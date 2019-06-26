@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+
+.resultsToolbar-PopupPanel {
+    border: 1px solid #CCCCCC;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 5556;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 12px;
+    overflow: hidden !important;
+}
+
+.resultsToolbar-Anchor {
+	color: white;
+    text-decoration: none;
+    display: block;
+    padding: 7px;
+    padding-right: 10px;
+}
+
+.resultsToolbar-Anchor:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.resultsToolbar-Anchor:active {
+	color: white;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+#downloadProductsDisabled{
+	color: grey;
+	cursor: default;
+	background: transparent;
+}

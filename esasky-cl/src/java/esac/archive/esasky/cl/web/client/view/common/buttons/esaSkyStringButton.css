@@ -1,0 +1,80 @@
+@CHARSET "UTF-8";
+
+.defaultEsaSkyStringButton{
+   	border: 1px solid;
+   	background: transparent;
+   	pointer: default;
+   	display: inline-flex;
+   	align-items: center;
+}
+
+.defaultEsaSkyStringButton .html-face{
+   	color: white !important;
+   	text-align: center;
+}
+
+.defaultEsaSkyStringButton:hover{
+	cursor: pointer;
+}
+
+.defaultEsaSkyStringButton.lightStringStyle.gwt-PushButton-up {
+	border-color: #AAAAAA;
+}
+
+.defaultEsaSkyStringButton.lightStringStyle.gwt-PushButton-up-hovering {
+	border-color: #EEEEEE;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+.defaultEsaSkyStringButton.lightStringStyle.gwt-PushButton-down, 
+.defaultEsaSkyStringButton.lightStringStyle.gwt-PushButton-down-hovering {
+	border-color: #FFFFFF;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.defaultEsaSkyStringButton.darkStringStyle.gwt-PushButton-up {
+	border-color: #AAAAAA;
+}
+
+.defaultEsaSkyStringButton.darkStringStyle.gwt-PushButton-up-hovering {
+	border-color: #666666;
+	background-color: rgba(0, 0, 0, 0.15);
+}
+.defaultEsaSkyStringButton.darkStringStyle.gwt-PushButton-down, 
+.defaultEsaSkyStringButton.darkStringStyle.gwt-PushButton-down-hovering {
+	border-color: #000000;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.smallStringButton{
+	font-size: 1em;
+	padding: 4px;
+}
+
+.smallStringButton.gwt-PushButton-down,
+.smallStringButton.gwt-PushButton-down-hovering {
+	padding: 5px 3px 3px 5px;
+}
+
+.mediumStringButton {
+	font-size: 1.1em;
+	padding: 5px 7px;
+}
+
+.mediumStringButton.gwt-PushButton-down,
+.mediumStringButton.gwt-PushButton-down-hovering {
+	padding: 6px 6px 4px 8px;
+}
+
+.bigStringButton {
+	font-size: 1.5em;
+	padding: 5px 7px;
+}
+
+.bigStringButton.gwt-PushButton-down,
+.bigStringButton.gwt-PushButton-down-hovering {
+	padding: 6px 6px 4px 8px;
+}
+
+.squaredStringButton {
+   	border-radius: 5px;
+}

@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+.dateFilterContainer {
+	height: 236px;
+	display: inline-flex;
+	padding: 4px;
+}
+
+.dateInputContainer{
+	display: inline-block;
+}
+
+.dateFilterInput{
+	width: 251px;
+	box-sizing: border-box;
+	cursor: default;
+	border: solid 1px;
+	text-align: center;
+}
+.dateFromFilterInput,
+.dateResetButton{
+	margin-right: 5px;
+}
+

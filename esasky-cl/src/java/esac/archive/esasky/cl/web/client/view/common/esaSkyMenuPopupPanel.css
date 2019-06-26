@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+.popupPanel{
+    border: 1px solid #eee;
+    border-radius: 4px;
+    z-index: 900000;
+    background-color: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+}
+
+.popupPanel tr:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.popupPanel tr:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}

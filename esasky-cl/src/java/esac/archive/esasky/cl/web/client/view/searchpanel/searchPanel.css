@@ -1,0 +1,144 @@
+@CHARSET "UTF-8";
+
+
+#allSkySearchPanelContainer{
+    border: 1px none;
+    margin: auto;
+    position: absolute;
+    right: 0px;
+    top: 35px;
+    z-index: 201;
+}
+
+#allSkySearchPanel {
+	border-radius: 10px;
+    clear: both;
+    height: 25px;
+    margin: auto;
+    padding: 1px 3px;
+    position: relative !important;
+	z-index: 202;
+}
+
+#allSkySearchTextBox {
+	background: none repeat scroll 0 0 #FCFCFC;
+    border: 1px solid #D1D1D1;
+    border-radius: 20px;
+    color: #000000;
+    outline: medium none;
+    padding: 6px 35px 6px 15px;
+    transition: all 0.7s ease 0s;
+    float:left;
+    font-size: 1em;
+}
+
+#tooltipCoords{
+	border: 1px solid #CCCCCC;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    font-size: 0.9em;
+    padding-top: 20px;
+    position: absolute;
+    text-decoration: none;
+    top: 10px;
+    width: 200px;
+    z-index: 202;
+    overflow-y: auto!important;
+    overflow-x: hidden!important;
+    box-sizing: border-box;
+}
+
+#tooltipCoords .coords {
+    margin: 5px 8px;
+}
+
+#searchTextBoxError{
+    border: 1px solid #CCCCCC;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    color: #AAAAAA;
+    padding-bottom: 10px;
+    padding-top: 32px;
+    position: absolute;
+    top: 8px;
+    width: 200px;
+    z-index: 201;
+    box-sizing: border-box;
+}
+
+.searchBoxLabel {
+	margin: 5px 8px;
+}
+
+#textBoxHolder{
+	z-index: 203;
+}
+
+.clearSearchTextBtn{
+	position: absolute;
+	left:168px;
+}
+
+.collapse{
+	visibility: collapse;
+}
+
+#searchResultsListPanel{
+    border: 1px solid #CCCCCC;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    padding-bottom: 10px;
+    padding-top: 32px;
+    position: absolute;
+    top: 8px;
+    width: 200px;
+    z-index: 201;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+#searchResultEntry{
+    cursor: pointer;
+	padding: 2px 8px;
+}
+
+#searchResultEntry:hover{
+    background: rgba(255, 255, 255, 0.15);
+}
+
+#searchResultEntry:active{
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.searchTextBox {
+	width: 150px;
+}
+
+.searchTextBox::-ms-clear{
+	width: 0;
+	height:0;
+}
+
+.searchIcon {
+	pointer-events: none;
+	position: absolute;
+	left: 9px;
+	top: 6px;
+	z-index: 210;
+}
+
+.searchPanel__logoContainer{
+	position: absolute;
+    top: 32px;
+    right: 5px;
+    pointer-events: none;
+}
+
+.searchPanel__logo{
+    width: 43px;
+    height: auto;
+    display: block;
+}

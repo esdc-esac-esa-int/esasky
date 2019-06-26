@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+.changePaletteBtn {
+	height: 24px;
+	width: 24px;
+	box-sizing: border-box;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: auto;
+	display: block;
+	border: 1px solid #AAAAAA;
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none;
+	user-drag: none;
+	-webkit-user-drag: none;
+}
+
+.changePaletteBtn:hover {
+	border: 1px solid #CCCCCC;
+}
+
+.changePaletteBtn:active {
+	border: 1px solid #FFFFFF;
+}

@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+#allSkyESALogo {
+    cursor: pointer;
+    position: absolute;
+    z-index: 9;
+}
+
+.notSelectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

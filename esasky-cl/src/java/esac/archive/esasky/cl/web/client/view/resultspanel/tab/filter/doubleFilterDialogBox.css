@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+.selectorContainer>input{
+	display: none;
+}
+
+.selectorTo{
+	position: absolute;
+	right: 3px;
+}
+
+.selectorSlider{
+	margin: 8px 2px 6px 13px;
+}
+
+.sliderSelector h3{
+	display: none;
+}
+
+.resetDoubleFilterButton{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.selectorContainer{
+	padding-right: 15px;
+	padding-left: 5px;
+}
+
+.sliderTextBox{
+	box-sizing: border-box;
+	margin: 0px 4px;
+	vertical-align: middle;
+	width: 100px;
+	text-align: center;
+	border: 2px solid #777777;
+	border-radius: 2px;
+}
+
+.sliderTextBox:focus{
+	border: 2px solid #8888FF;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 5px;
+}

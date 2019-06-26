@@ -1,0 +1,97 @@
+@CHARSET "UTF-8";
+
+
+.futureFootprintRow{
+	border-radius: 10px;
+    padding: 5px;
+    border: 1px solid;
+    margin-bottom: 3px;
+}
+
+.instrumentName{
+    font-weight: bold;
+    margin: 5px;
+    min-width: 75px;
+    max-width: 75px;
+    word-break: break-all;
+}
+
+.allInstrumentsCheckBox input{
+	vertical-align: middle;
+}
+
+.clearButton {
+    margin-left: 8px;
+}
+
+.commandsTable {
+	width: auto !important;
+	padding: 6px;
+}
+
+.instrumentHeader{
+    height: 26px;
+    width: 100%;
+    padding-right: 4px;
+    margin-bottom: 3px;
+    border-bottom: 1px solid #CCCCCC
+}
+
+.instrumentHeader td{
+	margin: auto;
+}
+
+.plusMinusButton{
+    margin-left: 3px;
+    margin-top: 2px;
+}
+
+.planningTextBox{
+    margin-left: 3px;
+    margin-top: 4px;
+    width: 80px;
+    padding: 2px;
+}
+.addInstrumentButton{
+	margin-left: 5px;
+}
+
+.planningInstrumentRow{
+    width: 100%;
+}
+
+#copyBtn{
+    cursor: pointer;
+	margin: 10px;
+}
+
+.copyLabel{
+	color: #FFFFFF;
+    margin-left: 30px;
+    margin-top: 11px;
+	max-width: none;
+}
+
+.copyOnClipboardCoordinates {
+	width: auto !important;
+}
+
+.variablesContainer{
+	width: auto !important;
+}
+
+.variablesContainer table{
+	width: auto !important;
+}
+
+.controlsContainer td{
+	margin: auto;
+}
+
+.rotationButton{
+	margin: 3px;
+}
+
+.directionalControls{
+	width: 120px !important;
+}

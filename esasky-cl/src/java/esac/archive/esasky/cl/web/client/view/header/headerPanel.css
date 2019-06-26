@@ -1,0 +1,288 @@
+.header {
+	font-size: 13px;
+	font-family: arial;
+	height: 30px;
+	width: 100%;
+	position: absolute;
+	z-index: 300;
+	background-color: rgba(0, 0, 0, 0.65)
+}
+
+#rightSideHeader {
+	position: absolute;
+	right: 0px;
+	display: inline-flex;
+}
+
+
+#headerShareButton > div ,
+#selectedSky > div ,
+#feedbackButton > div ,
+#header__screenshotButton > div,
+#headerHelpButton > div,
+#header__warningButton > div { 
+	border: 0px;
+	border-radius: 1px;
+}
+
+#selectedSky > div {
+	height: 30px;
+	box-sizing: border-box;
+}
+
+#feedbackButton > div {
+	height: 22px;
+}
+
+#headerShareButton,
+#feedbackButton,
+#header__screenshotButton,
+#headerHelpButton,
+#header__warningButton{
+	display: inline-flex;
+	vertical-align: middle;
+	margin-right: 5px;
+	align-items: center;
+}
+
+#header__dropdown:hover,
+.header select:hover,
+.header__science-mode__container:hover{
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+#header__dropdown:active,
+.header select:active,
+.header__science-mode__container:active{
+	background-color: rgba(255, 255, 255, 0.30);
+}
+
+.languageSelector {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+#coordinateContainer, .header label {
+	line-height: 30px;
+}
+
+.header select {
+	color: white;
+	font-weight: bold;
+	background-color: transparent;
+	border: 0px;
+}
+
+.header select:hover {
+	cursor: pointer;
+}
+
+.header select:active {
+}
+
+.header option{
+	background-color: #000000;
+}
+
+.coordinateFrameFull {
+	display: inline-block;
+}
+
+.coordinateLabel {
+	display: inline-block;
+	width: 170px;
+}
+
+.isCenterPosition {
+	font-weight: bold;
+	color: #20A4D8;
+}
+
+.fovPanel {
+	display: inline-block;
+}
+
+#coordinateContainer {
+	display: inline-flex;
+	vertical-align: top;
+}
+
+#selectedSky {
+	display: inline-block;
+	margin-right: 7px;
+}
+
+.header__dropdown__content {
+	background-color: rgba(0, 0, 0, 0.85);
+	position: absolute;
+	right: 0px;
+	max-height: literal("calc(100vh - 30px)");
+	overflow: auto;
+	width: intrinsic;           /* Safari/WebKit uses a non-standard name */
+  	width: -moz-max-content;    /* Firefox/Gecko */
+  	width: -webkit-max-content;
+}
+
+
+#header__dropdown .header__dropdown__content, .unselectable {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.header__dropdown__content>* {
+	display: block;
+	cursor: pointer;
+	padding: 6px;
+	color: white;
+	text-decoration: none;
+}
+
+.header__dropdown__content>*:hover, .header__dropdown__content>a:hover {
+	background-color: rgba(255, 255, 255, 0.15);
+	color: white;
+}
+
+.header__dropdown__content>*:active, .header__dropdown__content>a:active {
+	background-color: rgba(255, 255, 255, 0.25);
+}
+
+.header__dropdown__container {
+	display: inline-flex;
+	vertical-align: middle;
+}
+
+.header__dropdown__container:hover {
+	cursor: pointer;
+}
+
+.header__dropdown__item__icon{
+	height: 14px;
+	width: auto;
+	vertical-align: middle;
+	display: inline-block;
+	box-sizing: border-box;
+	margin-right: 5px;
+}
+
+#header__dropdown__wwt{
+	display: block;
+}
+
+#header__dropdown__language {
+	margin: 2px auto;
+	padding: 4px;
+}
+
+#header__dropdown__science  .header__science-mode__label {
+	line-height: 27px;
+}
+
+#header__dropdown__icon {
+	height: 25px;
+	width: auto;
+	vertical-align: middle;
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 5px 4px 0px 4px;
+	margin-bottom: 4px;
+}
+
+.header__dropdown__help__text,
+.header__dropdown__wwt__text,
+.header__dropdown__share__text,
+.header__dropdown__screenshot__text {
+	display: inline-block;
+}
+
+.header__science-mode__container {
+	display: inline-block;
+	vertical-align: middle;
+	box-sizing: border-box;
+	padding: 0px 7px;
+}
+
+.header__science-switch {
+	
+}
+
+.header__science-mode__clickable-area{
+	cursor: pointer;
+}
+
+.header__science-mode__label {
+	display: inline-block;
+	vertical-align: middle;
+	padding-right: 3px;
+}
+
+.header__science-mode__label-container {
+	display: inline-block;
+	vertical-align: middle;
+	pointer-events: none;
+}
+
+/* The switch - the box around the slider */
+.header__science-mode__switch-container {
+	pointer-events: none;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	width: 30px;
+	height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.header__science-mode__switch-container input {
+	display: none;
+}
+
+/* The slider */
+.header__science-mode__switch-slider {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.header__science-mode__switch-slider:before {
+	position: absolute;
+	content: "";
+	height: 13px;
+	width: 13px;
+	left: 2px;
+	bottom: 2px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.header__science-mode__switch-slider {
+	background-color: #20A4D8;
+}
+
+input:focus+.header__science-mode__switch-slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.header__science-mode__switch-slider:before {
+	-webkit-transform: translateX(13px);
+	-ms-transform: translateX(13px);
+	transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.header__science-mode__switch-slider.round {
+	border-radius: 17px;
+}
+
+.header__science-mode__switch-slider.round:before {
+	border-radius: 50%;
+}

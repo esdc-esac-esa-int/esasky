@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+
+#skeletonPanel{
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	width: 100%;
+}
+
+#everythingExceptBanner{
+	flex: 1 1 auto;
+	position: relative;
+	height: 100%;
+}
+
+.ctrlToolBar {
+    position: absolute;
+    top: 35px !important;
+    z-index: 30;
+    left: 5px;
+    padding-right: 5px;
+    pointer-events: none;
+    max-width: literal("calc(100% - 36px)");
+}
+
+.ctrlToolBar>*{
+    pointer-events: auto;
+}
+ 
+:focus {
+	outline: 0px;
+}
+
+.wDialogBox{ 
+	display: block; 
+	z-index: 10010; 
+	border-radius: 6px; 
+	opacity: 0.8; 
+	background-color: #808080; 
+	border: 1px solid; 
+	padding: 5px; 
+	devicePixelRatio: auto; 
+}
+
+.okButton{
+	height: 12px;
+	width: 15px;
+	margin:auto;
+	display:block;
+}
+
+::-webkit-resizer{
+	background-image: literal('url(images/resize.png)');
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,255,255,0.4); 
+}
+
+::-webkit-scrollbar-corner {
+	background-color: transparent;
+}
+
+body {
+	display: flex;
+	flex-flow: row;
+}

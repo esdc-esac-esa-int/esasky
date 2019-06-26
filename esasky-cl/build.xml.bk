@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!--
+ build.xml
+
+ esasky-cl-web  -  Multi Mission Interface web client application
+ Copyright (C) 2014-  ESA - ESAC - Madrid, Spain
+-->
+
+<project name="esasky-cl-web" default="final" xmlns:cl="antlib:net.jtools.classloadertask" basedir=".">
+
+	<description> esasky-cl-web - Multi Mission Interface web client application </description>
+
+	<!-- Jera Ant task for encoding passwords -->
+	<taskdef name="query" classpath="setup/antlibs/JeraAntTasks.jar" classname="com.jera.anttasks.Query" />
+
+	<!-- Included for autocontent deploy -->
+	<typedef uri="antlib:net.jtools.classloadertask" resource="net/jtools/classloadertask/antlib.xml">
+		<classpath>
+			<fileset dir="setup/antlibs/" includes="ant-classloadertask.jar" />
+		</classpath>
+	</typedef>
+
+	<cl:classloader loader="project">
+		<classpath>
+			<fileset dir="setup/antlibs" includes="jsch.jar" />
+		</classpath>
+	</cl:classloader>
+
+	<property file="build.properties" />
+	<property file="build.properties.defaults" />
+	<import file="ivy-tasks.xml" />
+
+	<path id="subant.path">
+	</path>
+
+	<fileset id="lib.fileset" dir="${lib.dir}">
+		<include name="*.jar" />
+	</fileset>
+
+	<path id="build.path">
+		<fileset refid="lib.fileset" />
+	</path>
+
+	<path id="test.path">
+		<path refid="build.path" />
+		<pathelement location="${build.classes.dir}" />
+	</path>
+
+	<target name="all" depends="final, test, docs, check" description="Build, pack, test, document and check the application" />
+
+	<target name="clean" depends="ivy-clean-jars,ivy-clean-cache" description="Clean up the environment">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${deploy.dir}"/>
+		<delete dir="${final.dir}" />
+		<delete dir="${deploy.classes.dir}" />
+		<delete dir="${deploy.gwtout.dir}" />
+	    <delete dir="${gwt.localcache.dir}" />	    
+	</target>
+
+	<target name="init" depends="ivy-retrieve" description="Initialise the environment">
+		<buildnumber/>
+		<echo> Build number is ${build.number} </echo>
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="build" depends="init" description="Compile the java sources">
+		<mkdir dir="${build.classes.dir}" />
+
+		<javac srcdir="${java.dir}" destdir="${build.classes.dir}" classpathref="build.path" source="${javac.source}" target="${javac.target}" compiler="${javac.compiler}" nowarn="${javac.nowarn}" debug="${javac.debug}" deprecation="${javac.deprec}" />
+
+		<copy todir="${build.classes.dir}">
+			<fileset dir="${java.dir}" excludes="**/*.java" />
+		</copy>
+
+	</target>
+
+	<target name="dist" depends="gwt-compile" description="Make the distribution files (pack as JAR, WAR, EAR, ...)">
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${deploy.dir}" />
+
+		<subant buildpathref="subant.path" target="dist" failonerror="true">
+			<property name="deploy.target" value="${deploy.target}" />
+		</subant>
+
+		<copy todir="${deploy.dir}" overwrite="true">  
+        	<fileset dir="${conf.dir}/web" />  
+ 		</copy>		
+
+		<replace file="${deploy.dir}/index.html">
+			<replacefilter token="@@@version@@@" value="${software.version}" />
+			<replacefilter token="@@@base_gui_location@@@" value="${base.gui.location}" />
+			<replacefilter token="@@@module_name@@@" value="${esasky.version.name}" />
+		</replace>
+		
+		<replace file="${deploy.dir}/manifest.json">
+			<replacefilter token="@@@short_name@@@" value="${web.app.short.name}" />
+			<replacefilter token="@@@long_name@@@" value="${web.app.long.name}" />
+		</replace>
+		
+		<copy file="${conf.dir}/web.xml" todir="${deploy.dir}/WEB-INF" overwrite="true" />
+				
+		<copy file="${conf.dir}/config-with-variable.js" tofile="${deploy.dir}/js/config.js" overwrite="true" />
+		<replace file="${deploy.dir}/js/config.js">
+			<replacefilter token="context.path" value="${context.path}" />
+		    <replacefilter token="tap.context" value="${tap.context}" />
+		    <replacefilter token="locale.url" value="${locale.url}" />
+		    <replacefilter token="targetlist.url" value="${targetlist.url}" />
+		</replace>
+		
+		<copy file="${conf.dir}/google-analytics-config.js" tofile="${deploy.dir}/js/google-analytics-config.js" overwrite="true" />
+		<replace file="${deploy.dir}/js/google-analytics-config.js">
+			<replacefilter token="@@@google.analytics.id@@@" value="${google.analytics.id}" />
+		</replace>
+
+		<copy file="${conf.dir}/web.xml" tofile="${deploy.webxml.file}" overwrite="true" />
+		
+		<war destfile="${dist.dir}/${software.name}-${software.version}.${deploy.target}.war" webxml="${deploy.webxml.file}" compress="${war.compress}" update="${war.update}">
+			<fileset dir="${deploy.dir}" includes="**/*.*" excludes="**/WEB-INF" />
+		</war>
+
+	</target>
+
+	<target name="final" depends="dist" description="Make the final distribution group of files">
+		<mkdir dir="${final.dir}" />
+
+		<subant buildpathref="subant.path" target="final" failonerror="true">
+			<property name="deploy.target" value="${deploy.target}" />
+		</subant>
+
+		<copy file="${dist.dir}/${software.name}-${software.version}.${deploy.target}.war" tofile="${final.dir}/${software.name}-${software.version}.${deploy.target}.war" />
+
+	</target>
+
+	<target name="deploy" depends="final" description="Deploy the application">
+		<echo message="Identify deploy machine's password..." />
+		<query name="server.password" message="Please enter password for ${server.user}@${server.host}" password="true" />
+
+		<echo message="Copy war file to deployment machine and directory..." />
+		<scp file="${final.dir}/${software.name}-${software.version}.${deploy.target}.war" todir="${server.user}:${server.password}@${server.host}:${server.instdir}" trust="true" verbose="true" />
+	</target>
+
+	    
+	<target name="jenkins-deploy" depends="final" description="Deploy the application">
+		<echo message="Identify deploy machine's password..." />
+		<echo message="Copy war file to deployment machine and directory..." />
+
+		<scp file="${final.dir}/${software.name}-${software.version}.${deploy.target}.war" todir="${server.user}:${server.password}@${server.host}:${server.instdir}" trust="true" verbose="true" />
+	</target>    
+
+	<target name="undeploy" depends="init" description="Undeploy the application">
+		<input message="Which target do you want to undeploy today ? " addproperty="deploy.target" validargs="local,dev,oper1,oper2" />
+		<property file="build.properties.${deploy.target}" />
+		<!--  TODO  -->
+	</target>
+
+	<target name="redeploy" depends="init" description="Redeploy the application">
+		<input message="Which target do you want to redeploy today? " addproperty="deploy.target" validargs="local,dev,oper1,oper2" />
+
+		<antcall target="undeploy" />
+		<antcall target="deploy" />
+	</target>
+
+	<target name="gwt-pre-compile" depends="init" description="Compile java source to bytecode">
+		<delete dir="${deploy.dir}"/>
+		<mkdir dir="${deploy.classes.dir}" />
+		
+		<copy file="${gwt.xml.template}" tofile="${gwt.xml.derived}" overwrite="true">
+		</copy>
+		
+		<scriptdef name="generate-gwt-acceptable-version-name" language="javascript">
+		    <attribute name="property" />
+		    <![CDATA[
+			
+			var versionIdentifier = "_V" + project.getProperty("software.version");
+			versionIdentifier += "_B" + project.getProperty("build.number");
+
+		    project.setProperty( attributes.get( "property" ), "esaskyweb" + versionIdentifier.replace(/[.,\/#!$%\^&\*;:{}=\-`~()]/g,"_"));
+		    ]]>
+		</scriptdef>
+
+		<generate-gwt-acceptable-version-name property="esasky.version.name" />
+		
+		<replace file="${gwt.xml.derived}">
+			<replacefilter token="@@@module_name@@@" value="${esasky.version.name}" />
+			<replacefilter token="@@@derived_file_warning@@@" value="${derived.file.warning}" />
+		</replace>
+
+		<javac srcdir="${java.dir}" includes="**" encoding="utf-8" classpathref="build.path" destdir="${deploy.classes.dir}" source="${javac.source}" target="${javac.target}" nowarn="${javac.nowarn}" debug="${javac.debug}" debuglevel="lines,vars,source">
+		</javac>
+
+		<copy todir="${deploy.classes.dir}">
+			<fileset dir="${java.dir}" excludes="**/*.java" />
+		</copy>
+	</target>
+
+	<target name="gwt-compile" depends="gwt-pre-compile" description="GWT compile to JavaScript (production mode)">
+
+		<input message="On which target do you want to deploy today? " addproperty="deploy.target" validargs="local,int,dev,oper1,oper2" defaultvalue="local" />
+		<property file="build.properties.${deploy.target}" />
+		<subant buildpathref="subant.path" target="build" failonerror="true">
+			<property name="deploy.target" value="${deploy.target}" />
+		</subant>
+
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+			<classpath>
+				<pathelement location="${java.dir}" />
+				<pathelement location="${deploy.classes.dir}" />
+				<path refid="build.path" />
+			</classpath>
+			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+			<jvmarg value="-Xmx256M" />
+			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+			<arg line="${gwt.args}" />
+			<arg value="${gwt.entrypoint}" />
+		</java>
+	</target>
+
+	<target name="gwt-compile-report" depends="gwt-pre-compile" description="GWT compile report">
+
+		<echo message="Generating compile report with local properties (loading build.properties.local)"/>
+		<property file="build.properties.local" />
+		<subant buildpathref="subant.path" target="build" failonerror="true">
+			<property name="deploy.target" value="local" />
+		</subant>
+
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+			<classpath>
+				<pathelement location="${java.dir}" />
+				<pathelement location="${deploy.classes.dir}" />
+				<path refid="build.path" />
+			</classpath>
+			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+			<!-- Increase memory compared to standard gwt-compile -->
+			<jvmarg value="-Xmx1024M" />
+			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+			<arg line="${gwt.args} -compileReport" />
+			<arg value="${gwt.entrypoint}" />
+		</java>
+	</target>
+
+	<target name="build-tests" depends="build" description="Compiles test code">
+		<mkdir dir="${build.testclass.dir}" />
+		<javac srcdir="test" includes="**" destdir="${build.testclass.dir}" classpathref="test.path" source="${javac.source}" target="${javac.target}" compiler="${javac.compiler}" nowarn="${javac.nowarn}" debug="${javac.debug}" />
+
+		<copy todir="${build.testclass.dir}">
+			<fileset dir="test" />
+		</copy>
+	</target>
+
+	<target name="test-dev" depends="build-tests" description="Run the unit tests in development mode">
+		<mkdir dir="${build.jureport.dev.dir}" />
+
+		<junit fork="${junit.fork}" printsummary="${junit.summary}" haltonfailure="${junit.halt}" showoutput="${junit.output}">
+			<jvmarg line="-Xmx256m" />
+			<sysproperty key="gwt.args" value="-standardsMode -logLevel WARN" />
+			<sysproperty key="java.awt.headless" value="true" />
+			<classpath>
+				<path refid="test.path" />
+				<pathelement location="${build.testclass.dir}" />
+				<pathelement location="${java.dir}" />
+			</classpath>
+			<batchtest todir="${build.jureport.dev.dir}">
+				<fileset dir="test">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+			<formatter type="plain" />
+			<formatter type="xml" />
+		</junit>
+
+		<junitreport todir="${build.jureport.dev.dir}">
+			<fileset dir="${build.jureport.dev.dir}" includes="TEST-*.xml" />
+			<report todir="${build.jureport.dev.dir}" />
+		</junitreport>
+	</target>
+
+	<target name="test-prod" depends="build-tests" description="Run the unit tests in production mode">
+		<mkdir dir="${build.jureport.prod.dir}" />
+
+		<junit fork="${junit.fork}" printsummary="${junit.summary}" haltonfailure="${junit.halt}" showoutput="${junit.output}">
+			<jvmarg line="-Xmx256m" />
+			<sysproperty key="gwt.args" value="-prod -standardsMode -logLevel WARN -standardsMode -out ${build.testwar.dir}" />
+			<sysproperty key="java.awt.headless" value="true" />
+			<classpath>
+				<path refid="test.path" />
+				<pathelement location="${build.testclass.dir}" />
+				<pathelement location="${java.dir}" />
+			</classpath>
+			<batchtest todir="${build.jureport.prod.dir}">
+				<fileset dir="test">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+			<formatter type="plain" />
+			<formatter type="xml" />
+		</junit>
+
+		<junitreport todir="${build.jureport.prod.dir}">
+			<fileset dir="${build.jureport.prod.dir}" includes="TEST-*.xml" />
+			<report todir="${build.jureport.prod.dir}" />
+		</junitreport>
+	</target>
+
+	<target name="test" depends="test-dev, test-prod" description="Run the unit tests in development and production mode">
+	</target>
+
+	<target name="docs" depends="init" description="Generate the API javadoc (and other documentation files)">
+		<mkdir dir="${build.javadoc.dir}" />
+
+		<javadoc sourcepath="${java.dir}" destdir="${build.javadoc.dir}" source="${javac.source}" packagenames="${javadoc.packages}" access="${javadoc.access}" failonerror="${javadoc.fail}">
+			<classpath refid="build.path" />
+			<link href="http://java.sun.com/j2se/1.4.2/docs/api/" />
+		</javadoc>
+	</target>
+
+	<target name="check" depends="build" description="Check the sources for style violations (and report them)">
+		<mkdir dir="${build.csreport.dir}" />
+		<taskdef resource="checkstyletask.properties" classpath="${lib.checkstyle.jar}" />
+
+		<checkstyle config="${checkstyle.config}" failonviolation="${checkstyle.fail}">
+			<classpath>
+				<path refid="build.path" />
+				<pathelement location="${build.classes.dir}" />
+			</classpath>
+			<fileset dir="${java.dir}" includes="**/*.java" />
+			<formatter type="xml" tofile="${build.csreport.dir}/csreport.xml" />
+		</checkstyle>
+
+		<xslt basedir="${build.csreport.dir}" includes="*.xml" destdir="${build.csreport.dir}" style="${checkstyle.style}">
+			<param name="output.dir" expression="${build.csreport.dir}" />
+			<param name="source.dir" expression="${basedir}/${java.dir}/" />
+		</xslt>
+	</target>
+</project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='gsamp'>
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+
+	<!-- Samp scripts -->
+<!-- 	<script src="samp.js"></script> -->
+  <script src="samp-2.js"></script>
+	<script src="json2.js"></script>
+	<script src="flXHR.js"></script>
+	<script src="flensed.js"></script>
+	<script src="checkplayer.js"></script>
+	<script src="swfobject.js"></script>
+	<script src="esasky-samp.js"></script>
+
+	<!-- Inherit gwt-log Default to `OFF`, but allow selection of a specific 
+		level , via the URL parameter: http://hostname/module/index.html?log_level=INFO -->
+	<inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
+	<!-- set log levels available -->
+	<extend-property name="log_level" values="DEBUG" />
+	<!-- set log pattern -->
+	<set-configuration-property name="log_pattern"
+		value="%d [%-5p] %m%n" />
+
+<!-- 	<entry-point class='esac.archive.esasky.cl.gsamp.sample.GSampSample' /> -->
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+<!-- 	<source path='sample' /> -->
+</module>
+	

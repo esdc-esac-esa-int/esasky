@@ -1,0 +1,87 @@
+@CHARSET "UTF-8";
+.welcomeDialogBox{ 
+	display: block; 
+	z-index: 8000; 
+	border-radius: 6px; 
+	background-color: rgba(0, 0, 0, 0.7); 
+	border: 1px solid; 
+	padding: 5px 13px 5px 13px;
+	position: absolute;
+	box-sizing: border-box;
+}
+
+.welcomeEsaSkyLogo{
+	vertical-align: middle;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+}
+
+.welcomeTitle{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;	
+	margin-top: 11px;
+	margin-bottom: 20px;
+	margin-right: 90px;
+	margin-left: 90px;
+}
+
+.welcomeDescription{
+	margin-bottom: 15px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.welcomeCheckBox {
+	font-size: 0.8em;
+	display: inline-block;
+}
+
+.welcomeCheckBox>*{
+	vertical-align: middle;
+}
+
+.cookieInformation{
+    margin-left: 5px;
+    font-size: 0.8em;
+    display: inline-block;
+}
+
+.cookieCheckboxAndPolicy{
+	margin-top: 19px;
+	margin-right: 60px;
+	margin-bottom: 12px;
+}
+
+.welcomeButtonContainer {
+	width: 100%;
+}
+
+.welcomeButton{
+	margin: 10px auto;
+}
+
+.welcomeButton div{
+	width: 130px;
+	margin: auto;
+}
+
+.welcomeCloseButton{
+	position: absolute;
+	right: 15px;
+	bottom: 11px;
+	display: inline-block;
+}
+
+.welcomeScienceModeButton{
+	display: inline-block;
+}
+
+#welcomeDialog__sciModeInfo{
+	display: flex;
+	justify-content: center;
+	justify-items: center;
+}
+

@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.allSkyZoomControl {
+    z-index: 5;
+    position: absolute;
+    top: 42%;
+    right: 8px;
+}
+
+.zoomButton {
+	margin-bottom: 2px;
+}

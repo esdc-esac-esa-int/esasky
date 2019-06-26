@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+.stringFilterDialogBox{
+}
+
+.stringFilterContainer{
+	width: 200px !important;
+}
+
+.filterTextBox{
+	padding: 6px 26px 5px 4px; 
+	border-radius: 5px;
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border-width: 0px;
+}
+
+.clearFilterTextBtn{
+	position: absolute;
+	right: 4px;
+	bottom: 3px;
+}

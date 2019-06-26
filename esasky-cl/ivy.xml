@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xml>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+
+    <info revision="3.1.2" status="release" organisation="esa" e:project="esasky" e:layer="cl"
+        e:component="esasky-cl-web" module="esasky-cl-web">
+        <description homepage="http://satscm.esac.esa.int/redmine/projects/esasky">ESA Sky web client
+            application</description>
+    </info>
+    <configurations />
+    <publications>
+        <artifact name="esasky-cl-web" type="war" ext="war" />
+    </publications>
+
+    <dependencies>
+        
+    <!--=================================== -->
+    <!--====== ABSI ====== -->
+    <!--=================================== -->
+    
+    <dependency e:project="absi" e:layer="cl" e:component="aladinlite-widget" name="absi-cl-aladinlite-widget" rev="0.8.2" force="false" transitive="true" />
+        
+    <!--=================================== -->
+    <!--====== ESDC LIBRARIES ====== -->
+    <!--=================================== --> 
+
+<!--     <dependency e:project="esasky" e:layer="modules" e:component="gwt-wcs-stcs-generator" name="gwt-wcs-stcs-generator" rev="1.1.1" force="true"  transitive="true" /> -->
+    <dependency e:project="esasky" e:layer="modules" e:component="gwt-wcs-stcs-generator" name="gwt-wcs-stcs-generator" rev="2.0.beta4" force="true"  transitive="true" />
+    <dependency e:project="ammi"   e:layer="ifcs" e:component="model"      name="ammi-ifcs-model"      rev="1.8.19" force="true"  transitive="true" />
+    <dependency e:project="esasky" e:layer="cl"   e:component="gsamp"      name="esasky-cl-gsamp"      rev="0.1"  force="true"  transitive="true" />
+    <dependency e:project="esasky" e:layer="cl"   e:component="gpresenter" name="esasky-cl-gpresenter" rev="0.1"  force="false" transitive="true" />
+
+    <!--=================================== -->
+    <!--====== EXTERNAL LIBRARIES ====== -->
+    <!--=================================== -->
+        
+    <dependency org="com.google.gwt" name="gwt-log"     rev="3.3.0" force="false"  transitive="true" />            
+    <dependency org="com.google.gwt" name="gwt-user"    rev="2.7.0" force="false"  transitive="true" />
+    <dependency org="com.google.gwt" name="gwt-dev"     rev="2.7.0" force="false"  transitive="true" />
+    <dependency org="com.google.gwt" name="gwt-servlet" rev="2.7.0" force="false"  transitive="true" />
+
+<!--     <dependency org="javax.validation"  name="validation-api" rev="1.0.0.GA" force="false" transitive="true" /> -->
+    <dependency org="org.moxieapps.gwt" name="highcharts"     rev="1.7.0"    force="false" transitive="true" />
+        
+    <dependency org="com.google.guava"             name="guava-gwt"           rev="17.0"  force="false" transitive="true" />
+    <dependency org="org.moxieapps.gwt"            name="uploader"            rev="1.1.0" force="false" transitive="true" />
+    <dependency org="junit"                        name="junit"               rev="4.10"  force="false" transitive="true" />
+    <dependency org="checkstyle"                   name="checkstyle-no-deps"  rev="4.4"   force="false" transitive="true" />
+    <dependency org="com.squareup"                 name="javapoet"            rev="1.0.0" force="false" transitive="false" />
+    <dependency org="com.fasterxml.jackson.core"   name="jackson-annotations" rev="2.5.1" force="false" transitive="false" />
+    <dependency org="com.github.nmorel.gwtjackson" name="gwt-jackson"         rev="0.9.0" force="false" transitive="false" />
+
+    </dependencies>
+</ivy-module>

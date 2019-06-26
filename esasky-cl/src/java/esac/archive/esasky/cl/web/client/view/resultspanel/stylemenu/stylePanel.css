@@ -1,0 +1,128 @@
+@CHARSET "UTF-8";
+
+#styleMenuContainer{
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 12px;
+    height: auto;
+    overflow: hidden !important;
+    padding: 5px;
+    z-index: 50;
+    margin-left: 3px;
+}
+
+.styleMenuInnerContainer{
+	width: 94%;
+	min-width: 200px;
+	border-radius: 10px;
+    padding: 5px;
+    border: 1px solid;
+    margin-bottom: 3px;
+}
+
+.styleContainerRow div{
+	display: inline-block;
+    vertical-align: middle;
+}
+
+.colorPicker {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  margin: 2px;
+  margin-left: 4px;
+  border-radius: 4px;
+  border: 1px solid #CCC;
+}
+
+.colorPicker:hover {
+	border-color: #FFFFFF;
+	cursor: pointer;
+}
+
+.colorPicker div {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 26px;
+  height: 26px;
+}
+
+.srcShapeDropDown {
+}
+
+.srcShapeDropDown .selectedArea {
+}
+
+.srcShapeDropDownItem .gwt-Image {
+    width: 20px;
+    margin-left: 2px;
+}
+
+.slider {
+	width: 95px;
+    margin-left: 6px;
+	vertical-align: middle;    
+	-webkit-appearance: none;
+    height: 6px;
+    border-radius: 5px;   
+    background: #d3d3d3;
+    opacity: 0.8;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+	opacity: 1;
+}
+
+.slider::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; 
+    background: #999999;
+    border: 1px solid #555555;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb:hover{
+	border-color: #333333;	
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #999999;
+    cursor: pointer;
+    border: 1px solid #555555;
+}
+
+.slider::-moz-range-thumb {
+	border-color: #333333;	
+}
+
+.arrowImg {
+    width: 32px;
+    margin-top: 8px;
+    margin-left: 8px;
+    margin-right: 10px;
+}
+
+.arrowAvgCheckBox {
+	display: block;
+    margin-left: 58px;
+    font-size: 11px;
+}
+
+.arrowAvgCheckBox label {
+    margin-left: 13px;
+}
+
+.arrowAvgCheckBox input, .arrowAvgCheckBox label {
+    vertical-align: middle;
+}

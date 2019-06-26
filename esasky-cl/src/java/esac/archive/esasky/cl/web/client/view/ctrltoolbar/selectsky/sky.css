@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+
+.skyPanel{
+    border-radius: 3px;
+    z-index: 10;    
+    display: inline-flex;
+    border-color: #CCCCCC;
+}
+
+.selectedSky{
+}
+
+.skyRadioBtn{
+	display: block;
+	margin: auto;
+	padding-left: 2px;
+}
+
+.skyInfoBtn{
+	display: block;
+	margin: auto;
+}
+
+.hipsCreatorImage{
+	margin: auto;
+	display: block;
+	width: 100%;
+}
+
+.creatorContainer {
+	margin: auto;
+	width: 18px;
+}
+
+td{
+    vertical-align: middle !important;
+}
+
+.closeSkyButton {
+	margin: auto;
+}
+
+.skyDropDown{
+	margin: auto;
+}
+
+.collapse {
+	margin: 0px;
+	visibility: collapse;
+	width: 0px;
+	height: 0px;
+	padding: 0px; 
+	display: none;
+}
+

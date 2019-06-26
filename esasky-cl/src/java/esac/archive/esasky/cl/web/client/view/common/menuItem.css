@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.selectedIcon{
+	height: 15px;
+	width: 15px;
+	float: right;
+}
+
+.dropdownLabel{
+	float:left;
+	font-weight: normal !important;
+}
+
+.dropdownItem {
+	padding: 4px;
+}
+
+.fillWidth {
+	width: 100%;
+}
+
+.dropdownItem tr {
+	background-color: transparent !important;
+}
+

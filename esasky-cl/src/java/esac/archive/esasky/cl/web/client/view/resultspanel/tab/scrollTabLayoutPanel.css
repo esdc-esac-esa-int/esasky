@@ -1,0 +1,156 @@
+@CHARSET "UTF-8";
+
+.scrollTabLayoutPanel {
+	border: none;
+	-moz-border-radius: 3px;
+	position: absolute !important;
+	left: 39px;	
+	top: 0px;	
+	right: 0px;	
+	bottom: 0px;
+}
+
+.scrollTabLayoutPanelTab {
+	margin-right: 6px;
+	padding: 3px 8px 3px 8px;
+	cursor: pointer;
+	font-size: small;
+	text-align: center;
+	background: #444444;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	height: 35px;
+	pointer-events: auto;
+}
+
+.scrollTabLayoutPanelTab:hover {
+	background: #777777;
+}
+
+.scrollTabLayoutPanelTab-selected {
+	cursor: default;
+	font-weight: bold;
+	background: #E3E3E3;
+}
+
+.scrollTabLayoutPanelTab-selected:hover {
+	background: #E3E3E3;
+}
+
+.scrollTabLayoutPanelTabInner {
+	margin-top: 3px;
+}
+
+.scrollTabLayoutPanelTabInner td{
+	vertical-align: middle !important;
+}
+
+.scrollTabLayoutPanelBar {
+	background: none repeat scroll 0 0 #222222;
+	border-color: #222222;
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 2px;
+	height: 19px;
+	margin-left: 7px;
+	padding-top: 4px;
+	width: 23px;
+}
+
+.scrollTabLayoutPanelContentContainer {
+	background-color: rgba(10, 10, 10, 0.95);
+	border: 1px solid #e3e3e3;
+	border-top: 0px;
+	border-bottom: 0px;
+	pointer-events: auto;
+}
+
+#scrollBar{
+	top: -1px !important;
+	height: 45px;
+	z-index: 100;
+}
+
+.scrollBarWithButtons{
+	left: 0px !important;
+}
+
+.scrollBarNoButtons{
+	left: -30px !important;
+}
+
+.scrollRightButton {
+	margin-left: 3px;
+	margin-top: 10px;
+	pointer-events: auto;
+	position: unset !important;
+}
+
+.scrollLeftButton {
+	margin-top: 10px;
+	margin-left: 2px;
+	pointer-events: auto;
+	position: unset !important;
+}
+
+.scrollTabs {
+	left: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+	white-space: nowrap;
+}
+
+.iconDisabled {
+	padding: 0px;
+	margin: 0px;
+	background-color: transparent;
+	cursor: default;
+}
+
+.dataPanelDraggablePanel:hover{
+	cursor: s-resize;
+} 
+
+.notSelectable * {
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.dragLine{
+	height: 5px;
+	width: 100%;
+	background-color: #e3e3e3;
+	position: absolute;
+	z-index: 40;
+	pointer-events: none;
+	opacity: 0.9;
+}
+
+.dataPanelDraggablePanel {
+    width: literal("calc(100% - 17px)");
+    height: 12px;
+    position: absolute;
+    top: 0px;
+}
+
+.dataPanelTabChild{
+	margin-top: 8px;	
+}
+
+.draggableArea__horizontal{
+	margin-top: 4px;
+	height: 1px;
+	width: 100%;
+	background-color: black;
+}
+
+.draggableArea__horizontal-second{
+	margin-top: 2px;
+	height: 1px;
+	width: 100%;
+	background-color: black;
+}

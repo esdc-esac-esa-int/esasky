@@ -1,0 +1,33 @@
+# build.properties.int
+#
+# esasky-cl-web - ESASky web client application
+# Copyright (C) 2014-  ESA - ESAC - Madrid, Spain
+
+### target flags & options
+server.host=ammiappint.n1data.lan
+server.user=mmiops
+server.user.home=/home/${server.user}
+server.instdir=${server.user.home}/esaskyComponents
+
+context.path=/esasky
+tap.context=/esasky-tap
+
+#Empty means local files. I.e. not CDN
+base.gui.location=
+#base.gui.location=//cdn.skies.esac.esa.int/gui/${esasky.version.name}/
+
+google.analytics.id=UA-59849409-13
+
+software.version=${software.version}-int
+
+web.app.short.name=ESASky v${software.version}
+web.app.long.name=ESASky v${software.version} release
+
+
+#Empty means local files. I.e. not CDN
+locale.url=
+#locale.url=${base.gui.location}internationalization/
+targetlist.url=
+#targetlist.url=${base.gui.location}targetlist/
+
+show.missing.translation.box=true

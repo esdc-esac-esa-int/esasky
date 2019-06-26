@@ -1,0 +1,47 @@
+.banner__container{
+	box-sizing: border-box;
+	width: 100%;
+    z-index: 10000;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+	flex: 0 0 auto;
+}
+
+.banner__text{
+	font-weight: bold;
+	display: inline;
+	vertical-align: middle;
+}
+
+.banner__text a:visited, .banner__text a{
+  color: #000000;
+}
+
+.banner__text a:hover {
+	color: #222222;
+}
+
+.banner__text a:active{
+	color: #444444;
+}
+
+.banner__closeButton{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.banner__icon{
+	display: inline;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+.banner__contentContainer{
+	padding: 1vh 10vw;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+
+#sourceToolTip{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.9);
+    border-radius: 0 7px 7px;
+    padding: 4px;
+    position: absolute;
+    z-index: 10;
+    border: 1px solid #CCCCCC;
+    text-align: center;
+}
+
+#sourceToolTip .Caption{
+    font-size: small;
+    font-weight: bold;
+} 
+
+#sourceTooltipContent a {
+}
+
+#sourceTooltipContent{
+    font-size: small;
+}
+
+.tooltipButton{
+	display: inline-block;	
+	vertical-align: middle;
+}
+
+.tooltipButton div{
+	border: 0px;	
+}

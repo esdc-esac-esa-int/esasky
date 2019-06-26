@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+.popupHeaderMinimizeButton{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+
+.popupHeaderLabelWithHelpButton {
+	font-size: 1.1 em;
+	font-weight: bold;
+	padding: 3px;
+	margin-right: 25px;
+}
+
+.popupHeaderContainer{
+	position: relative;
+}

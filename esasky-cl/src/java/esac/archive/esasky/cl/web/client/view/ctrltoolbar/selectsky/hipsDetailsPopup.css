@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+#hipsDbox a,#hipsDbox a:visited{
+    color: #20a4d8;
+}
+
+#hipsDbox a:hover{
+    color: #30B4e8;
+}
+
+#hipsDbox{
+	background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #F0FFFF;
+    border-radius: 9px;
+    height: auto;
+    padding: 4px;
+    z-index: 51;
+}
+
+#hipsDbox td{
+    font-size: small;
+}
+
+.closeHipsDetails{
+	position: absolute;
+	right: 5px;
+}
+    

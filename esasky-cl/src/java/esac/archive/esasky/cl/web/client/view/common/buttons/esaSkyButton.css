@@ -1,0 +1,130 @@
+@CHARSET "UTF-8";
+
+
+.fillParent {
+	width: 100%;
+	height: 100%;
+}
+
+.defaultEsaSkyButton{
+   	border: 1px solid;
+   	background: transparent;
+   	font-size: 0px;
+   	pointer: default;
+   	box-sizing: border-box;
+}
+
+.defaultEsaSkyButton:hover{
+	cursor: pointer;
+}
+
+.defaultEsaSkyButton.lightStyle.gwt-PushButton-up {
+	border-color: #CCCCCC;
+}
+
+.defaultEsaSkyButton.lightStyle.gwt-PushButton-up-hovering {
+	border-color: #EEEEEE;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+.defaultEsaSkyButton.lightStyle.gwt-PushButton-down, 
+.defaultEsaSkyButton.lightStyle.gwt-PushButton-down-hovering {
+	border-color: #FFFFFF;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.defaultEsaSkyButton.darkStyle.gwt-PushButton-up {
+	border-color: #AAAAAA;
+}
+
+.defaultEsaSkyButton.darkStyle.gwt-PushButton-up-hovering {
+	border-color: #666666;
+	background-color: rgba(0, 0, 0, 0.05);
+}
+.defaultEsaSkyButton.darkStyle.gwt-PushButton-down, 
+.defaultEsaSkyButton.darkStyle.gwt-PushButton-down-hovering {
+	border-color: #000000;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nonTransparentButton{
+	background-color: rgba(0, 0, 0, 0.65);
+	display: inline-block;
+}
+
+.smallButton{
+	height: 24px;
+	width: 24px;
+	padding: 4px;
+}
+
+.smallButton.gwt-PushButton-down,
+.smallButton.gwt-PushButton-down-hovering {
+	padding: 5px 3px 3px 5px;
+}
+
+.mediumButton {
+	height: 30px;
+	width: 34px;
+	padding: 5px 7px;
+}
+
+.mediumButton.gwt-PushButton-down,
+.mediumButton.gwt-PushButton-down-hovering {
+	padding: 6px 6px 4px 8px;
+}
+
+.bigButton {
+	height: 37px;
+	width: 41px;
+	padding: 5px 7px;
+}
+
+.bigButton.gwt-PushButton-down,
+.veryBigButton.gwt-PushButton-down,
+.veryBigButton.gwt-PushButton-down-hovering,
+.bigButton.gwt-PushButton-down-hovering {
+	padding: 6px 6px 4px 8px;
+}
+
+.veryBigButton {
+	height: 50px;
+	width: 60px;
+	padding: 5px 7px;
+}
+.veryBigButton img{
+	height: auto;
+}
+
+.roundButton {
+   	border-radius: 50%;
+}
+
+.squaredButton {
+   	border-radius: 15%;
+}
+
+.defaultEsaSkyButton .styleCircle{
+    width: 17px;
+    height: 17px;
+    border: 1px solid;
+	border-radius: 50%;
+	border-color: #CCCCCC;
+}
+
+.smallColorButton{
+	height: 17px !important; 
+	width: 17px !important; 
+    margin-left: 2px;
+}
+
+.widthAsMainSizeIndicator img{
+	width: 100%;
+	height:auto;
+}
+
+.widthAsMainSizeIndicator{
+	display: flex;
+    flex-direction: column;
+    justify-content: center
+}

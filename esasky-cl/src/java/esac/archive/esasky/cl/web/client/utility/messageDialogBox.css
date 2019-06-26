@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+
+.messageDialogBox{
+	position: absolute;
+    z-index: 6000;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;    
+    -moz-box-shadow: 0px 0px 20px #000000;
+    -webkit-box-shadow: 0px 0px 20px #000000;
+    box-shadow: 0px 0px 20px #000000;
+    border: 1px solid white;
+    background: rgba(0, 0, 0, 0.8);
+    overflow: auto !important;
+    padding: 10px;
+	width: 540px;
+	box-sizing: border-box;
+}
+
+.messageDialogHeaderText{
+	font-weight: bold;
+	text-align: center;
+}
+
+.closeDialogBox {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+
+.messageDialogBoxWidget{
+    font-size: 13px;
+    font-family: Arial Unicode MS, Arial, sans-serif;
+    font-weight: normal;
+    color: #EEEEEE;
+    padding-top: 10px;
+}

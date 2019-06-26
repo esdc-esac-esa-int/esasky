@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+.toggleButtonOn{
+	background-color: rgba(255, 255, 255, 0.3) !important;;
+	border-color: #FFFFFF !important;;
+}
+
+.toggleButtonOn.gwt-PushButton-up-hovering{
+	background-color: rgba(255, 255, 255, 0.2) !important;
+	border-color: #EEEEEE !important;;
+}
+
+.toggleButtonOn.gwt-PushButton-down-hovering{
+	background-color: rgba(255, 255, 255, 0.1) !important;
+	border-color: #CCCCCC !important;
+}
+

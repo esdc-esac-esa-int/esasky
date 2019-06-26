@@ -1,0 +1,145 @@
+package esac.archive.esasky.cl.web.client.view.banner;
+
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
+
+import esac.archive.esasky.cl.web.client.presenter.BannerPresenter.View;
+import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
+import esac.archive.esasky.cl.web.client.view.animation.CssPxAnimation;
+import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+
+public class Banner extends Composite implements View{
+
+	private static Resources resources = GWT.create(Resources.class);
+	private CssResource style;
+
+	private final FlowPanel banner = new FlowPanel();
+	private HTML bannerText = new HTML();
+	private CloseButton closeButton = new CloseButton();
+	private CssPxAnimation animation;
+	private int animationTimer = 1000;
+	private boolean isShowing;
+	private Image warningIcon = new Image(resources.warning());
+	private Image informationIcon = new Image(resources.information());
+	private Side side;
+	
+	public interface Resources extends ClientBundle {
+		@Source("banner.css")
+		@CssResource.NotStrict
+		CssResource style();
+		
+        @Source("warning.png")
+        ImageResource warning();
+        
+        @Source("information.png")
+        ImageResource information();
+	}
+	
+	public enum Side {TOP, BOTTOM, LEFT, RIGHT}
+
+	public Banner(Side side) {
+		style = resources.style();
+		style.ensureInjected();
+		this.side = side;
+		initView();
+	}
+	
+	private void initView() {
+		banner.addStyleName("banner__container");
+		
+		FlowPanel contentContainer = new FlowPanel();
+		contentContainer.addStyleName("banner__contentContainer");
+		warningIcon.addStyleName("banner__icon");
+		contentContainer.add(warningIcon);
+		informationIcon.addStyleName("banner__icon");
+		contentContainer.add(informationIcon);
+		bannerText.addStyleName("banner__text");
+		contentContainer.add(bannerText);
+		banner.add(contentContainer);
+		
+		closeButton.addStyleName("banner__closeButton");
+		banner.add(closeButton);
+		if(side == Side.LEFT) {
+			animation = new CssPxAnimation(banner.getElement(), "marginLeft");
+			banner.getElement().getStyle().setBackgroundColor("blue");
+			contentContainer.getElement().getStyle().setProperty("padding", "10vh 1vw");
+		} else if (side == Side.TOP){
+			animation = new CssPxAnimation(banner.getElement(), "marginTop");
+		} else if (side == Side.RIGHT){
+			animation = new CssPxAnimation(banner.getElement(), "marginRight");
+			banner.getElement().getStyle().setBackgroundColor("grey");
+			contentContainer.getElement().getStyle().setProperty("padding", "10vh 1vw");
+		} else if (side == Side.BOTTOM){
+			animation = new CssPxAnimation(banner.getElement(), "marginBottom");
+			banner.getElement().getStyle().setBackgroundColor("green");
+		}
+		
+		animation.addObserver(new AnimationObserver() {
+			
+			@Override
+			public void onComplete(double currentPosition) {
+				banner.setVisible(isShowing);
+			}
+		});
+		contentContainer.setHeight("100%");
+		contentContainer.setWidth("100%");
+		banner.setVisible(false);
+		
+		initWidget(banner);
+	}
+
+	@Override
+	public void setText(String text) {
+		bannerText.setHTML(text);
+	}
+
+	@Override
+	public void show() {
+		banner.setVisible(true);
+		isShowing = true;
+		animation.animateTo(0, animationTimer);
+	}
+
+	@Override
+	public void hide() {
+		isShowing = false;
+		if(side == Side.LEFT || side == Side.RIGHT) {
+			animation.animateTo(- banner.getOffsetWidth(), animationTimer);
+		} else {
+			animation.animateTo(- banner.getOffsetHeight(), animationTimer);
+		}
+	}
+
+	@Override
+	public void addCloseButtonClickHandler(ClickHandler handler) {
+		closeButton.addClickHandler(handler);
+	}
+
+	@Override
+	public String getText() {
+		return bannerText.getHTML();
+	}
+
+	@Override
+	public boolean isShowing() {
+		return isShowing;
+	}
+
+	@Override
+	public void setIsWarning(boolean isWarning) {
+		if(isWarning) {
+			banner.getElement().getStyle().setBackgroundColor("rgb(170, 0 , 0)");
+		} else {
+			banner.getElement().getStyle().setBackgroundColor("#20a4d8");
+		}
+		warningIcon.setVisible(isWarning);
+		informationIcon.setVisible(!isWarning);
+	}
+}

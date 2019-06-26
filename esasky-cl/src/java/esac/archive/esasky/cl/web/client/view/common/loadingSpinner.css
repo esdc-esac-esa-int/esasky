@@ -1,0 +1,149 @@
+@CHARSET "UTF-8";
+/* Spinner css */
+.esasky__spinner {
+	width: 32px;
+	height: 30px;
+}
+
+.esasky__spinner div {
+	animation: esasky__spinner 1.2s
+		cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	transform-origin: 15px 15px;
+}
+
+.esasky__spinner div:after {
+	content: " ";
+	display: block;
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: white;
+	margin: -3px 0 0 -3px;
+}
+
+.esasky__spinner div:nth-child\(1\) {
+	animation-delay: 0.28s;
+}
+
+.esasky__spinner div:nth-child\(1\):after {
+	top: 19px;
+	left: 27px;
+}
+
+.esasky__spinner div:nth-child\(2\) {
+	animation-delay: 0.21s;
+}
+
+.esasky__spinner div:nth-child\(2\):after {
+	top: 25px;
+	left: 22px;
+}
+
+.esasky__spinner div:nth-child\(3\) {
+	animation-delay: 0.14s;
+}
+
+.esasky__spinner div:nth-child\(3\):after {
+	top: 27px;
+	left: 16px;
+}
+
+.esasky__spinner div:nth-child\(4\) {
+	animation-delay: 0.07s;
+}
+
+.esasky__spinner div:nth-child\(4\):after {
+	top: 25px;
+	left: 9px;
+}
+
+.esasky__spinner div:nth-child\(5\) {
+}
+
+.esasky__spinner div:nth-child\(5\):after {
+	top: 19px;
+	left: 4px;
+}
+
+@keyframes esasky__spinner { 
+	0% {
+		transform: rotate(0deg);
+	}
+	100%{
+		transform:rotate(360deg);
+	}
+}
+
+
+
+/* Large */
+
+.esasky__spinner__large {
+	width: 90px;
+	height: 90px;
+}
+
+.esasky__spinner__large div {
+	animation: esasky__spinner 1.2s
+		cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	transform-origin: 45px 45px;
+}
+
+.esasky__spinner__large div:after {
+	content: " ";
+	display: block;
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: white;
+	margin: -9px 0 0 -9px;
+	border: 1px solid black;
+}
+
+.esasky__spinner__large div:nth-child\(1\) {
+	animation-delay: 0.28s;
+}
+
+.esasky__spinner__large div:nth-child\(1\):after {
+	top: 57px;
+	left: 81px;
+}
+
+.esasky__spinner__large div:nth-child\(2\) {
+	animation-delay: 0.21s;
+}
+
+.esasky__spinner__large div:nth-child\(2\):after {
+	top: 75px;
+	left: 66px;
+}
+
+.esasky__spinner__large div:nth-child\(3\) {
+	animation-delay: 0.14s;
+}
+
+.esasky__spinner__large div:nth-child\(3\):after {
+	top: 81px;
+	left: 48px;
+}
+
+.esasky__spinner__large div:nth-child\(4\) {
+	animation-delay: 0.07s;
+}
+
+.esasky__spinner__large div:nth-child\(4\):after {
+	top: 75px;
+	left: 27px;
+}
+
+.esasky__spinner__large div:nth-child\(5\) {
+	
+}
+
+.esasky__spinner__large div:nth-child\(5\):after {
+	top: 57px;
+	left: 12px;
+}
+

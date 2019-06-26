@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+
+.labelWithHelpButtonLabel {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 18px;
+	font-weight: normal;
+}
+
+.labelWithHelpButtonLabelNoFontSize {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.labelHelpButton {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+	pointer-events: auto;
+}
+
+.displayInlineBlock {
+	display: inline-block;
+}
+
+

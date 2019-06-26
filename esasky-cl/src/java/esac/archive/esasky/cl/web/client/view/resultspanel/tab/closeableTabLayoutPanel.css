@@ -1,0 +1,92 @@
+@CHARSET "UTF-8";
+
+.closeTabButton {
+	margin-left: 6px;
+}
+
+.tabLogo {
+	margin-left: 5px;
+	height: 15px;
+	vertical-align: middle;
+}
+
+.tabButtons {
+	margin-top: 6px;
+	pointer-events: auto;
+	border: 1px solid #e3e3e3;
+	border-right: 0px;
+	border-radius: 12px 0px 0px 12px;
+	padding: 20px 0px 20px 3px;
+	background-color: rgba(0, 0, 0, 0.65)
+}
+
+.tabButton {
+	margin-bottom: 3px;
+}
+
+.tabIcon {
+	height: 25px;
+	width: 25px;
+	margin-left: 3px;
+	margin-right: 3px;
+	pointer-events: none;
+	vertical-align: middle;
+}
+
+.whiteLabel {
+	color: #ffffff;
+	pointer-events: none;
+}
+
+.darkLabel {
+	color: #343434;
+	pointer-events: none;
+}
+
+.observationPanel {
+	bottom: 0px;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	position: absolute;
+	pointer-events: none;
+	z-index: 200;
+}
+
+.toggleDataPanelButton {
+	margin-left: 9px;
+	margin-top: 10px;
+	pointer-events: auto;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.emtpyTableMessage {
+	position: absolute;
+	left: 50%;
+	top: 175px;
+	transform: translate(-50%, -50%);
+	z-index: 210;
+	font-weight: bold;
+	white-space: pre;
+	text-align: center;
+}
+
+.resultInformationArea {
+	position: absolute;
+	right: auto !important;
+	bottom: 0;
+	left: 38px !important;
+	pointer-events: auto;
+	z-index: 250;
+}
+
+.resultInformation {
+/* 	background: rgba(255, 255, 255, 0.05); */
+	background: #101010;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding: 8px;
+}

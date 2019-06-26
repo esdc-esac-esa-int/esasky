@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+
+.ctrlToolBarBtn {
+	margin-bottom: 5px;
+	margin-right: 4px;
+	pointer-events: auto;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.badgeButtonContainer{
+	display: inline-block;
+	vertical-align: middle;
+	height: 42px;
+	width: 42px;
+    margin-right: 3px;
+}
+
+.badgeButton{
+	position: absolute;	
+}
+
+.numberFound{
+	position: relative;	
+	display: inline-block;
+	background: #20A4D8;
+	border-radius: 10px;
+	padding: 1px 4px;
+	pointer-events: none;
+	white-space: nowrap;
+	-webkit-transform: rotate(45deg);
+    -webkit-transform-origin-x: 0%;
+    -webkit-transform-origin-y: 0%;
+    -ms-transform: rotate(45deg); 
+    -ms-transform-origin: 0% 0%; 
+    transform: rotate(45deg);
+    transform-origin: 0% 0%;
+    
+    left: 35px;
+    top: 26px;
+}
+
+.displayNone{
+	display: none
+}
+
+.catalogButton img{
+	margin-left: -3px;
+	margin-top: -3px;
+	height: 32px !important;
+	width: 32px !important;
+}
+

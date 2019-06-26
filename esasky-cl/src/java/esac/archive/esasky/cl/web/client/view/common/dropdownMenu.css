@@ -1,0 +1,72 @@
+@CHARSET "UTF-8";
+
+.dboxMenu {
+	border: 1px solid #eee;
+	border-top: transparent;
+    border-radius: 0px 0px 5px 5px;
+    font-size: 0.8em;
+    display: block;
+    position: absolute !important;
+    text-align: left;
+    z-index: 300;
+    padding: 1px;
+    box-sizing: border-box;
+}
+
+.dboxMenu td {
+    cursor: pointer;
+}
+
+.dboxMenu table{
+	width: 100%;
+}
+
+.dboxMenu tr{
+    border-bottom: 1px solid gray;
+}
+
+.dboxMenu tr:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dboxMenu tr:active{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.dboxMenu{
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.dboxLabel{
+    font-weight: bold;
+}
+
+
+.selectedArea{
+    box-sizing: border-box;
+	width: 100%;
+    margin: 3px;
+    cursor: pointer;
+    border-radius: 3px;
+	border: 1px solid #ccc;
+}
+
+.selectedArea:hover{
+	background-color: rgba(255, 255, 255, 0.15);
+	border: 1px solid #EEE;
+}
+
+.selectedArea:active{
+	background-color: rgba(255, 255, 255, 0.3);
+	border: 1px solid #FFF;
+}
+
+.selectedArea table{
+	width: 100%;
+}
+
+.selectedArea.dropdown__openBorderRadius{
+	border-radius: 3px 3px 0px 0px;
+}
+
+

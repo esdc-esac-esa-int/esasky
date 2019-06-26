@@ -1,0 +1,70 @@
+.header__statusPanel {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+	height: 100%;
+	min-width: 32px;
+}
+
+.header__statusPanel__container{
+	margin: auto;
+	min-width: 300px;
+}
+
+.header__statusPanel__label {
+	display: flex;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 15px;
+    font-size: 14px;
+}
+
+.statusPanel__label__important{
+	color: #20a4d8;	
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.statusPanel__label__animate-in{
+	animation: statusPanel__animate-in 400ms;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
+	-webkit-animation: statusPanel__animate-in 400ms;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-out;
+	-webkit-animation-fill-mode: forwards;
+}
+
+@keyframes statusPanel__animate-in{
+	from {
+		transform: translateY(-35px);
+	}
+	to {
+		transform: translateY(0px);
+	}
+}
+
+.statusPanel__label__animate-out{
+	animation: statusPanel__animate-out 400ms;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-fill-mode: forwards;
+	-webkit-animation: statusPanel__animate-out 400ms;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in;
+	-webkit-animation-fill-mode: forwards;
+}
+
+@keyframes statusPanel__animate-out{
+	to {
+		transform: translateY(35px);
+	}
+}
+
+.header__statusPanel__spinnerContainer,
+.header__statusPanel__exclamationIcon{
+	z-index: 10000;
+}

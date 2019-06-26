@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+.filterDialogBox{
+	z-index: 41;
+    border-radius: 6px;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 1px solid #CCCCCC;
+}
+
+.filterActive{
+	border: 2px solid red !important;
+	background: white;
+}
+
+.filterColumnName{
+	text-align: center;
+	margin-bottom: 5px;
+}

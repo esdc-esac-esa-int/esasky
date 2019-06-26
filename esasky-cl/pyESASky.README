@@ -1,0 +1,20 @@
+For a development installation (requires npm),
+
+$ git clone https://github.com/fab77/pyesasky.git
+
+$ git checkout
+
+$ ant pyesasky
+
+$ sh install.sh
+
+To reinstall it in the system, just run:
+
+$ sh reinstall.sh
+
+After a new recompilation of the mother Java code run:
+
+$ ant pyesasky-clean
+
+$ ant pyesasky
+

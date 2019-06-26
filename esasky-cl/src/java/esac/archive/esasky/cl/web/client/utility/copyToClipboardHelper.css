@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+
+.copyNotificationLabel{
+	color: #FFFFFF;
+	font-size: 1.5em;
+}
+
+.copyNotification {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+	z-index: 10000;
+	background: rgba(0, 0, 0, 0.65);
+	padding: 1px 5px;
+	border-radius: 15px;
+	border: 1px solid;
+	margin-left: 3px;
+}
+
+.copyPopupPanel {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+	z-index: 10000;
+	background: transparent;
+	margin-left: 3px;
+}
+
+.textBoxToCopyFrom{
+	border: 1px solid;
+	border-radius: 10px;
+	padding: 3px 7px;
+	font-size: 1em;
+}

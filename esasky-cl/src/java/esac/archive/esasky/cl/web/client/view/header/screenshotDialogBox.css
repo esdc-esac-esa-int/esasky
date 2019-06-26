@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.screenshotDialogBox{
+	z-index: 201;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.65);
+    padding: 2px;
+    border: 1px solid;
+}
+
+.closeScreenshotButton{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+
+.imageHoverLayer{
+	position: absolute;
+	top: 32px;
+	opacity: 0.5;
+	background: transparent;
+}
+
+.imageHoverLayer:hover{
+	background-color: rgba(50, 50, 50, 0.5);
+	opacity: 1;
+	cursor: pointer;
+}
+
+
+.imageHoverLayerIcon{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cursorMove{
+	cursor: move;
+}

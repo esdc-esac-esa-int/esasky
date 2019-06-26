@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+.aladin-location, 
+.aladin-frameChoice,
+.aladin-fov{
+	display: none;
+}
+
+.aladin-reticleColor {
+    color: #321bdf !important;
+    font-weight: bold;
+}
+
+.aladin-container {
+	border: none;
+}
