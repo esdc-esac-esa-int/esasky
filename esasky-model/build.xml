@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ build.xml
+
+ mmi-ifcs-model - MMI model classes used for GWT client-server communication using JSON
+ Copyright (C) 2011-  ESA - ESAC - Madrid, Spain
+-->
+
+<project xmlns:jacoco="antlib:org.jacoco.ant" name="ammi-ifcs-model" default="final" basedir=".">
+
+	<description>
+    	ammi-ifcs-model - MMI model classes used for GWT client-server communication using JSON
+    </description>
+
+	<property file="build.properties" />
+	<property file="build.properties.defaults" />
+	<import file="ivy-tasks.xml" />
+
+	<path id="subant.path">
+	</path>
+
+	<fileset id="lib.fileset" dir="${lib.dir}">
+		<include name="*.jar" />
+	</fileset>
+
+	<path id="build.path">
+		<fileset refid="lib.fileset" />
+	</path>
+
+	<path id="test.path">
+		<path refid="build.path" />
+		<pathelement location="${build.classes.dir}" />
+		<pathelement location="${lib.junit.jar}" />
+	</path>
+	
+
+	
+	<target name="all" depends="final, test, docs, check" description="Build, pack, test, document and check the application" />
+
+	<target name="clean" depends="ivy-clean-jars,ivy-clean-cache" description="Clean up the environment">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${final.dir}" />
+		<delete dir="${deploy.classes.dir}" />
+	</target>
+
+	<target name="init" depends="clean, ivy-retrieve" description="Initialise the environment">
+		<tstamp />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="build" depends="init" description="Compile the java sources">
+		<mkdir dir="${build.classes.dir}" />
+
+		<javac srcdir="${java.dir}" destdir="${build.classes.dir}" classpathref="build.path" source="${javac.source}" target="${javac.target}" compiler="${javac.compiler}" nowarn="${javac.nowarn}" debug="${javac.debug}" deprecation="${javac.deprec}" />
+
+		<copy todir="${build.classes.dir}">
+			<fileset dir="${java.dir}" />
+		</copy>
+
+	</target>
+
+	<target name="dist" depends="build" description="Make the distribution files (pack as JAR, WAR, EAR, ...)">
+		<mkdir dir="${dist.dir}" />
+
+		<jar destfile="${dist.jar.file}" basedir="${build.classes.dir}" manifest="${conf.manifest.file}" compress="${jar.compress}" index="${jar.index}" update="${jar.update}" filesetmanifest="merge">
+		</jar>
+	</target>
+
+	<target name="final" depends="dist" description="Make the final distribution group of files">
+		<mkdir dir="${final.dir}" />
+
+		<copy todir="${final.dir}" verbose="true" overwrite="true">
+			<fileset dir="${dist.dir}" />
+			<fileset dir="${lib.dir}">
+				<exclude name="junit*" />
+				<exclude name="checkstyle*" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="gwt-pre-compile" depends="init" description="Compile java source to bytecode">
+		<mkdir dir="${deploy.classes.dir}" />
+		<mkdir dir="${deploy.dir}/WEB-INF/lib" />
+		<copy todir="${deploy.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}" includes="gwt-servlet*.jar" />
+		</copy>
+
+		<javac srcdir="${java.dir}" includes="**" encoding="utf-8" classpathref="build.path" destdir="${deploy.classes.dir}" source="${javac.source}" target="${javac.target}" nowarn="${javac.nowarn}" debug="${javac.debug}" debuglevel="lines,vars,source">
+		</javac>
+
+		<copy todir="${deploy.classes.dir}">
+			<fileset dir="${java.dir}" excludes="**/*.java" />
+		</copy>
+	</target>
+
+	<target name="gwt-compile" depends="gwt-pre-compile" description="GWT compile to JavaScript (production mode)">
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+			<classpath>
+				<pathelement location="${java.dir}" />
+				<pathelement location="${deploy.classes.dir}" />
+				<path refid="build.path" />
+			</classpath>
+			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+			<jvmarg value="-Xmx256M" />
+			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+			<arg line="${gwt.args}" />
+			<arg value="${gwt.entrypoint}" />
+		</java>
+	</target>
+	
+	<target name="test" description="Run the unit tests (using JUnit or other specific tests)">
+		<mkdir dir="${build.testclass.dir}" />
+		<mkdir dir="${build.jureport.dir}" />
+		<mkdir dir="${jacoco.report.dir}" />
+		
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		   <classpath>
+		       <fileset dir="${lib.dir}"/>
+		   </classpath>
+		</taskdef>
+		
+		<javac srcdir="${test.dir}" destdir="${build.testclass.dir}" classpathref="test.path" />
+		
+		<jacoco:coverage destfile="${jacoco.exec.file}">
+			<junit printsummary="${junit.summary}" showoutput="${junit.output}"
+				fork="yes" forkmode="once">
+				<classpath>
+					<path refid="test.path" />
+					<pathelement location="${build.testclass.dir}" />
+				</classpath>
+				<batchtest todir="${build.jureport.dir}" haltonfailure="${junit.halt}">
+					<fileset dir="${build.testclass.dir}" includes="**/*Test.class" />
+				</batchtest>
+				<formatter type="xml" />
+			</junit>
+		</jacoco:coverage>
+	
+		<junitreport todir="${build.jureport.dir}">
+			<fileset dir="${build.jureport.dir}" includes="TEST-*.xml" />
+			<report todir="${build.jureport.dir}" />
+		</junitreport>
+	</target>
+
+	<target name="docs" depends="init" description="Generate the API javadoc (and other documentation files)">
+		<mkdir dir="${build.javadoc.dir}" />
+
+		<javadoc sourcepath="${java.dir}" destdir="${build.javadoc.dir}" source="${javac.source}" packagenames="${javadoc.packages}" access="${javadoc.access}" failonerror="${javadoc.fail}">
+			<classpath refid="build.path" />
+			<link href="http://java.sun.com/j2se/1.4.2/docs/api/" />
+		</javadoc>
+	</target>
+
+	<target name="check" depends="build" description="Check the sources for style violations (and report them)">
+		<mkdir dir="${build.csreport.dir}" />
+		<taskdef resource="checkstyletask.properties" classpath="${lib.checkstyle.jar}" />
+
+		<checkstyle config="${checkstyle.config}" failonviolation="${checkstyle.fail}">
+			<classpath>
+				<path refid="build.path" />
+				<pathelement location="${build.classes.dir}" />
+			</classpath>
+			<fileset dir="${java.dir}" includes="**/*.java" />
+			<formatter type="xml" tofile="${build.csreport.dir}/csreport.xml" />
+		</checkstyle>
+
+		<xslt basedir="${build.csreport.dir}" includes="*.xml" destdir="${build.csreport.dir}" style="${checkstyle.style}">
+			<param name="output.dir" expression="${build.csreport.dir}" />
+			<param name="source.dir" expression="${basedir}/${java.dir}/" />
+		</xslt>
+	</target>
+
+	<target name="-update-sonar-projectVersion" depends="init" description="Update value of sonar.projectVersion property in sonar properties file">
+		<echo>Extract version number from Ivy file</echo>
+		<loadfile srcfile="ivy.xml" property="ivy.revision">
+			<filterchain>
+				<linecontains>
+					<contains value="revision=&quot;" />
+				</linecontains>
+				<tokenfilter>
+					<replacestring from="revision=&quot;" to="&quot;" />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+		<echo message="${ivy.revision}" />
+
+		<echo>Replace version in sonar configuration file</echo>
+		<replaceregexp file="sonar-project.properties" match="sonar.projectVersion=(.)*" replace="sonar.projectVersion=${ivy.revision}">
+		</replaceregexp>
+	</target>
+
+	<target name="report" depends="test">
+		<jacoco:report>
+			<executiondata>
+				<file file="${jacoco.exec.file}" />
+			</executiondata>
+			<structure name="JaCoCo Ant Example">
+				<classfiles>
+					<fileset dir="${build.classes.dir}" />
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${java.dir}" />
+				</sourcefiles>
+			</structure>
+			
+			<html destdir="${jacoco.report.dir}" />
+			<csv destfile="${jacoco.report.dir}/report.csv" />
+			<xml destfile="${jacoco.report.dir}/report.xml" />
+		</jacoco:report>
+	</target>
+	</project>

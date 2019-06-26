@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ivy-tasks.xml
+ Ant targets for Ivy Dependency Manager
+ Version 2.3 - 02/Feb/2015
+ ========================================================================================================
+ Changes in version 2.3 (02/Feb/2015):
+	- New target: -load-pwd to ask for subversion password as input. Other svn tasks will fail if
+			not asked (since they are called with the "no prompt" option.
+ ========================================================================================================
+ Changes in version 2.2 (27/Mar/2013):
+ 	- New target: ivy-retrieve-runtime to retrieve only dependencies inside the "runtime" configuration
+ 	- New target: ivy-retrieve-test to retrieve only dependencies inside the "test" configuration
+ ========================================================================================================
+ Changes in version Version 2.1 (01/Sep/2010):
+ 	- New actions added to target "ivy-publish"
+	 	The sequence will be as follows:
+		- "ant ivy-publish" command
+		- Module is published with ivy
+		- (new) Svn commit : "svn commit" will be automatically launched WITHOUT any user input
+		- (new) Svn tag: The user will be prompted for a suitable folder for the tag. A default (reasonable) 
+			value will be proposed, so normally pressing enter will do the work.
+		If you want to skip this functionality (only for a good reason!), use "ivy-publish-artifacts" target 
+			instead of "ivy-publish".
+		This change should avoid us the nuisance of creating svn tags all the time, plus giving us the 
+			certainty that all code published with ivy is in version control.
+ ========================================================================================================
+ Copyright (C) 2010  ESA - ESAC - Madrid, Spain
+-->
+<project default="ivy-install-ivy-jars" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- ========================================================================= -->
+	<!--        Ivy Installation Targets      									   -->
+	<!-- ========================================================================= -->
+	<target name="download-properties">
+		<tstamp>
+			<format property="timestamp" pattern="yyyyMMddhhmmss" />
+		</tstamp>
+		<echo message="Updating (if needed) ivy properties..." />
+		<property name="ivy.properties.file" value="ivy-tasks.properties" />
+		<get src="http://satscm.esac.esa.int/ivy/${ivy.properties.file}" dest="${ivy.properties.file}" usetimestamp="true" />
+		<property file="${ivy.properties.file}" />
+		<echo message="Updating (if needed) ivy tasks xml file..." />
+		<get src="http://satscm.esac.esa.int/ivy/ivy-tasks.xml" dest="ivy-tasks.xml" usetimestamp="true" />		
+	</target>
+	<target name="download-ivy" depends="download-properties">
+		<mkdir dir="${ivy.jar.dir}" />
+		<echo message="Installing ivy and ssh support..." />
+		<get src="${http.ivy.jar}" dest="${ivy.jar.file}" usetimestamp="true" />
+		<get src="${http.jsch.jar}" dest="${jsch.jar.file}" usetimestamp="true" />
+		<get src="${http.svnant.jar}" dest="${svnant.jar.file}" usetimestamp="true" />
+		<get src="${http.svnclientadapter.jar}" dest="${svnclientadapter.jar.file}" usetimestamp="true" />
+	</target>
+	<target name="ivy-install-ivy-jars" depends="download-ivy" description="--> Install ivy">
+		<echo message="Loading ivy jar..." />
+		<path id="ivy.lib.path">
+			<fileset dir="${ivy.jar.dir}" includes="*.jar" />
+		</path>
+		<echo message="Loading ivy tags..." />
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
+		<echo message="Loading svn-ant tags..." />
+		<taskdef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="ivy.lib.path" />
+	</target>
+	<target name="ivy-clean-jars" description="--> Clean the ivy installation">
+		<delete dir="${ivy.jar.dir}" />
+		<delete dir="lib" />
+	</target>
+	<!-- ========================================================================= -->
+	<!--        Svn Functionality Targets           							   -->
+	<!-- ========================================================================= -->
+	<target name="-svn-tag" depends="-svn-commit">
+		<echo message="Tag latest changes as ${artifact.name}..." />
+		<svn javahl="false">
+			<info target="." />
+		</svn>
+		<echo message="Path [${svn.info.path}], url [${svn.info.url}], tstamp[${timestamp}] " />
+		<echo message="Removing nested paths..." />
+		<path id="svn.destinationUrl" location="${svn.info.url}" />
+		<pathconvert property="svn.originUrl" refid="svn.destinationUrl">
+			<mapper>
+				<chainedmapper>
+					<filtermapper>
+						<replacestring from="${basedir}/" to=""/>
+						<replacestring from="http:/" to="http://"/>
+						<replacestring from="https:/" to="https://"/>
+					</filtermapper>
+					<regexpmapper from="^(.*)/trunk/(.*)" to="\1/tags/${software.name}-${software.version}_${timestamp}"/>					
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+		<echo message="Destination url [${svn.originUrl}]" />		
+		<input addproperty="tagSelectedDestinationUrl" defaultvalue="${svn.originUrl}" 
+				message="Please enter destination url for tag (or select default):"  />			
+		<svn javahl="false" password="${svn.pass}">
+			<copy 	srcUrl="${svn.info.url}" 
+				destUrl="${tagSelectedDestinationUrl}"
+				message="Tagging software module: [${software.name}-${software.version}]"/>
+		</svn>		
+	</target>
+	<target name="-load-artifact-name">
+		<fileset dir="${dist.dir}" id="artifact.folder.contents">
+			<include name="*" />
+		</fileset>
+		<property name="artifact.name" refid="artifact.folder.contents" />
+		<echo message="${artifact.name}" />
+	</target>
+	<target name="-load-pwd">
+        	<echo message="Loading pasword for Subversion repository..." />
+        	<input message="Subversion password:" addproperty="svn.pass">
+            		<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+        	</input>        
+	</target>
+	<target name="-svn-commit" depends="ivy-install-ivy-jars, -load-artifact-name, -load-pwd">
+		<echo message="Commit current changes to svn repository..." />
+		<svn javahl="false" password="${svn.pass}">
+			<commit message="Automatic svn commit after uploading [${artifact.name}] to Ivy" dir="."/>
+		</svn>
+	</target>
+	<!-- ========================================================================= -->
+	<!--        Ivy Functionality Targets           							   -->
+	<!-- ========================================================================= -->
+	<target name="ivy-settings" depends="ivy-install-ivy-jars">
+		<echo message="Loading ivy settings from remote repository..." />
+		<ivy:settings url="${http.ivy}/ivysettings.xml" />
+	</target>
+	<target name="ivy-resolve" depends="ivy-settings">
+		<echo message="Resolving ivy dependencies and moving files to ivy cache..." />
+		<ivy:resolve />
+	</target>
+	<target name="ivy-retrieve" description="--> Retrieve all dependencies with Ivy" depends="ivy-resolve">
+		<echo message="Moving dependencies to project library folder..." />
+		<ivy:retrieve sync="true"/>
+	</target>
+	<target name="ivy-retrieve-runtime" description="--> Retrieve runtime configuration dependencies with Ivy" depends="ivy-resolve">
+		<echo message="Moving dependencies to project library folder..." />
+		<ivy:retrieve conf="runtime" sync="true"/>
+	</target>
+	<target name="ivy-retrieve-test" description="--> Retrieve test configuration dependencies with Ivy" depends="ivy-resolve">
+		<echo message="Moving dependencies to project library folder..." />
+		<ivy:retrieve conf="test" sync="true"/>
+	</target>
+	<target name="ivy-clean-cache" description="--> Clean the ivy cache" depends="ivy-settings">
+		<echo message="Cleaning ivy cache..." />
+		<ivy:cleancache />
+	</target>
+	<target name="ivy-report" depends="ivy-retrieve" description="--> Generates a report of dependencies">
+		<echo message="Generating ivy dependencies report..." />
+		<ivy:report todir="${build.dir}/${ivyReport.dir}" />
+	</target>
+	<target name="ivy-deliver" depends="ivy-resolve">
+		<echo message="Creating ivy xml file prior to publishing..." />
+		<ivy:deliver deliverpattern="${dist.dir}/${artifact.pattern}" />
+	</target>
+	<target name="ivy-publish-artifacts" description="Upload distribution files to repository" depends="ivy-deliver">
+		<echo message="Uploading distribution files to repository..." />
+		<ivy:publish resolver="${publish.resolver}" artifactspattern="${dist.dir}/${artifact.pattern}" overwrite="${publish.overwrite}" />
+	</target>
+	<target name="ivy-publish" description="--> Upload distribution files to repository plus commit and tag contents" 
+			depends="ivy-publish-artifacts, -svn-tag">
+	</target>
+</project>

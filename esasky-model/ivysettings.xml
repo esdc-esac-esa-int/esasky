@@ -1,0 +1,18 @@
+<!-- This file defines the settings for ivy repository. It forwards to different files, where -->
+<!-- different kinds of settings are published. -->
+<ivysettings>
+	<statuses default="integration">
+ 		<status name="release" integration="false"/>
+ 		<status name="milestone" integration="false"/>
+ 		<status name="integration" integration="true"/>
+	</statuses>
+
+	<settings defaultResolver="archivesResolver"/>
+	<include url="http://satscm.esac.esa.int/ivy/settings/ivysettings-public.xml"/>
+	<!--
+	<include url="http://satscm.esac.esa.int/ivy/notpublic/ivysettings-shared.xml"/>
+	<include url="http://satscm.esac.esa.int/ivy/notpublic/ivysettings-local.xml"/>
+	<include url="http://satscm.esac.esa.int/ivy/notpublic/ivysettings-main-chain.xml"/>
+	<include url="http://satscm.esac.esa.int/ivy/notpublic/ivysettings-default-chain.xml"/>
+	-->
+</ivysettings>
