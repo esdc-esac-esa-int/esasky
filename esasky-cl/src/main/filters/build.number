@@ -1,0 +1,4 @@
+#maven.buildNumber.plugin properties file
+#Wed Jun 26 13:39:51 CEST 2019
+buildNumber=201
+build.number=13
