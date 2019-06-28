@@ -36,6 +36,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Filter = "Filter";
     public static final String CAT_Screenshot = "Screenshot";
     public static final String CAT_Internationalization = "Internationalization";
+    public static final String CAT_Pyesasky = "Pyesasky";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
@@ -103,6 +104,36 @@ public final class GoogleAnalytics {
     public static final String ACT_TreeMap_Resize = "TreeMapResize";
     
     public static final String ACT_Count_Count = "Count";
+    
+    public static final String ACT_Pyesasky_goToTargetName = "goToTargetName";
+    public static final String ACT_Pyesasky_setFoV = "setFoV";
+    public static final String ACT_Pyesasky_goToRADec = "goToRADec";
+    public static final String ACT_Pyesasky_setHiPSColorPalette = "setHiPSColorPalette";
+    public static final String ACT_Pyesasky_changeHiPS = "changeHiPS";
+    public static final String ACT_Pyesasky_changeHiPSWithParams = "changeHiPSWithParams";
+    public static final String ACT_Pyesasky_overlayFootprints = "overlayFootprints";
+    public static final String ACT_Pyesasky_overlayFootprintsWithDetails = "overlayFootprintsWithDetails";
+    public static final String ACT_Pyesasky_clearFootprintsOverlay = "clearFootprintsOverlay";
+    public static final String ACT_Pyesasky_deleteFootprintsOverlay = "deleteFootprintsOverlay";
+    public static final String ACT_Pyesasky_overlayCatalogue = "overlayCatalogue";
+    public static final String ACT_Pyesasky_overlayCatalogueWithDetails = "overlayCatalogueWithDetails";
+    public static final String ACT_Pyesasky_removeCatalogue = "removeCatalogue";
+    public static final String ACT_Pyesasky_clearCatalogue = "clearCatalogue";
+    public static final String ACT_Pyesasky_getAvailableHiPS = "getAvailableHiPS";
+    public static final String ACT_Pyesasky_addJwstWithCoordinates = "addJwstWithCoordinates";
+    public static final String ACT_Pyesasky_addJwst = "addJwst";
+    public static final String ACT_Pyesasky_closeJwstPanel = "closeJwstPanel";
+    public static final String ACT_Pyesasky_openJwstPanel = "openJwstPanel";
+    public static final String ACT_Pyesasky_clearJwstAll = "clearJwstAll";
+    public static final String ACT_Pyesasky_getCenter = "getCenter";
+    public static final String ACT_Pyesasky_getObservationsCount = "getObservationsCount";
+    public static final String ACT_Pyesasky_getCataloguesCount = "getCataloguesCount";
+    public static final String ACT_Pyesasky_getSpectraCount = "getSpectraCount";
+    public static final String ACT_Pyesasky_getPublicationsCount = "getPublicationsCount";
+    public static final String ACT_Pyesasky_plotObservations = "plotObservations";
+    public static final String ACT_Pyesasky_plotCatalogues = "plotCatalogues";
+    public static final String ACT_Pyesasky_plotSpectra = "plotSpectra";
+    public static final String ACT_Pyesasky_getResultPanelData = "getResultPanelData";
     
     
     //Send events methods

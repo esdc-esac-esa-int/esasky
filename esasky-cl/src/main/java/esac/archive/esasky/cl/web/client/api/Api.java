@@ -47,6 +47,7 @@ import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
@@ -93,18 +94,22 @@ public class Api {
 			switch (msg['event']) {
 				
 				case 'goToTargetName':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_goToTargetName, msg['targetname']);
 					console.log('goToTargetName event captured');
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::goToTargetName(Ljava/lang/String;)(msg['targetname']);
 				
 				case 'setFoV':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_setFoV, msg['fovDeg']);
 					console.log('setFoV event captured');
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::setFoV(D)(msg['fovDeg']);
 				
 				case 'goToRADec':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_goToRADec, "ra: " + msg['ra'] + "dec: " + msg['dec']);
 					console.log('goToRADec event captured!');
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::goTo(Ljava/lang/String;Ljava/lang/String;)(msg['ra'], msg['dec']);
 
 				case 'setHiPSColorPalette':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_setHiPSColorPalette, msg['colorPalette']);
 					console.log('setHiPSColorPalette event captured!');
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPSColorPalette(Ljava/lang/String;)(msg['colorPalette']);
 	
@@ -112,10 +117,11 @@ public class Api {
 					console.log('overlayCatalogue event captured!');
 					console.log(msg);
 					var catJSON = JSON.stringify(msg['content']);
-					console.log(catJSON);
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayCatalogue, msg['content']['content']);
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogue(Ljava/lang/String;)(catJSON);
 	
 				case 'changeHiPS':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_changeHiPS, msg['content']);
 					console.log('changeHiPS event captured!');
 					console.log(msg);
 					var callback = instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPS(Ljava/lang/String;)(msg['content']);
@@ -123,6 +129,7 @@ public class Api {
 					break;
 				
 				case 'changeHiPSWithParams':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_changeHiPSWithParams, msg['content']['HiPS']['url']);
 					console.log('changeHiPSWithParams event captured!');
 					console.log(msg);
 					console.log("HiPS URL "+msg['content']['HiPS']['url']);
@@ -130,126 +137,148 @@ public class Api {
 					break
 					
 				case 'clearCatalogue':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_clearCatalogue, msg['content']);
 					console.log('clear catalgue event captured!');
 					console.log(msg);
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::clearCatalogue(Ljava/lang/String;)(msg['content']);
 	
 				case 'removeCatalogue':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_removeCatalogue, msg['content']);
 					console.log('remove catalgue event captured!');
 					console.log(msg);
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::removeCatalogue(Ljava/lang/String;)(msg['content']);
 	
 				case 'overlayFootprints':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayFootprints, msg['content']['overlayName']);
 					console.log('overlayFootprints event captured!');
 					console.log(msg);
 					var footprintSetJSON = JSON.stringify(msg['content']);
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::overlayFootprints(Ljava/lang/String;)(footprintSetJSON);
 	
 				case 'overlayFootprintsWithDetails':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayFootprintsWithDetails, msg['content']['overlayName']);
 					console.log('overlayFootprintsWithDetails event captured!');
 					console.log(msg);
 					var footprintSetJSON = JSON.stringify(msg['content']);
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::overlayFootprintsWithData(Ljava/lang/String;)(footprintSetJSON);
 				
 				case 'overlayCatalogueWithDetails':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayCatalogueWithDetails, msg['content']['overlayName']);
 					console.log('overlayCatalogueWithDetails event captured!');
 					console.log(msg);
 					var userCatalogueJSON = JSON.stringify(msg['content']);
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogueWithData(Ljava/lang/String;)(userCatalogueJSON);
 				
+				case 'clearFootprintsOverlay':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, msg['content']);
+					console.log('clearFootprintsOverlay event captured!');
+					console.log(msg);
+					return instance.@esac.archive.esasky.cl.web.client.api.Api::clearFootprints(Ljava/lang/String;)(msg['content']);
+					
+				case 'deleteFootprintsOverlay':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_deleteFootprintsOverlay, msg['content']);
+					console.log('deleteFootprintsOverlay event captured!');
+					console.log(msg);
+					return instance.@esac.archive.esasky.cl.web.client.api.Api::deleteFootprints(Ljava/lang/String;)(msg['content']);
+	
 				case 'getAvailableHiPS':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, msg['wavelength'] );
 					console.log('getAvailableHiPS event captured!');
 					console.log(msg);
 					var wavelength = msg['wavelength'];
 					var hipsMap = instance.@esac.archive.esasky.cl.web.client.api.Api::getAvailableHiPS(Ljava/lang/String;)(wavelength);
 					e.source.postMessage(hipsMap,e.origin);
 					break;	
-								
-				case 'clearFootprintsOverlay':
-					console.log('clearFootprintsOverlay event captured!');
-					console.log(msg);
-					return instance.@esac.archive.esasky.cl.web.client.api.Api::clearFootprints(Ljava/lang/String;)(msg['content']);
-					
-				case 'deleteFootprintsOverlay':
-					console.log('deleteFootprintsOverlay event captured!');
-					console.log(msg);
-					return instance.@esac.archive.esasky.cl.web.client.api.Api::deleteFootprints(Ljava/lang/String;)(msg['content']);
-	
+
 				case 'addJwstWithCoordinates':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_addJwstWithCoordinates, msg);
 					console.log('addJwstWithCoordinates event captured!');
 					console.log(msg);
 					instance.@esac.archive.esasky.cl.web.client.api.Api::addJwstWithCoordinates(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)(msg['instrument'],msg['detector'] , msg['showAllInstruments'],msg['ra'], msg['dec'],msg['rotation']);
 					break;
 					
 				case 'addJwst':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_addJwst, msg);
 					console.log('addJwst event captured!');
 					console.log(msg);
 					instance.@esac.archive.esasky.cl.web.client.api.Api::addJwst(Ljava/lang/String;Ljava/lang/String;Z)(msg['instrument'],msg['detector'] , msg['showAllInstruments']);
 					break;
 					
 				case 'closeJwstPanel':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_closeJwstPanel, "");
 					console.log('closeJwst event captured!');
 					console.log(msg);
 					instance.@esac.archive.esasky.cl.web.client.api.Api::closeJwstPanel()();
 					break;
 					
 				case 'openJwstPanel':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_openJwstPanel, "");
 					console.log('openJwst event captured!');
 					console.log(msg);
 					instance.@esac.archive.esasky.cl.web.client.api.Api::openJwstPanel()();
 					break;
 		
 				case 'clearJwstAll':
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_clearJwstAll, "");
 					console.log('clearJwstAll event captured!');
 					console.log(msg);
 					instance.@esac.archive.esasky.cl.web.client.api.Api::clearJwst()();
 					break;
 					
 				case 'getCenter':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getCenter );
 					console.log('getCenter event captured');
 					var coors = instance.@esac.archive.esasky.cl.web.client.api.Api::getCenter(Ljava/lang/String;)(msg['cooFrame']);
 					e.source.postMessage(coors,e.origin);
 					break;	
 					
 				case 'getObservationsCount':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getObservationsCount);
 					console.log('getObservations event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::getObservationsCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
 					
 				case 'getCataloguesCount':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getCataloguesCount);
 					console.log('getCataloguesCount event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::getCataloguesCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
 					
 				case 'getSpectraCount':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getSpectraCount);
 					console.log('getSpectraCount event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::getSpectraCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
 					
 				case 'getPublicationsCount':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getPublicationsCount);
 					console.log('getPublicationsCount event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::getPublicationsCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
 
 				case 'plotObservations':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_plotObservations, msg['missionId']);
 					console.log('plotObservations event captured');
 					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotObservations(Ljava/lang/String;)(msg['missionId']);
 					e.source.postMessage(callbackMessage,e.origin);
 					break;	
 					
 				case 'plotCatalogues':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, msg['missionId']);
 					console.log('plotCatalogues event captured');
 					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotCatalogues(Ljava/lang/String;)(msg['missionId']);
 					e.source.postMessage(callbackMessage,e.origin);
 					break;	
 					
 				case 'plotSpectra':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_plotSpectra, msg['missionId']);
 					console.log('plotSpectra event captured');
 					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotSpectra(Ljava/lang/String;)(msg['missionId']);
 					e.source.postMessage(callbackMessage,e.origin);
 					break;	
 					
 				case 'getResultPanelData':
+					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
 					console.log('getResultPanelData event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::getResultPanelData(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
