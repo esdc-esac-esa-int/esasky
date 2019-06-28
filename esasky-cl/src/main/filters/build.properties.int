@@ -18,7 +18,7 @@ base.gui.location=
 
 google.analytics.id=UA-59849409-13
 
-software.version=${software.version}-int
+software.version=${project.version}-int
 
 web.app.short.name=ESASky v${software.version}
 web.app.long.name=ESASky v${software.version} release
