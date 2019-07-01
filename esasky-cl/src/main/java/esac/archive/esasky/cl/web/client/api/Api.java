@@ -54,6 +54,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 
 public class Api {
+	
+
 
 	public interface CatalogueMapper extends ObjectMapper<SourceListJSONWrapper> {
 	}
@@ -67,6 +69,17 @@ public class Api {
 	Map<String, JavaScriptObject> userCatalogues = new HashMap<String, JavaScriptObject>();
 	Map<String, JavaScriptObject> setOfFootprints = new HashMap<String, JavaScriptObject>();
 	Controller controller;
+	
+	private String googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
+	
+	public void setGoogleAnalyticsCatToPython() {
+		this.googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
+	}
+
+	public void setGoogleAnalyticsCatToAPI() {
+		this.googleAnalyticsCat = GoogleAnalytics.CAT_JavaScriptAPI;
+	}
+	
 
 	public Api(EsaSkyWeb esaSkyWeb) {
 		Log.debug("[Api]");
@@ -90,6 +103,17 @@ public class Api {
 			var msg = e.data
 			console.log('message recieved');
 			console.log(msg);
+			
+			if('origin' in msg){
+				if(msg['origin'] == 'pyesasky'){
+					instance.@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToPython()();
+				}
+				else{
+					instance.@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToAPI()();
+				}
+			}else{
+					instance.@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToAPI()();
+			}
 			
 			switch (msg['event']) {
 				
@@ -356,7 +380,7 @@ public class Api {
 	
 	
 	public void getResultPanelData(final JavaScriptObject msg) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
 		final AbstractTablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		JSONObject callback = tablePanel.exportAsJSON();
 		if(callback.size() == 0) {
@@ -376,7 +400,7 @@ public class Api {
 	}
 	
 	public String plotObservations(String missionId) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
 		EntityContext context = EntityContext.ASTRO_IMAGING;
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
@@ -393,7 +417,7 @@ public class Api {
 	}
 	
 	public String plotCatalogues(String missionId) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, missionId);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
 		EntityContext context = EntityContext.ASTRO_CATALOGUE;
 		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
@@ -410,7 +434,7 @@ public class Api {
 	}
 	
 	public String plotSpectra(String missionId) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_plotSpectra, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotSpectra, missionId);
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
 		EntityContext context = EntityContext.ASTRO_SPECTRA;
 		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
@@ -437,30 +461,30 @@ public class Api {
 		coors.put("ra", new JSONNumber(skyViewPosition.getCoordinate().ra));
 		coors.put("dec", new JSONNumber(skyViewPosition.getCoordinate().dec));
 		coors.put("fov", new JSONNumber(skyViewPosition.getFov()));
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getCenter, "Cooframe: " + cooFrame + " returned: " + coors.toString() );
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getCenter, "Cooframe: " + cooFrame + " returned: " + coors.toString() );
 		return coors.toString();		
 	}
 	
 	public void getObservationsCount(JavaScriptObject msg) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getObservationsCount);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getObservationsCount);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
 		getCounts(descriptors, msg);
 	}
 	
 	public void getCataloguesCount(JavaScriptObject msg) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getCataloguesCount);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getCataloguesCount);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
 		getCounts(descriptors, msg);
 	}
 	
 	public void getSpectraCount(JavaScriptObject msg) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getSpectraCount);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getSpectraCount);
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
 		getCounts(descriptors, msg);
 	}
 	
 	public void getPublicationsCount(JavaScriptObject msg) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getPublicationsCount);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getPublicationsCount);
 		DescriptorListAdapter<PublicationsDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getPublicationsDescriptors();
 		getCounts(descriptors, msg);
 	}
@@ -474,7 +498,7 @@ public class Api {
 				obsCount.put(currObs.getMission(), new JSONNumber(c));
 			}
 			obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
-			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
+			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 			sendBackToWidget(obsCount.toString(), widget);
 		}else {
 			countStatus.registerObserver(new CountObserver() {
@@ -486,7 +510,7 @@ public class Api {
 						obsCount.put(currObs.getMission(), new JSONNumber(c));
 					}
 					obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
-					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
+					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 					sendBackToWidget(obsCount.toString(), widget);
 					countStatus.unregisterObserver(this);
 				}
@@ -509,26 +533,26 @@ public class Api {
 
 	
 	public void clearJwst() {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_clearJwstAll, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearJwstAll, "");
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.clearAllAPI();
 	}
 	
 	public void closeJwstPanel() {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_closeJwstPanel, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_closeJwstPanel, "");
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.hide();
 	}
 	
 	public void openJwstPanel() {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_openJwstPanel, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_openJwstPanel, "");
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
 	}
 	
 	public void addJwstWithCoordinates(String instrument, String detector,boolean allInstruments, String ra, String dec, String rotation) {
 		String allInfo = instrument + ";" + detector + ";" + Boolean.toString(allInstruments) + ";" + ra + ";" + dec + ";" + rotation;
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_addJwstWithCoordinates, allInfo);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addJwstWithCoordinates, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
 		planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, detector, allInstruments, ra, dec, rotation);
@@ -536,14 +560,14 @@ public class Api {
 	
 	public void addJwst(String instrument, String detector, boolean allInstruments) {	
 		String allInfo = instrument + ";" + detector + ";" + Boolean.toString(allInstruments);
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_addJwst, allInfo);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addJwst, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
 		planObservationPanel.addInstrumentRowAPI(instrument, detector, allInstruments);
 	}
 
 	public void goTo(String RA, String Dec) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_goToRADec, "ra: " + RA + "dec: " + Dec);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_goToRADec, "ra: " + RA + "dec: " + Dec);
 		AladinLiteWrapper.getInstance().goToObject(RA + " " + Dec, false);
 	}
 
@@ -552,7 +576,7 @@ public class Api {
 	}
 
 	public void goToTargetName(String targetName) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_goToTargetName, targetName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_goToTargetName, targetName);
 		AladinLiteWrapper.getInstance().goToObject(targetName, false);
 	}
 
@@ -562,12 +586,12 @@ public class Api {
 	}
 
 	public void setFoV(double fov) {
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_setFoV, Double.toString(fov));
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setFoV, Double.toString(fov));
 		AladinLiteWrapper.getAladinLite().setZoom(fov);
 	}
 
 	public String setHiPS(String wantedHiPSName) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_changeHiPS, wantedHiPSName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPS, wantedHiPSName);
 		JSONObject callback = new JSONObject();
 		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, true, false)) {
 			String text =  "No HiPS called: " + wantedHiPSName + " found."
@@ -582,7 +606,7 @@ public class Api {
 	public void setHiPSWithParams(String surveyId, String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
 		
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_changeHiPSWithParams, surveyRootUrl);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPSWithParams, surveyRootUrl);
 
 		HiPS hips = new HiPS();
 		hips.setSurveyId(surveyId);
@@ -599,7 +623,7 @@ public class Api {
 	}
 
 	public void setHiPSColorPalette(String colorPalette) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_setHiPSColorPalette, colorPalette);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setHiPSColorPalette, colorPalette);
 		// Possible values: Native,EOSB, Planck, Rainbow, Greyscale, Cubehelix;
 		ColorPalette colorPaletteEnum = ColorPalette.valueOf(colorPalette);
 		AladinLiteWrapper.getInstance().setColorPalette(colorPaletteEnum);
@@ -614,7 +638,7 @@ public class Api {
 		JavaScriptObject overlay;
 		FootprintListOverlay fooprintList = (FootprintListOverlay) footprintsSet.getOverlaySet();
 		
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayFootprints, fooprintList.getOverlayName());
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayFootprints, fooprintList.getOverlayName());
 
 		if (setOfFootprints.containsKey(fooprintList.getOverlayName())) {
 			overlay = setOfFootprints.get(fooprintList.getOverlayName());
@@ -639,7 +663,7 @@ public class Api {
 		try {
 			FootprintListJSONWrapper footprintsSet = (FootprintListJSONWrapper) mapper.read(footprintsSetJSON);
 
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayFootprintsWithDetails, footprintsSet.getOverlaySet().getOverlayName());
+			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayFootprintsWithDetails, footprintsSet.getOverlaySet().getOverlayName());
 
 			List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
 
@@ -718,7 +742,7 @@ public class Api {
 	}
 
 	public void clearFootprints(String overlayName) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, overlayName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, overlayName);
 		JavaScriptObject overlay;
 		if (setOfFootprints.containsKey(overlayName)) {
 			overlay = setOfFootprints.get(overlayName);
@@ -727,7 +751,7 @@ public class Api {
 	}
 
 	public void deleteFootprints(String overlayName) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_deleteFootprintsOverlay, overlayName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_deleteFootprintsOverlay, overlayName);
 		JavaScriptObject overlay;
 		if (setOfFootprints.containsKey(overlayName)) {
 			overlay = setOfFootprints.get(overlayName);
@@ -743,7 +767,7 @@ public class Api {
 		CatalogueMapper mapper = GWT.create(CatalogueMapper.class);
 		try {
 			SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(userCatalogueJSON);
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayCatalogueWithDetails, userCatalogue.getOverlaySet().getOverlayName());
+			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayCatalogueWithDetails, userCatalogue.getOverlaySet().getOverlayName());
 
 			CoordinatesFrame convertToFrame = null;
 
@@ -847,7 +871,7 @@ public class Api {
 		CatalogueMapper mapper = GWT.create(CatalogueMapper.class);
 		SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(catalogueJSON);
 
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_overlayCatalogue, userCatalogue.getOverlaySet().getOverlayName());
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayCatalogue, userCatalogue.getOverlaySet().getOverlayName());
 
 		CoordinatesFrame convertToFrame = null;
 
@@ -907,13 +931,13 @@ public class Api {
 	}
 
 	public void clearCatalogue(String catalogueName) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_clearCatalogue, catalogueName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearCatalogue, catalogueName);
 		// remove all sources from the catalogue but not the catalogue itself
 		AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(userCatalogues.get(catalogueName));
 	}
 
 	public void removeCatalogue(String catalogueName) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_removeCatalogue, catalogueName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeCatalogue, catalogueName);
 		AladinLiteWrapper.getInstance();
 		// Remove the catalogue from the map
 		AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(userCatalogues.get(catalogueName));
@@ -923,13 +947,13 @@ public class Api {
 	public String getAvailableHiPS(String wavelength) {
 		//TODO Looks in skiesMenu which doesn't contain user added HiPS
 		
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Pyesasky, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, wavelength);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, wavelength);
 		
 		SkiesMenu skiesMenu = controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getSkiesMenu();
 		
 		HipsWavelength hipsWavelength;
 		try {
-			hipsWavelength = HipsWavelength.valueOf(wavelength);
+			hipsWavelength = HipsWavelength.valueOf(wavelength);	
 		}catch(Exception e) {
 			hipsWavelength = null;
 		}

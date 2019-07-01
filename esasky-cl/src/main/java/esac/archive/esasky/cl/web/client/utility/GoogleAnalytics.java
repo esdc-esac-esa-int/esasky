@@ -37,6 +37,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Screenshot = "Screenshot";
     public static final String CAT_Internationalization = "Internationalization";
     public static final String CAT_Pyesasky = "Pyesasky";
+    public static final String CAT_JavaScriptAPI = "JavaScriptAPI";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
