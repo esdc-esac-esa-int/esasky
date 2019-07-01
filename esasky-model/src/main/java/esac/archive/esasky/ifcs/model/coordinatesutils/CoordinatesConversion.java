@@ -10,22 +10,35 @@ public class CoordinatesConversion {
         -0.4838350155267381, 0.4941094279435681, -0.4448296299195045, 0.7469822444763707,
         -0.8676661489811610, -0.1980763734646737, 0.4559837762325372 };
 
-    public static Double[] convertPointGalacticToJ2000(Double ra, Double dec) {
-        double l = Math.toRadians(ra);
-        double b = Math.toRadians(dec);
-        double pole_ra = Math.toRadians(192.859508);
-        double pole_dec = Math.toRadians(27.128336);
-        double posangle = Math.toRadians(122.932 - 90.0);
-        double cra = Math.atan2(
-                (Math.cos(b) * Math.cos(l - posangle)),
-                (Math.sin(b) * Math.cos(pole_dec) - Math.cos(b) * Math.sin(pole_dec)
-                        * Math.sin(l - posangle)))
-                        + pole_ra;
-        double cdec = Math.asin(Math.cos(b) * Math.cos(pole_dec) * Math.sin(l - posangle)
-                + Math.sin(b) * Math.sin(pole_dec));
-        Double[] result = new Double[2];
-        result[0] = Math.toDegrees(cra);
-        result[1] = Math.toDegrees(cdec);
+    public static Double[] convertPointGalacticToJ2000(Double latitude, Double longitude) {
+
+        latitude = latitude * Math.PI / 180;
+        longitude = longitude * Math.PI / 180;
+        Double[] r0 = { Math.cos(latitude) * Math.cos(longitude),
+                Math.sin(latitude) * Math.cos(longitude), Math.sin(longitude) };
+
+        Double[] s0 = {
+                r0[0] * GALACTIC_TO_J2000[0] + r0[1] * GALACTIC_TO_J2000[1] + r0[2]
+                        * GALACTIC_TO_J2000[2],
+                r0[0] * GALACTIC_TO_J2000[3] + r0[1] * GALACTIC_TO_J2000[4] + r0[2]
+                        * GALACTIC_TO_J2000[5],
+                r0[0] * GALACTIC_TO_J2000[6] + r0[1] * GALACTIC_TO_J2000[7] + r0[2]
+                        * GALACTIC_TO_J2000[8] };
+
+        Double r = Math.sqrt(s0[0] * s0[0] + s0[1] * s0[1] + s0[2] * s0[2]);
+
+        Double[] result = { 0.0, 0.0 };
+        result[1] = Math.asin(s0[2] / r); // New dec in range -90.0 -- +90.0
+        // or use sin^2 + cos^2 = 1.0
+        Double cosaa = ((s0[0] / r) / Math.cos(result[1]));
+        Double sinaa = ((s0[1] / r) / Math.cos(result[1]));
+        result[0] = Math.atan2(sinaa, cosaa);
+        if (result[0] < 0.0)
+            result[0] = result[0] + 2 * Math.PI;
+
+        result[0] = result[0] * 180 / Math.PI;
+        result[1] = result[1] * 180 / Math.PI;
+
         return result;
     }
 

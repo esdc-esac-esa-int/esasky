@@ -67,13 +67,13 @@ public class CoordinatesParserTest {
 		assertParseCoords("20 54 05.689 +37 01 17.38", new Double[]{244.7835, 7.2645}, CoordinatesFrame.GALACTIC);
 		assertParseCoords("20 54 05.689 +37", new Double[]{244.80255584, 7.25417502}, CoordinatesFrame.GALACTIC);
 		assertParseCoords("20 54 05.689 +37 01 17.38", new Double[]{244.78354254, 7.26448425}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("10-45:17:50", new Double[]{320.93915441, -34.61273199}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("10:12:45.3-45:17:50", new Double[]{320.95576068, -34.46382150}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("10:12:45.3-45", new Double[]{320.59693857, -34.43574051}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("10:12:45.3-45:17:50.876", new Double[]{320.95605454, -34.46384406}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("0.0 +0.0", new Double[]{266.40508920, -28.93617470}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("214 +24", new Double[]{124.89839505, 9.80584280}, CoordinatesFrame.GALACTIC);
-//		assertParseCoords("350.123456 -17.33333", new Double[]{280.35462047, -45.49402661}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("10-45:17:50", new Double[]{320.93915441, -34.61273199}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("10:12:45.3-45:17:50", new Double[]{320.95576068, -34.46382150}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("10:12:45.3-45", new Double[]{320.59693857, -34.43574051}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("10:12:45.3-45:17:50.876", new Double[]{320.95605454, -34.46384406}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("0.0 +0.0", new Double[]{266.40508920, -28.93617470}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("214 +24", new Double[]{124.89839505, 9.80584280}, CoordinatesFrame.GALACTIC);
+		//assertParseCoords("350.123456 -17.33333", new Double[]{280.35462047, -45.49402661}, CoordinatesFrame.GALACTIC);
 	}
 	
 	private void assertParseCoords(String inputCoords, Double[] expected, CoordinatesFrame cooFrame) {
