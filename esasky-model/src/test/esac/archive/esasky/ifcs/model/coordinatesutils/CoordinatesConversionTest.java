@@ -78,7 +78,7 @@ public class CoordinatesConversionTest {
     	assertConvertEquatorialRAhhmmssToDecimal("13:29:52.8", 202.47);
     	assertConvertEquatorialRAhhmmssToDecimal("13 29 52.8", 202.47);
     	assertConvertEquatorialRAhhmmssToDecimal("20 54 05.689", 313.5237);
-    	assertConvertEquatorialRAhhmmssToDecimal("20", 20.0);
+    	assertConvertEquatorialRAhhmmssToDecimal("20", 300.0);
     	assertConvertEquatorialRAhhmmssToDecimal("13:29:52.8", 202.47);
     }
     

@@ -150,37 +150,22 @@ public class CoordinatesConversion {
         if(raHMSInput.contains("h")){
         	tokens = (raHMSInput.trim()).split(":|h|m|\"|\'\'|s|\'");
         }else {
-        	tokens = (raHMSInput.trim()).split(":");
+        	tokens = (raHMSInput.trim()).split(":|\\s");
         }
-        if (tokens.length > 1) {
+        if (tokens.length > 0) {
             double H = Double.parseDouble(tokens[0]);
             double decDegrees = H * 15;
 
-            double mmHMS = Double.parseDouble(tokens[1]);
-            double mmDAminAsec = mmHMS * 15;
-            decDegrees += mmDAminAsec / 60;
+            if (tokens.length > 1) {
+	            double mmHMS = Double.parseDouble(tokens[1]);
+	            double mmDAminAsec = mmHMS * 15;
+	            decDegrees += mmDAminAsec / 60;
 
-            if (tokens.length == 3) {
-                double ssHMS = Double.parseDouble(tokens[2]);
-                double ssDAminAsec = ssHMS * 15;
-                decDegrees += ssDAminAsec / 3600;
-            }
-            result = decDegrees;
-            return result;
-        }
-        tokens = (raHMSInput.trim()).split("\\s");
-        if (tokens.length > 1) {
-            double H = Double.parseDouble(tokens[0]);
-            double decDegrees = H * 15;
-
-            double mmHMS = Double.parseDouble(tokens[1]);
-            double mmDAminAsec = mmHMS * 15;
-            decDegrees += mmDAminAsec / 60;
-
-            if (tokens.length == 3) {
-                double ssHMS = Double.parseDouble(tokens[2]);
-                double ssDAminAsec = ssHMS * 15;
-                decDegrees += ssDAminAsec / 3600;
+	            if (tokens.length == 3) {
+	                double ssHMS = Double.parseDouble(tokens[2]);
+	                double ssDAminAsec = ssHMS * 15;
+	                decDegrees += ssDAminAsec / 3600;
+	            }
             }
             result = decDegrees;
             return result;
@@ -201,27 +186,25 @@ public class CoordinatesConversion {
         }else {
         	tokens = (decDMSInput.trim()).split(":|\\s");
         }
-        if (tokens.length > 1) {
+        if (tokens.length > 0) {
             double D = Double.parseDouble(tokens[0]);
             double decDegrees = D;
 
-            double mmDAminAsec = Double.parseDouble(tokens[1]);
-            
-           
-            if (isNegative) {
-                decDegrees -= mmDAminAsec / 60;
-            } else {
-                decDegrees += mmDAminAsec / 60;
-            }
-
-            if (tokens.length == 3) {
-                double ssDAminAsec = Double.parseDouble(tokens[2]);
-                if (isNegative) {
-                    decDegrees -= ssDAminAsec / 3600;
-                } else {
-                    decDegrees += ssDAminAsec / 3600;
-                }
-
+            if (tokens.length > 1) {
+	            double mmDAminAsec = Double.parseDouble(tokens[1]);
+	            if (isNegative) {
+	                decDegrees -= mmDAminAsec / 60;
+	            } else {
+	                decDegrees += mmDAminAsec / 60;
+	            }
+	            if (tokens.length == 3) {
+	                double ssDAminAsec = Double.parseDouble(tokens[2]);
+	                if (isNegative) {
+	                    decDegrees -= ssDAminAsec / 3600;
+	                } else {
+	                    decDegrees += ssDAminAsec / 3600;
+	                }
+	            }
             }
             result = decDegrees;
             return result;
@@ -243,25 +226,27 @@ public class CoordinatesConversion {
         }else {
         	tokens = (raDMSInput.trim()).split(":|\\s");
         }
-        if (tokens.length > 1) {
+        if (tokens.length > 0) {
             double D = Double.parseDouble(tokens[0]);
             double decDegrees = D;
 
-            double mmDAminAsec = Double.parseDouble(tokens[1]);
-            if (isNegative) {
-                decDegrees -= mmDAminAsec / 60;
-            } else {
-                decDegrees += mmDAminAsec / 60;
-            }
-
-            if (tokens.length == 3) {
-                double ssDAminAsec = Double.parseDouble(tokens[2]);
-                if (isNegative) {
-                    decDegrees -= ssDAminAsec / 3600;
-                } else {
-                    decDegrees += ssDAminAsec / 3600;
-                }
-
+            if (tokens.length > 1) {
+	            double mmDAminAsec = Double.parseDouble(tokens[1]);
+	            if (isNegative) {
+	                decDegrees -= mmDAminAsec / 60;
+	            } else {
+	                decDegrees += mmDAminAsec / 60;
+	            }
+	
+	            if (tokens.length == 3) {
+	                double ssDAminAsec = Double.parseDouble(tokens[2]);
+	                if (isNegative) {
+	                    decDegrees -= ssDAminAsec / 3600;
+	                } else {
+	                    decDegrees += ssDAminAsec / 3600;
+	                }
+	
+	            }
             }
             result = decDegrees;
             if (result < 0) {
