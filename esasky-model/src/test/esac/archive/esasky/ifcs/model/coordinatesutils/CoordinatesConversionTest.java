@@ -37,7 +37,7 @@ public class CoordinatesConversionTest {
         String input = "0.5000190396762169,0.5000000000000003,359.50198108695514,0.5000000000000003,359.5019812383684,-0.49799994953311816,0.5000188876548284,-0.49799994953311816";
         String actual = CoordinatesConversion.convertPointListGalacticToJ2000(input);
         String expected = "266.21626444268526,-28.248749623725896,266.21626444268526,-28.248749623725896,266.21626444268526,-28.248749623725896,266.21626444268526,-28.248749623725896";
-    	//assertThat(actual, equalToIgnoringCase(expected));
+    	assertThat(actual, equalToIgnoringCase(expected));
     }
     
     @Test

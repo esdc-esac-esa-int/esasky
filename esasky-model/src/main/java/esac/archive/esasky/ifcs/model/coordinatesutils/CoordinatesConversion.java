@@ -146,7 +146,12 @@ public class CoordinatesConversion {
      */
     public static Double convertEquatorialRAhhmmssToDecimal(String raHMSInput) {
         Double result = null;
-        String[] tokens = (raHMSInput.trim()).split(":");
+        String[] tokens;
+        if(raHMSInput.contains("h")){
+        	tokens = (raHMSInput.trim()).split(":|h|m|\"|\'\'|s|\'");
+        }else {
+        	tokens = (raHMSInput.trim()).split(":");
+        }
         if (tokens.length > 1) {
             double H = Double.parseDouble(tokens[0]);
             double decDegrees = H * 15;
@@ -190,7 +195,12 @@ public class CoordinatesConversion {
     public static Double convertDECddmmssToDecimal(String decDMSInput) {
         Double result = null;
         boolean isNegative = decDMSInput.trim().startsWith("-");
-        String[] tokens = (decDMSInput.trim()).split(":|\\s");
+        String[] tokens;
+        if(decDMSInput.contains("d")){
+        	tokens = (decDMSInput.trim()).split(":|d|m|\"|\'\'|s|\'");
+        }else {
+        	tokens = (decDMSInput.trim()).split(":|\\s");
+        }
         if (tokens.length > 1) {
             double D = Double.parseDouble(tokens[0]);
             double decDegrees = D;
@@ -227,7 +237,12 @@ public class CoordinatesConversion {
     public static Double convertGalacticRAdddmmssToDecimal(String raDMSInput) {
         Double result = null;
         boolean isNegative = raDMSInput.trim().startsWith("-");
-        String[] tokens = (raDMSInput.trim()).split(":|\\s");
+        String[] tokens;
+        if(raDMSInput.contains("d")){
+        	tokens = (raDMSInput.trim()).split(":|d|m|\"|\'\'|s|\'");
+        }else {
+        	tokens = (raDMSInput.trim()).split(":|\\s");
+        }
         if (tokens.length > 1) {
             double D = Double.parseDouble(tokens[0]);
             double decDegrees = D;

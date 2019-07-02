@@ -12,7 +12,8 @@ public class CoordinateValidator {
                 "byCoords2"), SPACE_RAhhmmssDECdeg("byCoords3"), COLUMN_RAhhmmssDECdeg("byCoords4"), SPACE_RAdegDECddmmss(
                 "byCoords5"), COLUMN_RAdegDECddmmss("byCoords6"), RAdegDECdeg("byCoords7"), COLUMN_RAdddmmssDECddmmss(
                                 "byCoords8"), SPACE_RAdddmmssDECddmmss("byCoords9"), COLUMN_RAdddmmssDECdeg(
-                "byCoords10"), SPACE_RAdddmmssDECdeg("byCoords11"), BIBCODE("byBibcode"), AUTHOR("byAuthor");
+                "byCoords10"), SPACE_RAdddmmssDECdeg("byCoords11"),LETTERS_RAhhmmssDECddmmss("byCoords12"),
+        		LETTERS_RAdddmmssDECddmmss("byCoords13"), BIBCODE("byBibcode"), AUTHOR("byAuthor");
 
         String type;
 
@@ -29,40 +30,40 @@ public class CoordinateValidator {
 
         input = input.trim();
 
-        if (regex.test(ESASkySearchRegEx.TARGET, input)) {
-            return SearchInputType.TARGET;
-        } else {
-            boolean matchFound = false;
-            // LOGGER.debug("@@@ COORD Validator @@@");
+       
+        boolean matchFound = false;
+        // LOGGER.debug("@@@ COORD Validator @@@");
 
-            if (CoordinatesFrame.GALACTIC == cooFrame) {
-                for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainGalactic
-                        .entrySet()) {
-                    if (regex.test(currCoordPattern.getKey(), input)) {
-                        return currCoordPattern.getValue();
-                    }
-                }
-            }
-
-            if (CoordinatesFrame.J2000 == cooFrame) {
-                for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainEquatorial
-                        .entrySet()) {
-                    if (regex.test(currCoordPattern.getKey(), input)) {
-                        return currCoordPattern.getValue();
-                    }
-                }
-            }
-
-            for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainGeneral
+        if (CoordinatesFrame.GALACTIC == cooFrame) {
+            for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainGalactic
                     .entrySet()) {
                 if (regex.test(currCoordPattern.getKey(), input)) {
                     return currCoordPattern.getValue();
                 }
             }
+        }
 
-            if (!matchFound) {
-                return SearchInputType.NOT_VALID;
+        if (CoordinatesFrame.J2000 == cooFrame) {
+            for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainEquatorial
+                    .entrySet()) {
+                if (regex.test(currCoordPattern.getKey(), input)) {
+                    return currCoordPattern.getValue();
+                }
             }
+        }
+
+        for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainGeneral
+                .entrySet()) {
+            if (regex.test(currCoordPattern.getKey(), input)) {
+                return currCoordPattern.getValue();
+            }
+        }
+
+        if (regex.test(ESASkySearchRegEx.TARGET, input)) {
+            return SearchInputType.TARGET;
+        }
+        if (!matchFound) {
+            return SearchInputType.NOT_VALID;
         }
         return SearchInputType.NOT_VALID;
     }
