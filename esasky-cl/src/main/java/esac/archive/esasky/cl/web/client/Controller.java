@@ -5,6 +5,7 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -65,11 +66,11 @@ public class Controller implements ValueChangeHandler<String> {
 				(sciMode != null 
 				&& (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"))
 						)
-				|| 
-				(!DeviceUtils.isMobileOrTablet() && sciMode == null )) {
+				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet())
+				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true"))
+				) {
 			GUISessionStatus.setInitialIsInScienceMode();
 		}
-		
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
 		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true") ? true: false;
 		String hideSwitchString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_SCI);

@@ -1,13 +1,17 @@
 package esac.archive.esasky.cl.web.client.status;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gwt.user.client.Cookies;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
 import esac.archive.esasky.cl.web.client.model.TrackedSso;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
@@ -197,7 +201,12 @@ public class GUISessionStatus {
 				doCountOnEnteringScienceMode = false;
 			}
 			UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
+			Date expires = new Date();
+			long milliseconds = 120 * 24 * 60 * 60 * 1000;
+			expires.setTime(expires.getTime() + milliseconds);
+			Cookies.setCookie(EsaSkyWebConstants.SCI_MODE_COOKIE, Boolean.toString(isInScienceMode), expires);
 		}
+		
 	}
 
 	public static void setDoCountOnEnteringScienceMode() {

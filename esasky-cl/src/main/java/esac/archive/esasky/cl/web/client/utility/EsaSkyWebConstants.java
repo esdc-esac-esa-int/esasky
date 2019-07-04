@@ -67,6 +67,8 @@ public class EsaSkyWebConstants {
     public static final String URL_PARAM_HIDE_WELCOME = "hide_welcome";
     public static final String URL_PARAM_HIDE_SCI = "hide_sci_switch";
     
+    public static final String SCI_MODE_COOKIE = "IsInSciMode";
+    
     public static final boolean SINGLE_COUNT_ENABLED = true; // If enabled the Dynamic count will go against the single fast-count, else one request per mission
     
     public static final boolean RANDOM_SOURCE_ON_STARTUP = true; // Show a random source given by server on startup
