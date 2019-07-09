@@ -4,7 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>esac.archive.esasky.cl</groupId>
 	<artifactId>web</artifactId>
-	<version>3.1.2</version>
 	<packaging>war</packaging>
 
 	<parent>
@@ -561,7 +560,7 @@
 		<dependency>
 			<groupId>esac.archive.absi.modules.cl</groupId>
 			<artifactId>absi-cl-aladinlite-widget</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.2</version>
 		</dependency>
 
 		<!-- LOCAL -->
