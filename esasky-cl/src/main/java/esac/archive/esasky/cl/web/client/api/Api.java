@@ -117,6 +117,11 @@ public class Api {
 			
 			switch (msg['event']) {
 				
+				case 'initTest':
+					console.log('initTest event captured');
+					instance.@esac.archive.esasky.cl.web.client.api.Api::sendInitMessage(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;
+
 				case 'goToTargetName':
 					console.log('goToTargetName event captured');
 					return instance.@esac.archive.esasky.cl.web.client.api.Api::goToTargetName(Ljava/lang/String;)(msg['targetname']);
@@ -136,8 +141,8 @@ public class Api {
 				case 'changeHiPS':
 					console.log('changeHiPS event captured!');
 					console.log(msg);
-					var callback = instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPS(Ljava/lang/String;)(msg['content']);
-					e.source.postMessage(callback,e.origin);
+					var callback = instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPS(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg['content'],e);
+					//e.source.postMessage(callback,e.origin);
 					break;
 				
 				case 'changeHiPSWithParams':
@@ -195,7 +200,7 @@ public class Api {
 					console.log('getAvailableHiPS event captured!');
 					console.log(msg);
 					var wavelength = msg['wavelength'];
-					var hipsMap = instance.@esac.archive.esasky.cl.web.client.api.Api::getAvailableHiPS(Ljava/lang/String;)(wavelength);
+					var hipsMap = instance.@esac.archive.esasky.cl.web.client.api.Api::getAvailableHiPS(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(wavelength,e);
 					e.source.postMessage(hipsMap,e.origin);
 					break;	
 					
@@ -231,8 +236,7 @@ public class Api {
 					
 				case 'getCenter':
 					console.log('getCenter event captured');
-					var coors = instance.@esac.archive.esasky.cl.web.client.api.Api::getCenter(Ljava/lang/String;)(msg['cooFrame']);
-					e.source.postMessage(coors,e.origin);
+					var coors = instance.@esac.archive.esasky.cl.web.client.api.Api::getCenter(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg['cooFrame'],e);
 					break;	
 					
 				case 'getObservationsCount':
@@ -257,19 +261,19 @@ public class Api {
 
 				case 'plotObservations':
 					console.log('plotObservations event captured');
-					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotObservations(Ljava/lang/String;)(msg['missionId']);
+					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotObservations(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg['missionId'],e);
 					e.source.postMessage(callbackMessage,e.origin);
 					break;	
 					
 				case 'plotCatalogues':
 					console.log('plotCatalogues event captured');
-					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotCatalogues(Ljava/lang/String;)(msg['missionId']);
+					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotCatalogues(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg['missionId'],e);
 					e.source.postMessage(callbackMessage,e.origin);
 					break;	
 					
 				case 'plotSpectra':
 					console.log('plotSpectra event captured');
-					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotSpectra(Ljava/lang/String;)(msg['missionId']);
+					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotSpectra(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg['missionId'],e);
 					e.source.postMessage(callbackMessage,e.origin);
 					break;	
 					
@@ -306,9 +310,9 @@ public class Api {
 			instance.@esac.archive.esasky.cl.web.client.api.Api::setFoV(D)(fov);
 		};
 
-		$wnd.ESASkyAPI.setHiPSAPI = function(surveyId) {
-			instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPS(Ljava/lang/String;)(surveyId);
-		};
+//		$wnd.ESASkyAPI.setHiPSAPI = function(surveyId) {
+//			instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPS(Ljava/lang/String;)(surveyId);
+//		};
 
 		$wnd.ESASkyAPI.setHiPSWithParamsAPI = function(surveyId, surveyName,
 				surveyRootUrl, surveyFrame, maximumNorder, imgFormat) {
@@ -352,9 +356,9 @@ public class Api {
 			instance.@esac.archive.esasky.cl.web.client.api.Api::deleteFootprints(Ljava/lang/String;)(overlayName);
 		};
 		
-		$wnd.ESASkyAPI.getAvailableHiPSAPI = function(wavelength) {
-			return instance.@esac.archive.esasky.cl.web.client.api.Api::getAvailableHiPS(Ljava/lang/String;)(wavelength);
-		};
+//		$wnd.ESASkyAPI.getAvailableHiPSAPI = function(wavelength) {
+//			return instance.@esac.archive.esasky.cl.web.client.api.Api::getAvailableHiPS(Ljava/lang/String;)(wavelength);
+//		};
 		
 		$wnd.ESASkyAPI.addJwstWithCoordinatesAPI = function(instrument, detector, allInstruments, ra, dec, rotation) {
 			return instance.@esac.archive.esasky.cl.web.client.api.Api::addJwstWithCoordinates(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)(instrument, detector, allInstruments, ra, dec, rotation);
@@ -389,129 +393,142 @@ public class Api {
 				@Override
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
 					JSONObject callback = tablePanel.exportAsJSON();
-					sendBackToWidget(callback.toString(), msg);
+					sendBackToWidget(callback, msg);
 					tablePanel.unregisterObserver(this);
 				}
 				
 			});
 		}else {
-			sendBackToWidget(callback.toString(), msg);
+			sendBackToWidget(callback, msg);
 		}
 	}
 	
-	public String plotObservations(String missionId) {
+	public void plotObservations(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
 		EntityContext context = EntityContext.ASTRO_IMAGING;
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
 		if(currObs != null ) {
 			controller.getRootPresenter().getRelatedMetadata(currObs,context);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Image observations from missionId: " + missionId + " displayed in the ESASky"));
-			return callbackMessage.toString();
-		}else {
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		else {
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getObservationCount() for available mission names"));
-			return callbackMessage.toString();
+			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
 	
-	public String plotCatalogues(String missionId) {
+	public void plotCatalogues(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, missionId);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
 		EntityContext context = EntityContext.ASTRO_CATALOGUE;
 		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
 		if(currObs != null ) {
 			controller.getRootPresenter().getRelatedMetadata(currObs,context);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
-			return callbackMessage.toString();
-		}else {
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		else {
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getCataloguesCount() for available mission names"));
-			return callbackMessage.toString();
+			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
 	
-	public String plotSpectra(String missionId) {
+	public void plotSpectra(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotSpectra, missionId);
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
 		EntityContext context = EntityContext.ASTRO_SPECTRA;
 		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
 		if(currObs != null ) {
 			controller.getRootPresenter().getRelatedMetadata(currObs,context);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Spectra from missionId: " + missionId + " displayed in the ESASky"));
-			return callbackMessage.toString();
-		}else {
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		else {
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getSpectraCount() for available mission names"));
-			return callbackMessage.toString();
+			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
 	
-	public String getCenter(String cooFrame){
+	public void getCenter(String cooFrame, JavaScriptObject widget){
 		SkyViewPosition skyViewPosition;
 		if(cooFrame.equals("J2000")) {
 			skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 		}else {
 			skyViewPosition = CoordinateUtils.getCenterCoordinateInGalactic();
 		}
+		
 		JSONObject coors = new  JSONObject();
 		coors.put("ra", new JSONNumber(skyViewPosition.getCoordinate().ra));
 		coors.put("dec", new JSONNumber(skyViewPosition.getCoordinate().dec));
 		coors.put("fov", new JSONNumber(skyViewPosition.getFov()));
+		
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getCenter, "Cooframe: " + cooFrame + " returned: " + coors.toString() );
-		return coors.toString();		
+		sendBackToWidget(coors, widget);
 	}
 	
-	public void getObservationsCount(JavaScriptObject msg) {
+	public void getObservationsCount(JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getObservationsCount);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
-		getCounts(descriptors, msg);
+		getCounts(descriptors, widget);
 	}
 	
-	public void getCataloguesCount(JavaScriptObject msg) {
+	public void getCataloguesCount(JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getCataloguesCount);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
-		getCounts(descriptors, msg);
+		getCounts(descriptors, widget);
 	}
 	
-	public void getSpectraCount(JavaScriptObject msg) {
+	public void getSpectraCount(JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getSpectraCount);
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
-		getCounts(descriptors, msg);
+		getCounts(descriptors, widget);
 	}
 	
-	public void getPublicationsCount(JavaScriptObject msg) {
+	public void getPublicationsCount(JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getPublicationsCount);
 		DescriptorListAdapter<PublicationsDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getPublicationsDescriptors();
-		getCounts(descriptors, msg);
+		getCounts(descriptors, widget);
 	}
 	
 	private void getCounts(final DescriptorListAdapter<? extends BaseDescriptor> descriptors, final JavaScriptObject widget) {
 		final CountStatus countStatus = descriptors.getCountStatus();
 		if(checkCountUpdated(descriptors)) {
 			JSONObject obsCount = new  JSONObject();
+			
 			for (BaseDescriptor currObs : descriptors.getDescriptors()) {
 				int c = countStatus.getDetailsByKey(currObs.getMission()).getCount();
 				obsCount.put(currObs.getMission(), new JSONNumber(c));
 			}
+			
 			obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
-			sendBackToWidget(obsCount.toString(), widget);
+			sendBackToWidget(obsCount, widget);
+			
 		}else {
 			countStatus.registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
 					JSONObject obsCount = new  JSONObject();
+					
 					for (BaseDescriptor currObs : descriptors.getDescriptors()) {
 						int c = countStatus.getDetailsByKey(currObs.getMission()).getCount();
 						obsCount.put(currObs.getMission(), new JSONNumber(c));
 					}
+					
 					obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
-					sendBackToWidget(obsCount.toString(), widget);
+					sendBackToWidget(obsCount, widget);
 					countStatus.unregisterObserver(this);
 				}
 			});
@@ -520,15 +537,35 @@ public class Api {
 	
 	private Boolean checkCountUpdated(DescriptorListAdapter<? extends BaseDescriptor> descriptors) {
 		if(descriptors != null) {
-		CountStatus countStatus = descriptors.getCountStatus();
-		String firstMissionId = descriptors.getDescriptors().get(0).getMission();
-		return !countStatus.hasMoved(firstMissionId);
+			CountStatus countStatus = descriptors.getCountStatus();
+			String firstMissionId = descriptors.getDescriptors().get(0).getMission();
+			return !countStatus.hasMoved(firstMissionId);
 		}
 		return false;
 	}
 	
-	private native void sendBackToWidget(String data, JavaScriptObject widget) /*-{
-		widget.source.postMessage(data, widget.origin);
+	private void sendInitMessage( JavaScriptObject widget) {
+		JSONObject msg = new JSONObject();
+		msg.put("Text", new JSONString("Initialised"));
+		sendBackToWidget(msg, widget);
+	}
+	
+	
+	private void sendBackToWidget(JSONObject values, JavaScriptObject widget) {
+		sendBackToWidget(values,null,widget);
+	}
+	
+	private native void sendBackToWidget(JSONObject values, JSONObject extras, JavaScriptObject widget) /*-{
+		// Javascript adds a wrapper object around the values and extras which we remove
+		var msg = {}
+		if(values != null){
+			msg["values"] = Object.values(values)[0];
+		}
+		if(extras != null){
+			msg["extras"] = Object.values(extras)[0];
+		}
+		msg["msgId"] = widget.data.msgId;
+		widget.source.postMessage(JSON.stringify(msg), widget.origin);
 	}-*/;
 
 	
@@ -590,17 +627,17 @@ public class Api {
 		AladinLiteWrapper.getAladinLite().setZoom(fov);
 	}
 
-	public String setHiPS(String wantedHiPSName) {
+	public void setHiPS(String wantedHiPSName, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPS, wantedHiPSName);
-		JSONObject callback = new JSONObject();
+		JSONObject callbackMessage = new JSONObject();
 		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, true, false)) {
 			String text =  "No HiPS called: " + wantedHiPSName + " found."
 					+ " Try getAvailableHiPS() for existing HiPS names";
-			callback.put("message",new JSONString(text));
-			return callback.toString();
+			callbackMessage.put("message",new JSONString(text));
+			sendBackToWidget(null, callbackMessage, widget);
 		}
-		callback.put("message",new JSONString("Success"));
-		return callback.toString();
+		callbackMessage.put("message",new JSONString("Success"));
+		sendBackToWidget(null, callbackMessage, widget);
 	}
 
 	public void setHiPSWithParams(String surveyId, String surveyName, String surveyRootUrl, String surveyFrame,
@@ -944,7 +981,7 @@ public class Api {
 		userCatalogues.remove(catalogueName);
 	}
 
-	public String getAvailableHiPS(String wavelength) {
+	public void getAvailableHiPS(String wavelength, JavaScriptObject widget) {
 		//TODO Looks in skiesMenu which doesn't contain user added HiPS
 		
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, wavelength);
@@ -963,9 +1000,9 @@ public class Api {
 				HipsWavelength currWavelength = currSkiesMenuEntry.getWavelength();
 				wavelengthMap.put(currWavelength.name(),getHiPSByWavelength(currWavelength));
 			}
-			return wavelengthMap.toString();
+			sendBackToWidget(wavelengthMap, null, widget);
 		} else {
-			return getHiPSByWavelength(hipsWavelength).toString();
+			sendBackToWidget(getHiPSByWavelength(hipsWavelength), null, widget);
 		}
 	}
 
