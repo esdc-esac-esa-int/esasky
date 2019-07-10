@@ -24,4 +24,17 @@ public class SkyViewPosition{
 	public void setCoordinate(Coordinate coordinate) {
 		this.coordinate = coordinate;
 	}
+	
+	public boolean compare(SkyViewPosition comparison) {
+		return this.compare(comparison, 0.0);
+	}
+
+	public boolean compare(SkyViewPosition comparison, double precision) {
+		if(Math.abs(this.fov-comparison.fov)<=precision) {
+			if(this.coordinate.compare(comparison.coordinate, precision)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
