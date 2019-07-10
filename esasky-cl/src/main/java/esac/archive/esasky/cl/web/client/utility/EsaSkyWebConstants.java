@@ -120,7 +120,7 @@ public class EsaSkyWebConstants {
         hips.setMoreInfoURL("//alasky.u-strasbg.fr/DSS/DSSColor/properties");
         hips.setSurveyId("DSS2 color");
         hips.setSurveyName("DSS2 color");
-        hips.setSurveyRootUrl("//skies.esac.esa.int/DSSColor/");
+        hips.setSurveyRootUrl("//cdn.skies.esac.esa.int/DSSColor/");
         hips.setSurveyFrame(HiPSCoordsFrame.EQUATORIAL);
         hips.setMaximumNorder(9);
         hips.setImgFormat(HiPSImageFormat.jpg);
