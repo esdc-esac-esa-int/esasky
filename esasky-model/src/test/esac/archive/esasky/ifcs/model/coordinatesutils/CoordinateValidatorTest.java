@@ -76,4 +76,27 @@ public class CoordinateValidatorTest {
         assertThat(CoordinateValidator.isDecFormatValid(new ServerRegexClass(), "91 12 12.123"), is(false));
         assertThat(CoordinateValidator.isDecFormatValid(new ServerRegexClass(), "444 12 12.123"), is(false));
     }
+
+    @Test
+    public void comparison_returns_correctly() {
+    	SkyViewPosition base = new SkyViewPosition(new Coordinate(10.0, 1.0), 1.0);
+    	SkyViewPosition comparison = new SkyViewPosition(new Coordinate(10.0, 1.0), 1.0);
+    	assertThat(base.compare(comparison), is(true));
+    	comparison = new SkyViewPosition(new Coordinate(10.1, 1.0), 1.0);
+    	assertThat(base.compare(comparison), is(false));
+    	comparison = new SkyViewPosition(new Coordinate(10.0, 1.1), 1.0);
+    	assertThat(base.compare(comparison), is(false));
+    	comparison = new SkyViewPosition(new Coordinate(10.0, 1.0), 1.1);
+    	assertThat(base.compare(comparison), is(false));
+
+    	base = new SkyViewPosition(new Coordinate(10.0, 1.0), 10.0);
+    	comparison = new SkyViewPosition(new Coordinate(10.1, 1.0), 10.0);
+    	assertThat(base.compare(comparison,0.02), is(true));
+    	comparison = new SkyViewPosition(new Coordinate(10.3, 1.0), 10.0);
+    	assertThat(base.compare(comparison,0.02), is(false));
+    	comparison = new SkyViewPosition(new Coordinate(10.0, 1.0), 10.1);
+    	assertThat(base.compare(comparison,0.02), is(true));
+    	comparison = new SkyViewPosition(new Coordinate(10.0, 1.0), 10.5);
+    	assertThat(base.compare(comparison,0.01), is(false));
+    }
 }
