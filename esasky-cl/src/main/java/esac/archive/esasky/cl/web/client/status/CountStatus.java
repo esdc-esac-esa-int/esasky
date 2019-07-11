@@ -91,9 +91,9 @@ public class CountStatus {
     	try {
     		SkyViewPosition currPos = CoordinateUtils.getCenterCoordinateInJ2000();
     		SkyViewPosition missionPos = getSkyViewPosition(missionId);
-        	return !currPos.compare(missionPos, 0.0001);
+        	return !currPos.compare(missionPos, 0.01);
     	}catch(Exception e) {
-    		// Handles if the we haven't received any data yet i.e. no SkyViewPosition exists.
+    		// Handles if the we haven't received any data yet i.e. no missionPos exists.
     		return true; 
     	}
 	}
