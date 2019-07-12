@@ -148,7 +148,11 @@ public class CoordinatesConversion {
         Double result = null;
         String[] tokens;
         if(raHMSInput.contains("h")){
-        	tokens = (raHMSInput.trim()).split(":|h|m|\"|\'\'|s|\'");
+        	tokens = (raHMSInput.trim()).split(":|h|m|\'|s|\'\'|\"");
+        	if(tokens.length == 2 && 
+        			(raHMSInput.contains("s") || raHMSInput.contains("\"") || raHMSInput.contains("\'\'"))){
+        		tokens = new String[] {tokens[0], "00", tokens[1]};
+        	}
         }else {
         	tokens = (raHMSInput.trim()).split(":|\\s");
         }
@@ -183,6 +187,10 @@ public class CoordinatesConversion {
         String[] tokens;
         if(decDMSInput.contains("d")){
         	tokens = (decDMSInput.trim()).split(":|d|m|\"|\'\'|s|\'");
+        	if(tokens.length == 2  && 
+        			(decDMSInput.contains("s") || decDMSInput.contains("\"") || decDMSInput.contains("\'\'"))){
+        		tokens = new String[] {tokens[0], "00", tokens[1]};
+        	}
         }else {
         	tokens = (decDMSInput.trim()).split(":|\\s");
         }
@@ -223,6 +231,10 @@ public class CoordinatesConversion {
         String[] tokens;
         if(raDMSInput.contains("d")){
         	tokens = (raDMSInput.trim()).split(":|d|m|\"|\'\'|s|\'");
+        	if(tokens.length == 2   && 
+        			(raDMSInput.contains("s") || raDMSInput.contains("\"") || raDMSInput.contains("\'\'"))){
+        		tokens = new String[] {tokens[0], "00", tokens[1]};
+        	}
         }else {
         	tokens = (raDMSInput.trim()).split(":|\\s");
         }

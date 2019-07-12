@@ -30,7 +30,7 @@ public class ESASkySearchRegEx {
     final static String RA_hhmmss_column_pattern = RA_hh_column + "(" + base60_column
             + base60_column + "?)";
     final static String RA_hhmmss_letters_pattern = RA_hh_column + "h(\\s?(" + base60
-    		+ "(m|\\'\\'|\"))?\\s?(" + base60 + "(s|\\'))?\\s?)";
+    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\\\"))?\\s?)";
 
     /**
      * RA and DEC in decimal DEGREES 214.123 +89.123 214.123 -89.123
@@ -45,8 +45,8 @@ public class ESASkySearchRegEx {
     final static String RA_dddmmss_column_pattern = RA_DEGREES_integer_base360 + "("
             + base60_column + base60_column + "?)";
     final static String RA_dddmmss_letters_pattern = RA_DEGREES_integer_base360 + "d(\\s?(" + base60
-    		+ "(m|\\'\\'|\"))?\\s?(" + base60 + "(s|\\'))?\\s?)";
-
+    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\"))?\\s?)";
+    
     final static String DEC_DEGREES_decimal_base90 = "(\\d(\\.\\d+)?" + "|0\\d?(\\.\\d+)?"
             + "|[0-8]\\d(\\.\\d+)?" + "|90)";
 
@@ -57,7 +57,7 @@ public class ESASkySearchRegEx {
     final static String DEC_ddmmss_column_pattern = DEC_DEGREES_integer_base90 + "("
             + base60_column + base60_column + "?)";
     final static String DEC_ddmmss_letters_pattern = DEC_DEGREES_integer_base90 + "d(\\s?(" + base60
-    		+ "(m|\\'\\'|\"))?\\s?(" + base60 + "(s|\\'))?\\s?)";
+    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\"))?\\s?)";
 
     /**
      * PATTERNS!!!

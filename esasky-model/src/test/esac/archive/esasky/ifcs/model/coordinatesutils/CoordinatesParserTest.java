@@ -60,10 +60,11 @@ public class CoordinatesParserTest {
 		assertParseCoords("214 +24", new Double[]{214.0, 24.0}, CoordinatesFrame.J2000);
 		assertParseCoords("350.123456 -17.33333", new Double[]{350.123456, -17.33333}, CoordinatesFrame.J2000);
 		assertParseCoords("12h 12m 12s -89d 01m 01s", new Double[]{183.05, -89.01694444}, CoordinatesFrame.J2000);
-		assertParseCoords("12h 12'' 12' -89d 01m 01s", new Double[]{183.05, -89.01694444}, CoordinatesFrame.J2000);
-		assertParseCoords("12h 12\" -89d", new Double[]{183.0, -89.0}, CoordinatesFrame.J2000);
-		assertParseCoords("12h 12'' 12' -89d 01'' 01'", new Double[]{183.05, -89.01694444}, CoordinatesFrame.J2000);
-		assertParseCoords("12h 12m +89d 01\" 01s", new Double[]{183.0, 89.0169444}, CoordinatesFrame.J2000);
+		assertParseCoords("12h 12' 12'' -89d 01m 01s", new Double[]{183.05, -89.01694444}, CoordinatesFrame.J2000);
+		assertParseCoords("12h 12\" -89d", new Double[]{180.05, -89.0}, CoordinatesFrame.J2000);
+		assertParseCoords("12h 12' 12'' -89d 01' 01''", new Double[]{183.05, -89.01694444}, CoordinatesFrame.J2000);
+		assertParseCoords("12h 12' +89d 01' 01s", new Double[]{183.0, 89.0169444}, CoordinatesFrame.J2000);
+		assertParseCoords("12h 12'' +89d 01' 01s", new Double[]{180.05, 89.0169444}, CoordinatesFrame.J2000);
 		assertParseCoords("12h +89d", new Double[]{180.0, 89.0}, CoordinatesFrame.J2000);
 	}
 	
@@ -80,7 +81,7 @@ public class CoordinatesParserTest {
 		assertParseCoords("0.0 +0.0", new Double[]{266.40508920, -28.93617470}, CoordinatesFrame.GALACTIC);
 		assertParseCoords("214 +24", new Double[]{124.89839505, 9.80584280}, CoordinatesFrame.GALACTIC);
 		assertParseCoords("12d 12m 12s -89d 01m 01s", new Double[]{11.8232, -27.4724}, CoordinatesFrame.GALACTIC);
-		assertParseCoords("12d 12'' 12' -89d 01m 01s", new Double[]{11.8232, -27.4724}, CoordinatesFrame.GALACTIC);
+		assertParseCoords("12d 12' 12'' -89d 01m 01s", new Double[]{11.8232, -27.4724}, CoordinatesFrame.GALACTIC);
 		assertParseCoords("12d -89d", new Double[]{11.80667, -27.48158}, CoordinatesFrame.GALACTIC);
 		//assertParseCoords("350.123456 -17.33333", new Double[]{280.35462047, -45.49402661}, CoordinatesFrame.GALACTIC);
 	}
