@@ -5,6 +5,7 @@
 	<groupId>esac.archive.esasky.cl</groupId>
 	<artifactId>web</artifactId>
 	<packaging>war</packaging>
+	<version>3.1.3</version>
 
 	<parent>
 		<groupId>esac.archive.esasky</groupId>
@@ -371,7 +372,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<attachClasses>true</attachClasses>
+					<attachClasses>false</attachClasses>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<webResources>
 						<resource>
@@ -391,6 +392,7 @@
 						</resource>
 					</webResources>
 					<webXml>src/main/resources/web.xml</webXml>
+					<packagingExcludes>**/*.jar</packagingExcludes>
 				</configuration>
 			</plugin>
 
@@ -560,9 +562,7 @@
 		<dependency>
 			<groupId>esac.archive.absi.modules.cl</groupId>
 			<artifactId>absi-cl-aladinlite-widget</artifactId>
-			<version>0.8.2</version>
 		</dependency>
-
 		<!-- LOCAL -->
 		<dependency>
 			<groupId>esac.archive.esasky.ifcs</groupId>
