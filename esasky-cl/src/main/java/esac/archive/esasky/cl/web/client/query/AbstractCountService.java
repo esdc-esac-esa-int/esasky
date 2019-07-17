@@ -6,6 +6,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public abstract class AbstractCountService<T extends IDescriptor> {
@@ -23,10 +24,9 @@ public abstract class AbstractCountService<T extends IDescriptor> {
 
         String url = null;
         String shape = null;
-        double fovDeg = aladinLite.getFovDeg();
         String adqlQuery = "";
 
-        if (fovDeg < 90) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             // shape = "POLYGON('ICRS', " + aladinLite.getFovCorners(2).toString() + ")";
             shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
             adqlQuery = "SELECT esasky_general_dynamic_count_q3c_poly_singletable('" + tapTable + "', " + shape

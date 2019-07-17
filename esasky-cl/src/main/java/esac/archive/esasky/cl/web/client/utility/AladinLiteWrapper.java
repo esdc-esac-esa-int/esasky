@@ -133,8 +133,8 @@ public class AladinLiteWrapper {
                 false, // showFullscreenControlBoolean
                 false, // showShareControlBoolean
                 true, // showReticleBoolean
-                false, // showZoomControlBoolean (are these swapped???)
-                true, // showFrameBoolean (are these swapped???)
+                false, // showZoomControlBoolean
+                true, // showFrameBoolean
                 target, // target
                 fov, // zoomInteger
                 inputParentWidget);
@@ -509,5 +509,18 @@ public class AladinLiteWrapper {
 
     public static double getCenterDecDeg() {
         return aladinLite.getCenterLatitudeDeg();
+    }
+    
+    public static boolean isCornersInsideHips() {
+    	try {
+    		String [] points = aladinLite.getFovCorners(2).toString().split(",");
+    		if(points.length == 8) {
+    			for (int i = 0; i < points.length; i++) {
+    				new Double(points[i]);
+    			}
+    		}
+    	} catch(Exception e) {
+    	}
+    	return false;
     }
 }

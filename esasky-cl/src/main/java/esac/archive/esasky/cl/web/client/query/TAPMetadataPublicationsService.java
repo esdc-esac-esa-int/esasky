@@ -76,7 +76,7 @@ public class TAPMetadataPublicationsService {
 
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (fovDeg < descriptor.getFovLimit()) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug("[TAPMetadataPublicationsService/getMetadataAdqlforSIMBAD()] FoV < 1d");
                 shape = "POLYGON('ICRS', "

@@ -6,6 +6,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPCountPublicationsService extends
@@ -49,7 +50,7 @@ AbstractCountService<PublicationsDescriptor> {
             + " where 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
             + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
 
-        if (fovDeg < 90) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug("[TAPCountPublicationsService/getCountQueryForSIMBAD()] FoV < 1d");
                 shape = "POLYGON('ICRS', "

@@ -54,9 +54,8 @@ public class TAPMetadataObservationService extends AbstractMetadataService {
     	final String debugPrefix = "[TAPMetadataObservationService.getGeometricConstraint]";
     	String constraint = "1=INTERSECTS(fov,";
         String shape = null;
-        // TODO getFovCorners only works if the current field of view is <90d.
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (fovDeg < 90) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug(debugPrefix + " FoV < 1d");
                 shape = "POLYGON('ICRS', "

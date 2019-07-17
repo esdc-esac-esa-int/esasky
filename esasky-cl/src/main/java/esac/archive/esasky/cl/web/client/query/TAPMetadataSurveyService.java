@@ -40,9 +40,8 @@ public class TAPMetadataSurveyService extends AbstractMetadataService {
         parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE 1=CONTAINS(pos,";
 
         String shape = null;
-        // TODO getFovCorners only works if the current field of view is <90d.
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (fovDeg < 90) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug("[TAPQueryBuilder/getMetadata4Footprints()] FoV < 1d");
                 shape = "POLYGON('ICRS', "

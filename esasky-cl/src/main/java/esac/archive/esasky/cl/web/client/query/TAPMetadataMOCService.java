@@ -42,7 +42,7 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
 
         if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
-            if (fovDeg < 120) {
+            if (AladinLiteWrapper.isCornersInsideHips()) {
                 if (fovDeg < 1) {
                     Log.debug("[TAPQueryBuilder/getMOC()] FoV < 1d");
                     shape = "POLYGON('ICRS', "
@@ -63,7 +63,7 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
                 shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
             }
         } else {
-            if (fovDeg < 120) {
+            if (AladinLiteWrapper.isCornersInsideHips()) {
                 if (fovDeg < 1) {
                     Log.debug("[TAPQueryBuilder/getMOC()] FoV < 1d");
                     shape = "POLYGON('ICRS', "

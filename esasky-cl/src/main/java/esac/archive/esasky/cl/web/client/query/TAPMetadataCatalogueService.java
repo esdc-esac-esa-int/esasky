@@ -61,7 +61,7 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
 
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (fovDeg < descriptor.getFovLimit()) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug("[TAPQueryBuilder/getMetadata4Sources()] FoV < 1d");
                 shape = "POLYGON('ICRS', "

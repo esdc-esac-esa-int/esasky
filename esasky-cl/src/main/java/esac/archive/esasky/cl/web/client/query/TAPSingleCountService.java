@@ -4,6 +4,7 @@ import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPSingleCountService {
@@ -25,7 +26,6 @@ public class TAPSingleCountService {
         String cooFrame = aladinLite.getCooFrame();
         Double[] ccInJ2000 = { aladinLite.getCenterLongitudeDeg(),
                                aladinLite.getCenterLatitudeDeg() };
-        double fovDeg = aladinLite.getFovDeg();
         
         if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
             // convert to J2000
@@ -37,7 +37,7 @@ public class TAPSingleCountService {
         String shape = "POLYGON('ICRS', 0.0, 0.0, 1.0, 1.0, 2.0, 2.0)";
         String spoly = "";
         
-        if (fovDeg < 90) {
+        if (AladinLiteWrapper.isCornersInsideHips()) {
             shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
             spoly = "{" + aladinLite.getFovCorners(2).toString() + "}";
         }
