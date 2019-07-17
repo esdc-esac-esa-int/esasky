@@ -514,10 +514,11 @@ public class AladinLiteWrapper {
     public static boolean isCornersInsideHips() {
     	try {
     		String [] points = aladinLite.getFovCorners(2).toString().split(",");
-    		if(points.length == 8) {
+    		if(points.length == 16) {
     			for (int i = 0; i < points.length; i++) {
     				new Double(points[i]);
     			}
+    			return true;
     		}
     	} catch(Exception e) {
     	}
