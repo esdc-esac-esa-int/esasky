@@ -29,6 +29,8 @@ public class AladinLiteWrapper {
 
     /** Instance to ABSI aladinWidget. */
     private static AladinLiteWidget aladinLite;
+    
+    public static boolean loadInitialHipsFromEsac;
     /** Instance to JavaScriptObject. */
     private JavaScriptObject multiTargetCatalogObject;
 
@@ -108,6 +110,15 @@ public class AladinLiteWrapper {
         if (initialHiPS == null){
             initialHiPS = EsaSkyWebConstants.getInitialHiPS();
         }
+        String rootUrl = initialHiPS.getSurveyRootUrl();
+        if(loadInitialHipsFromEsac) {
+    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
+    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+    			initialHiPS.setSurveyRootUrl(newRootUrl);
+    			Log.debug("Switched to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
+    		}
+        }
+        
         if (target == null || target.equals("")){
         	    target = EsaSkyConstants.ALADIN_DEFAULT_TARGET;
         }
@@ -381,22 +392,6 @@ public class AladinLiteWrapper {
 
     /**
      * openHiPS().
-     * @param surveyId Input String
-     * @param surveyName Input String
-     * @param surveyRootUrl Input String
-     * @param surveyFrame Input String
-     * @param maximumNorder Input Integer
-     * @param imgFormat Input String
-     */
-    public final void openHiPS(final String surveyId, final String surveyName,
-            final String surveyRootUrl, final String surveyFrame, final Integer maximumNorder,
-            final String imgFormat) {
-        aladinLite.createAndSetImageSurveyWithImgFormat(surveyId, surveyName, surveyRootUrl,
-                surveyFrame, maximumNorder, imgFormat);
-    }
-
-    /**
-     * openHiPS().
      * @param hips Input HiPS object.
      */
     public final void openHiPS(final HiPS hips) {
@@ -404,19 +399,31 @@ public class AladinLiteWrapper {
                 hips.getSurveyRootUrl(), hips.getSurveyFrame().name(), hips.getMaximumNorder(),
                 hips.getImgFormat().name());
     }
-
-    /**
-     * openDefaultHiPS().
-     */
-    public final void openDefaultHiPS() {
-        aladinLite.createAndSetImageSurveyWithImgFormat(EsaSkyConstants.ALADIN_DEFAULT_SURVEY_ID,
-                EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME,
-                EsaSkyConstants.ALADIN_DEFAULT_SURVEY_URL,
-                EsaSkyConstants.ALADIN_HiPS_DEFAULT_COO_FRAME,
-                EsaSkyConstants.ALADIN_DEFAULT_NORDER,
-                EsaSkyConstants.ALADIN_DEFAULT_IMG_FORMAT.name());
+    
+    public void setLoadHipsFromCDN(boolean loadFromCDN) {
+    	String rootUrl = getRootUrl(aladinLite.getCurrentImageSurveyObject());
+    	if(loadFromCDN) {
+        	if(rootUrl.contains("skies.esac.esa.int") && !rootUrl.contains("cdn.skies.esac.esa.int")) {
+        		String newRootUrl = rootUrl.replaceFirst("skies\\.esac\\.esa\\.int", "cdn.skies.esac.esa.int");
+        		setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
+        		Log.debug("Switched to CDN servers for HiPS loading. New rootUrl is: " + newRootUrl);
+        	}
+    	} else {
+    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
+    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+    			setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
+    			Log.debug("Switched to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
+    		}
+    	}
     }
-
+    
+    private native void setRootUrl(JavaScriptObject currentImageSurvey, String newRootUrl) /*-{
+    	currentImageSurvey.rootUrl = newRootUrl;
+    }-*/;
+    
+    private native String getRootUrl(JavaScriptObject currentImageSurvey) /*-{
+    	return currentImageSurvey.rootUrl;
+    }-*/;
     /**
      * createOverlayMap().
      * @param overlayHiPS Input HiPS object

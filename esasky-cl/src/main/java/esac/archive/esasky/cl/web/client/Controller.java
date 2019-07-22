@@ -60,7 +60,8 @@ public class Controller implements ValueChangeHandler<String> {
     }
 
 	private void initializePresenter() {
-
+		GUISessionStatus.initiateHipsLocationScheduler();
+		
 		String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
 				(sciMode != null 

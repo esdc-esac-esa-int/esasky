@@ -4,15 +4,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
 import esac.archive.esasky.cl.web.client.model.TrackedSso;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 
@@ -220,4 +225,56 @@ public class GUISessionStatus {
 	public static String getCurrentLanguage() {
 		return currentLanguage;
 	}
+	
+	public static void initiateHipsLocationScheduler() {
+		checkHipsServerLocation();
+		new Timer() {
+			
+			@Override
+			public void run() {
+				if(ActivityStatus.getInstance().anyActivityDuringTheLastMinute()) {
+					checkHipsServerLocation();
+				}
+			}
+		}.scheduleRepeating(1000 * 60);
+		
+		new Timer() {
+			
+			@Override
+			public void run() {
+				checkHipsServerLocation();
+			}
+		}.schedule(1000 * 10);
+	}
+	
+	public static void checkHipsServerLocation() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.HIPS_STORAGE_URL, new IJSONRequestCallback() {
+			
+			@Override
+			public void onSuccess(String responseText) {
+				if(responseText.equalsIgnoreCase("//skies.esac.esa.int")) {
+					try {
+						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(false);
+					} catch (AssertionError exception) {
+						//AladinLite not initialized
+						AladinLiteWrapper.loadInitialHipsFromEsac = true;
+					}
+				} else {
+					try {
+						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(true);
+					} catch (AssertionError exception) {
+						//AladinLite not initialized
+						AladinLiteWrapper.loadInitialHipsFromEsac = false;
+					}
+				}
+			}
+			
+			@Override
+			public void onError(String errorCause) {
+				Log.debug(errorCause);
+			}
+		});
+
+	}
+	
 }
