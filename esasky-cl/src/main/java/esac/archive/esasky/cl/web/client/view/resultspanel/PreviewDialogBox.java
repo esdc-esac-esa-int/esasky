@@ -1,8 +1,11 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -95,6 +98,14 @@ public class PreviewDialogBox extends AutoHidingMovablePanel {
         }
     }
 
+	private Timer postcardLoadFailedNotificationTimer = new Timer() {
+
+		@Override
+		public void run() {
+			CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("postcardLoadFailed"));
+		}
+	};
+    
     public PreviewDialogBox(String url, String observationId) {
     	super(GoogleAnalytics.CAT_Preview);
         this.style = this.resources.style();
@@ -142,6 +153,25 @@ public class PreviewDialogBox extends AutoHidingMovablePanel {
                 addResizeHandler();
             }
         });
+        
+        image.addErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void onError(ErrorEvent event) {
+				Log.debug("Failed to load postcard: " + image.getUrl());
+				
+                MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("Loading preview"));
+                CommonEventBus.getEventBus().fireEvent(
+                		new ProgressIndicatorPushEvent("postcardLoadFailed", TextMgr.getInstance().getText("Preview_postcardLoadFailed"), true));
+                hide();
+                if(postcardLoadFailedNotificationTimer.isRunning()) {
+                	postcardLoadFailedNotificationTimer.run();
+                }
+                postcardLoadFailedNotificationTimer.schedule(5000);
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Preview, GoogleAnalytics.ACT_Preview_PostcardLoadFailed, "Failed to load postcard: " + image.getUrl());
+			}
+		});
 
         loadingSpinner.addStyleName("previewLoadingSpinner");
         MainLayoutPanel.addElementToMainArea(loadingSpinner);

@@ -2367,7 +2367,7 @@
 		Resizing Data Panel
 	</text>
 	<text key="PreviewDialog_loading_postcard">
-		Loading postcard
+		Loading preview
 	</text>
 	<text key="dataPanelPager_of">
 		of
@@ -2524,6 +2524,9 @@
 	</text>
 	<text key="STAR">
 		Star
+	</text>
+	<text key="Preview_postcardLoadFailed">
+		Failed to load preview from archive
 	</text>
 	
 	

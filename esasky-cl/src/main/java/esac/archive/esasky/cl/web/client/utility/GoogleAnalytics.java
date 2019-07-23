@@ -101,6 +101,8 @@ public final class GoogleAnalytics {
     public static final String ACT_Search_SearchTargetNotFound = "SearchTargetNotFound";
     public static final String ACT_Search_SearchWrongCoords = "SearchWrongCoords";
     
+    public static final String ACT_Preview_PostcardLoadFailed = "PostcardLoadFailed";
+    
     public static final String ACT_Tab_Resize = "TabResize";
     public static final String ACT_TreeMap_Resize = "TreeMapResize";
     
