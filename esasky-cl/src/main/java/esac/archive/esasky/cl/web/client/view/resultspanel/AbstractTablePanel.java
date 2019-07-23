@@ -151,7 +151,7 @@ public abstract class AbstractTablePanel extends Composite {
 	private int lastHoveredRowId;
 	private boolean isHidingTable = false;
 	private boolean hasBeenClosed = false;
-	private boolean isShowing = false;
+	protected boolean isShowing = false;
 	
 	private IPreviewClickedHandler previewClickedHandler;
 	private List<TableRow> originalList;

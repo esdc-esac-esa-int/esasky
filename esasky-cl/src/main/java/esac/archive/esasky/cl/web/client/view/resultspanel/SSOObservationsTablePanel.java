@@ -24,8 +24,10 @@ public class SSOObservationsTablePanel extends CommonObservationsTablePanel {
     
     @Override
     public void closeTablePanel() {
+    	if(isShowing) {
+    		AladinLiteWrapper.getInstance().cleanSSOOverlay();
+    	}
     	super.closeTablePanel();
-    	AladinLiteWrapper.getInstance().cleanSSOOverlay();
     }
     
     @Override
