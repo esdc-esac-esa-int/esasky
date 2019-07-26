@@ -106,6 +106,9 @@ public final class GoogleAnalytics {
     public static final String ACT_Tab_Resize = "TabResize";
     public static final String ACT_TreeMap_Resize = "TreeMapResize";
     
+    public static final String ACT_Tab_Download = "TabDownload";
+    public static final String ACT_Tab_Download_Failure = "TabDownloadFailure";
+
     public static final String ACT_Count_Count = "Count";
     
     public static final String ACT_Pyesasky_goToTargetName = "goToTargetName";

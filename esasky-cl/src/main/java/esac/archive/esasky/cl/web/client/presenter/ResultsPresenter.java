@@ -415,6 +415,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                 + type.toString());
 
         Map.Entry<String, String> tempEntry = getResultsTableURLPerMission();
+        final String eventCategory = (type.equals(ReturnType.CSV)) ? GoogleAnalytics.CAT_Download_CSV : GoogleAnalytics.CAT_Download_VOT;
 
         if (tempEntry != null) {
 
@@ -429,17 +430,11 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                     
                 } else if (type.equals(ReturnType.VOTABLE)) {
                     view.getTabPanel().getAbstractTablePanelFromId(tableName).exportAsVOTABLE();
-                    
                 }
                 
             } else {
 	        	if(Modules.improvedDownload){
-	        		
-	//            	HTML form = new HTML("<form id='downloadFile' method='post' enctype='application/x-www-form-urlencoded;charset=ISO-8859-1' action='" + tableUrl + "' target='downloadWindow'><input type='hidden' name='query' value='"+ adqlQuery + "'></form>");
-	//            	RootPanel.get().add(form);
-	//            	openUrl();
-	            
-	                String tableUrl = URL.encode(TAPUtils.getTAPQuery("", type.toString()));
+	                final String tableUrl = URL.encode(TAPUtils.getTAPQuery("", type.toString()));
 	                Log.debug("[ResultsPresenter/getResultsTableURLPerMission()] Getting results table: ["
 	                        + tableUrl + "] for tab: [" + tableName + "]");
 	                RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tableUrl);
@@ -450,12 +445,11 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	                try {
 	                    requestBuilder.sendRequest("query=" + adqlQuery.replaceAll("\\+", "%2B"), new RequestCallback() {
 
-	                    	//TODO take care of timecall issues
-	                    	
 	                        @Override
 	                        public void onError(final com.google.gwt.http.client.Request request,
 	                                final Throwable exception) {
 	                        	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(indicatorId));
+	                        	GoogleAnalytics.sendEvent(eventCategory, GoogleAnalytics.ACT_Tab_Download_Failure, tableUrl + adqlQuery.replaceAll("\\+", "%2B"));
 	                            Log.debug("Failed",exception);
 	                        }
 	
@@ -464,13 +458,14 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	                                final com.google.gwt.http.client.Request request,
 	                                final Response response) {
 	                        	Log.debug("[Sucssess] " + response.getText());
-	                    		UrlUtils.saveRawToFile(UrlUtils.getValidFilename(tableName) + ".csv", "data:text/csv;charset=utf-8," + response.getText());
+	                    		UrlUtils.saveRawToFile(UrlUtils.getValidFilename(tableName) + "." + type.toString(), "data:text/" + type.toString() + ";charset=utf-8," + response.getText());
 	                    		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(indicatorId));
 	                        }
 	
 	                    });
 	                } catch (RequestException e) {
 	                	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(indicatorId));
+	                	GoogleAnalytics.sendEvent(eventCategory, GoogleAnalytics.ACT_Tab_Download_Failure, tableUrl + adqlQuery.replaceAll("\\+", "%2B"));
 	                    Log.debug("Failed to get file",e);
 	                }
 	            } else {
@@ -479,16 +474,11 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	            }
             
             // Send download event
-            final String eventCategory = (type.equals(ReturnType.CSV)) ? GoogleAnalytics.CAT_Download_CSV : GoogleAnalytics.CAT_Download_VOT;
             sendGAEventWithCurrentTab(eventCategory, "");
             }
         }
     }
     
-//    private native void openUrl() /*-{
-//    	$wnd.window.open('about:blank', 'downloadWindow');
-//    	$wnd.document.getElementById('downloadFile').submit();
-//	}-*/;
     @Override
     public String getProgressIndicatorMessage() {
         return TextMgr.getInstance().getText("CountRequestCallback_countingAvailableData");
