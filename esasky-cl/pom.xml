@@ -573,7 +573,6 @@
 		<dependency>
 			<groupId>esac.archive.esasky.ifcs</groupId>
 			<artifactId>esasky-ifcs-model</artifactId>
-			<version>1.8.20</version>
 		</dependency>
 
 		<dependency>
