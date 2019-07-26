@@ -206,7 +206,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				Window.open(EsaSkyWebConstants.ESA_SKY_HELP_PAGES_URL, "_blank", "");
+				Window.open(TextMgr.getInstance().getText("headerPresenter_helpLink"), "_blank", "");
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Help, "");
 				view.closeDropdownMenu();
 			}

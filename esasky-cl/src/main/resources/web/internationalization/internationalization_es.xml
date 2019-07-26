@@ -3076,5 +3076,8 @@
 	<text key="Preview_postcardLoadFailed">
 		No se pudo cargar la imagen de previsualización desde el archivo
 	</text>
+	<text key="headerPresenter_helpLink">
+		https://www.cosmos.esa.int/web/esdc/introduccion-a-esasky
+	</text>
 </Internationalization>
 

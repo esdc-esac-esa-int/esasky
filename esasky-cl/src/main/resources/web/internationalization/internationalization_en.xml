@@ -2528,6 +2528,8 @@
 	<text key="Preview_postcardLoadFailed">
 		Failed to load preview from archive
 	</text>
-	
+	<text key="headerPresenter_helpLink">
+		https://www.cosmos.esa.int/web/esdc/esasky-how-to
+	</text>
 	
 </Internationalization>
