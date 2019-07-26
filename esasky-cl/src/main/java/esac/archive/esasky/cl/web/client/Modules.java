@@ -5,7 +5,7 @@ import com.google.gwt.core.client.GWT;
 public class Modules {
     
     public static boolean proposalModule = true;
-    public static boolean improvedDownload = false;
+    public static boolean improvedDownload = true;
     public static boolean bannersOnAllSides = false;
     public static boolean internationalization = true;
     public static boolean ssoModule = true;
