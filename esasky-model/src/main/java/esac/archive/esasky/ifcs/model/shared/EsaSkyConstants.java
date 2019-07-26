@@ -91,7 +91,18 @@ public class EsaSkyConstants {
     /** DEFAULT INIT VALUES **/
     /*************************************************************************/
     public enum ReturnType {
-        JSON, VOTABLE, CSV, ASCII
+        JSON("json"), VOTABLE("vot"), CSV("csv"), ASCII("ascii");
+
+    	private String name;
+    	private ReturnType(String name) {
+    		this.name = name;
+    	}
+		@Override
+		public String toString() {
+			return name;
+		}
+        
+        
     }
 
     /*************************************************************************/
