@@ -472,10 +472,9 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	            	String tableUrl = URL.encode(TAPUtils.getTAPQuery(adqlQuery, type.toString()));
 	            	Window.open(tableUrl, "_self", "location=0,status=0,toolbar=0,scrollbars=1,menubar=0");
 	            }
-            
+            }
             // Send download event
             sendGAEventWithCurrentTab(eventCategory, "");
-            }
         }
     }
     
