@@ -138,16 +138,14 @@ public class SearchPresenter {
                         Log.debug("ERROR FOR WRONG INPUT FORMAT");
                         
                         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchWrongCoords, userInput);
-                        return;
-                        
-                    } else if (inputType == CoordinateValidator.SearchInputType.TARGET) {
-                        doSearch4Target();
                     } else {
-                        doSearchByCoords(inputType);
+                    	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchQuery, userInput);
+                    	if (inputType == CoordinateValidator.SearchInputType.TARGET) {
+                    		doSearch4Target();
+                    	} else {
+                    		doSearchByCoords(inputType);
+                    	}
                     }
-                    
-                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchQuery, userInput);
-
                 }
             }
         });
