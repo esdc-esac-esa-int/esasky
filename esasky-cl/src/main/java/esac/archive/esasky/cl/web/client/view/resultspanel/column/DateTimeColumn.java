@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
@@ -41,6 +42,10 @@ public class DateTimeColumn extends SortableColumn<String>{
 	}
 	
 	private boolean match(String date, String minDate, String maxDate) {
+		if(date == null || date.equals("") || date.contains("null")) {
+			Log.warn("Warning! Date is invalid");
+			return true;
+		}
 		if(date.substring(0, 10).compareTo(minDate) < 0
 				|| date.substring(0, 10).compareTo(maxDate) > 0) {
 			return false;
