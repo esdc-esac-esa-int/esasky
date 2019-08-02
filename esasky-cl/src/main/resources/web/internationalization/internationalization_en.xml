@@ -500,6 +500,9 @@
 	<text key="ctrlToolBarPresenter_retrievingPublicationTargetList">
 		Retrieving Target List
 	</text>
+	<text key="ctrlToolBarPresenter_loadingAuthorSources">
+		Searching for sources in $AUTHOR$ publications
+	</text>
 
 	<!-- playerPanel -->
 	<text key="playerPanel_next">

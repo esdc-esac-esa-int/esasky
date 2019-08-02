@@ -319,14 +319,15 @@ public class CtrlToolBarPresenter {
         Log.info("[CtrlToolBarPresenter] showAuthorInfo AUTHOR received: " + author + " , preparing author info.");
         
         final int maxSources = (DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE : EsaSkyWebConstants.MAX_SOURCES_IN_TARGETLIST);
-        
+        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("LoadingAuthorPublicatoinSorces", 
+        		TextMgr.getInstance().getText("ctrlToolBarPresenter_loadingAuthorSources")));
         //Retrieves the sources for this bibcode and shows the upload panel
         JSONUtils.getJSONFromUrl(EsaSkyWebConstants.PUBLICATIONS_SOURCES_BY_AUTHOR_URL + "?AUTHOR="
                 + URL.encodeQueryString(author) + "&ROWS=" + maxSources, new IJSONRequestCallback() {
             
             @Override
             public void onSuccess(String responseText) {
-                
+            	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSorces"));
                 String authorHtml = LinkListColumn.getLinkList(author, 
                         splitByString,
                         authorsLinkUrl,
@@ -346,6 +347,7 @@ public class CtrlToolBarPresenter {
             @Override
             public void onError(String errorCause) {
                 Log.error("[CtrlToolBarPresenter] showAuthorInfo ERROR: " + errorCause);
+                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSorces"));
             }
             
         });
