@@ -272,13 +272,10 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
         final String missionId = entity.getDescriptor().getMission();
         final CountStatus countStatus = entity.getCountStatus();
-        SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 
         if (panel == null) {
             panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
             		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getContext() + "_"+ missionId));
-
-            countStatus.setSkyViewPosition(missionId, skyViewPosition);
         }
 
         if (countStatus.hasMoved(missionId)) {
