@@ -11,6 +11,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
@@ -22,6 +23,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
@@ -55,6 +57,8 @@ public class SkyRow extends Composite implements Selectable{
 
 	private Resources resources;
 	private Style style;
+	
+	private boolean isOverlay = false;
 
 	public static interface Resources extends ClientBundle {
 
@@ -172,9 +176,7 @@ public class SkyRow extends Composite implements Selectable{
 				final HiPS hips = hipsDropDown.getSelectedObject();
 				final ColorPalette colorPalette = hips.getColorPalette();
 				changePaletteBtn.setDefaultColorPallette(colorPalette);
-				if (isSelected()) {
-					notifySkyChange();
-				}
+				notifySkyChange();
 			}
 		});
 
@@ -292,6 +294,8 @@ public class SkyRow extends Composite implements Selectable{
 	private EsaSkyRadioButton createIsSelectedBtn() {
 		isSelectedBtn = new EsaSkyRadioButton("sky");
 		isSelectedBtn.addStyleName("skyRadioBtn");
+		
+		final SkyRow skyRow = this;
 
 		isSelectedBtn.registerValueChangeObserver(new EsaSkyRadioButtonObserver() {
 
@@ -299,6 +303,16 @@ public class SkyRow extends Composite implements Selectable{
 			public void onValueChange(boolean isSelected) {
 				if(isSelected){
 					notifySkyChange();
+					SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
+					if(SelectSkyPanel.skies.size() > 1){
+						for (int i = 0; i < skyPanel.skyTable.getRowCount(); i++) {
+			                Widget widget = skyPanel.skyTable.getWidget(i, 0);
+			                if (widget.equals(skyRow)) {
+			                	skyPanel.slider.setValue(i);
+			                	continue;
+				            }
+						}
+					}
 				}
 			}
 		});
@@ -365,7 +379,7 @@ public class SkyRow extends Composite implements Selectable{
 		observers.add(observer);
 	}
 
-	private void notifySkyChange(){
+	public void notifySkyChange(){
 		if(isSelected()){
 			for(SkyObserver observer: observers){
 				observer.onUpdateSkyEvent(this);
@@ -373,6 +387,10 @@ public class SkyRow extends Composite implements Selectable{
 			
 			//Notify sky change to Google Analytics
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getFullId());
+		}else if(isOverlay()) {
+			double value = SelectSkyPanel.getInstance().slider.getCurrentValue();
+			double opacity = value - Math.floor(value);
+			AladinLiteWrapper.getInstance().createOverlayMap(getSelectedHips(), opacity, getSelectedPalette());
 		}
 	}
 
@@ -395,4 +413,13 @@ public class SkyRow extends Composite implements Selectable{
     public String getFullId() {
         return wavelengthDropDown.getSelectedObject().name() + " - " + getSelectedHips().getSurveyName() + " - " + getSelectedPalette().name();
     }
+    
+    public void setOverlayStatus(boolean status) {
+    	isOverlay = status;
+    }
+    
+    public boolean isOverlay() {
+    	return isOverlay;
+    }
+    
 }

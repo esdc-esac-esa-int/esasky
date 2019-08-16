@@ -428,12 +428,14 @@ public class AladinLiteWrapper {
      * createOverlayMap().
      * @param overlayHiPS Input HiPS object
      * @param opacity Input double
+     * @param colorPalette Input ColorPalette object
      */
-    public final void createOverlayMap(final HiPS overlayHiPS, final double opacity) {
+    public final void createOverlayMap(final HiPS overlayHiPS, final double opacity,  ColorPalette colorPalette) {
         aladinLite.doOverlaySimpleImageLayer(overlayHiPS.getSurveyId(),
                 overlayHiPS.getSurveyName(), overlayHiPS.getSurveyRootUrl(), overlayHiPS
                         .getSurveyFrame().name(), overlayHiPS.getMaximumNorder(), overlayHiPS
                         .getImgFormat().name(), opacity);
+        aladinLite.setOverlayColorPalette(colorPalette);
     }
 
     /**
@@ -441,9 +443,21 @@ public class AladinLiteWrapper {
      * @param opacity Input double
      */
     public final void changeHiPSOpacity(final double opacity) {
-        aladinLite.setOverlayImageLayerAlpha(opacity);
+        aladinLite.setImageSurveyAlpha(opacity);
     }
 
+    
+    public final void changeOverlayOpacity(final double opacity) {
+    	aladinLite.setOverlayImageLayerAlpha(opacity);
+    }
+
+    /**
+     * setOverlayImageLayerToNull().
+     */
+    public final void setOverlayImageLayerToNull() {
+    	aladinLite.setOverlayImageLayerToNull();
+    }
+    	
     /**
      * removeAllFootprintsFromOverlay().
      * @param overlay Input JavaScriptObject

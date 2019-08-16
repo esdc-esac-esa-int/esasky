@@ -17,6 +17,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
@@ -25,18 +26,24 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
+import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
 public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyPanelPresenter.View {
 
+	private static SelectSkyPanel instance;
+
 	private PopupHeader header;
-	private DragFlexTable skyTable;
+	public DragFlexTable skyTable;
 	private final Resources resources;
 	private CssResource style;
+	public ESASkySlider slider;
 
 	private boolean isShowing;
 
@@ -48,7 +55,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 	private FlowPanel selectSkyPanel = new FlowPanel();
 
-	private static List<SkyRow> skies = new LinkedList<SkyRow>();
+	public static List<SkyRow> skies = new LinkedList<SkyRow>();
 
 	public static interface Resources extends ClientBundle {
 
@@ -63,7 +70,12 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		CssResource style();
 	}
 
-	public SelectSkyPanel(String defaultHiPS) {
+	public static SelectSkyPanel init(String defaultHiPS) {
+		instance = new SelectSkyPanel(defaultHiPS);
+		return instance;
+	}
+
+	private SelectSkyPanel(String defaultHiPS) {
 		super(false, false);
 		this.hipsFromUrl = defaultHiPS;
 
@@ -80,7 +92,14 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			}
 		});
 	}
-	
+
+	public static SelectSkyPanel getInstance() {
+		if (instance == null) {
+			throw new AssertionError("You have to call init first");
+		}
+		return instance;
+	}
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
@@ -96,13 +115,50 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		header = new PopupHeader(this, TextMgr.getInstance().getText("sky_loadingSkies"),
 				TextMgr.getInstance().getText("sky_selectSky_help"));
 		selectSkyPanel.add(header);
-		
+
 		skyTable = new DragFlexTable();
 		selectSkyPanel.add(skyTable);
 		selectSkyPanel.add(createAddSkyBtn());
 		selectSkyPanel.add(createPlayer());
+		slider = createSlider();
+		selectSkyPanel.add(slider);
+
 
 		this.add(selectSkyPanel);
+	}
+
+	private ESASkySlider createSlider() {
+		final ESASkySlider slider = new ESASkySlider(0,0, 250 , 18);
+		slider.addStyleName("hipsSlider");
+		slider.registerValueChangeObserver(new EsaSkySliderObserver() {
+
+			@Override
+			public void onValueChange(double value) {
+				SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
+				int nRows = skyPanel.skyTable.getRowCount();
+				int rowNumber = Math.min((int) Math.floor(value),nRows-1);
+				double opacity = value-rowNumber;		
+
+				SkyRow skyRow = (SkyRow) skyPanel.skyTable.getWidget(rowNumber, 0);
+				if(!skyRow.isSelected()) {
+					skyRow.setSelected();
+					skyRow.notifySkyChange();
+					AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
+				}
+				if(rowNumber >= 0 && rowNumber + 1 < nRows && Math.abs(opacity)>0.0) {
+					SkyRow overlaySky = (SkyRow) skyPanel.skyTable.getWidget(rowNumber+1, 0);
+					if(overlaySky.isOverlay()) {
+						AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
+						AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
+					}else {
+						AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
+								opacity, overlaySky.getSelectedPalette());
+						overlaySky.setOverlayStatus(true);
+					}
+				}
+			}
+		});
+		return slider;
 	}
 
 	private DisablablePushButton createAddSkyBtn() {
@@ -115,7 +171,8 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 			@Override
 			public void onClick(ClickEvent event) {
-			    final SkyRow newSky = createSky();
+				final SkyRow newSky = createSky();
+
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddSkyClick, newSky.getFullId());
 			}
 		});
@@ -125,12 +182,12 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	public void fillAllSkyPanelEntries(final SkiesMenu skiesMenu) {
 		this.skiesMenu = skiesMenu;
 		header.setText(TextMgr.getInstance().getText("sky_selectSky"));
-	       
+
 		createSky();
 
 		addSkyButton.enableButton();
 	}
-	
+
 	private SkyRow createSky(){
 		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl);
 		newSky.registerObserver(this);
@@ -143,13 +200,18 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private void ensureCorrectSkyStyle() {
+		slider.setMaxValue(skies.size()-1);
 		if(skies.size() <= 1){
 			for(SkyRow sky: skies){
 				sky.addOnlyOneSkyActiveStyle();
+				slider.addStyleName("collapse");
 			}
-		} else {
+		} else { 
 			for(SkyRow sky: skies){
 				sky.removeOnlyOneSkyActiveStyle();
+				slider.removeStyleName("collapse");
+				//Needs to set slider position again since since is 0 before removing collapse
+				slider.setValue(slider.getCurrentValue());
 			}
 		}
 	}
@@ -164,6 +226,9 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		skyTable.removeSky(skyToRemove);
 		player.removeEntry(skyToRemove);
 		skies.remove(skyToRemove);
+		if(skyToRemove.isOverlay()) {
+			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+		}
 		ensureCorrectSkyStyle();
 	}
 
@@ -171,6 +236,19 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	public void onUpdateSkyEvent(SkyRow sky) {
 		CommonEventBus.getEventBus().fireEvent(
 				new HipsChangeEvent(sky.getSelectedHips(), sky.getSelectedPalette()));
+
+		if(skies.size() > 1){
+			for (int i = 0; i < skyTable.getRowCount(); i++) {
+				Widget widget = skyTable.getWidget(i, 0);
+				if (widget.equals(sky)) {
+					slider.setCurrentValue(i);
+					AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+				}
+				if(widget instanceof SkyRow) {
+					((SkyRow) widget).setOverlayStatus(false);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -198,7 +276,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		final SkyRow sky = getSelectedSky();
 		sky.setHiPSFromAPI(hips, true, newHips);
 	}
-	
+
 	public static void setSelectedHipsName (String hipsName) {
 		final SkyRow sky = getSelectedSky();
 		if (sky != null) {

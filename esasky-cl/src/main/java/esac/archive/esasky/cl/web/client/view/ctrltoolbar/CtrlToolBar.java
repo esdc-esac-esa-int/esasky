@@ -146,7 +146,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 		ctrlToolBarPanel = new FlowPanel();
 
-		selectSkyPanel = new SelectSkyPanel(this.HiPSFromURL);
+		selectSkyPanel = SelectSkyPanel.init(this.HiPSFromURL);
 		selectSkyPanel.hide();
 		ctrlToolBarPanel.add(createSkiesMenuBtn());
 		ctrlToolBarPanel.add(selectSkyPanel);
