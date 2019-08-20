@@ -46,6 +46,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	public ESASkySlider slider;
 
 	private boolean isShowing;
+	private boolean changeFromSlider = false;
 
 	private ESASkyPlayerPanel player;
 	private DisablablePushButton addSkyButton;
@@ -137,23 +138,34 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 				SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
 				int nRows = skyPanel.skyTable.getRowCount();
 				int rowNumber = Math.min((int) Math.floor(value),nRows-1);
-				double opacity = value-rowNumber;		
+				double opacity = value-rowNumber;
+				
+				//Enforce only 1 HiPS close to the change
+				if(opacity<0.05) {
+					opacity = 0.0;
+				}
 
 				SkyRow skyRow = (SkyRow) skyPanel.skyTable.getWidget(rowNumber, 0);
 				if(!skyRow.isSelected()) {
+					skyPanel.changeFromSlider = true;
 					skyRow.setSelected();
-					skyRow.notifySkyChange();
 					AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
 				}
-				if(rowNumber >= 0 && rowNumber + 1 < nRows && Math.abs(opacity)>0.0) {
+				if(rowNumber >= 0 && rowNumber + 1 < nRows) {
 					SkyRow overlaySky = (SkyRow) skyPanel.skyTable.getWidget(rowNumber+1, 0);
-					if(overlaySky.isOverlay()) {
-						AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
-						AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
+					if(opacity>0.0) {
+						if(overlaySky.isOverlay()) {
+							AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
+							AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
+						}else {
+							AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
+									opacity, overlaySky.getSelectedPalette());
+							overlaySky.setOverlayStatus(true);
+						}
 					}else {
-						AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
-								opacity, overlaySky.getSelectedPalette());
-						overlaySky.setOverlayStatus(true);
+						AladinLiteWrapper.getInstance().changeHiPSOpacity(1);
+						overlaySky.setOverlayStatus(false);
+						AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 					}
 				}
 			}
@@ -210,7 +222,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			for(SkyRow sky: skies){
 				sky.removeOnlyOneSkyActiveStyle();
 				slider.removeStyleName("collapse");
-				//Needs to set slider position again since since is 0 before removing collapse
+				//Needs to set slider position again since since position is 0 before removing collapse regardless of object value
 				slider.setValue(slider.getCurrentValue());
 			}
 		}
@@ -241,7 +253,11 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			for (int i = 0; i < skyTable.getRowCount(); i++) {
 				Widget widget = skyTable.getWidget(i, 0);
 				if (widget.equals(sky)) {
-					slider.setCurrentValue(i);
+					if(changeFromSlider) {
+						changeFromSlider = false;
+					}else {
+						slider.setValue(i);
+					}
 					AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 				}
 				if(widget instanceof SkyRow) {

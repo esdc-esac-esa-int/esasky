@@ -295,24 +295,12 @@ public class SkyRow extends Composite implements Selectable{
 		isSelectedBtn = new EsaSkyRadioButton("sky");
 		isSelectedBtn.addStyleName("skyRadioBtn");
 		
-		final SkyRow skyRow = this;
-
 		isSelectedBtn.registerValueChangeObserver(new EsaSkyRadioButtonObserver() {
 
 			@Override
 			public void onValueChange(boolean isSelected) {
 				if(isSelected){
 					notifySkyChange();
-					SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
-					if(SelectSkyPanel.skies.size() > 1){
-						for (int i = 0; i < skyPanel.skyTable.getRowCount(); i++) {
-			                Widget widget = skyPanel.skyTable.getWidget(i, 0);
-			                if (widget.equals(skyRow)) {
-			                	skyPanel.slider.setValue(i);
-			                	continue;
-				            }
-						}
-					}
 				}
 			}
 		});
