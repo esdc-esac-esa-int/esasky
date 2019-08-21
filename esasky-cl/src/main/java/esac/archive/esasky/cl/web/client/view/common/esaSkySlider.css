@@ -1,14 +1,11 @@
 @CHARSET "UTF-8";
 
 .sliderScrollPanel {
-	border: 1px solid;
-	border-radius: 5px;
-	display: block;
 	position: relative;
 	scrollbar-color: rgba(255, 255, 255, 1.0) transparent;
 	scrollbar-width: auto;
 	background-color: transparent;
-	
+	box-sizing: border-box;
 }
 
 .sliderSimplePanel {

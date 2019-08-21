@@ -15,9 +15,9 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.Window.Navigator;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
@@ -40,7 +40,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private static SelectSkyPanel instance;
 
 	private PopupHeader header;
-	public DragFlexTable skyTable;
+	private DragFlexTable skyTable;
 	private final Resources resources;
 	private CssResource style;
 	public ESASkySlider slider;
@@ -55,8 +55,9 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private SkiesMenu skiesMenu;
 
 	private FlowPanel selectSkyPanel = new FlowPanel();
+	private FlowPanel sliderContainer = new FlowPanel();
 
-	public static List<SkyRow> skies = new LinkedList<SkyRow>();
+	private static List<SkyRow> skies = new LinkedList<SkyRow>();
 
 	public static interface Resources extends ClientBundle {
 
@@ -119,43 +120,56 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 		skyTable = new DragFlexTable();
 		selectSkyPanel.add(skyTable);
-		selectSkyPanel.add(createAddSkyBtn());
-		selectSkyPanel.add(createPlayer());
+		
+		FlowPanel hipsControllerContainer = new FlowPanel();
+		hipsControllerContainer.addStyleName("hipsControllerContainer");
+		selectSkyPanel.add(hipsControllerContainer);
+		
+		hipsControllerContainer.add(createAddSkyBtn());
 		slider = createSlider();
-		selectSkyPanel.add(slider);
-
+		sliderContainer.addStyleName("sliderContainer");
+		FlowPanel toMakeSliderSymetric = new FlowPanel();
+		toMakeSliderSymetric.addStyleName("toMakeSliderSymetric");
+		if (Navigator.getUserAgent().contains("Firefox")) {
+			toMakeSliderSymetric.addStyleName("toMakeSliderSymetricFirefox");
+		}
+		
+		sliderContainer.add(slider);
+		sliderContainer.add(toMakeSliderSymetric);
+		
+		hipsControllerContainer.add(sliderContainer);
+		hipsControllerContainer.add(createPlayer());
 
 		this.add(selectSkyPanel);
 	}
 
 	private ESASkySlider createSlider() {
-		final ESASkySlider slider = new ESASkySlider(0,0, 250 , 18);
+		final ESASkySlider slider = new ESASkySlider(0, 0, 250);
 		slider.addStyleName("hipsSlider");
 		slider.registerValueChangeObserver(new EsaSkySliderObserver() {
 
 			@Override
 			public void onValueChange(double value) {
-				SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
-				int nRows = skyPanel.skyTable.getRowCount();
-				int rowNumber = Math.min((int) Math.floor(value),nRows-1);
-				double opacity = value-rowNumber;
+				int nRows = SelectSkyPanel.this.skyTable.getRowCount();
+				int rowNumber = Math.min((int) Math.floor(value + 0.01),nRows - 1); // 0.01 extra because of float number precision errors. 
+				double opacity = value - rowNumber;
 				
 				//Enforce only 1 HiPS close to the change
-				if(opacity<0.05) {
+				if(opacity < 0.05) {
 					opacity = 0.0;
 				}
 
-				SkyRow skyRow = (SkyRow) skyPanel.skyTable.getWidget(rowNumber, 0);
+				SkyRow skyRow = (SkyRow) SelectSkyPanel.this.skyTable.getWidget(rowNumber, 0);
 				if(!skyRow.isSelected()) {
-					skyPanel.changeFromSlider = true;
+					SelectSkyPanel.this.changeFromSlider = true;
 					skyRow.setSelected();
 					AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
 				}
 				if(rowNumber >= 0 && rowNumber + 1 < nRows) {
-					SkyRow overlaySky = (SkyRow) skyPanel.skyTable.getWidget(rowNumber+1, 0);
-					if(opacity>0.0) {
+					SkyRow overlaySky = (SkyRow) SelectSkyPanel.this.skyTable.getWidget(rowNumber + 1, 0);
+					if(opacity > 0.0) {
 						if(overlaySky.isOverlay()) {
-							AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
+							AladinLiteWrapper.getInstance().changeHiPSOpacity(1 - opacity);
 							AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
 						}else {
 							AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
@@ -206,25 +220,25 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		skyTable.insertItem(newSky);
 		player.addEntryToPlayer(newSky);
 		skies.add(newSky);
-		newSky.setSelected();
 		ensureCorrectSkyStyle();
+		newSky.setSelected();
 		return newSky;
 	}
 
 	private void ensureCorrectSkyStyle() {
-		slider.setMaxValue(skies.size()-1);
+		slider.setMaxValue(skies.size() - 1);
 		if(skies.size() <= 1){
 			for(SkyRow sky: skies){
 				sky.addOnlyOneSkyActiveStyle();
 				slider.addStyleName("collapse");
 			}
+			sliderContainer.setVisible(false);
 		} else { 
 			for(SkyRow sky: skies){
 				sky.removeOnlyOneSkyActiveStyle();
 				slider.removeStyleName("collapse");
-				//Needs to set slider position again since since position is 0 before removing collapse regardless of object value
-				slider.setValue(slider.getCurrentValue());
 			}
+			sliderContainer.setVisible(true);
 		}
 	}
 
@@ -235,6 +249,8 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private void removeSky(SkyRow skyToRemove){
+		int indexToRemove = skies.indexOf(skyToRemove);
+		int indexOfSelected = skies.indexOf(getSelectedSky());
 		skyTable.removeSky(skyToRemove);
 		player.removeEntry(skyToRemove);
 		skies.remove(skyToRemove);
@@ -242,6 +258,11 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 		}
 		ensureCorrectSkyStyle();
+		if(indexOfSelected > indexToRemove) {
+			slider.setValue(indexOfSelected - 1);
+		} else {
+			slider.setValue(indexOfSelected);
+		}
 	}
 
 	@Override
@@ -251,18 +272,16 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 		if(skies.size() > 1){
 			for (int i = 0; i < skyTable.getRowCount(); i++) {
-				Widget widget = skyTable.getWidget(i, 0);
-				if (widget.equals(sky)) {
+				SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
+				if (skyRow.equals(sky)) {
 					if(changeFromSlider) {
 						changeFromSlider = false;
-					}else {
+					} else {
 						slider.setValue(i);
 					}
 					AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 				}
-				if(widget instanceof SkyRow) {
-					((SkyRow) widget).setOverlayStatus(false);
-				}
+				skyRow.setOverlayStatus(false);
 			}
 		}
 	}

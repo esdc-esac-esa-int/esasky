@@ -34,7 +34,7 @@ public class ESASkySlider extends ScrollPanel {
         CssResource style();
     }
 
-    public ESASkySlider(double min, double max, int width, int height) {
+    public ESASkySlider(double min, double max, int width) {
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -42,26 +42,25 @@ public class ESASkySlider extends ScrollPanel {
 
     	this.minValue = min;
     	this.maxValue = max;
-    	initView(width, height);
+    	initView(width);
     }
 
-    private void initView(int width, int height) {
+    private void initView(int width) {
     	SimplePanel sp = new SimplePanel();
 	    sp.setWidth(10*width + "px");
 	    sp.setHeight("1px");
 	    sp.addStyleName(CSS_SLIDER_ID);
 	 
 	    this.setWidth(width + "px");
-	    this.setHeight(height + "px");
 	    this.setWidget(sp);
 	    
 	    this.addScrollHandler(new ScrollHandler() {
 	    	
 			@Override
 			public void onScroll(ScrollEvent event) {
-				int maxVal = event.getRelativeElement().getScrollWidth()-event.getRelativeElement().getClientWidth();
-				double scrollPercentage =((double) event.getRelativeElement().getScrollLeft())/maxVal;
-				if(scrollPercentage<0.01 || scrollPercentage >0.99) {
+				double maxVal = event.getRelativeElement().getScrollWidth() - event.getRelativeElement().getClientWidth();
+				double scrollPercentage = ((double) event.getRelativeElement().getScrollLeft()) / maxVal;
+				if(scrollPercentage < 0.01 || scrollPercentage > 0.99) {
 					scrollPercentage = Math.round(scrollPercentage);
 				}
 				changeValueFomPercentage(scrollPercentage);
@@ -91,8 +90,8 @@ public class ESASkySlider extends ScrollPanel {
     	currentValue = value;
     	double minPos = this.getMinimumHorizontalScrollPosition();
     	double maxPos = this.getMaximumHorizontalScrollPosition();
-    	double newPos = (maxPos-minPos)*value/(maxValue-minValue);
-    	this.setHorizontalScrollPosition((int)newPos);
+    	double newPos = (maxPos - minPos) * value / (maxValue - minValue);
+    	this.setHorizontalScrollPosition((int)Math.round(newPos));
     }
 
 	public double getMinValue() {
