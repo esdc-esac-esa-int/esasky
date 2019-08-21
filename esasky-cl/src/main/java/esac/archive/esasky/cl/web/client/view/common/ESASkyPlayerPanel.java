@@ -20,6 +20,7 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 
 public class ESASkyPlayerPanel extends Composite {
 
@@ -47,7 +48,16 @@ public class ESASkyPlayerPanel extends Composite {
 
         @Override
         public void run() {
-            goToNextSurvey();
+        	ESASkySlider slider = SelectSkyPanel.getInstance().slider;
+        	if(slider.getCurrentValue()/slider.getMaxValue()<0.01) {
+        		//To avoid getting trapped in the start of the slider
+        		slider.setValue(slider.getMaxValue()*0.011);
+        	}
+        	else if(slider.getMaxValue()>slider.getCurrentValue()+0.02) {
+        		slider.setValue(slider.getCurrentValue()+0.02);
+        	}else {
+        		slider.setValue(0.0);
+        	}
         }
     }
 
@@ -233,7 +243,7 @@ public class ESASkyPlayerPanel extends Composite {
 	}
 
     private void startTimer(){
-    	    timer.scheduleRepeating(5000);
+    	    timer.scheduleRepeating(50);
     }
     
     private void stopTimer(){
