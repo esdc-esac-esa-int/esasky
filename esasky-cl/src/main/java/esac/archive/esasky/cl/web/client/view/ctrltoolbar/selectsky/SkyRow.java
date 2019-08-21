@@ -11,7 +11,6 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
@@ -177,6 +176,7 @@ public class SkyRow extends Composite implements Selectable{
 				final ColorPalette colorPalette = hips.getColorPalette();
 				changePaletteBtn.setDefaultColorPallette(colorPalette);
 				notifySkyChange();
+				sendConvenienceEvent();
 			}
 		});
 
@@ -246,6 +246,7 @@ public class SkyRow extends Composite implements Selectable{
 					hipsDropDown.selectObject(menuItem.getItem());
 					if (notifiyObservers) {
 						notifySkyChange();
+						sendConvenienceEvent();
 					}
 					return true;
 				}
@@ -301,6 +302,7 @@ public class SkyRow extends Composite implements Selectable{
 			public void onValueChange(boolean isSelected) {
 				if(isSelected){
 					notifySkyChange();
+					sendConvenienceEvent();
 				}
 			}
 		});
@@ -375,7 +377,7 @@ public class SkyRow extends Composite implements Selectable{
 			
 			//Notify sky change to Google Analytics
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getFullId());
-		}else if(isOverlay()) {
+		} else if(isOverlay()) {
 			double value = SelectSkyPanel.getInstance().slider.getCurrentValue();
 			double opacity = value - Math.floor(value);
 			AladinLiteWrapper.getInstance().createOverlayMap(getSelectedHips(), opacity, getSelectedPalette());
@@ -386,6 +388,12 @@ public class SkyRow extends Composite implements Selectable{
 		for(SkyObserver observer: observers){
 			observer.onCloseEvent(this);
 		}
+	}
+	
+	private void sendConvenienceEvent() {
+		if(!isSelected()) return;
+		//Convenience event for easy statistics gathering
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Convenience, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getSelectedHips().getMission());
 	}
 
 	@Override
