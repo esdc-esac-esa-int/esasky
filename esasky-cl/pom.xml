@@ -186,7 +186,6 @@
 				<configuration>
 					<filters>
 						<filter>${basedir}/src/main/filters/${environment}.properties</filter>
-						<filter>${basedir}/src/main/filters/build.number</filter>
 					</filters>
 					<nonFilteredFileExtensions>
 						<nonFilteredFileExtension>ico</nonFilteredFileExtension>
