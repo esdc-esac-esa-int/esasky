@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Detectors;
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Instrument;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEvent;

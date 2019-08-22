@@ -2,8 +2,9 @@ package esac.archive.esasky.cl.web.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Detectors;
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Instrument;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
+
 
 public class DetectorChangeEvent extends GwtEvent<DetectorChangeEventHandler> {
 

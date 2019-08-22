@@ -14,9 +14,9 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Detectors;
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Instrument;
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.PlanningMission;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.PlanningMission;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;

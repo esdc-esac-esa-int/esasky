@@ -22,12 +22,12 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
-import esac.archive.absi.modules.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
-import esac.archive.absi.modules.wcstransform.module.utility.Constants.Detectors;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
+import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
