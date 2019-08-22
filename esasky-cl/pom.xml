@@ -75,9 +75,9 @@
 			<version>${absi-vo-tap.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>esac.archive.absi.modules</groupId>
-			<artifactId>gwt-wcs-stcs-generator</artifactId>
-			<version>2.0beta4</version>
+			<groupId>esac.archive.esasky.esasky-app</groupId>
+			<artifactId>esasky-cl-mission-planning</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>esac.archive.esasky.cl</groupId>
