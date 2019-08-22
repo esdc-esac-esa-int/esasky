@@ -60,7 +60,7 @@ public class ESASkySlider extends ScrollPanel {
 			public void onScroll(ScrollEvent event) {
 				double maxVal = event.getRelativeElement().getScrollWidth() - event.getRelativeElement().getClientWidth();
 				double scrollPercentage = ((double) event.getRelativeElement().getScrollLeft()) / maxVal;
-				if(scrollPercentage < 0.01 || scrollPercentage > 0.99) {
+				if(scrollPercentage < 0.001 || scrollPercentage > 0.999) {
 					scrollPercentage = Math.round(scrollPercentage);
 				}
 				changeValueFomPercentage(scrollPercentage);

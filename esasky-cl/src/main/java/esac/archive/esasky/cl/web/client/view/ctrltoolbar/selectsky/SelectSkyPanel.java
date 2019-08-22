@@ -31,6 +31,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkyPlayerObserver;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
@@ -150,38 +151,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 			@Override
 			public void onValueChange(double value) {
-				int nRows = SelectSkyPanel.this.skyTable.getRowCount();
-				int rowNumber = Math.min((int) Math.floor(value + 0.01),nRows - 1); // 0.01 extra because of float number precision errors. 
-				double opacity = value - rowNumber;
-				
-				//Enforce only 1 HiPS close to the change
-				if(opacity < 0.05) {
-					opacity = 0.0;
-				}
-
-				SkyRow skyRow = (SkyRow) SelectSkyPanel.this.skyTable.getWidget(rowNumber, 0);
-				if(!skyRow.isSelected()) {
-					SelectSkyPanel.this.changeFromSlider = true;
-					skyRow.setSelected();
-					AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
-				}
-				if(rowNumber >= 0 && rowNumber + 1 < nRows) {
-					SkyRow overlaySky = (SkyRow) SelectSkyPanel.this.skyTable.getWidget(rowNumber + 1, 0);
-					if(opacity > 0.0) {
-						if(overlaySky.isOverlay()) {
-							AladinLiteWrapper.getInstance().changeHiPSOpacity(1 - opacity);
-							AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
-						}else {
-							AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
-									opacity, overlaySky.getSelectedPalette());
-							overlaySky.setOverlayStatus(true);
-						}
-					}else {
-						AladinLiteWrapper.getInstance().changeHiPSOpacity(1);
-						overlaySky.setOverlayStatus(false);
-						AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
-					}
-				}
+				SelectSkyPanel.this.onValueChange(value);
 			}
 		});
 		return slider;
@@ -203,6 +173,41 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			}
 		});
 		return addSkyButton;
+	}
+	
+	public void onValueChange(double value) {
+		int nRows = skyTable.getRowCount();
+		int rowNumber = Math.min((int) Math.floor(value + 0.01),nRows - 1); // 0.01 extra because of float number precision errors. 
+		double opacity = value - rowNumber;
+		
+		//Enforce only 1 HiPS close to the change
+		if(opacity < 0.05) {
+			opacity = 0.0;
+		}
+
+		SkyRow skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
+		if(!skyRow.isSelected()) {
+			changeFromSlider = true;
+			skyRow.setSelected();
+			AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
+		}
+		if(rowNumber >= 0 && rowNumber + 1 < nRows) {
+			SkyRow overlaySky = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
+			if(opacity > 0.0) {
+				if(overlaySky.isOverlay()) {
+					AladinLiteWrapper.getInstance().changeHiPSOpacity(1 - opacity);
+					AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
+				}else {
+					AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
+							opacity, overlaySky.getSelectedPalette());
+					overlaySky.setOverlayStatus(true);
+				}
+			}else {
+				AladinLiteWrapper.getInstance().changeHiPSOpacity(1);
+				overlaySky.setOverlayStatus(false);
+				AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+			}
+		}
 	}
 
 	public void fillAllSkyPanelEntries(final SkiesMenu skiesMenu) {
@@ -243,8 +248,15 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private ESASkyPlayerPanel createPlayer() {
-		player = new ESASkyPlayerPanel();
+		player = new ESASkyPlayerPanel(50, 0.01);
 		player.addStyleName("skyPlayer");
+		player.registerValueChangeObserver(new EsaSkyPlayerObserver() {
+			
+			@Override
+			public void onValueChange(double value) {
+				SelectSkyPanel.this.slider.setValue(value);
+			}
+		});
 		return player;
 	}
 

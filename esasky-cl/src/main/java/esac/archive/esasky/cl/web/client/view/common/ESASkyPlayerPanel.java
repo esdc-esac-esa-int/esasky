@@ -20,7 +20,6 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 
 public class ESASkyPlayerPanel extends Composite {
 
@@ -33,10 +32,12 @@ public class ESASkyPlayerPanel extends Composite {
     private EsaSkyButton next;
     private FlowPanel player = new FlowPanel();
     protected int blinkCounter;
+    private int waitTime = 5000; //milliseconds; 5000 per default;
+    private double value = 0.0;
+    private double increaser = 1.0;
     protected List<Selectable> entries;
     private String playerId = UUID.randomUUID().toString();
     private SurveyBlinkTimer timer = new SurveyBlinkTimer();
-    
     /**
      * Timer inner class to execute the blinking.
      *
@@ -48,16 +49,8 @@ public class ESASkyPlayerPanel extends Composite {
 
         @Override
         public void run() {
-        	ESASkySlider slider = SelectSkyPanel.getInstance().slider;
-        	if(slider.getCurrentValue()/slider.getMaxValue()<0.01) {
-        		//To avoid getting trapped in the start of the slider
-        		slider.setValue(slider.getMaxValue()*0.011);
-        	}
-        	else if(slider.getMaxValue()>slider.getCurrentValue()+0.02) {
-        		slider.setValue(slider.getCurrentValue()+0.02);
-        	}else {
-        		slider.setValue(0.0);
-        	}
+        	increaseValue();
+        	select();
         }
     }
 
@@ -91,6 +84,17 @@ public class ESASkyPlayerPanel extends Composite {
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
+
+        initView();
+    }
+    
+    public ESASkyPlayerPanel(int waitTime, double increaseValue) {
+        this.resources = GWT.create(Resources.class);
+        this.style = this.resources.style();
+        this.style.ensureInjected();
+        
+        this.waitTime = waitTime;
+        this.increaser = increaseValue;
 
         initView();
     }
@@ -208,6 +212,20 @@ public class ESASkyPlayerPanel extends Composite {
         decreaseCounter();
         select();
     }
+    
+    private void increaseValue() {
+		this.value += this.increaser;
+		if (this.value > this.entries.size() - 1) {
+            this.value = 0.0;
+        }
+		notifyObservers();
+		
+		this.blinkCounter = (int) Math.floor(this.value);
+		
+		if(!entries.get(blinkCounter).isValid()){
+			increaseCounter();
+		}
+    }
 
 	private void decreaseCounter() {
 		this.blinkCounter = getIndexOfSelected() - 1;
@@ -215,6 +233,9 @@ public class ESASkyPlayerPanel extends Composite {
         if (this.blinkCounter < 0) {
             this.blinkCounter = this.entries.size() - 1;
         }
+        
+        this.value = this.blinkCounter;
+		notifyObservers();
         
 		if(!entries.get(blinkCounter).isValid()){
 			decreaseCounter();
@@ -228,6 +249,9 @@ public class ESASkyPlayerPanel extends Composite {
 		    this.blinkCounter = 0;
 		}
 		
+		this.value = this.blinkCounter;
+		notifyObservers();
+
 		if(!entries.get(blinkCounter).isValid()){
 			increaseCounter();
 		}
@@ -243,11 +267,11 @@ public class ESASkyPlayerPanel extends Composite {
 	}
 
     private void startTimer(){
-    	    timer.scheduleRepeating(50);
+	    timer.scheduleRepeating(this.waitTime);
     }
     
     private void stopTimer(){
-    	    timer.cancel();
+	    timer.cancel();
     }
     
 	private void select() {
@@ -305,4 +329,31 @@ public class ESASkyPlayerPanel extends Composite {
     	    return timer.isRunning();
     }
 
+	public int getWaitTime() {
+		return waitTime;
+	}
+
+	public void setWaitTime(int waitTime) {
+		this.waitTime = waitTime;
+	}
+
+	public double getIncreaser() {
+		return increaser;
+	}
+
+	public void setIncreaser(double increaser) {
+		this.increaser = increaser;
+	}
+    
+    private LinkedList<EsaSkyPlayerObserver> observers = new LinkedList<EsaSkyPlayerObserver>();
+    
+    public void registerValueChangeObserver(EsaSkyPlayerObserver observer) {
+ 	   observers.add(observer);
+    }
+    
+    private void notifyObservers() {
+ 	   for(EsaSkyPlayerObserver observer : observers) {
+ 		   observer.onValueChange(this.value);
+ 	   }
+    }
 }
