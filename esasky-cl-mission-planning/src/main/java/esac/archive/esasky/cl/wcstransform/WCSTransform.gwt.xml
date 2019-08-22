@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='wcstransform'>
+
+    <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
+
+    <extend-property name="log_level" values="DEBUG" />
+
+    <set-configuration-property name="log_pattern" value="%d [%-5p] %m%n" />
+
+    <source path='module' />
+
+</module>
