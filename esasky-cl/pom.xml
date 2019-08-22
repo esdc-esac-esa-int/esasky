@@ -1,58 +1,282 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>esac.archive.esasky.cl</groupId>
-	<artifactId>web</artifactId>
-	<packaging>war</packaging>
-	<version>3.1.4</version>
 
 	<parent>
-		<groupId>esac.archive.esasky</groupId>
-		<artifactId>esasky-parent-pom</artifactId>
+		<groupId>esac.archive.esasky.esasky-app</groupId>
+		<artifactId>esasky-app-parent-pom</artifactId>
 		<version>3.1.4</version>
 	</parent>
 
+	<artifactId>esasky-cl</artifactId>
+	<name>${project.artifactId}</name>
+	<description>ESASky GWT Client</description>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-addthis</artifactId>
+			<version>${com.google.gwt.addthis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.gwt-crypto</groupId>
+			<artifactId>gwt-crypto</artifactId>
+			<version>${gwt-crypto.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.allen-sauer.gwt.log</groupId>
+			<artifactId>gwt-log</artifactId>
+			<version>${com.allen-sauer.gwt.log.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.gwtmockito</groupId>
+			<artifactId>gwtmockito</artifactId>
+			<version>${gwtmockito.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-gwt</artifactId>
+			<version>17.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.moxieapps.gwt</groupId>
+			<artifactId>highcharts</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.moxieapps.gwt</groupId>
+			<artifactId>uploader</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>esac.archive.absi.vo.tap</groupId>
+			<artifactId>absi-vo-tap-gwt</artifactId>
+			<version>${absi-vo-tap.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>esac.archive.absi.modules</groupId>
+			<artifactId>gwt-wcs-stcs-generator</artifactId>
+			<version>2.0beta4</version>
+		</dependency>
+		<dependency>
+			<groupId>esac.archive.esasky.cl</groupId>
+			<artifactId>esasky-cl-gpresenter</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>esac.archive.esasky.esasky-app</groupId>
+			<artifactId>esasky-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<classifier>runtime</classifier>
+			<scope>test</scope>
+			<version>${jacoco.version}</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<testResources>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+			<!-- <testResource > <targetPath>${basedir}/target/test-classes/esavo/sl/test/data/transform/</targetPath> 
+				<directory>${basedir}/src/test/java/esavo/sl/test/data/transform/</directory> 
+				<includes> <include>*</include> </includes> <filtering>false</filtering> 
+				</testResource> -->
+		</testResources>
+		<plugins>
+			<!-- Plugin for changing build number -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<artifactId>buildnumber-maven-plugin</artifactId> -->
+<!-- 				<version>1.4</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<phase>validate</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>create</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 				<configuration> -->
+<!-- 					<doCheck>false</doCheck> -->
+<!-- 					<doUpdate>false</doUpdate> -->
+<!-- 					<format>{0,number}</format> -->
+<!-- 					<items> -->
+<!-- 						<item>buildNumber</item> -->
+<!-- 					</items> -->
+<!-- 					<buildNumberPropertyName>buildNumber</buildNumberPropertyName> -->
+<!-- 					<buildNumberPropertiesFileLocation>src/main/filters/build.number</buildNumberPropertiesFileLocation> -->
+<!-- 					<revisionOnScmFailure /> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+									<!-- Execution for buildNumber -->
+<!-- 					<execution> -->
+<!-- 						<id>copy-resource-WebTemplate</id> -->
+<!-- 						<phase>generate-sources</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>copy-resources</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<outputDirectory>${basedir}/src/main/java/esac/archive/esasky/cl/web</outputDirectory> -->
+<!-- 							<resources> -->
+<!-- 								<resource> -->
+<!-- 									<filtering>true</filtering> -->
+<!-- 									<directory>${basedir}/src/main/resources</directory> -->
+<!-- 									<includes> -->
+<!-- 										<include>EsaSkyWeb.gwt.xml</include> -->
+<!-- 									</includes> -->
+<!-- 								</resource> -->
+<!-- 							</resources> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/properties</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/non-packaged-resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- War -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<filters>
+						<filter>${basedir}/src/main/filters/${environment}.properties</filter>
+						<filter>${basedir}/src/main/filters/build.number</filter>
+					</filters>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>ico</nonFilteredFileExtension>
+						<nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+						<nonFilteredFileExtension>svg</nonFilteredFileExtension>
+						<nonFilteredFileExtension>eot</nonFilteredFileExtension>
+						<nonFilteredFileExtension>otf</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/webapp</directory>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<!-- GWT plugin -->
+			<!--plugin> <groupId>net.ltgt.gwt.maven</groupId> <artifactId>gwt-maven-plugin</artifactId> 
+				<extensions>true</extensions> <configuration> <moduleName>esac.archive.gacs.cl.web.GacsWeb</moduleName> 
+				</configuration> </plugin -->
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.version}</version>
+				<configuration>
+					<module>esac.archive.esasky.cl.web.EsaSkyWeb</module>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
+		<!-- Local -->
 		<profile>
 			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
 			<properties>
-				<env>local</env>
+				<environment>local</environment>
 			</properties>
 		</profile>
 
+		<!-- Dev -->
 		<profile>
 			<id>dev</id>
 			<properties>
-				<env>dev</env>
+				<environment>dev</environment>
 			</properties>
 		</profile>
 
+		<!-- Beta -->
+		<profile>
+			<id>beta</id>
+			<properties>
+				<environment>beta</environment>
+			</properties>
+		</profile>
+
+		<!-- Int -->
 		<profile>
 			<id>int</id>
 			<properties>
-				<env>int</env>
+				<environment>int</environment>
 			</properties>
 		</profile>
 
+		<!-- Oper -->
 		<profile>
-			<id>oper1</id>
+			<id>oper</id>
 			<properties>
-				<env>oper1</env>
+				<environment>oper</environment>
 			</properties>
 		</profile>
 
-		<profile>
-			<id>oper2</id>
-			<properties>
-				<env>oper2</env>
-			</properties>
-		</profile>
 		<profile>
 			<id>pyesasky</id>
 			<properties>
-				<env>pyesasky</env>
+				<environment>pyesasky</environment>
 			</properties>
 			<build>
 				<plugins>
@@ -82,6 +306,7 @@
 					<plugin>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>2.7</version>
+						<!-- <version>3.1.0</version> -->
 						<executions>
 							<execution>
 								<id>copy-resource-pyesasky</id>
@@ -134,6 +359,23 @@
 									</resources>
 								</configuration>
 							</execution>
+
+							<execution>
+								<id>copy-resources</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/properties</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/non-packaged-resources</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
 						</executions>
 					</plugin>
 
@@ -170,423 +412,8 @@
 
 		</profile>
 
+
 	</profiles>
 
-	<scm>
-		<connection>scm:svn:http://none</connection>
-		<url>scm:svn:https://none</url>
-	</scm>
 
-	<build>
-		<filters>
-			<filter>src/main/filters/build.properties.defaults</filter>
-			<filter>src/main/filters/build.properties.local</filter>
-			<filter>src/main/filters/build.number</filter>
-			<filter>src/main/filters/build.properties.personal</filter>
-		</filters>
-
-		<sourceDirectory>src/main/java</sourceDirectory>
-
-		<resources>
-			<resource>
-				<directory>src/main/resources/</directory>
-				<filtering>true</filtering>
-				<excludes>
-					<exclude>**/*.java</exclude>
-					<exclude>**/*.png</exclude>
-					<exclude>**/*.ico</exclude>
-					<exclude>**/*.gif</exclude>
-				</excludes>
-			</resource>
-
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.png</include>
-					<include>**/*.ico</include>
-					<include>**/*.gif</include>
-				</includes>
-			</resource>
-		</resources>
-
-		<plugins>
-			<!-- Forces a clean of target in the install lifecycle -->
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>auto-clean</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Updates build number -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doCheck>false</doCheck>
-					<doUpdate>false</doUpdate>
-					<format>{0,number}</format>
-					<items>
-						<item>buildNumber</item>
-					</items>
-					<buildNumberPropertyName>buildNumber</buildNumberPropertyName>
-					<buildNumberPropertiesFileLocation>src/main/filters/build.number</buildNumberPropertiesFileLocation>
-					<revisionOnScmFailure />
-				</configuration>
-			</plugin>
-
-
-			<!-- Reads all the build properties -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>read-project-properties</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-							<files>
-								<file>src/main/filters/build.properties.defaults</file>
-								<file>src/main/filters/build.properties.${env}</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Copies a filtered version of the WebTemplate -->
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
-				<executions>
-					<execution>
-						<id>copy-resource-WebTemplate</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${gwt.xml.derived.dir}</outputDirectory>
-							<resources>
-								<resource>
-									<filtering>true</filtering>
-									<directory>${gwt.xml.template.dir}</directory>
-									<includes>
-										<include>${gwt.xml.template.name}</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-properties</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/properties</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/non-packaged-resources</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.shared</groupId>
-						<artifactId>maven-filtering</artifactId>
-						<version>1.3</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<!-- Renames the copied files -->
-			<plugin>
-				<groupId>com.coderplus.maven.plugins</groupId>
-				<artifactId>copy-rename-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<id>rename-files</id>
-						<phase>process-sources</phase>
-						<goals>
-							<goal>rename</goal>
-						</goals>
-						<configuration>
-							<sourceFile>${gwt.xml.derived.dir}/${gwt.xml.template.name}</sourceFile>
-							<destinationFile>${gwt.xml.derived.dir}/${gwt.xml.derived.name}</destinationFile>
-						</configuration>
-					</execution>
-
-				</executions>
-			</plugin>
-
-			<!-- GWT compilation -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<failOnError>false</failOnError>
-					<modules>
-						<module>esac.archive.esasky.cl.web.EsaSkyWeb</module>
-						<module>esac.archive.esasky.cl.gwidgets.GWidgets</module>
-						<module>esac.archive.esasky.cl.gsamp.GSamp</module>
-						<module>esac.archive.esasky.cl.web.theme.dark.DarkResources</module>
-						<module>esac.archive.esasky.cl.web.theme.dark.DarkRTL</module>
-						<module>esac.archive.esasky.cl.web.theme.dark.Dark</module>
-					</modules>
-				</configuration>
-			</plugin>
-
-			<!-- Building the war -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<attachClasses>false</attachClasses>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<webResources>
-						<resource>
-							<filtering>true</filtering>
-							<directory>target/classes/web</directory>
-							<exclude>**/*.ico</exclude>
-						</resource>
-						<resource>
-							<directory>target/classes/web</directory>
-							<include>**/*.ico</include>
-						</resource>
-						<resource>
-							<directory>src/main/resources/</directory>
-							<includes>
-								<include>**/web.xml</include>
-							</includes>
-						</resource>
-					</webResources>
-					<webXml>src/main/resources/web.xml</webXml>
-					<packagingExcludes>**/*.jar</packagingExcludes>
-				</configuration>
-			</plugin>
-
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-clean-plugin
-										</artifactId>
-										<versionRange>
-											[3.1.0,)
-										</versionRange>
-										<goals>
-											<goal>clean</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
-	<repositories>
-		<repository>
-			<id>local-libs</id>
-			<name>repo</name>
-			<url>file://${project.basedir}/../esasky-pom/repo</url>
-		</repository>
-
-		<repository>
-			<id>esdc-public-repository</id>
-			<name>ESDC Maven Repository</name>
-			<url>https://scidockreg.esac.esa.int/repository/esdc-public/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-				<checksumPolicy>warning</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-				<checksumPolicy>warning</checksumPolicy>
-			</snapshots>
-		</repository>
-
-	</repositories>
-
-
-	<dependencies>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-commons</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-debug-all</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-tree</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>com.allen-sauer.gwt.log</groupId>
-			<artifactId>gwt-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.allen-sauer.gwt.log</groupId>
-			<artifactId>gwt-log</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>com.github.nmorel.gwtjackson</groupId>
-			<artifactId>gwt-jackson</artifactId>
-			<version>0.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.nmorel.gwtjackson</groupId>
-			<artifactId>gwt-jackson</artifactId>
-			<version>0.9.0</version>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-gwt</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-
-		<!-- ESDC NEXUS -->
-		<dependency>
-			<groupId>org.moxieapps.gwt</groupId>
-			<artifactId>highcharts</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.moxieapps.gwt</groupId>
-			<artifactId>highcharts</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.moxieapps.gwt</groupId>
-			<artifactId>uploader</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.moxieapps.gwt</groupId>
-			<artifactId>uploader</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>esac.archive.absi.modules.cl</groupId>
-			<artifactId>absi-cl-aladinlite-widget</artifactId>
-		</dependency>
-		<!-- LOCAL -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>esac.archive.esasky.ifcs</groupId> -->
-<!-- 			<artifactId>esasky-ifcs-model</artifactId> -->
-<!-- 		</dependency> -->
-		
-		
-		<dependency>
-			<groupId>esac.archive.esasky.ifcs</groupId>
-			<artifactId>esasky-ifcs-model</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>esac.archive.absi.modules</groupId>
-			<artifactId>gwt-wcs-stcs-generator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>esac.archive.esasky.cl</groupId>
-			<artifactId>esasky-cl-gpresenter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>esac.archive.esasky.cl</groupId>
-			<artifactId>esasky-cl-gsamp</artifactId>
-		</dependency>
-
-	</dependencies>
 </project>
