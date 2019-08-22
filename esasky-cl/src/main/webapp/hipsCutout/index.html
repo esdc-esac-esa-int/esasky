@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EDDIE Cut-out Image Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel='stylesheet' href='//aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css' />
+    <link rel="stylesheet" href="css/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src='//aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js' charset='utf-8'></script>
+    <script src="js/config.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/hipsSourcesManager.js"></script>
+    <script src="js/skyImageManager.js"></script>
+    <script src="js/googleAnalytics.js"></script>
+    <script type="text/javascript">
+
+        var hipsSourcesManager = null;
+        var skyImgManager = null;
+
+        $( document ).ready(function() {
+
+          //Prepare Hips repository
+          hipsSourcesManager = new HipsSourcesManager(function () {
+
+            //We have hips sources, we can initialize gui, set current tab
+            skyImgManager = new SkyImageManager("skyImage", hipsSourcesManager.hipsSources);
+
+          });
+
+        });
+
+    </script>
+  </head>
+  <body>
+
+    <div class="container adminContainer">
+      <h2>EDDIE Cut-out Image Service</h2>
+      <p>
+        This service is intended for the generation of high resolution astronomical images, given a field-of-view (FoV), a HiPS map and a specific projection. The output image format is configurable, as well as the zoom level (HealPix nOrder) and the size of the output images.
+        <br><br>
+        To extract your image, start by defining the desired area in the Aladin widget: You have to enter the name or coordinates of your object and adjust the zoom level. Then click on "Get Aladin FoV" to retrieve the right ascension (RA), declination (Dec), FoV size and aspect ratio of the image. Next, choose a sky map from the HiPS menu. The size of the output image can also be customised via the "Image Size" text box. Click on "Refresh image" and then on "Open image in new tab" to display the real cut-out generated image.
+        <br><br>
+        Additional support for selecting the cut-out area or "polygon" is available through the "Input Area" selector.
+        <br><br>
+        Enjoy it!
+        <br><br>
+        Access to the full service documentation <a href="help.html">here</a>.
+      </p>
+      <div containerId="skyImage" class="row">
+        <br><br>
+        <div class="row">
+          <div class="col-md-12 mb-12">
+            <h4>Generated image:</h4>
+          </div>
+          <div class="col-md-12 mb-12 skyPreviewContainer">
+          </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <div class="col-md-10 mb-10">
+            <h4>Generation options:</h4>
+            <div class="form-check col-md-4 mb-4">
+              <input class="form-check-input" type="checkbox" id="aladinCheck" checked="checked">
+              <label class="form-check-label" for="aladinCheck">
+                Show Aladin
+              </label>
+            </div>
+          </div>
+          <div class="buttonContainer col-md-2 mb-2">
+            <button class="btn btn-success btnRefresh">Refresh image</button>
+          </div>
+        </div>
+        <br><br>
+        <div class="row aladinContainer">
+          <div class="col-md-10 mb-10">
+            <div id='aladin-lite-div' style='width: 100%;height: 500px;'></div>
+          </div>
+          <div class="col-md-2 mb-2">
+            <button class="btn btn-info btnFovCorners">Get Aladin FOV</button>
+          </div>
+          <br><br>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12 mb-12">
+            <div class="col-md-12 mb-12">
+              <label for="format">Input Area:</label>
+              <label class="radio-inline"><input type="radio" value="TARGET" name="coordinates_radio" checked="checked">Target</label>
+              <label class="radio-inline"><input type="radio" value="POLYGON" name="coordinates_radio">Polygon</label>
+            </div>
+            <div class="coordinatesRow form-row">
+              <div class="form-group col-md-3 mb-3">
+                <label for="ra">RA</label>
+                <input type="ra" class="form-control">
+              </div>
+              <div class="form-group col-md-3 mb-3">
+                <label for="dec">DEC</label>
+                <input type="dec" class="form-control">
+              </div>
+              <div class="form-group col-md-3 mb-3">
+                <label for="fov">FOV</label>
+                <input type="fov" class="form-control">
+              </div>
+              <div class="form-group col-md-3 mb-3">
+                <label for="fov">ASPECT RATIO</label>
+                <input type="aspectRatio" class="form-control">
+              </div>
+            </div>
+            <div class="polygonRow form-group col-md-12 mb-12">
+              <label for="polygon">Polygon</label>
+              <textarea class="polygon" rows="2" ></textarea>
+            </div>
+            <div class="clear"></div><br>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-3">
+                <label for="fov">HIPS</label>
+                <select class="skySelector col-md-12 mb-12"></select>
+              </div>
+              <div class="form-group col-md-9 mb-9">
+                <label for="format">Projection: </label><br>
+                <label class="radio-inline"><input type="radio" value="DEFAULT" name="projection_radio" checked="checked">ALADIN ORTOGRAPHIC</label>
+                <label class="radio-inline"><input type="radio" value="MERCATOR" name="projection_radio">MERCATOR (Experimental)</label>
+                <label class="radio-inline"><input type="radio" value="ORTOGRAPHIC" name="projection_radio">ORTOGRAPHIC (Experimental)</label>
+              </div>
+            </div>
+            <div class="clear"></div><br>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-3">
+                <input class="form-check-input" type="checkbox" id="norderCheck">
+                <label class="form-check-label" for="norderCheck">
+                  nOrder
+                </label>
+                <input type="norder" class="form-control" value="3" style="display:none">
+              </div>
+              <div class="form-group col-md-3 mb-3">
+                <label for="size">IMAGE SIZE (px)</label>
+                <input type="size" class="form-control" value="1024">
+              </div>
+              <div class="form-group col-md-3 mb-3">
+                <label for="format">Hips format: </label><br>
+                <label class="radio-inline"><input type="radio" value="DEFAULT" name="hips_format_radio" checked="checked">DEFAULT</label>
+                <label class="radio-inline"><input type="radio" value="PNG" name="hips_format_radio">PNG</label>
+                <label class="radio-inline"><input type="radio" value="JPG" name="hips_format_radio">JPG</label>
+              </div>
+              <div class="form-group col-md-3 mb-3">
+                <label for="format">Output format: </label><br>
+                <label class="radio-inline"><input type="radio" value="PNG" name="out_format_radio" checked="checked">PNG</label>
+                <label class="radio-inline"><input type="radio" value="JPG" name="out_format_radio">JPG</label>
+              </div>
+            </div>
+            <div class="clear"></div><br>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-3">
+                <input class="form-check-input" type="checkbox" id="timeoutCheck">
+                <label class="form-check-label" for="timeoutCheck">
+                  Timeout
+                </label>
+                <input type="timeout" class="form-control" value="15000" style="display:none">
+              </div>
+              <div class="form-check col-md-3 mb-3">
+                <input class="form-check-input" type="checkbox" id="croppedCheck" checked="checked">
+                <label class="form-check-label" for="croppedCheck">
+                  Crop image
+                </label>
+              </div>
+              <div class="form-group col-md-6 mb-6" style="color:orange;">
+                Note: If you want to use the generated image in other web pages, please use the "Save image" feature of your browser instead of the service URL, to avoid generating the image each time that a user accesses your web page.
+              </div>
+            </div>
+            <div class="clear"></div><br><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <br><br>
+
+  </body>
+</html>
