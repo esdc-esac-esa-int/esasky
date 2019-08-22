@@ -8,7 +8,6 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -24,8 +23,8 @@ public class EsaSkyWeb implements EntryPoint {
 	
     private static boolean loadControllersCalled = false;
     private Controller controller;
-    public static final String HIGHCHARTS_EXPORT_URL = Dictionary.getDictionary("serverProperties")
-            .get("highchartsExportURL");
+//    public static final String HIGHCHARTS_EXPORT_URL = Dictionary.getDictionary("serverProperties")
+//            .get("highchartsExportURL");
 
     public static native String getLocaleLanguage() /*-{
 		return navigator.language || navigator.userLanguage;
