@@ -14,6 +14,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Download_DD = "Download_DD";
     public static final String CAT_CtrlToolbar = "CtrlToolbar";
     public static final String CAT_SkiesMenu = "SkiesMenu";
+    public static final String CAT_Convenience = "Convenience";
     public static final String CAT_Help = "Help";
     public static final String CAT_Header = "Header";
     public static final String CAT_Header_Status = "Header_Status";
