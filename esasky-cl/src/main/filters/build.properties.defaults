@@ -56,7 +56,7 @@ gwt.entrypoint=esac.archive.esasky.cl.web.EsaSkyWeb
 gwt.localcache.dir=gwt-unitCache
 gwt.xml.template.dir=${conf.dir}
 gwt.xml.template.name=EsaSkyWebTemplate.gwt.xml
-gwt.xml.derived.dir=${java.dir}/esac/archive/esasky/cl/web
+gwt.xml.derived.dir=src/main/java/esac/archive/esasky/cl/web
 gwt.xml.derived.name=EsaSkyWeb.gwt.xml
 derived.file.warning=WARNING! THIS FILE IS DERIVED. DO NOT MAKE ANY CHANGES HERE AS THEY WILL BE OVERWRITTEN DURING THE NEXT BUILD. MAKE CHANGES IN EsaSkyWebTemplate.gwt.xml INSIDE THE CONF DIR INSTEAD.
 
