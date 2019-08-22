@@ -2,24 +2,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>esac.archive.esasky.ifcs</groupId>
-	<artifactId>esasky-ifcs-model</artifactId>
-	<version>1.8.21</version>
+	
+
+	<artifactId>esasky-model</artifactId>
+
 
 	<parent>
-		<groupId>esac.archive.esasky</groupId>
-		<artifactId>esasky-parent-pom</artifactId>
+		<groupId>esac.archive.esasky.esasky-app</groupId>
+		<artifactId>esasky-app-parent-pom</artifactId>
 		<version>3.1.4</version>
 	</parent>
-
-	<distributionManagement>
+<!--	<distributionManagement>
 		<repository>
 			<id>esdc-public-repository</id>
 			<name>ESDC Maven Repository</name>
 			<url>https://scidockreg.esac.esa.int/repository/esdc-releases/</url>
 		</repository>
 	</distributionManagement>
-
+-->
 	<build>
 		<testSourceDirectory>${project.basedir}/src/test/</testSourceDirectory>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -37,7 +37,7 @@
 		<plugins>
 
 			<!-- Deploys to nexus -->
-			<plugin>
+<!--			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>${maven-deploy-plugin.version}</version>
@@ -72,7 +72,7 @@
 					<forkMode>once</forkMode>
 					<forkCount>1</forkCount>
 					<argLine>@{argLine} -Xmx1024m -Dnet.sf.ehcache.disabled=true</argLine>
-					<!-- <argLine>jaCoCoArgLine -Xmx1024m </argLine> -->
+					 <argLine>jaCoCoArgLine -Xmx1024m </argLine> 
 					<reuseForks>false</reuseForks>
 					<testSourceDirectory>src/test/</testSourceDirectory>
 				</configuration>
@@ -100,7 +100,7 @@
 							<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
 						</configuration>
 					</execution>
-					<!-- attached to Maven test phase -->
+					 attached to Maven test phase 
 					<execution>
 						<id>report</id>
 						<phase>test</phase>
@@ -114,11 +114,11 @@
 				</executions>
 			</plugin>
 
-			<!-- Javadoc -->
+			 Javadoc 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>
+			</plugin> -->
 
 			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>gwt-maven-plugin</artifactId> 
 				<version>2.7.0</version> <executions> <execution> <goals> <goal>compile</goal> 
@@ -127,7 +127,7 @@
 		</plugins>
 	</build>
 
-	<repositories>
+<!--	<repositories>
 		<repository>
 			<id>esdc-public-repository</id>
 			<name>ESDC Maven Repository</name>
@@ -144,7 +144,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
+-->
 	<dependencies>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -158,9 +158,9 @@
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 		</dependency>
-		<dependency>
+	<!--	<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 </project>
