@@ -5,9 +5,10 @@ project.version=${project.version}
 project.artifactId=${project.artifactId}
 project.groupId=${project.groupId}
 project.packaging=${project.packaging}
-server.user=${server.user}
-server.host=${server.host}
-server.instdir=${server.instdir}
-ssh.user=${ssh.user}
-ssh.host=${ssh.host}
-ssh.inst.dir=${ssh.inst.dir}
+
+#ssh.user=${ssh.user}
+#ssh.host=${ssh.host}
+#ssh.inst.dir=${ssh.inst.dir}
+
+deploy.gwt_files_to_replace=${deploy.gwt_files_to_replace}
+#software.buildname=${software.buildnumber}
