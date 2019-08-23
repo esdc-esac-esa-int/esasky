@@ -79,11 +79,11 @@
 			<artifactId>esasky-cl-mission-planning</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>esac.archive.esasky.cl</groupId>
-			<artifactId>esasky-cl-gpresenter</artifactId>
-			<version>0.1</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>esac.archive.esasky.cl</groupId> -->
+<!-- 			<artifactId>esasky-cl-gpresenter</artifactId> -->
+<!-- 			<version>0.1</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>esac.archive.esasky.esasky-app</groupId>
 			<artifactId>esasky-model</artifactId>
