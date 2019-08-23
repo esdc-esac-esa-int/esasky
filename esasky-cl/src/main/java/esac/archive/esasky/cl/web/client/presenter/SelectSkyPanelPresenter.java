@@ -34,10 +34,6 @@ public class SelectSkyPanelPresenter {
     public SelectSkyPanelPresenter(final View inputView) {
         this.view = inputView;
         getHiPSMapsList();
-        bind();
-    }
-
-    private void bind() {
     }
 
     public SkiesMenu getSkiesMenu(){
