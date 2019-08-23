@@ -7,8 +7,8 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
@@ -25,7 +25,6 @@ import esac.archive.esasky.cl.web.client.event.MTClickEvent;
 import esac.archive.esasky.cl.web.client.event.MTClickEventHandler;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
-import esac.archive.esasky.cl.web.client.event.PublicationsClickEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
@@ -35,6 +34,8 @@ import esac.archive.esasky.cl.web.client.event.banner.ToggleSkyPanelEventHandler
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
@@ -55,6 +56,7 @@ public class CtrlToolBarPresenter {
     private View view;
     
     private SelectSkyPanelPresenter selectSkyPresenter;
+    private PublicationPanelPresenter publicationPresenter;
 
     public interface SkiesMenuMapper extends ObjectMapper<SkiesMenu> {}
     
@@ -64,26 +66,27 @@ public class CtrlToolBarPresenter {
         void updateCatalogCount(int newCount);
         void updateSpectraCount(int newCount);
         void updateSsoCount(int newCount);
-        void updatePublicationsCount(int newCount);
         void onIsTrackingSSOEventChanged();
         void closeTreeMap();
         void enterScienceMode();
         void leaveScienceMode();
-        void closeAllPanelsExceptSkyPanel();
+        void closeAllOtherPanels(Widget button);
 
         void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title);
         
-        HasClickHandlers getPublicationButton();
+        EsaSkyToggleButton getPublicationButton();
         EsaSkyToggleButton getSkyPanelButton();
         
         SelectSkyPanelPresenter.View getSelectSkyView();
+        PublicationPanelPresenter.View getPublicationPanelView();
 
         void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts);
     }
 
-    public CtrlToolBarPresenter(final View inputView) {
+    public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
         this.view = inputView;
         selectSkyPresenter = new SelectSkyPanelPresenter(view.getSelectSkyView());
+        publicationPresenter = new PublicationPanelPresenter(view.getPublicationPanelView(), descriptorRepo, entityRepo);
         bind();
         updateScienceModeElements();
     }
@@ -168,9 +171,9 @@ public class CtrlToolBarPresenter {
         view.getPublicationButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-            	GUISessionStatus.setIsPublicationsActive(!GUISessionStatus.getIsPublicationsActive());
-                CommonEventBus.getEventBus().fireEvent(new PublicationsClickEvent(GUISessionStatus.getIsPublicationsActive()));
                 GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, GoogleAnalytics.ACT_CtrlToolbar_Publications, "");
+                publicationPresenter.toggle();
+                view.closeAllOtherPanels(view.getPublicationButton());
             }
         });
         
@@ -188,7 +191,7 @@ public class CtrlToolBarPresenter {
 			public void onEvent(ToggleSkyPanelEvent event) {
 				selectSkyPresenter.toggle();
 				view.getSkyPanelButton().setToggleStatus(selectSkyPresenter.isShowing());;
-				view.closeAllPanelsExceptSkyPanel();
+				view.closeAllOtherPanels(view.getSkyPanelButton());
 			}
 		});
         
@@ -223,10 +226,6 @@ public class CtrlToolBarPresenter {
     
     public void updateSsoCount(int newCount){
         view.updateSsoCount(newCount);
-    }
-
-    public void updatePublicationsCount(int newCount) {
-        view.updatePublicationsCount(newCount);
     }
     
     private static long latestBibCodeTimeCall;

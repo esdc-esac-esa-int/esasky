@@ -27,8 +27,6 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -41,7 +39,6 @@ import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCall
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.ISSOCountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.PublicationsBySourceCallback;
-import esac.archive.esasky.cl.web.client.callback.PublicationsSourcesCallback;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ExportCSVEvent;
 import esac.archive.esasky.cl.web.client.event.ExportCSVEventHandler;
@@ -63,15 +60,12 @@ import esac.archive.esasky.cl.web.client.model.converter.TapToMmiDataConverter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.query.TAPCountObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataPublicationsService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -514,33 +508,6 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     // ----- PUBLICATIONS
     // ------------------------
     
-    protected final void getPublicationsSources(final PublicationsEntity entity, final boolean showProgress) {
-        
-        final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-        
-        final String debugPrefix = "[getPublicationsSources][" + descriptor.getGuiShortName() + "]";
-        
-        // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
-        String url = "";
-        if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_DATA_FROM_SIMBAD) {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, entity.getCountStatus());
-            url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encode(adql), null);
-        } else {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, entity.getCountStatus());
-            url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
-        }
-        
-        Log.debug(debugPrefix + "Query [" + url + "]");
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            builder.sendRequest(null, new PublicationsSourcesCallback(entity, TextMgr.getInstance().getText("PublicationsSourcesCallback_retrievingPubSources"), url));
-
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error(debugPrefix + "Error fetching JSON data from server");
-        }
-    }
     
     public void showPublications(String id, final PublicationsBySourceEntity entity, boolean byAuthor, IPreviewClickedHandler previewClickedHandler) {
         final String debugPrefix = "[showPublications][" + id + "]";

@@ -8,7 +8,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -26,6 +25,33 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
+import esac.archive.esasky.cl.web.client.event.TargetDescriptionEventHandler;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter;
+import esac.archive.esasky.cl.web.client.presenter.PublicationPanelPresenter;
+import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter.View;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
+import esac.archive.esasky.cl.web.client.utility.MessageDialogBox;
+import esac.archive.esasky.cl.web.client.utility.ParseUtils;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.TargetListPanel;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
@@ -34,31 +60,6 @@ import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
-import esac.archive.esasky.cl.web.client.event.TargetDescriptionEventHandler;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
-import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter;
-import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter.View;
-import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.utility.ParseUtils;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.utility.MessageDialogBox;
-import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.TargetListPanel;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -67,6 +68,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 	private FlowPanel ctrlToolBarPanel;
 	private SelectSkyPanel selectSkyPanel;
+	private PublicationPanel publicationPanel;
 	private PlanObservationPanel planObservationPanel;
 	private TargetListPanel targetListPanel;
 	private String HiPSFromURL = null;
@@ -83,7 +85,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private BadgeButton catalogButton;
 	private BadgeButton spectraButton;
 	private BadgeButton ssoButton;
-	private BadgeButton publicationsButton;
+	private EsaSkyToggleButton publicationsButton;
 	
 	private final CssResource style;
 	private Resources resources = GWT.create(Resources.class);
@@ -188,7 +190,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			});
 		}
 		if(Modules.publicationsModule){
+			publicationPanel = new PublicationPanel();
 			ctrlToolBarPanel.add(createPublicationsBtn());
+			ctrlToolBarPanel.add(publicationPanel);
+			publicationPanel.hide();
 		}
 		
 		ctrlToolBarPanel.add(createTargetListBtn());
@@ -316,10 +321,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		return ssoButton;
 	}
 	
-	private BadgeButton createPublicationsBtn() {
-        final EsaSkyToggleButton button = new EsaSkyToggleButton(resources.publicationsIcon());
-        addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_explorePublications"));
-        publicationsButton = new BadgeButton(button);
+	private EsaSkyToggleButton createPublicationsBtn() {
+        publicationsButton = new EsaSkyToggleButton(resources.publicationsIcon());
+        addCommonButtonStyle(publicationsButton, TextMgr.getInstance().getText("webConstants_explorePublications"));
+        
+        publicationPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
+			
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				publicationsButton.setToggleStatus(false);
+			}
+		});
         return publicationsButton;
     }
 	
@@ -374,11 +386,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		ssoButton.updateCount(newCount);
 		
 	}
-	
-   @Override
-    public void updatePublicationsCount(int newCount) {
-       publicationsButton.updateCount(newCount);
-    }
    
 	@Override
 	public void onIsTrackingSSOEventChanged(){
@@ -387,10 +394,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			ssoButton.setToggleStatus(true);
 			
 			ssoTreeMapContainer.open();
+			sendGAEvent(EntityContext.SSO.toString());
 			closeAllOtherPanels(ssoButton);
 		} else{
 			ssoButton.disable();
 			ssoTreeMapContainer.close();
+			sendGAEvent(EntityContext.SSO.toString());
 		}
 	}
 	
@@ -402,7 +411,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		ssoTreeMapContainer.close();
 	}
 	
-	private void closeAllOtherPanels(Widget button){
+	@Override
+	public void closeAllOtherPanels(Widget button){
 		if(!button.equals(observationButton)){
 			observationTreeMapContainer.close();
 		}
@@ -423,6 +433,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		}
 		if(!button.equals(planObservationButton)) {
 			planObservationPanel.hide();
+		}
+		if(!button.equals(publicationsButton)) {
+			publicationPanel.hide();
 		}
 	}
 	
@@ -577,8 +590,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
 	@Override
-	public HasClickHandlers getPublicationButton() {
-		return publicationsButton.getClickableArea();
+	public EsaSkyToggleButton getPublicationButton() {
+		return publicationsButton;
 	}
 
 	@Override
@@ -589,6 +602,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	@Override
 	public View getSelectSkyView() {
 		return selectSkyPanel;
+	}
+	
+	@Override
+	public PublicationPanelPresenter.View getPublicationPanelView() {
+		return publicationPanel;
 	}
 	
 	private void sendGAEvent(String eventAction) {
@@ -637,10 +655,5 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		if(spectraDescriptors.size() > 0) {
 			spectraTreeMapContainer.addData(spectraDescriptors, spectraCounts);
 		}
-	}
-
-	@Override
-	public void closeAllPanelsExceptSkyPanel() {
-		closeAllOtherPanels(selectSkyButton);
 	}
 }

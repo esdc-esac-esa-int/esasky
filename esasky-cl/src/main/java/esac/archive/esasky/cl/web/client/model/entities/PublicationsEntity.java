@@ -18,6 +18,8 @@ import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 public class PublicationsEntity extends CatalogEntity {
 
     Map<String, Integer> sourceIndexes = new HashMap<String, Integer>();
+    
+    private int sourceLimit;
 
     public PublicationsEntity(PublicationsDescriptor pubDescriptor, CountStatus countStatus,
             JavaScriptObject pubOverlay, SkyViewPosition skyViewPosition,
@@ -85,4 +87,12 @@ public class PublicationsEntity extends CatalogEntity {
     	return false;
     }
     
+    @Override
+    protected int getSourceLimit() {
+    	return sourceLimit;
+    }
+    
+	public void setPublicationsSourceLimit(int sourceLimit) {
+		this.sourceLimit = sourceLimit;
+	}
 }

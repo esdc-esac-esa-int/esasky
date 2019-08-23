@@ -32,7 +32,6 @@ public class GUISessionStatus {
 	private static TrackedSso trackedSso;
 	private static boolean isInScienceMode = false;
 	private static boolean doCountOnEnteringScienceMode = false;
-	private static boolean isPublicationsActive = false;
 	private static boolean hideSwitch = false;
 	
 	private static String currentLanguage;
@@ -171,16 +170,13 @@ public class GUISessionStatus {
 		if(GUISessionStatus.isTrackingSSO != isTrackingSso){
 			GUISessionStatus.isTrackingSSO = isTrackingSso;
 			CommonEventBus.getEventBus().fireEvent(new IsTrackingSSOEvent());
+			if(isTrackingSso) {
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, 
+						"SSO", GUISessionStatus.trackedSso.name + "(" + GUISessionStatus.trackedSso.type + ")");
+			}
 		}
 	}
 
-	public static void setIsPublicationsActive(boolean isPublicationsActive){
-		GUISessionStatus.isPublicationsActive = isPublicationsActive;
-	}
-	public static boolean getIsPublicationsActive(){
-		return GUISessionStatus.isPublicationsActive;
-	}
-	
 	public static void sethideSwitch(boolean hideSwitch){
 		GUISessionStatus.hideSwitch = hideSwitch;
 	}

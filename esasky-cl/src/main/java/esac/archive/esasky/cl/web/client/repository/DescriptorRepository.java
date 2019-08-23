@@ -284,7 +284,7 @@ public class DescriptorRepository {
 				});
 	}
 
-	public void initPubDescriptors(final CountObserver countObserver) {
+	public void initPubDescriptors() {
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initPubDescriptors");
 
 		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.PUBLICATIONS_URL), new IJSONRequestCallback() {
@@ -293,7 +293,12 @@ public class DescriptorRepository {
 			public void onSuccess(String responseText) {
 				PublicationsDescriptorListMapper mapper = GWT.create(PublicationsDescriptorListMapper.class);
 				publicationsDescriptors = new DescriptorListAdapter<PublicationsDescriptor>(mapper.read(responseText),
-						countObserver);
+						new CountObserver() {
+							
+							@Override
+							public void onCountUpdate(int newCount) {
+							}
+						});
 				publicationsDescriptorsIsReady = true;
 
 				Log.debug("[DescriptorRepository] Total publications entries: " + publicationsDescriptors.getTotal());

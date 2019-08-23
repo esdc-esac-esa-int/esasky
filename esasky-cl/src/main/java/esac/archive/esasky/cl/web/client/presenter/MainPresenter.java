@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -26,8 +25,6 @@ import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEventHandlerImpl;
-import esac.archive.esasky.cl.web.client.event.PublicationsClickEvent;
-import esac.archive.esasky.cl.web.client.event.PublicationsClickEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
@@ -110,7 +107,7 @@ public class MainPresenter {
         }
 
         if (Modules.publicationsModule) {
-            getPublicationsList();
+        	descriptorRepo.initPubDescriptors();
         }
 
         bindSampRequests();
@@ -250,24 +247,6 @@ public class MainPresenter {
              }
          });
          
-         /*
-          * When the user clicks on publications CtrlToolBar button
-          */
-         CommonEventBus.getEventBus().addHandler(PublicationsClickEvent.TYPE,
-                 new PublicationsClickEventHandler() {
-
-             @Override
-             public void onClick(PublicationsClickEvent event) {
-                 if (Modules.publicationsModule) {
-                     if (GUISessionStatus.getIsPublicationsActive()) {
-                         getRelatedMetadata(descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0),
-                                 EntityContext.PUBLICATIONS);
-                     } else {
-                         cleanPublicationSources();
-                     }
-                 }
-             }
-         });
          
          /*
           * When the url changed because the state has changed
@@ -318,16 +297,6 @@ public class MainPresenter {
         }     
     }
     
-    private final void cleanPublicationSources () {
-        if (!Modules.publicationsModule) {
-            return;
-        }
-        
-        //Clears the catalog
-        final JavaScriptObject catalog = AladinLiteWrapper.getInstance().getPublicationCatalogue();
-        AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(catalog);
-    }
-    
     public void getRelatedMetadata(IDescriptor descriptor, EntityContext context) {
         switch (context) {
             case ASTRO_IMAGING:
@@ -347,16 +316,11 @@ public class MainPresenter {
                 getSSOOrbitAndObservation((SSODescriptor)descriptor);
                 break;
                 
-            case PUBLICATIONS:
-                getPublicationSourcesPolygons((PublicationsDescriptor) descriptor);
-                break;
-                
             default:
                 throw new IllegalArgumentException("Does not recognize entity context");
         }
     }
     
-//    public void showUserRelatedMetadata(IDescriptor descriptor, EntityContext context, IJSONWrapper footprintsSet) {
 	public void showUserRelatedMetadata(IDescriptor descriptor, IJSONWrapper userDataJSONWrapper, CoordinatesFrame convertToFrame) {
     	Log.debug("[MainPresenter][showUserRelatedMetadata]");
     	
@@ -373,30 +337,6 @@ public class MainPresenter {
     		resultsPresenter.getUserMetadataAndPolygons(entity, true, null, userDataJSONWrapper, convertToFrame);	
     	}
     	
-//    	switch (context) {
-//            case USER_CATALOGUE:
-//            	break;
-//            
-//            case USER_SPECTRA:
-//            case USER_IMAGING:
-//            	Log.debug("[MainPresenter][showUserRelatedMetadata] USER_IMAGING");
-//                resultsPresenter.getUserMetadataAndFootprints(entityRepo.createCommonObservationEntity((CommonObservationDescriptor) descriptor, EntityContext.USER_IMAGING), true, null, footprintsSet);
-//                break;
-//            	
-//                
-//            default:
-//                throw new IllegalArgumentException("Does not recognize entity context");
-//        }
-    }
-
-    public final boolean getPublicationSourcesPolygons(PublicationsDescriptor descriptor) {
-        
-        if (entityRepo.getPublications() == null) {            
-            entityRepo.createPublicationsEntity(descriptor);   
-        }
-        
-        resultsPresenter.getPublicationsSources(entityRepo.getPublications(), true);
-        return true;
     }
     
     private void getObservationsList() {
@@ -442,24 +382,6 @@ public class MainPresenter {
         });
     }
 
-    private void getPublicationsList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getPublicationsList");
-        descriptorRepo.initPubDescriptors(new CountObserver() {
-
-            @Override
-            public void onCountUpdate(int newCount) {
-                if (descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
-                    ctrlTBPresenter.updatePublicationsCount(newCount);
-//                    if (GUISessionStatus.getIsPublicationsActive()
-//                        && EsaSkyWebConstants.PUBLICATIONS_UPDATE_ON_FOV_CHANGE) {
-//                        getRelatedMetadata(descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0),
-//                                EntityContext.PUBLICATIONS);
-//                    }
-                }
-            }
-        });
-    }
-
     public final AllSkyPresenter getAllSkyPresenter() {
         if (allSkyPresenter == null) {
             allSkyPresenter = new AllSkyPresenter(this.view.getAllSkyPanel());
@@ -476,7 +398,7 @@ public class MainPresenter {
 
     public final CtrlToolBarPresenter getCtrlTBPresenter() {
         if (ctrlTBPresenter == null) {
-            ctrlTBPresenter = new CtrlToolBarPresenter(this.view.getCtrlToolBar());
+            ctrlTBPresenter = new CtrlToolBarPresenter(this.view.getCtrlToolBar(), descriptorRepo, entityRepo);
         }
         return ctrlTBPresenter;
     }

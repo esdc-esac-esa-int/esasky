@@ -5,9 +5,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPMetadataPublicationsService {
@@ -18,8 +16,8 @@ public class TAPMetadataPublicationsService {
      * @param cs Input CountStatus
      * @return Query in ADQL format.
      */
-    public static String getMetadataAdqlFromEsaSkyTap(PublicationsDescriptor descriptor, CountStatus cs) {
-        String adql = "select top " + getResultsLimit(descriptor.getSourceLimit())
+    public static String getMetadataAdqlFromEsaSkyTap(PublicationsDescriptor descriptor, int limit) {
+        String adql = "select top " + limit
                 + " name, ra, dec, bibcount  from " + descriptor.getTapTable()
                 + " where bibcount>0 AND 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
                 + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
@@ -65,11 +63,10 @@ public class TAPMetadataPublicationsService {
     /**
      * getMetadataAdqlforSIMBAD().
      * @param descriptor Input PublicationsDescriptor.
-     * @param cs Input CountStatus
      * @return Query in ADQL format.
      */
-    public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, CountStatus cs) {
-        String adql = "select top " + getResultsLimit(descriptor.getSourceLimit())
+    public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit) {
+        String adql = "select top " + limit 
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
                 + " where 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
                 + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
@@ -110,14 +107,5 @@ public class TAPMetadataPublicationsService {
         Log.debug("[TAPMetadataPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
 
         return adql;
-    }
-    
-    protected static int getResultsLimit(int descriptorLimit){
-        
-        if (DeviceUtils.isMobile()){
-            return EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
-        }
-         
-        return descriptorLimit;  
     }
 }
