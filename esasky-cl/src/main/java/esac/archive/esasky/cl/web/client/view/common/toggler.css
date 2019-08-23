@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+.toggler{
+}
+
+.toggler:hover{
+	cursor:pointer;
+}
+
+.toggler__container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.toggler__advancedContainer{
+	flex: 0 0 auto;
+	margin: 0rem 0.25rem;
+}
+
+.toggler__arrow, .toggler__text{
+	display: inline-block;
+	margin: 0rem 0.25rem;
+}
+/* .wrapper > * { */
+/*   flex: 1 100%; */
+/* } */
+
+.toggler__line {
+    height: 0px;
+    border-top: 1px solid white;
+/*     width: 10px; */
+    vertical-align: middle;
+    flex: 1 1 100%;
+}
