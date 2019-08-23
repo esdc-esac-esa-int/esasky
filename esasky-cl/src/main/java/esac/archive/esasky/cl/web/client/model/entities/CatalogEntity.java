@@ -173,7 +173,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 	@Override
 	public void addShapes(TapRowList rowList) {
 		defaultEntity.addShapes(rowList);
-		if(rowList.getData().size() >= descriptor.getSourceLimit()) {
+		if(rowList.getData().size() >= getSourceLimit()) {
 			if(sourceLimitNotificationTimer.isRunning()) {
 				sourceLimitNotificationTimer.run();
 			}
@@ -181,13 +181,13 @@ public class CatalogEntity implements GeneralEntityInterface{
 			
 			if (sourceLimitDescription.contains("|")) {
 				String[] sourceLimitArr = sourceLimitDescription.split("\\|");
-				sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitArr[0]).replace("$sourceLimit$", descriptor.getSourceLimit() + "").replace("$orderBy$", TextMgr.getInstance().getText(sourceLimitArr[1]));
+				sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitArr[0]).replace("$sourceLimit$", getSourceLimit() + "").replace("$orderBy$", TextMgr.getInstance().getText(sourceLimitArr[1]));
 			} else {
-				sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", descriptor.getSourceLimit() + "");
+				sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", getSourceLimit() + "");
 			}
 			CommonEventBus.getEventBus().fireEvent( 
 					new ProgressIndicatorPushEvent(getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
-			sourceLimitNotificationTimer.schedule(15000);
+			sourceLimitNotificationTimer.schedule(8000);
 		}
 	}
 	
@@ -509,5 +509,9 @@ public class CatalogEntity implements GeneralEntityInterface{
 	@Override
 	public Image getTypeLogo() {
 		return defaultEntity.getTypeLogo();
+	}
+	
+	protected int getSourceLimit() {
+		return descriptor.getSourceLimit();
 	}
 }
