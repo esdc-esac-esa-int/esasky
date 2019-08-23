@@ -16,7 +16,11 @@ public class EsaSkyNumberControl{
 
 
 	public EsaSkyNumberControl(String title, ImageResource increaseNumberImage, ImageResource decreaseNumberImage, final double step, final NumberFormat numberFormat){
-		numberBox = new EsaSkyNumberBox(numberFormat, step);
+		this(title, increaseNumberImage, decreaseNumberImage, step, numberFormat, Double.MIN_VALUE, Double.MAX_VALUE);
+	}
+	
+	public EsaSkyNumberControl(String title, ImageResource increaseNumberImage, ImageResource decreaseNumberImage, final double step, final NumberFormat numberFormat, double min, double max){
+		numberBox = new EsaSkyNumberBox(numberFormat, step, min, max);
 		numberBox.setTitle(title);
 
 		increaseNumberButton = new EsaSkyRepeatButton(increaseNumberImage, new RepeatAction() {

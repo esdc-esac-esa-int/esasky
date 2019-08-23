@@ -15,12 +15,20 @@ import com.google.gwt.user.client.Timer;
 
 public class EsaSkyNumberBox extends EsaSkyTextBox{
 
-	private NumberFormat numberFormat;
+	private final NumberFormat numberFormat;
 
 	private double latestValidNumber;
+	private double maxNumber = Double.MAX_VALUE;
+	private double minNumber = Double.MIN_VALUE;
 	
-	public EsaSkyNumberBox(NumberFormat numberFormat, final double keyboardArrowStep){
+	public EsaSkyNumberBox(final NumberFormat numberFormat, final double keyboardArrowStep){
+		this(numberFormat, keyboardArrowStep, Double.MIN_VALUE, Double.MAX_VALUE);
+	}
+	
+	public EsaSkyNumberBox(final NumberFormat numberFormat, final double keyboardArrowStep, double min, double max){
 		super();
+		minNumber = min;
+		maxNumber = max;
 		this.numberFormat = numberFormat;
 		final KeyDownAndHold upArrowKeyPressedTimer = new KeyDownAndHold(new Timer() {
 
@@ -52,6 +60,7 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 			public void onBlur(BlurEvent event) {
 				upArrowKeyPressedTimer.cancel();
 				downArrowKeyPressedTimer.cancel();
+				setNumber(getNumber());
 			}
 		});
 
@@ -76,7 +85,16 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 				if (!getText().matches("[-+]?[0-9]*\\.?[0-9]+")) {
 					setNumber(latestValidNumber);
 				} else {
-					latestValidNumber = Double.valueOf(getText());
+					double currentNumber = Double.valueOf(getText());
+					if(new Double(numberFormat.format(currentNumber)) > new Double(numberFormat.format(maxNumber))) {
+						currentNumber = maxNumber;
+						setNumber(currentNumber);
+					}
+					if(new Double(numberFormat.format(currentNumber)) < new Double(numberFormat.format(minNumber))) {
+						currentNumber = minNumber;
+						setNumber(currentNumber);
+					}
+					latestValidNumber = currentNumber;
 				}
 			}
 		});
@@ -87,6 +105,12 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 	}
 
 	public void setNumber(double number) {
+		if(number > maxNumber) {
+			number = maxNumber;
+		}
+		if(number < minNumber) {
+			number = minNumber;
+		}
 		super.setText(numberFormat.format(number));
 	}
 
@@ -96,6 +120,14 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 
 	public void subtractNumber(double numberToSubtract) {
 		setNumber(getNumber() - numberToSubtract);
+	}
+	
+	public void setMaxNumber(double max) {
+		maxNumber = max;
+	}
+	
+	public void setMinNumber(double min) {
+		minNumber = min;
 	}
 
 	@Override
