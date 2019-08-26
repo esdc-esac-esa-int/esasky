@@ -20,6 +20,7 @@
 #feedbackButton > div ,
 #header__screenshotButton > div,
 #headerHelpButton > div,
+#header__gridButton > div,
 #header__warningButton > div { 
 	border: 0px;
 	border-radius: 1px;
@@ -38,6 +39,7 @@
 #feedbackButton,
 #header__screenshotButton,
 #headerHelpButton,
+#header__gridButton,
 #header__warningButton{
 	display: inline-flex;
 	vertical-align: middle;

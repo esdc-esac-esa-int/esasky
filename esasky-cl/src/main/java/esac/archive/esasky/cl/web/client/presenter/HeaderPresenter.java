@@ -87,11 +87,13 @@ public class HeaderPresenter {
 		void addScreenshotClickHandler(ClickHandler handler);
 		void addLanguageSelectionChangeHandler(StringValueSelectionChangedHandler handler);
 		void addWarningButtonClickHandler(ClickHandler handler);
+		void addGridButtonClickHandler(ClickHandler handler);
 
 		void showWarningButton();
 		void hideWarningButton();
 		void toggleDropdownMenu();
 		void closeDropdownMenu();
+		void toggleGrid();
 
 		StatusPresenter.View getStatusView();
 	}
@@ -265,6 +267,14 @@ public class HeaderPresenter {
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_VideoTutorials, "");
 				Window.open(EsaSkyWebConstants.ESA_SKY_HELP_PAGES_URL, "_blank", "");
 				view.closeDropdownMenu();
+			}
+		});
+
+		view.addGridButtonClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(final ClickEvent event) {
+				view.toggleGrid();
 			}
 		});
 

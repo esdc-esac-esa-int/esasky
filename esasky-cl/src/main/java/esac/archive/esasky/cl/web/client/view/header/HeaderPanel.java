@@ -36,8 +36,10 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 
 public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
@@ -47,6 +49,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private EsaSkyButton shareButton = new EsaSkyButton(resources.shareIcon());
 	private EsaSkyButton helpButton = new EsaSkyButton(resources.helpIcon());
 	private EsaSkyButton screenshotButton = new EsaSkyButton(resources.screenshotIcon());
+	private EsaSkyToggleButton gridButton = new EsaSkyToggleButton(resources.gridIcon());
 	private EsaSkyStringButton feedbackButton = new EsaSkyStringButton(TextMgr.getInstance().getText("header_comunity"));
 	private EsaSkyStringButton hipsLabelButton = new EsaSkyStringButton(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
 
@@ -101,6 +104,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		
         @Source("warning.png")
         ImageResource warning();
+
+        @Source("grid.png")
+        ImageResource gridIcon();
 	}
 
 	public HeaderPanel() {
@@ -132,6 +138,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		header.add(hipsLabelButton);
 
 		header.add(statusPanel);
+		
+		
+		gridButton.setTitle(TextMgr.getInstance().getText("header_grid"));
+		gridButton.setMediumStyle();
+		gridButton.getElement().setId("header__gridButton");
 		
 
 		shareButton.setTitle(TextMgr.getInstance().getText("header_getURLCurrentView"));
@@ -166,6 +177,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			languageBox.addStyleName("languageSelector");
 			rightSideHeader.add(languageBox);
 		}
+		rightSideHeader.add(gridButton);
 		rightSideHeader.add(screenshotButton);
 		rightSideHeader.add(shareButton);
 		rightSideHeader.add(helpButton);
@@ -459,6 +471,16 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		} else {
 			closeDropdownMenu();
 		}
+	}
+	
+	@Override
+	public void addGridButtonClickHandler(ClickHandler handler) {
+		gridButton.addClickHandler(handler);
+	}
+	
+	@Override
+	public void toggleGrid() {
+		AladinLiteWrapper.getAladinLite().showGrid(gridButton.getToggleStatus());
 	}
 
 	@Override
