@@ -59,6 +59,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Label coordinateLabel = new Label();
 	private FlowPanel fovPanel = new FlowPanel();
 	private final ListBox languageBox = new ListBox();
+	private boolean isGridOn = false;
 
 	private Image dropdownIcon = new Image(resources.menuIcon());
 	private FocusPanel dropdownContainer = new FocusPanel();
@@ -494,11 +495,15 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addGridButtonClickHandler(ClickHandler handler) {
 		gridButton.addClickHandler(handler);
+		dropdownGridEntry.addClickHandler(handler);
 	}
 	
 	@Override
 	public void toggleGrid() {
-		AladinLiteWrapper.getAladinLite().showGrid(gridButton.getToggleStatus());
+		isGridOn = !isGridOn;
+		
+		gridButton.setToggleStatus(isGridOn);
+		AladinLiteWrapper.getAladinLite().showGrid(isGridOn);
 	}
 
 	@Override
