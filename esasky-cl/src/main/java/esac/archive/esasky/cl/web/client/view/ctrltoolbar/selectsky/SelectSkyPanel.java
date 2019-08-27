@@ -179,7 +179,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		}
 		
 		SkyRow skyRow;
-		if(opacity > 0.95) {
+		if(opacity > 0.95 && rowNumber + 1 < nRows) {
 			skyRow = (SkyRow) skyTable.getWidget(rowNumber+1, 0);
 		}else {
 			skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
