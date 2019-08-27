@@ -66,6 +66,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownShareEntry = new FocusPanel(); 
 	private Anchor dropdownFeedbackEntry = new Anchor(TextMgr.getInstance().getText("header_comunity"));
 	private FocusPanel dropdownScreenshotEntry = new FocusPanel();
+	private FocusPanel dropdownGridEntry = new FocusPanel();
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
 	private FocusPanel dropdownScienceModeSwitch = new FocusPanel(); 
@@ -140,7 +141,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		header.add(statusPanel);
 		
 		
-		gridButton.setTitle(TextMgr.getInstance().getText("header_grid"));
+		gridButton.setTitle(TextMgr.getInstance().getText("header_gridFull"));
 		gridButton.setMediumStyle();
 		gridButton.getElement().setId("header__gridButton");
 		
@@ -261,6 +262,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		}
 
 		dropdownContent.add(createScreenshotDropdownEntry());
+		dropdownContent.add(createGridDropdownEntry());
 		dropdownContent.add(createShareDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
 		if(Modules.wwtLink) {
@@ -296,6 +298,22 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownScreenshotEntry.getElement().setId("header__dropdown__screenshot");
 		dropdownScreenshotEntry.setTitle(TextMgr.getInstance().getText("header_takeScreenshotFull"));
 		return dropdownScreenshotEntry;
+	}
+	
+	private Widget createGridDropdownEntry() {
+		FlowPanel dropdownGridContainer = new FlowPanel();
+
+		Image gridImage = new Image(resources.gridIcon());
+		gridImage.addStyleName("header__dropdown__item__icon");
+		dropdownGridContainer.add(gridImage);
+		Label screenshotLabel = new Label(TextMgr.getInstance().getText("header_gridDropdown"));
+		screenshotLabel.addStyleName("header__dropdown__grid__text");
+		dropdownGridContainer.add(screenshotLabel);
+
+		dropdownGridEntry.add(dropdownGridContainer);
+		dropdownGridEntry.getElement().setId("header__dropdown__grid");
+		dropdownGridEntry.setTitle(TextMgr.getInstance().getText("header_gridFull"));
+		return dropdownGridEntry;
 	}
 
 	private Widget createShareDropdownEntry() {
@@ -600,6 +618,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			shareButton.setVisible(false);
 			helpButton.setVisible(false);
 			screenshotButton.setVisible(false);
+			gridButton.setVisible(false);
 			headerScienceModeSwitch.setVisible(false);
 			
 			coordinateFrameFull.getElement().getStyle().setMarginRight(3, Unit.PX);
@@ -611,10 +630,12 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			dropdownScienceModeSwitch.setVisible(true);
 			dropdownShareEntry.setVisible(true);
 			dropdownScreenshotEntry.setVisible(true);
+			dropdownGridEntry.setVisible(true);
 		} else {
 			shareButton.setVisible(true);
 			helpButton.setVisible(true);
 			screenshotButton.setVisible(true);
+			gridButton.setVisible(true);
 			headerScienceModeSwitch.setVisible(true);
 			
 			coordinateFrameFull.getElement().getStyle().setMarginRight(5, Unit.PX);
@@ -626,6 +647,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			dropdownScienceModeSwitch.setVisible(false);
 			dropdownShareEntry.setVisible(false);
 			dropdownScreenshotEntry.setVisible(false);
+			dropdownGridEntry.setVisible(false);
 			
 		}
 		if(pxWidth <= ScreenWidth.MINI.getPxSize()) {

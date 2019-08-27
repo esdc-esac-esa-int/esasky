@@ -49,8 +49,11 @@ public class ESASkyPlayerPanel extends Composite {
 
         @Override
         public void run() {
+        	int oldCounter = blinkCounter;
         	increaseValue();
-        	select();
+        	if(oldCounter != blinkCounter) {
+        		select();
+        	}
         }
     }
 

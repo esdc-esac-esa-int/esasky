@@ -36,9 +36,7 @@
 }
 
 .sliderContainer{
-	border: 1px solid;
-	border-radius: 20px;
-	box-sizing: border-box;
+	 width: 60%;
 }
 
 #skies{

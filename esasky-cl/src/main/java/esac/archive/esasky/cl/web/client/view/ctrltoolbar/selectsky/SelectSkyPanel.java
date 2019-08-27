@@ -129,14 +129,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		hipsControllerContainer.add(createAddSkyBtn());
 		slider = createSlider();
 		sliderContainer.addStyleName("sliderContainer");
-		FlowPanel toMakeSliderSymetric = new FlowPanel();
-		toMakeSliderSymetric.addStyleName("toMakeSliderSymetric");
-		if (Navigator.getUserAgent().contains("Firefox")) {
-			toMakeSliderSymetric.addStyleName("toMakeSliderSymetricFirefox");
-		}
-		
 		sliderContainer.add(slider);
-		sliderContainer.add(toMakeSliderSymetric);
 		
 		hipsControllerContainer.add(sliderContainer);
 		hipsControllerContainer.add(createPlayer());
@@ -181,11 +174,17 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		double opacity = value - rowNumber;
 		
 		//Enforce only 1 HiPS close to the change
-		if(opacity < 0.05) {
+		if(opacity < 0.02) {
 			opacity = 0.0;
 		}
+		
+		SkyRow skyRow;
+		if(opacity > 0.95) {
+			skyRow = (SkyRow) skyTable.getWidget(rowNumber+1, 0);
+		}else {
+			skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
+		}
 
-		SkyRow skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
 		if(!skyRow.isSelected()) {
 			changeFromSlider = true;
 			skyRow.setSelected();
@@ -204,9 +203,16 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 				}
 			}else {
 				AladinLiteWrapper.getInstance().changeHiPSOpacity(1);
-				overlaySky.setOverlayStatus(false);
+				clearAllOverlayStatus();
 				AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 			}
+		}
+	}
+	
+	private void clearAllOverlayStatus() {
+		for (int i = 0; i < skyTable.getRowCount(); i++) {
+			SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
+			skyRow.setOverlayStatus(false);
 		}
 	}
 
@@ -291,9 +297,9 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 					} else {
 						slider.setValue(i);
 					}
-					AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+					//AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 				}
-				skyRow.setOverlayStatus(false);
+				//skyRow.setOverlayStatus(false);
 			}
 		}
 	}

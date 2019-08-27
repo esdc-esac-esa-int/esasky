@@ -4,22 +4,22 @@ package esac.archive.esasky.cl.web.client.view.common;
 import java.util.LinkedList;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ScrollEvent;
-import com.google.gwt.event.dom.client.ScrollHandler;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 
 
-
-public class ESASkySlider extends ScrollPanel {
+public class ESASkySlider extends FlowPanel {
 
     private Resources resources;
     private final CssResource style;
-    private final String CSS_SLIDER_CONTAINER_ID= "sliderScrollPanel";
-    private final String CSS_SLIDER_ID = "sliderSimplePanel";
-
+    private final String CSS_SLIDER_CONTAINER_ID= "esaSkySliderContainer";
+    private final String CSS_SLIDER_ID = "esaSkySlider";
+    private final int SLIDERMAX = 1000;
+    
+    private HTML slider;
     private double minValue;
     private double maxValue;
     private double currentValue;
@@ -46,28 +46,37 @@ public class ESASkySlider extends ScrollPanel {
     }
 
     private void initView(int width) {
-    	SimplePanel sp = new SimplePanel();
-	    sp.setWidth(10*width + "px");
-	    sp.setHeight("1px");
-	    sp.addStyleName(CSS_SLIDER_ID);
-	 
-	    this.setWidth(width + "px");
-	    this.setWidget(sp);
-	    
-	    this.addScrollHandler(new ScrollHandler() {
-	    	
-			@Override
-			public void onScroll(ScrollEvent event) {
-				double maxVal = event.getRelativeElement().getScrollWidth() - event.getRelativeElement().getClientWidth();
-				double scrollPercentage = ((double) event.getRelativeElement().getScrollLeft()) / maxVal;
-				if(scrollPercentage < 0.001 || scrollPercentage > 0.999) {
-					scrollPercentage = Math.round(scrollPercentage);
-				}
-				changeValueFomPercentage(scrollPercentage);
-				notifyObservers();
-			}
-		});
+    	String maxVal = Integer.toString(SLIDERMAX);
+    	this.slider = new HTML(
+				"<input type=\"range\" min=\"0\" max=\"" + maxVal + "\" "
+						+ "value=\"" + maxVal + "\" class=\"" + CSS_SLIDER_ID
+						+ " \" >");
+    	
+    	this.add(slider);
+    	addSliderListener(this, slider.getElement());
     }
+    
+	private native void addSliderListener(ESASkySlider instance, Element slider) /*-{
+		slider.oninput = function() {
+			instance.@esac.archive.esasky.cl.web.client.view.common.ESASkySlider::fireSliderChangedEvent(D)(this.children[0].value);
+		}
+	}-*/;
+	
+	private void setSliderValue(double value) {
+		setSliderValue(value, slider.getElement());
+	}
+	
+	private native void setSliderValue(double value, Element slider) /*-{
+		slider.children[0].value = value;
+	}-*/;
+	
+	private void fireSliderChangedEvent(double newValue) {
+		double scrollPercentage = ((double) newValue) / SLIDERMAX;
+		if(scrollPercentage < 0.001 || scrollPercentage > 0.999) {
+			scrollPercentage = Math.round(scrollPercentage);
+		}
+		changeValueFomPercentage(scrollPercentage);
+	}
     
     private LinkedList<EsaSkySliderObserver> observers = new LinkedList<EsaSkySliderObserver>();
     
@@ -88,10 +97,9 @@ public class ESASkySlider extends ScrollPanel {
 
     public void setValue(double value) {
     	currentValue = value;
-    	double minPos = this.getMinimumHorizontalScrollPosition();
-    	double maxPos = this.getMaximumHorizontalScrollPosition();
-    	double newPos = (maxPos - minPos) * value / (maxValue - minValue);
-    	this.setHorizontalScrollPosition((int)Math.round(newPos));
+    	double newPos = value / (maxValue - minValue) * SLIDERMAX;
+    	setSliderValue(newPos);
+    	notifyObservers();
     }
 
 	public double getMinValue() {
