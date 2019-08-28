@@ -51,6 +51,7 @@ public final class GoogleAnalytics {
     public static final String ACT_Header_Feedback = "Feedback";
     public static final String ACT_Header_VideoTutorials = "VideoTutorials";
     public static final String ACT_Header_ReleaseNotes = "ReleaseNotes";
+    public static final String ACT_Header_CoordinateGrid = "CoordinateGrid";
     public static final String ACT_Header_Newsletter = "Newsletter";
     public static final String ACT_Header_AboutUs = "AboutUs";
     public static final String ACT_Header_ScreenShot = "ScreenShot";

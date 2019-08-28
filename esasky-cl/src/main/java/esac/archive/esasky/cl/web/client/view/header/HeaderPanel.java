@@ -505,6 +505,18 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		gridButton.setToggleStatus(isGridOn);
 		AladinLiteWrapper.getAladinLite().showGrid(isGridOn);
 	}
+	
+	@Override
+	public void toggleGrid(boolean show) {
+		if(isGridOn != show) {
+			toggleGrid();
+		}
+	}
+
+	@Override
+	public boolean isGridOn() {
+		return isGridOn;
+	}
 
 	@Override
 	public void closeDropdownMenu() {

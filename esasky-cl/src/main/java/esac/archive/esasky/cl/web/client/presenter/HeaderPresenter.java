@@ -94,6 +94,9 @@ public class HeaderPresenter {
 		void toggleDropdownMenu();
 		void closeDropdownMenu();
 		void toggleGrid();
+		void toggleGrid(boolean show);
+		
+		boolean isGridOn();
 
 		StatusPresenter.View getStatusView();
 	}
@@ -274,6 +277,7 @@ public class HeaderPresenter {
 			
 			@Override
 			public void onClick(final ClickEvent event) {
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_CoordinateGrid, Boolean.toString(!view.isGridOn()));
 				view.toggleGrid();
 			}
 		});
@@ -517,5 +521,9 @@ public class HeaderPresenter {
 	
 	public interface StringValueSelectionChangedHandler{
 		public void onSelectionChanged(String newValue, int index);
+	}
+	
+	public void toggleGrid(boolean show) {
+		view.toggleGrid(show);		
 	}
 }
