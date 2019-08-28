@@ -57,6 +57,7 @@ public class MainPresenter {
     private ResultsPresenter resultsPresenter;
     private CtrlToolBarPresenter ctrlTBPresenter;
     private SearchPresenter targetPresenter;
+    private HeaderPresenter headerPresenter;
 
     private DescriptorRepository descriptorRepo;
     private EntityRepository entityRepo;
@@ -122,7 +123,7 @@ public class MainPresenter {
         this.allSkyPresenter = getAllSkyPresenter();
         this.ctrlTBPresenter = getCtrlTBPresenter();
         this.resultsPresenter = getResultsPresenter();
-        new HeaderPresenter(view.getHeaderPanel(), coordinateFrameFromUrl);
+        this.headerPresenter =  new HeaderPresenter(view.getHeaderPanel(), coordinateFrameFromUrl);
         new BannerPresenter(view.getBannerPanel());
         if(Modules.bannersOnAllSides) {
 	        new BannerPresenter(view.getBannerPanelLeftSide());
@@ -408,6 +409,13 @@ public class MainPresenter {
             targetPresenter = new SearchPresenter(this.view.getSearchPanel());
         }
         return targetPresenter;
+    }
+
+    public final HeaderPresenter getHeaderPresenter() {
+    	if (headerPresenter == null) {
+    		headerPresenter = new HeaderPresenter(this.view.getHeaderPanel() , CoordinatesFrame.J2000.toString());
+    	}
+    	return headerPresenter;
     }
 
     private void bindSampRequests() {

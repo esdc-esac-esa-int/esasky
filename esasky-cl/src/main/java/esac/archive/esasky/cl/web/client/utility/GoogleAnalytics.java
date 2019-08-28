@@ -143,6 +143,7 @@ public final class GoogleAnalytics {
     public static final String ACT_Pyesasky_plotCatalogues = "plotCatalogues";
     public static final String ACT_Pyesasky_plotSpectra = "plotSpectra";
     public static final String ACT_Pyesasky_getResultPanelData = "getResultPanelData";
+    public static final String ACT_Pyesasky_showCoordinateGrid = "showCoordinateGrid";
     
     
     //Send events methods

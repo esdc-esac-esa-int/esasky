@@ -285,6 +285,11 @@ public class Api {
 					console.log('getResultPanelData event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::getResultPanelData(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
+					
+				case 'showCoordinateGrid':
+					console.log('showCoordinateGrid event captured');
+					instance.@esac.archive.esasky.cl.web.client.api.Api::showCoordinateGrid(Z)(msg.content.show);
+					break;	
 	
 				default:
 					console.log('No event associated');
@@ -295,6 +300,11 @@ public class Api {
 
 	}-*/;
 	
+	
+	public void showCoordinateGrid(boolean show) {
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_showCoordinateGrid,Boolean.toString(show));
+		controller.getRootPresenter().getHeaderPresenter().toggleGrid(show);
+	}
 	
 	public void getResultPanelData(final JavaScriptObject msg) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
