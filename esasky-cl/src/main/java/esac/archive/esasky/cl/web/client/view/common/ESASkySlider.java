@@ -42,6 +42,7 @@ public class ESASkySlider extends FlowPanel {
 
     	this.minValue = min;
     	this.maxValue = max;
+    	this.currentValue = max;
     	initView(width);
     }
 
@@ -75,7 +76,7 @@ public class ESASkySlider extends FlowPanel {
 		if(scrollPercentage < 0.001 || scrollPercentage > 0.999) {
 			scrollPercentage = Math.round(scrollPercentage);
 		}
-		changeValueFomPercentage(scrollPercentage);
+		changeValueFromFraction(scrollPercentage);
 	}
     
     private LinkedList<EsaSkySliderObserver> observers = new LinkedList<EsaSkySliderObserver>();
@@ -90,14 +91,20 @@ public class ESASkySlider extends FlowPanel {
  	   }
     }
     
-    private void changeValueFomPercentage(double scrollPercentage) {
-		double value = (maxValue - minValue)*scrollPercentage;
+    private void changeValueFromFraction(double scrollFraction) {
+		double value = (maxValue - minValue) * scrollFraction + minValue;
 		setValue(value);
     }
 
     public void setValue(double value) {
-    	currentValue = value;
-    	double newPos = value / (maxValue - minValue) * SLIDERMAX;
+    	if(value > maxValue) {
+    		currentValue = maxValue;
+		}else if(value < minValue) {
+			currentValue = minValue;
+		}else {
+			currentValue = value;
+		}
+    	double newPos = currentValue / (maxValue - minValue) * SLIDERMAX;
     	setSliderValue(newPos);
     	notifyObservers();
     }
