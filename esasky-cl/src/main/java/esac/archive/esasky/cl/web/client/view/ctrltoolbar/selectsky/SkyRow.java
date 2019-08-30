@@ -350,6 +350,10 @@ public class SkyRow extends Composite implements Selectable{
 	public ColorPalette getSelectedPalette(){
 		return changePaletteBtn.getSelectedColorPalette();
 	}
+	
+	public void setColorPalette(ColorPalette colorPalette) {
+		changePaletteBtn.setDefaultColorPallette(colorPalette);
+	}
 
 	public void addOnlyOneSkyActiveStyle(){
 		onlyOneSkyActive = true;
@@ -378,13 +382,13 @@ public class SkyRow extends Composite implements Selectable{
 			//Notify sky change to Google Analytics
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getFullId());
 		} else if(isOverlay()) {
-			double value = SelectSkyPanel.getInstance().slider.getCurrentValue();
+			double value = SelectSkyPanel.getInstance().getSliderValue();
 			double opacity = value - Math.floor(value);
 			AladinLiteWrapper.getInstance().createOverlayMap(getSelectedHips(), opacity, getSelectedPalette());
 		}
 	}
 
-	private void notifyClose(){
+	public void notifyClose(){
 		for(SkyObserver observer: observers){
 			observer.onCloseEvent(this);
 		}

@@ -15,7 +15,6 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.Window.Navigator;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
@@ -44,7 +43,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private DragFlexTable skyTable;
 	private final Resources resources;
 	private CssResource style;
-	public ESASkySlider slider;
+	private ESASkySlider slider;
 
 	private boolean isShowing;
 	private boolean changeFromSlider = false;
@@ -115,8 +114,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 		selectSkyPanel.getElement().setId("allSkiesMenuContainer");
 
-		header = new PopupHeader(this, TextMgr.getInstance().getText("sky_loadingSkies"),
-				TextMgr.getInstance().getText("sky_selectSky_help"));
+		header = createHeader();
 		selectSkyPanel.add(header);
 
 		skyTable = new DragFlexTable();
@@ -135,6 +133,11 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		hipsControllerContainer.add(createPlayer());
 
 		this.add(selectSkyPanel);
+	}
+	
+	private PopupHeader createHeader() {
+		return new PopupHeader(this, TextMgr.getInstance().getText("sky_loadingSkies"),
+				TextMgr.getInstance().getText("sky_selectSky_help"));
 	}
 
 	private ESASkySlider createSlider() {
@@ -225,7 +228,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		addSkyButton.enableButton();
 	}
 
-	private SkyRow createSky(){
+	public SkyRow createSky(){
 		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl);
 		newSky.registerObserver(this);
 		skyTable.insertItem(newSky);
@@ -264,6 +267,16 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			}
 		});
 		return player;
+	}
+	
+	public String removeSky(int index) {
+		try {
+			SkyRow skyRow = skies.get(index);
+			removeSky(skyRow);
+			return "Success";
+		}catch(IndexOutOfBoundsException e) {
+			return "Index out of bounds. Max number is: " + Integer.toString(skies.size() - 1);
+		}
 	}
 
 	private void removeSky(SkyRow skyToRemove){
@@ -344,6 +357,18 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		Style style = getElement().getStyle();
 		style.setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15);
 		style.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+	}
+	
+	public void setSliderValue(double value) {
+		slider.setValue(value);
+	}
+	
+	public double getSliderValue() {
+		return slider.getCurrentValue();
+	}
+	
+	public int getNumberOfSkyRows() {
+		return skies.size();
 	}
 
 	@Override
