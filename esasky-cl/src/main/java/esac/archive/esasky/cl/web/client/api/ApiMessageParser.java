@@ -72,9 +72,9 @@ public class ApiMessageParser {
 				break
 				
 			case 'removeHipsOnIndex':
-				console.log('removeHips event captured!');
+				console.log('removeHipsOnIndex event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::removeSkyrow(ILcom/google/gwt/core/client/JavaScriptObject;)(msg.content.index,e);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::removeSkyRow(ILcom/google/gwt/core/client/JavaScriptObject;)(msg.content.index,e);
 				break;
 
 			case 'openSkyPanel':

@@ -144,6 +144,12 @@ public final class GoogleAnalytics {
     public static final String ACT_Pyesasky_plotSpectra = "plotSpectra";
     public static final String ACT_Pyesasky_getResultPanelData = "getResultPanelData";
     public static final String ACT_Pyesasky_showCoordinateGrid = "showCoordinateGrid";
+    public static final String ACT_Pyesasky_openSkyPanel = "openSkyPanel";
+    public static final String ACT_Pyesasky_closeSkyPanel = "closeSkyPanel";
+    public static final String ACT_Pyesasky_addHips = "addHips";
+    public static final String ACT_Pyesasky_removeHipsOnIndex = "removeHipsOnIndex";
+    public static final String ACT_Pyesasky_getNumberOfSkyRows = "getNumberOfSkyRows";
+    public static final String ACT_Pyesasky_setHipsSliderValue = "setHipsSliderValue";
     
     
     //Send events methods

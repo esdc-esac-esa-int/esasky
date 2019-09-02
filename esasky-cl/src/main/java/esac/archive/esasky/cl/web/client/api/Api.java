@@ -68,6 +68,8 @@ public class Api {
 	
 	private String googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
 	
+	private long lastGASliderSent = 0;
+	
 	public void setGoogleAnalyticsCatToPython() {
 		this.googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
 	}
@@ -343,12 +345,14 @@ public class Api {
 	}
 	
 	public void openSkyPanel() {
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_openSkyPanel, "");
 		if(!controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().isShowing()) {
 			controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().toggle();
 		}
 	}
 
 	public void closeSkyPanel() {
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_closeSkyPanel, "");
 		if(controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().isShowing()) {
 			controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().toggle();
 		}
@@ -356,6 +360,7 @@ public class Api {
 	
 	public void addHiPS(String wantedHiPSName, JavaScriptObject widget) {
 		SelectSkyPanel.getInstance().createSky();
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addHips, wantedHiPSName);
 		if(!setHiPS(wantedHiPSName, widget)) {
 			SelectSkyPanel.getSelectedSky().notifyClose();
 		}
@@ -363,25 +368,34 @@ public class Api {
 	
 	public void addHiPSWithParams(String surveyId, String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addHips, surveyRootUrl);
 		SelectSkyPanel.getInstance().createSky();
 		setHiPSWithParams(surveyId, surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat);
 	}
 	
-	public void removeSkyrow(int index, JavaScriptObject widget) {
+	public void removeSkyRow(int index, JavaScriptObject widget) {
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeHipsOnIndex, "");
 		JSONObject callbackMessage = new JSONObject();
-		String msg = SelectSkyPanel.getInstance().removeSky(index);
-		callbackMessage.put("message",new JSONString(msg));
+		if(!SelectSkyPanel.getInstance().removeSky(index)) {
+			String msg = "Index out of bounds. Max number is: " + Integer.toString(SelectSkyPanel.getInstance().getNumberOfSkyRows());
+			callbackMessage.put("message",new JSONString(msg));
+		}
 		sendBackToWidget(null, callbackMessage, widget);
 	}
 	
 	public void getNumberOfSkyRows(JavaScriptObject widget) {
 		JSONObject countObj = new JSONObject();
 		int count = SelectSkyPanel.getInstance().getNumberOfSkyRows();
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getNumberOfSkyRows, Integer.toString(count));
 		countObj.put("",new JSONNumber(count));
 		sendBackToWidget(countObj, null, widget);
 	}
 	
 	public void setHiPSSliderValue(double value) {
+		if(System.currentTimeMillis() - lastGASliderSent > 10000) {
+			lastGASliderSent = System.currentTimeMillis();
+			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setHipsSliderValue, Double.toString(value));
+		}
 		SelectSkyPanel.getInstance().setSliderValue(value);
 	}
 

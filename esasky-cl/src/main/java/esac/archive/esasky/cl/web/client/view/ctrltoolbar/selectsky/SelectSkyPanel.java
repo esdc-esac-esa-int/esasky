@@ -269,13 +269,13 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		return player;
 	}
 	
-	public String removeSky(int index) {
+	public boolean removeSky(int index) {
 		try {
 			SkyRow skyRow = skies.get(index);
 			removeSky(skyRow);
-			return "Success";
+			return true;
 		}catch(IndexOutOfBoundsException e) {
-			return "Index out of bounds. Max number is: " + Integer.toString(skies.size() - 1);
+			return false;
 		}
 	}
 
