@@ -248,7 +248,8 @@ public class GUISessionStatus {
 			
 			@Override
 			public void onSuccess(String responseText) {
-				if(responseText.equalsIgnoreCase("//skies.esac.esa.int")) {
+				if(responseText.equalsIgnoreCase("//skies.esac.esa.int")
+						|| responseText.equalsIgnoreCase("\"//skies.esac.esa.int\"")) {
 					try {
 						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(false);
 					} catch (AssertionError exception) {
