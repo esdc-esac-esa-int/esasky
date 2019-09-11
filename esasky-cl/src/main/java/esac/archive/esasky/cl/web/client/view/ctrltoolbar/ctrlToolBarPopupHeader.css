@@ -6,12 +6,21 @@
 	right: 0px;
 }
 
+.popupHeaderCloseButton {
+	position: absolute;
+    top: 0px;
+    right: 28px;
+}
 
 .popupHeaderLabelWithHelpButton {
 	font-size: 1.1 em;
 	font-weight: bold;
 	padding: 3px;
 	margin-right: 25px;
+}
+
+.popupHeaderLabelWithHelpButtonExtraMargin{
+	margin-right: 53px;
 }
 
 .popupHeaderContainer{

@@ -8,6 +8,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton.SignType;
@@ -28,6 +30,10 @@ public class PopupHeader extends FlowPanel{
 		this(panel, headerText, helpText, headerText);
 	}
 	public PopupHeader(final PopupPanel panel, String headerText, String helpText, String helpHeader) {
+		this(panel, headerText, helpText, helpHeader, null, "");
+	}
+	
+	public PopupHeader(final PopupPanel panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
 		this.style = resources.style();
 		this.style.ensureInjected();
 
@@ -36,9 +42,18 @@ public class PopupHeader extends FlowPanel{
 
 		add(labelWithHelpButton);
 
+		if(onCloseClick != null) {
+			CloseButton closeButton = new CloseButton();
+			closeButton.setTitle(closeTooltip);
+			closeButton.addStyleName("popupHeaderCloseButton");
+			closeButton.addClickHandler(onCloseClick);
+			add(closeButton);
+			labelWithHelpButton.addStyleName("popupHeaderLabelWithHelpButtonExtraMargin");
+		}
+		
 		SignButton minimizeButton = new SignButton(SignType.MINUS);
 		minimizeButton.addStyleName("popupHeaderMinimizeButton");
-
+		minimizeButton.setTitle(TextMgr.getInstance().getText("popupHeader_minimize"));
 		minimizeButton.addClickHandler(new ClickHandler() {
 
 			@Override
