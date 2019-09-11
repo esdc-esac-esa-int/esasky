@@ -25,7 +25,7 @@ public class StatusPresenter {
 	private Status statusCurrentyShowing;
 
 	private final int DELAY_UNTIL_NEXT_MESSAGE_IS_SHOWN_IN_MILLIS = 2000;
-	private final int POP_TIMEOUT_DELAY_IN_MILLIS = 40000;
+	private final int POP_TIMEOUT_DELAY_IN_MILLIS = 120000;
 	private StatusTimer statusTimer = new StatusTimer();
 
 	private class StatusTimer extends Timer{
