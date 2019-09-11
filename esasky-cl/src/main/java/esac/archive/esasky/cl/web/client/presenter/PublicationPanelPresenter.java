@@ -6,7 +6,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
@@ -14,6 +13,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Timer;
 
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -33,7 +33,13 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
+import esac.archive.esasky.cl.web.client.utility.UrlUtils;
+import esac.archive.esasky.cl.web.client.view.common.MenuItem;
+import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
 public class PublicationPanelPresenter {
@@ -42,47 +48,78 @@ public class PublicationPanelPresenter {
     
     private final DescriptorRepository descriptorRepo;
     private final EntityRepository entityRepo;
-    private final int MAX_FOV_DEG = 25;
+    private final int MAX_FOV_DEG = 181;
     private PublicationsEntity entity;
-    private int sourceLimit = 3000; //TODO mobile default source limit
+    private int sourceLimit;
     private long lastTimecall;
     private long lastSuccessfulTimecall;
+    private boolean isShowingDataOrCallInProgress;
+    private boolean isUpdateOnMoveChecked = false;
+    
+    private Timer sourceLimitChangedTimer = new Timer() {
+		
+		@Override
+		public void run() {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_TruncationNumberChanged, "Source Limit: " + sourceLimit + " URL: " + UrlUtils.getUrlForCurrentState());
+		}
+	};
 
     public interface View {
     	void hide();
     	void toggle();
     	boolean isShowing();
 
-    	EsaSkyButton getDoPublicationsQueryButton();
     	EsaSkyButton getUpdateButton();
-    	HasClickHandlers getRecentreButton();
-    	HasClickHandlers getRemoveButton();
+    	void addRemoveButtonClickHandler(ClickHandler handler);
     	void setPublicationStatusText(String statusText);
     	
-    	void setInitialLayout();
-    	void setPublicationResultsAvailableLayout();
     	void setMaxFoV(boolean maxFov);
     	void setLoadingSpinnerVisible(boolean visible);
     	
-    	boolean getUpdateOnMoveValue();
-    	void addUpdateOnMoveCheckboxOnValueChangeHandler(ValueChangeHandler<Boolean> handler);
+    	void addUpdateOnMoveSwitchClickHandler(ClickHandler handler);
+    	void setUpdateOnMoveSwitchValue(boolean checked);
     	void addSourceLimitOnValueChangeHandler(ValueChangeHandler<String> handler);
+    	void setSourceLimitValues(int value, int min, int max);
+    	
+    	void onlyShowFovWarning(boolean onlyShowFovWarning);
+    	void setMaxFovText(String text);
+    	
+    	String getOrderByValue();
+    	String getOrderByDescription();
     	
     	int getLimit();
+    	
+    	void addTruncationOption(MenuItem<String> menuItem);
+    	void addTruncationOptionObserver(MenuObserver observer);
     }
     
     public PublicationPanelPresenter(final View inputView, final DescriptorRepository descriptorRepo, final EntityRepository entityRepo) {
         this.view = inputView;
         this.descriptorRepo = descriptorRepo;
         this.entityRepo = entityRepo;
-        view.setInitialLayout();
-        
+        sourceLimit = DeviceUtils.isMobileOrTablet() ? 300 : 3000;
 
+		view.addTruncationOption(new MenuItem<String> ("bibcount DESC", TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost"), true));
+		view.addTruncationOption(new MenuItem<String> ("bibcount ASC", TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"), true));
+		view.addTruncationOption(new MenuItem<String> ("name ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueSourceNameAZ"), true));
+		view.addTruncationOption(new MenuItem<String> ("name DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueSourceNameZA"), true));
+		view.addTruncationOption(new MenuItem<String> ("ra DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueRaHigh"), true));
+		view.addTruncationOption(new MenuItem<String> ("ra ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueRaLow"), true));
+		view.addTruncationOption(new MenuItem<String> ("dec DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueDecHigh"), true));
+		view.addTruncationOption(new MenuItem<String> ("dec ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueDecLow"), true));
+        
+		view.setMaxFovText(TextMgr.getInstance().getText("publicationPanel_maxFovWarning").replace("$MAX_FOV$", String.valueOf(MAX_FOV_DEG)));
+        view.setSourceLimitValues(sourceLimit, 1, 50000);
+		
 		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
 
 			@Override
 			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
 				view.setMaxFoV(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG);
+				if(AladinLiteWrapper.getInstance().getFovDeg() < MAX_FOV_DEG && isShowing() && !isShowingDataOrCallInProgress) {
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_MoveTriggeredBoxQuery, "");
+					getPublications();
+				}
 			}
 		});
 
@@ -90,17 +127,21 @@ public class PublicationPanelPresenter {
 			
 			@Override
 			public void onChangeEvent(AladinLiteCoordinatesOrFoVChangedEvent clickEvent) {
-				if(view.getUpdateOnMoveValue()) {
+				if(isUpdateOnMoveChecked) {
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_MoveTriggeredBoxQuery, "");
 					getPublications();
 				}
 			}
 		});
 		
-		view.addUpdateOnMoveCheckboxOnValueChangeHandler(new ValueChangeHandler<Boolean>() {
-
+		view.addUpdateOnMoveSwitchClickHandler(new ClickHandler() {
+			
 			@Override
-			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				if(event.getValue() 
+			public void onClick(ClickEvent event) {
+				isUpdateOnMoveChecked = !isUpdateOnMoveChecked;
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_UpdateOnMove, "UpdateOnMove: " + isUpdateOnMoveChecked);
+				view.setUpdateOnMoveSwitchValue(isUpdateOnMoveChecked);
+				if(isUpdateOnMoveChecked
 						&& (entity == null || !entity.getSkyViewPosition().compare(CoordinateUtils.getCenterCoordinateInJ2000(), 0.01))
 						) {
 					getPublications();
@@ -108,21 +149,15 @@ public class PublicationPanelPresenter {
 			}
 		});
         
-        view.getRemoveButton().addClickHandler(new ClickHandler() {
+        view.addRemoveButtonClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				view.setInitialLayout();
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_Remove, UrlUtils.getUrlForCurrentState());
 				cleanPublicationSources();
 				entity = null;
-			}
-		});
-        
-        view.getDoPublicationsQueryButton().addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				getPublications();
+				isShowingDataOrCallInProgress = false;
+				view.hide();
 			}
 		});
         
@@ -130,17 +165,19 @@ public class PublicationPanelPresenter {
         	
         	@Override
         	public void onClick(ClickEvent event) {
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_Update, UrlUtils.getUrlForCurrentState());
         		getPublications();
         	}
         });
         
-        view.getRecentreButton().addClickHandler(new ClickHandler() {
+        view.addTruncationOptionObserver(new MenuObserver() {
 			
 			@Override
-			public void onClick(ClickEvent event) {
-                AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(entity.getSkyViewPosition().getCoordinate().ra),
-                        Double.toString(entity.getSkyViewPosition().getCoordinate().dec));
-                AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
+			public void onSelectedChange() {
+				if(entity != null) {
+					entity.setOrderByDescription(view.getOrderByDescription());
+				}
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_TruncationOptionsChanged, "Order By: " + view.getOrderByValue() + " URL: " + UrlUtils.getUrlForCurrentState());
 			}
 		});
         
@@ -152,26 +189,30 @@ public class PublicationPanelPresenter {
 				if(entity != null) {
 					entity.setPublicationsSourceLimit(view.getLimit());
 				}
+				sourceLimitChangedTimer.schedule(1000);
 			}
 		});
         
     }
     
     private void getPublications() {
-    	
 		view.setMaxFoV(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG);
 		if(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG) {
 			return;
 		}
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQuery, UrlUtils.getUrlForCurrentState());
+		view.onlyShowFovWarning(false);
 		
-		view.setPublicationStatusText("Updating...");
+		view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_updating"));
 		view.setLoadingSpinnerVisible(true);
 		
 		final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
+		isShowingDataOrCallInProgress = true;
 		
         if (entity == null) {            
             entity = entityRepo.createPublicationsEntity(descriptor);
             entity.setPublicationsSourceLimit(sourceLimit);
+            entity.setOrderByDescription(view.getOrderByDescription());
         } else {
         	entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
         }
@@ -181,10 +222,10 @@ public class PublicationPanelPresenter {
         // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
         String url = "";
         if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_DATA_FROM_SIMBAD) {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit());
+            final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), view.getOrderByValue());
             url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encode(adql), null);
         } else {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit());
+            final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), view.getOrderByValue());
             url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
         }
         
@@ -199,17 +240,24 @@ public class PublicationPanelPresenter {
 				@Override
 				protected void onSuccess(Response response) {
 					
-					//TODO replace GUiS..isPubActive with local equivalent... What if you have exited publication mode?
 					if(entity != null && timecall > lastSuccessfulTimecall) {
-						view.setPublicationResultsAvailableLayout();
 						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 						TapRowList rowList = mapper.read(response.getText());
 						entity.setMetadata(rowList);
 						entity.addShapes(rowList);
 						lastSuccessfulTimecall = timecall;
 			    		if(timecall == lastTimecall) {
-				    		//TODO source limit text / 0 results text?
-			    			view.setPublicationStatusText(rowList.getData().size() + " sources with related publications");
+			    			if(rowList.getData().size() == 0) {
+			    				view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextNoPublications"));
+			    			} else {
+			    				String formattedNumber = NumberFormatter.formatToNumberWithSpaces(Integer.toString(rowList.getData().size()));
+			    				if(rowList.getData().size() >= entity.getSourceLimit()) {
+			    					view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextTruncated") + " "
+			    							+ TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
+			    				} else {
+			    					view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
+			    				}
+			    			}
 				    		view.setLoadingSpinnerVisible(false);
 				    	}
 		    		}
@@ -218,8 +266,9 @@ public class PublicationPanelPresenter {
 				@Override
 				public void onError(Request request, Throwable exception) {
 					super.onError(request, exception);
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQueryFailed, "Exception: " + exception + " URL: " + UrlUtils.getUrlForCurrentState());
 					if(timecall == lastTimecall) {
-						view.setPublicationStatusText("Failed to retreive publications");
+						view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextFailed"));
 						view.setLoadingSpinnerVisible(false);
 					}
 				};
@@ -227,8 +276,13 @@ public class PublicationPanelPresenter {
 			});
 
         } catch (RequestException e) {
+        	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQueryFailed, "Exception: " + e.toString() + " URL: " + UrlUtils.getUrlForCurrentState());
             Log.error(e.getMessage());
             Log.error(debugPrefix + "Error fetching JSON data from server");
+            if(timecall == lastTimecall) {
+            	view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextFailed"));
+            	view.setLoadingSpinnerVisible(false);
+            }
         }
     }
 
@@ -238,6 +292,10 @@ public class PublicationPanelPresenter {
     
     public void toggle() {
 		view.toggle();
+		if(isShowing() && !isShowingDataOrCallInProgress) {
+			getPublications();
+			view.onlyShowFovWarning(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG);
+		}
     }
     
     public boolean isShowing() {

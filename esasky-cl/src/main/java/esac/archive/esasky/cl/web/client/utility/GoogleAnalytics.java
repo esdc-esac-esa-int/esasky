@@ -29,6 +29,7 @@ public final class GoogleAnalytics {
     public static final String CAT_TabRow_Download = "TabRow_Download";
     public static final String CAT_TabRow_Recenter = "TabRow_Recenter";
     public static final String CAT_API = "API";
+    public static final String CAT_Publication = "Publication";
     public static final String CAT_Welcome = "Welcome";
     public static final String CAT_Preview = "Preview";
     public static final String CAT_DataPanel_Pager = "DataPanel_Pager";
@@ -105,6 +106,15 @@ public final class GoogleAnalytics {
     public static final String ACT_Search_SearchWrongCoords = "SearchWrongCoords";
     
     public static final String ACT_Preview_PostcardLoadFailed = "PostcardLoadFailed";
+    
+    public static final String ACT_Publication_BoxQuery = "PublicationBoxQueryTotal";
+    public static final String ACT_Publication_BoxQueryFailed = "PublicationBoxQueryFailed";
+    public static final String ACT_Publication_Update = "PublicationUpdateButton";
+    public static final String ACT_Publication_Remove = "PublicationRemoveButton";
+    public static final String ACT_Publication_UpdateOnMove = "PublicationUpdateOnMoveChanged";
+    public static final String ACT_Publication_MoveTriggeredBoxQuery = "PublicationBoxQueryTriggeredByMoveOperation";
+    public static final String ACT_Publication_TruncationOptionsChanged = "PublicationTruncationOptionsChanged";
+    public static final String ACT_Publication_TruncationNumberChanged = "PublicationTruncationNumbrtChanged";
     
     public static final String ACT_Tab_Resize = "TabResize";
     public static final String ACT_TreeMap_Resize = "TreeMapResize";

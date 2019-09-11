@@ -16,7 +16,7 @@ public class TAPMetadataPublicationsService {
      * @param cs Input CountStatus
      * @return Query in ADQL format.
      */
-    public static String getMetadataAdqlFromEsaSkyTap(PublicationsDescriptor descriptor, int limit) {
+    public static String getMetadataAdqlFromEsaSkyTap(PublicationsDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit
                 + " name, ra, dec, bibcount  from " + descriptor.getTapTable()
                 + " where bibcount>0 AND 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
@@ -50,10 +50,8 @@ public class TAPMetadataPublicationsService {
 
         }
         adql += shape + ")";
-
-        if (null != descriptor.getOrderBy() && !"".equals(descriptor.getOrderBy().trim())) {
-            adql += " ORDER BY " + descriptor.getOrderBy();
-        }
+        
+        adql += " ORDER BY " + orderBy;
 
         Log.debug("[TAPMetadataPublicationsService/getMetadataAdql()] ADQL " + adql);
 
@@ -65,7 +63,7 @@ public class TAPMetadataPublicationsService {
      * @param descriptor Input PublicationsDescriptor.
      * @return Query in ADQL format.
      */
-    public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit) {
+    public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit 
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
                 + " where 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
@@ -100,9 +98,7 @@ public class TAPMetadataPublicationsService {
         }
         adql += shape + ") and nbref > 0";
 
-        if (null != descriptor.getOrderBy() && !"".equals(descriptor.getOrderBy().trim())) {
-            adql += " ORDER BY " + descriptor.getOrderBy();
-        }
+        adql += " ORDER BY " + orderBy;
 
         Log.debug("[TAPMetadataPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
 
