@@ -159,6 +159,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		addSkyButton.addStyleName("addSkyBtn");
 		addSkyButton.setMediumStyle();
 		addSkyButton.disableButton();
+		addSkyButton.setTitle(TextMgr.getInstance().getText("selectSkyPanel_addSky"));
 		addSkyButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -173,7 +174,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	
 	public void onValueChange(double value) {
 		int nRows = skyTable.getRowCount();
-		int rowNumber = Math.min((int) Math.floor(value + 0.01),nRows - 1); // 0.01 extra because of float number precision errors. 
+		int rowNumber = Math.min((int) Math.floor(value + 0.01), nRows - 1); // 0.01 extra because of float number precision errors. 
 		double opacity = value - rowNumber;
 		
 		//Enforce only 1 HiPS close to the change
@@ -183,7 +184,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		
 		SkyRow skyRow;
 		if(opacity > 0.95 && rowNumber + 1 < nRows) {
-			skyRow = (SkyRow) skyTable.getWidget(rowNumber+1, 0);
+			skyRow = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
 		}else {
 			skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
 		}
