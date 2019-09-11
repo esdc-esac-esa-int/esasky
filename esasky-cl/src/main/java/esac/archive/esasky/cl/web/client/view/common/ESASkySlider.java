@@ -10,6 +10,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+
 
 public class ESASkySlider extends FlowPanel {
 
@@ -23,6 +25,7 @@ public class ESASkySlider extends FlowPanel {
     private double minValue;
     private double maxValue;
     private double currentValue;
+    private long lastSentGoogleAnalyticsTime = 0;
 
     /**
      * A ClientBundle that provides images for this widget.
@@ -94,6 +97,11 @@ public class ESASkySlider extends FlowPanel {
     private void changeValueFromFraction(double scrollFraction) {
 		double value = (maxValue - minValue) * scrollFraction + minValue;
 		setValue(value);
+		
+		if(System.currentTimeMillis() -lastSentGoogleAnalyticsTime > 1000) {
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Slider, GoogleAnalytics.ACT_Slider_Moved, Double.toString(value));
+			lastSentGoogleAnalyticsTime = System.currentTimeMillis();
+		}
     }
 
     public void setValue(double value) {

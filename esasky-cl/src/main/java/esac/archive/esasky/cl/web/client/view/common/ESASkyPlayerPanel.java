@@ -19,6 +19,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
 public class ESASkyPlayerPanel extends Composite {
@@ -37,7 +38,10 @@ public class ESASkyPlayerPanel extends Composite {
     private double increaser = 1.0;
     protected List<Selectable> entries;
     private String playerId = UUID.randomUUID().toString();
+    private String playerName;
+    private String googleAnalyticsCat;
     private SurveyBlinkTimer timer = new SurveyBlinkTimer();
+    private long timeSincePlayerStarted = 0;
     /**
      * Timer inner class to execute the blinking.
      *
@@ -83,21 +87,23 @@ public class ESASkyPlayerPanel extends Composite {
         CssResource style();
     }
 
-    public ESASkyPlayerPanel() {
+    public ESASkyPlayerPanel(String playerName) {
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
+        this.playerName = playerName;
 
         initView();
     }
     
-    public ESASkyPlayerPanel(int waitTime, double increaseValue) {
+    public ESASkyPlayerPanel(int waitTime, double increaseValue, String playerName) {
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
         
         this.waitTime = waitTime;
         this.increaser = increaseValue;
+        this.playerName = playerName;
 
         initView();
     }
@@ -113,7 +119,16 @@ public class ESASkyPlayerPanel extends Composite {
         hidePlayer();
         pause();
         initWidget(player);
+        setGoogleAanalyticsProperties();
 
+    }
+    
+    private void setGoogleAanalyticsProperties() {
+    	if (playerName == "TargetListPlayer") {
+    		googleAnalyticsCat = GoogleAnalytics.CAT_TargetList;
+    	}else {
+    		googleAnalyticsCat = GoogleAnalytics.CAT_SkiesMenu;
+    	}
     }
 
 	private void initializeButtons() {
@@ -209,11 +224,13 @@ public class ESASkyPlayerPanel extends Composite {
     public final void goToNextSurvey() {
         increaseCounter();
         select();
+        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Next);
     }
 
     public final void goToPreviousSurvey() {
         decreaseCounter();
         select();
+        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Previous);
     }
     
     private void increaseValue() {
@@ -290,13 +307,17 @@ public class ESASkyPlayerPanel extends Composite {
         hidePauseButton();
         showPlayButton();
         CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(playerId));
+        double timePlayed = (System.currentTimeMillis()- timeSincePlayerStarted ) / 1000.0 ;
+        GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Pause, Double.toString(timePlayed));
     }
 
     private void play() {
-        	showPauseButton();
-        	hidePlayButton();
+    	showPauseButton();
+    	hidePlayButton();
         startTimer();
         updateProgressIndicatorMessage(TextMgr.getInstance().getText("playerPanel_surveyTourStarted"));
+        timeSincePlayerStarted = System.currentTimeMillis();
+        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Play);
     }
 
 	private void updateProgressIndicatorMessage(String message) {

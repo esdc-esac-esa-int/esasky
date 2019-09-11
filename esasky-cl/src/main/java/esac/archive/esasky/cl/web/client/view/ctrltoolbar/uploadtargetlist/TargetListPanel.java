@@ -163,7 +163,7 @@ public class TargetListPanel extends DialogBox {
         targetsContainer.add(targetListScrollPanel);
         scrollPanelAnimation = new ScrollPanelAnimation(targetListScrollPanel);
 
-        playerPanel = new ESASkyPlayerPanel();
+        playerPanel = new ESASkyPlayerPanel("TargetListPlayer");
         playerPanel.setStyleName("uploadTargetPlayer");
         targetsContainer.add(playerPanel);
 

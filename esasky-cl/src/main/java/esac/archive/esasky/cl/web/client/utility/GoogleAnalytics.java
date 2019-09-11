@@ -39,6 +39,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Internationalization = "Internationalization";
     public static final String CAT_Pyesasky = "Pyesasky";
     public static final String CAT_JavaScriptAPI = "JavaScriptAPI";
+    public static final String CAT_Slider = "Slider";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
@@ -113,6 +114,13 @@ public final class GoogleAnalytics {
 
     public static final String ACT_Count_Count = "Count";
     
+    public static final String ACT_Player_Play = "Play";
+    public static final String ACT_Player_Pause = "Pause";
+    public static final String ACT_Player_Next = "Next";
+    public static final String ACT_Player_Previous = "Previous";
+    
+    public static final String ACT_Slider_Moved = "Moved";
+    
     public static final String ACT_Pyesasky_goToTargetName = "goToTargetName";
     public static final String ACT_Pyesasky_setFoV = "setFoV";
     public static final String ACT_Pyesasky_goToRADec = "goToRADec";
@@ -165,6 +173,6 @@ public final class GoogleAnalytics {
     }
 	
 	public static void sendEventWithURL(String eventCategory, String eventAction, String extra){
-        sendEvent(eventCategory, eventAction, UrlUtils.getUrlForCurrentState() + extra);
+        sendEvent(eventCategory, eventAction, UrlUtils.getUrlForCurrentState() + "Extras: " + extra);
     }
 }

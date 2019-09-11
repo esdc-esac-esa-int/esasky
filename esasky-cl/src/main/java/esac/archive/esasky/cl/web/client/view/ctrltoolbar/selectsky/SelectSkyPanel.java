@@ -257,7 +257,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private ESASkyPlayerPanel createPlayer() {
-		player = new ESASkyPlayerPanel(50, 0.01);
+		player = new ESASkyPlayerPanel(50, 0.01, "HiPSPlayer");
 		player.addStyleName("skyPlayer");
 		player.registerValueChangeObserver(new EsaSkyPlayerObserver() {
 			

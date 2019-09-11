@@ -392,7 +392,7 @@ public class Api {
 	}
 	
 	public void setHiPSSliderValue(double value) {
-		if(System.currentTimeMillis() - lastGASliderSent > 10000) {
+		if(System.currentTimeMillis() - lastGASliderSent > 1000) {
 			lastGASliderSent = System.currentTimeMillis();
 			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setHipsSliderValue, Double.toString(value));
 		}
