@@ -48,14 +48,12 @@
 }
 
 #header__dropdown:hover,
-.header select:hover,
-.header__science-mode__container:hover{
+.header select:hover{
 	background-color: rgba(255, 255, 255, 0.15);
 }
 
 #header__dropdown:active,
-.header select:active,
-.header__science-mode__container:active{
+.header select:active{
 	background-color: rgba(255, 255, 255, 0.30);
 }
 
@@ -92,7 +90,7 @@
 
 .coordinateLabel {
 	display: inline-block;
-	width: 170px;
+	width: 174px;
 }
 
 .isCenterPosition {
@@ -199,93 +197,4 @@
 .header__dropdown__screenshot__text,
 .header__dropdown__grid__text  {
 	display: inline-block;
-}
-
-.header__science-mode__container {
-	display: inline-block;
-	vertical-align: middle;
-	box-sizing: border-box;
-	padding: 0px 7px;
-}
-
-.header__science-switch {
-	
-}
-
-.header__science-mode__clickable-area{
-	cursor: pointer;
-}
-
-.header__science-mode__label {
-	display: inline-block;
-	vertical-align: middle;
-	padding-right: 3px;
-}
-
-.header__science-mode__label-container {
-	display: inline-block;
-	vertical-align: middle;
-	pointer-events: none;
-}
-
-/* The switch - the box around the slider */
-.header__science-mode__switch-container {
-	pointer-events: none;
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-	width: 30px;
-	height: 17px;
-}
-
-/* Hide default HTML checkbox */
-.header__science-mode__switch-container input {
-	display: none;
-}
-
-/* The slider */
-.header__science-mode__switch-slider {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-
-.header__science-mode__switch-slider:before {
-	position: absolute;
-	content: "";
-	height: 13px;
-	width: 13px;
-	left: 2px;
-	bottom: 2px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-
-input:checked+.header__science-mode__switch-slider {
-	background-color: #20A4D8;
-}
-
-input:focus+.header__science-mode__switch-slider {
-	box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked+.header__science-mode__switch-slider:before {
-	-webkit-transform: translateX(13px);
-	-ms-transform: translateX(13px);
-	transform: translateX(13px);
-}
-
-/* Rounded sliders */
-.header__science-mode__switch-slider.round {
-	border-radius: 17px;
-}
-
-.header__science-mode__switch-slider.round:before {
-	border-radius: 50%;
 }

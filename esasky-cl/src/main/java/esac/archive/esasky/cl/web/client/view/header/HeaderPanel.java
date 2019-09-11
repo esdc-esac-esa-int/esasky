@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -37,6 +36,7 @@ import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
@@ -53,7 +53,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private EsaSkyStringButton feedbackButton = new EsaSkyStringButton(TextMgr.getInstance().getText("header_comunity"));
 	private EsaSkyStringButton hipsLabelButton = new EsaSkyStringButton(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
 
-	private FocusPanel headerScienceModeSwitch = new FocusPanel();
+	private EsaSkySwitch headerScienceModeSwitch;
 	private String headerScienceModeSwitchId = Document.get().createUniqueId();
 	private StatusPanel statusPanel = new StatusPanel();
 	private Label coordinateLabel = new Label();
@@ -70,7 +70,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownGridEntry = new FocusPanel();
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
-	private FocusPanel dropdownScienceModeSwitch = new FocusPanel(); 
+	private EsaSkySwitch dropdownScienceModeSwitch; 
 	private EsaSkyButton warningButton = new EsaSkyButton(resources.warning());
 	private final ListBox dropdownLanguageBox = new ListBox();
 	private String dropdownScienceModeSwitchId = Document.get().createUniqueId();
@@ -170,7 +170,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		hideWarningButton();
 		rightSideHeader.add(warningButton);
 
-		headerScienceModeSwitch = createScienceModeSwitch(headerScienceModeSwitchId);
+		headerScienceModeSwitch = new EsaSkySwitch(headerScienceModeSwitchId, GUISessionStatus.getIsInScienceMode(),
+				TextMgr.getInstance().getText("header_sciMode"), TextMgr.getInstance().getText("header_sciModeSwitchTooltip"));
+		
 		headerScienceModeSwitch.getElement().setId("header__scienceMode");
 		if(!GUISessionStatus.isHidingSwitch()) {
 			rightSideHeader.add(headerScienceModeSwitch);
@@ -202,35 +204,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		setResponsiveStyle();
 	}
 
-	private FocusPanel createScienceModeSwitch(String switchId) {
-		FlowPanel scienceModeContainer = new FlowPanel();
-		scienceModeContainer.addStyleName("header__science-mode__container");
-
-		HTML scienceModeLabel = new HTML(
-				"<label class=\"header__science-mode__label unselectable\" for=\"" + switchId + "\"> " 
-						+ TextMgr.getInstance().getText("header_sciMode") + "</label>");
-		scienceModeLabel.addStyleName("header__science-mode__label-container");
-		scienceModeContainer.add(scienceModeLabel);
-		String inputHtml = "  <input type=\"checkbox\" id=\"" + switchId + "\">";
-		if(GUISessionStatus.getIsInScienceMode()) {
-			inputHtml = inputHtml.replace(">", "checked>");
-		}
-		HTML scienceModeSwitch = new HTML(
-				"<label class=\"header__science-mode__switch-container\">"
-						+ inputHtml
-						+ "  <span class=\"header__science-mode__switch-slider round\"></span>" + 
-				"</label>");
-		scienceModeSwitch.addStyleName("header__science-mode__switch-container");
-		scienceModeContainer.add(scienceModeSwitch);
-
-		FocusPanel scienceModeClickableArea = new FocusPanel();
-		scienceModeContainer.addStyleName("header__science-mode__clickable-area");
-		scienceModeContainer.setTitle(TextMgr.getInstance().getText("header_sciModeSwitchTooltip"));
-
-		scienceModeClickableArea.add(scienceModeContainer);
-		return scienceModeClickableArea;
-	}
-
 	private FocusPanel createHamburgerMenu() {
 		dropdownContainer.addStyleName("header__dropdown__container");
 		FlowPanel dropdown = new FlowPanel();
@@ -251,7 +224,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		FlowPanel dropdownContent = new FlowPanel();
 		dropdownContent.addStyleName("header__dropdown__content");
 
-		dropdownScienceModeSwitch = createScienceModeSwitch(dropdownScienceModeSwitchId);
+		dropdownScienceModeSwitch = new EsaSkySwitch(dropdownScienceModeSwitchId, GUISessionStatus.getIsInScienceMode(),
+				TextMgr.getInstance().getText("header_sciMode"), TextMgr.getInstance().getText("header_sciModeSwitchTooltip"));
+		
 		dropdownScienceModeSwitch.getElement().setId("header__dropdown__science");
 		if(!GUISessionStatus.isHidingSwitch()) {
 			dropdownContent.add(dropdownScienceModeSwitch);
@@ -555,8 +530,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	@Override
 	public void setIsInScienceMode(boolean isInScienceMode) {
-		Document.get().getElementById(dropdownScienceModeSwitchId).setPropertyBoolean("checked", isInScienceMode);
-		Document.get().getElementById(headerScienceModeSwitchId).setPropertyBoolean("checked", isInScienceMode);
+		dropdownScienceModeSwitch.setChecked(isInScienceMode);
+		headerScienceModeSwitch.setChecked(isInScienceMode);
 	}
 
 	@Override

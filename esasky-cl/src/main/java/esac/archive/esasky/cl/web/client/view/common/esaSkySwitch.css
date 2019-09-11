@@ -1,0 +1,96 @@
+@CHARSET "UTF-8";
+
+.esasky__switch__container {
+	display: inline-flex;
+	vertical-align: middle;
+	box-sizing: border-box;
+	padding: 0px 7px;
+	align-items: center;
+	height: 100%;
+}
+
+.esasky__switch__clickable-area{
+	cursor: pointer;
+}
+
+.esasky__switch__container:hover{
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+.esasky__switch__container:active{
+	background-color: rgba(255, 255, 255, 0.30);
+}
+
+.esasky__switch__label {
+	display: inline-block;
+	vertical-align: middle;
+	padding-right: 3px;
+}
+
+.esasky__switch__label-container {
+	display: inline-block;
+	vertical-align: middle;
+	pointer-events: none;
+}
+
+/* The switch - the box around the slider */
+.esasky__switch__switch-container {
+	pointer-events: none;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	width: 30px;
+	height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.esasky__switch__switch-container input {
+	display: none;
+}
+
+/* The slider */
+.esasky__switch__switch-slider {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.esasky__switch__switch-slider:before {
+	position: absolute;
+	content: "";
+	height: 13px;
+	width: 13px;
+	left: 2px;
+	bottom: 2px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.esasky__switch__switch-slider {
+	background-color: #20A4D8;
+}
+
+input:focus+.esasky__switch__switch-slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.esasky__switch__switch-slider:before {
+	-webkit-transform: translateX(13px);
+	-ms-transform: translateX(13px);
+	transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.esasky__switch__switch-slider.round {
+	border-radius: 17px;
+}
+
+.esasky__switch__switch-slider.round:before {
+	border-radius: 50%;
+}
