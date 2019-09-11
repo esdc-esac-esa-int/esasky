@@ -20,6 +20,7 @@ public class PublicationsEntity extends CatalogEntity {
     Map<String, Integer> sourceIndexes = new HashMap<String, Integer>();
     
     private int sourceLimit;
+    private String orderByDescription = "";
 
     public PublicationsEntity(PublicationsDescriptor pubDescriptor, CountStatus countStatus,
             JavaScriptObject pubOverlay, SkyViewPosition skyViewPosition,
@@ -88,11 +89,20 @@ public class PublicationsEntity extends CatalogEntity {
     }
     
     @Override
-    protected int getSourceLimit() {
+    public int getSourceLimit() {
     	return sourceLimit;
     }
     
 	public void setPublicationsSourceLimit(int sourceLimit) {
 		this.sourceLimit = sourceLimit;
+	}
+	
+	@Override
+	protected String getOrderByDescription() {
+		return orderByDescription;
+	}
+	
+	public void setOrderByDescription(String orderBy) {
+		this.orderByDescription = orderBy;
 	}
 }

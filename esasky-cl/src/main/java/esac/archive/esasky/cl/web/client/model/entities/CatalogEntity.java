@@ -178,16 +178,16 @@ public class CatalogEntity implements GeneralEntityInterface{
 				sourceLimitNotificationTimer.run();
 			}
 			String sourceLimitDescription = descriptor.getSourceLimitDescription();
-			
+			String orderBy = getOrderByDescription();
 			if (sourceLimitDescription.contains("|")) {
 				String[] sourceLimitArr = sourceLimitDescription.split("\\|");
-				sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitArr[0]).replace("$sourceLimit$", getSourceLimit() + "").replace("$orderBy$", TextMgr.getInstance().getText(sourceLimitArr[1]));
-			} else {
-				sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", getSourceLimit() + "");
-			}
+				orderBy = sourceLimitArr[1];
+				sourceLimitDescription = sourceLimitArr[0];
+			} 
+			sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", getSourceLimit() + "").replace("$orderBy$", orderBy);
 			CommonEventBus.getEventBus().fireEvent( 
 					new ProgressIndicatorPushEvent(getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
-			sourceLimitNotificationTimer.schedule(8000);
+			sourceLimitNotificationTimer.schedule(6000);
 		}
 	}
 	
@@ -513,5 +513,9 @@ public class CatalogEntity implements GeneralEntityInterface{
 	
 	protected int getSourceLimit() {
 		return descriptor.getSourceLimit();
+	}
+	
+	protected String getOrderByDescription() {
+		return "";
 	}
 }
