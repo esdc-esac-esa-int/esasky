@@ -25,6 +25,7 @@ public abstract class Tooltip extends AutoHidePanel{
     private final int left;
     private final int top;
     protected HTML typeSpecificContent;
+    protected FlowPanel typeSpecificFlowPanel = new FlowPanel();
     protected Shape source;
     
     private Resources resources = GWT.create(Resources.class);
@@ -73,6 +74,7 @@ public abstract class Tooltip extends AutoHidePanel{
         typeSpecificContent = new HTML();
         typeSpecificContent.removeStyleName("gwt-HTML");
         tooltip.add(typeSpecificContent);
+        tooltip.add(typeSpecificFlowPanel);
 
         FlowPanel links = new FlowPanel();
         EsaSkyButton simbadButton = createLinkButton(resources.simbad());

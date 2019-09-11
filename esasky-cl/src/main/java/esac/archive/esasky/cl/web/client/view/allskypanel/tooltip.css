@@ -30,3 +30,13 @@
 .tooltipButton div{
 	border: 0px;	
 }
+
+#publicationTooltip__button > div{
+	border: 0px;
+	text-decoration: underline;
+	color: #0098db;
+}
+
+#publicationTooltip__button > .defaultEsaSkyStringButton > .html-face{
+	color: #0098db !important;
+}
