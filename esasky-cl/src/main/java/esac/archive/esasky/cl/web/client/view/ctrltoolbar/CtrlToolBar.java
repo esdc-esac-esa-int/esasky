@@ -72,6 +72,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private PlanObservationPanel planObservationPanel;
 	private TargetListPanel targetListPanel;
 	private String HiPSFromURL = null;
+	private String unwantedRandomTargets ="";
 	private final TreeMapContainer observationTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_IMAGING);
 	private final TreeMapContainer catalogTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_CATALOGUE);
 	private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
@@ -475,7 +476,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		button.addClickHandler(new ClickHandler() {
         	    	  public void onClick(ClickEvent event) {
         	    		  if(!exploreActionInProgress) {
-        	    			  showRandomSource(0);
+        	    			  showRandomSource();
         	    			  sendGAEvent(GoogleAnalytics.ACT_CtrlToolbar_Dice);
         	    		  }
         	    	  }
@@ -490,15 +491,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	
 	private MessageDialogBox targetDialogBox = new MessageDialogBox(new HTML(), "", "skyObject");
 	
-	private void showRandomSource (final int tries) {
-	    if (tries > 2) {
-	        exploreActionInProgress = false;
-	        return;
-	    }
-	    
+	private void showRandomSource () {
 	    exploreActionInProgress = true;
 	    
-        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.RANDOM_SOURCE_URL + "?lang=" + TextMgr.getInstance().getLangCode(), new IJSONRequestCallback() {
+        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.RANDOM_SOURCE_URL + "?lang=" + TextMgr.getInstance().getLangCode()
+        		+ "&UNWANTED=" + unwantedRandomTargets, new IJSONRequestCallback() {
             
             @Override
             public void onSuccess(String responseText) {
@@ -506,8 +503,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                 try {
                     
                     final ESASkyTarget esaSkyTarget = ParseUtils.parseJsonTarget(responseText);
-
-                    if (!esaSkyTarget.getTitle().isEmpty()
+                    
+                    if(esaSkyTarget.getName().equals("noMoreTargets")) {
+                    	CtrlToolBar.this.unwantedRandomTargets = "";
+                    	exploreActionInProgress = false;
+                    	CtrlToolBar.this.showRandomSource();           	
+                    }else if (!esaSkyTarget.getTitle().isEmpty()
                         && !esaSkyTarget.getDescription().isEmpty()
                         && !esaSkyTarget.getRa().isEmpty()
                         && !esaSkyTarget.getDec().isEmpty()
@@ -517,16 +518,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                         String surveyName = (!esaSkyTarget.getHipsName().isEmpty()) ? esaSkyTarget.getHipsName() : EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
                         SelectSkyPanel.setSelectedHipsName(surveyName);
                     	addTargetBox(esaSkyTarget.getTitle(), esaSkyTarget.getDescription());
+                    	
+                    	String targetName = esaSkyTarget.getName();
+                    	targetName = targetName.replaceAll("[\\[\\]]", "");
+                    	
+                    	CtrlToolBar.this.unwantedRandomTargets += "," + targetName;
                         
                         exploreActionInProgress = false;
                         
-                    } else {
-                        showRandomSource (tries + 1);
-                    }
-                    
+                    } 
                 } catch (Exception ex) {
                     Log.error("[CtrlToolBar] getRandomSource onSuccess ERROR: ", ex);
-                    showRandomSource (tries + 1);
                 }
             }
             
