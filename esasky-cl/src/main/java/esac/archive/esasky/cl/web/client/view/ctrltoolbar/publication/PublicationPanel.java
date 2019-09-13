@@ -27,6 +27,7 @@ import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.common.Toggler;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
@@ -52,6 +53,7 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	private FlowPanel advancedOptions;
 	private ClickHandler removeButtonClickHandler;
 	private EsaSkyNumberBox numberBox;
+	private Toggler advancedOptionsToggler;
 	private String updateOnMoveSwitchId = "publications__updateOnMove";
 	private final String sliderId = "publications__sourceLimitSlider";
 
@@ -152,16 +154,20 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		maxFoVWarning.addStyleName("publicationPanel__maxFovWarning");
 		
 		advancedOptions = new FlowPanel();
+		advancedOptionsToggler = new Toggler(advancedOptions);
+		advancedOptionsToggler.setText(TextMgr.getInstance().getText("publicationPanel_advanced"));
 		warningLabel.setText(TextMgr.getInstance().getText("publicationPanel_sourceLimitWarning"));
 		warningLabel.addStyleName("publicationPanel__warningLabel");
 		warningLabel.setVisible(false);
 		
-		Label truncationLabel = new Label(TextMgr.getInstance().getText("publicationPanel_truncationSettings"));
-		truncationLabel.addStyleName("publicationPanel__truncationLabel");
+		Label gettingTheFirstLabel = new Label(TextMgr.getInstance().getText("publicationPanel_getTheFirst"));
+		gettingTheFirstLabel.addStyleName("publicationPanel__getTheFirstLabel");
 		
 		numberBox = new EsaSkyNumberBox(NumberFormat.getFormat("#0"), 1);
 		numberBox.addStyleName("publicationPanel__limitTextBoxContainer");
 
+		Label sourcesBasedOn = new Label(TextMgr.getInstance().getText("publicationPanel_sourcesBasedOn"));
+		sourcesBasedOn.addStyleName("publicationPanel__sourcesBasedOn");
 		slider.addStyleName("publicationPanel__slideContainer");
 		FlowPanel sourceLimitContainer = new FlowPanel();
 		sourceLimitContainer.addStyleName("publicationPanel__sourceLimitContainer");
@@ -174,11 +180,13 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		publicationPanel.add(buttonContainer);
 		publicationPanel.add(statusContainer);
 		publicationPanel.add(maxFoVWarning);
+		publicationPanel.add(advancedOptionsToggler);
 		publicationPanel.add(advancedOptions);
 		
-		advancedOptions.add(truncationLabel);
-		advancedOptions.add(orderByDropdown);
+		advancedOptions.add(gettingTheFirstLabel);
 		advancedOptions.add(sourceLimitContainer);
+		advancedOptions.add(sourcesBasedOn);
+		advancedOptions.add(orderByDropdown);
 		advancedOptions.add(warningLabel);
 
 		this.add(publicationPanel);
@@ -271,7 +279,6 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		updateOnMoveSwitch.setVisible(!onlyShowFovWarning);
 		publicationStatusText.setVisible(!onlyShowFovWarning);
 		loadingSpinner.setVisible(!onlyShowFovWarning);
-		advancedOptions.setVisible(!onlyShowFovWarning);
 	}
 
 	@Override

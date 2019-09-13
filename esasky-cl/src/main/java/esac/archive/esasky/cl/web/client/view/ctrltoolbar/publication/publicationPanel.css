@@ -63,12 +63,12 @@
 	color: red;
 }
 
-.publicationPanel__truncationLabel, .publicationPanel__warningLabel, .publicationPanel__maxFovWarning{
+.publicationPanel__sourcesBasedOn, .publicationPanel__getTheFirstLabel, .publicationPanel__warningLabel, .publicationPanel__maxFovWarning{
 	text-align: center;
 	max-width: 12rem;
 }
 
-.publicationPanel__truncationLabel{
+.publicationPanel__getTheFirstLabel{
 	margin: auto;
 }
 
