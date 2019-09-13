@@ -54,6 +54,7 @@ public class StatusPresenter {
 
 			@Override
 			public void onPushEvent(final ProgressIndicatorPushEvent pushEvent) {
+				removeMessage(pushEvent.getId());
 				final Status newStatus = new Status(pushEvent.getId(), pushEvent.getMessage(), pushEvent.isImportant());
 				currentStatuses.add(newStatus);
 				statusTimer.run();
