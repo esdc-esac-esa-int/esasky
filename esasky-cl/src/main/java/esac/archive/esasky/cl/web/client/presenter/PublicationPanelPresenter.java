@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
@@ -22,7 +23,8 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoo
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
@@ -53,14 +55,21 @@ public class PublicationPanelPresenter {
     private int sourceLimit;
     private long lastTimecall;
     private long lastSuccessfulTimecall;
+    private int numberOfShownSources = 0;
     private boolean isShowingDataOrCallInProgress;
+    private boolean isCallInProgress;
+    private boolean isShowingTruncatedDataset = false;
     private boolean isUpdateOnMoveChecked = false;
+    private String progressIndicatorId = "publicationPresenterUpdatingId";
     
     private Timer sourceLimitChangedTimer = new Timer() {
 		
 		@Override
 		public void run() {
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_TruncationNumberChanged, "Source Limit: " + sourceLimit + " URL: " + UrlUtils.getUrlForCurrentState());
+			if(isShowingTruncatedDataset || isCallInProgress || numberOfShownSources > view.getLimit()) {
+				getPublications();
+			}
 		}
 	};
 
@@ -103,10 +112,6 @@ public class PublicationPanelPresenter {
 		view.addTruncationOption(new MenuItem<String> ("bibcount ASC", TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"), true));
 		view.addTruncationOption(new MenuItem<String> ("name ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueSourceNameAZ"), true));
 		view.addTruncationOption(new MenuItem<String> ("name DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueSourceNameZA"), true));
-		view.addTruncationOption(new MenuItem<String> ("ra DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueRaHigh"), true));
-		view.addTruncationOption(new MenuItem<String> ("ra ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueRaLow"), true));
-		view.addTruncationOption(new MenuItem<String> ("dec DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueDecHigh"), true));
-		view.addTruncationOption(new MenuItem<String> ("dec ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueDecLow"), true));
         
 		view.setMaxFovText(TextMgr.getInstance().getText("publicationPanel_maxFovWarning").replace("$MAX_FOV$", String.valueOf(MAX_FOV_DEG)));
         view.setSourceLimitValues(sourceLimit, 1, 50000);
@@ -153,6 +158,9 @@ public class PublicationPanelPresenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				removeProgressIndicator();
+				entity.removeSourceLimitNotificationNow();
+				numberOfShownSources = 0;
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_Remove, UrlUtils.getUrlForCurrentState());
 				cleanPublicationSources();
 				entity = null;
@@ -178,6 +186,9 @@ public class PublicationPanelPresenter {
 					entity.setOrderByDescription(view.getOrderByDescription());
 				}
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_TruncationOptionsChanged, "Order By: " + view.getOrderByValue() + " URL: " + UrlUtils.getUrlForCurrentState());
+				if(isShowingTruncatedDataset || isCallInProgress) {
+					getPublications();
+				}
 			}
 		});
         
@@ -202,9 +213,9 @@ public class PublicationPanelPresenter {
 		}
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQuery, UrlUtils.getUrlForCurrentState());
 		view.onlyShowFovWarning(false);
-		
 		view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_updating"));
 		view.setLoadingSpinnerVisible(true);
+		
 		
 		final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
 		isShowingDataOrCallInProgress = true;
@@ -231,43 +242,57 @@ public class PublicationPanelPresenter {
         
         Log.debug(debugPrefix + "Query [" + url + "]");
 
+        isCallInProgress = true;
         final long timecall = System.currentTimeMillis();
         lastTimecall = timecall;
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
-            builder.sendRequest(null, new JsonRequestCallback(TextMgr.getInstance().getText("PublicationsSourcesCallback_retrievingPubSources"), url) {
+        	addProgressIndicator(TextMgr.getInstance().getText("PublicationsSourcesCallback_retrievingPubSources"), url);
+            builder.sendRequest(null, new RequestCallback() {
 				
 				@Override
-				protected void onSuccess(Response response) {
+			    public void onResponseReceived(final Request request, final Response response) {
+			        if (200 != response.getStatusCode()) {
+			            onError(request, new Exception(response.getStatusCode() + " ("
+			                    + response.getStatusText() + ")"));
+			        }
 					
 					if(entity != null && timecall > lastSuccessfulTimecall) {
 						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 						TapRowList rowList = mapper.read(response.getText());
 						entity.setMetadata(rowList);
 						entity.addShapes(rowList);
+						numberOfShownSources = rowList.getData().size();
 						lastSuccessfulTimecall = timecall;
 			    		if(timecall == lastTimecall) {
+			    			removeProgressIndicator();
 			    			if(rowList.getData().size() == 0) {
 			    				view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextNoPublications"));
+			    				isShowingTruncatedDataset = false;
 			    			} else {
 			    				String formattedNumber = NumberFormatter.formatToNumberWithSpaces(Integer.toString(rowList.getData().size()));
 			    				if(rowList.getData().size() >= entity.getSourceLimit()) {
+			    					isShowingTruncatedDataset = true;
 			    					view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextTruncated") + " "
 			    							+ TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
 			    				} else {
+			    					isShowingTruncatedDataset = false;
 			    					view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
 			    				}
 			    			}
 				    		view.setLoadingSpinnerVisible(false);
+				    		isCallInProgress = false;
 				    	}
 		    		}
 				}
 				
 				@Override
 				public void onError(Request request, Throwable exception) {
-					super.onError(request, exception);
+					isCallInProgress = false;
+					numberOfShownSources = 0;
 					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQueryFailed, "Exception: " + exception + " URL: " + UrlUtils.getUrlForCurrentState());
 					if(timecall == lastTimecall) {
+						removeProgressIndicator();
 						view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextFailed"));
 						view.setLoadingSpinnerVisible(false);
 					}
@@ -276,10 +301,13 @@ public class PublicationPanelPresenter {
 			});
 
         } catch (RequestException e) {
+        	numberOfShownSources = 0;
+        	isCallInProgress = false;
         	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQueryFailed, "Exception: " + e.toString() + " URL: " + UrlUtils.getUrlForCurrentState());
             Log.error(e.getMessage());
             Log.error(debugPrefix + "Error fetching JSON data from server");
             if(timecall == lastTimecall) {
+            	removeProgressIndicator();
             	view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextFailed"));
             	view.setLoadingSpinnerVisible(false);
             }
@@ -305,6 +333,15 @@ public class PublicationPanelPresenter {
     private final void cleanPublicationSources () {
         final JavaScriptObject catalog = AladinLiteWrapper.getInstance().getPublicationCatalogue();
         AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(catalog);
+    }
+    
+    private void addProgressIndicator(String progressIndicatorMessage, String googleAnalyticsErrorMessage) {
+        CommonEventBus.getEventBus().fireEvent(
+                new ProgressIndicatorPushEvent(progressIndicatorId, progressIndicatorMessage, googleAnalyticsErrorMessage));
+    }
+
+    private void removeProgressIndicator() {
+        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(progressIndicatorId));
     }
     
 }

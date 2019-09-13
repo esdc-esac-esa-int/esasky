@@ -2569,9 +2569,6 @@
 	<text key="publicationPanel_sourceLimitWarning">
 		Warning: A high source limit may degrade performance
 	</text>
-	<text key="publicationPanel_truncationSettings">
-		Truncation settings
-	</text>
 	<text key="publicationPanel_orderByTooltip">
 		Truncation based on value
 	</text>
@@ -2587,18 +2584,6 @@
 	<text key="publicationPanel_truncationValueSourceNameZA">
 		Source name (Z-A)
 	</text>
-	<text key="publicationPanel_truncationValueRaHigh">
-		RA (High)
-	</text>
-	<text key="publicationPanel_truncationValueRaLow">
-		RA (Low)
-	</text>
-	<text key="publicationPanel_truncationValueDecHigh">
-		Dec (High)
-	</text>
-	<text key="publicationPanel_truncationValueDecLow">
-		Dec (Low)
-	</text>
 	<text key="publicationPanel_updating">
 		Updating...
 	</text>
@@ -2613,6 +2598,15 @@
 	</text>
 	<text key="publicationPanel_statusTextFailed">
 		Failed to retreive publications
+	</text>
+	<text key="publicationPanel_advanced">
+		Advanced
+	</text>
+	<text key="publicationPanel_getTheFirst">
+		Geting the first
+	</text>
+	<text key="publicationPanel_sourcesBasedOn">
+		sources based on
 	</text>
 	<text key="popupHeader_minimize">
 		Hide panel
