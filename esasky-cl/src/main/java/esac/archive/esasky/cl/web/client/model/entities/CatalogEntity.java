@@ -168,6 +168,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 	@Override
 	public void removeAllShapes() {
 		defaultEntity.removeAllShapes();
+		removeSourceLimitNotificationNow();
 	}
 	
 	@Override
@@ -517,5 +518,9 @@ public class CatalogEntity implements GeneralEntityInterface{
 	
 	protected String getOrderByDescription() {
 		return "";
+	}
+	
+	public void removeSourceLimitNotificationNow() {
+		sourceLimitNotificationTimer.run();
 	}
 }
