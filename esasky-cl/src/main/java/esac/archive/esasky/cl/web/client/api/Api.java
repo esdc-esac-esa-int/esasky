@@ -376,7 +376,11 @@ public class Api {
 	public void removeSkyRow(int index, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeHipsOnIndex, "");
 		JSONObject callbackMessage = new JSONObject();
-		if(!SelectSkyPanel.getInstance().removeSky(index)) {
+		if(index < 0) {
+			for(int i = SelectSkyPanel.getInstance().getNumberOfSkyRows() -1; i > 0 ;i--) {
+				SelectSkyPanel.getInstance().removeSky(i);
+			}
+		}else if(!SelectSkyPanel.getInstance().removeSky(index)) {
 			String msg = "Index out of bounds. Max number is: " + Integer.toString(SelectSkyPanel.getInstance().getNumberOfSkyRows());
 			callbackMessage.put("message",new JSONString(msg));
 		}

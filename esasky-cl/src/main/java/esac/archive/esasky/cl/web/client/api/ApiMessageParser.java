@@ -71,7 +71,7 @@ public class ApiMessageParser {
 				instance.@esac.archive.esasky.cl.web.client.api.Api::addHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.id, msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
 				break
 				
-			case 'removeHipsOnIndex':
+			case 'removeHips':
 				console.log('removeHipsOnIndex event captured!');
 				console.log(msg);
 				instance.@esac.archive.esasky.cl.web.client.api.Api::removeSkyRow(ILcom/google/gwt/core/client/JavaScriptObject;)(msg.content.index,e);
