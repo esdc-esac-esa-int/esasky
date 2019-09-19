@@ -46,8 +46,8 @@ public class CoordinateUtils {
     }
     
     public static boolean isTargetOutOfFocus(Double ra, Double dec, Double fovDeg) {
-    	double aladinRaDeg = AladinLiteWrapper.getCenterRaDeg();
-    	double aladinDecDeg = AladinLiteWrapper.getCenterDecDeg();
+    	double aladinRaDeg = AladinLiteWrapper.getInstance().getCenterLongitudeDeg();
+    	double aladinDecDeg = AladinLiteWrapper.getInstance().getCenterLatitudeDeg();
         return Math.abs(ra - aladinRaDeg) > (fovDeg / 2)
                 || Math.abs(dec - aladinDecDeg) > (fovDeg / 2);
     }
