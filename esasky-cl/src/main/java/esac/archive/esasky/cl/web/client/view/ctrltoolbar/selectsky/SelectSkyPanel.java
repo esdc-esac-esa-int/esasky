@@ -183,7 +183,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		}
 		
 		SkyRow skyRow;
-		if(opacity > 0.95 && rowNumber + 1 < nRows) {
+		if(opacity > 1 && rowNumber + 1 < nRows) {
 			skyRow = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
 		}else {
 			skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
@@ -193,6 +193,8 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			changeFromSlider = true;
 			skyRow.setSelected();
 			AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
+			clearAllOverlayStatus();
+			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 		}
 		if(rowNumber >= 0 && rowNumber + 1 < nRows) {
 			SkyRow overlaySky = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
