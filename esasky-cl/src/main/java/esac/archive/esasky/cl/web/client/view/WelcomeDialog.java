@@ -9,6 +9,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -88,6 +90,7 @@ public class WelcomeDialog extends Composite {
 			public void onClick(ClickEvent event) {
 				close();
 				GUISessionStatus.setIsInScienceMode(true);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_Science, "");
 			}
 		});
 		
@@ -98,12 +101,20 @@ public class WelcomeDialog extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_Explorer, "");
 				close();
 				GUISessionStatus.setIsInScienceMode(false);
 			}
 		});
 		
 		checkBox.addStyleName("welcomeCheckBox");
+		checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_DoNotShowAgain, event.getValue().toString());
+			}
+		});
 		
 		Anchor cookieInformation = new Anchor(TextMgr.getInstance().getText("WelcomeDialog_cookieInformation"), EsaSkyWebConstants.COOKIE_POLICY_URL, "_blank");
 		cookieInformation.addStyleName("cookieInformation");
@@ -153,6 +164,7 @@ public class WelcomeDialog extends Composite {
     		@Override
     		public void onClick(ClickEvent event) {
     			close();
+    			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_Close, "");
     		}
     	});
     	
