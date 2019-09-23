@@ -76,6 +76,14 @@ input:checked+.esasky__switch__switch-slider {
 	background-color: #20A4D8;
 }
 
+.esasky__switch__twoLabels span{
+	background-color: #20A4D8;
+}
+
+.esasky__switch__twoLabels{
+	margin-right: 5px;
+}
+
 input:focus+.esasky__switch__switch-slider {
 	box-shadow: 0 0 1px #2196F3;
 }
