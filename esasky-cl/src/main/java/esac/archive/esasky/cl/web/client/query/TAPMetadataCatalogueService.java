@@ -47,7 +47,7 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
                         + descriptor.getPolygonRaTapColumn() + ", ";
             } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + EsaSkyConstants.SOURCE_TAP_NAME + ", ";
+                        + currentMetadata.getTapName() + ", ";
             } else {
                 adql += " " + currentMetadata.getTapName() + ", ";
             }
