@@ -238,7 +238,7 @@ public class EsaSkyConstants {
      */
     public static final String SOURCE_TAP_RA = "ra";
     public static final String SOURCE_TAP_DEC = "dec";
-    public static final String SOURCE_TAP_NAME = "name";
+//    public static final String SOURCE_TAP_NAME = "name";
 
     public static final String OBS_TAP_RA = "ra_deg";
     public static final String OBS_TAP_DEC = "dec_deg";

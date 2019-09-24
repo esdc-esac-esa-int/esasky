@@ -348,7 +348,7 @@ public class CatalogEntity implements GeneralEntityInterface{
         mySource.setDec(dec.toString());
         mySource.setRa(ra.toString());
         mySource.setSourceName(((String) getTAPDataByTAPName(sourceList, shapeId,
-                EsaSkyConstants.SOURCE_TAP_NAME)).toString());
+                descriptor.getUniqueIdentifierField())).toString());
 
         Map<String, String> details = new HashMap<String, String>();
 

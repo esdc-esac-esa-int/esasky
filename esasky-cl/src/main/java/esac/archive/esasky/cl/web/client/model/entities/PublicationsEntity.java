@@ -44,7 +44,7 @@ public class PublicationsEntity extends CatalogEntity {
         mySource.setRa((getTAPDataByTAPName(sourceList, rowId,
                 descriptor.getPolygonRaTapColumn())).toString());
         mySource.setSourceName(((String) getTAPDataByTAPName(sourceList, rowId,
-                EsaSkyConstants.SOURCE_TAP_NAME)).toString());
+                descriptor.getUniqueIdentifierField())).toString());
 
         Map<String, String> details = new HashMap<String, String>();
 
