@@ -3118,34 +3118,34 @@
 	<text key="publicationPanel_advanced">
 		Ajustes
 	</text>
-	<text key="publicationPanel_helpText”>
+	<text key="publicationPanel_helpText">
 		Se muestran las fuentes del campo de visi&#243;n con publicaciones asociadas en SIMBAD. Pinchando en cada icono se abre una tabla con la lista de publicaciones para ese objeto, incluyendo informaci&#243;n b&#225;sica (t&#237;tulo, autores, fecha de publicaci&#243;n) y un enlace al art&#237;culo en ADS. Tambi&#233;n es posible cargar la lista completa de objetos estudiados en un art&#237;culo determinado para inspeccionarlos con ESASky. Por defecto se muestran un m&#225;ximo de 3000 fuentes con publicaciones asociadas, pero este l&#237;mite puede modificarse en los ajustes de la funcionalidad.
 	</text>
-	<text key="publicationPanel_sourceLimitWarning”>
+	<text key="publicationPanel_sourceLimitWarning">
 		Atenci&#243;n: Un l&#237;mite alto en el n&#250;mero de fuentes puede empeorar la ejecuci&#243;n
 	</text>
-	<text key="publicationPanel_truncationValuePublicationMost”>
+	<text key="publicationPanel_truncationValuePublicationMost">
 		Mayor
 	</text>
 	<text key="publicationPanel_truncationValuePublicationLeast">
 		Menor
 	</text>
-	<text key="publicationPanel_truncationValuePublicationNumberOfPublications”>
+	<text key="publicationPanel_truncationValuePublicationNumberOfPublications">
 		N&#250;mero de publicaciones
 	</text>
-	<text key="publicationPanel_getTheFirst”>
+	<text key="publicationPanel_getTheFirst">
 		Resultado limitado a las primeras
 	</text>
-	<text key="publicationPanel_sourcesBasedOn”>
+	<text key="publicationPanel_sourcesBasedOn">
 		fuentes con el
 	</text>
-	<text key="publicationPanel_resetTooltip”>
+	<text key="publicationPanel_resetTooltip">
 		Restablecer l&#237;mite en el n&#250;mero de fuentes
 	</text>
 	<text key="publicationSourceLimitDescription">
 		Resultado limitado a las primeras $sourceLimit$ fuentes con el $mostOrLeast$ n&#250;mero de publicaciones
 	</text>
-	<text key="publicationPanel_truncationValueTooltip”>
+	<text key="publicationPanel_truncationValueTooltip">
 		Prioriza fuentes con el mayor o menor n&#250;mero de publicaciones (s&#243;lo aplicable cuando el resultado est&#225; truncado).
 	</text>
 	<text key="popupHeader_minimize">
