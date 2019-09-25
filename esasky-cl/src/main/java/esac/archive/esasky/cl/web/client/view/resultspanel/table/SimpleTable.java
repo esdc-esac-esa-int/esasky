@@ -7,14 +7,12 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.cellview.client.DataGrid;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEvent;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEventHandler;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 
-public class SimpleTable<T extends TableRow> extends DataGrid<T> {
+public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
 	private Resources resources;
 	private CssResource style;
 	private com.google.gwt.dom.client.Style tableContentStyle;
@@ -25,24 +23,24 @@ public class SimpleTable<T extends TableRow> extends DataGrid<T> {
         CssResource style();
     }
 
-    public interface DataGridResource extends DataGrid.Resources {
+    public interface ESASkyDataGridResource extends ESASkyDataGrid.Resources {
 
-        public DataGrid.Resources INSTANCE = GWT.create(DataGridResource.class);
+        public ESASkyDataGrid.Resources INSTANCE = GWT.create(ESASkyDataGridResource.class);
 
         /**
          * The styles used in this widget.
          */
         @Override
-        @Source({ DataGrid.Style.DEFAULT_CSS, "datagrid.css" })
+        @Source({ ESASkyDataGrid.Style.DEFAULT_CSS, "datagrid.css" })
+        @CssResource.NotStrict
         CustomStyle dataGridStyle();
 
-        interface CustomStyle extends DataGrid.Style {
-
+        interface CustomStyle extends ESASkyDataGrid.Style {
         }
     }
 
     public SimpleTable() {
-        super(1, DataGridResource.INSTANCE);
+        super(1, ESASkyDataGridResource.INSTANCE);
        
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
@@ -57,9 +55,6 @@ public class SimpleTable<T extends TableRow> extends DataGrid<T> {
 							@Override
 							public void execute() {
 								refreshHeight();
-								//activate and deactivate to get gwt datagrid to remove/add necessary scrollbar
-								setAlwaysShowScrollBars(true);
-								setAlwaysShowScrollBars(false);
 							}
 						});
 					}
@@ -75,5 +70,6 @@ public class SimpleTable<T extends TableRow> extends DataGrid<T> {
     	if(!currentHeight.equals(newHeight)) {
     		tableContentStyle.setProperty("height", newHeight);
     	}
+    	setScrollbarHeight();
     }
 }

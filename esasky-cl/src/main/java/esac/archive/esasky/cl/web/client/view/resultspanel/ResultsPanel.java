@@ -21,6 +21,7 @@ import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.animation.HeightAnimation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
+import esac.archive.esasky.cl.web.client.view.resultspanel.table.ESASkyCustomScrollPanel;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -71,6 +72,8 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 			public void onComplete(double currentPosition) {
 				if(GUISessionStatus.isDataPanelOpen()){
 					tabPanel.refreshHeight();
+				} else {
+					ESASkyCustomScrollPanel.setScrollbarHeight();
 				}
 			}
 		});
