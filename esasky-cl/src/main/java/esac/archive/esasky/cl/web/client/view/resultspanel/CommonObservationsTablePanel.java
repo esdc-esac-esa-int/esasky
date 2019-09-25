@@ -141,8 +141,8 @@ public class CommonObservationsTablePanel extends AbstractTablePanel {
 			return;
 		}else if (!getEntity().getDescriptor().getDdBaseURL().isEmpty()) {
 			sampUrl = buildSAMPURL(row);
-		} else if (row.getElementByLabel("ProductURL").getValue() != null && !row.getElementByLabel("ProductURL").getValue().trim().isEmpty()) {
-			sampUrl = row.getElementByLabel("ProductURL").getValue();
+		} else if (row.getElementByTapName("product_url").getValue() != null) {
+			sampUrl = row.getElementByTapName("product_url").getValue();
 		} else {
 			Log.error("[ObservationsTablePanel/sendSelectedProductToSampApp()] No DD Base URL "
 					+ " nor Product URL found for "
