@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.table;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -26,7 +25,6 @@ public class ESASkyCustomScrollPanel extends CustomScrollPanel {
 			final Element scrollParent = scrollParents[i];
 			if (scrollParent != null && scrollParent.getAbsoluteTop() != 0) {
 				final Element scrollFixed = ((Element)scrollParent.getChild(scrollParent.getChildCount() - 1 ));
-				Log.debug(((Element)scrollFixed.getChild(0)).getStyle().getTop());
 				if(!((Element)scrollFixed.getChild(0)).getStyle().getTop().equals(scrollParent.getAbsoluteTop() + "px")) {
 					((Element)scrollFixed.getChild(0)).getStyle().setTop(scrollParent.getAbsoluteTop(), Unit.PX);
 					scrollFixed.getStyle().setPosition(Position.FIXED);
