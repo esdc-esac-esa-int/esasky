@@ -21,12 +21,9 @@ import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.PublicationPanelPresenter;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyNumberBox;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
-import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.Toggler;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
@@ -43,11 +40,10 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	
 	private EsaSkyButton updatePublicationsButton;
 	private Label publicationStatusText;
-	private Label maxFoVWarning;
 	private EsaSkySwitch updateOnMoveSwitch;
+	private EsaSkySwitch mostOrLeastSwitch;
 	private LoadingSpinner loadingSpinner = new LoadingSpinner(false);
 	private FlowPanel statusContainer = new FlowPanel();
-	private DropDownMenu<String> orderByDropdown;
 	private final Label warningLabel = new Label();;
 	private HTML slider = new HTML();
 	private FlowPanel advancedOptions;
@@ -56,14 +52,15 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	private Toggler advancedOptionsToggler;
 	private String updateOnMoveSwitchId = "publications__updateOnMove";
 	private final String sliderId = "publications__sourceLimitSlider";
+	private EsaSkyButton resetButton;
 
 	public static interface Resources extends ClientBundle {
 
-		@Source("publications_outline.png")
-		ImageResource publications();
-		
-		@Source("refresh_outline.png")
+		@Source("refresh.png")
 		ImageResource refresh();
+		
+		@Source("reset.png")
+		ImageResource resetIcon();
 		
 		@Source("publicationPanel.css")
 		@CssResource.NotStrict
@@ -150,15 +147,13 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		statusContainer.add(loadingSpinner);
 		statusContainer.add(publicationStatusText);
 		
-		maxFoVWarning = new Label();
-		maxFoVWarning.addStyleName("publicationPanel__maxFovWarning");
-		
 		advancedOptions = new FlowPanel();
 		advancedOptionsToggler = new Toggler(advancedOptions);
 		advancedOptionsToggler.setText(TextMgr.getInstance().getText("publicationPanel_advanced"));
-		warningLabel.setText(TextMgr.getInstance().getText("publicationPanel_sourceLimitWarning"));
-		warningLabel.addStyleName("publicationPanel__warningLabel");
-		warningLabel.setVisible(false);
+		publicationPanel.add(buttonContainer);
+		publicationPanel.add(statusContainer);
+		publicationPanel.add(advancedOptionsToggler);
+		publicationPanel.add(advancedOptions);
 		
 		Label gettingTheFirstLabel = new Label(TextMgr.getInstance().getText("publicationPanel_getTheFirst"));
 		gettingTheFirstLabel.addStyleName("publicationPanel__getTheFirstLabel");
@@ -166,27 +161,38 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		numberBox = new EsaSkyNumberBox(NumberFormat.getFormat("#0"), 1);
 		numberBox.addStyleName("publicationPanel__limitTextBoxContainer");
 
-		Label sourcesBasedOn = new Label(TextMgr.getInstance().getText("publicationPanel_sourcesBasedOn"));
-		sourcesBasedOn.addStyleName("publicationPanel__sourcesBasedOn");
 		slider.addStyleName("publicationPanel__slideContainer");
+		
+		resetButton = new EsaSkyButton(resources.resetIcon());
+		resetButton.addStyleName("publicationPanel__resetSourceLimit");
+		resetButton.setTitle(TextMgr.getInstance().getText("publicationPanel_resetTooltip"));
+		
 		FlowPanel sourceLimitContainer = new FlowPanel();
 		sourceLimitContainer.addStyleName("publicationPanel__sourceLimitContainer");
 		sourceLimitContainer.add(numberBox);
 		sourceLimitContainer.add(slider);
+		sourceLimitContainer.add(resetButton);
 		
-		orderByDropdown = new DropDownMenu<String>("", TextMgr.getInstance().getText("publicationPanel_orderByTooltip"), 200, "publicationPanel__orderByDropdown");
-		orderByDropdown.addStyleName("publicationPanel__dropdown");
+		Label sourcesBasedOn = new Label(TextMgr.getInstance().getText("publicationPanel_sourcesBasedOn"));
+		sourcesBasedOn.addStyleName("publicationPanel__sourcesBasedOn");
 		
-		publicationPanel.add(buttonContainer);
-		publicationPanel.add(statusContainer);
-		publicationPanel.add(maxFoVWarning);
-		publicationPanel.add(advancedOptionsToggler);
-		publicationPanel.add(advancedOptions);
+		mostOrLeastSwitch = new EsaSkySwitch("publicationPanel__mostOrLeastSwitch", false,
+				TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost"), 
+				TextMgr.getInstance().getText("publicationPanel_truncationValueTooltip"), TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"));
+		mostOrLeastSwitch.addStyleName("publicationPanel__mostOrLeastContainer");
+		
+		Label numberOfPublications = new Label(TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationNumberOfPublications"));
+		numberOfPublications.addStyleName("publicationPanel__numberOfPublications");
+		warningLabel.setText(TextMgr.getInstance().getText("publicationPanel_sourceLimitWarning"));
+		warningLabel.addStyleName("publicationPanel__warningLabel");
+		warningLabel.setVisible(false);
+		
 		
 		advancedOptions.add(gettingTheFirstLabel);
 		advancedOptions.add(sourceLimitContainer);
 		advancedOptions.add(sourcesBasedOn);
-		advancedOptions.add(orderByDropdown);
+		advancedOptions.add(mostOrLeastSwitch);
+		advancedOptions.add(numberOfPublications);
 		advancedOptions.add(warningLabel);
 
 		this.add(publicationPanel);
@@ -248,12 +254,6 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	}
 
 	@Override
-	public void setMaxFoV(boolean maxFov) {
-		maxFoVWarning.setVisible(maxFov);
-		updatePublicationsButton.setEnabled(!maxFov);
-	}
-
-	@Override
 	public void addUpdateOnMoveSwitchClickHandler(ClickHandler handler) {
 		updateOnMoveSwitch.addClickHandler(handler);
 	}
@@ -274,44 +274,8 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	}
 
 	@Override
-	public void onlyShowFovWarning(boolean onlyShowFovWarning) {
-		updatePublicationsButton.setVisible(!onlyShowFovWarning);
-		updateOnMoveSwitch.setVisible(!onlyShowFovWarning);
-		publicationStatusText.setVisible(!onlyShowFovWarning);
-		loadingSpinner.setVisible(!onlyShowFovWarning);
-	}
-
-	@Override
-	public String getOrderByValue() {
-		return orderByDropdown.getSelectedObject();
-	}
-	
-	@Override
-	public String getOrderByDescription() {
-		for(MenuItem<String> menuItem : orderByDropdown.getMenuItems()) {
-			if(menuItem.getItem() == orderByDropdown.getSelectedObject()) {
-				return menuItem.getText();
-			}
-		}
-		return "";
-	}
-
-	@Override
-	public void addTruncationOption(MenuItem<String> menuItem) {
-		orderByDropdown.addMenuItem(menuItem);
-		if(orderByDropdown.getMenuItems().size() == 1) {
-			orderByDropdown.selectObject(orderByDropdown.getMenuItems().get(0).getItem());
-		}
-	}
-
-	@Override
 	public void setUpdateOnMoveSwitchValue(boolean checked) {
 		updateOnMoveSwitch.setChecked(checked);
-	}
-
-	@Override
-	public void setMaxFovText(String text) {
-		maxFoVWarning.setText(text);
 	}
 
 	@Override
@@ -333,7 +297,22 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	}
 	
 	@Override
-	public void addTruncationOptionObserver(MenuObserver observer) {
-		orderByDropdown.registerObserver(observer);
+	public void setIsMostCheckedValue(boolean checked) {
+		mostOrLeastSwitch.setChecked(!checked);
+	}
+	
+	@Override
+	public void addMostOrLeastSwitchClickHandler(ClickHandler handler) {
+		mostOrLeastSwitch.addClickHandler(handler);
+	}
+
+	@Override
+	public void addResetButtonClickHandler(ClickHandler handler) {
+		resetButton.addClickHandler(handler);
+	}
+
+	@Override
+	public void setSourceLimit(int value) {
+		numberBox.setNumber(value);
 	}
 }

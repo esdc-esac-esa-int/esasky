@@ -40,8 +40,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
-import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
 public class PublicationPanelPresenter {
@@ -50,16 +48,17 @@ public class PublicationPanelPresenter {
     
     private final DescriptorRepository descriptorRepo;
     private final EntityRepository entityRepo;
-    private final int MAX_FOV_DEG = 181;
     private PublicationsEntity entity;
     private int sourceLimit;
     private long lastTimecall;
     private long lastSuccessfulTimecall;
     private int numberOfShownSources = 0;
+    private int defaultSourceLimit;
     private boolean isShowingDataOrCallInProgress;
     private boolean isCallInProgress;
     private boolean isShowingTruncatedDataset = false;
     private boolean isUpdateOnMoveChecked = false;
+    private boolean isMostChecked = true;
     private String progressIndicatorId = "publicationPresenterUpdatingId";
     
     private Timer sourceLimitChangedTimer = new Timer() {
@@ -82,46 +81,37 @@ public class PublicationPanelPresenter {
     	void addRemoveButtonClickHandler(ClickHandler handler);
     	void setPublicationStatusText(String statusText);
     	
-    	void setMaxFoV(boolean maxFov);
     	void setLoadingSpinnerVisible(boolean visible);
     	
     	void addUpdateOnMoveSwitchClickHandler(ClickHandler handler);
     	void setUpdateOnMoveSwitchValue(boolean checked);
+    	void setIsMostCheckedValue(boolean checked);
+    	void addMostOrLeastSwitchClickHandler(ClickHandler handler);
+    	
+    	void addResetButtonClickHandler(ClickHandler handler);
     	void addSourceLimitOnValueChangeHandler(ValueChangeHandler<String> handler);
     	void setSourceLimitValues(int value, int min, int max);
-    	
-    	void onlyShowFovWarning(boolean onlyShowFovWarning);
-    	void setMaxFovText(String text);
-    	
-    	String getOrderByValue();
-    	String getOrderByDescription();
+    	void setSourceLimit(int value);
     	
     	int getLimit();
     	
-    	void addTruncationOption(MenuItem<String> menuItem);
-    	void addTruncationOptionObserver(MenuObserver observer);
     }
     
     public PublicationPanelPresenter(final View inputView, final DescriptorRepository descriptorRepo, final EntityRepository entityRepo) {
         this.view = inputView;
         this.descriptorRepo = descriptorRepo;
         this.entityRepo = entityRepo;
-        sourceLimit = DeviceUtils.isMobileOrTablet() ? 300 : 3000;
+        defaultSourceLimit = DeviceUtils.isMobileOrTablet() ? 300 : 3000;
+        sourceLimit = defaultSourceLimit;
 
-		view.addTruncationOption(new MenuItem<String> ("bibcount DESC", TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost"), true));
-		view.addTruncationOption(new MenuItem<String> ("bibcount ASC", TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"), true));
-		view.addTruncationOption(new MenuItem<String> ("name ASC", TextMgr.getInstance().getText("publicationPanel_truncationValueSourceNameAZ"), true));
-		view.addTruncationOption(new MenuItem<String> ("name DESC", TextMgr.getInstance().getText("publicationPanel_truncationValueSourceNameZA"), true));
         
-		view.setMaxFovText(TextMgr.getInstance().getText("publicationPanel_maxFovWarning").replace("$MAX_FOV$", String.valueOf(MAX_FOV_DEG)));
         view.setSourceLimitValues(sourceLimit, 1, 50000);
 		
 		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
 
 			@Override
 			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
-				view.setMaxFoV(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG);
-				if(AladinLiteWrapper.getInstance().getFovDeg() < MAX_FOV_DEG && isShowing() && !isShowingDataOrCallInProgress) {
+				if(isShowing() && !isShowingDataOrCallInProgress) {
 					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_MoveTriggeredBoxQuery, "");
 					getPublications();
 				}
@@ -153,6 +143,19 @@ public class PublicationPanelPresenter {
 				}
 			}
 		});
+
+		view.addMostOrLeastSwitchClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				isMostChecked = !isMostChecked;
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_MostOrLeast, "Most: " + isMostChecked);
+				view.setIsMostCheckedValue(isMostChecked);
+				if(isShowingTruncatedDataset || isCallInProgress || numberOfShownSources > view.getLimit()) {
+					getPublications();
+				}
+			}
+		});
         
         view.addRemoveButtonClickHandler(new ClickHandler() {
 			
@@ -178,20 +181,6 @@ public class PublicationPanelPresenter {
         	}
         });
         
-        view.addTruncationOptionObserver(new MenuObserver() {
-			
-			@Override
-			public void onSelectedChange() {
-				if(entity != null) {
-					entity.setOrderByDescription(view.getOrderByDescription());
-				}
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_TruncationOptionsChanged, "Order By: " + view.getOrderByValue() + " URL: " + UrlUtils.getUrlForCurrentState());
-				if(isShowingTruncatedDataset || isCallInProgress) {
-					getPublications();
-				}
-			}
-		});
-        
         view.addSourceLimitOnValueChangeHandler(new ValueChangeHandler<String>() {
 			
 			@Override
@@ -204,15 +193,20 @@ public class PublicationPanelPresenter {
 			}
 		});
         
+        view.addResetButtonClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if(sourceLimit != defaultSourceLimit) {
+					view.setSourceLimit(defaultSourceLimit);
+				}
+			}
+		});
+        
     }
     
     private void getPublications() {
-		view.setMaxFoV(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG);
-		if(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG) {
-			return;
-		}
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQuery, UrlUtils.getUrlForCurrentState());
-		view.onlyShowFovWarning(false);
 		view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_updating"));
 		view.setLoadingSpinnerVisible(true);
 		
@@ -220,10 +214,12 @@ public class PublicationPanelPresenter {
 		final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
 		isShowingDataOrCallInProgress = true;
 		
+		String mostOrLeastAdql = isMostChecked ? "bibcount DESC" : "bibcount ASC";
+		String mostOrLeastDescription = isMostChecked ? TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost") : TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast");
         if (entity == null) {            
             entity = entityRepo.createPublicationsEntity(descriptor);
             entity.setPublicationsSourceLimit(sourceLimit);
-            entity.setOrderByDescription(view.getOrderByDescription());
+            entity.setOrderByDescription(mostOrLeastDescription);
         } else {
         	entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
         }
@@ -233,10 +229,10 @@ public class PublicationPanelPresenter {
         // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
         String url = "";
         if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_DATA_FROM_SIMBAD) {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), view.getOrderByValue());
+            final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
             url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encode(adql), null);
         } else {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), view.getOrderByValue());
+            final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
             url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
         }
         
@@ -322,7 +318,6 @@ public class PublicationPanelPresenter {
 		view.toggle();
 		if(isShowing() && !isShowingDataOrCallInProgress) {
 			getPublications();
-			view.onlyShowFovWarning(AladinLiteWrapper.getInstance().getFovDeg() >= MAX_FOV_DEG);
 		}
     }
     

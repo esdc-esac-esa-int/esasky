@@ -1663,9 +1663,6 @@
 		Showing the first $sourceLimit$ sources ordered by
 		$orderBy$
 	</text>
-	<text key="publicationSourceLimitDescription">
-		Showing the first $sourceLimit$ sources based on $orderBy$
-	</text>
 	<text key="sourceLimitNumImages">
 		Showing the $sourceLimit$ most observed sources (Number
 		of Images)
@@ -2549,7 +2546,7 @@
 		Publications
 	</text>
 	<text key="publicationPanel_helpText">
-		
+		Shown are the sources in the field-of-view that have associated publications according to SIMBAD. Clicking on each icon will open a table listing the publications for that object, including basic information (title, authors, publication date) and a link to the paper in ADS. There is also the possibility to load the full list of objects studied in a given publication for further exploration with ESASky. &lt;br&gt; &lt;br&gt; By default, ESASky is showing at most 3 000 sources with related publications at the same time, but this number can be changed in the settings.  
 	</text>
 	<text key="publicationPanel_removeAndClose">
 		Remove publications and close panel
@@ -2563,26 +2560,17 @@
 	<text key="publicationPanel_updateOnMoveTooltip">
 		Update the result every time the position is changed
 	</text>
-	<text key="publicationPanel_maxFovWarning">
-		Must be closer than $MAX_FOV$°
-	</text>
 	<text key="publicationPanel_sourceLimitWarning">
-		Warning: A high source limit may degrade performance
-	</text>
-	<text key="publicationPanel_orderByTooltip">
-		Truncation based on value
+		Warning: A high result limit may degrade performance
 	</text>
 	<text key="publicationPanel_truncationValuePublicationMost">
-		Publications (Most)
+		Highest
 	</text>
 	<text key="publicationPanel_truncationValuePublicationLeast">
-		Publications (Least)
+		Lowest
 	</text>
-	<text key="publicationPanel_truncationValueSourceNameAZ">
-		Source name (A-Z)
-	</text>
-	<text key="publicationPanel_truncationValueSourceNameZA">
-		Source name (Z-A)
+	<text key="publicationPanel_truncationValuePublicationNumberOfPublications">
+		Number of publications
 	</text>
 	<text key="publicationPanel_updating">
 		Updating...
@@ -2600,13 +2588,22 @@
 		Failed to retreive publications
 	</text>
 	<text key="publicationPanel_advanced">
-		Advanced
+		Settings
 	</text>
 	<text key="publicationPanel_getTheFirst">
-		Geting the first
+		Result limited to the first
 	</text>
 	<text key="publicationPanel_sourcesBasedOn">
-		sources based on
+		sources with the 
+	</text>
+	<text key="publicationPanel_resetTooltip">
+		Reset source limit
+	</text>
+	<text key="publicationSourceLimitDescription">
+		Result limited to the first $sourceLimit$ sources with the $mostOrLeast$ number of publications
+	</text>
+	<text key="publicationPanel_truncationValueTooltip">
+		Select whether to prioritize sources with either high or low numbers of publications. (This only applies when the result is truncated)
 	</text>
 	<text key="popupHeader_minimize">
 		Hide panel

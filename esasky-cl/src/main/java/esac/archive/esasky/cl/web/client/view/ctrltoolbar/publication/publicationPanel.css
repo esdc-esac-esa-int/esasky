@@ -25,7 +25,7 @@
 }
 
 .publicationPanel__statusContainer {
-	max-width: 12rem;
+	max-width: 15rem;
     text-align: center;
     margin: 5px auto;
 }
@@ -59,31 +59,27 @@
     margin: 5px auto;
 }
 
-.publicationPanel__maxFovWarning, .publicationPanel__warningLabel{
+.publicationPanel__warningLabel{
 	color: red;
 }
 
-.publicationPanel__sourcesBasedOn, .publicationPanel__getTheFirstLabel, .publicationPanel__warningLabel, .publicationPanel__maxFovWarning{
+.publicationPanel__sourcesBasedOn, .publicationPanel__getTheFirstLabel, .publicationPanel__warningLabel, .publicationPanel__numberOfPublications{
 	text-align: center;
-	max-width: 12rem;
+	max-width: 15rem;
 }
 
 .publicationPanel__getTheFirstLabel{
 	margin: auto;
 }
 
-.publicationPanel__maxFovWarning{
-	margin-bottom: 10px;
-}
-
-#publicationPanel__orderByDropdown{
-	font-size: 0.85rem;
-	margin: 3px auto;
+.publicationPanel__mostOrLeastContainer{
+    display: flex;
+    justify-content: center;
+    margin: 4px 0px;
 }
 
 .slider {
   -webkit-appearance: none;
-  width: 100%;
   height: 15px;
   border-radius: 5px;   
   background: #d3d3d3;
