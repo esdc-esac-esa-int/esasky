@@ -251,4 +251,15 @@ public class EsaSkyConstants {
     public static final String DEFAULT_LANGCODE = "en";
     public static final String[] AVAILABLE_LANGCODES = {"en", "es"};
     
+    
+    /*************************************************************************/
+    /** COMMUNICATION CONSTANTS **/
+    /*************************************************************************/
+    
+    public static final String EXT_TAP_ACTION_FLAG = "ACTION";
+    public static final String EXT_TAP_TARGET_FLAG = "TAP_TARGET";
+    public static final String EXT_TAP_ADQL_FLAG = "ADQL";
+    public static final String EXT_TAP_ACTION_DESCRIPTORS = "DESCRIPTORS";
+    public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
+    
 }

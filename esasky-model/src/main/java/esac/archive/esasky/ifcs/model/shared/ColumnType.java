@@ -1,8 +1,8 @@
 package esac.archive.esasky.ifcs.model.shared;
 
 public enum ColumnType {
-    LINK("link"), LINKLIST("linklist"), STRING("string"), CHAR("char"), LINK2ARCHIVE("link2archive"), DOWNLOAD("download"), RA(
-            "ra"), DEC("dec"), DOUBLE("double"), INTEGER("integer"), DATETIME("datetime");
+    DATALINK("datalink"), LINK("link"), LINKLIST("linklist"), STRING("string"), CHAR("char"), LINK2ARCHIVE("link2archive"), DOWNLOAD("download"), RA(
+            "ra"), DEC("dec"), DOUBLE("double"), INTEGER("integer"), LONG("long"), INT("int"), DATETIME("datetime");
 
     private String type;
 
