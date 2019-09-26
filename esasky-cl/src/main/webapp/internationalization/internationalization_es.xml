@@ -3151,5 +3151,11 @@
 	<text key="popupHeader_minimize">
 		Ocultar panel
 	</text>
+	<text key="header_gridFull">
+		Muestra/oculta la cuadrícula de coordenadas sobre el cielo
+	</text>
+	<text key="header_gridDropdown">
+		Cuadrícula de coordenadas
+	</text>
 </Internationalization>
 
