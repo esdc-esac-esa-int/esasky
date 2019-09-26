@@ -34,6 +34,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Preview = "Preview";
     public static final String CAT_DataPanel_Pager = "DataPanel_Pager";
     public static final String CAT_Search = "Search";
+    public static final String CAT_SAMP = "Samp";
     public static final String CAT_Count = "Count";
     public static final String CAT_Filter = "Filter";
     public static final String CAT_Screenshot = "Screenshot";
@@ -112,8 +113,8 @@ public final class GoogleAnalytics {
     public static final String ACT_Publication_Update = "PublicationUpdateButton";
     public static final String ACT_Publication_Remove = "PublicationRemoveButton";
     public static final String ACT_Publication_UpdateOnMove = "PublicationUpdateOnMoveChanged";
+    public static final String ACT_Publication_MostOrLeast = "PublicationMostOrLeastChanged";
     public static final String ACT_Publication_MoveTriggeredBoxQuery = "PublicationBoxQueryTriggeredByMoveOperation";
-    public static final String ACT_Publication_TruncationOptionsChanged = "PublicationTruncationOptionsChanged";
     public static final String ACT_Publication_TruncationNumberChanged = "PublicationTruncationNumbrtChanged";
     
     public static final String ACT_Tab_Resize = "TabResize";
