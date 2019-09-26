@@ -40,8 +40,8 @@
   padding: 4px;
   overflow: hidden;
   font-size: 11px;
-  overflow: hidden;
-  word-break: break-word;
+  word-break: keep-all;
+  white-space: nowrap; 
 }
 
 .dataGridFirstColumnFooter {
@@ -58,6 +58,10 @@
 
 .dataGridLastColumnHeader {
   border-style: solid solid solid solid;  
+}
+
+.dataGridChangeColumnsSize {
+  cursor: ew-resize;
 }
 
 .dataGridSortableHeader {
