@@ -109,10 +109,10 @@ public class Api {
 	public void extTap(String missionId) {
 		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
 		EntityContext context = EntityContext.EXT_TAP;
-		ExtTapDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
-		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs,context);
+		if(desc != null ) {
+			controller.getRootPresenter().getRelatedMetadata(desc,context);
 		}
 	}
 	
