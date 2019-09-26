@@ -238,6 +238,16 @@ public class ApiMessageParser {
 				console.log('showCoordinateGrid event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::showCoordinateGrid(Z)(msg.content.show);
 				break;	
+				
+			case 'extTap':
+				console.log('ExtTap event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::ExtTap(Ljava/lang/String;)(msg.content.missionId);
+				break;	
+				
+			case 'extTapCount':
+				console.log('ExtTapCount event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::ExtTapCount(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg.content.missionId, e);
+				break;	
 
 			default:
 				console.log('No event associated');

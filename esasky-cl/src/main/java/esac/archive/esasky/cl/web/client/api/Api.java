@@ -25,6 +25,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
@@ -94,6 +95,26 @@ public class Api {
 		$wnd.JavaApiReady();
 	}-*/;
 
+	
+	public void extTapCount(String missionId, JavaScriptObject widget) {
+		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
+		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
+		if(desc != null ) {
+			controller.getRootPresenter().getDescriptorRepository().updateCount4ExtTap(desc);
+			getExtTapCount(desc, widget);
+		}
+	}
+
+	public void extTap(String missionId) {
+		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
+		EntityContext context = EntityContext.EXT_TAP;
+		ExtTapDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
+		if(currObs != null ) {
+			controller.getRootPresenter().getRelatedMetadata(currObs,context);
+		}
+	}
 	
 	public void showCoordinateGrid(boolean show) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_showCoordinateGrid,Boolean.toString(show));
@@ -217,6 +238,35 @@ public class Api {
 		DescriptorListAdapter<PublicationsDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getPublicationsDescriptors();
 		getCounts(descriptors, widget);
 	}
+	
+	private void getExtTapCount(final ExtTapDescriptor descriptor, final JavaScriptObject widget) {
+		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
+		if(!countStatus.hasMoved(descriptor.getMission())) {
+			JSONObject obsCount = new  JSONObject();
+			
+			int c = countStatus.getDetailsByKey(descriptor.getMission()).getCount();
+			obsCount.put(descriptor.getMission(), new JSONNumber(c));
+			
+			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
+			sendBackToWidget(obsCount, widget);
+			
+		}else {
+			countStatus.registerObserver(new CountObserver() {
+				@Override
+				public void onCountUpdate(int newCount) {
+					JSONObject obsCount = new  JSONObject();
+					
+					int c = countStatus.getDetailsByKey(descriptor.getMission()).getCount();
+					obsCount.put(descriptor.getMission(), new JSONNumber(c));
+					
+					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
+					sendBackToWidget(obsCount, widget);
+					countStatus.unregisterObserver(this);
+				}
+			});
+		}
+	}
+	
 	
 	private void getCounts(final DescriptorListAdapter<? extends BaseDescriptor> descriptors, final JavaScriptObject widget) {
 		final CountStatus countStatus = descriptors.getCountStatus();

@@ -392,6 +392,12 @@ public class DescriptorRepository {
 		}
 	}
 	
+	public void updateCount4AllExtTaps() {
+		for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
+			updateCount4ExtTap(descriptor);
+		}
+	}
+	
 	public void updateCount4ExtTap(ExtTapDescriptor descriptor) {
 		final CountStatus cs = extTapDescriptors.getCountStatus();
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
