@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
@@ -54,7 +56,12 @@ public class TapToMmiDataConverter {
                     elem.setMaxDecimalDigits(cmd.getMaxDecimalDigits());
                 }
                 elem.setColumnIndex(cmd.getIndex());
-                elem.setLabel(TextMgr.getInstance().getText(cmd.getLabel()));
+                if(descriptor instanceof ExtTapDescriptor) {
+                	elem.setLabel(cmd.getLabel());
+                }else {
+                	String label = TextMgr.getInstance().getText(cmd.getLabel());
+                	elem.setLabel(label);
+                }
                 elem.setType(cmd.getType());
                 elem.setVisible(cmd.getVisible());
                 String data = tapRowList.getDataValue(cmd.getTapName(), i);

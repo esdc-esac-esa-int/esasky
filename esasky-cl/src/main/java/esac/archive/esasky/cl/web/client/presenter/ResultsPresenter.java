@@ -73,6 +73,7 @@ import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
 
 /**
@@ -257,6 +258,20 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     	}
     }
 
+    public final void getExtTapMetadata(final GeneralEntityInterface entity, final boolean showProgress,
+    		AbstractTablePanel panel) {
+    	
+    	final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
+    	
+    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+    	
+    	if (panel == null) {
+    		panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
+    	}
+    	
+		entity.fetchData(panel);
+    }
+    
     protected final void getMetadataAndFootprints(final GeneralEntityInterface entity, final boolean showProgress,
             AbstractTablePanel panel) {
 
@@ -412,6 +427,20 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
             final String tableName = tempEntry.getKey();
             final String adqlQuery = tempEntry.getValue();
+            
+            final int currentTab = view.getTabPanel().getSelectedTabIndex();
+            final Widget tab = view.getTabPanel().getWidget(currentTab);
+            if (tab instanceof ExtTapTablePanel) {
+                Log.debug("[ResultsPresenter/doSaveTableAs()] Saving " + tableName + " in format: " + type.toString());
+                if (type.equals(ReturnType.CSV)) {
+                	((ExtTapTablePanel) tab).exportAsCSV();
+                    return;
+                    
+                } else if (type.equals(ReturnType.VOTABLE)) {
+                	((ExtTapTablePanel) tab).exportAsVOTABLE();
+                    return;
+                }
+            }
             
             if (adqlQuery.equals(EntityContext.PUBLICATIONS.toString())) {
                 

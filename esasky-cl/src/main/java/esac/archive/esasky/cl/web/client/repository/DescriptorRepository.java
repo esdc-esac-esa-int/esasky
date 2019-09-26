@@ -8,6 +8,8 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 
@@ -15,6 +17,8 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.DescriptorList;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
@@ -35,6 +39,7 @@ import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.CountRequestCallback;
+import esac.archive.esasky.cl.web.client.callback.ExtTapCheckCallback;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.ISSOCountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
@@ -47,6 +52,7 @@ import esac.archive.esasky.cl.web.client.query.TAPCountCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPCountObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPCountPublicationsService;
 import esac.archive.esasky.cl.web.client.query.TAPCountSSOService;
+import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.query.TAPSingleCountService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -90,6 +96,9 @@ public class DescriptorRepository {
 	public interface CatalogDescriptorListMapper extends ObjectMapper<CatalogDescriptorList> {
 	}
 
+	public interface ExternalTapDescriptorListMapper extends ObjectMapper<ExtTapDescriptorList> {
+	}
+
 	public interface PublicationsDescriptorListMapper extends ObjectMapper<PublicationsDescriptorList> {
 	}
 
@@ -101,11 +110,13 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<SSODescriptor> ssoDescriptors;
 	private DescriptorListAdapter<SpectraDescriptor> spectraDescriptors;
 	private DescriptorListAdapter<PublicationsDescriptor> publicationsDescriptors;
+	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
 
 	/** Descriptor and CountStatus hashMaps for improve counts */
 	private HashMap<String, IDescriptor> descriptorsMap;
 	private HashMap<String, CountStatus> countStatusMap;
 
+	private boolean extTapDescriptorsIsReady = false;
 	private boolean catDescriptorsIsReady = false;
 	private boolean obsDescriptorsIsReady = false;
 	private boolean spectraDescriptorsIsReady = false;
@@ -127,6 +138,10 @@ public class DescriptorRepository {
 		return catDescriptors;
 	}
 
+	public DescriptorListAdapter<ExtTapDescriptor> getExtTapDescriptors() {
+		return extTapDescriptors;
+	}
+
 	public DescriptorListAdapter<ObservationDescriptor> getObsDescriptors() {
 		return obsDescriptors;
 	}
@@ -142,6 +157,30 @@ public class DescriptorRepository {
 	public DescriptorListAdapter<PublicationsDescriptor> getPublicationsDescriptors() {
 		return publicationsDescriptors;
 	}
+	
+	public void initExtDescriptors(final CountObserver countObserver) {
+
+		Log.debug("[DescriptorRepository] Into DescriptorRepository.initExtDescriptors");
+		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL), new IJSONRequestCallback() {
+
+			@Override
+			public void onSuccess(String responseText) {
+				ExternalTapDescriptorListMapper mapper = GWT.create(ExternalTapDescriptorListMapper.class);
+				extTapDescriptors = new DescriptorListAdapter<ExtTapDescriptor>(mapper.read(responseText), countObserver);
+				extTapDescriptorsIsReady = true;
+
+				Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
+			}
+
+			@Override
+			public void onError(String errorCause) {
+				Log.error("[DescriptorRepository] initExtDescriptors ERROR: " + errorCause);
+				extTapDescriptorsIsReady = true;
+			}
+
+		});
+	}
+	
 
 	public void initCatDescriptors(final CountObserver countObserver) {
 
@@ -352,6 +391,21 @@ public class DescriptorRepository {
 			}
 		}
 	}
+	
+	public void updateCount4ExtTap(ExtTapDescriptor descriptor) {
+		final CountStatus cs = extTapDescriptors.getCountStatus();
+		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
+		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), EsaSkyConstants.JSON, descriptor.getMission());
+		
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs, countRequestHandler.getProgressIndicatorMessage()));
+		}catch (RequestException e) {
+			Log.error(e.getMessage());
+			Log.error("Error fetching JSON data from server");
+		}
+	}
 
 	private void updateCount4Catalogs() {
 		final CountStatus cs = catDescriptors.getCountStatus();
@@ -410,6 +464,10 @@ public class DescriptorRepository {
 		}
 
 		JSONUtils.getJSONFromUrl(url, new CountRequestCallback(descriptor, cs, countRequestHandler, url));
+	}
+	
+	public void doCountExtTap(IDescriptor descriptor, CountStatus cs) {
+		
 	}
 
 	public void doCountSSO(String ssoName, ESASkySSOObjType ssoType, ISSOCountRequestHandler countRequestHandler) {

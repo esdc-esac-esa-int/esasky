@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
@@ -22,6 +23,7 @@ import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.entities.CatalogEntity;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.ObservationEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
@@ -79,6 +81,7 @@ public class EntityRepository {
 	public void removeEntity(GeneralEntityInterface entity) {
 		allEntities.remove(entity);
 	}
+	
 	public GeneralEntityInterface createCommonObservationEntity(CommonObservationDescriptor descriptor, EntityContext context) {
 		String esaSkyUniqID = descriptor.generateId();
 		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
@@ -275,5 +278,16 @@ public class EntityRepository {
 
 		return new SSOEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), skyViewPosition,
 				esaSkyUniqID, System.currentTimeMillis(), EntityContext.SSO);
+	}
+	
+	public GeneralEntityInterface createExtTapEntity(ExtTapDescriptor descriptor, EntityContext context) {
+		String esaSkyUniqID = descriptor.generateId();
+		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+		CountStatus countStatus = descriptorRepo.getExtTapDescriptors().getCountStatus();
+		ExtTapEntity newEntity = new ExtTapEntity(descriptor, countStatus,
+				skyViewPosition, esaSkyUniqID, System.currentTimeMillis(),
+				context);
+		addEntity(newEntity);	
+		return newEntity;
 	}
 }

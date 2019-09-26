@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.allen_sauer.gwt.log.client.Log;
+
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -48,6 +50,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.DefaultSelectionEventManager.SelectAction;
 
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
@@ -74,6 +77,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.column.DateTimeColumn
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DecColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DoubleColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.ImageColumn;
+import esac.archive.esasky.cl.web.client.view.resultspanel.column.IntegerColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.Link2ArchiveColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.LinkListColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.RaColumn;
@@ -410,6 +414,7 @@ public abstract class AbstractTablePanel extends Composite {
 
 	private ColumnSortList columnSortList = null;
 
+	private int scrollLeft = 0;
 	protected void initView() {
 		table.addColumnSortHandler(new ColumnSortEvent.Handler() {
 
@@ -419,6 +424,8 @@ public abstract class AbstractTablePanel extends Composite {
 			public void onColumnSort(ColumnSortEvent sortEvent) {
 				if (!originalListRestored) {
 					originalListRestored = true;
+					Element scrollableElement = table.getHorizontalScrollableElement();
+					scrollLeft = scrollableElement.getScrollLeft();
 
 					dataProvider.getList().clear();
 					dataProvider.getList().addAll(originalList);
@@ -427,6 +434,16 @@ public abstract class AbstractTablePanel extends Composite {
 
 					applyAllFilters();
 					originalListRestored = false;
+					
+					//Resets the scrollposition of the table after all updates are done.
+					Scheduler.get().scheduleFinally(new Scheduler.ScheduledCommand() {
+						
+						@Override
+						public void execute() {
+							Element scrollableElement = table.getHorizontalScrollableElement();
+							scrollableElement.setScrollLeft(scrollLeft);
+						}
+					});
 				}
 
 				columnSortList = sortEvent.getColumnSortList();
@@ -466,6 +483,10 @@ public abstract class AbstractTablePanel extends Composite {
 			loadingSpinner.setVisible(false);
 			return;
 		}
+		if(table.getColumnSortList().size() == 1) {
+			createMetadataColums();
+		}
+		
 		originalList = new LinkedList<TableRow>(data);
 		rowsRemovedByAtLeastOneFilter.clear();
 
@@ -511,7 +532,7 @@ public abstract class AbstractTablePanel extends Composite {
 		notifyObserversRowsChange(table.getRowCount());
 	}
 
-	private String getLabelTextFromHeader(final Header<?> hdr) {
+	protected String getLabelTextFromHeader(final Header<?> hdr) {
 		String label = "";
 		try {
 			String headerString = ((SafeHtml)hdr.getValue()).asString();
@@ -583,7 +604,13 @@ public abstract class AbstractTablePanel extends Composite {
 
 			if (currentMTD.getVisible()) {
 				final String labelKey = currentMTD.getLabel();
-				final String label = TextMgr.getInstance().getText(labelKey);
+				String labelTmp;
+				if(getEntity().getDescriptor() instanceof ExtTapDescriptor) {
+					labelTmp = labelKey;
+				}else {
+					labelTmp = TextMgr.getInstance().getText(labelKey);
+				}
+				final String label = labelTmp;
 
 				final int columnNumber = table.getColumnCount();
 				final String filterButtonId = getEntity().getEsaSkyUniqId() + columnNumber;
@@ -648,6 +675,18 @@ public abstract class AbstractTablePanel extends Composite {
 
 					});
 
+				}else if (ColumnType.DATALINK.equals(type)) {
+
+					StringColumn linkColumn = new StringColumn(label, filterButtonId, new RowsFilterObserver() {
+
+						@Override
+						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
+							calculateChangedRows(rowsToRemove, rowsToAdd);
+						}
+					});
+					table.getColumnSortList().push(linkColumn);
+					table.addColumn(linkColumn, header);
+
 				} else if (ColumnType.LINK.equals(type)) {
 
 					String tooltipMsg = TextMgr.getInstance().getText("abstractTablePanel_preview");
@@ -700,7 +739,7 @@ public abstract class AbstractTablePanel extends Composite {
 
 					});
 
-				} else if (ColumnType.STRING.equals(type)) {
+				} else if (ColumnType.STRING.equals(type) || ColumnType.CHAR.equals(type)) {
 					StringColumn stringColumn = new StringColumn(label, filterButtonId, new RowsFilterObserver() {
 
 						@Override
@@ -710,6 +749,7 @@ public abstract class AbstractTablePanel extends Composite {
 					});
 					table.getColumnSortList().push(stringColumn);
 					table.addColumn(stringColumn, header);
+					
 				} else if (ColumnType.DATETIME.equals(type)) {
 					DateTimeColumn dateTimeColumn = new DateTimeColumn(label, filterButtonId,
 							new RowsFilterObserver() {
@@ -756,7 +796,19 @@ public abstract class AbstractTablePanel extends Composite {
 					table.getColumnSortList().push(doubleColumn);
 					table.addColumn(doubleColumn, header);
 
-				} else if (ColumnType.LINK2ARCHIVE.equals(type)) {
+				} else if (ColumnType.INT.equals(type) || ColumnType.INTEGER.equals(type) || ColumnType.LONG.equals(type)) {
+					final IntegerColumn intColumn = new IntegerColumn(label, filterButtonId,
+							new RowsFilterObserver() {
+
+								@Override
+								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
+									calculateChangedRows(rowsToRemove, rowsToAdd);
+								}
+							});
+					table.getColumnSortList().push(intColumn);
+					table.addColumn(intColumn, header);
+					
+				}else if (ColumnType.LINK2ARCHIVE.equals(type)) {
 					Link2ArchiveColumn link2ArchiveColumn = new Link2ArchiveColumn(label,
 							getEntity().getDescriptor(), filterButtonId, new RowsFilterObserver() {
 
@@ -787,7 +839,8 @@ public abstract class AbstractTablePanel extends Composite {
 
 				if (type.equals(ColumnType.STRING) || type.equals(ColumnType.RA) || type.equals(ColumnType.DEC)
 						|| type.equals(ColumnType.DOUBLE) || type.equals(ColumnType.LINK2ARCHIVE)
-						|| type.equals(ColumnType.LINKLIST)) {
+						|| type.equals(ColumnType.LINKLIST) || type.equals(ColumnType.CHAR)
+						|| type.equals(ColumnType.INT) || type.equals(ColumnType.LONG)){
 					int currentIndex = table.getColumnCount() - 1;
 					table.getHeader(currentIndex)
 							.setHeaderStyleNames(table.getHeader(currentIndex).getHeaderStyleNames()
@@ -1082,7 +1135,14 @@ public abstract class AbstractTablePanel extends Composite {
 		for (int rowIndex = 0; rowIndex < rowList.getData().size(); rowIndex++) {
 			JSONObject rowData = new JSONObject();
 			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				rowData.put(rowList.getMetadata().get(cellIndex).getName(), new JSONString(rowList.getData().get(rowIndex).get(cellIndex).toString()));
+				Object cellData = rowList.getData().get(rowIndex).get(cellIndex); 
+				String cellString;
+				if(cellData != null) {
+					cellString = cellData.toString();
+				}else {
+					cellString = "";
+				}
+				rowData.put(rowList.getMetadata().get(cellIndex).getName(), new JSONString(cellString));
 			}
 			jsonData.put(Integer.toString(rowIndex), rowData);
 		}

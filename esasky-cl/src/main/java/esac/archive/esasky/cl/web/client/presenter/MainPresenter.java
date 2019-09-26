@@ -15,6 +15,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Source;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
@@ -102,6 +103,8 @@ public class MainPresenter {
 
         // Retrieve available catalogs entries
         getCatalogsList();
+        
+        getExtTapList();
 
         if (Modules.spectraModule) {
             getSpectraList();
@@ -267,6 +270,10 @@ public class MainPresenter {
     	return descriptorRepo;
     }
     
+    public EntityRepository getEntityRepository(){
+    	return entityRepo;
+    }
+    
     private final void showPublicationsTabPanel (String id, boolean byAuthor) {
         
     	entityRepo.getPublications().deselectAllShapes();
@@ -315,6 +322,13 @@ public class MainPresenter {
                 
             case SSO:
                 getSSOOrbitAndObservation((SSODescriptor)descriptor);
+                break;
+                
+            case EXT_TAP:
+                GeneralEntityInterface extEntity = entityRepo.createExtTapEntity((ExtTapDescriptor) descriptor, context);
+                if (extEntity != null) {
+                    resultsPresenter.getExtTapMetadata(extEntity, true, null);
+                }
                 break;
                 
             default:
@@ -379,6 +393,15 @@ public class MainPresenter {
             @Override
             public void onCountUpdate(int newCount) {
                 ctrlTBPresenter.updateCatalogCount(newCount);
+            }
+        });
+    }
+    
+    private void getExtTapList() {
+        Log.debug("[MainPresenter] Into MainPresenter.getCatalogsList");
+        descriptorRepo.initExtDescriptors(new CountObserver() {
+            @Override
+            public void onCountUpdate(int newCount) {
             }
         });
     }

@@ -33,7 +33,11 @@ public class StringColumn extends SortableColumn<String>{
 	public String getValue(TableRow row) {
         for (TableElement element : row.getElements()) {
             if (label.equals(element.getLabel())) {
-                return element.getValue();
+            	if(element.getValue() != null) {
+            		return element.getValue();
+            	}else {
+            		return "";
+            	}
             }
         }
         return "";

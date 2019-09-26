@@ -6,6 +6,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -43,6 +44,9 @@ public class EsaSkyWebConstants {
     public static final String SSO_URL = BACKEND_CONTEXT + "/sso";
     public static final String SPECTRA_URL = BACKEND_CONTEXT + "/spectra";
     public static final String CATALOGS_URL = BACKEND_CONTEXT + "/catalogs";
+    public static final String EXT_TAP_URL = BACKEND_CONTEXT + "/ext-taps";
+    public static final String EXT_TAP_REQUEST_URL = EXT_TAP_URL + "?" + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST;
+    public static final String EXT_TAP_GET_TAPS_URL = EXT_TAP_URL + "?" + EsaSkyConstants.EXT_TAP_ACTION_FLAG +  "=" + EsaSkyConstants.EXT_TAP_ACTION_DESCRIPTORS;
     public static final String PUBLICATIONS_URL = BACKEND_CONTEXT + "/publications";
     public static final String PUBLICATIONS_BY_SOURCE_URL = BACKEND_CONTEXT + "/publications-by-source";
     public static final String PUBLICATIONS_BY_AUTHOR_URL = BACKEND_CONTEXT + "/publications-by-author";
