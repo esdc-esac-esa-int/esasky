@@ -2564,13 +2564,13 @@
 		Warning: A high result limit may degrade performance
 	</text>
 	<text key="publicationPanel_truncationValuePublicationMost">
-		Highest
+		highest
 	</text>
 	<text key="publicationPanel_truncationValuePublicationLeast">
-		Lowest
+		lowest
 	</text>
 	<text key="publicationPanel_truncationValuePublicationNumberOfPublications">
-		Number of publications
+		number of publications
 	</text>
 	<text key="publicationPanel_updating">
 		Updating...

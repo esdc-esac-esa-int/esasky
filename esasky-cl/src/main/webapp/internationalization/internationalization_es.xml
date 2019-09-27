@@ -3125,13 +3125,13 @@
 		Atenci&#243;n: Un l&#237;mite alto en el n&#250;mero de fuentes puede empeorar la ejecuci&#243;n
 	</text>
 	<text key="publicationPanel_truncationValuePublicationMost">
-		Mayor
+		mayor
 	</text>
 	<text key="publicationPanel_truncationValuePublicationLeast">
-		Menor
+		menor
 	</text>
 	<text key="publicationPanel_truncationValuePublicationNumberOfPublications">
-		N&#250;mero de publicaciones
+		n&#250;mero de publicaciones
 	</text>
 	<text key="publicationPanel_getTheFirst">
 		Resultado limitado a las primeras

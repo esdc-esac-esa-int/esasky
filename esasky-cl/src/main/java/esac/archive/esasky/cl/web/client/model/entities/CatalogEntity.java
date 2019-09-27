@@ -19,7 +19,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
@@ -185,7 +184,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 				orderBy = sourceLimitArr[1];
 				sourceLimitDescription = sourceLimitArr[0];
 			} 
-			sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", getSourceLimit() + "").replace("$orderBy$", orderBy);
+			sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", getSourceLimit() + "").replace("$orderBy$", orderBy).replace("$mostOrLeast$", orderBy.toLowerCase());
 			CommonEventBus.getEventBus().fireEvent( 
 					new ProgressIndicatorPushEvent(getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
 			sourceLimitNotificationTimer.schedule(6000);

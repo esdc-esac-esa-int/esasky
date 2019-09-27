@@ -105,7 +105,7 @@ public class PublicationPanelPresenter {
         sourceLimit = defaultSourceLimit;
 
         
-        view.setSourceLimitValues(sourceLimit, 1, 50000);
+        view.setSourceLimitValues(sourceLimit, 1, 10000);
 		
 		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
 
