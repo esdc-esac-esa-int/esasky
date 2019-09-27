@@ -870,6 +870,6 @@ public class ESASkyDataGrid<T> extends AbstractCellTable<T> implements RequiresR
   }
   
   public void setScrollbarHeight() {
-	  ESASkyCustomScrollPanel.setScrollbarHeight();
+	  tableDataScroller.setScrollbarHeight();
   }
 }

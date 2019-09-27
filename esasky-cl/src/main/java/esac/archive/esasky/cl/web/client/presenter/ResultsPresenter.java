@@ -335,9 +335,8 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             sampUrlsPerMissionMap.put(tableName, sampUrl);
 
             // Send all URL to Samp
-            ESASkySampEvent sampEvent = new ESASkySampEvent(SampAction.SEND_VOTABLE,
-                    sampUrlsPerMissionMap);
-            CommonEventBus.getEventBus().fireEvent(sampEvent);
+            CommonEventBus.getEventBus().fireEvent(new ESASkySampEvent(SampAction.SEND_VOTABLE,
+                    sampUrlsPerMissionMap));
 
             // Display top progress bar...
             Log.debug("[ResultsPresenter/sendFullTableToSamp()] About to send 'show top progress bar...' event!!!");
@@ -345,7 +344,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             CommonEventBus.getEventBus().fireEvent(
                     new ProgressIndicatorPushEvent(SampAction.SEND_VOTABLE.toString(),
                             TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
-                            .replace(EsaSkyConstants.REPLACE_PATTERN, tableName)));
+                            .replace(EsaSkyConstants.REPLACE_PATTERN, tableName), "Table: " + tableName + ", adqlQuery: " + adqlQuery + ", " + ", sampUrl: " + sampUrl));
             
             sendGAEventWithCurrentTab(GoogleAnalytics.CAT_TabToolbar_SendToSAMP, "");
         }
@@ -427,6 +426,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
             final String tableName = tempEntry.getKey();
             final String adqlQuery = tempEntry.getValue();
+            Log.debug(adqlQuery);
             
             final int currentTab = view.getTabPanel().getSelectedTabIndex();
             final Widget tab = view.getTabPanel().getWidget(currentTab);

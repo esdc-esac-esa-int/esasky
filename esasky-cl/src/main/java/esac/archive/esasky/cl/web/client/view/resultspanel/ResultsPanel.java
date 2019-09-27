@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -21,7 +23,6 @@ import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.animation.HeightAnimation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
-import esac.archive.esasky.cl.web.client.view.resultspanel.table.ESASkyCustomScrollPanel;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -73,7 +74,7 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 				if(GUISessionStatus.isDataPanelOpen()){
 					tabPanel.refreshHeight();
 				} else {
-					ESASkyCustomScrollPanel.setScrollbarHeight();
+					CommonEventBus.getEventBus().fireEvent(new DataPanelAnimationCompleteEvent());
 				}
 			}
 		});
