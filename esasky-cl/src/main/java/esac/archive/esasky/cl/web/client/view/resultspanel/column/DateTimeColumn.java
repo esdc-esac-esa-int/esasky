@@ -95,7 +95,9 @@ public class DateTimeColumn extends SortableColumn<String>{
 		}
 
 		dateFilter.setStartRange(startDate, endDate);
-		filter();
+		if(dateFilter.isFilterActive()) {
+			filter();
+		}
 	}
 	
 	private String getElement(TableRow row) {

@@ -41,5 +41,5 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
 		}
 	}
 	
-	protected abstract boolean isFilterActive();
+	public abstract boolean isFilterActive();
 }

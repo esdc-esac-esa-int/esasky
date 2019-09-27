@@ -131,7 +131,7 @@ public class DateFilterDialogBox extends FilterDialogBox {
 	}
 
 	@Override
-	protected boolean isFilterActive() {
+	public boolean isFilterActive() {
 		return hasCalendarsBeenAddedToDialogBox 
 				&& (!currentFromDate.equals(startDate)
 						|| !currentToDate.equals(endDate));

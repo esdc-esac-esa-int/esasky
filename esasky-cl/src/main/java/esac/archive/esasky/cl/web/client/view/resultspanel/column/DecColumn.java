@@ -102,6 +102,13 @@ public class DecColumn extends SortableColumn<String>{
 	}
 	
 	@Override
+	protected void applyFilterOnNewDataSet() {
+		if(stringFilter.isFilterActive()) {
+			filter();
+		}
+	}
+	
+	@Override
 	protected int compare(String object1, String object2) {
 		if(object1.equals("") && object2.equals("")
 				|| (object1 == null && object2 == null)

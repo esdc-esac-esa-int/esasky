@@ -149,6 +149,13 @@ public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
 	}
 	
 	@Override
+	protected void applyFilterOnNewDataSet() {
+		if(stringFilter.isFilterActive()) {
+			filter();
+		}
+	}
+	
+	@Override
 	protected int compare(String object1, String object2) {
 		boolean validIntegerId = false;
 		int id1 = 0;

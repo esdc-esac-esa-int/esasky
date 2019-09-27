@@ -156,6 +156,13 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 	}
 	
 	@Override
+	protected void applyFilterOnNewDataSet() {
+		if(stringFilter.isFilterActive()) {
+			filter();
+		}
+	}
+	
+	@Override
 	protected int compare(String object1, String object2) {
 		if (("".equals(object1) && "".equals(object2)) || (null == object1 && null == object2)) {
 			return 0;

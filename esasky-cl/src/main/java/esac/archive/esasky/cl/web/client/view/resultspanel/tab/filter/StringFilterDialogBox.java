@@ -106,7 +106,7 @@ public class StringFilterDialogBox extends FilterDialogBox {
 	}
 
 	@Override
-	protected boolean isFilterActive() {
+	public boolean isFilterActive() {
 		return !textLine.getText().equals("");
 	}
 	

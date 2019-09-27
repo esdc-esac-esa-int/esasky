@@ -115,7 +115,9 @@ public class IntegerColumn extends SortableColumn<String> {
 		}
 		
 		intFilter.setRange(minValue, maxValue);
-		filter();
+		if(intFilter.isFilterActive()) {
+			filter();
+		}
 	}
 
 	

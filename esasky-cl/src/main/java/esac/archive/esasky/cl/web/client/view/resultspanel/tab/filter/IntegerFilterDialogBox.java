@@ -150,7 +150,7 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 	}
 
 	@Override
-	protected boolean isFilterActive() {
+	public boolean isFilterActive() {
 		return hasSliderBeenAddedToDialogBox 
 				&& (currentSliderFromFraction > 0 || currentSliderToFraction < SLIDER_MAX)
 				&& 	!(Double.isInfinite(minValue) || Double.isInfinite(maxValue));

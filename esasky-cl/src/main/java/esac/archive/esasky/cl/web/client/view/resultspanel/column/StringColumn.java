@@ -84,7 +84,9 @@ public class StringColumn extends SortableColumn<String>{
 	
 	@Override
 	protected void applyFilterOnNewDataSet() {
-		filter();
+		if(stringFilter.isFilterActive()) {
+			filter();
+		}
 	}
 	
 	@Override

@@ -151,6 +151,7 @@ public class DoubleColumn extends SortableColumn<String> {
 				maxValue = Math.max(doubleValue, maxValue);
 			}
 		}
+		
 		if(numValuesFound == 0) {
 			minValue = Double.NEGATIVE_INFINITY;
 			maxValue = Double.POSITIVE_INFINITY;
@@ -166,7 +167,9 @@ public class DoubleColumn extends SortableColumn<String> {
 		}
 		
 		doubleFilter.setRange(minValue, maxValue, numberFormat, precision);
-		filter();
+		if(doubleFilter.isFilterActive()) {
+			filter();
+		}
 	}
 
 	private void updateNumberFormat() {
