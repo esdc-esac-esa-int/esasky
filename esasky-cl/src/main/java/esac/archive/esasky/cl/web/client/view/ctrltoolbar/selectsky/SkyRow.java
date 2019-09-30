@@ -49,6 +49,7 @@ public class SkyRow extends Composite implements Selectable{
 	private DropDownMenu<HiPS> hipsDropDown;
 	private boolean onlyOneSkyActive = true;
 	private List<HiPS> listOfUserHips = new LinkedList<HiPS>();
+	private boolean isChosenFromSlider = false;
 
 	private List<SkyObserver> observers = new LinkedList<SkyObserver>();
 
@@ -58,6 +59,7 @@ public class SkyRow extends Composite implements Selectable{
 	private Style style;
 	
 	private boolean isOverlay = false;
+	private boolean isMain = false;
 
 	public static interface Resources extends ClientBundle {
 
@@ -300,7 +302,10 @@ public class SkyRow extends Composite implements Selectable{
 
 			@Override
 			public void onValueChange(boolean isSelected) {
-				if(isSelected){
+				if(isSelected && !isChosenFromSlider){
+					SelectSkyPanel.getInstance().clearAllMainStatus();
+					SelectSkyPanel.getInstance().clearAllOverlayStatus();
+					setMain(true);
 					notifySkyChange();
 					sendConvenienceEvent();
 				}
@@ -315,7 +320,11 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public void setSelected(){
+		if(!isChosenFromSlider) {
+			setMain(true);
+		}
 		isSelectedBtn.setSelected(true); 
+		isChosenFromSlider = false;
 	}
 
 	private void addSkyPaletteChangeListener() {
@@ -374,7 +383,7 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public void notifySkyChange(){
-		if(isSelected()){
+		if(isMain()){
 			for(SkyObserver observer: observers){
 				observer.onUpdateSkyEvent(this);
 			}
@@ -384,6 +393,7 @@ public class SkyRow extends Composite implements Selectable{
 		} else if(isOverlay()) {
 			double value = SelectSkyPanel.getInstance().getSliderValue();
 			double opacity = value - Math.floor(value);
+			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 			AladinLiteWrapper.getInstance().createOverlayMap(getSelectedHips(), opacity, getSelectedPalette());
 		}
 	}
@@ -421,5 +431,31 @@ public class SkyRow extends Composite implements Selectable{
     public boolean isOverlay() {
     	return isOverlay;
     }
+    
+	public boolean isMain() {
+		return isMain;
+	}
+
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
+	}
+
+	public boolean isChosenFromSlider() {
+		return isChosenFromSlider;
+	}
+
+	public void setChosenFromSlider(boolean isChosenFromSlider) {
+		this.isChosenFromSlider = isChosenFromSlider;
+	}
+	
+	public void setOpacity(double opacity) {
+		if(isMain()) {
+			AladinLiteWrapper.getInstance().changeHiPSOpacity(opacity);
+		}else if(isOverlay) {
+			AladinLiteWrapper.getInstance().changeOverlayOpacity(Math.pow(opacity,2));
+		}
+	}
+    
+    
     
 }

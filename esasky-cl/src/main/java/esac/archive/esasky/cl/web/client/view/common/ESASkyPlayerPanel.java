@@ -380,4 +380,13 @@ public class ESASkyPlayerPanel extends Composite {
  		   observer.onValueChange(this.value);
  	   }
     }
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+    
 }

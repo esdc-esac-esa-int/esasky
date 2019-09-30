@@ -46,7 +46,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private ESASkySlider slider;
 
 	private boolean isShowing;
-	private boolean changeFromSlider = false;
 
 	private ESASkyPlayerPanel player;
 	private DisablablePushButton addSkyButton;
@@ -173,52 +172,78 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 	
 	public void onValueChange(double value) {
+		player.setValue(value);
 		int nRows = skyTable.getRowCount();
-		int rowNumber = Math.min((int) Math.floor(value + 0.01), nRows - 1); // 0.01 extra because of float number precision errors. 
+		int rowNumber = Math.min((int) Math.floor(value + 0.001), nRows - 1); // 0.001 extra because of float number precision errors. 
 		double opacity = value - rowNumber;
 		
-		//Enforce only 1 HiPS close to the change
-		if(opacity < 0.02) {
-			opacity = 0.0;
-		}
-		
-		SkyRow skyRow;
-		if(opacity > 1 && rowNumber + 1 < nRows) {
-			skyRow = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
+		if(opacity < 0 ) { opacity = 0.0;} // Could happen with the added precision from rowNumbers
+
+		SkyRow secondSky;
+		SkyRow skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
+		if(rowNumber + 1 < nRows) {
+			secondSky = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
 		}else {
-			skyRow = (SkyRow) skyTable.getWidget(rowNumber, 0);
+			secondSky = null;
 		}
 
 		if(!skyRow.isSelected()) {
-			changeFromSlider = true;
+			skyRow.setChosenFromSlider(true);
 			skyRow.setSelected();
-			AladinLiteWrapper.getInstance().changeHiPSOpacity(1-opacity);
-			clearAllOverlayStatus();
-			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 		}
-		if(rowNumber >= 0 && rowNumber + 1 < nRows) {
-			SkyRow overlaySky = (SkyRow) skyTable.getWidget(rowNumber + 1, 0);
-			if(opacity > 0.0) {
-				if(overlaySky.isOverlay()) {
-					AladinLiteWrapper.getInstance().changeHiPSOpacity(1 - opacity);
-					AladinLiteWrapper.getInstance().changeOverlayOpacity(opacity);
-				}else {
-					AladinLiteWrapper.getInstance().createOverlayMap(overlaySky.getSelectedHips(),
-							opacity, overlaySky.getSelectedPalette());
-					overlaySky.setOverlayStatus(true);
-				}
-			}else {
-				AladinLiteWrapper.getInstance().changeHiPSOpacity(1);
+		
+		if(!skyRow.isMain() && !skyRow.isOverlay()) {
+			if(secondSky != null  && secondSky.isMain()) {
 				clearAllOverlayStatus();
-				AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+				skyRow.setOverlayStatus(true);
+				skyRow.notifySkyChange();
+				
+			}else {
+				clearAllMainStatus();
+				skyRow.setMain(true);
+				skyRow.setChosenFromSlider(true);
+				skyRow.notifySkyChange();
+				skyRow.setChosenFromSlider(false);
 			}
+		}
+		skyRow.setOpacity(1-opacity);
+
+		if(secondSky != null) {
+			
+			if(skyRow.isMain() && secondSky.isMain()) {
+				clearAllMainStatus();
+				skyRow.isMain();
+			}
+			
+			if(!secondSky.isMain() && !secondSky.isOverlay()) {
+				if(skyRow.isMain()) {
+					clearAllOverlayStatus();
+					secondSky.setOverlayStatus(true);
+					secondSky.notifySkyChange();
+					
+				}else {
+					clearAllMainStatus();
+					secondSky.setMain(true);
+					secondSky.setChosenFromSlider(true);
+					secondSky.notifySkyChange();
+					secondSky.setChosenFromSlider(false);
+				}
+			}
+			secondSky.setOpacity(opacity);
 		}
 	}
 	
-	private void clearAllOverlayStatus() {
+	public void clearAllOverlayStatus() {
 		for (int i = 0; i < skyTable.getRowCount(); i++) {
 			SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
 			skyRow.setOverlayStatus(false);
+		}
+	}
+	
+	public void clearAllMainStatus() {
+		for (int i = 0; i < skyTable.getRowCount(); i++) {
+			SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
+			skyRow.setMain(false);
 		}
 	}
 
@@ -308,14 +333,15 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			for (int i = 0; i < skyTable.getRowCount(); i++) {
 				SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
 				if (skyRow.equals(sky)) {
-					if(changeFromSlider) {
-						changeFromSlider = false;
-					} else {
+					if(!sky.isChosenFromSlider()) {
+						clearAllMainStatus();
+						clearAllOverlayStatus();
+						sky.setMain(true);
+						AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 						slider.setValue(i);
 					}
-					//AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+					break;
 				}
-				//skyRow.setOverlayStatus(false);
 			}
 		}
 	}
