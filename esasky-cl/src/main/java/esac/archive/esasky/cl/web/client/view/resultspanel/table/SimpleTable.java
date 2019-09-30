@@ -98,52 +98,53 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
         }
         final Element target = event.getEventTarget().cast();
         Element cell = ensureCellIsTarget(target);
-        int xValue = event.getClientX();
-        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
+        if(cell != null) {
+	        int xValue = event.getClientX();
+	        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
+	        
+	        String eventType = event.getType();
+	        if (Math.abs(xValue - xEndCell) < 5){
+	        	if(BrowserEvents.MOUSEDOWN.equals(eventType)) {
+	        		hasTriggered = true;
+	        		changingColumn = target.cast();     
+	        		offset = xValue - xEndCell;
+	        		DOM.setCapture(this.getElement());
+	        		
+	        	}else if (BrowserEvents.MOUSEOVER.equals(eventType)){
+	        		cell.addClassName("dataGridChangeColumnsSize");
+	        	}
+	        	else if (BrowserEvents.MOUSEOUT.equals(eventType)){
+	        		cell.removeClassName("dataGridChangeColumnsSize");
+	        	}
+	        	
+	        }else if (BrowserEvents.MOUSEMOVE.equals(eventType)){
+	        	int newWidth = xValue - changingColumn.getAbsoluteLeft() - offset;
+	        	int oldWidth = changingColumn.getClientWidth();
+	        	if(newWidth > MIN_COLUMN_SIZE) {
+	        		int col = changingColumn.getCellIndex();
+	        		doSetColumnWidth(col,Integer.toString(newWidth)+"px");
+		        	int change = newWidth - oldWidth - 1;
+		        	int oldTableWidth = getTableBodyElement().getClientWidth();
+		    		setTableWidth(oldTableWidth + change, Unit.PX);
+	        	}
+	    		hasTriggered = true;
+	    		
+	    	}else {
+	    		cell.removeClassName("dataGridChangeColumnsSize");
+	        }
+	    	if (BrowserEvents.MOUSEUP.equals(eventType)){
+	    		DOM.releaseCapture(this.getElement());
+	    		hasTriggered = true;
+	    		ignoreClick = true;
+	    		
+	    	}else if (BrowserEvents.CLICK.equals(eventType) && ignoreClick){
+	    		ignoreClick = false;
+	    		hasTriggered = true;
+	    	}
         
-        String eventType = event.getType();
-//        Log.debug(eventType);
-        if (Math.abs(xValue - xEndCell) < 5){
-        	if(BrowserEvents.MOUSEDOWN.equals(eventType)) {
-        		hasTriggered = true;
-        		changingColumn = target.cast();     
-        		offset = xValue - xEndCell;
-        		DOM.setCapture(this.getElement());
-        		
-        	}else if (BrowserEvents.MOUSEOVER.equals(eventType)){
-        		cell.addClassName("dataGridChangeColumnsSize");
-        	}
-        	else if (BrowserEvents.MOUSEOUT.equals(eventType)){
-        		cell.removeClassName("dataGridChangeColumnsSize");
-        	}
-        	
-        }else if (BrowserEvents.MOUSEMOVE.equals(eventType)){
-        	int newWidth = xValue - changingColumn.getAbsoluteLeft() - offset;
-        	int oldWidth = changingColumn.getClientWidth();
-        	if(newWidth > MIN_COLUMN_SIZE) {
-        		int col = changingColumn.getCellIndex();
-        		doSetColumnWidth(col,Integer.toString(newWidth)+"px");
-	        	int change = newWidth - oldWidth - 1;
-	        	int oldTableWidth = getTableBodyElement().getClientWidth();
-	    		setTableWidth(oldTableWidth + change, Unit.PX);
-        	}
-    		hasTriggered = true;
-    		
-    	}else {
-    		cell.removeClassName("dataGridChangeColumnsSize");
         }
-    	if (BrowserEvents.MOUSEUP.equals(eventType)){
-    		DOM.releaseCapture(this.getElement());
-    		hasTriggered = true;
-    		ignoreClick = true;
-    		
-    	}else if (BrowserEvents.CLICK.equals(eventType) && ignoreClick){
-    		ignoreClick = false;
-    		hasTriggered = true;
-    	}
         
         if(!hasTriggered) {
-            Log.debug("Super event " + eventType);
         	super.onBrowserEvent2(event);
         }
     }
