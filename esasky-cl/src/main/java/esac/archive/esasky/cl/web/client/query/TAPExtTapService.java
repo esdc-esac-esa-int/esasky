@@ -111,7 +111,7 @@ public class TAPExtTapService extends AbstractMetadataService {
     
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
-        int top = 10;
+        int top = 3000;
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
         return getAdql(descriptor, top);       
     }
