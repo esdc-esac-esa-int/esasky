@@ -106,18 +106,19 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
 	        if (Math.abs(xValue - xEndCell) < 5){
 	        	if(BrowserEvents.MOUSEDOWN.equals(eventType)) {
 	        		hasTriggered = true;
-	        		changingColumn = target.cast();     
+	        		changingColumn = cell.cast();     
 	        		offset = xValue - xEndCell;
 	        		DOM.setCapture(this.getElement());
 	        		
 	        	}else if (BrowserEvents.MOUSEOVER.equals(eventType)){
 	        		cell.addClassName("dataGridChangeColumnsSize");
+	        		DOM.setCapture(this.getElement());
 	        	}
 	        	else if (BrowserEvents.MOUSEOUT.equals(eventType)){
 	        		cell.removeClassName("dataGridChangeColumnsSize");
 	        	}
 	        	
-	        }else if (BrowserEvents.MOUSEMOVE.equals(eventType)){
+	        }else if (BrowserEvents.MOUSEMOVE.equals(eventType) && changingColumn != null){
 	        	int newWidth = xValue - changingColumn.getAbsoluteLeft() - offset;
 	        	int oldWidth = changingColumn.getClientWidth();
 	        	if(newWidth > MIN_COLUMN_SIZE) {
@@ -130,12 +131,16 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
 	    		hasTriggered = true;
 	    		
 	    	}else {
+	    		if(changingColumn == null) {
+	    			DOM.releaseCapture(this.getElement());
+	    		}
 	    		cell.removeClassName("dataGridChangeColumnsSize");
 	        }
 	    	if (BrowserEvents.MOUSEUP.equals(eventType)){
 	    		DOM.releaseCapture(this.getElement());
 	    		hasTriggered = true;
 	    		ignoreClick = true;
+	    		changingColumn = null;
 	    		
 	    	}else if (BrowserEvents.CLICK.equals(eventType) && ignoreClick){
 	    		ignoreClick = false;
