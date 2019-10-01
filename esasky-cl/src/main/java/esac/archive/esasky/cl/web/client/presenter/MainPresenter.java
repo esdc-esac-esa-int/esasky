@@ -185,7 +185,7 @@ public class MainPresenter {
                     }
                   };
     
-                timer.schedule(1500);
+                timer.schedule(2000);
             }
         }
     }
@@ -276,7 +276,9 @@ public class MainPresenter {
     
     private final void showPublicationsTabPanel (String id, boolean byAuthor) {
         
-    	entityRepo.getPublications().deselectAllShapes();
+    	if(entityRepo.getPublications() != null) {
+    		entityRepo.getPublications().deselectAllShapes();
+    	}
         //Creates a new TablePanel or selects the existing one
         final AbstractTablePanel tabPanel = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(id);
         if (tabPanel == null) {
