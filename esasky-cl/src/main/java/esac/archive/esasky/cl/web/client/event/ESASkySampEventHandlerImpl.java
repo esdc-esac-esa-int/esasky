@@ -289,6 +289,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 
 /**
@@ -435,13 +436,13 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
                         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tinyURL);
     
                         try {
-                            // String data = "url=" + URL.encode(resourceUrl);
-                            String data = "url=" + url;
+                            final String data = "url=" + url;
                             requestBuilder.sendRequest(data, new RequestCallback() {
     
                                 @Override
                                 public void onError(final com.google.gwt.http.client.Request request,
                                         final Throwable exception) {
+                                	sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
                                     Log.debug(
                                             "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
                                             exception);
@@ -454,15 +455,16 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
                                     String id = "";
                                     id = response.getText();
                                     String resourceUrl = tinyURL + "id=" + id;
+                                    Log.debug(resourceUrl);
                                     try {
-    
                                         gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
                                     } catch (Exception e) {
-    
+                                    	sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + tinyURL + ", Exception: " + e.toString());
                                         Log.debug(
                                                 "[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
                                                 e);
     
+                                        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
                                         throw new IllegalStateException(
                                                 "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
                                     }
@@ -485,6 +487,9 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
             default:
                 // Enable again the button
                 isFirstTime = true;
+                
+                sendGoogleAnalyticsErrorEvent("Unknown action type");
+                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
                 throw new IllegalStateException(
                         "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction "
                                 + event.getAction());
@@ -493,10 +498,12 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
 
         // Restart boolean value.
         isFirstTime = true;
-        CommonEventBus.getEventBus().fireEvent(
-                new ProgressIndicatorPopEvent(event.getAction().toString()));
+        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
     }
 
+    private void sendGoogleAnalyticsErrorEvent(String details) {
+    	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SAMP, GoogleAnalytics.ACT_SAMP_ERROR, details);
+    }
     /**
      * Timer responsible for attempt the SampAction after ESASky has been registered.
      *

@@ -42,6 +42,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Pyesasky = "Pyesasky";
     public static final String CAT_JavaScriptAPI = "JavaScriptAPI";
     public static final String CAT_Slider = "Slider";
+    public static final String CAT_RequestError = "RequestError";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
@@ -92,6 +93,8 @@ public final class GoogleAnalytics {
     public static final String ACT_PlanningTool_AllInstrumentsClick = "AllInstrumentsClick";
     public static final String ACT_PlanningTool_CopyCoordinates = "CopyCoordinates";
     public static final String ACT_PlanningTool_DetectorSelected = "DetectorSelected";
+
+    public static final String ACT_SAMP_ERROR = "SAMP failed";
     
     public static final String ACT_API_AuthorInURL = "AuthorInURL";
     public static final String ACT_API_BibcodeInURL = "BibcodeInURL";
