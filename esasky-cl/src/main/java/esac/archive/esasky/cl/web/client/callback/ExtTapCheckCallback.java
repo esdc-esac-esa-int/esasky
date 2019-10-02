@@ -1,11 +1,16 @@
 package esac.archive.esasky.cl.web.client.callback;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.Response;
 
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -53,6 +58,11 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        Log.debug(this.getClass().getSimpleName() + " " + descriptor.getMission() + ": [" + value
 		                + "] results found");
 		        countStatus.updateCount();
+	        	List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
+	        	descriptors.add(descriptor);
+	        	List<Integer> counts = new LinkedList<Integer>();
+	        	counts.add(countStatus.getCount(descriptor.getMission()));
+		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
 			}
 		});
 	}

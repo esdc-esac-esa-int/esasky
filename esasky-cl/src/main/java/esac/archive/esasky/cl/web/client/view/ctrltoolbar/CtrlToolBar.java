@@ -27,6 +27,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoo
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -53,6 +54,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.TargetListPanel;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
@@ -77,6 +79,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private final TreeMapContainer catalogTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_CATALOGUE);
 	private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
 	private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
+	private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
 	
 	private EsaSkyButton exploreBtn;
 	private EsaSkyToggleButton selectSkyButton;
@@ -86,6 +89,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private BadgeButton catalogButton;
 	private BadgeButton spectraButton;
 	private BadgeButton ssoButton;
+	private EsaSkyToggleButton extTapButton;
 	private EsaSkyToggleButton publicationsButton;
 	
 	private final CssResource style;
@@ -109,6 +113,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		
 		@Source("catalog_map_outline.png")
 		ImageResource catalogIcon();
+
+		@Source("catalog_map_outline.png")
+		ImageResource extTapIcon();
 		
 		@Source("spectra_light_outline.png")
 		ImageResource spectraIcon();
@@ -196,6 +203,16 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			ctrlToolBarPanel.add(publicationPanel);
 			publicationPanel.hide();
 		}
+		
+		ctrlToolBarPanel.add(createExtTapBtn());
+		ctrlToolBarPanel.add(extTapTreeMapContainer);
+		extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
+			@Override
+			public void onClose() {
+				extTapButton.setToggleStatus(false);
+				CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
+			}
+		});
 		
 		ctrlToolBarPanel.add(createTargetListBtn());
 		ctrlToolBarPanel.add(targetListPanel);
@@ -300,6 +317,24 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		observationButton = createDataPanelBtn(resources.observationIcon(), 
 		        TextMgr.getInstance().getText("webConstants_exploreImageObservations"), EntityContext.ASTRO_IMAGING, observationTreeMapContainer);
 		return observationButton;
+	}
+	
+	private EsaSkyToggleButton createExtTapBtn() {
+		
+		extTapButton = new EsaSkyToggleButton(resources.extTapIcon());
+		addCommonButtonStyle(extTapButton, TextMgr.getInstance().getText("webConstants_exploreExtTaps"));
+		extTapButton.addClickHandler(
+				new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				extTapTreeMapContainer.toggleTreeMap();
+				CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isOpen()));
+				closeAllOtherPanels(extTapButton);
+				sendGAEvent(EntityContext.EXT_TAP.toString());
+			}
+		});
+		return extTapButton;
 	}
 	
 	private BadgeButton createCatalogBtn() {
@@ -438,6 +473,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		if(!button.equals(publicationsButton)) {
 			publicationPanel.hide();
 		}
+		if(!button.equals(extTapButton)) {
+			extTapTreeMapContainer.hide();
+		}
 	}
 	
 	
@@ -448,6 +486,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		showWidget(publicationsButton);
 		showWidget(planObservationButton);
 		showWidget(ssoButton);
+		showWidget(extTapButton);
 		hideWidget(exploreBtn);
 	}
 	
@@ -458,6 +497,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		hideWidget(publicationsButton);
 		hideWidget(planObservationButton);
 		hideWidget(ssoButton);
+		hideWidget(extTapButton);
 		showWidget(exploreBtn);
 	}
 	
@@ -595,6 +635,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	public EsaSkyToggleButton getPublicationButton() {
 		return publicationsButton;
 	}
+	
+	public boolean isExtTapOpen() {
+		return extTapTreeMapContainer.isShowing();
+	}
 
 	@Override
 	public EsaSkyToggleButton getSkyPanelButton() {
@@ -625,6 +669,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		List<Integer> catalogCounts = new LinkedList<Integer>();
 		List<IDescriptor> spectraDescriptors = new LinkedList<IDescriptor>();
 		List<Integer> spectraCounts = new LinkedList<Integer>();
+		List<IDescriptor> extTapDescriptors = new LinkedList<IDescriptor>();
+		List<Integer> extTapCounts = new LinkedList<Integer>();
 		
 		for(int i = 0; i < descriptors.size(); i++) {
 			if(descriptors.get(i) instanceof ObservationDescriptor) {
@@ -643,6 +689,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				spectraDescriptors.add(descriptors.get(i));
 				spectraCounts.add(counts.get(i));
 			}
+			else if(descriptors.get(i) instanceof ExtTapDescriptor) {
+				extTapDescriptors.add(descriptors.get(i));
+				extTapCounts.add(counts.get(i));
+			}
 		}
 		
 		if(observationDescriptors.size() > 0) {
@@ -656,6 +706,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		}
 		if(spectraDescriptors.size() > 0) {
 			spectraTreeMapContainer.addData(spectraDescriptors, spectraCounts);
+		}
+		if(extTapDescriptors.size() > 0) {
+			extTapTreeMapContainer.addData(extTapDescriptors, extTapCounts);
 		}
 	}
 }
