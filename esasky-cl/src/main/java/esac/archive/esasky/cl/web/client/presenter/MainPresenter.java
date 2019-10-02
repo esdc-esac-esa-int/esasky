@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,6 +33,7 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.PublicationDescriptorLoadObserver;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -148,44 +148,41 @@ public class MainPresenter {
         if (Modules.publicationsModule) {
             if(UrlUtils.urlHasBibcode() || UrlUtils.urlHasAuthor()){
                
-                //Uses a delayed call to ensures that environment is just created and ready
-                //TODO timer does not ensure that environment is ready
-                Timer timer = new Timer() {
-                    public void run () {
-                        
-                        if (descriptorRepo.getPublicationsDescriptors() != null 
-                                && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
-                            final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-                            
-                            if (UrlUtils.urlHasBibcode()) {
-                                final String bibcode = Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0);
-                                getCtrlTBPresenter().showPublicationInfo(bibcode,
-                                                                        descriptor.getArchiveURL(),
-                                                                        descriptor.getArchiveProductURI(),
-                                                                        descriptor.getAdsAuthorSeparator(),
-                                                                        descriptor.getAdsAuthorUrl(),
-                                                                        descriptor.getAdsAuthorUrlReplace());
-                                
-                                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
-                                
-                            } else if (UrlUtils.urlHasAuthor()) {
-                                final String author = Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM).get(0);
-                                getCtrlTBPresenter().showAuthorInfo(author,
-                                                                    descriptor.getAdsAuthorSeparator(),
-                                                                    descriptor.getAdsAuthorUrl(),
-                                                                    descriptor.getAdsAuthorUrlReplace());
-                                showPublicationsTabPanel(author, true);
-                                
-                                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AuthorInURL, author);
-                            }
-                            
-                        } else {
-                            Log.error("[MainPresenter] Can't show soruces from bibcode, publicationsDescriptor is not ready!");
-                        }
-                    }
-                  };
-    
-                timer.schedule(2000);
+            	descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
+					
+					@Override
+					public void onLoad() {
+						if (descriptorRepo.getPublicationsDescriptors() != null 
+								&& descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+							final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
+							
+							if (UrlUtils.urlHasBibcode()) {
+								final String bibcode = Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0);
+								getCtrlTBPresenter().showPublicationInfo(bibcode,
+										descriptor.getArchiveURL(),
+										descriptor.getArchiveProductURI(),
+										descriptor.getAdsAuthorSeparator(),
+										descriptor.getAdsAuthorUrl(),
+										descriptor.getAdsAuthorUrlReplace());
+								
+								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
+								
+							} else if (UrlUtils.urlHasAuthor()) {
+								final String author = Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM).get(0);
+								getCtrlTBPresenter().showAuthorInfo(author,
+										descriptor.getAdsAuthorSeparator(),
+										descriptor.getAdsAuthorUrl(),
+										descriptor.getAdsAuthorUrlReplace());
+								showPublicationsTabPanel(author, true);
+								
+								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AuthorInURL, author);
+							}
+							
+						} else {
+							Log.error("[MainPresenter] Can't show soruces from bibcode, publicationsDescriptor is not ready!");
+						}
+					}
+				});
             }
         }
     }

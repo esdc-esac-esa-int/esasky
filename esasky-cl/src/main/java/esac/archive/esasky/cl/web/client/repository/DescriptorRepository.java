@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -125,6 +126,11 @@ public class DescriptorRepository {
 	private final boolean isInitialPositionDescribedInCoordinates;
 
 	private ICountRequestHandler countRequestHandler;
+	
+	private LinkedList<PublicationDescriptorLoadObserver> publicationDescriptorLoadObservers = new LinkedList<PublicationDescriptorLoadObserver>();
+	public interface PublicationDescriptorLoadObserver{
+		void onLoad();
+	}
 
 	public DescriptorRepository(boolean isInitialPositionDescribedInCoordinates) {
 		this.isInitialPositionDescribedInCoordinates = isInitialPositionDescribedInCoordinates;
@@ -339,6 +345,9 @@ public class DescriptorRepository {
 							}
 						});
 				publicationsDescriptorsIsReady = true;
+				for(PublicationDescriptorLoadObserver observer : publicationDescriptorLoadObservers) {
+					observer.onLoad();
+				}
 
 				Log.debug("[DescriptorRepository] Total publications entries: " + publicationsDescriptors.getTotal());
 				if (GUISessionStatus.getIsInScienceMode()) {
@@ -707,5 +716,9 @@ public class DescriptorRepository {
 		descriptor.setPolygonNameTapColumn(APIMetadataConstants.CAT_NAME);
 
 		return descriptor;
+	}
+	
+	public void addPublicationDescriptorLoadObserver(PublicationDescriptorLoadObserver observer) {
+		publicationDescriptorLoadObservers.add(observer);
 	}
 }

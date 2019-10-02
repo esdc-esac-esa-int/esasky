@@ -318,35 +318,39 @@ public class CtrlToolBarPresenter {
         Log.info("[CtrlToolBarPresenter] showAuthorInfo AUTHOR received: " + author + " , preparing author info.");
         
         final int maxSources = (DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE : EsaSkyWebConstants.MAX_SOURCES_IN_TARGETLIST);
-        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("LoadingAuthorPublicatoinSorces", 
-        		TextMgr.getInstance().getText("ctrlToolBarPresenter_loadingAuthorSources").replaceAll("$AUTHOR$", author)));
+        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("LoadingAuthorPublicatoinSources", 
+        		TextMgr.getInstance().getText("ctrlToolBarPresenter_loadingAuthorSources").replace("$AUTHOR$", author)));
         //Retrieves the sources for this bibcode and shows the upload panel
         JSONUtils.getJSONFromUrl(EsaSkyWebConstants.PUBLICATIONS_SOURCES_BY_AUTHOR_URL + "?AUTHOR="
                 + URL.encodeQueryString(author) + "&ROWS=" + maxSources, new IJSONRequestCallback() {
             
             @Override
             public void onSuccess(String responseText) {
-            	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSorces"));
-                String authorHtml = LinkListColumn.getLinkList(author, 
-                        splitByString,
-                        authorsLinkUrl,
-                        replaceString,
-                        EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
-                        EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
-
-                final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
-                "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
-                
-                //Shows the sources for this publication
-                final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-                view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
+            	try {
+            		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
+            		String authorHtml = LinkListColumn.getLinkList(author, 
+            				splitByString,
+            				authorsLinkUrl,
+            				replaceString,
+            				EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
+            				EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
+            		
+            		final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
+            				"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
+            				"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
+            		
+            		//Shows the sources for this publication
+            		final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
+            		view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
+            	} catch(Exception e) {
+            		onError(e.getMessage());
+            	}
             }
             
             @Override
             public void onError(String errorCause) {
                 Log.error("[CtrlToolBarPresenter] showAuthorInfo ERROR: " + errorCause);
-                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSorces"));
+                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
             }
             
         });
