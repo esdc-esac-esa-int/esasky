@@ -112,8 +112,8 @@ public class AllSkyPresenter {
             @Override
             public void onChangeEvent(final HipsChangeEvent changeEvent) {
 
-                changeHiPS(changeEvent.getHiPS(),
-                        changeEvent.getColorPalette());
+            	changeHiPS(changeEvent.getHiPS(), changeEvent.getColorPalette(),
+                		changeEvent.isBaseImage(), changeEvent.getOpacity());
                 CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
             }
         });
@@ -389,13 +389,21 @@ public class AllSkyPresenter {
      * @param hips Input HiPS object
      * @param colorPalette Input ColorPalette object
      */
-    protected final void changeHiPS(final HiPS hips, final ColorPalette colorPalette) {
-        if (currentHiPS != hips) {
-            currentHiPS = hips;
-            AladinLiteWrapper.getInstance().openHiPS(hips);
-            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
-        } else {
-            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
+    protected final void changeHiPS(final HiPS hips, final ColorPalette colorPalette, boolean isBaseImage, double opacity) {
+        if(isBaseImage) {
+	    	if (currentHiPS != hips) {
+	            currentHiPS = hips;
+	            AladinLiteWrapper.getInstance().openHiPS(hips);
+	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
+	            AladinLiteWrapper.getInstance().changeHiPSOpacity(opacity);
+	        } else {
+	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
+	            AladinLiteWrapper.getInstance().changeHiPSOpacity(opacity);
+	        }
+        }else {
+			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+			AladinLiteWrapper.getInstance().createOverlayMap(hips, Math.pow(opacity,2), colorPalette);
+
         }
     }
 

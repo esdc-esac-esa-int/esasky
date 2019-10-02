@@ -18,6 +18,8 @@ import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
@@ -309,10 +311,16 @@ public class SkyRow extends Composite implements Selectable{
 					notifySkyChange();
 					sendConvenienceEvent();
 				}
+				sendUpdateSkyName();
 			}
 		});
 
 		return isSelectedBtn;
+	}
+	
+	private void sendUpdateSkyName() {
+		CommonEventBus.getEventBus().fireEvent(
+				new HipsNameChangeEvent(getSelectedHips().getSurveyName()));
 	}
 
 	public boolean isSelected(){
@@ -383,19 +391,12 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public void notifySkyChange(){
-		if(isMain()){
 			for(SkyObserver observer: observers){
 				observer.onUpdateSkyEvent(this);
 			}
 			
 			//Notify sky change to Google Analytics
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getFullId());
-		} else if(isOverlay()) {
-			double value = SelectSkyPanel.getInstance().getSliderValue();
-			double opacity = value - Math.floor(value);
-			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
-			AladinLiteWrapper.getInstance().createOverlayMap(getSelectedHips(), opacity, getSelectedPalette());
-		}
 	}
 
 	public void notifyClose(){

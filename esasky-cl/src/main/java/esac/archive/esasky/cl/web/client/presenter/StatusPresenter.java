@@ -12,8 +12,8 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEventHandler;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEventHandler;
-import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
-import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEventHandler;
+import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
+import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEventHandler;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 
@@ -90,11 +90,11 @@ public class StatusPresenter {
 			}
 		});
 		
-		CommonEventBus.getEventBus().addHandler(HipsChangeEvent.TYPE, new HipsChangeEventHandler() {
+		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, new HipsNameChangeEventHandler() {
 
 			@Override
-			public void onChangeEvent(final HipsChangeEvent changeEvent) {
-				view.recalculateSize();
+			public void onChangeEvent(final HipsNameChangeEvent changeEvent) {
+					view.recalculateSize();
 			}
 		});
 	}

@@ -25,6 +25,7 @@ public class ESASkySlider extends FlowPanel {
     private double minValue;
     private double maxValue;
     private double currentValue;
+    private double oldValue;
     private long lastSentGoogleAnalyticsTime = 0;
 
     /**
@@ -105,6 +106,7 @@ public class ESASkySlider extends FlowPanel {
     }
 
     public void setValue(double value) {
+    	oldValue = currentValue;
     	if(value > maxValue) {
     		currentValue = maxValue;
 		}else if(value < minValue) {
@@ -139,6 +141,14 @@ public class ESASkySlider extends FlowPanel {
 
 	public void setCurrentValue(double currentValue) {
 		this.currentValue = currentValue;
+	}
+
+	public double getOldValue() {
+		return oldValue;
+	}
+
+	public void setOldValue(double oldValue) {
+		this.oldValue = oldValue;
 	}
 
 }

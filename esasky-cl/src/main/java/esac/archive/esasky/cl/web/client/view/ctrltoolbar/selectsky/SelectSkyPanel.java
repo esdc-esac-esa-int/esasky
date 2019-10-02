@@ -186,29 +186,39 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		}else {
 			secondSky = null;
 		}
-
-		if(!skyRow.isSelected()) {
-			skyRow.setChosenFromSlider(true);
+		
+		if(Math.abs(slider.getOldValue() - value) >= 1) {
 			skyRow.setSelected();
+		}
+
+		if(opacity > 0.5) {
+			if(!secondSky.isSelected()) {
+				secondSky.setChosenFromSlider(true);
+				secondSky.setSelected();
+			}
+		}else {
+			if(!skyRow.isSelected()) {
+				skyRow.setChosenFromSlider(true);
+				skyRow.setSelected();
+			}
 		}
 		
 		if(!skyRow.isMain() && !skyRow.isOverlay()) {
 			if(secondSky != null  && secondSky.isMain()) {
 				clearAllOverlayStatus();
 				skyRow.setOverlayStatus(true);
-				skyRow.notifySkyChange();
 				
 			}else {
 				clearAllMainStatus();
 				skyRow.setMain(true);
-				skyRow.setChosenFromSlider(true);
-				skyRow.notifySkyChange();
-				skyRow.setChosenFromSlider(false);
 			}
+			skyRow.setChosenFromSlider(true);
+			skyRow.notifySkyChange();
+			skyRow.setChosenFromSlider(false);
 		}
 		skyRow.setOpacity(1-opacity);
 
-		if(secondSky != null) {
+		if(secondSky != null && opacity > 0) {
 			
 			if(skyRow.isMain() && secondSky.isMain()) {
 				clearAllMainStatus();
@@ -219,17 +229,24 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 				if(skyRow.isMain()) {
 					clearAllOverlayStatus();
 					secondSky.setOverlayStatus(true);
-					secondSky.notifySkyChange();
 					
 				}else {
 					clearAllMainStatus();
 					secondSky.setMain(true);
-					secondSky.setChosenFromSlider(true);
-					secondSky.notifySkyChange();
-					secondSky.setChosenFromSlider(false);
 				}
+				secondSky.setChosenFromSlider(true);
+				secondSky.notifySkyChange();
+				secondSky.setChosenFromSlider(false);
 			}
 			secondSky.setOpacity(opacity);
+		}else {
+			if(skyRow.isMain()) {
+				clearAllOverlayStatus();
+				AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+			}else {
+				clearAllMainStatus();
+				AladinLiteWrapper.getInstance().changeHiPSOpacity(0);
+			}
 		}
 	}
 	
@@ -326,8 +343,12 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 	@Override
 	public void onUpdateSkyEvent(SkyRow sky) {
+		
+		double value = SelectSkyPanel.getInstance().getSliderValue();
+		double opacity = value - Math.floor(value);
+		if(sky.isMain()) { opacity = 1 - opacity;}
 		CommonEventBus.getEventBus().fireEvent(
-				new HipsChangeEvent(sky.getSelectedHips(), sky.getSelectedPalette()));
+				new HipsChangeEvent(sky.getSelectedHips(), sky.getSelectedPalette(), sky.isMain(), opacity));
 
 		if(skies.size() > 1){
 			for (int i = 0; i < skyTable.getRowCount(); i++) {
@@ -336,8 +357,8 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 					if(!sky.isChosenFromSlider()) {
 						clearAllMainStatus();
 						clearAllOverlayStatus();
-						sky.setMain(true);
 						AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
+						sky.setMain(true);
 						slider.setValue(i);
 					}
 					break;

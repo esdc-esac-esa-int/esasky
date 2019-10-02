@@ -36,8 +36,8 @@ import esac.archive.esasky.cl.web.client.event.banner.ServerProblemSolvedEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ServerProblemSolvedEventHandler;
 import esac.archive.esasky.cl.web.client.event.banner.ToggleServerProblemBannerEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ToggleSkyPanelEvent;
-import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
-import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEventHandler;
+import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
+import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -137,12 +137,12 @@ public class HeaderPresenter {
 
 		});
 
-		CommonEventBus.getEventBus().addHandler(HipsChangeEvent.TYPE, new HipsChangeEventHandler() {
+		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, new HipsNameChangeEventHandler() {
 
 			@Override
-			public void onChangeEvent(final HipsChangeEvent changeEvent) {
-				view.setHipsName(changeEvent.getHiPS().getSurveyName());
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_HipsName, changeEvent.getHiPS().getSurveyName());
+			public void onChangeEvent(final HipsNameChangeEvent changeEvent) {
+				view.setHipsName(changeEvent.getHiPSName());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_HipsName, changeEvent.getHiPSName());
 			}
 		});
 		

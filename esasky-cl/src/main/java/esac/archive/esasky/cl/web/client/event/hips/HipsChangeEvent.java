@@ -16,18 +16,30 @@ public class HipsChangeEvent extends GwtEvent<HipsChangeEventHandler> {
 
     private HiPS hips;
     private ColorPalette colorPalette;
+    private boolean isBaseImage;
+    private double opacity;
 
-    public HipsChangeEvent(final HiPS inputHips, final ColorPalette colorPalette) {
+    public HipsChangeEvent(final HiPS inputHips, final ColorPalette colorPalette, final boolean isBaseImage, final double opacity) {
         this.hips = inputHips;
         this.colorPalette = colorPalette;
+        this.isBaseImage = isBaseImage;
+        this.opacity = opacity;
     }
 
     public final HiPS getHiPS() {
         return hips;
     }
+    
+    public final boolean isBaseImage() {
+    	return isBaseImage;
+    }
 
     public final ColorPalette getColorPalette() {
         return colorPalette;
+    }
+    
+    public final double getOpacity() {
+    	return opacity;
     }
 
     @Override
