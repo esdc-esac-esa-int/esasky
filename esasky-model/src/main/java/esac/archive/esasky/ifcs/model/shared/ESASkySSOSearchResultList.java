@@ -3,7 +3,6 @@ package esac.archive.esasky.ifcs.model.shared;
 import java.util.LinkedList;
 import java.util.List;
 
-// TODO this class must be moved into ammi-ifcs-model
 public class ESASkySSOSearchResultList {
 
     List<ESASkySSOSearchResult> results = new LinkedList<ESASkySSOSearchResult>();
