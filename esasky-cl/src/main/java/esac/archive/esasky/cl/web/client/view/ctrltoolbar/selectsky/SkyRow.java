@@ -311,7 +311,6 @@ public class SkyRow extends Composite implements Selectable{
 					notifySkyChange();
 					sendConvenienceEvent();
 				}
-				sendUpdateSkyName();
 			}
 		});
 
@@ -394,7 +393,7 @@ public class SkyRow extends Composite implements Selectable{
 			for(SkyObserver observer: observers){
 				observer.onUpdateSkyEvent(this);
 			}
-			
+			sendUpdateSkyName();
 			//Notify sky change to Google Analytics
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getFullId());
 	}
