@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
+import java.rmi.ServerError;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
@@ -352,38 +354,45 @@ public class SearchPresenter {
 
                 @Override
                 public void onResponseReceived(final Request request, final Response response) {
-                	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(id));
-                	if(timecall != latestTimecall) {
-                		Log.warn("discarding search response, since there are newer searches");
+                	try {
+                		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(id));
+                		if(timecall != latestTimecall) {
+                			Log.warn("discarding search response, since there are newer searches");
+                		}
+                		if (200 == response.getStatusCode()) {
+                			
+                			ESASkyGeneralSearchResultMapper mapper = GWT
+                					.create(ESASkyGeneralSearchResultMapper.class);
+                			ESASkyGeneralResultList result = mapper.read(response.getText());
+                			if (result == null) {
+                				SearchPresenter.this.view.showTargetNotFoundMessage();
+                				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, "SIMBAD: " + view.getSearchTextBox().getValue());
+                				
+                			} else {
+                				SearchPresenter.this.view.showGeneralTargetResultsPanel(result);
+                			}
+                			setMaxHeight();
+                			
+                		} else {
+                			Log.error(debugPrefix + "Couldn't retrieve data from the " + url
+                					+ " StatusText: (" + response.getStatusText() + ")");
+                			onError(request, new Throwable());
+                		}
+                		CommonEventBus.getEventBus().fireEvent(new CheckForServerMessagesEvent());
+                	} catch (Exception e) {
+                		onError(request, e);
                 	}
-                    if (200 == response.getStatusCode()) {
-
-                        ESASkyGeneralSearchResultMapper mapper = GWT
-                                .create(ESASkyGeneralSearchResultMapper.class);
-                        ESASkyGeneralResultList result = mapper.read(response.getText());
-                        if (result == null) {
-                            SearchPresenter.this.view.showTargetNotFoundMessage();
-                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, "SIMBAD: " + view.getSearchTextBox().getValue());
-                            
-                        } else {
-                            SearchPresenter.this.view.showGeneralTargetResultsPanel(result);
-                        }
-                        setMaxHeight();
-
-                    } else {
-                        Log.error(debugPrefix + "Couldn't retrieve data from the " + url
-                                + "Genera (" + response.getStatusText() + ")");
-                    }
-                    CommonEventBus.getEventBus().fireEvent(new CheckForServerMessagesEvent());
                 }
 
                 @Override
                 public void onError(final Request request, final Throwable exception) {
+                	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(id));
                     Log.error(exception.getMessage());
                     Log.error(debugPrefix + "Error calling " + url);
                 }
             });
         } catch (RequestException e) {
+        	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(id));
             Log.error(e.getMessage());
             Log.error(debugPrefix + "Error calling " + url);
         }

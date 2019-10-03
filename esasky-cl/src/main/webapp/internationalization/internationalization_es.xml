@@ -2,19 +2,6 @@
 <!DOCTYPE Internationalization>
 <Internationalization langCode="es">
 
-	<!-- SsoCountRequestCallback -->
-	<text key="SsoCountRequestCallback_objectNotAvailableInEsaSky">
-		Lo sentimos, pero el objeto que est&#225; buscando no
-		est&#225;
-		disponible en ESASky en este momento. Actualmente estamos
-		procesando
-		objetos del Sistema Solar. Por favor, int&#233;ntelo de
-		nuevo en unos d&#237;as.
-	</text>
-	<text key="SsoCountRequestCallback_targetCurrentlyUnavailable">
-		Objeto actualmente no disponible.
-	</text>
-
 	<!-- JsonRequestCallback -->
 	<text key="JsonRequestCallback_retrievingMOC">
 		Recuperando MOC...
@@ -77,7 +64,7 @@
 		formatos permitidos.
 	</text>
 	<text key="searchPanel_targetNotFound">
-		Objeto no encontrado.
+		No encontrado.
 	</text>
 	<text key="searchPanel_ssoTargetNotFound">
 		Objeto del Sistema Solar no encontrado.

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
@@ -27,6 +28,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -526,9 +528,13 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
     @Override
     public void showObjectNotAvailableInEsaSkyMsg(String progressIndicatorId) {
+    	String missions = "";
+    	for(IDescriptor descriptor : descriptorRepo.getSsoDescriptors().getDescriptors()) {
+    		missions += descriptor.getGuiLongName() + ",";
+    	}
         DisplayUtils
-        .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_objectNotAvailableInEsaSky"),
-                TextMgr.getInstance().getText("SsoCountRequestCallback_targetCurrentlyUnavailable"),
+        .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsMessage").replace("$MISSIONS$", missions.subSequence(0, missions.length() - 1)),
+                TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsTitle"),
                 progressIndicatorId);
     }
     

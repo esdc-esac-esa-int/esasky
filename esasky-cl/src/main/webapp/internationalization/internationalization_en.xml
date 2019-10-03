@@ -62,16 +62,6 @@
 	
 	
 
-	<!-- SsoCountRequestCallback -->
-	<text key="SsoCountRequestCallback_objectNotAvailableInEsaSky">
-		Sorry, but the object you are looking for is not
-		available in ESASky at the moment. We are currently processing Solar
-		System Objects. Please try again in the upcoming days
-	</text>
-	<text key="SsoCountRequestCallback_targetCurrentlyUnavailable">
-		Target currently unavailable
-	</text>
-
 	<!-- JsonRequestCallback -->
 	<text key="JsonRequestCallback_retrievingMOC">
 		Retrieving MOC
@@ -146,7 +136,7 @@
 		input formats.
 	</text>
 	<text key="searchPanel_targetNotFound">
-		Target not found.
+		Not found
 	</text>
 	<text key="searchPanel_ssoTargetNotFound">
 		Solar System Object not found.
@@ -2608,5 +2598,30 @@
 	<text key="popupHeader_minimize">
 		Hide panel
 	</text>
+	<text key="SsoCountRequestCallback_noCrossMatchResultsMessage">
+		There are no cross matches for the object you are looking for. Searched in $MISSIONS$
+	</text>
+	<text key="SsoCountRequestCallback_noCrossMatchResultsTitle">
+		No cross matches for target
+	</text>
+	<text key="searchPanel_showMoreAuthors">
+		Show more authors
+	</text>
+	<text key="searchPanel_showMoreTooltip">
+		Show the first $COUNT$ author matches
+	</text>
+	<text key="searchPanel_author">
+		Author
+	</text>
+	<text key="searchPanel_showMoreBibcodes">
+		Show more bibcodes
+	</text>
+	<text key="searchPanel_showMoreBibcodeTooltip">
+		Show the first $COUNT$ bibcode matches
+	</text>
+	<text key="searchPanel_bibcode">
+		Bibcode
+	</text>
+	
 	
 </Internationalization>

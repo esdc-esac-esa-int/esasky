@@ -1,5 +1,8 @@
 package esac.archive.esasky.cl.web.client.view.searchpanel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -24,14 +27,18 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.ifcs.model.shared.ESASkyGeneralResultList;
+import esac.archive.esasky.ifcs.model.shared.ESASkyPublicationSearchResult;
+import esac.archive.esasky.ifcs.model.shared.ESASkyPublicationSearchResultList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
+import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
 import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SearchPresenter;
@@ -56,12 +63,17 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     
     private FocusPanel searchResultsFocusPanel;
     private FlowPanel resultsList;
-    private FlowPanel logoContainer;
     private CloseButton clearTextButton;
     private Image searchIcon;
     private Image ssoDNetLogo;
     private Image simbadLogo;
     
+    private boolean foundInSimbad = false;
+    private boolean foundAuthorInSimbad = false;
+    private boolean foundExactMatchAuthorInSimbad = false;
+    private boolean foundBibcodeInSimbad = false;
+    private boolean foundExactMatchBibcodeInSimbad = false;
+    private boolean foundInSSODnet = false;
 
     private CssPxAnimation searchWidthAnimation;
     private CssPxAnimation searchPaddingAnimation;
@@ -238,11 +250,6 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     	simbadLogo.addStyleName("searchPanel__logo");
     	ssoDNetLogo = new Image(resources.ssoDNetLogo().getSafeUri());
     	ssoDNetLogo.addStyleName("searchPanel__logo");
-    	
-    	logoContainer = new FlowPanel();
-    	logoContainer.addStyleName("searchPanel__logoContainer");
-    	logoContainer.add(simbadLogo);
-    	logoContainer.add(ssoDNetLogo);
     }
     
     private void ensureClearTextButtonVisibilty() {
@@ -289,20 +296,26 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         this.searchResultsFocusPanel.setVisible(false);
     }
 
+    private Map<String, Widget> authorList = new HashMap<String, Widget>(100);
+    private Map<String, Widget> bibcodeList = new HashMap<String, Widget>(100);
+    
     @Override
     public void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList) {
         this.resultsList.clear();
         final ESASkySearchResult simbadResult = resultList.getSimbadResult();
 
-        boolean foundInSimbad = false;
-        boolean foundInSSODnet = false;
+        foundInSimbad = false;
+        foundAuthorInSimbad = false;
+        foundBibcodeInSimbad = false;
+        foundInSSODnet = false;
+        foundExactMatchAuthorInSimbad = false;
+        foundExactMatchBibcodeInSimbad = false;
 
         Label simbadLabel = new Label();
-        simbadLabel.getElement().setId(SEARCH_RESULT_ENTRY);
         if (simbadResult != null && simbadResult.getServerMessage().isEmpty()) {
             simbadLabel.setText(simbadResult.getSimbadMainId());
             foundInSimbad = true;
-	        simbadLabel.addClickHandler(new ClickHandler() {
+	        ClickHandler clickHandler = new ClickHandler() {
 	
 	            @Override
 	            public void onClick(ClickEvent event) {
@@ -314,47 +327,87 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	                
 	                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SIMBAD: " + simbadResult.getSimbadMainId());
 	            }
-	        });
-	        this.resultsList.add(simbadLabel);
+	        };
+	        
+        	FocusPanel panel = new FocusPanel();
+        	panel.getElement().setId(SEARCH_RESULT_ENTRY);
+        	FlowPanel container = new FlowPanel();
+        	container.addStyleName("searchPanel__firstResultOfItsKindContainer");
+        	simbadLabel.addStyleName("searchPanel__firstResultOfItsKindLabel");
+        	container.add(simbadLabel);
+        	container.add(simbadLogo);
+        	panel.add(container);
+        	panel.addClickHandler(clickHandler);
+        	this.resultsList.add(panel);
         }
+        
+        authorList.clear();
+        addAuthorEntries(resultList.getSimbadAuthorResultExact());
+        if(authorList.size() > 0 ) {
+        	foundExactMatchAuthorInSimbad = true;
+        	Log.debug("Exact simbad author name found");
+        } 
+        addAuthorEntries(resultList.getSimbadAuthorResultWithWildcards());
+        
+        bibcodeList.clear();
+        addBibcodeEntries(resultList.getSimbadBibcodeResultExact());
+        if(bibcodeList.size() > 0 ) {
+        	foundExactMatchBibcodeInSimbad = true;
+        	Log.debug("Exact simbad bibcode name found");
+        } 
+        addBibcodeEntries(resultList.getSimbadBibcodeResultWithWildcards());
+        
 
         ESASkySSOSearchResultList ssodnetResult = resultList.getSsoDnetResults();
-
         if (ssodnetResult != null) {
-            foundInSSODnet = true;
 
-            for (ESASkySSOSearchResult currSSO : ssodnetResult.getResults()) {
+            for (final ESASkySSOSearchResult currSSO : ssodnetResult.getResults()) {
                 Log.debug("ITERATING SSO");
-
-                Label currSSOLabel = new Label();
-                currSSOLabel.getElement().setId(SEARCH_RESULT_ENTRY);
-                currSSOLabel.setText("[" + TextMgr.getInstance().getText(currSSO.getSsoObjType().name()) + "] "
-                        + currSSO.getName());
-
-                final String ssoName = currSSO.getName();
-                final ESASkySSOObjType ssoType = currSSO.getSsoObjType();
-                currSSOLabel.addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(ClickEvent event) {
-
+                
+        		FocusPanel menuEntry = new FocusPanel();
+        		menuEntry.getElement().setId(SEARCH_RESULT_ENTRY);
+        		menuEntry.addClickHandler(new ClickHandler() {
+        			
+        			@Override
+        			public void onClick(ClickEvent event) {
                         CommonEventBus.getEventBus().fireEvent(
-                                new SSOCrossMatchEvent(ssoName, ssoType));
+                                new SSOCrossMatchEvent(currSSO.getName(), currSSO.getSsoObjType()));
                         SearchPanel.this.searchResultsFocusPanel.setVisible(false);
                         
-                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SSO: " + ssoName);
-                    }
-                });
-                this.resultsList.add(currSSOLabel);
+                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SSO: " + currSSO.getName());
+        			}
+        		});
+        		
+        		
+        		FlowPanel container = new FlowPanel();
+        		container.addStyleName("searchPanel__firstResultOfItsKindContainer");
+        		Label ssoTypeLabel = new Label("[" + TextMgr.getInstance().getText(currSSO.getSsoObjType().name()) + "]");
+        		ssoTypeLabel.addStyleName("searchPanel__resultType");
+        		container.add(ssoTypeLabel);
+        		
+        		Label ssoName = new Label();
+        		ssoName.addStyleName("searchPanel__resultName");
+        		ssoName.setText(currSSO.getName());
+        		container.add(ssoName);
+        		menuEntry.add(container);
+        		if(!foundInSSODnet) {
+        			foundInSSODnet = true;
+    				ssoName.addStyleName("searchPanel__firstResultOfItsKindLabel");
+    				container.add(ssoDNetLogo);
+    				if(foundInSimbad || foundAuthorInSimbad || foundBibcodeInSimbad) {
+    					menuEntry.addStyleName("searchPanel__firstResultOfItsKind");
+    				}
+        		}
+        		this.resultsList.add(menuEntry);
             }
         }
         
-        if (!foundInSimbad && !foundInSSODnet) {
+        if (!foundInSimbad && !foundInSSODnet && !foundAuthorInSimbad && !foundBibcodeInSimbad) {
             this.resultsList.clear();
             showTargetNotFoundMessage();
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, searchTextBox.getText());
 
-        } else if (foundInSimbad && !foundInSSODnet) {
+        } else if (foundInSimbad && !foundInSSODnet && !foundAuthorInSimbad && !foundBibcodeInSimbad) {
             this.resultsList.clear();
             this.searchResultsFocusPanel.setVisible(false);
             AladinLiteWrapper.getInstance().goToTarget(simbadResult.getSimbadRaDeg(),
@@ -363,9 +416,6 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultAuto, "SIMBAD: " + simbadResult.getSimbadMainId());
             
         } else {
-        	simbadLogo.setVisible(foundInSimbad);
-        	ssoDNetLogo.setVisible(foundInSSODnet);
-        	this.resultsList.add(logoContainer);
             this.searchResultsFocusPanel.setVisible(true);
         }
 
@@ -426,5 +476,149 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 			
 			searchTextBox.setFocus(false);
 		}
+	}
+	
+	private void addAuthorEntries(final ESASkyPublicationSearchResultList simbadAuthorResult) {
+        if (simbadAuthorResult != null && (simbadAuthorResult.getErrorMessage() == null || simbadAuthorResult.getErrorMessage().isEmpty())) {
+	        for(final ESASkyPublicationSearchResult publicationResult : simbadAuthorResult.getResults()) {
+	        	addAuthorEntry(publicationResult);
+	        }
+	        if(authorList.size() > 3 || (foundExactMatchAuthorInSimbad && authorList.size() > 1)) {
+	        	final Label showMoreAuthorsLabel = new Label();
+	        	showMoreAuthorsLabel.getElement().setId("searchPanel__showMoreLabel");
+	        	showMoreAuthorsLabel.setText(TextMgr.getInstance().getText("searchPanel_showMoreAuthors"));
+	        	showMoreAuthorsLabel.setTitle(TextMgr.getInstance().getText("searchPanel_showMoreTooltip").replace("$COUNT$", "100"));
+	        	showMoreAuthorsLabel.addClickHandler(new ClickHandler() {
+	        		
+	        		@Override
+	        		public void onClick(ClickEvent event) {
+	        			for(Widget label : authorList.values()) {
+	        				label.setVisible(true);
+	        			}
+	        			showMoreAuthorsLabel.setVisible(false);
+	        			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchAuthorResultShowMoreClick, "User input: " + simbadAuthorResult.getUserInput() + " All authors: " + authorList.values());
+	        		}
+	        	});
+	        	
+	        	this.resultsList.add(showMoreAuthorsLabel);
+	        }
+        }
+	}
+	
+	private void addAuthorEntry(final ESASkyPublicationSearchResult publicationResult) {
+    	FocusPanel menuEntry = new FocusPanel();
+    	menuEntry.getElement().setId(SEARCH_RESULT_ENTRY);
+    	menuEntry.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+                
+                CommonEventBus.getEventBus().fireEvent(new AuthorSearchEvent(publicationResult.getName()));
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchAuthorResultClick, "SIMBAD: " + publicationResult.getName());
+            }
+        });
+
+    	
+    	FlowPanel container = new FlowPanel();
+    	container.addStyleName("searchPanel__firstResultOfItsKindContainer");
+    	Label simbadAuthorLabel = new Label("[" + TextMgr.getInstance().getText("searchPanel_author") + "]");
+    	simbadAuthorLabel.addStyleName("searchPanel__resultType");
+    	container.add(simbadAuthorLabel);
+    	
+    	Label simbadAuthorName = new Label();
+    	simbadAuthorName.addStyleName("searchPanel__resultName");
+        simbadAuthorName.setText(publicationResult.getName());
+        container.add(simbadAuthorName);
+        menuEntry.add(container);
+        if(authorList.containsKey(publicationResult.getName())){
+        	return;
+        }
+        authorList.put(publicationResult.getName(), menuEntry);
+        if(authorList.size() > 3 || foundExactMatchAuthorInSimbad) {
+        	menuEntry.setVisible(false);
+        }
+        if(!foundAuthorInSimbad) {
+        	foundAuthorInSimbad = true;
+            if(!foundInSimbad) {
+            	simbadAuthorName.addStyleName("searchPanel__firstResultOfItsKindLabel");
+            	container.add(simbadLogo);
+            } else {
+        		menuEntry.addStyleName("searchPanel__firstResultOfItsKind");
+			}
+        }
+    	this.resultsList.add(menuEntry);
+	}
+	
+	private void addBibcodeEntries(final ESASkyPublicationSearchResultList simbadBibcodeResult) {
+		if (simbadBibcodeResult != null && (simbadBibcodeResult.getErrorMessage() == null || simbadBibcodeResult.getErrorMessage().isEmpty())) {
+			for(final ESASkyPublicationSearchResult publicationResult : simbadBibcodeResult.getResults()) {
+				addBibcodeEntry(publicationResult);
+			}
+			if(bibcodeList.size() > 3 || (foundExactMatchBibcodeInSimbad && bibcodeList.size() > 1)) {
+				final Label showMoreBibcodeLabel = new Label();
+				showMoreBibcodeLabel.getElement().setId("searchPanel__showMoreLabel");
+				showMoreBibcodeLabel.setText(TextMgr.getInstance().getText("searchPanel_showMoreBibcodes"));
+				showMoreBibcodeLabel.setTitle(TextMgr.getInstance().getText("searchPanel_showMoreBibcodeTooltip").replace("$COUNT$", "100"));
+				showMoreBibcodeLabel.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						for(Widget label : bibcodeList.values()) {
+							label.setVisible(true);
+						}
+						showMoreBibcodeLabel.setVisible(false);
+						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchBibcodeResultShowMoreClick, "User input: " + simbadBibcodeResult.getUserInput() + " All authors: " + authorList.values());
+					}
+				});
+				
+				this.resultsList.add(showMoreBibcodeLabel);
+			}
+		}
+	}
+	
+	private void addBibcodeEntry(final ESASkyPublicationSearchResult publicationResult) {
+		FocusPanel menuEntry = new FocusPanel();
+		menuEntry.getElement().setId(SEARCH_RESULT_ENTRY);
+		menuEntry.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+				
+				CommonEventBus.getEventBus().fireEvent(new BibcodeSearchEvent(publicationResult.getName()));
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchBibcodeResultClick, "SIMBAD: " + publicationResult.getName());
+			}
+		});
+		
+		
+		FlowPanel container = new FlowPanel();
+		container.addStyleName("searchPanel__firstResultOfItsKindContainer");
+		Label simbadBibcodeLabel = new Label("[" + TextMgr.getInstance().getText("searchPanel_bibcode") + "]");
+		simbadBibcodeLabel.addStyleName("searchPanel__resultType");
+		container.add(simbadBibcodeLabel);
+		
+		Label simbadBibcodeName = new Label();
+		simbadBibcodeName.addStyleName("searchPanel__resultName");
+		simbadBibcodeName.setText(publicationResult.getName());
+		container.add(simbadBibcodeName);
+		menuEntry.add(container);
+		if(bibcodeList.containsKey(publicationResult.getName())){
+			return;
+		}
+		bibcodeList.put(publicationResult.getName(), menuEntry);
+		if(bibcodeList.size() > 3 || foundExactMatchBibcodeInSimbad) {
+			menuEntry.setVisible(false);
+		}
+		if(!foundBibcodeInSimbad) {
+			foundBibcodeInSimbad = true;
+			if(!foundInSimbad && !foundAuthorInSimbad) {
+				simbadBibcodeName.addStyleName("searchPanel__firstResultOfItsKindLabel");
+				container.add(simbadLogo);
+			} else {
+				menuEntry.addStyleName("searchPanel__firstResultOfItsKind");
+			}
+		}
+		this.resultsList.add(menuEntry);
 	}
 }

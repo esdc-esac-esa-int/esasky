@@ -23,6 +23,10 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
+import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
+import esac.archive.esasky.cl.web.client.event.AuthorSearchEventHandler;
+import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
+import esac.archive.esasky.cl.web.client.event.BibcodeSearchEventHandler;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEventHandlerImpl;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
@@ -144,45 +148,11 @@ public class MainPresenter {
         getTargetPresenter();
         AladinLiteWrapper.getAladinLite().enableReduceDeformations();
         
-        //If url has bibcode or author parammeter
         if (Modules.publicationsModule) {
-            if(UrlUtils.urlHasBibcode() || UrlUtils.urlHasAuthor()){
-               
-            	descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
-					
-					@Override
-					public void onLoad() {
-						if (descriptorRepo.getPublicationsDescriptors() != null 
-								&& descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
-							final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-							
-							if (UrlUtils.urlHasBibcode()) {
-								final String bibcode = Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0);
-								getCtrlTBPresenter().showPublicationInfo(bibcode,
-										descriptor.getArchiveURL(),
-										descriptor.getArchiveProductURI(),
-										descriptor.getAdsAuthorSeparator(),
-										descriptor.getAdsAuthorUrl(),
-										descriptor.getAdsAuthorUrlReplace());
-								
-								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
-								
-							} else if (UrlUtils.urlHasAuthor()) {
-								final String author = Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM).get(0);
-								getCtrlTBPresenter().showAuthorInfo(author,
-										descriptor.getAdsAuthorSeparator(),
-										descriptor.getAdsAuthorUrl(),
-										descriptor.getAdsAuthorUrlReplace());
-								showPublicationsTabPanel(author, true);
-								
-								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AuthorInURL, author);
-							}
-							
-						} else {
-							Log.error("[MainPresenter] Can't show soruces from bibcode, publicationsDescriptor is not ready!");
-						}
-					}
-				});
+        	if(UrlUtils.urlHasAuthor()) {
+        		loadOrQueueAuthorInformationFromSimbad(Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM).get(0));
+        	} else if(UrlUtils.urlHasBibcode()){
+            	loadOrQueueBibcodeTargetListFromSimbad(Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0));
             }
         }
     }
@@ -260,6 +230,22 @@ public class MainPresenter {
                  //Updates the url in the browser address bar
                  UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
              }
+         });
+         
+         CommonEventBus.getEventBus().addHandler(AuthorSearchEvent.TYPE, new AuthorSearchEventHandler() {
+			
+			@Override
+			public void onAuthorSelected(AuthorSearchEvent event) {
+				loadOrQueueAuthorInformationFromSimbad(event.getAuthorName());
+			}
+		});
+         
+         CommonEventBus.getEventBus().addHandler(BibcodeSearchEvent.TYPE, new BibcodeSearchEventHandler() {
+        	 
+        	 @Override
+        	 public void onBibcodeSelected(BibcodeSearchEvent event) {
+        		 loadOrQueueBibcodeTargetListFromSimbad(event.getBibcode());
+        	 }
          });
     }
     
@@ -454,4 +440,65 @@ public class MainPresenter {
         resultsPresenter.getTableSSOMetadata(entity);
         return true;
     }
+    
+    private void loadOrQueueAuthorInformationFromSimbad(final String author) {
+ 		if (descriptorRepo.getPublicationsDescriptors() != null 
+ 				&& descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+ 			loadAuthorInformationFromSimbad(author);
+ 			
+ 		} else {
+ 			descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
+ 				
+ 				@Override
+ 				public void onLoad() {
+ 					Log.debug("[MainPresenter] PublicationDescriptor ready, loading author informaiton");
+ 					loadAuthorInformationFromSimbad(author);
+ 				}
+ 			});
+ 			Log.debug("[MainPresenter] Can't show author information, publicationsDescriptor is not ready. Waiting for descriptor...");
+ 		}
+     }
+     
+     private void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
+     	if (descriptorRepo.getPublicationsDescriptors() != null 
+     			&& descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+     		loadBibcodeInformaitonFromSimbad(bibcode);
+     		
+     	} else {
+     		descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
+     			
+     			@Override
+     			public void onLoad() {
+     				Log.debug("[MainPresenter] PublicationDescriptor ready, loading bibcode informaiton");
+     				loadBibcodeInformaitonFromSimbad(bibcode);
+     			}
+     		});
+     		Log.debug("[MainPresenter] Can't show soruces from bibcode, publicationsDescriptor is not ready. Waiting for descriptor...");
+     	}
+     }
+     
+     private void loadAuthorInformationFromSimbad(String author) {
+     	final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
+ 			
+ 		getCtrlTBPresenter().showAuthorInfo(author,
+ 				descriptor.getAdsAuthorSeparator(),
+ 				descriptor.getAdsAuthorUrl(),
+ 				descriptor.getAdsAuthorUrlReplace());
+ 		showPublicationsTabPanel(author, true);
+ 		
+ 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AuthorInURL, author);
+     }
+     
+     private void loadBibcodeInformaitonFromSimbad(String bibcode) {
+     	final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
+     	getCtrlTBPresenter().showPublicationInfo(bibcode,
+     			descriptor.getArchiveURL(),
+     			descriptor.getArchiveProductURI(),
+     			descriptor.getAdsAuthorSeparator(),
+     			descriptor.getAdsAuthorUrl(),
+     			descriptor.getAdsAuthorUrlReplace());
+     	
+     	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
+     }
+    
 }

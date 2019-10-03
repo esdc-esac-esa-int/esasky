@@ -105,6 +105,10 @@ public final class GoogleAnalytics {
     
     public static final String ACT_Search_SearchQuery = "SearchQuery";
     public static final String ACT_Search_SearchResultClick = "SearchResultClick";
+    public static final String ACT_Search_SearchAuthorResultClick = "SearchResultAuthorClick";
+    public static final String ACT_Search_SearchAuthorResultShowMoreClick = "SearchResultAuthorShowMoreClick";
+    public static final String ACT_Search_SearchBibcodeResultClick = "SearchResultBibcodeClick";
+    public static final String ACT_Search_SearchBibcodeResultShowMoreClick = "SearchResultBibcodeShowMoreClick";
     public static final String ACT_Search_SearchResultAuto = "SearchResultAuto";
     public static final String ACT_Search_SearchTargetNotFound = "SearchTargetNotFound";
     public static final String ACT_Search_SearchWrongCoords = "SearchWrongCoords";
