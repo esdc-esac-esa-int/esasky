@@ -179,7 +179,10 @@ public class SkyRow extends Composite implements Selectable{
 				final HiPS hips = hipsDropDown.getSelectedObject();
 				final ColorPalette colorPalette = hips.getColorPalette();
 				changePaletteBtn.setDefaultColorPallette(colorPalette);
-				notifySkyChange();
+				if(isOverlay || isMain) {
+					isChosenFromSlider = true;
+					notifySkyChange();
+				}
 				sendConvenienceEvent();
 			}
 		});
@@ -339,7 +342,10 @@ public class SkyRow extends Composite implements Selectable{
 
 			@Override
 			public void onPaletteChange() {
-				notifySkyChange();
+				if(isOverlay || isMain) {
+					isChosenFromSlider = true;
+					notifySkyChange();
+				}
 			}
 		});
 	}

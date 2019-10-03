@@ -361,6 +361,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 						sky.setMain(true);
 						slider.setValue(i);
 					}
+					sky.setChosenFromSlider(false);
 					break;
 				}
 			}
