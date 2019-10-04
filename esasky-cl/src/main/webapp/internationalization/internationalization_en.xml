@@ -226,6 +226,9 @@
 	<text key="treeMap_SSO">
 		Solar System Object Observations
 	</text>
+	<text key="treeMap_EXT_TAP">
+		External TAP Services
+	</text>
 	<text key="treeMap_loading_ASTRO_IMAGING">
 		Loading Observations
 	</text>
@@ -234,6 +237,9 @@
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
 		Loading Spectra
+	</text>
+	<text key="treeMap_loading_EXT_TAP">
+		Loading External Taps
 	</text>
 	<text key="treeMap_loading_SSO">
 		Loading Solar System Objects
@@ -249,6 +255,9 @@
 	</text>
 	<text key="treeMap_noData_SSO">
 		No SSO Observations Found
+	</text>
+	<text key="treeMap_noData_EXT_TAP">
+		No External TAP Data Found
 	</text>
 	<text key="treeMap_nameOfSelectedLabel">
 		SSO: $SSONAME$ ($SSOTYPE$)
@@ -545,6 +554,9 @@
 	</text>
 	<text key="webConstants_exploreData">
 		Explore data for $TARGET$
+	</text>
+	<text key="webConstants_exploreExtTaps">
+		Explore data from External Tap services in this region
 	</text>
 	<text key="webConstants_trackSSO">
 		Track solar system objects through the search box
@@ -2361,6 +2373,13 @@
 		&gt;
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
+		<text key="treeMapContainer_help_EXT_TAP">
+		In ESASky you can now explore data from external TAP Services
+		which conforms with IVOA obsCore standards.
+		Services which have any data in the current region will appear
+		in the tree map. Pressing any service will start loading the data into
+		the datapanel and visualise footprints on the sky.
+		</text>
 	<text key="ResizingDataPanel">
 		Resizing Data Panel
 	</text>
