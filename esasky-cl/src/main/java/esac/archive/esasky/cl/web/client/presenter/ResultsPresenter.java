@@ -530,10 +530,10 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     public void showObjectNotAvailableInEsaSkyMsg(String progressIndicatorId) {
     	String missions = "";
     	for(IDescriptor descriptor : descriptorRepo.getSsoDescriptors().getDescriptors()) {
-    		missions += descriptor.getGuiLongName() + ",";
+    		missions += descriptor.getGuiLongName() + ", ";
     	}
         DisplayUtils
-        .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsMessage").replace("$MISSIONS$", missions.subSequence(0, missions.length() - 1)),
+        .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsMessage").replace("$MISSIONS$", missions.subSequence(0, missions.length() - 2)),
                 TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsTitle"),
                 progressIndicatorId);
     }
