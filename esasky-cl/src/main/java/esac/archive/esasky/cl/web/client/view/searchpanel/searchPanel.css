@@ -156,10 +156,6 @@
     right: 0px;
 }
 
-.searchPanel__firstResultOfItsKindLabel{
-	margin-right: 43px;
-}
-
 .searchPanel__firstResultOfItsKindContainer{
 	position: relative;
 }
@@ -169,6 +165,11 @@
 
 .searchPanel__resultName{
 	display: inline;
+}
+
+.searchPanel__firstResultOfItsKindLabel{
+	margin-right: 43px;
+	display: inline-block;
 }
 
 .searchPanel__resultType{

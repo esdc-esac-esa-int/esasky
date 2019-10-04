@@ -75,6 +75,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private boolean foundExactMatchBibcodeInSimbad = false;
     private boolean foundInSSODnet = false;
 
+    private Map<String, Widget> authorList = new HashMap<String, Widget>(100);
+    private Map<String, Widget> bibcodeList = new HashMap<String, Widget>(100);
+    private Map<String, Widget> ssoList = new HashMap<String, Widget>(100);
+    
     private CssPxAnimation searchWidthAnimation;
     private CssPxAnimation searchPaddingAnimation;
     
@@ -296,8 +300,6 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         this.searchResultsFocusPanel.setVisible(false);
     }
 
-    private Map<String, Widget> authorList = new HashMap<String, Widget>(100);
-    private Map<String, Widget> bibcodeList = new HashMap<String, Widget>(100);
     
     @Override
     public void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList) {
@@ -311,34 +313,36 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         foundExactMatchAuthorInSimbad = false;
         foundExactMatchBibcodeInSimbad = false;
 
-        Label simbadLabel = new Label();
         if (simbadResult != null && simbadResult.getServerMessage().isEmpty()) {
-            simbadLabel.setText(simbadResult.getSimbadMainId());
             foundInSimbad = true;
-	        ClickHandler clickHandler = new ClickHandler() {
-	
-	            @Override
-	            public void onClick(ClickEvent event) {
-	
+    		FocusPanel menuEntry = new FocusPanel();
+    		menuEntry.getElement().setId(SEARCH_RESULT_ENTRY);
+    		menuEntry.addClickHandler(new ClickHandler() {
+    			
+    			@Override
+    			public void onClick(ClickEvent event) {
 	                AladinLiteWrapper.getInstance().goToTarget(simbadResult.getSimbadRaDeg(),
 	                        simbadResult.getSimbadDecDeg(), simbadResult.getFoVDeg(), false,
 	                        AladinLiteConstants.FRAME_J2000);
 	                SearchPanel.this.searchResultsFocusPanel.setVisible(false);
 	                
 	                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SIMBAD: " + simbadResult.getSimbadMainId());
-	            }
-	        };
-	        
-        	FocusPanel panel = new FocusPanel();
-        	panel.getElement().setId(SEARCH_RESULT_ENTRY);
-        	FlowPanel container = new FlowPanel();
-        	container.addStyleName("searchPanel__firstResultOfItsKindContainer");
-        	simbadLabel.addStyleName("searchPanel__firstResultOfItsKindLabel");
-        	container.add(simbadLabel);
-        	container.add(simbadLogo);
-        	panel.add(container);
-        	panel.addClickHandler(clickHandler);
-        	this.resultsList.add(panel);
+    			}
+    		});
+    		
+    		FlowPanel container = new FlowPanel();
+    		container.addStyleName("searchPanel__firstResultOfItsKindContainer");
+    		Label typeLabel = new Label("[" + TextMgr.getInstance().getText("searchPanel_target") + "]");
+    		typeLabel.addStyleName("searchPanel__resultType");
+    		container.add(typeLabel);
+    		
+    		Label name = new Label(simbadResult.getSimbadMainId());
+    		name.addStyleName("searchPanel__resultName");
+    		container.add(name);
+    		menuEntry.add(container);
+//			name.addStyleName("searchPanel__firstResultOfItsKindLabel");
+			container.add(simbadLogo);
+    		this.resultsList.add(menuEntry);
         }
         
         authorList.clear();
@@ -358,7 +362,8 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         addBibcodeEntries(resultList.getSimbadBibcodeResultWithWildcards());
         
 
-        ESASkySSOSearchResultList ssodnetResult = resultList.getSsoDnetResults();
+        ssoList.clear();
+        final ESASkySSOSearchResultList ssodnetResult = resultList.getSsoDnetResults();
         if (ssodnetResult != null) {
 
             for (final ESASkySSOSearchResult currSSO : ssodnetResult.getResults()) {
@@ -399,7 +404,34 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     				}
         		}
         		this.resultsList.add(menuEntry);
+                ssoList.put(currSSO.getName(), menuEntry);
+                if(ssoList.size() > 3) {
+                	menuEntry.setVisible(false);
+                }
+        		
             }
+            
+			if(ssoList.size() > 3) {
+				final Label showMoreSsoLabel = new Label();
+				showMoreSsoLabel.getElement().setId("searchPanel__showMoreLabel");
+				showMoreSsoLabel.setText(TextMgr.getInstance().getText("searchPanel_showMoreSso"));
+				showMoreSsoLabel.setTitle(TextMgr.getInstance().getText("searchPanel_showMoreSsoTooltip"));
+				showMoreSsoLabel.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						for(Widget label : ssoList.values()) {
+							label.setVisible(true);
+						}
+						showMoreSsoLabel.setVisible(false);
+						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchSsoResultShowMoreClick, "User input: " 
+						+ ssodnetResult.getUserInput() + " All SSOs: " + ssoList.values());
+					}
+				});
+				
+				this.resultsList.add(showMoreSsoLabel);
+			}
+            
         }
         
         if (!foundInSimbad && !foundInSSODnet && !foundAuthorInSimbad && !foundBibcodeInSimbad) {

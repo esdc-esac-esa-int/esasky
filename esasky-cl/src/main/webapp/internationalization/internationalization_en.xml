@@ -2610,8 +2610,17 @@
 	<text key="searchPanel_showMoreTooltip">
 		Show the first $COUNT$ author matches
 	</text>
+	<text key="searchPanel_showMoreSso">
+		Show more SSOs
+	</text>
+	<text key="searchPanel_showMoreTooltip">
+		Show all the sso matches
+	</text>
 	<text key="searchPanel_author">
 		Author
+	</text>
+	<text key="searchPanel_target">
+		Target
 	</text>
 	<text key="searchPanel_showMoreBibcodes">
 		Show more bibcodes
