@@ -61,12 +61,29 @@ public class ExtTapEntity implements GeneralEntityInterface {
     	public Shape buildShape(int rowId, TapRowList rowList) {
     		PolygonShape polygon = new PolygonShape();
     		polygon.setShapeId(rowId);
-    		polygon.setStcs((String) getTAPDataByTAPName(rowList, rowId, descriptor.getTapSTCSColumn()));
+    		String stcs = (String) getTAPDataByTAPName(rowList, rowId, descriptor.getTapSTCSColumn());
+    		stcs = makeSureSTCSHasFrame(stcs);
+    		polygon.setStcs(stcs);
     		polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
     				polygon.getStcs(), rowId));
     		return polygon;
     	}
     };
+    
+    private String makeSureSTCSHasFrame(String input) {
+    	String stcs = input.toUpperCase();
+    	if(stcs.contains("J2000")  || stcs.contains("ICRS")) {
+    		return stcs;
+    	}
+    	if(stcs.contains("POLYGON")){
+    		stcs = stcs.replaceAll("POLYGON", "POLYGON J2000");
+    	}
+    	if(stcs.contains("CIRCLE")){
+    		stcs = stcs.replaceAll("CIRCLE", "CIRCLE J2000");
+    	}
+    	return stcs;
+    	
+    }
 
     public ExtTapEntity(ExtTapDescriptor descriptor, CountStatus countStatus,
     		SkyViewPosition skyViewPosition, String esaSkyUniqId, Long lastUpdate, EntityContext context) {
