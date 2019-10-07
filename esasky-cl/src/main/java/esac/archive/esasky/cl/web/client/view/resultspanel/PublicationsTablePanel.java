@@ -32,6 +32,30 @@ public class PublicationsTablePanel extends SourcesTablePanel {
 	public void hoverStopEntity(RowHoverEvent hoverEvent) {
 		//Do nothing
 	}
+	
+	public void hoverStartRow(int rowId) {
+		if (rowId >= 0) {
+			for (int i = 0; i < this.table.getVisibleItems().size(); i++) {
+				if (this.table.getVisibleItem(i).getShapeId() == rowId) {
+					setStyleName(this.table.getRowElement(i), "dataGridHoveredRowUserDefined", true);
+					lastHoveredRowId = rowId;
+					break;
+				}
+			}
+		}
+	}
+
+	public void hoverStopRow(int rowId) {
+		if (rowId >= 0) {
+			for (int i = 0; i < this.table.getVisibleItems().size(); i++) {
+				if (this.table.getVisibleItem(i).getShapeId() == rowId) {
+			        setStyleName(this.table.getRowElement(i), "dataGridHoveredRowUserDefined", false);
+					break;
+				}
+			}
+		}
+	}
+	
 
 	@Override
     protected int getRowLimit() {
