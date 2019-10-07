@@ -75,6 +75,15 @@ public class MovablePanel extends FlowPanel {
 	}
 
 	@Override
+	protected void onDetach() {
+		super.onDetach();
+		if (nativePreviewHandlerRegistration != null) {
+			nativePreviewHandlerRegistration.removeHandler();
+			nativePreviewHandlerRegistration = null;
+		}
+	}
+	
+	@Override
 	public void onBrowserEvent(Event event) {
 		final int eventType = DOM.eventGetType(event);
 		if (Event.ONMOUSEOVER == eventType) {
