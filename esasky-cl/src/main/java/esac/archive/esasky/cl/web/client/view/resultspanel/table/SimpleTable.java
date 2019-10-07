@@ -1,19 +1,15 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.table;
 
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableSectionElement;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -26,7 +22,12 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
 	private CssResource style;
 	private com.google.gwt.dom.client.Style tableContentStyle;
 	
-	private final int MIN_COLUMN_SIZE = 20;
+	private final int MIN_COLUMN_SIZE = 30;
+	private boolean columnEdgePressed = false;
+    private boolean columnLeftEdgePressed = false;
+    private TableCellElement pressedCell;
+    private int offset = 0;
+	   
 	
     public interface Resources extends ClientBundle {
         @Source("datagrid.css")
@@ -84,74 +85,100 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
     	setScrollbarHeight();
     }
     
-    private TableCellElement changingColumn;
-    private boolean ignoreClick = false;
-    int offset = 0;
-    
-    @Override
-    protected void onBrowserEvent2(Event event) {
-
-    	boolean hasTriggered = false;
-        EventTarget eventTarget = event.getEventTarget();
-        if (!Element.is(eventTarget)) {
-          return;
-        }
-        final Element target = event.getEventTarget().cast();
-        Element cell = ensureCellIsTarget(target);
-        if(cell != null) {
+    public void onMouseDown(Event event) {
+    	final Element target = event.getEventTarget().cast();
+    	Element cell = ensureCellIsTarget(target);
+    	if(cell != null) {
 	        int xValue = event.getClientX();
+	        int xStartCell = cell.getAbsoluteLeft();
 	        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
 	        
-	        String eventType = event.getType();
-	        if (Math.abs(xValue - xEndCell) < 5){
-	        	if(BrowserEvents.MOUSEDOWN.equals(eventType)) {
-	        		hasTriggered = true;
-	        		changingColumn = cell.cast();     
-	        		offset = xValue - xEndCell;
-	        		DOM.setCapture(this.getElement());
-	        		
-	        	}else if (BrowserEvents.MOUSEOVER.equals(eventType)){
-	        		cell.addClassName("dataGridChangeColumnsSize");
-	        		DOM.setCapture(this.getElement());
+	        if (Math.abs(xValue - xStartCell) < 5) {
+	        	pressedCell = cell.cast();
+	        	if(pressedCell.getCellIndex() != 0) {
+	        		columnLeftEdgePressed = true;
+	        		columnEdgePressed = true;
+	        		offset = xValue - xStartCell;
+	        		event.stopPropagation();;
 	        	}
-	        	else if (BrowserEvents.MOUSEOUT.equals(eventType)){
-	        		cell.removeClassName("dataGridChangeColumnsSize");
-	        	}
-	        	
-	        }else if (BrowserEvents.MOUSEMOVE.equals(eventType) && changingColumn != null){
-	        	int newWidth = xValue - changingColumn.getAbsoluteLeft() - offset;
-	        	int oldWidth = changingColumn.getClientWidth();
-	        	if(newWidth > MIN_COLUMN_SIZE) {
-	        		int col = changingColumn.getCellIndex();
-	        		doSetColumnWidth(col,Integer.toString(newWidth)+"px");
-		        	int change = newWidth - oldWidth - 1;
-		        	int oldTableWidth = getTableBodyElement().getClientWidth();
-		    		setTableWidth(oldTableWidth + change, Unit.PX);
-	        	}
-	    		hasTriggered = true;
-	    		
-	    	}else {
-	    		if(changingColumn == null) {
-	    			DOM.releaseCapture(this.getElement());
-	    		}
-	    		cell.removeClassName("dataGridChangeColumnsSize");
 	        }
-	    	if (BrowserEvents.MOUSEUP.equals(eventType)){
-	    		DOM.releaseCapture(this.getElement());
-	    		hasTriggered = true;
-	    		ignoreClick = true;
-	    		changingColumn = null;
-	    		
-	    	}else if (BrowserEvents.CLICK.equals(eventType) && ignoreClick){
-	    		ignoreClick = false;
-	    		hasTriggered = true;
-	    	}
-        
-        }
-        
-        if(!hasTriggered) {
-        	super.onBrowserEvent2(event);
-        }
+	        else if (Math.abs(xValue - xEndCell) < 5 ){
+	        	columnLeftEdgePressed = false;
+	        	columnEdgePressed = true;
+	        	pressedCell = cell.cast();     
+	        	offset = xValue - xEndCell;
+	        	event.stopPropagation();;
+	        }
+    	}
+    }
+    
+    public void onMouseUp() {
+    	if(columnEdgePressed) {
+    		redrawHeaders();
+    	}
+    	columnEdgePressed = false;
+    }
+    
+    public void onMouseMove(Event event) {
+    	if(columnEdgePressed) {
+    		event.stopPropagation();
+    		event.preventDefault();
+    		TableCellElement changingCell = pressedCell;
+    		if (columnLeftEdgePressed){
+    			changingCell = pressedCell.getPreviousSiblingElement().cast();
+    		}
+    		int oldWidth = changingCell.getClientWidth();
+    		int newWidth = event.getClientX() - changingCell.getAbsoluteLeft() - offset;
+    		if(newWidth > MIN_COLUMN_SIZE) {
+    			int col = changingCell.getCellIndex();
+    			doSetColumnWidth(col,Integer.toString(newWidth)+"px");
+    			int change = newWidth - oldWidth - 1;
+    			int oldTableWidth = getTableBodyElement().getClientWidth();
+    			setTableWidth(oldTableWidth + change, Unit.PX);
+    		}
+    	}
+    	addMouseOverStyles(event);
+    	
+    }
+    public void onMouseClick(Event event) {
+    	final Element target = event.getEventTarget().cast();
+    	Element cell = ensureCellIsTarget(target);
+    	if(cell != null) {
+	        int xValue = event.getClientX();
+	        int xStartCell = cell.getAbsoluteLeft();
+	        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
+	        
+	        if (Math.abs(xValue - xStartCell) < 5 || Math.abs(xValue - xEndCell) < 5) {
+	        	event.stopPropagation();
+	        	event.preventDefault();
+	        }
+    	}
+    }
+    
+    public void onMouseOver(Event event) {
+    	addMouseOverStyles(event);
+    }
+    
+    private void addMouseOverStyles(Event event) {
+    	final Element target = event.getEventTarget().cast();
+    	Element cell = ensureCellIsTarget(target);
+    	int xValue = event.getClientX();
+    	if(cell != null) {
+	        int xStartCell = cell.getAbsoluteLeft();
+	        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
+	        TableCellElement mouseOverElement = cell.cast();
+	        
+	        if ((Math.abs(xValue - xStartCell) < 5  && mouseOverElement.getCellIndex() != 0)
+	        		|| (Math.abs(xValue - xEndCell) < 5 && mouseOverElement.getCellIndex() != getColumnCount() - 1)) {
+	        	cell.addClassName("dataGridChangeColumnsSize");
+	        	cell.removeClassName("dataPanelHeaderHover");
+	        } else {
+	        	if(cell.getTagName().contains("TH")) {
+	        		cell.addClassName("dataPanelHeaderHover");
+	        	}
+	        	cell.removeClassName("dataGridChangeColumnsSize");
+	        }
+    	}
     }
 
     //Mainly copied from AbstractCellTable

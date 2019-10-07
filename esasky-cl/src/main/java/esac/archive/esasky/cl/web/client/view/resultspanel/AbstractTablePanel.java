@@ -19,8 +19,10 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.TableRowElement;
@@ -35,12 +37,17 @@ import com.google.gwt.user.cellview.client.ColumnSortList.ColumnSortInfo;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.cellview.client.RowHoverEvent.Handler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -150,7 +157,7 @@ public abstract class AbstractTablePanel extends Composite {
 	private FlowPanel columnGroupHeader = new FlowPanel();
 	private FlowPanel tableAndGroupHeader = new FlowPanel();
 
-	private int lastHoveredRowId;
+	protected int lastHoveredRowId;
 	private boolean isHidingTable = false;
 	private boolean hasBeenClosed = false;
 	protected boolean isShowing = false;
@@ -356,6 +363,10 @@ public abstract class AbstractTablePanel extends Composite {
 				TableColumnHelper.COLUMN_WIDTH_CHECKBOX_DEFAULT_SIZE, Unit.PX);
 		
 		initWidget(container);
+		
+		DOM.sinkEvents(getElement(), Event.ONMOUSEDOWN | Event.ONMOUSEMOVE | Event.ONCLICK
+				| Event.ONMOUSEUP | Event.ONMOUSEOVER | Event.ONTOUCHSTART | Event.ONTOUCHMOVE);
+		DOM.sinkEvents(RootPanel.get().getElement(), Event.ONMOUSEMOVE | Event.ONTOUCHMOVE | Event.ONMOUSEUP | Event.ONTOUCHEND | Event.ONTOUCHCANCEL);
 	}
 	
 	Timer refreshHeightTimer = new Timer() {
@@ -1288,6 +1299,57 @@ public abstract class AbstractTablePanel extends Composite {
 		} else {
 			getEntity().deselectShapes(changedRows);
 		}
+	}
+	
+	@Override
+	public void onBrowserEvent(Event event) {
+		if(BrowserEvents.MOUSEDOWN.equals(event.getType())) {
+			DOM.setCapture(this.getElement());
+			table.onMouseDown(event);
+		}
+		if(BrowserEvents.MOUSEUP.equals(event.getType())) {
+			DOM.releaseCapture(this.getElement());
+			table.onMouseUp();
+		}
+		if(BrowserEvents.MOUSEMOVE.equals(event.getType())) {
+			table.onMouseMove(event);
+		}
+		if(BrowserEvents.MOUSEOVER.equals(event.getType())) {
+			table.onMouseOver(event);
+		}
+	}
+	
+	@Override
+	protected void onAttach() {
+		super.onAttach();
+		updateHandlers();
+	}
+	
+	private void previewNativeEvent(NativePreviewEvent event) {
+		if (event.isCanceled() || (event.isConsumed())) {
+			return;
+		}
+
+		Event nativeEvent = Event.as(event.getNativeEvent());
+		if(nativeEvent.getTypeInt() == Event.ONCLICK && DOM.getCaptureElement() == null) {
+			table.onMouseClick(nativeEvent);
+		}
+	}
+	
+	private HandlerRegistration nativePreviewHandlerRegistration;
+
+	private void updateHandlers() {
+		// Remove any existing handlers.
+		if (nativePreviewHandlerRegistration != null) {
+			nativePreviewHandlerRegistration.removeHandler();
+			nativePreviewHandlerRegistration = null;
+		}
+
+		nativePreviewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
+			public void onPreviewNativeEvent(NativePreviewEvent event) {
+				previewNativeEvent(event);
+			}
+		});
 	}
 
 
