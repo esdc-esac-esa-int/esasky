@@ -1303,15 +1303,18 @@ public abstract class AbstractTablePanel extends Composite {
 	
 	@Override
 	public void onBrowserEvent(Event event) {
-		if(BrowserEvents.MOUSEDOWN.equals(event.getType())) {
+		if(BrowserEvents.MOUSEDOWN.equals(event.getType()) || BrowserEvents.TOUCHSTART.equals(event.getType())) {
 			DOM.setCapture(this.getElement());
 			table.onMouseDown(event);
 		}
-		if(BrowserEvents.MOUSEUP.equals(event.getType())) {
+		if(BrowserEvents.MOUSEUP.equals(event.getType())
+				|| BrowserEvents.TOUCHCANCEL.equals(event.getType())
+				|| BrowserEvents.TOUCHEND.equals(event.getType())) {
 			DOM.releaseCapture(this.getElement());
 			table.onMouseUp();
 		}
-		if(BrowserEvents.MOUSEMOVE.equals(event.getType())) {
+		if(BrowserEvents.MOUSEMOVE.equals(event.getType())
+				|| BrowserEvents.TOUCHMOVE.equals(event.getType())) {
 			table.onMouseMove(event);
 		}
 		if(BrowserEvents.MOUSEOVER.equals(event.getType())) {

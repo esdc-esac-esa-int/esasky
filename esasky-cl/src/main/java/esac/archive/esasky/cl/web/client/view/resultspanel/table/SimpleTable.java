@@ -90,6 +90,9 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
     	Element cell = ensureCellIsTarget(target);
     	if(cell != null) {
 	        int xValue = event.getClientX();
+	        if(xValue == 0 && event.getTouches() != null && event.getTouches().length() > 0) {
+	        	xValue = event.getTouches().get(0).getClientX();
+	        }
 	        int xStartCell = cell.getAbsoluteLeft();
 	        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
 	        
@@ -128,7 +131,11 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
     			changingCell = pressedCell.getPreviousSiblingElement().cast();
     		}
     		int oldWidth = changingCell.getClientWidth();
-    		int newWidth = event.getClientX() - changingCell.getAbsoluteLeft() - offset;
+    		int xValue = event.getClientX();
+	        if(xValue == 0 && event.getTouches() != null && event.getTouches().length() > 0) {
+	        	xValue = event.getTouches().get(0).getClientX();
+	        }
+    		int newWidth = xValue - changingCell.getAbsoluteLeft() - offset;
     		if(newWidth > MIN_COLUMN_SIZE) {
     			int col = changingCell.getCellIndex();
     			doSetColumnWidth(col,Integer.toString(newWidth)+"px");
@@ -145,6 +152,9 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
     	Element cell = ensureCellIsTarget(target);
     	if(cell != null) {
 	        int xValue = event.getClientX();
+	        if(xValue == 0 && event.getTouches() != null && event.getTouches().length() > 0) {
+	        	xValue = event.getTouches().get(0).getClientX();
+	        }
 	        int xStartCell = cell.getAbsoluteLeft();
 	        int xEndCell = cell.getAbsoluteLeft() + cell.getClientWidth();
 	        
