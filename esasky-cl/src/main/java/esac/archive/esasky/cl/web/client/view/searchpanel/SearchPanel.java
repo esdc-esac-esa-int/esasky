@@ -207,6 +207,14 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                         +"10:12:45.3 -45:17:50<br/>" 
                         +"102.036991 +59.771411<br/>"
                         + "</p>"
+                        + "<hr/>"
+                        + "<p class=\"coords\"><b>" + TextMgr.getInstance().getText("searchPanel_inputByAuthor") + "</b><br/>"
+                        + "Messier C.<br/>" 
+                        + "Hubble E.<br/>" 
+                        + "<hr/>"
+                        + "<p class=\"coords\"><b>" + TextMgr.getInstance().getText("searchPanel_inputByBibcode") + "</b><br/>"
+						+ "1850CDT..1784..227M<br/>" 
+						+ "1953ApJ...118..353H<br/>" 
                         + "<p class=\"coords\"><a href=\"//www.cosmos.esa.int/web/esdc/esasky-search-formats\" target=\"_blank\">" + TextMgr.getInstance().getText("searchPanel_seeMoreExamples") + "</a></p>");
         
         

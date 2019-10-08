@@ -2650,6 +2650,12 @@
 	<text key="searchPanel_bibcode">
 		Bibcode
 	</text>
+	<text key="searchPanel_inputByBibcode">
+		By bibcode
+	</text>
+	<text key="searchPanel_inputByAuthor">
+		By author
+	</text>
 	
 	
 </Internationalization>
