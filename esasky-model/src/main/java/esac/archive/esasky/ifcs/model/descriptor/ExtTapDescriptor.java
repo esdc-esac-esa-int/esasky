@@ -15,8 +15,10 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String uniqueIdentifierField;
     private String type;
     private String whereADQL;
+    private String selectADQL;
     private String responseFormat;
     private String searchFunction;
+    private boolean isInBackend = true;
     
     
     @JsonInclude(Include.NON_NULL)
@@ -98,6 +100,22 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setSearchFunction(String searchFunction) {
 		this.searchFunction = searchFunction;
+	}
+
+	public boolean isInBackend() {
+		return isInBackend;
+	}
+
+	public void setInBackend(boolean isInBackend) {
+		this.isInBackend = isInBackend;
+	}
+
+	public String getSelectADQL() {
+		return selectADQL;
+	}
+
+	public void setSelectADQL(String selectADQL) {
+		this.selectADQL = selectADQL;
 	}
 	
 }
