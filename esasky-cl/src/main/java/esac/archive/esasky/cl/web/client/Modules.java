@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.Dictionary;
 
 public class Modules {
     
@@ -12,6 +13,8 @@ public class Modules {
     public static boolean spectraModule = true;
     public static boolean publicationsModule = true;
     public static boolean wwtLink = true;
+    public static final boolean shouldShowExtTap = Boolean.parseBoolean(Dictionary.getDictionary("serverProperties")
+			.get("showExtTap"));
 
     public static void Init() {
 

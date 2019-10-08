@@ -204,15 +204,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			publicationPanel.hide();
 		}
 		
-		ctrlToolBarPanel.add(createExtTapBtn());
-		ctrlToolBarPanel.add(extTapTreeMapContainer);
-		extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
-			@Override
-			public void onClose() {
-				extTapButton.setToggleStatus(false);
-				CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
-			}
-		});
+		if(Modules.shouldShowExtTap) {
+			ctrlToolBarPanel.add(createExtTapBtn());
+			ctrlToolBarPanel.add(extTapTreeMapContainer);
+			extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
+				@Override
+				public void onClose() {
+					extTapButton.setToggleStatus(false);
+					CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
+				}
+			});
+		}
 		
 		ctrlToolBarPanel.add(createTargetListBtn());
 		ctrlToolBarPanel.add(targetListPanel);
@@ -502,10 +504,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	private void hideWidget(Widget widget) {
-		widget.getElement().getStyle().setDisplay(Display.NONE);
+		if(widget != null) {
+			widget.getElement().getStyle().setDisplay(Display.NONE);
+		}
 	}
 	private void showWidget(Widget widget) {
-		widget.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		if(widget != null) {
+			widget.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		}
 	}
 
 	
