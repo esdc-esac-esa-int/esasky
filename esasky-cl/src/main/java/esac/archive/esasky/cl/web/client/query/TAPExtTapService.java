@@ -25,7 +25,27 @@ public class TAPExtTapService extends AbstractMetadataService {
     }
 
     public String getAdql(ExtTapDescriptor descriptor, int top) {
-    	 String adql = "select top " + top + " *";
+    	String adql = "select top " + top + " *";
+    	
+    	String parsedAdql = adql;
+    	parsedAdql += " from " + descriptor.getTapTable() + " WHERE ";
+    	
+    	if(descriptor.getSearchFunction().equals("polygonIntersect")) {
+    		parsedAdql += polygonIntersectSearch(descriptor);
+    	}else {
+    		parsedAdql += raDecCenterSearch(descriptor);
+    	}
+    	
+    	if(descriptor.getWhereADQL() != null) {
+    		parsedAdql += " AND " + descriptor.getWhereADQL();
+    	}
+    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + parsedAdql);
+    	
+    	return parsedAdql;
+    }
+    
+    public String getAdqlNewService(ExtTapDescriptor descriptor) {
+    	 String adql = descriptor.getSelectADQL();
 
          String parsedAdql = adql;
          parsedAdql += " from " + descriptor.getTapTable() + " WHERE ";
@@ -111,15 +131,24 @@ public class TAPExtTapService extends AbstractMetadataService {
     
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
-        int top = 3000;
+        int top = 2000;
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-        return getAdql(descriptor, top);       
+        
+        if(descriptor.isInBackend()) {
+        	return getAdql(descriptor, top);       
+        }else {
+        	return getAdqlNewService(descriptor);
+        }
     }
     
     public String getCountAdql(IDescriptor descriptorInput) {
         int top = 1;
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-        return getAdql(descriptor, top);       
+        if(descriptor.isInBackend()) {
+        	return getAdql(descriptor, top);       
+        }else {
+        	return getAdqlNewService(descriptor);
+        }  
     }
 
     @Override

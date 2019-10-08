@@ -53,6 +53,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObser
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
 
 public class Api {
 	
@@ -116,6 +117,12 @@ public class Api {
 		}
 	}
 	
+	public void newExtTapService(String name, String tapUrl, String tapTable, String adql) {
+		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, tapTable, adql);
+		controller.getRootPresenter().getEntityRepository().createExtTapEntity(descriptor, EntityContext.EXT_TAP);
+		controller.getRootPresenter().getRelatedMetadata(descriptor, EntityContext.EXT_TAP);
+	}
+	
 	public void showCoordinateGrid(boolean show) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_showCoordinateGrid,Boolean.toString(show));
 		controller.getRootPresenter().getHeaderPresenter().toggleGrid(show);
@@ -138,6 +145,24 @@ public class Api {
 			});
 		}else {
 			sendBackToWidget(callback, msg);
+		}
+	}
+	
+	public void closeResultPanelTab(int index) {
+		final AbstractTablePanel tablePanel;
+		try {
+			if(index == -1) {
+				tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+			}else {
+				tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getWidget(index);
+			}
+			
+			tablePanel.closeTablePanel();
+			String id = tablePanel.getEntity().getEsaSkyUniqId();
+			MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
+			controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
+		}catch(IndexOutOfBoundsException e) {
+			Log.error(e.toString());
 		}
 	}
 	

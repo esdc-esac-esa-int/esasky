@@ -226,12 +226,19 @@ public class ApiMessageParser {
 				
 			case 'plotSpectra':
 				console.log('plotSpectra event captured');
-				var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotSpectra(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg.content.missionId,e);
+				var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotSpectra(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.missionId,e);
 				break;	
 				
 			case 'getResultPanelData':
 				console.log('getResultPanelData event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::getResultPanelData(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::getResultPanelData(Lcom/google/gwt/core/client/JavaScriptObject;)
+					(e);
+				break;	
+
+			case 'closeResultPanelTab':
+				console.log('closeResultPanelTab event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::closeResultPanelTab(I)(msg.content.index);
 				break;	
 				
 			case 'showCoordinateGrid':
@@ -241,12 +248,19 @@ public class ApiMessageParser {
 				
 			case 'extTap':
 				console.log('ExtTap event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::extTap(Ljava/lang/String;)(msg.content.missionId);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::extTap(Ljava/lang/String;)(msg.content.tapService);
 				break;	
 				
 			case 'extTapCount':
 				console.log('ExtTapCount event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::extTapCount(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(msg.content.missionId, e);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::extTapCount(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.tapService, e);
+				break;	
+
+			case 'newExtTapService':
+				console.log('newExtTapService event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::newExtTapService(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+					(msg.content.name, msg.content.tapUrl, msg.content.tapTable, msg.content.adql);
 				break;	
 
 			default:

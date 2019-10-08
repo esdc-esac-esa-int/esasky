@@ -26,6 +26,7 @@ public class MetadataCallback extends JsonRequestCallback {
 	private static HashMap<String, Long> latestUpdates = new HashMap<String, Long>();
 	private long timecall;
 	private OnComplete onComplete;
+	long startTime;
 
 	public interface OnComplete{
 		public void onComplete();
@@ -45,6 +46,7 @@ public class MetadataCallback extends JsonRequestCallback {
 		this.adql = adql;
 		timecall = System.currentTimeMillis();
 		latestUpdates.put(tablePanel.getEsaSkyUniqID(), timecall);
+		startTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -74,8 +76,12 @@ public class MetadataCallback extends JsonRequestCallback {
 
 				List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList,
 						entity.getDescriptor());
+				long receivedTime = System.currentTimeMillis();
+				Log.debug("Receive time " + Long.toString(receivedTime - startTime ));
+				
 				tablePanel.insertData(tabRowList);
-
+				Log.debug("Insert time " + Long.toString(System.currentTimeMillis() - receivedTime ));
+				
 				// used by download CSV, VOTABLE
 				tablePanel.setADQLQueryUrl(adql);
 				

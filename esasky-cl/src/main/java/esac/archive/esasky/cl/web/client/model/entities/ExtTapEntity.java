@@ -116,7 +116,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         		// Get Query in ADQL format.
         		final String adql = getMetadataAdql();
         		
-        		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), getDescriptor().getResponseFormat(), getDescriptor().getMission());
+        		String url = TAPUtils.getExtTAPQuery(URL.encode(adql),descriptor);
         		
         		Log.debug(debugPrefix + "Query [" + url + "]");
         		
