@@ -211,10 +211,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                         + "<p class=\"coords\"><b>" + TextMgr.getInstance().getText("searchPanel_inputByAuthor") + "</b><br/>"
                         + "Messier C.<br/>" 
                         + "Hubble E.<br/>" 
+                        + "Rubin V.<br/>" 
                         + "<hr/>"
                         + "<p class=\"coords\"><b>" + TextMgr.getInstance().getText("searchPanel_inputByBibcode") + "</b><br/>"
 						+ "1850CDT..1784..227M<br/>" 
 						+ "1953ApJ...118..353H<br/>" 
+						+ "1968Natur.217..709H<br/>" 
                         + "<p class=\"coords\"><a href=\"//www.cosmos.esa.int/web/esdc/esasky-search-formats\" target=\"_blank\">" + TextMgr.getInstance().getText("searchPanel_seeMoreExamples") + "</a></p>");
         
         

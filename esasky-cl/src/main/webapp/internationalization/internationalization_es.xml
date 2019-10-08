@@ -3170,37 +3170,35 @@
 	<text key="SsoCountRequestCallback_noCrossMatchResultsMessage">
 		No hay correspondencias para el objeto que est&#225; buscando.Buscado en
 		$MISSIONS$
-		There are no cross matches for the object you are looking for. Searched in
-		$MISSIONS$
 	</text>
 	<text key="SsoCountRequestCallback_noCrossMatchResultsTitle">
 		No hay correspondencias para el objeto
-		No cross matches for target
 	</text>
 	<text key="searchPanel_showMoreAuthors">
 		Mostrar m&#225;s autores
-		Show more authors
 	</text>
 	<text key="searchPanel_showMoreTooltip">
 		Mostrar los primeros $COUNT$ autores
-		Show the first $COUNT$ author matches
 	</text>
 	<text key="searchPanel_author">
 		Autor
-		Author
 	</text>
 	<text key="searchPanel_showMoreBibcodes">
 		Mostrar m&#225;s c&#243;digos bibcode
-		Show more bibcodes
 	</text>
 	<text key="searchPanel_showMoreBibcodeTooltip">
 		Mostrar las correspondencias con los primeros $COUNT$ c&#243;digos bibcode
-		Show the first $COUNT$ bibcode matches
 	</text>
 	<text key="searchPanel_bibcode">
 		C&#243;digo bibcode
-		Bibcode
 	</text>
+		<text key="searchPanel_inputByBibcode">
+		Por c&#243;digo bibcode
+	</text>
+	<text key="searchPanel_inputByAuthor">
+		Por autor
+	</text>
+	
 
 
 </Internationalization>
