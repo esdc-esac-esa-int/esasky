@@ -192,6 +192,37 @@ public class DescriptorRepository {
 		});
 	}
 	
+	public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, String tapTable, String adql) {
+		ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(name);
+		if(descriptor == null) {
+			descriptor = new ExtTapDescriptor();
+		}
+		
+		descriptor.setGuiShortName(name);
+		descriptor.setGuiLongName(name);
+		descriptor.setMission(name);
+		descriptor.setCreditedInstitutions(name);
+		descriptor.setTapRaColumn("s_ra");
+		descriptor.setTapDecColumn("s_dec");
+		descriptor.setTapSTCSColumn("s_region");
+		descriptor.setTapUrl(tapUrl);
+		descriptor.setTapTable(tapTable);
+		descriptor.setUniqueIdentifierField("s_region");
+		descriptor.setSearchFunction("raDecCenter");
+		descriptor.setResponseFormat("VOTable");
+		descriptor.setInBackend(false);
+		
+		adql = adql.toUpperCase();
+		String[] whereSplit = adql.split("WHERE");
+		if(whereSplit.length > 1) {
+			descriptor.setWhereADQL(whereSplit[1]);
+		}
+		descriptor.setSelectADQL(whereSplit[0]);
+		
+		extTapDescriptors.getDescriptors().add(descriptor);
+		return descriptor;
+	}
+	
 
 	public void initCatDescriptors(final CountObserver countObserver) {
 
@@ -422,7 +453,7 @@ public class DescriptorRepository {
 	public void updateCount4ExtTap(ExtTapDescriptor descriptor) {
 		final CountStatus cs = extTapDescriptors.getCountStatus();
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
-		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), EsaSkyConstants.JSON, descriptor.getMission());
+		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), descriptor);
 		
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
