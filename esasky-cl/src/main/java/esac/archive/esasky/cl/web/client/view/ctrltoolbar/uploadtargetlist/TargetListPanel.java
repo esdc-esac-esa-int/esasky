@@ -99,6 +99,7 @@ public class TargetListPanel extends DialogBox {
     private ESASkyPlayerPanel playerPanel;
     private Image simbadLogo;
     private boolean isShowing = false;
+    private boolean tryingBackupLanguage = false;
 
     private static final String TARGETLIST_FILES_URL = Dictionary.getDictionary("serverProperties")
             .get("targetListFilesLocation");
@@ -367,16 +368,8 @@ public class TargetListPanel extends DialogBox {
 
             @Override
             public void onSelectedChange() {
-                final String filename = preparedFilenamesBaseUrl
-                        + preparedListDropDown.getSelectedObject() + "_"
-                        + TextMgr.getInstance().getLangCode() + ".json?v=" + GWT.getModuleName();
-                readPreparedTargetList(
-                        filename,
-                        TextMgr.getInstance().getText(
-                                preparedListDropDown.getSelectedObject()));
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TargetList,
-                        GoogleAnalytics.ACT_TargetList_ListSelected,
-                        preparedListDropDown.getSelectedObject());
+            	tryingBackupLanguage = false;
+                getPreparedTargetList(TextMgr.getInstance().getLangCode());
             }
         });
 
@@ -578,6 +571,10 @@ public class TargetListPanel extends DialogBox {
 
                 public void onError(Request request, Throwable ex) {
                     Log.error("readPreparedTargetList onError", ex);
+                    if(!TextMgr.getInstance().getLangCode().equalsIgnoreCase("en") && !tryingBackupLanguage) {
+                    	tryingBackupLanguage = true;
+                    	getPreparedTargetList("en");
+                    }
                 }
 
                 public void onResponseReceived(Request request, Response response) {
@@ -587,7 +584,7 @@ public class TargetListPanel extends DialogBox {
                         setTargetsTableData(searchResult, title);
 
                     } catch (Exception ex) {
-                        Log.error("readPreparedTargetList.onResponseReceived error:", ex);
+                    	onError(request, ex);
                     }
                 }
             });
@@ -595,6 +592,19 @@ public class TargetListPanel extends DialogBox {
         } catch (RequestException ex) {
             Log.error("readPreparedTargetList error:", ex);
         }
+    }
+    
+    private void getPreparedTargetList(String langCode) {
+    	final String filename = preparedFilenamesBaseUrl
+                + preparedListDropDown.getSelectedObject() + "_"
+                + langCode + ".json?v=" + GWT.getModuleName();
+        readPreparedTargetList(
+                filename,
+                TextMgr.getInstance().getText(
+                        preparedListDropDown.getSelectedObject()));
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TargetList,
+                GoogleAnalytics.ACT_TargetList_ListSelected,
+                preparedListDropDown.getSelectedObject());
     }
 
 }
