@@ -1,7 +1,5 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
-import java.rmi.ServerError;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;

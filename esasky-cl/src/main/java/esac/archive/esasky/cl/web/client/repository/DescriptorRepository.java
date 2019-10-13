@@ -66,7 +66,6 @@ import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 
 public class DescriptorRepository {
 
@@ -120,7 +119,6 @@ public class DescriptorRepository {
 	private HashMap<String, IDescriptor> descriptorsMap;
 	private HashMap<String, CountStatus> countStatusMap;
 
-	private boolean extTapDescriptorsIsReady = false;
 	private boolean catDescriptorsIsReady = false;
 	private boolean obsDescriptorsIsReady = false;
 	private boolean spectraDescriptorsIsReady = false;
@@ -177,7 +175,6 @@ public class DescriptorRepository {
 			public void onSuccess(String responseText) {
 				ExternalTapDescriptorListMapper mapper = GWT.create(ExternalTapDescriptorListMapper.class);
 				extTapDescriptors = new DescriptorListAdapter<ExtTapDescriptor>(mapper.read(responseText), countObserver);
-				extTapDescriptorsIsReady = true;
 				registerExtTapObserver();
 
 				Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
@@ -186,7 +183,6 @@ public class DescriptorRepository {
 			@Override
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initExtDescriptors ERROR: " + errorCause);
-				extTapDescriptorsIsReady = true;
 			}
 
 		});

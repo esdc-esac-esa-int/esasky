@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
