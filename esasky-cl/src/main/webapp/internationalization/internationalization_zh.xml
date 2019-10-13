@@ -1942,7 +1942,7 @@
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#datapanel"
 		target="_blank"
 		&gt;
-		此功能的完整文档：www.cosmos.esa.int/web/esdc/esasky-interface#datapanel		&lt;/a&gt;
+		此功能的完整文档	&lt;/a&gt;
 	</text>
 	<text key="treeMapContainer_help_ASTRO_SPECTRA">
 		要搜索成像、星表或光谱数据(并打开数据面板)，请单击左侧菜单中相应的成像、星表和光谱图标。浏览器中会显示出所显示天区中的图像数据、星表资源和光谱数据的数量(不仅仅是搜索目标)。
@@ -1955,7 +1955,7 @@
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#datapanel"
 		target="_blank"
 		&gt;
-		此功能的完整文档：www.cosmos.esa.int/web/esdc/esasky-interface#datapanel		&lt;/a&gt;
+		此功能的完整文档	&lt;/a&gt;
 	</text>
 	<text key="treeMapContainer_help_ASTRO_CATALOGUE">
 		要搜索成像、星表或光谱数据(并打开数据面板)，请单击左侧菜单中相应的成像、星表和光谱图标。浏览器中会显示出所显示天区中的图像数据、星表资源和光谱数据的数量(不仅仅是搜索目标)。
@@ -1968,7 +1968,7 @@
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#datapanel"
 		target="_blank"
 		&gt;
-		此功能的完整文档：www.cosmos.esa.int/web/esdc/esasky-interface#datapanel		&lt;/a&gt; 
+		此功能的完整文档		&lt;/a&gt; 
 	</text>
 	<text key="treeMapContainer_help_SSO">
 		在ESASky中，您现在可以从哈勃空间望远镜、赫歇尔和XMM-牛顿望远镜等的观测数据库中搜索任何行星、卫星或彗星(计划内的观测或者偶得的图像)。在搜索框中输入天体的名称或者ID号，将会给出建议目标的所有备选。
@@ -1982,7 +1982,7 @@
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-interface#SSO"
 		target="_blank"
 		&gt;
-		此功能的完整文档：www.cosmos.esa.int/web/esdc/esasky-interface#SSO		&lt;/a&gt;
+		此功能的完整文档	&lt;/a&gt;
 	</text>
 	<text key="ResizingDataPanel">
 		调整数据面板大小
