@@ -2,6 +2,9 @@
 <!DOCTYPE Internationalization>
 <Internationalization langCode="en">
 
+	<text key="headerPresenter_languageNameAbbreviation">
+		En
+	</text>
 	<text key="header_learnMore">
 		Learn more about ESASky!
 	</text>
@@ -2654,6 +2657,12 @@
 		By bibcode
 	</text>
 	<text key="searchPanel_inputByAuthor">
+		By author
+	</text>
+	<text key="PublicationsByAuthorCallback_helpTitle">
+		By bibcode
+	</text>
+	<text key="PublicationsByAuthorCallback_helpDescription">
 		By author
 	</text>
 	

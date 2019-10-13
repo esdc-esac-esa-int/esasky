@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Internationalization>
 <Internationalization langCode="zh" label="中文">
+
+	<text key="headerPresenter_languageNameAbbreviation">
+		中文
+	</text>
 	<text key="header_learnMore">
 		了解更多关于ESASky
 	</text>

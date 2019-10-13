@@ -382,7 +382,7 @@ public class HeaderPresenter {
 		
 		List<SimpleEntry<String, String>> languageDisplayAndValue = new LinkedList<SimpleEntry<String, String>>();
 		for(String lowerCaseLanguageCode : EsaSkyConstants.AVAILABLE_LANGCODES) {
-			languageDisplayAndValue.add(new SimpleEntry<String, String>(lowerCaseLanguageCode.substring(0, 1).toUpperCase() + lowerCaseLanguageCode.substring(1), lowerCaseLanguageCode));
+			languageDisplayAndValue.add(new SimpleEntry<String, String>(TextMgr.getInstance().getText("headerPresenter_languageNameAbbreviation"), lowerCaseLanguageCode));
 		}
 		view.setAvailableLanguages(languageDisplayAndValue);
 		view.setSelectedLanguage(Arrays.asList(EsaSkyConstants.AVAILABLE_LANGCODES).indexOf(GUISessionStatus.getCurrentLanguage()));
