@@ -380,12 +380,13 @@ public class HeaderPresenter {
 
 		view.setHipsName(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
 		
-		List<SimpleEntry<String, String>> languageDisplayAndValue = new LinkedList<SimpleEntry<String, String>>();
-		for(String lowerCaseLanguageCode : EsaSkyConstants.AVAILABLE_LANGCODES) {
-			languageDisplayAndValue.add(new SimpleEntry<String, String>(TextMgr.getInstance().getText("headerPresenter_languageNameAbbreviation"), lowerCaseLanguageCode));
+		view.setAvailableLanguages(EsaSkyConstants.AVAILABLE_LANGUAGES);
+		for(SimpleEntry<String, String> entry : EsaSkyConstants.AVAILABLE_LANGUAGES) {
+			if(entry.getKey().equalsIgnoreCase(GUISessionStatus.getCurrentLanguage())) {
+				view.setSelectedLanguage(EsaSkyConstants.AVAILABLE_LANGUAGES.indexOf(entry));
+				break;
+			}
 		}
-		view.setAvailableLanguages(languageDisplayAndValue);
-		view.setSelectedLanguage(Arrays.asList(EsaSkyConstants.AVAILABLE_LANGCODES).indexOf(GUISessionStatus.getCurrentLanguage()));
 	}
 	
 	private void toggleSciMode() {

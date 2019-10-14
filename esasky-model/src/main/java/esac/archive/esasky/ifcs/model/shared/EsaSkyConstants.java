@@ -1,5 +1,10 @@
 package esac.archive.esasky.ifcs.model.shared;
 
+import java.util.List;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -248,9 +253,14 @@ public class EsaSkyConstants {
     /*************************************************************************/
     /** INTERNATIONALIZATION VALUES **/
     /*************************************************************************/
-    public static final String DEFAULT_LANGCODE = "en";
-    public static final String[] AVAILABLE_LANGCODES = {"en", "es"};
-    
+    public static final String DEFAULT_LANGCODE = "en"; 
+    public static final List<SimpleEntry<String, String>> AVAILABLE_LANGUAGES = new LinkedList<SimpleEntry<String, String>>(
+    		Arrays.asList(
+    				new SimpleEntry<String, String>("en", "En"),
+    				new SimpleEntry<String, String>("es", "Es"),
+    				new SimpleEntry<String, String>("zh", "中文")
+    				)
+    		);
     
     /*************************************************************************/
     /** COMMUNICATION CONSTANTS **/

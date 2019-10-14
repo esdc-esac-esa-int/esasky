@@ -1,10 +1,10 @@
 package esac.archive.esasky.cl.web.client.internationalization;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.AbstractMap.SimpleEntry;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
@@ -131,15 +131,19 @@ public class TextMgr {
 	public String getLangCode () {
 	    return langCode;
 	}
-	
-	public void setLangCode(String newLangCode) {
+	private String getTwoLetterLangCode(String newLangCode) {
 		String twoLetterLangCode = newLangCode.substring(0, 2);
 		Log.debug(twoLetterLangCode + ":");
-		if (Arrays.asList(EsaSkyConstants.AVAILABLE_LANGCODES).contains(twoLetterLangCode)) {
-			langCode = twoLetterLangCode;
-		} else {
-			Log.warn("TextMgr.setLangCode() langCode: " + newLangCode + ", IS NOT SUPPORTED");
+		for(SimpleEntry<String, String> entry : EsaSkyConstants.AVAILABLE_LANGUAGES) {
+			if(entry.getKey().equalsIgnoreCase(twoLetterLangCode)) {
+				return twoLetterLangCode;
+			}
 		}
+		Log.warn("TextMgr.setLangCode() langCode: " + newLangCode + ", IS NOT SUPPORTED");
+		return EsaSkyConstants.DEFAULT_LANGCODE;
+	}
+	public void setLangCode(String newLangCode) {
+		langCode = getTwoLetterLangCode(newLangCode);
 		
 		Log.debug("TextMgr.setLangCode() langCode: " + langCode);
 		texts = new HashMap<String, String>();

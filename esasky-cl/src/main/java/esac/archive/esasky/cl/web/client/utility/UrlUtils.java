@@ -1,6 +1,6 @@
 package esac.archive.esasky.cl.web.client.utility;
 
-import java.util.Arrays;
+import java.util.AbstractMap.SimpleEntry;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
@@ -89,9 +89,11 @@ public final class UrlUtils {
     public static String getUrlLangCode() {
         if (Window.Location.getParameterMap().containsKey(EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM)) {
             final String langCode = Window.Location.getParameter(EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM).toLowerCase();
-            if (Arrays.asList(EsaSkyConstants.AVAILABLE_LANGCODES).contains(langCode)) {
-                return langCode;
-            }
+    		for(SimpleEntry<String, String> entry : EsaSkyConstants.AVAILABLE_LANGUAGES) {
+    			if(entry.getKey().equalsIgnoreCase(langCode)) {
+    				return langCode;
+    			}
+    		}
         }
         Log.debug("Lang code empty");
         return "";
