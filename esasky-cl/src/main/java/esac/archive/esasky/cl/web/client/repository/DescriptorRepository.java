@@ -246,6 +246,8 @@ public class DescriptorRepository {
 			@Override
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initCatDescriptors ERROR: " + errorCause);
+				DescriptorList<CatalogDescriptor> list = new DescriptorList<CatalogDescriptor>() {};
+				catDescriptors = new DescriptorListAdapter<CatalogDescriptor>(list, countObserver);
 				catDescriptorsIsReady = true;
 				checkDoCountAll();
 			}
@@ -282,6 +284,8 @@ public class DescriptorRepository {
 			@Override
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initObsDescriptors ERROR: " + errorCause);
+				DescriptorList<ObservationDescriptor> list = new DescriptorList<ObservationDescriptor>() {};
+				obsDescriptors = new DescriptorListAdapter<ObservationDescriptor>(list, obsCountObserver);
 				obsDescriptorsIsReady = true;
 				checkDoCountAll();
 			}
