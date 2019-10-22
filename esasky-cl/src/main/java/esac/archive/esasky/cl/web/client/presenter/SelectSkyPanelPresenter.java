@@ -27,6 +27,7 @@ public class SelectSkyPanelPresenter {
     	void hide();
     	void toggle();
     	boolean isShowing();
+    	void setSkiesMenu(SkiesMenu skiesMenu);
     	
     	HasClickHandlers getAddSkyRowButton();
     }
@@ -68,6 +69,9 @@ public class SelectSkyPanelPresenter {
 
                     } else {
                         Log.error("Couldn't retrieve JSON (" + response.getStatusText() + ")");
+                        skiesMenu = new SkiesMenu();
+//                        view.fillAllSkyPanelEntries(skiesMenu);
+                        view.setSkiesMenu(skiesMenu);
                     }
                 }
 

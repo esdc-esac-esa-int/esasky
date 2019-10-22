@@ -390,7 +390,11 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	public static void setHiPSFromAPI (HiPS hips, boolean newHips) {
-		final SkyRow sky = getSelectedSky();
+		SkyRow skyTmp = getSelectedSky();
+		if(skyTmp == null) {
+			skyTmp = instance.createSky();
+		}
+		final SkyRow sky = skyTmp;
 		sky.setHiPSFromAPI(hips, true, newHips);
 	}
 
@@ -458,6 +462,14 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	@Override
 	public HasClickHandlers getAddSkyRowButton() {
 		return addSkyButton;
+	}
+
+	public SkiesMenu getSkiesMenu() {
+		return skiesMenu;
+	}
+
+	public void setSkiesMenu(SkiesMenu skiesMenu) {
+		this.skiesMenu = skiesMenu;
 	}
 
 }

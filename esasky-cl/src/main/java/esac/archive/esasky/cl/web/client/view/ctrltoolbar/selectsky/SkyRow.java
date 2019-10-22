@@ -322,7 +322,7 @@ public class SkyRow extends Composite implements Selectable{
 	
 	private void sendUpdateSkyName() {
 		CommonEventBus.getEventBus().fireEvent(
-				new HipsNameChangeEvent(getSelectedHips().getSurveyName()));
+				new HipsNameChangeEvent(getNameofSelected()));
 	}
 
 	public boolean isSelected(){
@@ -366,7 +366,10 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public HiPS getSelectedHips(){
-		return hipsDropDown.getSelectedObject();
+		if(hipsDropDown!= null) {
+			return hipsDropDown.getSelectedObject();
+		}
+		return null;
 	}
 
 	public ColorPalette getSelectedPalette(){
@@ -413,21 +416,25 @@ public class SkyRow extends Composite implements Selectable{
 	private void sendConvenienceEvent() {
 		if(!isSelected()) return;
 		//Convenience event for easy statistics gathering
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Convenience, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getSelectedHips().getMission());
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Convenience, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getNameofSelected());
 	}
 
 	@Override
 	public String getNameofSelected() {
-		return getSelectedHips().getSurveyName();
+		HiPS hips = getSelectedHips();
+		if(hips != null) {
+			return hips.getSurveyId();
+		}
+		return EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
 	}
 
 	@Override
 	public boolean isValid() {
 		return true;
 	}
-
+	
     public String getFullId() {
-        return wavelengthDropDown.getSelectedObject().name() + " - " + getSelectedHips().getSurveyName() + " - " + getSelectedPalette().name();
+        return wavelengthDropDown.getSelectedObject().name() + " - " + getNameofSelected() + " - " + getSelectedPalette().name();
     }
     
     public void setOverlayStatus(boolean status) {
@@ -456,7 +463,7 @@ public class SkyRow extends Composite implements Selectable{
 	
 	public void setOpacity(double opacity) {
 		if(isMain()) {
-			AladinLiteWrapper.getInstance().changeHiPSOpacity(opacity);
+			AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
 		}else if(isOverlay) {
 			AladinLiteWrapper.getInstance().changeOverlayOpacity(Math.pow(opacity,2));
 		}
