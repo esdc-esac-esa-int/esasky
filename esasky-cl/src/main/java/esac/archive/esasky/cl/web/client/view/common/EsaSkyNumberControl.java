@@ -16,7 +16,7 @@ public class EsaSkyNumberControl{
 
 
 	public EsaSkyNumberControl(String title, ImageResource increaseNumberImage, ImageResource decreaseNumberImage, final double step, final NumberFormat numberFormat){
-		this(title, increaseNumberImage, decreaseNumberImage, step, numberFormat, Double.MIN_VALUE, Double.MAX_VALUE);
+		this(title, increaseNumberImage, decreaseNumberImage, step, numberFormat, -Double.MAX_VALUE, Double.MAX_VALUE);
 	}
 	
 	public EsaSkyNumberControl(String title, ImageResource increaseNumberImage, ImageResource decreaseNumberImage, final double step, final NumberFormat numberFormat, double min, double max){
