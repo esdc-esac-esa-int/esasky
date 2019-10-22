@@ -547,9 +547,17 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
         final String debugPrefix = "[showPublications][" + id + "]";
         Log.debug(debugPrefix);
 
-        AbstractTablePanel panel = this.view.addResultsTab(entity,
-                TextMgr.getInstance().getText("PublicationsBySourceCallback_helpTitle"),
-                TextMgr.getInstance().getText("PublicationsBySourceCallback_helpDescription"));
+        AbstractTablePanel panel;
+        if(byAuthor) {
+        	panel = this.view.addResultsTab(entity,
+        			TextMgr.getInstance().getText("PublicationsByAuthorCallback_helpTitle"),
+        			TextMgr.getInstance().getText("PublicationsByAuthorCallback_helpDescription"));
+        	
+        } else {
+        	panel = this.view.addResultsTab(entity,
+        			TextMgr.getInstance().getText("PublicationsBySourceCallback_helpTitle"),
+        			TextMgr.getInstance().getText("PublicationsBySourceCallback_helpDescription"));
+        }
         panel.setPreviewClickedHandler(previewClickedHandler);
         
         //SOME EXAMPLE QUERIES:
