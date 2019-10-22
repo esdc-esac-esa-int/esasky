@@ -395,10 +395,10 @@ public class AllSkyPresenter {
 	            currentHiPS = hips;
 	            AladinLiteWrapper.getInstance().openHiPS(hips);
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
-	            AladinLiteWrapper.getInstance().changeHiPSOpacity(opacity);
+	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
 	        } else {
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
-	            AladinLiteWrapper.getInstance().changeHiPSOpacity(opacity);
+	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
 	        }
         }else {
 			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
