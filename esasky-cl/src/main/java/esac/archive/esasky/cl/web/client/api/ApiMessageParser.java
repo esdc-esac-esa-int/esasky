@@ -61,14 +61,14 @@ public class ApiMessageParser {
 				console.log('changeHiPSWithParams event captured!');
 				console.log(msg);
 				console.log("HiPS URL "+msg.content.hips.url);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.id, msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
 				break
 
 			case 'addHipsWithParams':
 				console.log('addHipsWithParams event captured!');
 				console.log(msg);
 				console.log("HiPS URL "+msg.content.hips.url);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::addHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.id, msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::addHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
 				break
 				
 			case 'removeHips':
@@ -262,6 +262,12 @@ public class ApiMessageParser {
 				instance.@esac.archive.esasky.cl.web.client.api.Api::newExtTapService(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
 					(msg.content.name, msg.content.tapUrl, msg.content.tapTable, msg.content.adql);
 				break;	
+				
+//			case 'addMOC':
+//				console.log('newExtTapService event captured');
+//				instance.@esac.archive.esasky.cl.web.client.api.Api::addMOC(Ljava/lang/String;Ljava/lang/String;)
+//					(msg.content.options, msg.content.mocData);
+//				break;	
 
 			default:
 				console.log('No event associated');

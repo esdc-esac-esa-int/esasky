@@ -95,7 +95,10 @@ public class Api {
 	public static native void onJavaApiReady() /*-{
 		$wnd.JavaApiReady();
 	}-*/;
-
+	
+//	public void addMOC(String options, String mocData) {
+//		AladinLiteWrapper.getAladinLite().addMOC(options, mocData);
+//	}
 	
 	public void extTapCount(String missionId, JavaScriptObject widget) {
 		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
@@ -441,11 +444,11 @@ public class Api {
 		}
 	}
 	
-	public void addHiPSWithParams(String surveyId, String surveyName, String surveyRootUrl, String surveyFrame,
+	public void addHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addHips, surveyRootUrl);
 		SelectSkyPanel.getInstance().createSky();
-		setHiPSWithParams(surveyId, surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat);
+		setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat);
 	}
 	
 	public void removeSkyRow(int index, JavaScriptObject widget) {
@@ -492,13 +495,13 @@ public class Api {
 		return true;
 	}
 
-	public void setHiPSWithParams(String surveyId, String surveyName, String surveyRootUrl, String surveyFrame,
+	public void setHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
 		
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPSWithParams, surveyRootUrl);
 
 		HiPS hips = new HiPS();
-		hips.setSurveyId(surveyId);
+		hips.setSurveyId(surveyName);
 		hips.setSurveyName(surveyName);
 		hips.setSurveyRootUrl(surveyRootUrl);
 		HiPSCoordsFrame surveyFrameEnum = HiPSCoordsFrame.GALACTIC.name().toLowerCase()
