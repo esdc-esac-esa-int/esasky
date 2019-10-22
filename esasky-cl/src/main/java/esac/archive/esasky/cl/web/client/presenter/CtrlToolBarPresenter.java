@@ -21,8 +21,8 @@ import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEventHandler;
-import esac.archive.esasky.cl.web.client.event.MTClickEvent;
-import esac.archive.esasky.cl.web.client.event.MTClickEventHandler;
+import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
+import esac.archive.esasky.cl.web.client.event.MultiTargetClickEventHandler;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
@@ -95,10 +95,10 @@ public class CtrlToolBarPresenter {
         /*
          * Multitarget pointer in the middle of the current sky
          */
-        CommonEventBus.getEventBus().addHandler(MTClickEvent.TYPE, new MTClickEventHandler() {
+        CommonEventBus.getEventBus().addHandler(MultiTargetClickEvent.TYPE, new MultiTargetClickEventHandler() {
 
             @Override
-            public void onClickEvent(final MTClickEvent clickEvent) {
+            public void onClickEvent(final MultiTargetClickEvent clickEvent) {
                 ESASkySearchResult target = clickEvent.getTarget();
                 if (target.getValidInput()) {
 
@@ -118,16 +118,16 @@ public class CtrlToolBarPresenter {
                                 // conversion
 
                                 Log.debug("Clicked on source uploaded with FRAME GALACTIC");
-                                Log.debug("mtl source input [" + target.getUserRaDeg() + ","
-                                        + target.getUserDecDeg() + "]");
+                                Log.debug("mtl source SIMBADinput [" + target.getSimbadRaDeg() + ","
+                                		+ target.getSimbadDecDeg() + "]");
                                 Double[] raDecDegJ2000 = CoordinatesConversion
                                         .convertPointGalacticToJ2000(
-                                                Double.parseDouble(target.getUserRaDeg()),
-                                                Double.parseDouble(target.getUserDecDeg()));
+                                                Double.parseDouble(target.getSimbadRaDeg()),
+                                                Double.parseDouble(target.getSimbadDecDeg()));
                                 Log.debug("mtl (after conversion) source input ["
                                         + raDecDegJ2000[0] + "," + raDecDegJ2000[1] + "]");
-                                raDecDeg[0] = Double.toString(raDecDegJ2000[0]);
-                                raDecDeg[1] = Double.toString(raDecDegJ2000[1]);
+                                raDecDeg[0] = target.getSimbadRaDeg();
+                                raDecDeg[1] = target.getSimbadDecDeg();
                             }
                             AladinLiteWrapper.getInstance().goToTarget(raDecDeg[0], raDecDeg[1],
                                     target.getFoVDeg(), false, AladinLiteConstants.FRAME_J2000);

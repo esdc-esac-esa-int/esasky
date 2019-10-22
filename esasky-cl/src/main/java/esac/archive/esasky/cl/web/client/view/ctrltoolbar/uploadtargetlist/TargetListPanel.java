@@ -46,15 +46,11 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.event.MTClickEvent;
+import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
@@ -398,7 +394,7 @@ public class TargetListPanel extends DialogBox {
         final TargetWidget selectedWidget = (TargetWidget) targetListTable.getWidget(index, 0);
         selectedWidget.setSelectedStyle();
         CommonEventBus.getEventBus().fireEvent(
-                new MTClickEvent(selectedWidget.getTargetObject(), index, false));
+                new MultiTargetClickEvent(selectedWidget.getTargetObject(), index, false));
         if (widgetPosition < targetListScrollPanel.getVerticalScrollPosition()) {
             scrollTo(widgetPosition);
 
@@ -494,31 +490,17 @@ public class TargetListPanel extends DialogBox {
         String jsRa = currEntity.getUserRaDeg();
         String jsDec = currEntity.getUserDecDeg();
 
-        CoordinatesFrame cf = AladinLiteWrapper.getCoordinatesFrame();
-        CoordinateValidator.SearchInputType inputType = CoordinateValidator.checkInputType(
-        		new ClientRegexClass(), currEntity.getUserInput().trim(), cf);
+        jsRa = currEntity.getSimbadRaDeg();
+        jsDec = currEntity.getSimbadDecDeg();
 
-        if (inputType == SearchInputType.TARGET) {
-            // SIMBAD RA and DEC if available
-            jsRa = currEntity.getSimbadRaDeg();
-            jsDec = currEntity.getSimbadDecDeg();
-
+        if (currEntity.getCooFrame() != null &&currEntity.getCooFrame().equals(AladinLiteConstants.FRAME_GALACTIC)) {
+    		Double[] raDecDegJ2000 = CoordinatesConversion.convertPointEquatorialToGalactic(
+    				Double.parseDouble(jsRa), Double.parseDouble(jsDec));
+    		details.put(MultiTargetSourceConstants.RA_DEG, Double.toString(raDecDegJ2000[0]));
+    		details.put(MultiTargetSourceConstants.DEC_DEG, Double.toString(raDecDegJ2000[1]));
         } else {
-            Double[] raDecDeg = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(),  currEntity.getUserInput(),
-                    cf, cf);
-            jsRa = Double.toString(raDecDeg[0]);
-            jsDec = Double.toString(raDecDeg[1]);
-        }
-
-        details.put(MultiTargetSourceConstants.RA_DEG, jsRa);
-        details.put(MultiTargetSourceConstants.DEC_DEG, jsDec);
-        if (currEntity.getCooFrame() != null) {
-            if (currEntity.getCooFrame().equals(AladinLiteConstants.FRAME_GALACTIC)) {
-                Double[] raDecDegJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
-                        Double.parseDouble(jsRa), Double.parseDouble(jsDec));
-                jsRa = Double.toString(raDecDegJ2000[0]);
-                jsDec = Double.toString(raDecDegJ2000[1]);
-            }
+        	details.put(MultiTargetSourceConstants.RA_DEG, jsRa);
+        	details.put(MultiTargetSourceConstants.DEC_DEG, jsDec);
         }
 
         JavaScriptObject sourceObj = AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(

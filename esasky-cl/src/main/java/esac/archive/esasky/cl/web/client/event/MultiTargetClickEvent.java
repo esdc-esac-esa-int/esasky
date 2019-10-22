@@ -7,10 +7,10 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 /**
  * Event to record closing results event tab sent by Tab components.
  */
-public class MTClickEvent extends GwtEvent<MTClickEventHandler> {
+public class MultiTargetClickEvent extends GwtEvent<MultiTargetClickEventHandler> {
 
     /** Event type. */
-    public static Type<MTClickEventHandler> TYPE = new Type<MTClickEventHandler>();
+    public static Type<MultiTargetClickEventHandler> TYPE = new Type<MultiTargetClickEventHandler>();
 
     /** class attribute with type MultiTargetObject. */
     private ESASkySearchResult target;
@@ -27,7 +27,7 @@ public class MTClickEvent extends GwtEvent<MTClickEventHandler> {
      * @param inputIndex Input Integer
      * @param inptShowProgress Input Boolean value
      */
-    public MTClickEvent(final ESASkySearchResult inputTarget, final int inputIndex,
+    public MultiTargetClickEvent(final ESASkySearchResult inputTarget, final int inputIndex,
             final boolean inptShowProgress) {
         this.target = inputTarget;
         this.index = inputIndex;
@@ -35,12 +35,12 @@ public class MTClickEvent extends GwtEvent<MTClickEventHandler> {
     }
 
     @Override
-    public final Type<MTClickEventHandler> getAssociatedType() {
+    public final Type<MultiTargetClickEventHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    protected final void dispatch(final MTClickEventHandler handler) {
+    protected final void dispatch(final MultiTargetClickEventHandler handler) {
         handler.onClickEvent(this);
     }
 

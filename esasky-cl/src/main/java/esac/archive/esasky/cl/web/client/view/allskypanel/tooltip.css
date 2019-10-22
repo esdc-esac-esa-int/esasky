@@ -40,3 +40,28 @@
 #publicationTooltip__button > .defaultEsaSkyStringButton > .html-face{
 	color: #0098db !important;
 }
+
+.multiTargetTooltip__userInput{
+	border-bottom: 1px solid;
+}
+
+.multiTargetTooltip__closestIdDescription{
+	font-weight: bold;
+}
+.multiTargetTooltip__closestIdName{
+	margin-bottom: 10px;
+}
+.multiTargetTooltip__raLabel{
+	font-weight: bold;
+	display: inline-block;
+}
+.multiTargetTooltip__decLabel{
+	font-weight: bold;
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.multiTargetTooltip__number{
+	display: inline-block;
+	margin-left: 5px;
+}
