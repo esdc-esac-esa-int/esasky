@@ -3223,7 +3223,28 @@
 	<text key="searchPanel_inputByAuthor">
 		Por autor
 	</text>
-	
+	<text key="PublicationsByAuthorCallback_helpTitle">
+		Publicaciones por autor
+	</text>
+	<text key="PublicationsByAuthorCallback_helpDescription">
+		Publicaciones asociadas al nombre de este/a autor/a en SIMBAD, y acceso a las fuentes en SIMBAD de cada publicaci&#243;n
+		&lt;br&gt;
+		&lt;b&gt;
+		SIMBAD solo contiene publicaciones con objetos asociados (seg&#250;n CDS)
+		&lt;/b&gt;
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#publications"
+		target="_blank"&gt;
+		Documentaci&#243;n completa de esta funcionalidad
+		&lt;/a&gt; 
+	</text>
+	<text key="MultiTargetTooltip_noNearbySimbadIdFound">
+		No se ha encontrado ningún identificador de SIMBAD cercano
+	</text>
+	<text key="MultiTargetTooltip_resolvingNearbyTargets">
+		Buscando objetos cercanos
+	</text>
 
 
 </Internationalization>
