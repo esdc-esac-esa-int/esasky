@@ -242,7 +242,7 @@
 		Loading Spectra
 	</text>
 	<text key="treeMap_loading_EXT_TAP">
-		Loading External Taps
+		Loading data from external TAP services
 	</text>
 	<text key="treeMap_loading_SSO">
 		Loading Solar System Objects
@@ -2377,11 +2377,11 @@
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
 		<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external TAP Services
-		which conforms with IVOA obsCore standards.
+		In ESASky you can now explore data from external data Services
+		which conforms with Virtual Observatory (IVOA) standards.
 		Services which have any data in the current region will appear
-		in the tree map. Pressing any service will start loading the data into
-		the datapanel and visualise footprints on the sky.
+		in the tree map. Clicking on any service will load the data into the
+		 data panel and display the corresponding footprints in the sky.
 		</text>
 	<text key="ResizingDataPanel">
 		Resizing Data Panel

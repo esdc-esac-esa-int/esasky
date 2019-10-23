@@ -143,6 +143,9 @@
 	<text key="treeMap_SSO">
 		Observaciones de objetos del Sistema Solar (OSS)
 	</text>
+	<text key="treeMap_EXT_TAP">
+ 		Servicios TAP externos
+ 	</text>
 	<text key="treeMap_loading_ASTRO_IMAGING">
 		Cargando observaciones...
 	</text>
@@ -155,6 +158,9 @@
 	<text key="treeMap_loading_SSO">
 		Cargando observaciones del Sistema Solar...
 	</text>
+	<text key="treeMap_loading_EXT_TAP">
+		Cargando datos de servicios TAP externos...
+	</text>
 	<text key="treeMap_noData_ASTRO_IMAGING">
 		No se encontraron observaciones.
 	</text>
@@ -166,6 +172,9 @@
 	</text>
 	<text key="treeMap_noData_SSO">
 		No se encontraron observaciones del Sistema Solar.
+	</text>
+	<text key="treeMap_noData_EXT_TAP">
+		No se encontraron datos de servicios TAP externos
 	</text>
 	<text key="treeMap_nameOfSelectedLabel">
 		OSS: $SSONAME$ ($SSOTYPE$)
@@ -359,6 +368,9 @@
 	</text>
 	<text key="webConstants_exploreRandomTarget">
 		Investigue un objeto aleatorio
+	</text>
+	<text key="webConstants_exploreExtTaps">
+		Inspeccione datos de servicios TAP externos en esta región
 	</text>
 
 	<!-- displayUtils -->
@@ -2812,6 +2824,15 @@
 		&gt;
 		Documentaci&#243;n completa de esta funcionalidad.
 		&lt;/a&gt; </text>
+		
+	<text key="treeMapContainer_help_EXT_TAP">
+		En ESASky puede inspeccionar datos de servicios TAP externos que cumplen
+		 los estándares obsCore del Observatorio Virtual. Se muestran los servicios
+		  con datos disponibles para la región visualizada. Al pinchar en uno de ellos
+		   se cargarán los datos correspondientes en el panel de datos, y las huellas
+		    de las observaciones se mostrarán en el cielo.
+	</text>	
+	
 	<text key="ResizingDataPanel">
 		Re-escalando el Panel de Datos
 	</text>
