@@ -543,8 +543,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void setAvailableLanguages(List<SimpleEntry<String, String>> languagesDisplayAndValuePairs) {
 		for(SimpleEntry<String, String> languagesDisplayAndValuePair : languagesDisplayAndValuePairs) {
-			languageBox.addItem(languagesDisplayAndValuePair.getKey(), languagesDisplayAndValuePair.getValue());
-			dropdownLanguageBox.addItem(languagesDisplayAndValuePair.getKey(), languagesDisplayAndValuePair.getValue());
+			languageBox.addItem(languagesDisplayAndValuePair.getValue(), languagesDisplayAndValuePair.getKey());
+			dropdownLanguageBox.addItem(languagesDisplayAndValuePair.getValue(), languagesDisplayAndValuePair.getKey());
 		}
 	}
 

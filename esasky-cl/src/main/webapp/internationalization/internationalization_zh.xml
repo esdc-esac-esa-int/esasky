@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Internationalization>
 <Internationalization langCode="zh" label="中文">
-
-	<text key="headerPresenter_languageNameAbbreviation">
-		中文
-	</text>
 	<text key="header_learnMore">
 		了解更多关于ESASky
 	</text>
@@ -150,7 +146,7 @@
 		目标列表文件：
 	</text>
 	<text key="uploadTargetList_targetListDescriptionText">
-		选择一个示例目标列表或选择一个包含目标列表的文本文件，可以是目标名称（应能通过Simbad进行解析）或坐标列表。
+		选择一个示例目标列表或选择一个包含目标列表的文本文件，可以是目标名称（应能通过SIMBAD进行解析）或坐标列表。
 		当列表加载时，界面顶部会出现“正在解析目标列表...”。当加载完成后，目标列表就会出现在左侧。
 		&lt;br&gt;&lt;br&gt;
 		点击一个目标以查看它。如果一个目标不能被SIMBAD天文数据库解析，它将会被排除掉。
@@ -1134,7 +1130,7 @@
 		在天空中显示目标
 	</text>
 	<text key="targetWidget_targetNotFoundInSimbad">
-		在Simbad天文数据库中未找到目标
+		在SIMBAD天文数据库中未找到目标
 	</text>
 	<!-- welcomeDialog -->
 	<text key="WelcomeDialog_title">
