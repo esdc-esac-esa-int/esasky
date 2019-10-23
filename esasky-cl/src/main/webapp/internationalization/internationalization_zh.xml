@@ -2,10 +2,10 @@
 <!DOCTYPE Internationalization>
 <Internationalization langCode="zh" label="中文">
 	<text key="header_learnMore">
-		了解更多关于ESASky
+		了解更多关于ESASky的信息
 	</text>
 	<text key="header_getURLCurrentView">
-		获取当前视图的网址
+		分享当前视图的网址
 	</text>
 	<text key="header_viewInWWTAbbr">
 		显示于WWT
@@ -33,7 +33,7 @@
 		版本说明
 	</text>
 	<text key="header_newsletter">
-		简报
+		新闻简报
 	</text>
 	<text key="header_sciMode">
 		科学模式
@@ -238,7 +238,7 @@
 		波长
 	</text>
 	<text key="sky_selectWavelength">
-		选择波长
+		选择波段
 	</text>
 	<text key="sky_skies">
 		天空图层
@@ -280,7 +280,7 @@
 
 	<!-- HiPS Details Popup -->
 	<text key="hiPSDetailsPopup_mapName">
-		地图名称：
+		星图名称：
 	</text>
 	<text key="hiPSDetailsPopup_mission">
 		任务：
@@ -292,7 +292,7 @@
 		波长/频率：
 	</text>
 	<text key="hiPSDetailsPopup_mapCreatedBy">
-		地图创建者：
+		星图创建者：
 	</text>
 	<text key="hiPSDetailsPopup_forMoreInformation">
 		更多信息请点击&amp;nbsp;
@@ -380,7 +380,7 @@
 	
 	<!-- futureFootprintRow -->
 	<text key="futureFootprintRow_addJWSTInstrument">
-		添加JWST的一个观测仪器
+		添加JWST的一个终端设备
 	</text>
 	<text key="futureFootprintRow_rotation">
 		旋转
@@ -389,7 +389,7 @@
 		所有仪器
 	</text>
 	<text key="futureFootprintRow_removeFootprint">
-		移除该足迹
+		移除该覆盖图
 	</text>
 	<text key="futureFootprintRow_increase">
 		增强
@@ -461,16 +461,16 @@
 
 	<!-- playerPanel -->
 	<text key="playerPanel_next">
-		下一个
+		下一层
 	</text>
 	<text key="playerPanel_pause">
 		暂停
 	</text>
 	<text key="playerPanel_play">
-		播放
+		自动切换
 	</text>
 	<text key="playerPanel_previous">
-		上一个
+		上一层
 	</text>
 	<text key="playerPanel_surveyTourStarted">
 		巡天漫游开始
@@ -492,16 +492,16 @@
 		管理目标列表
 	</text>
 	<text key="webConstants_exploreImageObservations">
-		探索该区域的图像观测数据
+		浏览该区域的图像观测数据
 	</text>
 	<text key="webConstants_exploreCatalogue">
-		探索该区域的星表数据
+		浏览该区域的星表数据
 	</text>
 	<text key="webConstants_exploreSpectral">
-		探索该区域的光谱数据
+		浏览该区域的光谱数据
 	</text>
 	<text key="webConstants_exploreData">
-		探索 $TARGET$ 的数据
+		浏览 $TARGET$ 的数据
 	</text>
 	<text key="webConstants_trackSSO">
 		通过搜索框追踪太阳系天体
@@ -510,10 +510,10 @@
 		观测规划工具
 	</text>
 	<text key="webConstants_explorePublications">
-		探索该区域的出版物
+		浏览该区域的出版物
 	</text>
 	<text key="webConstants_exploreRandomTarget">
-		探索随机目标
+		随机目标浏览
 	</text>
 
 	<!-- displayUtils -->
@@ -1137,7 +1137,7 @@
 		欢迎来到ESASky！
 	</text>
 	<text key="WelcomeDialog_description">
-		ESASky是一个可将太空观测任务中开放的天文数据进行可视化和下载的软件。
+		ESASky是一个空基探测任务数据可视化展示和使用的软件。
 	</text>
 	<text key="WelcomeDialog_checkbox">
 		不再显示这个对话框	
@@ -1154,7 +1154,7 @@
 	<text key="WelcomeDialog_modeDescription">
 		选择科学模式探索并下载科研可用数据。
 		&lt;br&gt;&lt;br&gt;
-		选择探索模式简单地探索不同波段星空。
+		选择探索模式简单地浏览不同波段星空。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#MODES"
@@ -2026,7 +2026,7 @@
 		100 - 750nm, 0.1 - 0.75 微米
 	</text>
 	<text key="wavelength_NEAR_IR">
-		近红外线
+		近红外
 	</text>
 	<text key="wavelength_NEAR_IR_Tooltip">
 		0.75 - 2.5 micron, 120 to 400 THz
