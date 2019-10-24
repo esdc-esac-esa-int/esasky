@@ -96,15 +96,21 @@ public class EsaSkyConstants {
     /** DEFAULT INIT VALUES **/
     /*************************************************************************/
     public enum ReturnType {
-        JSON("json"), VOTABLE("vot"), CSV("csv"), ASCII("ascii");
+        JSON("json", "application/json"), VOTABLE("vot", "application/x-votable+xml"), CSV("csv", "text/csv"), ASCII("ascii", "");
 
     	private String name;
-    	private ReturnType(String name) {
+    	private String mimeType;
+    	private ReturnType(String name, String mimeType) {
     		this.name = name;
+    		this.mimeType = mimeType;
     	}
 		@Override
 		public String toString() {
 			return name;
+		}
+		
+		public String getMimeType() {
+			return mimeType;
 		}
         
         
