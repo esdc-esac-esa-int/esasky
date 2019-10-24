@@ -41,9 +41,21 @@ public class TapToMmiDataConverter {
     public static List<TableRow> convertTapToMMIData(
             TapRowList tapRowList, final IDescriptor descriptor) {
         List<TableRow> tableData = new LinkedList<TableRow>();
+        
+        ArrayList<String> labels = new ArrayList<String>();
+    	for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
+            MetadataDescriptor cmd = descriptor
+                    .getMetadataDescriptorByTapName(tapMetadata.getName());
+            if(cmd == null) {
+            	labels.add("");
+            } else {
+            	labels.add(TextMgr.getInstance().getText(cmd.getLabel()));
+            }
+        }
 
         for (int i = 0; i < tapRowList.getData().size(); i++) {
         	TableRow row = new TableRow(i);
+        	int columnNumber = 0;
             for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
                 TableElement elem = new TableElement();
                 MetadataDescriptor cmd = descriptor
@@ -59,8 +71,7 @@ public class TapToMmiDataConverter {
                 if(descriptor instanceof ExtTapDescriptor) {
                 	elem.setLabel(cmd.getLabel());
                 }else {
-                	String label = TextMgr.getInstance().getText(cmd.getLabel());
-                	elem.setLabel(label);
+                	elem.setLabel(labels.get(columnNumber));
                 }
                 elem.setType(cmd.getType());
                 elem.setVisible(cmd.getVisible());
@@ -68,6 +79,7 @@ public class TapToMmiDataConverter {
                 elem.setValue(data);
                 elem.setTapName(cmd.getTapName());
                 row.getElements().add(elem);
+                columnNumber++;
             }
             if(row.getElements().size() > 0) {
             	tableData.add(row);
