@@ -9,7 +9,7 @@ public final class DownloadUtils {
 		});
     }-*/;
 	public static native void downloadFile(String fileName, String file, String mimeType) /*-{
-		$wnd.saveAs(blob, new Blob([file], {type : mimeType}));
+		$wnd.saveAs(new Blob([file], {type : mimeType}), fileName);
     }-*/;
 
 }
