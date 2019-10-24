@@ -27,12 +27,7 @@ public class IntegerColumn extends SortableColumn<String> {
 
 	@Override
 	public String getValue(TableRow row) {
-		String value = getElement(row);
-		if (value.equals("")) {
-			return "0";
-		}else {
-			return value;
-		}
+		return getElement(row);
 	}
 
 	private String getElement(TableRow row) {
@@ -49,13 +44,12 @@ public class IntegerColumn extends SortableColumn<String> {
 	}
 
 	private boolean match(String value, int low, int high) {
-		int intValue;
-		if(value.equals("") || value == null) {
-			intValue = 0;
-		}else {
-			intValue  = Integer.parseInt(value);
+		try {
+			int intValue  = Integer.parseInt(value);
+			return intValue >= low && intValue <= high;
+		} catch (NumberFormatException exception) {
+			return true;
 		}
-		return intValue >= low && intValue <= high;
 	}
 
 	protected void filter() {
