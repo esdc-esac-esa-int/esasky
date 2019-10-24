@@ -66,6 +66,8 @@ public final class UrlUtils {
 	
     public static native void saveRawToFile(String filename, String text) /*-{
         var encodedUri = encodeURI(text);
+        encodedUri = encodedUri.replace(new RegExp('#', 'g'), '%23');
+        encodedUri = encodedUri.replace(new RegExp('&', 'g'), '%26');
         var link = document.createElement("a");
         link.setAttribute("type", "hidden");
         document.body.appendChild(link);
