@@ -279,5 +279,14 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
     public static final String EXT_TAP_URL = "TAP_URL";
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
+    public static final String EXT_TAP_COLLECTION = "obs_collection";
     
+    /*************************************************************************/
+    /** TREE MAP **/
+    /*************************************************************************/
+    
+    public static final String TREEMAP_TYPE_MISSION = "mission";
+    public static final String TREEMAP_TYPE_SERVICE = "service";
+    public static final String TREEMAP_TYPE_SUBCOLLECTION= "collection";
+    public static final String TREEMAP_TYPE_DATAPRODUCT = "dataproduct";
 }
