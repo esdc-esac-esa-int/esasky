@@ -59,6 +59,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.ReturnType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEvent;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEventHandler;
@@ -71,9 +72,9 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -1159,42 +1160,54 @@ public abstract class AbstractTablePanel extends Composite {
 	}
 
 	public void exportAsCSV() {
-
-		String csvData = "data:text/csv;charset=utf-8,";
-		final String separator = getEntity().getDescriptor().getAdsAuthorSeparator();
+		String csvData = "";
+		final String separator = ",";
 
 		// Adds headers to csv
 		int addedCols = 0;
 		for (int cellIndex = 0; cellIndex < table.getColumnCount(); cellIndex++) {
 			final String label = getLabelTextFromHeader(table.getHeader(cellIndex));
 			if (!label.isEmpty()) {
-				csvData += ((addedCols == 0) ? "" : ",") + getLabelTextFromHeader(table.getHeader(cellIndex));
+				csvData += ((addedCols == 0) ? "" : separator) + getLabelTextFromHeader(table.getHeader(cellIndex));
 				addedCols++;
 			}
+			
 		}
 		csvData += "\n";
 
+		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
+		if (setToDownload.size() == 0) {
+			setToDownload = getFilteredRows();
+		}
 		// Adds data to csv
-		TapRowList rowList = getEntity().getMetadata();
-		for (int rowIndex = 0; rowIndex < rowList.getData().size(); rowIndex++) {
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				csvData += ((cellIndex == 0) ? "" : ",") + "\""
-						+ (rowList.getData().get(rowIndex)).get(cellIndex).toString().replaceAll(separator, ";") + "\"";
+		for (TableRow row : setToDownload) {
+			boolean firstCellOfRow = true;
+			for (TableElement cell : row.getElements()) {
+				if(firstCellOfRow) {
+					firstCellOfRow = false;
+				} else {
+					csvData += separator;
+				}
+				csvData += "\"";
+				if(cell.getValue() != null) {
+					csvData += cell.getValue().toString() + "\"";
+				}else {
+					csvData += "\"";
+				}
 			}
 			csvData += "\n";
 		}
-
-		UrlUtils.saveRawToFile(UrlUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv", csvData);
+		
+		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv", csvData, ReturnType.CSV.getMimeType());
 	}
 
 	public void exportAsVOTABLE() {
 
-		String votData = "data:text/xml;charset=utf-8,";
-		final String separator = getEntity().getDescriptor().getAdsAuthorSeparator();
+		String votData = "";
 
 		// Add VOT XML Schema
 		votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
-		votData += "<RESOURCE type=\"" + getEntity().getEsaSkyUniqId() + " publications\">\n";
+		votData += "<RESOURCE type=\"" + getEntity().getEsaSkyUniqId() + "\">\n";
 		votData += "<TABLE>\n";
 
 		// Adds headers to xml
@@ -1202,20 +1215,24 @@ public abstract class AbstractTablePanel extends Composite {
 			final String label = getLabelTextFromHeader(table.getHeader(cellIndex));
 			if (!label.isEmpty()) {
 				votData += "<FIELD arraysize=\"*\" datatype=\"char\" name=\""
-						+ SafeHtmlUtils.htmlEscape(getLabelTextFromHeader(table.getHeader(cellIndex))) + "\"/>\n";
+						+ getLabelTextFromHeader(table.getHeader(cellIndex)) + "\"/>\n";
 			}
 		}
 
-		// Adds data to csv
+		// Adds data to xml
 		votData += "<DATA>\n";
 		votData += "<TABLEDATA>\n";
-		TapRowList rowList = getEntity().getMetadata();
-		for (int rowIndex = 0; rowIndex < rowList.getData().size(); rowIndex++) {
+		
+		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
+		if (setToDownload.size() == 0) {
+			setToDownload = getFilteredRows();
+		}
+		// Adds data to csv
+		for (TableRow row : setToDownload) {
 			votData += "    <TR>\n";
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+			for (TableElement cell : row.getElements()) {
 				votData += "        <TD>"
-						+ SafeHtmlUtils.htmlEscape(
-								(rowList.getData().get(rowIndex)).get(cellIndex).toString().replaceAll(separator, ";"))
+						+ cell.getValue()
 						+ "</TD>\n";
 			}
 			votData += "    </TR>\n";
@@ -1226,7 +1243,7 @@ public abstract class AbstractTablePanel extends Composite {
 		votData += "</RESOURCE>\n";
 		votData += "</VOTABLE>\n";
 
-		UrlUtils.saveRawToFile(UrlUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", votData);
+		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", votData, ReturnType.VOTABLE.getMimeType());
 	}
 
 	public String getFullId() {

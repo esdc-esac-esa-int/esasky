@@ -64,22 +64,6 @@ public final class UrlUtils {
 		$wnd.history.replaceState(newUrl, "", newUrl);
 	}-*/;
 	
-    public static native void saveRawToFile(String filename, String text) /*-{
-        var encodedUri = encodeURI(text);
-        encodedUri = encodedUri.replace(new RegExp('#', 'g'), '%23');
-        encodedUri = encodedUri.replace(new RegExp('&', 'g'), '%26');
-        var link = document.createElement("a");
-        link.setAttribute("type", "hidden");
-        document.body.appendChild(link);
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", filename);
-        link.click();
-     }-*/;
-    
-    public static native String getValidFilename(String filename) /*-{
-        return filename.replace(/([^a-z0-9]+)/gi, '_')
-     }-*/;
-    
     public static boolean urlHasBibcode() {
         return Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM);
     }

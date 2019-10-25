@@ -71,7 +71,6 @@ import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
@@ -480,7 +479,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	                                final com.google.gwt.http.client.Request request,
 	                                final Response response) {
 	                        	Log.debug("[Download success]");
-	                    		DownloadUtils.downloadFile(UrlUtils.getValidFilename(tableName) + "." + type.toString(), response.getText(), type.getMimeType());
+	                    		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(tableName) + "." + type.toString(), response.getText(), type.getMimeType());
 	                    		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(indicatorId));
 	                        }
 	

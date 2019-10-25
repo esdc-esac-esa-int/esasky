@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
-import esac.archive.esasky.cl.web.client.utility.UrlUtils;
+import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
@@ -134,7 +134,7 @@ public class StylePanel extends DialogBox {
         this.id = id;
         this.mission = mission;
         
-        final String preparedId = UrlUtils.getValidFilename(id);
+        final String preparedId = DownloadUtils.getValidFilename(id);
         this.srcColorPickerId = preparedId + "_srcColor";
         this.srcColor = srcColor;
         this.srcColorCallback = srcColorCallback;

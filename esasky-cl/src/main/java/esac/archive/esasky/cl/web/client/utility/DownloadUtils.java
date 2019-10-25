@@ -11,5 +11,9 @@ public final class DownloadUtils {
 	public static native void downloadFile(String fileName, String file, String mimeType) /*-{
 		$wnd.saveAs(new Blob([file], {type : mimeType}), fileName);
     }-*/;
+	
+    public static native String getValidFilename(String filename) /*-{
+    return filename.replace(/([^a-z0-9]+)/gi, '_')
+ }-*/;
 
 }
