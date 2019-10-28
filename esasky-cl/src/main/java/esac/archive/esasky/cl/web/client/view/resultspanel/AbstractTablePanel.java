@@ -121,8 +121,11 @@ public abstract class AbstractTablePanel extends Composite {
 		public void run() {
 			for(int i = 0; i < table.getVisibleItemCount(); i++) {
 				if(table.getVisibleItem(i).getShapeId() == rowId) {
+					Element scrollableElement = table.getHorizontalScrollableElement();
+					scrollLeft = scrollableElement.getScrollLeft();
 					TableRowElement element = table.getRowElement(i);
 					element.scrollIntoView();
+					scrollableElement.setScrollLeft(scrollLeft);
 					break;
 				}
 			}
@@ -434,8 +437,6 @@ public abstract class AbstractTablePanel extends Composite {
 			public void onColumnSort(ColumnSortEvent sortEvent) {
 				if (!originalListRestored) {
 					originalListRestored = true;
-					Element scrollableElement = table.getHorizontalScrollableElement();
-					scrollLeft = scrollableElement.getScrollLeft();
 
 					dataProvider.getList().clear();
 					dataProvider.getList().addAll(originalList);
@@ -444,16 +445,13 @@ public abstract class AbstractTablePanel extends Composite {
 
 					applyAllFilters();
 					originalListRestored = false;
+
+					@SuppressWarnings("unchecked")
+					Column<TableRow, ?> column = (Column<TableRow, ?>) sortEvent.getColumn();
+					int index = table.getColumnIndex(column);
 					
-					//Resets the scrollposition of the table after all updates are done.
-					Scheduler.get().scheduleFinally(new Scheduler.ScheduledCommand() {
-						
-						@Override
-						public void execute() {
-							Element scrollableElement = table.getHorizontalScrollableElement();
-							scrollableElement.setScrollLeft(scrollLeft);
-						}
-					});
+					table.setKeyboardSelectedColumn(index);
+					
 				}
 
 				columnSortList = sortEvent.getColumnSortList();
@@ -1046,9 +1044,8 @@ public abstract class AbstractTablePanel extends Composite {
 	}
 
 	private void applyAllFilters() {
-		dataProvider.getList().clear();
-		dataProvider.getList().addAll(originalList);
-		filteredList = dataProvider.getList();
+		filteredList.clear();
+		filteredList.addAll(originalList);
 		Iterator<TableRow> rowIterator = filteredList.iterator();
 
 		while (rowIterator.hasNext()) {
