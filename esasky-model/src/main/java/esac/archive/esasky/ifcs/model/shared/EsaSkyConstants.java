@@ -279,7 +279,14 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
     public static final String EXT_TAP_URL = "TAP_URL";
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
-    public static final String EXT_TAP_COLLECTION = "obs_collection";
+    
+    /*************************************************************************/
+    /** IVOA OBSCORE **/
+    /*************************************************************************/
+    
+    public static final String OBSCORE_COLLECTION = "obs_collection";
+    public static final String OBSCORE_FACILITY = "facility_name";
+    public static final String OBSCORE_DATAPRODUCT = "dataproduct_type";
     
     /*************************************************************************/
     /** TREE MAP **/

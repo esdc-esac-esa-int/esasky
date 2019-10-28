@@ -1,6 +1,7 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,12 +17,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String tapRaColumn;
     private String tapDecColumn;
     private String uniqueIdentifierField;
-    private String dataProductType;
+    private ArrayList<String> dataProductTypes;
     private String whereADQL;
     private String selectADQL;
     private String responseFormat;
     private String searchFunction;
-    private ArrayList<String> collections;
+    private Map<String, ArrayList<String>> collections;
     private boolean isInBackend = true;
     private String treeMapType;
     private ExtTapDescriptor parent;
@@ -39,7 +40,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	tapRaColumn = parent.getTapRaColumn();
     	tapDecColumn = parent.getTapDecColumn();
     	uniqueIdentifierField = parent.getUniqueIdentifierField();
-    	dataProductType = parent.getDataProductType();
+    	dataProductTypes = parent.getDataProductTypes();
     	whereADQL = parent.getWhereADQL();
     	selectADQL = parent.getSelectADQL();
     	responseFormat = parent.getResponseFormat();
@@ -104,12 +105,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.tapDecColumn = tapDecColumn;
 	}
 
-	public String getDataProductType() {
-		return dataProductType;
+	public ArrayList<String> getDataProductTypes() {
+		return dataProductTypes;
 	}
 
-	public void setDataProductType(String dataProductType) {
-		this.dataProductType = dataProductType;
+	public void setDataProductTypes(ArrayList<String> dataProductTypes) {
+		this.dataProductTypes = dataProductTypes;
 	}
 
 	public String getWhereADQL() {
@@ -152,11 +153,11 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.selectADQL = selectADQL;
 	}
 
-	public ArrayList<String> getCollections() {
+	public Map<String, ArrayList<String>> getCollections() {
 		return collections;
 	}
 
-	public void setCollections(ArrayList<String> collections) {
+	public void setCollections(Map<String, ArrayList<String>> collections) {
 		this.collections = collections;
 	}
 
