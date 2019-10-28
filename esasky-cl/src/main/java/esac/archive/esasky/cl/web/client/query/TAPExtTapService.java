@@ -6,6 +6,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -24,44 +25,29 @@ public class TAPExtTapService extends AbstractMetadataService {
         return instance;
     }
 
-    public String getAdql(ExtTapDescriptor descriptor, int top) {
-    	String adql = "select top " + top + " *";
+    public String getAdql(ExtTapDescriptor descriptor, String selectADQL) {
+    	String adql = selectADQL;
     	
-    	String parsedAdql = adql;
-    	parsedAdql += " from " + descriptor.getTapTable() + " WHERE ";
+    	adql += " from " + descriptor.getTapTable() + " WHERE ";
     	
     	if(descriptor.getSearchFunction().equals("polygonIntersect")) {
-    		parsedAdql += polygonIntersectSearch(descriptor);
+    		adql += polygonIntersectSearch(descriptor);
     	}else {
-    		parsedAdql += raDecCenterSearch(descriptor);
+    		adql += raDecCenterSearch(descriptor);
     	}
     	
     	if(descriptor.getWhereADQL() != null) {
-    		parsedAdql += " AND " + descriptor.getWhereADQL();
+    		adql += " AND " + descriptor.getWhereADQL();
     	}
-    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + parsedAdql);
+    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
     	
-    	return parsedAdql;
+    	return adql;
     }
     
     public String getAdqlNewService(ExtTapDescriptor descriptor) {
     	 String adql = descriptor.getSelectADQL();
 
-         String parsedAdql = adql;
-         parsedAdql += " from " + descriptor.getTapTable() + " WHERE ";
-
-         if(descriptor.getSearchFunction().equals("polygonIntersect")) {
-        	 parsedAdql += polygonIntersectSearch(descriptor);
-         }else {
-        	 parsedAdql += raDecCenterSearch(descriptor);
-         }
-         
-         if(descriptor.getWhereADQL() != null) {
-         	parsedAdql += " AND " + descriptor.getWhereADQL();
-         }
-         Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + parsedAdql);
-
-         return parsedAdql;
+         return getAdql(descriptor, adql);
     }
     
     private String polygonIntersectSearch(ExtTapDescriptor descriptor) {
@@ -131,26 +117,27 @@ public class TAPExtTapService extends AbstractMetadataService {
     
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
-        int top = 2000;
+        String selectADQL = "SELECT TOP 2000 * ";
+
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
         
         if(descriptor.isInBackend()) {
-        	return getAdql(descriptor, top);       
+        	return getAdql(descriptor, selectADQL);       
         }else {
         	return getAdqlNewService(descriptor);
         }
     }
     
     public String getCountAdql(IDescriptor descriptorInput) {
-        int top = 1;
+        String selectADQL = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
         if(descriptor.isInBackend()) {
-        	return getAdql(descriptor, top);       
+        	return getAdql(descriptor, selectADQL);       
         }else {
         	return getAdqlNewService(descriptor);
         }  
     }
-
+    
     @Override
     public String getRetreivingDataTextKey() {
     	return "MetadataCallback_retrievingMissionData";

@@ -446,16 +446,23 @@ public class DescriptorRepository {
 	
 	public void updateCount4AllExtTaps() {
 		for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
-			updateCount4ExtTap(descriptor);
+			if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
+				updateCount4ExtTap(descriptor);
+			}
 		}
 	}
 	
 	public void updateCount4ExtTap(ExtTapDescriptor descriptor) {
 		final CountStatus cs = extTapDescriptors.getCountStatus();
+		if(!cs.containsDescriptor(descriptor)) {
+			cs.addDescriptor(descriptor);
+		}
+			
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
 		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), descriptor);
 		
-		
+		Log.debug("Query [" + url + "]");
+
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
 			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs, countRequestHandler.getProgressIndicatorMessage()));
@@ -464,6 +471,33 @@ public class DescriptorRepository {
 			Log.error("Error fetching JSON data from server");
 		}
 	}
+	
+//	public void countSubCollections(ExtTapDescriptor descriptor) {
+//		int i = 0;
+//		for(String collection : descriptor.getCollections()) {
+//			if(i>1) {
+//				break;
+//			}
+//			ExtTapDescriptor collectionDescriptor = new ExtTapDescriptor();
+//			collectionDescriptor.copyParentValues(descriptor);
+//			collectionDescriptor.setMission(collection);
+//			collectionDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION);
+//			
+//			collectionDescriptor.setGuiShortName(collection);
+//			collectionDescriptor.setGuiLongName(collectionDescriptor.getGuiLongName() + "-" + collection);
+//			
+//			String whereADQL = collectionDescriptor.getWhereADQL();
+//			whereADQL += " AND " + EsaSkyConstants.OBSCORE_COLLECTION + " = \'" + collection + "\'";
+//			collectionDescriptor.setWhereADQL(whereADQL);
+//			
+//			collectionDescriptor.setSelectADQL("SELECT TOP 1 *");
+//			
+//			updateCount4ExtTap(collectionDescriptor);
+//			i++;
+//		}
+//		
+//		
+//	}
 
 	private void updateCount4Catalogs() {
 		final CountStatus cs = catDescriptors.getCountStatus();

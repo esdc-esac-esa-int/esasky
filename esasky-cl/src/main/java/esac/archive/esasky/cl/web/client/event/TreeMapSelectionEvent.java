@@ -4,19 +4,17 @@ import com.google.gwt.event.shared.GwtEvent;
 
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
 
 public class TreeMapSelectionEvent extends GwtEvent<TreeMapSelectionEventHandler> {
 
     public static Type<TreeMapSelectionEventHandler> TYPE = new Type<TreeMapSelectionEventHandler>();
 
-    private EntityContext context;
+    private PointInformation pointInformation;
     
-    private IDescriptor descriptor;
-    
-    public TreeMapSelectionEvent(EntityContext context, IDescriptor descriptor) {
+    public TreeMapSelectionEvent(PointInformation pointInformation) {
         super();
-        this.context = context;
-        this.descriptor = descriptor;
+        this.pointInformation = pointInformation;
     }
 
     @Override
@@ -29,11 +27,15 @@ public class TreeMapSelectionEvent extends GwtEvent<TreeMapSelectionEventHandler
         handler.onSelection(this);
     }
     
+    public PointInformation getPointInformation(){
+    	return pointInformation;
+    }
+    
     public EntityContext getContext(){
-    	return context;
+    	return pointInformation.context;
     }
     
     public IDescriptor getDescriptor(){
-    	return descriptor;
+    	return pointInformation.descriptor;
     }
 }

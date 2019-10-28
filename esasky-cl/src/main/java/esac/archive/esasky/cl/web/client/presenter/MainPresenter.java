@@ -18,6 +18,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
@@ -48,6 +49,7 @@ import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
@@ -214,10 +216,16 @@ public class MainPresenter {
 
              @Override
              public void onSelection(TreeMapSelectionEvent event) {
-                 getRelatedMetadata(event.getDescriptor(), event.getContext());
+            	 if(event.getContext() == EntityContext.EXT_TAP) {
+            		PointInformation pointInformation = event.getPointInformation();
+            		if(pointInformation.getType() == EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT) {
+            			getRelatedMetadata(event.getDescriptor(), event.getContext());
+            		}
+            	 }else {
+            		 getRelatedMetadata(event.getDescriptor(), event.getContext());
+            	 }
              }
-         });
-         
+         });	
          
          /*
           * When the url changed because the state has changed

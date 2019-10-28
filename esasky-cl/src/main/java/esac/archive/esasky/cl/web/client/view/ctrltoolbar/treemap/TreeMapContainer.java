@@ -64,7 +64,11 @@ public class TreeMapContainer extends DialogBox {
 		this.style.ensureInjected();
 		this.context = context;
 		
-		treeMap = new TreeMap(context);
+		if(context.equals(EntityContext.EXT_TAP)) {
+			treeMap = new ExtTapTreeMap(context);
+		}else {
+			treeMap = new TreeMap(context);
+		}
         
 		this.removeStyleName("gwt-DialogBox");
 		this.addStyleName("treeMapContainer");

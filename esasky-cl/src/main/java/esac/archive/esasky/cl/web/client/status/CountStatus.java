@@ -19,8 +19,16 @@ public class CountStatus {
     public CountStatus (IDescriptorList<?> descriptor) {
         countStatus = new HashMap<String, CountDetails>();
         for (IDescriptor currentDesc : descriptor.getDescriptors()) {
-            countStatus.put(currentDesc.getMission().toLowerCase(), new CountDetails(0));
+        	addDescriptor(currentDesc);
         }
+    }
+    
+    public boolean containsDescriptor(IDescriptor descriptor) {
+    	return countStatus.containsKey(descriptor.getMission().toLowerCase());
+    }
+    
+    public void addDescriptor(IDescriptor descriptor) {
+    	countStatus.put(descriptor.getMission().toLowerCase(), new CountDetails(0));
     }
 
     public CountDetails getDetailsByKey(String missionId) {

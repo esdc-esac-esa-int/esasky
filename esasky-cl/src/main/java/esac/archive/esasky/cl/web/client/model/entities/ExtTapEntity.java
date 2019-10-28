@@ -1,7 +1,9 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -26,6 +28,7 @@ import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
+import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
@@ -33,6 +36,8 @@ import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 
@@ -55,20 +60,72 @@ public class ExtTapEntity implements GeneralEntityInterface {
     protected DefaultEntity defaultEntity;
     protected IShapeDrawer drawer;
     private ExtTapDescriptor descriptor;
-    protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
+    
+	public ExtTapEntity(ExtTapDescriptor descriptor, CountStatus countStatus,
+			SkyViewPosition skyViewPosition, String esaSkyUniqId, Long lastUpdate, EntityContext context) {
+		
+		JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
+				descriptor.getHistoColor());
+		
+		JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalog(
+				esaSkyUniqId, SourceDrawer.DEFAULT_SOURCE_SIZE, descriptor.getHistoColor());
+		
+		drawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder);
+		
+		defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
+				context, drawer, TAPMetadataObservationService.getInstance());
+		this.descriptor = descriptor;
+	}
     	
+	protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
     	@Override
     	public Shape buildShape(int rowId, TapRowList rowList) {
+    		String stcs = (String) getTAPDataByTAPName(rowList, rowId, descriptor.getTapSTCSColumn());
+    		
+    		if(stcs.toUpperCase().startsWith("POSITION")) {
+    			return catalogBuilder(rowId, rowList);
+    		}
+    		
+    		stcs = makeSureSTCSHasFrame(stcs);
     		PolygonShape polygon = new PolygonShape();
     		polygon.setShapeId(rowId);
-    		String stcs = (String) getTAPDataByTAPName(rowList, rowId, descriptor.getTapSTCSColumn());
-    		stcs = makeSureSTCSHasFrame(stcs);
     		polygon.setStcs(stcs);
     		polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
     				polygon.getStcs(), rowId));
     		return polygon;
     	}
     };
+    
+	public SourceShape catalogBuilder(int shapeId, TapRowList sourceList) {
+            SourceShape mySource = new SourceShape();
+            mySource.setShapeId(shapeId);
+
+            Double ra = Double.parseDouble(getTAPDataByTAPName(sourceList, shapeId,
+                    getDescriptor().getTapRaColumn()).toString());
+            mySource.setRa(ra.toString());
+
+            Double dec = Double.parseDouble(getTAPDataByTAPName(sourceList, shapeId,
+            		getDescriptor().getTapDecColumn()).toString());
+            mySource.setDec(dec.toString());
+            
+            mySource.setSourceName(((String) getTAPDataByTAPName(sourceList, shapeId,
+                    descriptor.getUniqueIdentifierField())).toString());
+
+            Map<String, String> details = new HashMap<String, String>();
+
+            details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
+
+            details.put(EsaSkyWebConstants.SOURCE_TYPE,
+                    EsaSkyWebConstants.SourceType.CATALOGUE.toString());
+            details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
+            details.put(SourceConstant.IDX, Integer.toString(shapeId));
+
+            details.put(SourceConstant.EXTRA_PARAMS, null);
+            
+            mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
+                    mySource.getRa(), mySource.getDec(), details, shapeId));
+            return mySource;
+    }
     
     private String makeSureSTCSHasFrame(String input) {
     	String stcs = input.toUpperCase();
@@ -85,15 +142,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
     	
     }
 
-    public ExtTapEntity(ExtTapDescriptor descriptor, CountStatus countStatus,
-    		SkyViewPosition skyViewPosition, String esaSkyUniqId, Long lastUpdate, EntityContext context) {
-    	JavaScriptObject overlay = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-				descriptor.getHistoColor());
-		drawer = new FootprintDrawer(overlay, shapeBuilder);
-        defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
-                context, drawer, TAPMetadataObservationService.getInstance());
-		this.descriptor = descriptor;
-    }
     
     @Override
     public SelectableImage getTypeIcon() {
@@ -168,7 +216,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 	@Override
 	public void addShapes(TapRowList rowList) {
-		defaultEntity.addShapes(rowList);
+		drawer.addShapes(rowList);
 	}
 	
 	@Override
@@ -278,7 +326,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getTabLabel() {
-		return defaultEntity.getTabLabel();
+		return getDescriptor().getGuiLongName();
 	}
 	
 	@Override

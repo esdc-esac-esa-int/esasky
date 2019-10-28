@@ -49,8 +49,8 @@ public class TreeMap extends Chart {
 
     private final EntityContext context;
     
-    private Series series;
-    private HashMap<String, PointInformation> allPoints = new HashMap<String, PointInformation>();
+    protected Series series;
+    protected HashMap<String, PointInformation> allPoints = new HashMap<String, PointInformation>();
 
     private GhostPoint ghostPoint;
     private boolean firstSelection = false;
@@ -58,8 +58,8 @@ public class TreeMap extends Chart {
     private boolean removePointsOnNextRender = false;
     private List<Point> pointsToRemove = new LinkedList<Point>();
 
-    private boolean addPointsOnNextRender = false;
-    private List<Point> pointsToAdd = new LinkedList<Point>();
+    protected boolean addPointsOnNextRender = false;
+    protected List<Point> pointsToAdd = new LinkedList<Point>();
 
     private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
 
@@ -73,27 +73,7 @@ public class TreeMap extends Chart {
         
         ghostPoint = new GhostPoint(TextMgr.getInstance().getText("treeMap_loading_" + context), TextMgr.getInstance().getText("treeMap_noData_" + context));
 
-        setCredits(new Credits().setEnabled(false))
-                .setToolTip(new ToolTip().setFormatter(new ToolTipFormatter() {
-
-                    @Override
-                    public String format(ToolTipData toolTipData) {
-                        Point point = toolTipData.getPoint();
-
-                        if (point.getText() != null && allPoints.containsKey(point.getText())) {
-                            PointInformation pointInformation = allPoints.get(point.getText());
-                            final String wavelengthText = "<br/><p style=\"font-size: 10px;\"> (" + pointInformation.wavelengthLongName + ") </p><br/>";
-                            String tooltipText = pointInformation.longName + wavelengthText;
-                            if(pointInformation.credits != null && !pointInformation.credits.isEmpty()) {
-                            	 tooltipText += " [" + pointInformation.credits.replace("U+00F8", "\u00F8") + "]";
-                            }
-                            return "<div style=\"font-size: 12px !important;\">" + tooltipText + "</div>";
-                        }
-
-                        return point.getName();
-                    }
-
-                })).setChartTitle(null).setBackgroundColor("rgba(0, 0, 0, 0.65)").setMargin(1, 0, 0, 1);
+        setTapCredits();
 
         series = createSeries().setType(Series.Type.TREEMAP).setPlotOptions(
                 new TreemapPlotOptions()
@@ -119,7 +99,10 @@ public class TreeMap extends Chart {
                                         ),
                                 new TreemapPlotOptions.Level().setLevel(2).setBorderWidth(2)
                                         .setBorderColor("rgba(0, 0, 0, 0.65)")
-                                        .setDataLabels(new DataLabels().setEnabled(false)))
+                                        .setDataLabels(new DataLabels().setEnabled(false)),
+                        		 new TreemapPlotOptions.Level().setLevel(3).setBorderWidth(2)
+                                                 .setBorderColor("rgba(0, 0, 0, 0.65)")
+                                                 .setDataLabels(new DataLabels().setEnabled(false)))
                         .setLevelIsConstant(false).setAllowDrillToNode(true));
 
         series.addPoint(ghostPoint);
@@ -136,8 +119,7 @@ public class TreeMap extends Chart {
                             PointInformation pointInformation = allPoints.get(id);
 
                             CommonEventBus.getEventBus().fireEvent(
-                                    new TreeMapSelectionEvent(context,
-                                            pointInformation.descriptor));
+                                    new TreeMapSelectionEvent(pointInformation));
                         }
                         return false;
                     }
@@ -161,11 +143,39 @@ public class TreeMap extends Chart {
                     removePointsOnNextRender = false;
                     removePointsAfterFirstRender();
                 }
+                
                 return false;
             }
         });
     }
+    
+    protected void setTapCredits() {
+    	setCredits(new Credits().setEnabled(false))
+        .setToolTip(new ToolTip().setFormatter(new ToolTipFormatter() {
 
+            @Override
+            public String format(ToolTipData toolTipData) {
+                Point point = toolTipData.getPoint();
+
+                if (point.getText() != null && allPoints.containsKey(point.getText())) {
+                    PointInformation pointInformation = allPoints.get(point.getText());
+                    String tooltipText = pointInformation.longName;
+                   
+                	final String wavelengthText = "<br/><p style=\"font-size: 10px;\"> (" + pointInformation.getWavelengthLongName() + ") </p><br/>";
+                	tooltipText +=  wavelengthText;
+                    
+                    if(pointInformation.credits != null && !pointInformation.credits.isEmpty()) {
+                    	 tooltipText += " [" + pointInformation.credits.replace("U+00F8", "\u00F8") + "]";
+                    }
+                    return "<div style=\"font-size: 12px !important;\">" + tooltipText + "</div>";
+                }
+
+                return point.getName();
+            }
+
+        })).setChartTitle(null).setBackgroundColor("rgba(0, 0, 0, 0.65)").setMargin(1, 0, 0, 1);
+    }
+    
     private void addPointsAfterFirstRender() {
         for (Point pointToAdd : pointsToAdd) {
             series.addPoint(pointToAdd, false, false, false);
@@ -199,6 +209,7 @@ public class TreeMap extends Chart {
             List<Integer> zeroCountList = new ArrayList<Integer>();
             
             for (int i = 0; i < descriptors.size(); i ++) {
+            	
                 if (counts.get(i) > 0) {
                     //Only add descriptors with non zero count
                 	final IDescriptor descriptor = descriptors.get(i);
@@ -217,7 +228,7 @@ public class TreeMap extends Chart {
         }
     }
     
-    private double logCount(int count) {
+    protected double logCount(int count) {
         double logCount = Math.log(count);
         if (count == 1) {
             logCount = 0.27; // compensate for log(1) = 0. A value of 0 is invisible in the graph.
@@ -226,26 +237,32 @@ public class TreeMap extends Chart {
         }
         return logCount;
     }
+    
+    protected Point getPoint(IDescriptor descriptor) {
+    	for (Point point : series.getPoints()) {
+            if (isMatch(descriptor, point)) {
+            	return point;
+            }
+    	}
+    	return null;
+    }
 
     private void addPoints(IDescriptor descriptor, int count, boolean updateView) {
-        Point[] points = series.getPoints();
         String pointId = null;
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
-                descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor);
+                descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor, context);
         boolean found = false;
         if (isRendered()) {
-            for (Point point : points) {
-                if (isMatch(descriptor, point)) {
-                    pointId = point.getText();
-                    if (count == 0) {
-                        removePoint(point, updateView);
-                    } else {
-                        point.update(logCount(count), updateView);
-                    }
-                    found = true;
-                    break;
-                }
+            Point point = getPoint(descriptor);
+            if(point != null) {
+            	pointId = point.getText();
+            	if (count == 0) {
+            		removePoint(point, updateView);
+            	} else {
+            		point.update(logCount(count), updateView);
+            	}
+            	found = true;
             }
             
             if (!found) {
@@ -304,10 +321,14 @@ public class TreeMap extends Chart {
         }
     }
     
-    private Point getNewPoint (String pointId, IDescriptor descriptor, String color, PointInformation pointInformation, double logCount) {
-        Point newPoint = new Point(descriptor.getGuiShortName()
-                                    + " <br/><p style=\"font-size: 10px;\">("
-                                    + pointInformation.wavelengthShortName + ")</p>", logCount);
+    protected Point getNewPoint (String pointId, IDescriptor descriptor, String color, PointInformation pointInformation, double logCount) {
+    	String displayText = descriptor.getGuiShortName();
+    	if(!pointInformation.getWavelengthShortName().isEmpty()) {
+    		displayText += " <br/><p style=\"font-size: 10px;\">("
+                    + pointInformation.getWavelengthShortName() + ")</p>";
+    	}
+    	
+        Point newPoint = new Point(displayText, logCount);
         newPoint.setColor(color);
         newPoint.setText(pointId);
         return newPoint;
@@ -331,7 +352,7 @@ public class TreeMap extends Chart {
             final PointInformation pointInfo = allPoints.get(foundPoint.getText());
 
             PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
-                    descriptor.getMission(), descriptor.getCreditedInstitutions(), pointInfo.count, descriptor);
+                    descriptor.getMission(), descriptor.getCreditedInstitutions(), pointInfo.count, descriptor, context);
             
             removePoint(foundPoint, false);
             
@@ -342,15 +363,15 @@ public class TreeMap extends Chart {
         }
     }
 
-    private boolean isMatch(IDescriptor descriptor, Point point) {
+    protected boolean isMatch(IDescriptor descriptor, Point point) {
         final PointInformation pointInfo = allPoints.get(point.getText());
         return point.getName().contains(descriptor.getGuiShortName())
                 && pointInfo != null
-                && point.getName().contains(pointInfo.wavelengthShortName)
+                && point.getName().contains(pointInfo.getWavelengthShortName())
                 && pointInfo.missionName.equals(descriptor.getMission());
     }
 
-    private void removePoint(Point point, boolean update) {
+    protected void removePoint(Point point, boolean update) {
         allPoints.remove(point.getText());
         series.removePoint(point, false, false);
         point.setParent(""); // remove from parent, otherwise it will stay in graph
@@ -359,7 +380,7 @@ public class TreeMap extends Chart {
         }
     }
 
-    private void makeSureGhostPointIsInGraph(String pointId) {
+    protected void makeSureGhostPointIsInGraph(String pointId) {
         for (PointInformation pointInformation : allPoints.values()) {
             if (!pointInformation.equals(allPoints.get(pointId))
                     && pointInformation.count > 0) {
@@ -397,7 +418,7 @@ public class TreeMap extends Chart {
         ghostPoint.setRemoved(false);
     }
 
-    private void removeGhostPoint() {
+    protected void removeGhostPoint() {
         if (ghostPoint.isRemoved()) {
             return;
         }
@@ -439,14 +460,14 @@ public class TreeMap extends Chart {
 		return point.id;
     }-*/;
 
-    private static native void zoomToPoint(JavaScriptObject series, JavaScriptObject point) /*-{
+    protected static native void zoomToPoint(JavaScriptObject series, String id) /*-{
 		try {
-			series.drillToNode(point.drillId);
+			series.drillToNode(id);
 		} catch (err) {
 		}
     }-*/;
 
-    private static native String getIdOfSelectedLevel(JavaScriptObject series)/*-{
+    protected static native String getIdOfSelectedLevel(JavaScriptObject series)/*-{
 		try {
 			return series.rootNode;
 		} catch (err) {
