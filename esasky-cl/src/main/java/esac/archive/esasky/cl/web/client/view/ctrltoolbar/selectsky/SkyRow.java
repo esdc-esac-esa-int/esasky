@@ -194,6 +194,11 @@ public class SkyRow extends Composite implements Selectable{
 
 	private void fillDropDownMenus(HipsWavelength defaultWavelength, String defaultHips) {
 		for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
+			if(menuEntry.getWavelength() == HipsWavelength.USER) {
+				for(HiPS hips: menuEntry.getHips()) {
+					listOfUserHips.add(hips);
+				}
+			}
 			createWavelengthOption(menuEntry.getWavelength());
 		}
 		wavelengthDropDown.selectObject(defaultWavelength);

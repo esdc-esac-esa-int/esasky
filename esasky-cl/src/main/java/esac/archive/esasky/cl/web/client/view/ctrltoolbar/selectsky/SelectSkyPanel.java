@@ -19,7 +19,9 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
+import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
@@ -392,10 +394,23 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	public static void setHiPSFromAPI (HiPS hips, boolean newHips) {
 		SkyRow skyTmp = getSelectedSky();
 		if(skyTmp == null) {
-			skyTmp = instance.createSky();
+			SkiesMenuEntry entry = new SkiesMenuEntry();
+			entry.getHips().add(hips);
+			entry.setTotal(1);
+			entry.setWavelength(HipsWavelength.USER);
+			instance.skiesMenu.getMenuEntries().add(entry);
+
+			skyTmp = new SkyRow(instance.skiesMenu, "Sky");
+			skyTmp.registerObserver(instance);
+			instance.skyTable.insertItem(skyTmp);
+			instance.player.addEntryToPlayer(skyTmp);
+			skies.add(skyTmp);
+			instance.ensureCorrectSkyStyle();
 		}
 		final SkyRow sky = skyTmp;
 		sky.setHiPSFromAPI(hips, true, newHips);
+		sky.setSelected();
+		instance.addSkyButton.enableButton();
 	}
 
 	public static void setSelectedHipsName (String hipsName) {
