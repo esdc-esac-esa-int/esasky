@@ -494,7 +494,10 @@ public class HeaderPresenter {
 
 	private String formatFov(double fovDeg) {
 		NumberFormat format = NumberFormat.getFormat("#00.00");
-		if(fovDeg >= 1) {
+		if(fovDeg >= 100) {
+			format = NumberFormat.getFormat("#00");
+			return "FoV: " + format.format(fovDeg) + "&deg;";
+		}else if(fovDeg >= 1) {
 			return "FoV: " + format.format(fovDeg) + "&deg;";
 		} else if (fovDeg * 60 >= 1){
 			return "FoV: " + format.format(fovDeg * 60) + "'";
