@@ -334,8 +334,7 @@ public class SearchPresenter {
         }
 
         final String url = URL.encode(
-                EsaSkyWebConstants.GENERAL_RESOLVER_URL + "?action=bytarget&target=" + targetName)
-                .replace("+", "%2B");
+                EsaSkyWebConstants.GENERAL_RESOLVER_URL + "?action=bytarget&target=") + URL.encodeQueryString(targetName);
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         final String id = "target-" + targetName;
