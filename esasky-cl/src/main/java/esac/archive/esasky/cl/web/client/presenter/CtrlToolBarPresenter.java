@@ -251,7 +251,16 @@ public class CtrlToolBarPresenter {
                     
                     final String bibcodeHtml = Link2ArchiveColumn.getLinkHtml(bibcode, bibcodeLinkUrl, bibcodeUri).asString();
                     
-                    String authorsHtml = LinkListColumn.getLinkList(rowList.getDataValue("author", 0), 
+                    String authorList = "";
+                    
+                    for(int i = 0; i < rowList.getData().size(); i++) {
+                    	authorList += rowList.getDataValue("author", i) + "\n";
+                    }
+                    if(authorList.length() > 0) {
+                    	authorList = authorList.substring(0, authorList.length() - 1);
+                    }
+                    
+                    String authorsHtml = LinkListColumn.getLinkList(authorList, 
                                                                     splitByString,
                                                                     authorsLinkUrl,
                                                                     replaceString,
