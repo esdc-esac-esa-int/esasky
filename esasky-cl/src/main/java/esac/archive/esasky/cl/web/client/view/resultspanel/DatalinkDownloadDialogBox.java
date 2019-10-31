@@ -1,0 +1,189 @@
+package esac.archive.esasky.cl.web.client.view.resultspanel;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.callback.StandardCallback;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+
+public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
+	private final Resources resources = GWT.create(Resources.class);
+	private CssResource style;
+
+	public interface Resources extends ClientBundle {
+		@Source("datalinkDialogBox.css")
+		@CssResource.NotStrict
+		CssResource style();
+	}
+
+	private final CloseButton closeButton;
+
+	private final LoadingSpinner loadingSpinner = new LoadingSpinner(true);
+	private Label datalinkIdLabel;
+	private final FlowPanel datalinkContent = new FlowPanel();
+
+	private Timer datalinkLoadFailedNotificationTimer = new Timer() {
+
+		@Override
+		public void run() {
+			CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("datalinkLoadFailed"));
+		}
+	};
+
+	public DatalinkDownloadDialogBox(final String url, String observationId) {
+		super(GoogleAnalytics.CAT_Datalink);
+		this.style = this.resources.style();
+		this.style.ensureInjected();
+
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.DATALINK_URL + "?url=" + URL.encodeQueryString(url),
+				new StandardCallback("Datalink", TextMgr.getInstance().getText("datalinkDownload_loading"), new StandardCallback.OnComplete() {
+
+					@Override
+					public void onComplete(String responseText) {
+						MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+
+						DatalinkJson json = JsonUtils.safeEval(responseText);
+						List<DatalinkLinks> listOfDatalinkLinks = new LinkedList<DatalinkLinks>();
+						removeStyleName("displayNone");
+						for (String[] data : json.getData()) {
+							listOfDatalinkLinks.add(DatalinkLinks.parseDatalinkLinks(data, json.getMetadata()));
+						}
+						for (DatalinkLinks links : listOfDatalinkLinks) {
+							if (!links.error_message.isEmpty()) {
+								Label label = new Label(links.error_message);
+								label.addStyleName("datalinkError");
+								datalinkContent.add(label);
+								continue;
+							}
+							if (!links.access_url.isEmpty()) {
+								String anchorName = "Download";
+								if (!links.description.isEmpty()) {
+									anchorName = links.description;
+								}
+								if (!links.content_type.isEmpty()) {
+									anchorName += links.getTypeAndSizeDisplayText();
+								}
+								Anchor anchor = new Anchor(anchorName, links.access_url, "_blank");
+								anchor.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Datalink, "Download", links.access_url);
+									}
+								});
+								anchor.addStyleName("datalinkAnchor");
+								datalinkContent.add(anchor);
+							}
+							if (!links.semantics.isEmpty()) {
+//								Label label = new Label(links.semantics);
+//								datalinkContent.add(label);
+							}
+							for (String otherInfo : links.others) {
+								if (otherInfo.toLowerCase().contains("eso_datalink")
+										|| otherInfo.toLowerCase().contains("readable: ")) {
+									continue;
+								}
+								Label label = new Label(otherInfo);
+								datalinkContent.add(label);
+							}
+						}
+						setMaxHeight(MainLayoutPanel.getMainAreaHeight());
+						setSuggestedPositionCenter();
+
+					}
+				}, new StandardCallback.OnFailure() {
+
+					@Override
+					public void onFailure() {
+						Log.debug("Failed to load datalink: " + url);
+						
+		                MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+		                CommonEventBus.getEventBus().fireEvent(
+		                		new ProgressIndicatorPushEvent("datalinkLoadFailed", TextMgr.getInstance().getText("Datalink_loadFailed"), true));
+		                hide();
+		                if(datalinkLoadFailedNotificationTimer.isRunning()) {
+		                	datalinkLoadFailedNotificationTimer.run();
+		                }
+		                datalinkLoadFailedNotificationTimer.schedule(5000);
+		                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Datalink, GoogleAnalytics.ACT_Datalink_LoadFailed, "Failed to load datalink: " + url);
+
+					}
+				}));
+
+		datalinkContent.getElement().setId("datalinkContent");
+		datalinkContent.addStyleName("datalinkContent");
+
+        loadingSpinner.addStyleName("datalinkLoadingSpinner");
+        MainLayoutPanel.addElementToMainArea(loadingSpinner);
+
+		closeButton = new CloseButton();
+		closeButton.addStyleName("datalinkCloseButton");
+		closeButton.addClickHandler(new ClickHandler() {
+			public void onClick(final ClickEvent event) {
+				hide();
+			}
+		});
+
+		datalinkIdLabel = new Label(observationId.replace("_", " "));
+		datalinkIdLabel.setStyleName("datalinkIdLabel");
+
+		FlowPanel contentAndCloseButton = new FlowPanel();
+		contentAndCloseButton.add(datalinkIdLabel);
+		contentAndCloseButton.add(closeButton);
+		contentAndCloseButton.add(datalinkContent);
+		add(contentAndCloseButton);
+
+		addStyleName("datalinkDialogBox");
+		addStyleName("displayNone");
+
+		addElementNotAbleToInitiateMoveOperation(datalinkContent.getElement());
+		show();
+
+		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
+
+			@Override
+			public void onResize(ResizeEvent arg0) {
+				setMaxHeight(arg0.getHeight());
+			}
+		});
+	}
+
+	@Override
+	public void hide() {
+		MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("Loading datalink"));
+		super.hide();
+	}
+
+	private void setMaxHeight(int height) {
+		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2 - datalinkIdLabel.getOffsetHeight()) {
+			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2 - datalinkIdLabel.getOffsetHeight();
+		}
+		datalinkContent.getElement().getStyle().setPropertyPx("maxHeight", height);
+	}
+}

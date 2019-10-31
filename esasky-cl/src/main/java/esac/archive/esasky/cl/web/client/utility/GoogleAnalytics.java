@@ -32,6 +32,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Publication = "Publication";
     public static final String CAT_Welcome = "Welcome";
     public static final String CAT_Preview = "Preview";
+    public static final String CAT_Datalink = "Datalink";
     public static final String CAT_DataPanel_Pager = "DataPanel_Pager";
     public static final String CAT_Search = "Search";
     public static final String CAT_SAMP = "Samp";
@@ -115,6 +116,8 @@ public final class GoogleAnalytics {
     public static final String ACT_Search_SearchWrongCoords = "SearchWrongCoords";
     
     public static final String ACT_Preview_PostcardLoadFailed = "PostcardLoadFailed";
+    
+    public static final String ACT_Datalink_LoadFailed = "DatalinkLoadFailed";
     
     public static final String ACT_Publication_BoxQuery = "PublicationBoxQueryTotal";
     public static final String ACT_Publication_BoxQueryFailed = "PublicationBoxQueryFailed";

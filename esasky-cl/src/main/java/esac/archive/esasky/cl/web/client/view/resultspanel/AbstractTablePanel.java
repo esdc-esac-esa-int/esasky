@@ -619,6 +619,7 @@ public abstract class AbstractTablePanel extends Composite {
 					labelTmp = TextMgr.getInstance().getText(labelKey);
 				}
 				final String label = labelTmp;
+				final SafeHtml header = SafeHtmlUtils.fromSafeConstant("<div class=\"dataPanelHeaderColumnTitle\" style=\"word-break:break-word\">"+  label + "</div>");
 
 				final int columnNumber = table.getColumnCount();
 				final String filterButtonId = getEntity().getEsaSkyUniqId() + columnNumber;
@@ -660,7 +661,7 @@ public abstract class AbstractTablePanel extends Composite {
 						+ "\"" + ">" + "<img src=\"" + TableColumnHelper.resources.filterIcon().getSafeUri().asString()
 						+ "\" class=\"fillParent\" />" + "</div>";
 
-				SafeHtml header = SafeHtmlUtils.fromSafeConstant("<div style=\"position:relative\">" + filterButton + "<div class=\"dataPanelHeaderColumnTitle\" style=\"word-break:break-word\">"+  label + "</div></div>");
+				SafeHtml headerWithFilterButton = SafeHtmlUtils.fromSafeConstant("<div style=\"position:relative\">" + filterButton + header.asString() + "</div>");
 				
 				final ColumnType type = currentMTD.getType();
 
@@ -685,15 +686,39 @@ public abstract class AbstractTablePanel extends Composite {
 
 				}else if (ColumnType.DATALINK.equals(type)) {
 
-					StringColumn linkColumn = new StringColumn(label, filterButtonId, new RowsFilterObserver() {
+					final ImageColumn linkColumn = new ImageColumn(
+							TextMgr.getInstance().getText("abstractTablePanel_downloadRow"),
+							TableColumnHelper.resources.download().getSafeUri().asString());
+					table.addColumn(linkColumn, header);
+					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
+
+					linkColumn.setFieldUpdater(new FieldUpdater<TableRow, String>() {
 
 						@Override
-						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
-							calculateChangedRows(rowsToRemove, rowsToAdd);
+						public void update(final int index, final TableRow row, final String value) {
+							GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Datalink, getFullId(), row.getElementByLabel(label).getValue());
+							String title = null;
+							if(row.getElementByTapName("obs_id") != null) {
+								title = row.getElementByTapName("obs_id").getValue();
+							}
+							if(title == null || title.isEmpty()) {
+								title = "Datalink";
+							}
+							
+							DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(row.getElementByLabel(label).getValue(), title);
+							if(!table.getSelectionModel().isSelected(row)) {
+								final int idToSelect = lastHoveredRowId;
+								selectRow(idToSelect);
+								datalinkBox.registerCloseObserver(new ClosingObserver() {
+									
+									@Override
+									public void onClose() {
+										deselectRow(idToSelect);
+									}
+								});
+							}
 						}
 					});
-					table.getColumnSortList().push(linkColumn);
-					table.addColumn(linkColumn, header);
 
 				} else if (ColumnType.LINK.equals(type)) {
 
@@ -726,7 +751,19 @@ public abstract class AbstractTablePanel extends Composite {
 											TextMgr.getInstance().getText("abstractTablePanel_name"));
 								}
 
-								new PreviewDialogBox(url, searchParam.getValue());
+								PreviewDialogBox box = new PreviewDialogBox(url, searchParam.getValue());
+								if(!table.getSelectionModel().isSelected(row)) {
+									final int idToSelect = lastHoveredRowId;
+									selectRow(idToSelect);
+									box.registerCloseObserver(new ClosingObserver() {
+										
+										@Override
+										public void onClose() {
+											deselectRow(idToSelect);
+										}
+									});
+									
+								}
 								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Download_Preview, getFullId(),
 										searchParam.getValue());
 
@@ -756,7 +793,7 @@ public abstract class AbstractTablePanel extends Composite {
 						}
 					});
 					table.getColumnSortList().push(stringColumn);
-					table.addColumn(stringColumn, header);
+					table.addColumn(stringColumn, headerWithFilterButton);
 					
 				} else if (ColumnType.DATETIME.equals(type)) {
 					DateTimeColumn dateTimeColumn = new DateTimeColumn(label, filterButtonId,
@@ -768,7 +805,7 @@ public abstract class AbstractTablePanel extends Composite {
 								}
 							});
 					table.getColumnSortList().push(dateTimeColumn);
-					table.addColumn(dateTimeColumn, header);
+					table.addColumn(dateTimeColumn, headerWithFilterButton);
 
 				} else if (ColumnType.RA.equals(type)) {
 					RaColumn raColumn = new RaColumn(label, filterButtonId, new RowsFilterObserver() {
@@ -779,7 +816,7 @@ public abstract class AbstractTablePanel extends Composite {
 						}
 					});
 					table.getColumnSortList().push(raColumn);
-					table.addColumn(raColumn, header);
+					table.addColumn(raColumn, headerWithFilterButton);
 
 				} else if (ColumnType.DEC.equals(type)) {
 					DecColumn decColumn = new DecColumn(label, filterButtonId, new RowsFilterObserver() {
@@ -790,7 +827,7 @@ public abstract class AbstractTablePanel extends Composite {
 						}
 					});
 					table.getColumnSortList().push(decColumn);
-					table.addColumn(decColumn, header);
+					table.addColumn(decColumn, headerWithFilterButton);
 
 				} else if (ColumnType.DOUBLE.equals(type)) {
 					final DoubleColumn doubleColumn = new DoubleColumn(label, filterButtonId,
@@ -802,7 +839,7 @@ public abstract class AbstractTablePanel extends Composite {
 								}
 							});
 					table.getColumnSortList().push(doubleColumn);
-					table.addColumn(doubleColumn, header);
+					table.addColumn(doubleColumn, headerWithFilterButton);
 
 				} else if (ColumnType.INT.equals(type) || ColumnType.INTEGER.equals(type) || ColumnType.LONG.equals(type)) {
 					final IntegerColumn intColumn = new IntegerColumn(label, filterButtonId,
@@ -814,7 +851,7 @@ public abstract class AbstractTablePanel extends Composite {
 								}
 							});
 					table.getColumnSortList().push(intColumn);
-					table.addColumn(intColumn, header);
+					table.addColumn(intColumn, headerWithFilterButton);
 					
 				}else if (ColumnType.LINK2ARCHIVE.equals(type)) {
 					Link2ArchiveColumn link2ArchiveColumn = new Link2ArchiveColumn(label,
@@ -826,7 +863,7 @@ public abstract class AbstractTablePanel extends Composite {
 								}
 							});
 					table.getColumnSortList().push(link2ArchiveColumn);
-					table.addColumn(link2ArchiveColumn, header);
+					table.addColumn(link2ArchiveColumn, headerWithFilterButton);
 
 				} else if (ColumnType.LINKLIST.equals(type)) {
 					IDescriptor descriptor = getEntity().getDescriptor();
@@ -841,7 +878,7 @@ public abstract class AbstractTablePanel extends Composite {
 								}
 							});
 					table.getColumnSortList().push(linkListColumn);
-					table.addColumn(linkListColumn, header);
+					table.addColumn(linkListColumn, headerWithFilterButton);
 
 				}
 

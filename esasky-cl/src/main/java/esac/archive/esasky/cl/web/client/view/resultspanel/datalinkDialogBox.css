@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+
+.datalinkDialogBox{
+	display: block;
+	z-index: 10010;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.9);
+	border: 1px solid;
+	position: absolute;
+    box-sizing: border-box;
+}
+
+.datalinkContent{
+	overflow: auto !important;
+    pointer-events:auto;
+    padding-top: 0px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+}
+
+.datalinkCloseButton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+}
+
+.datalinkLoadingSpinner{
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	z-index: 10011;
+	user-drag: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+.datalinkIdLabel{
+	font-size: 15px;
+	cursor:all-scroll;
+	height: 30px;
+	text-align: center;
+    box-sizing: border-box;
+}
+
+.datalinkAnchor{
+	display: block;
+	margin-top: 8px;
+}
+
+.datalinkError{
+	color: red;
+}

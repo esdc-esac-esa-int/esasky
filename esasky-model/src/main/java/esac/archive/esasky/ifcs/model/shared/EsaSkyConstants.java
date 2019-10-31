@@ -255,6 +255,7 @@ public class EsaSkyConstants {
     public static final String OBS_TAP_DEC = "dec_deg";
     public static final String OBS_TAP_NAME = "observation_id";
 
+    public static final String DATALINK_URL_PARAM = "url";
     
     /*************************************************************************/
     /** INTERNATIONALIZATION VALUES **/
