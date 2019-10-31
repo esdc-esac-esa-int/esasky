@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.dom.client.Element;
@@ -15,9 +16,11 @@ import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 
 public class AutoHidingMovablePanel extends MovablePanel{
 	private boolean isShowing;
+	private List<ClosingObserver> observers = new LinkedList<ClosingObserver>();
 	
 	public AutoHidingMovablePanel(String googleEventCategoryForMoveOperation) {
 		super(googleEventCategoryForMoveOperation, true);
@@ -32,6 +35,9 @@ public class AutoHidingMovablePanel extends MovablePanel{
 	}
 
 	public void hide() {
+		for(ClosingObserver onClose : observers) {
+			onClose.onClose();
+		}
 		MainLayoutPanel.removeElementFromMainArea(this);
 		isShowing = false;
 		updateHandlers();
@@ -137,4 +143,11 @@ public class AutoHidingMovablePanel extends MovablePanel{
 		autoHidePartners.add(partner);
 	}
 	
+	public void registerCloseObserver(ClosingObserver onClose) {
+		observers.add(onClose);
+	}
+	
+	public void unregisterCloseObserver(ClosingObserver onClose) {
+		observers.remove(onClose);
+	}
 }
