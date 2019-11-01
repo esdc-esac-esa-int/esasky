@@ -1,4 +1,4 @@
-package esac.archive.esasky.cl.web.client.model;
+package esac.archive.esasky.cl.web.client.utility;
 
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;

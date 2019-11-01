@@ -183,7 +183,9 @@ public class ExtTapTreeMap extends TreeMap {
     private void update() {
     	String id = getIdOfSelectedLevel(series.getNativeSeries());
         series.update(this.series, isRendered());
-        zoomToPoint(series.getNativeSeries(), id);
+        if(!id.equals("")) {
+        	zoomToPoint(series.getNativeSeries(), id);
+        }
     }
     
 }

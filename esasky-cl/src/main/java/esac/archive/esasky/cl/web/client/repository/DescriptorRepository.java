@@ -48,7 +48,7 @@ import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
-import esac.archive.esasky.cl.web.client.model.ExtTapHelper;
+import esac.archive.esasky.cl.web.client.utility.ExtTapHelper;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
@@ -64,6 +64,7 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyColors;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
@@ -200,6 +201,7 @@ public class DescriptorRepository {
 					counts.add(0);
 					for(String facilityName : tapService.getCollections().keySet()) {
 						ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, facilityName);
+						collectionDesc.setHistoColor(EsaSkyColors.getNext());
 						descriptorsList.add(collectionDesc);
 						counts.add(0);
 						for(String dataproductType : tapService.getDataProductTypes()) {

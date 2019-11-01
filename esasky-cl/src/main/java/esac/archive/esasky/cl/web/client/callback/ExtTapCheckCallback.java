@@ -12,7 +12,7 @@ import com.google.gwt.http.client.Response;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
-import esac.archive.esasky.cl.web.client.model.ExtTapHelper;
+import esac.archive.esasky.cl.web.client.utility.ExtTapHelper;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
