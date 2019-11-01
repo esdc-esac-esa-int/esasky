@@ -26,6 +26,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private boolean isInBackend = true;
     private String treeMapType;
     private ExtTapDescriptor parent;
+    private String ingestedTable;
     
 
     @JsonInclude(Include.NON_NULL)
@@ -48,6 +49,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	isInBackend = false;
     	this.parent = parent;
     	tapUrl = parent.getTapUrl();
+    	ingestedTable = parent.getIngestedTable();
     	
     	//From BaseDescriptor
     	setGuiShortName(parent.getGuiShortName());
@@ -58,6 +60,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setTapTable(parent.getTapTable());
     	setArchiveURL(parent.getAdsAuthorUrl());
     	setArchiveProductURI(parent.getArchiveProductURI());
+    	setFovLimit(parent.getFovLimit());
     }
 
 	@Override
@@ -175,6 +178,14 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setParent(ExtTapDescriptor parent) {
 		this.parent = parent;
+	}
+
+	public String getIngestedTable() {
+		return ingestedTable;
+	}
+
+	public void setIngestedTable(String ingestedTable) {
+		this.ingestedTable = ingestedTable;
 	}
 	
 }
