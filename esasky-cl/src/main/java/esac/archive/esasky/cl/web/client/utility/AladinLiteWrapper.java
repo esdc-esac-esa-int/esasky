@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.utility;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -544,5 +545,15 @@ public class AladinLiteWrapper {
     	} catch(Exception e) {
     	}
     	return false;
+    }
+    
+    public ArrayList<Integer> getVisibleNpix(int norder) {
+    	String[] cells = aladinLite.getVisibleNpix(norder).toString().split(",");
+    	ArrayList<Integer> list = new ArrayList<Integer>();
+    	
+    	for(String cell : cells) {
+    		list.add(Integer.parseInt(cell));
+    	}
+        return list;
     }
 }

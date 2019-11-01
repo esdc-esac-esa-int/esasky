@@ -23,7 +23,9 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
+import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
@@ -37,6 +39,7 @@ import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
@@ -154,8 +157,37 @@ public class ExtTapEntity implements GeneralEntityInterface {
         return TAPExtTapService.getInstance().getMetadataAdql(getDescriptor());
     }
     
+    public boolean showMocData() {
+    	if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < descriptor.getFovLimit()) {
+    		return false;
+    	}
+    	return true;
+    }
+    
+	public class MocBuilder implements ShapeBuilder{
+
+		@Override
+		public Shape buildShape(int rowId, TapRowList rowList) {
+			PolygonShape shape = new PolygonShape();
+	    	shape.setStcs((String)getTAPDataByTAPName(rowList, rowId, descriptor.getTapSTCSColumn()));
+			shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
+			return shape;
+		}
+	}
+    
     @Override
     public void fetchData(final AbstractTablePanel tablePanel) {
+    	if(showMocData()) {
+    		defaultEntity.setShapeBuilder(new MocBuilder());
+    		getMocMetadata(tablePanel);
+    	} else {
+    		defaultEntity.setShapeBuilder(shapeBuilder);
+    		getData(tablePanel);
+    	}
+    }
+    
+    private void getData(final AbstractTablePanel tablePanel) {
+    	
     	Scheduler.get().scheduleFinally(new ScheduledCommand() {
         	
         	@Override
@@ -185,6 +217,34 @@ public class ExtTapEntity implements GeneralEntityInterface {
         		}
         	}
         });
+    }
+    
+    private void getMocMetadata(final AbstractTablePanel tablePanel) {
+ 		final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
+
+         tablePanel.clearTable();
+         String adql = TAPExtTapService.getInstance().getMetadataAdql(getDescriptor(), true);
+         
+         String url = URL.encode(TAPUtils.getTAPQuery(adql, EsaSkyConstants.JSON));
+
+         Log.debug(debugPrefix + "Query [" + url + "]");
+         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+         try {
+             builder.sendRequest(null,
+                 new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new OnComplete() {
+                 	
+                 	@Override
+                 	public void onComplete() {
+                 		tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
+                 	}
+                 }));
+         } catch (RequestException e) {
+             Log.error(e.getMessage());
+             Log.error("[getMocMetadata] Error fetching JSON data from server");
+         }
+
+         tablePanel.setADQLQueryUrl("");
+        
     }
     
     public void setDescriptorMetaData() {

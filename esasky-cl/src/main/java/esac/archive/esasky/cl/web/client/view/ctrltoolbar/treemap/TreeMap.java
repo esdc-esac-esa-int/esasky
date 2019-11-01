@@ -52,7 +52,7 @@ public class TreeMap extends Chart {
     protected Series series;
     protected HashMap<String, PointInformation> allPoints = new HashMap<String, PointInformation>();
 
-    private GhostPoint ghostPoint;
+    protected GhostPoint ghostPoint;
     private boolean firstSelection = false;
 
     private boolean removePointsOnNextRender = false;
@@ -350,16 +350,11 @@ public class TreeMap extends Chart {
             String pointId = new String(foundPoint.getText());
             
             final PointInformation pointInfo = allPoints.get(foundPoint.getText());
+            
+            //Only way it seems to update the color
+            final Point newPoint = getNewPoint (pointId, descriptor, color, pointInfo, logCount(pointInfo.count));
+            foundPoint.update(newPoint);
 
-            PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
-                    descriptor.getMission(), descriptor.getCreditedInstitutions(), pointInfo.count, descriptor, context);
-            
-            removePoint(foundPoint, false);
-            
-            final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(pointInformation.count));
-   
-            series.addPoint(newPoint, true, false, false);
-            allPoints.put(pointId, pointInformation);
         }
     }
 
@@ -466,6 +461,13 @@ public class TreeMap extends Chart {
 		} catch (err) {
 		}
     }-*/;
+    
+    protected static native void zoomToPoint(JavaScriptObject series, JavaScriptObject point) /*-{
+		try {
+			series.drillToNode(point.drillId);
+		} catch (err) {
+		}
+	}-*/;
 
     protected static native String getIdOfSelectedLevel(JavaScriptObject series)/*-{
 		try {

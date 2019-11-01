@@ -95,7 +95,7 @@ public class MainPresenter {
         this.view = inputView;
         
         // Creates the descriptors repository
-        descriptorRepo = new DescriptorRepository(isInitialPositionDescribedInCoordinates);
+        descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
         entityRepo = new EntityRepository(descriptorRepo);
         
         initChildPresenters(coordinateFrameFromUrl);
@@ -218,9 +218,21 @@ public class MainPresenter {
              public void onSelection(TreeMapSelectionEvent event) {
             	 if(event.getContext() == EntityContext.EXT_TAP) {
             		PointInformation pointInformation = event.getPointInformation();
+            		
             		if(pointInformation.getType() == EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT) {
+            			
             			getRelatedMetadata(event.getDescriptor(), event.getContext());
+            			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_gettingData,
+            					pointInformation.longName);
+            			
             		}
+            		else{
+            			
+            			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_browsing,
+            					pointInformation.longName);
+            			
+            		}
+            		
             	 }else {
             		 getRelatedMetadata(event.getDescriptor(), event.getContext());
             	 }

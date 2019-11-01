@@ -71,7 +71,16 @@ public class MetadataCallback extends JsonRequestCallback {
 				entity.setMetadata(rowList);
 				
 				if(entity.getContext() == EntityContext.EXT_TAP) {
+					
 					((ExtTapEntity) entity).setDescriptorMetaData();
+					
+					if(((ExtTapEntity) entity).showMocData()){
+			
+						if(onComplete != null) {
+							onComplete.onComplete();
+						}
+						return;
+					}
 				}
 
 				List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList,

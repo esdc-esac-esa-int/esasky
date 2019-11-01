@@ -73,6 +73,7 @@ public class ExtTapTreeMap extends TreeMap {
             
             List<Integer> zeroCountList = new ArrayList<Integer>();
             
+            
             for (int i = 0; i < descriptors.size(); i ++) {
             	
             	cleanChildren((ExtTapDescriptor) descriptors.get(i));            	
@@ -80,6 +81,7 @@ public class ExtTapTreeMap extends TreeMap {
                     //Only add descriptors with non zero count
                 	final IDescriptor descriptor = descriptors.get(i);
             		addPoints(descriptor, counts.get(i), false);
+            		
                 } else {
                     //Store this index for later removing
                     zeroCountList.add(i);
@@ -112,7 +114,7 @@ public class ExtTapTreeMap extends TreeMap {
             if(point != null) {
             	pointId = point.getText();
             	if (count == 0) {
-            		removePoint(point, updateView);
+            		point.update(0, updateView);
             	} else {
             		point.update(logCount(count), updateView);
             	}
@@ -132,10 +134,6 @@ public class ExtTapTreeMap extends TreeMap {
                 
                 series.addPoint(newPoint, false, false, false);
                 allPointMap.put(descriptor.getGuiLongName(), newPoint);
-                
-                if (updateView) {
-                    update();
-                }
                 
         		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
 					@Override
@@ -184,7 +182,7 @@ public class ExtTapTreeMap extends TreeMap {
     
     private void update() {
     	String id = getIdOfSelectedLevel(series.getNativeSeries());
-        series.update(this.series,isRendered());
+        series.update(this.series, isRendered());
         zoomToPoint(series.getNativeSeries(), id);
     }
     

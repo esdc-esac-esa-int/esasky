@@ -44,6 +44,7 @@ public final class GoogleAnalytics {
     public static final String CAT_JavaScriptAPI = "JavaScriptAPI";
     public static final String CAT_Slider = "Slider";
     public static final String CAT_RequestError = "RequestError";
+    public static final String CAT_ExternalTaps = "ExternalTaps";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
@@ -186,6 +187,10 @@ public final class GoogleAnalytics {
     public static final String ACT_Pyesasky_getNumberOfSkyRows = "getNumberOfSkyRows";
     public static final String ACT_Pyesasky_setHipsSliderValue = "setHipsSliderValue";
     
+    public static final String ACT_ExtTap_missingCollection = "missingCollection";
+    public static final String ACT_ExtTap_gettingData = "gettingData";
+    public static final String ACT_ExtTap_browsing = "browsing";
+    public static final String ACT_ExtTap_count = "count";
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{

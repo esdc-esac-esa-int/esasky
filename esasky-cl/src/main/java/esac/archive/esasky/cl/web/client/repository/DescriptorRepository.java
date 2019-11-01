@@ -48,6 +48,7 @@ import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
+import esac.archive.esasky.cl.web.client.model.ExtTapHelper;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
@@ -129,12 +130,26 @@ public class DescriptorRepository {
 
 	private ICountRequestHandler countRequestHandler;
 	
+	private static DescriptorRepository _instance; 
+	
 	private LinkedList<PublicationDescriptorLoadObserver> publicationDescriptorLoadObservers = new LinkedList<PublicationDescriptorLoadObserver>();
 	public interface PublicationDescriptorLoadObserver{
 		void onLoad();
 	}
 
-	public DescriptorRepository(boolean isInitialPositionDescribedInCoordinates) {
+	public static DescriptorRepository init(boolean isInitialPositionDescribedInCoordinates) {
+		_instance = new DescriptorRepository(isInitialPositionDescribedInCoordinates);
+		return _instance;
+	}
+	
+	public static DescriptorRepository getInstance() {
+		if (_instance == null) {
+            throw new AssertionError("You have to call init first");
+        }
+        return _instance;
+	}
+	
+	private DescriptorRepository(boolean isInitialPositionDescribedInCoordinates) {
 		this.isInitialPositionDescribedInCoordinates = isInitialPositionDescribedInCoordinates;
 	}
 
@@ -176,9 +191,35 @@ public class DescriptorRepository {
 				ExternalTapDescriptorListMapper mapper = GWT.create(ExternalTapDescriptorListMapper.class);
 				extTapDescriptors = new DescriptorListAdapter<ExtTapDescriptor>(mapper.read(responseText), countObserver);
 				registerExtTapObserver();
-
+				
+				List<IDescriptor> descriptorsList = new LinkedList<IDescriptor>();
+				List<Integer> counts = new LinkedList<Integer>();
+				
+				for(ExtTapDescriptor tapService : extTapDescriptors.getDescriptors()) {
+					descriptorsList.add(tapService);
+					counts.add(0);
+					for(String facilityName : tapService.getCollections().keySet()) {
+						ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, facilityName);
+						descriptorsList.add(collectionDesc);
+						counts.add(0);
+						for(String dataproductType : tapService.getDataProductTypes()) {
+							ExtTapDescriptor dataDesc = ExtTapHelper.createDataproductDescriptor(collectionDesc, dataproductType);
+							descriptorsList.add(dataDesc);
+							counts.add(0);
+						}
+					}
+				}
+				
+				CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorsList, counts));
+				
+				for(IDescriptor descriptor : descriptorsList) {
+					if(extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(descriptor.getMission()) == null) {
+						extTapDescriptors.getDescriptors().add((ExtTapDescriptor) descriptor);
+					}
+				}
 				Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
 			}
+
 
 			@Override
 			public void onError(String errorCause) {
@@ -446,8 +487,14 @@ public class DescriptorRepository {
 	
 	public void updateCount4AllExtTaps() {
 		for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
-			if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
-				updateCount4ExtTap(descriptor);
+			if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+				if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
+					if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < descriptor.getFovLimit()) {
+						updateCount4ExtTap(descriptor);
+					}else {
+						updateMOCCount4ExtTap(descriptor);
+					}
+				}
 			}
 		}
 	}
@@ -461,7 +508,7 @@ public class DescriptorRepository {
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
 		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), descriptor);
 		
-		Log.debug("Query [" + url + "]");
+		Log.debug("[DescriptorRepository/updateCount4ExtTap()] Query [" + url + "]");
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
@@ -472,33 +519,27 @@ public class DescriptorRepository {
 		}
 	}
 	
-//	public void countSubCollections(ExtTapDescriptor descriptor) {
-//		int i = 0;
-//		for(String collection : descriptor.getCollections()) {
-//			if(i>1) {
-//				break;
-//			}
-//			ExtTapDescriptor collectionDescriptor = new ExtTapDescriptor();
-//			collectionDescriptor.copyParentValues(descriptor);
-//			collectionDescriptor.setMission(collection);
-//			collectionDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION);
-//			
-//			collectionDescriptor.setGuiShortName(collection);
-//			collectionDescriptor.setGuiLongName(collectionDescriptor.getGuiLongName() + "-" + collection);
-//			
-//			String whereADQL = collectionDescriptor.getWhereADQL();
-//			whereADQL += " AND " + EsaSkyConstants.OBSCORE_COLLECTION + " = \'" + collection + "\'";
-//			collectionDescriptor.setWhereADQL(whereADQL);
-//			
-//			collectionDescriptor.setSelectADQL("SELECT TOP 1 *");
-//			
-//			updateCount4ExtTap(collectionDescriptor);
-//			i++;
-//		}
-//		
-//		
-//	}
-
+	public void updateMOCCount4ExtTap(ExtTapDescriptor descriptor) {
+		final CountStatus cs = extTapDescriptors.getCountStatus();
+		if(!cs.containsDescriptor(descriptor)) {
+			cs.addDescriptor(descriptor);
+		}
+		
+		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor, true);
+		
+		String url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
+		
+		Log.debug("[DescriptorRepository/updateMOCCount4ExtTap()]  Query [" + url + "]");
+		
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs, countRequestHandler.getProgressIndicatorMessage()));
+		}catch (RequestException e) {
+			Log.error(e.getMessage());
+			Log.error("Error fetching JSON data from server");
+		}
+	}
+	
 	private void updateCount4Catalogs() {
 		final CountStatus cs = catDescriptors.getCountStatus();
 		for (CatalogDescriptor currCat : catDescriptors.getDescriptors()) {

@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.query;
 
+import java.util.ArrayList;
+
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -82,6 +84,21 @@ public class TAPExtTapService extends AbstractMetadataService {
         return constraint + shape + ")";
     }
     
+    private String npixSearch( int norder) {
+    	ArrayList<Integer> list = AladinLiteWrapper.getInstance().getVisibleNpix(norder);
+    	if(list.size()>0) {
+    		String constraint = "npix IN (";
+    		for(int npix : list) {
+    			constraint += "\'" + Integer.toString(npix) + "\',";
+    		}
+    		constraint = constraint.substring(0,constraint.length()-1) + ")";
+    		return constraint;
+    	}
+    	
+    	return null;
+    }
+
+    
     private String raDecCenterSearch(ExtTapDescriptor descriptor) {
         double minRa = 999.0;
         double maxRa = -999.0;
@@ -115,6 +132,27 @@ public class TAPExtTapService extends AbstractMetadataService {
         return adql;
     }
     
+    public String getMetadataAdql(IDescriptor descriptorInput, boolean MOC) {
+    	if(!MOC) {
+    		return getMetadataAdql(descriptorInput);
+    		
+    	}else {
+            ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+            String adql = "SELECT " + descriptor.getTapSTCSColumn() + " ";
+        	
+        	adql += " from " + descriptor.getIngestedTable();
+//        	+ " WHERE ";
+//            adql += npixSearch(3);
+            
+        	if(descriptor.getWhereADQL() != null) {
+        		adql += " WHERE " + descriptor.getWhereADQL();
+        	}
+        	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
+        	
+        	return adql;
+    	}
+    }
+    
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
         String selectADQL = "SELECT TOP 2000 * ";
@@ -126,6 +164,26 @@ public class TAPExtTapService extends AbstractMetadataService {
         }else {
         	return getAdqlNewService(descriptor);
         }
+    }
+    
+    public String getCountAdql(IDescriptor descriptorInput, boolean MOC) {
+    	if(!MOC) {
+    		return getCountAdql(descriptorInput);
+    		
+    	}else {
+            ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+            String adql = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
+        	
+        	adql += " from " + descriptor.getIngestedTable() + " WHERE ";
+            adql += npixSearch(3);
+            
+        	if(descriptor.getWhereADQL() != null) {
+        		adql += " AND " + descriptor.getWhereADQL();
+        	}
+        	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
+        	
+        	return adql;
+    	}
     }
     
     public String getCountAdql(IDescriptor descriptorInput) {

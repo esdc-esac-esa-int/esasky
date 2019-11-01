@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.callback;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,10 +12,14 @@ import com.google.gwt.http.client.Response;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
+import esac.archive.esasky.cl.web.client.model.ExtTapHelper;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -37,54 +40,6 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		this.descriptor = descriptor;
 	}
 	
-	private ExtTapDescriptor createTypeDescriptor(ExtTapDescriptor parent, String typeName) {
-		ExtTapDescriptor typeDescriptor = new ExtTapDescriptor();
-		typeDescriptor.copyParentValues(parent);
-		typeDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT);
-
-		typeDescriptor.setGuiShortName(typeName);
-		typeDescriptor.setGuiLongName(typeDescriptor.getGuiLongName() + "-" + typeName);
-		
-		typeDescriptor.setMission(typeDescriptor.getMission() + "-" + typeName);
-		
-		String whereADQL = typeDescriptor.getWhereADQL();
-		whereADQL += " AND " + EsaSkyConstants.OBSCORE_DATAPRODUCT + " = \'" + typeName + "\'";
-		typeDescriptor.setWhereADQL(whereADQL);
-		
-		typeDescriptor.setSelectADQL("SELECT TOP 2000 *");
-		
-		return typeDescriptor;
-	}
-	
-	private ExtTapDescriptor createCollectionDescriptor(String facilityName) {
-		ExtTapDescriptor collectionDescriptor = new ExtTapDescriptor();
-		collectionDescriptor.copyParentValues((ExtTapDescriptor) descriptor);
-		collectionDescriptor.setMission(facilityName);
-		collectionDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION);
-		
-		collectionDescriptor.setGuiShortName(facilityName);
-		collectionDescriptor.setGuiLongName(collectionDescriptor.getGuiLongName() + "-" + facilityName);
-		collectionDescriptor.setMission(collectionDescriptor.getMission() + "-" + facilityName);
-		
-		String whereADQL = collectionDescriptor.getWhereADQL();
-		if(whereADQL != null) {
-			whereADQL += " AND ";
-		}else {
-			whereADQL = "";
-		}
-		
-		whereADQL +=  EsaSkyConstants.OBSCORE_COLLECTION + " IN (";
-		for(String collectionName : descriptor.getCollections().get(facilityName)) {
-			whereADQL += "\'" + collectionName + "\', ";
-		}
-		//Remove last "," 
-		whereADQL = whereADQL.substring(0, whereADQL.length() - 2);
-		whereADQL += ")";
-		
-		collectionDescriptor.setWhereADQL(whereADQL);
-		return collectionDescriptor;
-	}
-	
 	@Override
 	protected void onSuccess(final Response response) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
@@ -97,6 +52,15 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor.getMission()) - timecall));
 		        	return;
 		        }
+			 
+			 	String logPrefix = "[ExtTapCheckCallback]";
+			 
+			 	double timeForReceiving = (double) (System.currentTimeMillis() - timecall)/1000.0;
+			 	Log.debug(logPrefix + descriptor.getGuiLongName() + " Time for response (s): "
+			 			+ Double.toString(timeForReceiving));
+			 	
+			 	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_count,
+			 			descriptor.getGuiLongName() + " Time for response (s): " + Double.toString(timeForReceiving));
 		        
 		        countStatus.setUpdateTime(descriptor.getMission(), timecall);
 				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
@@ -107,63 +71,83 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	
 		        countStatus.setCountDetails(descriptor.getMission(), totalCount, System.currentTimeMillis(),
 		        		skyViewPosition);
-		        Log.debug(this.getClass().getSimpleName() + " " + descriptor.getMission() + ": [" + totalCount
-		                + "] results found");
+		        
+		        Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getMission()
+		        	+ ": [" + totalCount + "] results found");
+		        
 		        countStatus.updateCount();
-	        	List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
-	        	descriptors.add(descriptor);
-	        	List<Integer> counts = new LinkedList<Integer>();
-	        	counts.add(countStatus.getCount(descriptor.getMission()));
-	        	
-	        	if(totalCount > 0) {
-	        		HashMap<String, ExtTapDescriptor> descMap = new HashMap<>();
-	        		LinkedList<String> productList = new LinkedList<String>();
-	        		
-	        		int collIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_COLLECTION);
-	        		int typeIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_DATAPRODUCT);
-	        		for(ArrayList<Object> row : rowList.getData()) {
-	        			String collection = (String) row.get(collIndex);
-	        			String productType = (String) row.get(typeIndex);
-	        			
-	        			if(descriptor.getDataProductTypes().contains(productType)) {
-	        				
-	        				boolean found = false;
-	        				String facilityName = "";
-	        				for(String key : descriptor.getCollections().keySet()) {
-	        					if(descriptor.getCollections().get(key).contains(collection)) {
-	        						found = true;
-	        						facilityName = key;
-	        						break;
-	        					}
-	        				}
-	        				
-	        				if(found) {
-	        					ExtTapDescriptor collectionDesc;
-	        					if(!descMap.containsKey(facilityName)) {
-	        						collectionDesc = createCollectionDescriptor(facilityName);
-	        						descMap.put(facilityName, collectionDesc);
-	        						descriptors.add(collectionDesc);
-	        						counts.add(1);
-	        					}else {
-	        						collectionDesc = descMap.get(facilityName);
-	        					}
-	        					
-	        					String combinedName = facilityName + "-" + productType;
-	        					if(!productList.contains(combinedName)) {
-	        						ExtTapDescriptor typeDesc = createTypeDescriptor(collectionDesc, productType);
-	        						descriptors.add(typeDesc);
-	        						counts.add(1);
-	        						productList.add(combinedName);
-	        					}
-	        				}else {
-	        					//TODO: GA Event
-	        				}
-	        			}
-	        		}
-	        	}
+		        
+		        List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
+		        List<Integer> counts = new LinkedList<Integer>();
+
+		        descriptors.add(descriptor);
+		        counts.add(totalCount);
+
+		        
+		        if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+		        	
+		        	if(totalCount > 0) {
+		        		DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();
+		        		
+		        		
+		        		int collIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_COLLECTION);
+		        		int typeIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_DATAPRODUCT);
+		        		for(ArrayList<Object> row : rowList.getData()) {
+		        			String collection = (String) row.get(collIndex);
+		        			String productType = (String) row.get(typeIndex);
+		        			
+		        			if(descriptor.getDataProductTypes().contains(productType)) {
+		        				
+		        				boolean found = false;
+		        				String facilityName = "";
+		        				for(String key : descriptor.getCollections().keySet()) {
+		        					if(descriptor.getCollections().get(key).contains(collection)) {
+		        						found = true;
+		        						facilityName = key;
+		        						break;
+		        					}
+		        				}
+		        				
+		        				if(found) {
+		        					ExtTapDescriptor collectionDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+		        							descriptor.getMission() + "-" + facilityName);
+		        					
+		        					if(collectionDesc == null) {
+		        						collectionDesc = ExtTapHelper.createCollectionDescriptor(descriptor, facilityName);
+		        						extTapDescriptors.getDescriptors().add(collectionDesc);
+		        					}
+		        					
+		        					if(!descriptors.contains(collectionDesc)) {
+		        						descriptors.add(collectionDesc);
+		        						counts.add(1);
+		        					}
+		        					
+		        					String combinedName = facilityName + "-" + productType;
+		        					ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+		        							descriptor.getMission() + "-" + combinedName);
+		        					
+		        					if(typeDesc == null) {
+		        						typeDesc = ExtTapHelper.createDataproductDescriptor(collectionDesc, productType);
+		        					}
+		        					
+		        					if(!descriptors.contains(typeDesc)) {
+		        						descriptors.add(typeDesc);
+		        						counts.add(1);
+		        					}
+		        					
+		        				}else {
+		        					String extra = descriptor.getCreditedInstitutions() + "-" + collection;
+		        					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
+		        							GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
+		        				}
+		        			}
+		        		}
+		        	}
+		        }
 	        	
 		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
 			}
 		});
 	}
+	
 }
