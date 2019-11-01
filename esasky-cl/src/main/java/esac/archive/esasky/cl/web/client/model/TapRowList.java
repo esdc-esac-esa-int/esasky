@@ -49,7 +49,7 @@ public class TapRowList {
         return null;
     }
     
-    private int getColumnIndex (String columnName) {
+    public int getColumnIndex (String columnName) {
         for (TapMetadata currentMd : metadata) {
             if (currentMd.getName().equals(columnName)) {
                 return  metadata.indexOf(currentMd);

@@ -73,7 +73,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 						for (String[] data : json.getData()) {
 							listOfDatalinkLinks.add(DatalinkLinks.parseDatalinkLinks(data, json.getMetadata()));
 						}
-						for (DatalinkLinks links : listOfDatalinkLinks) {
+						for (final DatalinkLinks links : listOfDatalinkLinks) {
 							if (!links.error_message.isEmpty()) {
 								Label label = new Label(links.error_message);
 								label.addStyleName("datalinkError");
