@@ -6,8 +6,10 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
+import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -53,12 +55,20 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 			@Override
 			public void update(final int index, final TableRow row,
 					final String value) {
+				TableElement fovElem =  row.getElementByTapName(EsaSkyConstants.OBSCORE_FOV);
+				TableElement regionElem =  row.getElementByTapName(EsaSkyConstants.OBSCORE_SREGION);
+				
+				double fov = AladinLiteWrapper.getInstance().getFovDeg();
+				if(fovElem != null && regionElem != null && !regionElem.getValue().startsWith("POSITION")) {
+					fov = Double.parseDouble(fovElem.getValue()) * 4;
+				}
+				
 				AladinLiteWrapper.getInstance().goToTarget(
 						row.getElementByTapName(entity.getDescriptor().getTapRaColumn())
 						.getValue(), 
 						row.getElementByTapName(entity.getDescriptor().getTapDecColumn())
 						.getValue(),
-						AladinLiteWrapper.getInstance().getFovDeg(), false,
+						fov, false,
 						AladinLiteWrapper.getInstance().getCooFrame());
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_Recenter, getFullId(), row.getElementByTapName(getDescriptor().getUniqueIdentifierField()).getValue());
 			}
