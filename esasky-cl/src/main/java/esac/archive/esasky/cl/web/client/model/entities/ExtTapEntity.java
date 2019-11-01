@@ -24,6 +24,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -170,7 +171,13 @@ public class ExtTapEntity implements GeneralEntityInterface {
         		
         		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         		try {
-        			builder.sendRequest(null, new MetadataCallback(tablePanel, adql, getDescriptor().getGuiShortName()));
+        			builder.sendRequest(null, 
+        					new MetadataCallback(tablePanel, 
+        							adql, 
+        							TextMgr.getInstance().getText("MetadataCallback_retrievingMissionData")
+        									.replace("$NAME$", getDescriptor().getGuiLongName())
+        							)
+        					);
         			
         		} catch (RequestException e) {
         			Log.error(e.getMessage());
