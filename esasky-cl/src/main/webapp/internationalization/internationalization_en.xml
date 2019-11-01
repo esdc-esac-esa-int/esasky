@@ -2683,5 +2683,8 @@
 		Resolving nearby targets
 	</text>
 	
+	<text key="datalinkDownload_loading">
+		Loading datalink
+	</text>
 	
 </Internationalization>

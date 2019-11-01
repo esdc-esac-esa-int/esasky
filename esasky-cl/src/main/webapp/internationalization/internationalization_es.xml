@@ -3246,6 +3246,9 @@
 		Buscando objetos cercanos
 	</text>
 
+	<text key="datalinkDownload_loading">
+		Cargando datalink
+	</text>
 
 </Internationalization>
 
