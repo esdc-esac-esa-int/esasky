@@ -579,7 +579,7 @@
 		Significancia
 	</text>
 	<text key="INTEGRAL_Exposure">
-		Exposici&#243;n (ksec)
+		Exposici&#243;n &lt;i&gt;(ksec)&lt;/i&gt;
 	</text>
 	<text key="observation_id">
 		ID Observaci&#243;n
@@ -805,28 +805,28 @@
 		Fecha
 	</text>
 	<text key="CHANDRA_flux_b">
-		Flujo ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_lower_flux_b">
-		Flujo Bajo ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo Bajo ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_upper_flux_b">
-		Flujo Alto ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo Alto ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_flux_w">
-		Flujo (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_lower_flux_w">
-		Flujo Bajo HCR (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo Bajo HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_upper_flux_w">
-		Flujo Alto HCR (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo Alto HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_snr">
 		Raz\u00F3n se&#241;al/ruido
@@ -2293,66 +2293,66 @@
 		(N&#250;mero de im&#225;genes)
 	</text>
 	<text key="INTEGRAL_flux20_40">
-		Flujo&lt;sub&gt;20-40 keV&lt;/sub&gt; (mCrab)
+		Flujo&lt;sub&gt;20-40 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;
 	</text>
 	<text key="INTEGRAL_flux40_100">
-		Flujo&lt;sub&gt;40-100 keV&lt;/sub&gt; (mCrab)
+		Flujo&lt;sub&gt;40-100 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;
 	</text>
 	<text key="3XMM_EPIC_ep_8_flux">
-		Flujo&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="3XMM_EPIC_ep_8_flux_err">
-		Error del flujo&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Error del flujo&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvw1_ab_flux">
-		Flujo UVW1&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo UVW1&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvw2_ab_flux">
-		Flujo UVW2&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo UVW2&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvm2_ab_flux">
-		Flujo UVM2&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo UVM2&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_u_ab_flux">
-		Flujo U&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo U&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_v_ab_flux">
-		Flujo V&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo V&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_b_ab_flux">
-		Flujo B&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo B&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b0">
-		Flujo (0.2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b0_err">
-		Error de flujo (0.2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Error de flujo (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b4">
-		Flujo (2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo (2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b4_err">
-		Error de flujo (2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Error de flujo (2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b5">
-		Flujo (0.2-2kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flujo (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b5_err">
-		Error de flujo (0.2-2kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Error de flujo (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="pm_ra">
 		Movimiento propio en
@@ -3038,25 +3038,25 @@
 		Nombre
 	</text>
 	<text key="RAStart">
-		RA inicial obj. (J2000)
+		RA inicial obj. &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DecStart">
-		Dec inicial obj. (J2000)
+		Dec inicial obj. &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="RAEnd">
-		RA final obj. (J2000)
+		RA final obj. &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DecEnd">
-		Dec final obj. (J2000)
+		Dec final obj. &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DeltaPosDeg">
-		Delta Pos. (grados)
+		Delta Pos. &lt;i&gt;(grados)&lt;/i&gt;
 	</text>
 	<text key="SSOVMag">
-		V obj. (Mag)
+		V obj. &lt;i&gt;(Mag)&lt;/i&gt;
 	</text>
 	<text key="SSODistanceAU">
-		Distancia obj. (UA)
+		Distancia obj. &lt;i&gt;(UA)&lt;/i&gt;
 	</text>
 	<text key="tableGroup_Observation">
 		Observaci&#243;n

@@ -1688,12 +1688,12 @@
 		Exposure (ksec)
 	</text>
 	<text key="3XMM_EPIC_ep_8_flux">
-		Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="3XMM_EPIC_ep_8_flux_err">
-		Flux error&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux error&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="observation_id">
 		Observation ID
@@ -1705,52 +1705,52 @@
 		Date observed
 	</text>
 	<text key="XMM_OM_uvw1_ab_flux">
-		UVW1 Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		UVW1 Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvw2_ab_flux">
-		UVW2 Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		UVW2 Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvm2_ab_flux">
-		UVM2 Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		UVM2 Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_u_ab_flux">
-		U Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		U Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_v_ab_flux">
-		V Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		V Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_b_ab_flux">
-		B Flux&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		B Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b0">
-		Flux (0.2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b0_err">
-		Flux error (0.2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux error (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b4">
-		Flux (2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux (2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b4_err">
-		Flux error (2-12kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux error (2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b5">
-		Flux (0.2-2kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b5_err">
-		Flux error (0.2-2kev)&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux error (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="pm_ra">
 		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
@@ -1855,10 +1855,10 @@
 		Cat. Reliability
 	</text>
 	<text key="Gaia_DR1_ra_error">
-		RA error (mas)
+		RA error &lt;i&gt;(mas)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR1_dec_error">
-		Dec error (mas)
+		Dec error &lt;i&gt;(mas)&lt;/i&gt;
 	</text>
 	<text key="PSZ_redshift">
 		Redshift
@@ -2032,28 +2032,28 @@
 		Date
 	</text>
 	<text key="CHANDRA_flux_b">
-		Flux ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_lower_flux_b">
-		Lower Flux ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Lower Flux ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_upper_flux_b">
-		Upper Flux ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Upper Flux ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_flux_w">
-		Flux (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Flux &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_lower_flux_w">
-		Lower Flux HCR (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Lower Flux HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_upper_flux_w">
-		Upper Flux HCR (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		Upper Flux HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_snr">
 		Signal to Noise Ratio
@@ -2492,25 +2492,25 @@
 		Name
 	</text>
 	<text key="RAStart">
-		RA Start (J2000)
+		RA Start &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DecStart">
-		Dec Start (J2000)
+		Dec Start &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="RAEnd">
-		RA End (J2000)
+		RA End &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DecEnd">
-		Dec End (J2000)
+		Dec End &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DeltaPosDeg">
-		Delta Pos. (Deg)
+		Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;
 	</text>
 	<text key="SSOVMag">
-		V. (Mag)
+		V. &lt;i&gt;(Mag)&lt;/i&gt;
 	</text>
 	<text key="SSODistanceAU">
-		Distance (AU)
+		Distance &lt;i&gt;(AU)&lt;/i&gt;
 	</text>
 	<text key="tableGroup_Observation">
 		Observation
