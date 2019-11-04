@@ -59,7 +59,7 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 				TableElement regionElem =  row.getElementByTapName(EsaSkyConstants.OBSCORE_SREGION);
 				
 				double fov = AladinLiteWrapper.getInstance().getFovDeg();
-				if(fovElem != null && regionElem != null && !regionElem.getValue().startsWith("POSITION")) {
+				if(fovElem != null && fovElem.getValue() != ""  && regionElem != null && !regionElem.getValue().startsWith("POSITION")) {
 					fov = Double.parseDouble(fovElem.getValue()) * 4;
 				}
 				
