@@ -3161,15 +3161,6 @@
 		menor
 	</text>
 	<text
-		key="publicationPanel_truncationValuePublicationNumberOfPublications">
-		n&#250;mero de publicaciones
-	</text>
-	<text key="publicationPanel_getTheFirst">
-		Resultado limitado a las primeras
-	</text>
-	<text key="publicationPanel_sourcesBasedOn">
-		fuentes con el
-	</text>
 	<text key="publicationPanel_resetTooltip">
 		Restablecer l&#237;mite en el n&#250;mero de fuentes
 	</text>

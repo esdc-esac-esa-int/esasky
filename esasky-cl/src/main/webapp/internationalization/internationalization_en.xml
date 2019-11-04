@@ -2581,9 +2581,6 @@
 	<text key="publicationPanel_truncationValuePublicationLeast">
 		lowest
 	</text>
-	<text key="publicationPanel_truncationValuePublicationNumberOfPublications">
-		number of publications
-	</text>
 	<text key="publicationPanel_updating">
 		Updating...
 	</text>
@@ -2601,12 +2598,6 @@
 	</text>
 	<text key="publicationPanel_advanced">
 		Settings
-	</text>
-	<text key="publicationPanel_getTheFirst">
-		Result limited to the first
-	</text>
-	<text key="publicationPanel_sourcesBasedOn">
-		sources with the 
 	</text>
 	<text key="publicationPanel_resetTooltip">
 		Reset source limit

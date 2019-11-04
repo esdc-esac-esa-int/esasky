@@ -2202,9 +2202,6 @@
 	<text key="publicationPanel_truncationValuePublicationLeast">
 		最低
 	</text>
-	<text key="publicationPanel_truncationValuePublicationNumberOfPublications">
-		文献数量
-	</text>
 	<text key="publicationPanel_updating">
 		更新中……
 	</text>
@@ -2222,12 +2219,6 @@
 	</text>
 	<text key="publicationPanel_advanced">
 		设置
-	</text>
-	<text key="publicationPanel_getTheFirst">
-		仅限于第一条的结果
-	</text>
-	<text key="publicationPanel_sourcesBasedOn">
-		源相关的文献：
 	</text>
 	<text key="publicationPanel_resetTooltip">
 		重置源限制

@@ -155,7 +155,37 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		publicationPanel.add(advancedOptionsToggler);
 		publicationPanel.add(advancedOptions);
 		
-		Label gettingTheFirstLabel = new Label(TextMgr.getInstance().getText("publicationPanel_getTheFirst"));
+		mostOrLeastSwitch = new EsaSkySwitch("publicationPanel__mostOrLeastSwitch", false,
+				TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost"), 
+				TextMgr.getInstance().getText("publicationPanel_truncationValueTooltip"), TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"));
+		mostOrLeastSwitch.addStyleName("publicationPanel__mostOrLeastContainer");
+		FlowPanel sourceLimitContainer = new FlowPanel();
+		String sourceLimitDescription = TextMgr.getInstance().getText("publicationSourceLimitDescription");
+		Label gettingTheFirstLabel;
+		Label sourcesBasedOn;
+		Label numberOfPublications;
+		if(sourceLimitDescription.indexOf("$sourceLimit$") < sourceLimitDescription.indexOf("$mostOrLeast$")) {
+			gettingTheFirstLabel = new Label(sourceLimitDescription.split("\\$sourceLimit\\$")[0]);
+			sourcesBasedOn = new Label(sourceLimitDescription.split("\\$sourceLimit\\$")[1].split("\\$mostOrLeast\\$")[0]);
+			numberOfPublications = new Label(sourceLimitDescription.split("\\$mostOrLeast\\$")[1]);
+			
+			advancedOptions.add(gettingTheFirstLabel);
+			advancedOptions.add(sourceLimitContainer);
+			advancedOptions.add(sourcesBasedOn);
+			advancedOptions.add(mostOrLeastSwitch);
+		} else {
+			gettingTheFirstLabel = new Label(sourceLimitDescription.split("\\$mostOrLeast\\$")[0]);
+			sourcesBasedOn = new Label(sourceLimitDescription.split("\\$mostOrLeast\\$")[1].split("\\$sourceLimit\\$")[0]);
+			numberOfPublications = new Label(sourceLimitDescription.split("\\$sourceLimit\\$")[1]);
+			
+			advancedOptions.add(gettingTheFirstLabel);
+			advancedOptions.add(mostOrLeastSwitch);
+			advancedOptions.add(sourcesBasedOn);
+			advancedOptions.add(sourceLimitContainer);
+		}
+		advancedOptions.add(numberOfPublications);
+		advancedOptions.add(warningLabel);
+		
 		gettingTheFirstLabel.addStyleName("publicationPanel__getTheFirstLabel");
 		
 		numberBox = new EsaSkyNumberBox(NumberFormat.getFormat("#0"), 1);
@@ -167,33 +197,21 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		resetButton.addStyleName("publicationPanel__resetSourceLimit");
 		resetButton.setTitle(TextMgr.getInstance().getText("publicationPanel_resetTooltip"));
 		
-		FlowPanel sourceLimitContainer = new FlowPanel();
 		sourceLimitContainer.addStyleName("publicationPanel__sourceLimitContainer");
 		sourceLimitContainer.add(numberBox);
 		sourceLimitContainer.add(slider);
 		sourceLimitContainer.add(resetButton);
 		
-		Label sourcesBasedOn = new Label(TextMgr.getInstance().getText("publicationPanel_sourcesBasedOn"));
 		sourcesBasedOn.addStyleName("publicationPanel__sourcesBasedOn");
 		
-		mostOrLeastSwitch = new EsaSkySwitch("publicationPanel__mostOrLeastSwitch", false,
-				TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost"), 
-				TextMgr.getInstance().getText("publicationPanel_truncationValueTooltip"), TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"));
-		mostOrLeastSwitch.addStyleName("publicationPanel__mostOrLeastContainer");
+
 		
-		Label numberOfPublications = new Label(TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationNumberOfPublications"));
 		numberOfPublications.addStyleName("publicationPanel__numberOfPublications");
 		warningLabel.setText(TextMgr.getInstance().getText("publicationPanel_sourceLimitWarning"));
 		warningLabel.addStyleName("publicationPanel__warningLabel");
 		warningLabel.setVisible(false);
 		
 		
-		advancedOptions.add(gettingTheFirstLabel);
-		advancedOptions.add(sourceLimitContainer);
-		advancedOptions.add(sourcesBasedOn);
-		advancedOptions.add(mostOrLeastSwitch);
-		advancedOptions.add(numberOfPublications);
-		advancedOptions.add(warningLabel);
 
 		this.add(publicationPanel);
 	}
