@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Internationalization>
 <Internationalization langCode="zh" label="中文">
 	<text key="header_learnMore">
@@ -2197,10 +2197,10 @@
 		警告：结果上限设置过高会降低性能
 	</text>
 	<text key="publicationPanel_truncationValuePublicationMost">
-		最高
+		最多
 	</text>
 	<text key="publicationPanel_truncationValuePublicationLeast">
-		最低
+		最少
 	</text>
 	<text key="publicationPanel_updating">
 		更新中……
@@ -2273,7 +2273,7 @@
 		基于作者
 	</text>
 	<text key="PublicationsByAuthorCallback_helpTitle">
-		文献作者：
+		与该作者相关的文献
 	</text>
 	<text key="PublicationsByAuthorCallback_helpDescription">
 		在SIMBAD数据库中与这个作者名称关联的文献以及与文献关联的源
