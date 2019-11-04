@@ -529,7 +529,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	        	final Label showMoreAuthorsLabel = new Label();
 	        	showMoreAuthorsLabel.getElement().setId("searchPanel__showMoreLabel");
 	        	showMoreAuthorsLabel.setText(TextMgr.getInstance().getText("searchPanel_showMoreAuthors"));
-	        	showMoreAuthorsLabel.setTitle(TextMgr.getInstance().getText("searchPanel_showMoreTooltip").replace("$COUNT$", "100"));
+	        	showMoreAuthorsLabel.setTitle(TextMgr.getInstance().getText("searchPanel_showMoreAuthorsTooltip").replace("$COUNT$", "100"));
 	        	showMoreAuthorsLabel.addClickHandler(new ClickHandler() {
 	        		
 	        		@Override

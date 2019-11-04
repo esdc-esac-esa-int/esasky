@@ -2597,7 +2597,7 @@
 		[Truncated]
 	</text>
 	<text key="publicationPanel_statusTextFailed">
-		Failed to retreive publications
+		Failed to retrieve publications
 	</text>
 	<text key="publicationPanel_advanced">
 		Settings
@@ -2629,13 +2629,13 @@
 	<text key="searchPanel_showMoreAuthors">
 		Show more authors
 	</text>
-	<text key="searchPanel_showMoreTooltip">
+	<text key="searchPanel_showMoreAuthorsTooltip">
 		Show the first $COUNT$ author matches
 	</text>
 	<text key="searchPanel_showMoreSso">
 		Show more SSOs
 	</text>
-	<text key="searchPanel_showMoreTooltip">
+	<text key="searchPanel_showMoreSsoTooltip">
 		Show all the sso matches
 	</text>
 	<text key="searchPanel_author">
