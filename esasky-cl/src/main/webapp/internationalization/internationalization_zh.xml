@@ -1314,10 +1314,10 @@
 		显示观测次数最多的$sourceLimit$源
 	</text>
 	<text key="INTEGRAL_flux20_40">
-		流量&lt;sub&gt;20-40 keV&lt;/sub&gt; (mCrab)
+		流量&lt;sub&gt;20-40 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;
 	</text>
 	<text key="INTEGRAL_flux40_100">
-		流量&lt;sub&gt;40-100 keV&lt;/sub&gt; (mCrab)
+		流量&lt;sub&gt;40-100 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;
 	</text>
 	<text key="INTEGRAL_Type">
 		类型	
@@ -1326,15 +1326,15 @@
 		显著性
 	</text>
 	<text key="INTEGRAL_Exposure">
-		曝光时间（ksec）
+		曝光时间&lt;i&gt;（ksec）&lt;/i&gt;
 	</text>
 	<text key="3XMM_EPIC_ep_8_flux">
-		流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="3XMM_EPIC_ep_8_flux_err">
-		流量误差&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量误差&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="observation_id">
 		观测ID
@@ -1346,52 +1346,52 @@
 		观测日期
 	</text>
 	<text key="XMM_OM_uvw1_ab_flux">
-		UVW1流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		UVW1流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvw2_ab_flux">
-		UVW2流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		UVW2流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_uvm2_ab_flux">
-		UVM2流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		UVM2流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_u_ab_flux">
-		U流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		U流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_v_ab_flux">
-		V流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		V流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_OM_b_ab_flux">
-		B流量&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		B流量&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b0">
-		流量（0.2-12kev）&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量（0.2-12kev）&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b0_err">
-		流量误差（0.2-12kev）&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量误差（0.2-12kev）&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b4">
-		流量（2-12kev）&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量（2-12kev）&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b4_err">
-		流量误差（2-12kev）&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量误差（2-12kev）&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b5">
-		流量（0.2-2kev）&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量（0.2-2kev）&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_Slew_flux_b5_err">
-		流量误差（0.2-2kev）&lt;br&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量误差（0.2-2kev）&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="pm_ra">
 		赤经自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
@@ -1445,7 +1445,7 @@
 		流量 &lt;i&gt;(mJy)&lt;/i&gt;
 	</text>
 	<text key="Herschel_HPPSC_rms">
-		&amp;	Delta; 流量 &lt;i&gt;(mJy)&lt;/i&gt;
+		&amp;Delta; 流量 &lt;i&gt;(mJy)&lt;/i&gt;
 	</text>
 	<text key="Herschel_HPPSC_elong_flag">
 		距角标志
@@ -1496,34 +1496,34 @@
 		信噪比
 	</text>
 	<text key="PGCC_gau_major_axis">
-		主半峰全宽（角分）&lt;i&gt;(arcmin)&lt;/i&gt;
+		主半峰全宽 &lt;i&gt;(角分)&lt;/i&gt;
 	</text>
 	<text key="PGCC_gau_major_gau_major_axis_sig">
-		主半峰全宽误差 （角分）&lt;i&gt;(arcmin)&lt;/i&gt;
+		主半峰全宽误差 &lt;i&gt;(角分)&lt;/i&gt;
 	</text>
 	<text key="PGCC_gau_minor_axis">
-		副半峰全宽（角分） &lt;i&gt;(arcmin)&lt;/i&gt;
+		副半峰全宽 &lt;i&gt;(角分)&lt;/i&gt;
 	</text>
 	<text key="PGCC_gau_minor_axis_sig">
-		副半峰全宽误差（角分） &lt;i&gt;(arcmin)&lt;/i&gt;
+		副半峰全宽误差 &lt;i&gt;(角分)&lt;/i&gt;
 	</text>
 	<text key="PCCS2E_frequency">
-		频率(GHz) &lt;i&gt;(GHz)&lt;/i&gt;
+		频率 &lt;i&gt;(GHz)&lt;/i&gt;
 	</text>
 	<text key="PCCS2E_detflux">
-		流量密度(mJy) &lt;i&gt;(mJy)&lt;/i&gt;
+		流量密度 &lt;i&gt;(mJy)&lt;/i&gt;
 	</text>
 	<text key="PCCS2E_detflux_err">
-		流量密度误差(mJy) &lt;i&gt;(mJy)&lt;/i&gt;
+		流量密度误差 &lt;i&gt;(mJy)&lt;/i&gt;
 	</text>
 	<text key="PCCS2E_highest_reliability_cat">
 		星表可靠性
 	</text>
 	<text key="Gaia_DR1_ra_error">
-		赤经误差（mas）
+		赤经误差&lt;i&gt;(mas）&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR1_dec_error">
-		赤纬误差（mas）
+		赤纬误差&lt;i&gt;(mas）&lt;/i&gt;
 	</text>
 	<text key="PSZ_redshift">
 		Redshift软件
@@ -1558,7 +1558,7 @@
 		提案ID
 	</text>
 	<text key="Chandra_StartTime">
-		开始时间（MJD） &lt;i&gt;(MJD)&lt;/i&gt;
+		开始时间 &lt;i&gt;(MJD)&lt;/i&gt;
 	</text>
 	<text key="filter">
 		滤光片
@@ -1567,7 +1567,7 @@
 		收藏
 	</text>
 	<text key="Herschel_Filter">
-		滤光片（微米） &lt;i&gt;(microns)&lt;/i&gt;
+		滤光片 &lt;i&gt;(微米)&lt;/i&gt;
 	</text>
 	<text key="XMM_NEWTON_Wavelength">
 		波长
@@ -1585,7 +1585,7 @@
 		光学元件
 	</text>
 	<text key="centralWavelength">
-		中心波长（纳米） &lt;i&gt;(nm)&lt;/i&gt;
+		中心波长 &lt;i&gt;(纳米)&lt;/i&gt;
 	</text>
 	<text key="ISO_ObservationIDAux">
 		观测ID辅助
@@ -1617,34 +1617,34 @@
 		IAU名称
 	</text>
 	<text key="RA_J1991">
-		赤经(~J1991) &lt;i&gt;(&#126;J1991)&lt;/i&gt;
+		赤经 &lt;i&gt;(&#126;J1991)&lt;/i&gt;
 	</text>
 	<text key="DEC_J1991">
-		赤纬(~J1991) &lt;i&gt;(&#126;J1991)&lt;/i&gt;
+		赤纬 &lt;i&gt;(&#126;J1991)&lt;/i&gt;
 	</text>
 	<text key="RA_J1991.25">
-		赤经(J1991.25) &lt;i&gt;(J1991.25)&lt;/i&gt;
+		赤经 &lt;i&gt;(J1991.25)&lt;/i&gt;
 	</text>
 	<text key="DEC_J1991.25">
-		赤纬(J1991.25) &lt;i&gt;(J1991.25)&lt;/i&gt;
+		赤纬 &lt;i&gt;(J1991.25)&lt;/i&gt;
 	</text>
 	<text key="RA_J2000">
-		赤经(J2000) &lt;i&gt;(J2000)&lt;/i&gt;
+		赤经 &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DEC_J2000">
-		赤纬(J2000) &lt;i&gt;(J2000)&lt;/i&gt;
+		赤纬 &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="RA_J2015">
-		赤经(J2015.0） &lt;i&gt;(J2015.0)&lt;/i&gt;
+		赤经 &lt;i&gt;(J2015.0)&lt;/i&gt;
 	</text>
 	<text key="DEC_J2015">
-		赤纬(J2015.0） &lt;i&gt;(J2015.0)&lt;/i&gt;
+		赤纬 &lt;i&gt;(J2015.0)&lt;/i&gt;
 	</text>
 	<text key="RA_J2015.5">
-		赤经(J2015.5） &lt;i&gt;(J2015.5)&lt;/i&gt;
+		赤经 &lt;i&gt;(J2015.5)&lt;/i&gt;
 	</text>
 	<text key="DEC_J2015.5">
-		赤纬(J2015.5） &lt;i&gt;(J2015.5)&lt;/i&gt;
+		赤纬 &lt;i&gt;(J2015.5)&lt;/i&gt;
 	</text>
 	<text key="SoftX-ray">
 		软X射线
@@ -1713,28 +1713,28 @@
 		日期
 	</text>
 	<text key="CHANDRA_flux_b">
-		流量ACIS(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量ACIS&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_lower_flux_b">
-		低流量ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		低流量ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_upper_flux_b">
-		高流量ACIS (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		高流量ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_flux_w">
-		流量 (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		流量 &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_lower_flux_w">
-		低流量HCR (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		低流量HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_upper_flux_w">
-		高流量HCR (erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)
+		高流量HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="CHANDRA_snr">
 		信噪比
@@ -2082,25 +2082,25 @@
 		名称
 	</text>
 	<text key="RAStart">
-		初始赤经（J2000）
+		初始赤经 &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DecStart">
-		初始赤纬(J2000)
+		初始赤纬 &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="RAEnd">
-		终止赤经（J2000）
+		终止赤经 &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DecEnd">
-		终止赤纬（J2000）
+		终止赤纬 &lt;i&gt;(J2000)&lt;/i&gt;
 	</text>
 	<text key="DeltaPosDeg">
-		位置范围 (角度)
+		位置范围 &lt;i&gt;(角度)&lt;/i&gt;
 	</text>
 	<text key="SSOVMag">
-		V（星等）
+		V  &lt;i&gt;（星等）&lt;/i&gt;
 	</text>
 	<text key="SSODistanceAU">
-		距离（天文单位）
+		距离  &lt;i&gt;（天文单位）&lt;/i&gt;
 	</text>
 	<text key="tableGroup_Observation">
 		观测结果
