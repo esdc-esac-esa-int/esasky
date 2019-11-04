@@ -20,6 +20,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private ArrayList<String> dataProductTypes;
     private String whereADQL;
     private String selectADQL;
+    private String orderByADQL;
     private String responseFormat;
     private String searchFunction;
     private Map<String, ArrayList<String>> collections;
@@ -186,6 +187,14 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setIngestedTable(String ingestedTable) {
 		this.ingestedTable = ingestedTable;
+	}
+
+	public String getOrderByADQL() {
+		return orderByADQL;
+	}
+
+	public void setOrderByADQL(String orderByADQL) {
+		this.orderByADQL = orderByADQL;
 	}
 	
 }

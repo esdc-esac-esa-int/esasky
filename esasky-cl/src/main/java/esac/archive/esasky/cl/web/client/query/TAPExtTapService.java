@@ -34,12 +34,20 @@ public class TAPExtTapService extends AbstractMetadataService {
     	
     	if(descriptor.getSearchFunction().equals("polygonIntersect")) {
     		adql += polygonIntersectSearch(descriptor);
-    	}else {
-    		adql += raDecCenterSearch(descriptor);
-    	}
+    		
+    	}else if(descriptor.getSearchFunction().equals("cointainsPoint")){
+    		adql += cointainsPointSearch(descriptor);
+    		
+	    }else {
+	    	adql += raDecCenterSearch(descriptor);
+	    }
     	
     	if(descriptor.getWhereADQL() != null) {
     		adql += " AND " + descriptor.getWhereADQL();
+    	}
+    	
+    	if(descriptor.getOrderByADQL() != null) {
+    		adql += " " + descriptor.getOrderByADQL();
     	}
     	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
     	
@@ -52,9 +60,8 @@ public class TAPExtTapService extends AbstractMetadataService {
          return getAdql(descriptor, adql);
     }
     
-    private String polygonIntersectSearch(ExtTapDescriptor descriptor) {
-    	String constraint = "1=INTERSECTS(" + descriptor.getTapSTCSColumn() + ",";
-        String shape = null;
+    private String screenPolygon(ExtTapDescriptor descriptor) {
+    	String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
@@ -81,7 +88,12 @@ public class TAPExtTapService extends AbstractMetadataService {
             }
 
         }
-        return constraint + shape + ")";
+        return shape + ")";
+    }
+    
+    private String polygonIntersectSearch(ExtTapDescriptor descriptor) {
+    	String constraint = "1=INTERSECTS(" + descriptor.getTapSTCSColumn() + ",";
+    	return constraint + screenPolygon(descriptor);
     }
     
     private String npixSearch( int norder) {
@@ -98,6 +110,11 @@ public class TAPExtTapService extends AbstractMetadataService {
     	return null;
     }
 
+    
+    private String cointainsPointSearch(ExtTapDescriptor descriptor) {
+    	String constraint = "1=CONTAINS( POINT(\'ICRS\', " + descriptor.getTapRaColumn() + ", " + descriptor.getTapDecColumn() + "), ";
+    	return constraint + screenPolygon(descriptor);
+    }
     
     private String raDecCenterSearch(ExtTapDescriptor descriptor) {
         double minRa = 999.0;

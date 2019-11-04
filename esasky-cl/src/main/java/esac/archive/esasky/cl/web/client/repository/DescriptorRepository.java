@@ -197,6 +197,7 @@ public class DescriptorRepository {
 				List<Integer> counts = new LinkedList<Integer>();
 				
 				for(ExtTapDescriptor tapService : extTapDescriptors.getDescriptors()) {
+					tapService.setInBackend(true);
 					descriptorsList.add(tapService);
 					counts.add(0);
 					for(String facilityName : tapService.getCollections().keySet()) {
