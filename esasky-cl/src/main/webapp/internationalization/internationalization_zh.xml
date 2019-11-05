@@ -63,7 +63,7 @@
 
 	<!-- countRequestCallback -->
 	<text key="CountRequestCallback_countingAvailableData">
-		计算可用的数据
+		数据刷新中……
 	</text>
 
 	<!-- getMissionDataCountRequestCallback -->
@@ -483,19 +483,19 @@
 
 	<!-- webConstants -->
 	<text key="webConstants_manageSkies">
-		管理天空图层
+		天空图层
 	</text>
 	<text key="webConstants_uploadTargetList">
-		管理目标列表
+		目标列表
 	</text>
 	<text key="webConstants_exploreImageObservations">
-		浏览该区域的图像观测数据
+		图像数据
 	</text>
 	<text key="webConstants_exploreCatalogue">
-		浏览该区域的星表数据
+		星表数据
 	</text>
 	<text key="webConstants_exploreSpectral">
-		浏览该区域的光谱数据
+		光谱数据
 	</text>
 	<text key="webConstants_exploreData">
 		浏览 $TARGET$ 的数据
@@ -507,10 +507,10 @@
 		观测规划工具
 	</text>
 	<text key="webConstants_explorePublications">
-		浏览该区域的出版物
+		文献数据
 	</text>
 	<text key="webConstants_exploreRandomTarget">
-		随机目标浏览
+		随机浏览
 	</text>
 
 	<!-- displayUtils -->
@@ -1597,7 +1597,7 @@
 		波长范围
 	</text>
 	<text key="PublicationTooltip_BIBCOUNT">
-		出版数:</text>
+		相关文献数:</text>
 	<text key="3XMM_EPIC_ep_8_n_contrib">
 		提交数
 	</text>
@@ -1806,7 +1806,7 @@
 		暗星云
 	</text>
 	<text key="ClosestExoplanetarySystems">
-		最近的系外行星系统系
+		近邻系外行星系统
 	</text>
 	<text key="SupermassiveBlackHoles">
 		特大质量黑洞
@@ -2140,7 +2140,7 @@
 	
 	
 	<text key="header_gridFull">
-		在星空上保持坐标网格的显示
+		显示坐标网格
 	</text>
 	<text key="header_gridDropdown">
 		坐标网格
@@ -2149,19 +2149,19 @@
 		未找到
 	</text>
 	<text key="treeMap_EXT_TAP">
-		外部TAP服务
+		TAP服务
 	</text>
 	<text key="treeMap_loading_EXT_TAP">
-		从外部TAP服务加载数据
+		从外部TAP服务导入数据
 	</text>
 	<text key="treeMap_noData_EXT_TAP">
 		没有找到外部TAP数据
 	</text>
 	<text key="ctrlToolBarPresenter_loadingAuthorSources">
-		在$AUTHOR$的出版物中搜寻目标
+		在$AUTHOR$的文献中搜寻目标
 	</text>
 	<text key="webConstants_exploreExtTaps">
-		从外部TAP服务中浏览本区域的数据
+		从外部TAP服务导入数据
 	</text>
 	<text key="PreviewDialog_loading_postcard">
 		加载预览
@@ -2295,7 +2295,7 @@
 		解析邻近的目标
 	</text>
 	<text key="treeMapContainer_help_EXT_TAP">
-		在ESASky中你现在可以访问符合虚拟天文台（VO）数据服务标准的外部数据。在当前视图中有数据的服务都会出现在树状图中。点击某个服务便可加载其相应数据结果并显示出对应的覆盖图。
+		在ESASky中你现在可以访问符合虚拟天文台（VO）数据服务标准的外部数据。在当前视图中有数据的服务都会出现在树状图中。点击某个服务便可加载其相应数据结果并显示。
 	</text>
 	
 	
