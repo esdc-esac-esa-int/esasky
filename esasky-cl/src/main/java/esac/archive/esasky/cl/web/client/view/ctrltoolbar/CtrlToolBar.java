@@ -114,7 +114,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		@Source("catalog_map_outline.png")
 		ImageResource catalogIcon();
 
-		@Source("catalog_map_outline.png")
+		@Source("extTap.png")
 		ImageResource extTapIcon();
 		
 		@Source("spectra_light_outline.png")
