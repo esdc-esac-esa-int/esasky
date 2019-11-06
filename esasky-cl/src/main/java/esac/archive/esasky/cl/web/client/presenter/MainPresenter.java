@@ -219,7 +219,7 @@ public class MainPresenter {
             	 if(event.getContext() == EntityContext.EXT_TAP) {
             		PointInformation pointInformation = event.getPointInformation();
             		
-            		if(pointInformation.getType() == EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT) {
+            		if(pointInformation.getType() == EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION) {
             			
             			getRelatedMetadata(event.getDescriptor(), event.getContext());
             			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_gettingData,
@@ -230,7 +230,6 @@ public class MainPresenter {
             			
             			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_browsing,
             					pointInformation.longName);
-            			
             		}
             		
             	 }else {

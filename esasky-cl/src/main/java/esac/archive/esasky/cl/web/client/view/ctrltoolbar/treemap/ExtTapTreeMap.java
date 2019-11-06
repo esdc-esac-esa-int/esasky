@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.allen_sauer.gwt.log.client.Log;
 import org.moxieapps.gwt.highcharts.client.Credits;
 import org.moxieapps.gwt.highcharts.client.Point;
 import org.moxieapps.gwt.highcharts.client.ToolTip;
@@ -13,6 +12,7 @@ import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
 import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEvent;
 import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEventHandler;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
@@ -51,7 +51,7 @@ public class ExtTapTreeMap extends TreeMap {
                     removePointsOnNextRender = false;
                     removePointsAfterFirstRender();
                 }
-                if(getIdOfSelectedLevel(series.getNativeSeries()).equals("") && !isColoredByParent) {
+                if(getLevelOfRoot(series.getNativeSeries()) < 2 && !isColoredByParent) {
                 	
                 	for(Point point : series.getPoints()) {
                 		PointInformation pointInformation = allPoints.get(point.getText());
@@ -63,7 +63,7 @@ public class ExtTapTreeMap extends TreeMap {
                 	isColoredByParent = true;
                 	redraw();
                 	
-                }else if(!getIdOfSelectedLevel(series.getNativeSeries()).equals("") && isColoredByParent) {
+                }else if(getLevelOfRoot(series.getNativeSeries()) >= 2 && isColoredByParent) {
                 	for(Point point : series.getPoints()) {
                 		PointInformation pointInformation = allPoints.get(point.getText());
                 		if(pointInformation != null) {
@@ -261,6 +261,42 @@ public class ExtTapTreeMap extends TreeMap {
         	zoomToPoint(series.getNativeSeries(), id);
         }
     }
+    
+    private native int getLevelOfRoot(JavaScriptObject series)/*-{
+		function loopChildren(parent, targetName){
+			var childLength = parent.children.length;
+			for(var i = 0; i < childLength; i++){
+				var child = parent.children[i]
+				if(child.id == targetName){
+					return child.level
+				}
+				
+				if(child.levelDynamic == 0){
+				 continue;
+				}
+				
+				if(child.children.length > 0){
+					var childResponse = loopChildren(child, targetName);
+					if(childResponse != -1){
+						return childResponse
+					}
+				}
+			}
+			return -1;
+		}
+		
+		try {
+			var rootNode = series.rootNode;
+			if (rootNode == ""){
+				return 0;
+			}
+			var level = loopChildren(series.nodeMap[""], rootNode)
+			return level;
+			
+		} catch (err) {
+			return -1
+		}
+	}-*/;
     
     
     

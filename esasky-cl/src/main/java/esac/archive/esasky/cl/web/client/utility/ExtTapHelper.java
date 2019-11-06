@@ -5,9 +5,9 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ExtTapHelper {
 
-	public static ExtTapDescriptor createCollectionDescriptor(ExtTapDescriptor tapService, String facilityName) {
+	public static ExtTapDescriptor createCollectionDescriptor(ExtTapDescriptor tapService, ExtTapDescriptor parent, String facilityName) {
 		ExtTapDescriptor collectionDescriptor = new ExtTapDescriptor();
-		collectionDescriptor.copyParentValues((ExtTapDescriptor) tapService);
+		collectionDescriptor.copyParentValues((ExtTapDescriptor) parent);
 		collectionDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION);
 		
 		collectionDescriptor.setGuiShortName(facilityName);
@@ -44,7 +44,13 @@ public class ExtTapHelper {
 		typeDescriptor.setMission(typeDescriptor.getMission() + "-" + typeName);
 		
 		String whereADQL = typeDescriptor.getWhereADQL();
-		whereADQL += " AND " + EsaSkyConstants.OBSCORE_DATAPRODUCT + " = \'" + typeName + "\'";
+		if(whereADQL != null) {
+			whereADQL += " AND ";
+		}else {
+			whereADQL = "";
+		}
+		
+		whereADQL += EsaSkyConstants.OBSCORE_DATAPRODUCT + " = \'" + typeName + "\'";
 		typeDescriptor.setWhereADQL(whereADQL);
 		
 		typeDescriptor.setSelectADQL("SELECT TOP " + Integer.toString(typeDescriptor.getSourceLimit()) + " *");

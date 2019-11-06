@@ -200,14 +200,14 @@ public class DescriptorRepository {
 					tapService.setInBackend(true);
 					descriptorsList.add(tapService);
 					counts.add(0);
-					for(String facilityName : tapService.getCollections().keySet()) {
-						ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, facilityName);
-						collectionDesc.setHistoColor(EsaSkyColors.getNext());
-						descriptorsList.add(collectionDesc);
+					for(String dataproductType : tapService.getDataProductTypes()) {
+						ExtTapDescriptor dataDesc = ExtTapHelper.createDataproductDescriptor(tapService, dataproductType);
+						descriptorsList.add(dataDesc);
 						counts.add(0);
-						for(String dataproductType : tapService.getDataProductTypes()) {
-							ExtTapDescriptor dataDesc = ExtTapHelper.createDataproductDescriptor(collectionDesc, dataproductType);
-							descriptorsList.add(dataDesc);
+						for(String facilityName : tapService.getCollections().keySet()) {
+							ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, dataDesc, facilityName);
+							collectionDesc.setHistoColor(EsaSkyColors.getNext());
+							descriptorsList.add(collectionDesc);
 							counts.add(0);
 						}
 					}

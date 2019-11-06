@@ -109,29 +109,30 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        				}
 		        				
 		        				if(found) {
+		        					
+		        					ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+		        							descriptor.getMission() + "-" + productType);
+		        					
+		        					if(typeDesc == null) {
+		        						typeDesc = ExtTapHelper.createDataproductDescriptor(descriptor, productType);
+		        					}
+		        					
+		        					if(!descriptors.contains(typeDesc)) {
+		        						descriptors.add(typeDesc);
+		        						counts.add(1);
+		        					}
+		        					
+		        					String combinedName = productType + "-" + facilityName;
 		        					ExtTapDescriptor collectionDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-		        							descriptor.getMission() + "-" + facilityName);
+		        							descriptor.getMission() + "-" + combinedName);
 		        					
 		        					if(collectionDesc == null) {
-		        						collectionDesc = ExtTapHelper.createCollectionDescriptor(descriptor, facilityName);
+		        						collectionDesc = ExtTapHelper.createCollectionDescriptor(descriptor, typeDesc, facilityName);
 		        						extTapDescriptors.getDescriptors().add(collectionDesc);
 		        					}
 		        					
 		        					if(!descriptors.contains(collectionDesc)) {
 		        						descriptors.add(collectionDesc);
-		        						counts.add(1);
-		        					}
-		        					
-		        					String combinedName = facilityName + "-" + productType;
-		        					ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-		        							descriptor.getMission() + "-" + combinedName);
-		        					
-		        					if(typeDesc == null) {
-		        						typeDesc = ExtTapHelper.createDataproductDescriptor(collectionDesc, productType);
-		        					}
-		        					
-		        					if(!descriptors.contains(typeDesc)) {
-		        						descriptors.add(typeDesc);
 		        						counts.add(1);
 		        					}
 		        					
