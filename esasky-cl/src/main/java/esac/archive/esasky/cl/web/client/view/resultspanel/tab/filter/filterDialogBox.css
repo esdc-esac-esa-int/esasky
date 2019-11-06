@@ -16,4 +16,5 @@
 .filterColumnName{
 	text-align: center;
 	margin-bottom: 5px;
+	text-transform: capitalize;
 }

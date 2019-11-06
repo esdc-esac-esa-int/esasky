@@ -64,7 +64,7 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		
 		this.filterObserver = filterObserver;
 		
-        HTML columnNameHTML = new HTML(columnName);
+        HTML columnNameHTML = new HTML(columnName.replaceAll("_", " "));
         columnNameHTML.addStyleName("filterColumnName");
 
 		FlowPanel fromContainer = new FlowPanel();

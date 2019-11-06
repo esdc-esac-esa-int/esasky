@@ -98,6 +98,12 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 								});
 								anchor.addStyleName("datalinkAnchor");
 								datalinkContent.add(anchor);
+								if (links.semantics.equalsIgnoreCase("#this")) {
+									anchor.addStyleName("datalinkAnchor__main");
+								}
+							} else if (!links.service_def.isEmpty()) {
+								Anchor anchor = new Anchor(links.service_def, "#", "_blank");
+								datalinkContent.add(anchor);
 							}
 							if (!links.semantics.isEmpty()) {
 //								Label label = new Label(links.semantics);
@@ -108,7 +114,10 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 										|| otherInfo.toLowerCase().contains("readable: ")) {
 									continue;
 								}
+								otherInfo = otherInfo.replaceAll("(_|\\.)", " ");
+								otherInfo = otherInfo.replaceAll("eso ", "ESO ");
 								Label label = new Label(otherInfo);
+								label.addStyleName("datalinkOther");
 								datalinkContent.add(label);
 							}
 						}
@@ -186,4 +195,5 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 		}
 		datalinkContent.getElement().getStyle().setPropertyPx("maxHeight", height);
 	}
+	
 }

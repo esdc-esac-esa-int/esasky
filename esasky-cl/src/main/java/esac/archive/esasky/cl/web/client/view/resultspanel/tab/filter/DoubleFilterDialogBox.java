@@ -72,7 +72,7 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
         sliderSelectorContainerId = "selectorId_WTIH_NO_TITLE_" + doubleFilterContainerId;
         this.filterObserver = filterObserver;
         
-        HTML columnNameHTML = new HTML(columnName);
+        HTML columnNameHTML = new HTML(columnName.replaceAll("_", " "));
         columnNameHTML.addStyleName("filterColumnName");
 
         fromTextBox.addStyleName("sliderTextBox");

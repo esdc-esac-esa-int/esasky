@@ -53,6 +53,14 @@
 	margin-top: 8px;
 }
 
+.datalinkAnchor__main{
+	font-weight: bold;
+}
+
+.datalinkOther{
+	text-transform:capitalize;
+}
+
 .datalinkError{
 	color: red;
 }

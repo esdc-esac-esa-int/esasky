@@ -400,12 +400,19 @@ public abstract class AbstractTablePanel extends Composite {
 				arrangeHeaderTimer.schedule(10);
 				return;
 			}
-			if(table.getOffsetWidth() / (table.getColumnCount() - 1) > 70) {
+			if(!header.getValue().toString().contains("filterButton")) {
+				continue;
+			}
+			if(table.getOffsetWidth() / (table.getColumnCount() - 1) > 90) {
 				headerStyleNames = headerStyleNames.replace("filterButtonOnTop", "");
-				headerStyleNames = headerStyleNames + " filterButtonToTheRight";
+				if(!headerStyleNames.contains("filterButtonToTheRight")) {
+					headerStyleNames = headerStyleNames + " filterButtonToTheRight";
+				}
 			} else {
 				headerStyleNames = headerStyleNames.replace("filterButtonToTheRight", "");
-				headerStyleNames = headerStyleNames + " filterButtonOnTop";
+				if(!headerStyleNames.contains("filterButtonOnTop")) {
+					headerStyleNames = headerStyleNames + " filterButtonOnTop";
+				}
 			}
 			header.setHeaderStyleNames(headerStyleNames);
 		}
@@ -414,7 +421,7 @@ public abstract class AbstractTablePanel extends Composite {
 	}
 	
 	private void setTableMinWidth() {
-		tableAndGroupHeader.getElement().getStyle().setProperty("minWidth", (table.getColumnCount() - 1) * 55  + "px");
+		tableAndGroupHeader.getElement().getStyle().setProperty("minWidth", (table.getColumnCount() - 1) * 80  + "px");
 	}
 	
 	public void toggleVisibilityOfFreeFlowingElements() {
@@ -513,8 +520,7 @@ public abstract class AbstractTablePanel extends Composite {
 			@SuppressWarnings("unchecked")
 			Column<TableRow, ?> col = (Column<TableRow, ?>) clmInfo.getColumn();
 			int colIdx = table.getColumnIndex(col);
-			Header<?> hdr = table.getHeader(colIdx);
-			createSortableColumn(list, col, hdr);
+			createSortableColumn(list, col, colIdx);
 		}
 
 		if (columnSortList != null) {
@@ -552,13 +558,14 @@ public abstract class AbstractTablePanel extends Composite {
 		return label;
 	}
 
-	public void createSortableColumn(List<TableRow> list, Column<TableRow, ?> col, final Header<?> hdr) {
+	public void createSortableColumn(List<TableRow> list, Column<TableRow, ?> col, final int colIdx) {
 		List<TableRow> catRowsList = (List<TableRow>) list;
 		Column<TableRow, ?> columns = (Column<TableRow, ?>) col;
 
-		final String columnLabel = getLabelTextFromHeader(hdr);
-		final SortableColumn<?> sortableColumn = getColumn(columnLabel);
-		
+		if(!(table.getColumn(colIdx) instanceof SortableColumn)) {
+			return;
+		}
+		final SortableColumn<?> sortableColumn = (SortableColumn<?>)table.getColumn(colIdx);
 		ListHandler<TableRow> columnSortHandler = new ListHandler<TableRow>(catRowsList);
 		columnSortHandler.setComparator(columns, new Comparator<TableRow>() {
 
@@ -608,18 +615,18 @@ public abstract class AbstractTablePanel extends Composite {
 	}
 
 	protected void createMetadataColums() {
-		for (MetadataDescriptor currentMTD : getEntity().getDescriptor().getMetadata()) {
+		for (final MetadataDescriptor currentMTD : getEntity().getDescriptor().getMetadata()) {
 
 			if (currentMTD.getVisible()) {
 				final String labelKey = currentMTD.getLabel();
 				String labelTmp;
 				if(getEntity().getDescriptor() instanceof ExtTapDescriptor) {
 					labelTmp = labelKey;
-				}else {
+				} else {
 					labelTmp = TextMgr.getInstance().getText(labelKey);
 				}
 				final String label = labelTmp;
-				final SafeHtml header = SafeHtmlUtils.fromSafeConstant("<div class=\"dataPanelHeaderColumnTitle\" style=\"word-break:break-word\">"+  label + "</div>");
+				final SafeHtml header = SafeHtmlUtils.fromSafeConstant("<div class=\"dataPanelHeaderColumnTitle\" style=\"word-break:break-word\">"+  label.replaceAll("_", " ") + "</div>");
 
 				final int columnNumber = table.getColumnCount();
 				final String filterButtonId = getEntity().getEsaSkyUniqId() + columnNumber;
@@ -690,7 +697,7 @@ public abstract class AbstractTablePanel extends Composite {
 							TextMgr.getInstance().getText("abstractTablePanel_downloadRow"),
 							TableColumnHelper.resources.download().getSafeUri().asString());
 					table.addColumn(linkColumn, header);
-					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
+					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE + 20, Unit.PX);
 
 					linkColumn.setFieldUpdater(new FieldUpdater<TableRow, String>() {
 
@@ -705,7 +712,7 @@ public abstract class AbstractTablePanel extends Composite {
 								title = "Datalink";
 							}
 							
-							DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(row.getElementByLabel(label).getValue(), title);
+							DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(row.getElementByTapName(currentMTD.getTapName()).getValue(), title);
 							if(!table.getSelectionModel().isSelected(row)) {
 								final int idToSelect = lastHoveredRowId;
 								selectRow(idToSelect);
@@ -741,17 +748,21 @@ public abstract class AbstractTablePanel extends Composite {
 
 							if (!labelKey.endsWith("_preview")) {
 								String url = row.getElementByLabel(label).getValue();
-								TableElement searchParam = row.getElementContainingLabel("observation_id");
+								TableElement searchParam = row.getElementByTapName("observation_id");
 								if (searchParam == null) {
 									searchParam = row
-											.getElementContainingLabel(TextMgr.getInstance().getText("observation_id"));
+											.getElementByTapName(TextMgr.getInstance().getText("obsid"));
 								}
 								if (searchParam == null) {
-									searchParam = row.getElementContainingLabel(
-											TextMgr.getInstance().getText("abstractTablePanel_name"));
+									searchParam = row.getElementByTapName("name");
+								}
+								PreviewDialogBox box;
+								if (searchParam == null) {
+									box = new PreviewDialogBox(url, "Preview");
+								} else {
+									box = new PreviewDialogBox(url, searchParam.getValue());
 								}
 
-								PreviewDialogBox box = new PreviewDialogBox(url, searchParam.getValue());
 								if(!table.getSelectionModel().isSelected(row)) {
 									final int idToSelect = lastHoveredRowId;
 									selectRow(idToSelect);
@@ -1093,18 +1104,6 @@ public abstract class AbstractTablePanel extends Composite {
 		}
 		dataProvider.setList(filteredList);
 		reactivateActiveFilterButtonStyles();
-	}
-
-	private SortableColumn<?> getColumn(String label) {
-		for (int i = 0; i < table.getColumnCount(); i++) {
-			if (table.getColumn(i) instanceof SortableColumn) {
-				SortableColumn<?> column = (SortableColumn<?>) table.getColumn(i);
-				if (column.getLabel().equals(label)) {
-					return column;
-				}
-			}
-		}
-		return null;
 	}
 
 	public void openFilterBox(int columnNumber) {

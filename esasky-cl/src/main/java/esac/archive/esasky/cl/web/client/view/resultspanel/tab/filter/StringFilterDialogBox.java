@@ -41,7 +41,7 @@ public class StringFilterDialogBox extends FilterDialogBox {
         this.style = this.resources.style();
         this.style.ensureInjected();
 		
-        HTML columnNameHTML = new HTML(columnName);
+        HTML columnNameHTML = new HTML(columnName.replaceAll("_", " "));
         columnNameHTML.addStyleName("filterColumnName");
 		textLine = new TextBox();
 		textLine.addStyleName("filterTextBox");
