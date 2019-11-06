@@ -66,6 +66,13 @@ public class TreeMapContainer extends DialogBox {
 		
 		if(context.equals(EntityContext.EXT_TAP)) {
 			treeMap = new ExtTapTreeMap(context);
+			((ExtTapTreeMap) treeMap).registerHeaderObserver(new TreeMapHeaderChanged() {
+				
+				@Override
+				public void onHeaderChanged(String text) {
+					header.setText(TextMgr.getInstance().getText("treeMap_" + TreeMapContainer.this.context) + text);
+				}
+			});
 		}else {
 			treeMap = new TreeMap(context);
 		}
@@ -220,5 +227,9 @@ public class TreeMapContainer extends DialogBox {
 	@Override 
 	public void hide() {
 		close();
+	}
+	
+	public void setHeaderText(String text) {
+		header.setText(text);
 	}
 }

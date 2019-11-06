@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.moxieapps.gwt.highcharts.client.Credits;
@@ -26,7 +27,8 @@ public class ExtTapTreeMap extends TreeMap {
 	private EntityContext context;
     private HashMap<String, Point> allPointMap = new HashMap<>();
     private boolean isColoredByParent = true;
-
+    
+    private List<TreeMapHeaderChanged> headerObservers = new LinkedList<TreeMapHeaderChanged>();
 	
 	public ExtTapTreeMap(final EntityContext context) {
 		super(context);
@@ -51,6 +53,10 @@ public class ExtTapTreeMap extends TreeMap {
                     removePointsOnNextRender = false;
                     removePointsAfterFirstRender();
                 }
+                
+                String headerText = getRootPath(series.getNativeSeries());
+                notifyHeaderChange(headerText);
+                
                 if(getLevelOfRoot(series.getNativeSeries()) < 2 && !isColoredByParent) {
                 	
                 	for(Point point : series.getPoints()) {
@@ -262,6 +268,33 @@ public class ExtTapTreeMap extends TreeMap {
         }
     }
     
+    private void notifyHeaderChange(String headerText) {
+    	for(TreeMapHeaderChanged observer : headerObservers){
+			observer.onHeaderChanged(headerText);		
+		}
+    }
+    
+    private native String getRootPath(JavaScriptObject series)/*-{
+    	var rootNodeId = series.rootNode;
+    	var array = []
+    	var rootNode = series.nodeMap[rootNodeId]
+		
+		while(rootNode && rootNode.name != ""){
+			array.push(rootNode.name)
+			rootNodeId = rootNode.parent
+			rootNode = series.nodeMap[rootNodeId]
+		}
+		
+		var text = "";
+		while(array.length > 0){
+    		text = text + " > " + array.pop()
+		}
+    
+    	return text;
+    
+    }-*/;
+    
+    
     private native int getLevelOfRoot(JavaScriptObject series)/*-{
 		function loopChildren(parent, targetName){
 			var childLength = parent.children.length;
@@ -298,6 +331,8 @@ public class ExtTapTreeMap extends TreeMap {
 		}
 	}-*/;
     
-    
+    public void registerHeaderObserver(TreeMapHeaderChanged observer) {
+        headerObservers.add(observer);
+    }
     
 }
