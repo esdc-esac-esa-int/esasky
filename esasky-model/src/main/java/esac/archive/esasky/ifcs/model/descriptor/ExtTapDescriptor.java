@@ -28,6 +28,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String treeMapType;
     private ExtTapDescriptor parent;
     private String ingestedTable;
+    private int sourceLimit;
     
 
     @JsonInclude(Include.NON_NULL)
@@ -37,6 +38,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     
     public void copyParentValues(ExtTapDescriptor parent) {
     	//Creates a shallow copy of the parent which is fine since String and Boolean is immutable
+    	this.parent = parent;
     	
     	tapSTCSColumn = parent.getTapSTCSColumn();
     	tapRaColumn = parent.getTapRaColumn();
@@ -45,12 +47,13 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	dataProductTypes = parent.getDataProductTypes();
     	whereADQL = parent.getWhereADQL();
     	selectADQL = parent.getSelectADQL();
+        orderByADQL = parent.getOrderByADQL();
     	responseFormat = parent.getResponseFormat();
     	searchFunction = parent.getSearchFunction();
     	isInBackend = false;
-    	this.parent = parent;
     	tapUrl = parent.getTapUrl();
     	ingestedTable = parent.getIngestedTable();
+    	sourceLimit = parent.getSourceLimit();
     	
     	//From BaseDescriptor
     	setGuiShortName(parent.getGuiShortName());
@@ -196,5 +199,15 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public void setOrderByADQL(String orderByADQL) {
 		this.orderByADQL = orderByADQL;
 	}
+
+	public int getSourceLimit() {
+		return sourceLimit;
+	}
+
+	public void setSourceLimit(int sourceLimit) {
+		this.sourceLimit = sourceLimit;
+	}
+	
+	
 	
 }
