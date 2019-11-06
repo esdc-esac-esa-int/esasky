@@ -53,9 +53,9 @@ public class TreeMap extends Chart {
     protected HashMap<String, PointInformation> allPoints = new HashMap<String, PointInformation>();
 
     protected GhostPoint ghostPoint;
-    private boolean firstSelection = false;
+    protected boolean firstSelection = false;
 
-    private boolean removePointsOnNextRender = false;
+    protected boolean removePointsOnNextRender = false;
     private List<Point> pointsToRemove = new LinkedList<Point>();
 
     protected boolean addPointsOnNextRender = false;
@@ -97,13 +97,16 @@ public class TreeMap extends Chart {
                                                                         .setFontWeight("bold"))
 
                                         ),
-                                new TreemapPlotOptions.Level().setLevel(2).setBorderWidth(2)
+                                new TreemapPlotOptions.Level().setLevel(2)
+                                .setBorderWidth(2)
                                         .setBorderColor("rgba(0, 0, 0, 0.65)")
                                         .setDataLabels(new DataLabels().setEnabled(false)),
                         		 new TreemapPlotOptions.Level().setLevel(3).setBorderWidth(2)
                                                  .setBorderColor("rgba(0, 0, 0, 0.65)")
                                                  .setDataLabels(new DataLabels().setEnabled(false)))
-                        .setLevelIsConstant(false).setAllowDrillToNode(true));
+                        .setLevelIsConstant(false)
+                        .setAllowDrillToNode(true)
+                        .setInteractByLeaf(false));
 
         series.addPoint(ghostPoint);
 
@@ -176,7 +179,7 @@ public class TreeMap extends Chart {
         })).setChartTitle(null).setBackgroundColor("rgba(0, 0, 0, 0.65)").setMargin(1, 0, 0, 1);
     }
     
-    private void addPointsAfterFirstRender() {
+    protected void addPointsAfterFirstRender() {
         for (Point pointToAdd : pointsToAdd) {
             series.addPoint(pointToAdd, false, false, false);
         }
@@ -184,7 +187,7 @@ public class TreeMap extends Chart {
         update();
     }
 
-    private void removePointsAfterFirstRender() {
+    protected void removePointsAfterFirstRender() {
         List<Point> matches = new LinkedList<Point>();
         for (Point point : series.getPoints()) {
             for (Point pointToRemove : pointsToRemove) {

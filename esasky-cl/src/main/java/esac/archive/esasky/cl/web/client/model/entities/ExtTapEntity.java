@@ -17,6 +17,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -24,8 +25,11 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
@@ -63,7 +67,16 @@ public class ExtTapEntity implements GeneralEntityInterface {
     
     protected DefaultEntity defaultEntity;
     protected IShapeDrawer drawer;
+    protected IShapeDrawer combinedDrawer;
     private ExtTapDescriptor descriptor;
+    
+    private Timer sourceLimitNotificationTimer = new Timer() {
+
+		@Override
+		public void run() {
+			CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(getEsaSkyUniqId() + "SourceLimit"));
+		}
+	};
     
 	public ExtTapEntity(ExtTapDescriptor descriptor, CountStatus countStatus,
 			SkyViewPosition skyViewPosition, String esaSkyUniqId, Long lastUpdate, EntityContext context) {
@@ -74,7 +87,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
 		JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalog(
 				esaSkyUniqId, SourceDrawer.DEFAULT_SOURCE_SIZE, descriptor.getHistoColor());
 		
-		drawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder);
+		combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder);
+		drawer = combinedDrawer;
 		
 		defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
 				context, drawer, TAPMetadataObservationService.getInstance());
@@ -178,10 +192,14 @@ public class ExtTapEntity implements GeneralEntityInterface {
     @Override
     public void fetchData(final AbstractTablePanel tablePanel) {
     	if(showMocData()) {
-    		defaultEntity.setShapeBuilder(new MocBuilder());
+    		drawer.removeAllShapes();
+    		drawer = new MocDrawer(descriptor.getHistoColor());
+    		defaultEntity.setDrawer(drawer);
     		getMocMetadata(tablePanel);
     	} else {
-    		defaultEntity.setShapeBuilder(shapeBuilder);
+    		drawer.removeAllShapes();
+    		drawer = combinedDrawer;
+    		defaultEntity.setDrawer(drawer);
     		getData(tablePanel);
     	}
     }
@@ -232,7 +250,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
          try {
              builder.sendRequest(null,
                  new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new OnComplete() {
-                 	
+                	 
                  	@Override
                  	public void onComplete() {
                  		tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
@@ -284,6 +302,23 @@ public class ExtTapEntity implements GeneralEntityInterface {
 	@Override
 	public void addShapes(TapRowList rowList) {
 		drawer.addShapes(rowList);
+		if(rowList.getData().size() >= getSourceLimit()) {
+			if(sourceLimitNotificationTimer.isRunning()) {
+				sourceLimitNotificationTimer.run();
+			}
+			String sourceLimitDescription = TextMgr.getInstance().getText(getSourceLimitDescription()).replace("$sourceLimit$", getSourceLimit() + "");
+			CommonEventBus.getEventBus().fireEvent( 
+					new ProgressIndicatorPushEvent(getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
+			sourceLimitNotificationTimer.schedule(6000);
+		}
+	}
+	
+	public int getSourceLimit() {
+		return descriptor.getSourceLimit();
+	}
+
+	public String getSourceLimitDescription() {
+		return "sourceLimitDescription_EXTTAP";
 	}
 	
 	@Override

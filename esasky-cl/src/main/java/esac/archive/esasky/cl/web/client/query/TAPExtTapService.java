@@ -155,7 +155,7 @@ public class TAPExtTapService extends AbstractMetadataService {
     		
     	}else {
             ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-            String adql = "SELECT " + descriptor.getTapSTCSColumn() + " ";
+            String adql = "SELECT " + descriptor.getTapSTCSColumn() + ", npix" + " ";
         	
         	adql += " from " + descriptor.getIngestedTable();
 //        	+ " WHERE ";
@@ -172,9 +172,8 @@ public class TAPExtTapService extends AbstractMetadataService {
     
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
-        String selectADQL = "SELECT TOP 2000 * ";
-
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+        String selectADQL = "SELECT TOP " + Integer.toString(descriptor.getSourceLimit()) + " * ";
         
         if(descriptor.isInBackend()) {
         	return getAdql(descriptor, selectADQL);       

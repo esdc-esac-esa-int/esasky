@@ -1664,6 +1664,9 @@
 	<text key="error">
 		error
 	</text>
+	<text key="sourceLimitDescription_EXTTAP">
+		Showing the first $sourceLimit$ results. Zoom in to get all data in a smaller region.
+	</text>
 	<text key="sourceLimitDescription">
 		Showing the first $sourceLimit$ sources ordered by
 		$orderBy$

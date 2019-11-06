@@ -47,7 +47,7 @@ public class ExtTapHelper {
 		whereADQL += " AND " + EsaSkyConstants.OBSCORE_DATAPRODUCT + " = \'" + typeName + "\'";
 		typeDescriptor.setWhereADQL(whereADQL);
 		
-		typeDescriptor.setSelectADQL("SELECT TOP 2000 *");
+		typeDescriptor.setSelectADQL("SELECT TOP " + Integer.toString(typeDescriptor.getSourceLimit()) + " *");
 		
 		return typeDescriptor;
 	}

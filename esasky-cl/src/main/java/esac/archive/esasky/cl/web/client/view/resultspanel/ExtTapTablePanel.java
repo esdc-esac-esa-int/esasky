@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 
+import java.util.List;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -34,6 +36,10 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 
 		this.entity = inputentity;
 		initView();
+
+		String sourceLimitDescription = entity.getSourceLimitDescription();
+
+		notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", entity.getSourceLimit() + ""));
 
 		addHoverFromDataPanelHandler();
 	}
@@ -78,6 +84,18 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 		this.table.setColumnWidth(centreViewColumn,
 				TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
 	}
+	
+	@Override
+	public void insertData(List<TableRow> data) {
+		super.insertData(data);
+
+		if (data.size() >= entity.getSourceLimit()) {
+			notShowingCompleteDataSetMouseOverDetector.setVisible(true);
+		} else {
+			notShowingCompleteDataSetMouseOverDetector.setVisible(false);
+		}
+	}
+
 	
 	@Override
 	public final ExtTapDescriptor getDescriptor() {

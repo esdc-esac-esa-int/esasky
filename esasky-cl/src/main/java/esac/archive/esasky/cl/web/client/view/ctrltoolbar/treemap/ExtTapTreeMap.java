@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
 import org.moxieapps.gwt.highcharts.client.Credits;
 import org.moxieapps.gwt.highcharts.client.Point;
 import org.moxieapps.gwt.highcharts.client.ToolTip;
 import org.moxieapps.gwt.highcharts.client.ToolTipData;
 import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
+import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEvent;
+import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEventHandler;
+
+import com.google.gwt.core.client.JsonUtils;
 
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
@@ -20,11 +25,65 @@ public class ExtTapTreeMap extends TreeMap {
 
 	private EntityContext context;
     private HashMap<String, Point> allPointMap = new HashMap<>();
+    private boolean isColoredByParent = true;
 
 	
 	public ExtTapTreeMap(final EntityContext context) {
 		super(context);
 		this.context = context;
+		series.setOption("drillUpButton", JsonUtils.safeEval("{\"text\":\"Back\"}"));
+		
+		setRedrawEventHandler(new ChartRedrawEventHandler() {
+
+            @Override
+            public boolean onRedraw(ChartRedrawEvent chartRedrawEvent) {
+                if (firstSelection) {
+                    firstSelection = false;
+                    return false;
+                }
+
+                if (addPointsOnNextRender) {
+                    addPointsOnNextRender = false;
+                    addPointsAfterFirstRender();
+                }
+
+                if (removePointsOnNextRender) {
+                    removePointsOnNextRender = false;
+                    removePointsAfterFirstRender();
+                }
+                if(getIdOfSelectedLevel(series.getNativeSeries()).equals("") && !isColoredByParent) {
+                	
+                	for(Point point : series.getPoints()) {
+                		PointInformation pointInformation = allPoints.get(point.getText());
+                		if(pointInformation != null && pointInformation.getParentColor() != null) {
+                			String color = pointInformation.getParentColor();
+                			setColor(point, color);
+                		}
+                	}
+                	isColoredByParent = true;
+                	redraw();
+                	
+                }else if(!getIdOfSelectedLevel(series.getNativeSeries()).equals("") && isColoredByParent) {
+                	for(Point point : series.getPoints()) {
+                		PointInformation pointInformation = allPoints.get(point.getText());
+                		if(pointInformation != null) {
+                			String color = pointInformation.descriptor.getHistoColor();
+                			setColor(point, color);
+                		}
+                	}
+                	isColoredByParent = false;
+                	redraw();
+
+                }
+                return false;
+            }
+        });
+	}
+	
+	private void setColor(Point point, String color) {
+			Point option = new Point(point.getValue());
+			option.setColor(color);
+			point.update(option, false, false);
 	}
 	
 	@Override
@@ -108,6 +167,20 @@ public class ExtTapTreeMap extends TreeMap {
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
                 descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor, context);
+        
+        String color;
+        if(((ExtTapDescriptor)descriptor).getParent() != null) {
+        	if(((ExtTapDescriptor)descriptor).getParent().getParent() != null) {
+        		color = ((ExtTapDescriptor)descriptor).getParent().getParent().getHistoColor();
+        	}else {
+        		color = ((ExtTapDescriptor)descriptor).getParent().getHistoColor();
+        	}
+        }else {
+        	color = descriptor.getHistoColor();
+        }
+        
+        pointInformation.setParentColor(color);
+        
         boolean found = false;
         if (isRendered()) {
             Point point = getPoint(descriptor);
@@ -124,7 +197,8 @@ public class ExtTapTreeMap extends TreeMap {
             if (!found) {
                 
                 pointId = descriptor.generateId();
-                final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getHistoColor(), pointInformation, logCount(count));
+                
+                final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
 
             	ExtTapDescriptor desc = (ExtTapDescriptor) descriptor;
             	if(desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION || desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT) {
@@ -187,5 +261,7 @@ public class ExtTapTreeMap extends TreeMap {
         	zoomToPoint(series.getNativeSeries(), id);
         }
     }
+    
+    
     
 }

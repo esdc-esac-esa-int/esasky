@@ -22,6 +22,8 @@ public class PointInformation {
 	private String type;
 	private String collectionName;
 	
+	private String parentColor;
+	
 	
 	public PointInformation(String longName, String missionName, String credits,
 			int count, IDescriptor descriptor, EntityContext context) {
@@ -93,6 +95,14 @@ public class PointInformation {
 
 	public void setCollectionName(String collectionName) {
 		this.collectionName = collectionName;
+	}
+
+	public String getParentColor() {
+		return parentColor;
+	}
+
+	public void setParentColor(String parentColor) {
+		this.parentColor = parentColor;
 	}
 	
 }
