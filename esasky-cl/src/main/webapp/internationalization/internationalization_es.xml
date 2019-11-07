@@ -3239,6 +3239,13 @@
 	<text key="datalinkDownload_loading">
 		Cargando datalink
 	</text>
+	<text key="datalink_loadFailed">
+		Error cargando datalink
+	</text>
+
+	<text key="abstractTablePanel_download">
+		Descargar
+	</text>
 
 </Internationalization>
 

@@ -2680,5 +2680,11 @@
 	<text key="datalinkDownload_loading">
 		Loading datalink
 	</text>
+	<text key="datalink_loadFailed">
+		Failed to load datalink
+	</text>
+	<text key="abstractTablePanel_download">
+		Download
+	</text>
 	
 </Internationalization>
