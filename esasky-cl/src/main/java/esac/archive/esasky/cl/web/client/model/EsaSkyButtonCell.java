@@ -66,6 +66,7 @@ public class EsaSkyButtonCell extends ButtonCell {
         this.popupPanel = new PopupPanel();
         popupPanel.getElement().getStyle().setZIndex(50);
         popupPanel.getElement().getStyle().setProperty("borderRadius", "10px");
+        popupPanel.getElement().getStyle().setProperty("pointerEvents", "none");
         	popupPanel.getElement().getStyle().setPadding(3, Unit.PX);
         	
         	Label tooltipLabel = new Label(tooltipText);
