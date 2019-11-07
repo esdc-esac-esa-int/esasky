@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -273,13 +274,14 @@ public class ExtTapEntity implements GeneralEntityInterface {
     		metaDatadescriptor.setTapName(tmd.getName());
     		if(tmd.getName().equals("access_url")) {
     			metaDatadescriptor.setType(ColumnType.DATALINK);
+    			metaDatadescriptor.setIndex(0);
     		}else {
     			metaDatadescriptor.setType(ColumnType.valueOf(tmd.getDatatype().toUpperCase()));
+    			metaDatadescriptor.setIndex(i++);
     		}
-    		metaDatadescriptor.setIndex(i++);
     		metaDatadescriptor.setLabel(tmd.getName());
     		metaDatadescriptor.setVisible(true);
-    		metaList.add(metaDatadescriptor);
+    		metaList.add(metaDatadescriptor.getIndex(),metaDatadescriptor);
     	}
     	descriptor.setMetadata(metaList);
     }
