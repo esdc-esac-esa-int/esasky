@@ -220,7 +220,13 @@ public class DescriptorRepository {
 
 							
 							ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, dataDesc, facilityName);
-							collectionDesc.setHistoColor(EsaSkyColors.getNext());
+							
+							if(facility.containsKey("color")) {
+								collectionDesc.setHistoColor(facility.get("color").get(0));
+							}else {
+								collectionDesc.setHistoColor(EsaSkyColors.getNext());
+							}
+							
 							descriptorsList.add(collectionDesc);
 							counts.add(0);
 						}
