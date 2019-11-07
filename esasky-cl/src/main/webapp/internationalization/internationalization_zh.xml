@@ -47,9 +47,6 @@
 	<text key="header_help">
 		帮助
 	</text>
-	<text key="ESASky_Description">
-		您可以通过ESASky对来自太空观测项目的开放数据进行可视化并下载。
-	</text>
 
 	<!-- JsonRequestCallback -->
 	<text key="JsonRequestCallback_retrievingMOC">

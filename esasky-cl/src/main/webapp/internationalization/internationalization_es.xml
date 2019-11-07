@@ -439,8 +439,7 @@
 	</text>
 	<text key="WelcomeDialog_description">
 		ESASky es una aplicaci&#243;n que le permite visualizar
-		y descargar datos astron&#243;micos p&#250;blicos de misiones
-		espaciales.
+		y descargar datos astron&#243;micos p&#250;blicos.
 	</text>
 	<text key="WelcomeDialog_closeButton">
 		Cerrar
@@ -909,12 +908,6 @@
 	</text>
 	<text key="header_help">
 		Ayuda
-	</text>
-
-	<text key="ESASky_Description">
-		ESASky es una aplicaci&#243;n que le permite visualizar
-		y descargar datos astron&#243;micos p&#250;blicos de misiones
-		espaciales.
 	</text>
 
 	<text key="PublicationsBySourceCallback_helpTitle">

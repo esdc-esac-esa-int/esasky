@@ -57,11 +57,6 @@
 	<text key="header_gridDropdown">
 		Coordinate grid
 	</text>
-
-	<text key="ESASky_Description">
-		ESASky is an application that allows you to visualise
-		and download public astronomical data from space-based missions.
-	</text>
 	
 	
 
@@ -1477,11 +1472,6 @@
 	<text key="WelcomeDialog_title">
 		Welcome to ESASky!
 	</text>
-	<text key="WelcomeDialog_description">
-		ESASky is an application that allows you to visualise
-		and download public
-		astronomical data from space-based missions.
-	</text>
 	<text key="WelcomeDialog_checkbox">
 		Don't show this dialog again
 	</text>
@@ -2686,5 +2676,9 @@
 	<text key="abstractTablePanel_download">
 		Download
 	</text>
-	
+	<text key="WelcomeDialog_description">
+		ESASky is an application that allows you to visualise
+		and download public
+		astronomical data.
+	</text>
 </Internationalization>
