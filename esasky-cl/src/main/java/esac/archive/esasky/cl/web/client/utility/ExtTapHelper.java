@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.utility;
 
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
 
 public class ExtTapHelper {
 
@@ -37,8 +38,14 @@ public class ExtTapHelper {
 		ExtTapDescriptor typeDescriptor = new ExtTapDescriptor();
 		typeDescriptor.copyParentValues(parent);
 		typeDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT);
-
-		typeDescriptor.setGuiShortName(typeName);
+		
+		String name;
+		try{
+			name = ObsCoreCollection.valueOf(typeName).toString();
+		}catch (Exception e) {
+			name = typeName;
+		}
+		typeDescriptor.setGuiShortName(name);
 		typeDescriptor.setGuiLongName(typeDescriptor.getMission() + "-" + typeName);
 		
 		typeDescriptor.setMission(typeDescriptor.getMission() + "-" + typeName);
