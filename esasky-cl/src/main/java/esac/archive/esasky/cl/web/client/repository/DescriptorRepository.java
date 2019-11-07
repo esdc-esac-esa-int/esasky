@@ -49,7 +49,7 @@ import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
-import esac.archive.esasky.cl.web.client.utility.ExtTapHelper;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
@@ -212,14 +212,14 @@ public class DescriptorRepository {
 							if(addedProductTypes.containsKey(dataproductType)) {
 								dataDesc = addedProductTypes.get(dataproductType);
 							}else {
-								dataDesc = ExtTapHelper.createDataproductDescriptor(tapService, dataproductType);
+								dataDesc = ExtTapUtils.createDataproductDescriptor(tapService, dataproductType);
 								addedProductTypes.put(dataproductType, dataDesc);
 								descriptorsList.add(dataDesc);
 								counts.add(0);
 							}
 
 							
-							ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, dataDesc, facilityName);
+							ExtTapDescriptor collectionDesc = ExtTapUtils.createCollectionDescriptor(tapService, dataDesc, facilityName);
 							
 							if(facility.containsKey("color")) {
 								collectionDesc.setHistoColor(facility.get("color").get(0));

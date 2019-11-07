@@ -6,7 +6,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
 
-public class ExtTapHelper {
+public class ExtTapUtils {
 
 	public static ExtTapDescriptor createCollectionDescriptor(ExtTapDescriptor tapService, ExtTapDescriptor parent, String facilityName) {
 		ExtTapDescriptor collectionDescriptor = new ExtTapDescriptor();

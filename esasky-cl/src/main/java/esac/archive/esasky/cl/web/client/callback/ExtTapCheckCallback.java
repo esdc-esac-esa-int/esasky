@@ -12,7 +12,7 @@ import com.google.gwt.http.client.Response;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
-import esac.archive.esasky.cl.web.client.utility.ExtTapHelper;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
@@ -115,7 +115,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        							descriptor.getMission() + "-" + ObsCoreCollection.get(productType));
 		        					
 		        					if(typeDesc == null) {
-		        						typeDesc = ExtTapHelper.createDataproductDescriptor(descriptor, productType);
+		        						typeDesc = ExtTapUtils.createDataproductDescriptor(descriptor, productType);
 		        					}
 		        					
 		        					if(!descriptors.contains(typeDesc)) {
@@ -128,7 +128,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        							descriptor.getMission() + "-" + combinedName);
 		        					
 		        					if(collectionDesc == null) {
-		        						collectionDesc = ExtTapHelper.createCollectionDescriptor(descriptor, typeDesc, facilityName);
+		        						collectionDesc = ExtTapUtils.createCollectionDescriptor(descriptor, typeDesc, facilityName);
 		        						extTapDescriptors.getDescriptors().add(collectionDesc);
 		        					}
 		        					
