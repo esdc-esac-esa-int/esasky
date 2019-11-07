@@ -92,6 +92,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.column.StringColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.table.DataPanelPager;
 import esac.archive.esasky.cl.web.client.view.resultspanel.table.SimpleTable;
+import esac.archive.esasky.cl.web.client.view.resultspanel.table.TableWidthChanged;
 
 public abstract class AbstractTablePanel extends Composite {
 
@@ -1292,6 +1293,9 @@ public abstract class AbstractTablePanel extends Composite {
 		columnGroupHeader.setHeight(heightInPx + "px");
 		table.getElement().getStyle().setProperty("height", "calc(100% - " + heightInPx + "px)");
 	}
+	protected void setColumnGroupWidth(int widthInPx) {
+		columnGroupHeader.setWidth(widthInPx + "px");
+	}
 	
 	public void setEmptyTable(String emptyTableText) {
 		loadingSpinner.setVisible(false);
@@ -1310,6 +1314,7 @@ public abstract class AbstractTablePanel extends Composite {
     			groupTwoHeader.setWidth((table.getElement().getOffsetWidth() - startElement.getOffsetLeft()) + "px");
     			groupTwoHeader.getElement().getStyle().setLeft(startElement.getOffsetLeft(), Unit.PX);
     			setColumnGroupHeight(groupTwoHeader.getElement().getOffsetHeight());
+    			setColumnGroupWidth(table.getElement().getOffsetWidth());
     		} else {
     			loadingTimer.schedule(10);
     		}
@@ -1325,6 +1330,13 @@ public abstract class AbstractTablePanel extends Composite {
 		isGroupHeaderActive = true;
 		addColumnGroupHeader(groupOneHeader);
 		addColumnGroupHeader(groupTwoHeader);
+		table.registerTableWidthObserver(new TableWidthChanged() {
+			
+			@Override
+			public void onTableWidthChanged() {
+				resizeColumnGroupHeader();
+			}
+		});
 	}
 	
 	public abstract void showStylePanel(int x, int y);

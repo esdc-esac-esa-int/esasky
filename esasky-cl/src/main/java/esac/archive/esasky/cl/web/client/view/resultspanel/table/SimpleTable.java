@@ -1,6 +1,9 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.table;
 
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -242,7 +245,17 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
     @Override
     public void setTableWidth(double value, Unit unit) {
     	getTableHeadElement().getParentElement().getParentElement().getParentElement().getParentElement().getStyle().setWidth(value, unit);
-      }
+    	
+		for(TableWidthChanged observer : observers){
+    			observer.onTableWidthChanged();	
+		}
+    }
+    
+    private List<TableWidthChanged> observers = new LinkedList<TableWidthChanged>();
+    
+    public void registerTableWidthObserver(TableWidthChanged observer) {
+    	observers.add(observer);
+    }
     
     public Element getHorizontalScrollableElement() {
     	Element currElement = getTableHeadElement();
