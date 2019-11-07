@@ -73,14 +73,24 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 						for (String[] data : json.getData()) {
 							listOfDatalinkLinks.add(DatalinkLinks.parseDatalinkLinks(data, json.getMetadata()));
 						}
+						boolean lastItemWasBright = false;
 						for (final DatalinkLinks links : listOfDatalinkLinks) {
+							
+							FlowPanel container = new FlowPanel();
+							container.addStyleName("datalinklinkContainer");
 							if (!links.error_message.isEmpty()) {
 								Label label = new Label(links.error_message);
 								label.addStyleName("datalinkError");
 								datalinkContent.add(label);
 								continue;
 							}
-							if (!links.access_url.isEmpty()) {
+							if (!links.service_def.isEmpty()) {
+								//TODO handle service_def 
+//								Anchor anchor = new Anchor(links.service_def, "#", "_blank");
+//								datalinkContent.add(anchor);
+								continue;
+							}
+							else if (!links.access_url.isEmpty()) {
 								String anchorName = "Download";
 								if (!links.description.isEmpty()) {
 									anchorName = links.description;
@@ -97,29 +107,36 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 									}
 								});
 								anchor.addStyleName("datalinkAnchor");
-								datalinkContent.add(anchor);
+								container.add(anchor);
+								datalinkContent.add(container);
 								if (links.semantics.equalsIgnoreCase("#this")) {
 									anchor.addStyleName("datalinkAnchor__main");
 								}
-							} else if (!links.service_def.isEmpty()) {
-								Anchor anchor = new Anchor(links.service_def, "#", "_blank");
-								datalinkContent.add(anchor);
-							}
-							if (!links.semantics.isEmpty()) {
+								if (!links.semantics.isEmpty()) {
 //								Label label = new Label(links.semantics);
 //								datalinkContent.add(label);
-							}
-							for (String otherInfo : links.others) {
-								if (otherInfo.toLowerCase().contains("eso_datalink")
-										|| otherInfo.toLowerCase().contains("readable: ")) {
-									continue;
 								}
-								otherInfo = otherInfo.replaceAll("(_|\\.)", " ");
-								otherInfo = otherInfo.replaceAll("eso ", "ESO ");
-								Label label = new Label(otherInfo);
-								label.addStyleName("datalinkOther");
-								datalinkContent.add(label);
-							}
+								container.getElement().getStyle().setBorderColor("white");
+								for (String otherInfo : links.others) {
+									if (otherInfo.toLowerCase().contains("eso_datalink")
+											|| otherInfo.toLowerCase().contains("readable: ")) {
+										continue;
+									}
+									otherInfo = otherInfo.replaceAll("(_|\\.)", " ");
+									otherInfo = otherInfo.replaceAll("eso ", "ESO ");
+									Label label = new Label(otherInfo);
+									label.addStyleName("datalinkOther");
+									container.add(label);
+								}
+								
+								if(lastItemWasBright) {
+									container.addStyleName("datalinklinkContainer__dark");
+									lastItemWasBright = false;
+								} else {
+									container.addStyleName("datalinklinkContainer__bright");
+									lastItemWasBright = true;
+								}
+							} 
 						}
 						setMaxHeight(MainLayoutPanel.getMainAreaHeight());
 						setSuggestedPositionCenter();
@@ -133,7 +150,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 						
 		                MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
 		                CommonEventBus.getEventBus().fireEvent(
-		                		new ProgressIndicatorPushEvent("datalinkLoadFailed", TextMgr.getInstance().getText("Datalink_loadFailed"), true));
+		                		new ProgressIndicatorPushEvent("datalinkLoadFailed", TextMgr.getInstance().getText("datalink_loadFailed"), true));
 		                hide();
 		                if(datalinkLoadFailedNotificationTimer.isRunning()) {
 		                	datalinkLoadFailedNotificationTimer.run();
