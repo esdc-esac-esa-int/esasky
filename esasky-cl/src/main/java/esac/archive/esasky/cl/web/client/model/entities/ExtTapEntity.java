@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -216,7 +215,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         		// Get Query in ADQL format.
         		final String adql = getMetadataAdql();
         		
-        		String url = TAPUtils.getExtTAPQuery(URL.encode(adql),descriptor);
+        		String url = TAPUtils.getExtTAPQuery(URL.encode(adql),descriptor).replaceAll("#", "%23");
         		
         		Log.debug(debugPrefix + "Query [" + url + "]");
         		
@@ -244,7 +243,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
          tablePanel.clearTable();
          String adql = TAPExtTapService.getInstance().getMetadataAdql(getDescriptor(), true);
          
-         String url = URL.encode(TAPUtils.getTAPQuery(adql, EsaSkyConstants.JSON));
+         String url = URL.encode(TAPUtils.getTAPQuery(adql, EsaSkyConstants.JSON)).replaceAll("#", "%23");
 
          Log.debug(debugPrefix + "Query [" + url + "]");
          RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -281,6 +280,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     		}
     		metaDatadescriptor.setLabel(tmd.getName());
     		metaDatadescriptor.setVisible(true);
+    		metaDatadescriptor.setMaxDecimalDigits(3);
     		metaList.add(metaDatadescriptor.getIndex(),metaDatadescriptor);
     	}
     	descriptor.setMetadata(metaList);
