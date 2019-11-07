@@ -33,6 +33,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Welcome = "Welcome";
     public static final String CAT_Preview = "Preview";
     public static final String CAT_Datalink = "Datalink";
+    public static final String CAT_DownloadRow = "DownloadRow";
     public static final String CAT_DataPanel_Pager = "DataPanel_Pager";
     public static final String CAT_Search = "Search";
     public static final String CAT_SAMP = "Samp";

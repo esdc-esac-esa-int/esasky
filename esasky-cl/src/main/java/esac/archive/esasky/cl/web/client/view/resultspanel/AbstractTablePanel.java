@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -75,6 +76,7 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.SizeFormatter;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -695,7 +697,7 @@ public abstract class AbstractTablePanel extends Composite {
 				}else if (ColumnType.DATALINK.equals(type)) {
 
 					final ImageColumn linkColumn = new ImageColumn(
-							TextMgr.getInstance().getText("abstractTablePanel_downloadRow"),
+							TextMgr.getInstance().getText("abstractTablePanel_download"),
 							TableColumnHelper.resources.download().getSafeUri().asString());
 					table.addColumn(linkColumn, header);
 					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE + 20, Unit.PX);
@@ -704,27 +706,36 @@ public abstract class AbstractTablePanel extends Composite {
 
 						@Override
 						public void update(final int index, final TableRow row, final String value) {
-							GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Datalink, getFullId(), row.getElementByLabel(label).getValue());
-							String title = null;
-							if(row.getElementByTapName("obs_id") != null) {
-								title = row.getElementByTapName("obs_id").getValue();
-							}
-							if(title == null || title.isEmpty()) {
-								title = "Datalink";
+							if(row.getElementByTapName("access_format") != null && row.getElementByTapName("access_format").getValue().contains("datalink")) {
+								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), row.getElementByLabel(label).getValue());
+								String title = null;
+								if(row.getElementByTapName("obs_id") != null) {
+									title = row.getElementByTapName("obs_id").getValue();
+								}
+								if(title == null || title.isEmpty()) {
+									title = "Datalink";
+								}
+								
+								DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(row.getElementByTapName(currentMTD.getTapName()).getValue(), title);
+								if(!table.getSelectionModel().isSelected(row)) {
+									final int idToSelect = lastHoveredRowId;
+									selectRow(idToSelect);
+									datalinkBox.registerCloseObserver(new ClosingObserver() {
+										
+										@Override
+										public void onClose() {
+											deselectRow(idToSelect);
+										}
+									});
+								}
+							} else {
+								final String url = row.getElementByLabel(label).getValue();
+								Window.open(url, "_blank", "_blank");
+								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), row.getElementByLabel(label).getValue());
+								Log.debug("Size: " + SizeFormatter.formatBytes(new Long(row.getElementByTapName("access_estsize").getValue()), 0));
+								Log.debug("ElementByLabel : " + row.getElementByLabel(label).getValue());
 							}
 							
-							DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(row.getElementByTapName(currentMTD.getTapName()).getValue(), title);
-							if(!table.getSelectionModel().isSelected(row)) {
-								final int idToSelect = lastHoveredRowId;
-								selectRow(idToSelect);
-								datalinkBox.registerCloseObserver(new ClosingObserver() {
-									
-									@Override
-									public void onClose() {
-										deselectRow(idToSelect);
-									}
-								});
-							}
 						}
 					});
 
