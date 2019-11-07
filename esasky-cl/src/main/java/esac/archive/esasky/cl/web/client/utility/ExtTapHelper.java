@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
+import com.google.gwt.http.client.URL;
+
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
@@ -23,7 +25,7 @@ public class ExtTapHelper {
 		}
 		
 		whereADQL +=  EsaSkyConstants.OBSCORE_COLLECTION + " IN (";
-		for(String collectionName : tapService.getCollections().get(facilityName)) {
+		for(String collectionName : tapService.getCollections().get(facilityName).get(EsaSkyConstants.OBSCORE_COLLECTION)) {
 			whereADQL += "\'" + collectionName + "\', ";
 		}
 		//Remove last "," 
@@ -39,16 +41,11 @@ public class ExtTapHelper {
 		typeDescriptor.copyParentValues(parent);
 		typeDescriptor.setTreeMapType(EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT);
 		
-		String name;
-		try{
-			name = ObsCoreCollection.valueOf(typeName).toString();
-		}catch (Exception e) {
-			name = typeName;
-		}
+		String name = ObsCoreCollection.get(typeName);
 		typeDescriptor.setGuiShortName(name);
-		typeDescriptor.setGuiLongName(typeDescriptor.getMission() + "-" + typeName);
+		typeDescriptor.setGuiLongName(typeDescriptor.getMission() + "-" + name);
 		
-		typeDescriptor.setMission(typeDescriptor.getMission() + "-" + typeName);
+		typeDescriptor.setMission(typeDescriptor.getMission() + "-" + name);
 		
 		String whereADQL = typeDescriptor.getWhereADQL();
 		if(whereADQL != null) {

@@ -24,6 +24,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
 
 public class ExtTapCheckCallback extends JsonRequestCallback {
 
@@ -96,22 +97,22 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        			String collection = (String) row.get(collIndex);
 		        			String productType = (String) row.get(typeIndex);
 		        			
-		        			if(descriptor.getDataProductTypes().contains(productType)) {
 		        				
-		        				boolean found = false;
-		        				String facilityName = "";
-		        				for(String key : descriptor.getCollections().keySet()) {
-		        					if(descriptor.getCollections().get(key).contains(collection)) {
-		        						found = true;
-		        						facilityName = key;
-		        						break;
-		        					}
-		        				}
-		        				
-		        				if(found) {
-		        					
+	        				boolean found = false;
+	        				String facilityName = "";
+	        				for(String key : descriptor.getCollections().keySet()) {
+	        					if(descriptor.getCollections().get(key).get(EsaSkyConstants.OBSCORE_COLLECTION).contains(collection)) {
+	        						found = true;
+	        						facilityName = key;
+	        						break;
+	        					}
+	        				}
+	        				
+	        				if(found) {
+	        					if(descriptor.getCollections().get(facilityName).get(EsaSkyConstants.OBSCORE_DATAPRODUCT).contains(productType)) {
+	        					
 		        					ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-		        							descriptor.getMission() + "-" + productType);
+		        							descriptor.getMission() + "-" + ObsCoreCollection.get(productType));
 		        					
 		        					if(typeDesc == null) {
 		        						typeDesc = ExtTapHelper.createDataproductDescriptor(descriptor, productType);
@@ -122,7 +123,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        						counts.add(1);
 		        					}
 		        					
-		        					String combinedName = productType + "-" + facilityName;
+		        					String combinedName = ObsCoreCollection.get(productType) + "-" + facilityName;
 		        					ExtTapDescriptor collectionDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
 		        							descriptor.getMission() + "-" + combinedName);
 		        					
@@ -135,12 +136,16 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        						descriptors.add(collectionDesc);
 		        						counts.add(1);
 		        					}
-		        					
-		        				}else {
-		        					String extra = descriptor.getCreditedInstitutions() + "-" + collection;
+	        					}else {
+		        					String extra = descriptor.getCreditedInstitutions() + "-" + collection + "-" + productType;
 		        					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
-		        							GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
+		        							GoogleAnalytics.ACT_ExtTap_missingProductType, extra);
 		        				}
+	        					
+	        				}else {
+	        					String extra = descriptor.getCreditedInstitutions() + "-" + collection;
+	        					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
+	        							GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
 		        			}
 		        		}
 		        	}

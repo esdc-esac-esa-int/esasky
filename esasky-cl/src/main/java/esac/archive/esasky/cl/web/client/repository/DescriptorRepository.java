@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
@@ -200,16 +201,30 @@ public class DescriptorRepository {
 					tapService.setInBackend(true);
 					descriptorsList.add(tapService);
 					counts.add(0);
-					for(String dataproductType : tapService.getDataProductTypes()) {
-						ExtTapDescriptor dataDesc = ExtTapHelper.createDataproductDescriptor(tapService, dataproductType);
-						descriptorsList.add(dataDesc);
-						counts.add(0);
-						for(String facilityName : tapService.getCollections().keySet()) {
+					Map<String, ExtTapDescriptor> addedProductTypes = new HashMap<>();
+					
+					for(String facilityName : tapService.getCollections().keySet()) {
+						Map<String, ArrayList<String>> facility = tapService.getCollections().get(facilityName);
+						
+						for(String dataproductType : facility.get(EsaSkyConstants.OBSCORE_DATAPRODUCT)) {
+							
+							ExtTapDescriptor dataDesc;
+							if(addedProductTypes.containsKey(dataproductType)) {
+								dataDesc = addedProductTypes.get(dataproductType);
+							}else {
+								dataDesc = ExtTapHelper.createDataproductDescriptor(tapService, dataproductType);
+								addedProductTypes.put(dataproductType, dataDesc);
+								descriptorsList.add(dataDesc);
+								counts.add(0);
+							}
+
+							
 							ExtTapDescriptor collectionDesc = ExtTapHelper.createCollectionDescriptor(tapService, dataDesc, facilityName);
 							collectionDesc.setHistoColor(EsaSkyColors.getNext());
 							descriptorsList.add(collectionDesc);
 							counts.add(0);
 						}
+						
 					}
 				}
 				

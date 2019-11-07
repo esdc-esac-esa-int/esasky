@@ -1,20 +1,26 @@
 package esac.archive.esasky.ifcs.model.shared;
 
-public enum ObsCoreCollection {
-    image("Images"), spectrum("Spectra"), cube("Cubes"), timeseries("Time series");
+import java.util.HashMap;
+import java.util.Map;
 
-    private String type;
 
-    private ObsCoreCollection(String type) {
-        this.type = type;
-    }
+public class ObsCoreCollection {
+    
+	private static Map<String, String> map = new HashMap<String, String>() {{
+        put("image", "Images");
+        put("spectrum", "Spectra");
+        put("cube", "Cubes");
+        put("timeseries", "Time series");
+        put("http://www.opencadc.org/caom2/DataProductType#catalog", "Catalogs");
+        put("measurements", "Measurements");
+        put("visibility", "Visibility");
+    }};
 
-    public String getName() {
-        return this.type;
-    }
-
-    @Override
-    public String toString() {
-        return this.type;
+    public static String get(String key) {
+    	if( map.containsKey(key)){
+    		return map.get(key);
+    	}
+    	
+    	return key;
     }
 }

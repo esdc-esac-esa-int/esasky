@@ -17,13 +17,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String tapRaColumn;
     private String tapDecColumn;
     private String uniqueIdentifierField;
-    private ArrayList<String> dataProductTypes;
     private String whereADQL;
     private String selectADQL;
     private String orderByADQL;
     private String responseFormat;
     private String searchFunction;
-    private Map<String, ArrayList<String>> collections;
+    private Map<String, Map<String, ArrayList<String>>> collections;
     private boolean isInBackend = true;
     private String treeMapType;
     private ExtTapDescriptor parent;
@@ -44,7 +43,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	tapRaColumn = parent.getTapRaColumn();
     	tapDecColumn = parent.getTapDecColumn();
     	uniqueIdentifierField = parent.getUniqueIdentifierField();
-    	dataProductTypes = parent.getDataProductTypes();
     	whereADQL = parent.getWhereADQL();
     	selectADQL = parent.getSelectADQL();
         orderByADQL = parent.getOrderByADQL();
@@ -112,14 +110,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.tapDecColumn = tapDecColumn;
 	}
 
-	public ArrayList<String> getDataProductTypes() {
-		return dataProductTypes;
-	}
-
-	public void setDataProductTypes(ArrayList<String> dataProductTypes) {
-		this.dataProductTypes = dataProductTypes;
-	}
-
 	public String getWhereADQL() {
 		return whereADQL;
 	}
@@ -160,11 +150,11 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.selectADQL = selectADQL;
 	}
 
-	public Map<String, ArrayList<String>> getCollections() {
+	public Map<String, Map<String, ArrayList<String>>> getCollections() {
 		return collections;
 	}
 
-	public void setCollections(Map<String, ArrayList<String>> collections) {
+	public void setCollections(Map<String, Map<String, ArrayList<String>>> collections) {
 		this.collections = collections;
 	}
 

@@ -188,6 +188,7 @@ public final class GoogleAnalytics {
     public static final String ACT_Pyesasky_setHipsSliderValue = "setHipsSliderValue";
     
     public static final String ACT_ExtTap_missingCollection = "missingCollection";
+    public static final String ACT_ExtTap_missingProductType = "missingDataproduct";
     public static final String ACT_ExtTap_gettingData = "gettingData";
     public static final String ACT_ExtTap_browsing = "browsing";
     public static final String ACT_ExtTap_count = "count";
