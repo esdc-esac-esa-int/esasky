@@ -133,6 +133,7 @@ public class WelcomeDialog extends Composite {
 		cookieCheckboxAndPolicy.add(cookieInformation);
 		
 		welcomeDialogConainer.add(cookieCheckboxAndPolicy);
+		welcomeDialogConainer.addElementNotAbleToInitiateMoveOperation(cookieCheckboxAndPolicy.getElement());
 		welcomeDialogConainer.add(createClosingButtons());
 		
 		initWidget(welcomeDialogConainer);
