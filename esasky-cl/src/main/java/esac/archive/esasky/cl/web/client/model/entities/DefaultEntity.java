@@ -197,8 +197,7 @@ public class DefaultEntity implements GeneralEntityInterface{
         		// Get Query in ADQL format.
         		final String adql = getMetadataAdql();
         		
-        		String url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
-//        		String url = TAPUtils.getTAPQuery(URL.encode(adql), "MOCjson");
+        		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
         		
         		Log.debug(debugPrefix + "Query [" + url + "]");
         		

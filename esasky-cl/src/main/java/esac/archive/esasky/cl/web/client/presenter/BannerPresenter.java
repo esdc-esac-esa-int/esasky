@@ -137,7 +137,7 @@ public class BannerPresenter {
 	}
 
 	private void checkBackendMessages() {
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.BANNER_MESSAGE_URL + "?lang=" + GUISessionStatus.getCurrentLanguage()), new IJSONRequestCallback() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.BANNER_MESSAGE_URL + "?lang=" + URL.encodeQueryString(GUISessionStatus.getCurrentLanguage()), new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {

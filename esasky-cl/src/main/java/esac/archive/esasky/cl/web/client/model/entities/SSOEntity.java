@@ -98,7 +98,7 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	@Override
 	public void fetchData(final AbstractTablePanel tablePanel) {
 		getSSOPolyline();
-		String url = TAPUtils.getTAPQuery(URL.encode(getMetadataAdql()), EsaSkyConstants.JSON);
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(getMetadataAdql()), EsaSkyConstants.JSON);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
 			MetadataCallback callback = new MetadataCallback(tablePanel, getMetadataAdql(),
@@ -135,7 +135,7 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	private void getSSOPolyline() {
 		final String adql = TAPMetadataSSOService.getInstance().getSSOPolylineAdql(this);
 
-		String url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
 
 		Log.debug("[getSSOPolyline] Query [" + url + "]");
 

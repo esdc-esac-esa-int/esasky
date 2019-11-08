@@ -289,8 +289,8 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
         }
 
         if (countStatus.hasMoved(missionId)) {
-            String url = URL.encode(TAPCountObservationService.getInstance().getCount(
-                    AladinLiteWrapper.getAladinLite(), entity.getDescriptor()));
+            String url = TAPCountObservationService.getInstance().getCount(
+                    AladinLiteWrapper.getAladinLite(), entity.getDescriptor());
             Log.debug(debugPrefix + "Query [" + url + "]");
 
             RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -324,7 +324,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             final String adqlQuery = tempEntry.getValue();
 
             String sampUrl = Window.Location.getProtocol() + "//" + Window.Location.getHost()
-                    + URL.encode(TAPUtils.getTAPQuery(adqlQuery, EsaSkyConstants.VOTABLE));
+                    + TAPUtils.getTAPQuery(URL.encodeQueryString(adqlQuery), EsaSkyConstants.VOTABLE);
 
             Log.debug("[ResultsPresenter/getResultsTableURLPerMission()] Adding query to Samp: ["
                     + sampUrl + "] for tab: [" + tableName + "]");
@@ -452,7 +452,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                 
             } else {
 	        	if(Modules.improvedDownload){
-	                final String tableUrl = URL.encode(TAPUtils.getTAPQuery("", type.toString()));
+	                final String tableUrl = TAPUtils.getTAPQuery("", type.toString());
 	                Log.debug("[ResultsPresenter/getResultsTableURLPerMission()] Getting results table: ["
 	                        + tableUrl + "] for tab: [" + tableName + "]");
 	                RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tableUrl);
@@ -461,13 +461,13 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	                final String indicatorId = UUID.randomUUID().toString();
 	                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent(indicatorId, "Downloading " + type.toString() + " file"));
 	                try {
-	                    requestBuilder.sendRequest("query=" + adqlQuery.replaceAll("\\+", "%2B"), new RequestCallback() {
+	                    requestBuilder.sendRequest("query=" + URL.encodeQueryString(adqlQuery), new RequestCallback() {
 
 	                        @Override
 	                        public void onError(final com.google.gwt.http.client.Request request,
 	                                final Throwable exception) {
 	                        	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(indicatorId));
-	                        	GoogleAnalytics.sendEvent(eventCategory, GoogleAnalytics.ACT_Tab_Download_Failure, tableUrl + adqlQuery.replaceAll("\\+", "%2B"));
+	                        	GoogleAnalytics.sendEvent(eventCategory, GoogleAnalytics.ACT_Tab_Download_Failure, tableUrl + URL.encodeQueryString(adqlQuery));
 	                            Log.debug("Failed",exception);
 	                        }
 	
@@ -483,11 +483,11 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 	                    });
 	                } catch (RequestException e) {
 	                	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(indicatorId));
-	                	GoogleAnalytics.sendEvent(eventCategory, GoogleAnalytics.ACT_Tab_Download_Failure, tableUrl + adqlQuery.replaceAll("\\+", "%2B"));
+	                	GoogleAnalytics.sendEvent(eventCategory, GoogleAnalytics.ACT_Tab_Download_Failure, tableUrl + URL.encodeQueryString(adqlQuery));
 	                    Log.debug("Failed to get file",e);
 	                }
 	            } else {
-	            	String tableUrl = URL.encode(TAPUtils.getTAPQuery(adqlQuery, type.toString()));
+	            	String tableUrl = TAPUtils.getTAPQuery(URL.encodeQueryString(adqlQuery), type.toString());
 	            	Window.open(tableUrl, "_self", "location=0,status=0,toolbar=0,scrollbars=1,menubar=0");
 	            }
             }

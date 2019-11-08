@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -86,10 +85,10 @@ public abstract class Tooltip extends AutoHidePanel{
 						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
 						+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
 				Window.open(
-						URL.encode(ExternalServices.buildSimbadURLWithRaDec(AladinLiteWrapper
+						ExternalServices.buildSimbadURLWithRaDec(AladinLiteWrapper
 								.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg(),
 								AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top)
-								.getDecDeg(), AladinLiteWrapper.getAladinLite().getCooFrame())),
+								.getDecDeg(), AladinLiteWrapper.getAladinLite().getCooFrame()),
 						"_blank", "");
 			}
 		});
@@ -104,10 +103,10 @@ public abstract class Tooltip extends AutoHidePanel{
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
 				Window.open(
-						URL.encode(ExternalServices.buildNedURL(AladinLiteWrapper.getAladinLite()
+						ExternalServices.buildNedURL(AladinLiteWrapper.getAladinLite()
 								.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
 								.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-								AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+								AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
         	}
         });
         links.add(nedButton);
@@ -121,10 +120,10 @@ public abstract class Tooltip extends AutoHidePanel{
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
         		Window.open(
-        				URL.encode(ExternalServices.buildVizierPhotometryURL(AladinLiteWrapper.getAladinLite()
+        				ExternalServices.buildVizierPhotometryURL(AladinLiteWrapper.getAladinLite()
         						.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
         						.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-        						AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+        						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
         	}
         });
         links.add(vizierPhotometryButton);
@@ -138,10 +137,10 @@ public abstract class Tooltip extends AutoHidePanel{
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
         		Window.open(
-        				URL.encode(ExternalServices.buildVizierURL(AladinLiteWrapper.getAladinLite()
+        				ExternalServices.buildVizierURL(AladinLiteWrapper.getAladinLite()
         						.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
         						.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-        						AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+        						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
         	}
         });
         links.add(vizierButton);

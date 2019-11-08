@@ -333,8 +333,8 @@ public class SearchPresenter {
         	return;
         }
 
-        final String url = URL.encode(
-                EsaSkyWebConstants.GENERAL_RESOLVER_URL + "?action=bytarget&target=") + URL.encodeQueryString(targetName);
+        final String url = 
+                EsaSkyWebConstants.GENERAL_RESOLVER_URL + "?action=bytarget&target=" + URL.encodeQueryString(targetName);
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         final String id = "target-" + targetName;

@@ -16,11 +16,11 @@ public final class UrlUtils {
 
 	public static String getUrlForCurrentState() {
 	    
-		String encodedRaDeg = URL.encode(new Double(AladinLiteWrapper.getCenterRaDeg()).toString());
-		String encodedDecDeg = URL.encode(new Double(AladinLiteWrapper.getCenterDecDeg()).toString());
-		String encodedFov = URL.encode(new Double(AladinLiteWrapper.getAladinLite().getFovDeg()).toString());
-		String encodedHips = URL.encode(SelectSkyPanel.getNameOfSelectedHips());
-		String encodedCooFrame = URL.encode(AladinLiteWrapper.getCoordinatesFrame().toString());
+		String encodedRaDeg = URL.encodeQueryString(new Double(AladinLiteWrapper.getCenterRaDeg()).toString());
+		String encodedDecDeg = URL.encodeQueryString(new Double(AladinLiteWrapper.getCenterDecDeg()).toString());
+		String encodedFov = URL.encodeQueryString(new Double(AladinLiteWrapper.getAladinLite().getFovDeg()).toString());
+		String encodedHips = URL.encodeQueryString(SelectSkyPanel.getNameOfSelectedHips());
+		String encodedCooFrame = URL.encodeQueryString(AladinLiteWrapper.getCoordinatesFrame().toString());
 		String hostName = Window.Location.getHost();
 		String baseUrl = Window.Location.getPath();
 		

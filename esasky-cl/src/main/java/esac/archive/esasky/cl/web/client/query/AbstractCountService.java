@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.http.client.URL;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -57,7 +58,7 @@ public abstract class AbstractCountService<T extends IDescriptor> {
         // + "}') as esasky_dynamic_count from dual";
         Log.debug("[TAPQueryBuilder/FastCountQuery()] Fast count ADQL " + adqlQuery);
         // String adqlQuery = getDynamicCountQuery(aladinLite, descriptor.getTapTable());
-        url = TAPUtils.getTAPQuery(adqlQuery, EsaSkyConstants.JSON);
+        url = TAPUtils.getTAPQuery(URL.encodeQueryString(adqlQuery), EsaSkyConstants.JSON);
         return url;
     }
 }

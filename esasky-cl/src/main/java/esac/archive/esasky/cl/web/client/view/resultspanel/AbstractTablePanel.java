@@ -975,7 +975,7 @@ public abstract class AbstractTablePanel extends Composite {
 		}
 
 		for (TableRow row : subset) {
-			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue().trim() + "',";
+			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue() + "',";
 		}
 		adql = adql.substring(0, adql.length() - 1) + ")";
 		return adql;

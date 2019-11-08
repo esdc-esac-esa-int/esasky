@@ -215,7 +215,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         		// Get Query in ADQL format.
         		final String adql = getMetadataAdql();
         		
-        		String url = TAPUtils.getExtTAPQuery(URL.encode(adql),descriptor).replaceAll("#", "%23");
+        		String url = TAPUtils.getExtTAPQuery(URL.encodeQueryString(adql),descriptor);
         		
         		Log.debug(debugPrefix + "Query [" + url + "]");
         		
@@ -243,7 +243,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
          tablePanel.clearTable();
          String adql = TAPExtTapService.getInstance().getMetadataAdql(getDescriptor(), true);
          
-         String url = URL.encode(TAPUtils.getTAPQuery(adql, EsaSkyConstants.JSON)).replaceAll("#", "%23");
+         String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON);
 
          Log.debug(debugPrefix + "Query [" + url + "]");
          RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);

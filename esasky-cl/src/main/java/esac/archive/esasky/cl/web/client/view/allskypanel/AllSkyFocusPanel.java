@@ -8,7 +8,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -145,10 +144,10 @@ public class AllSkyFocusPanel extends FocusPanel {
 						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
 								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
 										.getDecDeg());
-				Window.open(URL.encode(ExternalServices.buildSimbadURLWithRaDec(
+				Window.open(ExternalServices.buildSimbadURLWithRaDec(
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
 			}
 		});
 
@@ -166,10 +165,10 @@ public class AllSkyFocusPanel extends FocusPanel {
 						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
 								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
 										.getDecDeg());
-				Window.open(URL.encode(ExternalServices.buildNedURL(
+				Window.open(ExternalServices.buildNedURL(
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
 			}
 		});
 
@@ -188,10 +187,10 @@ public class AllSkyFocusPanel extends FocusPanel {
 						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
 								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
 										.getDecDeg());
-				Window.open(URL.encode(ExternalServices.buildVizierPhotometryURL(
+				Window.open(ExternalServices.buildVizierPhotometryURL(
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
 
 			}
 		});
@@ -210,10 +209,10 @@ public class AllSkyFocusPanel extends FocusPanel {
 						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
 								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
 										.getDecDeg());
-				Window.open(URL.encode(ExternalServices.buildVizierURL(
+				Window.open(ExternalServices.buildVizierURL(
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
 						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame())), "_blank", "");
+						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
 
 			}
 		});

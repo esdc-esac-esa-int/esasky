@@ -117,9 +117,9 @@ public class ExternalServices {
         formattedRa += NumberFormat.getFormat("00").format(minutes) + " ";
         formattedRa += NumberFormat.getFormat("00.00").format(seconds) + " ";
 
-        return VIZIER_PHOTOMETRY_URL + VIZIER_PHOTOMETRY_SERVICE_PARAMETER + "=" + VIZIER_PLOTTER + "&"
-                + VIZIER_SERVICE_SED_PLOT_RADIUS + "=" + VIZIER_DEFAULT_SED_PLOT_RADIUS_ARCSEC + "&"
-                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + formattedRa + " " + finalDec;
+        return VIZIER_PHOTOMETRY_URL + VIZIER_PHOTOMETRY_SERVICE_PARAMETER + "=" + URL.encodeQueryString(VIZIER_PLOTTER) + "&"
+                + VIZIER_SERVICE_SED_PLOT_RADIUS + "=" + URL.encodeQueryString(VIZIER_DEFAULT_SED_PLOT_RADIUS_ARCSEC) + "&"
+                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(new Double(finalDec).toString());
     }        
     public static String buildVizierURL(double raDeg, double decDeg, String cooFrame) {
     	double finalRa = raDeg;
@@ -132,7 +132,7 @@ public class ExternalServices {
     		finalDec = ccInJ2000[1];
     	}
     	
-    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + finalRa + " " + finalDec
+    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(new Double(finalRa).toString()) + " " + URL.encodeQueryString(new Double(finalDec).toString())
     			+ "&" + VIZIER_RADIUS_PARAMETER + VIZIER_DEFAULT_RADIUS_ARCMIN;
     }
 
@@ -140,14 +140,14 @@ public class ExternalServices {
         String formattedCoords = NumberFormat.getFormat("###.###").format(raDeg) + "d"
                 + NumberFormat.getFormat("###.###").format(decDeg) + "d";
         String url = SIMBAD_COO_URL + "&";
-        url += SIMBAD_SERVICE_PARAM_COORD + "=" + formattedCoords + "&";
+        url += SIMBAD_SERVICE_PARAM_COORD + "=" + URL.encodeQueryString(formattedCoords) + "&";
         if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
             url += SIMBAD_SERVICE_PARAM_COORD_FRAME + "=Gal&";
         } else if (AladinLiteConstants.FRAME_J2000.equals(cooFrame)) {
             url += SIMBAD_SERVICE_PARAM_COORD_FRAME + "=FK5&";
         }
-        url += SIMBAD_SERVICE_PARAM_RADIUS + "=" + SIMBAD_DEFAULT_RADIUS_ARCMIN + "&";
-        url += SIMBAD_SERVICE_PARAM_RADIUS_UNIT + "=" + SIMBAD_DEFAULT_RADIUS_UNIT;
+        url += SIMBAD_SERVICE_PARAM_RADIUS + "=" + URL.encodeQueryString(SIMBAD_DEFAULT_RADIUS_ARCMIN) + "&";
+        url += SIMBAD_SERVICE_PARAM_RADIUS_UNIT + "=" + URL.encodeQueryString(SIMBAD_DEFAULT_RADIUS_UNIT);
 
         return url;
     }
@@ -155,12 +155,11 @@ public class ExternalServices {
     public static String buildNedURL(double raDeg, double decDeg, String cooFrame) {
 
         String url = NED_URL;
-        // Galactic / J2000 check!!!
         if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-            url += NED_SERVICE_CSYS + "=" + NED_GALACTIC_CSYS + "&";
-            url += NED_SERVICE_OUT_CSYS + "=" + NED_GALACTIC_OUT_CSYS + "&";
+            url += NED_SERVICE_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_CSYS) + "&";
+            url += NED_SERVICE_OUT_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_OUT_CSYS) + "&";
         } else if (AladinLiteConstants.FRAME_J2000.equals(cooFrame)) {
-            url += NED_SERVICE_OUT_CSYS + "=" + NED_EQUATORIAL_OUT_CSYS + "&";
+            url += NED_SERVICE_OUT_CSYS + "=" + URL.encodeQueryString(NED_EQUATORIAL_OUT_CSYS) + "&";
         }
         String formattedRa = "";
         if (raDeg < 0) {
@@ -203,7 +202,7 @@ public class ExternalServices {
                 + NED_SERVICE_LIST_LIMIT + "=" + NED_DEFAULT_LIST_LIMIT + "&"
                 + NED_SERVICE_IMG_STAMP + "=" + NED_DEFAULT_IMG_STAMP + "&"
                 + NED_SERVICE_SEARCH_TYPE + "=" + NED_DEFAULT_SEARCH_TYPE + "&" + NED_SERVICE_LON
-                + "=" + formattedRa + "&" + NED_SERVICE_LAT + "=" + decDeg;
+                + "=" + URL.encodeQueryString(formattedRa) + "&" + NED_SERVICE_LAT + "=" + URL.encodeQueryString(new Double(decDeg).toString());
     }
     
     public static String buildWwtURL(double raDeg, double decDeg, String cooFrame) {

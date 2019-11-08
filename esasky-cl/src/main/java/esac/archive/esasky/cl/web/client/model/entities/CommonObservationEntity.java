@@ -78,16 +78,16 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 		String json = mapper.write(descriptor);
 
 		data.append("descriptor="
-				+ json.replaceAll("&", "%26").replaceAll("#", "%23"));
+				+ URL.encodeQueryString(json));
 
 		data.append("&observation_id=" + obsId);
 
 		Log.debug("[CommonObservationRow][executeSampFileList]URL:"
 				+ completeUrl);
 		Log.debug("[CommonObservationRow][executeSampFileList]JSON:"
-				+ URL.encode(data.toString()));
+				+ data.toString());
 
-		completeUrl = URL.encode(completeUrl + data.toString());
+		completeUrl = completeUrl + data.toString();
 		Log.debug("[CommonObservationRow][executeSampFileList]CompleteURL:"
 				+ completeUrl);
 

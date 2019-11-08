@@ -186,7 +186,7 @@ public class DescriptorRepository {
 	public void initExtDescriptors(final CountObserver countObserver) {
 
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initExtDescriptors");
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL), new IJSONRequestCallback() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL, new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {
@@ -288,7 +288,7 @@ public class DescriptorRepository {
 	public void initCatDescriptors(final CountObserver countObserver) {
 
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initCatDescriptors");
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.CATALOGS_URL), new IJSONRequestCallback() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.CATALOGS_URL, new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {
@@ -323,7 +323,7 @@ public class DescriptorRepository {
 	public void initObsDescriptors(final CountObserver obsCountObserver) {
 
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initObsDescriptors");
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.OBSERVATIONS_URL), new IJSONRequestCallback() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.OBSERVATIONS_URL, new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {
@@ -361,7 +361,7 @@ public class DescriptorRepository {
 	public void initSSODescriptors(final CountObserver ssoCountObserver) {
 
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initSSODescriptors");
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.SSO_URL), new IJSONRequestCallback() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.SSO_URL, new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {
@@ -398,7 +398,7 @@ public class DescriptorRepository {
 	public void initSpectraDescriptors(final CountObserver countObserver) {
 
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initSpectraDescriptors");
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.SPECTRA_URL),
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.SPECTRA_URL,
 				new esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback() {
 
 					@Override
@@ -433,7 +433,7 @@ public class DescriptorRepository {
 	public void initPubDescriptors() {
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initPubDescriptors");
 
-		JSONUtils.getJSONFromUrl(URL.encode(EsaSkyWebConstants.PUBLICATIONS_URL), new IJSONRequestCallback() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.PUBLICATIONS_URL, new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {
@@ -530,7 +530,7 @@ public class DescriptorRepository {
 		}
 			
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
-		String url = TAPUtils.getExtTAPQuery(URL.encode(adql), descriptor);
+		String url = TAPUtils.getExtTAPQuery(URL.encodeQueryString(adql), descriptor);
 		
 		Log.debug("[DescriptorRepository/updateCount4ExtTap()] Query [" + url + "]");
 
@@ -551,7 +551,7 @@ public class DescriptorRepository {
 		
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor, true);
 		
-		String url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
 		
 		Log.debug("[DescriptorRepository/updateMOCCount4ExtTap()]  Query [" + url + "]");
 		
@@ -601,23 +601,22 @@ public class DescriptorRepository {
 		if (descriptor instanceof PublicationsDescriptor) {
 			if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_PUB_COUNT_FROM_SIMBAD) {
 
-				url = URL.encode(TAPCountPublicationsService.getInstance()
-						.getCountQueryForSIMBAD(AladinLiteWrapper.getAladinLite()));
+				url = TAPCountPublicationsService.getInstance()
+						.getCountQueryForSIMBAD(AladinLiteWrapper.getAladinLite());
 			} else {
 
-				url = URL.encode(TAPCountPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
-						(PublicationsDescriptor) descriptor));
+				url = TAPCountPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
+						(PublicationsDescriptor) descriptor);
 			}
 
 		} else if (descriptor instanceof CatalogDescriptor) {
 
-			url = URL.encode(TAPCountCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
-					(CatalogDescriptor) descriptor));
+			url = TAPCountCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
+					(CatalogDescriptor) descriptor);
 
 		} else {
 
-			url = URL.encode(
-					TAPCountObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor));
+			url = TAPCountObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
 		}
 
 		JSONUtils.getJSONFromUrl(url, new CountRequestCallback(descriptor, cs, countRequestHandler, url));
@@ -629,8 +628,8 @@ public class DescriptorRepository {
 
 	public void doCountSSO(String ssoName, ESASkySSOObjType ssoType, ISSOCountRequestHandler countRequestHandler) {
 
-		String url = URL.encode(TAPUtils.getTAPQuery(TAPCountSSOService.getInstance().getCount(ssoName, ssoType),
-				EsaSkyConstants.JSON));
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPCountSSOService.getInstance().getCount(ssoName, ssoType)),
+				EsaSkyConstants.JSON);
 
 		Log.debug("[doCountSSO] SSO count Query [" + url + "]");
 		JSONUtils.getJSONFromUrl(url,
@@ -645,8 +644,8 @@ public class DescriptorRepository {
 		
 		final long timecall = System.currentTimeMillis();
 		lastestSingleCountTimecall = timecall;
-		String url = URL.encode(TAPUtils.getTAPQuery(
-				TAPSingleCountService.getInstance().getCount(AladinLiteWrapper.getAladinLite()), EsaSkyConstants.JSON));
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(
+				TAPSingleCountService.getInstance().getCount(AladinLiteWrapper.getAladinLite())), EsaSkyConstants.JSON);
 		JSONUtils.getJSONFromUrl(url, new JsonRequestCallback(countRequestHandler.getProgressIndicatorMessage(), url) {
 
 			@Override

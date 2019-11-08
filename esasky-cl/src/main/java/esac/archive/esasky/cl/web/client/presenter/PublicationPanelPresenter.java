@@ -230,10 +230,10 @@ public class PublicationPanelPresenter {
         String url = "";
         if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_DATA_FROM_SIMBAD) {
             final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
-            url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encode(adql), null);
+            url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
         } else {
             final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
-            url = TAPUtils.getTAPQuery(URL.encode(adql), EsaSkyConstants.JSON);
+            url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
         }
         
         Log.debug(debugPrefix + "Query [" + url + "]");

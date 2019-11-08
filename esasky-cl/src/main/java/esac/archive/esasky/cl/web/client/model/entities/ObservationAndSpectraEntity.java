@@ -88,7 +88,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
         tablePanel.clearTable();
         String adql = TAPMetadataMOCService.getInstance().getMetadataAdql(getDescriptor());
         
-        String url = URL.encode(TAPUtils.getTAPQuery(adql, EsaSkyConstants.JSON));
+        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {

@@ -9,7 +9,6 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.SkiesMenuMapper;
@@ -45,7 +44,7 @@ public class SelectSkyPanelPresenter {
         Log.debug("Into SelectSkyPresenter.getHiPSMapsList");
         String url = null;
 
-        url = URL.encode(EsaSkyWebConstants.HIPS_SOURCES_URL);
+        url = EsaSkyWebConstants.HIPS_SOURCES_URL;
         Log.debug("Query [" + url + "]");
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
