@@ -584,8 +584,8 @@
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_SUZAKU">
 		这些观测结果包括了出现在日本ISAS数据记录传输系统(DARTS)中的朱雀号探测器(SUZAKU)的所有公开图像产品。
 		有关SUZAKU任务及其数据产品可访问
-		&lt;a href="//www.astro.isas.jaxa.jp/suzaku/" target="_blank"&gt;
-		www.astro.isas.jaxa.jp/suzaku/&lt;/a&gt;。
+		&lt;a href="//www.darts.isas.jaxa.jp/astro/suzaku/" target="_blank"&gt;
+		www.darts.isas.jaxa.jp/astro/suzaku/&lt;/a&gt;。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-observations#SUZAKU-OBS"
