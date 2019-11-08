@@ -72,6 +72,7 @@ public class MessageDialogBox extends Composite{
         
         movablePanel.add(header);
         movablePanel.add(contentPanel);
+        movablePanel.addElementNotAbleToInitiateMoveOperation(inputWidget.getElement());
         
         initView(inputHeaderText);
     }
