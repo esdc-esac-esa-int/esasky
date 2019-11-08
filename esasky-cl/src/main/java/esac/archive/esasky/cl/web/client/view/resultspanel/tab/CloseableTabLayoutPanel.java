@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -258,8 +259,18 @@ public class CloseableTabLayoutPanel extends Composite {
                 // Update number of observation selected before display the pop-up
                 CommonEventBus.getEventBus().fireEvent(
                         new UpdateNumRowsSelectedEvent(selectedTabId, saveAllView));
-                
-                saveAllView.setProductsDownloadVisible(CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity().hasDownloadableDataProducts());
+                GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
+                List<MetadataDescriptor> metadataDescriptors = entity.getDescriptor().getMetadata();
+                boolean hasProductUrl = false;
+                for(MetadataDescriptor descriptor : metadataDescriptors) {
+                	if(descriptor.getTapName().equals("product_url")) {
+                		hasProductUrl = true;
+                		break;
+                	}
+                }
+                saveAllView.setProductsDownloadVisible(
+                		entity.hasDownloadableDataProducts()
+                		&& hasProductUrl);
                 // Set pop-up position.
                 saveAllView.getSaveOrDownloadDialog().setPopupPositionAndShow(
                         new PopupPanel.PositionCallback() {
