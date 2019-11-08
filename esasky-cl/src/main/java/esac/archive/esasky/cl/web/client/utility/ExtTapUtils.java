@@ -1,7 +1,5 @@
 package esac.archive.esasky.cl.web.client.utility;
 
-import com.google.gwt.http.client.URL;
-
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
