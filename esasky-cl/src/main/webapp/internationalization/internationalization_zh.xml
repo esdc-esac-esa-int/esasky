@@ -912,7 +912,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PSZ">
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PSZ2">
 		普朗克SZ星表是从普朗克数据中提取出来的一个几乎覆盖全天的SZ探测表，源于HFI频率通道图，并使用PCCS星表中相应通道的亮点源（信噪比＞10）遮挡、填充生成。这个星表包含1653个探测数据，其中1203个经由外部数据对比确认为星团。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
