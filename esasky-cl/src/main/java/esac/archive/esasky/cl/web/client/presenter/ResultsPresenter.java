@@ -175,7 +175,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
             @Override
             public void onSendTableClick(final SendTableToEvent clickEvent) {
-                sendFullTableToSamp();
+                sendToSamp();
             }
         });
 
@@ -311,12 +311,9 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
         }
     }
 
-    /**
-     * Send table (all results ) to samp application.
-     */
-    private void sendFullTableToSamp() {
+    private void sendToSamp() {
 
-        Log.debug("[ResultsPresenter] Into sendFullTableToSamp()");
+        Log.debug("[ResultsPresenter] Into sendToSamp()");
 
         HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
         Map.Entry<String, String> tempEntry = getResultsTableURLPerMission();
@@ -340,7 +337,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                     sampUrlsPerMissionMap));
 
             // Display top progress bar...
-            Log.debug("[ResultsPresenter/sendFullTableToSamp()] About to send 'show top progress bar...' event!!!");
+            Log.debug("[ResultsPresenter/sendToSamp()] About to send 'show top progress bar...' event!!!");
 
             CommonEventBus.getEventBus().fireEvent(
                     new ProgressIndicatorPushEvent(SampAction.SEND_VOTABLE.toString(),
