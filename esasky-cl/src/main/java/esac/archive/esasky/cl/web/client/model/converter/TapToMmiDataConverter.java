@@ -48,7 +48,7 @@ public class TapToMmiDataConverter {
                     .getMetadataDescriptorByTapName(tapMetadata.getName());
             if(cmd == null) {
             	labels.add("");
-            } else if(descriptor instanceof ExtTapDescriptor) {
+            } else if(descriptor instanceof ExtTapDescriptor || !cmd.getVisible()) {
             	labels.add(cmd.getLabel());
             } else {
             	labels.add(TextMgr.getInstance().getText(cmd.getLabel()));
