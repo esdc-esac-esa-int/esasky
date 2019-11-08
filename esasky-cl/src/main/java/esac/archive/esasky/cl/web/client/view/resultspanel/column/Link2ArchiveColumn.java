@@ -11,7 +11,6 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
@@ -69,8 +68,7 @@ public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
         for (MatchResult match = regularExpression.exec(descriptor.getArchiveProductURI()); match != null; match = regularExpression
                 .exec(descriptor.getArchiveProductURI())) {
             String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
-            String label = TextMgr.getInstance().getText(rowColumn); //Gets translated label from tanslation_key
-            String valueURI = row.getElementByLabel(label).getValue();
+            String valueURI = row.getElementByTapName(rowColumn).getValue();
             productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
         }
         return descriptor.getArchiveURL() + productURI;
