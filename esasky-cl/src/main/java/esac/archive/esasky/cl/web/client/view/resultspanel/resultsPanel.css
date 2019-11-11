@@ -152,3 +152,7 @@
 .dataPanelHeaderColumnTitle{
 	text-transform: capitalize;
 }
+
+.dataPanelHeaderColumnTitle i {
+    text-transform: none;
+}
