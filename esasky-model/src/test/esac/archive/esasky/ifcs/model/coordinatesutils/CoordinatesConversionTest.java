@@ -87,19 +87,19 @@ public class CoordinatesConversionTest {
     	assertThat(actual, is(closeTo(expected, 0.0001)));
     }
 
-    @Test
-    public void convertGalacticRADMStoDecimal_whenUsingVariousFormats_returnsCorrectDecimal() {
-    	convertGalacticRADMStoDecimal("13:29:52.8", 13.49800000);
-    	convertGalacticRADMStoDecimal("13 29 52.8", 13.49800000);
-    	convertGalacticRADMStoDecimal("20 54 05.689", 20.90158028);
-    	convertGalacticRADMStoDecimal("20", 20.0);
-    	convertGalacticRADMStoDecimal("-20 54 05.689", 339.09841972);
-    }
+//    @Test
+//    public void convertGalacticRADMStoDecimal_whenUsingVariousFormats_returnsCorrectDecimal() {
+//    	convertGalacticRADMStoDecimal("13:29:52.8", 13.49800000);
+//    	convertGalacticRADMStoDecimal("13 29 52.8", 13.49800000);
+//    	convertGalacticRADMStoDecimal("20 54 05.689", 20.90158028);
+//    	convertGalacticRADMStoDecimal("20", 20.0);
+//    	convertGalacticRADMStoDecimal("-20 54 05.689", 339.09841972);
+//    }
     
-    private void convertGalacticRADMStoDecimal(String inputCoords, Double expected){
-    	Double actual = CoordinatesConversion.convertGalacticRAdddmmssToDecimal(inputCoords);
-    	assertThat(actual, is(closeTo(expected, 0.0001)));
-    }
+//    private void convertGalacticRADMStoDecimal(String inputCoords, Double expected){
+//    	Double actual = CoordinatesConversion.convertGalacticRAdddmmssToDecimal(inputCoords);
+//    	assertThat(actual, is(closeTo(expected, 0.0001)));
+//    }
 
     @Test
     public void convertDECDMStoDecimal_whenUsingVariousFormats_returnsCorrectDecimal() {

@@ -21,17 +21,17 @@ public class CoordinateValidatorTest {
     	assertInputType("12 10 12.1 -88 12 1.123", SearchInputType.SPACE_RAhhmmssDECddmmss, CoordinatesFrame.J2000);
     }
     
-    @Test
-    public void checkInputType_Galactic() {
-    	assertInputType("223:10:12.1 -88:12:1.123", SearchInputType.COLUMN_RAdddmmssDECddmmss, CoordinatesFrame.GALACTIC);
-    	assertInputType("223:10:12.1 -88.123", SearchInputType.COLUMN_RAdddmmssDECdeg, CoordinatesFrame.GALACTIC);
-    	assertInputType("223.10 -88:12:1.123", SearchInputType.COLUMN_RAdegDECddmmss, CoordinatesFrame.GALACTIC);
-    	assertInputType("444 12 12 +12 12 12", SearchInputType.NOT_VALID, CoordinatesFrame.GALACTIC);
-    	assertInputType("223.10 -88.123", SearchInputType.RAdegDECdeg, CoordinatesFrame.GALACTIC);
-    	assertInputType("223 10 12.1 -88 12 1.123", SearchInputType.SPACE_RAdddmmssDECddmmss, CoordinatesFrame.GALACTIC);
-    	assertInputType("223 10 12.1 -88.123", SearchInputType.SPACE_RAdddmmssDECdeg, CoordinatesFrame.GALACTIC);
-    	assertInputType("223.10 -88 12 1.123", SearchInputType.SPACE_RAdegDECddmmss, CoordinatesFrame.GALACTIC);
-    }
+//    @Test
+//    public void checkInputType_Galactic() {
+//    	assertInputType("223:10:12.1 -88:12:1.123", SearchInputType.COLUMN_RAdddmmssDECddmmss, CoordinatesFrame.GALACTIC);
+//    	assertInputType("223:10:12.1 -88.123", SearchInputType.COLUMN_RAdddmmssDECdeg, CoordinatesFrame.GALACTIC);
+//    	assertInputType("223.10 -88:12:1.123", SearchInputType.COLUMN_RAdegDECddmmss, CoordinatesFrame.GALACTIC);
+//    	assertInputType("444 12 12 +12 12 12", SearchInputType.NOT_VALID, CoordinatesFrame.GALACTIC);
+//    	assertInputType("223.10 -88.123", SearchInputType.RAdegDECdeg, CoordinatesFrame.GALACTIC);
+//    	assertInputType("223 10 12.1 -88 12 1.123", SearchInputType.SPACE_RAdddmmssDECddmmss, CoordinatesFrame.GALACTIC);
+//    	assertInputType("223 10 12.1 -88.123", SearchInputType.SPACE_RAdddmmssDECdeg, CoordinatesFrame.GALACTIC);
+//    	assertInputType("223.10 -88 12 1.123", SearchInputType.SPACE_RAdegDECddmmss, CoordinatesFrame.GALACTIC);
+//    }
     
     @Test
     public void checkInputType_Target() {

@@ -114,19 +114,19 @@ public class ESASkySearchRegEx {
         {
 
             //
-            put(PATTERN_RAdddmmss_DECddmmss_column, SearchInputType.COLUMN_RAdddmmssDECddmmss);
-
-            //
-            put(PATTERN_RAdddmmss_DECddmmss_space, SearchInputType.SPACE_RAdddmmssDECddmmss);
-            
-            //
-            put( PATTERN_RAdddmmss_DECddmmss_letters, SearchInputType.LETTERS_RAdddmmssDECddmmss);
-
-            //
-            put(PATTERN_RAdddmmss_DECdeg_column, SearchInputType.COLUMN_RAdddmmssDECdeg);
-
-            //
-            put(PATTERN_RAdddmmss_DECdeg_space, SearchInputType.SPACE_RAdddmmssDECdeg);
+//            put(PATTERN_RAdddmmss_DECddmmss_column, SearchInputType.COLUMN_RAdddmmssDECddmmss);
+//
+//            //
+//            put(PATTERN_RAdddmmss_DECddmmss_space, SearchInputType.SPACE_RAdddmmssDECddmmss);
+//            
+//            //
+//            put( PATTERN_RAdddmmss_DECddmmss_letters, SearchInputType.LETTERS_RAdddmmssDECddmmss);
+//
+//            //
+//            put(PATTERN_RAdddmmss_DECdeg_column, SearchInputType.COLUMN_RAdddmmssDECdeg);
+//
+//            //
+//            put(PATTERN_RAdddmmss_DECdeg_space, SearchInputType.SPACE_RAdddmmssDECdeg);
 
         }
     };
@@ -167,10 +167,10 @@ public class ESASkySearchRegEx {
         {
 
             // DEGREES_decimal + RADEC_SEPARATOR + DEC_sex_degrees_space_pattern
-            put(PATTERN_RAdeg_DECddmmss_space, SearchInputType.SPACE_RAdegDECddmmss);
+//            put(PATTERN_RAdeg_DECddmmss_space, SearchInputType.SPACE_RAdegDECddmmss);
 
             // DEGREES_decimal + RADEC_SEPARATOR + DEC_sex_degrees_column_pattern
-            put(PATTERN_RAdeg_DECddmmss_column, SearchInputType.COLUMN_RAdegDECddmmss);
+//            put(PATTERN_RAdeg_DECddmmss_column, SearchInputType.COLUMN_RAdegDECddmmss);
 
             // DEGREES_decimal + RADEC_SEPARATOR + DEGREES_decimal
             put(PATTERN_RAdeg_DECdeg, SearchInputType.RAdegDECdeg);
