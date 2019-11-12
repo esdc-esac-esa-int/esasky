@@ -34,15 +34,6 @@ public class CoordinateValidator {
         boolean matchFound = false;
         // LOGGER.debug("@@@ COORD Validator @@@");
 
-        if (CoordinatesFrame.GALACTIC == cooFrame) {
-            for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainGalactic
-                    .entrySet()) {
-                if (regex.test(currCoordPattern.getKey(), input)) {
-                    return currCoordPattern.getValue();
-                }
-            }
-        }
-
         if (CoordinatesFrame.J2000 == cooFrame) {
             for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainEquatorial
                     .entrySet()) {

@@ -48,12 +48,12 @@ public class CoordinateValidatorTest {
         assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "223.10"), is(true));
         assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "12 10 12.1"), is(true));
         assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "12:10:12.1"), is(true));
-        assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "44 12 12.123"), is(true));
-        assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "44:12:12.123"), is(true));
     }
     
     @Test
     public void isRaFormatValid_whenInvalid_returnsInvalid() {
+    	assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "44 12 12.123"), is(false));
+    	assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "44:12:12.123"), is(false));
     	assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "[GMC2001] 10-45"), is(false));
     	assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "44 12:12.123"), is(false));
     	assertThat(CoordinateValidator.isRaFormatValid(new ServerRegexClass(), "444 12 12.123"), is(false));

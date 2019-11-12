@@ -27,13 +27,9 @@ public class CoordinatesParser {
         if (inputType == SearchInputType.SPACE_RAhhmmssDECddmmss
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
                 || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
-                || inputType == SearchInputType.LETTERS_RAdddmmssDECddmmss
                 || inputType == SearchInputType.SPACE_RAhhmmssDECdeg
-                || inputType == SearchInputType.COLUMN_RAhhmmssDECdeg
-                || inputType == SearchInputType.SPACE_RAdddmmssDECddmmss
-                || inputType == SearchInputType.COLUMN_RAdddmmssDECddmmss
-                || inputType == SearchInputType.SPACE_RAdddmmssDECdeg
-                || inputType == SearchInputType.COLUMN_RAdddmmssDECdeg) {
+                || inputType == SearchInputType.COLUMN_RAhhmmssDECdeg)
+        {
 
             if (CoordinatesFrame.GALACTIC == inputCooFrame) {
                 raDeg = CoordinatesConversion.convertGalacticRAdddmmssToDecimal(raString);
@@ -47,13 +43,9 @@ public class CoordinatesParser {
         if (inputType == SearchInputType.SPACE_RAhhmmssDECddmmss
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
                 || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
-                || inputType == SearchInputType.LETTERS_RAdddmmssDECddmmss
                 || inputType == SearchInputType.SPACE_RAdegDECddmmss
-                || inputType == SearchInputType.COLUMN_RAdegDECddmmss
-                || inputType == SearchInputType.SPACE_RAdddmmssDECddmmss
-                || inputType == SearchInputType.COLUMN_RAdddmmssDECddmmss
-                || inputType == SearchInputType.SPACE_RAdddmmssDECdeg
-                || inputType == SearchInputType.COLUMN_RAdddmmssDECdeg) {
+                || inputType == SearchInputType.COLUMN_RAdegDECddmmss)
+        {
             decDeg = CoordinatesConversion.convertDECddmmssToDecimal(decString);
         } else {
             decDeg = Double.parseDouble(decString);

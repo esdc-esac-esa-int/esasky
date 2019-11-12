@@ -104,32 +104,6 @@ public class ESASkySearchRegEx {
 
     final static String TARGET = "^[0-9]*$|^\\[.+\\].*$|^[0-9].*[\\p{L}]+.*$|^[\\p{L}]+.*$|^[\\p{L}]+\\s[\\p{L}]+$|^[\\p{L}]+\\s[\\p{L}_0-9]+\\*$|^[\\p{L}]+\\s?\\d+$|^[\\p{L}]+\\s?\\+?\\s?[\\p{L}_0-9]+$|^[\\p{L}]+\\s?[\\p{L}]*-?[\\p{L}_0-9]+$";
 
-    public static Map<String, SearchInputType> explainGalactic = new HashMap<String, SearchInputType>() {
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = 1L;
-
-        {
-
-            //
-//            put(PATTERN_RAdddmmss_DECddmmss_column, SearchInputType.COLUMN_RAdddmmssDECddmmss);
-//
-//            //
-//            put(PATTERN_RAdddmmss_DECddmmss_space, SearchInputType.SPACE_RAdddmmssDECddmmss);
-//            
-//            //
-//            put( PATTERN_RAdddmmss_DECddmmss_letters, SearchInputType.LETTERS_RAdddmmssDECddmmss);
-//
-//            //
-//            put(PATTERN_RAdddmmss_DECdeg_column, SearchInputType.COLUMN_RAdddmmssDECdeg);
-//
-//            //
-//            put(PATTERN_RAdddmmss_DECdeg_space, SearchInputType.SPACE_RAdddmmssDECdeg);
-
-        }
-    };
 
     public static Map<String, SearchInputType> explainEquatorial = new HashMap<String, SearchInputType>() {
 
@@ -166,12 +140,6 @@ public class ESASkySearchRegEx {
 
         {
 
-            // DEGREES_decimal + RADEC_SEPARATOR + DEC_sex_degrees_space_pattern
-//            put(PATTERN_RAdeg_DECddmmss_space, SearchInputType.SPACE_RAdegDECddmmss);
-
-            // DEGREES_decimal + RADEC_SEPARATOR + DEC_sex_degrees_column_pattern
-//            put(PATTERN_RAdeg_DECddmmss_column, SearchInputType.COLUMN_RAdegDECddmmss);
-
             // DEGREES_decimal + RADEC_SEPARATOR + DEGREES_decimal
             put(PATTERN_RAdeg_DECdeg, SearchInputType.RAdegDECdeg);
 
@@ -184,12 +152,9 @@ public class ESASkySearchRegEx {
     private static String RA_2 = BEGIN + SIGN + RA_DEGREES_integer_base360 + END;
     private static String RA_3 = BEGIN + SIGN + RA_hhmmss_space_pattern + END;
     private static String RA_4 = BEGIN + SIGN + RA_hhmmss_column_pattern + END;
-    private static String RA_5 = BEGIN + SIGN + RA_dddmmss_space_pattern + END;
-    private static String RA_6 = BEGIN + SIGN + RA_dddmmss_column_pattern + END;
     private static String RA_7 = BEGIN + SIGN + RA_hhmmss_letters_pattern + END;
-    private static String RA_8 = BEGIN + SIGN + RA_dddmmss_letters_pattern + END;
 
-    public static String[] RAValid = { RA_1, RA_2, RA_3, RA_4, RA_5, RA_6, RA_7, RA_8 };
+    public static String[] RAValid = { RA_1, RA_2, RA_3, RA_4,RA_7};
 
     public static String DEC_1 = BEGIN + SIGN + DEC_DEGREES_decimal_base90 + END;
     public static String DEC_2 = BEGIN + SIGN + DEC_DEGREES_integer_base90 + END;
