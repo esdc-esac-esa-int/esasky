@@ -2275,6 +2275,10 @@
 	<text key="stylePanel_removeMedianCheckBox">
 		Sustraer la mediana del MP
 	</text>
+	<text key="sourceLimitDescription_EXTTAP">
+		Mostrando los primeros $sourceLimit$ resultados. Haga zoom para obtener todos los datos disponibles 
+		en una regi&#243;n m&#225;s peque&#241;a.
+	</text>
 	<text key="sourceLimitDescription">
 		Mostrando las primeras $sourceLimit$ fuentes,
 		ordenadas
@@ -2819,12 +2823,18 @@
 		&lt;/a&gt; </text>
 		
 	<text key="treeMapContainer_help_EXT_TAP">
-		En ESASky puede inspeccionar datos de servicios TAP externos que cumplen
-		 los estándares obsCore del Observatorio Virtual. Se muestran los servicios
-		  con datos disponibles para la región visualizada. Al pinchar en uno de ellos
-		   se cargarán los datos correspondientes en el panel de datos, y las huellas
-		    de las observaciones se mostrarán en el cielo.
-	</text>	
+	Con ESASky es posible inspeccionar datos de servicios de datos externos que cumplan con los est&#225;ndares 
+	del Observatorio Virtual.
+	&lt;br&gt;&lt;br&gt;
+	Aquellos servicios que dispongan de datos en la regi&#243;n visualizada aparecen en el diagrama. 
+	Al pinchar en cualquiera de ellos, se presentar&#225;n todos los tipos de productos disponibles en esa
+	 regi&#243;n (im&#225;genes, espectros, etc.). Pinchando en uno de ellos se mostrar&#225;n todas las colecciones
+	  que disponen de ese tipo de producto.
+	&lt;br&gt;&lt;br&gt;
+	Al pinchar en una colecci&#243;n se cargar&#225;n los datos en el panel y se mostrar&#225;n las correspondientes
+	 huellas de las observaciones. Si el campo de visi&#243;n es mayor de 10&#176; se mostrar&#225; el mapa de
+	 cobertura en lugar de las observaciones individuales.
+	</text>
 	
 	<text key="ResizingDataPanel">
 		Re-escalando el Panel de Datos
@@ -2852,12 +2862,9 @@
 		Buscando cat&#225;logos en VizieR, radio de 2 arcmin
 	</text>
 	<text key="commonObservationTablePanel_showingGlobalSkyCoverage">
-		Mostrando la cobertura global de la misi&#243;n.
-
-		Ac&#233;rquese y refresque la tabla
-		para obtener las huellas de las
-		observaciones individuales.
-	</text>
+		Mostrando la cobertura global de este conjunto de datos. Haga zoom y vuelva a cargar la tabla para obtener 
+		las huellas de las observaciones individuales.
+		</text>
 	<text key="WelcomeDialog_checkbox">
 		No volver a mostrar este mensaje
 	</text>
