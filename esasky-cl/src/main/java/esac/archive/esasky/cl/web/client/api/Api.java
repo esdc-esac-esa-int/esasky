@@ -32,6 +32,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.EsaSkyWeb;
 import esac.archive.esasky.cl.web.client.api.model.Footprint;
@@ -43,11 +44,13 @@ import esac.archive.esasky.cl.web.client.api.model.Source;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyColors;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
@@ -100,6 +103,76 @@ public class Api {
 //		AladinLiteWrapper.getAladinLite().addMOC(options, mocData);
 //	}
 	
+	public void getVisibleNpix(int norder) {
+		JavaScriptObject js = AladinLiteWrapper.getAladinLite().getVisibleNpix(norder);
+		Log.debug(js.toString());
+	}
+	
+	public void getAvailableTapServices(JavaScriptObject widget) {
+		JSONObject tapServices = new  JSONObject();
+		int i = 0;
+		for(ExtTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptors()) {
+			if(desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+				tapServices.put(Integer.toString(i), new JSONString(desc.getMission()));
+				i++;
+			}
+		}
+		sendBackToWidget(tapServices, null, widget);
+	}
+	
+	public void getAllAvailableTapMissions(JavaScriptObject widget) {
+		JSONObject tapServices = new  JSONObject();
+		for(ExtTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptors()) {
+			
+			checkAndPutJSONObject(tapServices, desc);
+		}
+		sendBackToWidget(tapServices, null, widget);
+	}
+	
+	private JSONObject checkAndPutJSONObject(JSONObject object, ExtTapDescriptor desc) {
+		if(desc.getParent() == null) {
+			if( !object.containsKey(desc.getMission())) {
+				JSONObject childList = new JSONObject();
+				object.put(desc.getMission(), childList);
+				return childList;
+			}else {
+				return (JSONObject) object.get(desc.getMission());
+			}
+			
+		}else if(desc.getParent().getParent() == null){
+			JSONObject list = checkAndPutJSONObject(object,desc.getParent());
+			if(!list.containsKey(desc.getMission())) {
+				JSONObject childList = new JSONObject();
+				list.put(desc.getMission(), childList);
+				return childList;
+			}else {
+				return (JSONObject) list.get(desc.getMission());
+			}
+			
+		}else {
+			JSONObject list = checkAndPutJSONObject(object,desc.getParent());
+			list.put("missionID", new JSONString(desc.getMission()));
+		}
+		return object;
+	}
+	
+
+	public void getExtTapADQL(String missionId, JavaScriptObject widget) {
+		ExtTapDescriptor desc = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptorByMissionNameCaseInsensitive(missionId);
+		
+		if(desc != null) {
+			JSONObject callbackMessage = new  JSONObject();
+			String adql = TAPExtTapService.getInstance().getMetadataAdql(desc);
+			callbackMessage.put(missionId,new JSONString(adql));
+			sendBackToWidget(callbackMessage, null, widget);
+		}else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Unknown TAP Service: " + missionId + "\n Check getAllAvailableTapMissions() for available TAP Service"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		
+	}
+
 	public void extTapCount(String missionId, JavaScriptObject widget) {
 		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
 		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
@@ -107,21 +180,42 @@ public class Api {
 		if(desc != null ) {
 			controller.getRootPresenter().getDescriptorRepository().updateCount4ExtTap(desc);
 			getExtTapCount(desc, widget);
+		}else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Unknown TAP Service: " + missionId + "\n Check getAvailableTapServices() for available TAP Service"));
+			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
 
-	public void extTap(String missionId) {
+	public void plotExtTap(String missionId, JavaScriptObject widget) {
 		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
 		EntityContext context = EntityContext.EXT_TAP;
 		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(desc != null ) {
 			controller.getRootPresenter().getRelatedMetadata(desc,context);
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Data from TAP: " + missionId + " displayed in the ESASky"));
+			sendBackToWidget(null, callbackMessage, widget);
+			
+		}else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Unknown TAP Service: " + missionId + "\n Check getAllAvailableTapMissions()"
+					+ " or getTapServiceCount() for available TAP Services"));
+			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
 	
-	public void newExtTapService(String name, String tapUrl, String tapTable, String adql) {
-		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, tapTable, adql);
+	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit) {
+		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, dataOnlyInView, adql);
+		if(color == "") {
+			color = EsaSkyColors.getNext();
+		}
+		if(limit == -1) {
+			limit = 3000;
+		}
+		descriptor.setHistoColor(color);
+		descriptor.setSourceLimit(limit);
 		controller.getRootPresenter().getEntityRepository().createExtTapEntity(descriptor, EntityContext.EXT_TAP);
 		controller.getRootPresenter().getRelatedMetadata(descriptor, EntityContext.EXT_TAP);
 	}
@@ -183,7 +277,7 @@ public class Api {
 		}
 		else {
 			JSONObject callbackMessage = new JSONObject();
-			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getObservationCount() for available mission names"));
+			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getObservationsCount() for available mission names"));
 			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
@@ -272,8 +366,14 @@ public class Api {
 		if(!countStatus.hasMoved(descriptor.getMission())) {
 			JSONObject obsCount = new  JSONObject();
 			
-			int c = countStatus.getDetailsByKey(descriptor.getMission()).getCount();
-			obsCount.put(descriptor.getMission(), new JSONNumber(c));
+			for(String key : countStatus.getKeys()) {
+				if(key.toLowerCase().startsWith(descriptor.getMission().toLowerCase())){
+					int c = countStatus.getDetailsByKey(key).getCount();
+					if(c == 1) {
+						obsCount.put(key, new JSONNumber(c));
+					}
+				}
+			}
 			
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 			sendBackToWidget(obsCount, widget);
@@ -284,8 +384,14 @@ public class Api {
 				public void onCountUpdate(int newCount) {
 					JSONObject obsCount = new  JSONObject();
 					
-					int c = countStatus.getDetailsByKey(descriptor.getMission()).getCount();
-					obsCount.put(descriptor.getMission(), new JSONNumber(c));
+					for(String key : countStatus.getKeys()) {
+						if(key.toLowerCase().startsWith(descriptor.getMission().toLowerCase())){
+							int c = countStatus.getDetailsByKey(key).getCount();
+							if(c == 1) {
+								obsCount.put(key, new JSONNumber(c));
+							}
+						}
+					}
 					
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 					sendBackToWidget(obsCount, widget);

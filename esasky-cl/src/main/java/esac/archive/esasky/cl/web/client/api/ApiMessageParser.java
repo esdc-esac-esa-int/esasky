@@ -246,21 +246,56 @@ public class ApiMessageParser {
 				instance.@esac.archive.esasky.cl.web.client.api.Api::showCoordinateGrid(Z)(msg.content.show);
 				break;	
 				
-			case 'extTap':
-				console.log('ExtTap event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::extTap(Ljava/lang/String;)(msg.content.tapService);
+			case 'plotTapService':
+				console.log('plotTapService event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::plotExtTap(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+				(msg.content.tapService, e);
 				break;	
 				
-			case 'extTapCount':
-				console.log('ExtTapCount event captured');
+			case 'getTapServiceCount':
+				console.log('getTapServiceCount event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::extTapCount(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 					(msg.content.tapService, e);
 				break;	
 
-			case 'newExtTapService':
-				console.log('newExtTapService event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::newExtTapService(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
-					(msg.content.name, msg.content.tapUrl, msg.content.tapTable, msg.content.adql);
+			case 'getAvailableTapServices':
+				console.log('getAvailableTapServices event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::getAvailableTapServices(Lcom/google/gwt/core/client/JavaScriptObject;)
+					(e);
+				break;	
+
+			case 'getAllAvailableTapMissions':
+				console.log('getAllAvailableTapMissions event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::getAllAvailableTapMissions(Lcom/google/gwt/core/client/JavaScriptObject;)
+					(e);
+				break;	
+				
+			case 'getTapADQL':
+				console.log('getTapADQL event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::getExtTapADQL(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.tapService, e);
+				break;	
+
+			case 'plotTapServiceWithDetails':
+				console.log('plotTapServiceWithDetails event captured');
+				if(!msg.content.hasOwnProperty('color')){
+					msg.content['color'] = "";
+				}
+				if(!msg.content.hasOwnProperty('limit')){ 
+					msg.content['limit'] = -1;
+				}
+				if(!msg.content.hasOwnProperty('dataOnlyInView')){ 
+					msg.content['dataOnlyInView'] = true;
+				}
+				instance.@esac.archive.esasky.cl.web.client.api.Api::plotExtTapWithDetails(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;I)
+					(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit);
+				
+				break;	
+
+			case 'getVisibleNpix':
+				console.log('getVisibleNpix event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::getVisibleNpix(I)
+					(msg.content.norder);
 				break;	
 				
 //			case 'addMOC':
