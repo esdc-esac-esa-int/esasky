@@ -149,7 +149,8 @@ public class TextMgr {
 		texts = new HashMap<String, String>();
 		
 		//Requests the translations file with the "v" parameter to avoid caching issues if EsaSky version changes
-		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName(), this);
+		//TODO use build number and not hard coded version number
+		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName() + "3.2", this);
 		
 		GUISessionStatus.setCurrentLanguage(langCode);
 	}
