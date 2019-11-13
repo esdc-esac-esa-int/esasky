@@ -402,7 +402,7 @@ public class MainPresenter {
     }
     
     private void getExtTapList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getCatalogsList");
+        Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
         descriptorRepo.initExtDescriptors(new CountObserver() {
             @Override
             public void onCountUpdate(int newCount) {

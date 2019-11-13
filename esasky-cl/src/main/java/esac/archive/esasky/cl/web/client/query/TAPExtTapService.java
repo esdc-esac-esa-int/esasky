@@ -30,16 +30,16 @@ public class TAPExtTapService extends AbstractMetadataService {
     public String getAdql(ExtTapDescriptor descriptor, String selectADQL) {
     	String adql = selectADQL;
     	
-    	adql += " from " + descriptor.getTapTable() + " WHERE ";
+    	adql += " from " + descriptor.getTapTable();
     	
     	if(descriptor.getSearchFunction().equals("polygonIntersect")) {
-    		adql += polygonIntersectSearch(descriptor);
+    		adql +=  " WHERE " + polygonIntersectSearch(descriptor);
     		
     	}else if(descriptor.getSearchFunction().equals("cointainsPoint")){
-    		adql += cointainsPointSearch(descriptor);
+    		adql += " WHERE " + cointainsPointSearch(descriptor);
     		
-	    }else {
-	    	adql += raDecCenterSearch(descriptor);
+	    }else if(descriptor.getSearchFunction().equals("raDecCenterSearch") ){
+	    	adql += " WHERE " + raDecCenterSearch(descriptor);
 	    }
     	
     	if(descriptor.getWhereADQL() != null) {

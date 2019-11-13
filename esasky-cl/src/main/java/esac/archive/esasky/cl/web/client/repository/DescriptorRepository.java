@@ -253,11 +253,13 @@ public class DescriptorRepository {
 		});
 	}
 	
-	public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, String tapTable, String adql) {
+	public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {
 		ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(name);
 		if(descriptor == null) {
 			descriptor = new ExtTapDescriptor();
 		}
+		
+		
 		
 		descriptor.setGuiShortName(name);
 		descriptor.setGuiLongName(name);
@@ -266,10 +268,15 @@ public class DescriptorRepository {
 		descriptor.setTapRaColumn("s_ra");
 		descriptor.setTapDecColumn("s_dec");
 		descriptor.setTapSTCSColumn("s_region");
+		descriptor.setFovLimit(180.0);
+		descriptor.setSourceLimit(3000);
 		descriptor.setTapUrl(tapUrl);
-		descriptor.setTapTable(tapTable);
-		descriptor.setUniqueIdentifierField("s_region");
-		descriptor.setSearchFunction("raDecCenter");
+		descriptor.setUniqueIdentifierField("obs_id");
+		if(dataOnlyInView) {
+			descriptor.setSearchFunction("polygonIntersect");
+		}else {
+			descriptor.setSearchFunction("");
+		}
 		descriptor.setResponseFormat("VOTable");
 		descriptor.setInBackend(false);
 		
@@ -278,8 +285,11 @@ public class DescriptorRepository {
 		if(whereSplit.length > 1) {
 			descriptor.setWhereADQL(whereSplit[1]);
 		}
-		descriptor.setSelectADQL(whereSplit[0]);
+		String[] fromSplit = adql.split("FROM");
+		descriptor.setSelectADQL(fromSplit[0]);
 		
+		String[] tapTable = fromSplit[1].split("\\s");
+		descriptor.setTapTable(tapTable[1]);
 		extTapDescriptors.getDescriptors().add(descriptor);
 		return descriptor;
 	}

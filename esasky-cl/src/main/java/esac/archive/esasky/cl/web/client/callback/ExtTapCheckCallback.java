@@ -76,7 +76,6 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getMission()
 		        	+ ": [" + totalCount + "] results found");
 		        
-		        countStatus.updateCount();
 		        
 		        List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
 		        List<Integer> counts = new LinkedList<Integer>();
@@ -135,6 +134,8 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        					if(!descriptors.contains(collectionDesc)) {
 		        						descriptors.add(collectionDesc);
 		        						counts.add(1);
+		        						countStatus.setCountDetails(collectionDesc.getMission(), 1, System.currentTimeMillis(),
+		        				        		skyViewPosition);
 		        					}
 	        					}else {
 		        					String extra = descriptor.getCreditedInstitutions() + "-" + collection + "-" + productType;
@@ -151,6 +152,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        	}
 		        }
 	        	
+		        countStatus.updateCount();
 		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
 			}
 		});

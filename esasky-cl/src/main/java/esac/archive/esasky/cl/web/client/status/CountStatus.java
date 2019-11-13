@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.status;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -33,6 +34,10 @@ public class CountStatus {
 
     public CountDetails getDetailsByKey(String missionId) {
         return countStatus.get(missionId.toLowerCase());
+    }
+
+    public Set<String> getKeys() {
+    	return countStatus.keySet();
     }
 
     public void setCountDetails(String missionId, Integer count, Long updateTime, SkyViewPosition skyViewPosition) {
