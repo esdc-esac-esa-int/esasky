@@ -1207,13 +1207,14 @@ public abstract class AbstractTablePanel extends Composite {
 	public void exportAsCSV() {
 		String csvData = "";
 		final String separator = ",";
+		TapRowList rowList = getEntity().getMetadata();
 
 		// Adds headers to csv
 		int addedCols = 0;
-		for (int cellIndex = 0; cellIndex < table.getColumnCount(); cellIndex++) {
-			final String label = getLabelTextFromHeader(table.getHeader(cellIndex));
+		for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+			final String label = rowList.getMetadata().get(cellIndex).getName();
 			if (!label.isEmpty()) {
-				csvData += ((addedCols == 0) ? "" : separator) + getLabelTextFromHeader(table.getHeader(cellIndex));
+				csvData += ((addedCols == 0) ? "" : separator) + label;
 				addedCols++;
 			}
 			
@@ -1227,17 +1228,21 @@ public abstract class AbstractTablePanel extends Composite {
 		// Adds data to csv
 		for (TableRow row : setToDownload) {
 			boolean firstCellOfRow = true;
-			for (TableElement cell : row.getElements()) {
-				if(firstCellOfRow) {
-					firstCellOfRow = false;
-				} else {
-					csvData += separator;
-				}
-				csvData += "\"";
-				if(cell.getValue() != null) {
-					csvData += cell.getValue().toString() + "\"";
-				}else {
+			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+				String label = rowList.getMetadata().get(cellIndex).getName();
+				if (!label.isEmpty()) {
+					TableElement cell = row.getElementByLabel(label);
+					if(firstCellOfRow) {
+						firstCellOfRow = false;
+					} else {
+						csvData += separator;
+					}
 					csvData += "\"";
+					if(cell.getValue() != null) {
+						csvData += cell.getValue().toString() + "\"";
+					}else {
+						csvData += "\"";
+					}
 				}
 			}
 			csvData += "\n";
@@ -1249,6 +1254,8 @@ public abstract class AbstractTablePanel extends Composite {
 	public void exportAsVOTABLE() {
 
 		String votData = "";
+		TapRowList rowList = getEntity().getMetadata();
+
 
 		// Add VOT XML Schema
 		votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
@@ -1256,11 +1263,11 @@ public abstract class AbstractTablePanel extends Composite {
 		votData += "<TABLE>\n";
 
 		// Adds headers to xml
-		for (int cellIndex = 0; cellIndex < table.getColumnCount(); cellIndex++) {
-			final String label = getLabelTextFromHeader(table.getHeader(cellIndex));
+		for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+			String label = rowList.getMetadata().get(cellIndex).getName();
 			if (!label.isEmpty()) {
 				votData += "<FIELD arraysize=\"*\" datatype=\"char\" name=\""
-						+ getLabelTextFromHeader(table.getHeader(cellIndex)) + "\"/>\n";
+						+ label + "\"/>\n";
 			}
 		}
 
@@ -1275,7 +1282,9 @@ public abstract class AbstractTablePanel extends Composite {
 		// Adds data to csv
 		for (TableRow row : setToDownload) {
 			votData += "    <TR>\n";
-			for (TableElement cell : row.getElements()) {
+			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+				String label = rowList.getMetadata().get(cellIndex).getName();
+				TableElement cell = row.getElementByLabel(label);
 				votData += "        <TD>"
 						+ cell.getValue()
 						+ "</TD>\n";
