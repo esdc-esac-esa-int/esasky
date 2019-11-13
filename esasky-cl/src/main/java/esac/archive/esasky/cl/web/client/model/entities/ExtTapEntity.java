@@ -280,7 +280,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     		}
     		metaDatadescriptor.setLabel(tmd.getName());
     		metaDatadescriptor.setVisible(true);
-    		metaDatadescriptor.setMaxDecimalDigits(3);
+    		metaDatadescriptor.setMaxDecimalDigits(4);
     		metaList.add(metaDatadescriptor.getIndex(),metaDatadescriptor);
     	}
     	descriptor.setMetadata(metaList);
