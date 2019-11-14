@@ -388,7 +388,7 @@ public class TreeMap extends Chart {
         addNoResultsGhostPoint();
     }
 
-    private void addNoResultsGhostPoint() {
+    protected void addNoResultsGhostPoint() {
         ghostPoint.setNoResults();
         if (!ghostPoint.isRemoved()) {
             return;

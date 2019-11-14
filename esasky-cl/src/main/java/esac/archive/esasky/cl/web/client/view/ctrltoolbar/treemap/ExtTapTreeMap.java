@@ -27,6 +27,7 @@ public class ExtTapTreeMap extends TreeMap {
 	private EntityContext context;
     private HashMap<String, Point> allPointMap = new HashMap<>();
     private boolean isColoredByParent = true;
+    private boolean firstResultReceived = false;
     
     private List<TreeMapHeaderChanged> headerObservers = new LinkedList<TreeMapHeaderChanged>();
 	
@@ -255,8 +256,21 @@ public class ExtTapTreeMap extends TreeMap {
 
         if (count > 0) {
             removeGhostPoint();
+            firstResultReceived = true;
         } else {
             makeSureGhostPointIsInGraph(pointId);
+        }
+    }
+    
+    protected void makeSureGhostPointIsInGraph(String pointId) {
+        for (PointInformation pointInformation : allPoints.values()) {
+            if (!pointInformation.equals(allPoints.get(pointId))
+                    && pointInformation.count > 0) {
+                return;
+            }
+        }
+        if(firstResultReceived) {
+        	addNoResultsGhostPoint();
         }
     }
     
