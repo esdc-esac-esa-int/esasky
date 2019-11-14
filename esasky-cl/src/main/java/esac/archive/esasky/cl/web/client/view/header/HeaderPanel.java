@@ -647,7 +647,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			coordinateFrameFull.setVisible(false);
 			coordinateFrameFirstLetter.setVisible(true);
 		} else {
-			coordinateContainer.setWidth("332px");
+			coordinateContainer.setWidth("355px");
 			coordinateFrameFull.setVisible(true);
 			coordinateFrameFirstLetter.setVisible(false);
 		}

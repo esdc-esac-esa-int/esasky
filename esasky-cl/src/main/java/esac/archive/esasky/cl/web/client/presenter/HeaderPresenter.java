@@ -119,7 +119,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
-				view.setFov(formatFov(fovEvent.getFov()));
+				view.setFov("FoV: " + formatFov(fovEvent.getFov()) + " X " +  formatFov(fovEvent.getFovDec())); 
 			}
 		});
 
@@ -493,16 +493,33 @@ public class HeaderPresenter {
 	}
 
 	private String formatFov(double fovDeg) {
-		NumberFormat format = NumberFormat.getFormat("#00.00");
 		if(fovDeg >= 100) {
-			format = NumberFormat.getFormat("#00");
-			return "FoV: " + format.format(fovDeg) + "&deg;";
-		}else if(fovDeg >= 1) {
-			return "FoV: " + format.format(fovDeg) + "&deg;";
-		} else if (fovDeg * 60 >= 1){
-			return "FoV: " + format.format(fovDeg * 60) + "'";
+			NumberFormat format = NumberFormat.getFormat("#00");
+			return format.format(fovDeg) + "&deg;";
+		}
+		else if(fovDeg >= 10.0) {
+			NumberFormat format = NumberFormat.getFormat("#00");
+				return format.format(fovDeg) + "&deg;";
+				
+		}else if(fovDeg >= 1.0) {
+			NumberFormat format = NumberFormat.getFormat("#0.0");
+			return format.format(fovDeg) + "&deg;";
+			
+		} else if (fovDeg * 6 >= 1.0){
+			NumberFormat format = NumberFormat.getFormat("#00");
+			return format.format(fovDeg * 60) + "'";
+			
+		} else if (fovDeg * 60 >= 1.0){
+			NumberFormat format = NumberFormat.getFormat("#0.0");
+			return format.format(fovDeg * 60) + "'";
+			
+		}else if (fovDeg * 600 >= 1.0){
+			NumberFormat format = NumberFormat.getFormat("#00");
+			return format.format(fovDeg * 60 * 60) + "''";
+			
 		} else {
-			return "FoV: " + format.format(fovDeg * 60 * 60) + "''";
+			NumberFormat format = NumberFormat.getFormat("#0.0");
+			return format.format(fovDeg * 60 * 60) + "''";
 		}
 	}
 
