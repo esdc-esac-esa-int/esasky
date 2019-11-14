@@ -546,7 +546,8 @@ public class DescriptorRepository {
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
-			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs, countRequestHandler.getProgressIndicatorMessage()));
+			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs,
+					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
 		}catch (RequestException e) {
 			Log.error(e.getMessage());
 			Log.error("Error fetching JSON data from server");
@@ -567,7 +568,8 @@ public class DescriptorRepository {
 		
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		try {
-			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs, countRequestHandler.getProgressIndicatorMessage()));
+			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs,
+					countRequestHandler.getProgressIndicatorMessage() +  " " + descriptor.getMission()));
 		}catch (RequestException e) {
 			Log.error(e.getMessage());
 			Log.error("Error fetching JSON data from server");
