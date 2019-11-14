@@ -64,43 +64,36 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     @Override
     public void fetchData(final AbstractTablePanel tablePanel) {
         if(!getCountStatus().hasMoved(descriptor.getMission())) {
-        	int mocLimit = descriptor.getMocLimit();
-        	int count = getCountStatus().getCount(descriptor.getMission());
-        	
-        	if (DeviceUtils.isMobile()){
-        		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
-        	}
-        	
-        	if (mocLimit > 0 && count > mocLimit) {
-        		defaultEntity.setShapeBuilder(new MocBuilder());
-        		getMocMetadata(tablePanel);
-        	}else {
-        		defaultEntity.setShapeBuilder(shapeBuilder);
-        		defaultEntity.fetchData(tablePanel);
-        	}
+        	fetchData2(tablePanel);
         }
         
         getCountStatus().registerObserver(new CountObserver() {
 			@Override
 			public void onCountUpdate(int newCount) {
-	        	int mocLimit = descriptor.getMocLimit();
-
-				if (DeviceUtils.isMobile()){
-	        		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
-	        	}
-	        	
-	        	if (mocLimit > 0 && newCount > mocLimit) {
-	        		defaultEntity.setShapeBuilder(new MocBuilder());
-	        		getMocMetadata(tablePanel);
-	        	}else {
-	        		defaultEntity.setShapeBuilder(shapeBuilder);
-	        		defaultEntity.fetchData(tablePanel);
-	        	}
-				
+				fetchData2(tablePanel);				
 				getCountStatus().unregisterObserver(this);
 			}
 		});
     }
+    
+    private void fetchData2(AbstractTablePanel tablePanel) {
+    	int mocLimit = descriptor.getMocLimit();
+    	int count = getCountStatus().getCount(descriptor.getMission());
+    	
+    	if (DeviceUtils.isMobile()){
+    		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+    	}
+    	
+    	if (mocLimit > 0 && count > mocLimit) {
+    		defaultEntity.setShapeBuilder(new MocBuilder());
+    		getMocMetadata(tablePanel);
+    	}else {
+    		defaultEntity.setShapeBuilder(shapeBuilder);
+    		defaultEntity.fetchData(tablePanel);
+    	}
+    }
+    
+
     
     private void getMocMetadata(final AbstractTablePanel tablePanel) {
         Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
