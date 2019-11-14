@@ -2374,17 +2374,13 @@
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
 		<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external data Services
-		which conforms with Virtual Observatory (IVOA) standards.
-		
-		Services which have any data in the current region will appear
-		in the tree map. Clicking on any service will show the available 
-		dataproduct types in the visible region (Images, Spectra etc). Clicking
-		on a prdouct type will show the available collections these product exist in.
-		
-		Clicking on the collection/facility will load the data into the data panel and display
-		the corresponding footprints in the sky. For FoV larger than 10° a map of observation coverage (MOC)
-		 of the available regions will be shown instead.
+		In ESASky you can now explore data from external data Services which conform with Virtual Observatory (IVOA)
+		 standards. Services that have any data in the displayed region will appear in the tree map. 
+		 Clicking on any service will show the available dataproduct types in the displayed region (Images, Spectra etc). 
+		 Clicking on a product type will show the available collections these products exist in. 
+		 Clicking on the collection/facility will load the data into the data panel and display the 
+		 corresponding footprints in the sky. For a FoV larger than 10° a map of observation coverage (MOC) 
+		 will be displayed instead.
 		</text>
 	<text key="ResizingDataPanel">
 		Resizing Data Panel

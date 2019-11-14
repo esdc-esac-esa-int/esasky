@@ -11,7 +11,7 @@ public class ObsCoreCollection {
         put("spectrum", "Spectra");
         put("cube", "Cubes");
         put("timeseries", "Time series");
-        put("http://www.opencadc.org/caom2/DataProductType#catalog", "Catalogs");
+        put("http://www.opencadc.org/caom2/DataProductType#catalog", "Catalogues");
         put("measurements", "Measurements");
         put("visibility", "Visibility");
     }};
