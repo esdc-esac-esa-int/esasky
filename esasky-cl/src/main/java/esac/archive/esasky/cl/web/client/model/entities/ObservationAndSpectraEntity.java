@@ -4,8 +4,11 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
@@ -17,10 +20,12 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
+import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.CommonObservationsTablePanel;
 
@@ -57,30 +62,45 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     }
     
     @Override
-    public void fetchData(AbstractTablePanel tablePanel) {
-    	if(showMocData()) {
-    		defaultEntity.setShapeBuilder(new MocBuilder());
-    		getMocMetadata(tablePanel);
-    	} else {
-    		defaultEntity.setShapeBuilder(shapeBuilder);
-    		super.fetchData(tablePanel);
-    	}
-    }
-    
-    private boolean showMocData() {
-        int mocLimit = descriptor.getMocLimit();
-        int count = getCountStatus().getCount(descriptor.getMission());
-        
-        if (DeviceUtils.isMobile()){
-            mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+    public void fetchData(final AbstractTablePanel tablePanel) {
+        if(!getCountStatus().hasMoved(descriptor.getMission())) {
+        	int mocLimit = descriptor.getMocLimit();
+        	int count = getCountStatus().getCount(descriptor.getMission());
+        	
+        	if (DeviceUtils.isMobile()){
+        		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+        	}
+        	
+        	if (mocLimit > 0 && count > mocLimit) {
+        		defaultEntity.setShapeBuilder(new MocBuilder());
+        		getMocMetadata(tablePanel);
+        	}else {
+        		defaultEntity.setShapeBuilder(shapeBuilder);
+        		defaultEntity.fetchData(tablePanel);
+        	}
         }
         
-        if (mocLimit > 0 && count > mocLimit) {
-            return true;
-        }
-        return false;
-    }
+        getCountStatus().registerObserver(new CountObserver() {
+			@Override
+			public void onCountUpdate(int newCount) {
+	        	int mocLimit = descriptor.getMocLimit();
 
+				if (DeviceUtils.isMobile()){
+	        		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+	        	}
+	        	
+	        	if (mocLimit > 0 && newCount > mocLimit) {
+	        		defaultEntity.setShapeBuilder(new MocBuilder());
+	        		getMocMetadata(tablePanel);
+	        	}else {
+	        		defaultEntity.setShapeBuilder(shapeBuilder);
+	        		defaultEntity.fetchData(tablePanel);
+	        	}
+				
+				getCountStatus().unregisterObserver(this);
+			}
+		});
+    }
     
     private void getMocMetadata(final AbstractTablePanel tablePanel) {
         Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
