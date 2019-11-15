@@ -145,7 +145,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
         Window.setMargin("0px");
         initWidget(skeletonPanel);
         
-        leftBanner.setHeight("100%");
+//        leftBanner.setHeight("100%");
         leftBanner.setWidth("50px");
         RootPanel.get().add(leftBanner);
     }
@@ -153,7 +153,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
     @Override 
     protected void onLoad() {
     	super.onLoad();
-        rightSideBanner.setHeight("100%");
+//        rightSideBanner.setHeight("100%");
         rightSideBanner.setWidth("50px");
         RootPanel.get().add(rightSideBanner);
         if(!hideWelcome) {
