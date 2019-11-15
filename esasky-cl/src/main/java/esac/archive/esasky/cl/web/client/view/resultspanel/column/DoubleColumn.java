@@ -46,6 +46,9 @@ public class DoubleColumn extends SortableColumn<String> {
 			}
 			return prefix + scientificNumberFormat.format(Double.parseDouble(value));
 		}
+		if(value.equals("-Infinity")) {
+			return prefix + value;
+		}
 		return prefix + numberFormat.format(Double.parseDouble(value));
 	}
 
