@@ -42,7 +42,7 @@ public class PublicationsBySourceCallback extends JsonRequestCallback {
         }
     	
         TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-        TapRowList rowList = mapper.read(response.getText());
+        TapRowList rowList = mapper.read(response.getText().replace("\\u0019", "'"));
 
         List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList, entity.getDescriptor());
         entity.setMetadata(rowList);
