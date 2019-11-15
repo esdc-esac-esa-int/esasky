@@ -1383,7 +1383,7 @@ public abstract class AbstractTablePanel extends Composite {
 		fireSelectionEvent(gettingSelected, changedRows);
 	}
 
-	private void fireSelectionEvent(boolean gettingSelected, Set<ShapeId> changedRows) {
+	protected void fireSelectionEvent(boolean gettingSelected, Set<ShapeId> changedRows) {
 		if(gettingSelected) {
 			getEntity().selectShapes(changedRows);
 		} else {

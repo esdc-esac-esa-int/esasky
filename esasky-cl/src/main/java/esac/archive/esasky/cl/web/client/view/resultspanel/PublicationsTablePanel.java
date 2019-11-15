@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import com.google.gwt.user.cellview.client.RowHoverEvent;
 
@@ -53,6 +54,13 @@ public class PublicationsTablePanel extends SourcesTablePanel {
 					break;
 				}
 			}
+		}
+	}
+	
+	@Override
+	protected void fireSelectionEvent(boolean gettingSelected, Set<ShapeId> changedRows) {
+		if(gettingSelected) {
+			getEntity().selectShapes(changedRows);
 		}
 	}
 	
