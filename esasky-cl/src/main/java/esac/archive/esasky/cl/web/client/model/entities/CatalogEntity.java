@@ -181,10 +181,13 @@ public class CatalogEntity implements GeneralEntityInterface{
 			String orderBy = getOrderByDescription();
 			if (sourceLimitDescription.contains("|")) {
 				String[] sourceLimitArr = sourceLimitDescription.split("\\|");
-				orderBy = sourceLimitArr[1];
+				orderBy = TextMgr.getInstance().getText(sourceLimitArr[1]);
 				sourceLimitDescription = sourceLimitArr[0];
 			} 
-			sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", getSourceLimit() + "").replace("$orderBy$", orderBy).replace("$mostOrLeast$", orderBy.toLowerCase());
+			sourceLimitDescription = TextMgr.getInstance().getText(sourceLimitDescription)
+					.replace("$sourceLimit$", getSourceLimit() + "")
+					.replace("$orderBy$", orderBy.toLowerCase())
+					.replace("$mostOrLeast$", orderBy.toLowerCase());
 			CommonEventBus.getEventBus().fireEvent( 
 					new ProgressIndicatorPushEvent(getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
 			sourceLimitNotificationTimer.schedule(6000);
