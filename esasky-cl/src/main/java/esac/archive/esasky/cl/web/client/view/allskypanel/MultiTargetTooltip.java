@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -167,6 +168,27 @@ public class MultiTargetTooltip extends Tooltip {
             Log.error(e.getMessage());
             Log.error("Error calling " + url);
         }
+    }
+    
+    @Override
+    public void hide() {
+    	super.hide();
+    	deselectSource(source);
+    }
+    
+    private native void deselectSource(JavaScriptObject object) /*-{
+	    object.deselect();
+    	object["catalog"].reportChange();
+    }-*/;
+    private native void selectSource(JavaScriptObject object) /*-{
+	    object.select();
+	    object["catalog"].reportChange();
+    }-*/;
+    
+    @Override
+    public void show() {
+    	super.show();
+    	selectSource(source);
     }
     
     private void setNearbyTarget(String targetName) {
