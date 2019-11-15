@@ -149,7 +149,12 @@ public class AllSkyPresenter {
 				final Shape obj = hoverEvent.getShapeobj();
 				if (obj != null) {
 					if (obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PUBLICATION.toString())) {
-						AllSkyPresenter.this.view.showSourceTooltip(obj);
+						try {
+							AllSkyPresenter.this.view.showSourceTooltip(obj);
+						} catch(Exception e) {
+							//TODO Temporary fix for 3.2. We are receiving incorrect hover event when sources are behind hips
+							Log.warn("Failed to show source tooltip on hover");
+						}
 					}
 				}
 			}
