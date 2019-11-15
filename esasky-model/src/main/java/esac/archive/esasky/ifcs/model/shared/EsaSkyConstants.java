@@ -264,8 +264,8 @@ public class EsaSkyConstants {
     public static final List<SimpleEntry<String, String>> AVAILABLE_LANGUAGES = new LinkedList<SimpleEntry<String, String>>(
     		Arrays.asList(
     				new SimpleEntry<String, String>("en", "En"),
-    				new SimpleEntry<String, String>("es", "Es"),
-    				new SimpleEntry<String, String>("zh", "中文")
+    				new SimpleEntry<String, String>("es", "Es")
+//    				,new SimpleEntry<String, String>("zh", "中文")
     				)
     		);
     
