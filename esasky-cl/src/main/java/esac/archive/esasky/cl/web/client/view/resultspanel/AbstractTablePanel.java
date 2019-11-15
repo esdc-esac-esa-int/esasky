@@ -369,6 +369,14 @@ public abstract class AbstractTablePanel extends Composite {
 		this.table.setColumnWidth(checkColumn,
 				TableColumnHelper.COLUMN_WIDTH_CHECKBOX_DEFAULT_SIZE, Unit.PX);
 		
+		table.registerTableWidthObserver(new TableWidthChanged() {
+			
+			@Override
+			public void onTableWidthChanged() {
+				reactivateActiveFilterButtonStyles();
+			}
+		});
+		
 		initWidget(container);
 		
 		DOM.sinkEvents(getElement(), Event.ONMOUSEDOWN | Event.ONMOUSEMOVE | Event.ONCLICK
@@ -1214,7 +1222,7 @@ public abstract class AbstractTablePanel extends Composite {
 		for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
 			final String label = rowList.getMetadata().get(cellIndex).getName();
 			if (!label.isEmpty()) {
-				csvData += ((addedCols == 0) ? "" : separator) + label;
+				csvData += ((addedCols == 0) ? "" : separator) + label.replace("\"", "\"\"");
 				addedCols++;
 			}
 			
@@ -1239,7 +1247,7 @@ public abstract class AbstractTablePanel extends Composite {
 					}
 					csvData += "\"";
 					if(cell.getValue() != null) {
-						csvData += cell.getValue().toString() + "\"";
+						csvData += cell.getValue().toString().replace("\"", "\"\"") + "\"";
 					}else {
 						csvData += "\"";
 					}
@@ -1256,7 +1264,6 @@ public abstract class AbstractTablePanel extends Composite {
 		String votData = "";
 		TapRowList rowList = getEntity().getMetadata();
 
-
 		// Add VOT XML Schema
 		votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
 		votData += "<RESOURCE type=\"" + getEntity().getEsaSkyUniqId() + "\">\n";
@@ -1267,7 +1274,8 @@ public abstract class AbstractTablePanel extends Composite {
 			String label = rowList.getMetadata().get(cellIndex).getName();
 			if (!label.isEmpty()) {
 				votData += "<FIELD arraysize=\"*\" datatype=\"char\" name=\""
-						+ label + "\"/>\n";
+						+ label.replace("&", "&amp;")
+						.replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;") + "\"/>\n";
 			}
 		}
 
@@ -1286,7 +1294,7 @@ public abstract class AbstractTablePanel extends Composite {
 				String label = rowList.getMetadata().get(cellIndex).getName();
 				TableElement cell = row.getElementByLabel(label);
 				votData += "        <TD>"
-						+ cell.getValue()
+						+ cell.getValue().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
 						+ "</TD>\n";
 			}
 			votData += "    </TR>\n";

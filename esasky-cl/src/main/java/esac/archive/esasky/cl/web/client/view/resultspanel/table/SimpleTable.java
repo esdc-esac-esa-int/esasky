@@ -121,6 +121,9 @@ public class SimpleTable<T extends TableRow> extends ESASkyDataGrid<T> {
     public void onMouseUp() {
     	if(columnEdgePressed) {
     		redrawHeaders();
+			for(TableWidthChanged observer : observers){
+	    			observer.onTableWidthChanged();	
+			}
     	}
     	columnEdgePressed = false;
     }
