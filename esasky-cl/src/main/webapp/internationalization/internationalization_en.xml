@@ -921,6 +921,24 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AKARI-IRC-SC">
+		The AKARI IRC Point Source Catalogue Version 1.0 provides positions 
+		and fluxes of 870,973 sources (844,649 sources in 9 micron band and 
+		194,551 sources in 18 micron band) in the Mid-Infrared wavelengths.
+		&lt;br&gt;&lt;br&gt;
+		
+		The IRC scanned 96 / 97 percent of the entire sky in 9 / 18 micron 
+		band twice or more during the 16 months of the cryogenic mission phase. 
+		The Point Source Catalogue is the primary catalogue from the AKARI IRC 
+		survey. The catalogue is designed to have a uniform detection limit over 
+		the entire sky, based on the uniform source detection limit per scan observation. 
+		Redundant observations are used to increase the reliability of the detection.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#Akari"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AllWise">
 		The AllWISE Source Catalog provides astrometry and mid-infrared
@@ -2698,14 +2716,23 @@
 		&lt;/a&gt; 
 	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AKARI-IRC-SC">
-		TBD
+		The AKARI IRC Point Source Catalogue Version 1.0 provides positions 
+		and fluxes of 870,973 sources (844,649 sources in 9 micron band and 
+		194,551 sources in 18 micron band) in the Mid-Infrared wavelengths.
+		&lt;br&gt;&lt;br&gt;
+		
+		The IRC scanned 96 / 97 percent of the entire sky in 9 / 18 micron 
+		band twice or more during the 16 months of the cryogenic mission phase. 
+		The Point Source Catalogue is the primary catalogue from the AKARI IRC 
+		survey. The catalogue is designed to have a uniform detection limit over 
+		the entire sky, based on the uniform source detection limit per scan observation. 
+		Redundant observations are used to increase the reliability of the detection.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#AKARI-IRC-SC"
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#Akari"
 		target="_blank"&gt;
 		More information
-		&lt;/a&gt; 
-	</text>
+		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
 		ESASky serves all pointed observations taken with the InfraRed Camera (IRC) of this mission, which are directly downloaded from DARTS. The IRC consisted of three independent camera systems, NIR, MIR-S and MIR-L, which observed the wavelength bands of 1.7-5.5 μm, 5.8-14.1 μm, and 12.4-26.5 μm, respectively. Each camera system had three filters available. NIR and MIR-S covered the same field of view (FoV), while MIR-L had a different one, which did not overlap with the NIR/MIR-S FoV. A brief description of the instrument and data products is given in 
 		&lt;a
