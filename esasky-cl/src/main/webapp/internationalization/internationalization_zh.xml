@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Internationalization>
 <Internationalization langCode="zh" label="中文">
 	<text key="header_learnMore">
@@ -2175,9 +2175,6 @@
 	<text key="publicationPanel_title">
 		文献和出版物
 	</text>
-	<text key="publicationPanel_helpText">
-		目前显示的是视野中有相关文献和出版物的源，信息来自SIMBAD。点击图标会打开一个表单列出该目标对应的文献信息，包括标题、作者和发表日期等基本信息以及ADS中该文献的链接。ESASky还提供了加载指定文献中所有相关天体列表的功能。&lt;br&gt; &lt;br&gt; 默认情况下ESASky一次显示文献中最多3000个源的信息。具体数量可以在设置中调整。
-	</text>
 	<text key="publicationPanel_removeAndClose">
 		去掉文献信息并关闭面板
 	</text>
@@ -2294,6 +2291,8 @@
 	<text key="treeMapContainer_help_EXT_TAP">
 		在ESASky中你现在可以访问符合虚拟天文台（VO）数据服务标准的外部数据。在当前视图中有数据的服务都会出现在树状图中。点击某个服务便可加载其相应数据结果并显示。
 	</text>
-	
+	<text key="publicationPanel_helpText">
+		目前显示的是视野中有相关文献和出版物的源，信息来自SIMBAD。点击图标会打开一个表单列出该目标对应的文献信息，包括标题、作者和发表日期等基本信息以及ADS中该文献的链接。ESASky还提供了加载指定文献中所有相关天体列表的功能。&lt;br&gt; &lt;br&gt; 默认情况下ESASky一次显示文献中最多3000个源的信息。具体数量可以在设置中调整。
+	</text>
 	
 </Internationalization>
