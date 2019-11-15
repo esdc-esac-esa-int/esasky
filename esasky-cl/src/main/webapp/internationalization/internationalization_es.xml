@@ -3265,6 +3265,29 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; 
 	</text>
+	
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AKARI-IRC-SC">
+		La versi&#243;n 1.0 del cat&#225;logo IRC de fuentes puntuales de la 
+		misi&#243;n AKARI contiene posiciones y flujos de 870,973 fuentes 
+		en longitudes de onda del infrarrojo medio (844,649 fuentes en la 
+		banda de 9 micras y 194,551 fuentes en la banda de 18 micras).&#10;&#10;
+		&lt;br&gt;&lt;br&gt;
+		La c&#225;mara 
+		IRC escane&#243; el 96% del cielo en la banda de 9 micras (97% en la banda de 18 micras) 
+		dos o m&#225;s veces durante los 16 meses de la fase criog&#233;nica de la misi&#243;n. 
+		El cat&#225;logo de fuentes puntuales es el cat&#225;logo principal de la AKARI IRC 
+		survey. El cat&#225;logo est&#225; dise&#241;ado para peter un l&#237;mite de 
+		detecci&#243;n uniforme en todo el cielo, basado en el l&#237;mite de 
+		detecci&#243;n uniforme de cada observaci&#243;n. Observaciones redundantes 
+		se usan para aumentar la fiabilidad de la detecci&#243;n.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#Akari"
+		target="_blank"&gt;
+		M&#225;s informacion
+		&lt;/a&gt; 
+	</text>
+	
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
 		ESASky ofrece todas las observaciones de objetos espec&#237;ficos realizadas con la c&#225;mara infrarroja IRC de esta misi&#243;n, las cuales se descargan directamente de DARTS. La IRC consist&#237;a en tres sistemas independientes, NIR, MIR-S y MIR-L, que observaban en los rangos 1.7-5.5 &#956;m, 5.8-14.1 &#956;m y 12.4-26.5 &#956;m, respectivamente. Cada sistema dispon&#237;a de tres filtros. NIR y MIR-S cubr&#237;an el mismo campo de visi&#243;n, mientras que el de MIR-L era diferente y no se solapaba con el anterior. Este documento
 		&lt;a
