@@ -3397,6 +3397,9 @@
 	<text key="AKARI_IRC_orderBy_flux_s9w">
 		Flujo en S9W
 	</text>
+	<text key="searchPanel_target">
+		Destino
+	</text>
 
 </Internationalization>
 
