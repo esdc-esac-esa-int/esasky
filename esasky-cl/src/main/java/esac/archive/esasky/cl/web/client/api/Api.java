@@ -11,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
@@ -109,15 +110,15 @@ public class Api {
 	}
 	
 	public void getAvailableTapServices(JavaScriptObject widget) {
-		JSONObject tapServices = new  JSONObject();
-		int i = 0;
+		JSONArray tapServices = new JSONArray();
 		for(ExtTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptors()) {
 			if(desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
-				tapServices.put(Integer.toString(i), new JSONString(desc.getMission()));
-				i++;
+				tapServices.set(tapServices.size(), new JSONString(desc.getMission()));
 			}
 		}
-		sendBackToWidget(tapServices, null, widget);
+		JSONObject result = new JSONObject();
+		result.put("TapServices", tapServices);
+		sendBackToWidget(result, null, widget);
 	}
 	
 	public void getAllAvailableTapMissions(JavaScriptObject widget) {
@@ -142,16 +143,17 @@ public class Api {
 		}else if(desc.getParent().getParent() == null){
 			JSONObject list = checkAndPutJSONObject(object,desc.getParent());
 			if(!list.containsKey(desc.getMission())) {
-				JSONObject childList = new JSONObject();
-				list.put(desc.getMission(), childList);
-				return childList;
+				JSONArray array = new JSONArray();
+				list.put(desc.getMission(), array);
+				return list;
 			}else {
-				return (JSONObject) list.get(desc.getMission());
+				return list;
 			}
 			
 		}else {
 			JSONObject list = checkAndPutJSONObject(object,desc.getParent());
-			list.put("missionID", new JSONString(desc.getMission()));
+			JSONArray array = (JSONArray) list.get(desc.getParent().getMission());
+			array.set(array.size(), new JSONString(desc.getMission()));
 		}
 		return object;
 	}
