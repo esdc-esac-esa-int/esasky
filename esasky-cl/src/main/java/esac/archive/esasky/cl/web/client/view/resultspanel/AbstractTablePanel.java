@@ -88,6 +88,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.column.ImageColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.IntegerColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.Link2ArchiveColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.LinkListColumn;
+import esac.archive.esasky.cl.web.client.view.resultspanel.column.LongColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.RaColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.SortableColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.StringColumn;
@@ -872,7 +873,7 @@ public abstract class AbstractTablePanel extends Composite {
 					table.getColumnSortList().push(doubleColumn);
 					table.addColumn(doubleColumn, headerWithFilterButton);
 
-				} else if (ColumnType.INT.equals(type) || ColumnType.INTEGER.equals(type) || ColumnType.LONG.equals(type)) {
+				} else if (ColumnType.INT.equals(type) || ColumnType.INTEGER.equals(type)) {
 					final IntegerColumn intColumn = new IntegerColumn(label, filterButtonId,
 							new RowsFilterObserver() {
 
@@ -883,6 +884,18 @@ public abstract class AbstractTablePanel extends Composite {
 							});
 					table.getColumnSortList().push(intColumn);
 					table.addColumn(intColumn, headerWithFilterButton);
+					
+				}else if (ColumnType.LONG.equals(type)) {
+					final LongColumn longColumn = new LongColumn(label, filterButtonId,
+							new RowsFilterObserver() {
+
+								@Override
+								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
+									calculateChangedRows(rowsToRemove, rowsToAdd);
+								}
+							});
+					table.getColumnSortList().push(longColumn);
+					table.addColumn(longColumn, headerWithFilterButton);
 					
 				}else if (ColumnType.LINK2ARCHIVE.equals(type)) {
 					Link2ArchiveColumn link2ArchiveColumn = new Link2ArchiveColumn(label,
