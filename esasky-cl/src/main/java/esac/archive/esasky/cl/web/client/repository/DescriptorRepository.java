@@ -742,6 +742,11 @@ public class DescriptorRepository {
 		if (descriptorsMap == null) {
 			prepareDescriptorsMap();
 		}
+		
+		ArrayList<String> remainingDescriptors = new ArrayList<String>();
+		for(String key : descriptorsMap.keySet()) {
+			remainingDescriptors.add(key);
+		}
 
 		List<IDescriptor> descriptors = new ArrayList<IDescriptor>();
 		List<Integer> counts = new ArrayList<Integer>();
@@ -754,6 +759,8 @@ public class DescriptorRepository {
 				CountStatus cs = countStatusMap.get(singleCount.getTableName());
 				final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
 				cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+				
+				remainingDescriptors.remove(singleCount.getTableName());
 
 				if (!(descriptor instanceof PublicationsDescriptor)) {
 					// Publications do not use Treemap
@@ -764,6 +771,21 @@ public class DescriptorRepository {
 			} else {
 				Log.warn("[DescriptorRepository] doUpdateSingleCount. TABLE_NAME: '" + singleCount.getTableName()
 						+ "' NOT FOUND IN DESCRIPTORS!");
+			}
+		}
+		
+		
+		//Handling that the fast count doesn't give any results for missing missions in the area so we set them to 0
+		for(String mission : remainingDescriptors) {
+			IDescriptor descriptor = descriptorsMap.get(mission);
+			CountStatus cs = countStatusMap.get(mission);
+			final int count = 0;
+			cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+			
+			if (!(descriptor instanceof PublicationsDescriptor)) {
+				// Publications do not use Treemap
+				descriptors.add(descriptor);
+				counts.add(count);
 			}
 		}
 
