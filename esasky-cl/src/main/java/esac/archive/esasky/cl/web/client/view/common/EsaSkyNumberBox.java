@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -11,9 +12,17 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.client.Timer;
 
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch.Resources;
+
 public class EsaSkyNumberBox extends EsaSkyTextBox{
+
+	private final CssResource style;
+	private Resources resources;
 
 	private final NumberFormat numberFormat;
 
@@ -21,12 +30,27 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 	private double maxNumber = Double.MAX_VALUE;
 	private double minNumber = Double.MIN_VALUE;
 	
+	private final String INVALID_INPUT_CSS = "esaskyNumberBox__invalidInput";
+	
+    public static interface Resources extends ClientBundle {
+
+        @Source("esaSkyNumberBox.css")
+        @CssResource.NotStrict
+        CssResource style();
+    }
+	
+	
 	public EsaSkyNumberBox(final NumberFormat numberFormat, final double keyboardArrowStep){
 		this(numberFormat, keyboardArrowStep, Double.MIN_VALUE, Double.MAX_VALUE);
 	}
 	
 	public EsaSkyNumberBox(final NumberFormat numberFormat, final double keyboardArrowStep, double min, double max){
 		super();
+		
+		this.resources = GWT.create(Resources.class);
+		this.style = this.resources.style();
+		this.style.ensureInjected();
+
 		minNumber = min;
 		maxNumber = max;
 		this.numberFormat = numberFormat;
@@ -82,9 +106,7 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 			
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				if (!getText().matches("[-+]?[0-9]*\\.?[0-9]+")) {
-					setNumber(latestValidNumber);
-				} else {
+				if(getText().matches("[-+]?[0-9]*\\.?[0-9]+")) {
 					double currentNumber = Double.valueOf(getText());
 					if(new Double(numberFormat.format(currentNumber)) > new Double(numberFormat.format(maxNumber))) {
 						currentNumber = maxNumber;
@@ -95,6 +117,11 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 						setNumber(currentNumber);
 					}
 					latestValidNumber = currentNumber;
+					getElement().removeClassName(INVALID_INPUT_CSS);
+				
+				}else {
+					
+					getElement().addClassName(INVALID_INPUT_CSS);
 				}
 			}
 		});
