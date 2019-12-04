@@ -63,17 +63,20 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     
     @Override
     public void fetchData(final AbstractTablePanel tablePanel) {
-        if(!getCountStatus().hasMoved(descriptor.getMission())) {
-        	fetchData2(tablePanel);
-        }
         
-        getCountStatus().registerObserver(new CountObserver() {
-			@Override
-			public void onCountUpdate(int newCount) {
-				fetchData2(tablePanel);				
-				getCountStatus().unregisterObserver(this);
-			}
-		});
+    	if(!getCountStatus().hasMoved(descriptor.getMission())) {
+        	fetchData2(tablePanel);
+        	
+        }else {
+        	
+	        getCountStatus().registerObserver(new CountObserver() {
+				@Override
+				public void onCountUpdate(int newCount) {
+					fetchData2(tablePanel);				
+					getCountStatus().unregisterObserver(this);
+				}
+			});
+        }
     }
     
     private void fetchData2(AbstractTablePanel tablePanel) {
