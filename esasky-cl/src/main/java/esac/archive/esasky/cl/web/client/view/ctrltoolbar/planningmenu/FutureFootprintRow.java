@@ -74,7 +74,7 @@ public class FutureFootprintRow extends Composite {
 			resources.arrowIcon(), resources.arrowIcon(), RA_DEG_STEP, raAndDecFormat);
 	private EsaSkyNumberControl decControl = new EsaSkyNumberControl(DEC_TEXT, 
 			resources.arrowIcon(), resources.arrowIcon(), DEC_DEG_STEP, raAndDecFormat);
-	private EsaSkyNumberControl rotationControl = new EsaSkyNumberControl(DEC_TEXT, 
+	private EsaSkyNumberControl rotationControl = new EsaSkyNumberControl(ROTATION_TEXT, 
 			resources.rotateLeftArrow(), resources.rotateRightArrow(), ROTATION_DEG_STEP, NumberFormat.getFormat("#0"));
 
 
