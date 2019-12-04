@@ -41,6 +41,10 @@ public class TAPUtils {
         String url = EsaSkyWebConstants.EXT_TAP_REQUEST_URL + "&" + EsaSkyConstants.EXT_TAP_TARGET_FLAG
         		+ "=" + descriptor.getMission();
         if(!descriptor.isInBackend()) {
+        	String tapUrl = descriptor.getTapUrl();
+        	if(!tapUrl.endsWith("/sync")) {
+        		tapUrl += "/sync";
+        	}
         	url += "&" + EsaSkyConstants.EXT_TAP_URL + "=" + descriptor.getTapUrl() +
         			"&" + EsaSkyConstants.EXT_TAP_RESPONSE_FORMAT + "=" + descriptor.getResponseFormat();
         }
