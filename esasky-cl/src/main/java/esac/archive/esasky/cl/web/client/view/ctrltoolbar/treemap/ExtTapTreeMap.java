@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.moxieapps.gwt.highcharts.client.Credits;
 import org.moxieapps.gwt.highcharts.client.Point;
+import org.moxieapps.gwt.highcharts.client.Series;
 import org.moxieapps.gwt.highcharts.client.ToolTip;
 import org.moxieapps.gwt.highcharts.client.ToolTipData;
 import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
@@ -137,20 +138,26 @@ public class ExtTapTreeMap extends TreeMap {
         if ((descriptors.size() > 0)
                 && (descriptors.size() == counts.size())) {
             
+        	String rootNodeId = getIdOfSelectedLevel(series.getNativeSeries());
+        	boolean redraw = false;
             List<Integer> zeroCountList = new ArrayList<Integer>();
             
             
             for (int i = 0; i < descriptors.size(); i ++) {
             	
             	cleanChildren((ExtTapDescriptor) descriptors.get(i));            	
+            	final IDescriptor descriptor = descriptors.get(i);
                 if (counts.get(i) > 0) {
                     //Only add descriptors with non zero count
-                	final IDescriptor descriptor = descriptors.get(i);
             		addPoints(descriptor, counts.get(i), false);
             		
                 } else {
                     //Store this index for later removing
                     zeroCountList.add(i);
+                }
+                
+                if(rootNodeId.equals("") || getNativePointId(getPoint(descriptor).getNativePoint()).equals(rootNodeId)) {
+                	redraw = true;
                 }
             }
             
@@ -158,7 +165,7 @@ public class ExtTapTreeMap extends TreeMap {
                 addPoints(descriptors.get(i), counts.get(i), false);
             }
             
-            update();
+            update(redraw);
         }
     }
     
@@ -274,13 +281,31 @@ public class ExtTapTreeMap extends TreeMap {
         }
     }
     
-    private void update() {
+    private void update(boolean redraw) {
+    	nativeSetData(series.getNativeSeries(), redraw);
     	String id = getIdOfSelectedLevel(series.getNativeSeries());
-        series.update(this.series, isRendered());
-        if(!id.equals("")) {
-        	zoomToPoint(series.getNativeSeries(), id);
+        if(redraw) {
+        	if(!id.equals("")) {
+        		zoomToPoint(series.getNativeSeries(), id);
+        	}
         }
     }
+    
+    private static native void nativeSetData(JavaScriptObject series, boolean redraw) /*-{
+    	var a = series.nodeMap[series.rootNode]
+    	if(series.rootNode != ""){
+    		
+	    	for(var i = 0; i < series.data.length; i++){
+	    		if(series.data[i].id == series.rootNode){
+	    			if(series.data[i].value < 0.25){
+	    				series.drillToNode("")
+	    			}
+	    			break;
+	    		}
+	    	}
+    	}
+    	series.setData(series.data, redraw, false, true);
+	}-*/;	
     
     private void notifyHeaderChange(String headerText) {
     	for(TreeMapHeaderChanged observer : headerObservers){
@@ -305,6 +330,11 @@ public class ExtTapTreeMap extends TreeMap {
 		}
     
     	return text;
+    
+    }-*/;
+    
+    private native String getNativePointId(JavaScriptObject point)/*-{
+    	return point.id;
     
     }-*/;
     

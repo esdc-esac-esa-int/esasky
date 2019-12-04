@@ -79,7 +79,7 @@ public class TreeMap extends Chart {
                 new TreemapPlotOptions()
                         .setCursor(Cursor.POINTER)
                         .setBorderColor("#30A0A0")
-                .setAlternateStartingDirection(true)
+                .setAlternateStartingDirection(false)
                 .setLayoutAlgorithm(TreemapPlotOptions.LayoutAlgorithm.SQUARIFIED)
                 .setLevels(
                                 new TreemapPlotOptions.Level()
@@ -460,7 +460,9 @@ public class TreeMap extends Chart {
 
     protected static native void zoomToPoint(JavaScriptObject series, String id) /*-{
 		try {
-			series.drillToNode(id);
+			if(series.nodeMap.includes[id]){
+				series.drillToNode(id);
+			}
 		} catch (err) {
 		}
     }-*/;
@@ -479,6 +481,16 @@ public class TreeMap extends Chart {
 			return ""
 		}
     }-*/;
+    
+    protected static native String getNameOfSelectedLevel(JavaScriptObject series)/*-{
+		try {
+			var rootNodeId = series.rootNode;
+			return series.nodeMap[rootNodeId].name;
+		} catch (err) {
+			return ""
+		}
+    }-*/;
+
 
     public void registerObserver(TreeMapChanged observer) {
         observers.add(observer);
