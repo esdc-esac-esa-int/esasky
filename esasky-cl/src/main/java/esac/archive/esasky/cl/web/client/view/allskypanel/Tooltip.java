@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -50,7 +52,7 @@ public abstract class Tooltip extends AutoHidePanel{
 		@Source("wwt_logo.png")
 		ImageResource wwt();
     }
-
+    
     public Tooltip(int left, int top, Shape source) {
     	this(left, top, source, true);
     }
@@ -63,6 +65,7 @@ public abstract class Tooltip extends AutoHidePanel{
     	this.top = top;
     	this.source = source;
     	initView(addLinks);
+    	DOM.sinkEvents(getElement(), Event.ONMOUSEWHEEL);
     }
     
     
@@ -74,7 +77,7 @@ public abstract class Tooltip extends AutoHidePanel{
         typeSpecificContent.removeStyleName("gwt-HTML");
         tooltip.add(typeSpecificContent);
         tooltip.add(typeSpecificFlowPanel);
-
+        
         FlowPanel links = new FlowPanel();
         EsaSkyButton simbadButton = createLinkButton(resources.simbad());
         simbadButton.addClickHandler(new ClickHandler() {
@@ -187,4 +190,15 @@ public abstract class Tooltip extends AutoHidePanel{
         fillContent(cooFrame);
         DisplayUtils.showInsideMainAreaPointingAtPosition(this, left, top);;
     }
+    
+	@Override
+	public void onBrowserEvent(Event event) {
+		if(event.getTypeInt() == Event.ONMOUSEWHEEL) {
+			event.stopPropagation();
+			AladinLiteWrapper.getAladinLite().triggerMouseWheelEvent(event);
+			
+		}else {
+			super.onBrowserEvent(event);
+		}
+	}
 }
