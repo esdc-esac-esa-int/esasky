@@ -59,6 +59,7 @@ public class EsaSkyWebConstants {
     public static final String BANNER_MESSAGE_URL = BACKEND_CONTEXT + "/banner-message";
     public static final String HIPS_STORAGE_URL = BACKEND_CONTEXT + "/location";
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
+    public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
 
     public static final String SOURCE_TYPE = "sourceType";
     
