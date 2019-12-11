@@ -32,6 +32,7 @@ public class AladinLiteWrapper {
     private static AladinLiteWidget aladinLite;
     
     public static boolean loadInitialHipsFromEsac;
+    public static boolean loadHipsFromCDN;
     /** Instance to JavaScriptObject. */
     private JavaScriptObject multiTargetCatalogObject;
 
@@ -396,12 +397,22 @@ public class AladinLiteWrapper {
      * @param hips Input HiPS object.
      */
     public final void openHiPS(final HiPS hips) {
+        String rootUrl = hips.getSurveyRootUrl();
+        if(!loadHipsFromCDN) {
+    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
+    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+    			hips.setSurveyRootUrl(newRootUrl);
+    			Log.debug("Changed survey url to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
+    		}
+        }
+        
         aladinLite.createAndSetImageSurveyWithImgFormat(hips.getSurveyId(), hips.getSurveyName(),
                 hips.getSurveyRootUrl(), hips.getSurveyFrame().name(), hips.getMaximumNorder(),
                 hips.getImgFormat().name());
     }
     
     public void setLoadHipsFromCDN(boolean loadFromCDN) {
+    	loadHipsFromCDN = loadFromCDN;
     	String rootUrl = getRootUrl(aladinLite.getCurrentImageSurveyObject());
     	if(loadFromCDN) {
         	if(rootUrl.contains("skies.esac.esa.int") && !rootUrl.contains("cdn.skies.esac.esa.int")) {
