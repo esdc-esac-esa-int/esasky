@@ -155,7 +155,7 @@ public class TAPExtTapService extends AbstractMetadataService {
     		
     	}else {
             ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-            String adql = "SELECT " + descriptor.getTapSTCSColumn() + ", npix" + " ";
+            String adql = "SELECT " + descriptor.getTapSTCSColumn() + ", healpix_index" + " ";
         	
         	adql += " from " + descriptor.getIngestedTable();
 //        	+ " WHERE ";
