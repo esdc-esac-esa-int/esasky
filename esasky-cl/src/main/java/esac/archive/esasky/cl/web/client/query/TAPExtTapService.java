@@ -96,12 +96,12 @@ public class TAPExtTapService extends AbstractMetadataService {
     	return constraint + screenPolygon(descriptor);
     }
     
-    private String npixSearch( int norder) {
-    	ArrayList<Integer> list = AladinLiteWrapper.getInstance().getVisibleNpix(norder);
+    private String npixSearch( int order) {
+    	ArrayList<Integer> list = AladinLiteWrapper.getInstance().getVisibleNpix(order);
     	if(list.size()>0) {
-    		String constraint = "npix IN (";
-    		for(int npix : list) {
-    			constraint += "\'" + Integer.toString(npix) + "\',";
+    		String constraint = "healpix_index IN (";
+    		for(int ipix : list) {
+    			constraint += Integer.toString(ipix) + ",";
     		}
     		constraint = constraint.substring(0,constraint.length()-1) + ")";
     		return constraint;
