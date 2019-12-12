@@ -443,6 +443,15 @@ public class AladinLiteWrapper {
      * @param colorPalette Input ColorPalette object
      */
     public final void createOverlayMap(final HiPS overlayHiPS, final double opacity,  ColorPalette colorPalette) {
+        String rootUrl = overlayHiPS.getSurveyRootUrl();
+        if(!loadHipsFromCDN) {
+    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
+    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+    			overlayHiPS.setSurveyRootUrl(newRootUrl);
+    			Log.debug("Changed overlay survey url to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
+    		}
+        }
+    	
         aladinLite.doOverlaySimpleImageLayer(overlayHiPS.getSurveyId(),
                 overlayHiPS.getSurveyName(), overlayHiPS.getSurveyRootUrl(), overlayHiPS
                         .getSurveyFrame().name(), overlayHiPS.getMaximumNorder(), overlayHiPS
