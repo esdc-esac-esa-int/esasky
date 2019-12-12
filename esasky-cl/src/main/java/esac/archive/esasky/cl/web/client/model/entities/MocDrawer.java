@@ -51,11 +51,11 @@ public class MocDrawer implements IShapeDrawer{
 	public void addShapes(TapRowList rowList) {
 		removeAllShapes();
 
-		int npixIndex = rowList.getColumnIndex("npix");
-		if(npixIndex != -1) {
+		int healpixIndex = rowList.getColumnIndex("healpix_index");
+		if(healpixIndex != -1) {
 			String mocJSON = "{\"3\":[";
 			for(int i = 0; i < rowList.getData().size(); i++) {
-				mocJSON += rowList.getDataRow(i).get(npixIndex) + ",";
+				mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
 			}
 			mocJSON = mocJSON.substring(0,mocJSON.length()-1) + "]}";
 			AladinLiteWrapper.getAladinLite().addMOCData(moc, mocJSON);
