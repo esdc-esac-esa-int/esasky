@@ -255,6 +255,7 @@ public class GUISessionStatus {
 					} catch (AssertionError exception) {
 						//AladinLite not initialized
 						AladinLiteWrapper.loadInitialHipsFromEsac = true;
+						AladinLiteWrapper.loadHipsFromCDN = false;
 					}
 				} else {
 					try {
@@ -262,6 +263,7 @@ public class GUISessionStatus {
 					} catch (AssertionError exception) {
 						//AladinLite not initialized
 						AladinLiteWrapper.loadInitialHipsFromEsac = false;
+						AladinLiteWrapper.loadHipsFromCDN = true;
 					}
 				}
 			}
