@@ -124,22 +124,6 @@ public class Api {
         });
 	}
 	
-	public void healpixBorder(int order, int ipix, JavaScriptObject widget) {
-		JavaScriptObject a = AladinLiteWrapper.getAladinLite().getHealpixBorder(order, ipix);
-		JSONObject data = new JSONObject();
-		data.put("border", new JSONString(a.toString()));
-		sendBackToWidget(data, widget);
-	}
-		
-	public void addMOC(String options, String mocData) {
-		
-		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createMOC(options);
-		AladinLiteWrapper.getAladinLite().addMOCData(moc, mocData);
-		AladinLiteWrapper.getAladinLite().addMOC(moc);
-		
-	}
-	
-	
 	public void getVisibleNpix(int norder) {
 		JavaScriptObject js = AladinLiteWrapper.getAladinLite().getVisibleNpix(norder);
 		Log.debug(js.toString());

@@ -298,18 +298,6 @@ public class ApiMessageParser {
 					(msg.content.norder);
 				break;	
 				
-			case 'addMOC':
-				console.log('addMOC event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::addMOC(Ljava/lang/String;Ljava/lang/String;)
-					(msg.content.options, msg.content.mocData);
-				break;	
-				
-			case 'healpixBorder':
-				console.log('healpixBorder event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::healpixBorder(IILcom/google/gwt/core/client/JavaScriptObject;)
-					(msg.content.order, msg.content.ipix, e);
-				break;	
-				
 			case 'registerShapeSelectionCallback':
 				console.log('registerShapeSelectionCallback event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::registerShapeSelectionCallback(Lcom/google/gwt/core/client/JavaScriptObject;)
