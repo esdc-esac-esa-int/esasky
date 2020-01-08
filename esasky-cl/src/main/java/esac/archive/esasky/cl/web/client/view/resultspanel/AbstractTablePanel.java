@@ -1201,6 +1201,11 @@ public abstract class AbstractTablePanel extends Composite {
 		}
 	}
 	
+	public String getUnfilteredRow(int rowIndex) {
+		TapRowList rowList = getEntity().getMetadata();
+		return rowList.getData().get(rowIndex).toString(); 
+	}
+	
 	public JSONObject exportAsJSON() {
 		JSONObject jsonData = new JSONObject();
 		TapRowList rowList = getEntity().getMetadata();
