@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
@@ -14,6 +15,8 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
@@ -34,6 +37,7 @@ import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.EsaSkyWeb;
 import esac.archive.esasky.cl.web.client.api.model.Footprint;
@@ -100,9 +104,41 @@ public class Api {
 		$wnd.JavaApiReady();
 	}-*/;
 	
-//	public void addMOC(String options, String mocData) {
-//		AladinLiteWrapper.getAladinLite().addMOC(options, mocData);
-//	}
+	public void registerShapeSelectionCallback(final JavaScriptObject widget) {
+		CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
+                new AladinLiteShapeSelectedEventHandler() {
+
+            @Override
+            public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
+            	 if (!selectEvent.getOverlayName().equals(EntityContext.PUBLICATIONS.toString())) {
+
+                     // Selects a table row
+                     AbstractTablePanel tableContainingShape = controller.getRootPresenter().getResultsPresenter().getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
+                     
+                     String data = tableContainingShape.getUnfilteredRow(selectEvent.getShapeId());
+                     JSONObject values = new JSONObject();
+                     values.put("data", new JSONString(data));
+                     sendBackToWidget(values, widget);
+                 }
+            }
+        });
+	}
+	
+	public void healpixBorder(int order, int ipix, JavaScriptObject widget) {
+		JavaScriptObject a = AladinLiteWrapper.getAladinLite().getHealpixBorder(order, ipix);
+		JSONObject data = new JSONObject();
+		data.put("border", new JSONString(a.toString()));
+		sendBackToWidget(data, widget);
+	}
+		
+	public void addMOC(String options, String mocData) {
+		
+		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createMOC(options);
+		AladinLiteWrapper.getAladinLite().addMOCData(moc, mocData);
+		AladinLiteWrapper.getAladinLite().addMOC(moc);
+		
+	}
+	
 	
 	public void getVisibleNpix(int norder) {
 		JavaScriptObject js = AladinLiteWrapper.getAladinLite().getVisibleNpix(norder);
