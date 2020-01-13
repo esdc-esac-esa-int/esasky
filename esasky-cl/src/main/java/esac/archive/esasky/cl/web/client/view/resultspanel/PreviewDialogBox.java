@@ -117,7 +117,7 @@ public class PreviewDialogBox extends AutoHidingMovablePanel {
 
         setSnapping(false);
 
-        if(Window.Location.getProtocol().equals("https") && !url.startsWith("https")) {
+        if(Window.Location.getProtocol().contains("https") && !url.startsWith("https")) {
         	image = new Image(EsaSkyWebConstants.IMAGE_LOADER_URL + "?" + EsaSkyConstants.IMAGELOADER_URL_PARAM + "=" + URL.encodeQueryString(url));
         } else {
         	image = new Image(url);
