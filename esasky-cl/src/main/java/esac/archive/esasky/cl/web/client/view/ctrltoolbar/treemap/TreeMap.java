@@ -28,12 +28,17 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
+import esac.archive.esasky.ifcs.model.client.WavelengthNumbering;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.WavelenthDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkyMultiRangeSliderObserver;
 
 public class TreeMap extends Chart {
 
@@ -60,9 +65,11 @@ public class TreeMap extends Chart {
 
     protected boolean addPointsOnNextRender = false;
     protected List<Point> pointsToAdd = new LinkedList<Point>();
+    protected double sliderValueLow = 0;
+    protected double sliderValueHigh = Double.MAX_VALUE;
 
     private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
-
+    
     public TreeMap(final EntityContext context) {
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
@@ -150,7 +157,9 @@ public class TreeMap extends Chart {
                 return false;
             }
         });
+        
     }
+    
     
     protected void setTapCredits() {
     	setCredits(new Credits().setEnabled(false))
@@ -228,6 +237,7 @@ public class TreeMap extends Chart {
             }
             
             update();
+            onSliderValueChange(sliderValueLow, sliderValueHigh);
         }
     }
     
@@ -249,7 +259,7 @@ public class TreeMap extends Chart {
     	}
     	return null;
     }
-
+    
     private void addPoints(IDescriptor descriptor, int count, boolean updateView) {
         String pointId = null;
 
@@ -494,6 +504,71 @@ public class TreeMap extends Chart {
 
     public void registerObserver(TreeMapChanged observer) {
         observers.add(observer);
+    }
+    
+    public void addSliderObserver(ESASkyMultiRangeSlider slider) {
+    	slider.registerValueChangeObserver(new EsaSkyMultiRangeSliderObserver() {
+
+			@Override
+			public void onValueChange(double low, double high) {
+				TreeMap.this.onSliderValueChange(low, high);
+			}
+		});
+    }
+    
+    public void onSliderValueChange(double low, double high) {
+    	sliderValueLow = low;
+    	sliderValueHigh = high;
+		double highWavelength = ESASkyColors.valueToWaveLength(low);
+		double lowWavelength = ESASkyColors.valueToWaveLength(high);
+		
+		boolean anyPointsAreShown = false;
+		
+    	for(Point point : series.getPoints()) {
+    		boolean shouldBeShown = false;
+    		PointInformation pointInformation = allPoints.get(point.getText());
+    		if(pointInformation != null) {
+    			
+    			for(WavelenthDescriptor waveLength : pointInformation.descriptor.getWavelengths()) {
+    				
+	    			ArrayList<Double> waveLengthRange = waveLength.getRange();
+	    			
+	    			if(waveLengthRange.size() > 0) {
+	    				if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)) {
+	    					shouldBeShown = true;
+	    				}
+	    			}else {
+	    			
+	    				String prefix = waveLength.getPrefix().toLowerCase();
+	    				String wavelengthString;
+	    				if(prefix.length() > 0) {
+	    					wavelengthString = prefix + " " + waveLength.getLongName().toLowerCase();
+	    				}else {
+	    					wavelengthString = waveLength.getLongName().toLowerCase();
+	    				}
+	    				int waveLengthNumber = WavelengthNumbering.get(wavelengthString);
+	    				if(waveLengthNumber >= low && waveLengthNumber <= high) {
+	    					shouldBeShown = true;
+	    				}
+	    			}
+    			}
+    			
+    			Point pointInSeries = getPoint(pointInformation.descriptor);
+    			if(!shouldBeShown) {
+    				pointInSeries.update(0, false);
+    			}else if(shouldBeShown) {
+    				pointInSeries.update(logCount(pointInformation.count), false);
+    				anyPointsAreShown = true;
+    			}
+    		}
+    	}
+    	
+    	if(anyPointsAreShown) {
+    		removeGhostPoint();
+    	}else {
+    		addNoResultsGhostPoint();
+    	}
+    	update();
     }
 
 }

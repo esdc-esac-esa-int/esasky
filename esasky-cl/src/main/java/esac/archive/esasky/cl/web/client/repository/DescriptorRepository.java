@@ -33,6 +33,7 @@ import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.UserCatalogueDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -65,7 +66,6 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyColors;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
@@ -224,7 +224,7 @@ public class DescriptorRepository {
 							if(facility.containsKey("color")) {
 								collectionDesc.setHistoColor(facility.get("color").get(0));
 							}else {
-								collectionDesc.setHistoColor(EsaSkyColors.getNext());
+								collectionDesc.setHistoColor(ESASkyColors.getNext());
 							}
 							
 							descriptorsList.add(collectionDesc);

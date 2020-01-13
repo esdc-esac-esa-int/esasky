@@ -28,3 +28,17 @@
 	position: absolute;
 	height: 23px;
 }
+
+.treeMap__filter__text__container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.treeMap__slider__rainbow{
+	background: linear-gradient(to right, #E8ECFB, #CAACCB, #AA6F9E, #882E72, #437DBF,
+	 #4EB265, #CAE0AB, #90C987, #F7CB45, #EE8026, #DC050C, #72190E, #42150A);
+	min-height: 20px;
+}
+

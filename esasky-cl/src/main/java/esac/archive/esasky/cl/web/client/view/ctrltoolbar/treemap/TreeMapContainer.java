@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -15,14 +16,18 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkyMultiRangeSliderObserver;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
 public class TreeMapContainer extends DialogBox {
@@ -43,6 +48,9 @@ public class TreeMapContainer extends DialogBox {
 	private TreeMap treeMap;
 	private FlowPanel allContent = new FlowPanel();
 	private final PopupHeader header;
+	private ESASkyMultiRangeSlider slider;
+	private Element sliderUiHeader = null;
+	private FlowPanel sliderContainer;
 	
 	private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
 	
@@ -91,8 +99,10 @@ public class TreeMapContainer extends DialogBox {
 		ssoDnetLogo.setVisible(context == EntityContext.SSO);
 
 		allContent.add(header);
-		
 		allContent.add(treeMap);
+		
+		sliderContainer = initSliderContainer();
+		allContent.add(sliderContainer);
 		add(allContent);
 		
 		header.setText(TextMgr.getInstance().getText("treeMap_" + context));
@@ -109,6 +119,73 @@ public class TreeMapContainer extends DialogBox {
 		//Due to rendering problems in highcharts, this element is always in the DOM. Open() and Close() is used to show/hide
 		show();
 		close();
+	}
+	
+	private FlowPanel initSliderContainer() {
+		FlowPanel sliderContainer = new FlowPanel();
+		
+		FlowPanel textPanel = new FlowPanel();
+		textPanel.addStyleName("treeMap__filter__text__container");
+		
+		Label leftLabel = new Label();
+		leftLabel.setText("Gamma-ray");
+		leftLabel.addStyleName("treeMap__filter__text__left");
+		
+		Label centerLabel = new Label();
+		centerLabel.setText("Optical");
+		centerLabel.addStyleName("treeMap__filter__text__center");
+		
+		Label rightLabel = new Label();
+		rightLabel.setText("Radio");
+		rightLabel.addStyleName("treeMap__filter__text__right");
+		
+		textPanel.add(leftLabel);
+		textPanel.add(centerLabel);
+		textPanel.add(rightLabel);
+		
+		sliderContainer.add(textPanel);
+		
+		slider = new ESASkyMultiRangeSlider(0, ESASkyColors.maxIndex() , 300);
+		slider.addStyleName("treeMap__slider");
+		
+		sliderContainer.add(slider);
+		treeMap.addSliderObserver(slider);
+		slider.registerValueChangeObserver(new EsaSkyMultiRangeSliderObserver() {
+
+			@Override
+			public void onValueChange(double low, double high) {
+				updateSliderColor(low, high);
+			}
+		});
+		
+		return sliderContainer;
+	}
+	
+	public void updateSliderColor(double low, double high) {
+		if(sliderUiHeader != null) {
+			
+			double botPosition = (1 -( low - Math.floor(low)) ) / (high - low);
+			double topPosition = (1 - (Math.ceil(high) - high)) / ( high - low );
+			
+			String styleString =  "background:linear-gradient(to right,";
+			int nShown = 0;
+			
+			for(int i = (int) Math.floor(low); i <=  Math.ceil(high); i++) {
+				styleString += ESASkyColors.getColor(i);
+				if(nShown == 1) {
+					styleString += " " + Double.toString(botPosition*100) + "%";
+				}else if(nShown == Math.ceil(high) - Math.floor(low) - 1) {
+					styleString += " " + Double.toString(100 - topPosition * 100) + "%";
+				}
+				nShown++;
+				styleString += ",";
+			}
+			styleString = styleString.substring(0,styleString.length() - 1);
+			
+			styleString += "); width:100%";
+			
+			sliderUiHeader.setAttribute("style", styleString);
+		}
 	}
 	
 	public void onLayoutChange() {
@@ -161,7 +238,8 @@ public class TreeMapContainer extends DialogBox {
 	};
 	
 	private void updateTreeMapSize() {
-		treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 20, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - 20 );
+		treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 20, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 30 );
+		slider.updateSize(TreeMapContainer.this.getOffsetWidth() - 30);
 	}
 
 	
@@ -196,10 +274,29 @@ public class TreeMapContainer extends DialogBox {
 			}
 			addResizeHandler(context.toString());
 			addResizeCursorToBottomRightCorner(context.toString());
+			slider.firstOpening();
+			getSliderUiHeader();
+			updateSliderColor(0, ESASkyColors.maxIndex());
 			updateTreeMapSize();
 		}
 		isOpen = true;
 		updateMaxSize();
+	}
+	
+	public void getSliderUiHeader() {
+		Element el = slider.getElement().getFirstChildElement();
+		int i = 0;
+		while(!el.hasClassName("ui-widget-header")) {
+			el = el.getFirstChildElement();
+			i++;
+			if(i > 5) {
+				break;
+			}
+		}
+		
+		if(i < 6) {
+			sliderUiHeader = el;
+		}
 	}
 	
 	public void addData(List<IDescriptor> descriptors, List<Integer> counts) {
