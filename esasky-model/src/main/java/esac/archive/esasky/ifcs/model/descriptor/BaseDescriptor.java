@@ -1,11 +1,14 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 public abstract class BaseDescriptor implements IDescriptor {
 
@@ -69,7 +72,7 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private List<WavelenthDescriptor> wavelengths = new LinkedList<WavelenthDescriptor>();
-
+   
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String creditedInstitutions;
     
@@ -122,10 +125,10 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     @Override
     public final void setHistoColor(final String inputHistoColor) {
-        this.histoColor = inputHistoColor;
-        for (ColorChangeObserver observer : colorObservers) {
-        	observer.onColorChange(this, inputHistoColor);
-        }
+//        this.histoColor = inputHistoColor;
+//        for (ColorChangeObserver observer : colorObservers) {
+//        	observer.onColorChange(this, inputHistoColor);
+//        }
     }
     
     @Override
@@ -271,9 +274,22 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public final void setWavelengths(final List<WavelenthDescriptor> wavelengths) {
         this.wavelengths = wavelengths;
+        double minWavelength = 100;
+        double maxWavelength = 0;
+        for(WavelenthDescriptor w : wavelengths) {
+        	ArrayList<Double> range = w.getRange();
+    		minWavelength = Math.min(range.get(0), minWavelength);
+    		maxWavelength = Math.max(range.get(1), maxWavelength);
+        }
+        double mean = (maxWavelength + minWavelength) / 2;
+        
+        this.histoColor = ESASkyColors.getColorFromWavelength(mean);
+        for (ColorChangeObserver observer : colorObservers) {
+        	observer.onColorChange(this, this.histoColor);
+        }
     }
     
-    @Override
+	@Override
     public final String getCreditedInstitutions() {
     	return creditedInstitutions;
     }
