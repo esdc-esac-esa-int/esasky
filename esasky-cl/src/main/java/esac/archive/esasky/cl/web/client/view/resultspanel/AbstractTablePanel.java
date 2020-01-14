@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,9 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
+//import com.google.gwt.aria.client.ColumnheaderRole;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
+//import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -81,6 +84,7 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+//import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DateTimeColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DecColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DoubleColumn;
@@ -174,6 +178,70 @@ public abstract class AbstractTablePanel extends Composite {
 	private List<TableRow> originalList;
 	private GeneralEntityInterface entity;
 	
+	private class TableFocusPanel extends FocusPanel{
+		public TableFocusPanel() {
+			sinkEvents(Event.ONCONTEXTMENU);
+		}
+		
+		@Override
+		public final void onBrowserEvent(final Event event) {
+			if(DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
+//				this.openContextMenu(event);
+			} else {
+				super.onBrowserEvent(event);
+			}
+		}
+		
+//		private void openContextMenu(final Event event) {
+////			ColumnSettingInfo[] columnDefinitions = new ColumnSettingInfo[4];
+//			ColumnSettingInfo[] columnDefinitions = new ColumnSettingInfo[3];
+////	 		{formatter:"rowSelection", titleFormatter:"rowSelection", align:"center", headerSort:false},
+////		 	{title:"Name", field:"name", width:150, headerFilter:"input"},
+////		 	{title:"Age", field:"age", align:"left", formatter:"progress",headerFilter:"input"},
+////		 	{title:"Favourite Color", field:"col", headerFilter:"input"},
+////		 	{title:"Date Of Birth", field:"dob", sorter:"date", align:"center",headerFilter:"input"},
+//			columnDefinitions[0] = ColumnSettingInfo.createColumnSetting();
+//			columnDefinitions[0].setStringProperty("formatter", "rowSelection");
+//			columnDefinitions[0].setStringProperty("titleFormatter", "rowSelection");
+//			columnDefinitions[0].setStringProperty("align", "center");
+//			columnDefinitions[0].setBooleanProperty("headerSort", false);
+//			columnDefinitions[1] = ColumnSettingInfo.createColumnSetting();
+//			columnDefinitions[1].setStringProperty("formatter", "html");
+//			columnDefinitions[1].setStringProperty("title", "Label");
+//			columnDefinitions[1].setStringProperty("field", "label");
+//			columnDefinitions[1].setStringProperty("align", "left");
+//			columnDefinitions[1].setStringProperty("headerFilter", "input");
+//			columnDefinitions[3] = ColumnSettingInfo.createColumnSetting();
+//			columnDefinitions[3].setStringProperty("title", "TAP name");
+//			columnDefinitions[3].setStringProperty("field", "tap_name");
+//			columnDefinitions[3].setStringProperty("align", "left");
+//			columnDefinitions[3].setStringProperty("headerFilter", "input");
+//			columnDefinitions[2] = ColumnSettingInfo.createColumnSetting();
+//			columnDefinitions[2].setStringProperty("title", "Description");
+//			columnDefinitions[2].setStringProperty("field", "description");
+//			columnDefinitions[2].setStringProperty("align", "left");
+//			columnDefinitions[2].setStringProperty("headerFilter", "input");
+//			new ToggleColumnsDialogBox(entity.getDescriptor().getGuiLongName(), columnInformationList, columnDefinitions,
+//					new TabulatorCallback() {
+//				
+//				@Override
+//				public void onAction(ColumnSettingInfo eventObject) {
+//					ColumnAndHeader addedColumn = columnMap.get(eventObject.getStringProperty("tap_name"));
+//					table.insertColumn(columnMap.get(eventObject.getStringProperty("tap_name")).initialIndex + 1, columnMap.get(eventObject.getStringProperty("tap_name")).column, columnMap.get(eventObject.getStringProperty("tap_name")).header);
+//					columnInformationList[addedColumn.initialIndex].setBooleanProperty("is_hidden", false);
+//				}
+//			}, new TabulatorCallback() {
+//				
+//				@Override
+//				public void onAction(ColumnSettingInfo eventObject) {
+//					ColumnAndHeader removedColumn = columnMap.get(eventObject.getStringProperty("tap_name"));
+//					table.removeColumn(removedColumn.column);
+//					columnInformationList[removedColumn.initialIndex].setBooleanProperty("is_hidden", true);
+//				}
+//			}).show();
+//		}
+	}
+	
 	public AbstractTablePanel(final String inputLabel, final String inputEsaSkyUniqID, GeneralEntityInterface entity) {
 		this.esaSkyUniqID = inputEsaSkyUniqID;
 		this.tabTitle = inputLabel;
@@ -205,10 +273,10 @@ public abstract class AbstractTablePanel extends Composite {
 		tableAndGroupHeader.add(columnGroupHeader);
 		tableAndGroupHeader.add(table);
 		
-		FocusPanel hoverDetector = new FocusPanel();
-		hoverDetector.addStyleName("dataPanelHoverDetector");
-		hoverDetector.add(tableAndGroupHeader);
-		container.add(hoverDetector);
+		FocusPanel tableFocusPanel = new TableFocusPanel();
+		tableFocusPanel.addStyleName("dataPanelHoverDetector");
+		tableFocusPanel.add(tableAndGroupHeader);
+		container.add(tableFocusPanel);
 		
 		final FlowPanel notShowingCompleteDataSetContainer = new FlowPanel();
 		notShowingCompleteDataSetContainer.addStyleName("resultInformation");
@@ -269,20 +337,21 @@ public abstract class AbstractTablePanel extends Composite {
 			}
 		});
 		
-		hoverDetector.addMouseOutHandler(new MouseOutHandler() {
+		tableFocusPanel.addMouseOutHandler(new MouseOutHandler() {
 			
 			@Override
 			public void onMouseOut(MouseOutEvent event) {
 				hoverStopRow(lastHoveredRowId);
 			}
 		});
-		hoverDetector.addMouseOverHandler(new MouseOverHandler() {
+		tableFocusPanel.addMouseOverHandler(new MouseOverHandler() {
 			
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
 				hoverStopRow(lastHoveredRowId);
 			}
 		});
+		
 
 		
 		table.addStyleName("displayNone");
@@ -454,6 +523,15 @@ public abstract class AbstractTablePanel extends Composite {
 
 			@Override
 			public void onColumnSort(ColumnSortEvent sortEvent) {
+//				if(addColumnBoolean) {
+////					if(columnMap.size() > 0 && Math.random() * 10 > 5) {
+//						table.insertColumn(columnMap.get("observation_id").initialIndex + 1, columnMap.get("observation_id").column, columnMap.get("observation_id").header);
+//						addColumnBoolean = false;
+//					} else {
+//						table.removeColumn(columnMap.get("observation_id").column);
+//						addColumnBoolean = true;
+//					}
+//				}
 				if (!originalListRestored) {
 					originalListRestored = true;
 
@@ -625,8 +703,23 @@ public abstract class AbstractTablePanel extends Composite {
 		emptyTableLabel.setText(TextMgr.getInstance().getText("abstractTablePanel_loadingData"));
 		loadingSpinner.setVisible(true);
 	}
-
+	
+	private ColumnSettingInfo[] columnInformationList;
+	private final HashMap<String, ColumnAndHeader> columnMap = new HashMap<String, ColumnAndHeader>();
+	private class ColumnAndHeader{
+		public final Column<TableRow, ?> column;
+		public final SafeHtml header;
+		public final int initialIndex;
+		public ColumnAndHeader(Column<TableRow, ?> column, SafeHtml header, int initialIndex) {
+			this.column = column;
+			this.header = header;
+			this.initialIndex = initialIndex;
+			
+		}
+	}
 	protected void createMetadataColums() {
+		int i = 1; // First column is selection check box
+		columnInformationList = new ColumnSettingInfo[getEntity().getDescriptor().getMetadata().size()];
 		for (final MetadataDescriptor currentMTD : getEntity().getDescriptor().getMetadata()) {
 
 			if (currentMTD.getVisible()) {
@@ -686,13 +779,13 @@ public abstract class AbstractTablePanel extends Composite {
 
 				if (ColumnType.DOWNLOAD.equals(type)) {
 
-					final ImageColumn linkColumn = new ImageColumn(
+					final ImageColumn column = new ImageColumn(
 							TextMgr.getInstance().getText("abstractTablePanel_downloadRow"),
 							TableColumnHelper.resources.download().getSafeUri().asString());
-					table.addColumn(linkColumn, "");
-					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
+					addColumn(column, null, i, label, currentMTD);
+					table.setColumnWidth(column, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
 
-					linkColumn.setFieldUpdater(new FieldUpdater<TableRow, String>() {
+					column.setFieldUpdater(new FieldUpdater<TableRow, String>() {
 
 						@Override
 						public void update(final int index, final TableRow row, final String value) {
@@ -703,15 +796,16 @@ public abstract class AbstractTablePanel extends Composite {
 
 					});
 
-				}else if (ColumnType.DATALINK.equals(type)) {
+				} else if (ColumnType.DATALINK.equals(type)) {
 
-					final ImageColumn linkColumn = new ImageColumn(
+					final ImageColumn column = new ImageColumn(
 							TextMgr.getInstance().getText("abstractTablePanel_download"),
 							TableColumnHelper.resources.download().getSafeUri().asString());
-					table.addColumn(linkColumn, header);
-					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE + 20, Unit.PX);
+					addColumn(column, header, i, label, currentMTD);
+					
+					table.setColumnWidth(column, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE + 20, Unit.PX);
 
-					linkColumn.setFieldUpdater(new FieldUpdater<TableRow, String>() {
+					column.setFieldUpdater(new FieldUpdater<TableRow, String>() {
 
 						@Override
 						public void update(final int index, final TableRow row, final String value) {
@@ -758,11 +852,11 @@ public abstract class AbstractTablePanel extends Composite {
 						icon = TableColumnHelper.resources.targetListIcon();
 					}
 
-					final ImageColumn linkColumn = new ImageColumn(tooltipMsg, icon.getSafeUri().asString());
-					table.addColumn(linkColumn, "");
-					table.setColumnWidth(linkColumn, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
+					final ImageColumn column = new ImageColumn(tooltipMsg, icon.getSafeUri().asString());
+					addColumn(column, null, i, label, currentMTD);
+					table.setColumnWidth(column, TableColumnHelper.COLUMN_WIDTH_ICON_DEFAULT_SIZE, Unit.PX);
 
-					linkColumn.setFieldUpdater(new FieldUpdater<TableRow, String>() {
+					column.setFieldUpdater(new FieldUpdater<TableRow, String>() {
 
 						@Override
 						public void update(final int index, final TableRow row, final String value) {
@@ -817,18 +911,18 @@ public abstract class AbstractTablePanel extends Composite {
 					});
 
 				} else if (ColumnType.STRING.equals(type) || ColumnType.CHAR.equals(type)) {
-					StringColumn stringColumn = new StringColumn(label, filterButtonId, new RowsFilterObserver() {
+					StringColumn column = new StringColumn(currentMTD.getTapName(), label, filterButtonId, new RowsFilterObserver() {
 
 						@Override
 						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 							calculateChangedRows(rowsToRemove, rowsToAdd);
 						}
 					});
-					table.getColumnSortList().push(stringColumn);
-					table.addColumn(stringColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 					
 				} else if (ColumnType.DATETIME.equals(type)) {
-					DateTimeColumn dateTimeColumn = new DateTimeColumn(label, filterButtonId,
+					DateTimeColumn column = new DateTimeColumn(currentMTD.getTapName(), label, filterButtonId,
 							new RowsFilterObserver() {
 
 								@Override
@@ -836,33 +930,33 @@ public abstract class AbstractTablePanel extends Composite {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
 							});
-					table.getColumnSortList().push(dateTimeColumn);
-					table.addColumn(dateTimeColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 
 				} else if (ColumnType.RA.equals(type)) {
-					RaColumn raColumn = new RaColumn(label, filterButtonId, new RowsFilterObserver() {
+					RaColumn column = new RaColumn(currentMTD.getTapName(), label, filterButtonId, new RowsFilterObserver() {
 
 						@Override
 						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 							calculateChangedRows(rowsToRemove, rowsToAdd);
 						}
 					});
-					table.getColumnSortList().push(raColumn);
-					table.addColumn(raColumn, headerWithFilterButton);
-
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
+					
 				} else if (ColumnType.DEC.equals(type)) {
-					DecColumn decColumn = new DecColumn(label, filterButtonId, new RowsFilterObserver() {
+					DecColumn column = new DecColumn(currentMTD.getTapName(), label, filterButtonId, new RowsFilterObserver() {
 
 						@Override
 						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 							calculateChangedRows(rowsToRemove, rowsToAdd);
 						}
 					});
-					table.getColumnSortList().push(decColumn);
-					table.addColumn(decColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 
 				} else if (ColumnType.DOUBLE.equals(type)) {
-					final DoubleColumn doubleColumn = new DoubleColumn(label, filterButtonId,
+					final DoubleColumn column = new DoubleColumn(currentMTD.getTapName(), label, filterButtonId,
 							new RowsFilterObserver() {
 
 								@Override
@@ -870,11 +964,11 @@ public abstract class AbstractTablePanel extends Composite {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
 							});
-					table.getColumnSortList().push(doubleColumn);
-					table.addColumn(doubleColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 
 				} else if (ColumnType.INT.equals(type) || ColumnType.INTEGER.equals(type)) {
-					final IntegerColumn intColumn = new IntegerColumn(label, filterButtonId,
+					final IntegerColumn column = new IntegerColumn(currentMTD.getTapName(), label, filterButtonId,
 							new RowsFilterObserver() {
 
 								@Override
@@ -882,11 +976,11 @@ public abstract class AbstractTablePanel extends Composite {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
 							});
-					table.getColumnSortList().push(intColumn);
-					table.addColumn(intColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 					
 				}else if (ColumnType.LONG.equals(type)) {
-					final LongColumn longColumn = new LongColumn(label, filterButtonId,
+					final LongColumn column = new LongColumn(currentMTD.getTapName(), label, filterButtonId,
 							new RowsFilterObserver() {
 
 								@Override
@@ -894,11 +988,11 @@ public abstract class AbstractTablePanel extends Composite {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
 							});
-					table.getColumnSortList().push(longColumn);
-					table.addColumn(longColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 					
 				}else if (ColumnType.LINK2ARCHIVE.equals(type)) {
-					Link2ArchiveColumn link2ArchiveColumn = new Link2ArchiveColumn(label,
+					Link2ArchiveColumn column = new Link2ArchiveColumn(currentMTD.getTapName(), label,
 							getEntity().getDescriptor(), filterButtonId, new RowsFilterObserver() {
 
 								@Override
@@ -906,12 +1000,12 @@ public abstract class AbstractTablePanel extends Composite {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
 							});
-					table.getColumnSortList().push(link2ArchiveColumn);
-					table.addColumn(link2ArchiveColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 
 				} else if (ColumnType.LINKLIST.equals(type)) {
 					IDescriptor descriptor = getEntity().getDescriptor();
-					LinkListColumn linkListColumn = new LinkListColumn(label, descriptor.getAdsAuthorSeparator(),
+					LinkListColumn column = new LinkListColumn(currentMTD.getTapName(), label, descriptor.getAdsAuthorSeparator(),
 							descriptor.getAdsAuthorUrl(), descriptor.getAdsAuthorUrlReplace(),
 							EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT,
 							EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS, filterButtonId, new RowsFilterObserver() {
@@ -921,8 +1015,8 @@ public abstract class AbstractTablePanel extends Composite {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
 							});
-					table.getColumnSortList().push(linkListColumn);
-					table.addColumn(linkListColumn, headerWithFilterButton);
+					table.getColumnSortList().push(column);
+					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 
 				}
 
@@ -936,6 +1030,7 @@ public abstract class AbstractTablePanel extends Composite {
 									+ " dataPanelHeader dataPanelHeaderHover");
 				}
 			}
+			i++;
 		}
 
 		/*
@@ -948,6 +1043,31 @@ public abstract class AbstractTablePanel extends Composite {
 		table.addColumn(lColumn, SafeHtmlUtils.fromSafeConstant(""));
 		table.setColumnWidth(table.getColumn(table.getColumnCount() - 1), 0 + "px");
 	}
+	
+	private void addColumn(Column<TableRow, ?> column, SafeHtml header, int index, String label, MetadataDescriptor currentMTD) {
+		if(header == null) {
+			table.addColumn(column, "");
+			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, SafeHtmlUtils.fromSafeConstant(table.getHeader(table.getColumnCount() - 1).toString()), index));
+		} else {
+			table.addColumn(column, header);
+			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, header, index));
+		}
+		columnInformationList[index-1] = ColumnSettingInfo.createColumnSetting(currentMTD.getVisible(), index, label, "Placeholder for description of column");
+		columnInformationList[index-1].setIntegerProperty("id", index);
+		columnInformationList[index-1].setStringProperty("label", label);
+		columnInformationList[index-1].setStringProperty("description", "placeholder description");
+		columnInformationList[index-1].setStringProperty("tap_name", currentMTD.getTapName());
+		
+//		public boolean isVisible;
+//		public int initialIndex;
+//		public String label;
+//		public String description;
+// 		{formatter:"rowSelection", titleFormatter:"rowSelection", align:"center", headerSort:false},
+//	 	{title:"Name", field:"name", width:150, headerFilter:"input"},
+//	 	{title:"Age", field:"age", align:"left", formatter:"progress",headerFilter:"input"},
+	}
+	
+
 
 	public void refreshHeight() {
 		table.refreshHeight();
@@ -1090,7 +1210,27 @@ public abstract class AbstractTablePanel extends Composite {
 		});
 	}
 
+//	public String getFilterConstraints() {
+//		return conditions;
+//	}
+//	private String conditions = "";
+//	
 	private void calculateChangedRows(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
+//		conditions = "";
+//		if(addColumnBoolean) {
+//			for (int i = 0; i < table.getColumnCount(); i++) {
+//				if (table.getColumn(i) instanceof SortableColumn) {
+//					String condition = ((SortableColumn<?>) table.getColumn(i)).getAdqlForFilterCondition();
+//					Log.debug(condition);
+//					if(!condition.isEmpty()) {
+//						conditions += " and " + condition;
+//					}
+//				}
+//			}
+//			if(!conditions.isEmpty()) {
+//				getEntity().fetchData(this);
+//			}
+//		}
 		for (int idOfRowToRemove : rowsToRemove) {
 			if (!rowsRemovedByAtLeastOneFilter.contains(idOfRowToRemove)) {
 				isTableDirty = true;
@@ -1124,19 +1264,25 @@ public abstract class AbstractTablePanel extends Composite {
 		}
 	}
 
+	private boolean addColumnBoolean = false;
 	private void applyAllFilters() {
-		filteredList.clear();
-		filteredList.addAll(originalList);
-		Iterator<TableRow> rowIterator = filteredList.iterator();
-
-		while (rowIterator.hasNext()) {
-			TableRow row = rowIterator.next();
-			if (rowsRemovedByAtLeastOneFilter.contains(row.getShapeId())) {
-				rowIterator.remove();
+//		if(addColumnBoolean) {
+//			
+//			addColumnBoolean = false;
+//		} else {
+			filteredList.clear();
+			filteredList.addAll(originalList);
+			Iterator<TableRow> rowIterator = filteredList.iterator();
+			
+			while (rowIterator.hasNext()) {
+				TableRow row = rowIterator.next();
+				if (rowsRemovedByAtLeastOneFilter.contains(row.getShapeId())) {
+					rowIterator.remove();
+				}
 			}
-		}
-		dataProvider.setList(filteredList);
-		reactivateActiveFilterButtonStyles();
+			dataProvider.setList(filteredList);
+			reactivateActiveFilterButtonStyles();
+//		}
 	}
 
 	public void openFilterBox(int columnNumber) {
