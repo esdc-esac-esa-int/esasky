@@ -537,19 +537,6 @@ public class TreeMap extends Chart {
 	    				if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)) {
 	    					shouldBeShown = true;
 	    				}
-	    			}else {
-	    			
-	    				String prefix = waveLength.getPrefix().toLowerCase();
-	    				String wavelengthString;
-	    				if(prefix.length() > 0) {
-	    					wavelengthString = prefix + " " + waveLength.getLongName().toLowerCase();
-	    				}else {
-	    					wavelengthString = waveLength.getLongName().toLowerCase();
-	    				}
-	    				int waveLengthNumber = WavelengthNumbering.get(wavelengthString);
-	    				if(waveLengthNumber >= low && waveLengthNumber <= high) {
-	    					shouldBeShown = true;
-	    				}
 	    			}
     			}
     			
