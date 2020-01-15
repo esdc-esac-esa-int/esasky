@@ -28,7 +28,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
-import esac.archive.esasky.ifcs.model.client.WavelengthNumbering;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.WavelenthDescriptor;
@@ -78,7 +77,9 @@ public class TreeMap extends Chart {
         
         this.context = context;
         
-        ghostPoint = new GhostPoint(TextMgr.getInstance().getText("treeMap_loading_" + context), TextMgr.getInstance().getText("treeMap_noData_" + context));
+        ghostPoint = new GhostPoint(TextMgr.getInstance().getText("treeMap_loading_" + context),
+        		TextMgr.getInstance().getText("treeMap_noData_" + context),
+        		TextMgr.getInstance().getText("treeMap_notInRange_" + context));
 
         setTapCredits();
 
@@ -399,14 +400,25 @@ public class TreeMap extends Chart {
     }
 
     protected void addNoResultsGhostPoint() {
-        ghostPoint.setNoResults();
-        if (!ghostPoint.isRemoved()) {
-            return;
-        }
+    	if (ghostPoint.isRemoved() || ghostPoint.getName() != ghostPoint.getNoResultsText()) {
+    		addGhostPoint(ghostPoint.getNoResultsText());
+    	}
+    }
+    
+    protected void addNotInRangeGhostPoint() {
+    	//We don't want to overwrite noResultPointText
+    	if (ghostPoint.isRemoved() ) {
+    		addGhostPoint(ghostPoint.getNotInRangeText());
+    	}
+    }
+    	
+    protected void addGhostPoint(String newName) {
         boolean found = false;
         for (Point point : series.getPoints()) {
             if (point.getName().equals(ghostPoint.getName())) {
                 found = true;
+                point.setName(newName);
+                ghostPoint.setName(newName);
                 if (isRendered()) {
                     series.addPoint(point);
                     update();
@@ -420,6 +432,7 @@ public class TreeMap extends Chart {
             }
         }
         if (!found) {
+        	ghostPoint.setName(newName);
             series.addPoint(ghostPoint);
             update();
         }
@@ -534,7 +547,8 @@ public class TreeMap extends Chart {
 	    			ArrayList<Double> waveLengthRange = waveLength.getRange();
 	    			
 	    			if(waveLengthRange.size() > 0) {
-	    				if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)) {
+	    				if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)
+	    						&& pointInformation.count > 0) {
 	    					shouldBeShown = true;
 	    				}
 	    			}
@@ -553,7 +567,7 @@ public class TreeMap extends Chart {
     	if(anyPointsAreShown) {
     		removeGhostPoint();
     	}else {
-    		addNoResultsGhostPoint();
+    		addNotInRangeGhostPoint();
     	}
     	update();
     }

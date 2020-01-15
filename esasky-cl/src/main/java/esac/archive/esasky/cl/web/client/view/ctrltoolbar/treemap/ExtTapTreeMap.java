@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.moxieapps.gwt.highcharts.client.Credits;
 import org.moxieapps.gwt.highcharts.client.Point;
-import org.moxieapps.gwt.highcharts.client.Series;
 import org.moxieapps.gwt.highcharts.client.ToolTip;
 import org.moxieapps.gwt.highcharts.client.ToolTipData;
 import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
@@ -21,6 +20,7 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ExtTapTreeMap extends TreeMap {
@@ -132,6 +132,7 @@ public class ExtTapTreeMap extends TreeMap {
     		}
     }
     
+    
     @Override
     public void addData(final List<IDescriptor> descriptors, List<Integer> counts) {
         
@@ -144,19 +145,21 @@ public class ExtTapTreeMap extends TreeMap {
             
             
             for (int i = 0; i < descriptors.size(); i ++) {
+            	ExtTapDescriptor desc = (ExtTapDescriptor) descriptors.get(i);
+            	if(desc.getTreeMapType() == EsaSkyConstants.OBSCORE_DATAPRODUCT || desc.getTreeMapType() == EsaSkyConstants.OBSCORE_COLLECTION) {
+            		cleanChildren(desc);            	
+            	}
             	
-            	cleanChildren((ExtTapDescriptor) descriptors.get(i));            	
-            	final IDescriptor descriptor = descriptors.get(i);
                 if (counts.get(i) > 0) {
                     //Only add descriptors with non zero count
-            		addPoints(descriptor, counts.get(i), false);
+            		addPoints(desc, counts.get(i), false);
             		
                 } else {
                     //Store this index for later removing
                     zeroCountList.add(i);
                 }
                 
-                if(rootNodeId.equals("") || getNativePointId(getPoint(descriptor).getNativePoint()).equals(rootNodeId)) {
+                if(rootNodeId.equals("") || getNativePointId(getPoint(desc).getNativePoint()).equals(rootNodeId)) {
                 	redraw = true;
                 }
             }
@@ -292,7 +295,6 @@ public class ExtTapTreeMap extends TreeMap {
     }
     
     private static native void nativeSetData(JavaScriptObject series, boolean redraw) /*-{
-    	var a = series.nodeMap[series.rootNode]
     	if(series.rootNode != ""){
     		
 	    	for(var i = 0; i < series.data.length; i++){
@@ -377,6 +379,76 @@ public class ExtTapTreeMap extends TreeMap {
     
     public void registerHeaderObserver(TreeMapHeaderChanged observer) {
         headerObservers.add(observer);
+    }
+    
+    private native void updateParentCount(JavaScriptObject series)/*-{
+    	var head = series.nodeMap[""];
+    	for(var i = 0; i < head.children.length; i++){
+    		var count = 0;
+			var lvl1 = head.children[i];
+			for(var j = 0; j < lvl1.children.length; j++){
+				var lvl2 = lvl1.children[j]
+				count += lvl2.childrenTotal
+				lvl2.val = lvl2.childrenTotal
+			}
+			lvl1.val = count
+    	}
+    	
+    	for(i = 0; i < series.points.length; i++){
+    		var point = series.points[i];
+    		if(point.id){
+    			var count = series.nodeMap[point.id].val
+    			if(count > 0.5){
+    				point.update(0.27, false, false)
+    			}else{
+    				point.update(0, false, false)
+    			}
+    		}
+    	}
+    	
+    }-*/;
+    
+    @Override
+    public void onSliderValueChange(double low, double high) {
+    	sliderValueLow = low;
+    	sliderValueHigh = high;
+		double highWavelength = ESASkyColors.valueToWaveLength(low);
+		double lowWavelength = ESASkyColors.valueToWaveLength(high);
+		
+		boolean anyPointsAreShown = false;
+		
+    	for(Point point : series.getPoints()) {
+    		boolean shouldBeShown = false;
+    		PointInformation pointInformation = allPoints.get(point.getText());
+    		if(pointInformation != null) {
+    			
+    			ExtTapDescriptor descriptor = (ExtTapDescriptor) pointInformation.descriptor;
+    				
+    			double[] waveLengthRange = descriptor.getWavelengthRange();
+	    			
+    			if(waveLengthRange.length > 0) {
+    				if(lowWavelength <= waveLengthRange[1] && highWavelength >= waveLengthRange[0]) {
+    					shouldBeShown = true;
+    				}
+    			}
+    			
+    			Point pointInSeries = getPoint(pointInformation.descriptor);
+    			if(!shouldBeShown) {
+    				pointInSeries.update(0, false);
+    			}else if(shouldBeShown) {
+    				pointInSeries.update(logCount(pointInformation.count), false);
+    				anyPointsAreShown = true;
+    			}
+    		}
+		}
+    
+	    if(anyPointsAreShown) {
+			removeGhostPoint();
+		}else {
+			addNoResultsGhostPoint();
+		}
+	    updateParentCount(series.getNativeSeries());
+		update(true);
     }
     
 }

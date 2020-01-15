@@ -7,11 +7,13 @@ public class GhostPoint extends Point{
 	private boolean removed;
 	private String loadingText;
 	private String noResultsText;
+	private String notInRangeText;
 	
-	public GhostPoint(String loadingText, String noResultsText) {
+	public GhostPoint(String loadingText, String noResultsText, String notInRangeText) {
 		super(loadingText, 0.2);
 		this.loadingText = loadingText;
 		this.noResultsText = noResultsText;
+		this.notInRangeText = notInRangeText;
 		setColor("#000");
 	}
 	
@@ -23,6 +25,10 @@ public class GhostPoint extends Point{
 		setName(noResultsText);
 	}
 	
+	public void setNotInRange(){
+		setName(notInRangeText);
+	}
+	
 	public boolean isRemoved(){
 		return removed;
 	}
@@ -30,4 +36,18 @@ public class GhostPoint extends Point{
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}
+
+	public String getLoadingText() {
+		return loadingText;
+	}
+
+	public String getNoResultsText() {
+		return noResultsText;
+	}
+
+	public String getNotInRangeText() {
+		return notInRangeText;
+	}
+	
+	
 }
