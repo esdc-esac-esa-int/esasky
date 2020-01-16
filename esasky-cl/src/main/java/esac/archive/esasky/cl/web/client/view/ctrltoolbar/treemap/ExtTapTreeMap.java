@@ -146,7 +146,7 @@ public class ExtTapTreeMap extends TreeMap {
             
             for (int i = 0; i < descriptors.size(); i ++) {
             	ExtTapDescriptor desc = (ExtTapDescriptor) descriptors.get(i);
-            	if(desc.getTreeMapType() == EsaSkyConstants.OBSCORE_DATAPRODUCT || desc.getTreeMapType() == EsaSkyConstants.OBSCORE_COLLECTION) {
+            	if(desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
             		cleanChildren(desc);            	
             	}
             	
