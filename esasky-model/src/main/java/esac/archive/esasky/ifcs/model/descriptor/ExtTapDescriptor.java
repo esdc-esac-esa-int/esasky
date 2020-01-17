@@ -28,6 +28,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private ExtTapDescriptor parent;
     private String ingestedTable;
     private int sourceLimit;
+    private double[] wavelengthRange = new double[] {0,13};
     
 
     @JsonInclude(Include.NON_NULL)
@@ -197,7 +198,13 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public void setSourceLimit(int sourceLimit) {
 		this.sourceLimit = sourceLimit;
 	}
-	
-	
+
+	public double[] getWavelengthRange() {
+		return wavelengthRange;
+	}
+
+	public void setWavelengthRange(double[] wavelengthRange) {
+		this.wavelengthRange = wavelengthRange;
+	}
 	
 }
