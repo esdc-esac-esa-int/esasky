@@ -125,10 +125,10 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     @Override
     public final void setHistoColor(final String inputHistoColor) {
-//        this.histoColor = inputHistoColor;
-//        for (ColorChangeObserver observer : colorObservers) {
-//        	observer.onColorChange(this, inputHistoColor);
-//        }
+        this.histoColor = inputHistoColor;
+        for (ColorChangeObserver observer : colorObservers) {
+        	observer.onColorChange(this, inputHistoColor);
+        }
     }
     
     @Override
@@ -281,11 +281,13 @@ public abstract class BaseDescriptor implements IDescriptor {
     		minWavelength = Math.min(range.get(0), minWavelength);
     		maxWavelength = Math.max(range.get(1), maxWavelength);
         }
-        double mean = (maxWavelength + minWavelength) / 2;
         
-        this.histoColor = ESASkyColors.getColorFromWavelength(mean);
-        for (ColorChangeObserver observer : colorObservers) {
-        	observer.onColorChange(this, this.histoColor);
+        double mean = (maxWavelength + minWavelength) / 2;
+        if(mean < 40){
+        	this.histoColor = ESASkyColors.getColorFromWavelength(mean);
+        	for (ColorChangeObserver observer : colorObservers) {
+        		observer.onColorChange(this, this.histoColor);
+        	}
         }
     }
     
