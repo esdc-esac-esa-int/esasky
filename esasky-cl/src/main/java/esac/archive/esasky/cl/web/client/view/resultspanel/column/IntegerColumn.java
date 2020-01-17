@@ -10,6 +10,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.IntegerFilterDialogBox;
 
 public class IntegerColumn extends SortableColumn<String> {
@@ -17,11 +18,13 @@ public class IntegerColumn extends SortableColumn<String> {
 	private IntegerFilterDialogBox intFilter;
 
 	private final String filterButtonId;
+	private final String tapName;
 	
 	private final int ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME = 500;
 
-	public IntegerColumn(String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
+	public IntegerColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
 		super(label, new TextCell(), rowsFilterObserver);
+		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
 	}
 
@@ -99,7 +102,7 @@ public class IntegerColumn extends SortableColumn<String> {
 			maxValue = Integer.MIN_VALUE;
 		}
 		if (intFilter == null) {
-			this.intFilter = new IntegerFilterDialogBox(label, filterButtonId, new FilterObserver() {
+			this.intFilter = new IntegerFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 
 				@Override
 				public void onNewFilter() {
@@ -160,6 +163,11 @@ public class IntegerColumn extends SortableColumn<String> {
 			return -1;
 		}
 		return Integer.parseInt(object1) > Integer.parseInt(object2) ? -1 : 1;
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return intFilter;
 	}
 
 }

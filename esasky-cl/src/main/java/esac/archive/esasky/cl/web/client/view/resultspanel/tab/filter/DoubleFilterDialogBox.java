@@ -64,8 +64,8 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 		ImageResource resetIcon();
     }
     
-	public DoubleFilterDialogBox(String columnName, final String filterButtonId, final FilterObserver filterObserver) {
-		super(filterButtonId);
+	public DoubleFilterDialogBox(String tapName, String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+		super(tapName, filterButtonId);
         this.style = this.resources.style();
         this.style.ensureInjected();
         doubleFilterContainerId = filterButtonId.replaceAll("(\\(|\\)| )", "_") + "doubleColumn";
@@ -326,5 +326,10 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 		private boolean isActiveHandle(String className) {
 			return className.contains("ui-slider-handle") && className.contains("ui-state-active");
 		}
+	}
+
+	@Override
+	public String getAdqlForFilterCondition() {
+		return "";
 	}
 }

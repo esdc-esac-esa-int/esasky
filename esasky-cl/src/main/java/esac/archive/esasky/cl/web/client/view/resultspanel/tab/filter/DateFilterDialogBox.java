@@ -57,8 +57,8 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		ImageResource resetIcon();
 	}
 
-	public DateFilterDialogBox(String columnName, final String filterButtonId, final FilterObserver filterObserver) {
-		super(filterButtonId);
+	public DateFilterDialogBox(String tapName, String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+		super(tapName, filterButtonId);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		
@@ -241,5 +241,10 @@ public class DateFilterDialogBox extends FilterDialogBox {
 			ensureCorrectFilterButtonStyle();
 			schedule(100);
 		}
+	}
+
+	@Override
+	public String getAdqlForFilterCondition() {
+		return "";
 	}
 }

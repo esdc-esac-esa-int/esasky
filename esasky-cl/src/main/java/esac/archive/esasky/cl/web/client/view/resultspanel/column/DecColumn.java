@@ -12,15 +12,16 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.StringFilterDialogBox;
 
 public class DecColumn extends SortableColumn<String>{
 
 	private StringFilterDialogBox stringFilter;
 	
-	public DecColumn(String label, String filterButtonId, RowsFilterObserver rowsFiltered){
+	public DecColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFiltered){
 		super(label, new TextCell(), rowsFiltered);
-		this.stringFilter = new StringFilterDialogBox(label, filterButtonId, new FilterObserver() {
+		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
 			public void onNewFilter() {
@@ -129,6 +130,11 @@ public class DecColumn extends SortableColumn<String>{
 			return -1;
 		}
 		return Double.parseDouble(object1) > Double.parseDouble(object2) ? -1 : 1;
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return stringFilter;
 	}
 
 }

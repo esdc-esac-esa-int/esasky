@@ -61,8 +61,8 @@ public class LongFilterDialogBox extends FilterDialogBox {
 		ImageResource resetIcon();
     }
     
-	public LongFilterDialogBox(String columnName, final String filterButtonId, final FilterObserver filterObserver) {
-		super(filterButtonId);
+	public LongFilterDialogBox(String tapName, String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+		super(tapName, filterButtonId);
         this.style = this.resources.style();
         this.style.ensureInjected();
         intFilterContainerId = filterButtonId.replaceAll("(\\(|\\)| )", "_") + "intColumn";
@@ -306,5 +306,10 @@ public class LongFilterDialogBox extends FilterDialogBox {
 		private boolean isActiveHandle(String className) {
 			return className.contains("ui-slider-handle") && className.contains("ui-state-active");
 		}
+	}
+
+	@Override
+	public String getAdqlForFilterCondition() {
+		return "";
 	}
 }

@@ -35,8 +35,8 @@ public class StringFilterDialogBox extends FilterDialogBox {
         CssResource style();
     }
     
-	public StringFilterDialogBox(final String columnName, final String filterButtonId, final FilterObserver filterObserver) {
-		super(filterButtonId);
+	public StringFilterDialogBox(String tapName, final String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+		super(tapName, filterButtonId);
 		this.filterObserver = filterObserver;
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -133,5 +133,14 @@ public class StringFilterDialogBox extends FilterDialogBox {
 			schedule(500);
 		}
 		
+	}
+
+	@Override
+	public String getAdqlForFilterCondition() {
+		if(isFilterActive()) {
+			//TODO ILIKE
+			return "" + tapName + "" + " LIKE '%" + textLine.getText() + "%'";
+		}
+		return "";
 	}
 }

@@ -11,6 +11,7 @@ import com.google.gwt.user.cellview.client.Column;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 
 public abstract class SortableColumn<C> extends Column<TableRow, C>{
 
@@ -42,6 +43,12 @@ public abstract class SortableColumn<C> extends Column<TableRow, C>{
 	public boolean hasFilteredAwayId(Integer rowId) {
 		return removedRowIds.contains(rowId);
 	}
+	
+	public String getAdqlForFilterCondition() {
+		return getFilterBox().getAdqlForFilterCondition();
+	}
+	
+	protected abstract FilterDialogBox getFilterBox();
 	
 	protected void applyFilterOnNewDataSet() {
 		filter();

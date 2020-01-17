@@ -15,6 +15,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.StringFilterDialogBox;
 
 public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
@@ -22,10 +23,10 @@ public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
 	private IDescriptor descriptor;
 	private final StringFilterDialogBox stringFilter;
 	
-	public Link2ArchiveColumn(String label, IDescriptor descriptor, String filterButtonId, RowsFilterObserver rowsFilterObserver){
+	public Link2ArchiveColumn(String tapName, String label, IDescriptor descriptor, String filterButtonId, RowsFilterObserver rowsFilterObserver){
 		super(label, new SafeHtmlCell(), rowsFilterObserver);
 		this.descriptor = descriptor;
-		this.stringFilter = new StringFilterDialogBox(label, filterButtonId, new FilterObserver() {
+		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
 			public void onNewFilter() {
@@ -178,6 +179,11 @@ public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
 			}
 			return object1.compareToIgnoreCase(object2);
 		}
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return stringFilter;
 	}
 
 }

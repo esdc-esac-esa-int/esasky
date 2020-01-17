@@ -12,11 +12,13 @@ import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DoubleFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 
 public class DoubleColumn extends SortableColumn<String> {
 
 	private DoubleFilterDialogBox doubleFilter;
 
+	private final String tapName;
 	private final String filterButtonId;
 	private NumberFormat numberFormat;
 	private NumberFormat scientificNumberFormat;
@@ -24,8 +26,9 @@ public class DoubleColumn extends SortableColumn<String> {
 	
 	private final int ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME = 500;
 
-	public DoubleColumn(String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
+	public DoubleColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
 		super(label, new TextCell(), rowsFilterObserver);
+		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
 	}
 
@@ -160,7 +163,7 @@ public class DoubleColumn extends SortableColumn<String> {
 			maxValue = Double.POSITIVE_INFINITY;
 		}
 		if (doubleFilter == null) {
-			this.doubleFilter = new DoubleFilterDialogBox(label, filterButtonId, new FilterObserver() {
+			this.doubleFilter = new DoubleFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 
 				@Override
 				public void onNewFilter() {
@@ -233,6 +236,11 @@ public class DoubleColumn extends SortableColumn<String> {
 			return -1;
 		}
 		return Double.parseDouble(object1) > Double.parseDouble(object2) ? -1 : 1;
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return doubleFilter;
 	}
 
 }

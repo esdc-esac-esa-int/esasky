@@ -15,14 +15,15 @@ import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 
 public class DateTimeColumn extends SortableColumn<String>{
 	
 	private final DateFilterDialogBox dateFilter;
 	
-	public DateTimeColumn(String label, String filterButtonId, RowsFilterObserver rowsFilterObserver){
+	public DateTimeColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver){
 		super(label, new TextCell(), rowsFilterObserver);
-		this.dateFilter = new DateFilterDialogBox(label, filterButtonId, new FilterObserver() {
+		this.dateFilter = new DateFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
 			public void onNewFilter() {
@@ -135,6 +136,11 @@ public class DateTimeColumn extends SortableColumn<String>{
 			return 1;
 		}
 		return object1.compareToIgnoreCase(object2);
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return dateFilter;
 	}
 	
 }

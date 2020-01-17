@@ -10,6 +10,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.LongFilterDialogBox;
 
 public class LongColumn extends SortableColumn<String> {
@@ -17,11 +18,13 @@ public class LongColumn extends SortableColumn<String> {
 	private LongFilterDialogBox longFilter;
 
 	private final String filterButtonId;
+	private final String tapName;
 	
 	private final int ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME = 500;
 
-	public LongColumn(String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
+	public LongColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
 		super(label, new TextCell(), rowsFilterObserver);
+		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
 	}
 
@@ -99,7 +102,7 @@ public class LongColumn extends SortableColumn<String> {
 			maxValue = Integer.MIN_VALUE;
 		}
 		if (longFilter == null) {
-			this.longFilter = new LongFilterDialogBox(label, filterButtonId, new FilterObserver() {
+			this.longFilter = new LongFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 
 				@Override
 				public void onNewFilter() {
@@ -160,6 +163,11 @@ public class LongColumn extends SortableColumn<String> {
 			return -1;
 		}
 		return Long.parseLong(object1) > Long.parseLong(object2) ? -1 : 1;
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return longFilter;
 	}
 
 }

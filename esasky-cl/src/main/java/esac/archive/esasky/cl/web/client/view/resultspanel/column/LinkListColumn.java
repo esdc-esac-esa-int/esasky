@@ -13,6 +13,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.StringFilterDialogBox;
 
 public class LinkListColumn extends SortableColumn<SafeHtml>{
@@ -24,7 +25,7 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 	private int maxLinks;
 	private final StringFilterDialogBox stringFilter;
 	
-	public LinkListColumn(String label, String splitByString, String linkUrl, String replaceString, 
+	public LinkListColumn(String tapName, String label, String splitByString, String linkUrl, String replaceString, 
 			String showAllString, int maxLinks, String filterButtonId, RowsFilterObserver rowsFilterObserver){
 		super(label, new SafeHtmlCell(), rowsFilterObserver);
 		this.splitByString = splitByString;
@@ -32,7 +33,7 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 		this.replaceString = replaceString;
 		this.showAllString = showAllString;
 		this.maxLinks = maxLinks;
-		this.stringFilter = new StringFilterDialogBox(label, filterButtonId, new FilterObserver() {
+		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
 			public void onNewFilter() {
@@ -174,6 +175,11 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 			return 1;
 		}
 		return object1.compareToIgnoreCase(object2);
+	}
+
+	@Override
+	protected FilterDialogBox getFilterBox() {
+		return stringFilter;
 	}
 
 }

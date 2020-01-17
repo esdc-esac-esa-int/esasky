@@ -15,6 +15,7 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
     private CssResource style;
 
     private final String filterButtonId;
+    protected final String tapName;
     
     public interface Resources extends ClientBundle {
         @Source("filterDialogBox.css")
@@ -22,8 +23,9 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
         CssResource style();
     }
     
-	public FilterDialogBox(String filterButtonId) {
+	public FilterDialogBox(String tapName, String filterButtonId) {
 		super(GoogleAnalytics.CAT_Filter);
+		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -42,4 +44,6 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
 	}
 	
 	public abstract boolean isFilterActive();
+	
+	public abstract String getAdqlForFilterCondition();
 }
