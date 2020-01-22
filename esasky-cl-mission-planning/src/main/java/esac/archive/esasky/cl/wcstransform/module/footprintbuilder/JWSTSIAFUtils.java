@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 /**
  * Class responsible for conversion between reference frames defined in the SIAF
  * file
+ *  @author eracero@sciops.esa.int Copyright (c) 2016 - European Space Agency
  */
 public final class JWSTSIAFUtils {
 
@@ -137,11 +138,18 @@ public final class JWSTSIAFUtils {
 
 	}
 
-	public static double[] convertIdealToScienceCoords(double xidl, double yidl) {
+	public static double[] convertIdealToScienceCoords(double[] coords, double v2ref, double v3ref, double parity, double angle) {
 		// xsci -xsciref = idl2sci
+		//V3IdlAngle in degrees, convert to radians first
+		double v3idlRad = Math.toRadians(angle);
+		double xsci = v2ref + parity * coords[0] * Math.cos(v3idlRad) + coords[1] * Math.sin(v3idlRad);
+		double ysci = v3ref - parity * coords[0] * Math.sin(v3idlRad) + coords[1] * Math.cos(v3idlRad);
 
-		return null;
+		return new double[] {xsci,ysci};
 
 	}
+	
+	
+
 
 }

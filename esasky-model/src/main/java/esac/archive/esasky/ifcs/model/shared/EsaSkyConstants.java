@@ -300,4 +300,71 @@ public class EsaSkyConstants {
     public static final String TREEMAP_TYPE_SERVICE = "service";
     public static final String TREEMAP_TYPE_SUBCOLLECTION= "collection";
     public static final String TREEMAP_TYPE_DATAPRODUCT = "dataproduct";
+    
+    /*************************************************************************/
+    /** JWST Instruments **/
+    /*************************************************************************/
+    
+    public enum JWSTInstrument {
+        FGS1("FGS", "FGS1_FULL"),
+        FGS2("FGS", "FGS2_FULL"), 
+        NIRISS_CEN("NIRISS","NIS_CEN"),
+        NIRSPEC_MSA("NIRSpec","NRS_FULL_MSA"),
+        NIRSPEC_MSA1("NIRSpec","NRS_FULL_MSA1"),
+        NIRSPEC_MSA2("NIRSpec","NRS_FULL_MSA2"),
+        NIRSPEC_MSA3("NIRSpec","NRS_FULL_MSA3"),
+        NIRSPEC_MSA4("NIRSpec","NRS_FULL_MSA4"),
+        NIRSPEC_IFU("NIRSpec","NRS_FULL_IFU"),
+        NIRSPEC_SLIT1("NIRSpec","NRS_S200A1_SLIT"),
+        NIRSPEC_SLIT2("NIRSpec","NRS_S200A2_SLIT"),
+        NIRSPEC_SLIT3("NIRSpec","NRS_S200B1_SLIT"),
+        NIRSPEC_SLIT4("NIRSpec","NRS_S400A1_SLIT"),
+        NIRSPEC_SLIT5("NIRSpec","NRS_S1600A1_SLIT"),
+        NIRCAFULL("NIRCam","NRCALL_FULL"),
+        NIRCA1("NIRCam","NRCA1_FULL"),
+        NIRCA2("NIRCam","NRCA2_FULL"),
+        NIRCA3("NIRCam","NRCA3_FULL"),
+        NIRCA4("NIRCam","NRCA4_FULL"),
+        NIRCA5("NIRCam","NRCA5_FULL_OSS"),
+        NIRCB1("NIRCam","NRCB1_FULL"),
+        NIRCB2("NIRCam","NRCB2_FULL"),
+        NIRCB3("NIRCam","NRCB3_FULL"),
+        NIRCB4("NIRCam","NRCB4_FULL"),
+        NIRCB5("NIRCam","NIRCB5_FULL"),
+        NIRCA2_MASK210R("NIRCam","NRCA2_MASK210R"),
+        NIRCA5_MASK335R("NIRCam","NRCA5_MASK335R"),
+        NIRCA5_MASK430R("NIRCam","NRCA5_MASK430R"),
+        NIRCA4_MASKSWB("NIRCam","NRCA4_MASKSWB"),
+        NIRCA5_MASKLWB("NIRCam","NRCA5_MASKLWB"),
+        NIRCB1_MASK210R("NIRCam","NRCB1_MASK210R"),
+        NIRCB5_MASK335R("NIRCam","NRCB5_MASK335R"),
+        NIRCB5_MASK430R("NIRCam","NRCB5_MASK430R"),
+        NIRCB3_MASKSWB("NIRCam","NRCB3_MASKSWB"),
+        NIRCB5_MASKLWB("NIRCam","NRCB5_MASKLWB"),
+        MIRIM_FULL("MIRI","MIRIM_FULL"),     
+        MIRIM_MASK1065("MIRI","MIRIM_MASK1065"),
+        MIRIM_ILLUM("MIRI","MIRIM_ILLUM"),
+        MIRIM_FP1MIMF("MIRI","MIRIM_FP1MIMF"),
+        MIRIM_MASK1140("MIRI","MIRIM_MASK1140"),
+        MIRIM_MASK1550("MIRI","MIRIM_MASK1550"),
+        MIRIM_MASKLYOT("MIRI","MIRIM_MASKLYOT"),
+        MIRIM_CHANNEL1A("MIRI","MIRIFU_CHANNEL1A");
+
+    	private String instrName;
+    	private String aperName;
+    	private JWSTInstrument(String instrName, String aperName) {
+    		this.instrName = instrName;
+    		this.aperName = aperName;
+    	}
+		@Override
+		public String toString() {
+			return instrName;
+		}
+		
+		public String getAperName() {
+			return aperName;
+		}
+        
+        
+    }
 }

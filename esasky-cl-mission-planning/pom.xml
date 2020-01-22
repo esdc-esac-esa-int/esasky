@@ -60,6 +60,12 @@
 			<scope>test</scope>
 			<version>${jacoco.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>esac.archive.esasky.esasky-app</groupId>
+			<artifactId>esasky-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
 	</dependencies>
 
 

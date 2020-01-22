@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
+import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
@@ -56,7 +56,7 @@ public class FutureFootprintRow extends Composite {
 	private double ra, dec, rotation;
 
 	private Instrument instrument;
-	private Detectors aperture;
+	private String aperture;
 	private final NumberFormat raAndDecFormat = NumberFormat.getFormat("#0.000000");
 
 	private final String RA_TEXT = "RA \u00B0";
@@ -97,7 +97,7 @@ public class FutureFootprintRow extends Composite {
 		ImageResource rotateRightArrow();
 	}
 
-	public FutureFootprintRow(Instrument instrument, Detectors detector, boolean showAllInstruments) {
+	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments) {
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 
@@ -115,7 +115,7 @@ public class FutureFootprintRow extends Composite {
 		}
 	}
 	
-	public FutureFootprintRow(Instrument instrument, Detectors detector, boolean showAllInstruments, String ra, String dec, String rotation ) {
+	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments, String ra, String dec, String rotation ) {
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 
@@ -196,18 +196,19 @@ public class FutureFootprintRow extends Composite {
 		return instrumentHeader;
 	}
 
-	private DropDownMenu<Detectors> createDetectorDropDownMenu() {
-		final DropDownMenu<Detectors> aperturesDropDownMenu = new DropDownMenu<Detectors>(
+	private DropDownMenu<String> createDetectorDropDownMenu() {
+		final DropDownMenu<String> aperturesDropDownMenu = new DropDownMenu<String>(
 				TextMgr.getInstance().getText("futureFootprintRow_aperture"), TextMgr.getInstance().getText("futureFootprintRow_aperture"), 125, "aperturesDropDownMenu");
 
-		List<Detectors> aperturesNames = Detectors.getDetectorsForInstrument(instrument
-				.getInstrumentName());
+//		List<Detectors> aperturesNames = Detectors.getDetectorsForInstrument(instrument
+//				.getInstrumentName());
+		List<String> aperturesNames = InstrumentMapping.getInstance().getApertureListForInstrument(instrument.getInstrumentName());
 
 		int counter = 0;
 		int apertureIndex = 0;
-		for (final Detectors currentAperture : aperturesNames) {
-			MenuItem<Detectors> dropdownItem = new MenuItem<Detectors>(currentAperture,
-					currentAperture.getDetectorName(), currentAperture.getDetectorName(), true);
+		for (final String currentAperture : aperturesNames) {
+			MenuItem<String> dropdownItem = new MenuItem<String>(currentAperture,
+					currentAperture, currentAperture, true);
 			aperturesDropDownMenu.addMenuItem(dropdownItem);
 			if (currentAperture.equals(aperture)) {
 				apertureIndex = counter;
@@ -220,11 +221,11 @@ public class FutureFootprintRow extends Composite {
 
 			@Override
 			public void onSelectedChange() {
-				String apertureName = aperturesDropDownMenu.getSelectedObject().getDetectorName();
+				String apertureName = aperturesDropDownMenu.getSelectedObject();
 
-				for (Detectors aperture : Detectors.values()) {
+				for (String aperture : InstrumentMapping.getInstance().getApertureListForInstrument(instrument.getInstrumentName())) {
 
-					if (aperture.getDetectorName().equals(apertureName)) {
+					if (aperture.equals(apertureName)) {
 						FutureFootprintRow.this.aperture = aperture;
 
 						CommonEventBus.getEventBus().fireEvent(
@@ -373,7 +374,7 @@ public class FutureFootprintRow extends Composite {
 		return instrument;
 	}
 
-	public Detectors getAperture() {
+	public String getAperture() {
 		return aperture;
 	}
 

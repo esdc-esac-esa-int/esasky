@@ -19,6 +19,7 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
@@ -111,6 +112,9 @@ public class MainPresenter {
         getCatalogsList();
         
         getExtTapList();
+        
+        new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
+    
 
         if (Modules.spectraModule) {
             getSpectraList();

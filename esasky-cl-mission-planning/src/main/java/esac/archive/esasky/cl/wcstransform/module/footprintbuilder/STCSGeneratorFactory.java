@@ -14,7 +14,7 @@ public class STCSGeneratorFactory {
         Log.debug("FACTORY " + mission);
         if (PlanningMission.JWST.getMissionName().equals(mission)) {
             Log.debug("FACTORY " + PlanningMission.JWST.getMissionName());
-            return new JWSTSTCSGenerator(mission);
+            return new JWSTSiafToSTCSGenerator(mission);
         }
         return null;
     }

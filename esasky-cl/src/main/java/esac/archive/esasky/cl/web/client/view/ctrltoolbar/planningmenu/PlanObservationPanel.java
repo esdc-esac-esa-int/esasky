@@ -14,7 +14,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
+import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.PlanningMission;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -121,7 +121,7 @@ public class PlanObservationPanel extends DialogBox {
             @Override
             public void onSelectedChange() {
                 String instrument = instrumentPopupMenu.getSelectedObject().getInstrumentName();
-                Detectors detector = Detectors.getDefaultDetectorPerInstrument(instrument);
+                String detector = InstrumentMapping.getInstance().getDefaultApertureForInstrument(instrument);
                 PlanObservationPanel.this.addInstrumentRow(Instrument.getSingleInstrument(pm, instrument), detector,jwstPanel);
                 
                 GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_InstrumentSelected, instrument);
@@ -148,7 +148,7 @@ public class PlanObservationPanel extends DialogBox {
 		return addInstrumentButton;
 	}
 
-    private void addInstrumentRow(Instrument instrument, Detectors detector, VerticalPanel verticalPanel) {
+    private void addInstrumentRow(Instrument instrument, String detector, VerticalPanel verticalPanel) {
         FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, false);
         verticalPanel.add(fr);
     }
@@ -156,9 +156,9 @@ public class PlanObservationPanel extends DialogBox {
     public void addInstrumentRowAPI(String instrumentName, String detectorName, boolean showAllInstruments) {
     	final PlanningMission pm = PlanningMission.JWST;
     	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
-    	List<Detectors> detectors = Detectors.getDetectorsForInstrument(instrumentName);
-    	for (Detectors detector : detectors) {
-    		if(detector.getDetectorName().equals(detectorName)) {
+    	List<String> detectors = InstrumentMapping.getInstance().getApertureListForInstrument(instrumentName);
+    	for (String detector : detectors) {
+    		if(detector.equals(detectorName)) {
     			FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments);
     			PlanObservationPanel.jwstPanel.add(fr);
     		}
@@ -168,9 +168,9 @@ public class PlanObservationPanel extends DialogBox {
     public void addInstrumentRowWithCoordinatesAPI(String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
     	final PlanningMission pm = PlanningMission.JWST;
     	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
-    	List<Detectors> detectors = Detectors.getDetectorsForInstrument(instrumentName);
-    	for (Detectors detector : detectors) {
-    		if(detector.getDetectorName().equals(detectorName)) {
+    	List<String> detectors = InstrumentMapping.getInstance().getApertureListForInstrument(instrumentName);
+    	for (String detector : detectors) {
+    		if(detector.equals(detectorName)) {
     	    	FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation);
     	        PlanObservationPanel.jwstPanel.add(fr);
     		}

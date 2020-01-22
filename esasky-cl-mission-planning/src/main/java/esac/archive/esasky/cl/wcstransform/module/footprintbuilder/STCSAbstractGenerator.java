@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
-
 /**
  * @author Fabrizio Giordano Copyright (c) 2016 - European Space Agency
  */
@@ -38,12 +36,12 @@ public abstract class STCSAbstractGenerator {
 
     public abstract String generateSTCS(Vector<double[]> pixels);
 
-    public abstract Map<Detectors, Vector<double[]>> getDetectorsSkyCoordsForInstrument(
+    public abstract Map<String, Vector<double[]>> getDetectorsSkyCoordsForInstrument(
             double raDeg, double decDeg, double rotationDeg, String instrument, String detector);
 
     public abstract double[] selectReferencePosVFrame(String instrument, String detector);
 
-    public abstract Map<Detectors, Vector<double[]>> getDetectorsSkyCoordsForFoV(double raDeg,
+    public abstract Map<String, Vector<double[]>> getDetectorsSkyCoordsForFoV(double raDeg,
             double decDeg, double rotationDeg, String instrument, String detector);
 
 }

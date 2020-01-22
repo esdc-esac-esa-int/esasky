@@ -27,7 +27,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
-import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Detectors;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
@@ -220,7 +219,7 @@ public class AllSkyPresenter {
         Map<String, String> stcsPolygonInstrumentMap = STCSGeneratorFactory.getSTCSGenerator(
                 futureFootprintRow.getInstrument().getMission().getMissionName()).doAll(
                 futureFootprintRow.getInstrument().getInstrumentName(),
-                futureFootprintRow.getAperture().getDetectorName(),
+                futureFootprintRow.getAperture(),
                 futureFootprintRow.getRotationDeg(), raDeg, decDeg);
 
         Map<String, JavaScriptObject> polygonJsInstrumentMap = new HashMap<String, JavaScriptObject>();
@@ -275,19 +274,19 @@ public class AllSkyPresenter {
             if (currentPlanningFootprintRow == currEntry.getKey()) {
                 double raDeg = currentPlanningFootprintRow.getCenterRaDeg();
                 double decDeg = currentPlanningFootprintRow.getCenterDecDeg();
-                Map<Detectors, Vector<double[]>> detectorCenters = STCSGeneratorFactory
+                Map<String, Vector<double[]>> detectorCenters = STCSGeneratorFactory
                         .getSTCSGenerator(
                                 currentPlanningFootprintRow.getInstrument().getMission()
                                 .getMissionName()).getDetectorsSkyCoordsForInstrument(
                                         raDeg, decDeg, currentPlanningFootprintRow.getRotationDeg(),
                                         currentPlanningFootprintRow.getInstrument().getInstrumentName(),
-                                        currentPlanningFootprintRow.getAperture().getDetectorName());
+                                        currentPlanningFootprintRow.getAperture());
 
                 if (!currentPlanningFootprintRow.getIsAllInstrumentsSelected()) {
 
-                    for (Entry<Detectors, Vector<double[]>> currCenter : detectorCenters.entrySet()) {
+                    for (Entry<String, Vector<double[]>> currCenter : detectorCenters.entrySet()) {
 
-                        Log.debug("[cc] Det name " + currCenter.getKey().getDetectorName()
+                        Log.debug("[cc] Det name " + currCenter.getKey()
                                 + " coords " + currCenter.getValue().get(0)[0] + " "
                                 + currCenter.getValue().get(0)[1]);
 
@@ -295,8 +294,7 @@ public class AllSkyPresenter {
 
                         details.put(PlanningConstant.INSTRUMENT, currentPlanningFootprintRow
                                 .getInstrument().getInstrumentName());
-                        details.put(PlanningConstant.DETECTOR, currCenter.getKey()
-                                .getDetectorName());
+                        details.put(PlanningConstant.DETECTOR, currCenter.getKey());
                         details.put(PlanningConstant.REFERENCE_RA,
                                 Double.toString(currCenter.getValue().get(0)[0]));
                         details.put(PlanningConstant.REFERENCE_DEC,
@@ -323,7 +321,7 @@ public class AllSkyPresenter {
                     }
 
                 } else {
-                    Map<Detectors, Vector<double[]>> currDetectorCenters = STCSGeneratorFactory
+                    Map<String, Vector<double[]>> currDetectorCenters = STCSGeneratorFactory
                             .getSTCSGenerator(
                                     currentPlanningFootprintRow.getInstrument().getMission()
                                     .getMissionName())
@@ -332,20 +330,18 @@ public class AllSkyPresenter {
                                             decDeg,
                                     currentPlanningFootprintRow.getRotationDeg(),
                                             currentPlanningFootprintRow.getInstrument().getInstrumentName(),
-                                            currentPlanningFootprintRow.getAperture().getDetectorName());
+                                            currentPlanningFootprintRow.getAperture());
 
-                    for (Entry<Detectors, Vector<double[]>> currCenter : currDetectorCenters
+                    for (Entry<String, Vector<double[]>> currCenter : currDetectorCenters
                             .entrySet()) {
 
-                        Log.debug("[cc] Det name " + currCenter.getKey().getDetectorName()
+                        Log.debug("[cc] Det name " + currCenter.getKey()
                                 + " coords " + currCenter.getValue().get(0)[0] + " "
                                 + currCenter.getValue().get(0)[1]);
                         Map<String, Object> details = new HashMap<String, Object>();
 
-                        details.put(PlanningConstant.INSTRUMENT, currCenter.getKey()
-                                .getInstrumentName());
-                        details.put(PlanningConstant.DETECTOR, currCenter.getKey()
-                                .getDetectorName());
+                        details.put(PlanningConstant.INSTRUMENT, currentPlanningFootprintRow.getInstrument().getInstrumentName());
+                        details.put(PlanningConstant.DETECTOR, currCenter.getKey());
                         details.put(PlanningConstant.REFERENCE_RA,
                                 Double.toString(currCenter.getValue().get(0)[0]));
                         details.put(PlanningConstant.REFERENCE_DEC,
