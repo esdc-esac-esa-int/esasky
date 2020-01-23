@@ -61,6 +61,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObser
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
 
 public class Api {
@@ -105,6 +106,7 @@ public class Api {
 	}-*/;
 	
 	public void registerShapeSelectionCallback(final JavaScriptObject widget) {
+		setDataPanelHidden(true);
 		CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
                 new AladinLiteShapeSelectedEventHandler() {
 
@@ -265,6 +267,14 @@ public class Api {
 		}else {
 			sendBackToWidget(callback, msg);
 		}
+	}
+	
+	public void closeDataPanel() {
+		ResultsPanel.closeDataPanel();
+	}
+	
+	public void setDataPanelHidden(boolean input) {
+		ResultsPanel.shouldBeHidden(input);
 	}
 	
 	public void closeResultPanelTab(int index) {

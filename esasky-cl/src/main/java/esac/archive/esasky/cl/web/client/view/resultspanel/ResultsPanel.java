@@ -35,6 +35,8 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	private static final LayoutPanel resultsLP = new LayoutPanel();
 	
 	private static EsaSkyAnimation panelAnimation = new HeightAnimation(resultsLP.getElement());
+	
+	private static boolean shouldBeHidden = false;
 
 	private Resources resources = GWT.create(Resources.class);
 	private CssResource style;
@@ -87,6 +89,7 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 			}
 		});
 		ensureDataPanelCanFit();
+		
 	}
 	
 	private void ensureDataPanelCanFit() {
@@ -117,7 +120,7 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	@Override
     public final AbstractTablePanel addResultsTab(final GeneralEntityInterface entity, final String helpTitle, final String helpDescription) {
 
-        openDataPanel();
+//        openDataPanel();
         
         AbstractTablePanel tablePanel = entity.createTablePanel();
         
@@ -157,11 +160,13 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	}
 
 	public static final void openDataPanel() {
-		Log.debug("[ResultsPanel/openDataPanelButton()] ResultPanel IS NOT visible - diplaying it");
-
-		panelAnimation.animateTo(GUISessionStatus.getCurrentHeightForExpandedDataPanel(), 1000);
-		GUISessionStatus.setDataPanelOpen(true);
-		tabPanel.notifyDataPanelToggled();
+		if(!shouldBeHidden) {
+			Log.debug("[ResultsPanel/openDataPanelButton()] ResultPanel IS NOT visible - diplaying it");
+	
+			panelAnimation.animateTo(GUISessionStatus.getCurrentHeightForExpandedDataPanel(), 1000);
+			GUISessionStatus.setDataPanelOpen(true);
+			tabPanel.notifyDataPanelToggled();
+		}
 	}
 
 	public static final void closeDataPanel() {
@@ -175,4 +180,10 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	public boolean isOpen(){
 		return GUISessionStatus.isDataPanelOpen();
 	}
+	
+	public static void shouldBeHidden(boolean input) {
+		shouldBeHidden = input;
+	}
+
+	
 }
