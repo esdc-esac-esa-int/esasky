@@ -125,6 +125,14 @@ public class Api {
             }
         });
 	}
+		
+	public void addMOC(String options, String mocData) {
+		
+		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+		AladinLiteWrapper.getAladinLite().addMOCData(moc, mocData);
+		AladinLiteWrapper.getAladinLite().addMOC(moc);
+		
+	}
 	
 	public void getVisibleNpix(int norder) {
 		JavaScriptObject js = AladinLiteWrapper.getAladinLite().getVisibleNpix(norder);
