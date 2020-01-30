@@ -128,7 +128,7 @@ public class Api {
 		
 	public void addMOC(String options, String mocData) {
 		
-		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createMOC(options);
 		AladinLiteWrapper.getAladinLite().addMOCData(moc, mocData);
 		AladinLiteWrapper.getAladinLite().addMOC(moc);
 		
