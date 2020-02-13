@@ -20,7 +20,7 @@ public class RaColumn extends SortableColumn<String>{
 	private final StringFilterDialogBox stringFilter;
 	
 	public RaColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver){
-		super(label, new TextCell(), rowsFilterObserver);
+		super(tapName, label, new TextCell(), rowsFilterObserver);
 		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
@@ -87,6 +87,10 @@ public class RaColumn extends SortableColumn<String>{
 		return false;
 	}
 	
+	public void createFilter(Double min, Double max) {
+		//DUMMY
+	}
+	
 	protected void filter() {
 		String filter = stringFilter.getFilterString();
 		Set<Integer> rowsIdsToRemove = new HashSet<Integer>();
@@ -109,6 +113,9 @@ public class RaColumn extends SortableColumn<String>{
 		if(isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " = \'" + filter + "\'";
+		notifyFilterChanged(tapFilter);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class DoubleColumn extends SortableColumn<String> {
 	private final int ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME = 500;
 
 	public DoubleColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
-		super(label, new TextCell(), rowsFilterObserver);
+		super(tapName, label, new TextCell(), rowsFilterObserver);
 		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
 	}
@@ -124,8 +124,32 @@ public class DoubleColumn extends SortableColumn<String> {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
 		
+		String tapFilter = this.tapName  + " BETWEEN  " + Double.toString(doubleFilter.getCurrentLow()) + 
+				" AND " + Double.toString(doubleFilter.getCurrentHigh());
+		notifyFilterChanged(tapFilter);
+		
 		doubleFilter.setReRenderingWouldTakeSignificantTime( 
 				(originalRows.size() - removedRowIds.size()) > ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME);
+	}
+	
+	public void createFilter(Double min, Double max) {
+		if (doubleFilter == null) {
+			this.doubleFilter = new DoubleFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
+	
+				@Override
+				public void onNewFilter() {
+					filter();
+				}
+			});
+		}
+		
+		updateNumberFormat();
+		
+		if(min != null && max != null) {
+			doubleFilter.setRange(min, max, numberFormat, precision);
+		}else {
+			doubleFilter.setRange(0.0, 100.0, numberFormat, precision);
+		}
 	}
 
 	private int getMaxNumberOfDecimals(String number) {
@@ -180,7 +204,12 @@ public class DoubleColumn extends SortableColumn<String> {
 
 	private void updateNumberFormat() {
 		StringBuilder numberPattern = new StringBuilder("0");
-		precision = getPrecision(originalRows.get(0));
+		if(originalRows != null && originalRows.size() > 0) {
+			precision = getPrecision(originalRows.get(0));
+		}else {
+			precision = 3;
+		}
+		
 		if(precision > 0) {
 			numberPattern.append(".");
 			for (int i = 0; i < precision; i++) {

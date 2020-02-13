@@ -23,7 +23,7 @@ public class LongColumn extends SortableColumn<String> {
 	private final int ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME = 500;
 
 	public LongColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
-		super(label, new TextCell(), rowsFilterObserver);
+		super(tapName, label, new TextCell(), rowsFilterObserver);
 		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
 	}
@@ -31,6 +31,24 @@ public class LongColumn extends SortableColumn<String> {
 	@Override
 	public String getValue(TableRow row) {
 		return getElement(row);
+	}
+	
+	public void createFilter(Double min, Double max) {
+		if (longFilter == null) {
+			this.longFilter = new LongFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
+	
+				@Override
+				public void onNewFilter() {
+					filter();
+				}
+			});
+		}
+		
+		if(min != null && max != null) {
+			longFilter.setRange(min.intValue(), max.intValue());
+		}else {
+			longFilter.setRange(0, 100);
+		}
 	}
 
 	private String getElement(TableRow row) {
@@ -77,6 +95,10 @@ public class LongColumn extends SortableColumn<String> {
 		if (isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " BETWEEN  " + Long.toString(longFilter.getCurrentLow()) + 
+				" AND " + Long.toString(longFilter.getCurrentHigh());
+		notifyFilterChanged(tapFilter);
 		
 		longFilter.setReRenderingWouldTakeSignificantTime( 
 				(originalRows.size() - removedRowIds.size()) > ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME);

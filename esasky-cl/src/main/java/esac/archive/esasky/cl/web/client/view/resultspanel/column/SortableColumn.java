@@ -18,13 +18,15 @@ public abstract class SortableColumn<C> extends Column<TableRow, C>{
 	protected String label;
 	protected List<TableRow> originalRows = new LinkedList<TableRow>();
 	protected Set<Integer> removedRowIds = new HashSet<Integer>();
+	protected String tapName;
 	
 	private final RowsFilterObserver rowFilterObserver;
 	
 	private boolean isTableDirty;
 	
-	public SortableColumn(String label, Cell<C> cell, RowsFilterObserver rowsFilterObserver){
+	public SortableColumn(String tapName, String label, Cell<C> cell, RowsFilterObserver rowsFilterObserver){
 		super(cell);
+		this.tapName = tapName;
 		this.label = label;
 		this.rowFilterObserver = rowsFilterObserver;
         setSortable(true);
@@ -63,6 +65,10 @@ public abstract class SortableColumn<C> extends Column<TableRow, C>{
 		isTableDirty = false;
 	}
 	
+	protected void notifyFilterChanged(String filter) {
+		rowFilterObserver.onFilterChanged(filter);
+	}
+	
 	protected boolean isTableDirty() {
 		return isTableDirty;
 	}
@@ -99,4 +105,14 @@ public abstract class SortableColumn<C> extends Column<TableRow, C>{
 	}
 	
 	protected abstract int compare(String object1, String object2);
+	
+	protected void showDescription(String description) {
+		
+	}
+	
+	public abstract void createFilter(Double min, Double max);
+	
+	public String getTapName() {
+		return tapName;
+	}
 }

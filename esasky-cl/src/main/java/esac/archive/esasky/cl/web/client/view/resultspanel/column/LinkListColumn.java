@@ -27,7 +27,7 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 	
 	public LinkListColumn(String tapName, String label, String splitByString, String linkUrl, String replaceString, 
 			String showAllString, int maxLinks, String filterButtonId, RowsFilterObserver rowsFilterObserver){
-		super(label, new SafeHtmlCell(), rowsFilterObserver);
+		super(tapName, label, new SafeHtmlCell(), rowsFilterObserver);
 		this.splitByString = splitByString;
 		this.linkUrl = linkUrl;
 		this.replaceString = replaceString;
@@ -50,6 +50,10 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 	        }
 	    }
 	    return null;
+	}
+	
+	public void createFilter(Double min, Double max) {
+		//DUMMY
 	}
 	
 	public static SafeHtml getLinkList(String linkListValue, String splitByString, String linkUrl, String replaceString, String showAllString, int maxLinks) {
@@ -144,6 +148,9 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 		if(isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " = \'" + filter + "\'";
+		notifyFilterChanged(tapFilter);
 	}
 	
 	@Override

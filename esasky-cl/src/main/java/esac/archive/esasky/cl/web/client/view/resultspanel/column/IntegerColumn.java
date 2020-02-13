@@ -23,7 +23,7 @@ public class IntegerColumn extends SortableColumn<String> {
 	private final int ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME = 500;
 
 	public IntegerColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver) {
-		super(label, new TextCell(), rowsFilterObserver);
+		super(tapName, label, new TextCell(), rowsFilterObserver);
 		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
 	}
@@ -54,6 +54,24 @@ public class IntegerColumn extends SortableColumn<String> {
 			return true;
 		}
 	}
+	
+	public void createFilter(Double min, Double max) {
+		if (intFilter == null) {
+			this.intFilter = new IntegerFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
+	
+				@Override
+				public void onNewFilter() {
+					filter();
+				}
+			});
+		}
+		
+		if(min != null && max != null) {
+			intFilter.setRange(min.intValue(), max.intValue());
+		}else {
+			intFilter.setRange(0, 100);
+		}
+	}
 
 	protected void filter() {
 		Set<Integer> rowsIdsToRemove = new HashSet<Integer>();
@@ -77,6 +95,10 @@ public class IntegerColumn extends SortableColumn<String> {
 		if (isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " BETWEEN  " + Integer.toString(intFilter.getCurrentLow()) + 
+				" AND " + Integer.toString(intFilter.getCurrentHigh());
+		notifyFilterChanged(tapFilter);
 		
 		intFilter.setReRenderingWouldTakeSignificantTime( 
 				(originalRows.size() - removedRowIds.size()) > ITEM_THRESHOLD_BEFORE_SIGNIFICANT_RENDERING_TIME);

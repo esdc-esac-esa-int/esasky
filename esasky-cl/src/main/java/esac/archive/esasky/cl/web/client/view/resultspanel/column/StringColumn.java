@@ -19,7 +19,7 @@ public class StringColumn extends SortableColumn<String>{
 	private final StringFilterDialogBox stringFilter;
 	
 	public StringColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver){
-		super(label, new TextCell(), rowsFilterObserver);
+		super(tapName, label, new TextCell(), rowsFilterObserver);
 		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
@@ -81,6 +81,9 @@ public class StringColumn extends SortableColumn<String>{
 		if(isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " = \'" + filter + "\'";
+		notifyFilterChanged(tapFilter);
 	}
 	
 	@Override
@@ -93,6 +96,10 @@ public class StringColumn extends SortableColumn<String>{
 	@Override
 	public void showFilter() {
 		stringFilter.show();
+	}
+	
+	public void createFilter(Double min, Double max) {
+		//DUMMY
 	}
 	
 	@Override 

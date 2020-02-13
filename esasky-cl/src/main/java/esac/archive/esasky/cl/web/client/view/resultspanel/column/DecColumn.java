@@ -20,7 +20,7 @@ public class DecColumn extends SortableColumn<String>{
 	private StringFilterDialogBox stringFilter;
 	
 	public DecColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFiltered){
-		super(label, new TextCell(), rowsFiltered);
+		super(tapName, label, new TextCell(), rowsFiltered);
 		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
@@ -69,6 +69,11 @@ public class DecColumn extends SortableColumn<String>{
 		return false;
 	}
 	
+
+	public void createFilter(Double min, Double max) {
+		//DUMMY
+	}
+	
 	protected void filter() {
 		String filter = stringFilter.getFilterString();
 		Set<Integer> rowsIdsToRemove = new HashSet<Integer>();
@@ -91,6 +96,9 @@ public class DecColumn extends SortableColumn<String>{
 		if(isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " = \'" + filter + "\'";
+		notifyFilterChanged(tapFilter);
 	}
 	@Override
 	public void showFilter() {

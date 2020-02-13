@@ -24,7 +24,7 @@ public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
 	private final StringFilterDialogBox stringFilter;
 	
 	public Link2ArchiveColumn(String tapName, String label, IDescriptor descriptor, String filterButtonId, RowsFilterObserver rowsFilterObserver){
-		super(label, new SafeHtmlCell(), rowsFilterObserver);
+		super(tapName, label, new SafeHtmlCell(), rowsFilterObserver);
 		this.descriptor = descriptor;
 		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
@@ -135,11 +135,18 @@ public class Link2ArchiveColumn extends SortableColumn<SafeHtml>{
 		if(isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " = \'" + filter + "\'";
+		notifyFilterChanged(tapFilter);
 	}
 	
 	@Override
 	public void showFilter() {
 		stringFilter.show();
+	}
+	
+	public void createFilter(Double min, Double max) {
+		//DUMMY
 	}
 	
 	@Override 

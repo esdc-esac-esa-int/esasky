@@ -22,7 +22,7 @@ public class DateTimeColumn extends SortableColumn<String>{
 	private final DateFilterDialogBox dateFilter;
 	
 	public DateTimeColumn(String tapName, String label, String filterButtonId, RowsFilterObserver rowsFilterObserver){
-		super(label, new TextCell(), rowsFilterObserver);
+		super(tapName, label, new TextCell(), rowsFilterObserver);
 		this.dateFilter = new DateFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
@@ -77,6 +77,15 @@ public class DateTimeColumn extends SortableColumn<String>{
 		if(isTableDirty()) {
 			notifyDirty(rowsIdsToRemove, rowsIdsToAdd);
 		}
+		
+		String tapFilter = this.tapName  + " BETWEEN  \'" + dateFilter.getCurrentFromDate()
+			+ "\' AND \'" + dateFilter.getCurrentToDate() + "\'";
+		notifyFilterChanged(tapFilter);
+	}
+	
+	public void createFilter(Double min, Double max) {
+		
+		dateFilter.setStartRange("1990-01-01", "2020-12-31");
 	}
 	
 	@Override
