@@ -44,9 +44,21 @@ public class EntityRepository {
 	private PublicationsEntity publicationsEntity;
 	private List<PublicationsBySourceEntity> publicationsBySourceEntities;
 	private List<GeneralEntityInterface> allEntities = new LinkedList<GeneralEntityInterface>();
-	
+	private static EntityRepository _instance;
 
-	public EntityRepository(DescriptorRepository descriptorRepo) {
+	public static EntityRepository init(DescriptorRepository descriptorRepo) {
+		_instance = new EntityRepository(descriptorRepo);
+		return _instance;
+	}
+	
+	public static EntityRepository getInstance() {
+		if (_instance == null) {
+            throw new AssertionError("You have to call init first");
+        }
+        return _instance;
+	}
+	
+	private EntityRepository(DescriptorRepository descriptorRepo) {
 
 		this.descriptorRepo = descriptorRepo;
 
