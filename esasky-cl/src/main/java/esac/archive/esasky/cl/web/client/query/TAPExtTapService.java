@@ -45,6 +45,9 @@ public class TAPExtTapService extends AbstractMetadataService {
     	if(descriptor.getWhereADQL() != null) {
     		adql += " AND " + descriptor.getWhereADQL();
     	}
+    	if(descriptor.getDateADQL() != null) {
+    		adql += " AND " + descriptor.getDateADQL();
+    	}
     	
     	if(descriptor.getOrderByADQL() != null) {
     		adql += " " + descriptor.getOrderByADQL();
@@ -155,14 +158,16 @@ public class TAPExtTapService extends AbstractMetadataService {
     		
     	}else {
             ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-            String adql = "SELECT " + descriptor.getTapSTCSColumn() + ", healpix_index" + " ";
+            String adql = "SELECT " + EsaSkyConstants.HEALPIX_ORDER + ", " + EsaSkyConstants.HEALPIX_IPIX;
+//            		+ ", " + EsaSkyConstants.HEALPIX_COUNT + " ";
         	
         	adql += " from " + descriptor.getIngestedTable();
-//        	+ " WHERE ";
-//            adql += npixSearch(3);
+        	adql += " WHERE ";
+            adql += npixSearch(3);
             
         	if(descriptor.getWhereADQL() != null) {
-        		adql += " WHERE " + descriptor.getWhereADQL();
+        		adql += " AND " + descriptor.getWhereADQL();
+//        		adql += "AND healpix_order = 7";
         	}
         	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
         	
@@ -216,5 +221,11 @@ public class TAPExtTapService extends AbstractMetadataService {
     public String getRetreivingDataTextKey() {
     	return "MetadataCallback_retrievingMissionData";
     }
+
+	@Override
+	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
