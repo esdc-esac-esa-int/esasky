@@ -376,4 +376,15 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	public Image getTypeLogo() {
 		return defaultEntity.getTypeLogo();
 	}
+	
+	@Override 
+	public void refreshData(AbstractTablePanel tablePanel) {
+		//TODO
+	}
+	
+	@Override
+	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+		defaultEntity.coneSearch(tablePanel, conePos);
+		
+	}
 }

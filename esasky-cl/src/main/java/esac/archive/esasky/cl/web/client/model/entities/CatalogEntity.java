@@ -525,4 +525,16 @@ public class CatalogEntity implements GeneralEntityInterface{
 	public void removeSourceLimitNotificationNow() {
 		sourceLimitNotificationTimer.run();
 	}
+
+	@Override
+	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+		defaultEntity.coneSearch(tablePanel, conePos);
+		
+	}
+	
+	@Override
+	public void refreshData(AbstractTablePanel tablePanel) {
+		// TODO Auto-generated method stub
+		
+	}
 }

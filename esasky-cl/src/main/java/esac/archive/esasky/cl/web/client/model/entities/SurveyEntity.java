@@ -327,4 +327,15 @@ public class SurveyEntity implements GeneralEntityInterface{
 	public boolean isCustomizable() {
 		return defaultEntity.isCustomizable();
 	}
+
+	@Override
+	public void refreshData(AbstractTablePanel tablePanel) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+		// TODO Auto-generated method stub		
+	}
 }

@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
@@ -213,6 +212,38 @@ public class DefaultEntity implements GeneralEntityInterface{
         	}
         });
 	}
+
+	@Override
+	public void coneSearch(final AbstractTablePanel tablePanel, final SkyViewPosition conePos) {
+		Scheduler.get().scheduleFinally(new ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				clearAll();
+				final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
+				// Get Query in ADQL format.
+				final String adql = metadataService.getMetadataAdqlRadial(descriptor, conePos);
+				
+				String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), "json");
+				
+				Log.debug(debugPrefix + "Query [" + url + "]");
+				
+				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+				
+//        		new StreamRequest(url, new MetadataStreamCallback(tablePanel, adql, "Test"));
+				
+				try {
+					
+					builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
+							TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
+					
+				} catch (Exception e) {
+					Log.error(e.getMessage());
+					Log.error(debugPrefix + "Error fetching JSON data from server");
+				}
+			}
+		});
+	}
 	
 	public void setDrawer(IShapeDrawer drawer) {
 		this.drawer = drawer;
@@ -321,5 +352,11 @@ public class DefaultEntity implements GeneralEntityInterface{
 	@Override
 	public Image getTypeLogo() {
 		return null;
+	}
+
+	@Override
+	public void refreshData(AbstractTablePanel tablePanel) {
+		// TODO Auto-generated method stub
+		
 	}
 }
