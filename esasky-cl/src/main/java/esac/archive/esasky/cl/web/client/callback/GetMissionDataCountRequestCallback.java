@@ -19,8 +19,21 @@ public class GetMissionDataCountRequestCallback extends JsonRequestCallback {
     private AbstractTablePanel tablePanel;
     private static HashMap<String, Long> latestUpdates = new HashMap<String, Long>();
     private long timecall;
+	private OnComplete onComplete;
 
-    public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, AbstractTablePanel tablePanel,
+
+	public interface OnComplete{
+		public void onComplete();
+	}
+    
+	public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, AbstractTablePanel tablePanel,
+			String progressIndicatorMessage, String url, OnComplete onComplete) {
+		
+		this(entity, tablePanel, progressIndicatorMessage, url);
+		this.onComplete = onComplete;
+	}
+	
+	public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, AbstractTablePanel tablePanel,
             String progressIndicatorMessage, String url) {
         super(progressIndicatorMessage, url);
         this.entity = entity;
@@ -45,6 +58,9 @@ public class GetMissionDataCountRequestCallback extends JsonRequestCallback {
 
         entity.getCountStatus().setCount(entity.getDescriptor().getMission(), countObject.getCount());
         entity.getCountStatus().updateCount();
-        entity.fetchData(tablePanel);
+        
+		if(onComplete != null) {
+			onComplete.onComplete();
+		}
     }
 }
