@@ -51,7 +51,7 @@ public class SourcesTablePanel extends AbstractTablePanel {
 
 	protected void initView() {
 		createCentreViewColumn();
-		createMetadataColums();
+		createMetadataColumns();
 
 		super.initView();
 	}

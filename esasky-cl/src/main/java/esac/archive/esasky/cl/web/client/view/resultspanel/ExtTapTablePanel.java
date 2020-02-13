@@ -47,7 +47,7 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 	protected void initView() {
 		createCentreViewColumn();
 
-		createMetadataColums();
+		createMetadataColumns();
 		super.initView();
 	}
 

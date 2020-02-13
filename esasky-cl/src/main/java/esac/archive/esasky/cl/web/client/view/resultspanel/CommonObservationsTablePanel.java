@@ -60,7 +60,7 @@ public class CommonObservationsTablePanel extends AbstractTablePanel {
 			createSendToSampColumn();
 		}
 
-		createMetadataColums();
+		createMetadataColumns();
 		super.initView();
 	}
 

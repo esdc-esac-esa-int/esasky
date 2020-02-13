@@ -31,7 +31,7 @@ public class SurveyTablePanel extends AbstractTablePanel {
     
     protected void initView() {
         createCentreViewColumn();
-        createMetadataColums();
+        createMetadataColumns();
     }
     
     private void createCentreViewColumn() {
