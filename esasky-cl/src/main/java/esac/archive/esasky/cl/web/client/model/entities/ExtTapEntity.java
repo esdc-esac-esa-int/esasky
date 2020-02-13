@@ -281,6 +281,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     		metaDatadescriptor.setLabel(tmd.getName());
     		metaDatadescriptor.setVisible(true);
     		metaDatadescriptor.setMaxDecimalDigits(4);
+    		metaDatadescriptor.setDescription(tmd.getDescription());
     		metaList.add(metaDatadescriptor.getIndex(),metaDatadescriptor);
     	}
     	descriptor.setMetadata(metaList);
@@ -303,6 +304,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 	@Override
 	public void addShapes(TapRowList rowList) {
+	
 		drawer.addShapes(rowList);
 		if(rowList.getData().size() >= getSourceLimit()) {
 			if(sourceLimitNotificationTimer.isRunning()) {
@@ -515,5 +517,15 @@ public class ExtTapEntity implements GeneralEntityInterface {
     	return defaultEntity.isCustomizable();
     }
 
+	@Override
+	public void refreshData(AbstractTablePanel tablePanel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+		// TODO Auto-generated method stub		
+	}
 
 }
