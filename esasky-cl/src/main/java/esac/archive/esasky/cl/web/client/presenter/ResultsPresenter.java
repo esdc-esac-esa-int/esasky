@@ -27,6 +27,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
@@ -274,7 +275,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     }
     
     protected final void getMetadataAndFootprints(final GeneralEntityInterface entity, final boolean showProgress,
-            AbstractTablePanel panel) {
+            AbstractTablePanel panel, final boolean isConeSearch, final SkyViewPosition conePos) {
 
         final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
 
@@ -287,6 +288,8 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
             		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getContext() + "_"+ missionId));
         }
+        
+        final AbstractTablePanel finalPanel = panel;
 
         if (countStatus.hasMoved(missionId)) {
             String url = TAPCountObservationService.getInstance().getCount(
@@ -300,14 +303,29 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                 		new GetMissionDataCountRequestCallback(entity, 
                 				panel, 
                 				TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", entity.getDescriptor().getGuiShortName()),
-                				url)
+                				url, new GetMissionDataCountRequestCallback.OnComplete() {
+									
+									@Override
+									public void onComplete() {
+										if(isConeSearch) {
+											entity.coneSearch(finalPanel, conePos);
+										}else {
+											entity.fetchData(finalPanel);
+										}
+										
+									}
+								})
                 		);
             } catch (RequestException e) {
                 Log.error(e.getMessage());
                 Log.error(debugPrefix + "Error fetching JSON data from server");
             }
         } else {
-            entity.fetchData(panel);
+        	if(isConeSearch) {
+				entity.coneSearch(finalPanel, conePos);
+			}else {
+				entity.fetchData(finalPanel);
+			}
         }
     }
 

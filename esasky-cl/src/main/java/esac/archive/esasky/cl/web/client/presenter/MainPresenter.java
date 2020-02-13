@@ -12,6 +12,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Source;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -97,7 +98,7 @@ public class MainPresenter {
         
         // Creates the descriptors repository
         descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
-        entityRepo = new EntityRepository(descriptorRepo);
+        entityRepo = EntityRepository.init(descriptorRepo);
         
         initChildPresenters(coordinateFrameFromUrl);
 
@@ -314,18 +315,22 @@ public class MainPresenter {
     }
     
     public void getRelatedMetadata(IDescriptor descriptor, EntityContext context) {
+    	getRelatedMetadata(descriptor, context, false, null);
+    }
+    
+    public void getRelatedMetadata(IDescriptor descriptor, EntityContext context, boolean isConeSearch, SkyViewPosition conePos) {
         switch (context) {
             case ASTRO_IMAGING:
             case ASTRO_SPECTRA:
                 GeneralEntityInterface newEntity = entityRepo.createCommonObservationEntity((CommonObservationDescriptor) descriptor, context);
                 if (newEntity != null) {
-                    resultsPresenter.getMetadataAndFootprints(newEntity, true, null);
+                    resultsPresenter.getMetadataAndFootprints(newEntity, true, null, isConeSearch, conePos);
                 }
                 break;
                 
             case ASTRO_CATALOGUE:
             	GeneralEntityInterface catEntity = entityRepo.createCatalogueEntity((CatalogDescriptor) descriptor, context);
-                resultsPresenter.getMetadataAndFootprints(catEntity, true, null);
+                resultsPresenter.getMetadataAndFootprints(catEntity, true, null, isConeSearch, conePos);
                 break;
                 
             case SSO:
@@ -343,7 +348,7 @@ public class MainPresenter {
                 throw new IllegalArgumentException("Does not recognize entity context");
         }
     }
-    
+
 	public void showUserRelatedMetadata(IDescriptor descriptor, IJSONWrapper userDataJSONWrapper, CoordinatesFrame convertToFrame) {
     	Log.debug("[MainPresenter][showUserRelatedMetadata]");
     	

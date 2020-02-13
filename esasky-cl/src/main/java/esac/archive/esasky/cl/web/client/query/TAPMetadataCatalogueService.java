@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -100,6 +101,65 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     @Override
     public String getRetreivingDataTextKey() {
     	return "MetadataCallback_retrievingMissionData";
+    }
+    
+    public String getMetadataAdqlFromIpix(IDescriptor descriptorInput, int order, int ipix) {
+    	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
+    	
+    	String adql = "select  ";
+
+        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
+            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + descriptor.getPolygonDecTapColumn() + ", ";
+            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + descriptor.getPolygonRaTapColumn() + ", ";
+            } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + currentMetadata.getTapName() + ", ";
+            } else {
+                adql += " " + currentMetadata.getTapName() + ", ";
+            }
+        }
+
+        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+        parsedAdql.replace("\\s*,\\s*$", "");
+        parsedAdql += " from " + descriptor.getTapTable() + " WHERE "
+    	+ "esasky_q3c_bitshift_left(" + Integer.toString(ipix) + "," + Integer.toString(60 -  2 * order) + " ) <= q3c_ang2ipix(ra,dec)"
+    			+ " AND esasky_q3c_bitshift_left(" + Integer.toString(ipix + 1) + "," + Integer.toString(60 -  2 * order) + " ) > q3c_ang2ipix(ra,dec)";
+
+        return parsedAdql;
+    }
+    
+    public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos) {
+    	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
+    	
+    	String adql = "select  ";
+
+        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
+            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + descriptor.getPolygonDecTapColumn() + ", ";
+            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + descriptor.getPolygonRaTapColumn() + ", ";
+            } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + currentMetadata.getTapName() + ", ";
+            } else {
+                adql += " " + currentMetadata.getTapName() + ", ";
+            }
+        }
+
+        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+        parsedAdql.replace("\\s*,\\s*$", "");
+        parsedAdql += " from " + descriptor.getTapTable() + " WHERE "
+    	+ "'1' = q3c_radial_query(" +  descriptor.getPolygonRaTapColumn() + ", "  + descriptor.getPolygonDecTapColumn() + ", "
+				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
+				+ Double.toString(pos.getFov()/2) +")";
+
+        return parsedAdql;
     }
 
 }

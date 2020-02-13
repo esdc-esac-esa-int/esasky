@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -84,4 +85,10 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
         Log.debug("[TAPQueryBuilder/getMOC()] ADQL " + adql);
         return adql;
     }
+
+	@Override
+	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

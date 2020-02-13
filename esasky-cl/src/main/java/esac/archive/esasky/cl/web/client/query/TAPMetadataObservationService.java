@@ -3,6 +3,8 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -82,6 +84,26 @@ public class TAPMetadataObservationService extends AbstractMetadataService {
 
         }
         return constraint + shape + ")";
+    }
+    
+    public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos) {
+    	CommonObservationDescriptor descriptor = (CommonObservationDescriptor) descriptorInput;
+    	
+    	String adql = "SELECT ";
+
+    	for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
+            MetadataDescriptor castMetadata = currMetadata;
+            adql += " " + castMetadata.getTapName() + ",";
+        }
+
+        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 1));
+        parsedAdql.replace("\\s*,\\s*$", "");
+        parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE "
+        		+ "1=INTERSECTS(fov, CIRCLE(\'ICRS\', "
+				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
+				+ Double.toString(pos.getFov()/2) +"))";
+
+        return parsedAdql;
     }
 
 }
