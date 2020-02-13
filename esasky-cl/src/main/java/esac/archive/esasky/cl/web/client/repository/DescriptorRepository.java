@@ -218,12 +218,18 @@ public class DescriptorRepository {
 								counts.add(0);
 							}
 
-							
 							ExtTapDescriptor collectionDesc = ExtTapUtils.createCollectionDescriptor(tapService, dataDesc, facilityName);
 							
-							if(facility.containsKey("color")) {
+							if(facility.containsKey("range")) {
+								double minWavelength = Double.parseDouble(facility.get("range").get(0));
+								double maxWavelength = Double.parseDouble(facility.get("range").get(1));
+								
+								collectionDesc.setWavelengthRange(new double[] {minWavelength, maxWavelength});
+								collectionDesc.setHistoColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
+							}else if(facility.containsKey("color")) {
 								collectionDesc.setHistoColor(facility.get("color").get(0));
-							}else {
+							}
+							else {
 								collectionDesc.setHistoColor(ESASkyColors.getNext());
 							}
 							
@@ -258,8 +264,6 @@ public class DescriptorRepository {
 		if(descriptor == null) {
 			descriptor = new ExtTapDescriptor();
 		}
-		
-		
 		
 		descriptor.setGuiShortName(name);
 		descriptor.setGuiLongName(name);
