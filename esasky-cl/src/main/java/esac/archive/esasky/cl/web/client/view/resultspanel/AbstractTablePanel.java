@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -589,7 +590,7 @@ public abstract class AbstractTablePanel extends Composite {
 			return;
 		}
 		if(table.getColumnSortList().size() == 1) {
-			createMetadataColums();
+			createMetadataColumns();
 		}
 		
 		originalList = new LinkedList<TableRow>(data);
@@ -717,7 +718,7 @@ public abstract class AbstractTablePanel extends Composite {
 			
 		}
 	}
-	protected void createMetadataColums() {
+	protected void createMetadataColumns() {
 		int i = 1; // First column is selection check box
 		columnInformationList = new ColumnSettingInfo[getEntity().getDescriptor().getMetadata().size()];
 		for (final MetadataDescriptor currentMTD : getEntity().getDescriptor().getMetadata()) {
@@ -917,6 +918,13 @@ public abstract class AbstractTablePanel extends Composite {
 						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 							calculateChangedRows(rowsToRemove, rowsToAdd);
 						}
+						
+						@Override
+						public void onFilterChanged(String tapFilter) {
+							addTapFilter(label, tapFilter);
+						}
+						
+						
 					});
 					table.getColumnSortList().push(column);
 					addColumn(column, headerWithFilterButton, i, label, currentMTD);
@@ -929,6 +937,11 @@ public abstract class AbstractTablePanel extends Composite {
 								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
+								
+								@Override
+								public void onFilterChanged(String tapFilter) {
+									addTapFilter(label, tapFilter);
+								}
 							});
 					table.getColumnSortList().push(column);
 					addColumn(column, headerWithFilterButton, i, label, currentMTD);
@@ -940,6 +953,11 @@ public abstract class AbstractTablePanel extends Composite {
 						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 							calculateChangedRows(rowsToRemove, rowsToAdd);
 						}
+						
+						@Override
+						public void onFilterChanged(String tapFilter) {
+							addTapFilter(label, tapFilter);
+						}
 					});
 					table.getColumnSortList().push(column);
 					addColumn(column, headerWithFilterButton, i, label, currentMTD);
@@ -950,6 +968,11 @@ public abstract class AbstractTablePanel extends Composite {
 						@Override
 						public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 							calculateChangedRows(rowsToRemove, rowsToAdd);
+						}
+						
+						@Override
+						public void onFilterChanged(String tapFilter) {
+							addTapFilter(label, tapFilter);
 						}
 					});
 					table.getColumnSortList().push(column);
@@ -963,6 +986,11 @@ public abstract class AbstractTablePanel extends Composite {
 								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
+								
+								@Override
+								public void onFilterChanged(String tapFilter) {
+									addTapFilter(label, tapFilter);
+								}
 							});
 					table.getColumnSortList().push(column);
 					addColumn(column, headerWithFilterButton, i, label, currentMTD);
@@ -974,6 +1002,11 @@ public abstract class AbstractTablePanel extends Composite {
 								@Override
 								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
+								}
+								
+								@Override
+								public void onFilterChanged(String tapFilter) {
+									addTapFilter(label, tapFilter);
 								}
 							});
 					table.getColumnSortList().push(column);
@@ -987,6 +1020,11 @@ public abstract class AbstractTablePanel extends Composite {
 								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
 								}
+								
+								@Override
+								public void onFilterChanged(String tapFilter) {
+									addTapFilter(label, tapFilter);
+								}
 							});
 					table.getColumnSortList().push(column);
 					addColumn(column, headerWithFilterButton, i, label, currentMTD);
@@ -998,6 +1036,11 @@ public abstract class AbstractTablePanel extends Composite {
 								@Override
 								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
+								}
+								
+								@Override
+								public void onFilterChanged(String tapFilter) {
+									addTapFilter(label, tapFilter);
 								}
 							});
 					table.getColumnSortList().push(column);
@@ -1013,6 +1056,11 @@ public abstract class AbstractTablePanel extends Composite {
 								@Override
 								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
 									calculateChangedRows(rowsToRemove, rowsToAdd);
+								}
+								
+								@Override
+								public void onFilterChanged(String tapFilter) {
+									addTapFilter(label, tapFilter);
 								}
 							});
 					table.getColumnSortList().push(column);
@@ -1209,6 +1257,33 @@ public abstract class AbstractTablePanel extends Composite {
 			}
 		});
 	}
+	
+	public Map<String, String> tapFilters = new HashMap<String, String>();
+	
+	private void addTapFilter(String label, String tapFilter) {
+		if(tapFilter.length() > 0) {
+			tapFilters.put(label, tapFilter);
+		}else if(tapFilters.containsKey(label)) {
+			tapFilters.remove(label);
+		}
+		
+		notifyFilterObservers();
+	}
+	
+	LinkedList<AbstractTableFilterObserver> filterObservers = new LinkedList<>();
+	
+	public void registerFilterObserver(AbstractTableFilterObserver observer){
+		if(!filterObservers.contains(observer)) {
+			filterObservers.add(observer);
+		}
+		
+	}
+	
+	private void notifyFilterObservers() {
+		for(AbstractTableFilterObserver obs : filterObservers) {
+			obs.filterChanged(tapFilters);
+		}
+	}
 
 //	public String getFilterConstraints() {
 //		return conditions;
@@ -1316,7 +1391,20 @@ public abstract class AbstractTablePanel extends Composite {
 			stylePanel.removeFromParent();
 		}
 		getEntity().clearAll();
+		notifyClosingObservers();
 	}
+	
+	private LinkedList<ClosingObserver> closingObservers = new LinkedList<ClosingObserver>();
+    
+    public void registerClosingObserver(ClosingObserver observer) {
+    	closingObservers.add(observer);
+    }
+    
+    private void notifyClosingObservers() {
+ 	   for(ClosingObserver observer : closingObservers) {
+ 		   observer.onClose();
+ 	   }
+    }
 
 	public boolean hasBeenClosed() {
 		return hasBeenClosed;
