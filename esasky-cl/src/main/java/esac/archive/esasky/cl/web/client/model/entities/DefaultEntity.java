@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
