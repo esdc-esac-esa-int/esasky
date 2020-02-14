@@ -102,7 +102,8 @@ public class TAPExtTapService extends AbstractMetadataService {
     private String npixSearch( int order) {
     	ArrayList<Integer> list = AladinLiteWrapper.getInstance().getVisibleNpix(order);
     	if(list.size()>0) {
-    		String constraint = "healpix_index IN (";
+    		String constraint = "healpix_order = " + Integer.toString(order);
+    		constraint += " AND healpix_index IN (";
     		for(int ipix : list) {
     			constraint += Integer.toString(ipix) + ",";
     		}
@@ -163,7 +164,7 @@ public class TAPExtTapService extends AbstractMetadataService {
         	
         	adql += " from " + descriptor.getIngestedTable();
         	adql += " WHERE ";
-            adql += npixSearch(3);
+            adql += npixSearch(6);
             
         	if(descriptor.getWhereADQL() != null) {
         		adql += " AND " + descriptor.getWhereADQL();
@@ -196,7 +197,7 @@ public class TAPExtTapService extends AbstractMetadataService {
             String adql = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
         	
         	adql += " from " + descriptor.getIngestedTable() + " WHERE ";
-            adql += npixSearch(3);
+            adql += npixSearch(6);
             
         	if(descriptor.getWhereADQL() != null) {
         		adql += " AND " + descriptor.getWhereADQL();
