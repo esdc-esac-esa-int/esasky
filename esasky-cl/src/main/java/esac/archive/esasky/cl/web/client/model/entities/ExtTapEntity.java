@@ -27,7 +27,6 @@ import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -249,7 +248,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
          RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
          try {
              builder.sendRequest(null,
-                 new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new OnComplete() {
+                 new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MetadataCallback.OnComplete() {
                 	 
                  	@Override
                  	public void onComplete() {
@@ -519,8 +518,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 	@Override
 	public void refreshData(AbstractTablePanel tablePanel) {
-		// TODO Auto-generated method stub
-		
+		fetchData(tablePanel);
 	}
 
 	@Override
