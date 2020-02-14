@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class MocDrawer implements IShapeDrawer{
 
@@ -51,10 +52,22 @@ public class MocDrawer implements IShapeDrawer{
 	public void addShapes(TapRowList rowList) {
 		removeAllShapes();
 
-		int healpixIndex = rowList.getColumnIndex("healpix_index");
+		int healpixOrderIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_ORDER);
+		int healpixIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_IPIX);
 		if(healpixIndex != -1) {
-			String mocJSON = "{\"3\":[";
+			String healpixOrder = "";
+			boolean first = true;
+			String mocJSON = "{";
 			for(int i = 0; i < rowList.getData().size(); i++) {
+				String currentOrder = (String) rowList.getDataRow(i).get(healpixOrderIndex);
+				if(currentOrder != healpixOrder) {
+					healpixOrder = currentOrder;
+					if(!first) {
+						mocJSON += "], ";
+					}
+					mocJSON += "\" " + healpixOrder + "\":[";
+					first = false;
+				}
 				mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
 			}
 			mocJSON = mocJSON.substring(0,mocJSON.length()-1) + "]}";
