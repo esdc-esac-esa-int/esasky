@@ -23,6 +23,7 @@ import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -322,6 +323,26 @@ public class Api {
 		}
 	}
 	
+	public void coneSearchObservations(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
+		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
+		EntityContext context = EntityContext.ASTRO_IMAGING;
+		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
+		if(currObs != null ) {
+			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
+			controller.getRootPresenter().getRelatedMetadata(currObs,context, true, conePos);
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Image observations from missionId: " + missionId + " displayed in the ESASky"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getObservationsCount() for available mission names"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+	}
+	
 	public void plotCatalogues(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, missionId);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
@@ -330,6 +351,25 @@ public class Api {
 		
 		if(currObs != null ) {
 			controller.getRootPresenter().getRelatedMetadata(currObs,context);
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getCataloguesCount() for available mission names"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+	}
+	
+	public void coneSearchCatalogues(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
+		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
+		EntityContext context = EntityContext.ASTRO_CATALOGUE;
+		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
+		if(currObs != null ) {
+			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
+			controller.getRootPresenter().getRelatedMetadata(currObs,context, true, conePos);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -351,6 +391,25 @@ public class Api {
 			controller.getRootPresenter().getRelatedMetadata(currObs,context);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Spectra from missionId: " + missionId + " displayed in the ESASky"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+		else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getSpectraCount() for available mission names"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+	}
+	
+	public void coneSearchSpectra(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
+		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
+		EntityContext context = EntityContext.ASTRO_SPECTRA;
+		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		
+		if(currObs != null ) {
+			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
+			controller.getRootPresenter().getRelatedMetadata(currObs,context, true, conePos);
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
 		}
 		else {
