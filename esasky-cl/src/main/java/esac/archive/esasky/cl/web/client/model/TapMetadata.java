@@ -9,6 +9,7 @@ public class TapMetadata {
     private String datatype;
     private String arraysize;
     private String ucd;
+    private String description;
 
     public String getName() {
         return name;
@@ -42,4 +43,12 @@ public class TapMetadata {
         this.ucd = ucd;
     }
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+    
 }
