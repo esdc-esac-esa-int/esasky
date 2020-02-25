@@ -164,11 +164,10 @@ public class TAPExtTapService extends AbstractMetadataService {
         	
         	adql += " from " + descriptor.getIngestedTable();
         	adql += " WHERE ";
-            adql += npixSearch(6);
+            adql += npixSearch(getNorderFromFov());
             
         	if(descriptor.getWhereADQL() != null) {
         		adql += " AND " + descriptor.getWhereADQL();
-//        		adql += "AND healpix_order = 7";
         	}
         	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
         	
@@ -197,7 +196,7 @@ public class TAPExtTapService extends AbstractMetadataService {
             String adql = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
         	
         	adql += " from " + descriptor.getIngestedTable() + " WHERE ";
-            adql += npixSearch(6);
+            adql += npixSearch(getNorderFromFov());
             
         	if(descriptor.getWhereADQL() != null) {
         		adql += " AND " + descriptor.getWhereADQL();
@@ -227,6 +226,28 @@ public class TAPExtTapService extends AbstractMetadataService {
 	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private int getNorderFromFov() {
+		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+		if(fov > 60) {
+			return 3;
+		}
+		else if(fov > 40) {
+			return 4;
+		}
+		else if(fov > 20) {
+			return 5;
+		}
+		else if(fov > 10) {
+			return 6;
+		}
+		else if(fov > 5) {
+			return 7;
+		}
+		else {
+			return 8;
+		}
 	}
 
 }
