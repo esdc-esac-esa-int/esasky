@@ -18,6 +18,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String tapDecColumn;
     private String uniqueIdentifierField;
     private String whereADQL;
+    private String dateADQL;
     private String selectADQL;
     private String orderByADQL;
     private String responseFormat;
@@ -45,6 +46,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	tapDecColumn = parent.getTapDecColumn();
     	uniqueIdentifierField = parent.getUniqueIdentifierField();
     	whereADQL = parent.getWhereADQL();
+    	dateADQL = parent.getDateADQL();
     	selectADQL = parent.getSelectADQL();
         orderByADQL = parent.getOrderByADQL();
     	responseFormat = parent.getResponseFormat();
@@ -117,6 +119,14 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setWhereADQL(String whereADQL) {
 		this.whereADQL = whereADQL;
+	}
+	
+	public String getDateADQL() {
+		return dateADQL;
+	}
+
+	public void setDateADQL(String dateADQL) {
+		this.dateADQL = dateADQL;
 	}
 
 	public String getResponseFormat() {

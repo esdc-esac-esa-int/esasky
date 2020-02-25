@@ -302,6 +302,18 @@ public class EsaSkyConstants {
     public static final String TREEMAP_TYPE_DATAPRODUCT = "dataproduct";
     
     /*************************************************************************/
+    /** MOC **/
+    /*************************************************************************/
+    
+    public static final String HEALPIX_IPIX = "healpix_index";
+    public static final String HEALPIX_ORDER = "healpix_order";
+    public static final String HEALPIX_COUNT = "healpix_count";
+    
+    public static final String Q3C_IPIX = "moc_ipix";
+    public static final String Q3C_ORDER = "moc_order";
+    public static final String Q3C_COUNT = "moc_count";
+    
+    /*************************************************************************/
     /** JWST Instruments **/
     /*************************************************************************/
     
