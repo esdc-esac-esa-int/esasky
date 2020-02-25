@@ -830,7 +830,6 @@ public class DescriptorRepository {
 		ObservationDescriptor descriptor = new ObservationDescriptor();
 
 		descriptor.setMetadata(metadata);
-		descriptor.setWavelengths(null);
 
 		descriptor.setMission(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setGuiLongName(footprintsSet.getOverlaySet().getOverlayName());
@@ -869,7 +868,6 @@ public class DescriptorRepository {
 		CatalogDescriptor descriptor = new UserCatalogueDescriptor();
 
 		descriptor.setMetadata(metadata);
-		descriptor.setWavelengths(null);
 
 		descriptor.setMission(userCatalogue.getOverlaySet().getOverlayName());
 		descriptor.setGuiLongName(userCatalogue.getOverlaySet().getOverlayName());
