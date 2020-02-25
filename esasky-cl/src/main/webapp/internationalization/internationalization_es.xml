@@ -179,6 +179,22 @@
 	<text key="treeMap_nameOfSelectedLabel">
 		OSS: $SSONAME$ ($SSOTYPE$)
 	</text>
+	
+	<text key="treeMap_notInRange_ASTRO_IMAGING">
+		Ninguna im&#225;gen encontrada en este rango de longitudes de onda.
+	</text>
+	<text key="treeMap_notInRange_ASTRO_CATALOGUE">
+		Ningun cat&#225;logo encontrado en este rango de longitudes de onda.
+	</text>
+	<text key="treeMap_notInRange_ASTRO_SPECTRA">
+		Ning&#xFA;n Dato espectral encontrado en este rango de longitudes de onda. 
+	</text>
+	<text key="treeMap_notInRange_SSO">
+		Ninguna observaci&#xF3;n de objetos del sistema solar encontrada en este rango de longitudes de onda.
+	</text>
+	<text key="treeMap_notInRange_EXT_TAP">
+		Ning&#xFA;n dato de taps externos encontrado en este rango de longitudes de onda.
+	</text>
 
 	<!-- HiPS Details Popup -->
 	<text key="hiPSDetailsPopup_mapName">
@@ -589,21 +605,24 @@
 	<text key="XMM_OM_date_obs">
 		Fecha de observaci&#243;n
 	</text>
-	<text key="HSC_v2_1_match_id">
+	<text key="HSC_v3_1_match_id">
 		ID cruzado
 	</text>
 	<text key="targetName">
 		Nombre del objeto
 	</text>
-	<text key="HSC_v2_1_num_images">
+	<text key="HSC_v3_1_num_images">
 		Numero de Im&#225;genes
 	</text>
-	<text key="HSC_v2_1_fluxes">
+	<text key="HSC_v3_1_fluxes">
 		Filtros
 	</text>
-	<text key="HSC_v2_1_fluxesvalues">
+	<text key="HSC_v3_1_fluxesvalues">
 		Magnitud &lt;i&gt;(mag)&lt;/i&gt; </text>
-	<text key="HSC_v2_1_sigmavalues">
+	<text key="HSC_v3_1_num_images_per_filter">
+		N&#xFA;mero de im&#225;genes por filtro
+	</text>
+	<text key="HSC_v3_1_sigmavalues">
 		Error de magnitud &lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="Herschel_HPPSC_flux">
 		Flujo &lt;i&gt;(mJy)&lt;/i&gt; </text>

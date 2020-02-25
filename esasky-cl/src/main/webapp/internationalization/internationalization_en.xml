@@ -260,6 +260,21 @@
 	<text key="treeMap_nameOfSelectedLabel">
 		SSO: $SSONAME$ ($SSOTYPE$)
 	</text>
+	<text key="treeMap_notInRange_ASTRO_IMAGING">
+		No Image data found in this wavelength range.
+	</text>
+	<text key="treeMap_notInRange_ASTRO_CATALOGUE">
+		No Catalogue entries found in this wavelength range.
+	</text>
+	<text key="treeMap_notInRange_ASTRO_SPECTRA">
+		No Spectral data found in this wavelength range.
+	</text>
+	<text key="treeMap_notInRange_SSO">
+		No SSO Observations found in this wavelength range.
+	</text>
+	<text key="treeMap_notInRange_EXT_TAP">
+		No data from external taps found in this wavelength range.
+	</text>
 
 	<!-- Sky -->
 	<text key="sky_wavelength">
@@ -974,19 +989,18 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_HSC">
-		The Hubble Source Catalog is a combination of all the
-		visit-based source lists in the Hubble Legacy Archive (HLA) into a
-		single catalogue.
-		It contains about 80 million detections of 30 million objects, involving
-		112 different detector/filter combinations, and about 160,000 HST
-		exposures.
-		Source lists from the Data Release 8 of the Hubble Legacy Archive (HLA) are
-		matched using an algorithm developed by Budávari &amp; Ludow (2012).
-		The mean photometric accuracy is better than 0.10 mag, with relative
-		accuracies as good as 0.02 in certain cases.
-		The relative astrometric residuals are typically within 10 mas, and the
-		absolute astrometric accuracy is better than about 0.1 arcsec for most
-		sources.
+		The Hubble Source Catalog is a combination of all the visit-based source
+		lists in the Hubble Legacy Archive (HLA) into a single catalogue and is
+		designed to optimize science from the Hubble Space Telescope by combining
+		the tens of thousands of visit-based source lists in the HLA into a single
+		master catalog.
+    The HSC v3 contains members of the WFPC2, ACS/WFC, WFC3/UVIS and WFC3/IR
+		Source Extractor source lists from HLA data release 10. The cross-matching
+		process involves adjusting the relative astrometry of overlapping images
+		so as to minimize positional offsets between closely aligned sources in
+		different images. After correction, the astrometric residuals of
+		cross-matched sources are significantly reduced, with median errors
+		less than 8 mas.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#HSC"
@@ -1781,21 +1795,24 @@
 		G mean Mag&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="mag">
 		Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
-	<text key="HSC_v2_1_match_id">
+	<text key="HSC_v3_1_match_id">
 		Match ID
 	</text>
 	<text key="targetName">
 		Target name
 	</text>
-	<text key="HSC_v2_1_num_images">
+	<text key="HSC_v3_1_num_images">
 		Number of Images
 	</text>
-	<text key="HSC_v2_1_fluxes">
-		Filters
+	<text key="HSC_v3_1_num_images_per_filter">
+		Number of Images per filter
 	</text>
-	<text key="HSC_v2_1_fluxesvalues">
+	<text key="HSC_v3_1_fluxes">
+		Filter
+	</text>
+	<text key="HSC_v3_1_fluxesvalues">
 		Magnitude &lt;i&gt;(mag)&lt;/i&gt; </text>
-	<text key="HSC_v2_1_sigmavalues">
+	<text key="HSC_v3_1_sigmavalues">
 		Magnitude Error &lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="Herschel_HPPSC_flux">
 		Flux &lt;i&gt;(mJy)&lt;/i&gt; </text>
