@@ -16,12 +16,21 @@ public class MetadataDescriptor {
     private Boolean visible;
 
     private ColumnType type;
+    
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String description;
 
     /* Appearing order within the ResultPanel */
     private Integer index;
     
     @JsonIgnoreProperties(ignoreUnknown = true)
     private Integer maxDecimalDigits;
+    
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private Double defaultMin;
+    
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private Double defaultMax;
 
     public Integer getMaxDecimalDigits() {
         return maxDecimalDigits;
@@ -70,4 +79,29 @@ public class MetadataDescriptor {
     public void setIndex(Integer index) {
         this.index = index;
     }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Double getDefaultMin() {
+		return defaultMin;
+	}
+
+	public void setDefaultMin(Double defaultMin) {
+		this.defaultMin = defaultMin;
+	}
+
+	public Double getDefaultMax() {
+		return defaultMax;
+	}
+
+	public void setDefaultMax(Double defaultMax) {
+		this.defaultMax = defaultMax;
+	}
+    
 }
