@@ -239,7 +239,7 @@ public class ApiMessageParser {
 			case 'plotSpectra':
 				console.log('plotSpectra event captured');
 				if(msg.content.ra != null){
-					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::coneSearchSpextra(Ljava/lang/String;DDDLcom/google/gwt/core/client/JavaScriptObject;)
+					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::coneSearchSpectra(Ljava/lang/String;DDDLcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.missionId, msg.content.ra, msg.content.dec, msg.content.radius, e);
 				}else{
 					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotSpectra(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
