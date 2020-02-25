@@ -379,7 +379,7 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	
 	@Override 
 	public void refreshData(AbstractTablePanel tablePanel) {
-		//TODO
+		fetchData(tablePanel);
 	}
 	
 	@Override
