@@ -56,7 +56,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private EsaSkySwitch headerScienceModeSwitch;
 	private String headerScienceModeSwitchId = Document.get().createUniqueId();
 	private StatusPanel statusPanel = new StatusPanel();
-	private Label coordinateLabel = new Label();
+	private EsaSkyStringButton coordinateLabel = new EsaSkyStringButton("");
 	private FlowPanel fovPanel = new FlowPanel();
 	private final ListBox languageBox = new ListBox();
 	private boolean isGridOn = false;
@@ -126,6 +126,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		coordinateFrameFirstLetter.addStyleName("coordinateFrameFirstLetter");
 
 		coordinateLabel.addStyleName("coordinateLabel");
+		coordinateLabel.getElement().setId("coordinateLabelButton");
 
 		fovPanel.addStyleName("fovPanel");
 
@@ -357,6 +358,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	public void setIsNotCenterCoordinateStyle() {
 		coordinateLabel.removeStyleName("isCenterPosition");
+	}
+	
+	public void addCoordinateClickHandler(ClickHandler clickHandler) {
+		coordinateLabel.addClickHandler(clickHandler);
 	}
 
 	@Override

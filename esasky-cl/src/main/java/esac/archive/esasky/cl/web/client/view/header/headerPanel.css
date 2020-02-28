@@ -93,9 +93,17 @@
 	width: 164px;
 }
 
-.isCenterPosition {
+#coordinateLabelButton{
+	border: 0px;
+}
+#coordinateLabelButton>div{
+	border: 0px;
+	padding: 0px;
+}
+
+.isCenterPosition >div{
 	font-weight: bold;
-	color: #20A4D8;
+	color: #20A4D8 !important;
 }
 
 .fovPanel {

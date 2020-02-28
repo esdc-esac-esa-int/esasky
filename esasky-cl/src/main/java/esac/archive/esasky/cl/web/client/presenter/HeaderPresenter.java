@@ -68,6 +68,7 @@ public class HeaderPresenter {
 		void setSelectedLanguage(int index);
 
 		void addCoordinateFrameChangeHandler(ChangeHandler changeHandler);
+		void addCoordinateClickHandler(ClickHandler handler);
 		String getSelectedCoordinateFrame();
 
 		void addMenuClickHandler(ClickHandler handler);
@@ -106,6 +107,7 @@ public class HeaderPresenter {
 
 	private long timeSinceLastMouseDownInsideDropdownContainer;
 	private boolean isSciModeChecked = GUISessionStatus.getIsInScienceMode();
+	private boolean isCoordinateTextToggled = false;
 
 	public HeaderPresenter(final View inputView, String coordinateFrameFromUrl) {
 		this.view = inputView;
@@ -191,6 +193,16 @@ public class HeaderPresenter {
 			@Override
 			public void onClick(final ClickEvent event) {
 				CommonEventBus.getEventBus().fireEvent(new ToggleSkyPanelEvent());
+			}
+		});
+
+		view.addCoordinateClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(final ClickEvent event) {
+				isCoordinateTextToggled = !isCoordinateTextToggled;
+				Coordinate coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
+				setCoordinates(coordinate.ra, coordinate.dec);
 			}
 		});
 		
@@ -398,7 +410,11 @@ public class HeaderPresenter {
 	private void setCoordinates(double ra, double dec) {
 		String coordinate = "";
 		if(view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString())) {
-			coordinate = formatJ200Ra(ra).getSpacedString() + " "+ formatJ200Dec(dec);
+			if(isCoordinateTextToggled) {
+				coordinate = formatGalacticRa(ra) + " " + formatGalacticDec(dec);
+			}else {
+				coordinate = formatJ200Ra(ra).getSpacedString() + " "+ formatJ200Dec(dec);
+			}
 		} else {
 			Double [] coord = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
 			coordinate = formatGalacticRa(coord[0]) + " " + formatGalacticDec(coord[1]);
