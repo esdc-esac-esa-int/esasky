@@ -101,7 +101,7 @@
 	padding: 0px;
 }
 
-.isCenterPosition >div{
+.isCenterPosition > div .html-face{
 	font-weight: bold;
 	color: #20A4D8 !important;
 }
