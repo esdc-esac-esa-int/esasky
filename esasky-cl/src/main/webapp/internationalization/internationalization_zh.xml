@@ -1264,384 +1264,11 @@
 	<text key="stylePanel_removeMedianCheckBox">
 		减去中位自行
 	</text>
-	<!-- catalogString -->
-	<text key="name">
-		名称
-	</text>
-	<text key="flux">
-		流量
-	</text>
-	<text key="type">
-		类型
-	</text>
-	<text key="significance">
-		显著性	
-	</text>
-	<text key="exposure">
-		曝光
-	</text>
-	<text key="flux20_40keV">
-		流量在20-40keV
-	</text>
-	<text key="fluxUVW1">
-		UVW1滤波器开始的流量
-	</text>
-	<text key="btMagnitude">
-		BT星等
-	</text>
-	<text key="SN">
-		信噪比
-	</text>
-	<text key="gMagnitude">
-		G星等
-	</text>
-	<text key="hpMagnitude">
-		Hp星等
-	</text>
-	<text key="fluxDensity">
-		流量密度
-	</text>
-	<text key="error">
-		误差
-	</text>
 	<text key="sourceLimitDescription">
 		显示$orderBy$排序中第一个$sourceLimit$源	
 	</text>
 	<text key="sourceLimitNumImages">
 		显示观测次数最多的$sourceLimit$源
-	</text>
-	<text key="INTEGRAL_flux20_40">
-		流量&lt;sub&gt;20-40 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;
-	</text>
-	<text key="INTEGRAL_flux40_100">
-		流量&lt;sub&gt;40-100 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;
-	</text>
-	<text key="INTEGRAL_Type">
-		类型	
-	</text>
-	<text key="INTEGRAL_Significance">
-		显著性
-	</text>
-	<text key="INTEGRAL_Exposure">
-		曝光时间&lt;i&gt;（ksec）&lt;/i&gt;
-	</text>
-	<text key="3XMM_EPIC_ep_8_flux">
-		流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="3XMM_EPIC_ep_8_flux_err">
-		流量误差&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="observation_id">
-		观测ID
-	</text>
-	<text key="XMM_OM_poserr">
-		&amp;Delta;位置
-	</text>
-	<text key="XMM_OM_date_obs">
-		观测日期
-	</text>
-	<text key="XMM_OM_uvw1_ab_flux">
-		UVW1流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_OM_uvw2_ab_flux">
-		UVW2流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_OM_uvm2_ab_flux">
-		UVM2流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_OM_u_ab_flux">
-		U流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_OM_v_ab_flux">
-		V流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_OM_b_ab_flux">
-		B流量&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_Slew_flux_b0">
-		流量（0.2-12kev）&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_Slew_flux_b0_err">
-		流量误差（0.2-12kev）&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_Slew_flux_b4">
-		流量（2-12kev）&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_Slew_flux_b4_err">
-		流量误差（2-12kev）&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_Slew_flux_b5">
-		流量（0.2-2kev）&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="XMM_Slew_flux_b5_err">
-		流量误差（0.2-2kev）&lt;br&gt;&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="pm_ra">
-		赤经自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="pm_de">
-		赤纬自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Tycho_2_bt_mag">
-		BT星等&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="Tycho_2_vt_mag">
-		VT星等&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="parallax">
-		视差&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR1_TGAS_parallax_error">
-		视差误差&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR1_TGAS_pmra_error">
-		赤经自行误差&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR1_TGAS_pmdec_error">
-		赤纬自行误差&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR1_TGAS_phot_g_mean_mag">
-		G平均星等&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="mag">
-		星等&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="HSC_v2_1_match_id">
-		匹配ID
-	</text>
-	<text key="targetName">
-		目标名称
-	</text>
-	<text key="HSC_v2_1_num_images">
-		图像个数
-	</text>
-	<text key="HSC_v2_1_fluxes">
-		滤光片
-	</text>
-	<text key="HSC_v2_1_fluxesvalues">
-		星等 &lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="HSC_v2_1_sigmavalues">
-		星等误差 &lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_flux">
-		流量 &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_rms">
-		&amp;Delta; 流量 &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_elong_flag">
-		距角标志
-	</text>
-	<text key="Herschel_HPPSC_edge_flag">
-		边标志
-	</text>
-	<text key="Herschel_HPPSC_blend_flag">
-		混合标志
-	</text>
-	<text key="Herschel_HPPSC_ssomap_flag">
-		SSO地图标志
-	</text>
-	<text key="Herschel_HPPSC_fluxdao">
-		Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_fluxdao_err">
-		&amp;Delta;Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_fluxtm2">
-		TM2流量 &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_fluxtm2_err">
-		&amp;Delta;TM2流量 &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="Herschel_HPPSC_pntsrc_flag">
-		点源标志
-	</text>
-	<text key="Herschel_HPPSC_lowfwhm_flag">
-		低半峰全宽标志
-	</text>
-	<text key="Herschel_HPPSC_largegal_flag">
-		大星系标志
-	</text>
-	<text key="Herschel_HPPSC_mapedge_flag">
-		地图边缘标志
-	</text>
-	<text key="Herschel_HPPSC_ssocont_flag">
-		SSO污染物标志
-	</text>
-	<text key="Submm">
-		亚毫米
-	</text>
-	<text key="Herschel_HPPSC_extsrc_flag">
-		展源标志
-	</text>
-	<text key="PGCC_snr">
-		信噪比
-	</text>
-	<text key="PGCC_gau_major_axis">
-		主半峰全宽 &lt;i&gt;(角分)&lt;/i&gt;
-	</text>
-	<text key="PGCC_gau_major_gau_major_axis_sig">
-		主半峰全宽误差 &lt;i&gt;(角分)&lt;/i&gt;
-	</text>
-	<text key="PGCC_gau_minor_axis">
-		副半峰全宽 &lt;i&gt;(角分)&lt;/i&gt;
-	</text>
-	<text key="PGCC_gau_minor_axis_sig">
-		副半峰全宽误差 &lt;i&gt;(角分)&lt;/i&gt;
-	</text>
-	<text key="PCCS2E_frequency">
-		频率 &lt;i&gt;(GHz)&lt;/i&gt;
-	</text>
-	<text key="PCCS2E_detflux">
-		流量密度 &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="PCCS2E_detflux_err">
-		流量密度误差 &lt;i&gt;(mJy)&lt;/i&gt;
-	</text>
-	<text key="PCCS2E_highest_reliability_cat">
-		星表可靠性
-	</text>
-	<text key="Gaia_DR1_ra_error">
-		赤经误差&lt;i&gt;(mas）&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR1_dec_error">
-		赤纬误差&lt;i&gt;(mas）&lt;/i&gt;
-	</text>
-	<text key="PSZ_redshift">
-		Redshift软件
-	</text>
-	<text key="PSZ_msz">
-		Sunyaev-Zeldovich 质量
-		&lt;i&gt;(10&lt;sup&gt;14&lt;/sup&gt;
-		M&lt;sub&gt;solar&lt;/sub&gt;)&lt;/i&gt;
-	</text>
-	<text key="PSZ_validation">
-		验证
-	</text>
-	<text key="productURL">
-		产品网址
-	</text>
-	<text key="instrument">
-		设备
-	</text>
-	<text key="startTime">
-		开始时间
-	</text>
-	<text key="duration">
-		持续时间 &lt;i&gt;(s)&lt;/i&gt;
-	</text>
-	<text key="EP_STACK_ONTIME">
-		EP准时 &lt;i&gt;(s)&lt;/i&gt;
-	</text>
-	<text key="durationKs">
-		持续时间 &lt;i&gt;(ks)&lt;/i&gt;
-	</text>
-	<text key="Chandra_ProposalID">
-		提案ID
-	</text>
-	<text key="Chandra_StartTime">
-		开始时间 &lt;i&gt;(MJD)&lt;/i&gt;
-	</text>
-	<text key="filter">
-		滤光片
-	</text>
-	<text key="Collection">
-		收藏
-	</text>
-	<text key="Herschel_Filter">
-		滤光片 &lt;i&gt;(微米)&lt;/i&gt;
-	</text>
-	<text key="XMM_NEWTON_Wavelength">
-		波长
-	</text>
-	<text key="IUE_Aperture">
-		口径
-	</text>
-	<text key="IUE_Dispersion">
-		色散
-	</text>
-	<text key="FileName">
-		文件名
-	</text>
-	<text key="opticalElement">
-		光学元件
-	</text>
-	<text key="centralWavelength">
-		中心波长 &lt;i&gt;(纳米)&lt;/i&gt;
-	</text>
-	<text key="ISO_ObservationIDAux">
-		观测ID辅助
-	</text>
-	<text key="ObservingMode">
-		观测模式
-	</text>
-	<text key="Herschel_WavelengthRange">
-		波长范围
-	</text>
-	<text key="PublicationTooltip_BIBCOUNT">
-		相关文献数:</text>
-	<text key="3XMM_EPIC_ep_8_n_contrib">
-		提交数
-	</text>
-	<text key="3XMM_EPIC_ep_8_n_obs">
-		观测数
-	</text>
-	<text key="3XMM_EPIC_ep_8_extent">
-		延展度
-	</text>
-	<text key="3XMM_EPIC_ep_8_extent_err">
-		延展度误差
-	</text>
-	<text key="3XMM_EPIC_ep_8_flux_var">
-		流量变化
-	</text>
-	<text key="3XMM_EPIC_ep_8_iau_name">
-		IAU名称
-	</text>
-	<text key="RA_J1991">
-		赤经 &lt;i&gt;(&#126;J1991)&lt;/i&gt;
-	</text>
-	<text key="DEC_J1991">
-		赤纬 &lt;i&gt;(&#126;J1991)&lt;/i&gt;
-	</text>
-	<text key="RA_J1991.25">
-		赤经 &lt;i&gt;(J1991.25)&lt;/i&gt;
-	</text>
-	<text key="DEC_J1991.25">
-		赤纬 &lt;i&gt;(J1991.25)&lt;/i&gt;
-	</text>
-	<text key="RA_J2000">
-		赤经 &lt;i&gt;(J2000)&lt;/i&gt;
-	</text>
-	<text key="DEC_J2000">
-		赤纬 &lt;i&gt;(J2000)&lt;/i&gt;
-	</text>
-	<text key="RA_J2015">
-		赤经 &lt;i&gt;(J2015.0)&lt;/i&gt;
-	</text>
-	<text key="DEC_J2015">
-		赤纬 &lt;i&gt;(J2015.0)&lt;/i&gt;
-	</text>
-	<text key="RA_J2015.5">
-		赤经 &lt;i&gt;(J2015.5)&lt;/i&gt;
-	</text>
-	<text key="DEC_J2015.5">
-		赤纬 &lt;i&gt;(J2015.5)&lt;/i&gt;
 	</text>
 	<text key="SoftX-ray">
 		软X射线
@@ -1709,72 +1336,7 @@
 	<text key="Date">
 		日期
 	</text>
-	<text key="CHANDRA_flux_b">
-		流量ACIS&lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="CHANDRA_lower_flux_b">
-		低流量ACIS &lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="CHANDRA_upper_flux_b">
-		高流量ACIS &lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="CHANDRA_flux_w">
-		流量 &lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="CHANDRA_lower_flux_w">
-		低流量HCR &lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="CHANDRA_upper_flux_w">
-		高流量HCR &lt;i&gt;(erg
-		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
-	</text>
-	<text key="CHANDRA_snr">
-		信噪比
-	</text>
-	<text key="Gaia_phot_g_mean_flux">
-		流量 &lt;i&gt;(e-/s)&lt;/i&gt;
-	</text>
-	<text key="Gaia_phot_g_mean_flux_error">
-		流量误差 &lt;i&gt;(e-/s)&lt;/i&gt;
-	</text>
-	<text key="Gaia_phot_g_mean_mag">
-		G星等 &lt;i&gt;(mag)&lt;/i&gt;
-	</text>
-	<text key="Flag">
-		标志
-	</text>
-	<text key="SNR">
-		信噪比
-	</text>
-	<text key="Herschel_fwhmxfit">
-		FWHM x拟合
-	</text>
-	<text key="Herschel_fwhmyfit">
-		FWHM y拟合
-	</text>
-	<text key="Herschel_snr">
-		S/N_S
-	</text>
-	<text key="Herschel_stn">
-		S/N_R
-	</text>
-	<text key="Herschel_Warmat">
-		Warmat
-	</text>
-	<text key="HST_Collection">
-		收藏
-	</text>
-	<text key="Observation ObjectId">
-		观测ObjectId
-	</text>
-	<text key="BIBCODE_preview">
-		BIBCODE_预览
-	</text>
+	
 	<text key="GalaxyClusters">
 		星系团
 	</text>
@@ -1826,101 +1388,6 @@
 	<text key="CESAR_Colours">
 		CESAR颜色
 	</text>
-	<text key="2MASS_J_Mag">
-		J星等
-	</text>
-	<text key="2MASS_J_Mag_err">
-		&amp;Delta;J星等
-	</text>
-	<text key="2MASS_H_Mag">
-		H星等
-	</text>
-	<text key="2MASS_H_Mag_err">
-		&amp;Delta;H星等
-	</text>
-	<text key="2MASS_KS_Mag">
-		Ks星等
-	</text>
-	<text key="2MASS_KS_Mag_err">
-		&amp;Delta;Ks星等
-	</text>
-
-	<text key="AllWise_ra_err">
-		&amp;Delta;RA
-	</text>
-	<text key="AllWise_dec_err">
-		&amp;Delta;Dec
-	</text>
-	<text key="AllWise_w1mpro">
-		W1星等
-	</text>
-	<text key="AllWise_w1mpro_error">
-		&amp;Delta;W1星等
-	</text>
-	<text key="AllWise_w2mpro">
-		W2星等
-	</text>
-	<text key="AllWise_w2mpro_error">
-		&amp;Delta;W2星等
-	</text>
-	<text key="AllWise_w3mpro">
-		W3星等
-	</text>
-	<text key="AllWise_w3mpro_error">
-		&amp;Delta;W3星等
-	</text>
-	<text key="AllWise_w4mpro">
-		W4星等
-	</text>
-	<text key="AllWise_w4mpro_error">
-		&amp;Delta;W4星等		
-	</text>
-	<text key="Gaia_DR1_ra_error">
-		&amp;Delta;RA
-		</text>
-	<text key="Gaia_DR1_dec_error">
-		&amp;Delta;Dec
-	</text>
-	<text key="Gaia_DR2_parallax">
-		视差（毫角秒） &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_parallax_error">
-		&amp;Delta;视差&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_pmra">
-		赤经自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_pmra_error">
-		&amp;Delta;赤经自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_pmdec">
-		赤纬自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_pmdec_error">
-		&amp;Delta;赤纬自行&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_phot_g_mean_mag">
-		G星等
-	</text>
-	<text key="Gaia_DR2_br_rp">
-		(BP - RP)星等
-	</text>
-	<text key="Gaia_DR2_radial_velocity">
-		径向速度&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_radial_velocity_error">
-		&amp;Delta;径向速度
-	</text>
-	<text key="Gaia_DR2_phot_variable_flag">
-		变量标志
-	</text>
-	<text key="Gaia_DR2_teff_val">
-		有效温度&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt;
-	</text>
-	<text key="Gaia_DR2_a_g_val">
-		A_{G}星等
-	</text>
-
 	<text key="treeMapContainer_help_ASTRO_IMAGING">
 		要搜索成像、星表或光谱数据(并打开数据面板)，请单击左侧菜单中相应的成像、星表和光谱图标。浏览器中会显示出所显示天区中的图像数据、星表资源和光谱数据的数量(不仅仅是搜索目标)。
 		&lt;br&gt;&lt;br&gt;
@@ -2074,30 +1541,6 @@
 	</text>
 	<text key="colorPalette_CUBEHELIX">
 		立方螺旋
-	</text>
-	<text key="ssoName">
-		名称
-	</text>
-	<text key="RAStart">
-		初始赤经 &lt;i&gt;(J2000)&lt;/i&gt;
-	</text>
-	<text key="DecStart">
-		初始赤纬 &lt;i&gt;(J2000)&lt;/i&gt;
-	</text>
-	<text key="RAEnd">
-		终止赤经 &lt;i&gt;(J2000)&lt;/i&gt;
-	</text>
-	<text key="DecEnd">
-		终止赤纬 &lt;i&gt;(J2000)&lt;/i&gt;
-	</text>
-	<text key="DeltaPosDeg">
-		位置范围 &lt;i&gt;(角度)&lt;/i&gt;
-	</text>
-	<text key="SSOVMag">
-		V  &lt;i&gt;（星等）&lt;/i&gt;
-	</text>
-	<text key="SSODistanceAU">
-		距离  &lt;i&gt;（天文单位）&lt;/i&gt;
 	</text>
 	<text key="tableGroup_Observation">
 		观测结果
@@ -2293,6 +1736,641 @@
 	</text>
 	<text key="publicationPanel_helpText">
 		目前显示的是视野中有相关文献和出版物的源，信息来自SIMBAD。点击图标会打开一个表单列出该目标对应的文献信息，包括标题、作者和发表日期等基本信息以及ADS中该文献的链接。ESASky还提供了加载指定文献中所有相关天体列表的功能。&lt;br&gt; &lt;br&gt; 默认情况下ESASky一次显示文献中最多3000个源的信息。具体数量可以在设置中调整。
+	</text>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- DO NOT TRANSLATE -->
+	<text key="name">
+		Name
+	</text>
+	<text key="flux">
+		Flux
+	</text>
+	<text key="type">
+		Type
+	</text>
+	<text key="significance">
+		Significance
+	</text>
+	<text key="exposure">
+		Exposure
+	</text>
+	<text key="flux20_40keV">
+		Flux at 20-40 keV
+	</text>
+	<text key="fluxUVW1">
+		Flux starting with the UVW1 filter
+	</text>
+	<text key="btMagnitude">
+		BT Magnitude
+	</text>
+	<text key="SN">
+		Signal to Noise
+	</text>
+	<text key="gMagnitude">
+		G magnitude
+	</text>
+	<text key="hpMagnitude">
+		Hp magnitude
+	</text>
+	<text key="fluxDensity">
+		Flux Density
+	</text>
+	<text key="error">
+		error
+	</text>
+	<text key="INTEGRAL_flux20_40">
+		Flux&lt;sub&gt;20-40 keV&lt;/sub&gt; (mCrab)
+	</text>
+	<text key="INTEGRAL_flux40_100">
+		Flux&lt;sub&gt;40-100 keV&lt;/sub&gt; (mCrab)
+	</text>
+	<text key="INTEGRAL_Type">
+		Type
+	</text>
+	<text key="INTEGRAL_Significance">
+		Significance
+	</text>
+	<text key="INTEGRAL_Exposure">
+		Exposure (ksec)
+	</text>
+	<text key="3XMM_EPIC_ep_8_flux">
+		Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="3XMM_EPIC_ep_8_flux_err">
+		Flux error&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="observation_id">
+		Observation ID
+	</text>
+	<text key="XMM_OM_poserr">
+		&amp;Delta;Pos
+	</text>
+	<text key="XMM_OM_date_obs">
+		Date observed
+	</text>
+	<text key="XMM_OM_uvw1_ab_flux">
+		UVW1 Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_OM_uvw2_ab_flux">
+		UVW2 Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_OM_uvm2_ab_flux">
+		UVM2 Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_OM_u_ab_flux">
+		U Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_OM_v_ab_flux">
+		V Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_OM_b_ab_flux">
+		B Flux&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_Slew_flux_b0">
+		Flux (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_Slew_flux_b0_err">
+		Flux error (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_Slew_flux_b4">
+		Flux (2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_Slew_flux_b4_err">
+		Flux error (2-12kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_Slew_flux_b5">
+		Flux (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="XMM_Slew_flux_b5_err">
+		Flux error (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="pm_ra">
+		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+	<text key="pm_de">
+		Proper Motion in
+		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+	<text key="Tycho_2_bt_mag">
+		BT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="Tycho_2_vt_mag">
+		VT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="parallax">
+		Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	<text key="mag">
+		Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="HSC_v3_1_match_id">
+		Match ID
+	</text>
+	<text key="targetName">
+		Target name
+	</text>
+	<text key="HSC_v3_1_num_images">
+		Number of Images
+	</text>
+	<text key="HSC_v3_1_num_images_per_filter">
+		Number of Images per filter
+	</text>
+	<text key="HSC_v3_1_fluxes">
+		Filter
+	</text>
+	<text key="HSC_v3_1_fluxesvalues">
+		Magnitude &lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="HSC_v3_1_sigmavalues">
+		Magnitude Error &lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_flux">
+		Flux &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_rms">
+		&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_elong_flag">
+		Elong Flag
+	</text>
+	<text key="Herschel_HPPSC_edge_flag">
+		Edge Flag
+	</text>
+	<text key="Herschel_HPPSC_blend_flag">
+		Blend Flag
+	</text>
+	<text key="Herschel_HPPSC_ssomap_flag">
+		SSO Map Flag
+	</text>
+	<text key="Herschel_HPPSC_fluxdao">
+		Fluxdao &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_fluxdao_err">
+		&amp;Delta;Fluxdao &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_fluxtm2">
+		Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_fluxtm2_err">
+		&amp;Delta;Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="Herschel_HPPSC_pntsrc_flag">
+		Point Source Flag
+	</text>
+	<text key="Herschel_HPPSC_lowfwhm_flag">
+		Low FWHM Flag
+	</text>
+	<text key="Herschel_HPPSC_largegal_flag">
+		Large Galaxy Flag
+	</text>
+	<text key="Herschel_HPPSC_mapedge_flag">
+		Map Edge Flag
+	</text>
+	<text key="Herschel_HPPSC_ssocont_flag">
+		SSO Contaminator Flag
+	</text>
+	<text key="Submm">
+		Submillimeter
+	</text>
+	<text key="Herschel_HPPSC_extsrc_flag">
+		Extended Source Flag
+	</text>
+	<text key="PGCC_snr">
+		Signal to Noise
+	</text>
+	<text key="PGCC_gau_major_axis">
+		Major FWHM &lt;i&gt;(arcmin)&lt;/i&gt; </text>
+	<text key="PGCC_gau_major_gau_major_axis_sig">
+		Major FWHM Error &lt;i&gt;(arcmin)&lt;/i&gt; </text>
+	<text key="PGCC_gau_minor_axis">
+		Minor FWHM &lt;i&gt;(arcmin)&lt;/i&gt; </text>
+	<text key="PGCC_gau_minor_axis_sig">
+		Minor FWHM Error &lt;i&gt;(arcmin)&lt;/i&gt; </text>
+	<text key="PCCS2E_frequency">
+		Frequency &lt;i&gt;(GHz)&lt;/i&gt; </text>
+	<text key="PCCS2E_detflux">
+		Flux Density &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="PCCS2E_detflux_err">
+		Flux Density Error &lt;i&gt;(mJy)&lt;/i&gt; </text>
+	<text key="PCCS2E_highest_reliability_cat">
+		Cat. Reliability
+	</text>
+	<text key="Gaia_DR1_ra_error">
+		RA error &lt;i&gt;(mas)&lt;/i&gt;
+	</text>
+	<text key="Gaia_DR1_dec_error">
+		Dec error &lt;i&gt;(mas)&lt;/i&gt;
+	</text>
+	<text key="PSZ_redshift">
+		Redshift
+	</text>
+	<text key="PSZ_msz">
+		Sunyaev-Zeldovich Mass
+		&lt;i&gt;(10&lt;sup&gt;14&lt;/sup&gt;
+		M&lt;sub&gt;solar&lt;/sub&gt;)&lt;/i&gt; </text>
+	<text key="PSZ_validation">
+		Validation
+	</text>
+	<text key="productURL">
+		ProductURL
+	</text>
+	<text key="instrument">
+		Instrument
+	</text>
+	<text key="startTime">
+		Start Time
+	</text>
+	<text key="duration">
+		Duration &lt;i&gt;(s)&lt;/i&gt; </text>
+	<text key="EP_STACK_ONTIME">
+		EP Ontime &lt;i&gt;(s)&lt;/i&gt; </text>
+	<text key="durationKs">
+		Duration &lt;i&gt;(ks)&lt;/i&gt; </text>
+	<text key="Chandra_ProposalID">
+		Proposal ID
+	</text>
+	<text key="Chandra_StartTime">
+		Start Time &lt;i&gt;(MJD)&lt;/i&gt; </text>
+	<text key="filter">
+		Filter
+	</text>
+	<text key="Collection">
+		Collection
+	</text>
+	<text key="Herschel_Filter">
+		Filter &lt;i&gt;(microns)&lt;/i&gt; </text>
+	<text key="XMM_NEWTON_Wavelength">
+		Wavelength
+	</text>
+	<text key="IUE_Aperture">
+		Aperture
+	</text>
+	<text key="IUE_Dispersion">
+		Dispersion
+	</text>
+	<text key="FileName">
+		Filename
+	</text>
+	<text key="opticalElement">
+		Optical Element
+	</text>
+	<text key="centralWavelength">
+		Central Wavelength &lt;i&gt;(nm)&lt;/i&gt; </text>
+	<text key="ISO_ObservationIDAux">
+		Observation ID Aux
+	</text>
+	<text key="ObservingMode">
+		Observing Mode
+	</text>
+	<text key="Herschel_WavelengthRange">
+		Wavelength Range
+	</text>
+	<text key="PublicationTooltip_BIBCOUNT">
+		Num. pub.:
+	</text>
+	<text key="3XMM_EPIC_ep_8_n_contrib">
+		N. Contrib
+	</text>
+	<text key="3XMM_EPIC_ep_8_n_obs">
+		N. Obs
+	</text>
+	<text key="3XMM_EPIC_ep_8_extent">
+		Extent
+	</text>
+	<text key="3XMM_EPIC_ep_8_extent_err">
+		Extent error
+	</text>
+	<text key="3XMM_EPIC_ep_8_flux_var">
+		Flux Var
+	</text>
+	<text key="3XMM_EPIC_ep_8_iau_name">
+		IAU Name
+	</text>
+	<text key="RA_J1991">
+		RA &lt;i&gt;(&#126;J1991)&lt;/i&gt; </text>
+	<text key="DEC_J1991">
+		Dec &lt;i&gt;(&#126;J1991)&lt;/i&gt; </text>
+	<text key="RA_J1991.25">
+		RA &lt;i&gt;(J1991.25)&lt;/i&gt; </text>
+	<text key="DEC_J1991.25">
+		Dec &lt;i&gt;(J1991.25)&lt;/i&gt; </text>
+	<text key="RA_J2000">
+		RA &lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="DEC_J2000">
+		Dec &lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="RA_J2015">
+		RA &lt;i&gt;(J2015.0)&lt;/i&gt; </text>
+	<text key="DEC_J2015">
+		Dec &lt;i&gt;(J2015.0)&lt;/i&gt; </text>
+	<text key="RA_J2015.5">
+		RA &lt;i&gt;(J2015.5)&lt;/i&gt; </text>
+	<text key="DEC_J2015.5">
+		Dec &lt;i&gt;(J2015.5)&lt;/i&gt; </text>
+	<text key="CHANDRA_flux_b">
+		Flux ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="CHANDRA_lower_flux_b">
+		Lower Flux ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="CHANDRA_upper_flux_b">
+		Upper Flux ACIS &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="CHANDRA_flux_w">
+		Flux &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="CHANDRA_lower_flux_w">
+		Lower Flux HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="CHANDRA_upper_flux_w">
+		Upper Flux HCR &lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="CHANDRA_snr">
+		Signal to Noise Ratio
+	</text>
+	<text key="Gaia_phot_g_mean_flux">
+		Flux &lt;i&gt;(e-/s)&lt;/i&gt; </text>
+	<text key="Gaia_phot_g_mean_flux_error">
+		Flux Error &lt;i&gt;(e-/s)&lt;/i&gt; </text>
+	<text key="Gaia_phot_g_mean_mag">
+		G Magnitude &lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="Flag">
+		Flag
+	</text>
+	<text key="SNR">
+		SNR
+	</text>
+	<text key="Herschel_fwhmxfit">
+		FWHM x Fit
+	</text>
+	<text key="Herschel_fwhmyfit">
+		FWHM y Fit
+	</text>
+	<text key="Herschel_snr">
+		S/N_S
+	</text>
+	<text key="Herschel_stn">
+		S/N_R
+	</text>
+	<text key="Herschel_Warmat">
+		Warmat
+	</text>
+	<text key="HST_Collection">
+		Collection
+	</text>
+	<text key="Observation ObjectId">
+		Observation ObjectId
+	</text>
+	<text key="BIBCODE_preview">
+		BIBCODE_preview
+	</text>
+	<text key="2MASS_J_Mag">
+		J mag
+	</text>
+	<text key="2MASS_J_Mag_err">
+		&amp;Delta;J mag
+	</text>
+	<text key="2MASS_H_Mag">
+		H mag
+	</text>
+	<text key="2MASS_H_Mag_err">
+		&amp;Delta;H mag
+	</text>
+	<text key="2MASS_KS_Mag">
+		Ks mag
+	</text>
+	<text key="2MASS_KS_Mag_err">
+		&amp;Delta;Ks mag
+	</text>
+
+	<text key="AllWise_ra_err">
+		&amp;Delta;RA
+	</text>
+	<text key="AllWise_dec_err">
+		&amp;Delta;Dec
+	</text>
+	<text key="AllWise_w1mpro">
+		W1 mag
+	</text>
+	<text key="AllWise_w1mpro_error">
+		&amp;Delta;W1 mag
+	</text>
+	<text key="AllWise_w2mpro">
+		W2 mag
+	</text>
+	<text key="AllWise_w2mpro_error">
+		&amp;Delta;W2 mag
+	</text>
+	<text key="AllWise_w3mpro">
+		W3 mag
+	</text>
+	<text key="AllWise_w3mpro_error">
+		&amp;Delta;W3 mag
+	</text>
+	<text key="AllWise_w4mpro">
+		W4 mag
+	</text>
+	<text key="AllWise_w4mpro_error">
+		&amp;Delta;W4 mag
+	</text>
+	<text key="Gaia_DR2_parallax">
+		Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_parallax_error">
+		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_pmra">
+		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_pmra_error">
+		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_pmdec">
+		Proper Motion in
+		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_pmdec_error">
+		&amp;Delta;PM in
+		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_phot_g_mean_mag">
+		G mag
+	</text>
+	<text key="Gaia_DR2_br_rp">
+		(BP - RP) mag
+	</text>
+	<text key="Gaia_DR2_radial_velocity">
+		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_radial_velocity_error">
+		&amp;Delta;Radial Velocity
+	</text>
+	<text key="Gaia_DR2_phot_variable_flag">
+		Variable flag
+	</text>
+	<text key="Gaia_DR2_teff_val">
+		T_{eff}&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt; </text>
+	<text key="Gaia_DR2_a_g_val">
+		A_{G} mag
+	</text>
+	<text key="ssoName">
+		Name
+	</text>
+	<text key="RAStart">
+		RA Start &lt;i&gt;(J2000)&lt;/i&gt;
+	</text>
+	<text key="DecStart">
+		Dec Start &lt;i&gt;(J2000)&lt;/i&gt;
+	</text>
+	<text key="RAEnd">
+		RA End &lt;i&gt;(J2000)&lt;/i&gt;
+	</text>
+	<text key="DecEnd">
+		Dec End &lt;i&gt;(J2000)&lt;/i&gt;
+	</text>
+	<text key="DeltaPosDeg">
+		Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;
+	</text>
+	<text key="SSOVMag">
+		V. &lt;i&gt;(Mag)&lt;/i&gt;
+	</text>
+	<text key="SSODistanceAU">
+		Distance &lt;i&gt;(AU)&lt;/i&gt;
+	</text>
+	<text key="endTime">
+		End Time
+	</text>
+	<text key="LAMOST_obj_type">
+		Object Type
+	</text>
+	<text key="LAMOST_class">
+		Class
+	</text>
+	<text key="LAMOST_subclass">
+		Subclass
+	</text>
+	<text key="LAMOST_z">
+		Z
+	</text>
+	<text key="LAMOST_z_err">
+		Z Error
+	</text>
+	<text key="LAMOST_snr_u">
+		SNR U
+	</text>
+	<text key="LAMOST_snr_g">
+		SNR G
+	</text>
+	<text key="LAMOST_snr_r">
+		SNR R
+	</text>
+	<text key="LAMOST_snr_i">
+		SNR I
+	</text>
+	<text key="LAMOST_snr_z">
+		SNR Z
+	</text>
+	<text key="LAMOST_effective_temperature">
+		Effective Temperature &lt;i&gt;(K)&lt;/i&gt;
+	</text>
+	<text key="LAMOST_surface_gravity">
+		Surface Gravity
+	</text>
+	<text key="LAMOST_metallicity">
+		Metallicity
+	</text>
+	<text key="LAMOST_radial_velocity">
+		Radial Velocity &lt;i&gt;(km/s)&lt;/i&gt;
+	</text>
+	<text key="LAMOST_mag">
+		magnitude
+	</text>
+	<text key="AKARI_IRC_flux_s9w">
+		Flux S9W &lt;i&gt;(Jy)&lt;/i&gt;
+	</text>
+	<text key="AKARI_IRC_flux_s9w_err">
+		Flux S9W Error &lt;i&gt;(Jy)&lt;/i&gt;
+	</text>
+	<text key="AKARI_IRC_flux_l18w">
+		Flux L18W &lt;i&gt;(Jy)&lt;/i&gt;
+	</text>
+	<text key="AKARI_IRC_flux_l18w_err">
+		Flux L18W Error &lt;i&gt;(Jy)&lt;/i&gt;
+	</text>
+	<text key="AKARI_IRC_flag_s9w">
+		Flag S9W
+	</text>
+	<text key="AKARI_IRC_flag_l18w">
+		Flag L18W
+	</text>
+	<text key="AKARI_IRC_extended_s9w_flag">
+		Extended S9W Flag
+	</text>
+	<text key="AKARI_IRC_extended_l18w_flag">
+		Extended L18W Flag
+	</text>
+	<text key="AKARI_IRC_num_sw09_events">
+		Number of SW09 Events
+	</text>
+	<text key="AKARI_IRC_num_l18w_events">
+		Number of L18W Events
+	</text>
+	<text key="AKARI_IRC_orderBy_flux_s9w">
+		Flux S9W
 	</text>
 	
 </Internationalization>
