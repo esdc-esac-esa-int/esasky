@@ -7,12 +7,14 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class PublicationsEntity extends CatalogEntity {
 
@@ -29,39 +31,47 @@ public class PublicationsEntity extends CatalogEntity {
     }
     
     @Override
-    public void addShapes(TapRowList rowList) {
-        sourceIndexes.clear();
-        super.addShapes(rowList);
+    public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+    	if(Modules.useTabulator) {
+    		return; //TODO
+    	} else {
+	        sourceIndexes.clear();
+	        super.addShapes(rowList, javaScriptObject);
+    	}
     }
     
     @Override
-    public SourceShape buildShape(int rowId, TapRowList sourceList) {
-        SourceShape mySource = new SourceShape();
-        mySource.setShapeId(rowId);
-        mySource.setDec((getTAPDataByTAPName(sourceList, rowId,
-                descriptor.getPolygonDecTapColumn())).toString());
-        mySource.setRa((getTAPDataByTAPName(sourceList, rowId,
-                descriptor.getPolygonRaTapColumn())).toString());
-        mySource.setSourceName(((String) getTAPDataByTAPName(sourceList, rowId,
-                descriptor.getUniqueIdentifierField())).toString());
-
-        Map<String, String> details = new HashMap<String, String>();
-
-        details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
-
-        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-                EsaSkyWebConstants.SourceType.PUBLICATION.toString());
-        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
-        details.put(SourceConstant.IDX, Integer.toString(rowId));
-
-        sourceIndexes.put(mySource.getSourceName(), rowId);
-
-        details.put(SourceConstant.EXTRA_PARAMS, "BIBCOUNT");
-        details.put("BIBCOUNT", sourceList.getDataValue(SourceConstant.BIBCOUNT, rowId));
-
-        mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
-                mySource.getRa(), mySource.getDec(), details, rowId));
-        return mySource;
+    public SourceShape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+    	if(Modules.useTabulator) {
+    		return null; //TODO
+    	} else {
+    		SourceShape mySource = new SourceShape();
+    		mySource.setShapeId(rowId);
+    		mySource.setDec((getTAPDataByTAPName(rowList, rowId,
+    				descriptor.getPolygonDecTapColumn())).toString());
+    		mySource.setRa((getTAPDataByTAPName(rowList, rowId,
+    				descriptor.getPolygonRaTapColumn())).toString());
+    		mySource.setSourceName(((String) getTAPDataByTAPName(rowList, rowId,
+    				descriptor.getUniqueIdentifierField())).toString());
+    		
+    		Map<String, String> details = new HashMap<String, String>();
+    		
+    		details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
+    		
+    		details.put(EsaSkyWebConstants.SOURCE_TYPE,
+    				EsaSkyWebConstants.SourceType.PUBLICATION.toString());
+    		details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
+    		details.put(SourceConstant.IDX, Integer.toString(rowId));
+    		
+    		sourceIndexes.put(mySource.getSourceName(), rowId);
+    		
+    		details.put(SourceConstant.EXTRA_PARAMS, "BIBCOUNT");
+    		details.put("BIBCOUNT", rowList.getDataValue(SourceConstant.BIBCOUNT, rowId));
+    		
+    		mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
+    				mySource.getRa(), mySource.getDec(), details, rowId));
+    		return mySource;
+    	}
     }
 
     public int getSourceIdx(String sourceName) {

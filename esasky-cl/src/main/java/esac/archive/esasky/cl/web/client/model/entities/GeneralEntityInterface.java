@@ -7,7 +7,7 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
@@ -46,11 +46,11 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public String getColor();
     public void setColor(String color);
     
-    public void fetchData(AbstractTablePanel tablePanel);
-    public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos);
-    public void refreshData(AbstractTablePanel tablePanel);
+    public void fetchData(ITablePanel tablePanel);
+    public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos);
+    public void refreshData(ITablePanel tablePanel);
     
-    public AbstractTablePanel createTablePanel();
+    public ITablePanel createTablePanel();
     
     public boolean isSampEnabled();
     public boolean isRefreshable();

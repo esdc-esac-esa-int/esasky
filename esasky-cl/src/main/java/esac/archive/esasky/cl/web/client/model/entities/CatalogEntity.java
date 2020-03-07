@@ -20,6 +20,7 @@ import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -33,7 +34,8 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SourcesTablePanel;
 
 public class CatalogEntity implements GeneralEntityInterface{
@@ -56,8 +58,8 @@ public class CatalogEntity implements GeneralEntityInterface{
     private ShapeBuilder shapeBuilder = new ShapeBuilder() {
     	
     	@Override
-    	public SourceShape buildShape(int shapeId, TapRowList sourceList) {
-    		return CatalogEntity.this.buildShape(shapeId, sourceList);
+    	public SourceShape buildShape(int shapeId, TapRowList rowList, GeneralJavaScriptObject row) {
+    		return CatalogEntity.this.buildShape(shapeId, rowList, row);
     	}
     };
     
@@ -171,8 +173,8 @@ public class CatalogEntity implements GeneralEntityInterface{
 	}
 	
 	@Override
-	public void addShapes(TapRowList rowList) {
-		defaultEntity.addShapes(rowList);
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+		defaultEntity.addShapes(rowList, javaScriptObject);
 		if(rowList.getData().size() >= getSourceLimit()) {
 			if(sourceLimitNotificationTimer.isRunning()) {
 				sourceLimitNotificationTimer.run();
@@ -339,143 +341,147 @@ public class CatalogEntity implements GeneralEntityInterface{
 		defaultEntity.hoverStop(hoveredRowId);
 	}
 	
-	public SourceShape buildShape(int shapeId, TapRowList sourceList) {
-        SourceShape mySource = new SourceShape();
-        mySource.setShapeId(shapeId);
-
-        Double dec = Double.parseDouble(getTAPDataByTAPName(sourceList, shapeId,
-                getDescriptor().getPolygonDecTapColumn()).toString());
-        Double ra = Double.parseDouble(getTAPDataByTAPName(sourceList, shapeId,
-        		getDescriptor().getPolygonRaTapColumn()).toString());
-        mySource.setDec(dec.toString());
-        mySource.setRa(ra.toString());
-        mySource.setSourceName(((String) getTAPDataByTAPName(sourceList, shapeId,
-                descriptor.getUniqueIdentifierField())).toString());
-
-        Map<String, String> details = new HashMap<String, String>();
-
-        details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
-
-        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-                EsaSkyWebConstants.SourceType.CATALOGUE.toString());
-        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
-        details.put(SourceConstant.IDX, Integer.toString(shapeId));
-
-        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
-            details.put(SourceConstant.EXTRA_PARAMS, null);
-        } else {
-            details.put(SourceConstant.EXTRA_PARAMS,
-                    this.getDescriptor().getExtraPopupDetailsByTapName());
-            String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
-                    .split(",");
-
-            for (String currTapName : extraDetailsTapName) {
-
-                MetadataDescriptor cmd = this.getDescriptor()
-                        .getMetadataDescriptorByTapName(currTapName);
-                Integer precision = null;
-                String value = (String) getTAPDataByTAPName(sourceList, shapeId, currTapName);
-                if (cmd.getMaxDecimalDigits() != null
-                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
-                                .getType() == ColumnType.DOUBLE)) {
-                    StringBuilder sb = new StringBuilder();
-                    precision = cmd.getMaxDecimalDigits();
-                    sb.append("#0.");
-                    if (precision != null) {
-                        for (int i = 0; i < precision; i++) {
-                            sb.append("0");
-                        }
-                    } else {
-                        sb.append("00");
-                    }
-                    value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
-                }
-                details.put(currTapName, value);
-            }
-        }
-
-        if (this.getDescriptor().getDrawSourcesFunction() != null) {
-
-            // Adds the details for drawing the proper motion arrows
-            try {
-
-                Double finalRa = null;
-                Double finalDec = null;
-
-                if ((this.getDescriptor().getFinalRaTapColumn() != null)
-                        && this.getDescriptor().getFinalDecTapColumn() != null) {
-
-                    // Proper motion ra, dec is coming from descriptor data, just use it
-                    finalRa = getDoubleByTAPName(sourceList, shapeId, this.getDescriptor().getFinalRaTapColumn(), null);
-                    finalDec = getDoubleByTAPName(sourceList, shapeId, this.getDescriptor().getFinalDecTapColumn(), null);
-
-                } else {
-
-                    // Proper motion ra, dec not coming from descriptor data, so we need to
-                    // calculate it
-                    
-                    final Double pm_ra = getDoubleByTAPName(sourceList, shapeId, this.getDescriptor().getPmRaTapColumn(), null);
-                    final Double pm_dec = getDoubleByTAPName(sourceList, shapeId, this.getDescriptor().getPmDecTapColumn(), null);
-                    
-                    if ((pm_ra != null) && (pm_dec != null)
-                        && (this.getDescriptor().getPmOrigEpoch() != null)
-                        && (this.getDescriptor().getPmFinalEpoch() != null)) {
-                        
-                        double[] inputA = new double[6];
-                        inputA[0] = ra;
-                        inputA[1] = dec;
-                        inputA[2] = getDoubleByTAPName(sourceList, shapeId, this.getDescriptor().getPmPlxTapColumn(), 0.0); // Consider the parallax as 0.0 by default
-                        inputA[3] = pm_ra;
-                        inputA[4] = pm_dec;
-                        inputA[5] = getDoubleByTAPName(sourceList, shapeId, this.getDescriptor().getPmNormRadVelTapColumn(), 0.0);// normalised radial velocity at t0 [mas/yr] - see Note 2
-    
-                        double[] outputA = new double[6];
-    
-                        ProperMotionUtils.pos_prop(this.getDescriptor().getPmOrigEpoch(), inputA,
-                                this.getDescriptor().getPmFinalEpoch(), outputA);
-    
-                        finalRa = outputA[0];
-                        finalDec = outputA[1];
-                        
-                        if (this.getDescriptor().getPmOrigEpoch() > this.getDescriptor().getPmFinalEpoch()) {
-                            // For catalogs in J2015 put the source in J2015 but draw the arrow flipped... from J2000 to J2015
-                            details.put("arrowFlipped", "true");
-                        }
-                    }
-                }
-
-                if ((finalRa != null) && (finalDec != null)) {
-                    details.put("arrowRa", finalRa + "");
-                    details.put("arrowDec", finalDec + "");
-    
-                    // Creates the ra dec normalized vector of 10 degrees
-                    final double raInc = finalRa - ra;
-                    final double decInc = finalDec - dec;
-                    final double m = Math.sqrt((raInc * raInc) + (decInc * decInc));
-                    final double mRatio = 2 / m; // 2 degrees
-                    final double raNorm = ra + (raInc * mRatio);
-                    final double decNorm = dec + (decInc * mRatio);
-                    
-                    //Calculates the scale factor, this function is also in AladinESDC.js (modify there also)
-                    final double arrowRatio = 4.0 - (3.0 * Math.pow(Math.log((m * 1000) + 2.72), -2.0)); // See: //rechneronline.de/function-graphs/  , using function: 4 - (3*(log((x* 1000)+2.72)^(-2)))
-                    
-                    details.put("arrowRaNorm", raNorm + "");
-                    details.put("arrowDecNorm", decNorm + "");
-                    details.put("arrowRatio", arrowRatio + "");
-                }
-                
-            } catch (Exception ex) {
-                Log.error(this.getClass().getSimpleName() + ", Calculate proper motion error: ", ex);
-            }
-        }
-
-        mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
-                mySource.getRa(), mySource.getDec(), details, shapeId));
-        return mySource;
+	public SourceShape buildShape(int shapeId, TapRowList rowList, GeneralJavaScriptObject row) {
+		if(Modules.useTabulator) {
+			return null; //TODO
+		} else {
+	        SourceShape mySource = new SourceShape();
+	        mySource.setShapeId(shapeId);
+	
+	        Double dec = Double.parseDouble(getTAPDataByTAPName(rowList, shapeId,
+	                getDescriptor().getPolygonDecTapColumn()).toString());
+	        Double ra = Double.parseDouble(getTAPDataByTAPName(rowList, shapeId,
+	        		getDescriptor().getPolygonRaTapColumn()).toString());
+	        mySource.setDec(dec.toString());
+	        mySource.setRa(ra.toString());
+	        mySource.setSourceName(((String) getTAPDataByTAPName(rowList, shapeId,
+	                descriptor.getUniqueIdentifierField())).toString());
+	
+	        Map<String, String> details = new HashMap<String, String>();
+	
+	        details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
+	
+	        details.put(EsaSkyWebConstants.SOURCE_TYPE,
+	                EsaSkyWebConstants.SourceType.CATALOGUE.toString());
+	        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
+	        details.put(SourceConstant.IDX, Integer.toString(shapeId));
+	
+	        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
+	            details.put(SourceConstant.EXTRA_PARAMS, null);
+	        } else {
+	            details.put(SourceConstant.EXTRA_PARAMS,
+	                    this.getDescriptor().getExtraPopupDetailsByTapName());
+	            String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
+	                    .split(",");
+	
+	            for (String currTapName : extraDetailsTapName) {
+	
+	                MetadataDescriptor cmd = this.getDescriptor()
+	                        .getMetadataDescriptorByTapName(currTapName);
+	                Integer precision = null;
+	                String value = (String) getTAPDataByTAPName(rowList, shapeId, currTapName);
+	                if (cmd.getMaxDecimalDigits() != null
+	                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
+	                                .getType() == ColumnType.DOUBLE)) {
+	                    StringBuilder sb = new StringBuilder();
+	                    precision = cmd.getMaxDecimalDigits();
+	                    sb.append("#0.");
+	                    if (precision != null) {
+	                        for (int i = 0; i < precision; i++) {
+	                            sb.append("0");
+	                        }
+	                    } else {
+	                        sb.append("00");
+	                    }
+	                    value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
+	                }
+	                details.put(currTapName, value);
+	            }
+	        }
+	
+	        if (this.getDescriptor().getDrawSourcesFunction() != null) {
+	
+	            // Adds the details for drawing the proper motion arrows
+	            try {
+	
+	                Double finalRa = null;
+	                Double finalDec = null;
+	
+	                if ((this.getDescriptor().getFinalRaTapColumn() != null)
+	                        && this.getDescriptor().getFinalDecTapColumn() != null) {
+	
+	                    // Proper motion ra, dec is coming from descriptor data, just use it
+	                    finalRa = getDoubleByTAPName(rowList, shapeId, this.getDescriptor().getFinalRaTapColumn(), null);
+	                    finalDec = getDoubleByTAPName(rowList, shapeId, this.getDescriptor().getFinalDecTapColumn(), null);
+	
+	                } else {
+	
+	                    // Proper motion ra, dec not coming from descriptor data, so we need to
+	                    // calculate it
+	                    
+	                    final Double pm_ra = getDoubleByTAPName(rowList, shapeId, this.getDescriptor().getPmRaTapColumn(), null);
+	                    final Double pm_dec = getDoubleByTAPName(rowList, shapeId, this.getDescriptor().getPmDecTapColumn(), null);
+	                    
+	                    if ((pm_ra != null) && (pm_dec != null)
+	                        && (this.getDescriptor().getPmOrigEpoch() != null)
+	                        && (this.getDescriptor().getPmFinalEpoch() != null)) {
+	                        
+	                        double[] inputA = new double[6];
+	                        inputA[0] = ra;
+	                        inputA[1] = dec;
+	                        inputA[2] = getDoubleByTAPName(rowList, shapeId, this.getDescriptor().getPmPlxTapColumn(), 0.0); // Consider the parallax as 0.0 by default
+	                        inputA[3] = pm_ra;
+	                        inputA[4] = pm_dec;
+	                        inputA[5] = getDoubleByTAPName(rowList, shapeId, this.getDescriptor().getPmNormRadVelTapColumn(), 0.0);// normalised radial velocity at t0 [mas/yr] - see Note 2
+	    
+	                        double[] outputA = new double[6];
+	    
+	                        ProperMotionUtils.pos_prop(this.getDescriptor().getPmOrigEpoch(), inputA,
+	                                this.getDescriptor().getPmFinalEpoch(), outputA);
+	    
+	                        finalRa = outputA[0];
+	                        finalDec = outputA[1];
+	                        
+	                        if (this.getDescriptor().getPmOrigEpoch() > this.getDescriptor().getPmFinalEpoch()) {
+	                            // For catalogs in J2015 put the source in J2015 but draw the arrow flipped... from J2000 to J2015
+	                            details.put("arrowFlipped", "true");
+	                        }
+	                    }
+	                }
+	
+	                if ((finalRa != null) && (finalDec != null)) {
+	                    details.put("arrowRa", finalRa + "");
+	                    details.put("arrowDec", finalDec + "");
+	    
+	                    // Creates the ra dec normalized vector of 10 degrees
+	                    final double raInc = finalRa - ra;
+	                    final double decInc = finalDec - dec;
+	                    final double m = Math.sqrt((raInc * raInc) + (decInc * decInc));
+	                    final double mRatio = 2 / m; // 2 degrees
+	                    final double raNorm = ra + (raInc * mRatio);
+	                    final double decNorm = dec + (decInc * mRatio);
+	                    
+	                    //Calculates the scale factor, this function is also in AladinESDC.js (modify there also)
+	                    final double arrowRatio = 4.0 - (3.0 * Math.pow(Math.log((m * 1000) + 2.72), -2.0)); // See: //rechneronline.de/function-graphs/  , using function: 4 - (3*(log((x* 1000)+2.72)^(-2)))
+	                    
+	                    details.put("arrowRaNorm", raNorm + "");
+	                    details.put("arrowDecNorm", decNorm + "");
+	                    details.put("arrowRatio", arrowRatio + "");
+	                }
+	                
+	            } catch (Exception ex) {
+	                Log.error(this.getClass().getSimpleName() + ", Calculate proper motion error: ", ex);
+	            }
+	        }
+	
+	        mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
+	                mySource.getRa(), mySource.getDec(), details, shapeId));
+	        return mySource;
+		}
     }
 	
 	@Override
-    public void fetchData(final AbstractTablePanel tablePanel) {
+    public void fetchData(final ITablePanel tablePanel) {
 		defaultEntity.fetchData(tablePanel);
 	}
 
@@ -485,7 +491,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public AbstractTablePanel createTablePanel() {
+	public ITablePanel createTablePanel() {
 		return new SourcesTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
 	}
 
@@ -527,13 +533,13 @@ public class CatalogEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
 		defaultEntity.coneSearch(tablePanel, conePos);
 		
 	}
 	
 	@Override
-	public void refreshData(AbstractTablePanel tablePanel) {
+	public void refreshData(ITablePanel tablePanel) {
 		// TODO Auto-generated method stub
 		
 	}

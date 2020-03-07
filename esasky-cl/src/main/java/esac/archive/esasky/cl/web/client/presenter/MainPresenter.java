@@ -52,9 +52,9 @@ import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
 
 /**
@@ -199,11 +199,11 @@ public class MainPresenter {
                 } else {
 
                     // Selects a table row
-                    AbstractTablePanel tableContainingShape = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
+                    ITablePanel tableContainingShape = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
                     
                     if (tableContainingShape != null) {
                         
-                        AbstractTablePanel selectedTabPanel = resultsPresenter.getTabPanel().getSelectedWidget();
+                        ITablePanel selectedTabPanel = resultsPresenter.getTabPanel().getSelectedWidget();
                         if (selectedTabPanel == null 
                                 || !selectedTabPanel.getEsaSkyUniqID().equals(tableContainingShape.getEsaSkyUniqID())) {
                             resultsPresenter.getTabPanel().selectTab(tableContainingShape);
@@ -287,14 +287,14 @@ public class MainPresenter {
     		entityRepo.getPublications().deselectAllShapes();
     	}
         //Creates a new TablePanel or selects the existing one
-        final AbstractTablePanel tabPanel = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(id);
+        final ITablePanel tabPanel = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(id);
         if (tabPanel == null) {
             Log.debug("[MainPresenter][showPublicationsTabPanel] id: " + id);
             PublicationsBySourceEntity pubBySourceEntity = entityRepo.createPublicationsBySourceEntity(id, byAuthor);
             
             if (pubBySourceEntity.getSourceMetadata() != null) {
                 //Draws the source for this publication list, only valid if not by author
-                pubBySourceEntity.addShapes(pubBySourceEntity.getSourceMetadata());
+                pubBySourceEntity.addShapes(pubBySourceEntity.getSourceMetadata(), null);
             }
             
             resultsPresenter.showPublications(id, pubBySourceEntity, byAuthor, new IPreviewClickedHandler() {
@@ -340,7 +340,7 @@ public class MainPresenter {
             case EXT_TAP:
                 GeneralEntityInterface extEntity = entityRepo.createExtTapEntity((ExtTapDescriptor) descriptor, context);
                 if (extEntity != null) {
-                    resultsPresenter.getExtTapMetadata(extEntity, true, null);
+                    resultsPresenter.getExtTapMetadata(extEntity);
                 }
                 break;
                 

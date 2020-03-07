@@ -11,11 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
-//import com.google.gwt.aria.client.ColumnheaderRole;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
-//import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -85,7 +83,6 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
-//import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DateTimeColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DecColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DoubleColumn;
@@ -102,7 +99,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.table.DataPanelPager;
 import esac.archive.esasky.cl.web.client.view.resultspanel.table.SimpleTable;
 import esac.archive.esasky.cl.web.client.view.resultspanel.table.TableWidthChanged;
 
-public abstract class AbstractTablePanel extends Composite {
+public abstract class AbstractTablePanel extends Composite implements ITablePanel {
 
 	private final MultiSelectionModel<TableRow> selectionModel = new MultiSelectionModel<TableRow>();
 	private int separatorIndex;
@@ -576,13 +573,13 @@ public abstract class AbstractTablePanel extends Composite {
 		this.previewClickedHandler = previewClickedHandler;
 	}
 
-	public native void exposeOpenFilterBoxMethodToJs(AbstractTablePanel tab) /*-{
+	public native void exposeOpenFilterBoxMethodToJs(ITablePanel tab) /*-{
 		$wnd.openFilterBox = function(columnNumber) {
 			tab.@esac.archive.esasky.cl.web.client.view.resultspanel.CommonObservationsTablePanel::openFilterBox(I)(columnNumber);
 		}
 	}-*/;
 
-	public void insertData(List<TableRow> data) {
+	public void insertData(List<TableRow> data, String url) {
 		if(data == null || data.size() == 0) {
 			clearTable();
 			emptyTableLabel.setText(TextMgr.getInstance().getText("resultsPresenter_noDataFound"));
@@ -871,6 +868,9 @@ public abstract class AbstractTablePanel extends Composite {
 								}
 								if (searchParam == null) {
 									searchParam = row.getElementByTapName("name");
+								}
+								if (searchParam == null) {
+									searchParam = row.getElementByTapName("iauname");
 								}
 								PreviewDialogBox box;
 								if (searchParam == null) {
@@ -1697,5 +1697,8 @@ public abstract class AbstractTablePanel extends Composite {
 		});
 	}
 
+	public Widget getWidget() {
+		return this;
+	}
 
 }

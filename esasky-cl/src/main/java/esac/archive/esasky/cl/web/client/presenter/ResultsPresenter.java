@@ -15,7 +15,6 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
@@ -76,6 +75,7 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
 
 /**
@@ -105,9 +105,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
         Widget getTabFromTableId(String id);
 
-        LayoutPanel getResultsLP();
-
-        AbstractTablePanel addResultsTab(GeneralEntityInterface entity, String helpTitle, String helpDescription);
+        ITablePanel addResultsTab(GeneralEntityInterface entity, String helpTitle, String helpDescription);
 
         void removeTab(String id);
     }
@@ -146,7 +144,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             @Override
             public void onShapeDeselectionEvent(AladinLiteShapeDeselectedEvent selectEvent) {
 
-                AbstractTablePanel tableContainingShape = view.getTabPanel().getAbstractTablePanelFromId(selectEvent
+                ITablePanel tableContainingShape = view.getTabPanel().getAbstractTablePanelFromId(selectEvent
                         .getOverlayName());
 
                 if (tableContainingShape != null) {
@@ -161,7 +159,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             @Override
             public void onShapeHoverStartEvent(AladinLiteShapeHoverStartEvent hoverEvent) {
 
-                AbstractTablePanel tablePanel = view
+                ITablePanel tablePanel = view
                         .getTabPanel().getAbstractTablePanelFromId(hoverEvent.getOverlayName());
 
                 if (tablePanel != null) {
@@ -228,7 +226,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                 if (!Modules.publicationsModule || !hoverEvent.getOverlayName().startsWith(descriptorRepo.getPublicationsDescriptors()
                         .getDescriptors().get(0).getMission())) {
                     // Deselects a table row
-                    AbstractTablePanel tablePanel = view.getTabPanel().getAbstractTablePanelFromId(
+                    ITablePanel tablePanel = view.getTabPanel().getAbstractTablePanelFromId(
                                     hoverEvent.getOverlayName());
                     if (tablePanel != null) {
                         tablePanel.hoverStopRow(hoverEvent.getShapeId());
@@ -243,7 +241,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     }
     
     protected final void getUserMetadataAndPolygons(final GeneralEntityInterface entity, final boolean showProgress,
-            AbstractTablePanel panel, IJSONWrapper userData, CoordinatesFrame convertToFrame) {
+    		ITablePanel panel, IJSONWrapper userData, CoordinatesFrame convertToFrame) {
     	Log.debug("[ResultPresenter][getUserMetadataAndPolygons]");
     	if (panel == null) {
     		panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
@@ -255,27 +253,31 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     	if (rowList != null){
     		List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList, entity.getDescriptor());
             entity.setMetadata(rowList);
-            panel.insertData(tabRowList);	
-            entity.addShapes(rowList);
+            panel.insertData(tabRowList, null);	
+            entity.addShapes(rowList, null);
     	}
     }
 
-    public final void getExtTapMetadata(final GeneralEntityInterface entity, final boolean showProgress,
-    		AbstractTablePanel panel) {
+    public final void getExtTapMetadata(final GeneralEntityInterface entity) {
     	
     	final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
     	
     	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
     	
-    	if (panel == null) {
-    		panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
+    	if(Modules.useTabulator) {
+    		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
+    		
+    		entity.fetchData(panel);
+    		
+    	} else {
+    		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
+    		
+    		entity.fetchData(panel);
     	}
-    	
-		entity.fetchData(panel);
     }
     
     protected final void getMetadataAndFootprints(final GeneralEntityInterface entity, final boolean showProgress,
-            AbstractTablePanel panel, final boolean isConeSearch, final SkyViewPosition conePos) {
+    		ITablePanel panel, final boolean isConeSearch, final SkyViewPosition conePos) {
 
         final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
 
@@ -289,7 +291,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getContext() + "_"+ missionId));
         }
         
-        final AbstractTablePanel finalPanel = panel;
+        final ITablePanel finalPanel = panel;
 
         if (countStatus.hasMoved(missionId)) {
             String url = TAPCountObservationService.getInstance().getCount(
@@ -375,7 +377,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
         // Get Current Tab
         int currentTab = view.getTabPanel().getSelectedTabIndex();
-        Widget tab = view.getTabPanel().getWidget(currentTab);
+        Widget tab = view.getTabPanel().getWidget(currentTab).getWidget();
 
         if (tab instanceof AbstractTablePanel) {
 
@@ -405,9 +407,9 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     
     private void sendGAEventWithCurrentTab (String eventCategory, String extra) {
         final int currentTab = view.getTabPanel().getSelectedTabIndex();
-        final Widget tab = view.getTabPanel().getWidget(currentTab);
-        if (tab instanceof AbstractTablePanel) {
-            GoogleAnalytics.sendEventWithURL(eventCategory, ((AbstractTablePanel)tab).getFullId(), extra);
+        final Widget tab = view.getTabPanel().getWidget(currentTab).getWidget();
+        if (tab instanceof ITablePanel) {
+            GoogleAnalytics.sendEventWithURL(eventCategory, ((ITablePanel)tab).getFullId(), extra);
         }
     }
 
@@ -419,7 +421,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
         Log.debug("[ResultPresenter][updateNumberOfObservationsSelected] AAAA1 ");
         // Get Current Tab.
         int currentTab = view.getTabPanel().getSelectedTabIndex();
-        AbstractTablePanel tab = view.getTabPanel().getWidget(currentTab);
+        ITablePanel tab = view.getTabPanel().getWidget(currentTab);
 
         Set<TableRow> subset = tab.getSelectedRows();
         Log.debug("[ResultPresenter][updateNumberOfObservationsSelected]NUMBER OF SELECTED OBS "
@@ -445,7 +447,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             Log.debug(adqlQuery);
             
             final int currentTab = view.getTabPanel().getSelectedTabIndex();
-            final Widget tab = view.getTabPanel().getWidget(currentTab);
+            final Widget tab = view.getTabPanel().getWidget(currentTab).getWidget();
             if (tab instanceof ExtTapTablePanel) {
                 Log.debug("[ResultsPresenter/doSaveTableAs()] Saving " + tableName + " in format: " + type.toString());
                 if (type.equals(ReturnType.CSV)) {
@@ -529,7 +531,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                 + entity.getDescriptor().getGuiShortName() + "]";
         Log.debug(debugPrefix);
         
-        AbstractTablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+        ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
         		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getContext() + "_" + entity.getDescriptor().getMission()));
 
         entity.fetchData(panel);
@@ -562,7 +564,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
         final String debugPrefix = "[showPublications][" + id + "]";
         Log.debug(debugPrefix);
 
-        AbstractTablePanel panel;
+        ITablePanel panel;
         if(byAuthor) {
         	panel = this.view.addResultsTab(entity,
         			TextMgr.getInstance().getText("PublicationsByAuthorCallback_helpTitle"),

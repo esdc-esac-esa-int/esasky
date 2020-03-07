@@ -12,6 +12,7 @@ import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class SourceDrawer implements IShapeDrawer{
 
@@ -49,10 +50,10 @@ public class SourceDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
 		List<Shape> shapes = new LinkedList<Shape>();
 		for(int i = 0; i < rowList.getData().size(); i++) {
-			shapes.add(shapeBuilder.buildShape(i, rowList));
+			shapes.add(shapeBuilder.buildShape(i, rowList, null));
 		}
 		
 		removeAllShapes();

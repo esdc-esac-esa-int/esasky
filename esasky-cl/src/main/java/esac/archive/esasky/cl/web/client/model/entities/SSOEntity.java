@@ -28,6 +28,7 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SSOObservationsTablePanel;
 
 public class SSOEntity extends ObservationAndSpectraEntity {
@@ -96,7 +97,7 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	}
 
 	@Override
-	public void fetchData(final AbstractTablePanel tablePanel) {
+	public void fetchData(final ITablePanel tablePanel) {
 		getSSOPolyline();
 		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(getMetadataAdql()), EsaSkyConstants.JSON);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);

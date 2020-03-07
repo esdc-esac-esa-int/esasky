@@ -25,6 +25,8 @@ import esac.archive.esasky.cl.web.client.query.AbstractMetadataService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class DefaultEntity implements GeneralEntityInterface{
 
@@ -187,7 +189,7 @@ public class DefaultEntity implements GeneralEntityInterface{
     }
 	
 	@Override
-    public void fetchData(final AbstractTablePanel tablePanel) {
+    public void fetchData(final ITablePanel tablePanel) {
         Scheduler.get().scheduleFinally(new ScheduledCommand() {
         	
         	@Override
@@ -215,7 +217,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void coneSearch(final AbstractTablePanel tablePanel, final SkyViewPosition conePos) {
+	public void coneSearch(final ITablePanel tablePanel, final SkyViewPosition conePos) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
 			
 			@Override
@@ -321,8 +323,8 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
-		drawer.addShapes(rowList);
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+		drawer.addShapes(rowList, javaScriptObject);
 	}
 
 	@Override
@@ -356,7 +358,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void refreshData(AbstractTablePanel tablePanel) {
+	public void refreshData(ITablePanel tablePanel) {
 		// TODO Auto-generated method stub
 		
 	}

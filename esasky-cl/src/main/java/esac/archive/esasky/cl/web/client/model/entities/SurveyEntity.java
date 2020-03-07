@@ -16,6 +16,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
@@ -28,6 +29,8 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SurveyConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SurveyTablePanel;
 
 public class SurveyEntity implements GeneralEntityInterface{
@@ -51,27 +54,31 @@ public class SurveyEntity implements GeneralEntityInterface{
     private ShapeBuilder shapeBuilder = new ShapeBuilder() {
     	
     	@Override
-    	public Shape buildShape(int rowId, TapRowList rowList) {
-            SourceShape mySource = new SourceShape();
-            mySource.setShapeId(rowId);
-            mySource.setDec((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_DEC))
-                    .toString());
-            mySource.setRa((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_RA))
-                    .toString());
-
-            Map<String, String> details = new HashMap<String, String>();
-
-            details.put(EsaSkyWebConstants.SOURCE_TYPE,
-                    EsaSkyWebConstants.SourceType.SURVEY.toString());
-            details.put(SurveyConstant.SURVEY_NAME, (getTAPDataByTAPName(rowList, rowId,
-                    EsaSkyConstants.OBS_TAP_NAME)).toString());
-            details.put(SurveyConstant.CATALOGE_NAME, getEsaSkyUniqId());
-            details.put(SurveyConstant.IDX, Integer.toString(rowId));
-
-            mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
-                    mySource.getRa(), mySource.getDec(), details, rowId));
-
-            return mySource;
+    	public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+    		if(Modules.useTabulator) {
+				return null; //TODO
+			} else {
+	            SourceShape mySource = new SourceShape();
+	            mySource.setShapeId(rowId);
+	            mySource.setDec((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_DEC))
+	                    .toString());
+	            mySource.setRa((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_RA))
+	                    .toString());
+	
+	            Map<String, String> details = new HashMap<String, String>();
+	
+	            details.put(EsaSkyWebConstants.SOURCE_TYPE,
+	                    EsaSkyWebConstants.SourceType.SURVEY.toString());
+	            details.put(SurveyConstant.SURVEY_NAME, (getTAPDataByTAPName(rowList, rowId,
+	                    EsaSkyConstants.OBS_TAP_NAME)).toString());
+	            details.put(SurveyConstant.CATALOGE_NAME, getEsaSkyUniqId());
+	            details.put(SurveyConstant.IDX, Integer.toString(rowId));
+	
+	            mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
+	                    mySource.getRa(), mySource.getDec(), details, rowId));
+	
+	            return mySource;
+			}
     	}
     };
     
@@ -138,8 +145,8 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
-		defaultEntity.addShapes(rowList);
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+		defaultEntity.addShapes(rowList, javaScriptObject);
 	}
 
 	@Override
@@ -304,7 +311,7 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void fetchData(AbstractTablePanel tablePanel) {
+	public void fetchData(ITablePanel tablePanel) {
 		defaultEntity.fetchData(tablePanel);
 	}
 
@@ -329,13 +336,13 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void refreshData(AbstractTablePanel tablePanel) {
+	public void refreshData(ITablePanel tablePanel) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
 		// TODO Auto-generated method stub		
 	}
 }

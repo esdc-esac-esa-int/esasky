@@ -4,13 +4,11 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONObject;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -25,9 +23,10 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.CommonObservationsTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public abstract class ObservationAndSpectraEntity extends CommonObservationEntity {
 
@@ -36,11 +35,15 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 	public class MocBuilder implements ShapeBuilder{
 
 		@Override
-		public Shape buildShape(int rowId, TapRowList rowList) {
-			PolygonShape shape = new PolygonShape();
-	    	shape.setStcs((String)getTAPDataByTAPName(rowList, rowId, descriptor.getMocSTCSColumn()));
-			shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
-			return shape;
+		public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+			if(Modules.useTabulator) {
+				return null; //TODO
+			} else {
+				PolygonShape shape = new PolygonShape();
+		    	shape.setStcs((String)getTAPDataByTAPName(rowList, rowId, descriptor.getMocSTCSColumn()));
+				shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
+				return shape;
+			}
 		}
 	}
     
@@ -62,7 +65,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     }
     
     @Override
-    public void fetchData(final AbstractTablePanel tablePanel) {
+    public void fetchData(final ITablePanel tablePanel) {
         
     	if(!getCountStatus().hasMoved(descriptor.getMission())) {
         	fetchData2(tablePanel);
@@ -79,7 +82,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
         }
     }
     
-    private void fetchData2(AbstractTablePanel tablePanel) {
+    private void fetchData2(ITablePanel tablePanel) {
     	int mocLimit = descriptor.getMocLimit();
     	int count = getCountStatus().getCount(descriptor.getMission());
     	
@@ -98,7 +101,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     
 
     
-    private void getMocMetadata(final AbstractTablePanel tablePanel) {
+    private void getMocMetadata(final ITablePanel tablePanel) {
         Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
 
         tablePanel.clearTable();

@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,7 +27,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.CommonResources;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
@@ -39,7 +36,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ProvidesResize;
 import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -48,178 +44,19 @@ import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.animation.LeftSlideAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.ScrollDisablablePushButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 
 public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesResize, HasSelectionHandlers<Integer> {
 
-	/**
-	 * @author ESDC team Copyright (c) 2015- European Space Agency
-	 */
-	private class Tab extends SimplePanel {
-
-		private Element inner;
-		private boolean replacingWidget;
-		private DataPanelDraggablePanel draggableArea;
-
-		public Tab(final Widget child) {
-			this(child, TAB_STYLE, TAB_INNER_STYLE);
-		}
-
-		private Tab(final Widget child, final String tabStyle, final String tabInnerStyle) {
-			super(Document.get().createDivElement());
-			getElement().appendChild(this.inner = Document.get().createDivElement());
-
-			draggableArea = new DataPanelDraggablePanel();
-			FlowPanel horizontalLine = new FlowPanel();
-			horizontalLine.addStyleName("draggableArea__horizontal");
-			draggableArea.add(horizontalLine);
-			FlowPanel secondHorizontalLine = new FlowPanel();
-			secondHorizontalLine.addStyleName("draggableArea__horizontal-second");
-			draggableArea.add(secondHorizontalLine);
-			
-			FlowPanel tabContainer = new FlowPanel();
-			tabContainer.add(draggableArea);
-			child.addStyleName("dataPanelTabChild");
-			tabContainer.add(child);
-
-			setWidget(tabContainer);
-			setStyleName(tabStyle);
-			this.inner.setClassName(tabInnerStyle);
-
-			getElement().addClassName(CommonResources.getInlineBlockStyle());
-		}
-		
-		public HandlerRegistration addClickHandler(final ClickHandler handler) {
-			return addDomHandler(handler, ClickEvent.getType());
-		}
-
-		@Override
-		public boolean remove(final Widget w) {
-			/*
-			 * Removal of items from the TabBar is delegated to the
-			 * TabLayoutPanel to ensure consistency.
-			 */
-			int index = ScrollTabLayoutPanel.this.tabs.indexOf(this);
-			if (this.replacingWidget || index < 0) {
-				/*
-				 * The tab contents are being replaced, or this tab is no longer
-				 * in the panel, so just remove the widget.
-				 */
-				return super.remove(w);
-			} else {
-				// Delegate to the TabLayoutPanel.
-				return ScrollTabLayoutPanel.this.remove(index);
-			}
-		}
-
-		/**
-		 * setSelected().
-		 * 
-		 * @param selected
-		 *            Input boolean
-		 */
-		public void setSelected(final boolean selected) {
-			if (selected) {
-				addStyleDependentName("selected");
-			} else {
-				removeStyleDependentName("selected");
-			}
-		}
-
-		@Override
-		public void setWidget(final Widget w) {
-			this.replacingWidget = true;
-			super.setWidget(w);
-			this.replacingWidget = false;
-		}
-
-		@Override
-		protected com.google.gwt.user.client.Element getContainerElement() {
-			return this.inner.cast();
-		}
-		
-		private boolean isBeingDragged() {
-			return draggableArea.isBeingDragged();
-		}
-	}
-
-	/**
-	 * This extension of DeckLayoutPanel overrides the public mutator methods to
-	 * prevent external callers from adding to the state of the DeckPanel.
-	 * <p>
-	 * Removal of Widgets is supported so that WidgetCollection.WidgetIterator
-	 * operates as expected.
-	 * </p>
-	 * <p>
-	 * We ensure that the DeckLayoutPanel cannot become of of sync with its
-	 * associated TabBar by delegating all mutations to the TabBar to this
-	 * implementation of DeckLayoutPanel.
-	 * </p>
-	 */
-	private class TabbedDeckLayoutPanel extends DeckLayoutPanel {
-
-		@Override
-		public void add(final Widget w) {
-			throw new UnsupportedOperationException("Use TabLayoutPanel.add() to alter the DeckLayoutPanel");
-		}
-
-		@Override
-		public void clear() {
-			throw new UnsupportedOperationException("Use TabLayoutPanel.clear() to alter the DeckLayoutPanel");
-		}
-
-		@Override
-		public void insert(final Widget w, final int beforeIndex) {
-			throw new UnsupportedOperationException("Use TabLayoutPanel.insert() to alter the DeckLayoutPanel");
-		}
-
-		@Override
-		public boolean remove(final Widget w) {
-			/*
-			 * Removal of items from the DeckLayoutPanel is delegated to the
-			 * TabLayoutPanel to ensure consistency.
-			 */
-			return ScrollTabLayoutPanel.this.remove(w);
-		}
-		
-		@Override
-		public AbstractTablePanel getWidget(int index) {
-			return (AbstractTablePanel)super.getWidget(index);
-		}
-
-		/**
-		 * insertProtected().
-		 * 
-		 * @param w
-		 *            Input Widget.
-		 * @param beforeIndex
-		 *            Input integer
-		 */
-		protected void insertProtected(final AbstractTablePanel w, final int beforeIndex) {
-			super.insert(w, beforeIndex);
-		}
-
-		/**
-		 * removeProtected().
-		 * 
-		 * @param w
-		 *            Input widget.
-		 */
-		protected void removeProtected(final AbstractTablePanel w) {
-			super.remove(w);
-		}
-	}
 
 	private static final String CONTENT_CONTAINER_STYLE = "scrollTabLayoutPanelContentContainer";
 	private static final String CONTENT_STYLE = "scrollTabLayoutPanelContent";
 	private static final String MAIN_STYLE = "scrollTabLayoutPanel";
 	private static final String SCROLLBAR_STYLE = "scrollBar";
-	private static final String TAB_STYLE = "scrollTabLayoutPanelTab";
 	private static final String TABS_STYLE = "scrollTabs";
-	private static final String TAB_INNER_STYLE = "scrollTabLayoutPanelTabInner";
 
-	private final TabbedDeckLayoutPanel deckPanel = new TabbedDeckLayoutPanel();
+	private final DeckLayoutPanel deckPanel = new DeckLayoutPanel();
 	private final FlowPanel tabBar = new FlowPanel();
 	private final ArrayList<Tab> tabs = new ArrayList<Tab>();
 	private int selectedIndex = -1;
@@ -239,28 +76,7 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 	private Resources resources = GWT.create(Resources.class);
 	private CssResource style;
 
-	/**
-	 * Creates an empty tab panel.
-	 *
-	 * @param barHeight
-	 *            the size of the tab bar
-	 * @param barUnit
-	 *            the unit in which the tab bar size is specified
-	 */
-	public ScrollTabLayoutPanel(final double barHeight, final Unit barUnit) {
-		this(barHeight, barUnit, true);
-	}
 
-	/**
-	 * Creates an empty tab panel.
-	 *
-	 * @param barHeight
-	 *            the size of the tab bar
-	 * @param barUnit
-	 *            the unit in which the tab bar size is specified
-	 * @param scroll
-	 *            whether scroll is shown or not
-	 */
 	public ScrollTabLayoutPanel(final double barHeight, final Unit barUnit, final boolean scroll) {
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -284,21 +100,6 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		setStyleName(MAIN_STYLE);
 	}
 
-	/**
-	 * Adds a widget to the panel. If the Widget is already attached, it will be
-	 * moved to the right-most index.
-	 *
-	 * @param child
-	 *            the widget to be added
-	 * @param tab
-	 *            the widget to be placed in the associated tab
-	 */
-	public final void add(final AbstractTablePanel child, final MissionTabButtons tab) {
-		insert(child, tab, deckPanel.getWidgetCount());
-		selectTab(child);
-		checkIfScrollButtonsNecessary();
-	}
-
 	public int getWidgetIndex(Widget widget){
 		return deckPanel.getWidgetIndex(widget);
 	}
@@ -308,35 +109,46 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		return addHandler(handler, SelectionEvent.getType());
 	}
 
-	/**
-	 * Gets the index of the currently-selected tab.
-	 *
-	 * @return the selected index, or <code>-1</code> if none is selected.
-	 */
 	public final int getSelectedIndex() {
 		return this.selectedIndex;
 	}
 
-	/**
-	 * Returns the widget at the given index.
-	 */
-	public final AbstractTablePanel getWidget(final int index) {
-		return this.deckPanel.getWidget(index);
+	public final ITablePanel getWidget(final int index) {
+		return (ITablePanel) this.deckPanel.getWidget(index);
 	}
+	
+	public final void add(final Widget child, final MissionTabButtons tabButtons) {
+		final Tab tab = new Tab(tabButtons);
+		int beforeIndex = deckPanel.getWidgetCount();
+		
+		this.deckPanel.insert(child, beforeIndex);
+		this.tabs.add(beforeIndex, tab);
 
-	/**
-	 * Inserts a widget into the panel. If the Widget is already attached, it
-	 * will be moved to the requested index.
-	 *
-	 * @param child
-	 *            the widget to be added
-	 * @param tab
-	 *            the widget to be placed in the associated tab
-	 * @param beforeIndex
-	 *            the index before which it will be inserted
-	 */
-	public final void insert(final AbstractTablePanel child, final MissionTabButtons tab, final int beforeIndex) {
-		insert(child, new Tab(tab), beforeIndex);
+		this.tabBar.insert(tab, beforeIndex);
+		tab.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(final ClickEvent event) {
+				if(!tab.isBeingDragged()) {
+					selectTab(child);
+				}
+			}
+		});
+
+		child.addStyleName(CONTENT_STYLE);
+		
+		if (this.selectedIndex == -1) {
+			selectTab(deckPanel.getWidget(0));
+		} else if (this.selectedIndex >= beforeIndex) {
+			// If we inserted before the currently selected tab, its index has
+			// just
+			// increased.
+			this.selectedIndex++;
+		}
+		
+		
+		selectTab(child);
+		checkIfScrollButtonsNecessary();
 	}
 
 	public final boolean remove(final int index) {
@@ -345,9 +157,9 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 			return false;
 		}
 
-		AbstractTablePanel child = getWidget(index);
+		Widget child = getWidget(index).getWidget();
 		this.tabBar.remove(index);
-		this.deckPanel.removeProtected(child);
+		this.deckPanel.remove(child);
 		child.removeStyleName(CONTENT_STYLE);
 
 		Tab tab = this.tabs.remove(index);
@@ -379,7 +191,7 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		return remove(index);
 	}
 
-	public final void selectTab(AbstractTablePanel tablePanel) {
+	public final void selectTab(Widget tablePanel) {
 		selectTab(deckPanel.getWidgetIndex(tablePanel));
 	}
 
@@ -403,66 +215,16 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		this.tabs.get(newlySelectedIndex).setSelected(true);
 
 		if(dataPanelWasOpen){
-			deckPanel.getWidget(newlySelectedIndex).selectTablePanel();
+			((ITablePanel)deckPanel.getWidget(newlySelectedIndex)).selectTablePanel();
 			for(int i = 0; i < deckPanel.getWidgetCount(); i++) {
 				if(i != newlySelectedIndex) {
-					deckPanel.getWidget(i).deselectTablePanel();
+					((ITablePanel)deckPanel.getWidget(i)).deselectTablePanel();
 				}
 			}
 		}
 		
 		this.selectedIndex = newlySelectedIndex;
 		SelectionEvent.fire(this, newlySelectedIndex);
-	}
-
-	/**
-	 * insert().
-	 * 
-	 * @param child
-	 *            Input Widget
-	 * @param tab
-	 *            Input Tab object
-	 * @param beforeIndex
-	 *            Input integer value.
-	 */
-	private void insert(final AbstractTablePanel child, final Tab tab, int beforeIndex) {
-
-		assert (beforeIndex >= 0) && (beforeIndex <= deckPanel.getWidgetCount()) : "beforeIndex out of bounds";
-
-		// Check to see if the TabPanel already contains the Widget. If so,
-		// remove it and see if we need to shift the position to the left.
-		int idx = deckPanel.getWidgetIndex(child);
-		if (idx != -1) {
-			remove(child);
-			if (idx < beforeIndex) {
-				beforeIndex--;
-			}
-		}
-
-		this.deckPanel.insertProtected(child, beforeIndex);
-		this.tabs.add(beforeIndex, tab);
-
-		this.tabBar.insert(tab, beforeIndex);
-		tab.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(final ClickEvent event) {
-				if(!tab.isBeingDragged()) {
-					selectTab(child);
-				}
-			}
-		});
-
-		child.addStyleName(CONTENT_STYLE);
-		
-		if (this.selectedIndex == -1) {
-			selectTab(deckPanel.getWidget(0));
-		} else if (this.selectedIndex >= beforeIndex) {
-			// If we inserted before the currently selected tab, its index has
-			// just
-			// increased.
-			this.selectedIndex++;
-		}
 	}
 
 	@Override
@@ -506,6 +268,29 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		}
 	}
 
+	private void doOnSelectTab(final int selected) {
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+			@Override
+			public void execute() {
+				if (isScrollingNecessary()) {
+					Widget selectedTab = tabBar.getWidget(selected);
+					int rightOfSelectedTab = getRightOfWidget(selectedTab);
+					int leftOfSelectedTab = selectedTab.getElement().getOffsetLeft();
+					int currentLeft = parsePosition(ScrollTabLayoutPanel.this.tabBar.getElement().getStyle().getLeft());
+					if (rightOfSelectedTab > getTabBarWidth() - currentLeft) {
+						int positionWithSelectedTabVisible = getTabBarWidth() - rightOfSelectedTab;
+						scrollTo(positionWithSelectedTabVisible);
+					} else if (leftOfSelectedTab + currentLeft < 0) {
+						int positionWithSelectedTabVisible = -leftOfSelectedTab;
+						scrollTo(positionWithSelectedTabVisible);
+					}
+				}
+				checkIfScrollButtonsNecessary();
+			}
+		});
+	}
+
 	private void checkIfScrollButtonsNecessary() {
 		if (!this.showScroll) {
 			return;
@@ -544,23 +329,16 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		});
 	}
 	
-	/**
-	 * createScrollClickHandler().
-	 * 
-	 * @param diff
-	 *            Input integer
-	 * @return ClickHandler.
-	 */
 	private ClickHandler createScrollClickHandler(final int diff) {
 		return new ClickHandler() {
-
+			
 			@Override
 			public void onClick(final ClickEvent event) {
 				Widget lastTab = getLastTab();
-
+				
 				int newLeft = parsePosition(ScrollTabLayoutPanel.this.tabBar.getElement().getStyle().getLeft()) + diff;
 				int rightOfLastTab = getRightOfWidget(lastTab);
-
+				
 				// Prevent scrolling the last tab too far away form the right
 				// border,
 				// or the first tab further than the left border position
@@ -574,47 +352,20 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 			}
 		};
 	}
-
+	
 	private void updateScrollButtonsEnabled(double currentLeft) {
 		if (currentLeft >= 0) {
 			scrollLeftButton.disableButton();
 		} else {
 			scrollLeftButton.enableButton();
 		}
-
+		
 		if (getTabBarWidth() - currentLeft >= getRightOfWidget(getLastTab())) {
 			scrollRightButton.disableButton();
 		} else {
 			scrollRightButton.enableButton();
 		}
 	}
-
-	private void doOnSelectTab(final int selected) {
-		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-			@Override
-			public void execute() {
-				if (isScrollingNecessary()) {
-					Widget selectedTab = tabBar.getWidget(selected);
-					int rightOfSelectedTab = getRightOfWidget(selectedTab);
-					int leftOfSelectedTab = selectedTab.getElement().getOffsetLeft();
-					int currentLeft = parsePosition(ScrollTabLayoutPanel.this.tabBar.getElement().getStyle().getLeft());
-					if (rightOfSelectedTab > getTabBarWidth() - currentLeft) {
-						int positionWithSelectedTabVisible = getTabBarWidth() - rightOfSelectedTab;
-						scrollTo(positionWithSelectedTabVisible);
-					} else if (leftOfSelectedTab + currentLeft < 0) {
-						int positionWithSelectedTabVisible = -leftOfSelectedTab;
-						scrollTo(positionWithSelectedTabVisible);
-					}
-				}
-				checkIfScrollButtonsNecessary();
-			}
-		});
-	}
-
-	/**
-	 *
-	 */
 	private void initScrollBar() {
 		scrollBar.getElement().setId(SCROLLBAR_STYLE);
 
@@ -652,13 +403,6 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		return  getRightOfWidget(getLastTab()) > getTabBarWidth();
 	}
 
-	/**
-	 * getRightOfWidget().
-	 * 
-	 * @param widget
-	 *            Input Widget.
-	 * @return integer.
-	 */
 	private int getRightOfWidget(final Widget widget) {
 		if(widget == null){
 			return 0;
@@ -666,11 +410,6 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		return widget.getElement().getOffsetLeft() + widget.getElement().getOffsetWidth();
 	}
 
-	/**
-	 * getTabBarWidth().
-	 * 
-	 * @return Integer
-	 */
 	private int getTabBarWidth() {
 		if (this.tabBar.getElement().getParentElement() != null) {
 			return this.tabBar.getElement().getParentElement().getClientWidth();
@@ -680,11 +419,6 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		}
 	}
 
-	/**
-	 * getLastTab().
-	 * 
-	 * @return Widget.
-	 */
 	private Widget getLastTab() {
 		if (this.tabBar.getWidgetCount() == 0) {
 			return null;
@@ -692,13 +426,6 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		return this.tabBar.getWidget(this.tabBar.getWidgetCount() - 1);
 	}
 
-	/**
-	 * parsePosition().
-	 * 
-	 * @param positionString
-	 *            Input String.
-	 * @return integer.
-	 */
 	private static int parsePosition(String positionString) {
 		int position;
 		try {
@@ -716,19 +443,10 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		return position;
 	}
 
-	/**
-	 *
-	 */
 	private void resetScrollPosition() {
 		tabBarAnimation.animateTo(0, 500);
 	}
 
-	/**
-	 * scrollTo().
-	 * 
-	 * @param to
-	 *            Input integer.
-	 */
 	private void scrollTo(int to) {
 		if (to > 0) {
 			to = 0;
@@ -736,8 +454,6 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		tabBarAnimation.animateTo(to, 500);
 		updateScrollButtonsEnabled(to);
 	}
-
-	/* END OF SCROLL-RELATED PRIVATE METHODS */
 
 
 	/**
@@ -782,7 +498,7 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 
 	public void refreshHeight() {
 		if(selectedIndex != -1){
-			((AbstractTablePanel)deckPanel.getWidget(selectedIndex)).refreshHeight();
+			((ITablePanel)deckPanel.getWidget(selectedIndex)).refreshHeight();
 		}
 	}
 }

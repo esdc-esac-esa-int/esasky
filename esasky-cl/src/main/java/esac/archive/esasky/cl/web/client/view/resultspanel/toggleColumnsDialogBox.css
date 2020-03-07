@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+.toggleColumns__dialogBox{
+	display: block;
+	z-index: 10010;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.9);
+	border: 1px solid;
+	position: absolute;
+    box-sizing: border-box;
+}
+
+.toggleColumns__contentContainer{
+	overflow: auto !important;
+    pointer-events:auto;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.toggleColumns__closeButton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+}
+
+.toggleColumns__missionLabel{
+	font-size: 15px;
+	cursor: all-scroll;
+	height: 30px;
+	text-align: center;
+    box-sizing: border-box;
+    margin-right: 30px;
+    padding: 5px;}
+
+.toggleColumns__header{
+	display: inline;
+	font-weight: bold;
+}
+
+.toggleColumns__checkbox{
+	display: inline;
+}
+.toggleColumns__columnName{
+	display: inline;
+}
+.toggleColumns__columnDescription{
+	display: inline;
+}

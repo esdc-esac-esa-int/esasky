@@ -61,7 +61,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
 
@@ -116,7 +116,7 @@ public class Api {
             	 if (!selectEvent.getOverlayName().equals(EntityContext.PUBLICATIONS.toString())) {
 
                      // Selects a table row
-                     AbstractTablePanel tableContainingShape = controller.getRootPresenter().getResultsPresenter().getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
+                     ITablePanel tableContainingShape = controller.getRootPresenter().getResultsPresenter().getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
                      
                      String data = tableContainingShape.getUnfilteredRow(selectEvent.getShapeId());
                      JSONObject values = new JSONObject();
@@ -260,7 +260,7 @@ public class Api {
 	
 	public void getResultPanelData(final JavaScriptObject msg) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
-		final AbstractTablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		JSONObject callback = tablePanel.exportAsJSON();
 		if(callback.size() == 0) {
 			tablePanel.registerObserver( new AbstractTableObserver() {
@@ -287,7 +287,7 @@ public class Api {
 	}
 	
 	public void closeResultPanelTab(int index) {
-		final AbstractTablePanel tablePanel;
+		final ITablePanel tablePanel;
 		try {
 			if(index == -1) {
 				tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();

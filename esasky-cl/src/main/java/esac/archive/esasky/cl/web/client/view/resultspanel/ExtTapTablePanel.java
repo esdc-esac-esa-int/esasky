@@ -86,8 +86,8 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 	}
 	
 	@Override
-	public void insertData(List<TableRow> data) {
-		super.insertData(data);
+	public void insertData(List<TableRow> data, String url) {
+		super.insertData(data, url);
 
 		if (data.size() >= entity.getSourceLimit()) {
 			notShowingCompleteDataSetMouseOverDetector.setVisible(true);

@@ -127,7 +127,7 @@
 }
 
 .dataPanelHoverDetector{
-	overflow-x: auto;
+/* 	overflow-x: auto; */
 }
 
 .dataPanelHoverDetector, .tableAndColumnGroupHeader{

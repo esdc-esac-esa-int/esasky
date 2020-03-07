@@ -6,11 +6,13 @@ import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 
@@ -62,17 +64,34 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
 		removeAllShapes();
-
-		for(int i = 0; i < rowList.getData().size(); i++) {
-			Shape shape = shapeBuilder.buildShape(i, rowList);
-			if( shape instanceof SourceShape) {
-				sourceShapes.add(shape);
-				allShapesIndexes.add(new Integer[] {sourceShapes.size()-1, -1});
-			}else {
-				footPrintshapes.add(shape);
-				allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
+		
+		if(Modules.useTabulator) {
+			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows", null);
+			GeneralJavaScriptObject [] rowArray = GeneralJavaScriptObject.convertToArray(rows);
+			
+			
+			for(int i = 0; i < rowArray.length; i++) {
+				Shape shape = shapeBuilder.buildShape(i, null, rowArray[i]);
+				if( shape instanceof SourceShape) {
+					sourceShapes.add(shape);
+					allShapesIndexes.add(new Integer[] {sourceShapes.size()-1, -1});
+				} else {
+					footPrintshapes.add(shape);
+					allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
+				}
+			}
+		} else {
+			for(int i = 0; i < rowList.getData().size(); i++) {
+				Shape shape = shapeBuilder.buildShape(i, rowList, null);
+				if( shape instanceof SourceShape) {
+					sourceShapes.add(shape);
+					allShapesIndexes.add(new Integer[] {sourceShapes.size()-1, -1});
+				} else {
+					footPrintshapes.add(shape);
+					allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
+				}
 			}
 		}
 		

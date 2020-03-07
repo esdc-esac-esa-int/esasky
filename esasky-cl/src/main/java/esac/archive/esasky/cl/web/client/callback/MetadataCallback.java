@@ -16,12 +16,12 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class MetadataCallback extends JsonRequestCallback {
 
 	private GeneralEntityInterface entity;
-	private AbstractTablePanel tablePanel;
+	private ITablePanel tablePanel;
 	private String adql;
 	private static HashMap<String, Long> latestUpdates = new HashMap<String, Long>();
 	private long timecall;
@@ -32,13 +32,13 @@ public class MetadataCallback extends JsonRequestCallback {
 		public void onComplete();
 	}
 
-	public MetadataCallback(AbstractTablePanel tablePanel, String adql,
+	public MetadataCallback(ITablePanel tablePanel, String adql,
 			String progressIndicatorMessage, OnComplete onComplete) {
 		this(tablePanel, adql, progressIndicatorMessage);
 		this.onComplete = onComplete;
 	}
 	
-	public MetadataCallback(AbstractTablePanel tablePanel, String adql,
+	public MetadataCallback(ITablePanel tablePanel, String adql,
 			String progressIndicatorMessage) {
 		super(progressIndicatorMessage, adql);
 		this.entity = tablePanel.getEntity();
@@ -67,7 +67,7 @@ public class MetadataCallback extends JsonRequestCallback {
 				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 				TapRowList rowList = mapper.read(response.getText());
 
-				entity.addShapes(rowList);
+				entity.addShapes(rowList, null);
 				entity.setMetadata(rowList);
 				
 				if(entity.getContext() == EntityContext.EXT_TAP) {
@@ -88,7 +88,7 @@ public class MetadataCallback extends JsonRequestCallback {
 				long receivedTime = System.currentTimeMillis();
 				Log.debug("Receive time " + Long.toString(receivedTime - startTime ));
 				
-				tablePanel.insertData(tabRowList);
+				tablePanel.insertData(tabRowList, null);
 				Log.debug("Insert time " + Long.toString(System.currentTimeMillis() - receivedTime ));
 				
 				// used by download CSV, VOTABLE

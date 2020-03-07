@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter;
@@ -55,9 +56,6 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 		initView();
 	}
 
-	/**
-	 * Initialize widget view.
-	 */
 	private void initView() {
 		Log.debug("[ResultsPanel] Initializing ResulsPanel...");
 
@@ -89,7 +87,6 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 			}
 		});
 		ensureDataPanelCanFit();
-		
 	}
 	
 	private void ensureDataPanelCanFit() {
@@ -103,32 +100,23 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	}
 
 	@Override
-	public final LayoutPanel getResultsLP() {
-		return resultsLP;
-	}
-
-	/**
-	 * getTabPanel().
-	 * 
-	 * @return CloseableTabLayoutPanel
-	 */
-	@Override
 	public final CloseableTabLayoutPanel getTabPanel() {
 		return tabPanel;
 	}
 
 	@Override
-    public final AbstractTablePanel addResultsTab(final GeneralEntityInterface entity, final String helpTitle, final String helpDescription) {
-
-//        openDataPanel();
-        
-        AbstractTablePanel tablePanel = entity.createTablePanel();
-        
-        Log.debug("[ResultsPanel/addResultsTab()] " + tablePanel.getClass().getCanonicalName());
-
-        tabPanel.addTab(tablePanel, helpTitle, helpDescription);
-
-        return tablePanel;
+    public final ITablePanel addResultsTab(final GeneralEntityInterface entity, final String helpTitle, final String helpDescription) {
+		if(Modules.useTabulator) {
+    		TabulatorTablePanel panel = new TabulatorTablePanel("Test", entity.getEsaSkyUniqId(), entity);
+    		Log.debug("[ResultsPanel/addResultsTab()] " + panel.getClass().getCanonicalName());
+    		tabPanel.addTab(panel, helpTitle, helpDescription);
+    		return panel;
+		} else {
+			AbstractTablePanel tablePanel = (AbstractTablePanel) entity.createTablePanel();
+			Log.debug("[ResultsPanel/addResultsTab()] " + tablePanel.getClass().getCanonicalName());
+			tabPanel.addTab(tablePanel, helpTitle, helpDescription);
+			return tablePanel;
+		}
     }
 
 	@Override
@@ -139,16 +127,9 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	    }
     }
 	
-	/**
-	 * getTabFromTableId().
-	 * 
-	 * @param id
-	 *            EsaSkyUniqID
-	 * @return Widget
-	 */
 	@Override
 	public final Widget getTabFromTableId(final String id) {
-		return tabPanel.getAbstractTablePanelFromId(id);
+		return tabPanel.getAbstractTablePanelFromId(id).getWidget();
 	}
 	
 	public static final void toggleOpenCloseDataPanel(){

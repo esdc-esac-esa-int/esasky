@@ -257,7 +257,7 @@ public class PublicationPanelPresenter {
 						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 						TapRowList rowList = mapper.read(response.getText());
 						entity.setMetadata(rowList);
-						entity.addShapes(rowList);
+						entity.addShapes(rowList, null);
 						numberOfShownSources = rowList.getData().size();
 						lastSuccessfulTimecall = timecall;
 			    		if(timecall == lastTimecall) {

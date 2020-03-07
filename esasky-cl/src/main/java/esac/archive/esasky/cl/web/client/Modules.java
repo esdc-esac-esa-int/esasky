@@ -7,6 +7,7 @@ public class Modules {
     
     public static boolean proposalModule = true;
     public static boolean improvedDownload = true;
+    public static boolean useTabulator = false;
     public static boolean bannersOnAllSides = false;
     public static boolean internationalization = true;
     public static boolean ssoModule = true;

@@ -12,16 +12,16 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.converter.TapToMmiDataConverter;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class PublicationsBySourceCallback extends JsonRequestCallback {
 
     private PublicationsBySourceEntity entity;
-    private AbstractTablePanel tablePanel;
+    private ITablePanel tablePanel;
     private static HashMap<String, Long> latestUpdates = new HashMap<String, Long>();
     private long timecall;
     
-    public PublicationsBySourceCallback(PublicationsBySourceEntity entity, AbstractTablePanel tablePanel,
+    public PublicationsBySourceCallback(PublicationsBySourceEntity entity, ITablePanel tablePanel,
             String progressIndicatorMessage, String url) {
         super(progressIndicatorMessage, url);
         this.entity = entity;
@@ -46,6 +46,6 @@ public class PublicationsBySourceCallback extends JsonRequestCallback {
 
         List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList, entity.getDescriptor());
         entity.setMetadata(rowList);
-        tablePanel.insertData(tabRowList);
+        tablePanel.insertData(tabRowList, null);
     }
 }

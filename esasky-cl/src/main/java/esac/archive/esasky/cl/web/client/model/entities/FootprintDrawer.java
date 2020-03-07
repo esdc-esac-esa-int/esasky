@@ -10,6 +10,7 @@ import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class FootprintDrawer implements IShapeDrawer{
 
@@ -49,10 +50,10 @@ public class FootprintDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
         removeAllShapes();
         for (int i = 0; i < rowList.getData().size(); i++) {
-        	Shape polygon = shapeBuilder.buildShape(i, rowList);
+        	Shape polygon = shapeBuilder.buildShape(i, rowList, null);
         	
         	AladinLiteWrapper.getAladinLite().addFootprintToOverlay(overlay, polygon.getJsObject());
         	shapes.add(i, polygon);

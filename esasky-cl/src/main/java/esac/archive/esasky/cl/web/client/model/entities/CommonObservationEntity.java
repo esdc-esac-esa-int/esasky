@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
@@ -34,6 +35,8 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public abstract class CommonObservationEntity implements GeneralEntityInterface {
 
@@ -43,14 +46,18 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
     	
     	@Override
-    	public Shape buildShape(int rowId, TapRowList rowList) {
-    		PolygonShape polygon = new PolygonShape();
-    		polygon.setShapeId(rowId);
-    		polygon.setStcs((String) getTAPDataByTAPName(rowList, rowId, descriptor
-    				.getTapSTCSColumn()));
-    		polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
-    				polygon.getStcs(), rowId));
-    		return polygon;
+    	public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+    		if(Modules.useTabulator) {
+    			return null;
+    		} else {
+    			PolygonShape polygon = new PolygonShape();
+    			polygon.setShapeId(rowId);
+    			polygon.setStcs((String) getTAPDataByTAPName(rowList, rowId, descriptor
+    					.getTapSTCSColumn()));
+    			polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
+    					polygon.getStcs(), rowId));
+    			return polygon;
+    		}
     	}
     };
     
@@ -172,8 +179,8 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
-		defaultEntity.addShapes(rowList);
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+		defaultEntity.addShapes(rowList, javaScriptObject);
 	}
 	
 	@Override
@@ -322,7 +329,7 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	}
 	
 	@Override
-    public void fetchData(AbstractTablePanel tablePanel) {
+    public void fetchData(ITablePanel tablePanel) {
 		defaultEntity.fetchData(tablePanel);
 	}
 	
@@ -378,12 +385,12 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	}
 	
 	@Override 
-	public void refreshData(AbstractTablePanel tablePanel) {
+	public void refreshData(ITablePanel tablePanel) {
 		fetchData(tablePanel);
 	}
 	
 	@Override
-	public void coneSearch(AbstractTablePanel tablePanel, SkyViewPosition conePos) {
+	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
 		defaultEntity.coneSearch(tablePanel, conePos);
 		
 	}

@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -46,6 +45,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 
 /**
@@ -53,8 +53,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
  */
 public class CloseableTabLayoutPanel extends Composite {	
 	
-    /** Default filler width. */
-    private static final String DEFAULT_FILLER_WIDTH = "6px";
 
     private final Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -73,10 +71,6 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton sendButton;
     private EsaSkyButton saveButton;
 
-    /**
-     * Public resources interface.
-     * @author ESDC team
-     */
     public interface Resources extends ClientBundle {
 
         @Source("up_arrow_outline.png")
@@ -104,12 +98,6 @@ public class CloseableTabLayoutPanel extends Composite {
         CssResource style();
     }
     
-    /**
-     * CloseableTabLayoutPanel().
-     * @param height Input double
-     * @param unit Input Unit
-     * @param showScroll Input boolean.
-     */
     public CloseableTabLayoutPanel(final double height, final Unit unit, final boolean showScroll) {
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -169,7 +157,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 
                 updateStyleOnTab(index);
                 
-                AbstractTablePanel tabPanel = (AbstractTablePanel)CloseableTabLayoutPanel.this.getWidget(index);
+                ITablePanel tabPanel = CloseableTabLayoutPanel.this.getWidget(index);
                 final GeneralEntityInterface entity = tabPanel.getEntity();
                 
                 ensureCorrectRelatedInformationVisibilty(entity);
@@ -341,7 +329,7 @@ public class CloseableTabLayoutPanel extends Composite {
 
             @Override
             public void onClick(final ClickEvent arg0) {
-                AbstractTablePanel tabPanel = getSelectedWidget();
+                ITablePanel tabPanel = getSelectedWidget();
                 tabPanel.updateData();
                 
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Refresh, tabPanel.getFullId());
@@ -370,15 +358,15 @@ public class CloseableTabLayoutPanel extends Composite {
         return styleButton;
     }
     
-    public void selectTab(AbstractTablePanel tablePanel) {
-    	tabLayout.selectTab(tablePanel);
+    public void selectTab(ITablePanel tablePanel) {
+    	tabLayout.selectTab(tablePanel.getWidget());
     }
     
-    public final void addTab(final AbstractTablePanel tabPanel,  final String helpTitle, final String helpDescription) {
+    public final void addTab(final ITablePanel tabPanel,  final String helpTitle, final String helpDescription) {
         addTab(new MissionTabButtons(helpTitle, helpDescription, tabPanel.getEntity()), tabPanel);
     }
     
-    private final void addTab(final MissionTabButtons tab, final AbstractTablePanel tabPanel) {
+    private final void addTab(final MissionTabButtons tab, final ITablePanel tabPanel) {
 
         tab.setCloseClickHandler(new ClickHandler() {
 
@@ -416,8 +404,8 @@ public class CloseableTabLayoutPanel extends Composite {
 				ensureCorrectButtonClickability();
 			}
         });
-        this.tabLayout.add(tabPanel, tab);
-	    updateStyleOnTab(getWidgetIndex(tabPanel));
+        this.tabLayout.add(tabPanel.getWidget(), tab);
+	    updateStyleOnTab(getWidgetIndex(tabPanel.getWidget()));
 
         
         GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabOpened, tabPanel.getFullId());
@@ -434,7 +422,7 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     private void ensureCorrectButtonClickability() {
-        AbstractTablePanel tabPanel = ((AbstractTablePanel)tabLayout.getWidget(getSelectedTabIndex()));
+        ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
         if(Modules.improvedDownload){
 	        sendButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
 	        saveButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
@@ -444,48 +432,26 @@ public class CloseableTabLayoutPanel extends Composite {
         }
     }
 
-    /**
-     * getSelectedTabIndex().
-     * @return integer
-     */
     public final int getSelectedTabIndex() {
         return this.tabLayout.getSelectedIndex();
     }
     
-    /**
-     * getSelectedWidget().
-     * @return AbstractTablePanel
-     */
-    public AbstractTablePanel getSelectedWidget() {
+    public ITablePanel getSelectedWidget() {
         final int selectedIdx = getSelectedTabIndex();
         if(selectedIdx != -1) {
-           return ((AbstractTablePanel)tabLayout.getWidget(selectedIdx));
+           return tabLayout.getWidget(selectedIdx);
         }
         return null;
     }
     
-    /**
-     * getWidget().
-     * @param index Input integer
-     * @return Widget
-     */
-    public final AbstractTablePanel getWidget(final int index) {
-        return this.tabLayout.getWidget(index);
+    public final ITablePanel getWidget(final int index) {
+        return (ITablePanel)this.tabLayout.getWidget(index);
     }
 
-    /**
-     * getWidgetIndex().
-     * @param w Input Widget.
-     * @return integer
-     */
-    public final int getWidgetIndex(final AbstractTablePanel w) {
+    public final int getWidgetIndex(final Widget w) {
         return this.tabLayout.getWidgetIndex(w);
     }
 
-    /**
-     * removeTab().
-     * @param tab Input Tab.
-     */
     public final void removeTab(final MissionTabButtons tab) {
         int index = this.tabs.indexOf(tab);
 
@@ -499,41 +465,22 @@ public class CloseableTabLayoutPanel extends Composite {
         }
     }
 
-    /**
-     * getIdFromTab().
-     * @param w Input Widget
-     * @return String
-     */
     public final String getIdFromTab(final Widget w) {
         return this.tabWidgetIds.get(w);
     }
     
-    /**
-     * getTabFromId().
-     * @param id Input String
-     * @return Widget.
-     */
     public final MissionTabButtons getTabFromId(final String id) {
         return this.tabWidgetIds.inverse().get(id);
     }
 
-    /**
-     * getTabFromId().
-     * @param id Input String
-     * @return Widget.
-     */
-    public final AbstractTablePanel getAbstractTablePanelFromId(final String id) {
+    public final ITablePanel getAbstractTablePanelFromId(final String id) {
     	MissionTabButtons tab = getTabFromId(id);
         if (tab != null) {
-            return (AbstractTablePanel)this.tabLayout.getWidget(this.tabs.indexOf(tab));
+            return this.tabLayout.getWidget(this.tabs.indexOf(tab));
         }
         return null;
     }
 
-    /**
-     * updateStyleOnTab().
-     * @param index input int
-     */
     private void updateStyleOnTab(final int index) {
         // remove style from previous selection (if any)
         for (MissionTabButtons tab : this.tabs) {
@@ -546,30 +493,8 @@ public class CloseableTabLayoutPanel extends Composite {
         }
     }
 
-    /**
-     * getTabWidgetIds.
-     * @return BiMap<Tab, String>
-     */
     public final BiMap<MissionTabButtons, String> getTabWidgetIds() {
         return tabWidgetIds;
-    }
-
-    /**
-     * getFillerPanel().
-     * @param width Input String with the width of the filler panel.
-     * @return SimplePanel
-     */
-    public final SimplePanel getFillerPanel(final String width) {
-
-        SimplePanel auxPanel = new SimplePanel();
-        auxPanel.getElement().setId("few");
-        if ((width != null) && (width != "")) {
-            auxPanel.setWidth(width);
-        } else {
-            auxPanel.setWidth(DEFAULT_FILLER_WIDTH);
-        }
-        return auxPanel;
-
     }
 
 	public void refreshHeight() {
@@ -584,7 +509,7 @@ public class CloseableTabLayoutPanel extends Composite {
 	}
 	
 	private void fireShowStylePanel(String tabId) {
-		AbstractTablePanel tablePanel = getAbstractTablePanelFromId(tabId);
+		ITablePanel tablePanel = getAbstractTablePanelFromId(tabId);
 		tablePanel.showStylePanel(styleButton.getAbsoluteLeft() + styleButton.getOffsetWidth() + 2, 
                 styleButton.getAbsoluteTop());
 	}

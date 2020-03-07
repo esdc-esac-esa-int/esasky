@@ -11,29 +11,28 @@ import com.google.gwt.http.client.Response;
 import esac.archive.esasky.cl.web.client.model.DynamicCountObject;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class GetMissionDataCountRequestCallback extends JsonRequestCallback {
     
     private GeneralEntityInterface entity;
-    private AbstractTablePanel tablePanel;
+    private ITablePanel tablePanel;
     private static HashMap<String, Long> latestUpdates = new HashMap<String, Long>();
     private long timecall;
 	private OnComplete onComplete;
-
 
 	public interface OnComplete{
 		public void onComplete();
 	}
     
-	public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, AbstractTablePanel tablePanel,
+	public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, ITablePanel tablePanel,
 			String progressIndicatorMessage, String url, OnComplete onComplete) {
 		
 		this(entity, tablePanel, progressIndicatorMessage, url);
 		this.onComplete = onComplete;
 	}
 	
-	public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, AbstractTablePanel tablePanel,
+	public GetMissionDataCountRequestCallback(GeneralEntityInterface entity, ITablePanel tablePanel,
             String progressIndicatorMessage, String url) {
         super(progressIndicatorMessage, url);
         this.entity = entity;

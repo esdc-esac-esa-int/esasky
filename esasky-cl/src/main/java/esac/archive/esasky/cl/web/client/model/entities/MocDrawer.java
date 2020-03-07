@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class MocDrawer implements IShapeDrawer{
@@ -49,7 +50,7 @@ public class MocDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList) {
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
 		removeAllShapes();
 
 		int healpixOrderIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_ORDER);
