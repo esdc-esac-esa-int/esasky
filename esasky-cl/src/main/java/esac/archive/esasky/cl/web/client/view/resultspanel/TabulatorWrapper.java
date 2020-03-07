@@ -77,7 +77,7 @@ public class TabulatorWrapper{
 		        return response.data;
 		    },
 		    dataLoaded:function(data){
-		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::tabulatorCallback()();
+		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    },
 		    dataLoading:function(data){
 		    	refinedColumnDef[0] = {formatter:"rowSelection", titleFormatter:"rowSelection"};
