@@ -15,6 +15,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.SelectableImage;
@@ -194,23 +195,29 @@ public class DefaultEntity implements GeneralEntityInterface{
         	
         	@Override
         	public void execute() {
-        		clearAll();
-        		final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
-        		// Get Query in ADQL format.
-        		final String adql = getMetadataAdql();
-        		
-        		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-        		
-        		Log.debug(debugPrefix + "Query [" + url + "]");
-        		
-        		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        		try {
-        			builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
-        					TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
+        		if(Modules.useTabulator) {
+            		drawer.removeAllShapes();
+        			clearAll();
+        			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(getMetadataAdql()), EsaSkyConstants.JSON));
+        		} else {
+        			clearAll();
+        			final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
+        			// Get Query in ADQL format.
+        			final String adql = getMetadataAdql();
         			
-        		} catch (RequestException e) {
-        			Log.error(e.getMessage());
-        			Log.error(debugPrefix + "Error fetching JSON data from server");
+        			String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+        			
+        			Log.debug(debugPrefix + "Query [" + url + "]");
+        			
+        			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        			try {
+        				builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
+        						TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
+        				
+        			} catch (RequestException e) {
+        				Log.error(e.getMessage());
+        				Log.error(debugPrefix + "Error fetching JSON data from server");
+        			}
         		}
         	}
         });

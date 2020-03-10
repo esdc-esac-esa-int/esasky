@@ -22,6 +22,7 @@ import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.entities.CatalogEntity;
+import esac.archive.esasky.cl.web.client.model.entities.CombinedSourceFootprintDrawer;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -29,7 +30,6 @@ import esac.archive.esasky.cl.web.client.model.entities.ObservationEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
-import esac.archive.esasky.cl.web.client.model.entities.SourceDrawer;
 import esac.archive.esasky.cl.web.client.model.entities.SpectraEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SurveyEntity;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -159,7 +159,7 @@ public class EntityRepository {
 		}
 
 		JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
-				esaSkyUniqID, SourceDrawer.DEFAULT_SOURCE_SIZE, catDescriptor.getHistoColor(), catDetails);
+				esaSkyUniqID, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, catDescriptor.getHistoColor(), catDetails);
 		CatalogEntity newCatEntity = null;
 		newCatEntity = new CatalogEntity(catDescriptor,
 				descriptorRepo.getCatDescriptors().getCountStatus(), catalogue,

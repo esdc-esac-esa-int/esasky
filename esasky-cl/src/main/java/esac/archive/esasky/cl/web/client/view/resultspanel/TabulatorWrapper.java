@@ -79,7 +79,14 @@ public class TabulatorWrapper{
 					var row = {};
 					row['id'] = i;
 					for(var j = 0; j < columnDef.length; j++){
-						row[columnDef[j].name] = response.data[i][j];
+		    			if(columnDef[j].datatype === "DOUBLE"){
+							row[columnDef[j].name] = parseFloat(response.data[i][j]);
+			    			if(isNaN(row[columnDef[j].name])){
+								row[columnDef[j].name] = undefined;
+			    			}
+		    			} else {
+							row[columnDef[j].name] = response.data[i][j];
+		    			}
 					}
 					data[i] = row;
 				}		
@@ -93,6 +100,9 @@ public class TabulatorWrapper{
 		    	refinedColumnDef[0] = {formatter:"rowSelection", titleFormatter:"rowSelection"};
 		    	for(var i = 0; i < columnDef.length; i++){
 		    		var sorter = "string";
+		    		if(columnDef[i].datatype === "DOUBLE"){
+		    			sorter = "number";
+		    		}
 		    		refinedColumnDef[i + 1] = {title:columnDef[i].name, 
 		    			field:columnDef[i].name,
 		    			headerTooltip:columnDef[i].description,
