@@ -46,10 +46,10 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
 
 public class ExtTapEntity implements GeneralEntityInterface {
 
@@ -87,7 +87,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 				descriptor.getHistoColor());
 		
 		JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalog(
-				esaSkyUniqId, SourceDrawer.DEFAULT_SOURCE_SIZE, descriptor.getHistoColor());
+				esaSkyUniqId, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, descriptor.getHistoColor());
 		
 		combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder);
 		drawer = combinedDrawer;
@@ -528,8 +528,12 @@ public class ExtTapEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public AbstractTablePanel createTablePanel() {
-		return new ExtTapTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+	public ITablePanel createTablePanel() {
+		if(Modules.useTabulator) {
+			return new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+		} else {
+			return new ExtTapTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+		}
 	}
 
 	@Override

@@ -73,8 +73,18 @@ public class TabulatorWrapper{
 		 	ajaxURL:url,
 		    ajaxResponse:function(url, params, response){
 				columnDef = response.metadata;
-				var data = response.data;
-		        return response.data;
+				
+				var data = [];
+				for(var i = 0; i < response.data.length; i++){
+					var row = {};
+					row['id'] = i;
+					for(var j = 0; j < columnDef.length; j++){
+						row[columnDef[j].name] = response.data[i][j];
+					}
+					data[i] = row;
+				}		
+				
+		        return data;
 		    },
 		    dataLoaded:function(data){
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();

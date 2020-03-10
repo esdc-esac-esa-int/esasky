@@ -264,16 +264,9 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     	
     	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
     	
-    	if(Modules.useTabulator) {
-    		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
-    		
-    		entity.fetchData(panel);
-    		
-    	} else {
-    		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
-    		
-    		entity.fetchData(panel);
-    	}
+		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
+		
+		entity.fetchData(panel);
     }
     
     protected final void getMetadataAndFootprints(final GeneralEntityInterface entity, final boolean showProgress,
