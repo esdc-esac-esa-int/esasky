@@ -94,7 +94,7 @@ public class SurveyEntity implements GeneralEntityInterface{
 		catDetails.put("shape", SourceShapeType.CROSS.getName());
 		overlay = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
 				esaSkyUniqId, 20, descriptor.getHistoColor(), catDetails);
-    	IShapeDrawer drawer = new SourceDrawer(overlay, shapeBuilder);
+    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, null, shapeBuilder);
         defaultEntity = new DefaultEntity(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
                 context, drawer, TAPMetadataSurveyService.getInstance());
     }

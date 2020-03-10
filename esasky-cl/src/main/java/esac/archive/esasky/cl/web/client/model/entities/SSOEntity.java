@@ -37,7 +37,7 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	private String ssoName = null;
 	private ESASkySSOObjType ssoType;
 	private String ssoOrbitColor = "#FF0000";
-	private double ssoOrbitLineWidth = FootprintDrawer.DEFAULT_LINEWIDTH;
+	private double ssoOrbitLineWidth = CombinedSourceFootprintDrawer.DEFAULT_LINEWIDTH;
 
 	private final Resources resources = GWT.create(Resources.class);
 
@@ -172,12 +172,12 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	}
 
 	public void setSsoOrbitLineRatio(double ratio) {
-	    setSsoOrbitLineWidth((int)(FootprintDrawer.MAX_LINEWIDTH * ratio));
+	    setSsoOrbitLineWidth((int)(CombinedSourceFootprintDrawer.MAX_LINEWIDTH * ratio));
 	    AladinLiteWrapper.getAladinLite().setOverlayLineWidth(getOrbitPolyline(), (int) ssoOrbitLineWidth);
 	}
 
 	public double getSsoOrbitLineRatio(){
-        return (double)ssoOrbitLineWidth / (double)FootprintDrawer.MAX_LINEWIDTH;
+        return (double)ssoOrbitLineWidth / (double)CombinedSourceFootprintDrawer.MAX_LINEWIDTH;
 	}
 
 	public int getSsoOrbitLineWidth(){
