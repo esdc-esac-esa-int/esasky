@@ -28,10 +28,10 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SurveyConstant;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SurveyTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
 
 public class SurveyEntity implements GeneralEntityInterface{
 
@@ -55,30 +55,32 @@ public class SurveyEntity implements GeneralEntityInterface{
     	
     	@Override
     	public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+    		SourceShape mySource = new SourceShape();
+    		mySource.setShapeId(rowId);
+    		Map<String, String> details = new HashMap<String, String>();
     		if(Modules.useTabulator) {
-				return null; //TODO
+    			mySource.setRa(row.invokeFunction("getData", null).getStringProperty(EsaSkyConstants.OBS_TAP_RA));
+    			mySource.setDec(row.invokeFunction("getData", null).getStringProperty(EsaSkyConstants.OBS_TAP_DEC));
+    			details.put(EsaSkyWebConstants.SOURCE_TYPE,
+    					EsaSkyWebConstants.SourceType.SURVEY.toString());
+    			details.put(SurveyConstant.SURVEY_NAME, row.invokeFunction("getData", null).getStringProperty(EsaSkyConstants.OBS_TAP_NAME));
 			} else {
-	            SourceShape mySource = new SourceShape();
-	            mySource.setShapeId(rowId);
 	            mySource.setDec((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_DEC))
 	                    .toString());
 	            mySource.setRa((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_RA))
 	                    .toString());
-	
-	            Map<String, String> details = new HashMap<String, String>();
-	
 	            details.put(EsaSkyWebConstants.SOURCE_TYPE,
 	                    EsaSkyWebConstants.SourceType.SURVEY.toString());
 	            details.put(SurveyConstant.SURVEY_NAME, (getTAPDataByTAPName(rowList, rowId,
 	                    EsaSkyConstants.OBS_TAP_NAME)).toString());
-	            details.put(SurveyConstant.CATALOGE_NAME, getEsaSkyUniqId());
-	            details.put(SurveyConstant.IDX, Integer.toString(rowId));
-	
-	            mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
-	                    mySource.getRa(), mySource.getDec(), details, rowId));
-	
-	            return mySource;
 			}
+    		details.put(SurveyConstant.CATALOGE_NAME, getEsaSkyUniqId());
+    		details.put(SurveyConstant.IDX, Integer.toString(rowId));
+    		
+    		mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
+    				mySource.getRa(), mySource.getDec(), details, rowId));
+    		
+    		return mySource;
     	}
     };
     
@@ -94,7 +96,7 @@ public class SurveyEntity implements GeneralEntityInterface{
 		catDetails.put("shape", SourceShapeType.CROSS.getName());
 		overlay = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
 				esaSkyUniqId, 20, descriptor.getHistoColor(), catDetails);
-    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, null, shapeBuilder);
+    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, overlay, shapeBuilder);
         defaultEntity = new DefaultEntity(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
                 context, drawer, TAPMetadataSurveyService.getInstance());
     }
@@ -125,8 +127,12 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public AbstractTablePanel createTablePanel() {
-		return new SurveyTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+	public ITablePanel createTablePanel() {
+		if(Modules.useTabulator) {
+			return new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+		} else {
+			return new SurveyTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+		}
 	}
 
 	@Override
