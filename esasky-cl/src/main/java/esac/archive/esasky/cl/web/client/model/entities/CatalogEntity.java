@@ -349,8 +349,6 @@ public class CatalogEntity implements GeneralEntityInterface{
 			SourceShape mySource = new SourceShape();
 	        mySource.setShapeId(shapeId);
 	
-//	        Double ra = Double.parseDouble(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getPolygonRaTapColumn()));
-//	        Double dec = Double.parseDouble(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getPolygonDecTapColumn()));
 	        Double ra = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPolygonRaTapColumn());
 	        Double dec = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPolygonDecTapColumn());
 	        mySource.setDec(dec.toString());
