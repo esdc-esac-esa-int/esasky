@@ -128,6 +128,7 @@ public class AllSkyPresenter {
 				if ((obj != null)
 						&& (obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.CATALOGUE.toString())
 								|| obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.MULTITARGET.toString())
+								|| obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.SURVEY.toString())
 								|| obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PLANNING.toString())
 								)
 						){
