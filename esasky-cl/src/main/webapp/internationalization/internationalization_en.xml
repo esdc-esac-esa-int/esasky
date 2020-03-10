@@ -1637,10 +1637,10 @@
 		Use this panel for customizing the style of the results
 	</text>
 	<text key="stylePanel_removeAvgCheckBox">
-		Substract average PM
+		Subtract average PM
 	</text>
 	<text key="stylePanel_removeMedianCheckBox">
-		Substract median PM
+		Subtract median PM
 	</text>
 
 	<!-- catalogString -->
