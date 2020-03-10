@@ -222,7 +222,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     			defaultEntity.setDrawer(drawer);
     			
     			clearAll();
-    			tablePanel.insertData(null, TAPUtils.getExtTAPQueryForTabulator(URL.encodeQueryString(getMetadataAdql()), getDescriptor()));
+    			tablePanel.insertData(null, TAPUtils.getExtTAPQuery(URL.encodeQueryString(getMetadataAdql()), getDescriptor()));
     		}
     		
     	} else {
