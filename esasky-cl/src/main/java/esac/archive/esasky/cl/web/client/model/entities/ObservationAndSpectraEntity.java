@@ -23,10 +23,10 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.CommonObservationsTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
 
 public abstract class ObservationAndSpectraEntity extends CommonObservationEntity {
 
@@ -36,14 +36,14 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 
 		@Override
 		public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+			PolygonShape shape = new PolygonShape();
 			if(Modules.useTabulator) {
-				return null; //TODO
+				shape.setStcs(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getMocSTCSColumn()));
 			} else {
-				PolygonShape shape = new PolygonShape();
 		    	shape.setStcs((String)getTAPDataByTAPName(rowList, rowId, descriptor.getMocSTCSColumn()));
-				shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
-				return shape;
 			}
+			shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
+			return shape;
 		}
 	}
     
@@ -128,7 +128,11 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     }
 
 	@Override
-	public AbstractTablePanel createTablePanel() {
-		return new CommonObservationsTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+	public ITablePanel createTablePanel() {
+		if(Modules.useTabulator) {
+			return new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+		} else {
+			return new CommonObservationsTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+		}
 	}
 }

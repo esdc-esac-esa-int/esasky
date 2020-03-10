@@ -34,7 +34,6 @@ import esac.archive.esasky.cl.web.client.utility.UncachedRequestBuilder;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
@@ -47,17 +46,17 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     	
     	@Override
     	public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+    		PolygonShape polygon = new PolygonShape();
+    		polygon.setShapeId(rowId);
     		if(Modules.useTabulator) {
-    			return null;
+    			polygon.setStcs(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getTapSTCSColumn()));
     		} else {
-    			PolygonShape polygon = new PolygonShape();
-    			polygon.setShapeId(rowId);
     			polygon.setStcs((String) getTAPDataByTAPName(rowList, rowId, descriptor
     					.getTapSTCSColumn()));
-    			polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
-    					polygon.getStcs(), rowId));
-    			return polygon;
     		}
+    		polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
+    				polygon.getStcs(), rowId));
+    		return polygon;
     	}
     };
     
@@ -374,7 +373,7 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	}
 
 	@Override
-	public AbstractTablePanel createTablePanel() {
+	public ITablePanel createTablePanel() {
 		return defaultEntity.createTablePanel();
 	}
 

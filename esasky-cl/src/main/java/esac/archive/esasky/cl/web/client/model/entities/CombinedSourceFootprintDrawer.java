@@ -71,7 +71,6 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows", null);
 			GeneralJavaScriptObject [] rowArray = GeneralJavaScriptObject.convertToArray(rows);
 			
-			
 			for(int i = 0; i < rowArray.length; i++) {
 				Shape shape = shapeBuilder.buildShape(i, null, rowArray[i]);
 				if( shape instanceof SourceShape) {
