@@ -96,4 +96,5 @@ public interface ITablePanel {
 	public void updateData();
 	
 	public Widget getWidget();
+	public void registerClosingObserver(ClosingObserver closingObserver);
 }

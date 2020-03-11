@@ -328,6 +328,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 			stylePanel.removeFromParent();
 		}
 		getEntity().clearAll();
+		notifyClosingObservers();
 	}
 
 	public boolean hasBeenClosed() {
@@ -642,5 +643,17 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private LinkedList<ClosingObserver> closingObservers = new LinkedList<ClosingObserver>();
+    
+    public void registerClosingObserver(ClosingObserver observer) {
+    	closingObservers.add(observer);
+    }
+    
+    private void notifyClosingObservers() {
+ 	   for(ClosingObserver observer : closingObservers) {
+ 		   observer.onClose();
+ 	   }
+    }
 
 }
