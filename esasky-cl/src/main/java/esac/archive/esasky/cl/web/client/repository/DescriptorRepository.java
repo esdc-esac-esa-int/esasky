@@ -284,7 +284,8 @@ public class DescriptorRepository {
 		descriptor.setResponseFormat("VOTable");
 		descriptor.setInBackend(false);
 		
-		adql = adql.toUpperCase();
+		adql = adql.replace("from", "FROM");
+		adql = adql.replace("where", "WHERE");
 		String[] whereSplit = adql.split("WHERE");
 		if(whereSplit.length > 1) {
 			descriptor.setWhereADQL(whereSplit[1]);
