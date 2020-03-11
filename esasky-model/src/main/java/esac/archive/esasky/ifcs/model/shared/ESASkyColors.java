@@ -6,7 +6,7 @@ public class ESASkyColors {
 				new Color("#1965B0", 8), new Color("#437DBF", 7), new Color("#6195CF", 6.8), new Color("#7BAFDE", 6.5),
 				new Color("#4EB265", 6.3), new Color("#90C987", 6.2), new Color("#CAE0AB", 6.0), new Color("#F7F056", 5.66),
 				new Color("#F7CB45", 5.33), new Color("#F4A736", 5), new Color("#EE8026", 4.5), new Color("#E65518", 4), 
-				new Color("#DC050C", 3.5), new Color("#A5170E", 3), new Color("#72190E", 2), new Color("#42150A", 1), new Color("#777777", 0)};
+				new Color("#DC050C", 3.0), new Color("#A5170E", 2), new Color("#72190E", 1), new Color("#777777", 0)};
 	
 	//This will extract the starting colorIndex from the floored -Log10 of the wavelength.
 	//Ie UV with log(wl) @ ~- 7 would start at wavelengthIndex[7] 
