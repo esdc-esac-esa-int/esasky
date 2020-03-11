@@ -2,7 +2,7 @@ package esac.archive.esasky.ifcs.model.shared;
 
 public enum ColumnType {
     DATALINK("datalink"), LINK("link"), LINKLIST("linklist"), STRING("string"), CHAR("char"), VARCHAR("char"),  LINK2ARCHIVE("link2archive"), DOWNLOAD("download"), RA(
-            "ra"), DEC("dec"), DOUBLE("double"), INTEGER("integer"), LONG("long"), INT("int"), DATETIME("datetime");
+            "ra"), DEC("dec"), DOUBLE("double"), FLOAT("double"), INTEGER("integer"), LONG("long"), INT("int"), DATETIME("datetime");
 
     private String type;
 

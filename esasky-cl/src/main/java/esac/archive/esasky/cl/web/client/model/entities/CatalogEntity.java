@@ -31,9 +31,11 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
+import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SourcesTablePanel;
@@ -58,6 +60,7 @@ public class CatalogEntity implements GeneralEntityInterface{
     
     private boolean showAvgPM = false;
     private boolean useMedianOnAvgPM;
+    private MOCEntity mocEntity;
     private ShapeBuilder shapeBuilder = new ShapeBuilder() {
     	
     	@Override
@@ -89,6 +92,7 @@ public class CatalogEntity implements GeneralEntityInterface{
             JavaScriptObject catalogue, SkyViewPosition skyViewPosition,
             String esaSkyUniqId, Long lastUpdate, EntityContext context) {
 		this.catalogue = catalogue;
+		this.mocEntity = new MOCEntity(catDescriptor, countStatus);
     	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(catalogue, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
 				catDescriptor.getHistoColor()), shapeBuilder);
         defaultEntity = new DefaultEntity(catDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
@@ -616,9 +620,25 @@ public class CatalogEntity implements GeneralEntityInterface{
 	
 	@Override
     public void fetchData(final ITablePanel tablePanel) {
-		defaultEntity.fetchData(tablePanel);
+		int mocLimit = descriptor.getSourceLimit();
+		int count = getCountStatus().getCount(descriptor.getMission());
+    	
+    	if (DeviceUtils.isMobile()){
+    		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+    	}
+    	
+    	if (mocLimit > 0 && count > mocLimit) {
+    		mocEntity.setTablePanel(tablePanel);
+    		mocEntity.refreshMOC();
+    	}else {
+    		defaultEntity.fetchData(tablePanel);
+    	}
 	}
-
+    
+	public void refreshData(final AbstractTablePanel tablePanel) {
+		mocEntity.fetchData(tablePanel);
+	}
+	
 	@Override
 	public void setShapeBuilder(ShapeBuilder shapeBuilder) {
 		defaultEntity.setShapeBuilder(shapeBuilder);
