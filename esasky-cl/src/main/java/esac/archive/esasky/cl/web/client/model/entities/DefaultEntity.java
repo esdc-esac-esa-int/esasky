@@ -28,6 +28,7 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
 public class DefaultEntity implements GeneralEntityInterface{
 
@@ -368,5 +369,11 @@ public class DefaultEntity implements GeneralEntityInterface{
 	public void refreshData(ITablePanel tablePanel) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public StylePanel createStylePanel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

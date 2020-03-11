@@ -13,10 +13,6 @@ import esac.archive.esasky.cl.web.client.model.entities.SurveyEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.ImageColumn;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnColorChangedCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnShapeChangedCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnValueChangedCallback;
 
 public class SurveyTablePanel extends AbstractTablePanel {
 
@@ -59,41 +55,6 @@ public class SurveyTablePanel extends AbstractTablePanel {
 	}
 
 
-	@Override
-	public void showStylePanel(int x, int y) {
-		OnShapeChangedCallback srcShapeCallback = new OnShapeChangedCallback() {
-
-			@Override
-			public void onShapeChanged(String shape) {
-				entity.setShape(shape);
-			}
-		};
-
-		if(stylePanel == null) {
-			stylePanel = new StylePanel(getEntity().getEsaSkyUniqId(), getEntity().getTabLabel(), 
-					getEntity().getColor(), getEntity().getSize(), 
-					entity.getShape(),
-					null, null, null, null, null, null,
-					new OnColorChangedCallback() {
-	
-				@Override
-				public void onColorChanged(String color) {
-					getDescriptor().setHistoColor(color);
-				}
-			}, new OnValueChangedCallback() {
-	
-				@Override
-				public void onValueChanged(double value) {
-					getEntity().setSizeRatio(value);
-				}
-			}, srcShapeCallback,
-					null, null, null,
-					null, null);
-		}
-		stylePanel.toggle();
-		stylePanel.setPopupPosition(x, y);
-	}
-	
 	@Override
 	public final CommonObservationDescriptor getDescriptor() {
 		return entity.getDescriptor();

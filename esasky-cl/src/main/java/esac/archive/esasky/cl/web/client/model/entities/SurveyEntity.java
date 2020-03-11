@@ -32,6 +32,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObje
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SurveyTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.StylePanelCallback;;
 
 public class SurveyEntity implements GeneralEntityInterface{
 
@@ -96,7 +98,8 @@ public class SurveyEntity implements GeneralEntityInterface{
 		catDetails.put("shape", SourceShapeType.CROSS.getName());
 		overlay = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
 				esaSkyUniqId, 20, descriptor.getHistoColor(), catDetails);
-    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, overlay, shapeBuilder);
+    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
+				descriptor.getHistoColor()), shapeBuilder);
         defaultEntity = new DefaultEntity(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
                 context, drawer, TAPMetadataSurveyService.getInstance());
     }
@@ -350,5 +353,48 @@ public class SurveyEntity implements GeneralEntityInterface{
 	@Override
 	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
 		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public StylePanel createStylePanel() {
+		return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShape(), 
+				null, null, null, null, null, null, 
+				new StylePanelCallback() {
+					
+					@Override
+					public void onShapeSizeChanged(double value) {
+						setSizeRatio(value);
+					}
+					
+					@Override
+					public void onShapeColorChanged(String color) {
+						descriptor.setHistoColor(color);
+					}
+					
+					@Override
+					public void onShapeChanged(String shape) {
+						setShape(shape);
+					}
+					
+					@Override
+					public void onOrbitScaleChanged(double value) {
+					}
+					
+					@Override
+					public void onOrbitColorChanged(String color) {
+					}
+					
+					@Override
+					public void onArrowScaleChanged(double value) {
+					}
+					
+					@Override
+					public void onArrowColorChanged(String color) {
+					}
+					
+					@Override
+					public void onArrowAvgCheckChanged(boolean checkedOne, boolean checkedTwo) {
+					}
+				});
 	}
 }

@@ -61,13 +61,14 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     };
     
     public CommonObservationEntity(CommonObservationDescriptor descriptor,
-            CountStatus countStatus, SkyViewPosition skyViewPosition, String esaSkyUniqObsId, Long lastUpdate, EntityContext context) {
-    	JavaScriptObject overlay = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqObsId,
+            CountStatus countStatus, SkyViewPosition skyViewPosition, String esaSkyUniqId, Long lastUpdate, EntityContext context) {
+    	JavaScriptObject overlay = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
 				descriptor.getHistoColor());
-		drawer = new CombinedSourceFootprintDrawer(overlay, overlay, shapeBuilder);
-        defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqObsId, lastUpdate,
+    	this.descriptor = descriptor;
+		drawer = new CombinedSourceFootprintDrawer(AladinLiteWrapper.getAladinLite().createCatalog(
+				esaSkyUniqId, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, descriptor.getHistoColor()), overlay, shapeBuilder);
+        defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
                 context, drawer, TAPMetadataObservationService.getInstance());
-		this.descriptor = descriptor;
 
     }
     

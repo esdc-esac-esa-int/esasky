@@ -30,6 +30,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SSOObservationsTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
 public class SSOEntity extends ObservationAndSpectraEntity {
 
@@ -201,5 +202,11 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	@Override
 	public boolean isRefreshable() {
 		return false;
+	}
+
+	@Override
+	public StylePanel createStylePanel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

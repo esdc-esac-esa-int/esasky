@@ -38,6 +38,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObje
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SourcesTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.StylePanelCallback;;
 
 public class CatalogEntity implements GeneralEntityInterface{
 
@@ -87,7 +89,8 @@ public class CatalogEntity implements GeneralEntityInterface{
             JavaScriptObject catalogue, SkyViewPosition skyViewPosition,
             String esaSkyUniqId, Long lastUpdate, EntityContext context) {
 		this.catalogue = catalogue;
-    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(catalogue, catalogue, shapeBuilder);
+    	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(catalogue, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
+				catDescriptor.getHistoColor()), shapeBuilder);
         defaultEntity = new DefaultEntity(catDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
                 context, drawer, TAPMetadataCatalogueService.getInstance());
         this.descriptor = catDescriptor;
@@ -677,5 +680,52 @@ public class CatalogEntity implements GeneralEntityInterface{
 	public void refreshData(ITablePanel tablePanel) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public StylePanel createStylePanel() {
+		return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShape(), 
+				getArrowColor(), getArrowScale(), getShowAvgProperMotion(), getUseMedianOnAvgProperMotion(), 
+				null, null, new StylePanelCallback() {
+					
+					@Override
+					public void onShapeSizeChanged(double value) {
+						setSizeRatio(value);
+					}
+					
+					@Override
+					public void onShapeColorChanged(String color) {
+						descriptor.setHistoColor(color);
+					}
+					
+					@Override
+					public void onShapeChanged(String shape) {
+						setShape(shape);
+					}
+					
+					@Override
+					public void onOrbitScaleChanged(double value) {
+					}
+					
+					@Override
+					public void onOrbitColorChanged(String color) {
+					}
+					
+					@Override
+					public void onArrowScaleChanged(double value) {
+						setArrowScale(value);
+						
+					}
+					
+					@Override
+					public void onArrowColorChanged(String color) {
+						setArrowColor(color);
+					}
+					
+					@Override
+					public void onArrowAvgCheckChanged(boolean checkedOne, boolean checkedTwo) {
+						setShowAvgProperMotion(checkedOne, checkedTwo);
+					}
+				});
 	}
 }

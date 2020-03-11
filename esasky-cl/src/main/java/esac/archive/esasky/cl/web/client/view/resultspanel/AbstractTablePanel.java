@@ -1619,7 +1619,14 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		});
 	}
 	
-	public abstract void showStylePanel(int x, int y);
+	public void showStylePanel(int x, int y) {
+		if(stylePanel == null) {
+			stylePanel = getEntity().createStylePanel();
+		}
+
+		stylePanel.toggle();
+		stylePanel.setPopupPosition(x, y);
+	};
 	
 	public void downloadSelected(DDRequestForm ddForm) {
 	}

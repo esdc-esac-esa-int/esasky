@@ -24,20 +24,17 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
 public class StylePanel extends DialogBox {
 
-    public interface OnColorChangedCallback {
-        public void onColorChanged (String color);
-    }
-    
-    public interface OnShapeChangedCallback {
-        public void onShapeChanged (String shape);
-    }
-    
-    public interface OnValueChangedCallback {
-        public void onValueChanged (double value);
-    }
-    
-    public interface OnCheckChangedCallback {
-        public void onCheckChanged (boolean checkedOne, boolean checkedTwo);
+	private final StylePanelCallback stylePanelCallback;
+	
+    public interface StylePanelCallback {
+    	public void onShapeColorChanged (String color);
+    	public void onArrowColorChanged (String color);
+    	public void onOrbitColorChanged (String color);
+    	public void onShapeChanged (String shape);
+    	public void onShapeSizeChanged (double value);
+    	public void onArrowScaleChanged (double value);
+    	public void onOrbitScaleChanged (double value);
+        public void onArrowAvgCheckChanged (boolean checkedOne, boolean checkedTwo);
     }
     
     public interface Resources extends ClientBundle {
@@ -102,17 +99,6 @@ public class StylePanel extends DialogBox {
     
     private long timeLastHiddenTime;
     
-    private OnColorChangedCallback srcColorCallback;
-    private OnValueChangedCallback srcSizeCallback;
-    private OnShapeChangedCallback srcShapeCallback;
-    
-    private OnColorChangedCallback arrowColorCallback;
-    private OnValueChangedCallback arrowScaleCallback;
-    private OnCheckChangedCallback arrowAvgCheckCallback;
-    
-    private OnColorChangedCallback orbitColorCallback;
-    private OnValueChangedCallback orbitScaleCallback;
-    private OnCheckChangedCallback orbitAvgCheckCallback;
     
     private CheckBox arrowAvgCheckBox;
     private CheckBox arrowMedianCheckBox;
@@ -121,9 +107,7 @@ public class StylePanel extends DialogBox {
                       String srcColor, Double srcSizeRatio, String srcShape,
                       String arrowColor, Double arrowScale, Boolean arrowAvgChecked, Boolean useMedianOnAvgChecked,
                       String orbitColor, Double orbitScale,
-                      OnColorChangedCallback srcColorCallback, OnValueChangedCallback srcSizeCallback, OnShapeChangedCallback srcShapeCallback,
-                      OnColorChangedCallback arrowColorCallback, OnValueChangedCallback arrowScaleCallback, OnCheckChangedCallback arrowAvgCheckCallback,
-                      OnColorChangedCallback orbitColorCallback, OnValueChangedCallback orbitScaleCallback) {
+                      StylePanelCallback callback) {
         
         super(true, false);
         this.resources = GWT.create(Resources.class);
@@ -131,51 +115,45 @@ public class StylePanel extends DialogBox {
         this.style.ensureInjected();
         this.setAutoHideEnabled(false);
 
+        this.stylePanelCallback = callback;
+        
         this.id = id;
         this.mission = mission;
         
         final String preparedId = DownloadUtils.getValidFilename(id);
         this.srcColorPickerId = preparedId + "_srcColor";
         this.srcColor = srcColor;
-        this.srcColorCallback = srcColorCallback;
         
         this.srcSizeId = preparedId + "_srcSize";
         this.srcSizeRatio = srcSizeRatio;
-        this.srcSizeCallback = srcSizeCallback;
 
         if (srcShape != null) {
             this.srcShape = srcShape;
-            this.srcShapeCallback = srcShapeCallback;
         }
         
         if (arrowColor != null) {
             this.arrowColorPickerId = preparedId + "_arrowColor";
             this.arrowColor = arrowColor;
-            this.arrowColorCallback = arrowColorCallback;
+            if (arrowScale != null) {
+            	this.arrowScaleId = preparedId + "_arrowScale";
+            	this.arrowScale = arrowScale;
+            }
+            
+            if (arrowAvgChecked != null) {
+            	this.arrowAvgChecked = arrowAvgChecked;
+            	this.useMedianOnAvgChecked = useMedianOnAvgChecked;
+            }
         }
         
-        if (arrowScale != null) {
-            this.arrowScaleId = preparedId + "_arrowScale";
-            this.arrowScale = arrowScale;
-            this.arrowScaleCallback = arrowScaleCallback;
-        }
-        
-        if (arrowAvgChecked != null) {
-            this.arrowAvgChecked = arrowAvgChecked;
-            this.useMedianOnAvgChecked = useMedianOnAvgChecked;
-            this.arrowAvgCheckCallback = arrowAvgCheckCallback;
-        }
         
         if (orbitColor != null) {
         	this.orbitColorPickerId = preparedId + "_orbitColor";
         	this.orbitColor = orbitColor;
-        	this.orbitColorCallback = orbitColorCallback;
         }
         
         if (orbitScale != null) {
         	this.orbitScaleId = preparedId + "_orbitScale";
         	this.orbitScale = orbitScale;
-        	this.orbitScaleCallback = orbitScaleCallback;
         }
         
         initView();
@@ -254,10 +232,8 @@ public class StylePanel extends DialogBox {
                     @Override
                     public void onClick(ClickEvent arg0) {
                         arrowMedianCheckBox.setValue(false);
-                        if (arrowAvgCheckCallback != null) {
-                            final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
-                            arrowAvgCheckCallback.onCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
-                        }
+                        final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
+                        stylePanelCallback.onArrowAvgCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
                     }
                 });
                 
@@ -271,10 +247,8 @@ public class StylePanel extends DialogBox {
                     @Override
                     public void onClick(ClickEvent arg0) {
                         arrowAvgCheckBox.setValue(false);
-                        if (arrowAvgCheckCallback != null) {
-                            final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
-                            arrowAvgCheckCallback.onCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
-                        }
+                        final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
+                        stylePanelCallback.onArrowAvgCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
                     }
                 });
                 
@@ -306,11 +280,11 @@ public class StylePanel extends DialogBox {
         
         if (arrowColorPickerId != null) {
             createColorPicker(this, arrowColorPickerId, arrowColorPickerId + "_Container", arrowColor);
+            if (arrowScaleId != null) {
+            	createSlider(this, arrowScaleId);
+            }
         }
         
-        if (arrowScaleId != null) {
-            createSlider(this, arrowScaleId);
-        }
         
         if (orbitScaleId != null) {
         	createSlider(this, orbitScaleId);
@@ -364,9 +338,7 @@ public class StylePanel extends DialogBox {
 
             @Override
             public void onSelectedChange() {
-                if (srcShapeCallback != null) {
-                    srcShapeCallback.onShapeChanged(srcShapeDropDown.selectedObject.getName());
-                }
+            	stylePanelCallback.onShapeChanged(srcShapeDropDown.selectedObject.getName());
             }
         });
 
@@ -411,15 +383,15 @@ public class StylePanel extends DialogBox {
     }-*/;
     
     private void fireColorChangedEvent(String colorPickerId, String color) {
-        if (colorPickerId.equals(srcColorPickerId) && (srcColorCallback != null)) {
+        if (colorPickerId.equals(srcColorPickerId)) {
         	srcColor = color;
-            srcColorCallback.onColorChanged(color);
-        } else if (colorPickerId.equals(arrowColorPickerId) && (arrowColorCallback != null)) {
+            stylePanelCallback.onShapeColorChanged(color);
+        } else if (colorPickerId.equals(arrowColorPickerId)) {
         	arrowColor = color;
-            arrowColorCallback.onColorChanged(color);
-        } else if (orbitColorPickerId.equals(orbitColorPickerId) && (orbitColorCallback != null)) {
+            stylePanelCallback.onArrowColorChanged(color);
+        } else if (orbitColorPickerId.equals(orbitColorPickerId)) {
         	orbitColor = color;
-        	orbitColorCallback.onColorChanged(color);
+        	stylePanelCallback.onOrbitColorChanged(color);
         }
     }
     
@@ -432,15 +404,15 @@ public class StylePanel extends DialogBox {
     }-*/;
     
     private void fireSliderChangedEvent(String sliderId, String value) {
-        if (sliderId.equals(srcSizeId) && (srcSizeCallback != null)) {
+        if (sliderId.equals(srcSizeId)) {
         	srcSizeRatio = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
-            srcSizeCallback.onValueChanged(srcSizeRatio);
-        } else if (sliderId.equals(arrowScaleId) && (arrowScaleCallback != null)) {
+        	stylePanelCallback.onShapeSizeChanged(srcSizeRatio);
+        } else if (sliderId.equals(arrowScaleId)) {
         	arrowScale = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
-            arrowScaleCallback.onValueChanged(arrowScale);
-        } else if (sliderId.equals(orbitScaleId) && (orbitScaleCallback != null)) {
+        	stylePanelCallback.onArrowScaleChanged(arrowScale);
+        } else if (sliderId.equals(orbitScaleId)) {
         	orbitScale = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
-        	orbitScaleCallback.onValueChanged(orbitScale);
+        	stylePanelCallback.onOrbitScaleChanged(orbitScale);
         }
     }
     

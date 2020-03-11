@@ -8,6 +8,7 @@ import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
@@ -51,6 +52,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void refreshData(ITablePanel tablePanel);
     
     public ITablePanel createTablePanel();
+    public StylePanel createStylePanel();
     
     public boolean isSampEnabled();
     public boolean isRefreshable();

@@ -27,6 +27,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.CommonObservationsTab
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.StylePanelCallback;;
 
 public abstract class ObservationAndSpectraEntity extends CommonObservationEntity {
 
@@ -134,5 +136,47 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 		} else {
 			return new CommonObservationsTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
 		}
+	}
+	
+	@Override
+	public StylePanel createStylePanel() {
+		return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), 
+				null, null, null, null, null, null, null, 
+				new StylePanelCallback() {
+					
+					@Override
+					public void onShapeSizeChanged(double value) {
+						setSizeRatio(value);
+					}
+					
+					@Override
+					public void onShapeColorChanged(String color) {
+						getDescriptor().setHistoColor(color);
+					}
+					
+					@Override
+					public void onShapeChanged(String shape) {
+					}
+					
+					@Override
+					public void onOrbitScaleChanged(double value) {
+					}
+					
+					@Override
+					public void onOrbitColorChanged(String color) {
+					}
+					
+					@Override
+					public void onArrowScaleChanged(double value) {
+					}
+					
+					@Override
+					public void onArrowColorChanged(String color) {
+					}
+					
+					@Override
+					public void onArrowAvgCheckChanged(boolean checkedOne, boolean checkedTwo) {
+					}
+				});
 	}
 }

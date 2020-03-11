@@ -494,6 +494,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 	}
 
 	public void showStylePanel(int x, int y) {
+		if(stylePanel == null) {
+			stylePanel = getEntity().createStylePanel();
+		}
+
+		stylePanel.toggle();
+		stylePanel.setPopupPosition(x, y);
 	}
 
 	public void downloadSelected(DDRequestForm ddForm) {

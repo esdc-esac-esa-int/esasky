@@ -30,9 +30,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.ImageColumn;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnColorChangedCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnValueChangedCallback;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -178,34 +175,6 @@ public class CommonObservationsTablePanel extends AbstractTablePanel {
 		return entity;
 	}
 
-	@Override
-	public void showStylePanel(int x, int y) {
-
-		if(stylePanel == null) {
-
-			stylePanel = new StylePanel(getEntity().getEsaSkyUniqId(), getEntity().getTabLabel(), 
-					getDescriptor().getHistoColor(), getEntity().getSize(), null,
-					null, null, null, null, null, null,
-					new OnColorChangedCallback() {
-
-				@Override
-				public void onColorChanged(String color) {
-					getDescriptor().setHistoColor(color);
-				}
-			}, new OnValueChangedCallback() {
-
-				@Override
-				public void onValueChanged(double value) {
-					getEntity().setSizeRatio(value);
-				}
-			}, null,
-					null, null, null,
-					null, null);
-		}		
-		stylePanel.toggle();
-		stylePanel.setPopupPosition(x, y);
-	}
-	
 	@Override
 	public void downloadSelected(DDRequestForm ddForm) {
 		

@@ -17,11 +17,6 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnCheckChangedCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnColorChangedCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnShapeChangedCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.OnValueChangedCallback;
 
 public class SourcesTablePanel extends AbstractTablePanel {
 
@@ -114,75 +109,4 @@ public class SourcesTablePanel extends AbstractTablePanel {
 		return entity;
 	}
 
-	@Override
-	public void showStylePanel(int x, int y) {
-
-		OnShapeChangedCallback srcShapeCallback = new OnShapeChangedCallback() {
-
-			@Override
-			public void onShapeChanged(String shape) {
-				entity.setShape(shape);
-			}
-		};
-
-		String arrowColor = null;
-		Double arrowScale = null;
-		Boolean arrowAvgChecked = null;
-		Boolean useMedianOnAvgChecked = null;
-		OnColorChangedCallback arrowColorCallback = null;
-		OnValueChangedCallback arrowScaleCallback = null;
-		OnCheckChangedCallback checkChangedCallback = null;
-
-		arrowColor = entity.getArrowColor();
-		if (arrowColor != null) {
-			arrowScale = entity.getArrowScale();
-			arrowAvgChecked = entity.getShowAvgProperMotion();
-			useMedianOnAvgChecked = entity.getUseMedianOnAvgProperMotion();
-
-			arrowColorCallback = new OnColorChangedCallback() {
-
-				@Override
-				public void onColorChanged(String color) {
-					entity.setArrowColor(color);
-				}
-			};
-
-			arrowScaleCallback = new OnValueChangedCallback() {
-
-				@Override
-				public void onValueChanged(double value) {
-					entity.setArrowScale(value);
-				}
-			};
-
-			checkChangedCallback = new OnCheckChangedCallback() {
-
-				@Override
-				public void onCheckChanged(boolean checkedOne, boolean checkedTwo) {
-					entity.setShowAvgProperMotion(checkedOne, checkedTwo);
-				}
-			};
-		}
-
-		stylePanel = new StylePanel(entity.getEsaSkyUniqId(), entity.getTabLabel(), 
-				entity.getColor(), entity.getSize(), entity.getShape(),
-				arrowColor, arrowScale, arrowAvgChecked, useMedianOnAvgChecked, null, null,
-				new OnColorChangedCallback() {
-
-			@Override
-			public void onColorChanged(String color) {
-				getDescriptor().setHistoColor(color);
-			}
-		}, new OnValueChangedCallback() {
-
-			@Override
-			public void onValueChanged(double value) {
-				getEntity().setSizeRatio(value);
-			}
-		}, srcShapeCallback,
-				arrowColorCallback, arrowScaleCallback, checkChangedCallback,
-				null, null);
-		stylePanel.toggle();
-		stylePanel.setPopupPosition(x, y);
-	}
 }
