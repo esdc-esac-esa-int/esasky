@@ -1004,12 +1004,13 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST">
+		
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-OPTICAL">
 		Los datos observacionales del Telescopio Espacial Hubble
 		(HST)
 		proporcionados por ESASky son productos cient&#237;ficos
 		de las
-		tres colecciones de datos de Hubble:
+		dos colecciones de datos de Hubble:
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1022,11 +1023,74 @@
 		Archive (HLA)
 		&lt;/span&gt;
 		&lt;/li&gt;
+		&lt;/ul&gt;
+		ESASky aplica un filtro en los datos de archivo
+		del HST
+		para mostrar en primer lugar todas las im&#225;genes compuestas
+		(asociaciones)
+		y despu&#233;s todas las im&#225;genes individuales
+		(&quot;HST
+		singleton&quot;)
+		que no forman parte de ninguna
+		asociaci&#243;n.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt; </text>
+		
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-UV">
+		Los datos observacionales del Telescopio Espacial Hubble
+		(HST)
+		proporcionados por ESASky son productos cient&#237;ficos
+		de las
+		dos colecciones de datos de Hubble:
+		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
-		La
-		colecci&#243;n de
-		Productos Cient&#237;ficos de Alto Nivel (HLSP)
+		La colecci&#243;n HST est&#225;ndar
+		&lt;/span&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+		&lt;span&gt;
+		La colecci&#243;n del Hubble Legacy
+		Archive (HLA)
+		&lt;/span&gt;
+		&lt;/li&gt;
+		&lt;/ul&gt;
+		ESASky aplica un filtro en los datos de archivo
+		del HST
+		para mostrar en primer lugar todas las im&#225;genes compuestas
+		(asociaciones)
+		y despu&#233;s todas las im&#225;genes individuales
+		(&quot;HST
+		singleton&quot;)
+		que no forman parte de ninguna
+		asociaci&#243;n.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt; </text>
+		
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-IR">
+		Los datos observacionales del Telescopio Espacial Hubble
+		(HST)
+		proporcionados por ESASky son productos cient&#237;ficos
+		de las
+		dos colecciones de datos de Hubble:
+		&lt;ul&gt;
+		&lt;li&gt;
+		&lt;span&gt;
+		La colecci&#243;n HST est&#225;ndar
+		&lt;/span&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+		&lt;span&gt;
+		La colecci&#243;n del Hubble Legacy
+		Archive (HLA)
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
@@ -1783,7 +1847,7 @@
 		(HST)
 		proporcionados por ESASky son productos cient&#237;ficos
 		de las
-		tres colecciones de datos de Hubble:
+		dos colecciones de datos de Hubble:
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1793,12 +1857,6 @@
 		&lt;li&gt;
 		&lt;span&gt;
 		La colecci&#243;n del Hubble Legacy Archive (HLA)
-		&lt;/span&gt;
-		&lt;/li&gt;
-		&lt;li&gt;
-		&lt;span&gt;
-		La colecci&#243;n de
-		Productos Cient&#237;ficos de Alto Nivel (HLSP)
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
@@ -1822,7 +1880,7 @@
 		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST(OPTICAL)">
 		Los datos observacionales del Telescopio Espacial Hubble (HST)
 		proporcionados por ESASky son productos cient&#237;ficos
-		de las tres
+		de las dos
 		colecciones de datos de Hubble:
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1834,12 +1892,6 @@
 		&lt;li&gt;
 		&lt;span&gt;
 		La colecci&#243;n del Hubble Legacy Archive (HLA)
-		&lt;/span&gt;
-		&lt;/li&gt;
-		&lt;li&gt;
-		&lt;span&gt;
-		La colecci&#243;n de
-		Productos Cient&#237;ficos de Alto Nivel (HLSP)
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
@@ -1940,7 +1992,7 @@
 		(HST)
 		proporcionados por ESASky son productos cient&#237;ficos
 		de las
-		tres colecciones de datos de Hubble:
+		dos colecciones de datos de Hubble:
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1950,12 +2002,6 @@
 		&lt;li&gt;
 		&lt;span&gt;
 		La colecci&#243;n del Hubble Legacy Archive (HLA)
-		&lt;/span&gt;
-		&lt;/li&gt;
-		&lt;li&gt;
-		&lt;span&gt;
-		La colecci&#243;n de
-		Productos Cient&#237;ficos de Alto Nivel (HLSP)
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
