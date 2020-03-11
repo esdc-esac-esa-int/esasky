@@ -133,9 +133,15 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     }
     
     public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos) {
+    	return getMetadataAdqlRadial(descriptorInput, pos, "");
+    }
+    
+    public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos, String filters) {
     	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
     	
-    	String adql = "select  ";
+        int top = getResultsLimit(descriptor.getSourceLimit());
+
+        String adql = "select top " + top + " ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
             if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
@@ -158,6 +164,12 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     	+ "'1' = q3c_radial_query(" +  descriptor.getPolygonRaTapColumn() + ", "  + descriptor.getPolygonDecTapColumn() + ", "
 				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
 				+ Double.toString(pos.getFov()/2) +")";
+        
+        parsedAdql += filters;
+        
+        if (null != descriptor.getOrderBy() && !"".equals(descriptor.getOrderBy().trim())) {
+            parsedAdql += " ORDER BY " + descriptor.getOrderBy();
+        }
 
         return parsedAdql;
     }
