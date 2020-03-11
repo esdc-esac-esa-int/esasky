@@ -1545,8 +1545,12 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
 				String tapName = rowList.getMetadata().get(cellIndex).getName();
 				TableElement cell = row.getElementByTapName(tapName);
+				String value = cell.getValue();
+				if(value == null) {
+					value = "";
+				}
 				votData += "        <TD>"
-						+ cell.getValue().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
+						+ value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
 						+ "</TD>\n";
 			}
 			votData += "    </TR>\n";
