@@ -1489,9 +1489,9 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		for (TableRow row : setToDownload) {
 			boolean firstCellOfRow = true;
 			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				String label = rowList.getMetadata().get(cellIndex).getName();
-				if (!label.isEmpty()) {
-					TableElement cell = row.getElementByLabel(label);
+				String tapName = rowList.getMetadata().get(cellIndex).getName();
+				if (!tapName.isEmpty()) {
+					TableElement cell = row.getElementByTapName(tapName);
 					if(firstCellOfRow) {
 						firstCellOfRow = false;
 					} else {
@@ -1523,10 +1523,10 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 
 		// Adds headers to xml
 		for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-			String label = rowList.getMetadata().get(cellIndex).getName();
-			if (!label.isEmpty()) {
+			String tapName = rowList.getMetadata().get(cellIndex).getName();
+			if (!tapName.isEmpty()) {
 				votData += "<FIELD arraysize=\"*\" datatype=\"char\" name=\""
-						+ label.replace("&", "&amp;")
+						+ tapName.replace("&", "&amp;")
 						.replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;") + "\"/>\n";
 			}
 		}
@@ -1543,8 +1543,8 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		for (TableRow row : setToDownload) {
 			votData += "    <TR>\n";
 			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				String label = rowList.getMetadata().get(cellIndex).getName();
-				TableElement cell = row.getElementByLabel(label);
+				String tapName = rowList.getMetadata().get(cellIndex).getName();
+				TableElement cell = row.getElementByTapName(tapName);
 				votData += "        <TD>"
 						+ cell.getValue().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
 						+ "</TD>\n";
