@@ -334,6 +334,11 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
 	}
 	
 	@Override
+	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+		defaultEntity.fetchData(tablePanel);
+	}
+	
+	@Override
 	public void setShapeBuilder(ShapeBuilder shapeBuilder) {
 		defaultEntity.setShapeBuilder(shapeBuilder);
 	}

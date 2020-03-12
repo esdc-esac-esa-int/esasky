@@ -69,6 +69,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private int currentDisplayOrder; 
     private int currentMinOrder; 
     private boolean shouldBeShown = true;
+    private GeneralEntityInterface parentEntity;
     
     private AbstractTableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
@@ -105,7 +106,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
     }
     
-	public MOCEntity(IDescriptor descriptor, CountStatus countStatus) {
+	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent) {
 		
 		overlay = null;
 		drawer = null;
@@ -113,6 +114,8 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		defaultEntity = new DefaultEntity(descriptor, countStatus , new SkyViewPosition(new Coordinate(0, 0), 0.0), "MOC", (long) 0,
 				EntityContext.MOC, drawer, TAPMetadataObservationService.getInstance());
+		
+		parentEntity = parent;
 		
 		
 		CommonEventBus.getEventBus().addHandler(AladinLiteMOCIpixClickedEvent.TYPE, new AladinLiteMOCIpixClickedEventHandler () {
@@ -236,28 +239,34 @@ public class MOCEntity implements GeneralEntityInterface {
 //    		filter += " AND ";
 //    		filter += tablePanel.tapFilters.get(key);
 //    	}
-        String adql = TAPMetadataCatalogueService.getInstance().getMetadataAdqlRadial(descriptor, pos, filter);
-        
     	
-    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
-        
-        Log.debug(debugPrefix + "Query [" + url + "]");
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            builder.sendRequest(null,
-                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingData"), new MetadataCallback.OnComplete() {
-					
-					@Override
-					public void onComplete() {
-						shouldBeShown = false;
-						clearMOC();
-						
-					}
-				}));
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error("[getMocMetadata] Error fetching JSON data from server");
-        }
+    	parentEntity.fetchDataWithoutMOC(tablePanel);
+    	shouldBeShown = false;
+    	clearAll();
+    	updateOverlay();
+    	
+//        String adql = TAPMetadataCatalogueService.getInstance().getMetadataAdqlRadial(descriptor, pos, filter);
+//        
+//    	
+//    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
+//        
+//        Log.debug(debugPrefix + "Query [" + url + "]");
+//        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+//        try {
+//            builder.sendRequest(null,
+//                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingData"), new MetadataCallback.OnComplete() {
+//					
+//					@Override
+//					public void onComplete() {
+//						shouldBeShown = false;
+//						clearMOC();
+//						
+//					}
+//				}));
+//        } catch (RequestException e) {
+//            Log.error(e.getMessage());
+//            Log.error("[getMocMetadata] Error fetching JSON data from server");
+//        }
 
     }
     
@@ -290,7 +299,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void refreshMOC() {
-    	clearMOC();
+    	clearAll();
     	
     	shouldBeShown = true;
     	int count = getCountStatus().getCount(descriptor.getMission());
@@ -338,7 +347,7 @@ public class MOCEntity implements GeneralEntityInterface {
                 	public void onComplete() {
 //                		tablePanel.setMOCTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
                 		updateCountMap();
-                		if(getTotalCount() < 2000) {
+                		if(getTotalCount() < 2000 && getTotalCount() > 0) {
                 			sendLoadQuery();
                 		}
                 	}
@@ -407,15 +416,10 @@ public class MOCEntity implements GeneralEntityInterface {
 		return moc;
 	}
 	
-	public void clearMOC() {
-		moc = new ESASkyResultMOC(2, -1);
-		updateOverlay();
-	}
-	
 	@Override
 	public void clearAll() {
-		clearMOC();
-		defaultEntity.clearAll();
+		moc = new ESASkyResultMOC(2, -1);
+		updateOverlay();
 	}
 	
 	public void replaceData(ITablePanel tablePanel, ESASkyResultMOC newData) {
@@ -429,14 +433,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		this.tablePanel = tablePanel;
 		
-//		tablePanel.registerClosingObserver(new ClosingObserver() {
-//			
-//			@Override
-//			public void onClose() {
-//				closingPanel(tablePanel);
-//				
-//			}
-//		});
+		tablePanel.registerClosingObserver(new ClosingObserver() {
+			
+			@Override
+			public void onClose() {
+				closingPanel(tablePanel);
+				
+			}
+		});
 		
 		moc.addData(newData);
 		moc.updateCount();
@@ -445,8 +449,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 	
 	private void closingPanel(ITablePanel tablePanel) {
-		clearMOC();
-		updateOverlay();
+		clearAll();
 	}
 	
 	public void updateOverlay() {
@@ -810,6 +813,12 @@ public class MOCEntity implements GeneralEntityInterface {
 	public StylePanel createStylePanel() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

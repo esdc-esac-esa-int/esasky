@@ -323,6 +323,12 @@ public class SurveyEntity implements GeneralEntityInterface{
 	public void fetchData(ITablePanel tablePanel) {
 		defaultEntity.fetchData(tablePanel);
 	}
+	
+	@Override
+	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+		fetchData(tablePanel);
+		
+	}
 
 	@Override
 	public boolean isSampEnabled() {
@@ -397,4 +403,5 @@ public class SurveyEntity implements GeneralEntityInterface{
 					}
 				});
 	}
+
 }

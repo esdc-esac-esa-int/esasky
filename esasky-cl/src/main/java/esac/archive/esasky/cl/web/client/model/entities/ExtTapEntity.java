@@ -73,6 +73,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
     protected IShapeDrawer drawer;
     protected IShapeDrawer combinedDrawer;
     private ExtTapDescriptor descriptor;
+    private boolean willShowMOC = false;
+    private MOCEntity mocEntity;
     
     private Timer sourceLimitNotificationTimer = new Timer() {
 
@@ -93,6 +95,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 		
 		combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder);
 		drawer = combinedDrawer;
+//		this.mocEntity = new MOCEntity(descriptor);
 		
 		defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
 				context, drawer, TAPMetadataObservationService.getInstance());
@@ -214,6 +217,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     @Override
     public void fetchData(final ITablePanel tablePanel) {
     	if(Modules.useTabulator) {
+    		willShowMOC = true;
     		drawer.removeAllShapes();
     		if(showMocData()) {
     			drawer = new MocDrawer(descriptor.getHistoColor());
@@ -241,6 +245,15 @@ public class ExtTapEntity implements GeneralEntityInterface {
     		}
     	}
     }
+    
+	@Override
+	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+		drawer.removeAllShapes();
+		drawer = combinedDrawer;
+		defaultEntity.setDrawer(drawer);
+		getData(tablePanel);
+		
+	}
     
     private void getData(final ITablePanel tablePanel) {
     	
@@ -569,6 +582,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
 	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
 		// TODO Auto-generated method stub		
 	}
+	
+
 
 	@Override
 	public StylePanel createStylePanel() {

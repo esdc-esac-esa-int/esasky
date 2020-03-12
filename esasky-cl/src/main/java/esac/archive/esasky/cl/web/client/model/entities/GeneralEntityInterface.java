@@ -48,6 +48,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void setColor(String color);
     
     public void fetchData(ITablePanel tablePanel);
+    public void fetchDataWithoutMOC(ITablePanel tablePanel);
     public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos);
     public void refreshData(ITablePanel tablePanel);
     
@@ -58,4 +59,5 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public boolean isRefreshable();
     public boolean hasDownloadableDataProducts();
 	public boolean isCustomizable();
+	
 }

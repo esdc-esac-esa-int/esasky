@@ -376,4 +376,10 @@ public class DefaultEntity implements GeneralEntityInterface{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+		fetchData(tablePanel);
+		
+	}
 }
