@@ -42,6 +42,7 @@ import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEnti
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.PublicationDescriptorLoadObserver;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -99,6 +100,7 @@ public class MainPresenter {
         // Creates the descriptors repository
         descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
         entityRepo = EntityRepository.init(descriptorRepo);
+        MocRepository.init();
         
         initChildPresenters(coordinateFrameFromUrl);
 

@@ -26,11 +26,6 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyResultMOC;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
-import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.MOCCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -40,17 +35,15 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
+import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
-import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltipObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class MOCEntity implements GeneralEntityInterface {
 
@@ -117,14 +110,16 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		parentEntity = parent;
 		
+		MocRepository.getInstance().addMocEntity(this);
 		
-		CommonEventBus.getEventBus().addHandler(AladinLiteMOCIpixClickedEvent.TYPE, new AladinLiteMOCIpixClickedEventHandler () {
-
-			@Override
-			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
-				MOCClicked(event.getNorder(), event.getIpix(), event.getScreenX(), event.getScreenY());
-			}
-		});
+//		MOVED to MOCRepo
+//		CommonEventBus.getEventBus().addHandler(AladinLiteMOCIpixClickedEvent.TYPE, new AladinLiteMOCIpixClickedEventHandler () {
+//
+//			@Override
+//			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
+//				MOCClicked(event.getNorder(), event.getIpix(), event.getScreenX(), event.getScreenY());
+//			}
+//		});
 		
 		filterObserver = new AbstractTableFilterObserver() {
 			
@@ -162,44 +157,54 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	int index = 0;
     	double fov = AladinLiteWrapper.getInstance().getFovDeg();
-    	int minOrder = ESASkyResultMOC.getMinOrderFromFoV(fov);
+    	int minOrder = 8;//ESASkyResultMOC.getMinOrderFromFoV(fov);
     	int maxOrder = ESASkyResultMOC.getMaxOrderFromFoV(fov);
     	
 		moc.populateCountMap(countMap, index, minOrder, maxOrder);
     	
     }
     
-    public void MOCClicked(final int order,final int ipix, int screenX, int screenY) {
-    	Log.debug("[MOCEntity] MOCClicked " + Integer.toString(order) + ", " + Integer.toString(ipix) );
+    public String MOCClicked(final String orders, final String ipixels, int screenX, int screenY) {
+    	Log.debug("[MOCEntity] MOCClicked " + orders + ", " + ipixels );
+    	String tooltipText = "";
+    	String[] orderArray = orders.split(",");
+    	String[] ipixArray = ipixels.split(",");
+    	for(int i = 0; i < orderArray.length; i++) {
     	
-		int count = countMap.get(order).get((long)ipix);
-		
-		String tooltipText = "";
-		
-		if(count > 0) {
-
-			tooltipText += "Count: " + count + "\n";
-			
-		}
-			
-		
-		MOCTooltip tooltip = new MOCTooltip(screenX, screenY);
-		tooltip.registerObserver(new MOCTooltipObserver() {
-			
-			@Override
-			public void onSplit() {
-				sendSplitQuery(order, ipix);
+    		int order = Integer.parseInt(orderArray[i]);
+    		int ipix = Integer.parseInt(ipixArray[i]);
+	    	try {
+				int count = countMap.get(order).get((long)ipix);
 				
-			}
-			
-			@Override
-			public void onLoad() {
-				sendLoadQuery(order, ipix);
 				
-			}
-		});
+				if(count > 0) {
 		
-		tooltip.show(tooltipText);
+					tooltipText += descriptor.getMission() + ": " + count + "\n";
+					
+				}
+	    	}catch(Exception e){
+	    		//Catch here if the countMap doesn't have that order or ipix
+	    	}
+    	}
+		return tooltipText;
+		
+//		MOCTooltip tooltip = new MOCTooltip(screenX, screenY);
+//		tooltip.registerObserver(new MOCTooltipObserver() {
+//			
+//			@Override
+//			public void onSplit() {
+//				sendSplitQuery(order, ipix);
+//				
+//			}
+//			
+//			@Override
+//			public void onLoad() {
+//				sendLoadQuery(order, ipix);
+//				
+//			}
+//		});
+//		
+//		tooltip.show(tooltipText);
 		
     }
     
@@ -230,11 +235,11 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void sendLoadQuery() {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
-    	
-    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+//    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
+//    	
+//    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 
-    	String filter = "";
+//    	String filter = "";
 //    	for(String key : tablePanel.tapFilters.keySet()) {
 //    		filter += " AND ";
 //    		filter += tablePanel.tapFilters.get(key);
@@ -272,21 +277,21 @@ public class MOCEntity implements GeneralEntityInterface {
     
     public void sendSplitQuery(int order, int ipix) {
     	
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
-    	
-    	String pixelPart = Integer.toString(order) + "," + Integer.toString(ipix) + ", " + Integer.toString(order+2);
-    	String filter = "";
-//        for(String key : tablePanel.tapFilters.keySet()) {
-//			filter += " AND ";
-//			filter += tablePanel.tapFilters.get(key);
-//    	}
-        
-    	String adql = "SELECT esasky_q3c_moc_split('" + descriptor.getTapTable() + "'," + pixelPart +", '" + filter + "' ) as rec from dual";
-    		
-    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
-    	
-    	Log.debug(debugPrefix + "Query [" + url + "]");
-    	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+//    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
+//    	
+//    	String pixelPart = Integer.toString(order) + "," + Integer.toString(ipix) + ", " + Integer.toString(order+2);
+//    	String filter = "";
+////        for(String key : tablePanel.tapFilters.keySet()) {
+////			filter += " AND ";
+////			filter += tablePanel.tapFilters.get(key);
+////    	}
+//        
+//    	String adql = "SELECT esasky_q3c_moc_split('" + descriptor.getTapTable() + "'," + pixelPart +", '" + filter + "' ) as rec from dual";
+//    		
+//    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
+//    	
+//    	Log.debug(debugPrefix + "Query [" + url + "]");
+//    	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 //    	try {
 //    		builder.sendRequest(null,
 //    				new MOCAsRecordCallback(tablePanel, adql,this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingData")
@@ -450,6 +455,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	private void closingPanel(ITablePanel tablePanel) {
 		clearAll();
+		
 	}
 	
 	public void updateOverlay() {
@@ -457,36 +463,31 @@ public class MOCEntity implements GeneralEntityInterface {
 			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getHistoColor() + "\"}";
 			overlay = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
-			
-			CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
-
-				@Override
-				public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
-					checkUpdateMOCNorder(fovEvent.getFov()); 
-					Log.debug("Total MOC count: " + Integer.toString(getTotalCount()));
-				}
-			});
+//			
+//			MOVED to MOCRepp
+//			CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
+//
+//				@Override
+//				public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
+//					checkUpdateMOCNorder(fovEvent.getFov()); 
+//					Log.debug("Total MOC count: " + Integer.toString(getTotalCount()));
+//				}
+//			});
 		}
-		
-		Long curr = System.currentTimeMillis();
 		
 		updateCountMap();
 		
-		Log.debug("COuntMAp: " + Long.toString(System.currentTimeMillis() - curr));
-		curr = System.currentTimeMillis();
+//		Log.debug("CountMAp: " + Long.toString(System.currentTimeMillis() - curr));
 		
 		AladinLiteWrapper.getAladinLite().clearMOC(overlay);
-		curr = System.currentTimeMillis();
 		
 		double fov = AladinLiteWrapper.getInstance().getFovDeg();
     	int minOrder = ESASkyResultMOC.getMinOrderFromFoV(fov);
     	int maxOrder = ESASkyResultMOC.getMaxOrderFromFoV(fov);
 		
 		String mocData = getAladinMOCString(minOrder, maxOrder);
-		curr = System.currentTimeMillis();
 		
 		AladinLiteWrapper.getAladinLite().addMOCData(overlay, mocData);
-		curr = System.currentTimeMillis();
 		
 	}
 	
