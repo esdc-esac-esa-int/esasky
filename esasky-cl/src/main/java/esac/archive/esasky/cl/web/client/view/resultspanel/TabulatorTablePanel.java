@@ -1,9 +1,11 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -573,6 +575,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 				public void onRowMouseLeave(int rowId) {
 					getEntity().hoverStop(rowId);
 				}
+
+				@Override
+				public void onFilterChanged(String label, String filter) {
+					addTapFilter(label, filter);
+				}
 			});
 			tableNotShowingContainer.addStyleName("displayNone");
 		}
@@ -655,5 +662,32 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
  		   observer.onClose();
  	   }
     }
+    
+    public Map<String, String> tapFilters = new HashMap<String, String>();
+	
+	private void addTapFilter(String label, String tapFilter) {
+		if(tapFilter.length() > 0) {
+			tapFilters.put(label, tapFilter);
+		}else if(tapFilters.containsKey(label)) {
+			tapFilters.remove(label);
+		}
+		
+		notifyFilterObservers();
+	}
+	
+	LinkedList<AbstractTableFilterObserver> filterObservers = new LinkedList<>();
+	
+	public void registerFilterObserver(AbstractTableFilterObserver observer){
+		if(!filterObservers.contains(observer)) {
+			filterObservers.add(observer);
+		}
+		
+	}
+	
+	private void notifyFilterObservers() {
+		for(AbstractTableFilterObserver obs : filterObservers) {
+			obs.filterChanged(tapFilters);
+		}
+	}
 
 }

@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
+
 public class TabulatorWrapper{
 
 	public interface TabulatorCallback {
@@ -8,6 +9,7 @@ public class TabulatorWrapper{
 		public void onRowDeselection(int rowId);
 		public void onRowMouseEnter(int rowId);
 		public void onRowMouseLeave(int rowId);
+		public void onFilterChanged(String label, String filter);
 	}
 
 	private TabulatorCallback tabulatorCallback;
@@ -58,6 +60,10 @@ public class TabulatorWrapper{
 	public void onRowDeselection(int rowId) {
 		tabulatorCallback.onRowDeselection(rowId);
 	}
+	
+	public void onFilterChanged(String label, String filter) {
+		tabulatorCallback.onFilterChanged(label, filter);
+	}
 
 	private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String url) /*-{
 		var visibleTableData = [];
@@ -68,6 +74,31 @@ public class TabulatorWrapper{
 		var selectionMap = [];
 		var columnDef;
 		var refinedColumnDef = [];
+		function DoubleFilter(headerValue, rowValue, rowData, filterParams){
+		    //headerValue - the value of the header filter element
+		    //rowValue - the value of the column in this row
+		    //rowData - the data for the row being filtered
+		    //filterParams - params object passed to the headerFilterFuncParams property
+			
+			var split = headerValue.split(",");
+		
+			if(split.length == 2){
+				var filter = filterParams.tapName + " BETWEEN  " + split[0] + " AND " + split[1]; 
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(filterParams.tapName, filter);
+		    	return rowValue >= parseFloat(split[0]) && rowValue <= parseFloat(split[1]); //must return a boolean, true if it passes the filter.
+			}
+			
+			wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(filterParams.tapName, "");
+			return true;
+		}
+		
+		var doubleFilterEmptyCheck = function(value){
+			if(value.length == 0){
+				
+			}
+		}
+		
+		
 		var table = new $wnd.Tabulator("#" + divId, {
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	ajaxURL:url,
@@ -97,6 +128,8 @@ public class TabulatorWrapper{
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    },
 		    dataLoading:function(data){
+
+		    	
 		    	refinedColumnDef[0] = {formatter:"rowSelection", titleFormatter:"rowSelection"};
 		    	for(var i = 0; i < columnDef.length; i++){
 		    		var sorter = "string";
@@ -107,7 +140,18 @@ public class TabulatorWrapper{
 		    			field:columnDef[i].name,
 		    			headerTooltip:columnDef[i].description,
 		    			sorter: sorter,
-		    			headerFilter: true
+		    			headerFilter: true,
+		    			headerFilterFunc:DoubleFilter,
+		    			headerFilterFuncParams:{tapName:columnDef[i].name},
+		    			headerFilterEmptyCheck:function(value){
+		    					//We don't get a filterchange unless this returns false which means we don't remove the filter string in the observsers
+		    					//So this will always return negative for now until we can find a better solution
+								if(value.length == 0){
+									//wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(this.field, "");
+									return false;
+								}
+								return false;
+							}
 		    			};
 		    	}
 
