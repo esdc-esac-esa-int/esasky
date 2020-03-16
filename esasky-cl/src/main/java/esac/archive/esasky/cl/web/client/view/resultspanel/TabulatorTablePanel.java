@@ -1,11 +1,9 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -314,7 +312,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 //		exposeOpenFilterBoxMethodToJs(this);
 	}
 
-	protected StylePanel stylePanel;
+	private StylePanel stylePanel;
 
 	public void deselectTablePanel() {
 		isShowing = false;
@@ -386,101 +384,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 		return jsonData;
 	}
 
-	public void exportAsCSV() {
-		String csvData = "";
-		final String separator = ",";
-		TapRowList rowList = getEntity().getMetadata();
-
-		// Adds headers to csv
-		int addedCols = 0;
-		for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-			final String label = rowList.getMetadata().get(cellIndex).getName();
-			if (!label.isEmpty()) {
-				csvData += ((addedCols == 0) ? "" : separator) + label.replace("\"", "\"\"");
-				addedCols++;
-			}
-
-		}
-		csvData += "\n";
-
-		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
-		if (setToDownload.size() == 0) {
-			setToDownload = getFilteredRows();
-		}
-		// Adds data to csv
-		for (TableRow row : setToDownload) {
-			boolean firstCellOfRow = true;
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				String label = rowList.getMetadata().get(cellIndex).getName();
-				if (!label.isEmpty()) {
-					TableElement cell = row.getElementByLabel(label);
-					if (firstCellOfRow) {
-						firstCellOfRow = false;
-					} else {
-						csvData += separator;
-					}
-					csvData += "\"";
-					if (cell.getValue() != null) {
-						csvData += cell.getValue().toString().replace("\"", "\"\"") + "\"";
-					} else {
-						csvData += "\"";
-					}
-				}
-			}
-			csvData += "\n";
-		}
-
-		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv", csvData,
-				ReturnType.CSV.getMimeType());
+	public void exportAsCsv() {
+		table.downloadCsv(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv");
 	}
 
-	public void exportAsVOTABLE() {
-
-		String votData = "";
-		TapRowList rowList = getEntity().getMetadata();
-
-		// Add VOT XML Schema
-		votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
-		votData += "<RESOURCE type=\"" + getEntity().getEsaSkyUniqId() + "\">\n";
-		votData += "<TABLE>\n";
-
-		// Adds headers to xml
-		for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-			String label = rowList.getMetadata().get(cellIndex).getName();
-			if (!label.isEmpty()) {
-				votData += "<FIELD arraysize=\"*\" datatype=\"char\" name=\"" + label.replace("&", "&amp;")
-						.replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
-						+ "\"/>\n";
-			}
-		}
-
-		// Adds data to xml
-		votData += "<DATA>\n";
-		votData += "<TABLEDATA>\n";
-
-		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
-		if (setToDownload.size() == 0) {
-			setToDownload = getFilteredRows();
-		}
-		// Adds data to csv
-		for (TableRow row : setToDownload) {
-			votData += "    <TR>\n";
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				String label = rowList.getMetadata().get(cellIndex).getName();
-				TableElement cell = row.getElementByLabel(label);
-				votData += "        <TD>" + cell.getValue().replace("&", "&amp;").replace("<", "&lt;")
-						.replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;") + "</TD>\n";
-			}
-			votData += "    </TR>\n";
-		}
-		votData += "</TABLEDATA>\n";
-		votData += "</DATA>\n";
-		votData += "</TABLE>\n";
-		votData += "</RESOURCE>\n";
-		votData += "</VOTABLE>\n";
-
-		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", votData,
-				ReturnType.VOTABLE.getMimeType());
+	public void exportAsVot() {
+		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getGuiLongName());
 	}
 
 	public Widget getWidget() {
@@ -688,6 +597,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 		for(AbstractTableFilterObserver obs : filterObservers) {
 			obs.filterChanged(tapFilters);
 		}
+	}
+
+	@Override
+	public String getVoTableString() {
+		return table.getVot(getDescriptor().getGuiLongName());
 	}
 
 }

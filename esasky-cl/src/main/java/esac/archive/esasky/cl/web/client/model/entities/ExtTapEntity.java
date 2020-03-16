@@ -553,8 +553,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 	@Override
 	public boolean isSampEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -564,7 +563,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 	@Override
 	public boolean hasDownloadableDataProducts() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

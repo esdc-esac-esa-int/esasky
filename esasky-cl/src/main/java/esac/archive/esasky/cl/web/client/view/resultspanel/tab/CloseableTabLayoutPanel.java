@@ -41,6 +41,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
@@ -279,8 +280,8 @@ public class CloseableTabLayoutPanel extends Composite {
 
     private EsaSkyButton createSendButton() {
 
-        	sendButton = new EsaSkyButton(resources.sendIcon());
-        	sendButton.setMediumStyle();
+        sendButton = new EsaSkyButton(resources.sendIcon());
+        sendButton.setMediumStyle();
         sendButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_sendTableToVOA"));
 
         // Bind 'send' Icon
@@ -330,6 +331,7 @@ public class CloseableTabLayoutPanel extends Composite {
             @Override
             public void onClick(final ClickEvent arg0) {
                 ITablePanel tabPanel = getSelectedWidget();
+                tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
                 tabPanel.updateData();
                 
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Refresh, tabPanel.getFullId());
@@ -424,8 +426,13 @@ public class CloseableTabLayoutPanel extends Composite {
     private void ensureCorrectButtonClickability() {
         ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
         if(Modules.improvedDownload){
-	        sendButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
-	        saveButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
+            if(Modules.useTabulator){
+                saveButton.setEnabled(true);
+                sendButton.setEnabled(true);
+            } else {
+                sendButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
+                saveButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
+            }
         } else {
         	sendButton.setEnabled(!tabPanel.getIsHidingTable());
         	saveButton.setEnabled(!tabPanel.getIsHidingTable());

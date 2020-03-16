@@ -327,37 +327,66 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     private void sendToSamp() {
 
         Log.debug("[ResultsPresenter] Into sendToSamp()");
-
+        
         HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
-        Map.Entry<String, String> tempEntry = getResultsTableURLPerMission();
-
-        if (tempEntry != null) {
-
-            final String tableName = tempEntry.getKey();
-            final String adqlQuery = tempEntry.getValue();
-
-            String sampUrl = Window.Location.getProtocol() + "//" + Window.Location.getHost()
-                    + TAPUtils.getTAPQuery(URL.encodeQueryString(adqlQuery), EsaSkyConstants.VOTABLE);
-
-            Log.debug("[ResultsPresenter/getResultsTableURLPerMission()] Adding query to Samp: ["
-                    + sampUrl + "] for tab: [" + tableName + "]");
-
-            // Store Tab/list of urls into the hashmap
-            sampUrlsPerMissionMap.put(tableName, sampUrl);
-
-            // Send all URL to Samp
-            CommonEventBus.getEventBus().fireEvent(new ESASkySampEvent(SampAction.SEND_VOTABLE,
-                    sampUrlsPerMissionMap));
-
-            // Display top progress bar...
-            Log.debug("[ResultsPresenter/sendToSamp()] About to send 'show top progress bar...' event!!!");
-
-            CommonEventBus.getEventBus().fireEvent(
-                    new ProgressIndicatorPushEvent(SampAction.SEND_VOTABLE.toString(),
-                            TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
-                            .replace(EsaSkyConstants.REPLACE_PATTERN, tableName), "Table: " + tableName + ", adqlQuery: " + adqlQuery + ", " + ", sampUrl: " + sampUrl));
+        if(Modules.useTabulator) {
+        	
+        	int currentTab = view.getTabPanel().getSelectedTabIndex();
+            ITablePanel tab = view.getTabPanel().getWidget(currentTab);
             
-            sendGAEventWithCurrentTab(GoogleAnalytics.CAT_TabToolbar_SendToSAMP, "");
+        		
+    		final String tableName = tab.getLabel();
+    		final String voTableString = tab.getVoTableString();
+    		
+    		// Store Tab/list of urls into the hashmap
+    		sampUrlsPerMissionMap.put(tableName, voTableString);
+    		
+    		// Send all URL to Samp
+    		CommonEventBus.getEventBus().fireEvent(new ESASkySampEvent(SampAction.SEND_VOTABLE,
+    				sampUrlsPerMissionMap));
+    		
+    		// Display top progress bar...
+    		Log.debug("[ResultsPresenter/sendToSamp()] About to send 'show top progress bar...' event!!!");
+    		
+    		CommonEventBus.getEventBus().fireEvent(
+    				new ProgressIndicatorPushEvent(SampAction.SEND_VOTABLE.toString(),
+    						TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
+    						.replace(EsaSkyConstants.REPLACE_PATTERN, tableName), "Table: " + tableName + ", voTable: " + voTableString));
+    		
+    		sendGAEventWithCurrentTab(GoogleAnalytics.CAT_TabToolbar_SendToSAMP, "");
+        	
+        } else {
+        	Map.Entry<String, String> tempEntry = getResultsTableURLPerMission();
+        	
+        	if (tempEntry != null) {
+        		
+        		final String tableName = tempEntry.getKey();
+        		final String adqlQuery = tempEntry.getValue();
+        		
+        		String sampUrl = Window.Location.getProtocol() + "//" + Window.Location.getHost()
+        		+ TAPUtils.getTAPQuery(URL.encodeQueryString(adqlQuery), EsaSkyConstants.VOTABLE);
+        		
+        		Log.debug("[ResultsPresenter/getResultsTableURLPerMission()] Adding query to Samp: ["
+        				+ sampUrl + "] for tab: [" + tableName + "]");
+        		
+        		// Store Tab/list of urls into the hashmap
+        		sampUrlsPerMissionMap.put(tableName, sampUrl);
+        		
+        		// Send all URL to Samp
+        		CommonEventBus.getEventBus().fireEvent(new ESASkySampEvent(SampAction.SEND_VOTABLE,
+        				sampUrlsPerMissionMap));
+        		
+        		// Display top progress bar...
+        		Log.debug("[ResultsPresenter/sendToSamp()] About to send 'show top progress bar...' event!!!");
+        		
+        		CommonEventBus.getEventBus().fireEvent(
+        				new ProgressIndicatorPushEvent(SampAction.SEND_VOTABLE.toString(),
+        						TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
+        						.replace(EsaSkyConstants.REPLACE_PATTERN, tableName), "Table: " + tableName + ", adqlQuery: " + adqlQuery + ", " + ", sampUrl: " + sampUrl));
+        		
+        		sendGAEventWithCurrentTab(GoogleAnalytics.CAT_TabToolbar_SendToSAMP, "");
+        	}
+        	
         }
     }
 
@@ -429,6 +458,17 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     private void doSaveTableAs(final ReturnType type) {
         Log.debug("[ResultsPresenter/doSaveTableAs()] Saving results table in format: "
                 + type.toString());
+        
+        if(Modules.useTabulator) {
+        	
+        	if (type.equals(ReturnType.CSV)) {
+        		view.getTabPanel().getSelectedWidget().exportAsCsv();
+        	} else {
+        		view.getTabPanel().getSelectedWidget().exportAsVot();
+        	}
+        	//TODO google events
+        	return;
+        }
 
         Map.Entry<String, String> tempEntry = getResultsTableURLPerMission();
         final String eventCategory = (type.equals(ReturnType.CSV)) ? GoogleAnalytics.CAT_Download_CSV : GoogleAnalytics.CAT_Download_VOT;
@@ -444,11 +484,11 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
             if (tab instanceof ExtTapTablePanel) {
                 Log.debug("[ResultsPresenter/doSaveTableAs()] Saving " + tableName + " in format: " + type.toString());
                 if (type.equals(ReturnType.CSV)) {
-                	((ExtTapTablePanel) tab).exportAsCSV();
+                	((ExtTapTablePanel) tab).exportAsCsv();
                     return;
                     
                 } else if (type.equals(ReturnType.VOTABLE)) {
-                	((ExtTapTablePanel) tab).exportAsVOTABLE();
+                	((ExtTapTablePanel) tab).exportAsVot();
                     return;
                 }
             }
@@ -457,10 +497,10 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
                 
                 Log.debug("[ResultsPresenter/doSaveTableAs()] Saving " + tableName + " in format: " + type.toString());
                 if (type.equals(ReturnType.CSV)) {
-                    view.getTabPanel().getAbstractTablePanelFromId(tableName).exportAsCSV();
+                    view.getTabPanel().getAbstractTablePanelFromId(tableName).exportAsCsv();
                     
                 } else if (type.equals(ReturnType.VOTABLE)) {
-                    view.getTabPanel().getAbstractTablePanelFromId(tableName).exportAsVOTABLE();
+                    view.getTabPanel().getAbstractTablePanelFromId(tableName).exportAsVot();
                 }
                 
             } else {

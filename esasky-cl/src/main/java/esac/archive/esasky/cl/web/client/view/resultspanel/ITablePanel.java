@@ -79,8 +79,8 @@ public interface ITablePanel {
 	
 	public String getUnfilteredRow(int rowIndex);	
 	public JSONObject exportAsJSON();
-	public void exportAsCSV();
-	public void exportAsVOTABLE();
+	public void exportAsCsv();
+	public void exportAsVot();
 	public String getFullId();	
 	
 	public void setEmptyTable(String emptyTableText);
@@ -97,4 +97,5 @@ public interface ITablePanel {
 	
 	public Widget getWidget();
 	public void registerClosingObserver(ClosingObserver closingObserver);
+	public String getVoTableString();
 }

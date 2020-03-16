@@ -1464,7 +1464,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		return jsonData;
 	}
 
-	public void exportAsCSV() {
+	public void exportAsCsv() {
 		String csvData = "";
 		final String separator = ",";
 		TapRowList rowList = getEntity().getMetadata();
@@ -1511,7 +1511,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv", csvData, ReturnType.CSV.getMimeType());
 	}
 
-	public void exportAsVOTABLE() {
+	public void exportAsVot() {
 
 		String votData = "";
 		TapRowList rowList = getEntity().getMetadata();
@@ -1710,6 +1710,12 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 
 	public Widget getWidget() {
 		return this;
+	}
+	
+	@Override
+	public String getVoTableString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

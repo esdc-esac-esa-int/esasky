@@ -1,273 +1,3 @@
-//package esac.archive.esasky.cl.web.client.event;
-//
-//import com.allen_sauer.gwt.log.client.Log;
-//import com.google.gwt.http.client.RequestBuilder;
-//import com.google.gwt.http.client.RequestCallback;
-//import com.google.gwt.http.client.RequestException;
-//import com.google.gwt.http.client.Response;
-//import com.google.gwt.user.client.Timer;
-//import com.google.gwt.user.client.Window;
-//import com.google.gwt.user.client.ui.Label;
-//
-//import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-//import esac.archive.esasky.cl.gsamp.client.GSampManager;
-//import esac.archive.esasky.cl.web.client.CommonEventBus;
-//import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-//import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
-//import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-//import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
-//
-///**
-// * @author Maria Henar Sarmiento Carrion Copyright (c) 2015 - European Space Agency
-// */
-//public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
-//
-//    /** Samp manager. */
-//    private GSampManager gsampManager;
-//    /** isFirstTime. */
-//    private boolean isFirstTime = true;
-//
-//    /**
-//     * Default constructor.
-//     */
-//    public ESASkySampEventHandlerImpl() {
-//        gsampManager = new GSampManager(new Label());
-//    }
-//
-//    /**
-//     * Method invoked when the event is fired.
-//     * @param event
-//     */
-//    @Override
-//    public final void onEvent(final ESASkySampEvent event) {
-//        // Preventing double clicks
-//        if (!isFirstTime) {
-//            Log.info("[ESASkySampEventHandlerImpl/onEvent()] Samp is currently attending other click event.");
-//            return;
-//        }
-//
-//        // Unregister action
-//        if (SampAction.UNREGISTER.equals(event.getAction())) {
-//            if (gsampManager.isApplicationRegistered()) {
-//                gsampManager.unregister();
-//            }
-//            isFirstTime = true;
-//            return;
-//        }
-//
-//        // Registering ESASky in case it is not registered yet
-//        int count = 0;
-//        if (!gsampManager.isApplicationRegistered()) {
-//            Log.debug("[ESASkySampEventHandlerImpl] ESASky is not registered yet into the hub !!!");
-//            gsampManager.launchRpcPingOnHub();
-//            Log.debug("[ESASkySampEventHandlerImpl] Rpc Ping on hub launched !!!");
-//            gsampManager.register();
-//            Log.debug("[ESASkySampEventHandlerImpl] ESASky registered !!!");
-//        }
-//
-//        // Send data in another thread using Timer object.
-//        CheckHubStatusTimer checkHubStatusTimer = new CheckHubStatusTimer(event, count);
-//        checkHubStatusTimer.schedule(0);
-//    }
-//
-//    /**
-//     * Send the URL to the awake applications.
-//     * @param event Input SampEvent
-//     * @throws Exception basic Java exception
-//     */
-//    public final void processEvent(final ESASkySampEvent event) throws Exception {
-//
-//        Log.info("[ESASkySampEventHandlerImpl.processEvent] " + event.getAction()
-//                + " Processing URLs  ");
-//
-//        switch (event.getAction()) {
-//
-//            case SEND_PRODUCT_TO_SAMP_APP:
-//                for (String tableName : event.getSampUrlsPerMissionMap().keySet()) {
-//                    // Get URL
-//                    String url = event.getSampUrlsPerMissionMap().get(tableName);
-//    
-//                    // Prepare sending message
-//                    String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
-//    
-//                    gsampManager.loadFitsImage(url, tableName, sendingMessage);
-//                }
-//                break;
-//    
-//            case SEND_VOTABLE:
-//    
-//                for (String tableName : event.getSampUrlsPerMissionMap().keySet()) {
-//    
-//                    // Get URL
-//                    String url = event.getSampUrlsPerMissionMap().get(tableName);
-//                    final String tableId = tableName;
-//    
-//                    if (url.length() > 1000) {
-//    
-//                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Url request to SAMP with more than 1000 characters");
-//    
-//                        final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
-//    
-//                        final String tinyURL = Window.Location.getProtocol() + "//"
-//                                + Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
-//                                + EsaSkyConstants.HttpServlet.TINY_URL_SERVLET;
-//    
-//                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Tiny Url servlet"
-//                                + tinyURL);
-//    
-//                        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tinyURL);
-//    
-//                        try {
-//                            // String data = "url=" + URL.encode(resourceUrl);
-//                            String data = "url=" + url;
-//                            requestBuilder.sendRequest(data, new RequestCallback() {
-//    
-//                                @Override
-//                                public void onError(final com.google.gwt.http.client.Request request,
-//                                        final Throwable exception) {
-//                                    Log.debug(
-//                                            "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-//                                            exception);
-//                                }
-//    
-//                                @Override
-//                                public void onResponseReceived(
-//                                        final com.google.gwt.http.client.Request request,
-//                                        final Response response) {
-//                                    String id = "";
-//                                    id = response.getText();
-//                                    String resourceUrl = tinyURL + "id=" + id;
-//                                    try {
-//    
-//                                        gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
-//                                    } catch (Exception e) {
-//    
-//                                        Log.debug(
-//                                                "[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
-//                                                e);
-//    
-//                                        throw new IllegalStateException(
-//                                                "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
-//                                    }
-//                                }
-//    
-//                            });
-//                        } catch (RequestException e) {
-//                            Log.debug(
-//                                    "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-//                                    e);
-//                        }
-//                    } else {
-//    
-//                        String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableId;
-//                        gsampManager.loadVoTable(url, tableId, sendingMessage);
-//                    }
-//                } // end 1st for
-//                break;
-//    
-//            default:
-//                // Enable again the button
-//                isFirstTime = true;
-//                throw new IllegalStateException(
-//                        "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction "
-//                                + event.getAction());
-//
-//        }
-//
-//        // Restart boolean value.
-//        isFirstTime = true;
-////        CommonEventBus.getEventBus().fireEvent(
-////                new ProgressIndicatorPopEvent(event.getAction().toString()));
-//    }
-//
-//    /**
-//     * Timer responsible for attempt the SampAction after ESASky has been registered.
-//     *
-//     * @author mhsarmiento
-//     *
-//     */
-//    private class CheckHubStatusTimer extends Timer {
-//
-//        /** Max number of registering tries. */
-//        private final Integer MAX_TRIES_REGISTER = 20;
-//        /** Max number of tries checking clients. */
-//        private final Integer MIN_TRIES_CHECKING_CLIENTS = 1;
-//
-//        /** local count. */
-//        private int count;
-//        /** local sampEvent. */
-//        private ESASkySampEvent event;
-//
-//        /**
-//         * Default constructor.
-//         * @param inputEvent Input Samp Event
-//         * @param inputCount Input integer.
-//         */
-//        public CheckHubStatusTimer(final ESASkySampEvent inputEvent, final int inputCount) {
-//            Log.debug("[ESASkySampEventHandlerImpl.CheckHubStatusTimer] Into Check hub Status Timer!!!");
-//            this.count = inputCount;
-//            this.event = inputEvent;
-//            this.count++;
-//        }
-//
-//        /**
-//         * Where job is done.
-//         */
-//        @Override
-//        public void run() {
-//
-//            if (this.count > MAX_TRIES_REGISTER) {
-//                Log.debug("[ESASkySampEventHandlerImpl.CheckHubStatusTimer] Maximum number of attemps exceeded !!!");
-//                CommonEventBus.getEventBus().fireEvent(
-//                        new ProgressIndicatorPopEvent(event.getAction().toString()));
-//                return;
-//            }
-//
-//            try {
-//                if (gsampManager.isApplicationRegistered()) {
-//                    isFirstTime = false;
-//                    processEvent(event);
-//                } else {
-//                    if (count > MIN_TRIES_CHECKING_CLIENTS && notAvailableClients()) {
-//
-//                        // Create an ancillary widget to show the links to Aladin/Topcat/DS9
-//                        DisplayUtils.showMessageDialogBox(DisplayUtils.createSampAppsWidgets(),
-//                                TextMgr.getInstance().getText("sampConstants_help"),
-//                                event.getAction().toString());
-//
-//                        // Enable again the button
-//                        isFirstTime = true;
-//                        return;
-//                    }
-//
-//                    CheckHubStatusTimer checkHubStatusTimer = new CheckHubStatusTimer(event,
-//                            this.count);
-//                    checkHubStatusTimer.schedule(1000);
-//
-//                }
-//            } catch (Exception e) {
-//                CheckHubStatusTimer checkHubStatusTimer = new CheckHubStatusTimer(event, this.count);
-//                checkHubStatusTimer.schedule(1000);
-//            }
-//        }
-//
-//        /**
-//         * Returns true in case there are not any client available to send the data via SAMP: status
-//         * == false and not registered.
-//         * @return boolean value.
-//         */
-//        private Boolean notAvailableClients() {
-//            Boolean hubStatus = null;
-//            try {
-//                hubStatus = gsampManager.getHubStatus();
-//            } catch (Exception e) {
-//                Log.warn("[ESASkySampEventHandler.notAvailableClients] STATUS exception" + e);
-//                hubStatus = null;
-//            }
-//            return Boolean.FALSE.equals(hubStatus) && !gsampManager.isApplicationRegistered();
-//        }
-//    }
-//}
 package esac.archive.esasky.cl.web.client.event;
 
 import java.util.Iterator;
@@ -286,6 +16,7 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.gsamp.client.GSampManager;
 import esac.archive.esasky.cl.gsamp.client.model.SampClient;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -416,71 +147,131 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
     
                 for (String tableName : event.getSampUrlsPerMissionMap().keySet()) {
     
-                    // Get URL
-                    String url = event.getSampUrlsPerMissionMap().get(tableName);
-                    final String tableId = tableName;
-    
-                    if (url.length() > 1000) {
-    
-                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Url request to SAMP with more than 1000 characters");
-    
-                        final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
-    
-                        final String tinyURL = Window.Location.getProtocol() + "//"
-                                + Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
-                                + EsaSkyConstants.HttpServlet.TINY_URL_SERVLET;
-    
-                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Tiny Url servlet"
-                                + tinyURL);
-    
-                        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tinyURL);
-    
-                        try {
-                            final String data = "url=" + url;
-                            requestBuilder.sendRequest(data, new RequestCallback() {
-    
-                                @Override
-                                public void onError(final com.google.gwt.http.client.Request request,
-                                        final Throwable exception) {
-                                	sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
-                                    Log.debug(
-                                            "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-                                            exception);
-                                }
-    
-                                @Override
-                                public void onResponseReceived(
-                                        final com.google.gwt.http.client.Request request,
-                                        final Response response) {
-                                    String id = "";
-                                    id = response.getText();
-                                    String resourceUrl = tinyURL + "id=" + id;
-                                    Log.debug(resourceUrl);
-                                    try {
-                                        gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
-                                    } catch (Exception e) {
-                                    	sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + tinyURL + ", Exception: " + e.toString());
-                                        Log.debug(
-                                                "[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
-                                                e);
-    
-                                        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
-                                        throw new IllegalStateException(
-                                                "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
-                                    }
-                                }
-    
-                            });
-                        } catch (RequestException e) {
-                            Log.debug(
-                                    "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-                                    e);
-                        }
-                    } else {
-    
-                        String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableId;
-                        gsampManager.loadVoTable(url, tableId, sendingMessage);
-                    }
+                	if(Modules.useTabulator) {
+                		// Get URL
+                		String voTable = event.getSampUrlsPerMissionMap().get(tableName);
+                		final String tableId = tableName;
+                		
+            			final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
+            			
+            			final String votableBufferUrl = Window.Location.getProtocol() + "//"
+            					+ Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
+            					+ EsaSkyConstants.HttpServlet.VOTABLE_BUFFER_SERVLET;
+            			
+            			Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Votable buffer servlet"
+            					+ votableBufferUrl);
+            			
+            			RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, votableBufferUrl);
+            			
+            			try {
+            				final String data = "vot=" + voTable;
+            				requestBuilder.sendRequest(data, new RequestCallback() {
+            					
+            					@Override
+            					public void onError(final com.google.gwt.http.client.Request request,
+            							final Throwable exception) {
+            						sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
+            						Log.debug(
+            								"[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
+            								exception);
+            					}
+            					
+            					@Override
+            					public void onResponseReceived(
+            							final com.google.gwt.http.client.Request request,
+            							final Response response) {
+            						String id = "";
+            						id = response.getText();
+            						String resourceUrl = votableBufferUrl + "id=" + id;
+            						Log.debug(resourceUrl);
+            						try {
+            							gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
+            						} catch (Exception e) {
+            							sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + votableBufferUrl + ", Exception: " + e.toString());
+            							Log.debug(
+            									"[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
+            									e);
+            							
+            							CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
+            							throw new IllegalStateException(
+            									"[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
+            						}
+            					}
+            					
+            				});
+            			} catch (RequestException e) {
+            				Log.debug(
+            						"[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
+            						e);
+            			}
+                		
+                	} else {
+	                    // Get URL
+	                    String url = event.getSampUrlsPerMissionMap().get(tableName);
+	                    final String tableId = tableName;
+	    
+	                    if (url.length() > 1000) {
+	    
+	                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Url request to SAMP with more than 1000 characters");
+	    
+	                        final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
+	    
+	                        final String tinyURL = Window.Location.getProtocol() + "//"
+	                                + Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
+	                                + EsaSkyConstants.HttpServlet.TINY_URL_SERVLET;
+	    
+	                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Tiny Url servlet"
+	                                + tinyURL);
+	    
+	                        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tinyURL);
+	    
+	                        try {
+	                            final String data = "url=" + url;
+	                            requestBuilder.sendRequest(data, new RequestCallback() {
+	    
+	                                @Override
+	                                public void onError(final com.google.gwt.http.client.Request request,
+	                                        final Throwable exception) {
+	                                	sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
+	                                    Log.debug(
+	                                            "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
+	                                            exception);
+	                                }
+	    
+	                                @Override
+	                                public void onResponseReceived(
+	                                        final com.google.gwt.http.client.Request request,
+	                                        final Response response) {
+	                                    String id = "";
+	                                    id = response.getText();
+	                                    String resourceUrl = tinyURL + "id=" + id;
+	                                    Log.debug(resourceUrl);
+	                                    try {
+	                                        gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
+	                                    } catch (Exception e) {
+	                                    	sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + tinyURL + ", Exception: " + e.toString());
+	                                        Log.debug(
+	                                                "[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
+	                                                e);
+	    
+	                                        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
+	                                        throw new IllegalStateException(
+	                                                "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
+	                                    }
+	                                }
+	    
+	                            });
+	                        } catch (RequestException e) {
+	                            Log.debug(
+	                                    "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
+	                                    e);
+	                        }
+	                    } else {
+	    
+	                        String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableId;
+	                        gsampManager.loadVoTable(url, tableId, sendingMessage);
+	                    }
+                	}
                 } // end 1st for
                 break;
     

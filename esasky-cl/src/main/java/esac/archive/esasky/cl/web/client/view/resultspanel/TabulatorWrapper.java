@@ -64,6 +64,31 @@ public class TabulatorWrapper{
 	public void onFilterChanged(String label, String filter) {
 		tabulatorCallback.onFilterChanged(label, filter);
 	}
+	
+   public void downloadCsv(String fileName){
+        downloadCsv(tableJsObject, fileName);
+    }
+   
+    private native void downloadCsv(GeneralJavaScriptObject tableJsObject, String fileName)/*-{
+        tableJsObject.download("csv", fileName, {bom:true});
+    }-*/;
+    
+    public void downloadVot(String fileName, String resourceName){
+        downloadVot(tableJsObject, fileName, resourceName);
+    }
+    
+    private native void downloadVot(GeneralJavaScriptObject tableJsObject, String fileName, String resourceName)/*-{
+        tableJsObject.download(tableJsObject.voTableFormatter, fileName, {resourceName:resourceName});
+    }-*/;
+    
+    public String getVot(String resourceName){
+        return getVot(tableJsObject, resourceName);
+    }
+    
+    private native String getVot(GeneralJavaScriptObject tableJsObject, String resourceName)/*-{
+        return tableJsObject.getVoTableString(tableJsObject.getData(), resourceName);
+    }-*/;
+        
 
 	private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String url) /*-{
 		var visibleTableData = [];
@@ -72,7 +97,7 @@ public class TabulatorWrapper{
 		var isInitializing = true;
 		var previouslySelectedMap = [];
 		var selectionMap = [];
-		var columnDef;
+		var metadata;
 		var refinedColumnDef = [];
 		function DoubleFilter(headerValue, rowValue, rowData, filterParams){
 		    //headerValue - the value of the header filter element
@@ -103,20 +128,20 @@ public class TabulatorWrapper{
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	ajaxURL:url,
 		    ajaxResponse:function(url, params, response){
-				columnDef = response.metadata;
+				metadata = response.metadata;
 				
 				var data = [];
 				for(var i = 0; i < response.data.length; i++){
 					var row = {};
 					row['id'] = i;
-					for(var j = 0; j < columnDef.length; j++){
-		    			if(columnDef[j].datatype === "DOUBLE"){
-							row[columnDef[j].name] = parseFloat(response.data[i][j]);
-			    			if(isNaN(row[columnDef[j].name])){
-								row[columnDef[j].name] = undefined;
+					for(var j = 0; j < metadata.length; j++){
+		    			if(metadata[j].datatype === "DOUBLE"){
+							row[metadata[j].name] = parseFloat(response.data[i][j]);
+			    			if(isNaN(row[metadata[j].name])){
+								row[metadata[j].name] = undefined;
 			    			}
 		    			} else {
-							row[columnDef[j].name] = response.data[i][j];
+							row[metadata[j].name] = response.data[i][j];
 		    			}
 					}
 					data[i] = row;
@@ -128,17 +153,15 @@ public class TabulatorWrapper{
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    },
 		    dataLoading:function(data){
-
-		    	
 		    	refinedColumnDef[0] = {formatter:"rowSelection", titleFormatter:"rowSelection"};
-		    	for(var i = 0; i < columnDef.length; i++){
+		    	for(var i = 0; i < metadata.length; i++){
 		    		var sorter = "string";
-		    		if(columnDef[i].datatype === "DOUBLE"){
+		    		if(metadata[i].datatype === "DOUBLE"){
 		    			sorter = "number";
 		    		}
-		    		refinedColumnDef[i + 1] = {title:columnDef[i].name, 
-		    			field:columnDef[i].name,
-		    			headerTooltip:columnDef[i].description,
+		    		refinedColumnDef[i + 1] = {title:metadata[i].name, 
+		    			field:metadata[i].name,
+		    			headerTooltip:metadata[i].description,
 		    			sorter: sorter,
 		    			headerFilter: true,
 		    			headerFilterFunc:DoubleFilter,
@@ -187,6 +210,56 @@ public class TabulatorWrapper{
 		 	movableColumns: true,
 		 	autoColumns: true
 		});
+		
+		
+		
+		table.getVoTableString = function(data, resourceName){
+			// Add VOT XML Schema
+			var votData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+                votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
+				votData += "<RESOURCE name=\"" + resourceName + "\">\n";
+				votData += "<TABLE>\n";
+			
+			// Adds headers to xml
+			metadata.forEach(function (columnInfo) {
+				votData += "<FIELD";
+				Object.keys(columnInfo).forEach(function (key) {
+					if(columnInfo[key] !== null) {
+						votData += " " + key + "=\"" + columnInfo[key] + "\"";
+					}
+					
+				});
+				votData += "/>\n";
+			});//TODO TEST with Publications
+			
+			// Adds data to xml
+			votData += "<DATA>\n";
+			votData += "<TABLEDATA>\n";
+			
+			data.forEach(function (row) {
+				votData += "<TR>\n";
+				metadata.forEach(function (columnInfo) {
+					var value = row[columnInfo.name] || "";
+					votData += "<TD>"
+							+ value
+							+ "</TD>\n";
+				});
+					
+				votData += "</TR>\n";
+			})
+		
+			votData += "</TABLEDATA>\n";
+			votData += "</DATA>\n";
+			votData += "</TABLE>\n";
+			votData += "</RESOURCE>\n";
+			votData += "</VOTABLE>\n";
+			
+			return votData;
+		}
+		table.voTableFormatter = function(columns, data, options, setFileContents){
+		    setFileContents(table.getVoTableString(data.data, options.resourceName), "application/x-votable+xml");
+		}
+		
 
 		isInitializing = false;
 		return table;
