@@ -43,10 +43,20 @@ public class TAPExtTapService extends AbstractMetadataService {
 	    }
     	
     	if(descriptor.getWhereADQL() != null) {
-    		adql += " AND " + descriptor.getWhereADQL();
+    		if(adql.contains("WHERE")) {
+    			adql += " AND ";
+    		}else {
+    			adql += " WHERE ";
+    		}
+    		adql += descriptor.getWhereADQL();
     	}
     	if(descriptor.getDateADQL() != null) {
-    		adql += " AND " + descriptor.getDateADQL();
+    		if(adql.contains("WHERE")) {
+    			adql += " AND ";
+    		}else {
+    			adql += " WHERE ";
+    		}
+    		adql += descriptor.getDateADQL();
     	}
     	
     	if(descriptor.getOrderByADQL() != null) {
