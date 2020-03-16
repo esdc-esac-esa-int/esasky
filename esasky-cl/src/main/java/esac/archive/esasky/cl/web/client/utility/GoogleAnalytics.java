@@ -147,7 +147,7 @@ public final class GoogleAnalytics {
     
     public static final String ACT_Welcome_Science = "Science";
     public static final String ACT_Welcome_Explorer = "Explorer";
-    public static final String ACT_Welcome_Close = "Previous";
+    public static final String ACT_Welcome_Close = "CloseWithoutSelection";
     public static final String ACT_Welcome_DoNotShowAgain = "DoNotShowAgain";
     
     public static final String ACT_Slider_Moved = "Moved";
