@@ -569,7 +569,7 @@
 		Explore data for $TARGET$
 	</text>
 	<text key="webConstants_exploreExtTaps">
-		Explore data from External Tap services in this region
+		Explore data from External TAP services in this region
 	</text>
 	<text key="webConstants_trackSSO">
 		Track solar system objects through the search box
