@@ -157,7 +157,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	int index = 0;
     	double fov = AladinLiteWrapper.getInstance().getFovDeg();
-    	int minOrder = 8;//ESASkyResultMOC.getMinOrderFromFoV(fov);
+    	int minOrder = ESASkyResultMOC.getMinOrderFromFoV(fov);
     	int maxOrder = ESASkyResultMOC.getMaxOrderFromFoV(fov);
     	
 		moc.populateCountMap(countMap, index, minOrder, maxOrder);
@@ -455,6 +455,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	private void closingPanel(ITablePanel tablePanel) {
 		clearAll();
+		shouldBeShown = false;
 		
 	}
 	
