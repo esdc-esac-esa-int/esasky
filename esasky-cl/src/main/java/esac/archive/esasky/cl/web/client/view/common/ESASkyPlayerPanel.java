@@ -308,7 +308,9 @@ public class ESASkyPlayerPanel extends Composite {
         showPlayButton();
         CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(playerId));
         double timePlayed = (System.currentTimeMillis()- timeSincePlayerStarted ) / 1000.0 ;
-        GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Pause, Double.toString(timePlayed));
+        if(timeSincePlayerStarted > 0.1) {
+            GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Pause, Double.toString(timePlayed));
+        }
     }
 
     private void play() {
