@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
+import com.allen_sauer.gwt.log.client.Log;
+
 public final class GoogleAnalytics {
 
     //Categories
@@ -198,6 +200,7 @@ public final class GoogleAnalytics {
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{
 		try{
         	$wnd.ga('send', 'event', eventCategory, eventAction, eventLabel);
+        	@esac.archive.esasky.cl.web.client.utility.GoogleAnalytics::logEvent(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(eventCategory, eventAction, eventLabel);
 		}
 		catch(e){}			
 	}-*/; 
@@ -209,4 +212,8 @@ public final class GoogleAnalytics {
 	public static void sendEventWithURL(String eventCategory, String eventAction, String extra){
         sendEvent(eventCategory, eventAction, UrlUtils.getUrlForCurrentState() + "Extras: " + extra);
     }
+	
+	public static void logEvent(String eventCategory, String eventAction, String label){
+	    Log.debug("GA Event - Category: " + eventCategory + " - Action: " + eventAction + " - Label: " + label);
+	}
 }
