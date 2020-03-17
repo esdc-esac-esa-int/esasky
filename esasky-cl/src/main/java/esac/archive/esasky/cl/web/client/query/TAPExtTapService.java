@@ -197,6 +197,11 @@ public class TAPExtTapService extends AbstractMetadataService {
         }
     }
     
+    @Override
+    public String getHeaderAdql(IDescriptor descriptorInput) {
+    	return "SELECT TOP 0 * FROM " + descriptorInput.getTapTable();
+    }
+    
     public String getCountAdql(IDescriptor descriptorInput, boolean MOC) {
     	if(!MOC) {
     		return getCountAdql(descriptorInput);

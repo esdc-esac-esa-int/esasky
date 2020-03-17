@@ -134,8 +134,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void setTablePanel(ITablePanel panel) {
 		if(this.tablePanel != panel) {
 			this.tablePanel = panel;
-			//TODO
-//			panel.registerFilterObserver(filterObserver);
+			panel.registerFilterObserver(filterObserver);
 		}
 	}
     	
@@ -214,10 +213,10 @@ public class MOCEntity implements GeneralEntityInterface {
         String adql = TAPMetadataCatalogueService.getInstance().getMetadataAdqlFromIpix(descriptor, order, ipix);
         
     	String filter = "";
-//        for(String key : tablePanel.tapFilters.keySet()) {
-//			filter += " AND ";
-//			filter += tablePanel.tapFilters.get(key);
-//    	}
+        for(String key : tablePanel.getTapFilters().keySet()) {
+			filter += " AND ";
+			filter += tablePanel.getTapFilters().get(key);
+    	}
         adql += filter;
     	
     	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
@@ -239,11 +238,11 @@ public class MOCEntity implements GeneralEntityInterface {
 //    	
 //    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 
-//    	String filter = "";
-//    	for(String key : tablePanel.tapFilters.keySet()) {
-//    		filter += " AND ";
-//    		filter += tablePanel.tapFilters.get(key);
-//    	}
+    	String filter = "";
+    	for(String key : tablePanel.getTapFilters().keySet()) {
+    		filter += " AND ";
+    		filter += tablePanel.getTapFilters().get(key);
+    	}
     	
     	parentEntity.fetchDataWithoutMOC(tablePanel);
     	shouldBeShown = false;
@@ -317,8 +316,8 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	int targetOrder = ESASkyResultMOC.getTargetOrderFromFoV(fov);
     	
-//|    	if(targetOrder == 8 && tablePanel.tapFilters.size() == 0) {
-		if(targetOrder == 8 ) {
+    	if(targetOrder == 8 && tablePanel.getTapFilters().size() == 0) {
+//		if(targetOrder == 8 ) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
     	}
@@ -368,11 +367,11 @@ public class MOCEntity implements GeneralEntityInterface {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
     	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
     	String filter = "";
-//    	
-//    	for(String key : tablePanel.tapFilters.keySet()) {
-//    			filter += " AND ";
-//    		filter += tablePanel.tapFilters.get(key);
-//    	}
+    	
+    	for(String key : tablePanel.getTapFilters().keySet()) {
+    			filter += " AND ";
+    		filter += tablePanel.getTapFilters().get(key);
+    	}
 
 		String adql = "SELECT " + Integer.toString(order) + " as moc_order,"
 				+ "esasky_q3c_bitshift_right(q3c_ang2ipix(ra,dec), " + Integer.toString(60 - 2 * order) + ") as moc_ipix, count(*) as moc_count"
@@ -499,6 +498,7 @@ public class MOCEntity implements GeneralEntityInterface {
 				count += c;
 			}
 		}
+		Log.debug("MOC count: " + Integer.toString(count));
 		return count;
 	}
 	
@@ -641,6 +641,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	@Override
 	public void hideShapes(List<Integer> shapeIds) {
 		defaultEntity.hideShapes(shapeIds);
+	}
+	
+	@Override
+	public void hideAllShapes() {
+		defaultEntity.hideAllShapes();
 	}
 
 	@Override

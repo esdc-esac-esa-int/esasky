@@ -173,5 +173,32 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
 
         return parsedAdql;
     }
+    
+    public String getHeaderAdql(IDescriptor descriptorInput) {
+        CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
+
+        String adql = "select top 0 ";
+
+        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
+            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + descriptor.getPolygonDecTapColumn() + ", ";
+            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + descriptor.getPolygonRaTapColumn() + ", ";
+            } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
+                adql += " " + currentMetadata.getTapName() + " as "
+                        + currentMetadata.getTapName() + ", ";
+            } else {
+                adql += " " + currentMetadata.getTapName() + ", ";
+            }
+        }
+
+        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+        parsedAdql.replace("\\s*,\\s*$", "");
+        parsedAdql += " from " + descriptor.getTapTable();
+
+        return parsedAdql;
+    }
 
 }

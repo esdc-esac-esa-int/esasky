@@ -474,6 +474,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 					});
 					entity.deselectShapes(selectionId);
 				}
+				
+				@Override
+				public void onDataFiltered(List<Integer> indexArray) {
+					entity.hideAllShapes();
+					entity.showShapes(indexArray);
+				}
 
 				@Override
 				public void onRowMouseEnter(int rowId) {
@@ -572,16 +578,26 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
  	   }
     }
     
-    public Map<String, String> tapFilters = new HashMap<String, String>();
+    private Map<String, String> tapFilters = new HashMap<String, String>();
+    
+    public Map<String, String> getTapFilters(){
+    	return tapFilters;
+    };
 	
 	private void addTapFilter(String label, String tapFilter) {
+		boolean shouldNotify = true;
 		if(tapFilter.length() > 0) {
+			if(tapFilters.containsKey(label) && tapFilter == tapFilters.get(label)){
+					shouldNotify = false;
+			}
 			tapFilters.put(label, tapFilter);
 		}else if(tapFilters.containsKey(label)) {
 			tapFilters.remove(label);
 		}
 		
-		notifyFilterObservers();
+		if(shouldNotify){
+			notifyFilterObservers();
+		}
 	}
 	
 	LinkedList<AbstractTableFilterObserver> filterObservers = new LinkedList<>();

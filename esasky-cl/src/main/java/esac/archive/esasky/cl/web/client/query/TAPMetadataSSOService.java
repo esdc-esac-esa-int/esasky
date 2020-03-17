@@ -69,4 +69,10 @@ public class TAPMetadataSSOService extends AbstractMetadataService {
 		return null;
 	}
 
+	@Override
+	public String getHeaderAdql(IDescriptor descriptor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

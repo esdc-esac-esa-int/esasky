@@ -153,6 +153,10 @@ public class DefaultEntity implements GeneralEntityInterface{
     public String getMetadataAdql() {
     	return metadataService.getMetadataAdql(getDescriptor());
     }
+
+    public String getHeaderAdql() {
+    	return metadataService.getHeaderAdql(getDescriptor());
+    }
     
     @Override
     public SelectableImage getTypeIcon() {
@@ -223,7 +227,7 @@ public class DefaultEntity implements GeneralEntityInterface{
         	}
         });
 	}
-
+	
 	@Override
 	public void coneSearch(final ITablePanel tablePanel, final SkyViewPosition conePos) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
@@ -255,6 +259,14 @@ public class DefaultEntity implements GeneralEntityInterface{
 			}
 		});
 	}
+	
+	 public void fetchHeaders(final ITablePanel tablePanel) {
+		 if(Modules.useTabulator) {
+// 			clearAll();
+ 			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(getHeaderAdql()), EsaSkyConstants.JSON));
+ 		}
+	 }
+	
 	
 	public void setDrawer(IShapeDrawer drawer) {
 		this.drawer = drawer;
@@ -313,6 +325,11 @@ public class DefaultEntity implements GeneralEntityInterface{
 	@Override
 	public void hideShapes(List<Integer> shapeIds) {
 		drawer.hideShapes(shapeIds);
+	}
+	
+	@Override
+	public void hideAllShapes() {
+		drawer.hideAllShapes();
 	}
 
 	@Override

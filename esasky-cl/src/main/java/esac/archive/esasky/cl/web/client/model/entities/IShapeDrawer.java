@@ -22,6 +22,7 @@ public interface IShapeDrawer {
     public void showAndHideShapes(List<Integer> shapesIdsToShow, List<Integer> shapeIdsToHide);
     public void hideShape(int rowId);
     public void hideShapes(List<Integer> shapeIds);
+    public void hideAllShapes();
     public void setShapeBuilder(ShapeBuilder shapeBuilder);
     public void hoverStart(int hoveredShapeId);
     public void hoverStop(int hoveredShapeId);

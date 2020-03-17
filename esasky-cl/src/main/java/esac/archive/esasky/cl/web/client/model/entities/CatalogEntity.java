@@ -628,13 +628,14 @@ public class CatalogEntity implements GeneralEntityInterface{
     	}
     	
     	if (mocLimit > 0 && count > mocLimit) {
+    		defaultEntity.fetchHeaders(tablePanel);
     		mocEntity.setTablePanel(tablePanel);
     		mocEntity.refreshMOC();
     	}else {
     		defaultEntity.fetchData(tablePanel);
     	}
 	}
-
+	
 	public void fetchDataWithoutMOC(final ITablePanel tablePanel) {
 		defaultEntity.fetchData(tablePanel);
 	}
@@ -752,5 +753,10 @@ public class CatalogEntity implements GeneralEntityInterface{
 						setShowAvgProperMotion(checkedOne, checkedTwo);
 					}
 				});
+	}
+
+	@Override
+	public void hideAllShapes() {
+		defaultEntity.hideAllShapes();
 	}
 }

@@ -91,4 +91,10 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getHeaderAdql(IDescriptor descriptor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -22,7 +22,7 @@ public class MocDrawer implements IShapeDrawer{
 
 
 	public MocDrawer(String color) {
-		String options = "{\"opacity\":0.4, \"color\":\"" + color + "\"}";
+		String options = "{\"opacity\":0.2, \"color\":\"" + color + "\"}";
 		moc = AladinLiteWrapper.getAladinLite().createMOC(options);
 	}
 
@@ -100,6 +100,11 @@ public class MocDrawer implements IShapeDrawer{
     @Override
     public void hideShapes(List<Integer> shapeIds) {
 		//TODO
+    }
+
+    @Override
+    public void hideAllShapes() {
+    	//TODO
     }
     
     @Override

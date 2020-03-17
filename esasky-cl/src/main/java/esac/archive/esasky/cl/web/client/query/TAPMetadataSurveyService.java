@@ -79,4 +79,23 @@ public class TAPMetadataSurveyService extends AbstractMetadataService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String getHeaderAdql(IDescriptor descriptor) {
+        final String debugPrefix = "[TAPMetadataObservationService.getHeaders]";
+
+        Log.debug(debugPrefix);
+
+        String adql = "SELECT TOP 0 ";
+        for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
+            MetadataDescriptor castMetadata = currMetadata;
+            adql += " " + castMetadata.getTapName() + ", ";
+        }
+
+        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+        parsedAdql.replace("\\s*,\\s*$", "");
+        parsedAdql += " FROM " + descriptor.getTapTable();
+
+        return parsedAdql;
+	}
 }

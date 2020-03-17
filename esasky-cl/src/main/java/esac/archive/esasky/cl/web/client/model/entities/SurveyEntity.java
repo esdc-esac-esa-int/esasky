@@ -197,6 +197,11 @@ public class SurveyEntity implements GeneralEntityInterface{
 	public void hideShapes(List<Integer> shapeIds) {
 		defaultEntity.hideShapes(shapeIds);
 	}
+	
+	@Override
+	public void hideAllShapes() {
+		defaultEntity.hideAllShapes();
+	}
 
 	@Override
 	public void setShapeBuilder(ShapeBuilder shapeBuilder) {

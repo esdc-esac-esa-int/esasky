@@ -172,6 +172,18 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     }
     
     @Override
+    public void hideAllShapes() {
+    	for(Integer[] index : allShapesIndexes) {
+    		
+    		if(index[0] != -1) {
+    			AladinLiteWrapper.getAladinLite().hideShape(sourceShapes.get(index[0]).getJsObject());
+    		}else {
+    			AladinLiteWrapper.getAladinLite().hideShape(footPrintshapes.get(index[1]).getJsObject());
+    		}
+    	}
+    }
+    
+    @Override
     public void showShape(int shapeId) {
         Integer[] index = allShapesIndexes.get(shapeId);
 		

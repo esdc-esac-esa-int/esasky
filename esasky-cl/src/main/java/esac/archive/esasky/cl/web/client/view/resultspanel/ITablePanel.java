@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.json.client.JSONObject;
@@ -37,7 +38,6 @@ public interface ITablePanel {
 
 	public void clearTable();
 	
-
 	public void refreshHeight();
 	public String getEsaSkyUniqID();
 
@@ -97,5 +97,9 @@ public interface ITablePanel {
 	
 	public Widget getWidget();
 	public void registerClosingObserver(ClosingObserver closingObserver);
+	
+	public void registerFilterObserver(AbstractTableFilterObserver observer);
+	public Map<String, String> getTapFilters();
+	
 	public String getVoTableString();
 }
