@@ -35,9 +35,7 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     public String getMetadataAdql(IDescriptor descriptorInput) {
         CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
 
-        int top = getResultsLimit(descriptor.getSourceLimit());
-
-        String adql = "select top " + top + " ";
+        String adql = "select top " + getResultsLimit(descriptor.getSourceLimit()) + " ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
             if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
