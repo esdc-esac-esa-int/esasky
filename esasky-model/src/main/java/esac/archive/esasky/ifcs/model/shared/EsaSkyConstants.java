@@ -64,7 +64,7 @@ public class EsaSkyConstants {
                 "/servlet/fits-spectra-action?"), FITS_METADATA_SERVLET(
                 "/servlet/fits-metadata-action?"), FITS_IMAGE_SERVLET("/servlet/fits-image-action?"), QUERY_RESULTS_DOWNLOAD_SERVLET(
                                                         "/servlet/query-results-download-action?"), TINY_URL_SERVLET(
-                                                                "/servlet/tiny-url-action?"), VOTABLE_BUFFER_SERVLET("/servlet/tiny-url-action?");
+                                                                "/servlet/tiny-url-action?"), VOTABLE_BUFFER_SERVLET("/servlet/votable-buffer?");
 
         /** enum attrubite. */
         private String value;
