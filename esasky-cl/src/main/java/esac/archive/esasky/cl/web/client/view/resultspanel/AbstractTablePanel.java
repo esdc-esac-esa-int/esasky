@@ -1717,5 +1717,11 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+    @Override
+    public Map<String, String> getTapFilters() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }
