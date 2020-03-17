@@ -22,7 +22,12 @@ public class TAPMetadataSurveyService extends AbstractMetadataService {
         }
         return instance;
     }
-
+    
+    @Override
+    public String getMetadataAdql(IDescriptor descriptorInput) {
+    	return getMetadataAdql(descriptorInput, "");
+    }
+    
     /**
      * getMetadata4Footprints().
      * @param aladinLite Input AladinLiteWidget.
@@ -30,7 +35,7 @@ public class TAPMetadataSurveyService extends AbstractMetadataService {
      * @return Query in ADQL format.
      */
     @Override
-    public String getMetadataAdql(IDescriptor descriptor) {
+    public String getMetadataAdql(IDescriptor descriptor, String filter) {
         String adql = "SELECT DISTINCT";
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
             adql += " " + currentMetadata.getTapName() + ", ";
@@ -69,6 +74,8 @@ public class TAPMetadataSurveyService extends AbstractMetadataService {
 
         }
         parsedAdql += shape + ")";
+        
+        parsedAdql += filter;
 
         Log.debug("[TAPQueryBuilder/getMetadata4Footprints()] ADQL " + parsedAdql);
         return parsedAdql;

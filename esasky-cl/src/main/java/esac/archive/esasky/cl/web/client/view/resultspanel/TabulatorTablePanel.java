@@ -600,6 +600,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 		}
 	}
 	
+	public String getFilterString() {
+		String filter = "";
+		for(String key : getTapFilters().keySet()) {
+			filter += " AND ";
+			filter += getTapFilters().get(key);
+		}
+		return filter;
+	}
+	
 	LinkedList<AbstractTableFilterObserver> filterObservers = new LinkedList<>();
 	
 	public void registerFilterObserver(AbstractTableFilterObserver observer){

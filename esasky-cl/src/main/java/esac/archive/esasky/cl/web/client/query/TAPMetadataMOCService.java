@@ -23,6 +23,11 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
         return instance;
     }
 
+    @Override
+    public String getMetadataAdql(IDescriptor descriptorInput) {
+    	return getMetadataAdql(descriptorInput, "");
+    }
+    
     /**
      * getMOC().
      * @param aladinLite Input AladinLiteWidget.
@@ -30,7 +35,7 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
      * @return Query in ADQL format.
      */
     @Override
-    public String getMetadataAdql(IDescriptor inputDescriptor) {
+    public String getMetadataAdql(IDescriptor inputDescriptor, String filter) {
         CommonObservationDescriptor descriptor = (CommonObservationDescriptor) inputDescriptor;
         Log.debug("[TAPQueryBuilder/getMOC()] Cooframe "
                 + AladinLiteWrapper.getAladinLite().getCooFrame());
@@ -81,6 +86,8 @@ public class TAPMetadataMOCService extends AbstractMetadataService {
         }
 
         adql += shape + ")";
+        
+        adql += filter;
 
         Log.debug("[TAPQueryBuilder/getMOC()] ADQL " + adql);
         return adql;

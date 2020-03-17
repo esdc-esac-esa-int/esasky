@@ -100,6 +100,7 @@ public interface ITablePanel {
 	
 	public void registerFilterObserver(AbstractTableFilterObserver observer);
 	public Map<String, String> getTapFilters();
+	public String getFilterString();
 	
 	public String getVoTableString();
 }

@@ -23,7 +23,14 @@ public class TAPMetadataSSOService extends AbstractMetadataService {
         return instance;
     }
 
-    public String getMetadataAdql(final IDescriptor inputDescriptor) {
+    @Override
+    public String getMetadataAdql(IDescriptor descriptorInput) {
+    	return getMetadataAdql(descriptorInput, "");
+    }
+    
+    public String getMetadataAdql(final IDescriptor inputDescriptor, String filter) {
+    	//TODO
+    	//Include filters if needed
         final String debugPrefix = "[TAPMetadataSSOService.getMetadataAdql]";
         SSODescriptor descriptor = (SSODescriptor) inputDescriptor;
 

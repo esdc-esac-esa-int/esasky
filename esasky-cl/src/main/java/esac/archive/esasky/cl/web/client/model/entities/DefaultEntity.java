@@ -154,6 +154,10 @@ public class DefaultEntity implements GeneralEntityInterface{
     	return metadataService.getMetadataAdql(getDescriptor());
     }
 
+    public String getMetadataAdql(String filter) {
+    	return metadataService.getMetadataAdql(getDescriptor(), filter);
+    }
+
     public String getHeaderAdql() {
     	return metadataService.getHeaderAdql(getDescriptor());
     }
@@ -203,7 +207,9 @@ public class DefaultEntity implements GeneralEntityInterface{
         		if(Modules.useTabulator) {
             		drawer.removeAllShapes();
         			clearAll();
-        			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(getMetadataAdql()), EsaSkyConstants.JSON));
+        			String filter = tablePanel.getFilterString();
+        			String adql = getMetadataAdql(filter);
+        			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON));
         		} else {
         			clearAll();
         			final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";

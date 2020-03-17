@@ -212,11 +212,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
         String adql = TAPMetadataCatalogueService.getInstance().getMetadataAdqlFromIpix(descriptor, order, ipix);
         
-    	String filter = "";
-        for(String key : tablePanel.getTapFilters().keySet()) {
-			filter += " AND ";
-			filter += tablePanel.getTapFilters().get(key);
-    	}
+    	String filter = tablePanel.getFilterString();
         adql += filter;
     	
     	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
@@ -238,12 +234,6 @@ public class MOCEntity implements GeneralEntityInterface {
 //    	
 //    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 
-    	String filter = "";
-    	for(String key : tablePanel.getTapFilters().keySet()) {
-    		filter += " AND ";
-    		filter += tablePanel.getTapFilters().get(key);
-    	}
-    	
     	parentEntity.fetchDataWithoutMOC(tablePanel);
     	shouldBeShown = false;
     	clearAll();
@@ -366,12 +356,8 @@ public class MOCEntity implements GeneralEntityInterface {
     private void getSplitMOC(int order) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
     	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-    	String filter = "";
     	
-    	for(String key : tablePanel.getTapFilters().keySet()) {
-    			filter += " AND ";
-    		filter += tablePanel.getTapFilters().get(key);
-    	}
+    	String filter = tablePanel.getFilterString();
 
 		String adql = "SELECT " + Integer.toString(order) + " as moc_order,"
 				+ "esasky_q3c_bitshift_right(q3c_ang2ipix(ra,dec), " + Integer.toString(60 - 2 * order) + ") as moc_ipix, count(*) as moc_count"
@@ -454,6 +440,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	private void closingPanel(ITablePanel tablePanel) {
 		clearAll();
+		MocRepository.getInstance().removeEntity(this);
 		shouldBeShown = false;
 		
 	}

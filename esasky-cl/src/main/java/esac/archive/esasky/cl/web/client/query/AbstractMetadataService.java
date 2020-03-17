@@ -7,6 +7,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 public abstract class AbstractMetadataService {
 
     public abstract String getMetadataAdql(IDescriptor descriptor);
+    public abstract String getMetadataAdql(IDescriptor descriptor, String filter);
     public abstract String getHeaderAdql(IDescriptor descriptor);
     public abstract String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos);
     

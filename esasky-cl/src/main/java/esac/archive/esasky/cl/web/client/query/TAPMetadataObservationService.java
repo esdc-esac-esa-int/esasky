@@ -24,6 +24,12 @@ public class TAPMetadataObservationService extends AbstractMetadataService {
         return instance;
     }
 
+    
+    @Override
+    public String getMetadataAdql(IDescriptor descriptorInput) {
+    	return getMetadataAdql(descriptorInput, "");
+    }
+    
     /**
      * getMetadata4Footprints().
      * @param aladinLite Input AladinLiteWidget.
@@ -31,7 +37,7 @@ public class TAPMetadataObservationService extends AbstractMetadataService {
      * @return Query in ADQL format.
      */
     @Override
-    public String getMetadataAdql(IDescriptor descriptor) {
+    public String getMetadataAdql(IDescriptor descriptor, String filter) {
         final String debugPrefix = "[TAPMetadataObservationService.getMetadata]";
 
         Log.debug(debugPrefix);
@@ -47,6 +53,8 @@ public class TAPMetadataObservationService extends AbstractMetadataService {
         parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE ";
 
         parsedAdql += getGeometricConstraint();
+        
+        parsedAdql += filter;
 
         Log.debug(debugPrefix + " ADQL " + parsedAdql);
         return parsedAdql;
