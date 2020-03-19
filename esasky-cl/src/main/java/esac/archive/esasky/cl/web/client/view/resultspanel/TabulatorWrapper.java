@@ -27,22 +27,22 @@ public class TabulatorWrapper{
 
     public void selectRow(int rowId) {
         GeneralJavaScriptObject row = tableJsObject.invokeFunction("getRow", "" + rowId);
-        row.invokeFunction("select", null);
-        row.invokeFunction("scrollTo", null);
+        row.invokeFunction("select");
+        row.invokeFunction("scrollTo");
     }
 
     public void deselectRow(int rowId) {
         GeneralJavaScriptObject row = tableJsObject.invokeFunction("getRow", "" + rowId);
-        row.invokeFunction("deselect", null);
+        row.invokeFunction("deselect");
     }
 
     public void hoverStart(int rowId) {
-        GeneralJavaScriptObject element = tableJsObject.invokeFunction("getRow", "" + rowId).invokeFunction("getElement", null).getProperty("style");
+        GeneralJavaScriptObject element = tableJsObject.invokeFunction("getRow", "" + rowId).invokeFunction("getElement").getProperty("style");
         element.setProperty("background-color", "rgba(255, 255, 255, 0.15)");
     }
 
     public void hoverStop(int rowId) {
-        GeneralJavaScriptObject element = tableJsObject.invokeFunction("getRow", "" + rowId).invokeFunction("getElement", null).getProperty("style");
+        GeneralJavaScriptObject element = tableJsObject.invokeFunction("getRow", "" + rowId).invokeFunction("getElement").getProperty("style");
         element.setProperty("background-color", "");
     }
 

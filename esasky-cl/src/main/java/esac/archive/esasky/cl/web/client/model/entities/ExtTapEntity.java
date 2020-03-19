@@ -107,11 +107,11 @@ public class ExtTapEntity implements GeneralEntityInterface {
     	public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
     		String stcs;
     		if(Modules.useTabulator) {
-    			stcs = row.invokeFunction("getData", null).getStringProperty(getDescriptor().getTapSTCSColumn());
+    			stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
     			if(stcs.toUpperCase().startsWith("POSITION")) {
-    				String ra = row.invokeFunction("getData", null).getStringProperty(getDescriptor().getTapRaColumn());
-    				String dec = row.invokeFunction("getData", null).getStringProperty(getDescriptor().getTapDecColumn());
-    				String sourceName = row.invokeFunction("getData", null).getStringProperty(getDescriptor().getUniqueIdentifierField());
+    				String ra = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapRaColumn());
+    				String dec = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapDecColumn());
+    				String sourceName = row.invokeFunction("getData").getStringProperty(getDescriptor().getUniqueIdentifierField());
     				
     				return catalogBuilder(rowId, ra, dec, sourceName);
     			}
@@ -201,7 +201,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 		public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
 			if(Modules.useTabulator) {
 				PolygonShape shape = new PolygonShape();
-				String stcs = row.invokeFunction("getData", null).getStringProperty(getDescriptor().getTapSTCSColumn());
+				String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
 				shape.setStcs(stcs);
 				shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
 				return shape;

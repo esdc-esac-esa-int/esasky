@@ -356,11 +356,11 @@ public class CatalogEntity implements GeneralEntityInterface{
 			SourceShape mySource = new SourceShape();
 	        mySource.setShapeId(shapeId);
 	
-	        Double ra = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPolygonRaTapColumn());
-	        Double dec = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPolygonDecTapColumn());
+	        Double ra = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPolygonRaTapColumn());
+	        Double dec = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPolygonDecTapColumn());
 	        mySource.setDec(dec.toString());
 	        mySource.setRa(ra.toString());
-	        mySource.setSourceName(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getUniqueIdentifierField()));
+	        mySource.setSourceName(row.invokeFunction("getData").getStringProperty(getDescriptor().getUniqueIdentifierField()));
 	
 	        Map<String, String> details = new HashMap<String, String>();
 	
@@ -384,7 +384,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 	                MetadataDescriptor cmd = this.getDescriptor()
 	                        .getMetadataDescriptorByTapName(currTapName);
 	                Integer precision = null;
-	                String value = row.invokeFunction("getData", null).getStringProperty(currTapName);
+	                String value = row.invokeFunction("getData").getStringProperty(currTapName);
 	                if (cmd.getMaxDecimalDigits() != null
 	                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
 	                                .getType() == ColumnType.DOUBLE)) {
@@ -416,16 +416,16 @@ public class CatalogEntity implements GeneralEntityInterface{
 	                        && this.getDescriptor().getFinalDecTapColumn() != null) {
 	
 	                    // Proper motion ra, dec is coming from descriptor data, just use it
-	                	finalRa = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getFinalRaTapColumn());
-	                	finalDec =row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getFinalDecTapColumn());
+	                	finalRa = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getFinalRaTapColumn());
+	                	finalDec =row.invokeFunction("getData").getDoubleProperty(getDescriptor().getFinalDecTapColumn());
 	
 	                } else {
 	
 	                    // Proper motion ra, dec not coming from descriptor data, so we need to
 	                    // calculate it
 	                    
-	                	final Double pm_ra = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPmRaTapColumn());
-	                    final Double pm_dec = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPmDecTapColumn());
+	                	final Double pm_ra = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPmRaTapColumn());
+	                    final Double pm_dec = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPmDecTapColumn());
 	                    
 	                    if ((pm_ra != null) && (pm_dec != null)
 	                        && (this.getDescriptor().getPmOrigEpoch() != null)
@@ -434,10 +434,10 @@ public class CatalogEntity implements GeneralEntityInterface{
 	                        double[] inputA = new double[6];
 	                        inputA[0] = ra;
 	                        inputA[1] = dec;
-	                        inputA[2] = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPmPlxTapColumn()); // Consider the parallax as 0.0 by default
+	                        inputA[2] = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPmPlxTapColumn()); // Consider the parallax as 0.0 by default
 	                        inputA[3] = pm_ra;
 	                        inputA[4] = pm_dec;
-	                        inputA[5] = row.invokeFunction("getData", null).getDoubleProperty(getDescriptor().getPmNormRadVelTapColumn()); // normalised radial velocity at t0 [mas/yr] - see Note 2
+	                        inputA[5] = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPmNormRadVelTapColumn()); // normalised radial velocity at t0 [mas/yr] - see Note 2
 	    
 	                        double[] outputA = new double[6];
 	    

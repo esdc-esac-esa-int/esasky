@@ -40,7 +40,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 		public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
 			PolygonShape shape = new PolygonShape();
 			if(Modules.useTabulator) {
-				shape.setStcs(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getMocSTCSColumn()));
+				shape.setStcs(row.invokeFunction("getData").getStringProperty(getDescriptor().getMocSTCSColumn()));
 			} else {
 		    	shape.setStcs((String)getTAPDataByTAPName(rowList, rowId, descriptor.getMocSTCSColumn()));
 			}

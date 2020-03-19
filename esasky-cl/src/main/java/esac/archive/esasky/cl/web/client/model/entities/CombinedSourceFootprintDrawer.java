@@ -68,7 +68,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		removeAllShapes();
 		
 		if(Modules.useTabulator) {
-			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows", null);
+			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows");
 			GeneralJavaScriptObject [] rowArray = GeneralJavaScriptObject.convertToArray(rows);
 			
 			for(int i = 0; i < rowArray.length; i++) {

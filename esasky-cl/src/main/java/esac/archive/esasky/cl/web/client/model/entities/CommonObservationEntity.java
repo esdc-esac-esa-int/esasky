@@ -49,7 +49,7 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     		PolygonShape polygon = new PolygonShape();
     		polygon.setShapeId(rowId);
     		if(Modules.useTabulator) {
-    			polygon.setStcs(row.invokeFunction("getData", null).getStringProperty(getDescriptor().getTapSTCSColumn()));
+    			polygon.setStcs(row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn()));
     		} else {
     			polygon.setStcs((String) getTAPDataByTAPName(rowList, rowId, descriptor
     					.getTapSTCSColumn()));

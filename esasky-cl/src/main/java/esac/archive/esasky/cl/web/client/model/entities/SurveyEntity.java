@@ -61,11 +61,11 @@ public class SurveyEntity implements GeneralEntityInterface{
     		mySource.setShapeId(rowId);
     		Map<String, String> details = new HashMap<String, String>();
     		if(Modules.useTabulator) {
-    			mySource.setRa(row.invokeFunction("getData", null).getStringProperty(EsaSkyConstants.OBS_TAP_RA));
-    			mySource.setDec(row.invokeFunction("getData", null).getStringProperty(EsaSkyConstants.OBS_TAP_DEC));
+    			mySource.setRa(row.invokeFunction("getData").getStringProperty(EsaSkyConstants.OBS_TAP_RA));
+    			mySource.setDec(row.invokeFunction("getData").getStringProperty(EsaSkyConstants.OBS_TAP_DEC));
     			details.put(EsaSkyWebConstants.SOURCE_TYPE,
     					EsaSkyWebConstants.SourceType.SURVEY.toString());
-    			details.put(SurveyConstant.SURVEY_NAME, row.invokeFunction("getData", null).getStringProperty(EsaSkyConstants.OBS_TAP_NAME));
+    			details.put(SurveyConstant.SURVEY_NAME, row.invokeFunction("getData").getStringProperty(EsaSkyConstants.OBS_TAP_NAME));
 			} else {
 	            mySource.setDec((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_DEC))
 	                    .toString());

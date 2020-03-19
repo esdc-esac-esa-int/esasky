@@ -502,17 +502,17 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 				public void onDatalinkClicked(final GeneralJavaScriptObject row) {
 			        String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
 			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
-			        String title = row.invokeFunction("getData", "").getStringProperty("obs_id");
+			        String title = row.invokeFunction("getData").getStringProperty("obs_id");
 
 			        DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(datalinkUrl, title);
 			        
-			        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected", ""))) {
-			            row.invokeFunction("select", "");
+			        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
+			            row.invokeFunction("select");
 			            datalinkBox.registerCloseObserver(new ClosingObserver() {
 			               
 			                @Override
 			                public void onClose() {
-			                    row.invokeFunction("deselect", "");
+			                    row.invokeFunction("deselect");
 			                }
 			            });
 			        }
