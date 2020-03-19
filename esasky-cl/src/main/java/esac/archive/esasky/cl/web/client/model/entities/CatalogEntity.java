@@ -356,8 +356,8 @@ public class CatalogEntity implements GeneralEntityInterface{
 			SourceShape mySource = new SourceShape();
 	        mySource.setShapeId(shapeId);
 	
-	        Double ra = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPolygonRaTapColumn());
-	        Double dec = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getPolygonDecTapColumn());
+	        Double ra = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getTapRaColumn());
+	        Double dec = row.invokeFunction("getData").getDoubleProperty(getDescriptor().getTapDecColumn());
 	        mySource.setDec(dec.toString());
 	        mySource.setRa(ra.toString());
 	        mySource.setSourceName(row.invokeFunction("getData").getStringProperty(getDescriptor().getUniqueIdentifierField()));
@@ -487,9 +487,9 @@ public class CatalogEntity implements GeneralEntityInterface{
 	        mySource.setShapeId(shapeId);
 	
 	        Double dec = Double.parseDouble(getTAPDataByTAPName(rowList, shapeId,
-	                getDescriptor().getPolygonDecTapColumn()).toString());
+	                getDescriptor().getTapDecColumn()).toString());
 	        Double ra = Double.parseDouble(getTAPDataByTAPName(rowList, shapeId,
-	        		getDescriptor().getPolygonRaTapColumn()).toString());
+	        		getDescriptor().getTapRaColumn()).toString());
 	        mySource.setDec(dec.toString());
 	        mySource.setRa(ra.toString());
 	        mySource.setSourceName(((String) getTAPDataByTAPName(rowList, shapeId,

@@ -359,9 +359,6 @@
 	</text>
 
 	<!-- abstractTablePanel -->
-	<text key="abstractTablePanel_downloadRow">
-		Download row
-	</text>
 	<text key="abstractTablePanel_preview">
 		Preview
 	</text>
@@ -389,14 +386,6 @@
 	<!-- commonObservationTablePanel -->
 	<text key="commonObservationTablePanel_sendRowToVOA">
 		Send row to virtual observatory application
-	</text>
-	<text key="commonObservationTablePanel_centreOnObservation">
-		Centre on observation
-	</text>
-
-	<!-- sourcesTablePanel -->
-	<text key="SourcesTablePanel_centreOnSource">
-		Centre on source
 	</text>
 
 	<!-- planObservationPanel -->
@@ -2861,7 +2850,7 @@
 	<text key="datalink_loadFailed">
 		Failed to load datalink
 	</text>
-	<text key="abstractTablePanel_download">
+	<text key="tabulator_download">
 		Download
 	</text>
 	<text key="WelcomeDialog_description">
@@ -3075,6 +3064,16 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt;
+	</text>
+	
+	<text key="tabulator_centreOnShape">
+		Centre on shape
+	</text>
+	<text key="tabulator_centreHeader">
+		Go To
+	</text>
+	<text key="tabulator_centreHeaderTooltip">
+		Move view to the position of each shape
 	</text>
 
 </Internationalization>

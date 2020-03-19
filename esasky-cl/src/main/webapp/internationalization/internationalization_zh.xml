@@ -304,7 +304,7 @@
 	</text>
 
 	<!-- abstractTablePanel -->
-	<text key="abstractTablePanel_downloadRow">
+	<text key="tabulator_download">
 		下载行
 	</text>
 	<text key="abstractTablePanel_preview">
@@ -333,14 +333,6 @@
 	<!-- commonObservationTablePanel -->
 	<text key="commonObservationTablePanel_sendRowToVOA">
 		发送数据行到虚拟天文台应用程序
-	</text>
-	<text key="commonObservationTablePanel_centreOnObservation">
-		居中于观测点
-	</text>
-
-	<!-- sourcesTablePanel -->
-	<text key="SourcesTablePanel_centreOnSource">
-		居中于源
 	</text>
 
 	<!-- planObservationPanel -->

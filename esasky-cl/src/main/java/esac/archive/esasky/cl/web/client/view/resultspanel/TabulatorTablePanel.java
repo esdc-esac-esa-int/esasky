@@ -26,11 +26,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -523,6 +525,24 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 			        Window.open(url, "_blank", "_blank");
 			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
 				}
+
+                @Override
+                public void onCenterClicked(GeneralJavaScriptObject rowData) {
+                    final String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
+                    final String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+                    
+                    double fov = AladinLiteWrapper.getInstance().getFovDeg();
+                    if(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV) != null 
+                            && rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV).isEmpty()
+                            && rowData.getStringProperty(EsaSkyConstants.OBSCORE_SREGION) != null 
+                            && rowData.getStringProperty(EsaSkyConstants.OBSCORE_SREGION).startsWith("POSITION")) {
+                        fov = Double.parseDouble(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV)) * 4;
+                    }
+                    
+                    AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
+                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_Recenter, getFullId(), 
+                            rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
+                }
 			});
 			tableNotShowingContainer.addStyleName("displayNone");
 		}

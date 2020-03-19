@@ -889,8 +889,8 @@ public class DescriptorRepository {
 		descriptor.setAdsPublicationsMaxRows(0);
 		descriptor.setTabCount(0);
 
-		descriptor.setPolygonRaTapColumn(APIMetadataConstants.CENTER_RA_DEG);
-		descriptor.setPolygonDecTapColumn(APIMetadataConstants.CENTER_DEC_DEG);
+		descriptor.setTapRaColumn(APIMetadataConstants.CENTER_RA_DEG);
+		descriptor.setTapDecColumn(APIMetadataConstants.CENTER_DEC_DEG);
 		descriptor.setPolygonNameTapColumn(APIMetadataConstants.CAT_NAME);
 
 		return descriptor;

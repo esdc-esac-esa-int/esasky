@@ -20,7 +20,6 @@ import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.EsaSkyButtonCell;
-import esac.archive.esasky.cl.web.client.model.TAPConstant4Observation;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.entities.CommonObservationEntity;
@@ -100,9 +99,9 @@ public class CommonObservationsTablePanel extends AbstractTablePanel {
 			public void update(final int index, final TableRow row,
 					final String value) {
 				AladinLiteWrapper.getInstance().goToTarget(
-						row.getElementByTapName(TAPConstant4Observation.RA_DEG)
+						row.getElementByTapName(getDescriptor().getTapRaColumn())
 						.getValue(), 
-						row.getElementByTapName(TAPConstant4Observation.DEC_DEG)
+						row.getElementByTapName(getDescriptor().getTapDecColumn())
 						.getValue(),
 						AladinLiteWrapper.getInstance().getFovDeg(), false,
 						AladinLiteWrapper.getInstance().getCooFrame());

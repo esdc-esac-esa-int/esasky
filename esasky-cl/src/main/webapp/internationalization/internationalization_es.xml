@@ -227,9 +227,6 @@
 	</text>
 
 	<!-- abstractTablePanel -->
-	<text key="abstractTablePanel_downloadRow">
-		Descargar fila
-	</text>
 	<text key="abstractTablePanel_preview">
 		Previsualizar
 	</text>
@@ -247,14 +244,6 @@
 	<text key="commonObservationTablePanel_sendRowToVOA">
 		Enviar fila a una aplicaci&#243;n de observatorio
 		virtual
-	</text>
-	<text key="commonObservationTablePanel_centreOnObservation">
-		Centrar en observaci&#243;n
-	</text>
-
-	<!-- sourcesTablePanel -->
-	<text key="SourcesTablePanel_centreOnSource">
-		Centrar en objeto
 	</text>
 
 	<!-- planObservationPanel -->
@@ -2801,7 +2790,7 @@
 		Error cargando datalink
 	</text>
 
-	<text key="abstractTablePanel_download">
+	<text key="tabulator_download">
 		Descargar
 	</text>
 

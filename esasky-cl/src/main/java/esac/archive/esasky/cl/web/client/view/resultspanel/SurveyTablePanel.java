@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.TAPConstant4Observation;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.entities.SurveyEntity;
@@ -40,8 +39,8 @@ public class SurveyTablePanel extends AbstractTablePanel {
 			@Override
             public void update(final int index, final TableRow row,
                     final String value) {
-                final String ra = row.getElementByTapName(TAPConstant4Observation.RA_DEG).getValue();
-                final String dec = row.getElementByTapName(TAPConstant4Observation.DEC_DEG).getValue();
+                final String ra = row.getElementByTapName(getDescriptor().getTapRaColumn()).getValue();
+                final String dec = row.getElementByTapName(getDescriptor().getTapDecColumn()).getValue();
                 AladinLiteWrapper.getInstance().goToTarget(ra, dec,
       					AladinLiteWrapper.getInstance().getFovDeg(), false,
       					AladinLiteWrapper.getInstance().getCooFrame());

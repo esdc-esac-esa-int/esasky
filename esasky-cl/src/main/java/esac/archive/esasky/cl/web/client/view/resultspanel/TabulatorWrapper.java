@@ -15,6 +15,7 @@ public class TabulatorWrapper{
         public void onDataFiltered(List<Integer> filteredRows);
         public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
         public void onAccessUrlClicked(String url);
+        public void onCenterClicked(GeneralJavaScriptObject rowData);
     }
 
     private TabulatorCallback tabulatorCallback;
@@ -222,24 +223,35 @@ public class TabulatorWrapper{
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    },
 		    dataLoading:function(data){
-		    	refinedColumnDef[0] = {formatter:"rowSelection", titleFormatter:"rowSelection"};
+		    	refinedColumnDef.push({formatter:"rowSelection", titleFormatter:"rowSelection"});
 
 		    	 var imageButton = function(cell, formatterParams, onRendered){ 
                     return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
                 };
+                refinedColumnDef.push({
+                    title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
+                    headerSort:false, 
+                    headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
+                    minWidth: 85,
+                    formatter:imageButton, width:40, align:"center", formatterParams:{image:"recenter.png", 
+                        tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
+                        cellClick:function(e, cell){
+                            e.stopPropagation();
+            		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
+                        }
+                });
 
 
 		    	for(var i = 0; i < metadata.length; i++){
 		    		if(metadata[i].name.toLowerCase() === "access_url"){
-                        refinedColumnDef[i + 1] = {
+                        refinedColumnDef.push({
                             title:metadata[i].name,
                             field:metadata[i].name,
                             headerSort:false, 
-                            headerTooltip:metadata[i].name,
                             headerTooltip:metadata[i].description,
                             minWidth: 85,
                             formatter:imageButton, width:40, align:"center", formatterParams:{image:"download_small.png", 
-                                tooltip:$wnd.esasky.getInternationalizationText("abstractTablePanel_download")}, 
+                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
                                 cellClick:function(e, cell){
                                     e.stopPropagation();
                                     if(cell.getRow().getData().access_format && cell.getRow().getData().access_format.toLowerCase().includes("datalink")){
@@ -249,7 +261,7 @@ public class TabulatorWrapper{
                                     }
 
                                 }
-                        };
+                        });
                         continue;
 		    		}
 		    		var sorter = "string";
@@ -261,17 +273,16 @@ public class TabulatorWrapper{
 		    			headerFilterFunc = DoubleFilter;
 
 		    		}
-		    		refinedColumnDef[i + 1] = {
+		    		refinedColumnDef.push({
 		    			title:metadata[i].name,
 		    			field:metadata[i].name, 
-		    			headerTooltip:metadata[i].name,
 		    			headerTooltip:metadata[i].description,
 		    			sorter: sorter,
 		    			headerFilter:headerFilter,
 		    			headerFilterFunc:headerFilterFunc,
 		    			headerFilterFuncParams:{tapName:metadata[i].name}
 //		    			headerFilterEmptyCheck:headerFilterEmptyCheck
-	    			};
+	    			});
 		    	}
 
 		    	table.setColumns(refinedColumnDef);
@@ -379,6 +390,10 @@ public class TabulatorWrapper{
 
     public void onAccessUrlClicked(String url){
         tabulatorCallback.onAccessUrlClicked(url);
+    }
+    
+    public void onCenterClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onCenterClicked(rowData);
     }
 
     public void onRowSelection(int rowId) {

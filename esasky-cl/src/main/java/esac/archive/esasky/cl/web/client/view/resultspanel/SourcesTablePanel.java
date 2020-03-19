@@ -85,8 +85,8 @@ public class SourcesTablePanel extends AbstractTablePanel {
 			@Override
 			public void update(final int index, final TableRow row,
 					final String value) {
-				final String ra = row.getElementByTapName(getDescriptor().getPolygonRaTapColumn()).getValue();
-				final String dec = row.getElementByTapName(getDescriptor().getPolygonDecTapColumn()).getValue();
+				final String ra = row.getElementByTapName(getDescriptor().getTapRaColumn()).getValue();
+				final String dec = row.getElementByTapName(getDescriptor().getTapDecColumn()).getValue();
 
 				AladinLiteWrapper.getInstance().goToTarget(ra, dec, AladinLiteWrapper.getInstance().getFovDeg(), false,
 						AladinLiteWrapper.getInstance().getCooFrame());

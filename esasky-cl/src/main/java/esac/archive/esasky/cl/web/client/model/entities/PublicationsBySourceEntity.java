@@ -70,9 +70,9 @@ public class PublicationsBySourceEntity extends CatalogEntity {
     		SourceShape mySource = new SourceShape();
     		mySource.setShapeId(rowId);
     		mySource.setDec((getTAPDataByTAPName(rowList, rowId,
-    				descriptor.getPolygonDecTapColumn())).toString());
+    				descriptor.getTapDecColumn())).toString());
     		mySource.setRa((getTAPDataByTAPName(rowList, rowId,
-    				descriptor.getPolygonRaTapColumn())).toString());
+    				descriptor.getTapRaColumn())).toString());
     		mySource.setSourceName(((String) getTAPDataByTAPName(rowList, rowId,
     				descriptor.getUniqueIdentifierField())).toString());
     		

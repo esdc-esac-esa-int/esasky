@@ -38,12 +38,12 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
         String adql = "select top " + getResultsLimit(descriptor.getSourceLimit()) + " ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+            if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonDecTapColumn() + ", ";
-            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                        + descriptor.getTapDecColumn() + ", ";
+            } else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonRaTapColumn() + ", ";
+                        + descriptor.getTapRaColumn() + ", ";
             } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
                         + currentMetadata.getTapName() + ", ";
@@ -107,12 +107,12 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     	String adql = "select  ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+            if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonDecTapColumn() + ", ";
-            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                        + descriptor.getTapDecColumn() + ", ";
+            } else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonRaTapColumn() + ", ";
+                        + descriptor.getTapRaColumn() + ", ";
             } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
                         + currentMetadata.getTapName() + ", ";
@@ -142,12 +142,12 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
         String adql = "select top " + top + " ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+            if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonDecTapColumn() + ", ";
-            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                        + descriptor.getTapDecColumn() + ", ";
+            } else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonRaTapColumn() + ", ";
+                        + descriptor.getTapRaColumn() + ", ";
             } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
                         + currentMetadata.getTapName() + ", ";
@@ -159,7 +159,7 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
         String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         parsedAdql.replace("\\s*,\\s*$", "");
         parsedAdql += " from " + descriptor.getTapTable() + " WHERE "
-    	+ "'1' = q3c_radial_query(" +  descriptor.getPolygonRaTapColumn() + ", "  + descriptor.getPolygonDecTapColumn() + ", "
+    	+ "'1' = q3c_radial_query(" +  descriptor.getTapRaColumn() + ", "  + descriptor.getTapDecColumn() + ", "
 				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
 				+ Double.toString(pos.getFov()/2) +")";
         
@@ -178,12 +178,12 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
         String adql = "select top 0 ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-            if (descriptor.getPolygonDecTapColumn().equals(currentMetadata.getTapName())) {
+            if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonDecTapColumn() + ", ";
-            } else if (descriptor.getPolygonRaTapColumn().equals(currentMetadata.getTapName())) {
+                        + descriptor.getTapDecColumn() + ", ";
+            } else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
-                        + descriptor.getPolygonRaTapColumn() + ", ";
+                        + descriptor.getTapRaColumn() + ", ";
             } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
                 adql += " " + currentMetadata.getTapName() + " as "
                         + currentMetadata.getTapName() + ", ";
@@ -197,6 +197,12 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
         parsedAdql += " from " + descriptor.getTapTable();
 
         return parsedAdql;
+    }
+
+    @Override
+    public String getMetadataAdql(IDescriptor descriptor, String filter) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
