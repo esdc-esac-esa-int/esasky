@@ -47,18 +47,18 @@ public class EsaSkyButtonCell extends ButtonCell {
     /** Popup delay. */
     private int showPopupDelayMs;
 
-	
+
     private Resources resources = GWT.create(Resources.class);
     private CssResource style;
-    
-    
+
+
     public static interface Resources extends ClientBundle {
 
         @Source("esaSkyButtonCell.css")
         @CssResource.NotStrict
         CssResource style();
     }
-	
+
     public EsaSkyButtonCell(final String tooltipText, final int popupDelayMs) {
         super();
         this.style = this.resources.style();
@@ -67,11 +67,11 @@ public class EsaSkyButtonCell extends ButtonCell {
         popupPanel.getElement().getStyle().setZIndex(50);
         popupPanel.getElement().getStyle().setProperty("borderRadius", "10px");
         popupPanel.getElement().getStyle().setProperty("pointerEvents", "none");
-        	popupPanel.getElement().getStyle().setPadding(3, Unit.PX);
-        	
-        	Label tooltipLabel = new Label(tooltipText);
-        	tooltipLabel.addStyleName("darkLabel");
-    	
+        popupPanel.getElement().getStyle().setPadding(3, Unit.PX);
+
+        Label tooltipLabel = new Label(tooltipText);
+        tooltipLabel.addStyleName("darkLabel");
+
         this.popupPanel.setWidget(tooltipLabel);
         this.showPopupDelayMs = popupDelayMs;
     }
@@ -92,7 +92,7 @@ public class EsaSkyButtonCell extends ButtonCell {
 
         // Let the parent handle the rest of events not sink by this cell
         super.onBrowserEvent(context, parent, value, event, valueUpdater);
-        
+
         switch (DOM.eventGetType((Event) event)) {
 
         case Event.ONCLICK:
@@ -153,16 +153,14 @@ public class EsaSkyButtonCell extends ButtonCell {
             this.popupPanel.hide();
         }
     }
-    
+
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context, String value, SafeHtmlBuilder sb){
-        	final FlowPanel flowPanel = new FlowPanel();
-        	flowPanel.getElement().getStyle().setCursor(Cursor.POINTER);
-        	flowPanel.add(new Image(value));
-        	flowPanel.addStyleName("buttonCell");
-        	sb.append(SafeHtmlUtils
-                .fromTrustedString(flowPanel.toString()));
+        final FlowPanel flowPanel = new FlowPanel();
+        flowPanel.getElement().getStyle().setCursor(Cursor.POINTER);
+        flowPanel.add(new Image(value));
+        flowPanel.addStyleName("buttonCell");
+        sb.append(SafeHtmlUtils.fromTrustedString(flowPanel.toString()));
     }
-    
 
 }
