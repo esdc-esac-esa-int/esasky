@@ -94,7 +94,16 @@ public class TextMgr {
 		Log.debug("TextMgr.Init() langCode: " + localeLanguage);
 		TextMgr.initCallback = initCallback;
 		instance = new TextMgr(localeLanguage);
+		exposeToJavascript(instance);
 	}
+	
+	public static native void exposeToJavascript(TextMgr instance)/*-{
+	    if(!$wnd.esasky) {$wnd.esasky = {};}
+        $wnd.esasky.getInternationalizationText = function(text) {
+            return instance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;)(text);
+        }
+        
+    }-*/;
 	
 	public static boolean isInitialized() {
 		return instance != null;
