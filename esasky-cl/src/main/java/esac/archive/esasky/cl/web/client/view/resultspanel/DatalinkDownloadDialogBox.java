@@ -175,6 +175,9 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 			}
 		});
 
+		if(observationId == null || observationId.isEmpty()) {
+		    observationId = "Datalink";
+		}
 		datalinkIdLabel = new Label(observationId.replace("_", " "));
 		datalinkIdLabel.setStyleName("datalinkIdLabel");
 

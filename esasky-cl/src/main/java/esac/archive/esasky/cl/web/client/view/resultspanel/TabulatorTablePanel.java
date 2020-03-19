@@ -17,6 +17,7 @@ import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -31,6 +32,7 @@ import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -494,6 +496,32 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 				@Override
 				public void onFilterChanged(String label, String filter) {
 					addTapFilter(label, filter);
+				}
+				
+				@Override
+				public void onDatalinkClicked(final GeneralJavaScriptObject row) {
+			        String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
+			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
+			        String title = row.invokeFunction("getData", "").getStringProperty("obs_id");
+
+			        DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(datalinkUrl, title);
+			        
+			        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected", ""))) {
+			            row.invokeFunction("select", "");
+			            datalinkBox.registerCloseObserver(new ClosingObserver() {
+			               
+			                @Override
+			                public void onClose() {
+			                    row.invokeFunction("deselect", "");
+			                }
+			            });
+			        }
+				}
+				
+				@Override
+				public void onAccessUrlClicked(String url) {
+			        Window.open(url, "_blank", "_blank");
+			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
 				}
 			});
 			tableNotShowingContainer.addStyleName("displayNone");

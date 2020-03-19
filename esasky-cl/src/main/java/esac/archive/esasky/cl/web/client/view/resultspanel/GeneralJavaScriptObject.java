@@ -25,6 +25,10 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
     	return this[propertyName];
 	}-*/;
     
+    public final native GeneralJavaScriptObject invokeFunction(String functionName)/*-{
+    	return this[functionName]();
+	}-*/;
+    
     public final native GeneralJavaScriptObject invokeFunction(String functionName, String parameter)/*-{
     	return this[functionName](parameter);
 	}-*/;
@@ -36,6 +40,9 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
     
     
     
+    public static native boolean convertToBoolean(GeneralJavaScriptObject javaScriptObject)/*-{
+    	return javaScriptObject;
+    }-*/;
     public static native GeneralJavaScriptObject[] convertToArray(GeneralJavaScriptObject javaScriptObject)/*-{
     	return javaScriptObject;
     }-*/;
