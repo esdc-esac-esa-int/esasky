@@ -13,10 +13,6 @@ public class CatalogDescriptor extends BaseDescriptor {
 
     private String posTapColumn;
 
-    private String polygonRaTapColumn;
-
-    private String polygonDecTapColumn;
-
     private String polygonNameTapColumn;
 
     private String orderBy;
@@ -91,22 +87,6 @@ public class CatalogDescriptor extends BaseDescriptor {
 
     public void setPosTapColumn(String posTapColumn) {
         this.posTapColumn = posTapColumn;
-    }
-
-    public String getPolygonRaTapColumn() {
-        return polygonRaTapColumn;
-    }
-
-    public void setPolygonRaTapColumn(String polygonRaTapColumn) {
-        this.polygonRaTapColumn = polygonRaTapColumn;
-    }
-
-    public String getPolygonDecTapColumn() {
-        return polygonDecTapColumn;
-    }
-
-    public void setPolygonDecTapColumn(String polygonDecTapColumn) {
-        this.polygonDecTapColumn = polygonDecTapColumn;
     }
 
     public String getPolygonNameTapColumn() {

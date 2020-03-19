@@ -224,5 +224,15 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     public void setUniqueIdentifierField(String field){
     	tapObservationId = field;
     }
+    
+    @Override
+    public String getTapRaColumn() {
+        return "ra_deg";
+    }
+
+    @Override
+    public String getTapDecColumn() {
+        return "dec_deg";
+    }
 
 }

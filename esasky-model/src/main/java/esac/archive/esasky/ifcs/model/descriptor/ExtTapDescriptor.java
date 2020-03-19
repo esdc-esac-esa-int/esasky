@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ExtTapDescriptor extends BaseDescriptor {
 
     private String tapSTCSColumn;
-    private String tapRaColumn;
-    private String tapDecColumn;
     private String uniqueIdentifierField;
     private String whereADQL;
     private String dateADQL;
@@ -42,8 +40,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	this.parent = parent;
     	
     	tapSTCSColumn = parent.getTapSTCSColumn();
-    	tapRaColumn = parent.getTapRaColumn();
-    	tapDecColumn = parent.getTapDecColumn();
     	uniqueIdentifierField = parent.getUniqueIdentifierField();
     	whereADQL = parent.getWhereADQL();
     	dateADQL = parent.getDateADQL();
@@ -66,6 +62,8 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setArchiveURL(parent.getAdsAuthorUrl());
     	setArchiveProductURI(parent.getArchiveProductURI());
     	setFovLimit(parent.getFovLimit());
+    	setTapRaColumn(parent.getTapRaColumn());
+    	setTapDecColumn(parent.getTapDecColumn());
     }
 
 	@Override
@@ -95,22 +93,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	
 	public void setTapSTCSColumn(String tapSTCSColumn) {
 		this.tapSTCSColumn = tapSTCSColumn;
-	}
-
-	public String getTapRaColumn() {
-		return tapRaColumn;
-	}
-
-	public void setTapRaColumn(String tapRaColumn) {
-		this.tapRaColumn = tapRaColumn;
-	}
-
-	public String getTapDecColumn() {
-		return tapDecColumn;
-	}
-
-	public void setTapDecColumn(String tapDecColumn) {
-		this.tapDecColumn = tapDecColumn;
 	}
 
 	public String getWhereADQL() {

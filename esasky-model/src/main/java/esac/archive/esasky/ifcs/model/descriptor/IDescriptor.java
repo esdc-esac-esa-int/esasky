@@ -151,5 +151,13 @@ public interface IDescriptor {
     int getTabCount();
 
     void setTabCount(int count);
+    
+    public String getTapRaColumn();
+    
+    public void setTapRaColumn(String tapRaColumn);
+    
+    public String getTapDecColumn();
+    
+    public void setTapDecColumn(String tapDecColumn);
 
 }

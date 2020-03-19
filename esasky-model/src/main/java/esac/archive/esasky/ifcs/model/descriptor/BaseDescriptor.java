@@ -42,6 +42,13 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     /** Archive related URL parameter */
     private String archiveProductURI;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String tapRaColumn;
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String tapDecColumn;
 
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -299,5 +306,25 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public final void setCreditedInstitutions(final String creditedInstitutions) {
     	this.creditedInstitutions = creditedInstitutions;
+    }
+    
+    @Override
+    public String getTapRaColumn() {
+        return tapRaColumn;
+    }
+
+    @Override
+    public void setTapRaColumn(String tapRaColumn) {
+        this.tapRaColumn = tapRaColumn;
+    }
+
+    @Override
+    public String getTapDecColumn() {
+        return tapDecColumn;
+    }
+
+    @Override
+    public void setTapDecColumn(String tapDecColumn) {
+        this.tapDecColumn = tapDecColumn;
     }
 }
