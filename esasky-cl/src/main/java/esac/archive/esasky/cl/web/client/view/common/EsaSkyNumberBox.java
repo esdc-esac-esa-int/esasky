@@ -14,10 +14,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.user.client.Timer;
-
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch.Resources;
 
 public class EsaSkyNumberBox extends EsaSkyTextBox{
 
