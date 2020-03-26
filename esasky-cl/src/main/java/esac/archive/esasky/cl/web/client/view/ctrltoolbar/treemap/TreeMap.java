@@ -282,7 +282,7 @@ public class TreeMap extends Chart {
             if (!found) {
                 
                 pointId = descriptor.generateId();
-                final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getHistoColor(), pointInformation, logCount(count));
+                final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
 
                 series.addPoint(newPoint, false, false, false);
                 
@@ -320,7 +320,7 @@ public class TreeMap extends Chart {
 				});
             }
             
-            final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getHistoColor(), pointInformation, logCount(count));
+            final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
             
             pointsToAdd.add(newPoint);
             addPointsOnNextRender = true;

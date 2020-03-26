@@ -15,7 +15,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
@@ -64,8 +63,8 @@ import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
 public class MainPresenter {
 
     private AllSkyPresenter allSkyPresenter;
-    private ResultsPresenter resultsPresenter;
     private CtrlToolBarPresenter ctrlTBPresenter;
+    private ResultsPresenter resultsPresenter;
     private SearchPresenter targetPresenter;
     private HeaderPresenter headerPresenter;
 
@@ -324,27 +323,16 @@ public class MainPresenter {
         switch (context) {
             case ASTRO_IMAGING:
             case ASTRO_SPECTRA:
-                GeneralEntityInterface newEntity = entityRepo.createCommonObservationEntity((CommonObservationDescriptor) descriptor, context);
-                if (newEntity != null) {
-                    resultsPresenter.getMetadataAndFootprints(newEntity, true, null, isConeSearch, conePos);
-                }
-                break;
-                
             case ASTRO_CATALOGUE:
-            	GeneralEntityInterface catEntity = entityRepo.createCatalogueEntity((CatalogDescriptor) descriptor, context);
-                resultsPresenter.getMetadataAndFootprints(catEntity, true, null, isConeSearch, conePos);
+            case EXT_TAP:   
+                GeneralEntityInterface newEntity = entityRepo.createEntity(descriptor);
+                resultsPresenter.getMetadata(newEntity, isConeSearch, conePos);
                 break;
                 
             case SSO:
                 getSSOOrbitAndObservation((SSODescriptor)descriptor);
                 break;
                 
-            case EXT_TAP:
-                GeneralEntityInterface extEntity = entityRepo.createExtTapEntity((ExtTapDescriptor) descriptor, context);
-                if (extEntity != null) {
-                    resultsPresenter.getExtTapMetadata(extEntity);
-                }
-                break;
                 
             default:
                 throw new IllegalArgumentException("Does not recognize entity context");
@@ -358,10 +346,10 @@ public class MainPresenter {
     	GeneralEntityInterface entity = null;
     	if (userDataJSONWrapper instanceof SourceListJSONWrapper){
     		Log.debug("[MainPresenter][showUserRelatedMetadata] USER_SOURCES");
-    		entity = entityRepo.createCatalogueEntity((CatalogDescriptor) descriptor, EntityContext.USER_CATALOGUE);
+    		entity = entityRepo.createCatalogueEntity((CatalogDescriptor) descriptor);
     	}else if (userDataJSONWrapper instanceof FootprintListJSONWrapper){
     		Log.debug("[MainPresenter][showUserRelatedMetadata] USER_IMAGING");
-    		entity = entityRepo.createCommonObservationEntity((CommonObservationDescriptor) descriptor, EntityContext.USER_IMAGING);
+    		entity = entityRepo.createEntity((CommonObservationDescriptor) descriptor);
     	}
     	if (entity != null){
     		resultsPresenter.getUserMetadataAndPolygons(entity, true, null, userDataJSONWrapper, convertToFrame);	

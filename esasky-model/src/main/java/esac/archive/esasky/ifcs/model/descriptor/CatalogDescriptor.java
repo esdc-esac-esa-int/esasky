@@ -19,10 +19,6 @@ public class CatalogDescriptor extends BaseDescriptor {
 
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private String extraPopupDetailsByTapName;
-
-    @JsonInclude(Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private String drawSourcesFunction;
     
     @JsonInclude(Include.NON_NULL)
@@ -56,10 +52,6 @@ public class CatalogDescriptor extends BaseDescriptor {
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private Double pmFinalEpoch;
-    
-    @JsonInclude(Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private String pmArrowColor;
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -105,14 +97,6 @@ public class CatalogDescriptor extends BaseDescriptor {
         this.orderBy = orderBy;
     }
 
-    public String getExtraPopupDetailsByTapName() {
-        return extraPopupDetailsByTapName;
-    }
-
-    public void setExtraPopupDetailsByTapName(String extraPopupDetailsByTapName) {
-        this.extraPopupDetailsByTapName = extraPopupDetailsByTapName;
-    }
-    
     public String getDrawSourcesFunction() {
         return drawSourcesFunction;
     }
@@ -185,14 +169,6 @@ public class CatalogDescriptor extends BaseDescriptor {
         this.pmFinalEpoch = pmFinalEpoch;
     }
     
-    public String getPmArrowColor() {
-        return pmArrowColor;
-    }
-
-    public void setPmArrowColor(String pmArrowColor) {
-        this.pmArrowColor = pmArrowColor;
-    }
-    
     public Double getPmArrowWidth() {
         return pmArrowWidth;
     }
@@ -202,11 +178,6 @@ public class CatalogDescriptor extends BaseDescriptor {
     }
     
 	@Override
-	public String generateId() {
-		 return getMission() + " C " + generateNextTabCount();
-	}
-
-	@Override
 	public String getUniqueIdentifierField() {
 		return polygonNameTapColumn;
 	}
@@ -215,4 +186,17 @@ public class CatalogDescriptor extends BaseDescriptor {
 	public void setUniqueIdentifierField(String field) {
 		polygonNameTapColumn = field;
 	}
+
+    @Override
+    public String getIcon() {
+        return "catalog";
+    }
+
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "ASTRO_CATALOGUE_" + getMission();
+        }
+        return descriptorId;
+    }
 }

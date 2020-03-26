@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.google.gwt.http.client.URL;
 
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
@@ -27,8 +29,7 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     private String guiLongName;
 
-    /** color that will be used on the GUI for histograms. */
-    private String histoColor;
+    private String primaryColor;
 
     /** Limit of the FOV to use the aggregated count (degrees). */
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -43,12 +44,46 @@ public abstract class BaseDescriptor implements IDescriptor {
     /** Archive related URL parameter */
     private String archiveProductURI;
     
+    private String uniqueIdentifierField;
+    
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String tapRaColumn;
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String tapDecColumn;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String tapSTCSColumn;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String secondaryColor;
+
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private Boolean sampEnabled;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String extraPopupDetailsByTapName;
+    
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String sampUrl;
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String ddProductURI;
+
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String ddBaseURL;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    protected String descriptorId;
 
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -126,15 +161,15 @@ public abstract class BaseDescriptor implements IDescriptor {
     }
 
     @Override
-    public final String getHistoColor() {
-        return histoColor;
+    public final String getPrimaryColor() {
+        return primaryColor;
     }
 
     @Override
-    public final void setHistoColor(final String inputHistoColor) {
-        this.histoColor = inputHistoColor;
+    public final void setPrimaryColor(final String inputPrimaryColor) {
+        this.primaryColor = inputPrimaryColor;
         for (ColorChangeObserver observer : colorObservers) {
-        	observer.onColorChange(this, inputHistoColor);
+        	observer.onColorChange(this, inputPrimaryColor);
         }
     }
     
@@ -291,9 +326,9 @@ public abstract class BaseDescriptor implements IDescriptor {
         
         double mean = (maxWavelength + minWavelength) / 2;
         if(mean < 40){
-        	this.histoColor = ESASkyColors.getColorFromWavelength(mean);
+        	this.primaryColor = ESASkyColors.getColorFromWavelength(mean);
         	for (ColorChangeObserver observer : colorObservers) {
-        		observer.onColorChange(this, this.histoColor);
+        		observer.onColorChange(this, this.primaryColor);
         	}
         }
     }
@@ -326,5 +361,105 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public void setTapDecColumn(String tapDecColumn) {
         this.tapDecColumn = tapDecColumn;
+    }
+    
+    public final void setSampEnabled(final Boolean inputSampEnabled) {
+        this.sampEnabled = inputSampEnabled;
+    }
+
+    public final Boolean getSampEnabled() {
+        if(sampEnabled == null) {
+            return false;
+        }
+        return this.sampEnabled;
+    }
+   
+    public final String getTapSTCSColumn() {
+        return tapSTCSColumn;
+    }
+
+    public final void setTapSTCSColumn(final String inputTapSTCSColumn) {
+        this.tapSTCSColumn = inputTapSTCSColumn;
+    }
+
+    @Override
+    public String getTapQuery(String tapContext, String metadataAdql, String responseFormat) {
+        Long timecall = System.currentTimeMillis();
+        String adqlParameterAndValue = "";
+        String adql = URL.encodeQueryString(metadataAdql);
+        if(!adql.isEmpty()) {
+            adqlParameterAndValue = "&query=" + adql;
+        }
+
+        Log.debug("[getTapQuery()] timecall " + timecall);
+        return tapContext + "/tap/sync?request=doQuery&lang=ADQL&format="
+        + responseFormat + adqlParameterAndValue + "&timecall=" + timecall;
+    }
+    
+    
+    public String getUniqueIdentifierField(){
+        return uniqueIdentifierField;
+    }
+    
+    public void setUniqueIdentifierField(String field){
+        uniqueIdentifierField = field;
+    }
+    
+    public String getSecondaryColor() {
+        return secondaryColor;
+    }
+
+    public void setSecondaryColor(String secondaryColor) {
+        this.secondaryColor = secondaryColor;
+    }
+    
+    public String getExtraPopupDetailsByTapName() {
+        return extraPopupDetailsByTapName;
+    }
+
+    public void setExtraPopupDetailsByTapName(String extraPopupDetailsByTapName) {
+        this.extraPopupDetailsByTapName = extraPopupDetailsByTapName;
+    }
+    
+    public void setIcon(String icon) {}
+    
+
+    public String getSampUrl() {
+        return sampUrl;
+    }
+
+    public void setSampUrl(String sampUrl) {
+        this.sampUrl = sampUrl;
+    }
+
+    public String getDdProductURI() {
+        return ddProductURI;
+    }
+
+    public void setDdProductURI(String ddProductURI) {
+        this.ddProductURI = ddProductURI;
+    }
+
+    public final String getDdBaseURL() {
+        return ddBaseURL;
+    }
+
+    public final void setDdBaseURL(final String inputDDBaseURL) {
+        this.ddBaseURL = inputDDBaseURL;
+    }
+    
+    @Override
+    public String getDescriptorId() {
+        return descriptorId;
+    }
+
+    @Override
+    public void setDescriptorId(String descriptorId) {
+        this.descriptorId = descriptorId;
+    }
+    
+    @Override
+    public String generateId() {
+         return getDescriptorId() + generateNextTabCount();
     }
 }

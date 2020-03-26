@@ -3070,10 +3070,73 @@
 		Centre on shape
 	</text>
 	<text key="tabulator_centreHeader">
-		Go To
+		Go to
 	</text>
 	<text key="tabulator_centreHeaderTooltip">
 		Move view to the position of each shape
+	</text>
+	<text key="tabulator_sendToVOApplicationHeader">
+		Send
+	</text>
+	
+	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
+		Send data product to Virtual Observatory application
+	</text>
+
+	
+	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+		External data provided by 
+		&lt;a
+		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
+		target="_blank"&gt;
+		the Canadian Astronomy Data Center (CADC)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team. 
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+		External data provided by 
+		&lt;a
+		href="//www.eso.org/"
+		target="_blank"&gt;
+		the European Southern Observatory (ESO)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team. 
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+		External data provided by 
+		&lt;a
+		href="//archive.stsci.edu/"
+		target="_blank"&gt;
+		the Mikulski Archive for Space Telescopes (MAST)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team. 
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
 	</text>
 
 </Internationalization>

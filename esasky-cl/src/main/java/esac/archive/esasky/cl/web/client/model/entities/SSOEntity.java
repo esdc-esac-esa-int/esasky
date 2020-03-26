@@ -2,15 +2,10 @@ package esac.archive.esasky.cl.web.client.model.entities;
 
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
-
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -21,7 +16,6 @@ import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.callback.SSOOrbitMetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -40,23 +34,9 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 	private String ssoOrbitColor = "#FF0000";
 	private double ssoOrbitLineWidth = CombinedSourceFootprintDrawer.DEFAULT_LINEWIDTH;
 
-	private final Resources resources = GWT.create(Resources.class);
-
-	public interface Resources extends ClientBundle {
-
-		@Source("saturn_light.png")
-		@ImageOptions(flipRtl = true)
-		ImageResource tabDefaultSSOIcon();
-
-		@Source("saturn_dark.png")
-		@ImageOptions(flipRtl = true)
-		ImageResource tabSelectedSSOIcon();
-	}
-
 	public SSOEntity(SSODescriptor descriptor, CountStatus countStatus,
-			SkyViewPosition skyViewPosition, String esaSkyUniqObsId, Long lastUpdate, EntityContext context) {
-		super(descriptor, countStatus, skyViewPosition, esaSkyUniqObsId,
-				lastUpdate, context);
+			SkyViewPosition skyViewPosition, String esaSkyUniqObsId) {
+		super(descriptor, countStatus, skyViewPosition, esaSkyUniqObsId);
 		setSsoName(GUISessionStatus.getTrackedSso().name);
 		setSsoType(GUISessionStatus.getTrackedSso().type);
 	}
@@ -77,10 +57,10 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 		this.ssoType = ssoType;
 	}
 
-	@Override
-	public SelectableImage getTypeIcon() {
-		return new SelectableImage(resources.tabDefaultSSOIcon(), resources.tabSelectedSSOIcon());
-	}
+//	@Override
+//	public ToggleImage getTypeIcon() {
+//		return new ToggleImage(new Image(resources.tabDefaultSSOIcon()), new Image(resources.tabSelectedSSOIcon()));
+//	}
 
 	@Override
 	public String getTabLabel() {
@@ -209,4 +189,6 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 }

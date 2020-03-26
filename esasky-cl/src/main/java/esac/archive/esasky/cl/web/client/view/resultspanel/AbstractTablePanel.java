@@ -1565,7 +1565,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 	}
 
 	public String getFullId() {
-		return getEntity().getContext().toString() + "-" + getLabel();
+		return getEntity().getEsaSkyUniqId() + "-" + getLabel();
 	}
 	
 	protected void addColumnGroupHeader(Widget header) {
@@ -1720,6 +1720,13 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 	
     @Override
     public Map<String, String> getTapFilters() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+
+    @Override
+    public String getFilterString() {
         // TODO Auto-generated method stub
         return null;
     }

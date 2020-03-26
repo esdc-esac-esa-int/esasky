@@ -26,4 +26,6 @@ public interface IShapeDrawer {
     public void setShapeBuilder(ShapeBuilder shapeBuilder);
     public void hoverStart(int hoveredShapeId);
     public void hoverStop(int hoveredShapeId);
+    public String getShapeType();
+    public void setShapeType(String shapeType);
 }

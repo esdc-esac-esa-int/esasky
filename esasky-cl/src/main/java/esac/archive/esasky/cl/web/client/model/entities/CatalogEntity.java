@@ -6,12 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
@@ -24,7 +20,6 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -53,8 +48,6 @@ public class CatalogEntity implements GeneralEntityInterface{
     
     private final DefaultEntity defaultEntity;
 
-    private final Resources resources = GWT.create(Resources.class);
-
     private String shape;
     private double arrowScale = 1.0;
     
@@ -77,26 +70,15 @@ public class CatalogEntity implements GeneralEntityInterface{
 		}
 	};
     
-    public interface Resources extends ClientBundle {
-
-        @Source("catalog_map_outline.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabDefaultCatalogueIcon();
-
-        @Source("catalog_map_outline_dark.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabSelectedCatalogueIcon();
-    }
-
     public CatalogEntity(CatalogDescriptor catDescriptor, CountStatus countStatus,
             JavaScriptObject catalogue, SkyViewPosition skyViewPosition,
-            String esaSkyUniqId, Long lastUpdate, EntityContext context) {
+            String esaSkyUniqId) {
 		this.catalogue = catalogue;
 		this.mocEntity = new MOCEntity(catDescriptor, countStatus, this);
     	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(catalogue, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-				catDescriptor.getHistoColor()), shapeBuilder);
-        defaultEntity = new DefaultEntity(catDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
-                context, drawer, TAPMetadataCatalogueService.getInstance());
+				catDescriptor.getPrimaryColor()), shapeBuilder);
+        defaultEntity = new DefaultEntity(catDescriptor, countStatus, skyViewPosition, esaSkyUniqId,
+                drawer, TAPMetadataCatalogueService.getInstance());
         this.descriptor = catDescriptor;
     }
 
@@ -110,12 +92,6 @@ public class CatalogEntity implements GeneralEntityInterface{
        return defaultEntity.getMetadataAdql();
     }
 
-    @Override
-    public SelectableImage getTypeIcon() {
-        return new SelectableImage(resources.tabDefaultCatalogueIcon(),
-                resources.tabSelectedCatalogueIcon());
-    }
-
     public String getShape() {
         return (this.shape != null) ? this.shape : "square";
     }
@@ -126,11 +102,11 @@ public class CatalogEntity implements GeneralEntityInterface{
     }
 
     public String getArrowColor() {
-        return this.getDescriptor().getPmArrowColor();
+        return this.getDescriptor().getSecondaryColor();
     }
 
     public void setArrowColor(String color) {
-        this.getDescriptor().setPmArrowColor(color);
+        this.getDescriptor().setSecondaryColor(color);
         AladinLiteWrapper.getAladinLite().setCatalogArrowColor(this.catalogue, color);
     }
 
@@ -721,7 +697,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 					
 					@Override
 					public void onShapeColorChanged(String color) {
-						descriptor.setHistoColor(color);
+						descriptor.setPrimaryColor(color);
 					}
 					
 					@Override
@@ -759,4 +735,14 @@ public class CatalogEntity implements GeneralEntityInterface{
 	public void hideAllShapes() {
 		defaultEntity.hideAllShapes();
 	}
+
+    @Override
+    public String getShapeType() {
+        return defaultEntity.getShapeType();
+    }
+
+    @Override
+    public void setShapeType(String shapeType) {
+        defaultEntity.setShapeType(shapeType);
+    }
 }

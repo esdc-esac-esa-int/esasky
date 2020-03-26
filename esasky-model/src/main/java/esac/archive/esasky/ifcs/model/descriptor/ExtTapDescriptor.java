@@ -3,9 +3,13 @@ package esac.archive.esasky.ifcs.model.descriptor;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.google.gwt.http.client.URL;
+
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 
 /**
@@ -13,12 +17,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class ExtTapDescriptor extends BaseDescriptor {
 
-    private String tapSTCSColumn;
-    private String uniqueIdentifierField;
     private String whereADQL;
     private String dateADQL;
     private String selectADQL;
-    private String orderByADQL;
+    private String orderBy;
     private String responseFormat;
     private String searchFunction;
     private Map<String, Map<String, ArrayList<String>>> collections;
@@ -39,12 +41,10 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	//Creates a shallow copy of the parent which is fine since String and Boolean is immutable
     	this.parent = parent;
     	
-    	tapSTCSColumn = parent.getTapSTCSColumn();
-    	uniqueIdentifierField = parent.getUniqueIdentifierField();
     	whereADQL = parent.getWhereADQL();
     	dateADQL = parent.getDateADQL();
     	selectADQL = parent.getSelectADQL();
-        orderByADQL = parent.getOrderByADQL();
+        orderBy = parent.getOrderBy();
     	responseFormat = parent.getResponseFormat();
     	searchFunction = parent.getSearchFunction();
     	isInBackend = false;
@@ -57,27 +57,21 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setGuiLongName(parent.getGuiLongName());
     	setMission(parent.getMission());
     	setCreditedInstitutions(parent.getCreditedInstitutions());
-    	setHistoColor(parent.getHistoColor());
+    	setPrimaryColor(parent.getPrimaryColor());
     	setTapTable(parent.getTapTable());
     	setArchiveURL(parent.getAdsAuthorUrl());
     	setArchiveProductURI(parent.getArchiveProductURI());
     	setFovLimit(parent.getFovLimit());
     	setTapRaColumn(parent.getTapRaColumn());
     	setTapDecColumn(parent.getTapDecColumn());
+    	setTapSTCSColumn(parent.getTapSTCSColumn());
+    	setUniqueIdentifierField(parent.getUniqueIdentifierField());
     }
 
 	@Override
 	public String generateId() {
-		return getMission() + " ExtTap " + generateNextTabCount();
+		return getMission() + " EXT_TAP_ " + generateNextTabCount();
 	}
-
-    public String getUniqueIdentifierField(){
-    	return uniqueIdentifierField;
-    }
-    
-    public void setUniqueIdentifierField(String field){
-    	uniqueIdentifierField = field;
-    }
 
 	public String getTapUrl() {
 		return tapUrl;
@@ -85,14 +79,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setTapUrl(String tapUrl) {
 		this.tapUrl = tapUrl;
-	}
-
-	public String getTapSTCSColumn() {
-		return tapSTCSColumn;
-	}
-	
-	public void setTapSTCSColumn(String tapSTCSColumn) {
-		this.tapSTCSColumn = tapSTCSColumn;
 	}
 
 	public String getWhereADQL() {
@@ -175,12 +161,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.ingestedTable = ingestedTable;
 	}
 
-	public String getOrderByADQL() {
-		return orderByADQL;
+	public String getOrderBy() {
+		return orderBy;
 	}
 
-	public void setOrderByADQL(String orderByADQL) {
-		this.orderByADQL = orderByADQL;
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 
 	public int getSourceLimit() {
@@ -198,5 +184,39 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public void setWavelengthRange(double[] wavelengthRange) {
 		this.wavelengthRange = wavelengthRange;
 	}
-	
+
+    public String getTapQuery(String tapContext, String metadataAdql, String responseFormat) {
+        Long timecall = System.currentTimeMillis();
+        String adqlParameterAndValue = "";
+        String adql = URL.encodeQueryString(metadataAdql);
+        if(!adql.isEmpty()) {
+            adqlParameterAndValue = "&" + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adql;
+        }
+
+        Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
+        String url = tapContext + "&" + EsaSkyConstants.EXT_TAP_TARGET_FLAG
+                    + "=" + getMission();
+        if(!isInBackend()) {
+            String tapUrl = getTapUrl();
+            if(!tapUrl.endsWith("/sync")) {
+                tapUrl += "/sync";
+            }
+            url += "&" + EsaSkyConstants.EXT_TAP_URL + "=" + getTapUrl() +
+                    "&" + EsaSkyConstants.EXT_TAP_RESPONSE_FORMAT + "=" + getResponseFormat();
+        }
+        return url + adqlParameterAndValue;
+    }
+
+    @Override
+    public String getIcon() {
+        return "ext_tap";
+    }
+    
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "EXT_TAP_" + getCreditedInstitutions();
+        }
+        return descriptorId;
+    }
 }

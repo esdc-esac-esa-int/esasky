@@ -16,14 +16,15 @@ public class TabulatorWrapper{
         public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
         public void onAccessUrlClicked(String url);
         public void onCenterClicked(GeneralJavaScriptObject rowData);
+        public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
     }
 
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
 
-    public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback) {
+    public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback, boolean addSendToVOApplicationColumn) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, url);
+        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn);
     }
 
     public void selectRow(int rowId) {
@@ -82,7 +83,7 @@ public class TabulatorWrapper{
         tabulatorCallback.onDataFiltered(indexArray);
     }
 
-    private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String url) /*-{
+    private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String url, boolean addSendToVOApplicationColumn) /*-{
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
@@ -232,7 +233,7 @@ public class TabulatorWrapper{
                     title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
                     headerSort:false, 
                     headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
-                    minWidth: 85,
+                    minWidth: 50,
                     formatter:imageButton, width:40, align:"center", formatterParams:{image:"recenter.png", 
                         tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
                         cellClick:function(e, cell){
@@ -240,6 +241,21 @@ public class TabulatorWrapper{
             		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
                         }
                 });
+                
+                if(addSendToVOApplicationColumn){
+                    refinedColumnDef.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_sendToVOApplicationHeader"),
+                        headerSort:false, 
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
+                        minWidth: 50,
+                        formatter:imageButton, width:40, align:"center", formatterParams:{image:"send_small.png", 
+                            tooltip:$wnd.esasky.getInternationalizationText("commonObservationTablePanel_sendRowToVOA")},
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
+                            }
+                    });
+                }
 
 
 		    	for(var i = 0; i < metadata.length; i++){
@@ -394,6 +410,10 @@ public class TabulatorWrapper{
     
     public void onCenterClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onCenterClicked(rowData);
+    }
+    
+    public void onSendToVoApplicaitionClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onSendToVoApplicaitionClicked(rowData);
     }
 
     public void onRowSelection(int rowId) {

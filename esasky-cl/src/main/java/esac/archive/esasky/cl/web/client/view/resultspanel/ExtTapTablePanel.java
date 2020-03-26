@@ -96,7 +96,7 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 	
 	@Override
 	public final ExtTapDescriptor getDescriptor() {
-		return entity.getDescriptor();
+		return (ExtTapDescriptor)entity.getDescriptor();
 	}
 
 	@Override

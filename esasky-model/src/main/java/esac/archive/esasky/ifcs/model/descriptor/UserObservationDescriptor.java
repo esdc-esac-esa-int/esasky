@@ -5,16 +5,12 @@ package esac.archive.esasky.ifcs.model.descriptor;
  */
 public class UserObservationDescriptor extends ObservationDescriptor {
 
-	private static int tabNumber = 0;
-	
-	@Override
-	public String generateId() {
-		 return getMission() + " UC " + generateNextTabCount();
-	}
-	
-	@Override
-	protected int generateNextTabCount(){
-		tabNumber = tabNumber + 1;
-		return tabNumber;
-	}
+    
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "USER_IMAGING_" + getMission();
+        }
+        return descriptorId;
+    }
 }

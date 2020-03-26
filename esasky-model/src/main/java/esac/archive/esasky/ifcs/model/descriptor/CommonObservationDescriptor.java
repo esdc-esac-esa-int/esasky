@@ -6,8 +6,6 @@ package esac.archive.esasky.ifcs.model.descriptor;
  */
 public abstract class CommonObservationDescriptor extends BaseDescriptor {
 
-    /** Tap DB STC_S column name. */
-    private String tapSTCSColumn;
 
     /** Tap DB ObsId column name. */
     private String tapObservationId;
@@ -22,40 +20,15 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
 
     private String ddProductURI;
 
-    /** Mission Archive DD base url. */
-    private String ddBaseURL;
-
     /** DD product URL. */
     private String ddProductIDParameter;
 
     /** DD Product ID. */
     private String ddProductIDColumn;
-
-    /** sampEnabled. */
-    private Boolean sampEnabled;
     
-    /** SampUrl. */
-    private String sampUrl;
-
 	private String ssoCardReductionTapTable;
 
     private String ssoXMatchTapTable;
-
-    /**
-     * getTapSTCSColumn().
-     * @return String.
-     */
-    public final String getTapSTCSColumn() {
-        return tapSTCSColumn;
-    }
-
-    /**
-     * setTapSTCSColumn().
-     * @param inputTapSTCSColumn Input String.
-     */
-    public final void setTapSTCSColumn(final String inputTapSTCSColumn) {
-        this.tapSTCSColumn = inputTapSTCSColumn;
-    }
 
     /**
      * getTapObservationId().
@@ -130,22 +103,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     }
 
     /**
-     * getDdBaseUrl().
-     * @return String.
-     */
-    public final String getDdBaseURL() {
-        return ddBaseURL;
-    }
-
-    /**
-     * setDdBaseURL().
-     * @param inputDDBaseURL Input String
-     */
-    public final void setDdBaseURL(final String inputDDBaseURL) {
-        this.ddBaseURL = inputDDBaseURL;
-    }
-
-    /**
      * getDdProductIDParameter().
      * @return String.
      */
@@ -176,30 +133,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     public final void setDdProductIDColumn(final String inputDDProductIDColumn) {
         this.ddProductIDColumn = inputDDProductIDColumn;
     }
-
-    /**
-     * setSampEnambled().
-     * @param inputSampEnabled Input String.
-     */
-    public final void setSampEnabled(final Boolean inputSampEnabled) {
-        this.sampEnabled = inputSampEnabled;
-    }
-
-    /**
-     * getSampEnabled().
-     * @return Boolean
-     */
-    public final Boolean getSampEnabled() {
-        return this.sampEnabled;
-    }
-    
-    public String getSampUrl() {
-  		return sampUrl;
-  	}
-
-  	public void setSampUrl(String sampUrl) {
-  		this.sampUrl = sampUrl;
-  	}
 
     public String getSsoCardReductionTapTable() {
         return ssoCardReductionTapTable;

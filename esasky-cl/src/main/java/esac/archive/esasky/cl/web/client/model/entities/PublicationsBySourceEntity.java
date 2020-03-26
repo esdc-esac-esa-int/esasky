@@ -3,17 +3,12 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -26,32 +21,13 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePane
 
 public class PublicationsBySourceEntity extends CatalogEntity {
 
-    private final Resources resources = GWT.create(Resources.class);
 
     private TapRowList sourceMetadata;
 
-    public interface Resources extends ClientBundle {
-
-        @Source("publications_light.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabDefaultPublicationsIcon();
-
-        @Source("publications_dark.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabSelectedPublicationsIcon();
-    }
-
     public PublicationsBySourceEntity(PublicationsDescriptor pubDescriptor,
             CountStatus countStatus, JavaScriptObject pubOverlay, SkyViewPosition skyViewPosition,
-            String esaSkyUniqObsId, Long lastUpdate, EntityContext context) {
-        super(pubDescriptor, countStatus, pubOverlay, skyViewPosition, esaSkyUniqObsId,
-                lastUpdate, context);
-    }
-
-    @Override
-    public SelectableImage getTypeIcon() {
-        return new SelectableImage(resources.tabDefaultPublicationsIcon(),
-                resources.tabSelectedPublicationsIcon());
+            String esaSkyUniqObsId) {
+        super(pubDescriptor, countStatus, pubOverlay, skyViewPosition, esaSkyUniqObsId);
     }
 
     public void setSourceMetadata(TapRowList sourceMetadata) {

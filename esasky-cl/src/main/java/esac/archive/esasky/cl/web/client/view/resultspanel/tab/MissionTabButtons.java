@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
+import esac.archive.esasky.cl.web.client.model.ToggleImage;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
@@ -20,7 +20,7 @@ public class MissionTabButtons extends Composite {
     protected CloseButton closeButton;
     protected HorizontalPanel compositePanel;
     protected final String esaSkyUniqId;
-    protected SelectableImage selectableImage;
+    protected ToggleImage toggleImage;
     private LabelWithHelpButton tabTitleLabel;
 
     public MissionTabButtons(final String helpTitle, final String helpDescription, GeneralEntityInterface entity) {
@@ -53,9 +53,10 @@ public class MissionTabButtons extends Composite {
         
         initWidget(this.compositePanel);
         
-        this.selectableImage = entity.getTypeIcon();
-        selectableImage.addStyleName("tabIcon");
-        this.compositePanel.insert(selectableImage, 0);
+        this.toggleImage = new ToggleImage(new Image("images/" + entity.getDescriptor().getIcon() + ".png"), 
+                new Image("images/" + entity.getDescriptor().getIcon() + "_toggled.png"));
+        toggleImage.addStyleName("tabIcon");
+        this.compositePanel.insert(toggleImage, 0);
         
         entity.getDescriptor().registerColorChangeObservers(new ColorChangeObserver() {
 			
@@ -94,8 +95,8 @@ public class MissionTabButtons extends Composite {
             }
             closeButton.setDarkIcon();
             closeButton.setDarkStyle();
-            if(selectableImage != null){
-                selectableImage.setSelected();
+            if(toggleImage != null){
+                toggleImage.setToggled();
             }
         } else {
             tabTitleLabel.addStyleName("whiteLabel");
@@ -106,8 +107,8 @@ public class MissionTabButtons extends Composite {
             }
             closeButton.setLightIcon();
             closeButton.setLightStyle();
-            if(selectableImage != null){
-                selectableImage.setDefault();
+            if(toggleImage != null){
+                toggleImage.setDefault();
             }
         }
     }

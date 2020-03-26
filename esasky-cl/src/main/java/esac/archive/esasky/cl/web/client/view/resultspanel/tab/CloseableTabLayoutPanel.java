@@ -313,7 +313,7 @@ public class CloseableTabLayoutPanel extends Composite {
                         Double.toString(entity.getSkyViewPosition().getCoordinate().dec));
                 AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
 
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Recenter, getSelectedWidget().getFullId());
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Recenter, entity.getEsaSkyUniqId());
             }
         });
         recenterButton.addStyleName("tabButton");
@@ -353,7 +353,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 final String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
                 CloseableTabLayoutPanel.this.fireShowStylePanel(selectedTabId);
                 
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_SetStyle, getSelectedWidget().getFullId());
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_SetStyle, getSelectedWidget().getEsaSkyUniqID());
             }
         });
         styleButton.addStyleName("tabButton");
@@ -420,7 +420,7 @@ public class CloseableTabLayoutPanel extends Composite {
 				}
 			}
 		});
-        styleButton.setCircleColor(tabPanel.getDescriptor().getHistoColor());
+        styleButton.setCircleColor(tabPanel.getDescriptor().getPrimaryColor());
     }
     
     private void ensureCorrectButtonClickability() {

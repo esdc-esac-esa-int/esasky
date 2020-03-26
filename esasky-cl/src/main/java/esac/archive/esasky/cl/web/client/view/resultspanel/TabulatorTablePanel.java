@@ -9,6 +9,13 @@ import java.util.Map;
 import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -27,19 +34,28 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.model.entities.CommonObservationEntity.DescriptorMapper;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.UncachedRequestBuilder;
+import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
+import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
+import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
-public class TabulatorTablePanel extends Composite implements ITablePanel {
+public class TabulatorTablePanel extends Composite implements ITablePanel, TabulatorCallback {
 
 	private class SelectTimer extends Timer {
 		private final int rowId;
@@ -57,7 +73,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 			} else {
 				numberOfTries++;
 				if(numberOfTries > 30) {
-					Log.debug("Giving up scrollIntoView");
+					Log.error("Giving up scrollIntoView");
 					return;
 				}
 				schedule(50);
@@ -69,10 +85,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 		public void onPreviewClicked(final String id);
 	}
 
+	private TabulatorWrapper table;
 	/** is the esaSkyUniqID, the same saved into the Entities. */
 	private String esaSkyUniqID;
 	private String tabulatorContainerId;
-	/** label. */
 	private String tabTitle;
 	private String adqlQueryUrl;
 
@@ -159,7 +175,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 		this.esaSkyUniqID = inputEsaSkyUniqID;
 		this.tabTitle = inputLabel;
 		this.entity = entity;
-		this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll(" ", "_");
+		this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll(" ", "_").replaceAll(".", "_");
 		exposeOpenFilterBoxMethodToJs(this);
 
 		FlowPanel container = new FlowPanel();
@@ -401,7 +417,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 	}
 
 	public String getFullId() {
-		return getEntity().getContext().toString() + "-" + getLabel();
+		return getEntity().getEsaSkyUniqId() + "-" + getLabel();
 	}
 
 	public void setEmptyTable(String emptyTableText) {
@@ -439,111 +455,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 
 	}
 
-	private TabulatorWrapper table;
 
 	@Override
 	public void insertData(List<TableRow> data, String url) {
 		if(url != null) {
-			table = new TabulatorWrapper(tabulatorContainerId, url, 
-			new TabulatorCallback() {
-				
-				@Override
-				public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
-					entity.addShapes(null, javaScriptObject);
-				}
-
-				@Override
-				public void onRowSelection(final int rowId) {
-					HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
-					selectionId.add(new ShapeId() {
-						
-						@Override
-						public int getShapeId() {
-							return rowId;
-						}
-					});
-					entity.selectShapes(selectionId);
-					
-				}
-
-				@Override
-				public void onRowDeselection(final int rowId) {
-					HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
-					selectionId.add(new ShapeId() {
-						
-						@Override
-						public int getShapeId() {
-							return rowId;
-						}
-					});
-					entity.deselectShapes(selectionId);
-				}
-				
-				@Override
-				public void onDataFiltered(List<Integer> indexArray) {
-					entity.hideAllShapes();
-					entity.showShapes(indexArray);
-				}
-
-				@Override
-				public void onRowMouseEnter(int rowId) {
-					getEntity().hoverStart(rowId);
-				}
-
-				@Override
-				public void onRowMouseLeave(int rowId) {
-					getEntity().hoverStop(rowId);
-				}
-
-				@Override
-				public void onFilterChanged(String label, String filter) {
-					addTapFilter(label, filter);
-				}
-				
-				@Override
-				public void onDatalinkClicked(final GeneralJavaScriptObject row) {
-			        String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
-			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
-			        String title = row.invokeFunction("getData").getStringProperty("obs_id");
-
-			        DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(datalinkUrl, title);
-			        
-			        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
-			            row.invokeFunction("select");
-			            datalinkBox.registerCloseObserver(new ClosingObserver() {
-			               
-			                @Override
-			                public void onClose() {
-			                    row.invokeFunction("deselect");
-			                }
-			            });
-			        }
-				}
-				
-				@Override
-				public void onAccessUrlClicked(String url) {
-			        Window.open(url, "_blank", "_blank");
-			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
-				}
-
-                @Override
-                public void onCenterClicked(GeneralJavaScriptObject rowData) {
-                    final String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-                    final String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
-                    
-                    double fov = AladinLiteWrapper.getInstance().getFovDeg();
-                    if(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV) != null 
-                            && rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV).isEmpty()
-                            && rowData.getStringProperty(EsaSkyConstants.OBSCORE_SREGION) != null 
-                            && rowData.getStringProperty(EsaSkyConstants.OBSCORE_SREGION).startsWith("POSITION")) {
-                        fov = Double.parseDouble(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV)) * 4;
-                    }
-                    
-                    AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
-                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_Recenter, getFullId(), 
-                            rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
-                }
-			});
+			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled());
 			tableNotShowingContainer.addStyleName("displayNone");
 		}
 
@@ -676,5 +592,223 @@ public class TabulatorTablePanel extends Composite implements ITablePanel {
 	public String getVoTableString() {
 		return table.getVot(getDescriptor().getGuiLongName());
 	}
+	
+    @Override
+    public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+        entity.addShapes(null, javaScriptObject);
+    }
+
+    @Override
+    public void onRowSelection(final int rowId) {
+        HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
+        selectionId.add(new ShapeId() {
+            
+            @Override
+            public int getShapeId() {
+                return rowId;
+            }
+        });
+        entity.selectShapes(selectionId);
+        
+    }
+
+    @Override
+    public void onRowDeselection(final int rowId) {
+        HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
+        selectionId.add(new ShapeId() {
+            
+            @Override
+            public int getShapeId() {
+                return rowId;
+            }
+        });
+        entity.deselectShapes(selectionId);
+    }
+    
+    @Override
+    public void onDataFiltered(List<Integer> indexArray) {
+        entity.hideAllShapes();
+        entity.showShapes(indexArray);
+    }
+
+    @Override
+    public void onRowMouseEnter(int rowId) {
+        getEntity().hoverStart(rowId);
+    }
+
+    @Override
+    public void onRowMouseLeave(int rowId) {
+        getEntity().hoverStop(rowId);
+    }
+
+    @Override
+    public void onFilterChanged(String label, String filter) {
+        addTapFilter(label, filter);
+    }
+    
+    @Override
+    public void onDatalinkClicked(final GeneralJavaScriptObject row) {
+        String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
+        String title = row.invokeFunction("getData").getStringProperty("obs_id");
+
+        DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(datalinkUrl, title);
+        
+        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
+            row.invokeFunction("select");
+            datalinkBox.registerCloseObserver(new ClosingObserver() {
+               
+                @Override
+                public void onClose() {
+                    row.invokeFunction("deselect");
+                }
+            });
+        }
+    }
+    
+    @Override
+    public void onAccessUrlClicked(String url) {
+        Window.open(url, "_blank", "_blank");
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
+    }
+
+    @Override
+    public void onCenterClicked(GeneralJavaScriptObject rowData) {
+        final String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
+        final String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+        
+        double fov = AladinLiteWrapper.getInstance().getFovDeg();
+        if(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV) != null 
+                && rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV).isEmpty()
+                && rowData.getStringProperty(EsaSkyConstants.OBSCORE_SREGION) != null 
+                && rowData.getStringProperty(EsaSkyConstants.OBSCORE_SREGION).startsWith("POSITION")) {
+            fov = Double.parseDouble(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV)) * 4;
+        }
+        
+        AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_Recenter, getFullId(), 
+                rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
+    }
+
+    @Override
+    public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
+        String uniqueIdentifierField = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
+        if(getEntity().getDescriptor().getSampUrl() != null){
+            executeSampFileList(uniqueIdentifierField);
+            return;
+        } 
+
+        String tableName = getLabel() + "-" + uniqueIdentifierField;
+        HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
+
+        // Display top progress bar...
+        Log.debug("[sendSelectedProductToSampApp()] About to send 'show top progress bar...' event!!!");
+        CommonEventBus.getEventBus().fireEvent(
+                new ProgressIndicatorPushEvent(SampAction.SEND_PRODUCT_TO_SAMP_APP.toString(),
+                        TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
+                        .replace(EsaSkyConstants.REPLACE_PATTERN, tableName)));
+
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_SendToVOTools, getFullId(), uniqueIdentifierField);
+        String sampUrl = null;
+        if (!getEntity().getDescriptor().getDdBaseURL().isEmpty()) {
+            String tapName = getEntity().getDescriptor().getDdProductURI().split("@@@")[1];
+            String valueURI = rowData.getStringProperty(tapName);
+            sampUrl = getEntity().getDescriptor().getDdBaseURL() + getEntity().getDescriptor().getDdProductURI().replace("@@@" + tapName + "@@@", valueURI);
+        }
+        
+        if (sampUrl == null) {
+            sampUrl = rowData.getStringProperty("product_url");
+        } 
+        if (sampUrl == null) {
+            Log.error("[sendSelectedProductToSampApp()] No DD Base URL "
+                    + " nor Product URL found for "
+                    + getLabel()
+                    + " obsId:" + uniqueIdentifierField);
+        }
+
+        sampUrlsPerMissionMap.put(tableName, sampUrl);
+
+        // Send all URL to Samp
+        ESASkySampEvent sampEvent = new ESASkySampEvent(SampAction.SEND_PRODUCT_TO_SAMP_APP,
+                sampUrlsPerMissionMap);
+        CommonEventBus.getEventBus().fireEvent(sampEvent);
+    }
+    
+    public void executeSampFileList(String obsId) {
+
+        String completeUrl = EsaSkyWebConstants.TAP_CONTEXT + "/samp-files?";
+
+        StringBuilder data = new StringBuilder();
+        DescriptorMapper mapper = GWT.create(DescriptorMapper.class);
+
+        String json = mapper.write(getDescriptor());
+
+        data.append("descriptor=" + URL.encodeQueryString(json));
+        data.append("&observation_id=" + obsId);
+
+        Log.debug("[executeSampFileList] URL:" + completeUrl);
+        Log.debug("[executeSampFileList] JSON:" + data.toString());
+        completeUrl = completeUrl + data.toString();
+        Log.debug("[executeSampFileList] CompleteURL:" + completeUrl);
+
+        UncachedRequestBuilder requestBuilder = new UncachedRequestBuilder(
+                RequestBuilder.GET, completeUrl);
+
+        try {
+            requestBuilder.sendRequest(null, new RequestCallback() {
+
+                @Override
+                public void onError(
+                        final com.google.gwt.http.client.Request request,
+                        final Throwable exception) {
+                    Log.debug(
+                            "[TabulatorTablePanel/executeSampFileList()] Failed file reading",
+                            exception);
+                }
+
+                @Override
+                public void onResponseReceived(final Request request,
+                        final Response response) {
+                    String data = "";
+                    data = response.getText();
+                    List<SampMessageItem> messageItems = SampXmlParser.parse(data);
+                    try {
+
+                        int counter = 0;
+                        String tableNameTmp="";
+
+                        // Send all URL to Samp
+                        HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
+                        for (SampMessageItem i : messageItems) {
+                            // Prepare sending message
+                            tableNameTmp = getDescriptor().getTapTable() + "_" + counter;
+                            String fullUrl = getDescriptor().getDdBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
+                            if (fullUrl.contains("README")) {
+                                continue;
+                            }
+                            sampUrlsPerMissionMap.put(tableNameTmp, fullUrl);
+                            Log.debug("SAMP URL=" + fullUrl);
+                            counter++;
+                        }
+                        ESASkySampEvent sampEvent  = new ESASkySampEvent(SampAction.SEND_PRODUCT_TO_SAMP_APP, sampUrlsPerMissionMap);
+                        CommonEventBus.getEventBus().fireEvent(sampEvent);
+
+                    } catch (Exception e) {
+
+                        Log.debug("[TabulatorTablePanel/executeSampFileList()] Exception in ESASkySampEventHandlerImpl.processEvent",e);
+
+                        throw new IllegalStateException(
+                                "[TabulatorTablePanel.executeSampFileList] Unexpected SampAction: SEND_VO_TABLE");
+                    }
+                }
+
+            });
+        } catch (RequestException e) {
+            Log.debug(
+                    "[TabulatorTablePanel/executeSampFileList()] Failed file reading",
+                    e);
+        }
+    }
+
 
 }

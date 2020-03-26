@@ -225,12 +225,12 @@ public class DescriptorRepository {
 								double maxWavelength = Double.parseDouble(facility.get("range").get(1));
 								
 								collectionDesc.setWavelengthRange(new double[] {minWavelength, maxWavelength});
-								collectionDesc.setHistoColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
+								collectionDesc.setPrimaryColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
 							}else if(facility.containsKey("color")) {
-								collectionDesc.setHistoColor(facility.get("color").get(0));
+								collectionDesc.setPrimaryColor(facility.get("color").get(0));
 							}
 							else {
-								collectionDesc.setHistoColor(ESASkyColors.getNext());
+								collectionDesc.setPrimaryColor(ESASkyColors.getNext());
 							}
 							
 							descriptorsList.add(collectionDesc);
@@ -545,7 +545,7 @@ public class DescriptorRepository {
 		}
 			
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
-		String url = TAPUtils.getExtTAPQuery(URL.encodeQueryString(adql), descriptor);
+		String url = descriptor.getTapQuery(EsaSkyWebConstants.EXT_TAP_REQUEST_URL, adql, descriptor.getResponseFormat());
 		
 		Log.debug("[DescriptorRepository/updateCount4ExtTap()] Query [" + url + "]");
 
@@ -835,7 +835,7 @@ public class DescriptorRepository {
 		descriptor.setMission(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setGuiLongName(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setGuiShortName(footprintsSet.getOverlaySet().getOverlayName());
-		descriptor.setHistoColor(footprintsSet.getOverlaySet().getColor());
+		descriptor.setPrimaryColor(footprintsSet.getOverlaySet().getColor());
 		
 		descriptor.setTapObservationId(APIMetadataConstants.OBS_NAME);
 		descriptor.setUniqueIdentifierField(APIMetadataConstants.ID);
@@ -873,7 +873,7 @@ public class DescriptorRepository {
 		descriptor.setMission(userCatalogue.getOverlaySet().getOverlayName());
 		descriptor.setGuiLongName(userCatalogue.getOverlaySet().getOverlayName());
 		descriptor.setGuiShortName(userCatalogue.getOverlaySet().getOverlayName());
-		descriptor.setHistoColor(userCatalogue.getOverlaySet().getColor());
+		descriptor.setPrimaryColor(userCatalogue.getOverlaySet().getColor());
 		descriptor.setUniqueIdentifierField(APIMetadataConstants.ID);
 
 		descriptor.setFovLimit(360.0);

@@ -5,8 +5,16 @@ package esac.archive.esasky.ifcs.model.descriptor;
  */
 public class SpectraDescriptor extends CommonObservationDescriptor {
 
-	@Override
-	public String generateId() {
-		 return getMission() + " Spectra " + generateNextTabCount();
-	}
+    @Override
+    public String getIcon() {
+        return "spectra";
+    }
+    
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "ASTRO_SPECTRA_" + getMission();
+        }
+        return descriptorId;
+    }
 }

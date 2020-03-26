@@ -75,7 +75,7 @@ public class ExtTapTreeMap extends TreeMap {
                 	for(Point point : series.getPoints()) {
                 		PointInformation pointInformation = allPoints.get(point.getText());
                 		if(pointInformation != null) {
-                			String color = pointInformation.descriptor.getHistoColor();
+                			String color = pointInformation.descriptor.getPrimaryColor();
                 			setColor(point, color);
                 		}
                 	}
@@ -188,12 +188,12 @@ public class ExtTapTreeMap extends TreeMap {
         String color;
         if(((ExtTapDescriptor)descriptor).getParent() != null) {
         	if(((ExtTapDescriptor)descriptor).getParent().getParent() != null) {
-        		color = ((ExtTapDescriptor)descriptor).getParent().getParent().getHistoColor();
+        		color = ((ExtTapDescriptor)descriptor).getParent().getParent().getPrimaryColor();
         	}else {
-        		color = ((ExtTapDescriptor)descriptor).getParent().getHistoColor();
+        		color = ((ExtTapDescriptor)descriptor).getParent().getPrimaryColor();
         	}
         }else {
-        	color = descriptor.getHistoColor();
+        	color = descriptor.getPrimaryColor();
         }
         
         pointInformation.setParentColor(color);
@@ -256,7 +256,7 @@ public class ExtTapTreeMap extends TreeMap {
 				});
             }
             
-            final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getHistoColor(), pointInformation, logCount(count));
+            final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
             
             pointsToAdd.add(newPoint);
             addPointsOnNextRender = true;

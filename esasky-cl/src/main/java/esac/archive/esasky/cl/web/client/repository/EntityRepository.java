@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.resources.client.ClientBundle;
@@ -16,26 +17,33 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.entities.CatalogEntity;
 import esac.archive.esasky.cl.web.client.model.entities.CombinedSourceFootprintDrawer;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
+import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity.SecondaryShapeAdder;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.model.entities.ObservationEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
-import esac.archive.esasky.cl.web.client.model.entities.SpectraEntity;
-import esac.archive.esasky.cl.web.client.model.entities.SurveyEntity;
+import esac.archive.esasky.cl.web.client.query.AbstractMetadataService;
+import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataSSOService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataSurveyService;
+import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class EntityRepository {
 
@@ -94,81 +102,157 @@ public class EntityRepository {
 		allEntities.remove(entity);
 	}
 	
-	public GeneralEntityInterface createCommonObservationEntity(CommonObservationDescriptor descriptor, EntityContext context) {
-		String esaSkyUniqID = descriptor.generateId();
-		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-
-		GeneralEntityInterface newEntity = null;
-		// TODO move this code into a factory class
-		if (descriptor instanceof ObservationDescriptor) {
-			if (((ObservationDescriptor) descriptor).getIsSurveyMission()) {
-				newEntity = createSurveyMissionEntity((ObservationDescriptor) descriptor, esaSkyUniqID,
-						skyViewPosition, context, descriptorRepo.getObsDescriptors().getCountStatus());
-			} else {
-				newEntity = createObservationEntity(descriptor, esaSkyUniqID, skyViewPosition, context,
-						descriptorRepo.getObsDescriptors().getCountStatus());
-			}
-		} else if (descriptor instanceof SpectraDescriptor) {
-			newEntity = createSpectraEntity(descriptor, esaSkyUniqID, skyViewPosition, context,
-					descriptorRepo.getSpectraDescriptors().getCountStatus());
-		} else {
-			throw new IllegalArgumentException("Unknown Descriptor type");
-		}
-		addEntity(newEntity);	
-		return newEntity;
+	public GeneralEntityInterface createEntity(IDescriptor descriptor) {
+	    GeneralEntityInterface newEntity;
+	    if(descriptor instanceof ObservationDescriptor && ((ObservationDescriptor)descriptor).getIsSurveyMission()) {
+	        newEntity = new ExtTapEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(),
+	                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPMetadataSurveyService.getInstance(), 
+	                20, SourceShapeType.CROSS.getName());
+	        addEntity(newEntity);   
+	    } else if (descriptor instanceof SSODescriptor) {
+	        return createEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), TAPMetadataSSOService.getInstance());
+	    } else if (descriptor instanceof CommonObservationDescriptor) {
+	        return createEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(), TAPMetadataObservationService.getInstance());
+	    } else if (descriptor instanceof CatalogDescriptor) {
+	        return createCatalogueEntity((CatalogDescriptor)descriptor);
+	    } else if (descriptor instanceof ExtTapDescriptor) {
+	        return createEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(), TAPExtTapService.getInstance());
+	        
+	    }
+	    return null;//TODO SSO, Publication
 	}
-
-	private GeneralEntityInterface createObservationEntity(CommonObservationDescriptor descriptor,
-			String esaSkyUniqID, SkyViewPosition skyViewPosition, EntityContext entityContext, CountStatus countStatus) {
-		return new ObservationEntity(descriptor, countStatus,
-				skyViewPosition, esaSkyUniqID, System.currentTimeMillis(),
-				entityContext);
-	}
-
-	private GeneralEntityInterface createSpectraEntity(CommonObservationDescriptor descriptor,
-			String esaSkyUniqID, SkyViewPosition skyViewPosition, EntityContext entityContext, CountStatus countStatus) {
-		return new SpectraEntity(descriptor, countStatus,
-				skyViewPosition, esaSkyUniqID, System.currentTimeMillis(),
-				entityContext);
-	}
-
-	private GeneralEntityInterface createSurveyMissionEntity(ObservationDescriptor descriptor,
-			String esaSkyUniqID, SkyViewPosition skyViewPosition, EntityContext entityContext, CountStatus countStatus) {
-		return new SurveyEntity(descriptor, countStatus,
-				skyViewPosition, esaSkyUniqID, System.currentTimeMillis(),
-				entityContext);
+	
+	private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus, AbstractMetadataService metadataService) {
+	    GeneralEntityInterface newEntity = new ExtTapEntity(descriptor, countStatus, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), metadataService);
+	    addEntity(newEntity);   
+	    return newEntity;
 	}
 
 	// CATALOG -------------
-	public GeneralEntityInterface createCatalogueEntity(CatalogDescriptor catDescriptor, EntityContext context) {
-		String esaSkyUniqID = catDescriptor.generateId();
+	public GeneralEntityInterface createCatalogueEntity(final CatalogDescriptor descriptor) {
+		String esaSkyUniqId = descriptor.generateId();
 		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+		GeneralEntityInterface newCatEntity = null;
+		if(Modules.useTabulator) {
+		    newCatEntity = new ExtTapEntity(descriptor, descriptorRepo.getCatDescriptors().getCountStatus(), 
+		            skyViewPosition, esaSkyUniqId, TAPMetadataCatalogueService.getInstance(), new SecondaryShapeAdder() {
+                        
+                        @Override
+                        public void createSpecializedOverlayShape(Map<String, Object> details) {
+                            if (descriptor.getDrawSourcesFunction() != null && !descriptor.getDrawSourcesFunction().isEmpty()) {
+                                JavaScriptObject functionPointer = AladinLiteWrapper.getAladinLite()
+                                        .createFunctionPointer(descriptor.getDrawSourcesFunction());
+                                details.put("shape", functionPointer);
+    
+                                // Adds the arrow style details
+                                details.put("arrowColor", descriptor.getSecondaryColor());
+                                details.put("arrowWidth", descriptor.getPmArrowWidth());
+                                details.put("arrowLength", descriptor.getPmArrowWidth() * 6);
+                            }
+                        }
+                        
+                        @Override
+                        public void addSecondaryShape(GeneralJavaScriptObject row, String ra, String dec, Map<String, String> details) {
+                            if (descriptor.getDrawSourcesFunction() != null) {
+                    
+                                // Adds the details for drawing the proper motion arrows
+                                try {
+                    
+                                    Double finalRa = null;
+                                    Double finalDec = null;
+                    
+                                    if ((descriptor.getFinalRaTapColumn() != null)
+                                            && descriptor.getFinalDecTapColumn() != null) {
+                    
+                                        // Proper motion ra, dec is coming from descriptor data, just use it
+                                        finalRa = row.invokeFunction("getData").getDoubleProperty(descriptor.getFinalRaTapColumn());
+                                        finalDec =row.invokeFunction("getData").getDoubleProperty(descriptor.getFinalDecTapColumn());
+                    
+                                    } else {
+                    
+                                        // Proper motion ra, dec not coming from descriptor data, so we need to
+                                        // calculate it
+                                        
+                                        final Double pm_ra = row.invokeFunction("getData").getDoubleProperty(descriptor.getPmRaTapColumn());
+                                        final Double pm_dec = row.invokeFunction("getData").getDoubleProperty(descriptor.getPmDecTapColumn());
+                                        
+                                        if ((pm_ra != null) && (pm_dec != null)
+                                            && (descriptor.getPmOrigEpoch() != null)
+                                            && (descriptor.getPmFinalEpoch() != null)) {
+                                            
+                                            double[] inputA = new double[6];
+                                            inputA[0] = new Double(ra);
+                                            inputA[1] = new Double(dec);
+                                            inputA[2] = row.invokeFunction("getData").getDoubleProperty(descriptor.getPmPlxTapColumn()); // Consider the parallax as 0.0 by default
+                                            inputA[3] = pm_ra;
+                                            inputA[4] = pm_dec;
+                                            inputA[5] = row.invokeFunction("getData").getDoubleProperty(descriptor.getPmNormRadVelTapColumn()); // normalised radial velocity at t0 [mas/yr] - see Note 2
 
-		Map<String, Object> catDetails = null;
-		if (catDescriptor.getDrawSourcesFunction() != null && !catDescriptor.getDrawSourcesFunction().isEmpty()) {
-			catDetails = new HashMap<String, Object>();
-
-			JavaScriptObject functionPointer = AladinLiteWrapper.getAladinLite()
-					.createFunctionPointer(catDescriptor.getDrawSourcesFunction());
-			catDetails.put("shape", functionPointer);
-
-			// Adds the arrow style details
-			catDetails.put("arrowColor", catDescriptor.getPmArrowColor());
-			catDetails.put("arrowWidth", catDescriptor.getPmArrowWidth());
-			catDetails.put("arrowLength", catDescriptor.getPmArrowWidth() * 6);
+                                            double[] outputA = new double[6];
+                        
+                                            ProperMotionUtils.pos_prop(descriptor.getPmOrigEpoch(), inputA,
+                                                    descriptor.getPmFinalEpoch(), outputA);
+                        
+                                            finalRa = outputA[0];
+                                            finalDec = outputA[1];
+                                            
+                                            if (descriptor.getPmOrigEpoch() > descriptor.getPmFinalEpoch()) {
+                                                // For catalogs in J2015 put the source in J2015 but draw the arrow flipped... from J2000 to J2015
+                                                details.put("arrowFlipped", "true");
+                                            }
+                                        }
+                                    }
+                    
+                                    if ((finalRa != null) && (finalDec != null)) {
+                                        details.put("arrowRa", finalRa + "");
+                                        details.put("arrowDec", finalDec + "");
+                        
+                                        // Creates the ra dec normalized vector of 10 degrees
+                                        final double raInc = finalRa - new Double(ra);
+                                        final double decInc = finalDec - new Double(dec);
+                                        final double m = Math.sqrt((raInc * raInc) + (decInc * decInc));
+                                        final double mRatio = 2 / m; // 2 degrees
+                                        final double raNorm = new Double(ra) + (raInc * mRatio);
+                                        final double decNorm = new Double(dec) + (decInc * mRatio);
+                                        
+                                        //Calculates the scale factor, this function is also in AladinESDC.js (modify there also)
+                                        final double arrowRatio = 4.0 - (3.0 * Math.pow(Math.log((m * 1000) + 2.72), -2.0)); // See: //rechneronline.de/function-graphs/  , using function: 4 - (3*(log((x* 1000)+2.72)^(-2)))
+                                        
+                                        details.put("arrowRaNorm", raNorm + "");
+                                        details.put("arrowDecNorm", decNorm + "");
+                                        details.put("arrowRatio", arrowRatio + "");
+                                    }
+                                    
+                                } catch (Exception ex) {
+                                    Log.error(this.getClass().getSimpleName() + ", Calculate proper motion error: ", ex);
+                                }
+                            }
+                        }
+                    });
+		} else {
+		    Map<String, Object> catDetails = null;
+		    if (descriptor.getDrawSourcesFunction() != null && !descriptor.getDrawSourcesFunction().isEmpty()) {
+		        catDetails = new HashMap<String, Object>();
+		        
+		        JavaScriptObject functionPointer = AladinLiteWrapper.getAladinLite()
+		                .createFunctionPointer(descriptor.getDrawSourcesFunction());
+		        catDetails.put("shape", functionPointer);
+		        
+		        // Adds the arrow style details
+		        catDetails.put("arrowColor", descriptor.getSecondaryColor());
+		        catDetails.put("arrowWidth", descriptor.getPmArrowWidth());
+		        catDetails.put("arrowLength", descriptor.getPmArrowWidth() * 6);
+		    }
+		    
+		    JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
+		            esaSkyUniqId, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, descriptor.getPrimaryColor(), catDetails);
+		    newCatEntity = new CatalogEntity(descriptor,
+		            descriptorRepo.getCatDescriptors().getCountStatus(), catalogue,
+		            skyViewPosition, esaSkyUniqId);
 		}
-
-		JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
-				esaSkyUniqID, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, catDescriptor.getHistoColor(), catDetails);
-		CatalogEntity newCatEntity = null;
-		newCatEntity = new CatalogEntity(catDescriptor,
-				descriptorRepo.getCatDescriptors().getCountStatus(), catalogue,
-				skyViewPosition, esaSkyUniqID,
-				System.currentTimeMillis(), context);
-
-		if (newCatEntity != null) {
-			allEntities.add(newCatEntity);
-		}
+		
+		
+		allEntities.add(newCatEntity);
 		
 		return newCatEntity;
 	}
@@ -203,11 +287,11 @@ public class EntityRepository {
 		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 
 		JavaScriptObject jsPubOverlay = AladinLiteWrapper.getInstance().createPublicationCatalogue(
-				EntityContext.PUBLICATIONS.toString(), descriptor.getHistoColor(), getPubDetails());
+				EntityContext.PUBLICATIONS.toString(), descriptor.getPrimaryColor(), getPubDetails());
 
 		publicationsEntity = new PublicationsEntity(descriptor,
 				descriptorRepo.getPublicationsDescriptors().getCountStatus(), jsPubOverlay, skyViewPosition,
-				esaSkyUniqID, System.currentTimeMillis(), EntityContext.PUBLICATIONS);
+				esaSkyUniqID);
 
 		return publicationsEntity;
 	}
@@ -221,11 +305,11 @@ public class EntityRepository {
 		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 
 		JavaScriptObject jsPubOverlay = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(sourceId, 0,
-				descriptor.getHistoColor(), getPubDetails());
+				descriptor.getPrimaryColor(), getPubDetails());
 
 		PublicationsBySourceEntity pubBySourceEntity = new PublicationsBySourceEntity(descriptor,
 				descriptorRepo.getPublicationsDescriptors().getCountStatus(), jsPubOverlay, skyViewPosition,
-				sourceId, System.currentTimeMillis(), EntityContext.PUBLICATIONS);
+				sourceId);
 
 		if (!byAuthor) {
 
@@ -289,17 +373,6 @@ public class EntityRepository {
 		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 
 		return new SSOEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), skyViewPosition,
-				esaSkyUniqID, System.currentTimeMillis(), EntityContext.SSO);
-	}
-	
-	public GeneralEntityInterface createExtTapEntity(ExtTapDescriptor descriptor, EntityContext context) {
-		String esaSkyUniqID = descriptor.generateId();
-		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-		CountStatus countStatus = descriptorRepo.getExtTapDescriptors().getCountStatus();
-		ExtTapEntity newEntity = new ExtTapEntity(descriptor, countStatus,
-				skyViewPosition, esaSkyUniqID, System.currentTimeMillis(),
-				context);
-		addEntity(newEntity);	
-		return newEntity;
+				esaSkyUniqID);
 	}
 }

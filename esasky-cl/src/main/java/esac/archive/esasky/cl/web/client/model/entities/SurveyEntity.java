@@ -5,11 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -17,7 +13,6 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
@@ -37,20 +32,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.
 
 public class SurveyEntity implements GeneralEntityInterface{
 
-    private final Resources resources = GWT.create(Resources.class);
-
-    public interface Resources extends ClientBundle {
-
-        @Source("galaxy_light.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabDefaultImagingIcon();
-
-        @Source("galaxy_dark.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabSelectedImagingIcon();
-
-    }
-    
     private String shape;
     
     private ShapeBuilder shapeBuilder = new ShapeBuilder() {
@@ -92,16 +73,16 @@ public class SurveyEntity implements GeneralEntityInterface{
     private JavaScriptObject overlay;
     
     public SurveyEntity(ObservationDescriptor obsDescriptor, CountStatus countStatus,
-    		SkyViewPosition skyViewPosition, String esaSkyUniqId, Long lastUpdate, EntityContext context) {
+    		SkyViewPosition skyViewPosition, String esaSkyUniqId) {
     	this.descriptor = obsDescriptor;
 		Map<String, String> catDetails = new HashMap<String, String>();
 		catDetails.put("shape", SourceShapeType.CROSS.getName());
 		overlay = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
-				esaSkyUniqId, 20, descriptor.getHistoColor(), catDetails);
+				esaSkyUniqId, 20, descriptor.getPrimaryColor(), catDetails);
     	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-				descriptor.getHistoColor()), shapeBuilder);
-        defaultEntity = new DefaultEntity(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqId, lastUpdate,
-                context, drawer, TAPMetadataSurveyService.getInstance());
+				descriptor.getPrimaryColor()), shapeBuilder);
+        defaultEntity = new DefaultEntity(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqId,
+                drawer, TAPMetadataSurveyService.getInstance());
     }
     
     public String getShape() {
@@ -116,12 +97,6 @@ public class SurveyEntity implements GeneralEntityInterface{
     @Override
     public String getMetadataAdql() {
         return TAPMetadataSurveyService.getInstance().getMetadataAdql(getDescriptor());
-    }
-
-    @Override
-    public SelectableImage getTypeIcon() {
-        return new SelectableImage(resources.tabDefaultImagingIcon(),
-                resources.tabSelectedImagingIcon());
     }
 
 	@Override
@@ -379,7 +354,7 @@ public class SurveyEntity implements GeneralEntityInterface{
 					
 					@Override
 					public void onShapeColorChanged(String color) {
-						descriptor.setHistoColor(color);
+						descriptor.setPrimaryColor(color);
 					}
 					
 					@Override
@@ -408,5 +383,15 @@ public class SurveyEntity implements GeneralEntityInterface{
 					}
 				});
 	}
+
+    @Override
+    public String getShapeType() {
+        return defaultEntity.getShapeType();
+    }
+
+    @Override
+    public void setShapeType(String shapeType) {
+        defaultEntity.setShapeType(shapeType);
+    }
 
 }

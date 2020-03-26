@@ -2,7 +2,6 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
 public class SSOObservationsTablePanel extends CommonObservationsTablePanel {
 

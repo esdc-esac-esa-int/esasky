@@ -26,6 +26,11 @@ public class TAPExtTapService extends AbstractMetadataService {
         }
         return instance;
     }
+    
+    @Override
+    public String getRequestUrl() {
+        return EsaSkyWebConstants.EXT_TAP_REQUEST_URL;
+    }
 
     public String getAdql(ExtTapDescriptor descriptor, String selectADQL) {
     	String adql = selectADQL;
@@ -59,8 +64,8 @@ public class TAPExtTapService extends AbstractMetadataService {
     		adql += descriptor.getDateADQL();
     	}
     	
-    	if(descriptor.getOrderByADQL() != null) {
-    		adql += " " + descriptor.getOrderByADQL();
+    	if(descriptor.getOrderBy() != null) {
+    		adql += " ORDER BY " + descriptor.getOrderBy();
     	}
     	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
     	
@@ -163,26 +168,22 @@ public class TAPExtTapService extends AbstractMetadataService {
         return adql;
     }
     
-    public String getMetadataAdql(IDescriptor descriptorInput, boolean MOC) {
-    	if(!MOC) {
-    		return getMetadataAdql(descriptorInput);
-    		
-    	}else {
-            ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-            String adql = "SELECT " + EsaSkyConstants.HEALPIX_ORDER + ", " + EsaSkyConstants.HEALPIX_IPIX;
+    @Override
+    public String getMocAdql(IDescriptor descriptorInput, String filter) {
+        ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+        String adql = "SELECT " + EsaSkyConstants.HEALPIX_ORDER + ", " + EsaSkyConstants.HEALPIX_IPIX;
 //            		+ ", " + EsaSkyConstants.HEALPIX_COUNT + " ";
-        	
-        	adql += " from " + descriptor.getIngestedTable();
-        	adql += " WHERE ";
-            adql += npixSearch(getNorderFromFov());
-            
-        	if(descriptor.getWhereADQL() != null) {
-        		adql += " AND " + descriptor.getWhereADQL();
-        	}
-        	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
-        	
-        	return adql;
+    	
+    	adql += " from " + descriptor.getIngestedTable();
+    	adql += " WHERE ";
+        adql += npixSearch(getNorderFromFov());
+        
+    	if(descriptor.getWhereADQL() != null) {
+    		adql += " AND " + descriptor.getWhereADQL();
     	}
+    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
+    	
+    	return adql;
     }
     
     @Override
@@ -192,7 +193,7 @@ public class TAPExtTapService extends AbstractMetadataService {
         
         if(descriptor.isInBackend()) {
         	return getAdql(descriptor, selectADQL);       
-        }else {
+        } else {
         	return getAdqlNewService(descriptor);
         }
     }

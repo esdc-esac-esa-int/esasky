@@ -17,8 +17,16 @@ public class ObservationDescriptor extends CommonObservationDescriptor {
         this.isSurveyMission = isSurveyMission;
     }
 
-	@Override
-	public String generateId() {
-		return getMission() + " Observation " + generateNextTabCount();
-	}
+    @Override
+    public String getIcon() {
+        return "galaxy";
+    }
+    
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "ASTRO_IMAGING_" + getMission();
+        }
+        return descriptorId;
+    }
 }

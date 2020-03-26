@@ -11,11 +11,6 @@ public class SSODescriptor extends CommonObservationDescriptor {
 //    private String ssoXMatchTapTable;
 	
 	@Override
-	public String generateId() {
-		return getMission() + " SSO " + generateNextTabCount();
-	}
-
-	@Override
 	public final void setMetadata(final List<MetadataDescriptor> inputMetadata) {
 		metadata = inputMetadata;
 		metadata.addAll(ssoXMatchMetadata);
@@ -37,6 +32,19 @@ public class SSODescriptor extends CommonObservationDescriptor {
 
     public final void setSsoXMatchMetadata(final List<MetadataDescriptor> inputMetadata) {
         this.ssoXMatchMetadata = inputMetadata;
+    }
+
+    @Override
+    public String getIcon() {
+        return "sso";
+    }
+    
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "SSO_" + getMission();
+        }
+        return descriptorId;
     }
     
 //    public String getUniqueIdentifierField(){

@@ -10,8 +10,8 @@ public class ESASkyAPICatalogueEntity extends CatalogEntity implements GeneralEn
 
 	public ESASkyAPICatalogueEntity(CatalogDescriptor catDescriptor, CountStatus countStatus,
 			JavaScriptObject catalogue, SkyViewPosition skyViewPosition, String esaSkyUniqObsId,
-			Long lastUpdate, EntityContext context) {
-		super(catDescriptor, countStatus, catalogue, skyViewPosition, esaSkyUniqObsId, lastUpdate, context);
+			Long lastUpdate) {
+		super(catDescriptor, countStatus, catalogue, skyViewPosition, esaSkyUniqObsId);
 	}
 
 }

@@ -1,23 +1,13 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.URL;
-
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -50,10 +40,8 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 	}
     
     public ObservationAndSpectraEntity(CommonObservationDescriptor obsDescriptor,
-            CountStatus countStatus, SkyViewPosition skyViewPosition, String esaSkyUniqObsId,
-            Long lastUpdate, EntityContext context) {
-        super(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqObsId,
-                lastUpdate, context);
+            CountStatus countStatus, SkyViewPosition skyViewPosition, String esaSkyUniqObsId) {
+        super(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqObsId);
         this.descriptor = obsDescriptor;
     }
 
@@ -72,7 +60,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     	if(!getCountStatus().hasMoved(descriptor.getMission())) {
         	fetchData2(tablePanel);
         	
-        }else {
+        } else {
         	
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
@@ -106,25 +94,25 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     private void getMocMetadata(final ITablePanel tablePanel) {
         Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
 
-        tablePanel.clearTable();
-        String adql = TAPMetadataMOCService.getInstance().getMetadataAdql(getDescriptor());
-        
-        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            builder.sendRequest(null,
-                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new OnComplete() {
-                	
-                	@Override
-                	public void onComplete() {
-                		tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
-                	}
-                }));
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error("[getMocMetadata] Error fetching JSON data from server");
-        }
+//        tablePanel.clearTable();
+//        String adql = .getInstance().getMetadataAdql(getDescriptor());
+//        
+//        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+//
+//        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+//        try {
+//            builder.sendRequest(null,
+//                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new OnComplete() {
+//                	
+//                	@Override
+//                	public void onComplete() {
+//                		tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
+//                	}
+//                }));
+//        } catch (RequestException e) {
+//            Log.error(e.getMessage());
+//            Log.error("[getMocMetadata] Error fetching JSON data from server");
+//        }
 
         tablePanel.setADQLQueryUrl("");
     }
@@ -132,6 +120,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 	@Override
 	public ITablePanel createTablePanel() {
 		if(Modules.useTabulator) {
+//			return new CommonObservationsTabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
 			return new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
 		} else {
 			return new CommonObservationsTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
@@ -151,7 +140,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 					
 					@Override
 					public void onShapeColorChanged(String color) {
-						getDescriptor().setHistoColor(color);
+						getDescriptor().setPrimaryColor(color);
 					}
 					
 					@Override

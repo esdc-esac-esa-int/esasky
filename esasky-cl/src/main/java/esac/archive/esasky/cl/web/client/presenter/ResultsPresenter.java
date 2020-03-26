@@ -36,7 +36,6 @@ import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
-import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.ISSOCountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.PublicationsBySourceCallback;
@@ -61,12 +60,9 @@ import esac.archive.esasky.cl.web.client.model.converter.TapToMmiDataConverter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
-import esac.archive.esasky.cl.web.client.query.TAPCountObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
-import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -258,70 +254,51 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     	}
     }
 
-    public final void getExtTapMetadata(final GeneralEntityInterface entity) {
-    	
-    	final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
-    	
-    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
-    	
-		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiShortName(), entity.getDescriptor().getGuiLongName());
-		
-		entity.fetchData(panel);
-    }
-    
-    protected final void getMetadataAndFootprints(final GeneralEntityInterface entity, final boolean showProgress,
-    		ITablePanel panel, final boolean isConeSearch, final SkyViewPosition conePos) {
-
+    protected final void getMetadata(final GeneralEntityInterface entity,
+    		final boolean isConeSearch, final SkyViewPosition conePos) {
         final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
 
         Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
 
-        final String missionId = entity.getDescriptor().getMission();
-        final CountStatus countStatus = entity.getCountStatus();
+        final ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+                TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
 
-        if (panel == null) {
-            panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-            		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getContext() + "_"+ missionId));
-        }
-        
-        final ITablePanel finalPanel = panel;
-
-        if (countStatus.hasMoved(missionId)) {
-            String url = TAPCountObservationService.getInstance().getCount(
-                    AladinLiteWrapper.getAladinLite(), entity.getDescriptor());
-            Log.debug(debugPrefix + "Query [" + url + "]");
-
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-            try {
-                panel.clearTable();
-                builder.sendRequest(null, 
-                		new GetMissionDataCountRequestCallback(entity, 
-                				panel, 
-                				TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", entity.getDescriptor().getGuiShortName()),
-                				url, new GetMissionDataCountRequestCallback.OnComplete() {
-									
-									@Override
-									public void onComplete() {
-										if(isConeSearch) {
-											entity.coneSearch(finalPanel, conePos);
-										}else {
-											entity.fetchData(finalPanel);
-										}
-										
-									}
-								})
-                		);
-            } catch (RequestException e) {
-                Log.error(e.getMessage());
-                Log.error(debugPrefix + "Error fetching JSON data from server");
-            }
-        } else {
+//        if (countStatus.hasMoved(missionId)) {
+//            String url = TAPCountObservationService.getInstance().getCount(
+//                    AladinLiteWrapper.getAladinLite(), entity.getDescriptor());
+//            Log.debug(debugPrefix + "Query [" + url + "]");
+//
+//            RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+//            try {
+//                panel.clearTable();
+//                builder.sendRequest(null, 
+//                		new GetMissionDataCountRequestCallback(entity, 
+//                				panel, 
+//                				TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", entity.getDescriptor().getGuiShortName()),
+//                				url, new GetMissionDataCountRequestCallback.OnComplete() {
+//									
+//									@Override
+//									public void onComplete() {
+//										if(isConeSearch) {
+//											entity.coneSearch(panel, conePos);
+//										}else {
+//											entity.fetchData(panel);
+//										}
+//										
+//									}
+//								})
+//                		);
+//            } catch (RequestException e) {
+//                Log.error(e.getMessage());
+//                Log.error(debugPrefix + "Error fetching JSON data from server");
+//            }
+//        } else {
         	if(isConeSearch) {
-				entity.coneSearch(finalPanel, conePos);
-			}else {
-				entity.fetchData(finalPanel);
+				entity.coneSearch(panel, conePos);
+			} else {
+				entity.fetchData(panel);
 			}
-        }
+//        }
     }
 
     private void sendToSamp() {
@@ -565,7 +542,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
         Log.debug(debugPrefix);
         
         ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-        		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getContext() + "_" + entity.getDescriptor().getMission()));
+        		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getEsaSkyUniqId()));
 
         entity.fetchData(panel);
     }

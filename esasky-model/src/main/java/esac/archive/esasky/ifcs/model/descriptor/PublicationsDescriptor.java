@@ -5,8 +5,11 @@ package esac.archive.esasky.ifcs.model.descriptor;
  */
 public class PublicationsDescriptor extends CatalogDescriptor {
 
-	@Override
-	public String generateId() {
-		 return getMission() + " P " + generateNextTabCount();
-	}
+    @Override
+    public String getDescriptorId() {
+        if(descriptorId == null || descriptorId.isEmpty()) {
+            return "PUBLICATIONS_" + getMission();
+        }
+        return descriptorId;
+    }
 }

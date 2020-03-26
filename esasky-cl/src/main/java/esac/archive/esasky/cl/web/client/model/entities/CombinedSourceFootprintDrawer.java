@@ -10,30 +10,42 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
+import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class CombinedSourceFootprintDrawer implements IShapeDrawer{
-
+    
 	public static final int DEFAULT_LINEWIDTH = 2;
     public static final int DEFAULT_SOURCE_SIZE = 8;
     private static final int MAX_SOURCE_SIZE = 40;
 	public static final int MAX_LINEWIDTH = 12;
+	private static final double MAX_ARROW_SCALE = 10.0;
 
 	private double ratio = DEFAULT_LINEWIDTH / MAX_LINEWIDTH;
+
+    private double arrowScale = 1.0;
+    private boolean showAvgPM = false;
+    private boolean useMedianOnAvgPM;
 	private JavaScriptObject sourceOverlay;
 	private JavaScriptObject footPrintOverlay;
 	private ArrayList<Shape> sourceShapes = new ArrayList<>();
 	private ArrayList<Shape> footPrintshapes = new ArrayList<>();
 	private ArrayList<Integer[]> allShapesIndexes = new ArrayList<>();
 	private ShapeBuilder shapeBuilder;
+	private String shapeType;
 
 
 	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder) {
+	    this(sourceOverlay, footPrintOverlay, shapeBuilder, SourceShapeType.SQUARE.getName());
+	}
+	
+	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder, String shapeType) {
 		this.sourceOverlay = sourceOverlay;
 		this.footPrintOverlay = footPrintOverlay;
 		this.shapeBuilder = shapeBuilder;
+		this.shapeType = shapeType;
 	}
 
 	@Override
@@ -241,4 +253,44 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		this.shapeBuilder = shapeBuilder;
 	}
 	
+	
+	@Override
+    public String getShapeType() {
+        return (sourceShapes.size() != 0) ? this.shapeType : null;
+    }
+
+	@Override
+    public void setShapeType(String shapeType) {
+        this.shapeType = shapeType;
+        AladinLiteWrapper.getAladinLite().setCatalogShape(sourceOverlay, shapeType);
+    }
+
+    public void setArrowColor(String color) {
+        AladinLiteWrapper.getAladinLite().setCatalogArrowColor(sourceOverlay, color);
+    }
+
+    // Must return a ratio between 0.01 and 1.0;
+    public double getArrowScale() {
+        return arrowScale / MAX_ARROW_SCALE;
+    }
+
+    // Must receive a ratio between 0.01 and 1.0;
+    public void setArrowScale(double scale) {
+        arrowScale = scale * MAX_ARROW_SCALE;
+        AladinLiteWrapper.getAladinLite().setCatalogArrowScale(sourceOverlay, arrowScale);
+    }
+    
+    public void setShowAvgProperMotion(boolean showAvgPM, boolean useMedianOnAvgPM) {
+        this.showAvgPM = showAvgPM;
+        this.useMedianOnAvgPM = useMedianOnAvgPM;
+        AladinLiteWrapper.getAladinLite().setCatalogAvgProperMotion(sourceOverlay, this.showAvgPM, this.useMedianOnAvgPM, true);
+    }
+    
+    public boolean getShowAvgProperMotion() {
+        return this.showAvgPM;
+    }
+    
+    public boolean getUseMedianOnAvgProperMotion() {
+        return this.useMedianOnAvgPM;
+    }
 }

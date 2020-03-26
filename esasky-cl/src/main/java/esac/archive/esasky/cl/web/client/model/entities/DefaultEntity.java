@@ -18,7 +18,6 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -31,7 +30,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
 public class DefaultEntity implements GeneralEntityInterface{
-
+    
     private CountStatus countStatus;
     private SkyViewPosition skyViewPosition;
     private String histoLabel;
@@ -46,18 +45,15 @@ public class DefaultEntity implements GeneralEntityInterface{
     protected EntityContext context;
 
     public DefaultEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
-    		String esaSkyUniqObsId, Long lastUpdate, EntityContext context, IShapeDrawer drawer, AbstractMetadataService metadataService) {
+    		String esaSkyUniqObsId, IShapeDrawer drawer, AbstractMetadataService metadataService) {
     	this.descriptor = descriptor;
         this.countStatus = countStatus;
         this.skyViewPosition = skyViewPosition;
         this.esaSkyUniqId = esaSkyUniqObsId;
-        this.lastUpdate = lastUpdate;
+        this.lastUpdate = System.currentTimeMillis();
         this.drawer = drawer;
         this.metadataService = metadataService;
-        this.context = EntityContext.ASTRO_IMAGING;
-        if (context != null) {
-            this.context = context;
-        }
+        this.context = EntityContext.ASTRO_IMAGING; //TODO remove together with getContext
         setTabNumber(descriptor.getTabCount());
         
 		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
@@ -146,7 +142,7 @@ public class DefaultEntity implements GeneralEntityInterface{
     }
     
     public String getColor() {
-    	return this.getDescriptor().getHistoColor();
+    	return this.getDescriptor().getPrimaryColor();
     }
     
     @Override
@@ -160,12 +156,6 @@ public class DefaultEntity implements GeneralEntityInterface{
 
     public String getHeaderAdql() {
     	return metadataService.getHeaderAdql(getDescriptor());
-    }
-    
-    @Override
-    public SelectableImage getTypeIcon() {
-    	// TODO Auto-generated method stub
-    	return null;
     }
     
 	@Override
@@ -405,4 +395,14 @@ public class DefaultEntity implements GeneralEntityInterface{
 		fetchData(tablePanel);
 		
 	}
+
+    @Override
+    public String getShapeType() {
+        return drawer.getShapeType();
+    }
+
+    @Override
+    public void setShapeType(String shapeType) {
+        drawer.setShapeType(shapeType);
+    }
 }

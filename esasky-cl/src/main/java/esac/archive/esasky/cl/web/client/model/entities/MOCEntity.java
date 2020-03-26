@@ -8,14 +8,10 @@ import java.util.Set;
 
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
@@ -29,7 +25,6 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.callback.MOCCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.SelectableImage;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
@@ -49,7 +44,6 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	final int DISPLAY_LIMIT = 2000;
 	
-    private final Resources resources = GWT.create(Resources.class);
     private ESASkyResultMOC moc = new ESASkyResultMOC(2,-1);
     private ITablePanel tablePanel;
     private TapRowList data;
@@ -87,26 +81,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 	};
 
-    public interface Resources extends ClientBundle {
-
-        @Source("galaxy_light.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabDefaultImagingIcon();
-
-        @Source("galaxy_dark.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource tabSelectedImagingIcon();
-
-    }
-    
 	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent) {
 		
 		overlay = null;
 		drawer = null;
 		this.descriptor = descriptor;
 		
-		defaultEntity = new DefaultEntity(descriptor, countStatus , new SkyViewPosition(new Coordinate(0, 0), 0.0), "MOC", (long) 0,
-				EntityContext.MOC, drawer, TAPMetadataObservationService.getInstance());
+		defaultEntity = new DefaultEntity(descriptor, countStatus , new SkyViewPosition(new Coordinate(0, 0), 0.0), "MOC",
+				drawer, TAPMetadataObservationService.getInstance());
 		
 		parentEntity = parent;
 		
@@ -138,11 +120,6 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 	}
     	
-	
-	@Override
-    public SelectableImage getTypeIcon() {
-        return new SelectableImage(resources.tabDefaultImagingIcon(), resources.tabSelectedImagingIcon());
-    }
     
     @Override
     public String getMetadataAdql() {
@@ -447,7 +424,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void updateOverlay() {
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getHistoColor() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\"}";
 			overlay = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 //			
@@ -814,5 +791,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		// TODO Auto-generated method stub
 		
 	}
+
+    @Override
+    public String getShapeType() {
+        return defaultEntity.getShapeType();
+    }
+
+    @Override
+    public void setShapeType(String shapeType) {
+    }
 
 }

@@ -25,9 +25,8 @@ public class PublicationsEntity extends CatalogEntity {
 
     public PublicationsEntity(PublicationsDescriptor pubDescriptor, CountStatus countStatus,
             JavaScriptObject pubOverlay, SkyViewPosition skyViewPosition,
-            String esaSkyUniqObsId, Long lastUpdate, EntityContext context) {
-        super(pubDescriptor, countStatus, pubOverlay, skyViewPosition, esaSkyUniqObsId,
-                lastUpdate, context);
+            String esaSkyUniqObsId) {
+        super(pubDescriptor, countStatus, pubOverlay, skyViewPosition, esaSkyUniqObsId);
     }
     
     @Override

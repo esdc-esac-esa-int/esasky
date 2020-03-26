@@ -136,5 +136,14 @@ public class MocDrawer implements IShapeDrawer{
 	public void setShapeBuilder(ShapeBuilder shapeBuilder) {
 		//TODO
 	}
-	
+
+    @Override
+    public String getShapeType() {
+        return null;
+    }
+
+    @Override
+    public void setShapeType(String shapeType) {
+    }
+
 }
