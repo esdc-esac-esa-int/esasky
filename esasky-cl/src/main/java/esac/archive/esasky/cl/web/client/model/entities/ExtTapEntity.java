@@ -208,10 +208,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
     public boolean hasReachedFovLimit() {
-        if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < descriptor.getFovLimit()) {
-            return false;
-        }
-        return true;
+        return descriptor.getFovLimit() > 0 && CoordinateUtils.getCenterCoordinateInJ2000().getFov() > descriptor.getFovLimit();
     }
 
     public class MocBuilder implements ShapeBuilder{
@@ -229,7 +226,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     @Override
     public void fetchData(final ITablePanel tablePanel) {
-        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() > 0 ) {
+        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() == 0 ) {
             updateCount(tablePanel, new GetMissionDataCountRequestCallback.OnComplete() {
 
                 @Override
@@ -258,7 +255,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
             mocEntity.setTablePanel(tablePanel);
             mocEntity.refreshMOC();
         } else if(hasReachedFovLimit()) {
-            Log.debug("Showing fov limit moc");
+            Log.debug("Showing fov limit moc. FoVLimit = " + descriptor.getFovLimit());
             drawer = new MocDrawer(descriptor.getPrimaryColor());
             defaultEntity.setDrawer(drawer);
             getMocMetadata(tablePanel);
@@ -293,6 +290,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         defaultEntity.setDrawer(drawer);
 
         clearAll();
+        Log.debug(descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
         tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
     }
 
@@ -576,7 +574,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     @Override
     public void coneSearch(final ITablePanel tablePanel, final SkyViewPosition conePos) {
-        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() > 0 ) {
+        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() ==  0 ) {
             updateCount(tablePanel, new GetMissionDataCountRequestCallback.OnComplete() {
 
                 @Override

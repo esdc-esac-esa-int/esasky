@@ -69,31 +69,31 @@ public class MetadataCallback extends JsonRequestCallback {
 
 				entity.addShapes(rowList, null);
 				entity.setMetadata(rowList);
-				
-				if(entity.getContext() == EntityContext.EXT_TAP) {
-					
-					((ExtTapEntity) entity).setDescriptorMetaData();
-					
-					if(((ExtTapEntity) entity).hasReachedFovLimit()){
-			
-						if(onComplete != null) {
-							onComplete.onComplete();
-						}
-						return;
-					}
-				}
-
-				List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList,
-						entity.getDescriptor());
-				long receivedTime = System.currentTimeMillis();
-				Log.debug("Receive time " + Long.toString(receivedTime - startTime ));
-				
-				tablePanel.insertData(tabRowList, null);
-				Log.debug("Insert time " + Long.toString(System.currentTimeMillis() - receivedTime ));
-				
-				// used by download CSV, VOTABLE
-				tablePanel.setADQLQueryUrl(adql);
-				
+//				
+//				if(entity.getContext() == EntityContext.EXT_TAP) {
+//					
+//					((ExtTapEntity) entity).setDescriptorMetaData();
+//					
+//					if(((ExtTapEntity) entity).hasReachedFovLimit()){
+//			
+//						if(onComplete != null) {
+//							onComplete.onComplete();
+//						}
+//						return;
+//					}
+//				}
+//
+//				List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList,
+//						entity.getDescriptor());
+//				long receivedTime = System.currentTimeMillis();
+//				Log.debug("Receive time " + Long.toString(receivedTime - startTime ));
+////				
+//				tablePanel.insertData(tabRowList, null);
+////				Log.debug("Insert time " + Long.toString(System.currentTimeMillis() - receivedTime ));
+//				
+//				// used by download CSV, VOTABLE
+//				tablePanel.setADQLQueryUrl(adql);
+//				
 				if(onComplete != null) {
 					onComplete.onComplete();
 				}

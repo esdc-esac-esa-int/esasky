@@ -247,7 +247,7 @@ public class Api {
 			limit = 3000;
 		}
 		descriptor.setPrimaryColor(color);
-		descriptor.setSourceLimit(limit);
+		descriptor.setShapeLimit(limit);
 		controller.getRootPresenter().getEntityRepository().createEntity(descriptor);
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}

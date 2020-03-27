@@ -28,7 +28,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String treeMapType;
     private ExtTapDescriptor parent;
     private String ingestedTable;
-    private int sourceLimit;
     private double[] wavelengthRange = new double[] {0,13};
     
 
@@ -50,7 +49,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	isInBackend = false;
     	tapUrl = parent.getTapUrl();
     	ingestedTable = parent.getIngestedTable();
-    	sourceLimit = parent.getSourceLimit();
     	
     	//From BaseDescriptor
     	setGuiShortName(parent.getGuiShortName());
@@ -66,6 +64,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setTapDecColumn(parent.getTapDecColumn());
     	setTapSTCSColumn(parent.getTapSTCSColumn());
     	setUniqueIdentifierField(parent.getUniqueIdentifierField());
+    	setShapeLimit(parent.getShapeLimit());
     }
 
 	@Override
@@ -167,14 +166,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
-	}
-
-	public int getSourceLimit() {
-		return sourceLimit;
-	}
-
-	public void setSourceLimit(int sourceLimit) {
-		this.sourceLimit = sourceLimit;
 	}
 
 	public double[] getWavelengthRange() {

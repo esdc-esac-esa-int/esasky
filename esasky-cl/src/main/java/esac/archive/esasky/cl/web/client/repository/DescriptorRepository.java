@@ -273,7 +273,7 @@ public class DescriptorRepository {
 		descriptor.setTapDecColumn("s_dec");
 		descriptor.setTapSTCSColumn("s_region");
 		descriptor.setFovLimit(180.0);
-		descriptor.setSourceLimit(3000);
+		descriptor.setShapeLimit(3000);
 		descriptor.setTapUrl(tapUrl);
 		descriptor.setUniqueIdentifierField("obs_id");
 		if(dataOnlyInView) {
