@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.cl.web.client.Modules;
@@ -82,7 +83,6 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		if(Modules.useTabulator) {
 			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows");
 			GeneralJavaScriptObject [] rowArray = GeneralJavaScriptObject.convertToArray(rows);
-			
 			for(int i = 0; i < rowArray.length; i++) {
 				Shape shape = shapeBuilder.buildShape(i, null, rowArray[i]);
 				if( shape instanceof SourceShape) {
@@ -93,6 +93,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 					allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
 				}
 			}
+			Log.debug("Added " + rowArray.length + " rows and shapes");
 		} else {
 			for(int i = 0; i < rowList.getData().size(); i++) {
 				Shape shape = shapeBuilder.buildShape(i, rowList, null);
