@@ -17,6 +17,10 @@ public abstract class BaseDescriptor implements IDescriptor {
     /** the name of the mission (e.g. XMM). */
     private String mission;
 
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private int shapeLimit;
+    
     /** DB table name. */
     private String tapTable;
 
@@ -35,9 +39,6 @@ public abstract class BaseDescriptor implements IDescriptor {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private double countFovLimit;
 
-    /** Fov limit. */
-    private Double fovLimit;
-
     /** Archive related base URL */
     private String archiveURL;
 
@@ -45,6 +46,10 @@ public abstract class BaseDescriptor implements IDescriptor {
     private String archiveProductURI;
     
     private String uniqueIdentifierField;
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private Double fovLimit;
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -185,6 +190,9 @@ public abstract class BaseDescriptor implements IDescriptor {
     
     @Override
     public final Double getFovLimit() {
+        if(fovLimit == null) {
+            return new Double(0);
+        }
         return fovLimit;
     }
 
@@ -461,5 +469,13 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public String generateId() {
          return getDescriptorId() + generateNextTabCount();
+    }
+    
+    public int getShapeLimit() {
+        return shapeLimit;
+    }
+
+    public void setShapeLimit(int shapeLimit) {
+        this.shapeLimit = shapeLimit;
     }
 }

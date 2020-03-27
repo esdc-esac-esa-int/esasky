@@ -164,7 +164,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 				if(sourceLimitNotificationTimer.isRunning()) {
 					sourceLimitNotificationTimer.run();
 				}
-				String sourceLimitDescription = descriptor.getSourceLimitDescription();
+				String sourceLimitDescription = descriptor.getShapeLimitDescription();
 				String orderBy = getOrderByDescription();
 				if (sourceLimitDescription.contains("|")) {
 					String[] sourceLimitArr = sourceLimitDescription.split("\\|");
@@ -596,18 +596,18 @@ public class CatalogEntity implements GeneralEntityInterface{
 	
 	@Override
     public void fetchData(final ITablePanel tablePanel) {
-		int mocLimit = descriptor.getSourceLimit();
+		int shapeLimit = descriptor.getShapeLimit();
 		int count = getCountStatus().getCount(descriptor.getMission());
     	
     	if (DeviceUtils.isMobile()){
-    		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+    		shapeLimit = EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
     	}
     	
-    	if (mocLimit > 0 && count > mocLimit) {
+    	if (shapeLimit > 0 && count > shapeLimit) {
     		defaultEntity.fetchHeaders(tablePanel);
     		mocEntity.setTablePanel(tablePanel);
     		mocEntity.refreshMOC();
-    	}else {
+    	} else {
     		defaultEntity.fetchData(tablePanel);
     	}
 	}
@@ -661,7 +661,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 	}
 	
 	protected int getSourceLimit() {
-		return descriptor.getSourceLimit();
+		return descriptor.getShapeLimit();
 	}
 	
 	protected String getOrderByDescription() {

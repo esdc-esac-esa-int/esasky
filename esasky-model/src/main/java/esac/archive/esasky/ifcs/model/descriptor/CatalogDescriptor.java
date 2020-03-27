@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class CatalogDescriptor extends BaseDescriptor {
 
-    private int sourceLimit;
-
-    private String sourceLimitDescription;
+    private String shapeLimitDescription;
 
     private String posTapColumn;
 
@@ -57,20 +55,12 @@ public class CatalogDescriptor extends BaseDescriptor {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private Double pmArrowWidth;
 
-    public int getSourceLimit() {
-        return sourceLimit;
+    public String getShapeLimitDescription() {
+        return shapeLimitDescription;
     }
 
-    public void setSourceLimit(int sourceLimit) {
-        this.sourceLimit = sourceLimit;
-    }
-
-    public String getSourceLimitDescription() {
-        return sourceLimitDescription;
-    }
-
-    public void setSourceLimitDescription(String sourceLimitDescription) {
-        this.sourceLimitDescription = sourceLimitDescription;
+    public void setShapeLimitDescription(String sourceLimitDescription) {
+        this.shapeLimitDescription = sourceLimitDescription;
     }
 
     public String getPosTapColumn() {

@@ -54,11 +54,11 @@ import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
-import esac.archive.esasky.cl.web.client.query.TAPCountCatalogueService;
-import esac.archive.esasky.cl.web.client.query.TAPCountObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPCountPublicationsService;
-import esac.archive.esasky.cl.web.client.query.TAPCountSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataPublicationsService;
+import esac.archive.esasky.cl.web.client.query.TAPMetadataSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPSingleCountService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -530,7 +530,7 @@ public class DescriptorRepository {
 				if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
 					if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < descriptor.getFovLimit()) {
 						updateCount4ExtTap(descriptor);
-					}else {
+					} else {
 						updateMOCCount4ExtTap(descriptor);
 					}
 				}
@@ -553,7 +553,7 @@ public class DescriptorRepository {
 		try {
 			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs,
 					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
-		}catch (RequestException e) {
+		} catch (RequestException e) {
 			Log.error(e.getMessage());
 			Log.error("Error fetching JSON data from server");
 		}
@@ -618,22 +618,21 @@ public class DescriptorRepository {
 		if (descriptor instanceof PublicationsDescriptor) {
 			if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_PUB_COUNT_FROM_SIMBAD) {
 
-				url = TAPCountPublicationsService.getInstance()
+				url = TAPMetadataPublicationsService.getInstance()
 						.getCountQueryForSIMBAD(AladinLiteWrapper.getAladinLite());
 			} else {
 
-				url = TAPCountPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
-						(PublicationsDescriptor) descriptor);
+				url = TAPMetadataPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
+						descriptor);
 			}
 
 		} else if (descriptor instanceof CatalogDescriptor) {
 
-			url = TAPCountCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
-					(CatalogDescriptor) descriptor);
+			url = TAPMetadataCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
 
 		} else {
 
-			url = TAPCountObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
+			url = TAPMetadataObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
 		}
 
 		JSONUtils.getJSONFromUrl(url, new CountRequestCallback(descriptor, cs, countRequestHandler, url));
@@ -645,7 +644,7 @@ public class DescriptorRepository {
 
 	public void doCountSSO(String ssoName, ESASkySSOObjType ssoType, ISSOCountRequestHandler countRequestHandler) {
 
-		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPCountSSOService.getInstance().getCount(ssoName, ssoType)),
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPMetadataSSOService.getInstance().getCount(ssoName, ssoType)),
 				EsaSkyConstants.JSON);
 
 		Log.debug("[doCountSSO] SSO count Query [" + url + "]");
@@ -880,8 +879,8 @@ public class DescriptorRepository {
 		descriptor.setArchiveURL("<not_set>");
 		descriptor.setArchiveProductURI("<not_set>");
 		
-		descriptor.setSourceLimit(10000);
-		descriptor.setSourceLimitDescription("sourceLimitDescription");
+		descriptor.setShapeLimit(10000);
+		descriptor.setShapeLimitDescription("sourceLimitDescription");
 
 		descriptor.setTapTable("<not_set>");
 		descriptor.setCountColumn("<not_set>");

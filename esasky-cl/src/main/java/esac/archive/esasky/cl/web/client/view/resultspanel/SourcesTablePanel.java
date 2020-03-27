@@ -30,7 +30,7 @@ public class SourcesTablePanel extends AbstractTablePanel {
 		initView();
 
 		limitNumber = getRowLimit();
-		String sourceLimitDescription = catEntity.getDescriptor().getSourceLimitDescription();
+		String sourceLimitDescription = catEntity.getDescriptor().getShapeLimitDescription();
 
 		if (sourceLimitDescription.contains("|")) {
 			String[] sourceLimitArr = sourceLimitDescription.split("\\|");
@@ -52,7 +52,7 @@ public class SourcesTablePanel extends AbstractTablePanel {
 	}
 
 	protected int getRowLimit() {
-		return DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE : entity.getDescriptor().getSourceLimit();
+		return DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE : entity.getDescriptor().getShapeLimit();
 	}
 
 	@Override

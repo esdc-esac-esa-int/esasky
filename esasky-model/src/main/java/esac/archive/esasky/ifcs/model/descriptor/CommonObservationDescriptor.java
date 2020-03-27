@@ -15,9 +15,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     /** MOC Tap DB STC_S column name. */
     private String mocSTCSColumn;
 
-    /** Count limit below which we are going to display real data querying the tabTable. */
-    private int mocLimit;
-
     private String ddProductURI;
 
     /** DD product URL. */
@@ -76,22 +73,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
      */
     public final void setMocSTCSColumn(final String inputMocSTCSColumn) {
         this.mocSTCSColumn = inputMocSTCSColumn;
-    }
-
-    /**
-     * getMocLimit().
-     * @return int
-     */
-    public final int getMocLimit() {
-        return mocLimit;
-    }
-
-    /**
-     * setMocLimit().
-     * @param inputMocLimit input int
-     */
-    public final void setMocLimit(final int inputMocLimit) {
-        this.mocLimit = inputMocLimit;
     }
 
     public String getDdProductURI() {

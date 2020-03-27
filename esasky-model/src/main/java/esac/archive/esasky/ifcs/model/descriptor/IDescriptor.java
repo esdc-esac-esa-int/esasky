@@ -101,5 +101,6 @@ public interface IDescriptor {
     String getSampUrl();
     String getDdBaseURL();
     String getDdProductURI();
+    int getShapeLimit();
     
 }

@@ -73,11 +73,11 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     }
     
     private void fetchData2(ITablePanel tablePanel) {
-    	int mocLimit = descriptor.getMocLimit();
+    	int mocLimit = descriptor.getShapeLimit();
     	int count = getCountStatus().getCount(descriptor.getMission());
     	
     	if (DeviceUtils.isMobile()){
-    		mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
+    		mocLimit = EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
     	}
     	
     	if (mocLimit > 0 && count > mocLimit) {

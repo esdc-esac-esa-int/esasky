@@ -1727,7 +1727,6 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 
     @Override
     public String getFilterString() {
-        // TODO Auto-generated method stub
         return null;
     }
 

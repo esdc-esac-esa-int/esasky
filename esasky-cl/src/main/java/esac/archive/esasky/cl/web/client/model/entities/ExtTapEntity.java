@@ -8,13 +8,10 @@ import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -22,11 +19,10 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback;
+import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -40,6 +36,7 @@ import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
@@ -55,29 +52,20 @@ public class ExtTapEntity implements GeneralEntityInterface {
         void createSpecializedOverlayShape(Map<String, Object> details);
         void addSecondaryShape(GeneralJavaScriptObject row, String ra, String dec, Map<String, String> details);
     }
-    
+
     protected DefaultEntity defaultEntity;
     protected IShapeDrawer drawer;
     protected CombinedSourceFootprintDrawer combinedDrawer;
     private IDescriptor descriptor;
-    private boolean willShowMOC = false;
     private MOCEntity mocEntity;
     private AbstractMetadataService metadataService;
     private SecondaryShapeAdder secondaryShapeAdder;
-
-    private Timer sourceLimitNotificationTimer = new Timer() {
-
-        @Override
-        public void run() {
-            CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(getEsaSkyUniqId() + "SourceLimit"));
-        }
-    };
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractMetadataService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, 
                 SourceShapeType.SQUARE.getName(), secondaryShapeAdder);
-        
+
     }
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractMetadataService metadataService) {
@@ -90,7 +78,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
             AbstractMetadataService metadataService, int shapeSize, String shapeType) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null);
     }
-    
+
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
             AbstractMetadataService metadataService, int shapeSize, String shapeType, SecondaryShapeAdder secondaryShapeAdder) {
@@ -102,19 +90,18 @@ public class ExtTapEntity implements GeneralEntityInterface {
                 descriptor.getPrimaryColor());
 
         Map<String, Object> details = new HashMap<String, Object>();
-        
+
         if (secondaryShapeAdder != null) {
             secondaryShapeAdder.createSpecializedOverlayShape(details);
         } else {
             details.put("shape", shapeType);
         }
-        
+
         JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
                 esaSkyUniqId, shapeSize, descriptor.getPrimaryColor(), details);
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
         drawer = combinedDrawer;
-        //		this.mocEntity = new MOCEntity(descriptor);
 
         defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId,
                 drawer, metadataService);
@@ -142,7 +129,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         String ra = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapRaColumn());
         String dec = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapDecColumn());
         String sourceName = row.invokeFunction("getData").getStringProperty(getDescriptor().getUniqueIdentifierField());
-        
+
         SourceShape mySource = new SourceShape();
         mySource.setShapeId(shapeId);
 
@@ -220,7 +207,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         return metadataService.getMetadataAdql(getDescriptor());
     }
 
-    public boolean showMocData() {
+    public boolean hasReachedFovLimit() {
         if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < descriptor.getFovLimit()) {
             return false;
         }
@@ -231,130 +218,82 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
-            if(Modules.useTabulator) {
-                PolygonShape shape = new PolygonShape();
-                String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
-                shape.setStcs(stcs);
-                shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
-                return shape;
-            } else {
-                PolygonShape shape = new PolygonShape();
-                shape.setStcs((String)getTAPDataByTAPName(rowList, rowId, descriptor.getTapSTCSColumn()));
-                shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
-                return shape;
-            }
+            PolygonShape shape = new PolygonShape();
+            String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
+            shape.setStcs(stcs);
+            shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
+            return shape;
         }
     }
 
-    
-    
-//    private void fetchData2(ITablePanel tablePanel) {
-//        int mocLimit = descriptor.getMocLimit();
-//        int count = getCountStatus().getCount(descriptor.getMission());
-//        
-//        if (DeviceUtils.isMobile()){
-//            mocLimit = EsaSkyWebConstants.MAX_SOURCES_FOR_MOBILE;
-//        }
-//        
-//        if (mocLimit > 0 && count > mocLimit) {
-//            defaultEntity.setShapeBuilder(new MocBuilder());
-//            getMocMetadata(tablePanel);
-//        }else {
-//            defaultEntity.setShapeBuilder(shapeBuilder);
-//            defaultEntity.fetchData(tablePanel);
-//        }
-//    }
-//    @Override
-//    public void fetchData(final ITablePanel tablePanel) {
-//        
-//        if(!getCountStatus().hasMoved(descriptor.getMission())) {
-//            fetchData2(tablePanel);
-//            
-//        } else {
-//            
-//            getCountStatus().registerObserver(new CountObserver() {
-//                @Override
-//                public void onCountUpdate(int newCount) {
-//                    fetchData2(tablePanel);             
-//                    getCountStatus().unregisterObserver(this);
-//                }
-//            });
-//        }
-//    }
-    
+
     @Override
     public void fetchData(final ITablePanel tablePanel) {
-        if(Modules.useTabulator) {
-            willShowMOC = true;
-            drawer.removeAllShapes();
-            if(showMocData()) {
-                drawer = new MocDrawer(descriptor.getPrimaryColor());
-                defaultEntity.setDrawer(drawer);
-                getMocMetadata(tablePanel);
-            } else {
-                drawer = combinedDrawer;
-                defaultEntity.setDrawer(drawer);
+        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() > 0 ) {
+            updateCount(tablePanel, new GetMissionDataCountRequestCallback.OnComplete() {
 
-                clearAll();
-                tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), getMetadataAdql(), EsaSkyConstants.JSON));
-                //    			 String filter = tablePanel.getFilterString();
-            }
-
+                @Override
+                public void onComplete() {
+                    fetchShapesAndMetadata(tablePanel);
+                }
+            });
         } else {
-            if(showMocData()) {
-                drawer.removeAllShapes();
-                drawer = new MocDrawer(descriptor.getPrimaryColor());
-                defaultEntity.setDrawer(drawer);
-                getMocMetadata(tablePanel);
-            } else {
-                drawer.removeAllShapes();
-                drawer = combinedDrawer;
-                defaultEntity.setDrawer(drawer);
-                getData(tablePanel);
+            fetchShapesAndMetadata(tablePanel);
+        }
+    }
+    
+    private void fetchShapesAndMetadata(final ITablePanel tablePanel) {
+        clearAll();
+        int shapeLimit = descriptor.getShapeLimit();
+        if (shapeLimit > 0 && DeviceUtils.isMobile()){
+            shapeLimit = EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
+        }
+
+        if (shapeLimit > 0 && getCountStatus().getCount(descriptor.getMission()) > shapeLimit) {
+            Log.debug("Showing dynamic moc");
+            if(mocEntity == null){
+                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this);
             }
+            defaultEntity.fetchHeaders(tablePanel);
+            mocEntity.setTablePanel(tablePanel);
+            mocEntity.refreshMOC();
+        } else if(hasReachedFovLimit()) {
+            Log.debug("Showing fov limit moc");
+            drawer = new MocDrawer(descriptor.getPrimaryColor());
+            defaultEntity.setDrawer(drawer);
+            getMocMetadata(tablePanel);
+        } else {
+            fetchDataWithoutMOC(tablePanel);
+        }
+    }
+    
+    private void updateCount(final ITablePanel tablePanel, OnComplete onComplete) {
+        String url = metadataService.getCount(AladinLiteWrapper.getAladinLite(), descriptor);
+        Log.debug("Query [" + url + "]");
+
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        try {
+            tablePanel.clearTable();
+            builder.sendRequest(null, 
+                    new GetMissionDataCountRequestCallback(this, 
+                            tablePanel, 
+                            TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", getDescriptor().getGuiShortName()),
+                            url, onComplete)
+                    );
+        } catch (RequestException e) {
+            Log.error(e.getMessage());
+            Log.error("[FetchData] Error fetching JSON data from server");
         }
     }
 
     @Override
     public void fetchDataWithoutMOC(ITablePanel tablePanel) {
-        drawer.removeAllShapes();
+        Log.debug("Showing real data");
         drawer = combinedDrawer;
         defaultEntity.setDrawer(drawer);
-        getData(tablePanel);
 
-    }
-
-    private void getData(final ITablePanel tablePanel) {
-
-        Scheduler.get().scheduleFinally(new ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                clearAll();
-                final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
-                // Get Query in ADQL format.
-                final String adql = getMetadataAdql();
-
-                String url = descriptor.getTapQuery(metadataService.getRequestUrl(), getMetadataAdql(), EsaSkyConstants.JSON);
-
-                Log.debug(debugPrefix + "Query [" + url + "]");
-
-                RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-                try {
-                    builder.sendRequest(null, 
-                            new MetadataCallback(tablePanel, 
-                                    adql, 
-                                    TextMgr.getInstance().getText("MetadataCallback_retrievingMissionData")
-                                    .replace("$NAME$", getDescriptor().getGuiLongName())
-                                    )
-                            );
-
-                } catch (RequestException e) {
-                    Log.error(e.getMessage());
-                    Log.error(debugPrefix + "Error fetching JSON data from server");
-                }
-            }
-        });
+        clearAll();
+        tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
     }
 
     private void getMocMetadata(final ITablePanel tablePanel) {
@@ -382,7 +321,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
         }
 
         tablePanel.setADQLQueryUrl("");
-
     }
 
     public void setDescriptorMetaData() {
@@ -424,23 +362,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     @Override
     public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+        Log.debug("Count is " + getCountStatus().getCount(descriptor.getMission()));
         drawer.addShapes(rowList, javaScriptObject);
-        if(!Modules.useTabulator) {
-            if(rowList.getData().size() >= getSourceLimit()) {
-                if(sourceLimitNotificationTimer.isRunning()) {
-                    sourceLimitNotificationTimer.run();
-                }
-                String sourceLimitDescription = TextMgr.getInstance().getText(getSourceLimitDescription()).replace("$sourceLimit$", getSourceLimit() + "");
-                CommonEventBus.getEventBus().fireEvent( 
-                        new ProgressIndicatorPushEvent(getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
-                sourceLimitNotificationTimer.schedule(6000);
-            }
-        }
-    }
-
-    public int getSourceLimit() {
-        //		return descriptor.getSourceLimit();
-        return 100;
     }
 
     public String getSourceLimitDescription() {
@@ -652,8 +575,16 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
-        // TODO Auto-generated method stub		
+    public void coneSearch(final ITablePanel tablePanel, final SkyViewPosition conePos) {
+        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() > 0 ) {
+            updateCount(tablePanel, new GetMissionDataCountRequestCallback.OnComplete() {
+
+                @Override
+                public void onComplete() {
+                    defaultEntity.coneSearch(tablePanel, conePos);
+                }
+            });
+        } 
     }
 
     @Override

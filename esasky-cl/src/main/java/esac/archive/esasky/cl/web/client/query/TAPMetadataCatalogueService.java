@@ -35,7 +35,7 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     public String getMetadataAdql(IDescriptor descriptorInput) {
         CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
 
-        String adql = "select top " + getResultsLimit(descriptor.getSourceLimit()) + " ";
+        String adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
 
         for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
             if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
@@ -137,7 +137,7 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
     public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos, String filters) {
     	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
     	
-        int top = getResultsLimit(descriptor.getSourceLimit());
+        int top = getResultsLimit(descriptor.getShapeLimit());
 
         String adql = "select top " + top + " ";
 
@@ -201,8 +201,8 @@ public class TAPMetadataCatalogueService extends AbstractMetadataService {
 
     @Override
     public String getMetadataAdql(IDescriptor descriptor, String filter) {
-        // TODO Auto-generated method stub
-        return null;
+     // TODO proper filtering
+        return getMetadataAdql(descriptor);
     }
 
 }

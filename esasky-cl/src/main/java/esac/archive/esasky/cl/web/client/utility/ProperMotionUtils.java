@@ -156,7 +156,9 @@ public class ProperMotionUtils {
         /* Convert parameters at t to external units */
         alpha = Math.atan2 ( -p[0] , p[1] ) ;
         if ( alpha < ZERO )
-        alpha = alpha + TWO * PI ;
+        {
+            alpha = alpha + TWO * PI ;
+        }
         delta = Math.atan2 ( r[2] , xy ) ;
         pma = scalar ( p , pmv ) ;
         pmd = scalar ( q , pmv ) ;

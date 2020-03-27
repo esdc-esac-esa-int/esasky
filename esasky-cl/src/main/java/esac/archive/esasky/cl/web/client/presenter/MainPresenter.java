@@ -227,7 +227,7 @@ public class MainPresenter {
             		
             		if(pointInformation.getType() == EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION) {
             			
-            			getRelatedMetadata(event.getDescriptor(), event.getContext());
+            			getRelatedMetadata(event.getDescriptor());
             			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_gettingData,
             					pointInformation.longName);
             			
@@ -239,7 +239,7 @@ public class MainPresenter {
             		}
             		
             	 }else {
-            		 getRelatedMetadata(event.getDescriptor(), event.getContext());
+            		 getRelatedMetadata(event.getDescriptor());
             	 }
              }
          });	
@@ -315,28 +315,20 @@ public class MainPresenter {
         }     
     }
     
-    public void getRelatedMetadata(IDescriptor descriptor, EntityContext context) {
-    	getRelatedMetadata(descriptor, context, false, null);
+    public void coneSearch(IDescriptor descriptor, SkyViewPosition conePos) {
+            GeneralEntityInterface entity = entityRepo.createEntity(descriptor);
+            resultsPresenter.coneSearch(entity, conePos);
     }
     
-    public void getRelatedMetadata(IDescriptor descriptor, EntityContext context, boolean isConeSearch, SkyViewPosition conePos) {
-        switch (context) {
-            case ASTRO_IMAGING:
-            case ASTRO_SPECTRA:
-            case ASTRO_CATALOGUE:
-            case EXT_TAP:   
-                GeneralEntityInterface newEntity = entityRepo.createEntity(descriptor);
-                resultsPresenter.getMetadata(newEntity, isConeSearch, conePos);
-                break;
+    public void getRelatedMetadata(IDescriptor descriptor) {
+        GeneralEntityInterface newEntity = entityRepo.createEntity(descriptor);
+        resultsPresenter.getMetadata(newEntity);
+        //TODO SSO
+//                break;
                 
-            case SSO:
-                getSSOOrbitAndObservation((SSODescriptor)descriptor);
-                break;
-                
-                
-            default:
-                throw new IllegalArgumentException("Does not recognize entity context");
-        }
+//            case SSO:
+//                getSSOOrbitAndObservation((SSODescriptor)descriptor);
+//                break;
     }
 
 	public void showUserRelatedMetadata(IDescriptor descriptor, IJSONWrapper userDataJSONWrapper, CoordinatesFrame convertToFrame) {

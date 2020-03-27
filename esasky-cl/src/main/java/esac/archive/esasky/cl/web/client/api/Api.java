@@ -222,11 +222,10 @@ public class Api {
 
 	public void plotExtTap(String missionId, JavaScriptObject widget) {
 		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
-		EntityContext context = EntityContext.EXT_TAP;
 		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(desc != null ) {
-			controller.getRootPresenter().getRelatedMetadata(desc,context);
+			controller.getRootPresenter().getRelatedMetadata(desc);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Data from TAP: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -250,7 +249,7 @@ public class Api {
 		descriptor.setPrimaryColor(color);
 		descriptor.setSourceLimit(limit);
 		controller.getRootPresenter().getEntityRepository().createEntity(descriptor);
-		controller.getRootPresenter().getRelatedMetadata(descriptor, EntityContext.EXT_TAP);
+		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
 	
 	public void showCoordinateGrid(boolean show) {
@@ -307,11 +306,10 @@ public class Api {
 	public void plotObservations(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
-		EntityContext context = EntityContext.ASTRO_IMAGING;
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs,context);
+			controller.getRootPresenter().getRelatedMetadata(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Image observations from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -326,12 +324,11 @@ public class Api {
 	public void coneSearchObservations(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
-		EntityContext context = EntityContext.ASTRO_IMAGING;
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
 			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
-			controller.getRootPresenter().getRelatedMetadata(currObs,context, true, conePos);
+			controller.getRootPresenter().coneSearch(currObs, conePos);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Image observations from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -346,11 +343,10 @@ public class Api {
 	public void plotCatalogues(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, missionId);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
-		EntityContext context = EntityContext.ASTRO_CATALOGUE;
 		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs,context);
+			controller.getRootPresenter().getRelatedMetadata(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -364,12 +360,11 @@ public class Api {
 	
 	public void coneSearchCatalogues(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
-		EntityContext context = EntityContext.ASTRO_CATALOGUE;
 		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
 			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
-			controller.getRootPresenter().getRelatedMetadata(currObs,context, true, conePos);
+			controller.getRootPresenter().coneSearch(currObs, conePos);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -384,11 +379,10 @@ public class Api {
 	public void plotSpectra(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotSpectra, missionId);
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
-		EntityContext context = EntityContext.ASTRO_SPECTRA;
 		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs,context);
+			controller.getRootPresenter().getRelatedMetadata(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Spectra from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -402,12 +396,11 @@ public class Api {
 	
 	public void coneSearchSpectra(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
-		EntityContext context = EntityContext.ASTRO_SPECTRA;
 		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
 			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
-			controller.getRootPresenter().getRelatedMetadata(currObs,context, true, conePos);
+			controller.getRootPresenter().coneSearch(currObs, conePos);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);

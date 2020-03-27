@@ -74,7 +74,7 @@ public class MetadataCallback extends JsonRequestCallback {
 					
 					((ExtTapEntity) entity).setDescriptorMetaData();
 					
-					if(((ExtTapEntity) entity).showMocData()){
+					if(((ExtTapEntity) entity).hasReachedFovLimit()){
 			
 						if(onComplete != null) {
 							onComplete.onComplete();

@@ -6,6 +6,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 
@@ -81,5 +82,47 @@ public class TAPMetadataSSOService extends AbstractMetadataService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+    public String getCount(String ssoName, ESASkySSOObjType ssoType) {
+
+        String dbSSOType = "aster";
+        // TODO this must be changed! SSODnet and the ephemeris script uses different identifiers
+
+        String adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_name = '"
+                + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+
+        if (ssoType == ESASkySSOObjType.ASTEROID) {
+            dbSSOType = "aster";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_name = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        } else if (ssoType == ESASkySSOObjType.COMET) {
+            dbSSOType = "comet";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_id = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        } else if (ssoType == ESASkySSOObjType.PLANET) {
+            dbSSOType = "planet";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_name = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        } else if (ssoType == ESASkySSOObjType.SATELLITE) {
+            dbSSOType = "satellite";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_name = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        } else if (ssoType == ESASkySSOObjType.SPACECRAFT) {
+            dbSSOType = "spacecraft";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_id = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        } else if (ssoType == ESASkySSOObjType.DWARF_PLANET) {
+            dbSSOType = "aster";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_name = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        } else if (ssoType == ESASkySSOObjType.SSO) {
+            dbSSOType = "sso";
+            adql = "select b.* from sso.ssoid as a join sso.count_table as b on a.sso_oid = b.sso_oid where a.sso_id = '"
+                    + ssoName + "' and a.sso_type = '" + dbSSOType + "'";
+        }
+
+        Log.debug("SSO COUNT ADQL " + adql);
+        return adql;
+    }
 
 }

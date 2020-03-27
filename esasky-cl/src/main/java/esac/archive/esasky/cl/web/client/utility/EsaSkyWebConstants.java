@@ -90,7 +90,7 @@ public class EsaSkyWebConstants {
     public static final String PUBLICATIONS_AUTHOR_URL_PARAM = "simbad_author"; //Author URL parameter, if passed EsaSky must show the sources linked to this simbad author
 
     public static final int MAX_SOURCES_IN_TARGETLIST = 3000;
-    public static final int MAX_SOURCES_FOR_MOBILE = 200;
+    public static final int MAX_SHAPES_FOR_MOBILE = 200;
     
     public enum SourceType {
         MULTITARGET("Multitarget"), CATALOGUE("Catalogue"), PUBLICATION("Publication"), SURVEY(

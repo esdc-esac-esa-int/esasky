@@ -268,8 +268,8 @@ public class TAPExtTapService extends AbstractMetadataService {
 
 	@Override
 	public String getMetadataAdql(IDescriptor descriptor, String filter) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO proper filtering
+		return getMetadataAdql(descriptor);
 	}
 
 }

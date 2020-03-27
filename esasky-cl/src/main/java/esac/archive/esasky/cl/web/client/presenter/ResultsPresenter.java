@@ -254,51 +254,22 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     	}
     }
 
-    protected final void getMetadata(final GeneralEntityInterface entity,
-    		final boolean isConeSearch, final SkyViewPosition conePos) {
-        final String debugPrefix = "[getMissionData][" + entity.getDescriptor().getGuiShortName() + "]";
+    protected final void coneSearch(final GeneralEntityInterface entity, final SkyViewPosition conePos) {
+        final String debugPrefix = "[coneSearch][" + entity.getDescriptor().getGuiShortName() + "]";
+        Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+        
+        final ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+                TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
+        entity.coneSearch(panel, conePos);
+    }
 
+    protected final void getMetadata(final GeneralEntityInterface entity) {
+        final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
         Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
 
         final ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
                 TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
-
-//        if (countStatus.hasMoved(missionId)) {
-//            String url = TAPCountObservationService.getInstance().getCount(
-//                    AladinLiteWrapper.getAladinLite(), entity.getDescriptor());
-//            Log.debug(debugPrefix + "Query [" + url + "]");
-//
-//            RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-//            try {
-//                panel.clearTable();
-//                builder.sendRequest(null, 
-//                		new GetMissionDataCountRequestCallback(entity, 
-//                				panel, 
-//                				TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", entity.getDescriptor().getGuiShortName()),
-//                				url, new GetMissionDataCountRequestCallback.OnComplete() {
-//									
-//									@Override
-//									public void onComplete() {
-//										if(isConeSearch) {
-//											entity.coneSearch(panel, conePos);
-//										}else {
-//											entity.fetchData(panel);
-//										}
-//										
-//									}
-//								})
-//                		);
-//            } catch (RequestException e) {
-//                Log.error(e.getMessage());
-//                Log.error(debugPrefix + "Error fetching JSON data from server");
-//            }
-//        } else {
-        	if(isConeSearch) {
-				entity.coneSearch(panel, conePos);
-			} else {
-				entity.fetchData(panel);
-			}
-//        }
+        entity.fetchData(panel);
     }
 
     private void sendToSamp() {

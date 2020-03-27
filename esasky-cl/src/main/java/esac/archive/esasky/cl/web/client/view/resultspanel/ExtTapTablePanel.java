@@ -36,7 +36,7 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 
 		String sourceLimitDescription = entity.getSourceLimitDescription();
 
-		notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", entity.getSourceLimit() + ""));
+		notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", entity.getDescriptor().getShapeLimit() + ""));
 
 		addHoverFromDataPanelHandler();
 	}
@@ -86,7 +86,7 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 	public void insertData(List<TableRow> data, String url) {
 		super.insertData(data, url);
 
-		if (data.size() >= entity.getSourceLimit()) {
+		if (data.size() >= entity.getDescriptor().getShapeLimit()) {
 			notShowingCompleteDataSetMouseOverDetector.setVisible(true);
 		} else {
 			notShowingCompleteDataSetMouseOverDetector.setVisible(false);
