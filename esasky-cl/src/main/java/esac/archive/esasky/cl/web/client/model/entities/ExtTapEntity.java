@@ -288,6 +288,10 @@ public class ExtTapEntity implements GeneralEntityInterface {
         Log.debug("Showing real data");
         drawer = combinedDrawer;
         defaultEntity.setDrawer(drawer);
+        if(mocEntity != null){
+	        mocEntity.clearAll();
+	        mocEntity.setShouldBeShown(false);
+        }
 
         clearAll();
         Log.debug(descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
