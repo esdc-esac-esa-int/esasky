@@ -15,6 +15,7 @@ public class TabulatorWrapper{
         public void onDataFiltered(List<Integer> filteredRows);
         public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
         public void onAccessUrlClicked(String url);
+        public void onPostcardUrlClicked(GeneralJavaScriptObject rowData);
         public void onCenterClicked(GeneralJavaScriptObject rowData);
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
     }
@@ -280,6 +281,22 @@ public class TabulatorWrapper{
                         });
                         continue;
 		    		}
+		    		if(metadata[i].name.toLowerCase() === "postcard_url"){
+                        refinedColumnDef.push({
+                            title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
+                            field:metadata[i].name,
+                            headerSort:false, 
+                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
+                            minWidth: 50,
+                            formatter:imageButton, width:40, align:"center", formatterParams:{image:"preview.png", 
+                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
+                                cellClick:function(e, cell){
+                                    e.stopPropagation();
+                    		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
+                                }
+                        });
+                        continue;
+		    		}
 		    		var sorter = "string";
 		    		var headerFilter = true;
 		    		var headerFilterFunc = "like";
@@ -406,6 +423,10 @@ public class TabulatorWrapper{
 
     public void onAccessUrlClicked(String url){
         tabulatorCallback.onAccessUrlClicked(url);
+    }
+    
+    public void onPostcardUrlClicked(final GeneralJavaScriptObject rowData){
+        tabulatorCallback.onPostcardUrlClicked(rowData);
     }
     
     public void onCenterClicked(final GeneralJavaScriptObject rowData) {

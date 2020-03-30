@@ -51,6 +51,7 @@ import esac.archive.esasky.cl.web.client.utility.UncachedRequestBuilder;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
+import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -647,29 +648,26 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     }
     
     @Override
-    public void onDatalinkClicked(final GeneralJavaScriptObject row) {
+    public void onDatalinkClicked(GeneralJavaScriptObject row) {
         String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
-        String title = row.invokeFunction("getData").getStringProperty("obs_id");
+        String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
 
-        DatalinkDownloadDialogBox datalinkBox = new DatalinkDownloadDialogBox(datalinkUrl, title);
-        
-        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
-            row.invokeFunction("select");
-            datalinkBox.registerCloseObserver(new ClosingObserver() {
-               
-                @Override
-                public void onClose() {
-                    row.invokeFunction("deselect");
-                }
-            });
-        }
+        selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(datalinkUrl, title));
     }
     
     @Override
     public void onAccessUrlClicked(String url) {
         Window.open(url, "_blank", "_blank");
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
+    }
+
+    @Override
+    public void onPostcardUrlClicked(GeneralJavaScriptObject row) {
+        String url = row.invokeFunction("getData").getStringProperty("postcard_url");
+        String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
+        selectRowWhileDialogBoxIsOpen(row, new PreviewDialogBox(url, title));
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Download_Preview, getFullId(), title);        
     }
 
     @Override
@@ -810,5 +808,17 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         }
     }
 
+    private void selectRowWhileDialogBoxIsOpen(final GeneralJavaScriptObject row, AutoHidingMovablePanel dialogBox) {
+        if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
+            row.invokeFunction("select");
+            dialogBox.registerCloseObserver(new ClosingObserver() {
+                
+                @Override
+                public void onClose() {
+                    row.invokeFunction("deselect");
+                }
+            });
+        }
+    }
 
 }

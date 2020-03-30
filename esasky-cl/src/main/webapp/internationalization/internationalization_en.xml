@@ -359,7 +359,7 @@
 	</text>
 
 	<!-- abstractTablePanel -->
-	<text key="abstractTablePanel_preview">
+	<text key="tabulator_preview">
 		Preview
 	</text>
 	<text key="abstractTablePanel_sourceInPublication">
@@ -3137,6 +3137,9 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; 
+	</text>
+	<text key="tabulator_previewHeaderTooltip">
+		Visualize a preview of the data
 	</text>
 
 </Internationalization>

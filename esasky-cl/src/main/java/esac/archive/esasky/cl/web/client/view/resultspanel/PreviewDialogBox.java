@@ -114,6 +114,10 @@ public class PreviewDialogBox extends AutoHidingMovablePanel {
     	super(GoogleAnalytics.CAT_Preview);
         this.style = this.resources.style();
         this.style.ensureInjected();
+        
+        if(observationId == null) {
+            observationId = "Preview";
+        }
 
         setSnapping(false);
 
