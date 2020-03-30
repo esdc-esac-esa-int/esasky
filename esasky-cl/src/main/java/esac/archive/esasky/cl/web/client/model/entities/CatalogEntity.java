@@ -23,7 +23,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
@@ -78,7 +78,7 @@ public class CatalogEntity implements GeneralEntityInterface{
     	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(catalogue, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
 				catDescriptor.getPrimaryColor()), shapeBuilder);
         defaultEntity = new DefaultEntity(catDescriptor, countStatus, skyViewPosition, esaSkyUniqId,
-                drawer, TAPMetadataCatalogueService.getInstance());
+                drawer, TAPCatalogueService.getInstance());
         this.descriptor = catDescriptor;
     }
 

@@ -27,8 +27,8 @@ import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -88,7 +88,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		this.descriptor = descriptor;
 		
 		defaultEntity = new DefaultEntity(descriptor, countStatus , new SkyViewPosition(new Coordinate(0, 0), 0.0), "MOC",
-				drawer, TAPMetadataObservationService.getInstance());
+				drawer, TAPObservationService.getInstance());
 		
 		parentEntity = parent;
 		
@@ -187,7 +187,7 @@ public class MOCEntity implements GeneralEntityInterface {
     public void sendLoadQuery(int order, int ipix) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
-        String adql = TAPMetadataCatalogueService.getInstance().getMetadataAdqlFromIpix(descriptor, order, ipix);
+        String adql = TAPCatalogueService.getInstance().getMetadataAdqlFromIpix(descriptor, order, ipix);
         
     	String filter = tablePanel.getFilterString();
         adql += filter;
@@ -216,7 +216,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	clearAll();
     	updateOverlay();
     	
-//        String adql = TAPMetadataCatalogueService.getInstance().getMetadataAdqlRadial(descriptor, pos, filter);
+//        String adql = TAPCatalogueService.getInstance().getMetadataAdqlRadial(descriptor, pos, filter);
 //        
 //    	
 //    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");

@@ -55,10 +55,10 @@ import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataPublicationsService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataSSOService;
+import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
+import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPSingleCountService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -618,21 +618,21 @@ public class DescriptorRepository {
 		if (descriptor instanceof PublicationsDescriptor) {
 			if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_PUB_COUNT_FROM_SIMBAD) {
 
-				url = TAPMetadataPublicationsService.getInstance()
+				url = TAPPublicationsService.getInstance()
 						.getCountQueryForSIMBAD(AladinLiteWrapper.getAladinLite());
 			} else {
 
-				url = TAPMetadataPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
+				url = TAPPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
 						descriptor);
 			}
 
 		} else if (descriptor instanceof CatalogDescriptor) {
 
-			url = TAPMetadataCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
+			url = TAPCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
 
 		} else {
 
-			url = TAPMetadataObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
+			url = TAPObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
 		}
 
 		JSONUtils.getJSONFromUrl(url, new CountRequestCallback(descriptor, cs, countRequestHandler, url));
@@ -644,7 +644,7 @@ public class DescriptorRepository {
 
 	public void doCountSSO(String ssoName, ESASkySSOObjType ssoType, ISSOCountRequestHandler countRequestHandler) {
 
-		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPMetadataSSOService.getInstance().getCount(ssoName, ssoType)),
+		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPSSOService.getInstance().getCount(ssoName, ssoType)),
 				EsaSkyConstants.JSON);
 
 		Log.debug("[doCountSSO] SSO count Query [" + url + "]");

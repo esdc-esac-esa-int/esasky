@@ -7,7 +7,7 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -51,7 +51,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 
     @Override
     public String getMetadataAdql() {
-        return TAPMetadataObservationService.getInstance().getMetadataAdql(getDescriptor());
+        return TAPObservationService.getInstance().getMetadataAdql(getDescriptor());
     }
     
     @Override

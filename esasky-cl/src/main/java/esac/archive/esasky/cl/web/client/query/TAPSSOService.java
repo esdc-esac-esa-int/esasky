@@ -10,16 +10,16 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjT
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 
-public class TAPMetadataSSOService extends AbstractMetadataService {
+public class TAPSSOService extends AbstractTAPService {
 
-    private static TAPMetadataSSOService instance = null;
+    private static TAPSSOService instance = null;
 
-    private TAPMetadataSSOService() {
+    private TAPSSOService() {
     }
 
-    public static TAPMetadataSSOService getInstance() {
+    public static TAPSSOService getInstance() {
         if (instance == null) {
-            instance = new TAPMetadataSSOService();
+            instance = new TAPSSOService();
         }
         return instance;
     }
@@ -32,7 +32,7 @@ public class TAPMetadataSSOService extends AbstractMetadataService {
     public String getMetadataAdql(final IDescriptor inputDescriptor, String filter) {
     	//TODO
     	//Include filters if needed
-        final String debugPrefix = "[TAPMetadataSSOService.getMetadataAdql]";
+        final String debugPrefix = "[TAPSSOService.getMetadataAdql]";
         SSODescriptor descriptor = (SSODescriptor) inputDescriptor;
 
         String adql = "SELECT ";

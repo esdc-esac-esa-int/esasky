@@ -11,16 +11,16 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
-public class TAPMetadataCatalogueService extends AbstractMetadataService {
+public class TAPCatalogueService extends AbstractTAPService {
 
-    private static TAPMetadataCatalogueService instance = null;
+    private static TAPCatalogueService instance = null;
 
-    private TAPMetadataCatalogueService() {
+    private TAPCatalogueService() {
     }
 
-    public static TAPMetadataCatalogueService getInstance() {
+    public static TAPCatalogueService getInstance() {
         if (instance == null) {
-            instance = new TAPMetadataCatalogueService();
+            instance = new TAPCatalogueService();
         }
         return instance;
     }

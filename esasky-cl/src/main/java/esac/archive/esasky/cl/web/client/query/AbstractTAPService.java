@@ -13,7 +13,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-public abstract class AbstractMetadataService {
+public abstract class AbstractTAPService {
 
     public abstract String getMetadataAdql(IDescriptor descriptor);
     public abstract String getMetadataAdql(IDescriptor descriptor, String filter);

@@ -31,7 +31,7 @@ import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.AbstractMetadataService;
+import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -58,30 +58,30 @@ public class ExtTapEntity implements GeneralEntityInterface {
     protected CombinedSourceFootprintDrawer combinedDrawer;
     private IDescriptor descriptor;
     private MOCEntity mocEntity;
-    private AbstractMetadataService metadataService;
+    private AbstractTAPService metadataService;
     private SecondaryShapeAdder secondaryShapeAdder;
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractMetadataService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
+            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, 
                 SourceShapeType.SQUARE.getName(), secondaryShapeAdder);
 
     }
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractMetadataService metadataService) {
+            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, 
                 CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName());
     }
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractMetadataService metadataService, int shapeSize, String shapeType) {
+            AbstractTAPService metadataService, int shapeSize, String shapeType) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null);
     }
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractMetadataService metadataService, int shapeSize, String shapeType, SecondaryShapeAdder secondaryShapeAdder) {
+            AbstractTAPService metadataService, int shapeSize, String shapeType, SecondaryShapeAdder secondaryShapeAdder) {
         this.metadataService = metadataService;
         this.descriptor = descriptor;
         this.secondaryShapeAdder = secondaryShapeAdder;

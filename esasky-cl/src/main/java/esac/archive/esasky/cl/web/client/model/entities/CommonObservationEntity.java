@@ -26,7 +26,7 @@ import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -68,7 +68,7 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
         drawer = new CombinedSourceFootprintDrawer(AladinLiteWrapper.getAladinLite().createCatalog(
                 esaSkyUniqId, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, descriptor.getPrimaryColor()), overlay, shapeBuilder);
         defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId,
-                drawer, TAPMetadataObservationService.getInstance());
+                drawer, TAPObservationService.getInstance());
 
     }
 

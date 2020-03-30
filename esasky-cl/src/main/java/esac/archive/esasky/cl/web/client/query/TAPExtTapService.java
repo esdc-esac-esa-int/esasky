@@ -13,7 +13,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
-public class TAPExtTapService extends AbstractMetadataService {
+public class TAPExtTapService extends AbstractTAPService {
 
     private static TAPExtTapService instance = null;
 

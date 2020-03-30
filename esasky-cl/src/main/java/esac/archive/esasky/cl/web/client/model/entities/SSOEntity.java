@@ -16,7 +16,7 @@ import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.callback.SSOOrbitMetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataSSOService;
+import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -74,7 +74,7 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 
 	@Override
 	public String getMetadataAdql() {
-		return TAPMetadataSSOService.getInstance().getMetadataAdql(getDescriptor());
+		return TAPSSOService.getInstance().getMetadataAdql(getDescriptor());
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 
 
 	private void getSSOPolyline() {
-		final String adql = TAPMetadataSSOService.getInstance().getSSOPolylineAdql(this);
+		final String adql = TAPSSOService.getInstance().getSSOPolylineAdql(this);
 
 		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
 

@@ -31,12 +31,12 @@ import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
-import esac.archive.esasky.cl.web.client.query.AbstractMetadataService;
+import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataCatalogueService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataSSOService;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataSurveyService;
+import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPObservationService;
+import esac.archive.esasky.cl.web.client.query.TAPSSOService;
+import esac.archive.esasky.cl.web.client.query.TAPSurveyService;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -106,13 +106,13 @@ public class EntityRepository {
 	    GeneralEntityInterface newEntity;
 	    if(descriptor instanceof ObservationDescriptor && ((ObservationDescriptor)descriptor).getIsSurveyMission()) {
 	        newEntity = new ExtTapEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(),
-	                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPMetadataSurveyService.getInstance(), 
+	                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPSurveyService.getInstance(), 
 	                20, SourceShapeType.CROSS.getName());
 	        addEntity(newEntity);   
 	    } else if (descriptor instanceof SSODescriptor) {
-	        return createEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), TAPMetadataSSOService.getInstance());
+	        return createEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), TAPSSOService.getInstance());
 	    } else if (descriptor instanceof CommonObservationDescriptor) {
-	        return createEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(), TAPMetadataObservationService.getInstance());
+	        return createEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(), TAPObservationService.getInstance());
 	    } else if (descriptor instanceof CatalogDescriptor) {
 	        return createCatalogueEntity((CatalogDescriptor)descriptor);
 	    } else if (descriptor instanceof ExtTapDescriptor) {
@@ -122,7 +122,7 @@ public class EntityRepository {
 	    return null;//TODO SSO, Publication
 	}
 	
-	private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus, AbstractMetadataService metadataService) {
+	private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus, AbstractTAPService metadataService) {
 	    GeneralEntityInterface newEntity = new ExtTapEntity(descriptor, countStatus, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), metadataService);
 	    addEntity(newEntity);   
 	    return newEntity;
@@ -135,7 +135,7 @@ public class EntityRepository {
 		GeneralEntityInterface newCatEntity = null;
 		if(Modules.useTabulator) {
 		    newCatEntity = new ExtTapEntity(descriptor, descriptorRepo.getCatDescriptors().getCountStatus(), 
-		            skyViewPosition, esaSkyUniqId, TAPMetadataCatalogueService.getInstance(), new SecondaryShapeAdder() {
+		            skyViewPosition, esaSkyUniqId, TAPCatalogueService.getInstance(), new SecondaryShapeAdder() {
                         
                         @Override
                         public void createSpecializedOverlayShape(Map<String, Object> details) {

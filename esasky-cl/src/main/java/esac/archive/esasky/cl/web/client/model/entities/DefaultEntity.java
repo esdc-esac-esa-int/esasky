@@ -21,7 +21,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.AbstractMetadataService;
+import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
@@ -40,12 +40,12 @@ public class DefaultEntity implements GeneralEntityInterface{
     private int tabNumber;
     private IDescriptor descriptor;
     private IShapeDrawer drawer;
-    private AbstractMetadataService metadataService;
+    private AbstractTAPService metadataService;
     
     protected EntityContext context;
 
     public DefaultEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
-    		String esaSkyUniqObsId, IShapeDrawer drawer, AbstractMetadataService metadataService) {
+    		String esaSkyUniqObsId, IShapeDrawer drawer, AbstractTAPService metadataService) {
     	this.descriptor = descriptor;
         this.countStatus = countStatus;
         this.skyViewPosition = skyViewPosition;

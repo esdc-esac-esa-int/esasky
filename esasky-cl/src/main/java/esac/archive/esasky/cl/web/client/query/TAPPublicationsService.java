@@ -11,16 +11,16 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
-public class TAPMetadataPublicationsService extends AbstractMetadataService {
+public class TAPPublicationsService extends AbstractTAPService {
 
-    private static TAPMetadataPublicationsService instance = null;
+    private static TAPPublicationsService instance = null;
 
-    private TAPMetadataPublicationsService() {
+    private TAPPublicationsService() {
     }
 
-    public static TAPMetadataPublicationsService getInstance() {
+    public static TAPPublicationsService getInstance() {
         if (instance == null) {
-            instance = new TAPMetadataPublicationsService();
+            instance = new TAPPublicationsService();
         }
         return instance;
     }
@@ -41,7 +41,7 @@ public class TAPMetadataPublicationsService extends AbstractMetadataService {
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (fovDeg < descriptor.getFovLimit()) {
             if (fovDeg < 1) {
-                Log.debug("[TAPMetadataPublicationsService/getMetadataAdql()] FoV < 1d");
+                Log.debug("[TAPPublicationsService/getMetadataAdql()] FoV < 1d");
                 shape = "POLYGON('ICRS', "
                         + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
             } else {
@@ -68,7 +68,7 @@ public class TAPMetadataPublicationsService extends AbstractMetadataService {
         
         adql += " ORDER BY " + orderBy;
 
-        Log.debug("[TAPMetadataPublicationsService/getMetadataAdql()] ADQL " + adql);
+        Log.debug("[TAPPublicationsService/getMetadataAdql()] ADQL " + adql);
 
         return adql;
     }
@@ -88,7 +88,7 @@ public class TAPMetadataPublicationsService extends AbstractMetadataService {
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
-                Log.debug("[TAPMetadataPublicationsService/getMetadataAdqlforSIMBAD()] FoV < 1d");
+                Log.debug("[TAPPublicationsService/getMetadataAdqlforSIMBAD()] FoV < 1d");
                 shape = "POLYGON('ICRS', "
                         + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
             } else {
@@ -115,7 +115,7 @@ public class TAPMetadataPublicationsService extends AbstractMetadataService {
 
         adql += " ORDER BY " + orderBy;
 
-        Log.debug("[TAPMetadataPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
+        Log.debug("[TAPPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
 
         return adql;
     }

@@ -29,7 +29,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataPublicationsService;
+import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -229,10 +229,10 @@ public class PublicationPanelPresenter {
         // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
         String url = "";
         if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_DATA_FROM_SIMBAD) {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
+            final String adql = TAPPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
             url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
         } else {
-            final String adql = TAPMetadataPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
+            final String adql = TAPPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
             url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
         }
         

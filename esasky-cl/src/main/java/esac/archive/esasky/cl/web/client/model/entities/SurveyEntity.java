@@ -18,7 +18,7 @@ import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPMetadataSurveyService;
+import esac.archive.esasky.cl.web.client.query.TAPSurveyService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -82,7 +82,7 @@ public class SurveyEntity implements GeneralEntityInterface{
     	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(overlay, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
 				descriptor.getPrimaryColor()), shapeBuilder);
         defaultEntity = new DefaultEntity(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqId,
-                drawer, TAPMetadataSurveyService.getInstance());
+                drawer, TAPSurveyService.getInstance());
     }
     
     public String getShape() {
@@ -96,7 +96,7 @@ public class SurveyEntity implements GeneralEntityInterface{
     
     @Override
     public String getMetadataAdql() {
-        return TAPMetadataSurveyService.getInstance().getMetadataAdql(getDescriptor());
+        return TAPSurveyService.getInstance().getMetadataAdql(getDescriptor());
     }
 
 	@Override
