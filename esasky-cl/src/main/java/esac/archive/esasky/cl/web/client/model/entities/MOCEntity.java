@@ -22,12 +22,14 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyResultMOC;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.callback.MOCCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
+import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
@@ -57,6 +59,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private int currentMinOrder; 
     private boolean shouldBeShown = true;
     private GeneralEntityInterface parentEntity;
+    private TAPMOCService metadataService;
     
     private AbstractTableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
@@ -87,22 +90,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		drawer = null;
 		this.descriptor = descriptor;
 		
+		metadataService = TAPMOCService.getInstance();
+		
 		defaultEntity = new DefaultEntity(descriptor, countStatus , new SkyViewPosition(new Coordinate(0, 0), 0.0), "MOC",
 				drawer, TAPObservationService.getInstance());
 		
 		parentEntity = parent;
 		
 		MocRepository.getInstance().addMocEntity(this);
-		
-//		MOVED to MOCRepo
-//		CommonEventBus.getEventBus().addHandler(AladinLiteMOCIpixClickedEvent.TYPE, new AladinLiteMOCIpixClickedEventHandler () {
-//
-//			@Override
-//			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
-//				MOCClicked(event.getNorder(), event.getIpix(), event.getScreenX(), event.getScreenY());
-//			}
-//		});
-		
 		filterObserver = new AbstractTableFilterObserver() {
 			
 			@Override
@@ -284,7 +279,6 @@ public class MOCEntity implements GeneralEntityInterface {
     	int targetOrder = ESASkyResultMOC.getTargetOrderFromFoV(fov);
     	
     	if(targetOrder == 8 && tablePanel.getTapFilters().size() == 0) {
-//		if(targetOrder == 8 ) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
     	}
@@ -298,21 +292,18 @@ public class MOCEntity implements GeneralEntityInterface {
     private void getPrecomputedMOC() {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
-//        tablePanel.clearTable();
-        
-        SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-        
-        String adql = "SELECT * from " + descriptor.getTapTable().replace("public", "moc_schema")  
-       		+ " WHERE '1' = esasky_q3c_moc_radial_query(moc_order, moc_ipix,"
-        		+ Double.toString(pos.getCoordinate().ra) + ", " +  Double.toString(pos.getCoordinate().dec) + ", " + Double.toString(pos.getFov()/2) + " )";
-        
+        String adql = metadataService.getPrecomputedMOCAdql(descriptor);
+//        String adql = "SELECT * from " + descriptor.getTapTable().replace("public", "moc_schema")  
+//       		+ " WHERE '1' = esasky_q3c_moc_radial_query(8, moc_ipix,"
+//        		+ Double.toString(pos.getCoordinate().ra) + ", " +  Double.toString(pos.getCoordinate().dec) + ", " + Double.toString(pos.getFov()/2) + " )";
+//        
         String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
             builder.sendRequest(null,
-                new MOCCallback(tablePanel, adql, this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MOCCallback.OnComplete() {
+                new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MOCAsRecordCallback.OnComplete() {
                	 
                 	@Override
                 	public void onComplete() {
@@ -526,6 +517,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		return MOCString;
 	}
 	
+	public boolean isShouldBeShown() {
+		return shouldBeShown;
+	}
+
+	public void setShouldBeShown(boolean shouldBeShown) {
+		this.shouldBeShown = shouldBeShown;
+	}
+
 	public void setDescriptorMetaData() {
 		List<MetadataDescriptor> metaList = new LinkedList<>();
 		
