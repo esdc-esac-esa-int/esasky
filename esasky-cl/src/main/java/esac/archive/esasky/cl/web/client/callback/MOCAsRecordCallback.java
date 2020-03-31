@@ -12,6 +12,7 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class MOCAsRecordCallback extends JsonRequestCallback {
 
@@ -60,7 +61,10 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 				}
 				
 				String text = response.getText();
-				text = text.replace("{\"name\":\"esasky_q3c_moc_query\",\"datatype\":\"record\"}", "{\"name\":\"moc_order\",\"datatype\":\"INTEGER\"},{\"name\":\"moc_ipix\",\"datatype\":\"INTEGER\"},{\"name\":\"moc_count\",\"datatype\":\"INTEGER\"}");
+				text = text.replace("{\"name\":\"esasky_q3c_moc_query\",\"datatype\":\"record\"}",""
+						+ "{\"name\":\"" + EsaSkyConstants.Q3C_ORDER + "\",\"datatype\":\"INTEGER\"},"
+						+ "{\"name\":\"" + EsaSkyConstants.Q3C_IPIX + "\",\"datatype\":\"INTEGER\"},"
+						+ "{\"name\":\"" + EsaSkyConstants.Q3C_COUNT + "\",\"datatype\":\"INTEGER\"}");
 				text = text.replace("\"(", "");
 				text = text.replace(")\"", "");
 				
