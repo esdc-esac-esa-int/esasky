@@ -18,14 +18,16 @@ public class TabulatorWrapper{
         public void onPostcardUrlClicked(GeneralJavaScriptObject rowData);
         public void onCenterClicked(GeneralJavaScriptObject rowData);
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
+        public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
     }
 
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
 
-    public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback, boolean addSendToVOApplicationColumn) {
+    public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback, 
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn);
+        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn, addLink2ArchiveColumn);
     }
 
     public void selectRow(int rowId) {
@@ -84,7 +86,8 @@ public class TabulatorWrapper{
         tabulatorCallback.onDataFiltered(indexArray);
     }
 
-    private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String url, boolean addSendToVOApplicationColumn) /*-{
+    private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
+            String url, boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn) /*-{
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
@@ -227,7 +230,7 @@ public class TabulatorWrapper{
 		    dataLoading:function(data){
 		    	refinedColumnDef.push({formatter:"rowSelection", titleFormatter:"rowSelection"});
 
-		    	 var imageButton = function(cell, formatterParams, onRendered){ 
+		    	var imageButtonFormatter = function(cell, formatterParams, onRendered){ 
                     return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
                 };
                 refinedColumnDef.push({
@@ -235,7 +238,7 @@ public class TabulatorWrapper{
                     headerSort:false, 
                     headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
                     minWidth: 50,
-                    formatter:imageButton, width:40, align:"center", formatterParams:{image:"recenter.png", 
+                    formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"recenter.png", 
                         tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
                         cellClick:function(e, cell){
                             e.stopPropagation();
@@ -249,11 +252,26 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
                         minWidth: 50,
-                        formatter:imageButton, width:40, align:"center", formatterParams:{image:"send_small.png", 
-                            tooltip:$wnd.esasky.getInternationalizationText("commonObservationTablePanel_sendRowToVOA")},
+                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"send_small.png", 
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
+                            }
+                    });
+                }
+                
+                if(addLink2ArchiveColumn){
+                    refinedColumnDef.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeader"),
+                        headerSort:false, 
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
+                        minWidth: 62,
+                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"link2archive.png",
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
                             }
                     });
                 }
@@ -267,7 +285,7 @@ public class TabulatorWrapper{
                             headerSort:false, 
                             headerTooltip:metadata[i].description,
                             minWidth: 85,
-                            formatter:imageButton, width:40, align:"center", formatterParams:{image:"download_small.png", 
+                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"download_small.png", 
                                 tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
                                 cellClick:function(e, cell){
                                     e.stopPropagation();
@@ -288,7 +306,7 @@ public class TabulatorWrapper{
                             headerSort:false, 
                             headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
                             minWidth: 50,
-                            formatter:imageButton, width:40, align:"center", formatterParams:{image:"preview.png", 
+                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"preview.png", 
                                 tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
                                 cellClick:function(e, cell){
                                     e.stopPropagation();
@@ -435,6 +453,10 @@ public class TabulatorWrapper{
     
     public void onSendToVoApplicaitionClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onSendToVoApplicaitionClicked(rowData);
+    }
+    
+    public void onLink2ArchiveClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onLink2ArchiveClicked(rowData);
     }
 
     public void onRowSelection(int rowId) {

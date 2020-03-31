@@ -5,6 +5,7 @@ import com.allen_sauer.gwt.log.client.Log;
 public final class GoogleAnalytics {
 
     //Categories
+    public static final String CAT_Outbound = "outbound";
 	public static final String CAT_SourceTooltip = "SourceTooltip";
 	public static final String CAT_ContextMenu = "ContextMenu";
 	public static final String CAT_TreeMap_Resize = "TreeMap_Resize";
@@ -195,6 +196,8 @@ public final class GoogleAnalytics {
     public static final String ACT_ExtTap_gettingData = "gettingData";
     public static final String ACT_ExtTap_browsing = "browsing";
     public static final String ACT_ExtTap_count = "count";
+    
+    public static final String ACT_Outbound_click = "click";
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{

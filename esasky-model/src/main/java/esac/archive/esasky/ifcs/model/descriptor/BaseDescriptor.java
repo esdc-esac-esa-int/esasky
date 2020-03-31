@@ -43,6 +43,8 @@ public abstract class BaseDescriptor implements IDescriptor {
     private String archiveURL;
 
     /** Archive related URL parameter */
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private String archiveProductURI;
     
     private String uniqueIdentifierField;

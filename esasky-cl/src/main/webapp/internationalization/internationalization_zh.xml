@@ -331,7 +331,7 @@
 	</text>
 
 	<!-- commonObservationTablePanel -->
-	<text key="commonObservationTablePanel_sendRowToVOA">
+	<text key="tabulator_sendRowToVOA">
 		发送数据行到虚拟天文台应用程序
 	</text>
 

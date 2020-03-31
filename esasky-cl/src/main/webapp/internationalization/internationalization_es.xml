@@ -241,7 +241,7 @@
 	</text>
 
 	<!-- commonObservationTablePanel -->
-	<text key="commonObservationTablePanel_sendRowToVOA">
+	<text key="tabulator_sendRowToVOA">
 		Enviar fila a una aplicaci&#243;n de observatorio
 		virtual
 	</text>

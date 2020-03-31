@@ -18,6 +18,8 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
@@ -460,7 +462,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void insertData(List<TableRow> data, String url) {
 		if(url != null) {
-			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled());
+			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
+			        getDescriptor().getArchiveProductURI() != null);
 			tableNotShowingContainer.addStyleName("displayNone");
 		}
 
@@ -819,6 +822,26 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
                 }
             });
         }
+    }
+
+    @Override
+    public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData) {
+        String url = buildArchiveURL(rowData);
+        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Outbound, GoogleAnalytics.ACT_Outbound_click, url);
+        Window.open(url, "_blank", "");
+    }
+    
+    private String buildArchiveURL(GeneralJavaScriptObject rowData) {
+        String productURI = getDescriptor().getArchiveProductURI();
+        RegExp regularExpression = RegExp.compile("@@@(.*?)@@@", "gm");
+
+        for (MatchResult match = regularExpression.exec(getDescriptor().getArchiveProductURI()); match != null; match = regularExpression
+                .exec(getDescriptor().getArchiveProductURI())) {
+            String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
+            String valueURI = rowData.getStringProperty(rowColumn);
+            productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
+        }
+        return getDescriptor().getArchiveURL() + productURI;
     }
 
 }
