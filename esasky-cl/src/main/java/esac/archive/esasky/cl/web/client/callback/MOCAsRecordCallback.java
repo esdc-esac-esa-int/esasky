@@ -61,7 +61,7 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 				}
 				
 				String text = response.getText();
-				text = text.replace("{\"name\":\"esasky_q3c_moc_query\",\"datatype\":\"record\"}",""
+				text = text.replace("{\"name\":\"moc\",\"datatype\":\"record\"}",""
 						+ "{\"name\":\"" + EsaSkyConstants.Q3C_ORDER + "\",\"datatype\":\"INTEGER\"},"
 						+ "{\"name\":\"" + EsaSkyConstants.Q3C_IPIX + "\",\"datatype\":\"INTEGER\"},"
 						+ "{\"name\":\"" + EsaSkyConstants.Q3C_COUNT + "\",\"datatype\":\"INTEGER\"}");

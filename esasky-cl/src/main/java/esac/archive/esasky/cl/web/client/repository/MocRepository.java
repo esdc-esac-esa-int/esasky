@@ -9,6 +9,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOC
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
 
 public class MocRepository {
@@ -52,7 +53,7 @@ public class MocRepository {
 			@Override
 			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
 				for(MOCEntity entity : allEntities){
-					entity.checkUpdateMOCNorder(fovEvent.getFov()); 
+					entity.checkUpdateMOCNorder(); 
 				}
 			}
 		});
@@ -65,5 +66,55 @@ public class MocRepository {
 	
 	public void removeEntity(MOCEntity entity) {
 		allEntities.remove(entity);
+	}
+	
+	public static int getMinOrderFromFoV() {
+		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+				
+		if(fov > 60) {
+			return 4;
+		}else if(fov > 40) {
+			return 5;
+		}else if(fov > 20) {
+			return 6;
+		}else if(fov > 5) {
+			return 8;
+		}else if(fov > 2) {
+			return 9;
+		}else if(fov > 1) {
+			return 10;
+		}else if(fov > 0.5) {
+			return 12;
+		}else {
+			return 14;
+		}			
+	}
+	
+	public static int getMaxOrderFromFoV() {
+		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+
+		if(fov > 20) {
+			return 8;
+		}else if(fov > 5) {
+			return 10;
+		}else if(fov > 2) {
+			return 12;
+		}else {
+			return 14;
+		}					
+	}
+
+	public static int getTargetOrderFromFoV() {
+		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+
+		if(fov > 2) {
+			return 8;
+		}else if(fov > .5) {
+			return 10;
+		}else if(fov > .1) {
+			return 12;
+		}else {
+			return 14;
+		}					
 	}
 }

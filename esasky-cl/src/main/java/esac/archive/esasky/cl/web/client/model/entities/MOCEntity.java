@@ -17,13 +17,13 @@ import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyResultMOC;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
-import esac.archive.esasky.cl.web.client.callback.MOCCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
@@ -35,7 +35,6 @@ import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -118,7 +117,6 @@ public class MOCEntity implements GeneralEntityInterface {
     
     @Override
     public String getMetadataAdql() {
-        //TODO
     	return null;
     }
     
@@ -127,9 +125,8 @@ public class MOCEntity implements GeneralEntityInterface {
     	countMap = new HashMap<Integer, Map<Long, Integer>>();
     	
     	int index = 0;
-    	double fov = AladinLiteWrapper.getInstance().getFovDeg();
-    	int minOrder = ESASkyResultMOC.getMinOrderFromFoV(fov);
-    	int maxOrder = ESASkyResultMOC.getMaxOrderFromFoV(fov);
+    	int minOrder = MocRepository.getMinOrderFromFoV();
+    	int maxOrder = MocRepository.getMaxOrderFromFoV();
     	
 		moc.populateCountMap(countMap, index, minOrder, maxOrder);
     	
@@ -269,14 +266,14 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	shouldBeShown = true;
     	int count = getCountStatus().getCount(descriptor.getMission());
-    	double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+
     	if(count > Math.pow(10, 7)) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
     		return;
     	}
     	
-    	int targetOrder = ESASkyResultMOC.getTargetOrderFromFoV(fov);
+    	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	
     	if(targetOrder == 8 && tablePanel.getTapFilters().size() == 0) {
     		getPrecomputedMOC();
@@ -293,10 +290,6 @@ public class MOCEntity implements GeneralEntityInterface {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
         String adql = metadataService.getPrecomputedMOCAdql(descriptor);
-//        String adql = "SELECT * from " + descriptor.getTapTable().replace("public", "moc_schema")  
-//       		+ " WHERE '1' = esasky_q3c_moc_radial_query(8, moc_ipix,"
-//        		+ Double.toString(pos.getCoordinate().ra) + ", " +  Double.toString(pos.getCoordinate().dec) + ", " + Double.toString(pos.getFov()/2) + " )";
-//        
         String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
 
         Log.debug(debugPrefix + "Query [" + url + "]");
@@ -323,15 +316,16 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private void getSplitMOC(int order) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
-    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
     	
     	String filter = tablePanel.getFilterString();
+    	
+    	String adql;
 
-		String adql = "SELECT " + Integer.toString(order) + " as moc_order,"
-				+ "esasky_q3c_bitshift_right(q3c_ang2ipix(ra,dec), " + Integer.toString(60 - 2 * order) + ") as moc_ipix, count(*) as moc_count"
-				+ " FROM " + descriptor.getTapTable() + " WHERE \'1\' = q3c_radial_query(ra,dec, "
-				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
-				+ Double.toString(pos.getFov()/2) + ")" + filter + " GROUP BY moc_ipix";
+    	if(descriptor instanceof CatalogDescriptor) {
+    		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, filter);
+    	}else {
+    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, filter);
+    	}
 				
     	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
     	
@@ -339,7 +333,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     	try {
     		builder.sendRequest(null,
-    				new MOCCallback(tablePanel, adql, this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MOCCallback.OnComplete() {
+    				new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MOCAsRecordCallback.OnComplete() {
 	                	 
 	                 	@Override
 	                 	public void onComplete() {
@@ -407,43 +401,30 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 	
 	private void closingPanel(ITablePanel tablePanel) {
+		
 		clearAll();
 		MocRepository.getInstance().removeEntity(this);
 		shouldBeShown = false;
-		
 	}
 	
 	public void updateOverlay() {
+		
 		if(overlay == null) {
 			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\"}";
 			overlay = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
-//			
-//			MOVED to MOCRepp
-//			CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
-//
-//				@Override
-//				public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
-//					checkUpdateMOCNorder(fovEvent.getFov()); 
-//					Log.debug("Total MOC count: " + Integer.toString(getTotalCount()));
-//				}
-//			});
 		}
 		
 		updateCountMap();
 		
-//		Log.debug("CountMAp: " + Long.toString(System.currentTimeMillis() - curr));
-		
 		AladinLiteWrapper.getAladinLite().clearMOC(overlay);
 		
-		double fov = AladinLiteWrapper.getInstance().getFovDeg();
-    	int minOrder = ESASkyResultMOC.getMinOrderFromFoV(fov);
-    	int maxOrder = ESASkyResultMOC.getMaxOrderFromFoV(fov);
+    	int minOrder = MocRepository.getMinOrderFromFoV();
+    	int maxOrder = MocRepository.getMaxOrderFromFoV();
 		
 		String mocData = getAladinMOCString(minOrder, maxOrder);
 		
 		AladinLiteWrapper.getAladinLite().addMOCData(overlay, mocData);
-		
 	}
 	
 	private int getTotalCount() {
@@ -457,11 +438,11 @@ public class MOCEntity implements GeneralEntityInterface {
 		return count;
 	}
 	
-	public void checkUpdateMOCNorder(double fov) {
+	public void checkUpdateMOCNorder() {
 		if(shouldBeShown) {
-			int minOrder = ESASkyResultMOC.getMinOrderFromFoV(fov);
-			int maxOrder = ESASkyResultMOC.getMaxOrderFromFoV(fov);
-			int targetOrder = ESASkyResultMOC.getTargetOrderFromFoV(fov);
+			int minOrder = MocRepository.getMinOrderFromFoV();
+			int maxOrder = MocRepository.getMaxOrderFromFoV();
+			int targetOrder = MocRepository.getTargetOrderFromFoV();
 			
 			if(currentDataOrder != targetOrder) {
 				refreshMOC();
@@ -729,13 +710,11 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public ITablePanel createTablePanel() {
-		//TODO
 		return null;
 	}
 
 	@Override
 	public boolean isSampEnabled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -746,7 +725,6 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public boolean hasDownloadableDataProducts() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -787,7 +765,6 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
-		// TODO Auto-generated method stub
 		
 	}
 
