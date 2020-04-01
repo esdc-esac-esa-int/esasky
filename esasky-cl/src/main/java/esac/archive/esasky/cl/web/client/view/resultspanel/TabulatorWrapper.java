@@ -13,7 +13,7 @@ public class TabulatorWrapper{
         public void onRowMouseLeave(int rowId);
         public void onFilterChanged(String label, String filter);
         public void onDataFiltered(List<Integer> filteredRows);
-        public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
+        public void onDatalinkClicked(final GeneralJavaScriptObject javaScriptObject);
         public void onAccessUrlClicked(String url);
         public void onPostcardUrlClicked(GeneralJavaScriptObject rowData);
         public void onCenterClicked(GeneralJavaScriptObject rowData);
@@ -74,6 +74,14 @@ public class TabulatorWrapper{
     private native String getVot(GeneralJavaScriptObject tableJsObject, String resourceName)/*-{
         return tableJsObject.getVoTableString(tableJsObject.getData(), resourceName);
     }-*/;
+    
+    public void setPlaceholderText(String text){
+        setPlaceholderText(tableJsObject, text);
+    }
+    
+    private native void setPlaceholderText(GeneralJavaScriptObject tableJsObject, String text)/*-{
+    	tableJsObject.options.placeholder.innerText = text;
+	}-*/;
 
 
     public void onDataFiltered(String indexes) {
@@ -194,6 +202,7 @@ public class TabulatorWrapper{
 		var table = new $wnd.Tabulator("#" + divId, {
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	ajaxURL:url,
+		 	placeholder:"",
 		    ajaxResponse:function(url, params, response){
 				metadata = response.metadata;
 

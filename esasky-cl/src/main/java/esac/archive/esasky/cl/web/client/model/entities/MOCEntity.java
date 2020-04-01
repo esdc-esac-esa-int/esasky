@@ -300,8 +300,9 @@ public class MOCEntity implements GeneralEntityInterface {
                	 
                 	@Override
                 	public void onComplete() {
-//                		tablePanel.setMOCTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
+                		setTableText();
                 		updateCountMap();
+                		
                 		if(getTotalCount() < 2000 && getTotalCount() > 0) {
                 			sendLoadQuery();
                 		}
@@ -312,6 +313,13 @@ public class MOCEntity implements GeneralEntityInterface {
             Log.error("[getMocMetadata] Error fetching JSON data from server");
         }
 
+    }
+    
+    private void setTableText() {
+ 		String text = TextMgr.getInstance().getText("MOC_count_text");
+ 		text = text.replace("$count$", Integer.toString(getTotalCount()));
+ 		text = text.replace("$limit$", Integer.toString(descriptor.getShapeLimit()));
+ 		tablePanel.setPlaceholderText(text);
     }
     
     private void getSplitMOC(int order) {
@@ -337,8 +345,9 @@ public class MOCEntity implements GeneralEntityInterface {
 	                	 
 	                 	@Override
 	                 	public void onComplete() {
-//	                 		tablePanel.setMOCTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
-	                		if(getTotalCount() < 2000) {
+	                 		setTableText();
+	                 		updateCountMap();
+	                 		if(getTotalCount() < 2000 && getTotalCount() > 0) {
 	                			sendLoadQuery();
 	                		}
 	                 	}

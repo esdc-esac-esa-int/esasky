@@ -3150,5 +3150,12 @@
 	<text key="tabulator_link2ArchiveButtonTooltip">
 		Open this data in the archive's website
 	</text>
+	<text key="MOC_count_text">
+		Total amount of objects in the shown MOC: $count$
+		
+		Will show the objects when under: $limit$
+		
+		Use filters or zoom in to reduce the amount
+	</text>
 
 </Internationalization>

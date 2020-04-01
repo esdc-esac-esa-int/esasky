@@ -103,4 +103,6 @@ public interface ITablePanel {
 	public String getFilterString();
 	
 	public String getVoTableString();
+	
+	public void setPlaceholderText(String text);
 }

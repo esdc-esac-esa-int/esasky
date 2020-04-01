@@ -457,7 +457,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	@Override
+	public void setPlaceholderText(String text) {
+		table.setPlaceholderText(text);
+	}
 
 	@Override
 	public void insertData(List<TableRow> data, String url) {
@@ -569,9 +573,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 	
 	public String getFilterString() {
+		boolean first = true;
+		
 		String filter = "";
 		for(String key : getTapFilters().keySet()) {
-			filter += " AND ";
+			if(first) {
+				first = false;
+			}else {
+				filter += " AND ";
+			}
 			filter += getTapFilters().get(key);
 		}
 		return filter;

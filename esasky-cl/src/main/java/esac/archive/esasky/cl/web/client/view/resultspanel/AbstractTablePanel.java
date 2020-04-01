@@ -632,6 +632,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		setTableMinWidth();
 		resizeColumnGroupHeader();
 		notifyObserversRowsChange(table.getRowCount());
+		selectTablePanel();
 	}
 
 	protected String getLabelTextFromHeader(final Header<?> hdr) {
@@ -1258,7 +1259,11 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		});
 	}
 	
-	public Map<String, String> tapFilters = new HashMap<String, String>();
+	private Map<String, String> tapFilters = new HashMap<String, String>();
+	
+	public Map<String, String> getTapFilters(){
+    	return tapFilters;
+    };
 	
 	private void addTapFilter(String label, String tapFilter) {
 		if(tapFilter.length() > 0) {
@@ -1268,6 +1273,15 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		}
 		
 		notifyFilterObservers();
+	}
+	
+	public String getFilterString() {
+		String filter = "";
+		for(String key : getTapFilters().keySet()) {
+			filter += " AND ";
+			filter += getTapFilters().get(key);
+		}
+		return filter;
 	}
 	
 	LinkedList<AbstractTableFilterObserver> filterObservers = new LinkedList<>();
@@ -1718,16 +1732,10 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		return null;
 	}
 	
-    @Override
-    public Map<String, String> getTapFilters() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-
-    @Override
-    public String getFilterString() {
-        return null;
-    }
+	@Override
+	public void setPlaceholderText(String text) {
+		// TODO Auto-generated method stub
+	}
+	
 
 }
