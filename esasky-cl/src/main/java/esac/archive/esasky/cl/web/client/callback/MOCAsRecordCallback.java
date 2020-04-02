@@ -18,7 +18,6 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 
 	private MOCEntity mocEntity;
 	private ITablePanel tablePanel;
-	private String adql;
 	private static HashMap<String, Long> latestUpdates = new HashMap<String, Long>();
 	private long timecall;
 	private OnComplete onComplete;
@@ -39,7 +38,6 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 		super(progressIndicatorMessage, adql);
 		this.mocEntity = mocEntity;
 		this.tablePanel = tablePanel;
-		this.adql = adql;
 		timecall = System.currentTimeMillis();
 		latestUpdates.put(tablePanel.getEsaSkyUniqID(), timecall);
 		startTime = System.currentTimeMillis();
