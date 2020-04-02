@@ -22,8 +22,16 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 	}-*/;
     
     public final native double getDoubleProperty(String propertyName)/*-{
-    	return this[propertyName];
+    	return this[propertyName] && !isNaN(this[propertyName]) ? this[propertyName]: 0;
 	}-*/;
+    
+    public final Double getDoubleOrNullProperty(String propertyName) {
+        try {
+           return new Double(getStringProperty(propertyName));
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
     
     public final native GeneralJavaScriptObject invokeFunction(String functionName)/*-{
     	return this[functionName]();
