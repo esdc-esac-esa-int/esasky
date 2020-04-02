@@ -102,7 +102,7 @@ public class EntityRepository {
 	}
 	
 	public GeneralEntityInterface createEntity(IDescriptor descriptor) {
-	    GeneralEntityInterface newEntity;
+	    GeneralEntityInterface newEntity = null;
 	    if(descriptor instanceof ObservationDescriptor && ((ObservationDescriptor)descriptor).getIsSurveyMission()) {
 	        newEntity = new ExtTapEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(),
 	                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPSurveyService.getInstance(), 
@@ -111,7 +111,6 @@ public class EntityRepository {
 	    } else if (descriptor instanceof SSODescriptor) {
 	        newEntity = new SSOEntity(descriptor);
 	        addEntity(newEntity);   
-	        return newEntity;
 	    } else if (descriptor instanceof CommonObservationDescriptor) {
 	        return createEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(), TAPObservationService.getInstance());
 	    } else if (descriptor instanceof CatalogDescriptor) {
@@ -120,7 +119,7 @@ public class EntityRepository {
 	        return createEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(), TAPExtTapService.getInstance());
 	        
 	    }
-	    return null;//TODO Publication
+	    return newEntity;//TODO Publication
 	}
 	
 	private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus, AbstractTAPService metadataService) {
