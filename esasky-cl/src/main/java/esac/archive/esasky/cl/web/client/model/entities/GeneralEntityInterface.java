@@ -43,7 +43,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void clearAll();
     
     public String getColor();
-    public void setColor(String color);
+    public void setPrimaryColor(String color);
     
     public void fetchData(ITablePanel tablePanel);
     public void fetchDataWithoutMOC(ITablePanel tablePanel);

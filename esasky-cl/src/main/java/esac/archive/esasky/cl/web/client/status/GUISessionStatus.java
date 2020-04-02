@@ -166,6 +166,10 @@ public class GUISessionStatus {
 		return isTrackingSSO ? trackedSso : null;
 	}
 	
+	public static String getTrackedSsoName() {
+	    return isTrackingSSO ? trackedSso.name : null;
+	}
+	
 	public static void setIsTrackingSSO(boolean isTrackingSso){
 		if(GUISessionStatus.isTrackingSSO != isTrackingSso){
 			GUISessionStatus.isTrackingSSO = isTrackingSso;

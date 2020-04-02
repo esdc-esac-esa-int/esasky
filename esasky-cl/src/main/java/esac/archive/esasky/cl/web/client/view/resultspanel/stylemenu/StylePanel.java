@@ -28,12 +28,10 @@ public class StylePanel extends DialogBox {
 	
     public interface StylePanelCallback {
     	public void onShapeColorChanged (String color);
-    	public void onArrowColorChanged (String color);
-    	public void onOrbitColorChanged (String color);
+    	public void onSecondaryColorChanged (String color);
     	public void onShapeChanged (String shape);
     	public void onShapeSizeChanged (double value);
-    	public void onArrowScaleChanged (double value);
-    	public void onOrbitScaleChanged (double value);
+    	public void onSecondaryShapeScaleChanged (double value);
         public void onArrowAvgCheckChanged (boolean checkedOne, boolean checkedTwo);
     }
     
@@ -74,24 +72,19 @@ public class StylePanel extends DialogBox {
     private String mission;
     private boolean interactiveElementsHaveBeenInitialized = false;
     
-    private String srcColorPickerId;
-    private String srcSizeId;
-    private String srcShapeId;
+    private String primaryShapeColorPickerId;
+    private String primaryShapeSizeId;
+    private String primaryShapeId;
     
-    private String arrowColorPickerId = null;
-    private String arrowScaleId = null;
+    private String secondaryShapeColorPickerId = null;
+    private String secondaryShapeScaleId = null;
     
-    private String orbitColorPickerId = null;
-    private String orbitColor = null;
-    private String orbitScaleId = null;
-    private double orbitScale;
+    private String primaryColor;
+    private double primarySizeRatio;
+    private String primaryShapeType;
     
-    private String srcColor;
-    private double srcSizeRatio;
-    private String srcShape;
-    
-    private String arrowColor = null;
-    private Double arrowScale = null; // A ratio from 0.01 to 1.0
+    private String secondaryColor = null;
+    private Double secondaryShapeScale = null; // A ratio from 0.01 to 1.0
     private Boolean arrowAvgChecked = null;
     private Boolean useMedianOnAvgChecked = null;
     
@@ -104,9 +97,8 @@ public class StylePanel extends DialogBox {
     private CheckBox arrowMedianCheckBox;
     
     public StylePanel(String id, String mission, 
-                      String srcColor, Double srcSizeRatio, String srcShape,
-                      String arrowColor, Double arrowScale, Boolean arrowAvgChecked, Boolean useMedianOnAvgChecked,
-                      String orbitColor, Double orbitScale,
+                      String primaryColor, Double primarySizeRatio, String primaryShape,
+                      String secondaryColor, Double secondarySizeRatio, Boolean arrowAvgChecked, Boolean useMedianOnAvgChecked,
                       StylePanelCallback callback) {
         
         super(true, false);
@@ -121,22 +113,22 @@ public class StylePanel extends DialogBox {
         this.mission = mission;
         
         final String preparedId = DownloadUtils.getValidFilename(id);
-        this.srcColorPickerId = preparedId + "_srcColor";
-        this.srcColor = srcColor;
+        this.primaryShapeColorPickerId = preparedId + "_primaryColor";
+        this.primaryColor = primaryColor;
         
-        this.srcSizeId = preparedId + "_srcSize";
-        this.srcSizeRatio = srcSizeRatio;
+        this.primaryShapeSizeId = preparedId + "_primarySize";
+        this.primarySizeRatio = primarySizeRatio;
 
-        if (srcShape != null) {
-            this.srcShape = srcShape;
+        if (primaryShape != null) {
+            this.primaryShapeType = primaryShape;
         }
         
-        if (arrowColor != null) {
-            this.arrowColorPickerId = preparedId + "_arrowColor";
-            this.arrowColor = arrowColor;
-            if (arrowScale != null) {
-            	this.arrowScaleId = preparedId + "_arrowScale";
-            	this.arrowScale = arrowScale;
+        if (secondaryColor != null) {
+            this.secondaryShapeColorPickerId = preparedId + "_secondaryColor";
+            this.secondaryColor = secondaryColor;
+            if (secondarySizeRatio != null) {
+            	this.secondaryShapeScaleId = preparedId + "_secondaryScale";
+            	this.secondaryShapeScale = secondarySizeRatio;
             }
             
             if (arrowAvgChecked != null) {
@@ -145,23 +137,11 @@ public class StylePanel extends DialogBox {
             }
         }
         
-        
-        if (orbitColor != null) {
-        	this.orbitColorPickerId = preparedId + "_orbitColor";
-        	this.orbitColor = orbitColor;
-        }
-        
-        if (orbitScale != null) {
-        	this.orbitScaleId = preparedId + "_orbitScale";
-        	this.orbitScale = orbitScale;
-        }
-        
         initView();
     }
 
-    HTML srcSlider;
-    HTML arrowSlider;
-    HTML orbitSlider;
+    HTML primarySlider;
+    HTML secondarySlider;
     HTML srcColorPickerContainer;
     
     private void initView() {
@@ -184,42 +164,42 @@ public class StylePanel extends DialogBox {
         shapeContainer.addStyleName("styleContainerRow");
         
         //Adds the source shape selector
-        if (this.srcShape != null) {
+        if (this.primaryShapeType != null) {
             shapeContainer.add(createSourceShapeDropdown());
         }
         
         //Adds the source color picker
-        srcColorPickerContainer = new HTML("<div id='" + srcColorPickerId + "_Container' class='colorPickerContainer'></div>");
+        srcColorPickerContainer = new HTML("<div id='" + primaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
         shapeContainer.add(srcColorPickerContainer);
         
         //Adds the source size slider
-        srcSlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(srcSizeRatio * MAX_SLIDER_VALUE) + "' class='slider srcSlider' id='" + srcSizeId + "'>");
-        shapeContainer.add(srcSlider);
+        primarySlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(primarySizeRatio * MAX_SLIDER_VALUE) + "' class='slider primarySlider' id='" + primaryShapeSizeId + "'>");
+        shapeContainer.add(primarySlider);
         
         innerContainer.add(shapeContainer);
         
-        FlowPanel properMotionShapeContainer = new FlowPanel();
-        properMotionShapeContainer.addStyleName("styleContainerRow");
+        FlowPanel secondaryShapeContainer = new FlowPanel();
+        secondaryShapeContainer.addStyleName("styleContainerRow");
         
         //Adds the arrow color picker
-        if (arrowColorPickerId != null) {
-            
-            Image arrowImage = new Image(resources.arrow().getSafeUri());
-            arrowImage.addStyleName("arrowImg");
-            properMotionShapeContainer.add(arrowImage);
-            
-            HTML arrowColorPickerContainer = new HTML("<div id='" + arrowColorPickerId + "_Container' class='colorPickerContainer'></div>");
-            properMotionShapeContainer.add(arrowColorPickerContainer);
-            
-            //Adds the arrow scale slider
-            if (arrowScaleId != null) {
-                
-                arrowSlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(arrowScale * MAX_SLIDER_VALUE) + "' class='slider arrowSlider' id='" + arrowScaleId + "'>");
-                properMotionShapeContainer.add(arrowSlider);
+        if (secondaryShapeColorPickerId != null) {
+            if (arrowAvgChecked != null) {
+                Image arrowImage = new Image(resources.arrow().getSafeUri());
+                arrowImage.addStyleName("arrowImg");
+                secondaryShapeContainer.add(arrowImage);
             }
             
-            innerContainer.add(properMotionShapeContainer);
+            HTML secondaryShapeColorPickerContainer = new HTML("<div id='" + secondaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
+            secondaryShapeContainer.add(secondaryShapeColorPickerContainer);
             
+            //Adds the arrow scale slider
+            if (secondaryShapeScaleId != null) {
+                
+                secondarySlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(secondaryShapeScale * MAX_SLIDER_VALUE) + "' class='slider secondarySlider' id='" + secondaryShapeScaleId + "'>");
+                secondaryShapeContainer.add(secondarySlider);
+            }
+            
+            innerContainer.add(secondaryShapeContainer);
             
             //Adds the remove proper motion average check box
             if (arrowAvgChecked != null) {
@@ -255,19 +235,7 @@ public class StylePanel extends DialogBox {
                 innerContainer.add(arrowMedianCheckBox);
             }
         }
-        
-        if (orbitColorPickerId != null) {
-        	FlowPanel orbitContainer = new FlowPanel();
-        	orbitContainer.addStyleName("styleContainerRow");
-            HTML orbitColorPickerContainer = new HTML("<div id='" + orbitColorPickerId + "_Container' class='colorPickerContainer'></div>");
-            orbitContainer.add(orbitColorPickerContainer);
-            
-            //Adds the source size slider
-            orbitSlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(orbitScale * MAX_SLIDER_VALUE) + "' class='slider orbitSlider' id='" + orbitScaleId + "'>");
-            orbitContainer.add(orbitSlider);
-            
-            innerContainer.add(orbitContainer);
-        }
+
         container.add(innerContainer);
 
         this.removeStyleName("gwt-DialogBox");
@@ -275,22 +243,14 @@ public class StylePanel extends DialogBox {
     }
 	
     private void initInteractiveElements() {
-        createColorPicker(this, srcColorPickerId, srcColorPickerId + "_Container", srcColor);
-        createSlider(this, srcSizeId);
+        createColorPicker(this, primaryShapeColorPickerId, primaryShapeColorPickerId + "_Container", primaryColor);
+        createSlider(this, primaryShapeSizeId);
         
-        if (arrowColorPickerId != null) {
-            createColorPicker(this, arrowColorPickerId, arrowColorPickerId + "_Container", arrowColor);
-            if (arrowScaleId != null) {
-            	createSlider(this, arrowScaleId);
+        if (secondaryShapeColorPickerId != null) {
+            createColorPicker(this, secondaryShapeColorPickerId, secondaryShapeColorPickerId + "_Container", secondaryColor);
+            if (secondaryShapeScaleId != null) {
+            	createSlider(this, secondaryShapeScaleId);
             }
-        }
-        
-        
-        if (orbitScaleId != null) {
-        	createSlider(this, orbitScaleId);
-        }
-        if (orbitColorPickerId != null) {
-        	createColorPicker(this, orbitColorPickerId, orbitColorPickerId + "_Container", orbitColor);
         }
         interactiveElementsHaveBeenInitialized = true;
     }
@@ -307,10 +267,10 @@ public class StylePanel extends DialogBox {
         timeLastHiddenTime = System.currentTimeMillis();
         super.hide(autoClosed);
 
-        hideColorPicker(srcColorPickerId);
+        hideColorPicker(primaryShapeColorPickerId);
         
-        if (arrowColorPickerId != null) {
-            hideColorPicker(arrowColorPickerId);
+        if (secondaryShapeColorPickerId != null) {
+            hideColorPicker(secondaryShapeColorPickerId);
         }
     }
     
@@ -349,7 +309,7 @@ public class StylePanel extends DialogBox {
             MenuItem<SourceShapeType> dropdownItem = new MenuItem<SourceShapeType>(
                     sourceShapeType, getImageShape(sourceShapeType.getName()));
             dropdownItem.addStyleName("srcShapeDropDownItem");
-            if (sourceShapeType.getName().equals(srcShape)) {
+            if (sourceShapeType.getName().equals(primaryShapeType)) {
                 selectedItem = sourceShapeType;
             }
             srcShapeDropDown.addMenuItem(dropdownItem);
@@ -383,15 +343,12 @@ public class StylePanel extends DialogBox {
     }-*/;
     
     private void fireColorChangedEvent(String colorPickerId, String color) {
-        if (colorPickerId.equals(srcColorPickerId)) {
-        	srcColor = color;
+        if (colorPickerId.equals(primaryShapeColorPickerId)) {
+        	primaryColor = color;
             stylePanelCallback.onShapeColorChanged(color);
-        } else if (colorPickerId.equals(arrowColorPickerId)) {
-        	arrowColor = color;
-            stylePanelCallback.onArrowColorChanged(color);
-        } else if (orbitColorPickerId.equals(orbitColorPickerId)) {
-        	orbitColor = color;
-        	stylePanelCallback.onOrbitColorChanged(color);
+        } else if (colorPickerId.equals(secondaryShapeColorPickerId)) {
+        	secondaryColor = color;
+            stylePanelCallback.onSecondaryColorChanged(color);
         }
     }
     
@@ -404,15 +361,12 @@ public class StylePanel extends DialogBox {
     }-*/;
     
     private void fireSliderChangedEvent(String sliderId, String value) {
-        if (sliderId.equals(srcSizeId)) {
-        	srcSizeRatio = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
-        	stylePanelCallback.onShapeSizeChanged(srcSizeRatio);
-        } else if (sliderId.equals(arrowScaleId)) {
-        	arrowScale = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
-        	stylePanelCallback.onArrowScaleChanged(arrowScale);
-        } else if (sliderId.equals(orbitScaleId)) {
-        	orbitScale = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
-        	stylePanelCallback.onOrbitScaleChanged(orbitScale);
+        if (sliderId.equals(primaryShapeSizeId)) {
+        	primarySizeRatio = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
+        	stylePanelCallback.onShapeSizeChanged(primarySizeRatio);
+        } else if (sliderId.equals(secondaryShapeScaleId)) {
+        	secondaryShapeScale = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
+        	stylePanelCallback.onSecondaryShapeScaleChanged(secondaryShapeScale);
         }
     }
     
@@ -435,10 +389,10 @@ public class StylePanel extends DialogBox {
     @Override
     public void removeFromParent() {
     	super.removeFromParent();
-        removeColorPicker(srcColorPickerId);
+        removeColorPicker(primaryShapeColorPickerId);
         
-        if (arrowColorPickerId != null) {
-            removeColorPicker(arrowColorPickerId);
+        if (secondaryShapeColorPickerId != null) {
+            removeColorPicker(secondaryShapeColorPickerId);
         }
         interactiveElementsHaveBeenInitialized = false;
     }

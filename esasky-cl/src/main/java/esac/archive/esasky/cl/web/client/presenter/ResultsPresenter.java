@@ -27,9 +27,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.ReturnType;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
@@ -37,7 +35,6 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
-import esac.archive.esasky.cl.web.client.callback.ISSOCountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.PublicationsBySourceCallback;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ExportCSVEvent;
@@ -63,7 +60,6 @@ import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEnti
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -77,7 +73,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayou
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
  */
-public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestHandler {
+public class ResultsPresenter implements ICountRequestHandler {
 
     /** local instance of view. */
     private final View view;
@@ -209,7 +205,7 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
 
             @Override
             public void newSsoSelected(final SSOCrossMatchEvent event) {
-                descriptorRepo.doCountSSO(event.getSsoName(), event.getSsoType(), ResultsPresenter.this);
+                descriptorRepo.doCountSSO(event.getSsoName(), event.getSsoType());
             }
         });
         
@@ -388,7 +384,6 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
      * @param saveAllView Input SaveAllView
      */
     private void updateNumberOfObservationsSelected(final SaveAllView saveAllView) {
-        Log.debug("[ResultPresenter][updateNumberOfObservationsSelected] AAAA1 ");
         // Get Current Tab.
         int currentTab = view.getTabPanel().getSelectedTabIndex();
         ITablePanel tab = view.getTabPanel().getWidget(currentTab);
@@ -501,40 +496,6 @@ public class ResultsPresenter implements ICountRequestHandler, ISSOCountRequestH
     public String getProgressIndicatorMessage() {
         return TextMgr.getInstance().getText("CountRequestCallback_countingAvailableData");
     }
-
-    // ------------------------
-    // ----- SSO
-    // ------------------------
-    
-    public void getTableSSOMetadata(final GeneralEntityInterface entity) {
-
-        final String debugPrefix = "[getTableSSOMetadata]["
-                + entity.getDescriptor().getGuiShortName() + "]";
-        Log.debug(debugPrefix);
-        
-        ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-        		TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getEsaSkyUniqId()));
-
-        entity.fetchData(panel);
-    }
-
-    @Override
-    public String getSSOProgressIndicatorMessage(String ssoName, ESASkySSOObjType ssoType) {
-        return TextMgr.getInstance().getText("resultsPresenter_computingDataCrossMatch").replace("$SSOTEXT$", ssoType.getType() + " " + ssoName);
-    }
-
-    @Override
-    public void showObjectNotAvailableInEsaSkyMsg(String progressIndicatorId) {
-    	String missions = "";
-    	for(IDescriptor descriptor : descriptorRepo.getSsoDescriptors().getDescriptors()) {
-    		missions += descriptor.getGuiLongName() + ", ";
-    	}
-        DisplayUtils
-        .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsMessage").replace("$MISSIONS$", missions.subSequence(0, missions.length() - 2)),
-                TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsTitle"),
-                progressIndicatorId);
-    }
-    
     
     // ------------------------
     // ----- PUBLICATIONS

@@ -2,121 +2,38 @@ package esac.archive.esasky.cl.web.client.model.entities;
 
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
-import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.callback.SSOOrbitMetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.TrackedSso;
 import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
-import esac.archive.esasky.cl.web.client.status.CountStatus;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.SSOObservationsTablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
-public class SSOEntity extends ObservationAndSpectraEntity {
-
-	private JavaScriptObject orbitPolyline;
-	private String ssoName = null;
-	private ESASkySSOObjType ssoType;
-	private String ssoOrbitColor = "#FF0000";
-	private double ssoOrbitLineWidth = CombinedSourceFootprintDrawer.DEFAULT_LINEWIDTH;
-
-	public SSOEntity(SSODescriptor descriptor, CountStatus countStatus,
-			SkyViewPosition skyViewPosition, String esaSkyUniqObsId) {
-		super(descriptor, countStatus, skyViewPosition, esaSkyUniqObsId);
-		setSsoName(GUISessionStatus.getTrackedSso().name);
-		setSsoType(GUISessionStatus.getTrackedSso().type);
-	}
-
-	public String getSsoName() {
-		return ssoName;
-	}
-
-	public void setSsoName(String ssoName) {
-		this.ssoName = ssoName;
-	}
-
-	public ESASkySSOObjType getSsoType() {
-		return ssoType;
-	}
-
-	public void setSsoType(ESASkySSOObjType ssoType) {
-		this.ssoType = ssoType;
-	}
-
-//	@Override
-//	public ToggleImage getTypeIcon() {
-//		return new ToggleImage(new Image(resources.tabDefaultSSOIcon()), new Image(resources.tabSelectedSSOIcon()));
-//	}
-
-	@Override
-	public String getTabLabel() {
-		return super.getTabLabel() + " " + ssoName + " (" + ssoType.getType() + ")";
-	}
-
-	@Override
-	public SSODescriptor getDescriptor() {
-		return (SSODescriptor)super.getDescriptor();
-	}
-
-	@Override
-	public String getMetadataAdql() {
-		return TAPSSOService.getInstance().getMetadataAdql(getDescriptor());
+public class SSOEntity extends ExtTapEntity {
+    
+    private final TrackedSso sso;
+	public SSOEntity(IDescriptor descriptor) {
+		super(descriptor, DescriptorRepository.getInstance().getSsoDescriptors().getCountStatus(), 
+                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPSSOService.getInstance());
+		this.sso = GUISessionStatus.getTrackedSso();
 	}
 
 	@Override
 	public void fetchData(final ITablePanel tablePanel) {
+	    super.fetchDataWithoutMOC(tablePanel);
 		getSSOPolyline();
-		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(getMetadataAdql()), EsaSkyConstants.JSON);
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-		try {
-			MetadataCallback callback = new MetadataCallback(tablePanel, getMetadataAdql(),
-					TextMgr.getInstance().getText("MetadataCallback_retrievingSSOMetadata").replace("$NAME$", getDescriptor().getMission()), new OnComplete() {
-
-				@Override
-				public void onComplete() {
-					int indexOfFirstSSOMetadata = 2; //0 is selection checkbox, 1 is recenter button
-					if(getDescriptor().getSampEnabled()) {
-						indexOfFirstSSOMetadata++;
-					}
-					for(MetadataDescriptor metadataDescriptor : getDescriptor().getMetadata()) {
-						if(metadataDescriptor.getVisible()) {
-							indexOfFirstSSOMetadata++;
-						}
-					}
-					for(MetadataDescriptor metadataDescriptor : getDescriptor().getSsoXMatchMetadata()) {
-						if(metadataDescriptor.getVisible()) {
-							indexOfFirstSSOMetadata--;
-						}
-					}
-					tablePanel.setSeparator(indexOfFirstSSOMetadata);
-				}
-			});
-			builder.sendRequest(null, callback);
-
-		} catch (RequestException e) {
-			Log.error(e.getMessage());
-			Log.error("Error fetching JSON data from server");
-		}
 	}
 
-
 	private void getSSOPolyline() {
-		final String adql = TAPSSOService.getInstance().getSSOPolylineAdql(this);
-
+		final String adql = TAPSSOService.getInstance().getPolylineAdql(getDescriptor());
 		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
 
 		Log.debug("[getSSOPolyline] Query [" + url + "]");
@@ -131,64 +48,17 @@ public class SSOEntity extends ObservationAndSpectraEntity {
 		}
 	}
 
-	public JavaScriptObject getOrbitPolyline() {
-		return orbitPolyline;
-	}
-
-	public void setOrbitPolyline(JavaScriptObject orbitPolyline) {
-		this.orbitPolyline = orbitPolyline;
-	}
-
-	public String getSsoOrbitColor(){
-		return ssoOrbitColor;
-	}
-
-	public void setSsoOrbitColor(String ssoOrbitColor){
-		this.ssoOrbitColor = ssoOrbitColor;
-		AladinLiteWrapper.getAladinLite().setOverlayColor(getOrbitPolyline(), ssoOrbitColor);
-	}
-
-	private void setSsoOrbitLineWidth(int lineWidth) {
-        ssoOrbitLineWidth = Math.max(1, lineWidth);
-	}
-
-	public void setSsoOrbitLineRatio(double ratio) {
-	    setSsoOrbitLineWidth((int)(CombinedSourceFootprintDrawer.MAX_LINEWIDTH * ratio));
-	    AladinLiteWrapper.getAladinLite().setOverlayLineWidth(getOrbitPolyline(), (int) ssoOrbitLineWidth);
-	}
-
-	public double getSsoOrbitLineRatio(){
-        return (double)ssoOrbitLineWidth / (double)CombinedSourceFootprintDrawer.MAX_LINEWIDTH;
-	}
-
-	public int getSsoOrbitLineWidth(){
-		return (int)ssoOrbitLineWidth;
+	public void setOrbitPolyline(double[] polylinePoints) {
+	    combinedDrawer.addPolylineOverlay(getEsaSkyUniqId(), polylinePoints, getDescriptor().getSecondaryColor());
 	}
 	
-	public void setStartOfPolyline(double ra, double dec) {
-		setSkyViewPosition(new SkyViewPosition(new Coordinate(ra, dec), AladinLiteWrapper.getInstance().getFovDeg()));
-	}
-
-	@Override
-	public AbstractTablePanel createTablePanel() {
-		return new SSOObservationsTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
-	}
-
-	@Override
-	public boolean isSampEnabled() {
-		return false;
-	}
-
+    @Override
+    public String getTabLabel() {
+        return super.getTabLabel() + " " + sso.name + " (" + sso.type.getType() + ")";
+    }
+	
 	@Override
 	public boolean isRefreshable() {
 		return false;
 	}
-
-	@Override
-	public StylePanel createStylePanel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 }

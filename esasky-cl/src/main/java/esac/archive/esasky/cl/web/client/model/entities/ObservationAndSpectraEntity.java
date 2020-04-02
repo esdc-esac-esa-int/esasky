@@ -130,7 +130,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 	@Override
 	public StylePanel createStylePanel() {
 		return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), 
-				null, null, null, null, null, null, null, 
+				null, null, null, null, null, 
 				new StylePanelCallback() {
 					
 					@Override
@@ -148,19 +148,11 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 					}
 					
 					@Override
-					public void onOrbitScaleChanged(double value) {
+					public void onSecondaryShapeScaleChanged(double value) {
 					}
 					
 					@Override
-					public void onOrbitColorChanged(String color) {
-					}
-					
-					@Override
-					public void onArrowScaleChanged(double value) {
-					}
-					
-					@Override
-					public void onArrowColorChanged(String color) {
+					public void onSecondaryColorChanged(String color) {
 					}
 					
 					@Override

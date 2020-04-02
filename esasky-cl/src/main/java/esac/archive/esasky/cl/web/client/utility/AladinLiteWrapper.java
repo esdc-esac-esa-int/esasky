@@ -182,26 +182,20 @@ public class AladinLiteWrapper {
         return CoordinatesFrame.valueOf(aladinLite.getCooFrame().toUpperCase());
     }
 
-    public JavaScriptObject getSSOOverlay() {
-        if (this.ssoOverlay == null) {
-            this.ssoOverlay = aladinLite.createOverlay(ssoOverlayName, "red");
-        }
-        return this.ssoOverlay;
-    }
-
-    public void addPlolyline2SSOverlay(JavaScriptObject polyline) {
-        cleanSSOOverlay();
+    public void addPlolyline2SsoOverlay(JavaScriptObject overlay, JavaScriptObject polyline) {
         if(polyline != null){
-        	getAladinLite().addJ2000PolylineToOverlay(getSSOOverlay(), polyline);
+        	getAladinLite().addJ2000PolylineToOverlay(overlay, polyline);
         }
     }
     
-    public JavaScriptObject createPolyline(double [] polylinePoints, String color, int lineWidth) {
-    	return aladinLite.createJ2000Polyline(polylinePoints, color, lineWidth);
+    public void removePolylineFromSsoOverlay(JavaScriptObject overlay, JavaScriptObject polyline) {
+        if(polyline != null){
+            getAladinLite().removeJ2000PolylineFromOverlay(overlay, polyline);
+        }
     }
-
-    public void cleanSSOOverlay() {
-        getAladinLite().removeAllFootprintsFromOverlay(getSSOOverlay());
+    
+    public JavaScriptObject createPolyline(double [] polylinePoints) {
+    	return aladinLite.createJ2000Polyline(polylinePoints);
     }
 
     public final JavaScriptObject getFutureCatalog() {

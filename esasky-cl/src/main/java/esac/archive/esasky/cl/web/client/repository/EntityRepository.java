@@ -35,7 +35,6 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPSurveyService;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -110,7 +109,9 @@ public class EntityRepository {
 	                20, SourceShapeType.CROSS.getName());
 	        addEntity(newEntity);   
 	    } else if (descriptor instanceof SSODescriptor) {
-	        return createEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), TAPSSOService.getInstance());
+	        newEntity = new SSOEntity(descriptor);
+	        addEntity(newEntity);   
+	        return newEntity;
 	    } else if (descriptor instanceof CommonObservationDescriptor) {
 	        return createEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(), TAPObservationService.getInstance());
 	    } else if (descriptor instanceof CatalogDescriptor) {
@@ -119,7 +120,7 @@ public class EntityRepository {
 	        return createEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(), TAPExtTapService.getInstance());
 	        
 	    }
-	    return null;//TODO SSO, Publication
+	    return null;//TODO Publication
 	}
 	
 	private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus, AbstractTAPService metadataService) {
@@ -165,16 +166,16 @@ public class EntityRepository {
                                             && descriptor.getFinalDecTapColumn() != null) {
                     
                                         // Proper motion ra, dec is coming from descriptor data, just use it
-                                        finalRa = row.invokeFunction("getData").getDoubleProperty(descriptor.getFinalRaTapColumn());
-                                        finalDec =row.invokeFunction("getData").getDoubleProperty(descriptor.getFinalDecTapColumn());
+                                        finalRa = row.invokeFunction("getData").getDoubleOrNullProperty(descriptor.getFinalRaTapColumn());
+                                        finalDec =row.invokeFunction("getData").getDoubleOrNullProperty(descriptor.getFinalDecTapColumn());
                     
                                     } else {
                     
                                         // Proper motion ra, dec not coming from descriptor data, so we need to
                                         // calculate it
                                         
-                                        final Double pm_ra = row.invokeFunction("getData").getDoubleProperty(descriptor.getPmRaTapColumn());
-                                        final Double pm_dec = row.invokeFunction("getData").getDoubleProperty(descriptor.getPmDecTapColumn());
+                                        final Double pm_ra = row.invokeFunction("getData").getDoubleOrNullProperty(descriptor.getPmRaTapColumn());
+                                        final Double pm_dec = row.invokeFunction("getData").getDoubleOrNullProperty(descriptor.getPmDecTapColumn());
                                         
                                         if ((pm_ra != null) && (pm_dec != null)
                                             && (descriptor.getPmOrigEpoch() != null)
@@ -363,16 +364,5 @@ public class EntityRepository {
 
 	public void clearPublicationsBySource() {
 		publicationsBySourceEntities.clear();
-	}
-
-	// SSO -------------
-
-	public GeneralEntityInterface createSSOEntity(SSODescriptor descriptor) {
-
-		String esaSkyUniqID = descriptor.generateId();
-		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-
-		return new SSOEntity(descriptor, descriptorRepo.getSsoDescriptors().getCountStatus(), skyViewPosition,
-				esaSkyUniqID);
 	}
 }

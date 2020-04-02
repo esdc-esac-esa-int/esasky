@@ -10,8 +10,6 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 
@@ -44,7 +42,6 @@ import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.CountRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.ExtTapCheckCallback;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
-import esac.archive.esasky.cl.web.client.callback.ISSOCountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
@@ -547,16 +544,8 @@ public class DescriptorRepository {
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
 		String url = descriptor.getTapQuery(EsaSkyWebConstants.EXT_TAP_REQUEST_URL, adql, descriptor.getResponseFormat());
 		
-		Log.debug("[DescriptorRepository/updateCount4ExtTap()] Query [" + url + "]");
-
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-		try {
-			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs,
+		JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
 					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
-		} catch (RequestException e) {
-			Log.error(e.getMessage());
-			Log.error("Error fetching JSON data from server");
-		}
 	}
 	
 	public void updateMOCCount4ExtTap(ExtTapDescriptor descriptor) {
@@ -568,17 +557,8 @@ public class DescriptorRepository {
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor, true);
 		
 		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-		
-		Log.debug("[DescriptorRepository/updateMOCCount4ExtTap()]  Query [" + url + "]");
-		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-		try {
-			builder.sendRequest(null, new ExtTapCheckCallback(adql, descriptor, cs,
+		JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
 					countRequestHandler.getProgressIndicatorMessage() +  " " + descriptor.getMission()));
-		}catch (RequestException e) {
-			Log.error(e.getMessage());
-			Log.error("Error fetching JSON data from server");
-		}
 	}
 	
 	private void updateCount4Catalogs() {
@@ -642,14 +622,14 @@ public class DescriptorRepository {
 		
 	}
 
-	public void doCountSSO(String ssoName, ESASkySSOObjType ssoType, ISSOCountRequestHandler countRequestHandler) {
+	public void doCountSSO(String ssoName, ESASkySSOObjType ssoType) {
 
 		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPSSOService.getInstance().getCount(ssoName, ssoType)),
 				EsaSkyConstants.JSON);
 
 		Log.debug("[doCountSSO] SSO count Query [" + url + "]");
 		JSONUtils.getJSONFromUrl(url,
-				new SsoCountRequestCallback(ssoDescriptors, ssoName, ssoType, countRequestHandler));
+				new SsoCountRequestCallback(ssoDescriptors, ssoName, ssoType));
 	}
 
 	private static long lastestSingleCountTimecall;

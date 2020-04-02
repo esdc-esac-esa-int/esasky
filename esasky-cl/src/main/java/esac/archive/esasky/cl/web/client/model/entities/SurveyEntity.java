@@ -295,8 +295,8 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void setColor(String color) {
-		defaultEntity.setColor(color);
+	public void setPrimaryColor(String color) {
+		defaultEntity.setPrimaryColor(color);
 	}
 
 	@Override
@@ -344,7 +344,7 @@ public class SurveyEntity implements GeneralEntityInterface{
 	@Override
 	public StylePanel createStylePanel() {
 		return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShape(), 
-				null, null, null, null, null, null, 
+				null, null, null, null, 
 				new StylePanelCallback() {
 					
 					@Override
@@ -361,21 +361,12 @@ public class SurveyEntity implements GeneralEntityInterface{
 					public void onShapeChanged(String shape) {
 						setShape(shape);
 					}
-					
 					@Override
-					public void onOrbitScaleChanged(double value) {
+					public void onSecondaryShapeScaleChanged(double value) {
 					}
 					
 					@Override
-					public void onOrbitColorChanged(String color) {
-					}
-					
-					@Override
-					public void onArrowScaleChanged(double value) {
-					}
-					
-					@Override
-					public void onArrowColorChanged(String color) {
+					public void onSecondaryColorChanged(String color) {
 					}
 					
 					@Override

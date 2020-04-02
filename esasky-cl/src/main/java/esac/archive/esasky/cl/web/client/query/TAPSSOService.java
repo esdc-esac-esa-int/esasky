@@ -7,7 +7,6 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
-import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 
 public class TAPSSOService extends AbstractTAPService {
@@ -61,14 +60,15 @@ public class TAPSSOService extends AbstractTAPService {
         return parsedAdql;
     }
 
-    public String getSSOPolylineAdql(SSOEntity entity) {
-        SSODescriptor descriptor = entity.getDescriptor();
-        String ssoCardReductionTapTable = descriptor.getSsoCardReductionTapTable();
+    public String getPolylineAdql(IDescriptor descriptor) {
+        if(descriptor instanceof SSODescriptor) {
+            String ssoCardReductionTapTable = ((SSODescriptor)descriptor).getSsoCardReductionTapTable();
+            
+            return "select positions from " + ssoCardReductionTapTable + " where "
+                    + ssoCardReductionTapTable + ".sso_oid=" + GUISessionStatus.getTrackedSso().id;
+        }
 
-        String adql = "select positions from " + ssoCardReductionTapTable + " where "
-                + ssoCardReductionTapTable + ".sso_oid=" + GUISessionStatus.getTrackedSso().id;
-
-        return adql;
+        return "";
     }
 
 	@Override

@@ -22,13 +22,15 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     public static final int DEFAULT_SOURCE_SIZE = 8;
     private static final int MAX_SOURCE_SIZE = 40;
 	public static final int MAX_LINEWIDTH = 12;
-	private static final double MAX_ARROW_SCALE = 10.0;
+	private static final double MAX_SECONDARY_SCALE = 10.0;
 
 	private double ratio = DEFAULT_LINEWIDTH / MAX_LINEWIDTH;
 
-    private double arrowScale = 1.0;
+    private double secondaryScale = 1.0;
     private boolean showAvgPM = false;
     private boolean useMedianOnAvgPM;
+    private JavaScriptObject polyline;
+	private JavaScriptObject polylineOverlay;
 	private JavaScriptObject sourceOverlay;
 	private JavaScriptObject footPrintOverlay;
 	private ArrayList<Shape> sourceShapes = new ArrayList<>();
@@ -50,7 +52,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void setColor(String color) {
+	public void setPrimaryColor(String color) {
 		AladinLiteWrapper.getAladinLite().setOverlayColor(sourceOverlay, color);
 		AladinLiteWrapper.getAladinLite().setOverlayColor(footPrintOverlay, color);
 	}
@@ -70,15 +72,20 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 
 	@Override
 	public void removeAllShapes() {
-        AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(sourceOverlay);
-        AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(footPrintOverlay);
-        sourceShapes.clear();
-        footPrintshapes.clear();
+	    removeAllSourcesAndFootprints();
+        AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(polylineOverlay);
+	}
+	
+	private void removeAllSourcesAndFootprints() {
+	    AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(sourceOverlay);
+	    AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(footPrintOverlay);
+	    sourceShapes.clear();
+	    footPrintshapes.clear();
 	}
 
 	@Override
 	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
-		removeAllShapes();
+	    removeAllSourcesAndFootprints();
 		
 		if(Modules.useTabulator) {
 			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows");
@@ -266,19 +273,21 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
         AladinLiteWrapper.getAladinLite().setCatalogShape(sourceOverlay, shapeType);
     }
 
-    public void setArrowColor(String color) {
+    public void setSecondaryColor(String color) {
         AladinLiteWrapper.getAladinLite().setCatalogArrowColor(sourceOverlay, color);
+        AladinLiteWrapper.getAladinLite().setOverlayColor(polylineOverlay, color);
     }
 
     // Must return a ratio between 0.01 and 1.0;
-    public double getArrowScale() {
-        return arrowScale / MAX_ARROW_SCALE;
+    public double getSecondaryScale() {
+        return secondaryScale / MAX_SECONDARY_SCALE;
     }
 
     // Must receive a ratio between 0.01 and 1.0;
-    public void setArrowScale(double scale) {
-        arrowScale = scale * MAX_ARROW_SCALE;
-        AladinLiteWrapper.getAladinLite().setCatalogArrowScale(sourceOverlay, arrowScale);
+    public void setSecondaryScale(double scale) {
+        secondaryScale = scale * MAX_SECONDARY_SCALE;
+        AladinLiteWrapper.getAladinLite().setCatalogArrowScale(sourceOverlay, secondaryScale);
+        AladinLiteWrapper.getAladinLite().setOverlayLineWidth(polylineOverlay, (int)  Math.max(1, secondaryScale));
     }
     
     public void setShowAvgProperMotion(boolean showAvgPM, boolean useMedianOnAvgPM) {
@@ -293,5 +302,13 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     
     public boolean getUseMedianOnAvgProperMotion() {
         return this.useMedianOnAvgPM;
+    }
+    
+    public void addPolylineOverlay(String esaskyUniqId, double[] polylinePoints, String color) {
+        if(this.polylineOverlay == null) {
+            this.polylineOverlay = AladinLiteWrapper.getAladinLite().createOverlay(esaskyUniqId, color);
+        }
+        polyline = AladinLiteWrapper.getInstance().createPolyline(polylinePoints);
+        AladinLiteWrapper.getInstance().addPlolyline2SsoOverlay(polylineOverlay, polyline);
     }
 }

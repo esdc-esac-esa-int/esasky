@@ -27,7 +27,7 @@ public class MocDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void setColor(String color) {
+	public void setPrimaryColor(String color) {
 		AladinLiteWrapper.getAladinLite().setOverlayColor(moc, color);
 	}
 

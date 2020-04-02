@@ -13,7 +13,7 @@ public class TabulatorWrapper{
         public void onRowMouseLeave(int rowId);
         public void onFilterChanged(String label, String filter);
         public void onDataFiltered(List<Integer> filteredRows);
-        public void onDatalinkClicked(final GeneralJavaScriptObject javaScriptObject);
+        public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
         public void onAccessUrlClicked(String url);
         public void onPostcardUrlClicked(GeneralJavaScriptObject rowData);
         public void onCenterClicked(GeneralJavaScriptObject rowData);
@@ -103,7 +103,7 @@ public class TabulatorWrapper{
 		var previouslySelectedMap = [];
 		var selectionMap = [];
 		var metadata;
-		var refinedColumnDef = [];
+		var columnDef = [];
 
 		//custom header filter
 		var doubleFilterEditor = function(cell, onRendered, success, cancel, editorParams){
@@ -237,12 +237,13 @@ public class TabulatorWrapper{
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    },
 		    dataLoading:function(data){
-		    	refinedColumnDef.push({formatter:"rowSelection", titleFormatter:"rowSelection"});
+		        var activeColumnGroup = [];
+		    	activeColumnGroup.push({formatter:"rowSelection", titleFormatter:"rowSelection"});
 
 		    	var imageButtonFormatter = function(cell, formatterParams, onRendered){ 
                     return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
                 };
-                refinedColumnDef.push({
+                activeColumnGroup.push({
                     title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
                     headerSort:false, 
                     headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
@@ -256,7 +257,7 @@ public class TabulatorWrapper{
                 });
                 
                 if(addSendToVOApplicationColumn){
-                    refinedColumnDef.push({
+                    activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_sendToVOApplicationHeader"),
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
@@ -271,7 +272,7 @@ public class TabulatorWrapper{
                 }
                 
                 if(addLink2ArchiveColumn){
-                    refinedColumnDef.push({
+                    activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeader"),
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
@@ -288,7 +289,7 @@ public class TabulatorWrapper{
 
 		    	for(var i = 0; i < metadata.length; i++){
 		    		if(metadata[i].name.toLowerCase() === "access_url"){
-                        refinedColumnDef.push({
+                        activeColumnGroup.push({
                             title:metadata[i].name,
                             field:metadata[i].name,
                             headerSort:false, 
@@ -309,7 +310,7 @@ public class TabulatorWrapper{
                         continue;
 		    		}
 		    		if(metadata[i].name.toLowerCase() === "postcard_url"){
-                        refinedColumnDef.push({
+                        activeColumnGroup.push({
                             title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
                             field:metadata[i].name,
                             headerSort:false, 
@@ -324,6 +325,12 @@ public class TabulatorWrapper{
                         });
                         continue;
 		    		}
+		    		if(metadata[i].name.toLowerCase() === "sso_name"){
+		    		    columnDef.push(activeColumnGroup[0]); //Selection column
+		    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
+		    		    activeColumnGroup = [];
+		    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
+		    		}
 		    		var sorter = "string";
 		    		var headerFilter = true;
 		    		var headerFilterFunc = "like";
@@ -333,7 +340,7 @@ public class TabulatorWrapper{
 		    			headerFilterFunc = DoubleFilter;
 
 		    		}
-		    		refinedColumnDef.push({
+		    		activeColumnGroup.push({
 		    			title:metadata[i].name,
 		    			field:metadata[i].name, 
 		    			headerTooltip:metadata[i].description,
@@ -344,8 +351,11 @@ public class TabulatorWrapper{
 //		    			headerFilterEmptyCheck:headerFilterEmptyCheck
 	    			});
 		    	}
+		    	if(columnDef.length == 0){
+		    	    columnDef = activeColumnGroup;
+		    	}
 
-		    	table.setColumns(refinedColumnDef);
+		    	table.setColumns(columnDef);
 		    },
 		 	selectable:true,
 		    rowSelectionChanged:function(data, rows){

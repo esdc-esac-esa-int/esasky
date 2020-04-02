@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.Response;
 
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 public class SSOOrbitMetadataCallback extends JsonRequestCallback {
 
@@ -51,16 +51,13 @@ public class SSOOrbitMetadataCallback extends JsonRequestCallback {
                 polylinePoints[2 * i] = Double.parseDouble(raAndDec[0]);
                 polylinePoints[2 * i + 1] = Double.parseDouble(raAndDec[1]);
             }
-
-            JavaScriptObject polylineObject = AladinLiteWrapper.getInstance().createPolyline(polylinePoints, entity.getSsoOrbitColor(), entity.getSsoOrbitLineWidth());
             
-            this.entity.setOrbitPolyline(polylineObject);
-
-            AladinLiteWrapper.getInstance().addPlolyline2SSOverlay(polylineObject);
+            this.entity.setOrbitPolyline(polylinePoints);
             
             if(raDecTokens.length > 0) {
             	String[] raAndDec = raDecTokens[0].split("\\s");
-            	this.entity.setStartOfPolyline(Double.valueOf(raAndDec[0]), Double.valueOf(raAndDec[1]));
+            	this.entity.setSkyViewPosition(new SkyViewPosition(new Coordinate(Double.valueOf(raAndDec[0]), Double.valueOf(raAndDec[1])), 
+            	        entity.getSkyViewPosition().getFov()));
             }
         }
     }

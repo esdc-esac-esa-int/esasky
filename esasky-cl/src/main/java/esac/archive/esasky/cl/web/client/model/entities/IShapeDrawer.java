@@ -9,7 +9,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObje
 
 public interface IShapeDrawer {
 
-	public void setColor(String color);
+	public void setPrimaryColor(String color);
 	public void setSizeRatio(double size);
 	public double getSize();
 	public void removeAllShapes();

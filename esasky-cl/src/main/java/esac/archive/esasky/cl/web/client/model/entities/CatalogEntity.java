@@ -136,8 +136,8 @@ public class CatalogEntity implements GeneralEntityInterface{
     }
 
     @Override
-	public void setColor(String color) {
-		defaultEntity.setColor(color);
+	public void setPrimaryColor(String color) {
+		defaultEntity.setPrimaryColor(color);
 	}
 
 	@Override
@@ -688,7 +688,7 @@ public class CatalogEntity implements GeneralEntityInterface{
 	public StylePanel createStylePanel() {
 		return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShape(), 
 				getArrowColor(), getArrowScale(), getShowAvgProperMotion(), getUseMedianOnAvgProperMotion(), 
-				null, null, new StylePanelCallback() {
+				new StylePanelCallback() {
 					
 					@Override
 					public void onShapeSizeChanged(double value) {
@@ -704,23 +704,15 @@ public class CatalogEntity implements GeneralEntityInterface{
 					public void onShapeChanged(String shape) {
 						setShape(shape);
 					}
-					
+
 					@Override
-					public void onOrbitScaleChanged(double value) {
-					}
-					
-					@Override
-					public void onOrbitColorChanged(String color) {
-					}
-					
-					@Override
-					public void onArrowScaleChanged(double value) {
+					public void onSecondaryShapeScaleChanged(double value) {
 						setArrowScale(value);
 						
 					}
 					
 					@Override
-					public void onArrowColorChanged(String color) {
+					public void onSecondaryColorChanged(String color) {
 						setArrowColor(color);
 					}
 					

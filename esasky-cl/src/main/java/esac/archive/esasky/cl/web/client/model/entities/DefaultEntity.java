@@ -60,7 +60,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 			
 			@Override
 			public void onColorChange(IDescriptor descriptor, String newColor) {
-				setColor(newColor);
+				setPrimaryColor(newColor);
 			}
 		});
     }
@@ -339,8 +339,8 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void setColor(String color) {
-		drawer.setColor(color);
+	public void setPrimaryColor(String color) {
+		drawer.setPrimaryColor(color);
 	}
 
 	@Override

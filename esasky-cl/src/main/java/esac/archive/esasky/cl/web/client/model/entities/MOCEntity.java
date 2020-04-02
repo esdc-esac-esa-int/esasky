@@ -713,8 +713,8 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public void setColor(String color) {
-		defaultEntity.setColor(color);
+	public void setPrimaryColor(String color) {
+		defaultEntity.setPrimaryColor(color);
 	}
 
 	@Override

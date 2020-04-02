@@ -17,7 +17,6 @@ import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -323,17 +322,10 @@ public class MainPresenter {
     public void getRelatedMetadata(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = entityRepo.createEntity(descriptor);
         resultsPresenter.getMetadata(newEntity);
-        //TODO SSO
-//                break;
-                
-//            case SSO:
-//                getSSOOrbitAndObservation((SSODescriptor)descriptor);
-//                break;
     }
 
 	public void showUserRelatedMetadata(IDescriptor descriptor, IJSONWrapper userDataJSONWrapper, CoordinatesFrame convertToFrame) {
     	Log.debug("[MainPresenter][showUserRelatedMetadata]");
-    	
     
     	GeneralEntityInterface entity = null;
     	if (userDataJSONWrapper instanceof SourceListJSONWrapper){
@@ -441,16 +433,6 @@ public class MainPresenter {
                 new ESASkySampEventHandlerImpl());
     }
 
-    public final boolean getSSOOrbitAndObservation(SSODescriptor descriptor) {
-        Log.debug("[MainPresenter.getSSOOrbitAndObservation][] AND NOW GET THE ORBIT 4 " + GUISessionStatus.getTrackedSso().name + " (internal oid: " + GUISessionStatus.getTrackedSso().id + ")");
-        Log.debug("[MainPresenter.getSSOOrbitAndObservation][] AND THEN THE CROSSMATCH OBS WITH MISSION " + descriptor.getGuiShortName());
-
-        GeneralEntityInterface entity = entityRepo.createSSOEntity(descriptor);
-        entityRepo.addEntity(entity);
-        resultsPresenter.getTableSSOMetadata(entity);
-        return true;
-    }
-    
     private void loadOrQueueAuthorInformationFromSimbad(final String author) {
  		if (descriptorRepo.getPublicationsDescriptors() != null 
  				&& descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {

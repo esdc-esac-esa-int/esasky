@@ -8,8 +8,6 @@ import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
@@ -38,6 +36,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
@@ -266,21 +265,11 @@ public class ExtTapEntity implements GeneralEntityInterface {
     
     private void updateCount(final ITablePanel tablePanel, OnComplete onComplete) {
         String url = metadataService.getCount(AladinLiteWrapper.getAladinLite(), descriptor);
-        Log.debug("Query [" + url + "]");
-
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            tablePanel.clearTable();
-            builder.sendRequest(null, 
-                    new GetMissionDataCountRequestCallback(this, 
-                            tablePanel, 
-                            TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", getDescriptor().getGuiShortName()),
-                            url, onComplete)
-                    );
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error("[FetchData] Error fetching JSON data from server");
-        }
+        tablePanel.clearTable();
+        JSONUtils.getJSONFromUrl(url, new GetMissionDataCountRequestCallback(this, 
+                tablePanel, 
+                TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", getDescriptor().getGuiShortName()),
+                url, onComplete));
     }
 
     @Override
@@ -299,28 +288,19 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
     private void getMocMetadata(final ITablePanel tablePanel) {
-        final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
         tablePanel.clearTable();
         String adql = metadataService.getMocAdql(getDescriptor(), "");
 
         String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
 
-        Log.debug(debugPrefix + "Query [" + url + "]");
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            builder.sendRequest(null,
-                    new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MetadataCallback.OnComplete() {
+        JSONUtils.getJSONFromUrl(url, new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MetadataCallback.OnComplete() {
 
-                        @Override
-                        public void onComplete() {
-                            tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
-                        }
-                    }));
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error("[getMocMetadata] Error fetching JSON data from server");
-        }
+            @Override
+            public void onComplete() {
+                tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
+            }
+        }));
 
         tablePanel.setADQLQueryUrl("");
     }
@@ -538,8 +518,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void setColor(String color) {
-        defaultEntity.setColor(color);
+    public void setPrimaryColor(String color) {
+        defaultEntity.setPrimaryColor(color);
     }
 
     @Override
@@ -591,9 +571,14 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     @Override
     public StylePanel createStylePanel() {
+        Boolean showAvgProperMotion = null;
+        if(secondaryShapeAdder != null) {
+            showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
+        }
+        
         return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), 
-                getShapeType(), descriptor.getSecondaryColor(), combinedDrawer.getArrowScale(), combinedDrawer.getShowAvgProperMotion(), 
-                combinedDrawer.getUseMedianOnAvgProperMotion(), null, null, new StylePanelCallback() {
+                getShapeType(), descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
+                combinedDrawer.getUseMedianOnAvgProperMotion(), new StylePanelCallback() {
 
             @Override
             public void onShapeSizeChanged(double value) {
@@ -611,22 +596,14 @@ public class ExtTapEntity implements GeneralEntityInterface {
             }
 
             @Override
-            public void onOrbitScaleChanged(double value) {
+            public void onSecondaryShapeScaleChanged(double value) {
+                combinedDrawer.setSecondaryScale(value);
             }
 
             @Override
-            public void onOrbitColorChanged(String color) {
-            }
-
-            @Override
-            public void onArrowScaleChanged(double value) {
-                combinedDrawer.setArrowScale(value);
-            }
-
-            @Override
-            public void onArrowColorChanged(String color) {
+            public void onSecondaryColorChanged(String color) {
                 descriptor.setSecondaryColor(color);
-                combinedDrawer.setArrowColor(color);
+                combinedDrawer.setSecondaryColor(color);
             }
 
             @Override
