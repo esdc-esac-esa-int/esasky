@@ -33,6 +33,8 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     private String guiLongName;
 
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private String primaryColor;
 
     /** Limit of the FOV to use the aggregated count (degrees). */
@@ -326,20 +328,15 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public final void setWavelengths(final List<WavelenthDescriptor> wavelengths) {
         this.wavelengths = wavelengths;
-        double minWavelength = 100;
-        double maxWavelength = 0;
-        for(WavelenthDescriptor w : wavelengths) {
-        	ArrayList<Double> range = w.getRange();
-    		minWavelength = Math.min(range.get(0), minWavelength);
-    		maxWavelength = Math.max(range.get(1), maxWavelength);
-        }
-        
-        double mean = (maxWavelength + minWavelength) / 2;
-        if(mean < 40){
-        	this.primaryColor = ESASkyColors.getColorFromWavelength(mean);
-        	for (ColorChangeObserver observer : colorObservers) {
-        		observer.onColorChange(this, this.primaryColor);
-        	}
+        if(getPrimaryColor() == null) {
+            double minWavelength = 100;
+            double maxWavelength = 0;
+            for(WavelenthDescriptor w : wavelengths) {
+                ArrayList<Double> range = w.getRange();
+                minWavelength = Math.min(range.get(0), minWavelength);
+                maxWavelength = Math.max(range.get(1), maxWavelength);
+            }
+            setPrimaryColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
         }
     }
     
