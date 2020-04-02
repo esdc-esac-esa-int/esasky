@@ -176,9 +176,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public TabulatorTablePanel(final String inputLabel, final String inputEsaSkyUniqID, GeneralEntityInterface entity) {
 		this.esaSkyUniqID = inputEsaSkyUniqID;
-		this.tabTitle = inputLabel;
-		this.entity = entity;
-		this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll(" ", "_").replaceAll(".", "_");
+        this.tabTitle = inputLabel;
+        this.entity = entity;
+        this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll(" |\\.", "_");
 		exposeOpenFilterBoxMethodToJs(this);
 
 		FlowPanel container = new FlowPanel();
@@ -579,7 +579,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		for(String key : getTapFilters().keySet()) {
 			if(first) {
 				first = false;
-			}else {
+			} else {
 				filter += " AND ";
 			}
 			filter += getTapFilters().get(key);
