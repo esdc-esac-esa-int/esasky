@@ -33,6 +33,7 @@ import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
+import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableFilterObserver;
@@ -262,6 +263,20 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void refreshMOC() {
+    	 if (getCountStatus().hasMoved(descriptor.getMission())) {
+ 	        getCountStatus().registerObserver(new CountObserver() {
+ 				@Override
+ 				public void onCountUpdate(int newCount) {
+ 					getCountStatus().unregisterObserver(this);
+ 					refreshMOC2();
+ 				}
+ 			});
+         } else {
+        	 refreshMOC2();
+         }
+    }
+    
+    private void refreshMOC2() {
     	clearAll();
     	
     	shouldBeShown = true;
@@ -300,7 +315,7 @@ public class MOCEntity implements GeneralEntityInterface {
                	 
                 	@Override
                 	public void onComplete() {
-                		setTableText();
+                		setTableCountText();
                 		updateCountMap();
                 		
                 		if(getTotalCount() < 2000 && getTotalCount() > 0) {
@@ -315,12 +330,19 @@ public class MOCEntity implements GeneralEntityInterface {
 
     }
     
-    private void setTableText() {
- 		String text = TextMgr.getInstance().getText("MOC_count_text");
+    private void setTableCountText() {
+    	String text = "";
+    	
+    	if(getTotalCount() > Math.pow(10, 7)) {
+    		 text = TextMgr.getInstance().getText("MOC_large_count_text");
+    	}else {
+    		text = TextMgr.getInstance().getText("MOC_count_text");
+    	}
  		text = text.replace("$count$", Integer.toString(getTotalCount()));
  		text = text.replace("$limit$", Integer.toString(descriptor.getShapeLimit()));
  		tablePanel.setPlaceholderText(text);
     }
+
     
     private void getSplitMOC(int order) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
@@ -345,7 +367,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	                	 
 	                 	@Override
 	                 	public void onComplete() {
-	                 		setTableText();
+	                 		setTableCountText();
 	                 		updateCountMap();
 	                 		if(getTotalCount() < 2000 && getTotalCount() > 0) {
 	                			sendLoadQuery();

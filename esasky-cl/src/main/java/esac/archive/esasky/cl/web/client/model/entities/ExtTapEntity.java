@@ -11,7 +11,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
-
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -31,6 +30,7 @@ import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
+import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -226,13 +226,13 @@ public class ExtTapEntity implements GeneralEntityInterface {
     @Override
     public void fetchData(final ITablePanel tablePanel) {
         if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() == 0 ) {
-            updateCount(tablePanel, new GetMissionDataCountRequestCallback.OnComplete() {
-
-                @Override
-                public void onComplete() {
-                    fetchShapesAndMetadata(tablePanel);
-                }
-            });
+	        getCountStatus().registerObserver(new CountObserver() {
+				@Override
+				public void onCountUpdate(int newCount) {
+	                fetchShapesAndMetadata(tablePanel);
+					getCountStatus().unregisterObserver(this);
+				}
+			});
         } else {
             fetchShapesAndMetadata(tablePanel);
         }
