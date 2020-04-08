@@ -51,7 +51,6 @@
 		<dependency>
 			<groupId>com.google.gwt.gwtmockito</groupId>
 			<artifactId>gwtmockito</artifactId>
-			<version>${gwtmockito.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -77,6 +76,12 @@
 			<groupId>esac.archive.esasky.esasky-app</groupId>
 			<artifactId>esasky-cl-mission-planning</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>build-helper-maven-plugin</artifactId>
+			<version>3.1.0</version>
+			<type>maven-plugin</type>
 		</dependency>
 <!-- 		<dependency> -->
 <!-- 			<groupId>esac.archive.esasky.cl</groupId> -->
@@ -119,58 +124,64 @@
 				</testResource> -->
 		</testResources>
 		<plugins>
-			<!-- Plugin for changing build number -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.codehaus.mojo</groupId> -->
-<!-- 				<artifactId>buildnumber-maven-plugin</artifactId> -->
-<!-- 				<version>1.4</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<phase>validate</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>create</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 				<configuration> -->
-<!-- 					<doCheck>false</doCheck> -->
-<!-- 					<doUpdate>false</doUpdate> -->
-<!-- 					<format>{0,number}</format> -->
-<!-- 					<items> -->
-<!-- 						<item>buildNumber</item> -->
-<!-- 					</items> -->
-<!-- 					<buildNumberPropertyName>buildNumber</buildNumberPropertyName> -->
-<!-- 					<buildNumberPropertiesFileLocation>src/main/filters/build.number</buildNumberPropertiesFileLocation> -->
-<!-- 					<revisionOnScmFailure /> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
+	        <plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>build-helper-maven-plugin</artifactId>
+	            <version>3.0.0</version>
+	            <executions>
+	                <execution>
+	                    <id>regex-property</id>
+						<phase>generate-sources</phase>
+	                    <goals>
+	                        <goal>regex-property</goal>
+	                    </goals>
+	                    <configuration>
+	                        <name>modified.version</name>
+	                        <value>${project.build.finalName}_${maven.build.timestamp}</value>
+	                        <regex>(\.|-|:)</regex>
+	                        <replacement>_</replacement>
+	                        <failIfNoMatch>false</failIfNoMatch>
+	                    </configuration>
+	                </execution>
+	
+	                <execution>
+	                    <id>parse-version</id>
+	                    <phase>generate-sources</phase>
+	                    <goals>
+	                        <goal>parse-version</goal>
+	                    </goals>
+	                    <configuration>
+	                    <versionString>${modified.version}</versionString>
+	                    </configuration>
+	                </execution>
+	            </executions>
+	        </plugin>
+        
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.1.0</version>
 				<executions>
-									<!-- Execution for buildNumber -->
-<!-- 					<execution> -->
-<!-- 						<id>copy-resource-WebTemplate</id> -->
-<!-- 						<phase>generate-sources</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>copy-resources</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<outputDirectory>${basedir}/src/main/java/esac/archive/esasky/cl/web</outputDirectory> -->
-<!-- 							<resources> -->
-<!-- 								<resource> -->
-<!-- 									<filtering>true</filtering> -->
-<!-- 									<directory>${basedir}/src/main/resources</directory> -->
-<!-- 									<includes> -->
-<!-- 										<include>EsaSkyWeb.gwt.xml</include> -->
-<!-- 									</includes> -->
-<!-- 								</resource> -->
-<!-- 							</resources> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
+					<execution>
+						<id>copy-resource-WebTemplate</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/src/main/java/esac/archive/esasky/cl/web</outputDirectory>
+							<resources>
+								<resource>
+									<filtering>true</filtering>
+									<directory>${basedir}/src/main/filters</directory>
+									<includes>
+										<include>EsaSkyWeb.gwt.xml</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 					<execution>
 						<id>copy-resources</id>
-						<!-- here the phase you need -->
 						<phase>validate</phase>
 						<goals>
 							<goal>copy-resources</goal>
@@ -288,7 +299,6 @@
 			</properties>
 			<build>
 				<plugins>
-
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>properties-maven-plugin</artifactId>

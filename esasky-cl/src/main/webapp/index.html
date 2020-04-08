@@ -3,167 +3,56 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport"
-	content="user-scalable=no, initial-scale=0.9, width=device-width">
+<meta name="viewport" content="user-scalable=no, initial-scale=0.9, width=device-width">
 <meta name="mobile-web-app-capable" content="no">
 <meta name="apple-mobile-web-app-capable" content="no">
 <meta name="theme-color" content="rgba(0, 0, 0, 0.65)">
 
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link type="text/css" rel="stylesheet" href="index.css">
-<link type="text/css" rel="stylesheet"
-	href="js/colorpicker/colorpicker.css">
-<link type="text/css" rel="stylesheet"
-	href="js/sliderSelector/sliderSelector.css">
-<link type="text/css" rel="stylesheet"
-	href="js/datepicker/datepicker.css">
+<link type="text/css" rel="stylesheet" href="js/colorpicker/colorpicker.css">
+<link type="text/css" rel="stylesheet" href="js/sliderSelector/sliderSelector.css">
+<link type="text/css" rel="stylesheet" href="js/datepicker/datepicker.css">
 <link href="js/tabulator/tabulator_midnight.css" rel="stylesheet">
 <title>ESASky ${version}</title>
 
 <!-- See index.jsp for documentation about next line -->
 <!--#METATAGS#ESASky ${version}#//sky.esa.int/images/fbESASky.png#//sky.esa.int/esasky-tap/skyimage#1200#630#-->
 
-<script type="text/javascript" src="js/config-nocache.js"></script>
+<script defer type="text/javascript" src="js/config-nocache.js"></script>
+<script defer type="text/javascript" src="js/google-analytics-config.js"></script>
+<script defer type="text/javascript" src="js/esasky-logger.js"></script>
 
-<script type="text/javascript"
-	src="js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script defer type="text/javascript" src="js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
 
-<script type="text/javascript"
-	src="js/highcharts/5.0.12/highcharts-modified.js"></script>
-<script type="text/javascript"
-	src="js/highcharts/5.0.12/highcharts-more.js"></script>
-<script type="text/javascript"
-	src="js/highcharts/5.0.12/modules/treemap.js"></script>
-<script type="text/javascript"
-	src="js/resizeEvents/ElementQueries.js"></script>
-<script type="text/javascript"
-	src="js/resizeEvents/ResizeSensor.js"></script>
-<script type="text/javascript"
-	src="js/colorpicker/colorpicker.js"></script>
-<script type="text/javascript"
-	src="js/sliderSelector/sliderSelector.js"></script>
-<script type="text/javascript"
-	src="js/datepicker/datepicker.min.js"></script>
-<script type="text/javascript"
-	src="js/api/api.js"></script>
-<script type="text/javascript" src="js/filesaver/filesaver.min.js"></script>
-<script type="text/javascript" src="js/filesaver/canvas-toBlob.min.js"></script>
-<script type="text/javascript" src="js/tabulator/tabulator.min.js"></script>
+<script defer type="text/javascript" src="js/highcharts/5.0.12/highcharts-modified.js"></script>
+<script defer type="text/javascript" src="js/highcharts/5.0.12/highcharts-more.js"></script>
+<script defer type="text/javascript" src="js/highcharts/5.0.12/modules/treemap.js"></script>
+<script defer type="text/javascript" src="js/resizeEvents/ElementQueries.js"></script>
+<script defer type="text/javascript" src="js/resizeEvents/ResizeSensor.js"></script>
+<script defer type="text/javascript" src="js/colorpicker/colorpicker.js"></script>
+<script defer type="text/javascript" src="js/sliderSelector/sliderSelector.js"></script>
+<script defer type="text/javascript" src="js/datepicker/datepicker.min.js"></script>
+<script defer type="text/javascript" src="js/filesaver/filesaver.min.js"></script>
+<script defer type="text/javascript" src="js/filesaver/canvas-toBlob.min.js"></script>
+<script defer type="text/javascript" src="js/tabulator/tabulator.min.js"></script>
 
-<script type="text/javascript"
-	src="esaskyweb/esaskyweb.nocache.js"></script>
+<script defer type="text/javascript" src="js/api/api.js"></script>
+<script defer type="text/javascript" src="${modified.version}/${modified.version}.nocache.js"></script>
 
-<script type="text/javascript"
-	src="esaskyweb/firebugx.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/aladinESDC.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/v2-latest-aladin.ext.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/aladin-addon.js"></script>
+<script defer type="text/javascript" src="${modified.version}/aladinESDC.js"></script>
+<script defer type="text/javascript" src="${modified.version}/v2-latest-aladin.ext.js"></script>
+<script defer type="text/javascript" src="${modified.version}/aladin-addon.js"></script>
 
-<script type="text/javascript"
-	src="esaskyweb/swfupload.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/swfupload.speed.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/samp-2.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/json2.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/flXHR.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/flensed.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/checkplayer.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/swfobject.js"></script>
-<script type="text/javascript"
-	src="esaskyweb/esasky-samp.js"></script>
-
-<script type="text/javascript"
-	src="js/google-analytics-config.js"></script>
-
-<script type="text/javascript">
-
-var slowLoadTime = 60000;
-var timer = setTimeout(tellUserAboutReload, slowLoadTime);
-
-function tellUserAboutReload(){
-
-	var reloadMessage = document.getElementById("reloadMessage");
-	if(reloadMessage != null){
-		reloadMessage.innerHTML = "<p style=\"color:white; font-family: Arial Unicode MS, Arial, sans-serif;\">ESASky should have finished loading by now. Please <a target=\"_blank\" href=\"https://esdc.userecho.com/communities/1-esasky\" style=\"color:#AAAAFF\">get in touch</a> so we can help you get ESASky running.";
-		
-		var nVer = navigator.appVersion;
-		var nAgt = navigator.userAgent;
-		var browserName  = navigator.appName;
-		var fullVersion  = ''+parseFloat(navigator.appVersion); 
-		var majorVersion = parseInt(navigator.appVersion,10);
-		var nameOffset,verOffset,ix;
-
-		if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
-		 browserName = "Opera";
-		 fullVersion = nAgt.substring(verOffset+6);
-		 if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-		   fullVersion = nAgt.substring(verOffset+8);
-		}
-		else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
-		 browserName = "Microsoft Internet Explorer";
-		 fullVersion = nAgt.substring(verOffset+5);
-		}
-		else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
-		 browserName = "Chrome";
-		 fullVersion = nAgt.substring(verOffset+7);
-		}
-		else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
-		 browserName = "Safari";
-		 fullVersion = nAgt.substring(verOffset+7);
-		 if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-		   fullVersion = nAgt.substring(verOffset+8);
-		}
-		else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
-		 browserName = "Firefox";
-		 fullVersion = nAgt.substring(verOffset+8);
-		}
-		else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
-		          (verOffset=nAgt.lastIndexOf('/')) ) 
-		{
-		 browserName = nAgt.substring(nameOffset,verOffset);
-		 fullVersion = nAgt.substring(verOffset+1);
-		 if (browserName.toLowerCase()==browserName.toUpperCase()) {
-		  browserName = navigator.appName;
-		 }
-		}
-		if ((ix=fullVersion.indexOf(";"))!=-1)
-		   fullVersion=fullVersion.substring(0,ix);
-		if ((ix=fullVersion.indexOf(" "))!=-1)
-		   fullVersion=fullVersion.substring(0,ix);
-
-		majorVersion = parseInt(''+fullVersion,10);
-		if (isNaN(majorVersion)) {
-		 fullVersion  = ''+parseFloat(navigator.appVersion); 
-		 majorVersion = parseInt(navigator.appVersion,10);
-		}
-
-		var OSName="Unknown OS";
-		if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
-		if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
-		if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
-		if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
-
-		var debugInfo = 'OS: '+OSName
-		 +', Browser name  = '+browserName
-		 +', Full version  = '+fullVersion
-		 +', Major version = '+majorVersion
-		 +', navigator.appName = '+navigator.appName
-		 +', navigator.userAgent = '+navigator.userAgent;
-		
-		window.ga('send', 'event', "slowLoad", "HasNotLoadedAfter " + slowLoadTime + " milliseconds", debugInfo);
-	}
-}
-
-</script>
+<script defer type="text/javascript" src="${modified.version}/swfupload.js"></script>
+<script defer type="text/javascript" src="${modified.version}/swfupload.speed.js"></script>
+<script defer type="text/javascript" src="${modified.version}/samp-2.js"></script>
+<script defer type="text/javascript" src="${modified.version}/json2.js"></script>
+<script defer type="text/javascript" src="${modified.version}/flXHR.js"></script>
+<script defer type="text/javascript" src="${modified.version}/flensed.js"></script>
+<script defer type="text/javascript" src="${modified.version}/checkplayer.js"></script>
+<script defer type="text/javascript" src="${modified.version}/swfobject.js"></script>
+<script defer type="text/javascript" src="${modified.version}/esasky-samp.js"></script>
 
 </head>
 <body oncontextmenu="return false;">
@@ -198,6 +87,6 @@ function tellUserAboutReload(){
 
 	<input type="hidden" id="localeLanguage" value=navigator.language />
 </body>
-<script type="text/javascript"
+<script defer type="text/javascript"
 	src="js/xregexp/xregexp.js"></script>
 </html>
