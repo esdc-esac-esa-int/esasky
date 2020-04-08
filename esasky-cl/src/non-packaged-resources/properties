@@ -11,5 +11,4 @@ project.packaging=${project.packaging}
 #ssh.inst.dir=${ssh.inst.dir}
 
 deploy.gwt_files_to_replace=${deploy.gwt_files_to_replace}
-#software.buildname=${software.buildnumber}
 server.user.home=${server.user.home}
