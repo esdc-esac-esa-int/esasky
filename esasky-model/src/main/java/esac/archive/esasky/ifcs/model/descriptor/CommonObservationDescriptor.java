@@ -15,8 +15,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     /** MOC Tap DB STC_S column name. */
     private String mocSTCSColumn;
 
-    private String ddProductURI;
-
     /** DD product URL. */
     private String ddProductIDParameter;
 
@@ -73,14 +71,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
      */
     public final void setMocSTCSColumn(final String inputMocSTCSColumn) {
         this.mocSTCSColumn = inputMocSTCSColumn;
-    }
-
-    public String getDdProductURI() {
-        return ddProductURI;
-    }
-
-    public void setDdProductURI(String ddProductURI) {
-        this.ddProductURI = ddProductURI;
     }
 
     /**
