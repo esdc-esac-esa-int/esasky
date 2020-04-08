@@ -6,9 +6,9 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -66,7 +66,7 @@ public class EsaSkyWeb implements EntryPoint {
 							Log.error("Translation fail! Setting default translations");
 						}
 						loadControllers();
-						Log.debug("Loading ESASkyAPI 3.0");
+						Log.debug("Loading ESASkyAPI");
 						new Api(EsaSkyWeb.this);
 					}
 				});
@@ -80,13 +80,13 @@ public class EsaSkyWeb implements EntryPoint {
     
     public final void loadControllers() {
     	
-        	//TODO: add locks to this 
-        	if (loadControllersCalled) {
-        		Log.warn("loadControllers called twice");
-        		return;
-        	}
-        	loadControllersCalled = true;
-    	
+        //TODO: add locks to this 
+        if (loadControllersCalled) {
+        	Log.warn("loadControllers called twice");
+        	return;
+        }
+        loadControllersCalled = true;
+	
         EventBus eventBus = new SimpleEventBus();
         CommonEventBus.setEventBus(eventBus);
         
@@ -95,7 +95,7 @@ public class EsaSkyWeb implements EntryPoint {
         controller = new Controller();
 
         // Set GWT container invisible
-        DOM.setStyleAttribute(RootLayoutPanel.get().getElement(), "display", "none");
+        RootLayoutPanel.get().getElement().getStyle().setDisplay(Display.NONE);
 
         // Load the application
         RootLayoutPanel.get().getElement().setId("RootLayoutPanel");
@@ -111,7 +111,7 @@ public class EsaSkyWeb implements EntryPoint {
         }
         
         // Set GWT container visible
-        DOM.setStyleAttribute(RootLayoutPanel.get().getElement(), "display", "block");
+        RootLayoutPanel.get().getElement().getStyle().setDisplay(Display.BLOCK);
     }
 
 }
