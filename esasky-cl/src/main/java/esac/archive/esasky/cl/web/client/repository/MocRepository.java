@@ -3,6 +3,8 @@ package esac.archive.esasky.cl.web.client.repository;
 import java.util.LinkedList;
 import java.util.List;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
@@ -53,7 +55,17 @@ public class MocRepository {
 			@Override
 			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
 				for(MOCEntity entity : allEntities){
-					entity.checkUpdateMOCNorder(); 
+					entity.onFoVChanged(); 
+				}
+			}
+		});
+		
+		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, new AladinLiteCoordinatesOrFoVChangedEventHandler () {
+			
+			@Override
+			public void onChangeEvent(AladinLiteCoordinatesOrFoVChangedEvent fovEvent) {
+				for(MOCEntity entity : allEntities){
+					entity.onMove(); 
 				}
 			}
 		});
@@ -72,19 +84,27 @@ public class MocRepository {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
 				
 		if(fov > 60) {
-			return 4;
+			return 3;
 		}else if(fov > 40) {
-			return 5;
+			return 4;
 		}else if(fov > 20) {
+			return 5;
+		}else if(fov > 10) {
 			return 6;
 		}else if(fov > 5) {
+			return 7;
+		}else if(fov > 3) {
 			return 8;
-		}else if(fov > 2) {
+		}else if(fov > 1.5) {
 			return 9;
-		}else if(fov > 1) {
+		}else if(fov > 0.75) {
 			return 10;
-		}else if(fov > 0.5) {
+		}else if(fov > 0.3) {
+			return 11;
+		}else if(fov > 0.15) {
 			return 12;
+		}else if(fov > 0.075) {
+			return 13;
 		}else {
 			return 14;
 		}			
@@ -93,26 +113,38 @@ public class MocRepository {
 	public static int getMaxOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
 
-		if(fov > 20) {
+		if(fov > 60) {
+			return 5;
+		}else if(fov > 40) {
+			return 6;
+		}else if(fov > 20) {
+			return 7;
+		}else if(fov > 10) {
 			return 8;
-		}else if(fov > 5) {
-			return 10;
+		}else if(fov > 4) {
+			return 9;
 		}else if(fov > 2) {
+			return 10;
+		}else if(fov > 1) {
+			return 11;
+		}else if(fov > .5) {
 			return 12;
+		}else if(fov > .25) {
+			return 13;
 		}else {
 			return 14;
 		}					
 	}
-
+	
 	public static int getTargetOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
 
-		if(fov > 2) {
+		if(fov > 4) {
 			return 8;
-		}else if(fov > .5) {
-			return 10;
-		}else if(fov > .1) {
-			return 12;
+//		}else if(fov > 1) {
+//			return 10;
+//		}else if(fov > .2) {
+//			return 12;
 		}else {
 			return 14;
 		}					

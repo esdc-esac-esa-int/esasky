@@ -8,6 +8,7 @@ import java.util.Set;
 
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
@@ -53,7 +54,7 @@ public class MOCEntity implements GeneralEntityInterface {
     protected IShapeDrawer drawer;
     protected IShapeDrawer combinedDrawer;
     private IDescriptor descriptor;
-    private JavaScriptObject overlay;
+    private GeneralJavaScriptObject overlay;
     private int currentDataOrder = 8; 
     private int currentDisplayOrder; 
     private int currentMinOrder; 
@@ -67,20 +68,19 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	Timer refreshTimer = new Timer() {
 		
-		long lastChangeTime = (long) 0;
-		long timoutInMillis = 2000;
+//		long lastChangeTime = (long) 0;
+//		long timoutInMillis = 2000;
 		
 		@Override
 		public void run() {
-			if(System.currentTimeMillis() - lastChangeTime > timoutInMillis && shouldBeShown) {
-				refreshMOC();
-			}
+			refreshMOC();
 		}
 		
 		@Override
 		public void schedule(int delayMillis) {
+			super.cancel();
 			super.schedule(delayMillis);
-			lastChangeTime = System.currentTimeMillis();
+//			lastChangeTime = System.currentTimeMillis();
 		}
 	};
 
@@ -102,7 +102,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			
 			@Override
 			public void filterChanged(Map<String, String> tapFilters) {
-				refreshTimer.schedule(3000);
+				refreshTimer.schedule(2000);
 			}
 		};
 		
@@ -112,6 +112,15 @@ public class MOCEntity implements GeneralEntityInterface {
 		if(this.tablePanel != panel) {
 			this.tablePanel = panel;
 			panel.registerFilterObserver(filterObserver);
+			
+			tablePanel.registerClosingObserver(new ClosingObserver() {
+				
+				@Override
+				public void onClose() {
+					closingPanel(tablePanel);
+					
+				}
+			});
 		}
 	}
     	
@@ -125,11 +134,12 @@ public class MOCEntity implements GeneralEntityInterface {
     public void updateCountMap() {
     	countMap = new HashMap<Integer, Map<Long, Integer>>();
     	
-    	int index = 0;
-    	int minOrder = MocRepository.getMinOrderFromFoV();
-    	int maxOrder = MocRepository.getMaxOrderFromFoV();
+//    	int index = 0;
+//    	int minOrder = MocRepository.getMinOrderFromFoV();
+//    	int maxOrder = MocRepository.getMaxOrderFromFoV();
     	
-		moc.populateCountMap(countMap, index, minOrder, maxOrder);
+//		moc.populateCountMap(countMap, index, minOrder, maxOrder);
+		moc.populateCountMapAll(countMap);
     	
     }
     
@@ -262,22 +272,31 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     }
     
+    private CountObserver countObserver = new CountObserver() {
+			@Override
+			public void onCountUpdate(int newCount) {
+				getCountStatus().unregisterObserver(this);
+				loadMOC();
+			}
+		};
+    
     public void refreshMOC() {
-    	 if (getCountStatus().hasMoved(descriptor.getMission())) {
- 	        getCountStatus().registerObserver(new CountObserver() {
- 				@Override
- 				public void onCountUpdate(int newCount) {
- 					getCountStatus().unregisterObserver(this);
- 					refreshMOC2();
- 				}
- 			});
-         } else {
-        	 refreshMOC2();
-         }
+    	 clearAll();
+    	 checkLoadMOC();
     }
     
-    private void refreshMOC2() {
-    	clearAll();
+    public void checkLoadMOC() {
+    	if (getCountStatus().hasMoved(descriptor.getMission())) {
+    		if(!getCountStatus().hasObserver(countObserver)) {
+    			getCountStatus().registerObserver(countObserver);
+    			Log.debug("Registered");
+    		}
+    	} else {
+    		loadMOC();
+    	}
+    }
+    
+    private void loadMOC() {
     	
     	shouldBeShown = true;
     	int count = getCountStatus().getCount(descriptor.getMission());
@@ -299,6 +318,18 @@ public class MOCEntity implements GeneralEntityInterface {
     		currentDataOrder = targetOrder;
     	}
     	
+    }
+    
+    public interface IpixMapper extends ObjectMapper<HashMap<String,Long[]>> {
+    }
+    
+    private int getVisibleCount() {
+    	
+    	if(overlay != null) {
+    		return AladinLiteWrapper.getAladinLite().getVisibleCountInMOC(overlay);
+    	}
+    	
+    	return 0;
     }
     
     private void getPrecomputedMOC() {
@@ -338,7 +369,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	}else {
     		text = TextMgr.getInstance().getText("MOC_count_text");
     	}
- 		text = text.replace("$count$", Integer.toString(getTotalCount()));
+ 		text = text.replace("$count$", Integer.toString(getVisibleCount()));
  		text = text.replace("$limit$", Integer.toString(descriptor.getShapeLimit()));
  		tablePanel.setPlaceholderText(text);
     }
@@ -414,7 +445,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	public void addData(final ITablePanel tablePanel, ESASkyResultMOC newData) {
 		
-		this.tablePanel = tablePanel;
+		setTablePanel(tablePanel);
 		
 		tablePanel.registerClosingObserver(new ClosingObserver() {
 			
@@ -431,18 +462,33 @@ public class MOCEntity implements GeneralEntityInterface {
 		updateOverlay();
 	}
 	
+	public void addJSON(final ITablePanel tablePanel, GeneralJavaScriptObject data) {
+		
+		setTablePanel(tablePanel);
+		
+		if(overlay == null) {
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+			AladinLiteWrapper.getAladinLite().addMOC(overlay);
+		}
+		
+		overlay.invokeFunction("dataFromESAJSON", data);
+	}
+	
 	private void closingPanel(ITablePanel tablePanel) {
 		
 		clearAll();
 		MocRepository.getInstance().removeEntity(this);
+		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
+		overlay = null;
 		shouldBeShown = false;
 	}
 	
 	public void updateOverlay() {
 		
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\"}";
-			overlay = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
 		
@@ -453,38 +499,73 @@ public class MOCEntity implements GeneralEntityInterface {
     	int minOrder = MocRepository.getMinOrderFromFoV();
     	int maxOrder = MocRepository.getMaxOrderFromFoV();
 		
-		String mocData = getAladinMOCString(minOrder, maxOrder);
+    	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
+//		overlay.setProperty("maxShowOrder",maxOrder);
+    
+//		String mocData = getAladinMOCString(minOrder, maxOrder);
+		String mocData = getAladinMOCStringAll();
 		
 		AladinLiteWrapper.getAladinLite().addMOCData(overlay, mocData);
 	}
 	
 	private int getTotalCount() {
 		int count = 0;
-		for(Map <Long, Integer> order : countMap.values()) {
-			for(int c : order.values()) {
-				count += c;
-			}
-		}
-		Log.debug("MOC count: " + Integer.toString(count));
+//		for(Map <Long, Integer> order : countMap.values()) {
+//			for(int c : order.values()) {
+//				count += c;
+//			}
+//		}
+//		Log.debug("MOC count: " + Integer.toString(count));
 		return count;
 	}
 	
-	public void checkUpdateMOCNorder() {
+	Timer updateTimer = new Timer() {
+		
+		@Override
+		public void run() {
+				Long time = System.currentTimeMillis();
+				setTableCountText();	
+				Log.debug("CountTIME:" + Long.toString(System.currentTimeMillis() - time));
+				
+				int targetOrder = MocRepository.getTargetOrderFromFoV();
+				
+				if(currentDataOrder < targetOrder) {
+					checkLoadMOC();
+					currentDataOrder = targetOrder;
+					
+				}else {
+					currentDataOrder = targetOrder;
+				}
+				
+		}
+		
+		@Override
+		public void schedule(int delayMillis) {
+			super.cancel();
+			super.schedule(delayMillis);
+		}
+	};
+	
+	public void onFoVChanged() {
+
 		if(shouldBeShown) {
+			
 			int minOrder = MocRepository.getMinOrderFromFoV();
 			int maxOrder = MocRepository.getMaxOrderFromFoV();
-			int targetOrder = MocRepository.getTargetOrderFromFoV();
-			
-			if(currentDataOrder != targetOrder) {
-				refreshMOC();
-				currentDataOrder = targetOrder;
-			}
 			
 			if(maxOrder != currentDisplayOrder || minOrder != currentMinOrder) {
-				updateOverlay();
+		    	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
 				currentDisplayOrder = maxOrder;
 				currentMinOrder = minOrder;
+				
 			}
+		}
+	}
+
+	public void onMove() {
+		
+		if(shouldBeShown) {
+			updateTimer.schedule(300);
 		}
 	}
 	
@@ -526,6 +607,43 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		MOCString += "}";
 
+		return MOCString;
+	}
+
+	public String getAladinMOCStringAll() {
+		
+		String MOCString = "{";
+		boolean firstOrder = true;
+		
+		for(int order = 3; order <= 14; order++) {
+			
+			if(countMap.containsKey(order)) {
+				
+				if(!firstOrder) {
+					MOCString += ",";
+				}else {
+					firstOrder = false;
+				}
+				
+				MOCString += "\"" +  Integer.toString(order) + "\":[";
+				boolean firstIpix = true;
+				
+				for(long ipix : countMap.get(order).keySet()) {
+					if(!firstIpix) {
+						MOCString += ",";
+					}else {
+						firstIpix = false;
+					}
+					MOCString += Long.toString(ipix);
+				}
+				
+				MOCString += "]";
+				
+			}
+		}
+		
+		MOCString += "}";
+		
 		return MOCString;
 	}
 	

@@ -93,6 +93,10 @@ public class CountStatus {
     public void unregisterObserver(CountObserver observer){
     	observers.remove(observer);
     }
+
+    public boolean hasObserver(CountObserver observer){
+    	return observers.contains(observer);
+    }
     
     public void notifyObservers(){
         	for(CountObserver observer : observers){
