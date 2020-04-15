@@ -23,6 +23,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.
 public abstract class ObservationAndSpectraEntity extends CommonObservationEntity {
 
     private CommonObservationDescriptor descriptor;
+    private MOCEntity mocEntity;
+
 	
 	public class MocBuilder implements ShapeBuilder{
 
@@ -43,6 +45,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
             CountStatus countStatus, SkyViewPosition skyViewPosition, String esaSkyUniqObsId) {
         super(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqObsId);
         this.descriptor = obsDescriptor;
+        this.mocEntity = new MOCEntity(obsDescriptor, countStatus, this);
     }
 
     public CommonObservationDescriptor getDescriptor() {
@@ -81,8 +84,11 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     	}
     	
     	if (mocLimit > 0 && count > mocLimit) {
-    		defaultEntity.setShapeBuilder(new MocBuilder());
-    		getMocMetadata(tablePanel);
+    		//defaultEntity.setShapeBuilder(new MocBuilder());
+    		//getMocMetadata(tablePanel);
+    		//defaultEntity.fetchHeaders(tablePanel);
+    		mocEntity.setTablePanel(tablePanel);
+    		mocEntity.refreshMOC();
     	}else {
     		defaultEntity.setShapeBuilder(shapeBuilder);
     		defaultEntity.fetchData(tablePanel);
