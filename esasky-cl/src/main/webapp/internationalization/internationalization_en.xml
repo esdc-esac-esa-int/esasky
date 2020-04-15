@@ -3157,5 +3157,12 @@
 		
 		Use filters or zoom in to reduce the amount
 	</text>
+	<text key="MOC_large_count_text">
+		Total amount of objects in the shown MOC: $count$	
+		
+		Fitlering is only available under 10 000 000
+		
+		Zoom in to reduce the amount
+	</text>
 
 </Internationalization>
