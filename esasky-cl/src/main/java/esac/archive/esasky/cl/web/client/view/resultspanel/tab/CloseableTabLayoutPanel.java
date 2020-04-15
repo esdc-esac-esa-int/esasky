@@ -423,6 +423,14 @@ public class CloseableTabLayoutPanel extends Composite {
         styleButton.setCircleColor(tabPanel.getDescriptor().getPrimaryColor());
     }
     
+    public boolean checkIfIdExists(String id) {
+    	if(tabWidgetIds.inverse().get(id) != null) {
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
     private void ensureCorrectButtonClickability() {
         ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
         if(Modules.improvedDownload){
