@@ -6,8 +6,6 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 	protected GeneralJavaScriptObject() {
 	}
 	
-	
-	
    
 	public final native GeneralJavaScriptObject setProperty(String propertyName, String propertyValue)/*-{
     	return this[propertyName] = propertyValue;
@@ -48,6 +46,10 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
     public final native GeneralJavaScriptObject invokeFunction(String functionName, Object... parameters)/*-{
     	return this[functionName].apply(this, parameters);
 	}-*/;
+
+    public final native String jsonStringify() /*-{
+    	return JSON.stringify(this);
+    }-*/;
     
     public static native GeneralJavaScriptObject createJsonObject(String jsonText) /*-{
 		return JSON.parse(jsonText);
