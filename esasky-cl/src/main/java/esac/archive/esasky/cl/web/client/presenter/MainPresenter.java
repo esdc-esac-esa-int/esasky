@@ -326,6 +326,10 @@ public class MainPresenter {
 
 	public void showUserRelatedMetadata(IDescriptor descriptor, IJSONWrapper userDataJSONWrapper, CoordinatesFrame convertToFrame) {
     	Log.debug("[MainPresenter][showUserRelatedMetadata]");
+    	
+    	//To make sure that no tab with the same ID already exists in the layout panel
+    	while(resultsPresenter.getTabPanel().checkIfIdExists(descriptor.generateId())){}
+    	descriptor.setTabCount(descriptor.getTabCount()-1);
     
     	GeneralEntityInterface entity = null;
     	if (userDataJSONWrapper instanceof SourceListJSONWrapper){
