@@ -24,7 +24,7 @@
 			<version>${gwt.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.gwt</groupId>
+			<groupId>com.google.gwt</groupId> 
 			<artifactId>gwt-dev</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
@@ -258,6 +258,31 @@
 			<properties>
 				<environment>local</environment>
 			</properties>
+			<build>
+			<plugins>
+			 <plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>build-helper-maven-plugin</artifactId>
+	            <version>3.0.0</version>
+	            <executions>
+	                <execution>
+	                    <id>regex-property</id>
+						<phase>generate-sources</phase>
+	                    <goals>
+	                        <goal>regex-property</goal>
+	                    </goals>
+	                    <configuration>
+	                        <name>modified.version</name>
+                         	<value>${project.build.finalName}_local</value>
+	                        <regex>(\.|-|:)</regex>
+	                        <replacement>_</replacement>
+	                        <failIfNoMatch>false</failIfNoMatch>
+	                    </configuration>
+	                </execution>
+	                </executions>
+                </plugin>
+               </plugins>
+			</build>
 		</profile>
 
 		<!-- Dev -->
