@@ -38,7 +38,7 @@ public class LongColumn extends SortableColumn<String> {
 			this.longFilter = new LongFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 	
 				@Override
-				public void onNewFilter() {
+				public void onNewFilter(String filter) {
 					filter();
 				}
 			});
@@ -127,7 +127,7 @@ public class LongColumn extends SortableColumn<String> {
 			this.longFilter = new LongFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 
 				@Override
-				public void onNewFilter() {
+				public void onNewFilter(String filter) {
 					filter();
 				}
 			});

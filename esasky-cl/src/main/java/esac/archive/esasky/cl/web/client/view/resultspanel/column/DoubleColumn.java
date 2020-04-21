@@ -137,7 +137,7 @@ public class DoubleColumn extends SortableColumn<String> {
 			this.doubleFilter = new DoubleFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 	
 				@Override
-				public void onNewFilter() {
+				public void onNewFilter(String filter) {
 					filter();
 				}
 			});
@@ -190,7 +190,7 @@ public class DoubleColumn extends SortableColumn<String> {
 			this.doubleFilter = new DoubleFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 
 				@Override
-				public void onNewFilter() {
+				public void onNewFilter(String filter) {
 					filter();
 				}
 			});

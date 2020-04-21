@@ -229,7 +229,18 @@ public class DateFilterDialogBox extends FilterDialogBox {
 
 				@Override
 				public void execute() {
-					filterObserver.onNewFilter();
+					String filter = "";
+					if(currentFromDate != startDate) {
+						filter += currentFromDate;
+					}
+					
+					filter += ",";
+					
+					if(currentToDate != endDate) {
+						filter += currentToDate;
+					}
+					
+					filterObserver.onNewFilter(filter);
 					ensureCorrectFilterButtonStyle();
 				}
 			});

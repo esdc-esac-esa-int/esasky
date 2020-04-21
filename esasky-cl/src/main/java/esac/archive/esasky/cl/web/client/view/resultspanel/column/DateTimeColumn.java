@@ -26,7 +26,7 @@ public class DateTimeColumn extends SortableColumn<String>{
 		this.dateFilter = new DateFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
-			public void onNewFilter() {
+			public void onNewFilter(String filter) {
 				filter();
 			}
 		});

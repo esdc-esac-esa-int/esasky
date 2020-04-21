@@ -119,7 +119,7 @@ public class StringFilterDialogBox extends FilterDialogBox {
 		public void run() {
 			if(!originalText.equals(newText)) {
 				originalText = newText;
-				filterObserver.onNewFilter();
+				filterObserver.onNewFilter(newText);
 			}
 		}
 		

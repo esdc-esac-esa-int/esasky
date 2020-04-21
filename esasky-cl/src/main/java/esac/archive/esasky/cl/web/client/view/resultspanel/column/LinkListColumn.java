@@ -36,7 +36,7 @@ public class LinkListColumn extends SortableColumn<SafeHtml>{
 		this.stringFilter = new StringFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 			
 			@Override
-			public void onNewFilter() {
+			public void onNewFilter(String filter) {
 				filter();
 			}
 		});

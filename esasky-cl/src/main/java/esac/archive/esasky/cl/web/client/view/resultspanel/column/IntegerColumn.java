@@ -60,7 +60,7 @@ public class IntegerColumn extends SortableColumn<String> {
 			this.intFilter = new IntegerFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 	
 				@Override
-				public void onNewFilter() {
+				public void onNewFilter(String filter) {
 					filter();
 				}
 			});
@@ -127,7 +127,7 @@ public class IntegerColumn extends SortableColumn<String> {
 			this.intFilter = new IntegerFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
 
 				@Override
-				public void onNewFilter() {
+				public void onNewFilter(String filter) {
 					filter();
 				}
 			});

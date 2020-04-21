@@ -139,6 +139,7 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 		setWidget(container);
 		
 		addStyleName("doubleFilterDialogBox");
+		
 	}
 	
 	@Override
@@ -298,7 +299,11 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 			if(!(Math.abs(lastLow - currentLow) < range * 10e-6 && Math.abs(lastHigh - currentHigh) < range * 10e-6)) {
 				lastLow = currentLow;
 				lastHigh = currentHigh;
-				filterObserver.onNewFilter();
+				if(isFilterActive()) {
+					filterObserver.onNewFilter(Double.toString(lastLow)+ "," + Double.toString(lastHigh));
+				}else {
+					filterObserver.onNewFilter("");
+				}
 			}
 		}
 		
