@@ -1736,6 +1736,12 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 	public void setPlaceholderText(String text) {
 		// TODO Auto-generated method stub
 	}
+
+	@Override
+	public void insertHeader(String tapQuery) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

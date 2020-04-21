@@ -258,11 +258,11 @@ public class DefaultEntity implements GeneralEntityInterface{
 	
 	 public void fetchHeaders(final ITablePanel tablePanel) {
 		 if(Modules.useTabulator) {
-// 			clearAll();
- 			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(getHeaderAdql()), EsaSkyConstants.JSON));
- 		}
+			 String query = TAPUtils.getTAPQuery(URL.encodeQueryString(getHeaderAdql()), EsaSkyConstants.JSON);
+			 Log.debug("[FetchHeader] Query " + query );
+			 tablePanel.insertHeader(query);
+		 }
 	 }
-	
 	
 	public void setDrawer(IShapeDrawer drawer) {
 		this.drawer = drawer;

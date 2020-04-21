@@ -74,11 +74,11 @@ public class CatalogEntity implements GeneralEntityInterface{
             JavaScriptObject catalogue, SkyViewPosition skyViewPosition,
             String esaSkyUniqId) {
 		this.catalogue = catalogue;
-		this.mocEntity = new MOCEntity(catDescriptor, countStatus, this);
     	IShapeDrawer drawer = new CombinedSourceFootprintDrawer(catalogue, AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
 				catDescriptor.getPrimaryColor()), shapeBuilder);
         defaultEntity = new DefaultEntity(catDescriptor, countStatus, skyViewPosition, esaSkyUniqId,
                 drawer, TAPCatalogueService.getInstance());
+        this.mocEntity = new MOCEntity(catDescriptor, countStatus, this, defaultEntity);
         this.descriptor = catDescriptor;
     }
 

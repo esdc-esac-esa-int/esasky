@@ -1,7 +1,21 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import com.google.gwt.i18n.client.NumberFormat;
+
+import esac.archive.esasky.cl.web.client.model.FilterObserver;
+import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
+import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
+import esac.archive.esasky.cl.web.client.view.common.MenuItem;
+import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DoubleFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
+
 
 public class TabulatorWrapper{
 
@@ -23,11 +37,12 @@ public class TabulatorWrapper{
 
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
+    private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
 
     public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn) {
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean isHeaderQuery) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn, addLink2ArchiveColumn);
+        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn, addLink2ArchiveColumn, isHeaderQuery);
     }
 
     public void selectRow(int rowId) {
@@ -93,9 +108,87 @@ public class TabulatorWrapper{
         }
         tabulatorCallback.onDataFiltered(indexArray);
     }
+    
+    public void showNumericFilterDialog(String tapName, String filterButtonId, double minVal, double maxVal, final GeneralJavaScriptObject onChangeFunc) {
+
+    	if(!filterDialogs.containsKey(tapName)) {
+    		FilterObserver filterObserver = new FilterObserver() {
+				
+				@Override
+				public void onNewFilter(String filter) {
+					onChangeFunc.invokeFunction("onChange", filter);
+					
+				}
+			};
+    		
+    		DoubleFilterDialogBox filterDialog = new DoubleFilterDialogBox(tapName, tapName, filterButtonId, filterObserver);
+    		
+    		NumberFormat numberFormat = NumberFormat.getFormat("0.##");
+    		
+    		if((minVal - Math.floor(minVal)) == 0 && (maxVal - Math.floor(maxVal)) == 0) {
+    			numberFormat = NumberFormat.getFormat("0");
+    		}
+    		
+    		filterDialog.setRange(minVal, maxVal, numberFormat, 2);
+    		filterDialogs.put(tapName, filterDialog);
+    	}
+    	
+    	FilterDialogBox filterDialogBox = filterDialogs.get(tapName);
+    	filterDialogBox.show();
+    	
+    }
+
+    public void showDateFilterDialog(String tapName, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    	
+    	if(!filterDialogs.containsKey(tapName)) {
+    		FilterObserver filterObserver = new FilterObserver() {
+    			
+    			@Override
+    			public void onNewFilter(String filter) {
+    				onChangeFunc.invokeFunction("onChange", filter);
+    				
+    			}
+    		};
+    		
+    		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, tapName, filterButtonId, filterObserver);
+    		
+    		filterDialog.setStartRange(minVal, maxVal);
+    		filterDialogs.put(tapName, filterDialog);
+    	}
+    	
+    	FilterDialogBox filterDialogBox = filterDialogs.get(tapName);
+    	filterDialogBox.show();
+    	
+    }
+
+    public void showListFilterDialog(String tapName, String filterButtonId, String list, final GeneralJavaScriptObject onChangeFunc) {
+    	
+    	if(!filterDialogs.containsKey(tapName)) {
+    		
+    		final DropDownMenu<String> dropDownMenu = new DropDownMenu<String>("", "", 125, filterButtonId + "_DropDownMenu");
+
+    		for(String s : list.split(",")) {
+    			MenuItem<String> dropdownItem = new MenuItem<String>(s, s, s, true);
+    			dropDownMenu.addMenuItem(dropdownItem);
+    		}
+    		
+    		dropDownMenu.registerObserver(new MenuObserver() {
+
+    			@Override
+    			public void onSelectedChange() {
+    				String object = dropDownMenu.getSelectedObject();
+    				onChangeFunc.invokeFunction("onChange", object);
+    			}
+    		});
+    		
+    		dropDownMenu.toggleMenuBar();
+    	}
+    	
+    	
+    }
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
-            String url, boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn) /*-{
+            String url, boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean isHeaderQuery) /*-{
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
@@ -104,106 +197,47 @@ public class TabulatorWrapper{
 		var selectionMap = [];
 		var metadata;
 		var columnDef = [];
+		
+		var ajaxResponseFunc = {}
+		var filterData = [];
+		if(isHeaderQuery){
+			ajaxResponseFunc = function(url, params, response){
+				metadata = response.metadata;
+				newMeta = [];
+				filterData[0] = {};
+				filterData[1] = {};
+				filterData[0].id = 0;
+				filterData[1].id = 1;
+				for(var j = 0; j < metadata.length; j++){
+	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
 
-		//custom header filter
-		var doubleFilterEditor = function(cell, onRendered, success, cancel, editorParams){
-
-			 var container = $wnd.$("<span></span>")
-			//create and style input
-			var start = $wnd.$("<input type='double' placeholder='Start'/>");
-			var end = $wnd.$("<input type='double' placeholder='End'/>");
-
-			container.append(start).append(end);
-
-			var inputs = $wnd.$("input", container);
-
-
-			inputs.css({
-				"padding":"4px",
-				"width":"50%",
-				"box-sizing":"border-box",
-			})
-			.val(cell.getValue());
-
-			function buildFilterString(){
-				//Adding this value to the cointainer since tabulator has timer which checks the value of the element after 300ms
-				container[0].value = start.val() +',' + end.val();
-				return start.val() +',' + end.val();
-			}
-
-			function onFilterChanged(){
-				var filter = "";
-				if(start.val().length > 0 ){
-					filter += cell.getField() + " >=  " + start.val()
-				}
-				if(end.val().length > 0 ){
-					if(filter.length > 0){
-						filter += " AND ";
-					}
-					filter += cell.getField() + " <=  " + end.val();
-				}
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
-			}
-
-			//submit new value on blur
-			inputs.on("change blur", function(e){
-				success(buildFilterString());
-				onFilterChanged();
-			});
-
-			//submit new value on enter
-			inputs.on("keydown", function(e){
-				if(e.keyCode == 13){
-					success(buildFilterString());
-					onFilterChanged();
+	    			if(metadata[j].name.endsWith("_min")){
+	    				meta = {name:name, datatype:"DOUBLE"}
+	    				newMeta.push(meta)
+						filterData[0][name] = parseFloat(response.data[0][j]);
+	    			}
+	    			else if(metadata[j].name.endsWith("_max")){
+						filterData[1][name] = parseFloat(response.data[0][j]);
+	    			}
+	    			else if(metadata[j].name.endsWith("_lst")){
+	    				list = response.data[0][j];
+	    				list = list.replace("{","[").replace("}","]");
+						filterData[0][name] = list;
+						meta = {name:name, datatype:"LIST"}
+						newMeta.push(meta)
+	    			}
+	    			else{
+	    				meta = {name:name, datatype:"STRING"}
+	    				newMeta.push(meta)
+	    			}
+	    			
 				}
 
-				if(e.keyCode == 27){
-					cancel();
-				}
-			});
-
-			return container[0];
-
-		}
-
-
-		function DoubleFilter(headerValue, rowValue, rowData, filterParams){
-		    //headerValue - the value of the header filter element
-		    //rowValue - the value of the column in this row
-		    //rowData - the data for the row being filtered
-		    //filterParams - params object passed to the headerFilterFuncParams property
-
-			var split = headerValue.split(",");
-
-			if(split.length == 2){
-				var startTrue = true;
-				var endTrue = true;
-				if(split[0].length > 0 && rowValue < parseFloat(split[0]) ){
-					startTrue = false;
-				}
-				if(split[1].length > 0 && rowValue > parseFloat(split[1]) ){
-
-					endTrue = false;
-				}
-				console.log(startTrue && endTrue)
-		    	return startTrue && endTrue; //must return a boolean, true if it passes the filter.
-			}
-			return true;
-		}
-
-		function DoubleFilterEmpty(value){
-			if(value.length > 0){
-				return false;
-			}
-			return true;
-		}
-
-		var table = new $wnd.Tabulator("#" + divId, {
-		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-		 	ajaxURL:url,
-		 	placeholder:"",
-		    ajaxResponse:function(url, params, response){
+				metadata = newMeta;
+		        return [];
+		    }
+		}else{
+			ajaxResponseFunc = function(url, params, response){
 				metadata = response.metadata;
 
 				var data = [];
@@ -224,7 +258,262 @@ public class TabulatorWrapper{
 				}		
 
 		        return data;
-		    },
+		    }
+		}
+		
+
+		var numericFilterEditor = function(cell, onRendered, success, cancel, editorParams){
+			
+			var tapName = editorParams["tapName"];
+			var filterButtonId = divId + "_" + tapName;
+
+			filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
+
+			var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
+						+ "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
+						+ "title=\""  + "\""
+						+ "\"" + ">" + "<img src=\"" + filterIcon
+						+ "\" class=\"fillParent\" />" + "</div>");
+			
+			var functionObject = {};
+			functionObject.onChange = function(filter){
+				success(filter);
+				onFilterChanged(filter);
+			}
+				
+			filterButton.on("click", function(){
+				var minVal = Infinity;
+				var maxVal = -Infinity;
+				
+				if(filterData.length > 0){
+					name = cell.getColumn()._column.definition.field;
+					minVal = filterData[0][name];
+					maxVal = filterData[1][name];
+				}else{
+					cell.getColumn()._column.cells.forEach(function (row){
+						if(row.getValue() != undefined){
+							minVal = Math.min(minVal, row.getValue())
+							maxVal = Math.max(maxVal, row.getValue())
+						}
+					});
+				}
+				
+				if(minVal == Infinity){
+					minVal = -100;
+					maxVal = 100;
+				}
+				
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
+					(tapName, filterButtonId, minVal, maxVal, functionObject);
+			});	
+			var container = $wnd.$("<span></span>")
+			 
+			container.append(filterButton);
+			//create and style input
+			
+			function onFilterChanged(input){
+				values = input.split(",");
+				var filter = "";
+				if(values[0].length > 0 ){
+					filter += cell.getField() + " >=  " + values[0]
+				}
+				if(values.length > 1 && values[1].length > 0 ){
+					if(filter.length > 0){
+						filter += " AND ";
+					}
+					filter += cell.getField() + " <=  " + values[1]
+				}
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
+			}
+
+			return container[0];
+
+		}
+		
+		var dateFilterEditor = function(cell, onRendered, success, cancel, editorParams){
+			
+			var tapName = editorParams["tapName"];
+			var filterButtonId = divId + "_" + tapName;
+
+			filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
+
+			var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
+						+ "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
+						+ "title=\""  + "\""
+						+ "\"" + ">" + "<img src=\"" + filterIcon
+						+ "\" class=\"fillParent\" />" + "</div>");
+			
+			var functionObject = {};
+			functionObject.onChange = function(filter){
+				success(filter);
+				onFilterChanged(filter);
+			}
+				
+			filterButton.on("click", function(){
+				var minVal = "2100-01-01";
+				var maxVal = "1800-01-01";
+				
+				if(filterData.length > 0){
+					name = cell.getColumn()._column.definition.field;
+					minVal = filterData[0][name];
+					maxVal = filterData[1][name];
+				}else{
+					cell.getColumn()._column.cells.forEach(function (row){
+						if(row.getValue() != undefined){
+							if(minVal > row.getValue()){
+								minVal = row.getValue();
+							}
+							if(maxVal < row.getValue()){
+								maxVal = row.getValue();
+							}
+						}
+					});
+				}
+				
+				if(minVal > maxVal){
+					tmp = minVal
+					minVal = maxVal
+					maxVal = tmp;
+				}
+				
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
+					(tapName, filterButtonId, minVal, maxVal, functionObject);
+			});	
+			var container = $wnd.$("<span></span>")
+			 
+			container.append(filterButton);
+			//create and style input
+			
+			function onFilterChanged(input){
+				values = input.split(",");
+				var filter = "";
+				if(values[0].length > 0 ){
+					filter += cell.getField() + " >=  " + values[0]
+				}
+				if(values.length > 1 && values[1].length > 0 ){
+					if(filter.length > 0){
+						filter += " AND ";
+					}
+					filter += cell.getField() + " <=  " + values[1]
+				}
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
+			}
+
+			return container[0];
+
+		}
+		
+		var listFilterEditor = function(cell, onRendered, success, cancel, editorParams){
+			
+			var tapName = editorParams["tapName"];
+			var filterButtonId = divId + "_" + tapName;
+
+			filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
+
+			var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
+						+ "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
+						+ "title=\""  + "\""
+						+ "\"" + ">" + "<img src=\"" + filterIcon
+						+ "\" class=\"fillParent\" />" + "</div>");
+			
+			var functionObject = {};
+			functionObject.onChange = function(filter){
+				success(filter);
+				onFilterChanged(filter);
+			}
+				
+			filterButton.on("click", function(){
+				if(filterData != []){
+					name = cell.getColumn()._column.definition.field;
+					list = filterData[0][name];
+					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
+						(tapName, filterButtonId, list, functionObject);
+				}				
+			});	
+			var container = $wnd.$("<span></span>")
+			 
+			container.append(filterButton);
+			//create and style input
+			
+			function onFilterChanged(input){
+				values = input.split(",");
+				var filter = "";
+				if(values[0].length > 0 ){
+					filter += cell.getField() + " = ''" + values[0] + "''";
+				}
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
+			}
+
+			return container[0];
+
+		}
+		
+		var doubleFormatter = function(cell, formatterParams, onRendered){
+			
+			if(cell.getValue() == undefined){
+				return "";
+			}
+			
+			decimals = 4;
+
+			if(Math.abs(cell.getValue()) > Math.pow(10, -decimals)){
+				return cell.getValue().toFixed(decimals)
+			}
+			
+			return cell.getValue().toExponential(decimals - 1);
+		}
+
+		function DoubleFilter(headerValue, rowValue, rowData, filterParams){
+			
+			var split = headerValue.split(",");
+
+			if(split.length == 2){
+				
+				if(!rowValue){
+					// If any filter is added Null should be removed
+					return false;
+				}
+				
+				var startTrue = true;
+				var endTrue = true;
+				if(split[0].length > 0 && rowValue < parseFloat(split[0]) ){
+					startTrue = false;
+				}
+				if(split[1].length > 0 && rowValue > parseFloat(split[1]) ){
+
+					endTrue = false;
+				}
+		    	return startTrue && endTrue; 
+			}
+			return true;
+		}
+		
+		function DateFilter(headerValue, rowValue, rowData, filterParams){
+			
+			var split = headerValue.split(",");
+		   	if(split.length == 2){
+		   		if(!rowValue){
+					return false;
+				}
+   				var startTrue = true;
+				var endTrue = true;
+				if(split[0].length > 0 && rowValue < split[0] ){
+					startTrue = false;
+				}
+				if(split[1].length > 0 && rowValue > split[1] ){
+					endTrue = false;
+				}
+		    	return startTrue && endTrue;
+		   	}
+		   	return true;
+		}
+		
+
+		var table = new $wnd.Tabulator("#" + divId, {
+		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+		 	ajaxURL:url,
+		 	placeholder:"",
+		    ajaxResponse:ajaxResponseFunc,
 		    dataFiltered:function(filters, rows){
 		    	var returnString = "";
 		    	for(i = 0; i < rows.length; i++){
@@ -331,30 +620,78 @@ public class TabulatorWrapper{
 		    		    activeColumnGroup = [];
 		    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
 		    		}
-		    		var sorter = "string";
-		    		var headerFilter = true;
-		    		var headerFilterFunc = "like";
+		    		
 		    		if(metadata[i].datatype === "DOUBLE"){
-		    			sorter = "number";
-		    			headerFilter = doubleFilterEditor;
-		    			headerFilterFunc = DoubleFilter;
-
+		    			activeColumnGroup.push({
+			    			title:metadata[i].name,
+			    			field:metadata[i].name, 
+			    			headerTooltip:metadata[i].description,
+			    			formatter:doubleFormatter,
+			    			sorter: "number",
+			    			headerFilter:numericFilterEditor,
+			    			headerFilterParams:{tapName:metadata[i].name},
+			    			headerFilterFunc:DoubleFilter,
+			    			headerFilterFuncParams:{tapName:metadata[i].name}
+	    				});
 		    		}
-		    		activeColumnGroup.push({
-		    			title:metadata[i].name,
-		    			field:metadata[i].name, 
-		    			headerTooltip:metadata[i].description,
-		    			sorter: sorter,
-		    			headerFilter:headerFilter,
-		    			headerFilterFunc:headerFilterFunc,
-		    			headerFilterFuncParams:{tapName:metadata[i].name}
-//		    			headerFilterEmptyCheck:headerFilterEmptyCheck
-	    			});
-		    	}
+		    		else if(metadata[i].datatype === "TIMESTAMP"){
+		    			activeColumnGroup.push({
+			    			title:metadata[i].name,
+			    			field:metadata[i].name, 
+			    			headerTooltip:metadata[i].description,
+			    			formatter:doubleFormatter,
+			    			sorter: "string",
+			    			formatter: "plaintext",
+			    			headerFilter:dateFilterEditor,
+			    			headerFilterParams:{tapName:metadata[i].name},
+			    			headerFilterFunc:DateFilter,
+			    			headerFilterFuncParams:{tapName:metadata[i].name}
+	    				});
+		    		}
+		    		else if(metadata[i].datatype === "INTEGER"){
+		    			activeColumnGroup.push({
+			    			title:metadata[i].name,
+			    			field:metadata[i].name, 
+			    			headerTooltip:metadata[i].description,
+			    			formatter:doubleFormatter,
+			    			sorter: "number",
+			    			formatter:"plaintext",
+			    			headerFilter:numericFilterEditor,
+			    			headerFilterParams:{tapName:metadata[i].name},
+			    			headerFilterFunc:DoubleFilter,
+			    			headerFilterFuncParams:{tapName:metadata[i].name}
+	    				});
+		    		}
+		    		else if(metadata[i].datatype === "LIST"){
+		    			activeColumnGroup.push({
+			    			title:metadata[i].name,
+			    			field:metadata[i].name, 
+			    			headerTooltip:metadata[i].description,
+			    			formatter:doubleFormatter,
+			    			sorter: "number",
+			    			formatter:"plaintext",
+			    			headerFilter:listFilterEditor,
+			    			headerFilterParams:{tapName:metadata[i].name},
+			    			headerFilterFunc:"like",
+	    				});
+		    		}else{
+			    		activeColumnGroup.push({
+			    			title:metadata[i].name,
+			    			field:metadata[i].name, 
+			    			headerTooltip:metadata[i].description,
+			    			formatter:"plaintext",
+			    			sorter:  "string",
+			    			headerFilter:true,
+			    			headerFilterParams:{tapName:metadata[i].name},
+			    			headerFilterFunc:"like",
+			    			headerFilterFuncParams:{tapName:metadata[i].name}
+		    			});
+		    		}
+	    		}
 		    	if(columnDef.length == 0){
 		    	    columnDef = activeColumnGroup;
 		    	}
-
+		    	
 		    	table.setColumns(columnDef);
 		    },
 		 	selectable:true,
@@ -488,6 +825,10 @@ public class TabulatorWrapper{
 
     public void onFilterChanged(String label, String filter) {
         tabulatorCallback.onFilterChanged(label, filter);
+    }
+    
+    public String getFilterIcon() {
+    	return TableColumnHelper.resources.filterIcon().getSafeUri().asString();
     }
 
 }

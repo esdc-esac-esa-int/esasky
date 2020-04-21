@@ -45,7 +45,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
             CountStatus countStatus, SkyViewPosition skyViewPosition, String esaSkyUniqObsId) {
         super(obsDescriptor, countStatus, skyViewPosition, esaSkyUniqObsId);
         this.descriptor = obsDescriptor;
-        this.mocEntity = new MOCEntity(obsDescriptor, countStatus, this);
+        this.mocEntity = new MOCEntity(obsDescriptor, countStatus, this, defaultEntity);
     }
 
     public CommonObservationDescriptor getDescriptor() {

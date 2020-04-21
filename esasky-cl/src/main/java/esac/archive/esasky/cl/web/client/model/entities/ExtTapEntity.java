@@ -248,9 +248,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
         if (shapeLimit > 0 && getCountStatus().getCount(descriptor.getMission()) > shapeLimit) {
             Log.debug("Showing dynamic moc");
             if(mocEntity == null){
-                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this);
+                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this, defaultEntity);
             }
-            defaultEntity.fetchHeaders(tablePanel);
             mocEntity.setTablePanel(tablePanel);
             mocEntity.refreshMOC();
         } else if(hasReachedFovLimit()) {

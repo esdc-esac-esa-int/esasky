@@ -467,10 +467,19 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void insertData(List<TableRow> data, String url) {
 		if(url != null) {
 			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
-			        getDescriptor().getArchiveProductURI() != null);
+			        getDescriptor().getArchiveProductURI() != null, false);
 			tableNotShowingContainer.addStyleName("displayNone");
 		}
 
+	}
+	@Override
+	public void insertHeader(String url) {
+		if(url != null) {
+			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
+					getDescriptor().getArchiveProductURI() != null, true);
+			tableNotShowingContainer.addStyleName("displayNone");
+		}
+		
 	}
 
 	@Override

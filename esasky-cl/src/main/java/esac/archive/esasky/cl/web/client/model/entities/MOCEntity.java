@@ -84,17 +84,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 	};
 
-	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent) {
+	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent, DefaultEntity defaultEntity) {
 		
 		overlay = null;
 		drawer = null;
 		this.descriptor = descriptor;
 		
 		metadataService = TAPMOCService.getInstance();
-		
-		defaultEntity = new DefaultEntity(descriptor, countStatus , new SkyViewPosition(new Coordinate(0, 0), 0.0), "MOC",
-				drawer, TAPObservationService.getInstance());
-		
+		this.defaultEntity = defaultEntity;
 		parentEntity = parent;
 		
 		MocRepository.getInstance().addMocEntity(this);
@@ -306,6 +303,8 @@ public class MOCEntity implements GeneralEntityInterface {
     		currentDataOrder = 8;
     		return;
     	}
+    	
+        defaultEntity.fetchHeaders(tablePanel);
     	
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	

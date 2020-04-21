@@ -105,4 +105,6 @@ public interface ITablePanel {
 	public String getVoTableString();
 	
 	public void setPlaceholderText(String text);
+
+	public void insertHeader(String tapQuery);
 }
