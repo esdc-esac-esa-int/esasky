@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import esac.archive.esasky.cl.web.client.api.Api;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
+import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -112,6 +113,8 @@ public class EsaSkyWeb implements EntryPoint {
         
         // Set GWT container visible
         RootLayoutPanel.get().getElement().getStyle().setDisplay(Display.BLOCK);
+        
+        ESASkyJavaScriptLibrary.initialize();
     }
 
 }
