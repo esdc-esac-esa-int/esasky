@@ -263,27 +263,45 @@ public class TabulatorWrapper{
 		    }
 		}
 		
+        var createFilterButton = function(filterButtonId){
+            filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
 
+            var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
+                        + "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
+                        + "title=\""  + "\""
+                        + "\"" + ">" + "<img src=\"" + filterIcon
+                        + "\" class=\"fillParent\" />" + "</div>");
+		    
+            filterButton.on("mouseenter", function(e){
+                filterButton.toggleClass("gwt-PushButton-up-hovering");
+            });
+            filterButton.on("mouseleave", function(e){
+                filterButton.toggleClass("gwt-PushButton-up-hovering");
+                filterButton.removeClass("gwt-PushButton-down");
+            });
+            filterButton.on("mouseover", function(e){e.stopPropagation();});
+            filterButton.on("mousedown", function(e){
+                filterButton.toggleClass("gwt-PushButton-down");
+                e.stopPropagation();
+            });
+            filterButton.on("mouseup",function(e){
+                filterButton.toggleClass("gwt-PushButton-down");
+                e.stopPropagation();
+            });
+            return filterButton;
+		}
+		
 		var numericFilterEditor = function(cell, onRendered, success, cancel, editorParams){
-			
-			var tapName = editorParams["tapName"];
-			var filterButtonId = divId + "_" + tapName;
-
-			filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
-
-			var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
-						+ "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
-						+ "title=\""  + "\""
-						+ "\"" + ">" + "<img src=\"" + filterIcon
-						+ "\" class=\"fillParent\" />" + "</div>");
+			var filterButtonId = divId + "_" + editorParams["tapName"];
+			var filterButton = createFilterButton(filterButtonId);
 			
 			var functionObject = {};
 			functionObject.onChange = function(filter){
 				success(filter);
 				onFilterChanged(filter);
 			}
-				
-			filterButton.on("click", function(){
+			filterButton.on("click", function(e){
+			    e.stopPropagation();
 				var minVal = Infinity;
 				var maxVal = -Infinity;
 				
@@ -306,7 +324,7 @@ public class TabulatorWrapper{
 				}
 				
 				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
-					(tapName, filterButtonId, minVal, maxVal, functionObject);
+					(editorParams["tapName"], filterButtonId, minVal, maxVal, functionObject);
 			});	
 			var container = $wnd.$("<span></span>")
 			 
@@ -333,25 +351,17 @@ public class TabulatorWrapper{
 		}
 		
 		var dateFilterEditor = function(cell, onRendered, success, cancel, editorParams){
-			
-			var tapName = editorParams["tapName"];
-			var filterButtonId = divId + "_" + tapName;
-
-			filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
-
-			var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
-						+ "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
-						+ "title=\""  + "\""
-						+ "\"" + ">" + "<img src=\"" + filterIcon
-						+ "\" class=\"fillParent\" />" + "</div>");
-			
+			var filterButtonId = divId + "_" + editorParams["tapName"];
+            var filterButton = createFilterButton(filterButtonId);
+            
 			var functionObject = {};
 			functionObject.onChange = function(filter){
 				success(filter);
 				onFilterChanged(filter);
 			}
 				
-			filterButton.on("click", function(){
+			filterButton.on("click", function(e){
+			    e.stopPropagation();
 				var minVal = "2100-01-01";
 				var maxVal = "1800-01-01";
 				
@@ -379,7 +389,7 @@ public class TabulatorWrapper{
 				}
 				
 				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
-					(tapName, filterButtonId, minVal, maxVal, functionObject);
+					(editorParams["tapName"], filterButtonId, minVal, maxVal, functionObject);
 			});	
 			var container = $wnd.$("<span></span>")
 			 
@@ -407,29 +417,22 @@ public class TabulatorWrapper{
 		
 		var listFilterEditor = function(cell, onRendered, success, cancel, editorParams){
 			
-			var tapName = editorParams["tapName"];
-			var filterButtonId = divId + "_" + tapName;
-
-			filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
-
-			var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
-						+ "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
-						+ "title=\""  + "\""
-						+ "\"" + ">" + "<img src=\"" + filterIcon
-						+ "\" class=\"fillParent\" />" + "</div>");
-			
+			var filterButtonId = divId + "_" + editorParams["tapName"];
+            var filterButton = createFilterButton(filterButtonId);
+            
 			var functionObject = {};
 			functionObject.onChange = function(filter){
 				success(filter);
 				onFilterChanged(filter);
 			}
 				
-			filterButton.on("click", function(){
+			filterButton.on("click", function(e){
+			    e.stopPropagation();
 				if(filterData != []){
 					name = cell.getColumn()._column.definition.field;
 					list = filterData[0][name];
 					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
-						(tapName, filterButtonId, list, functionObject);
+						(editorParams["tapName"], filterButtonId, list, functionObject);
 				}				
 			});	
 			var container = $wnd.$("<span></span>")
@@ -725,6 +728,16 @@ public class TabulatorWrapper{
 		    	}
 		    	
 		    	table.setColumns(columnDef);
+    	        table.getColumns().forEach(function (column){
+    	            if (column.getDefinition().sorter){
+                        column.getElement().onmouseover = function() {
+                            column.getElement().style.backgroundColor = "#d0d0d0";
+                        }
+                        column.getElement().onmouseout = function() {
+                            column.getElement().style.backgroundColor = "";
+                        }
+    	            } 
+                });
 		    },
 		 	selectable:true,
 		    rowSelectionChanged:function(data, rows){
@@ -777,7 +790,7 @@ public class TabulatorWrapper{
 
 				});
 				votData += "/>\n";
-			});//TODO TEST with Publications
+			});
 
 			// Adds data to xml
 			votData += "<DATA>\n";

@@ -120,20 +120,24 @@
   margin-top: 2px;
   width: 100%;
   text-align: center;
+  pointer-events: none;
 }
 
 .tabulator .tabulator-header .tabulator-col .tabulator-header-filter textarea {
   height: auto !important;
+  pointer-events: auto;
 }
 
 .tabulator .tabulator-header .tabulator-col .tabulator-header-filter svg {
   margin-top: 3px;
+  pointer-events: auto;
 }
 
 .tabulator .tabulator-header .tabulator-col .tabulator-header-filter input, .tabulator .tabulator-header .tabulator-col .tabulator-header-filter select {
   border: 1px solid #AAA;
   background: #fff;
   color: #000;
+  pointer-events: auto;
 }
 
 .tabulator .tabulator-header .tabulator-col .tabulator-header-filter input::-ms-clear {
@@ -147,7 +151,7 @@
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
   cursor: pointer;
-  background-color: #d0d0d0;
+/*   background-color: #d0d0d0; */
 }
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort="none"] .tabulator-col-content .tabulator-arrow {
