@@ -20,12 +20,9 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.esasky.cl.web.client.presenter.AllSkyPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 
 /**
@@ -184,48 +181,13 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     }
 
     @Override
-    public final void showSourceTooltip(final Shape aladinObj) {
-    	CoordinatesObject co = AladinLiteWrapper.getAladinLite().convertRaDecDegToMouseXY(
-    			Double.parseDouble(aladinObj.getRa()), Double.parseDouble(aladinObj.getDec()));
+    public final void showSourceTooltip(final Tooltip newTooltip) {
         if (tooltip != null) {
-            tooltip.hide();
+            tooltip.removeFromParent();
         }
         
-        tooltip = null;
-        
-        if (aladinObj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE) != null) {
-
-            if (aladinObj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(
-                    EsaSkyWebConstants.SourceType.MULTITARGET.toString())) {
-                tooltip = new MultiTargetTooltip(aladinObj,
-                        (int) (co.getMouseX() + 0.0), (int) (co.getMouseY() + 0.0));
-                
-            } else if (aladinObj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(
-                    EsaSkyWebConstants.SourceType.CATALOGUE.toString())) {
-                tooltip = new CatalogueTooltip(aladinObj,
-                        (int) (co.getMouseX() + 0.0), (int) (co.getMouseY() + 0.0));
-                
-            } else if (aladinObj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(
-                    EsaSkyWebConstants.SourceType.PUBLICATION.toString())) {
-                tooltip = new PublicationTooltip(aladinObj,
-                        (int) (co.getMouseX() + 0.0), (int) (co.getMouseY() + 0.0));
-                
-            } else if (aladinObj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(
-                    EsaSkyWebConstants.SourceType.SURVEY.toString())) {
-                tooltip = new SurveyTooltip(aladinObj,
-                        (int) (co.getMouseX() + 0.0), (int) (co.getMouseY() + 0.0));
-                
-            } else if (aladinObj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(
-                    EsaSkyWebConstants.SourceType.PLANNING.toString())) {
-                tooltip = new PlanningDetectorCenterTooltip(
-                        aladinObj, (int) (co.getMouseX() + 0.0), (int) (co.getMouseY() + 0.0));
-            }
+        tooltip = newTooltip;
             
-        } else {
-            tooltip = new SearchTooltip(aladinObj,
-                    (int) (co.getMouseX() + 0.0), (int) (co.getMouseY() + 0.0));
-        }
-        
         if (tooltip != null) {
             tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
         }

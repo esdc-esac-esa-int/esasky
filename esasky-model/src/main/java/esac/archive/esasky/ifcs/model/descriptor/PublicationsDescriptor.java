@@ -3,7 +3,7 @@ package esac.archive.esasky.ifcs.model.descriptor;
 /**
  * @author ESDC team Copyright (c) 2017 - European Space Agency
  */
-public class PublicationsDescriptor extends CatalogDescriptor {
+public class PublicationsDescriptor extends BaseDescriptor {
 
     @Override
     public String getDescriptorId() {
@@ -11,5 +11,10 @@ public class PublicationsDescriptor extends CatalogDescriptor {
             return "PUBLICATIONS_" + getMission();
         }
         return descriptorId;
+    }
+
+    @Override
+    public String getIcon() {
+        return "publications";
     }
 }

@@ -1,80 +1,53 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.HashSet;
-import java.util.Set;
-
-import com.google.gwt.user.cellview.client.RowHoverEvent;
+import java.util.List;
 
 import esac.archive.esasky.cl.web.client.model.ShapeId;
-import esac.archive.esasky.cl.web.client.model.entities.CatalogEntity;
+import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 
-public class PublicationsTablePanel extends SourcesTablePanel {
+public class PublicationsTablePanel extends TabulatorTablePanel {
     
-    public PublicationsTablePanel(String label, String esaSkyUniqID, CatalogEntity catEntity) {
-        super(label, esaSkyUniqID, catEntity);
+    public PublicationsTablePanel(String label, String esaSkyUniqID, GeneralEntityInterface entity) {
+        super(label, esaSkyUniqID, entity);
+        selectTablePanel();
     }
     
     @Override
-    protected void createCentreViewColumn() {
+    public void onRowMouseEnter(int rowId) {
         //Do nothing
     }
 
-	@Override
-	public void clearSelectionModel() {
-	    //Do nothing
-	}
-	
-	@Override
-	public void hoverStartEntity(RowHoverEvent hoverEvent) {
-		//Do nothing
-	}
-	
-	@Override
-	public void hoverStopEntity(RowHoverEvent hoverEvent) {
-		//Do nothing
-	}
-	
-	public void hoverStartRow(int rowId) {
-		if (rowId >= 0) {
-			for (int i = 0; i < this.table.getVisibleItems().size(); i++) {
-				if (this.table.getVisibleItem(i).getShapeId() == rowId) {
-					setStyleName(this.table.getRowElement(i), "dataGridHoveredRowUserDefined", true);
-					lastHoveredRowId = rowId;
-					break;
-				}
-			}
-		}
-	}
-
-	public void hoverStopRow(int rowId) {
-		if (rowId >= 0) {
-			for (int i = 0; i < this.table.getVisibleItems().size(); i++) {
-				if (this.table.getVisibleItem(i).getShapeId() == rowId) {
-			        setStyleName(this.table.getRowElement(i), "dataGridHoveredRowUserDefined", false);
-					break;
-				}
-			}
-		}
-	}
-	
-	@Override
-	protected void fireSelectionEvent(boolean gettingSelected, Set<ShapeId> changedRows) {
-		if(gettingSelected) {
-			getEntity().selectShapes(changedRows);
-		}
-	}
-	
-
-	@Override
-    protected int getRowLimit() {
-    	return entity.getDescriptor().getAdsPublicationsMaxRows();
+    @Override
+    public void onRowMouseLeave(int rowId) {
+        //Do nothing
     }
-	
-	@Override
-	public void selectRow(int rowId) {
-		//Do nothing
-	}
-	
+    
+    @Override
+    public void hoverStartRow(int rowId) {
+        //Do nothing
+    }
+
+    @Override
+    public void hoverStopRow(int rowId) {
+        //Do nothing
+    }
+    
+    @Override
+    public void onRowSelection(final int rowId) {
+        //Do nothing
+    }
+    
+    @Override
+    public void onRowDeselection(int rowId) {
+        //Do nothing
+    }
+    
+    @Override
+    public void onDataFiltered(List<Integer> indexArray) {
+        //Do nothing
+    }
+
 	@Override
 	public void deselectTablePanel() {
 		super.deselectTablePanel();
@@ -94,4 +67,5 @@ public class PublicationsTablePanel extends SourcesTablePanel {
 		});
 		entity.selectShapes(shapes);
 	}
+	
 }

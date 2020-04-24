@@ -37,14 +37,17 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
+import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.CommonObservationEntity.DescriptorMapper;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -108,7 +111,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	protected boolean isShowing = false;
 
 	private IPreviewClickedHandler previewClickedHandler;
-	private GeneralEntityInterface entity;
+	protected GeneralEntityInterface entity;
 
 	private class TableFocusPanel extends FocusPanel {
 		public TableFocusPanel() {
@@ -178,7 +181,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		this.esaSkyUniqID = inputEsaSkyUniqID;
         this.tabTitle = inputLabel;
         this.entity = entity;
-        this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll(" |\\.", "_");
+        this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll("[^A-Za-z0-9-_]", "_");
 		exposeOpenFilterBoxMethodToJs(this);
 
 		FlowPanel container = new FlowPanel();
@@ -331,8 +334,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void selectTablePanel() {
+	    if(isShowing) return;
 		isShowing = true;
 //		exposeOpenFilterBoxMethodToJs(this);
+		for(AbstractTableObserver observer : observers) {
+		    observer.onSelection(this);
+		}
 	}
 
 	private StylePanel stylePanel;
@@ -350,7 +357,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		if(stylePanel != null) {
 			stylePanel.removeFromParent();
 		}
-		getEntity().clearAll();
+		entity.clearAll();
+		EntityRepository.getInstance().removeEntity(entity);
 		notifyClosingObservers();
 	}
 
@@ -379,8 +387,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public String getUnfilteredRow(int rowIndex) {
-		TapRowList rowList = getEntity().getMetadata();
-		return rowList.getData().get(rowIndex).toString();
+	    if(Modules.useTabulator) {
+	        //TODO
+	        return null;
+	    } else {
+	        TapRowList rowList = getEntity().getMetadata();
+	        return rowList.getData().get(rowIndex).toString();
+	    }
 	}
 
 	public JSONObject exportAsJSON() {
@@ -442,7 +455,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public void updateData() {
 		clearTable();
-		getEntity().fetchData(this);
+		getEntity().fetchData();
 	}
 
 	@Override
@@ -467,7 +480,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void insertData(List<TableRow> data, String url) {
 		if(url != null) {
 			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
-			        getDescriptor().getArchiveProductURI() != null, false);
+			        getDescriptor().getArchiveProductURI() != null, 
+			        getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
+		            && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
+			        getDescriptor().getMission().equals("ADS PUB"), false);
 			tableNotShowingContainer.addStyleName("displayNone");
 		}
 
@@ -476,7 +492,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void insertHeader(String url) {
 		if(url != null) {
 			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
-					getDescriptor().getArchiveProductURI() != null, true);
+					getDescriptor().getArchiveProductURI() != null, getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
+		                    && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
+		                    getDescriptor().getMission().equals("ADS PUB"), true);
 			tableNotShowingContainer.addStyleName("displayNone");
 		}
 		
@@ -863,4 +881,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         return getDescriptor().getArchiveURL() + productURI;
     }
 
+    @Override
+    public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
+        CommonEventBus.getEventBus().fireEvent(new ShowPublicationSourcesEvent(rowData));
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_SourcesInPublication, getFullId(), rowData.getStringProperty("bibcode"));
+    }
 }

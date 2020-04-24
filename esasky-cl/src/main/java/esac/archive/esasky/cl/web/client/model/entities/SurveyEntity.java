@@ -12,6 +12,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
@@ -21,7 +22,6 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPSurveyService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SurveyConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
@@ -44,21 +44,19 @@ public class SurveyEntity implements GeneralEntityInterface{
     		if(Modules.useTabulator) {
     			mySource.setRa(row.invokeFunction("getData").getStringProperty(EsaSkyConstants.OBS_TAP_RA));
     			mySource.setDec(row.invokeFunction("getData").getStringProperty(EsaSkyConstants.OBS_TAP_DEC));
-    			details.put(EsaSkyWebConstants.SOURCE_TYPE,
-    					EsaSkyWebConstants.SourceType.SURVEY.toString());
     			details.put(SurveyConstant.SURVEY_NAME, row.invokeFunction("getData").getStringProperty(EsaSkyConstants.OBS_TAP_NAME));
 			} else {
 	            mySource.setDec((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_DEC))
 	                    .toString());
 	            mySource.setRa((getTAPDataByTAPName(rowList, rowId, EsaSkyConstants.OBS_TAP_RA))
 	                    .toString());
-	            details.put(EsaSkyWebConstants.SOURCE_TYPE,
-	                    EsaSkyWebConstants.SourceType.SURVEY.toString());
+//	            details.put(EsaSkyWebConstants.SOURCE_TYPE,
+//	                    EsaSkyWebConstants.SourceType.SURVEY.toString());
 	            details.put(SurveyConstant.SURVEY_NAME, (getTAPDataByTAPName(rowList, rowId,
 	                    EsaSkyConstants.OBS_TAP_NAME)).toString());
 			}
     		details.put(SurveyConstant.CATALOGE_NAME, getEsaSkyUniqId());
-    		details.put(SurveyConstant.IDX, Integer.toString(rowId));
+    		details.put(SurveyConstant.ID, Integer.toString(rowId));
     		
     		mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
     				mySource.getRa(), mySource.getDec(), details, rowId));
@@ -94,7 +92,7 @@ public class SurveyEntity implements GeneralEntityInterface{
         AladinLiteWrapper.getAladinLite().setCatalogShape(overlay, shape);
     }
     
-    @Override
+//    @Override
     public String getMetadataAdql() {
         return TAPSurveyService.getInstance().getMetadataAdql(getDescriptor());
     }
@@ -300,13 +298,13 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void fetchData(ITablePanel tablePanel) {
-		defaultEntity.fetchData(tablePanel);
+	public void fetchData() {
+		defaultEntity.fetchData();
 	}
 	
 	@Override
-	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
-		fetchData(tablePanel);
+	public void fetchDataWithoutMOC() {
+		fetchData();
 		
 	}
 
@@ -331,13 +329,13 @@ public class SurveyEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void refreshData(ITablePanel tablePanel) {
+	public void refreshData() {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
+	public void coneSearch(SkyViewPosition conePos) {
 		// TODO Auto-generated method stub		
 	}
 
@@ -383,6 +381,36 @@ public class SurveyEntity implements GeneralEntityInterface{
     @Override
     public void setShapeType(String shapeType) {
         defaultEntity.setShapeType(shapeType);
+    }
+
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeDeselection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeHover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeUnhover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void select() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

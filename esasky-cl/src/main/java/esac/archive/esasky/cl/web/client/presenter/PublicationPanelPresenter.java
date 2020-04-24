@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -33,7 +32,6 @@ import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -41,6 +39,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 
 public class PublicationPanelPresenter {
 
@@ -71,6 +70,14 @@ public class PublicationPanelPresenter {
 			}
 		}
 	};
+	
+   private Timer sourceLimitNotificationTimer = new Timer() {
+
+        @Override
+        public void run() {
+            CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(entity.getEsaSkyUniqId() + "SourceLimit"));
+        }
+    };
 
     public interface View {
     	void hide();
@@ -162,10 +169,10 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				removeProgressIndicator();
-				entity.removeSourceLimitNotificationNow();
+				sourceLimitNotificationTimer.run();
 				numberOfShownSources = 0;
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_Remove, UrlUtils.getUrlForCurrentState());
-				cleanPublicationSources();
+				entity.removeAllShapes();
 				entity = null;
 				isShowingDataOrCallInProgress = false;
 				view.hide();
@@ -186,9 +193,6 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
 				sourceLimit = view.getLimit();
-				if(entity != null) {
-					entity.setPublicationsSourceLimit(view.getLimit());
-				}
 				sourceLimitChangedTimer.schedule(1000);
 			}
 		});
@@ -215,11 +219,8 @@ public class PublicationPanelPresenter {
 		isShowingDataOrCallInProgress = true;
 		
 		String mostOrLeastAdql = isMostChecked ? "bibcount DESC" : "bibcount ASC";
-		String mostOrLeastDescription = isMostChecked ? TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost") : TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast");
         if (entity == null) {            
             entity = entityRepo.createPublicationsEntity(descriptor);
-            entity.setPublicationsSourceLimit(sourceLimit);
-            entity.setOrderByDescription(mostOrLeastDescription);
         } else {
         	entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
         }
@@ -256,8 +257,7 @@ public class PublicationPanelPresenter {
 					if(entity != null && timecall > lastSuccessfulTimecall) {
 						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 						TapRowList rowList = mapper.read(response.getText());
-						entity.setMetadata(rowList);
-						entity.addShapes(rowList, null);
+						entity.addShapes(null, convertResult(response.getText()));
 						numberOfShownSources = rowList.getData().size();
 						lastSuccessfulTimecall = timecall;
 			    		if(timecall == lastTimecall) {
@@ -267,10 +267,22 @@ public class PublicationPanelPresenter {
 			    				isShowingTruncatedDataset = false;
 			    			} else {
 			    				String formattedNumber = NumberFormatter.formatToNumberWithSpaces(Integer.toString(rowList.getData().size()));
-			    				if(rowList.getData().size() >= entity.getSourceLimit()) {
+			    				if(rowList.getData().size() >= sourceLimit) {
 			    					isShowingTruncatedDataset = true;
 			    					view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextTruncated") + " "
 			    							+ TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
+			    					
+			    	                if(sourceLimitNotificationTimer.isRunning()) {
+			    	                    sourceLimitNotificationTimer.run();
+			    	                }
+			    	                String orderBy = isMostChecked ? TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost") : TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast");
+			    	                String sourceLimitDescription = TextMgr.getInstance().getText("publicationShapeLimitDescription")
+			    	                        .replace("$sourceLimit$", sourceLimit + "")
+			    	                        .replace("$orderBy$", orderBy.toLowerCase())
+			    	                        .replace("$mostOrLeast$", orderBy.toLowerCase());
+			    	                CommonEventBus.getEventBus().fireEvent( 
+			    	                        new ProgressIndicatorPushEvent(entity.getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
+			    	                sourceLimitNotificationTimer.schedule(6000);
 			    				} else {
 			    					isShowingTruncatedDataset = false;
 			    					view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
@@ -309,6 +321,21 @@ public class PublicationPanelPresenter {
             }
         }
     }
+    
+    private native GeneralJavaScriptObject convertResult(String resultText)/*-{
+        var response = JSON.parse(resultText);
+        var metadata = response.metadata;
+
+        var data = [];
+        for(var i = 0; i < response.data.length; i++){
+            var row = {};
+            for(var j = 0; j < metadata.length; j++){
+                row[metadata[j].name] = response.data[i][j];
+            }
+            data[i] = row;
+        }       
+        return data;
+    }-*/;
 
     public void hide() {
     	view.hide();
@@ -323,11 +350,6 @@ public class PublicationPanelPresenter {
     
     public boolean isShowing() {
     	return view.isShowing();
-    }
-    
-    private final void cleanPublicationSources () {
-        final JavaScriptObject catalog = AladinLiteWrapper.getInstance().getPublicationCatalogue();
-        AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(catalog);
     }
     
     private void addProgressIndicator(String progressIndicatorMessage, String googleAnalyticsErrorMessage) {

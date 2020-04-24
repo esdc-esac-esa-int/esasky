@@ -4,7 +4,7 @@ public class MultiTargetSourceConstants {
 
     public static final String SIMBAD_MAIN_ID = "simbadMainId";
     public static final String CATALOGUE_NAME = "catalogue";
-    public static final String SOURCE_IDX = "idx";
+    public static final String SOURCE_ID = "id";
     public static final String USER_INPUT = "userInput";
     public static final String SIMBAD_ALIASES = "simbadAliases";
 

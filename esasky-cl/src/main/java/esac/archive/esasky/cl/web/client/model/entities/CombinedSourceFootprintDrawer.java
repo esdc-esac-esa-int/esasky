@@ -7,7 +7,6 @@ import java.util.Set;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
-import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
@@ -37,14 +36,14 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	private ArrayList<Shape> footPrintshapes = new ArrayList<>();
 	private ArrayList<Integer[]> allShapesIndexes = new ArrayList<>();
 	private ShapeBuilder shapeBuilder;
-	private String shapeType;
+	private Object shapeType;
 
 
 	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder) {
 	    this(sourceOverlay, footPrintOverlay, shapeBuilder, SourceShapeType.SQUARE.getName());
 	}
 	
-	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder, String shapeType) {
+	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder, Object shapeType) {
 		this.sourceOverlay = sourceOverlay;
 		this.footPrintOverlay = footPrintOverlay;
 		this.shapeBuilder = shapeBuilder;
@@ -62,7 +61,6 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		ratio = size;
 		AladinLiteWrapper.getAladinLite().setCatalogSourceSize(sourceOverlay, (int) Math.max(1, ratio * MAX_SOURCE_SIZE));
 		AladinLiteWrapper.getAladinLite().setOverlayLineWidth(footPrintOverlay, (int) Math.max(1, ratio * MAX_LINEWIDTH));
-
 	}
 	
 	@Override
@@ -84,33 +82,18 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+	public void addShapes(TapRowList rowList, GeneralJavaScriptObject rows) {
 	    removeAllSourcesAndFootprints();
 		
-		if(Modules.useTabulator) {
-			GeneralJavaScriptObject rows = javaScriptObject.invokeFunction("getRows");
-			GeneralJavaScriptObject [] rowArray = GeneralJavaScriptObject.convertToArray(rows);
-			for(int i = 0; i < rowArray.length; i++) {
-				Shape shape = shapeBuilder.buildShape(i, null, rowArray[i]);
-				if( shape instanceof SourceShape) {
-					sourceShapes.add(shape);
-					allShapesIndexes.add(new Integer[] {sourceShapes.size()-1, -1});
-				} else {
-					footPrintshapes.add(shape);
-					allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
-				}
+		if(rowList == null) {
+			GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
+			for(int i = 0; i < rowDataArray.length; i++) {
+				storeShape(shapeBuilder.buildShape(i, null, rowDataArray[i]));
 			}
-			Log.debug("Added " + rowArray.length + " rows and shapes");
+			Log.debug("Added " + rowDataArray.length + " rows and shapes");
 		} else {
 			for(int i = 0; i < rowList.getData().size(); i++) {
-				Shape shape = shapeBuilder.buildShape(i, rowList, null);
-				if( shape instanceof SourceShape) {
-					sourceShapes.add(shape);
-					allShapesIndexes.add(new Integer[] {sourceShapes.size()-1, -1});
-				} else {
-					footPrintshapes.add(shape);
-					allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
-				}
+				storeShape(shapeBuilder.buildShape(i, rowList, null));
 			}
 		}
 		
@@ -126,6 +109,16 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 			AladinLiteWrapper.getAladinLite().addFootprintToOverlay(footPrintOverlay, shape.getJsObject());
 		}
 	}
+
+    private void storeShape(Shape shape) {
+        if(shape instanceof SourceShape) {
+        	sourceShapes.add(shape);
+        	allShapesIndexes.add(new Integer[] {sourceShapes.size()-1, -1});
+        } else {
+        	footPrintshapes.add(shape);
+        	allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
+        }
+    }
 	
 	@Override
 	public void selectShapes(Set<ShapeId> shapesToSelect) {
@@ -264,7 +257,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	
 	@Override
     public String getShapeType() {
-        return (sourceShapes.size() != 0) ? this.shapeType : null;
+        return (sourceShapes.size() != 0) ? this.shapeType.toString() : null;
     }
 
 	@Override

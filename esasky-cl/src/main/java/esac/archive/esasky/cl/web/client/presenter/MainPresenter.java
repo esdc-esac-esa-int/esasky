@@ -5,18 +5,19 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEventHandler;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Source;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -24,6 +25,7 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
+import esac.archive.esasky.cl.web.client.event.AddTableEvent;
 import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
 import esac.archive.esasky.cl.web.client.event.AuthorSearchEventHandler;
 import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
@@ -36,7 +38,6 @@ import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEventHandler;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.PublicationDescriptorLoadObserver;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -46,14 +47,11 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
 
 /**
@@ -166,52 +164,40 @@ public class MainPresenter {
 
     public final void bind() {
 
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE,
-                new AladinLiteShapeHoverStopEventHandler() {
-
-            @Override
-            public void onShapeHoverStopEvent(AladinLiteShapeHoverStopEvent hoverEvent) {
-                
-                if (Modules.publicationsModule && hoverEvent.getOverlayName().startsWith(descriptorRepo.getPublicationsDescriptors()
-                        .getDescriptors().get(0).getMission())) {
-                    // Is a publication shape
-                    MainPresenter.this.getAllSkyPresenter().hideTooltip();
-                }
-            }
-        });
-        
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
                 new AladinLiteShapeSelectedEventHandler() {
 
             @Override
             public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
+                entityRepo.getEntity(selectEvent.getOverlayName()).onShapeSelection(selectEvent.getShape());
+            }
+        });
+        
+        CommonEventBus.getEventBus().addHandler(AladinLiteShapeDeselectedEvent.TYPE,
+                new AladinLiteShapeDeselectedEventHandler() {
+            
+            @Override
+            public void onShapeDeselectionEvent(AladinLiteShapeDeselectedEvent selectEvent) {
+                entityRepo.getEntity(selectEvent.getOverlayName()).onShapeDeselection(selectEvent.getShape());
+            }
+        });
+        
+        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStartEvent.TYPE,
+                new AladinLiteShapeHoverStartEventHandler() {
+            
+            @Override
+            public void onShapeHoverStartEvent(AladinLiteShapeHoverStartEvent hoverEvent) {
+                entityRepo.getEntity(hoverEvent.getOverlayName()).onShapeHover(hoverEvent.getShape());
+                
+            }
+        });
+        
+        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE,
+                new AladinLiteShapeHoverStopEventHandler() {
 
-                if (Modules.publicationsModule && selectEvent.getOverlayName().equals(EntityContext.PUBLICATIONS.toString())) {
-                    
-                    // Is a publication shape
-                    Shape shapeJs = selectEvent.getShapeobj();
-                    if (shapeJs instanceof Source) {
-                        final Source sourceJs = (Source) shapeJs;
-                        final String sourceName = sourceJs.getDataDetailsByKey(SourceConstant.SOURCE_NAME);
-                        showPublicationsTabPanel(sourceName, false);
-                    }
-                    
-                } else {
-
-                    // Selects a table row
-                    ITablePanel tableContainingShape = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
-                    
-                    if (tableContainingShape != null) {
-                        
-                        ITablePanel selectedTabPanel = resultsPresenter.getTabPanel().getSelectedWidget();
-                        if (selectedTabPanel == null 
-                                || !selectedTabPanel.getEsaSkyUniqID().equals(tableContainingShape.getEsaSkyUniqID())) {
-                            resultsPresenter.getTabPanel().selectTab(tableContainingShape);
-                        }
-                        
-                        tableContainingShape.selectRow(selectEvent.getShapeId());
-                    }
-                }
+            @Override
+            public void onShapeHoverStopEvent(AladinLiteShapeHoverStopEvent hoverEvent) {
+                entityRepo.getEntity(hoverEvent.getOverlayName()).onShapeUnhover(hoverEvent.getShape());
             }
         });
 
@@ -279,39 +265,6 @@ public class MainPresenter {
     
     public EntityRepository getEntityRepository(){
     	return entityRepo;
-    }
-    
-    private final void showPublicationsTabPanel (String id, boolean byAuthor) {
-        
-    	if(entityRepo.getPublications() != null) {
-    		entityRepo.getPublications().deselectAllShapes();
-    	}
-        //Creates a new TablePanel or selects the existing one
-        final ITablePanel tabPanel = resultsPresenter.getTabPanel().getAbstractTablePanelFromId(id);
-        if (tabPanel == null) {
-            Log.debug("[MainPresenter][showPublicationsTabPanel] id: " + id);
-            PublicationsBySourceEntity pubBySourceEntity = entityRepo.createPublicationsBySourceEntity(id, byAuthor);
-            
-            if (pubBySourceEntity.getSourceMetadata() != null) {
-                //Draws the source for this publication list, only valid if not by author
-                pubBySourceEntity.addShapes(pubBySourceEntity.getSourceMetadata(), null);
-            }
-            
-            resultsPresenter.showPublications(id, pubBySourceEntity, byAuthor, new IPreviewClickedHandler() {
-                @Override
-                public void onPreviewClicked(String id) {
-                    final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);   
-                    getCtrlTBPresenter().showPublicationInfo(id,
-                            descriptor.getArchiveURL(),
-                            descriptor.getArchiveProductURI(),
-                            descriptor.getAdsAuthorSeparator(),
-                            descriptor.getAdsAuthorUrl(),
-                            descriptor.getAdsAuthorUrlReplace());
-                }
-            });
-        } else {
-            resultsPresenter.getTabPanel().selectTab(tabPanel);
-        }     
     }
     
     public void coneSearch(IDescriptor descriptor, SkyViewPosition conePos) {
@@ -480,20 +433,13 @@ public class MainPresenter {
  				descriptor.getAdsAuthorSeparator(),
  				descriptor.getAdsAuthorUrl(),
  				descriptor.getAdsAuthorUrlReplace());
- 		showPublicationsTabPanel(author, true);
+ 		CommonEventBus.getEventBus().fireEvent(new AddTableEvent(entityRepo.createPublicationsByAuthorEntity(author)));
  		
  		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AuthorInURL, author);
      }
      
      private void loadBibcodeInformaitonFromSimbad(String bibcode) {
-     	final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-     	getCtrlTBPresenter().showPublicationInfo(bibcode,
-     			descriptor.getArchiveURL(),
-     			descriptor.getArchiveProductURI(),
-     			descriptor.getAdsAuthorSeparator(),
-     			descriptor.getAdsAuthorUrl(),
-     			descriptor.getAdsAuthorUrlReplace());
-     	
+     	getCtrlTBPresenter().showPublicationInfo(bibcode);
      	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
      }
     

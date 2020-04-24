@@ -45,8 +45,6 @@ public class AladinLiteWrapper {
     String planningOverlaySelectedInstrumentName = "PlanningSelectedInstrument";
     String planningOverlaySelectedDetectorName = "PlanningSelectedDetector";
 
-    private JavaScriptObject publicationCatalogue;
-    
     JavaScriptObject planningOverlay = null;
     JavaScriptObject planningOverlaySelectedInstrument = null;
 
@@ -225,14 +223,9 @@ public class AladinLiteWrapper {
         aladinLite.newApi_addSourceToCatalogue(getFutureSelectedDetectorCatalogue(), source);
     }
     
-    public JavaScriptObject getPublicationCatalogue() {
-        return this.publicationCatalogue;
-    }
     
     public JavaScriptObject createPublicationCatalogue(String catalogName, String color, Map<String, Object> details) {
-        this.publicationCatalogue = aladinLite.createCatalogWithDetails(
-                catalogName, 14, color, details);
-        return this.publicationCatalogue;
+        return aladinLite.createCatalogWithDetails(catalogName, 14, color, details);
     }
 
     public JavaScriptObject getPlanningOverlaySelectedInstrument() {

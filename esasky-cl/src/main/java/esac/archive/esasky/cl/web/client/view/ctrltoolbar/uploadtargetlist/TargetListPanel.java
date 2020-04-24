@@ -466,7 +466,7 @@ public class TargetListPanel extends DialogBox {
         }
     }
 
-    private void addPolygons(ESASkySearchResult currEntity, Integer idx) {
+    private void addPolygons(ESASkySearchResult currEntity, Integer id) {
 
         Map<String, String> details = new HashMap<String, String>();
 
@@ -474,7 +474,7 @@ public class TargetListPanel extends DialogBox {
         details.put(
                 MultiTargetSourceConstants.CATALOGUE_NAME,
                 TextMgr.getInstance().getText("uploadTargetListPanel_MultiTargetCatalog"));
-        details.put(MultiTargetSourceConstants.SOURCE_IDX, idx.toString());
+        details.put(MultiTargetSourceConstants.SOURCE_ID, id.toString());
         String targetName;
         if (currEntity.getUserInputType() == SearchInputType.BIBCODE
                 || currEntity.getUserInputType() == SearchInputType.AUTHOR) {

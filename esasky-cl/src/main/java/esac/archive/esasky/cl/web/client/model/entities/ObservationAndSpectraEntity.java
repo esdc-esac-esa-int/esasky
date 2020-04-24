@@ -58,24 +58,24 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     }
     
     @Override
-    public void fetchData(final ITablePanel tablePanel) {
+    public void fetchData() {
         
     	if(!getCountStatus().hasMoved(descriptor.getMission())) {
-        	fetchData2(tablePanel);
+        	fetchData2();
         	
         } else {
         	
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
-					fetchData2(tablePanel);				
+					fetchData2();				
 					getCountStatus().unregisterObserver(this);
 				}
 			});
         }
     }
     
-    private void fetchData2(ITablePanel tablePanel) {
+    private void fetchData2() {
     	int mocLimit = descriptor.getShapeLimit();
     	int count = getCountStatus().getCount(descriptor.getMission());
     	
@@ -87,17 +87,17 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     		//defaultEntity.setShapeBuilder(new MocBuilder());
     		//getMocMetadata(tablePanel);
     		//defaultEntity.fetchHeaders(tablePanel);
-    		mocEntity.setTablePanel(tablePanel);
+//    		mocEntity.setTablePanel(tablePanel);
     		mocEntity.refreshMOC();
     	}else {
     		defaultEntity.setShapeBuilder(shapeBuilder);
-    		defaultEntity.fetchData(tablePanel);
+    		defaultEntity.fetchData();
     	}
     }
     
 
     
-    private void getMocMetadata(final ITablePanel tablePanel) {
+    private void getMocMetadata() {
         Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
 
 //        tablePanel.clearTable();
@@ -120,7 +120,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 //            Log.error("[getMocMetadata] Error fetching JSON data from server");
 //        }
 
-        tablePanel.setADQLQueryUrl("");
+//        tablePanel.setADQLQueryUrl("");
     }
 
 	@Override

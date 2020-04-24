@@ -93,8 +93,7 @@ public class EsaSkyWebConstants {
     public static final int MAX_SHAPES_FOR_MOBILE = 200;
     
     public enum SourceType {
-        MULTITARGET("Multitarget"), CATALOGUE("Catalogue"), PUBLICATION("Publication"), SURVEY(
-                "Survey"), PLANNING("Planning");
+        MULTITARGET("Multitarget"), PLANNING("Planning");
 
         String sourceType;
 

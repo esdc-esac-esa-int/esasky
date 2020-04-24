@@ -15,7 +15,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -36,8 +36,8 @@ public class MultiTargetTooltip extends Tooltip {
     private Label closestIdName = new Label();
     private Label closestIdDescription = new Label(TextMgr.getInstance().getText("MultiTargetTooltip_nearestSimbadId") + ":");
 
-    public MultiTargetTooltip(final Shape source, int left, int top) {
-        super(left, top, source);
+    public MultiTargetTooltip(final AladinShape source) {
+        super(source);
         this.source = source;
     }
 
@@ -194,6 +194,10 @@ public class MultiTargetTooltip extends Tooltip {
     private void setNearbyTarget(String targetName) {
     	loadingSpinner.setVisible(false);
     	closestIdName.setText(targetName);
+    	if(targetName.toLowerCase().equals(source.getSourceName().toLowerCase())) {
+    	    closestIdDescription.setVisible(false);
+    	    closestIdName.setVisible(false);
+    	}
     }
     
     private void setNoNearbyTargetFoundInSimbadText() {

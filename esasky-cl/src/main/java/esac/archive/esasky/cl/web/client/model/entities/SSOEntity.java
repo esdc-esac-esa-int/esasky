@@ -15,7 +15,6 @@ import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class SSOEntity extends ExtTapEntity {
     
@@ -27,8 +26,8 @@ public class SSOEntity extends ExtTapEntity {
 	}
 
 	@Override
-	public void fetchData(final ITablePanel tablePanel) {
-	    super.fetchDataWithoutMOC(tablePanel);
+	public void fetchData() {
+	    super.fetchDataWithoutMOC();
 		getSSOPolyline();
 	}
 

@@ -16,7 +16,6 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 
-import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -24,6 +23,7 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyResultMOC;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -31,7 +31,6 @@ import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
-import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -122,12 +121,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
     	
     
-    @Override
-    public String getMetadataAdql() {
-    	return null;
-    }
-    
-    
     public void updateCountMap() {
     	countMap = new HashMap<Integer, Map<Long, Integer>>();
     	
@@ -136,11 +129,11 @@ public class MOCEntity implements GeneralEntityInterface {
 //    	int maxOrder = MocRepository.getMaxOrderFromFoV();
     	
 //		moc.populateCountMap(countMap, index, minOrder, maxOrder);
-		moc.populateCountMapAll(countMap);
+//		moc.populateCountMapAll(countMap);
     	
     }
     
-    public String MOCClicked(final String orders, final String ipixels, int screenX, int screenY) {
+    public String MOCClicked(final String orders, final String ipixels) {
     	Log.debug("[MOCEntity] MOCClicked " + orders + ", " + ipixels );
     	String tooltipText = "";
     	String[] orderArray = orders.split(",");
@@ -164,7 +157,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	}
 		return tooltipText;
 		
-//		MOCTooltip tooltip = new MOCTooltip(screenX, screenY);
+//		MOCTooltip tooltip = new MOCTooltip();
 //		tooltip.registerObserver(new MOCTooltipObserver() {
 //			
 //			@Override
@@ -211,7 +204,7 @@ public class MOCEntity implements GeneralEntityInterface {
 //    	
 //    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 
-    	parentEntity.fetchDataWithoutMOC(tablePanel);
+    	parentEntity.fetchDataWithoutMOC();
     	shouldBeShown = false;
     	clearAll();
     	updateOverlay();
@@ -888,19 +881,19 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public void fetchData(ITablePanel tablePanel) {
+	public void fetchData() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
+	public void coneSearch(SkyViewPosition conePos) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void refreshData(ITablePanel tablePanel) {
+	public void refreshData() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -912,7 +905,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+	public void fetchDataWithoutMOC() {
 		
 	}
 
@@ -923,6 +916,36 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
     public void setShapeType(String shapeType) {
+    }
+
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeDeselection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeHover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeUnhover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void select() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

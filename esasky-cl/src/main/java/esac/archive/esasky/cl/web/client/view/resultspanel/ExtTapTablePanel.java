@@ -34,9 +34,9 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 		this.entity = inputentity;
 		initView();
 
-		String sourceLimitDescription = entity.getSourceLimitDescription();
+//		String sourceLimitDescription = entity.getSourceLimitDescription();
 
-		notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", entity.getDescriptor().getShapeLimit() + ""));
+//		notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", entity.getDescriptor().getShapeLimit() + ""));
 
 		addHoverFromDataPanelHandler();
 	}

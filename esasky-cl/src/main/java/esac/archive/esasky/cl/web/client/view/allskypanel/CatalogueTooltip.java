@@ -2,12 +2,12 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 
 public class CatalogueTooltip extends Tooltip {
 
-    public CatalogueTooltip(final Shape source, int left, int top) {
-        super(left, top, source);
+    public CatalogueTooltip(final AladinShape source) {
+        super(source);
     }
 
     protected void fillContent(String cooFrame) {

@@ -54,7 +54,6 @@ import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMa
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
-import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPSingleCountService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -463,15 +462,6 @@ public class DescriptorRepository {
 				}
 
 				Log.debug("[DescriptorRepository] Total publications entries: " + publicationsDescriptors.getTotal());
-				if (GUISessionStatus.getIsInScienceMode()) {
-					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
-						updateCount4Publications();
-					} else {
-						checkDoCountAll();
-					}
-				} else {
-					GUISessionStatus.setDoCountOnEnteringScienceMode();
-				}
 			}
 
 			@Override
@@ -486,7 +476,7 @@ public class DescriptorRepository {
 
 	private void checkDoCountAll() {
 		if (EsaSkyWebConstants.SINGLE_COUNT_ENABLED && catDescriptorsIsReady && obsDescriptorsIsReady
-				&& spectraDescriptorsIsReady && publicationsDescriptorsIsReady
+				&& spectraDescriptorsIsReady
 				&& isInitialPositionDescribedInCoordinates) {
 			doCountAll();
 		}
@@ -511,9 +501,6 @@ public class DescriptorRepository {
 				updateCount4Spectras();
 			}
 
-			if (Modules.publicationsModule) {
-				updateCount4Publications();
-			}
 			if(isExtTapOpen) {
 				updateCount4AllExtTaps();
 			}
@@ -582,31 +569,13 @@ public class DescriptorRepository {
 		}
 	}
 
-	private void updateCount4Publications() {
-		final CountStatus cs = publicationsDescriptors.getCountStatus();
-		for (PublicationsDescriptor currPub : publicationsDescriptors.getDescriptors()) {
-			doUpdateCount(currPub, cs);
-		}
-	}
-
 	private final void doUpdateCount(IDescriptor descriptor, CountStatus cs) {
 
 		Log.debug("[doUpdateCount][" + descriptor.getGuiShortName() + "]");
 
 		String url;
 
-		if (descriptor instanceof PublicationsDescriptor) {
-			if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_PUB_COUNT_FROM_SIMBAD) {
-
-				url = TAPPublicationsService.getInstance()
-						.getCountQueryForSIMBAD(AladinLiteWrapper.getAladinLite());
-			} else {
-
-				url = TAPPublicationsService.getInstance().getCount(AladinLiteWrapper.getAladinLite(),
-						descriptor);
-			}
-
-		} else if (descriptor instanceof CatalogDescriptor) {
+		if (descriptor instanceof CatalogDescriptor) {
 
 			url = TAPCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
 

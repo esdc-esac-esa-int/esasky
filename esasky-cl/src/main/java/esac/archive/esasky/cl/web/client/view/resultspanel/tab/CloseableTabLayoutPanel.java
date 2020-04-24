@@ -405,6 +405,11 @@ public class CloseableTabLayoutPanel extends Composite {
 			public void numberOfShownRowsChanged(int numberOfShownRows) {
 				ensureCorrectButtonClickability();
 			}
+
+            @Override
+            public void onSelection(ITablePanel selectedTablePanel) {
+                selectTab(selectedTablePanel);
+            }
         });
         this.tabLayout.add(tabPanel.getWidget(), tab);
 	    updateStyleOnTab(getWidgetIndex(tabPanel.getWidget()));

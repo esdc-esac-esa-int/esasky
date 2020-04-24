@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
@@ -342,13 +343,13 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     }
 
     @Override
-    public void fetchData(ITablePanel tablePanel) {
-        defaultEntity.fetchData(tablePanel);
+    public void fetchData() {
+        defaultEntity.fetchData();
     }
 
     @Override
-    public void fetchDataWithoutMOC(ITablePanel tablePanel) {
-        defaultEntity.fetchData(tablePanel);
+    public void fetchDataWithoutMOC() {
+        defaultEntity.fetchData();
     }
 
     @Override
@@ -376,7 +377,7 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
         return defaultEntity.isCustomizable();
     }
 
-    @Override
+//    @Override
     public String getMetadataAdql() {
         return defaultEntity.getMetadataAdql();
     }
@@ -398,13 +399,13 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     }
 
     @Override 
-    public void refreshData(ITablePanel tablePanel) {
-        fetchData(tablePanel);
+    public void refreshData() {
+        fetchData();
     }
 
     @Override
-    public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
-        defaultEntity.coneSearch(tablePanel, conePos);
+    public void coneSearch(SkyViewPosition conePos) {
+        defaultEntity.coneSearch(conePos);
     }
     
     @Override
@@ -415,5 +416,35 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
     @Override
     public void setShapeType(String shapeType) {
         defaultEntity.setShapeType(shapeType);
+    }
+    
+
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeDeselection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeHover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeUnhover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void select() {
+        // TODO Auto-generated method stub
+        
     }
 }

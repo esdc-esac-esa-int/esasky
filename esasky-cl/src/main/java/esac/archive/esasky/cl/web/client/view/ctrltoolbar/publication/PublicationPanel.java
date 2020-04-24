@@ -160,7 +160,7 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 				TextMgr.getInstance().getText("publicationPanel_truncationValueTooltip"), TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast"));
 		mostOrLeastSwitch.addStyleName("publicationPanel__mostOrLeastContainer");
 		FlowPanel sourceLimitContainer = new FlowPanel();
-		String sourceLimitDescription = TextMgr.getInstance().getText("publicationSourceLimitDescription");
+		String sourceLimitDescription = TextMgr.getInstance().getText("publicationShapeLimitDescription");
 		Label gettingTheFirstLabel;
 		Label sourcesBasedOn;
 		Label numberOfPublications;

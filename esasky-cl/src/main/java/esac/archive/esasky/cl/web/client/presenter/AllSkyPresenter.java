@@ -14,13 +14,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -28,6 +24,8 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
+import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEventHandler;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEventHandler;
@@ -39,6 +37,9 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
+import esac.archive.esasky.cl.web.client.view.allskypanel.MultiTargetTooltip;
+import esac.archive.esasky.cl.web.client.view.allskypanel.PlanningDetectorCenterTooltip;
+import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
 
 /**
@@ -64,7 +65,7 @@ public class AllSkyPresenter {
 
         VerticalPanel getAllSkyContainerPanel();
 
-        void showSourceTooltip(Shape aladinObj);
+        void showSourceTooltip(Tooltip tooltip);
 
         HasClickHandlers getZoomOutClickHandler();
 
@@ -124,52 +125,23 @@ public class AllSkyPresenter {
 			
 			@Override
 			public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
-				Shape obj = selectEvent.getShapeobj();
-				if ((obj != null)
-						&& (obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.CATALOGUE.toString())
-								|| obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.MULTITARGET.toString())
-								|| obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.SURVEY.toString())
-								|| obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PLANNING.toString())
-								)
-						){
-					AllSkyPresenter.this.view.showSourceTooltip(obj);
-					Log.debug(obj.toFormattedString());
-				}
-				
-			}
-        });
-
-        /*
-         * On mouse hover on top of a source show a tooltip for publications sources
-         */
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStartEvent.TYPE, new AladinLiteShapeHoverStartEventHandler() {
-			
-			@Override
-			public void onShapeHoverStartEvent(AladinLiteShapeHoverStartEvent hoverEvent) {
-				final Shape obj = hoverEvent.getShapeobj();
+				AladinShape obj = selectEvent.getShape();
 				if (obj != null) {
-					if (obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PUBLICATION.toString())) {
-						try {
-							AllSkyPresenter.this.view.showSourceTooltip(obj);
-						} catch(Exception e) {
-							//TODO Temporary fix for 3.2. We are receiving incorrect hover event when sources are behind hips
-							Log.warn("Failed to show source tooltip on hover");
-						}
-					}
+				    if(obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.MULTITARGET.toString())) {
+				        AllSkyPresenter.this.view.showSourceTooltip(new MultiTargetTooltip(obj));
+				    } else if(obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PLANNING.toString())) {
+				        AllSkyPresenter.this.view.showSourceTooltip(new PlanningDetectorCenterTooltip(obj));
+				    }
 				}
 			}
         });
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE, new AladinLiteShapeHoverStopEventHandler() {
-        	
-        	@Override
-        	public void onShapeHoverStopEvent(AladinLiteShapeHoverStopEvent hoverEvent) {
-        		final Shape obj = hoverEvent.getShapeobj();
-        		if (obj != null) {
-        			if (obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PUBLICATION.toString())) {
-        				AllSkyPresenter.this.view.hideTooltip();
-        			}
-        		}
-        	}
+        
+        CommonEventBus.getEventBus().addHandler(AddShapeTooltipEvent.TYPE, new AddShapeTooltipEventHandler() {
+            
+            @Override
+            public void onEvent(AddShapeTooltipEvent event) {
+              AllSkyPresenter.this.view.showSourceTooltip(event.getTooltip());
+            }
         });
         
         // Click on + (ZoomIn) button

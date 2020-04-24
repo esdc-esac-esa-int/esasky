@@ -16,10 +16,13 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
+import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -38,6 +41,8 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
+import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
+import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
@@ -49,7 +54,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     public interface SecondaryShapeAdder{
         void createSpecializedOverlayShape(Map<String, Object> details);
-        void addSecondaryShape(GeneralJavaScriptObject row, String ra, String dec, Map<String, String> details);
+        void addSecondaryShape(GeneralJavaScriptObject rowData, String ra, String dec, Map<String, String> details);
     }
 
     protected DefaultEntity defaultEntity;
@@ -59,6 +64,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
     private MOCEntity mocEntity;
     private AbstractTAPService metadataService;
     private SecondaryShapeAdder secondaryShapeAdder;
+    protected ITablePanel tablePanel;
+    protected Tooltip tooltip;
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
@@ -74,13 +81,13 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, String shapeType) {
+            AbstractTAPService metadataService, int shapeSize, Object shapeType) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null);
     }
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, String shapeType, SecondaryShapeAdder secondaryShapeAdder) {
+            AbstractTAPService metadataService, int shapeSize, Object shapeType, SecondaryShapeAdder secondaryShapeAdder) {
         this.metadataService = metadataService;
         this.descriptor = descriptor;
         this.secondaryShapeAdder = secondaryShapeAdder;
@@ -108,10 +115,10 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
         @Override
-        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
-            String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
+        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData) {
+            String stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
-                return catalogBuilder(rowId, row);
+                return catalogBuilder(rowId, rowData);
             }
 
             stcs = makeSureSTCSHasFrame(stcs);
@@ -124,10 +131,10 @@ public class ExtTapEntity implements GeneralEntityInterface {
         }
     };
 
-    public SourceShape catalogBuilder(int shapeId, GeneralJavaScriptObject row) {
-        String ra = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapRaColumn());
-        String dec = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapDecColumn());
-        String sourceName = row.invokeFunction("getData").getStringProperty(getDescriptor().getUniqueIdentifierField());
+    public SourceShape catalogBuilder(int shapeId, GeneralJavaScriptObject rowData) {
+        String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
+        String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+        String sourceName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
 
         SourceShape mySource = new SourceShape();
         mySource.setShapeId(shapeId);
@@ -140,9 +147,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
         details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
 
-        details.put(EsaSkyWebConstants.SOURCE_TYPE,EsaSkyWebConstants.SourceType.CATALOGUE.toString());
         details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
-        details.put(SourceConstant.IDX, Integer.toString(shapeId));
+        details.put(SourceConstant.ID, Integer.toString(shapeId));
 
         if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
             details.put(SourceConstant.EXTRA_PARAMS, null);
@@ -156,8 +162,8 @@ public class ExtTapEntity implements GeneralEntityInterface {
                 MetadataDescriptor cmd = this.getDescriptor()
                         .getMetadataDescriptorByTapName(currTapName);
                 Integer precision = null;
-                String value = row.invokeFunction("getData").getStringProperty(currTapName);
-                if (cmd.getMaxDecimalDigits() != null
+                String value = rowData.getStringProperty(currTapName);
+                if (cmd != null && cmd.getMaxDecimalDigits() != null
                         && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
                         .getType() == ColumnType.DOUBLE)) {
                     StringBuilder sb = new StringBuilder();
@@ -177,7 +183,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         }
 
         if(secondaryShapeAdder != null) {
-            secondaryShapeAdder.addSecondaryShape(row, ra, dec, details);
+            secondaryShapeAdder.addSecondaryShape(rowData, ra, dec, details);
         }
 
         mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
@@ -201,11 +207,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
 
-    @Override
-    public String getMetadataAdql() {
-        return metadataService.getMetadataAdql(getDescriptor());
-    }
-
     public boolean hasReachedFovLimit() {
         return descriptor.getFovLimit() > 0 && CoordinateUtils.getCenterCoordinateInJ2000().getFov() > descriptor.getFovLimit();
     }
@@ -224,21 +225,21 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
 
     @Override
-    public void fetchData(final ITablePanel tablePanel) {
+    public void fetchData() {
         if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() == 0 ) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
-	                fetchShapesAndMetadata(tablePanel);
+	                fetchShapesAndMetadata();
 					getCountStatus().unregisterObserver(this);
 				}
 			});
         } else {
-            fetchShapesAndMetadata(tablePanel);
+            fetchShapesAndMetadata();
         }
     }
     
-    private void fetchShapesAndMetadata(final ITablePanel tablePanel) {
+    private void fetchShapesAndMetadata() {
         clearAll();
         int shapeLimit = descriptor.getShapeLimit();
         if (shapeLimit > 0 && DeviceUtils.isMobile()){
@@ -256,13 +257,13 @@ public class ExtTapEntity implements GeneralEntityInterface {
             Log.debug("Showing fov limit moc. FoVLimit = " + descriptor.getFovLimit());
             drawer = new MocDrawer(descriptor.getPrimaryColor());
             defaultEntity.setDrawer(drawer);
-            getMocMetadata(tablePanel);
+            getMocMetadata();
         } else {
-            fetchDataWithoutMOC(tablePanel);
+            fetchDataWithoutMOC();
         }
     }
     
-    private void updateCount(final ITablePanel tablePanel, OnComplete onComplete) {
+    private void updateCount(OnComplete onComplete) {
         String url = metadataService.getCount(AladinLiteWrapper.getAladinLite(), descriptor);
         tablePanel.clearTable();
         JSONUtils.getJSONFromUrl(url, new GetMissionDataCountRequestCallback(this, 
@@ -272,7 +273,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void fetchDataWithoutMOC(ITablePanel tablePanel) {
+    public void fetchDataWithoutMOC() {
         Log.debug("Showing real data");
         drawer = combinedDrawer;
         defaultEntity.setDrawer(drawer);
@@ -286,7 +287,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
         tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
     }
 
-    private void getMocMetadata(final ITablePanel tablePanel) {
+    private void getMocMetadata() {
 
         tablePanel.clearTable();
         String adql = metadataService.getMocAdql(getDescriptor(), "");
@@ -345,10 +346,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
     public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
         Log.debug("Count is " + getCountStatus().getCount(descriptor.getMission()));
         drawer.addShapes(rowList, javaScriptObject);
-    }
-
-    public String getSourceLimitDescription() {
-        return "sourceLimitDescription_EXTTAP";
     }
 
     @Override
@@ -524,10 +521,11 @@ public class ExtTapEntity implements GeneralEntityInterface {
     @Override
     public ITablePanel createTablePanel() {
         if(Modules.useTabulator) {
-            return new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+            tablePanel = new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
         } else {
-            return new ExtTapTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+            tablePanel = new ExtTapTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
         }
+        return tablePanel;
     }
 
     @Override
@@ -551,18 +549,18 @@ public class ExtTapEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void refreshData(ITablePanel tablePanel) {
-        fetchData(tablePanel);
+    public void refreshData() {
+        fetchData();
     }
 
     @Override
-    public void coneSearch(final ITablePanel tablePanel, final SkyViewPosition conePos) {
+    public void coneSearch(final SkyViewPosition conePos) {
         if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() ==  0 ) {
-            updateCount(tablePanel, new GetMissionDataCountRequestCallback.OnComplete() {
+            updateCount(new GetMissionDataCountRequestCallback.OnComplete() {
 
                 @Override
                 public void onComplete() {
-                    defaultEntity.coneSearch(tablePanel, conePos);
+                    defaultEntity.coneSearch(conePos);
                 }
             });
         } 
@@ -620,6 +618,40 @@ public class ExtTapEntity implements GeneralEntityInterface {
     @Override
     public void setShapeType(String shapeType) {
         defaultEntity.setShapeType(shapeType);
+    }
+    
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+        select();
+        tablePanel.selectRow(new Integer(shape.getId()));
+        if(shape.getRa() != null && shape.getDec() != null) {
+            tooltip = new CatalogueTooltip(shape);
+            CommonEventBus.getEventBus().fireEvent(new AddShapeTooltipEvent(tooltip));
+        }
+    }
+    
+    @Override
+    public void onShapeDeselection(AladinShape shape) {
+        tablePanel.deselectRow(new Integer(shape.getId()));
+        if(tooltip != null) {
+            tooltip.removeFromParent();
+            tooltip = null;
+        }
+    }
+
+    @Override
+    public void onShapeHover(AladinShape shape) {
+        tablePanel.hoverStartRow(new Integer(shape.getId()));
+    }
+
+    @Override
+    public void onShapeUnhover(AladinShape shape) {
+        tablePanel.hoverStopRow(new Integer(shape.getId()));
+    }
+
+    @Override
+    public void select() {
+        tablePanel.selectTablePanel();
     }
 
 }

@@ -12,8 +12,8 @@ public class MOCTooltip extends Tooltip {
 
 	LinkedList<MOCTooltipObserver> observers = new LinkedList<>();
 	
-    public MOCTooltip(int left, int top) {
-        super(left, top, null, false);
+    public MOCTooltip() {
+        super(null, false);
         
         EsaSkyStringButton splitButton = new EsaSkyStringButton(TextMgr.getInstance().getText("mocDialog_split"));
         splitButton.setMediumStyle();

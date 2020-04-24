@@ -15,6 +15,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
@@ -87,7 +88,7 @@ public class CatalogEntity implements GeneralEntityInterface{
         return descriptor;
     }
 
-    @Override
+//    @Override
     public String getMetadataAdql() {
        return defaultEntity.getMetadataAdql();
     }
@@ -342,10 +343,8 @@ public class CatalogEntity implements GeneralEntityInterface{
 	
 	        details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
 	
-	        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-	                EsaSkyWebConstants.SourceType.CATALOGUE.toString());
 	        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
-	        details.put(SourceConstant.IDX, Integer.toString(shapeId));
+	        details.put(SourceConstant.ID, Integer.toString(shapeId));
 	
 	        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
 	            details.put(SourceConstant.EXTRA_PARAMS, null);
@@ -475,10 +474,10 @@ public class CatalogEntity implements GeneralEntityInterface{
 	
 	        details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
 	
-	        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-	                EsaSkyWebConstants.SourceType.CATALOGUE.toString());
+//	        details.put(EsaSkyWebConstants.SOURCE_TYPE,
+//	                EsaSkyWebConstants.SourceType.CATALOGUE.toString());
 	        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
-	        details.put(SourceConstant.IDX, Integer.toString(shapeId));
+	        details.put(SourceConstant.ID, Integer.toString(shapeId));
 	
 	        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
 	            details.put(SourceConstant.EXTRA_PARAMS, null);
@@ -595,7 +594,7 @@ public class CatalogEntity implements GeneralEntityInterface{
     }
 	
 	@Override
-    public void fetchData(final ITablePanel tablePanel) {
+    public void fetchData() {
 		int shapeLimit = descriptor.getShapeLimit();
 		int count = getCountStatus().getCount(descriptor.getMission());
     	
@@ -604,21 +603,21 @@ public class CatalogEntity implements GeneralEntityInterface{
     	}
     	
     	if (shapeLimit > 0 && count > shapeLimit) {
-    		defaultEntity.fetchHeaders(tablePanel);
-    		mocEntity.setTablePanel(tablePanel);
+//    		defaultEntity.fetchHeaders(tablePanel);
+//    		mocEntity.setTablePanel(tablePanel);
     		mocEntity.refreshMOC();
     	} else {
-    		defaultEntity.fetchData(tablePanel);
+    		defaultEntity.fetchData();
     	}
 	}
 	
-	public void fetchDataWithoutMOC(final ITablePanel tablePanel) {
-		defaultEntity.fetchData(tablePanel);
+	public void fetchDataWithoutMOC() {
+		defaultEntity.fetchData();
 	}
     
 	public void refreshData(final AbstractTablePanel tablePanel) {
 		clearAll();
-		mocEntity.fetchData(tablePanel);
+		mocEntity.fetchData();
 	}
 	
 	@Override
@@ -673,13 +672,13 @@ public class CatalogEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void coneSearch(ITablePanel tablePanel, SkyViewPosition conePos) {
-		defaultEntity.coneSearch(tablePanel, conePos);
+	public void coneSearch(SkyViewPosition conePos) {
+		defaultEntity.coneSearch(conePos);
 		
 	}
 	
 	@Override
-	public void refreshData(ITablePanel tablePanel) {
+	public void refreshData() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -736,5 +735,35 @@ public class CatalogEntity implements GeneralEntityInterface{
     @Override
     public void setShapeType(String shapeType) {
         defaultEntity.setShapeType(shapeType);
+    }
+
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeDeselection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeHover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeUnhover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void select() {
+        // TODO Auto-generated method stub
+        
     }
 }

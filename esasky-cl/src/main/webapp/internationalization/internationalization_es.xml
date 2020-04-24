@@ -535,9 +535,6 @@
 	<text key="PlanningDetectorCenterTooltip_referenceDEC">
 		DEC de referencia:
 	</text>
-	<text key="PublicationTooltip_BIBCOUNT">
-		N&#250;mero de publicaciones:
-	</text>
 	<text key="SoftX-ray">
 		Rayos X Blandos
 	</text>
@@ -646,7 +643,7 @@
 	<text key="PublicationsBySourceCallback_helpTitle">
 		Publicaciones
 	</text>
-	<text key="PublicationsBySourceCallback_helpDescription">
+	<text key="resultsPresenter_helpDescription_PUBLICATIONS_ADS PUB">
 		Publicaciones asociadas a esta fuente en SIMBAD, y
 		acceso a las fuentes de cada publicaci&#243;n.
 		&lt;br&gt;&lt;br&gt;
@@ -2049,10 +2046,6 @@
 	<text key="stylePanel_removeMedianCheckBox">
 		Sustraer la mediana del MP
 	</text>
-	<text key="sourceLimitDescription_EXTTAP">
-		Mostrando los primeros $sourceLimit$ resultados. Haga zoom para obtener todos los datos disponibles 
-		en una regi&#243;n m&#225;s peque&#241;a.
-	</text>
 	<text key="sourceLimitDescription">
 		Mostrando las primeras $sourceLimit$ fuentes,
 		ordenadas
@@ -2710,7 +2703,7 @@
 	<text key="publicationPanel_resetTooltip">
 		Restablecer l&#237;mite en el n&#250;mero de fuentes
 	</text>
-	<text key="publicationSourceLimitDescription">
+	<text key="publicationShapeLimitDescription">
 		Resultado limitado a las primeras $sourceLimit$ fuentes
 		con el $mostOrLeast$ n&#250;mero de publicaciones
 	</text>
@@ -3166,7 +3159,7 @@
 	<text key="Herschel_WavelengthRange">
 		Wavelength Range
 	</text>
-	<text key="PublicationTooltip_BIBCOUNT">
+	<text key="PublicationTooltip_bibcount">
 		Num. pub.:
 	</text>
 	<text key="3XMM_EPIC_ep_8_n_contrib">

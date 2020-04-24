@@ -3,7 +3,7 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
@@ -12,8 +12,8 @@ public class PlanningDetectorCenterTooltip extends Tooltip {
 
     private final String logPrefix = "[PlanningTooltip]";
 
-    public PlanningDetectorCenterTooltip(final Shape source, int left, int top) {
-        super(left, top, source, false);
+    public PlanningDetectorCenterTooltip(final AladinShape source) {
+        super(source, false);
     }
 
     @Override

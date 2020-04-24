@@ -1651,7 +1651,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 	
 	public void updateData() {
 		clearTable();
-		getEntity().fetchData(this);
+		getEntity().fetchData();
 	}
 	
 	private void afterForeignRowSelection(boolean gettingSelected, ShapeId changedRow) {

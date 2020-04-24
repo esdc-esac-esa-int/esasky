@@ -39,11 +39,11 @@ public class MocRepository {
 			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
 				String tooltipText = "";
 				for(MOCEntity entity : allEntities){
-					tooltipText += entity.MOCClicked(event.getOrders(), event.getIpixels(), event.getScreenX(), event.getScreenY());
+					tooltipText += entity.MOCClicked(event.getOrders(), event.getIpixels());
 				}
 
 				if(tooltipText != "") {
-					MOCTooltip tooltip = new MOCTooltip(event.getScreenX(), event.getScreenY());
+					MOCTooltip tooltip = new MOCTooltip();
 					tooltip.show(tooltipText);
 				}
 				

@@ -19,12 +19,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
@@ -35,7 +29,8 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
-import esac.archive.esasky.cl.web.client.callback.PublicationsBySourceCallback;
+import esac.archive.esasky.cl.web.client.event.AddTableEvent;
+import esac.archive.esasky.cl.web.client.event.AddTableEventHandler;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ExportCSVEvent;
 import esac.archive.esasky.cl.web.client.event.ExportCSVEventHandler;
@@ -56,16 +51,13 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.converter.TapToMmiDataConverter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
@@ -130,36 +122,6 @@ public class ResultsPresenter implements ICountRequestHandler {
                     }
         });
         
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeDeselectedEvent.TYPE,
-                new AladinLiteShapeDeselectedEventHandler() {
-
-            @Override
-            public void onShapeDeselectionEvent(AladinLiteShapeDeselectedEvent selectEvent) {
-
-                ITablePanel tableContainingShape = view.getTabPanel().getAbstractTablePanelFromId(selectEvent
-                        .getOverlayName());
-
-                if (tableContainingShape != null) {
-                    tableContainingShape.deselectRow(selectEvent.getShapeId());
-                }
-            }
-        });
-
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStartEvent.TYPE,
-                new AladinLiteShapeHoverStartEventHandler() {
-
-            @Override
-            public void onShapeHoverStartEvent(AladinLiteShapeHoverStartEvent hoverEvent) {
-
-                ITablePanel tablePanel = view
-                        .getTabPanel().getAbstractTablePanelFromId(hoverEvent.getOverlayName());
-
-                if (tablePanel != null) {
-                    tablePanel.hoverStartRow(hoverEvent.getShapeId());
-                }    
-            }
-        });
-        
         // Send Table to Event
         CommonEventBus.getEventBus().addHandler(SendTableToEvent.TYPE,
                 new SendTableToEventHandler() {
@@ -209,23 +171,14 @@ public class ResultsPresenter implements ICountRequestHandler {
             }
         });
         
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE,
-                new AladinLiteShapeHoverStopEventHandler() {
-
+      CommonEventBus.getEventBus().addHandler(AddTableEvent.TYPE,
+          new AddTableEventHandler() {
+    
             @Override
-            public void onShapeHoverStopEvent(AladinLiteShapeHoverStopEvent hoverEvent) {
-                
-                if (!Modules.publicationsModule || !hoverEvent.getOverlayName().startsWith(descriptorRepo.getPublicationsDescriptors()
-                        .getDescriptors().get(0).getMission())) {
-                    // Deselects a table row
-                    ITablePanel tablePanel = view.getTabPanel().getAbstractTablePanelFromId(
-                                    hoverEvent.getOverlayName());
-                    if (tablePanel != null) {
-                        tablePanel.hoverStopRow(hoverEvent.getShapeId());
-                    }
-                }
+            public void onEvent(AddTableEvent event) {
+                getMetadata(event.getEntity());
             }
-        });
+          });
     }
     
     public final CloseableTabLayoutPanel getTabPanel() {
@@ -254,18 +207,18 @@ public class ResultsPresenter implements ICountRequestHandler {
         final String debugPrefix = "[coneSearch][" + entity.getDescriptor().getGuiShortName() + "]";
         Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
         
-        final ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+        this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
                 TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
-        entity.coneSearch(panel, conePos);
+        entity.coneSearch(conePos);
     }
 
     protected final void getMetadata(final GeneralEntityInterface entity) {
         final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
         Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
 
-        final ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+        this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
                 TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
-        entity.fetchData(panel);
+        entity.fetchData();
     }
 
     private void sendToSamp() {
@@ -495,61 +448,6 @@ public class ResultsPresenter implements ICountRequestHandler {
     @Override
     public String getProgressIndicatorMessage() {
         return TextMgr.getInstance().getText("CountRequestCallback_countingAvailableData");
-    }
-    
-    // ------------------------
-    // ----- PUBLICATIONS
-    // ------------------------
-    
-    
-    public void showPublications(String id, final PublicationsBySourceEntity entity, boolean byAuthor, IPreviewClickedHandler previewClickedHandler) {
-        final String debugPrefix = "[showPublications][" + id + "]";
-        Log.debug(debugPrefix);
-
-        ITablePanel panel;
-        if(byAuthor) {
-        	panel = this.view.addResultsTab(entity,
-        			TextMgr.getInstance().getText("PublicationsByAuthorCallback_helpTitle"),
-        			TextMgr.getInstance().getText("PublicationsByAuthorCallback_helpDescription"));
-        	
-        } else {
-        	panel = this.view.addResultsTab(entity,
-        			TextMgr.getInstance().getText("PublicationsBySourceCallback_helpTitle"),
-        			TextMgr.getInstance().getText("PublicationsBySourceCallback_helpDescription"));
-        }
-        panel.setPreviewClickedHandler(previewClickedHandler);
-        
-        //SOME EXAMPLE QUERIES:
-        // DECODED: publications-by-source?SOURCE=UGC 12163&ROWS=10&ORDERBY=title asc&WHERE=title like '%high%' AND a.name like '%FAB%'
-        // ENCODED: publications-by-source?SOURCE=UGC%2012163&ROWS=10&ORDERBY=title%20asc&WHERE=title%20like%20%27%25high%25%27%20AND%20a.name%20like%20%27%25FAB%25%27
-        
-        // DECODED: publications-by-author?AUTHOR=MERIN B.&ROWS=10&ORDERBY=title desc&WHERE=title like '%ESASky%'
-        // ENCODED: publications-by-author?AUTHOR=MERIN%20B.&ROWS=10&ORDERBY=title%20asc&WHERE=title%20like%20%27%25ESASky%25%27
-        
-        //WHERE FIELDS: bibcode, title, name, pub, pubdate
-        //SORT FIELDS: bibcode, title, name, pub, pubdate -> default pubdate desc
-        //WHERE PARAM: &WHERE=whereClause
-        //SORT PARAM: &ORDERBY=orderClause
-        //WHERE and ORDERBY params are optional, don not pass them if not required
-        
-        String url;
-        if (!byAuthor) {
-            url = EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(id) + "&ROWS=" + entity.getDescriptor().getAdsPublicationsMaxRows();
-        } else {
-            url = EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL + "?AUTHOR=" + URL.encodeQueryString(id) + "&ROWS=" + entity.getDescriptor().getAdsPublicationsMaxRows();
-        }
-        Log.debug(debugPrefix + "Query [" + url + "]");
-        
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            builder.sendRequest(null, new PublicationsBySourceCallback(entity, panel,
-                    TextMgr.getInstance().getText("PublicationsBySourceCallback_retrievingPubsOf").replace("$NAME$", id), url));
-
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error(debugPrefix + "Error fetching JSON data from server");
-        }
-        
     }
     
     public void removeTab(String id) {

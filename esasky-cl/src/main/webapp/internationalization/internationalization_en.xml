@@ -92,7 +92,7 @@
 	<text key="PublicationsBySourceCallback_helpTitle">
 		Publications
 	</text>
-	<text key="PublicationsBySourceCallback_helpDescription">
+	<text key="resultsPresenter_helpDescription_PUBLICATIONS_ADS PUB">
 		Publications associated to this source in SIMBAD plus
 		access to sources for each of the publications.
 		&lt;br&gt;&lt;br&gt;
@@ -361,9 +361,6 @@
 	<!-- abstractTablePanel -->
 	<text key="tabulator_preview">
 		Preview
-	</text>
-	<text key="abstractTablePanel_sourceInPublication">
-		Sources in publication
 	</text>
 	<text key="abstractTablePanel_name">
 		Name
@@ -1730,9 +1727,6 @@
 	<text key="error">
 		error
 	</text>
-	<text key="sourceLimitDescription_EXTTAP">
-		Showing the first $sourceLimit$ results. Zoom in to get all data in a smaller region.
-	</text>
 	<text key="sourceLimitDescription">
 		Showing the first $sourceLimit$ sources ordered by
 		$orderBy$
@@ -2036,7 +2030,7 @@
 	<text key="Herschel_WavelengthRange">
 		Wavelength Range
 	</text>
-	<text key="PublicationTooltip_BIBCOUNT">
+	<text key="PublicationTooltip_bibcount">
 		Num. pub.:
 	</text>
 	<text key="3XMM_EPIC_ep_8_n_contrib">
@@ -2772,7 +2766,7 @@
 	<text key="publicationPanel_resetTooltip">
 		Reset source limit
 	</text>
-	<text key="publicationSourceLimitDescription">
+	<text key="publicationShapeLimitDescription">
 		Result limited to the first $sourceLimit$ sources with the $mostOrLeast$ number of publications
 	</text>
 	<text key="publicationPanel_truncationValueTooltip">
@@ -3157,7 +3151,20 @@
 		
 		Use filters or zoom in to reduce the amount
 	</text>
-	<text key="MOC_large_count_text">
+	
+	<text key="tabulator_authorHeaderTooltip">
+		Click on any author name to see that authors publications in ADS
+	</text>
+	<text key="tabulator_SourcesInPublicationHeader">
+		Sources
+	</text>
+	<text key="tabulator_SourcesInPublicationHeaderTooltip">
+		Click to show the sources mentioned in a publication
+	</text>
+	<text key="tabulator_SourcesInPublication">
+		Show the sources mentioned in this publication
+	</text>
+		<text key="MOC_large_count_text">
 		Total amount of objects in the shown MOC: $count$	
 		
 		Fitlering is only available under 10 000 000

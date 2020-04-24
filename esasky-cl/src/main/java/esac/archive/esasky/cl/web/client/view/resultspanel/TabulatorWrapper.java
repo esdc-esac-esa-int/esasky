@@ -33,6 +33,7 @@ public class TabulatorWrapper{
         public void onCenterClicked(GeneralJavaScriptObject rowData);
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
         public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
+        public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
     }
 
     private TabulatorCallback tabulatorCallback;
@@ -40,9 +41,9 @@ public class TabulatorWrapper{
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
 
     public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean isHeaderQuery) {
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addCentreColumn, boolean addSourcesInPublicationColumn, boolean isHeaderQuery) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn, addLink2ArchiveColumn, isHeaderQuery);
+        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn, addLink2ArchiveColumn, addCentreColumn, addSourcesInPublicationColumn, isHeaderQuery);
     }
 
     public void selectRow(int rowId) {
@@ -188,7 +189,8 @@ public class TabulatorWrapper{
     }
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
-            String url, boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean isHeaderQuery) /*-{
+            String url, boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn,
+            boolean addCentreColumn, boolean addSourcesInPublicationColumn, boolean isHeaderQuery) /*-{
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
@@ -532,19 +534,23 @@ public class TabulatorWrapper{
 		    	var imageButtonFormatter = function(cell, formatterParams, onRendered){ 
                     return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
                 };
-                activeColumnGroup.push({
-                    title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
-                    headerSort:false, 
-                    headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
-                    minWidth: 50,
-                    formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"recenter.png", 
-                        tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
-                        cellClick:function(e, cell){
-                            e.stopPropagation();
-            		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
-                        }
-                });
-                
+		    	var linkListFormatter = function(cell, formatterParams, onRendered){ 
+                    return $wnd.esasky.linkListFormatter(cell.getValue(), 100);
+                };
+                if(addCentreColumn){
+                    activeColumnGroup.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
+                        headerSort:false,
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
+                        minWidth: 50,
+                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"recenter.png", 
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
+                            }
+                    });
+                }
                 if(addSendToVOApplicationColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_sendToVOApplicationHeader"),
@@ -555,7 +561,7 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
                 }
@@ -570,7 +576,21 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow().getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
+                            }
+                    });
+                }
+                if(addSourcesInPublicationColumn){
+                    activeColumnGroup.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeader"),
+                        headerSort:false, 
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
+                        minWidth: 65,
+                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"target_list.png",
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")},
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
                 }
@@ -588,10 +608,10 @@ public class TabulatorWrapper{
                                 tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
                                 cellClick:function(e, cell){
                                     e.stopPropagation();
-                                    if(cell.getRow().getData().access_format && cell.getRow().getData().access_format.toLowerCase().includes("datalink")){
+                                    if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
                         		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
                                     } else {
-                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getRow().getData().access_url);
+                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getData().access_url);
                                     }
 
                                 }
@@ -614,6 +634,18 @@ public class TabulatorWrapper{
                         });
                         continue;
 		    		}
+		    		if(metadata[i].name.toLowerCase() === "author"){
+                        activeColumnGroup.push({
+                            title:metadata[i].name,
+                            field:metadata[i].name,
+    		    			sorter: "string",
+    		    			headerFilter:true,
+    		    			headerFilterFunc:"like",
+    		    			headerFilterFuncParams:{tapName:metadata[i].name},
+                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
+                            formatter:linkListFormatter});
+                        continue;
+                    }
 		    		if(metadata[i].name.toLowerCase() === "sso_name"){
 		    		    columnDef.push(activeColumnGroup[0]); //Selection column
 		    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
@@ -788,7 +820,7 @@ public class TabulatorWrapper{
     }
 
     public void onDataLoaded() {
-        tabulatorCallback.onDataLoaded(tableJsObject);
+        tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"));
     }
 
     public void onDatalinkClicked(final GeneralJavaScriptObject row) {
@@ -813,6 +845,10 @@ public class TabulatorWrapper{
     
     public void onLink2ArchiveClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onLink2ArchiveClicked(rowData);
+    }
+    
+    public void onSourcesInPublicationClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onSourcesInPublicationClicked(rowData);
     }
 
     public void onRowSelection(int rowId) {

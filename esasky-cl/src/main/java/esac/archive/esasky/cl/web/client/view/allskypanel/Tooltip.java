@@ -12,7 +12,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.Shape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
@@ -23,11 +24,11 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
 public abstract class Tooltip extends AutoHidePanel{
 
-    private final int left;
-    private final int top;
+    private int left;
+    private int top;
     protected HTML typeSpecificContent;
     protected FlowPanel typeSpecificFlowPanel = new FlowPanel();
-    protected Shape source;
+    protected AladinShape source;
     
     private Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -53,16 +54,24 @@ public abstract class Tooltip extends AutoHidePanel{
 		ImageResource wwt();
     }
     
-    public Tooltip(int left, int top, Shape source) {
-    	this(left, top, source, true);
+    public Tooltip(AladinShape source) {
+    	this(source, true);
     }
     
-    public Tooltip(int left, int top, Shape source, boolean addLinks) {
+    public Tooltip(AladinShape source, boolean addLinks) {
     	style = resources.style();
     	style.ensureInjected();
-    	
-    	this.left = left;
-    	this.top = top;
+        CoordinatesObject co = AladinLiteWrapper.getAladinLite().convertRaDecDegToMouseXY(
+                Double.parseDouble(source.getRa()), Double.parseDouble(source.getDec()));
+        if(co == null) {
+            // Cannot convert to position
+            setVisible(false);
+            this.left = 0;
+            this.top = 0;
+        } else {
+            this.left = (int) co.getMouseX();
+            this.top = (int) co.getMouseY();
+        }
     	this.source = source;
     	initView(addLinks);
     	DOM.sinkEvents(getElement(), Event.ONMOUSEWHEEL);
@@ -188,7 +197,7 @@ public abstract class Tooltip extends AutoHidePanel{
 
     public void show(String cooFrame) {
         fillContent(cooFrame);
-        DisplayUtils.showInsideMainAreaPointingAtPosition(this, left, top);;
+        DisplayUtils.showInsideMainAreaPointingAtPosition(this, left, top);
     }
     
 	@Override

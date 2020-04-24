@@ -7,7 +7,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
@@ -17,7 +16,7 @@ public class TAPPublicationsService extends AbstractTAPService {
 
     private TAPPublicationsService() {
     }
-
+    
     public static TAPPublicationsService getInstance() {
         if (instance == null) {
             instance = new TAPPublicationsService();
@@ -120,51 +119,6 @@ public class TAPPublicationsService extends AbstractTAPService {
         return adql;
     }
     
-    
-    public String getCountQueryForSIMBAD(final AladinLiteWidget aladinLite) {
-
-        String url = null;
-        String shape = null;
-        double fovDeg = aladinLite.getFovDeg();
-        
-        String adqlQuery = "select sum(nbref) as \"esasky_dynamic_count\" from basic"
-            + " where 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
-            + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
-
-        if (AladinLiteWrapper.isCornersInsideHips()) {
-            if (fovDeg < 1) {
-                Log.debug("[TAPCountPublicationsService/getCountQueryForSIMBAD()] FoV < 1d");
-                shape = "POLYGON('ICRS', "
-                        + aladinLite.getFovCorners(1).toString() + ")";
-            } else {
-                shape = "POLYGON('ICRS', "
-                        + aladinLite.getFovCorners(2).toString() + ")";
-            }
-        } else {
-        
-            String cooFrame = aladinLite.getCooFrame();
-            if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
-                // convert to J2000
-                Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
-                        aladinLite.getCenterLongitudeDeg(),
-                        aladinLite.getCenterLatitudeDeg());
-                shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
-            } else {
-                shape = "CIRCLE('ICRS', "
-                        + aladinLite.getCenterLongitudeDeg() + ","
-                        + aladinLite.getCenterLatitudeDeg() + ",90)";
-            }
-        
-        }
-        adqlQuery += shape + ")";
-        
-        Log.debug("[TAPCountPublicationsService/getCountQueryForSIMBAD()] Count ADQL " + adqlQuery);
-        
-        url = TAPUtils.getSIMBADTAPQuery("pub_count", adqlQuery, "{\"count\":$DATA$,\"aprox\":true}");
-        return url;
-    }
-    
-
     @Override
     public String getMetadataAdql(IDescriptor descriptor) {
         // TODO Auto-generated method stub

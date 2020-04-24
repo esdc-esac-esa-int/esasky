@@ -6,8 +6,6 @@ import java.util.Set;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Image;
 
@@ -15,9 +13,8 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -145,7 +142,7 @@ public class DefaultEntity implements GeneralEntityInterface{
     	return this.getDescriptor().getPrimaryColor();
     }
     
-    @Override
+//    @Override
     public String getMetadataAdql() {
     	return metadataService.getMetadataAdql(getDescriptor());
     }
@@ -189,7 +186,7 @@ public class DefaultEntity implements GeneralEntityInterface{
     }
 	
 	@Override
-    public void fetchData(final ITablePanel tablePanel) {
+    public void fetchData() {
         Scheduler.get().scheduleFinally(new ScheduledCommand() {
         	
         	@Override
@@ -197,35 +194,35 @@ public class DefaultEntity implements GeneralEntityInterface{
         		if(Modules.useTabulator) {
             		drawer.removeAllShapes();
         			clearAll();
-        			String filter = tablePanel.getFilterString();
-        			String adql = getMetadataAdql(filter);
-        			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON));
-        		} else {
-        			clearAll();
-        			final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
-        			// Get Query in ADQL format.
-        			final String adql = getMetadataAdql();
-        			
-        			String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-        			
-        			Log.debug(debugPrefix + "Query [" + url + "]");
-        			
-        			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        			try {
-        				builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
-        						TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
-        				
-        			} catch (RequestException e) {
-        				Log.error(e.getMessage());
-        				Log.error(debugPrefix + "Error fetching JSON data from server");
-        			}
+//        			String filter = tablePanel.getFilterString();
+//        			String adql = getMetadataAdql(filter);
+//        			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON));
+//        		} else {
+//        			clearAll();
+//        			final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
+//        			// Get Query in ADQL format.
+//        			final String adql = getMetadataAdql();
+//        			
+//        			String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+//        			
+//        			Log.debug(debugPrefix + "Query [" + url + "]");
+//        			
+//        			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+//        			try {
+//        				builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
+//        						TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
+//        				
+//        			} catch (RequestException e) {
+//        				Log.error(e.getMessage());
+//        				Log.error(debugPrefix + "Error fetching JSON data from server");
+//        			}
         		}
         	}
         });
 	}
 	
 	@Override
-	public void coneSearch(final ITablePanel tablePanel, final SkyViewPosition conePos) {
+	public void coneSearch(final SkyViewPosition conePos) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
 			
 			@Override
@@ -239,14 +236,14 @@ public class DefaultEntity implements GeneralEntityInterface{
 				
 				Log.debug(debugPrefix + "Query [" + url + "]");
 				
-				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+//				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 				
 //        		new StreamRequest(url, new MetadataStreamCallback(tablePanel, adql, "Test"));
 				
 				try {
 					
-					builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
-							TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
+//					builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
+//							TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
 					
 				} catch (Exception e) {
 					Log.error(e.getMessage());
@@ -379,7 +376,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void refreshData(ITablePanel tablePanel) {
+	public void refreshData() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -391,8 +388,8 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void fetchDataWithoutMOC(ITablePanel tablePanel) {
-		fetchData(tablePanel);
+	public void fetchDataWithoutMOC() {
+		fetchData();
 		
 	}
 
@@ -404,5 +401,35 @@ public class DefaultEntity implements GeneralEntityInterface{
     @Override
     public void setShapeType(String shapeType) {
         drawer.setShapeType(shapeType);
+    }
+
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeDeselection(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeHover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onShapeUnhover(AladinShape shape) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void select() {
+        // TODO Auto-generated method stub
+        
     }
 }
