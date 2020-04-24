@@ -50,7 +50,6 @@ import esac.archive.esasky.cl.web.client.api.model.MetadataAPI;
 import esac.archive.esasky.cl.web.client.api.model.Source;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
-import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -113,16 +112,16 @@ public class Api {
 
             @Override
             public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
-            	 if (!selectEvent.getOverlayName().equals(EntityContext.PUBLICATIONS.toString())) {
-
-                     // Selects a table row
-                     ITablePanel tableContainingShape = controller.getRootPresenter().getResultsPresenter().getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
-                     
-                     String data = tableContainingShape.getUnfilteredRow(selectEvent.getShapeId());
-                     JSONObject values = new JSONObject();
-                     values.put("data", new JSONString(data));
-                     sendBackToWidget(values, widget);
-                 }
+//            	 if (!selectEvent.getOverlayName().equals(EntityContext.PUBLICATIONS.toString())) {
+//
+//                     // Selects a table row
+//                     ITablePanel tableContainingShape = controller.getRootPresenter().getResultsPresenter().getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
+//                     
+//                     String data = tableContainingShape.getUnfilteredRow(selectEvent.getShapeId());
+//                     JSONObject values = new JSONObject();
+//                     values.put("data", new JSONString(data));
+//                     sendBackToWidget(values, widget);
+//                 }
             }
         });
 	}
@@ -270,6 +269,10 @@ public class Api {
 					sendBackToWidget(callback, msg);
 					tablePanel.unregisterObserver(this);
 				}
+
+                @Override
+                public void onSelection(ITablePanel selectedTablePanel) {
+                }
 				
 			});
 		}else {
