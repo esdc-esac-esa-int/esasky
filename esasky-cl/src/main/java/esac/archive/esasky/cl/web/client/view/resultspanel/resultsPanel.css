@@ -43,21 +43,7 @@
 
 .filterButton{
 	margin: auto;
-}
-
-.filterButtonToTheRight .filterButton{
-	position: absolute;
-	right: 0px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.filterButtonToTheRight .dataPanelHeaderColumnTitle{
-	margin-right: 24px;
-}
-
-.filterButtonOnTop{
-	vertical-align: top;
+	pointer-events: auto;
 }
 
 .dataPanelHeader{
