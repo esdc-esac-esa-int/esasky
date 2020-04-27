@@ -187,7 +187,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         this.tooltip
                 .getElement()
                 .setInnerHTML(
-                        "<p class=\"coords\"><b>" + TextMgr.getInstance().getText("searchPanel_inputByTargetName ") + "</b><br/>"
+                        "<p class=\"coords\"><b>" + TextMgr.getInstance().getText("searchPanel_inputByTargetName") + "</b><br/>"
                         + "Antares<br/>"
                         + "M31<br/>"
                         + "PKS2357-326<br/>"

@@ -102,7 +102,7 @@
 	</text>
 
 	<!-- searchPanel -->
-	<text key="searchPanel_inputByTargetName ">
+	<text key="searchPanel_inputByTargetName">
 		输入目标名称：
 	</text>
 	<text key="searchPanel_solarSystemObjects">

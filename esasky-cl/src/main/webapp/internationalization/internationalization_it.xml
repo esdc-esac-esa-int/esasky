@@ -50,7 +50,7 @@ Attualmente stiamo processando oggetti del Sistema Solare. Si prega di riprovare
 	</text>
 
 	<!-- searchPanel -->
-	<text key="searchPanel_inputByTargetName ">
+	<text key="searchPanel_inputByTargetName">
 		Esempi di ricerca per nome dell&#39;oggetto:
 	</text>
 	<text key="searchPanel_solarSystemObjects">
