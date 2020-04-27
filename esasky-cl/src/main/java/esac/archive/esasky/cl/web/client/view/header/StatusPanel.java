@@ -15,7 +15,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -35,7 +34,7 @@ public class StatusPanel extends Composite implements View{
 	private static Resources resources = GWT.create(Resources.class);
 	private CssResource style;
 
-	private Label statusLabel = new Label();
+	private FlowPanel statusLabel = new FlowPanel();
 	private LoadingSpinner loadingSpinner = new LoadingSpinner(false);
 	private Image exclamationImage;
 	private final int ANIMATION_TIME = 500;
@@ -148,7 +147,7 @@ public class StatusPanel extends Composite implements View{
 
 
 	private void animateInNewMessage(String message) {
-		statusLabel.setText(message);
+		statusLabel.getElement().setInnerHTML(message);
 		statusLabel.removeStyleName("statusPanel__label__animate-out");
 		statusLabel.addStyleName("statusPanel__label__animate-in");
 		if(isImportant) {
@@ -168,7 +167,7 @@ public class StatusPanel extends Composite implements View{
 			exclamationImage.setVisible(false);
 			loadingSpinner.setVisible(true);
 		}
-		if(statusLabel.getText().isEmpty()) {
+		if(statusLabel.getElement().getInnerHTML().isEmpty()) {
 			animateInNewMessage(statusMessage);
 			return;
 		}
@@ -192,7 +191,7 @@ public class StatusPanel extends Composite implements View{
 		@Override
 		public void run() {
 			if(newMessage.isEmpty()) {
-				statusLabel.setText("");
+				statusLabel.getElement().setInnerHTML("");
 			} else {
 				animateInNewMessage(newMessage);
 			}

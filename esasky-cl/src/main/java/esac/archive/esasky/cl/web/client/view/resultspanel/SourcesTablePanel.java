@@ -34,11 +34,11 @@ public class SourcesTablePanel extends AbstractTablePanel {
 
 		if (sourceLimitDescription.contains("|")) {
 			String[] sourceLimitArr = sourceLimitDescription.split("\\|");
-			notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText("sourceLimitDescription")
+			notShowingCompleteDataSetText.getElement().setInnerHTML(TextMgr.getInstance().getText("sourceLimitDescription")
 					.replace("$sourceLimit$", limitNumber + "")
 					.replace("$orderBy$", TextMgr.getInstance().getText(sourceLimitArr[1]).toLowerCase()));
 		} else {
-			notShowingCompleteDataSetText.setText(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", limitNumber + ""));
+			notShowingCompleteDataSetText.getElement().setInnerHTML(TextMgr.getInstance().getText(sourceLimitDescription).replace("$sourceLimit$", limitNumber + ""));
 		}
 
 		addHoverFromDataPanelHandler();
