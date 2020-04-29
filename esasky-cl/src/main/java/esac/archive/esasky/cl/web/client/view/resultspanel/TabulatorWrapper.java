@@ -40,12 +40,12 @@ public class TabulatorWrapper{
     private GeneralJavaScriptObject tableJsObject;
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
 
-    public TabulatorWrapper(String divId, String url, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addCentreColumn, boolean addSourcesInPublicationColumn, boolean isHeaderQuery) {
+    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addCentreColumn, boolean addSourcesInPublicationColumn) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, url, addSendToVOApplicationColumn, addLink2ArchiveColumn, addCentreColumn, addSourcesInPublicationColumn, isHeaderQuery);
+        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addCentreColumn, addSourcesInPublicationColumn);
     }
-
+    
     public void selectRow(int rowId) {
         GeneralJavaScriptObject row = tableJsObject.invokeFunction("getRow", "" + rowId);
         row.invokeFunction("select");
@@ -184,84 +184,99 @@ public class TabulatorWrapper{
     		
     		dropDownMenu.toggleMenuBar();
     	}
-    	
-    	
+    }
+    
+    
+    public void setData(String dataOrUrl){
+        setData(tableJsObject, dataOrUrl);
     }
 
+    private native void setData(GeneralJavaScriptObject tableJsObject, String dataOrUrl)/*-{
+        tableJsObject.setData(dataOrUrl);
+    }-*/;
+    
+    public void setDefaultQueryMode(){
+        setDefaultQueryMode(tableJsObject);
+    }
+    
+    private native void setDefaultQueryMode(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.options.ajaxResponse = function(url, params, response){
+            var metadata = response.metadata;
+
+            var data = [];
+            for(var i = 0; i < response.data.length; i++){
+                var row = {};
+                row['id'] = i;
+                for(var j = 0; j < metadata.length; j++){
+                    if(metadata[j].datatype === "DOUBLE"){
+                        row[metadata[j].name] = parseFloat(response.data[i][j]);
+                        if(isNaN(row[metadata[j].name])){
+                            row[metadata[j].name] = undefined;
+                        }
+                    } else {
+                        row[metadata[j].name] = response.data[i][j];
+                    }
+                }
+                data[i] = row;
+            }
+            tableJsObject.metadata = metadata;
+            return data;
+        }
+    }-*/;
+    
+    public void setHeaderQueryMode(){
+        setHeaderQueryMode(tableJsObject);
+    }
+    
+    private native void setHeaderQueryMode(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.clearData();
+        tableJsObject.options.ajaxResponse = function(url, params, response){
+            var metadata = response.metadata;
+            var newMeta = [];
+            tableJsObject.filterData[0] = {};
+            tableJsObject.filterData[1] = {};
+            tableJsObject.filterData[0].id = 0;
+            tableJsObject.filterData[1].id = 1;
+            for(var j = 0; j < metadata.length; j++){
+                name = metadata[j].name.substring(0,metadata[j].name.length - 4)
+    
+                if(metadata[j].name.endsWith("_min")){
+                    meta = {name:name, datatype:"DOUBLE"}
+                    newMeta.push(meta)
+                    tableJsObject.filterData[0][name] = parseFloat(response.data[0][j]);
+                }
+                else if(metadata[j].name.endsWith("_max")){
+                    tableJsObject.filterData[1][name] = parseFloat(response.data[0][j]);
+                }
+                else if(metadata[j].name.endsWith("_lst")){
+                    list = response.data[0][j];
+                    list = list.replace("{","[").replace("}","]");
+                    tableJsObject.filterData[0][name] = list;
+                    meta = {name:name, datatype:"LIST"}
+                    newMeta.push(meta)
+                }
+                else{
+                    meta = {name:name, datatype:"STRING"}
+                    newMeta.push(meta)
+                }
+                
+            }
+    
+            tableJsObject.metadata = newMeta;
+            return [];
+        }
+    }-*/;
+
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
-            String url, boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn,
-            boolean addCentreColumn, boolean addSourcesInPublicationColumn, boolean isHeaderQuery) /*-{
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn,
+            boolean addCentreColumn, boolean addSourcesInPublicationColumn) /*-{
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
 		var isInitializing = true;
 		var previouslySelectedMap = [];
 		var selectionMap = [];
-		var metadata;
 		var columnDef = [];
-		
-		var ajaxResponseFunc = {}
-		var filterData = [];
-		if(isHeaderQuery){
-			ajaxResponseFunc = function(url, params, response){
-				metadata = response.metadata;
-				newMeta = [];
-				filterData[0] = {};
-				filterData[1] = {};
-				filterData[0].id = 0;
-				filterData[1].id = 1;
-				for(var j = 0; j < metadata.length; j++){
-	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
-
-	    			if(metadata[j].name.endsWith("_min")){
-	    				meta = {name:name, datatype:"DOUBLE"}
-	    				newMeta.push(meta)
-						filterData[0][name] = parseFloat(response.data[0][j]);
-	    			}
-	    			else if(metadata[j].name.endsWith("_max")){
-						filterData[1][name] = parseFloat(response.data[0][j]);
-	    			}
-	    			else if(metadata[j].name.endsWith("_lst")){
-	    				list = response.data[0][j];
-	    				list = list.replace("{","[").replace("}","]");
-						filterData[0][name] = list;
-						meta = {name:name, datatype:"LIST"}
-						newMeta.push(meta)
-	    			}
-	    			else{
-	    				meta = {name:name, datatype:"STRING"}
-	    				newMeta.push(meta)
-	    			}
-	    			
-				}
-
-				metadata = newMeta;
-		        return [];
-		    }
-		}else{
-			ajaxResponseFunc = function(url, params, response){
-				metadata = response.metadata;
-
-				var data = [];
-				for(var i = 0; i < response.data.length; i++){
-					var row = {};
-					row['id'] = i;
-					for(var j = 0; j < metadata.length; j++){
-		    			if(metadata[j].datatype === "DOUBLE"){
-							row[metadata[j].name] = parseFloat(response.data[i][j]);
-			    			if(isNaN(row[metadata[j].name])){
-								row[metadata[j].name] = undefined;
-			    			}
-		    			} else {
-							row[metadata[j].name] = response.data[i][j];
-		    			}
-					}
-					data[i] = row;
-				}		
-
-		        return data;
-		    }
-		}
 		
         var createFilterButton = function(filterButtonId){
             filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
@@ -305,10 +320,10 @@ public class TabulatorWrapper{
 				var minVal = Infinity;
 				var maxVal = -Infinity;
 				
-				if(filterData.length > 0){
+				if(table.filterData.length > 0){
 					name = cell.getColumn()._column.definition.field;
-					minVal = filterData[0][name];
-					maxVal = filterData[1][name];
+					minVal = table.filterData[0][name];
+					maxVal = table.filterData[1][name];
 				}else{
 					cell.getColumn()._column.cells.forEach(function (row){
 						if(row.getValue() != undefined){
@@ -365,10 +380,10 @@ public class TabulatorWrapper{
 				var minVal = "2100-01-01";
 				var maxVal = "1800-01-01";
 				
-				if(filterData.length > 0){
+				if(table.filterData.length > 0){
 					name = cell.getColumn()._column.definition.field;
-					minVal = filterData[0][name];
-					maxVal = filterData[1][name];
+					minVal = table.filterData[0][name];
+					maxVal = table.filterData[1][name];
 				}else{
 					cell.getColumn()._column.cells.forEach(function (row){
 						if(row.getValue() != undefined){
@@ -428,9 +443,9 @@ public class TabulatorWrapper{
 				
 			filterButton.on("click", function(e){
 			    e.stopPropagation();
-				if(filterData != []){
+				if(table.filterData != []){
 					name = cell.getColumn()._column.definition.field;
-					list = filterData[0][name];
+					list = table.filterData[0][name];
 					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
 						(editorParams["tapName"], filterButtonId, list, functionObject);
 				}				
@@ -516,12 +531,10 @@ public class TabulatorWrapper{
 
 		var table = new $wnd.Tabulator("#" + divId, {
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-		 	ajaxURL:url,
 		 	placeholder:"",
-		    ajaxResponse:ajaxResponseFunc,
 		    dataFiltered:function(filters, rows){
 		    	var returnString = "";
-		    	for(i = 0; i < rows.length; i++){
+		    	for(var i = 0; i < rows.length; i++){
 		    		returnString += rows[i].getIndex() + ",";
 		    	}
 
@@ -598,146 +611,147 @@ public class TabulatorWrapper{
                     });
                 }
 
-
-		    	for(var i = 0; i < metadata.length; i++){
-		    		if(metadata[i].name.toLowerCase() === "access_url"){
-                        activeColumnGroup.push({
-                            title:metadata[i].name,
-                            field:metadata[i].name,
-                            headerSort:false, 
-                            headerTooltip:metadata[i].description,
-                            minWidth: 85,
-                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"download_small.png", 
-                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
-                                cellClick:function(e, cell){
-                                    e.stopPropagation();
-                                    if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
-                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
-                                    } else {
-                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getData().access_url);
+                if(!isInitializing){
+    		    	for(var i = 0; i < table.metadata.length; i++){
+    		    		if(table.metadata[i].name.toLowerCase() === "access_url"){
+                            activeColumnGroup.push({
+                                title:table.metadata[i].name,
+                                field:table.metadata[i].name,
+                                headerSort:false, 
+                                headerTooltip:table.metadata[i].description,
+                                minWidth: 85,
+                                formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"download_small.png", 
+                                    tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
+                                    cellClick:function(e, cell){
+                                        e.stopPropagation();
+                                        if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
+                            		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
+                                        } else {
+                            		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getData().access_url);
+                                        }
+    
                                     }
-
-                                }
-                        });
-                        continue;
-		    		}
-		    		if(metadata[i].name.toLowerCase() === "postcard_url"){
-                        activeColumnGroup.push({
-                            title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
-                            field:metadata[i].name,
-                            headerSort:false, 
-                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
-                            minWidth: 50,
-                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"preview.png", 
-                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
-                                cellClick:function(e, cell){
-                                    e.stopPropagation();
-                    		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
-                                }
-                        });
-                        continue;
-		    		}
-		    		if(metadata[i].name.toLowerCase() === "author"){
-                        activeColumnGroup.push({
-                            title:metadata[i].name,
-                            field:metadata[i].name,
-    		    			sorter: "string",
-    		    			headerFilter:true,
-    		    			headerFilterFunc:"like",
-    		    			headerFilterFuncParams:{tapName:metadata[i].name},
-                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
-                            formatter:linkListFormatter});
-                        continue;
-                    }
-		    		if(metadata[i].name.toLowerCase() === "sso_name"){
-		    		    columnDef.push(activeColumnGroup[0]); //Selection column
-		    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
-		    		    activeColumnGroup = [];
-		    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
-		    		}
-		    		
-		    		if(metadata[i].datatype === "DOUBLE"){
-		    			activeColumnGroup.push({
-			    			title:metadata[i].name,
-			    			field:metadata[i].name, 
-			    			headerTooltip:metadata[i].description,
-			    			formatter:doubleFormatter,
-			    			sorter: "number",
-			    			headerFilter:numericFilterEditor,
-			    			headerFilterParams:{tapName:metadata[i].name},
-			    			headerFilterFunc:DoubleFilter,
-			    			headerFilterFuncParams:{tapName:metadata[i].name}
-	    				});
-		    		}
-		    		else if(metadata[i].datatype === "TIMESTAMP"){
-		    			activeColumnGroup.push({
-			    			title:metadata[i].name,
-			    			field:metadata[i].name, 
-			    			headerTooltip:metadata[i].description,
-			    			formatter:doubleFormatter,
-			    			sorter: "string",
-			    			formatter: "plaintext",
-			    			headerFilter:dateFilterEditor,
-			    			headerFilterParams:{tapName:metadata[i].name},
-			    			headerFilterFunc:DateFilter,
-			    			headerFilterFuncParams:{tapName:metadata[i].name}
-	    				});
-		    		}
-		    		else if(metadata[i].datatype === "INTEGER"){
-		    			activeColumnGroup.push({
-			    			title:metadata[i].name,
-			    			field:metadata[i].name, 
-			    			headerTooltip:metadata[i].description,
-			    			formatter:doubleFormatter,
-			    			sorter: "number",
-			    			formatter:"plaintext",
-			    			headerFilter:numericFilterEditor,
-			    			headerFilterParams:{tapName:metadata[i].name},
-			    			headerFilterFunc:DoubleFilter,
-			    			headerFilterFuncParams:{tapName:metadata[i].name}
-	    				});
-		    		}
-		    		else if(metadata[i].datatype === "LIST"){
-		    			activeColumnGroup.push({
-			    			title:metadata[i].name,
-			    			field:metadata[i].name, 
-			    			headerTooltip:metadata[i].description,
-			    			formatter:doubleFormatter,
-			    			sorter: "number",
-			    			formatter:"plaintext",
-			    			headerFilter:listFilterEditor,
-			    			headerFilterParams:{tapName:metadata[i].name},
-			    			headerFilterFunc:"like",
-	    				});
-		    		}else{
-			    		activeColumnGroup.push({
-			    			title:metadata[i].name,
-			    			field:metadata[i].name, 
-			    			headerTooltip:metadata[i].description,
-			    			formatter:"plaintext",
-			    			sorter:  "string",
-			    			headerFilter:true,
-			    			headerFilterParams:{tapName:metadata[i].name},
-			    			headerFilterFunc:"like",
-			    			headerFilterFuncParams:{tapName:metadata[i].name}
-		    			});
-		    		}
-	    		}
-		    	if(columnDef.length == 0){
-		    	    columnDef = activeColumnGroup;
-		    	}
-		    	
-		    	table.setColumns(columnDef);
-    	        table.getColumns().forEach(function (column){
-    	            if (column.getDefinition().sorter){
-                        column.getElement().onmouseover = function() {
-                            column.getElement().style.backgroundColor = "#d0d0d0";
+                            });
+                            continue;
+    		    		}
+    		    		if(table.metadata[i].name.toLowerCase() === "postcard_url"){
+                            activeColumnGroup.push({
+                                title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
+                                field:table.metadata[i].name,
+                                headerSort:false, 
+                                headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
+                                minWidth: 50,
+                                formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"preview.png", 
+                                    tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
+                                    cellClick:function(e, cell){
+                                        e.stopPropagation();
+                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
+                                    }
+                            });
+                            continue;
+    		    		}
+    		    		if(table.metadata[i].name.toLowerCase() === "author"){
+                            activeColumnGroup.push({
+                                title:table.metadata[i].name,
+                                field:table.metadata[i].name,
+        		    			sorter: "string",
+        		    			headerFilter:true,
+        		    			headerFilterFunc:"like",
+        		    			headerFilterFuncParams:{tapName:table.metadata[i].name},
+                                headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
+                                formatter:linkListFormatter});
+                            continue;
                         }
-                        column.getElement().onmouseout = function() {
-                            column.getElement().style.backgroundColor = "";
-                        }
-    	            } 
-                });
+    		    		if(table.metadata[i].name.toLowerCase() === "sso_name"){
+    		    		    columnDef.push(activeColumnGroup[0]); //Selection column
+    		    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
+    		    		    activeColumnGroup = [];
+    		    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
+    		    		}
+    		    		
+    		    		if(table.metadata[i].datatype === "DOUBLE"){
+    		    			activeColumnGroup.push({
+    			    			title:table.metadata[i].name,
+    			    			field:table.metadata[i].name, 
+    			    			headerTooltip:table.metadata[i].description,
+    			    			formatter:doubleFormatter,
+    			    			sorter: "number",
+    			    			headerFilter:numericFilterEditor,
+    			    			headerFilterParams:{tapName:table.metadata[i].name},
+    			    			headerFilterFunc:DoubleFilter,
+    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
+    	    				});
+    		    		}
+    		    		else if(table.metadata[i].datatype === "TIMESTAMP"){
+    		    			activeColumnGroup.push({
+    			    			title:table.metadata[i].name,
+    			    			field:table.metadata[i].name, 
+    			    			headerTooltip:table.metadata[i].description,
+    			    			formatter:doubleFormatter,
+    			    			sorter: "string",
+    			    			formatter: "plaintext",
+    			    			headerFilter:dateFilterEditor,
+    			    			headerFilterParams:{tapName:table.metadata[i].name},
+    			    			headerFilterFunc:DateFilter,
+    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
+    	    				});
+    		    		}
+    		    		else if(table.metadata[i].datatype === "INTEGER"){
+    		    			activeColumnGroup.push({
+    			    			title:table.metadata[i].name,
+    			    			field:table.metadata[i].name, 
+    			    			headerTooltip:table.metadata[i].description,
+    			    			formatter:doubleFormatter,
+    			    			sorter: "number",
+    			    			formatter:"plaintext",
+    			    			headerFilter:numericFilterEditor,
+    			    			headerFilterParams:{tapName:table.metadata[i].name},
+    			    			headerFilterFunc:DoubleFilter,
+    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
+    	    				});
+    		    		}
+    		    		else if(table.metadata[i].datatype === "LIST"){
+    		    			activeColumnGroup.push({
+    			    			title:table.metadata[i].name,
+    			    			field:table.metadata[i].name, 
+    			    			headerTooltip:table.metadata[i].description,
+    			    			formatter:doubleFormatter,
+    			    			sorter: "number",
+    			    			formatter:"plaintext",
+    			    			headerFilter:listFilterEditor,
+    			    			headerFilterParams:{tapName:table.metadata[i].name},
+    			    			headerFilterFunc:"like",
+    	    				});
+    		    		}else{
+    			    		activeColumnGroup.push({
+    			    			title:table.metadata[i].name,
+    			    			field:table.metadata[i].name, 
+    			    			headerTooltip:table.metadata[i].description,
+    			    			formatter:"plaintext",
+    			    			sorter:  "string",
+    			    			headerFilter:true,
+    			    			headerFilterParams:{tapName:table.metadata[i].name},
+    			    			headerFilterFunc:"like",
+    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
+    		    			});
+    		    		}
+    	    		}
+    		    	if(columnDef.length == 0){
+    		    	    columnDef = activeColumnGroup;
+    		    	}
+    		    	
+    		    	table.setColumns(columnDef);
+        	        table.getColumns().forEach(function (column){
+        	            if (column.getDefinition().sorter){
+                            column.getElement().onmouseover = function() {
+                                column.getElement().style.backgroundColor = "#d0d0d0";
+                            }
+                            column.getElement().onmouseout = function() {
+                                column.getElement().style.backgroundColor = "";
+                            }
+        	            } 
+                    });
+                }
 		    },
 		 	selectable:true,
 		    rowSelectionChanged:function(data, rows){
@@ -772,7 +786,6 @@ public class TabulatorWrapper{
 		});
 
 
-
 		table.getVoTableString = function(data, resourceName){
 			// Add VOT XML Schema
 			var votData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -781,7 +794,7 @@ public class TabulatorWrapper{
 				votData += "<TABLE>\n";
 
 			// Adds headers to xml
-			metadata.forEach(function (columnInfo) {
+			table.metadata.forEach(function (columnInfo) {
 				votData += "<FIELD";
 				Object.keys(columnInfo).forEach(function (key) {
 					if(columnInfo[key] !== null) {
@@ -798,7 +811,7 @@ public class TabulatorWrapper{
 
 			data.forEach(function (row) {
 				votData += "<TR>\n";
-				metadata.forEach(function (columnInfo) {
+				table.metadata.forEach(function (columnInfo) {
 					var value = row[columnInfo.name] || "";
 					votData += "<TD>"
 							+ value
@@ -819,8 +832,10 @@ public class TabulatorWrapper{
 		table.voTableFormatter = function(columns, data, options, setFileContents){
 		    setFileContents(table.getVoTableString(data.data, options.resourceName), "application/x-votable+xml");
 		}
-
+		
+        table.filterData = [];
 		isInitializing = false;
+        $wnd.tabulatorTable = table;
 		return table;
 	}-*/;
 
@@ -833,7 +848,9 @@ public class TabulatorWrapper{
     }
 
     public void onDataLoaded() {
-        tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"));
+        if(tableJsObject != null) {
+            tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"));
+        }
     }
 
     public void onDatalinkClicked(final GeneralJavaScriptObject row) {

@@ -72,6 +72,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	public void removeAllShapes() {
 	    removeAllSourcesAndFootprints();
         AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(polylineOverlay);
+        allShapesIndexes.clear();
 	}
 	
 	private void removeAllSourcesAndFootprints() {
@@ -209,6 +210,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     
     @Override
     public void showShapes(List<Integer> shapeIds) {
+        if(allShapesIndexes.size() == 0) {return;}
         for(int id : shapeIds) {
         	Integer[] index = allShapesIndexes.get(id);
     		

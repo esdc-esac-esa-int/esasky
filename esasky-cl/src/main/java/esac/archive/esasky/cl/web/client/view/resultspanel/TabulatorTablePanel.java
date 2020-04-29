@@ -207,6 +207,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		DOM.sinkEvents(RootPanel.get().getElement(),
 				Event.ONMOUSEMOVE | Event.ONTOUCHMOVE | Event.ONMOUSEUP | Event.ONTOUCHEND | Event.ONTOUCHCANCEL);
 	}
+	
+	@Override
+	protected void onAttach() {
+	    super.onAttach();
+        table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
+                getDescriptor().getArchiveProductURI() != null, 
+                getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
+                && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
+                getDescriptor().getMission().equals("ADS PUB"));
+	}
 
 	private int scrollLeft = 0;
 
@@ -478,26 +488,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void insertData(List<TableRow> data, String url) {
-		if(url != null) {
-			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
-			        getDescriptor().getArchiveProductURI() != null, 
-			        getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
-		            && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
-			        getDescriptor().getMission().equals("ADS PUB"), false);
-			tableNotShowingContainer.addStyleName("displayNone");
-		}
-
+	    table.setDefaultQueryMode();
+		table.setData(url);
+		tableNotShowingContainer.addStyleName("displayNone");
 	}
+	
 	@Override
 	public void insertHeader(String url) {
-		if(url != null) {
-			table = new TabulatorWrapper(tabulatorContainerId, url, this, getDescriptor().getSampEnabled(), 
-					getDescriptor().getArchiveProductURI() != null, getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
-		                    && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
-		                    getDescriptor().getMission().equals("ADS PUB"), true);
-			tableNotShowingContainer.addStyleName("displayNone");
-		}
-		
+	    table.setHeaderQueryMode();
+		table.setData(url);
+		tableNotShowingContainer.addStyleName("displayNone");
 	}
 
 	@Override
