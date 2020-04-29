@@ -90,7 +90,8 @@
 
 .coordinateLabel {
 	display: inline-block;
-	width: 164px;
+	width: 174px;
+	box-sizing: border-box;
 }
 
 #coordinateLabelButton{
@@ -99,6 +100,7 @@
 #coordinateLabelButton>div{
 	border: 0px;
 	padding: 0px;
+	border-radius: 0;
 }
 
 .isCenterPosition > div .html-face{

@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.common.buttons;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -72,6 +73,10 @@ public class EsaSkyStringButton extends Composite{
 	
 	public void setSquaredStyle() {
 		button.addStyleName("squaredStringButton");
+	}
+	public void setSidePadding(int left, int right) {
+	    button.getElement().getStyle().setPaddingLeft(left, Unit.PX);
+	    button.getElement().getStyle().setPaddingRight(right, Unit.PX);
 	}
 	
 	public HandlerRegistration addClickHandler(ClickHandler handler) {

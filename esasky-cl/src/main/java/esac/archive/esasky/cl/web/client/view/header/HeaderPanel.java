@@ -618,9 +618,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			gridButton.setVisible(false);
 			headerScienceModeSwitch.setVisible(false);
 			
-			coordinateFrameFull.getElement().getStyle().setMarginRight(3, Unit.PX);
-			coordinateFrameFirstLetter.getElement().getStyle().setMarginRight(3, Unit.PX);
-			coordinateLabel.getElement().getStyle().setMarginRight(3, Unit.PX);
+			coordinateLabel.setSidePadding(3, 3);
 			coordinateContainer.getElement().getStyle().setMarginRight(0, Unit.PX);
 			
 			dropdownHelpEntry.setVisible(true);
@@ -635,9 +633,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			gridButton.setVisible(true);
 			headerScienceModeSwitch.setVisible(true);
 			
-			coordinateFrameFull.getElement().getStyle().setMarginRight(5, Unit.PX);
-			coordinateFrameFirstLetter.getElement().getStyle().setMarginRight(5, Unit.PX);
-			coordinateLabel.getElement().getStyle().setMarginRight(5, Unit.PX);
+			coordinateLabel.setSidePadding(5, 5);
 			coordinateContainer.getElement().getStyle().setMarginRight(0, Unit.PX);
 			
 			dropdownHelpEntry.setVisible(false);
