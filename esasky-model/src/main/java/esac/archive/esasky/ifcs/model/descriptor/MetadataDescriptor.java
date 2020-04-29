@@ -1,5 +1,6 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -103,5 +104,23 @@ public class MetadataDescriptor {
 	public void setDefaultMax(Double defaultMax) {
 		this.defaultMax = defaultMax;
 	}
-    
+	
+	public GeneralJavaScriptObject toJSONObject() {
+		String jsonString = "{";
+		jsonString  += "\"tapName\":\"" + tapName + "\"";
+		jsonString  += ",\"label\":\"" + label + "\"";
+		if(visible != null) {
+			jsonString  += ",\"visible\":" + visible.toString();
+		}
+		jsonString  += ",\"description\":\"" + description + "\"";
+		if(maxDecimalDigits != null) {
+			jsonString  += ",\"maxDecimalDigits\":" + maxDecimalDigits.toString();
+		}
+		jsonString  += ",\"type\":\"" + type.toString() + "\"";
+		
+		jsonString += "}";
+		
+		return GeneralJavaScriptObject.createJsonObject(jsonString);
+	}
+	
 }

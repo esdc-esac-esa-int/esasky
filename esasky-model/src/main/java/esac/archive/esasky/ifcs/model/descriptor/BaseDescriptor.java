@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.gwt.http.client.URL;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 public abstract class BaseDescriptor implements IDescriptor {
@@ -476,5 +477,19 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     public void setShapeLimit(int shapeLimit) {
         this.shapeLimit = shapeLimit;
+    }
+    
+    public GeneralJavaScriptObject getMetaDataJSONObject() {
+    	
+    	GeneralJavaScriptObject object = GeneralJavaScriptObject.createJsonObject("{}");
+    	int i = 0;
+    	for(MetadataDescriptor md : getMetadata()) {
+    		GeneralJavaScriptObject mdObject = md.toJSONObject();
+    		mdObject.setProperty("index", i);
+    		object.setProperty(md.getTapName(), mdObject);
+    		i++;
+    	}
+    	
+    	return object;
     }
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+
 public interface IDescriptor {
 
     String getMission();
@@ -102,5 +104,7 @@ public interface IDescriptor {
     String getDdBaseURL();
     String getDdProductURI();
     int getShapeLimit();
+    
+    public GeneralJavaScriptObject getMetaDataJSONObject();
     
 }
