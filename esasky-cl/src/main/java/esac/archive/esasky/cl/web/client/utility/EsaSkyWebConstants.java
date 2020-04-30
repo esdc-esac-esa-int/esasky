@@ -152,4 +152,8 @@ public class EsaSkyWebConstants {
     public static final String ALADIN_GALACTIC_COOFRAME = "galactic";
 
     public static String INTERNET_EXPLORER_APPNAME = "Microsoft Internet Explorer";
+    
+    public static int MOC_FILTER_LIMIT = 10000000;
+    public static int MOC_GLOBAL_MINMAX_LIMIT = 5000000;
+    
 }
