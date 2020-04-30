@@ -32,13 +32,14 @@ public class TextMgr {
 	}
 	
 	private static TextMgr instance;
+	private static TextMgr defaultInstance;
 	private static InitCallback initCallback;
 	
 	private HashMap<String, String> texts;
 	
 	private String baseUrl = GWT.getHostPageBaseURL() + "internationalization/";
 	
-	private static String langCode = EsaSkyConstants.DEFAULT_LANGCODE;
+	private String langCode = EsaSkyConstants.DEFAULT_LANGCODE;
 	
 	//private ContextConstants ctxConstants;
 	
@@ -94,21 +95,43 @@ public class TextMgr {
 		Log.debug("TextMgr.Init() langCode: " + localeLanguage);
 		TextMgr.initCallback = initCallback;
 		instance = new TextMgr(localeLanguage);
-		exposeToJavascript(instance);
+		if(instance.getLangCode() == EsaSkyConstants.DEFAULT_LANGCODE) {
+			defaultInstance = instance;
+		}else {
+			defaultInstance = new TextMgr(EsaSkyConstants.DEFAULT_LANGCODE);
+		}
+		exposeToJavascript(instance, defaultInstance);
 	}
 	
-	public static native void exposeToJavascript(TextMgr instance)/*-{
+	public static native void exposeToJavascript(TextMgr instance, TextMgr defaultInstance)/*-{
 	    if(!$wnd.esasky) {$wnd.esasky = {};}
         $wnd.esasky.getInternationalizationText = function(text) {
             return instance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;)(text);
         }
-        
+        $wnd.esasky.getDefaultLanguageText = function(text) {
+            return defaultInstance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;)(text);
+        }
+     	$wnd.esasky.getColumnDisplayText = function(text){
+	        displayText = $wnd.esasky.getDefaultLanguageText(text);
+			if(displayText == text){
+				displayText = displayText.replace(/_/g," ");
+				displayText = displayText.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase();} );
+			}
+			return displayText;	
+     	}
     }-*/;
 	
 	public static boolean isInitialized() {
 		return instance != null;
 	}
 	
+	public static TextMgr getDefaultInstance() {
+		if (!isInitialized()) {
+			Log.error("TextMgr not initialized!!"); 
+		}
+		return instance;
+	}
+
 	public static TextMgr getInstance() {
 		if (!isInitialized()) {
 			Log.error("TextMgr not initialized!!"); 
@@ -128,6 +151,10 @@ public class TextMgr {
 			}
 		}
 		
+		if(this.langCode != EsaSkyConstants.DEFAULT_LANGCODE) {
+			return TextMgr.getDefaultInstance().getText(key);
+		}
+		
 		missingTranslations.add(key);
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_MissingTranslation + " " + langCode, key);
 		Log.warn("TextMgr.getText(), unknown key: " + key);
@@ -140,6 +167,7 @@ public class TextMgr {
 	public String getLangCode () {
 	    return langCode;
 	}
+	
 	private String getTwoLetterLangCode(String newLangCode) {
 		String twoLetterLangCode = newLangCode.substring(0, 2);
 		Log.debug(twoLetterLangCode + ":");
@@ -151,17 +179,18 @@ public class TextMgr {
 		Log.warn("TextMgr.setLangCode() langCode: " + newLangCode + ", IS NOT SUPPORTED");
 		return EsaSkyConstants.DEFAULT_LANGCODE;
 	}
+	
 	public void setLangCode(String newLangCode) {
 		langCode = getTwoLetterLangCode(newLangCode);
-		
 		Log.debug("TextMgr.setLangCode() langCode: " + langCode);
 		texts = new HashMap<String, String>();
 		
 		//Requests the translations file with the "v" parameter to avoid caching issues if EsaSky version changes
 		//TODO use build number and not hard coded version number
 		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName() + "3.2", this);
-		
-		GUISessionStatus.setCurrentLanguage(langCode);
+		if(instance == null || this == getInstance()) {
+			GUISessionStatus.setCurrentLanguage(langCode);
+		}
 	}
 	
 	private void getTextsFromXML(Document xmlDoc) {
@@ -214,7 +243,7 @@ public class TextMgr {
                     	} catch(Exception ex) {
                     		Log.error("TextMgr.readXML().onResponseReceived", ex);
                     		intManager.onInitialized(false);
-                    		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, langCode);
+                    		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
                     	}
                 }
             });
