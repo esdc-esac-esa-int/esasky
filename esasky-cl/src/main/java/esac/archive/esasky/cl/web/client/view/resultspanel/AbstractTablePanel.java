@@ -1738,7 +1738,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 	}
 
 	@Override
-	public void insertHeader(String tapQuery) {
+	public void insertHeader(String tapQuery, String mode) {
 		// TODO Auto-generated method stub
 		
 	}

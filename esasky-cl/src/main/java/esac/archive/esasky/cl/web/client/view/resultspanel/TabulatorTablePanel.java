@@ -33,6 +33,8 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -494,8 +496,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 	
 	@Override
-	public void insertHeader(String url) {
-	    table.setHeaderQueryMode();
+	public void insertHeader(String url, String mode) {
+	    table.setHeaderQueryMode(mode);
 		table.setData(url);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}
@@ -886,4 +888,20 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         CommonEventBus.getEventBus().fireEvent(new ShowPublicationSourcesEvent(rowData));
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_SourcesInPublication, getFullId(), rowData.getStringProperty("bibcode"));
     }
+    
+
+	@Override
+	public String getLabelFromTapName(String tapName) {
+		MetadataDescriptor md = entity.getDescriptor().getMetadataDescriptorByTapName(tapName);
+		if(md != null) {
+			return md.getLabel();
+		}
+		return tapName;
+	}
+	
+	@Override
+	public GeneralJavaScriptObject getDescriptorMetaData() {
+		return entity.getDescriptor().getMetaDataJSONObject();
+	}
+
 }

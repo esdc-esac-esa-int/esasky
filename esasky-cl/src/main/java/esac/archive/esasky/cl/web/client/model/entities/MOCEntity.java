@@ -36,11 +36,13 @@ import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class MOCEntity implements GeneralEntityInterface {
 
@@ -57,29 +59,55 @@ public class MOCEntity implements GeneralEntityInterface {
     private int currentDataOrder = 8; 
     private int currentDisplayOrder; 
     private int currentMinOrder; 
+    private int currentVisibleCount = 0;
     private boolean shouldBeShown = true;
     private GeneralEntityInterface parentEntity;
     private TAPMOCService metadataService;
+    private boolean globalMinMaxLoaded = false;
+    private boolean filterRequested = false;
+    private boolean loadMOCRequested = false;
     
     private AbstractTableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
     
+    private CountObserver countObserver = new CountObserver() {
+		@Override
+		public void onCountUpdate(int newCount) {
+			
+			if(newCount > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
+				setTableCountText();
+			}
+			
+			if(filterRequested && newCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
+				refreshMOC();
+				filterRequested = false;
+			}
+
+			if(loadMOCRequested && shouldBeShown) {
+				loadMOC();
+				loadMOCRequested = false;
+			}
+			
+		}
+	};
 	
-	Timer refreshTimer = new Timer() {
-		
-//		long lastChangeTime = (long) 0;
-//		long timoutInMillis = 2000;
-		
+	Timer filterTimer = new Timer() {
+	
 		@Override
 		public void run() {
-			refreshMOC();
+			if (getCountStatus().hasMoved(descriptor.getMission())) {
+	    		filterRequested = true;
+	    	} else if( getCountStatus().getCount(descriptor.getMission()) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
+	    		filterRequested = true;
+	    		refreshMOC();
+	    		filterRequested = false;
+	    	}
 		}
 		
 		@Override
 		public void schedule(int delayMillis) {
 			super.cancel();
 			super.schedule(delayMillis);
-//			lastChangeTime = System.currentTimeMillis();
 		}
 	};
 
@@ -98,9 +126,11 @@ public class MOCEntity implements GeneralEntityInterface {
 			
 			@Override
 			public void filterChanged(Map<String, String> tapFilters) {
-				refreshTimer.schedule(2000);
+				filterTimer.schedule(2000);
 			}
 		};
+		
+		getCountStatus().registerObserver(countObserver);
 		
 	}
 	
@@ -204,7 +234,9 @@ public class MOCEntity implements GeneralEntityInterface {
 //    	
 //    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 
-    	parentEntity.fetchDataWithoutMOC();
+//    	MainPresenter.getInstance().getRelatedMetadataWithFilter(descriptor, tablePanel.getFilterString());
+    	
+    	((ExtTapEntity) parentEntity).fetchDataWithoutMOC();
     	shouldBeShown = false;
     	clearAll();
     	updateOverlay();
@@ -262,25 +294,16 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     }
     
-    private CountObserver countObserver = new CountObserver() {
-			@Override
-			public void onCountUpdate(int newCount) {
-				getCountStatus().unregisterObserver(this);
-				loadMOC();
-			}
-		};
-    
     public void refreshMOC() {
-    	 clearAll();
-    	 checkLoadMOC();
+    	if(shouldBeShown) {
+    		clearAll();
+    		checkLoadMOC();
+    	}
     }
     
     public void checkLoadMOC() {
     	if (getCountStatus().hasMoved(descriptor.getMission())) {
-    		if(!getCountStatus().hasObserver(countObserver)) {
-    			getCountStatus().registerObserver(countObserver);
-    			Log.debug("Registered");
-    		}
+    		loadMOCRequested = true;
     	} else {
     		loadMOC();
     	}
@@ -288,16 +311,24 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private void loadMOC() {
     	
-    	shouldBeShown = true;
     	int count = getCountStatus().getCount(descriptor.getMission());
 
-    	if(count > Math.pow(10, 7)) {
+    	if(currentVisibleCount == 0 && !filterRequested) {
+    		if(count > EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT) {
+    			defaultEntity.fetchGlobalMinMaxHeaders(tablePanel);
+    			globalMinMaxLoaded = true;
+    		}else {
+    			defaultEntity.fetchLocalMinMaxHeaders(tablePanel);
+    			globalMinMaxLoaded = false;
+    		}
+    	}
+
+    	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
     		return;
     	}
     	
-        defaultEntity.fetchHeaders(tablePanel);
     	
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	
@@ -318,7 +349,8 @@ public class MOCEntity implements GeneralEntityInterface {
     private int getVisibleCount() {
     	
     	if(overlay != null) {
-    		return AladinLiteWrapper.getAladinLite().getVisibleCountInMOC(overlay);
+    		currentVisibleCount = AladinLiteWrapper.getAladinLite().getVisibleCountInMOC(overlay);
+    		return currentVisibleCount;
     	}
     	
     	return 0;
@@ -338,10 +370,10 @@ public class MOCEntity implements GeneralEntityInterface {
                	 
                 	@Override
                 	public void onComplete() {
+                		getVisibleCount();
                 		setTableCountText();
-                		updateCountMap();
                 		
-                		if(getTotalCount() < 2000 && getTotalCount() > 0) {
+                		if(currentVisibleCount< descriptor.getShapeLimit() && currentVisibleCount > 0) {
                 			sendLoadQuery();
                 		}
                 	}
@@ -355,18 +387,22 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private void setTableCountText() {
     	String text = "";
+    	int count = getCountStatus().getCount(descriptor.getMission());
     	
-    	if(getTotalCount() > Math.pow(10, 7)) {
-    		 text = TextMgr.getInstance().getText("MOC_large_count_text");
-    	}else {
-    		text = TextMgr.getInstance().getText("MOC_count_text");
+    	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
+    		text = TextMgr.getInstance().getText("MOC_large_count_text");
     	}
- 		text = text.replace("$count$", Integer.toString(getVisibleCount()));
- 		text = text.replace("$limit$", Integer.toString(descriptor.getShapeLimit()));
+    	else {
+    		count = currentVisibleCount;
+    		text = TextMgr.getInstance().getText("MOC_count_text");
+    		text = text.replace("$limit$", Integer.toString(descriptor.getShapeLimit()));
+    	}
+
+    	String countString = NumberFormatter.formatToNumberWithSpaces(count);
+    	text = text.replace("$count$", countString);
  		tablePanel.setPlaceholderText(text);
     }
 
-    
     private void getSplitMOC(int order) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
     	
@@ -390,9 +426,9 @@ public class MOCEntity implements GeneralEntityInterface {
 	                	 
 	                 	@Override
 	                 	public void onComplete() {
+	                 		getVisibleCount();
 	                 		setTableCountText();
-	                 		updateCountMap();
-	                 		if(getTotalCount() < 2000 && getTotalCount() > 0) {
+	                 		if(currentVisibleCount < descriptor.getShapeLimit() && currentVisibleCount > 0) {
 	                			sendLoadQuery();
 	                		}
 	                 	}
@@ -426,6 +462,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void clearAll() {
 		moc = new ESASkyResultMOC(2, -1);
 		updateOverlay();
+		getVisibleCount();
 	}
 	
 	public void replaceData(ITablePanel tablePanel, ESASkyResultMOC newData) {
@@ -474,6 +511,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
 		overlay = null;
 		shouldBeShown = false;
+		getCountStatus().unregisterObserver(countObserver);
 	}
 	
 	public void updateOverlay() {
@@ -484,7 +522,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
 		
-		updateCountMap();
+//		updateCountMap();
 		
 		AladinLiteWrapper.getAladinLite().clearMOC(overlay);
 		
@@ -495,9 +533,9 @@ public class MOCEntity implements GeneralEntityInterface {
 //		overlay.setProperty("maxShowOrder",maxOrder);
     
 //		String mocData = getAladinMOCString(minOrder, maxOrder);
-		String mocData = getAladinMOCStringAll();
+//		String mocData = getAladinMOCStringAll();
 		
-		AladinLiteWrapper.getAladinLite().addMOCData(overlay, mocData);
+//		AladinLiteWrapper.getAladinLite().addMOCData(overlay, mocData);
 	}
 	
 	private int getTotalCount() {
@@ -515,9 +553,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		@Override
 		public void run() {
-				Long time = System.currentTimeMillis();
+				getVisibleCount();
+				
 				setTableCountText();	
-				Log.debug("CountTIME:" + Long.toString(System.currentTimeMillis() - time));
+				
+				if(currentVisibleCount < parentEntity.getDescriptor().getShapeLimit() && currentVisibleCount > 0) {
+					sendLoadQuery();
+					return;
+				}
 				
 				int targetOrder = MocRepository.getTargetOrderFromFoV();
 				
@@ -528,7 +571,6 @@ public class MOCEntity implements GeneralEntityInterface {
 				}else {
 					currentDataOrder = targetOrder;
 				}
-				
 		}
 		
 		@Override
@@ -946,6 +988,18 @@ public class MOCEntity implements GeneralEntityInterface {
     public void select() {
         // TODO Auto-generated method stub
         
+    }
+    
+    public void setColor(String color) {
+    	if(overlay != null) {
+    		overlay.setProperty("color", color);
+    	}
+    }
+
+    public void setScale(double value) {
+    	if(overlay != null) {
+    		overlay.setProperty("opacity", value);
+    	}
     }
 
 }

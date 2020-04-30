@@ -15,6 +15,7 @@ import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DoubleFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 
 public class TabulatorWrapper{
@@ -34,6 +35,8 @@ public class TabulatorWrapper{
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
         public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
         public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
+        public String getLabelFromTapName(String tapName);
+        public GeneralJavaScriptObject getDescriptorMetaData();
     }
 
     private TabulatorCallback tabulatorCallback;
@@ -110,7 +113,7 @@ public class TabulatorWrapper{
         tabulatorCallback.onDataFiltered(indexArray);
     }
     
-    public void showNumericFilterDialog(String tapName, String filterButtonId, double minVal, double maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    public void showNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, double maxVal, final GeneralJavaScriptObject onChangeFunc) {
 
     	if(!filterDialogs.containsKey(tapName)) {
     		FilterObserver filterObserver = new FilterObserver() {
@@ -122,15 +125,19 @@ public class TabulatorWrapper{
 				}
 			};
     		
-    		DoubleFilterDialogBox filterDialog = new DoubleFilterDialogBox(tapName, tapName, filterButtonId, filterObserver);
+    		DoubleFilterDialogBox filterDialog = new DoubleFilterDialogBox(tapName, title, filterButtonId, filterObserver);
+    		
+    		boolean isInt = false;
     		
     		NumberFormat numberFormat = NumberFormat.getFormat("0.##");
     		
     		if((minVal - Math.floor(minVal)) == 0 && (maxVal - Math.floor(maxVal)) == 0) {
     			numberFormat = NumberFormat.getFormat("0");
+    			isInt = true;
     		}
     		
     		filterDialog.setRange(minVal, maxVal, numberFormat, 2);
+    		filterDialog.setInt(isInt);
     		filterDialogs.put(tapName, filterDialog);
     	}
     	
@@ -139,7 +146,7 @@ public class TabulatorWrapper{
     	
     }
 
-    public void showDateFilterDialog(String tapName, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    public void showDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
     	
     	if(!filterDialogs.containsKey(tapName)) {
     		FilterObserver filterObserver = new FilterObserver() {
@@ -151,7 +158,7 @@ public class TabulatorWrapper{
     			}
     		};
     		
-    		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, tapName, filterButtonId, filterObserver);
+    		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, title, filterButtonId, filterObserver);
     		
     		filterDialog.setStartRange(minVal, maxVal);
     		filterDialogs.put(tapName, filterDialog);
@@ -162,14 +169,14 @@ public class TabulatorWrapper{
     	
     }
 
-    public void showListFilterDialog(String tapName, String filterButtonId, String list, final GeneralJavaScriptObject onChangeFunc) {
+    public void showListFilterDialog(String tapName, String title, String filterButtonId, String list, final GeneralJavaScriptObject onChangeFunc) {
     	
     	if(!filterDialogs.containsKey(tapName)) {
     		
     		final DropDownMenu<String> dropDownMenu = new DropDownMenu<String>("", "", 125, filterButtonId + "_DropDownMenu");
 
-    		for(String s : list.split(",")) {
-    			MenuItem<String> dropdownItem = new MenuItem<String>(s, s, s, true);
+    		for(String item : list.split(",")) {
+    			MenuItem<String> dropdownItem = new MenuItem<String>(item, item, item, true);
     			dropDownMenu.addMenuItem(dropdownItem);
     		}
     		
@@ -196,74 +203,175 @@ public class TabulatorWrapper{
     }-*/;
     
     public void setDefaultQueryMode(){
-        setDefaultQueryMode(tableJsObject);
+        setDefaultQueryMode(this, tableJsObject);
     }
     
-    private native void setDefaultQueryMode(GeneralJavaScriptObject tableJsObject)/*-{
+    private native void setDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.options.ajaxResponse = function(url, params, response){
-            var metadata = response.metadata;
-
-            var data = [];
-            for(var i = 0; i < response.data.length; i++){
-                var row = {};
-                row['id'] = i;
-                for(var j = 0; j < metadata.length; j++){
-                    if(metadata[j].datatype === "DOUBLE"){
-                        row[metadata[j].name] = parseFloat(response.data[i][j]);
-                        if(isNaN(row[metadata[j].name])){
-                            row[metadata[j].name] = undefined;
-                        }
-                    } else {
-                        row[metadata[j].name] = response.data[i][j];
-                    }
-                }
-                data[i] = row;
-            }
-            tableJsObject.metadata = metadata;
-            return data;
-        }
+			descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
+			
+			metadata = response.metadata;
+			for(var j = 0; j < metadata.length; j++){
+				
+				metadata[j]["visible"] = true;
+				metadata[j]["displayName"] = metadata[j].name;
+				
+				if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
+				
+					if(descriptorMetaData[metadata[j].name].hasOwnProperty("visible")){
+						metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
+					}
+					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label")){
+						metadata[j].displayName = descriptorMetaData[metadata[j].name]["label"];
+					}
+				}
+				
+				displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+				
+				metadata[j].displayName = displayName;
+			}
+			var data = [];
+			for(var i = 0; i < response.data.length; i++){
+				var row = {};
+				row['id'] = i;
+				for(var j = 0; j < metadata.length; j++){
+	    			if(metadata[j].datatype === "DOUBLE" || metadata[j].datatype === "REAL" || metadata[j].datatype === "INTEGER"){
+						row[metadata[j].name] = parseFloat(response.data[i][j]);
+		    			if(isNaN(row[metadata[j].name])){
+							row[metadata[j].name] = undefined;
+		    			}
+	    			} else {
+						row[metadata[j].name] = response.data[i][j];
+	    			}
+				}
+				data[i] = row;
+			}		
+			tableJsObject.metadata = metadata;
+	        return data;
+	    }
     }-*/;
     
-    public void setHeaderQueryMode(){
-        setHeaderQueryMode(tableJsObject);
+    public void setHeaderQueryMode(String mode){
+        setHeaderQueryMode(this, tableJsObject, mode);
     }
     
-    private native void setHeaderQueryMode(GeneralJavaScriptObject tableJsObject)/*-{
+    private native void setHeaderQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject, String mode)/*-{
         tableJsObject.clearData();
-        tableJsObject.options.ajaxResponse = function(url, params, response){
-            var metadata = response.metadata;
-            var newMeta = [];
-            tableJsObject.filterData[0] = {};
-            tableJsObject.filterData[1] = {};
-            tableJsObject.filterData[0].id = 0;
-            tableJsObject.filterData[1].id = 1;
-            for(var j = 0; j < metadata.length; j++){
-                name = metadata[j].name.substring(0,metadata[j].name.length - 4)
-    
-                if(metadata[j].name.endsWith("_min")){
-                    meta = {name:name, datatype:"DOUBLE"}
-                    newMeta.push(meta)
-                    tableJsObject.filterData[0][name] = parseFloat(response.data[0][j]);
-                }
-                else if(metadata[j].name.endsWith("_max")){
-                    tableJsObject.filterData[1][name] = parseFloat(response.data[0][j]);
-                }
-                else if(metadata[j].name.endsWith("_lst")){
-                    list = response.data[0][j];
-                    list = list.replace("{","[").replace("}","]");
-                    tableJsObject.filterData[0][name] = list;
-                    meta = {name:name, datatype:"LIST"}
-                    newMeta.push(meta)
-                }
-                else{
-                    meta = {name:name, datatype:"STRING"}
-                    newMeta.push(meta)
-                }
-                
-            }
-    
-            tableJsObject.metadata = newMeta;
-            return [];
+        
+        if(mode == 'localMinMax'){
+        	tableJsObject.options.ajaxResponse = function(url, params, response){
+				var metadata = response.metadata;
+				newMeta = [];
+				filterData = {};
+				
+				for(var j = 0; j < metadata.length; j++){
+	    			
+	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
+	    			displayName = $wnd.esasky.getColumnDisplayText(name);
+	    			
+	    			if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
+	    				datatype = "TIMESTAMP";
+	    			}else{
+    					datatype = "DOUBLE";
+    				}
+
+	    			if(metadata[j].name.endsWith("_min")){
+	    				meta = {name:name, displayName:displayName, datatype:datatype}
+	    				newMeta.push(meta)
+	    				if(!filterData[name]){
+	    					filterData[name] = {};
+	    				}
+	    				
+	    				if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
+							filterData[name]["min"] = response.data[0][j];
+		    			}else{
+							filterData[name]["min"] = parseFloat(response.data[0][j]);
+	    				}
+	    			}
+	    			else if(metadata[j].name.endsWith("_max")){
+    					if(!filterData[name]){
+	    					filterData[name] = {};
+	    				}
+	    				
+						if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
+							filterData[name]["max"] = response.data[0][j];
+		    			}else{
+							filterData[name]["max"] = parseFloat(response.data[0][j]);
+	    				}	    			
+					}
+	    			else if(metadata[j].name.endsWith("_lst")){
+	    				list = response.data[0][j];
+	    				list = list.replace("{","[").replace("}","]");
+    					if(!filterData[name]){
+    						filterData[name] = {};
+	    				}
+						filterData[name]["list"] = list;
+						meta = {name:name, displayName:displayName, datatype:"LIST"}
+						newMeta.push(meta)
+	    			}
+	    			else{
+	    				meta = {name:name, displayName:displayName, datatype:"STRING"}
+	    				newMeta.push(meta)
+	    			}
+	    			
+				}
+
+				tableJsObject.metadata = newMeta;
+				tableJsObject.filterData = filterData;
+		        return [];
+		    }
+        }else{
+        	tableJsObject.options.ajaxResponse = function(url, params, response){
+				var md = response.metadata;
+				newMeta = [];
+				var filterData = {};
+				var colNameIndex, minIndex, maxIndex;
+				for(var j = 0; j < md.length; j++){
+					if(md[j].name.endsWith("min_value")){
+						minIndex = j;
+					}
+					else if(md[j].name.endsWith("max_value")){
+						maxIndex = j
+					}
+					else if(md[j].name == "column_name"){
+						colNameIndex = j
+					}
+				}
+				for(var i = 0; i < response.data.length; i++){
+					
+					name = response.data[i][colNameIndex];
+					name = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
+					
+					displayName = $wnd.esasky.getColumnDisplayText(name);
+					
+					minVal = parseFloat(response.data[i][minIndex]);
+					maxVal = parseFloat(response.data[i][maxIndex]);
+					
+					if(minVal){
+						if(Math.floor(minVal) == minVal && Math.floor(maxVal) == maxVal){
+		    				meta = {name:name, displayName:displayName, datatype:"INTEGER", visible:true}
+		    				newMeta.push(meta)
+						}else{
+		    				meta = {name:name, displayName:displayName, datatype:"DOUBLE", visible:true}
+		    				newMeta.push(meta)
+						}
+						
+	    				if(!filterData[name]){
+	    					filterData[name] = {};
+	    				}
+						filterData[name]["min"] = minVal;
+						filterData[name]["max"] = maxVal;
+					}
+	    			else{
+	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible:true}
+	    				newMeta.push(meta)
+	    			}
+    			}
+
+				tableJsObject.metadata = newMeta;
+				tableJsObject.filterData = filterData;
+		        return [];
+			}
         }
     }-*/;
 
@@ -320,10 +428,10 @@ public class TabulatorWrapper{
 				var minVal = Infinity;
 				var maxVal = -Infinity;
 				
-				if(table.filterData.length > 0){
-					name = cell.getColumn()._column.definition.field;
-					minVal = table.filterData[0][name];
-					maxVal = table.filterData[1][name];
+				name = cell.getColumn()._column.definition.field;
+				if(filterData[name]){
+					minVal = filterData[name].min;
+					maxVal = filterData[name].max;
 				}else{
 					cell.getColumn()._column.cells.forEach(function (row){
 						if(row.getValue() != undefined){
@@ -338,8 +446,8 @@ public class TabulatorWrapper{
 					maxVal = 100;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
-					(editorParams["tapName"], filterButtonId, minVal, maxVal, functionObject);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+					(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
 			});	
 			var container = $wnd.$("<span></span>")
 			 
@@ -380,10 +488,10 @@ public class TabulatorWrapper{
 				var minVal = "2100-01-01";
 				var maxVal = "1800-01-01";
 				
-				if(table.filterData.length > 0){
-					name = cell.getColumn()._column.definition.field;
-					minVal = table.filterData[0][name];
-					maxVal = table.filterData[1][name];
+				name = cell.getColumn()._column.definition.field;
+				if(filterData[name]){
+					minVal = filterData[name].min;
+					maxVal = filterData[name].max;
 				}else{
 					cell.getColumn()._column.cells.forEach(function (row){
 						if(row.getValue() != undefined){
@@ -403,8 +511,8 @@ public class TabulatorWrapper{
 					maxVal = tmp;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
-					(editorParams["tapName"], filterButtonId, minVal, maxVal, functionObject);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+					(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
 			});	
 			var container = $wnd.$("<span></span>")
 			 
@@ -445,9 +553,9 @@ public class TabulatorWrapper{
 			    e.stopPropagation();
 				if(table.filterData != []){
 					name = cell.getColumn()._column.definition.field;
-					list = table.filterData[0][name];
-					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)
-						(editorParams["tapName"], filterButtonId, list, functionObject);
+					list = filterData[name]["list"];
+					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+						(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
 				}				
 			});	
 			var container = $wnd.$("<span></span>")
@@ -474,7 +582,7 @@ public class TabulatorWrapper{
 				return "";
 			}
 			
-			decimals = 4;
+			var decimals = 4;
 
 			if(Math.abs(cell.getValue()) > Math.pow(10, -decimals)){
 				return cell.getValue().toFixed(decimals)
@@ -528,10 +636,13 @@ public class TabulatorWrapper{
 		   	return true;
 		}
 		
+		var footerCounter = "<div></div><div class=\"footerCounter\">0</div>"
+		
 
 		var table = new $wnd.Tabulator("#" + divId, {
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	placeholder:"",
+    		footerElement:footerCounter,
 		    dataFiltered:function(filters, rows){
 		    	var returnString = "";
 		    	for(var i = 0; i < rows.length; i++){
@@ -539,13 +650,24 @@ public class TabulatorWrapper{
 		    	}
 
 		  		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataFiltered(Ljava/lang/String;)(returnString);
+
+			   	var footerCounter = this.footerManager.element.getElementsByClassName("footerCounter")[0];
+			   	var text = $wnd.esasky.getInternationalizationText("tabulator_rowCount");
+			   	text = text.replace("$count$", rows.length);
+			   	if(footerCounter){
+					footerCounter.innerHTML = text;
+			   	}
 		    },
 		    dataLoaded:function(data){
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
+		    	this.rowManager.adjustTableSize();
 		    },
 		    dataLoading:function(data){
 		        var activeColumnGroup = [];
-		    	activeColumnGroup.push({formatter:"rowSelection", titleFormatter:"rowSelection"});
+		    	activeColumnGroup.push({formatter:"rowSelection", titleFormatter:"rowSelection", sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
+					return bRow.isSelected() - aRow.isSelected();
+					
+				}});
 
 		    	var imageButtonFormatter = function(cell, formatterParams, onRendered){ 
                     return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
@@ -563,7 +685,7 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
                 }
@@ -577,7 +699,7 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
                 }
@@ -592,7 +714,7 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
                 }
@@ -606,152 +728,161 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
                 }
 
-                if(!isInitializing){
-    		    	for(var i = 0; i < table.metadata.length; i++){
-    		    		if(table.metadata[i].name.toLowerCase() === "access_url"){
-                            activeColumnGroup.push({
-                                title:table.metadata[i].name,
-                                field:table.metadata[i].name,
-                                headerSort:false, 
-                                headerTooltip:table.metadata[i].description,
-                                minWidth: 85,
-                                formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"download_small.png", 
-                                    tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
-                                    cellClick:function(e, cell){
-                                        e.stopPropagation();
-                                        if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
-                            		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
-                                        } else {
-                            		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getData().access_url);
-                                        }
-    
-                                    }
-                            });
-                            continue;
-    		    		}
-    		    		if(table.metadata[i].name.toLowerCase() === "postcard_url"){
-                            activeColumnGroup.push({
-                                title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
-                                field:table.metadata[i].name,
-                                headerSort:false, 
-                                headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
-                                minWidth: 50,
-                                formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"preview.png", 
-                                    tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
-                                    cellClick:function(e, cell){
-                                        e.stopPropagation();
-                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/cl/web/client/view/resultspanel/GeneralJavaScriptObject;)(cell.getRow());
-                                    }
-                            });
-                            continue;
-    		    		}
-    		    		if(table.metadata[i].name.toLowerCase() === "author"){
-                            activeColumnGroup.push({
-                                title:table.metadata[i].name,
-                                field:table.metadata[i].name,
-        		    			sorter: "string",
-        		    			headerFilter:true,
-        		    			headerFilterFunc:"like",
-        		    			headerFilterFuncParams:{tapName:table.metadata[i].name},
-                                headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
-                                formatter:linkListFormatter});
-                            continue;
-                        }
-    		    		if(table.metadata[i].name.toLowerCase() === "sso_name"){
-    		    		    columnDef.push(activeColumnGroup[0]); //Selection column
-    		    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
-    		    		    activeColumnGroup = [];
-    		    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
-    		    		}
-    		    		
-    		    		if(table.metadata[i].datatype === "DOUBLE"){
-    		    			activeColumnGroup.push({
-    			    			title:table.metadata[i].name,
-    			    			field:table.metadata[i].name, 
-    			    			headerTooltip:table.metadata[i].description,
-    			    			formatter:doubleFormatter,
-    			    			sorter: "number",
-    			    			headerFilter:numericFilterEditor,
-    			    			headerFilterParams:{tapName:table.metadata[i].name},
-    			    			headerFilterFunc:DoubleFilter,
-    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
-    	    				});
-    		    		}
-    		    		else if(table.metadata[i].datatype === "TIMESTAMP"){
-    		    			activeColumnGroup.push({
-    			    			title:table.metadata[i].name,
-    			    			field:table.metadata[i].name, 
-    			    			headerTooltip:table.metadata[i].description,
-    			    			formatter:doubleFormatter,
-    			    			sorter: "string",
-    			    			formatter: "plaintext",
-    			    			headerFilter:dateFilterEditor,
-    			    			headerFilterParams:{tapName:table.metadata[i].name},
-    			    			headerFilterFunc:DateFilter,
-    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
-    	    				});
-    		    		}
-    		    		else if(table.metadata[i].datatype === "INTEGER"){
-    		    			activeColumnGroup.push({
-    			    			title:table.metadata[i].name,
-    			    			field:table.metadata[i].name, 
-    			    			headerTooltip:table.metadata[i].description,
-    			    			formatter:doubleFormatter,
-    			    			sorter: "number",
-    			    			formatter:"plaintext",
-    			    			headerFilter:numericFilterEditor,
-    			    			headerFilterParams:{tapName:table.metadata[i].name},
-    			    			headerFilterFunc:DoubleFilter,
-    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
-    	    				});
-    		    		}
-    		    		else if(table.metadata[i].datatype === "LIST"){
-    		    			activeColumnGroup.push({
-    			    			title:table.metadata[i].name,
-    			    			field:table.metadata[i].name, 
-    			    			headerTooltip:table.metadata[i].description,
-    			    			formatter:doubleFormatter,
-    			    			sorter: "number",
-    			    			formatter:"plaintext",
-    			    			headerFilter:listFilterEditor,
-    			    			headerFilterParams:{tapName:table.metadata[i].name},
-    			    			headerFilterFunc:"like",
-    	    				});
-    		    		}else{
-    			    		activeColumnGroup.push({
-    			    			title:table.metadata[i].name,
-    			    			field:table.metadata[i].name, 
-    			    			headerTooltip:table.metadata[i].description,
-    			    			formatter:"plaintext",
-    			    			sorter:  "string",
-    			    			headerFilter:true,
-    			    			headerFilterParams:{tapName:table.metadata[i].name},
-    			    			headerFilterFunc:"like",
-    			    			headerFilterFuncParams:{tapName:table.metadata[i].name}
-    		    			});
-    		    		}
-    	    		}
-    		    	if(columnDef.length == 0){
-    		    	    columnDef = activeColumnGroup;
-    		    	}
-    		    	
-    		    	table.setColumns(columnDef);
-        	        table.getColumns().forEach(function (column){
-        	            if (column.getDefinition().sorter){
-                            column.getElement().onmouseover = function() {
-                                column.getElement().style.backgroundColor = "#d0d0d0";
-                            }
-                            column.getElement().onmouseout = function() {
-                                column.getElement().style.backgroundColor = "";
+				if(!isInitializing){
+			    	for(var i = 0; i < this.metadata.length; i++){
+			    		if(this.metadata[i].name.toLowerCase() === "access_url"){
+	                        activeColumnGroup.push({
+	                            title:this.metadata[i].name,
+	                            field:this.metadata[i].name,
+	                            headerSort:false, 
+	                            headerTooltip:this.metadata[i].description,
+	                            minWidth: 85,
+	                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"download_small.png", 
+	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
+	                                cellClick:function(e, cell){
+	                                    e.stopPropagation();
+	                                    if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
+	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+	                                    } else {
+	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getData().access_url);
+	                                    }
+	                                }
+	                        });
+	                        continue;
+			    		}
+			    		if(this.metadata[i].name.toLowerCase() === "postcard_url"){
+	                        activeColumnGroup.push({
+	                            title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
+	                            field:this.metadata[i].name,
+	                            headerSort:false, 
+	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
+	                            minWidth: 50,
+	                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"preview.png", 
+	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
+	                                cellClick:function(e, cell){
+	                                    e.stopPropagation();
+	                    		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+	                                }
+	                        });
+	                        continue;
+			    		}
+			    		if(this.metadata[i].name.toLowerCase() === "author"){
+	                        activeColumnGroup.push({
+	                            title:this.metadata[i].name,
+	                            field:this.metadata[i].name,
+	    		    			sorter: "string",
+	    		    			headerFilter:true,
+	    		    			headerFilterFunc:"like",
+	    		    			headerFilterFuncParams:{tapName:metadata[i].name},
+	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
+	                            formatter:linkListFormatter});
+	                        continue;
+	                    }
+			    		if(this.metadata[i].name.toLowerCase() === "sso_name"){
+			    		    columnDef.push(activeColumnGroup[0]); //Selection column
+			    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
+			    		    activeColumnGroup = [];
+			    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
+			    		}
+			    		if(this.metadata[i].datatype === "DOUBLE" || this.metadata[i].datatype === "REAL"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:doubleFormatter,
+				    			sorter: "number",
+				    			headerFilter:numericFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:DoubleFilter,
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+		    				});
+		    				
+			    		}
+			    		else if(this.metadata[i].datatype === "TIMESTAMP"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:doubleFormatter,
+				    			sorter: "string",
+				    			formatter: "plaintext",
+				    			headerFilter:dateFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:DateFilter,
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+		    				});
+			    		}
+			    		else if(this.metadata[i].datatype === "INTEGER"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:doubleFormatter,
+				    			sorter: "number",
+				    			formatter:"plaintext",
+				    			headerFilter:numericFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:DoubleFilter,
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+		    				});
+			    		}
+			    		else if(this.metadata[i].datatype === "LIST"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:doubleFormatter,
+				    			sorter: "number",
+				    			formatter:"plaintext",
+				    			headerFilter:listFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:"like",
+		    				});
+			    		}else{
+				    		activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:"plaintext",
+				    			sorter:  "string",
+				    			headerFilter:true,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:"like",
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+			    			});
+			    		}
+		    		}
+			    	if(columnDef.length == 0){
+			    	    columnDef = activeColumnGroup;
+			    	}
+			    	
+			    	table.setColumns(columnDef);
+	    	        table.getColumns().forEach(function (column){
+	    	            if (column.getDefinition().sorter){
+	                        column.getElement().onmouseover = function() {
+	                            column.getElement().style.backgroundColor = "#d0d0d0";
+	                        }
+	                        column.getElement().onmouseout = function() {
+	                            column.getElement().style.backgroundColor = "";
                             }
         	            } 
                     });
-                }
+			    }
 		    },
 		 	selectable:true,
 		    rowSelectionChanged:function(data, rows){
@@ -784,8 +915,30 @@ public class TabulatorWrapper{
 		 	autoColumns: true,
 		 	layout: "fitDataFill"
 		});
+		
+		table.rowManager.adjustTableSize = function () {
+		//Change to remove that it changes with the footer height
+		if (this.renderMode === "virtual") {
 
+			this.height = this.element.clientHeight;
 
+//			this.vDomWindowBuffer = this.table.options.virtualDomBuffer || this.height;
+
+			var otherHeight = this.columnManager.getElement().offsetHeight ;
+			
+			this.element.style.minHeight = "calc(100% - " + otherHeight + "px)";
+
+			this.element.style.height = "calc(100% - " + otherHeight + "px)";
+
+			this.element.style.maxHeight = "calc(100% - " + otherHeight + "px)";
+			
+			footerOffset = (this.table.footerManager && !this.table.footerManager.external ? this.table.footerManager.getElement().offsetHeight : 0);
+			
+			this.table.footerManager.element.style.marginTop = -  footerOffset + "px";
+			
+		}
+	};
+	
 		table.getVoTableString = function(data, resourceName){
 			// Add VOT XML Schema
 			var votData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -834,8 +987,8 @@ public class TabulatorWrapper{
 		}
 		
         table.filterData = [];
+        table.metadata = [];
 		isInitializing = false;
-        $wnd.tabulatorTable = table;
 		return table;
 	}-*/;
 
@@ -891,6 +1044,14 @@ public class TabulatorWrapper{
 
     public void onFilterChanged(String label, String filter) {
         tabulatorCallback.onFilterChanged(label, filter);
+    }
+    
+    public String getLabelFromTapName(String tapName) {
+    	return tabulatorCallback.getLabelFromTapName(tapName);
+    }
+
+    public GeneralJavaScriptObject getDescriptorMetaData() {
+    	return tabulatorCallback.getDescriptorMetaData();
     }
     
     public String getFilterIcon() {

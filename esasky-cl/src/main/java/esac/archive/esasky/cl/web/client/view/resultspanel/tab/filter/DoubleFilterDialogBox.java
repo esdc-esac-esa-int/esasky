@@ -42,6 +42,8 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
     private double currentHigh = maxValue;
     private double range;
     private double precision;
+    private double stepSize;
+    private boolean isInt;
     
     private final int SLIDER_MAX = 10000;
     private double currentSliderFromFraction = 0;
@@ -147,7 +149,13 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 		super.show();
 		if(!hasSliderBeenAddedToDialogBox) {
 			hasSliderBeenAddedToDialogBox = true;
-			slider = createSliderFilter(this, doubleFilterContainerId, sliderSelectorContainerId, SLIDER_MAX);
+			if(isInt) {
+				stepSize = Math.max(1,Math.floor(SLIDER_MAX/(range)));
+				slider = createSliderFilter(this, doubleFilterContainerId, sliderSelectorContainerId, 0, SLIDER_MAX, stepSize);
+			}else {
+				stepSize = 1;
+				slider = createSliderFilter(this, doubleFilterContainerId, sliderSelectorContainerId, 0, SLIDER_MAX, stepSize);
+			}
 			setTextBoxValues(minValue, maxValue);
 			addElementNotAbleToInitiateMoveOperation("slider-" + sliderSelectorContainerId);
 		}
@@ -160,16 +168,16 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 				&& 	!(Double.isInfinite(minValue) || Double.isInfinite(maxValue));
 	}
 	
-    private native JavaScriptObject createSliderFilter(DoubleFilterDialogBox instance, String containerId, String sliderSelectorId, int multiple) /*-{
+    private native JavaScriptObject createSliderFilter(DoubleFilterDialogBox instance, String containerId, String sliderSelectorId, int minValue, int maxValue, double fixedStep) /*-{
 	    var sliderSelector = $wnd.createSliderSelector(sliderSelectorId,
 	                                      "",
-	                                      0,
-	                                      multiple,
+	                                      minValue,
+	                                      maxValue,
 	                                      $entry(function (selector) {
 	                                      	instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DoubleFilterDialogBox::fireRangeChangedEvent(DD)(selector.fromValue, selector.toValue);
 	                                      	}),
 	                                      20,
-	                                      1e-20);
+	                                      fixedStep);
 		$wnd.$("#" + containerId).append(sliderSelector.$html);
 		return sliderSelector;
     }-*/;
@@ -180,6 +188,11 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
     	
     	fromValue = minValue + fromValue * range / SLIDER_MAX;
     	toValue = minValue + toValue * range / SLIDER_MAX;
+    	
+    	if(isInt) {
+    		fromValue = Math.round(fromValue);
+    		toValue = Math.round(toValue);
+    	}
     	setTextBoxValues(fromValue, toValue);
     	filterTimer.setNewRange(fromValue, toValue);
     }
@@ -300,7 +313,16 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 				lastLow = currentLow;
 				lastHigh = currentHigh;
 				if(isFilterActive()) {
-					filterObserver.onNewFilter(Double.toString(lastLow)+ "," + Double.toString(lastHigh));
+					String filter = "";
+					if(currentSliderFromFraction > 0) {
+						filter += Double.toString(currentLow);
+					}
+					filter += ",";
+					if((SLIDER_MAX - currentSliderToFraction) > stepSize) {
+						filter += Double.toString(currentHigh);
+					}
+					
+					filterObserver.onNewFilter(filter);
 				}else {
 					filterObserver.onNewFilter("");
 				}
@@ -337,4 +359,14 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 	public String getAdqlForFilterCondition() {
 		return "";
 	}
+
+	public boolean isInt() {
+		return isInt;
+	}
+
+	public void setInt(boolean isInt) {
+		this.isInt = isInt;
+	}
+	
+	
 }

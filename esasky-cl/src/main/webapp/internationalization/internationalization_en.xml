@@ -1750,43 +1750,43 @@
 	<text key="INTEGRAL_Exposure">
 		Exposure (ksec)
 	</text>
-	<text key="3XMM_EPIC_ep_8_flux">
+	<text key="XMM_EPIC_ep_8_flux">
 		Flux&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="3XMM_EPIC_ep_8_flux_err">
+	<text key="XMM_EPIC_ep_8_flux_err">
 		Flux error&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_2_flux">
+	<text key="XMM_EPIC_ep_2_flux">
 		Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_2_flux_err">
+	<text key="XMM_EPIC_ep_2_flux_err">
 		Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_3_flux">
+	<text key="XMM_EPIC_ep_3_flux">
 		Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_3_flux_err">
+	<text key="XMM_EPIC_ep_3_flux_err">
 		Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_4_flux">
+	<text key="XMM_EPIC_ep_4_flux">
 		Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_4_flux_err">
+	<text key="XMM_EPIC_ep_4_flux_err">
 		Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_5_flux">
+	<text key="XMM_EPIC_ep_5_flux">
 		Flux&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<text key="4XMM_EPIC_ep_5_flux_err">
+	<text key="XMM_EPIC_ep_5_flux_err">
 		Flux error&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
@@ -2033,22 +2033,22 @@
 	<text key="PublicationTooltip_bibcount">
 		Num. pub.:
 	</text>
-	<text key="3XMM_EPIC_ep_8_n_contrib">
+	<text key="XMM_EPIC_ep_8_n_contrib">
 		N. Contrib
 	</text>
-	<text key="3XMM_EPIC_ep_8_n_obs">
+	<text key="XMM_EPIC_ep_8_n_obs">
 		N. Obs
 	</text>
-	<text key="3XMM_EPIC_ep_8_extent">
+	<text key="XMM_EPIC_ep_8_extent">
 		Extent
 	</text>
-	<text key="3XMM_EPIC_ep_8_extent_err">
+	<text key="XMM_EPIC_ep_8_extent_err">
 		Extent error
 	</text>
-	<text key="3XMM_EPIC_ep_8_flux_var">
+	<text key="XMM_EPIC_ep_8_flux_var">
 		Flux Var
 	</text>
-	<text key="3XMM_EPIC_ep_8_iau_name">
+	<text key="XMM_EPIC_ep_8_iau_name">
 		IAU Name
 	</text>
 	<text key="RA_J1991">
@@ -3164,12 +3164,18 @@
 	<text key="tabulator_SourcesInPublication">
 		Show the sources mentioned in this publication
 	</text>
-		<text key="MOC_large_count_text">
+	<text key="MOC_large_count_text">
 		Total amount of objects in the shown MOC: $count$	
 		
 		Fitlering is only available under 10 000 000
 		
 		Zoom in to reduce the amount
 	</text>
+
+	<text key="tabulator_rowCount">
+		#Rows: $count$
+	</text>
+
+
 
 </Internationalization>
