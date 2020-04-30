@@ -76,12 +76,6 @@ public class TAPSSOService extends AbstractTAPService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getHeaderAdql(IDescriptor descriptor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
     public String getCount(String ssoName, ESASkySSOObjType ssoType) {
 
@@ -124,5 +118,11 @@ public class TAPSSOService extends AbstractTAPService {
         Log.debug("SSO COUNT ADQL " + adql);
         return adql;
     }
+
+	@Override
+	protected String getGeometricConstraint(IDescriptor descriptor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -7,7 +7,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -34,6 +33,11 @@ public class TAPCatalogueService extends AbstractTAPService {
      */
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
+    	return getMetadataAdql(descriptorInput, "");
+    }
+    
+    @Override
+	public String getMetadataAdql(IDescriptor descriptorInput, String filters) {
         CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
 
         String adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
@@ -49,44 +53,18 @@ public class TAPCatalogueService extends AbstractTAPService {
                 adql += " " + currentMetadata.getTapName() + " as "
                         + currentMetadata.getTapName() + ", ";
             } else {
-                adql += " " + currentMetadata.getTapName() + ", ";
+                adql += " " + currentMetadata.getTapName();
+                adql += ", ";
             }
         }
 
         String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " from " + descriptor.getTapTable() + " where 1=CONTAINS(POINT('ICRS',"
-                + EsaSkyConstants.SOURCE_TAP_RA + ", " + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
-        // + catalogue.getPosTapColumn() + ",";
-
-        String shape = null;
-        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (AladinLiteWrapper.isCornersInsideHips()) {
-            if (fovDeg < 1) {
-                Log.debug("[TAPQueryBuilder/getMetadata4Sources()] FoV < 1d");
-                shape = "POLYGON('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
-            } else {
-                shape = "POLYGON('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")";
-            }
-        } else {
-
-            String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
-            if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
-                // convert to J2000
-                Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
-                        AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg(),
-                        AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg());
-                shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
-            } else {
-                shape = "CIRCLE('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg() + ","
-                        + AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg() + ",90)";
-            }
-
+        parsedAdql += " from " + descriptor.getTapTable() + " where " + getGeometricConstraint(descriptor);
+        
+        if(filters != "") {
+        	parsedAdql += " AND " + filters;
         }
-        parsedAdql += shape + ")";
 
         if (null != descriptor.getOrderBy() && !"".equals(descriptor.getOrderBy().trim())) {
             parsedAdql += " ORDER BY " + descriptor.getOrderBy();
@@ -173,46 +151,12 @@ public class TAPCatalogueService extends AbstractTAPService {
         return parsedAdql;
     }
     
-    public String getHeaderAdql(IDescriptor descriptorInput) {
-        CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
-
-        String adql = "select ";
-
-        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-        	if(currentMetadata.getType().equals(ColumnType.DOUBLE) || currentMetadata.getType().equals(ColumnType.INTEGER)) {
-        		adql += "min(" + currentMetadata.getTapName() + ") as " +
-        				currentMetadata.getTapName() + "_min , ";
-        		adql += "max(" + currentMetadata.getTapName() + ") as " +
-        				currentMetadata.getTapName() + "_max , ";
-        	}
-        	else if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
-            	adql += "min(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapDecColumn() + "_min , ";
-            	adql += "max(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapDecColumn() + "_max , ";
-            } 
-            else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
-            	adql += "min(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapRaColumn() + "_min , ";
-            	adql += "max(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapRaColumn() + "_max , ";
-//            } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
-//                adql += " " + currentMetadata.getTapName() + " as "
-//                        + currentMetadata.getTapName() + ", ";
-            } else if(currentMetadata.getTapName() == "filter"){
-                adql += "ARRAY_AGG(DISTINCT_FUNC(" + currentMetadata.getTapName() +")) as " + currentMetadata.getTapName() + "_lst , ";
-	        } else {
-	        	adql += "'' as " + currentMetadata.getTapName() + "_str , ";
-	        }
-        
-        }
-
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-//        String parsedAdql = adql;
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " from " + descriptor.getTapTable() + " where 1=CONTAINS(POINT('ICRS',"
+    @Override
+    protected String getGeometricConstraint(IDescriptor descriptor) {
+    	String adql = "1=CONTAINS(POINT('ICRS',"
                 + EsaSkyConstants.SOURCE_TAP_RA + ", " + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
-        
+        // + catalogue.getPosTapColumn() + ",";
+
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
@@ -240,15 +184,9 @@ public class TAPCatalogueService extends AbstractTAPService {
             }
 
         }
-        parsedAdql += shape + ")";
-
-        return parsedAdql;
-    }
-
-    @Override
-    public String getMetadataAdql(IDescriptor descriptor, String filter) {
-     // TODO proper filtering
-        return getMetadataAdql(descriptor);
+        adql += shape + ")";
+        
+        return adql;
     }
 
 }

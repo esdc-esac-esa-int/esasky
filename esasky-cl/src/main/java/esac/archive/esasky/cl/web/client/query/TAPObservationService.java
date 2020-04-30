@@ -52,15 +52,18 @@ public class TAPObservationService extends AbstractTAPService {
         parsedAdql.replace("\\s*,\\s*$", "");
         parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE ";
 
-        parsedAdql += getGeometricConstraint();
+        parsedAdql += getGeometricConstraint(descriptor);
         
-        parsedAdql += filter;
+        if(filter != "") {
+        	parsedAdql += " AND " + filter;
+        }
 
         Log.debug(debugPrefix + " ADQL " + parsedAdql);
         return parsedAdql;
     }
     
-    private String getGeometricConstraint() {
+    @Override
+	protected String getGeometricConstraint(IDescriptor descriptor) {
     	final String debugPrefix = "[TAPObservationService.getGeometricConstraint]";
     	String constraint = "1=INTERSECTS(fov,";
         String shape = null;
@@ -113,24 +116,5 @@ public class TAPObservationService extends AbstractTAPService {
 
         return parsedAdql;
     }
-
-	@Override
-	public String getHeaderAdql(IDescriptor descriptor) {
-        final String debugPrefix = "[TAPObservationService.getHeaders]";
-
-        Log.debug(debugPrefix);
-
-        String adql = "SELECT TOP 0 ";
-        for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-            MetadataDescriptor castMetadata = currMetadata;
-            adql += " " + castMetadata.getTapName() + ", ";
-        }
-
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " FROM " + descriptor.getTapTable();
-
-        return parsedAdql;
-	}
 
 }

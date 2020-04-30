@@ -43,7 +43,23 @@ public class TAPSurveyService extends AbstractTAPService {
 
         String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE 1=CONTAINS(pos,";
+        parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE " + getGeometricConstraint(descriptor);
+        
+        parsedAdql += filter;
+
+        Log.debug("[TAPQueryBuilder/getMetadata4Footprints()] ADQL " + parsedAdql);
+        return parsedAdql;
+    }
+
+	@Override
+	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getGeometricConstraint(IDescriptor descriptor) {
+		String adql= "1=CONTAINS(pos,";
 
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
@@ -73,36 +89,7 @@ public class TAPSurveyService extends AbstractTAPService {
             }
 
         }
-        parsedAdql += shape + ")";
-        
-        parsedAdql += filter;
-
-        Log.debug("[TAPQueryBuilder/getMetadata4Footprints()] ADQL " + parsedAdql);
-        return parsedAdql;
-    }
-
-	@Override
-	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getHeaderAdql(IDescriptor descriptor) {
-        final String debugPrefix = "[TAPObservationService.getHeaders]";
-
-        Log.debug(debugPrefix);
-
-        String adql = "SELECT TOP 0 ";
-        for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-            MetadataDescriptor castMetadata = currMetadata;
-            adql += " " + castMetadata.getTapName() + ", ";
-        }
-
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " FROM " + descriptor.getTapTable();
-
-        return parsedAdql;
+        adql += shape + ")";
+        return adql;
 	}
 }
