@@ -198,11 +198,6 @@ public class TAPExtTapService extends AbstractTAPService {
         }
     }
     
-    @Override
-    public String getHeaderAdql(IDescriptor descriptorInput) {
-    	return "SELECT TOP 0 * FROM " + descriptorInput.getTapTable();
-    }
-    
     public String getCountAdql(IDescriptor descriptorInput, boolean MOC) {
     	if(!MOC) {
     		return getCountAdql(descriptorInput);
@@ -270,6 +265,12 @@ public class TAPExtTapService extends AbstractTAPService {
 	public String getMetadataAdql(IDescriptor descriptor, String filter) {
 		// TODO proper filtering
 		return getMetadataAdql(descriptor);
+	}
+
+	@Override
+	protected String getGeometricConstraint(IDescriptor descriptor) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
