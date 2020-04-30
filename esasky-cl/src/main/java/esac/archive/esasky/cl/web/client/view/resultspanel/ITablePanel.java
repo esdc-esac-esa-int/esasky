@@ -106,5 +106,5 @@ public interface ITablePanel {
 	
 	public void setPlaceholderText(String text);
 
-	public void insertHeader(String tapQuery);
+	public void insertHeader(String tapQuery, String mode);
 }
