@@ -13,7 +13,7 @@ import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     
@@ -80,6 +80,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	    AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(footPrintOverlay);
 	    sourceShapes.clear();
 	    footPrintshapes.clear();
+	    allShapesIndexes.clear();
 	}
 
 	@Override

@@ -32,7 +32,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SourcesTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;

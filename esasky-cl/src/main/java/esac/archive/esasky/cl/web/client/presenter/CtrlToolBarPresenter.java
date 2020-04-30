@@ -51,7 +51,7 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.LinkListColumn;
 
 /**

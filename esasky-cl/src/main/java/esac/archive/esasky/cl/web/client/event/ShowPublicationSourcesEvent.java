@@ -2,7 +2,7 @@ package esac.archive.esasky.cl.web.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class ShowPublicationSourcesEvent extends GwtEvent<ShowPublicationSourcesEventHandler> {
 

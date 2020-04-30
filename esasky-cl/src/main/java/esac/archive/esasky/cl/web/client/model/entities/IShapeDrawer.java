@@ -5,7 +5,7 @@ import java.util.Set;
 
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public interface IShapeDrawer {
 

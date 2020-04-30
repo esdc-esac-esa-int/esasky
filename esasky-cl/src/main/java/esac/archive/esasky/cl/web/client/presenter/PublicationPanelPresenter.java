@@ -39,7 +39,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class PublicationPanelPresenter {
 

@@ -23,7 +23,7 @@ import esac.archive.esasky.cl.web.client.query.TAPSurveyService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.SurveyConstant;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.SurveyTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;

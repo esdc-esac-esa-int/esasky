@@ -15,6 +15,7 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.entities.CatalogEntity;
 import esac.archive.esasky.cl.web.client.model.entities.CombinedSourceFootprintDrawer;
@@ -35,7 +36,7 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class EntityRepository {
 
@@ -90,9 +91,12 @@ public class EntityRepository {
         } else if (descriptor instanceof SSODescriptor) {
             newEntity = new SSOEntity(descriptor);
             addEntity(newEntity);
-        } else if (descriptor instanceof CommonObservationDescriptor) {
+        } else if (descriptor instanceof ObservationDescriptor) {
             return createEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(),
                     TAPObservationService.getInstance());
+        } else if (descriptor instanceof SpectraDescriptor) {
+        	return createEntity(descriptor, descriptorRepo.getSpectraDescriptors().getCountStatus(),
+        			TAPObservationService.getInstance());
         } else if (descriptor instanceof CatalogDescriptor) {
             return createCatalogueEntity((CatalogDescriptor) descriptor);
         } else if (descriptor instanceof ExtTapDescriptor) {

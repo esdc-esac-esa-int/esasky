@@ -44,7 +44,7 @@ import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -252,6 +252,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
                 this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this, defaultEntity);
             }
             mocEntity.setTablePanel(tablePanel);
+            mocEntity.setShouldBeShown(true);
             mocEntity.refreshMOC();
         } else if(hasReachedFovLimit()) {
             Log.debug("Showing fov limit moc. FoVLimit = " + descriptor.getFovLimit());
@@ -283,8 +284,20 @@ public class ExtTapEntity implements GeneralEntityInterface {
         }
 
         clearAll();
-        Log.debug(descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
         tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
+    }
+
+    public void fetchDataWithoutMOC(String filter) {
+    	Log.debug("Showing real data");
+    	drawer = combinedDrawer;
+    	defaultEntity.setDrawer(drawer);
+    	if(mocEntity != null){
+    		mocEntity.clearAll();
+    		mocEntity.setShouldBeShown(false);
+    	}
+    	
+    	clearAll();
+    	tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(filter), EsaSkyConstants.JSON));
     }
 
     private void getMocMetadata() {
@@ -580,11 +593,17 @@ public class ExtTapEntity implements GeneralEntityInterface {
             @Override
             public void onShapeSizeChanged(double value) {
                 setSizeRatio(value);
+                if(mocEntity != null) {
+                	mocEntity.setScale(value);
+                }
             }
 
             @Override
             public void onShapeColorChanged(String color) {
                 getDescriptor().setPrimaryColor(color);
+                if(mocEntity != null) {
+                	mocEntity.setColor(color);
+                }
             }
 
             @Override
@@ -595,6 +614,7 @@ public class ExtTapEntity implements GeneralEntityInterface {
             @Override
             public void onSecondaryShapeScaleChanged(double value) {
                 combinedDrawer.setSecondaryScale(value);
+               
             }
 
             @Override

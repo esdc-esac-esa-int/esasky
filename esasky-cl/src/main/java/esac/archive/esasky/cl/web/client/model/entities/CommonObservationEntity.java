@@ -35,7 +35,7 @@ import esac.archive.esasky.cl.web.client.utility.UncachedRequestBuilder;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public abstract class CommonObservationEntity implements GeneralEntityInterface {

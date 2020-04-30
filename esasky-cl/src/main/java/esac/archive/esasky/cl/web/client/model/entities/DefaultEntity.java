@@ -22,7 +22,7 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
@@ -151,9 +151,27 @@ public class DefaultEntity implements GeneralEntityInterface{
     	return metadataService.getMetadataAdql(getDescriptor(), filter);
     }
 
-    public String getHeaderAdql() {
-    	return metadataService.getHeaderAdql(getDescriptor());
+    public void fetchGlobalMinMaxHeaders(final ITablePanel tablePanel) {
+    	String adql =  metadataService.fetchGlobalMinMaxHeaders(getDescriptor());
+    	String query = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+    	Log.debug("[FetchHeader] Query " + query );
+    	tablePanel.insertHeader(query, "globalMinMax");
     }
+
+    public void fetchLocalMinMaxHeaders(final ITablePanel tablePanel) {
+    	String adql = metadataService.fetchLocalMinMaxHeaders(getDescriptor());
+    	String query = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+    	Log.debug("[FetchHeader] Query " + query );
+    	tablePanel.insertHeader(query, "localMinMax");
+    }
+    
+//    public void fetchHeaders(final ITablePanel tablePanel) {
+//		 if(Modules.useTabulator) {
+//			 String query = TAPUtils.getTAPQuery(URL.encodeQueryString(getHeaderAdql()), EsaSkyConstants.JSON);
+//			 Log.debug("[FetchHeader] Query " + query );
+//			 tablePanel.insertHeader(query);
+//		 }
+//	 }
     
 	@Override
 	public AbstractTablePanel createTablePanel() {
@@ -253,13 +271,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 		});
 	}
 	
-	 public void fetchHeaders(final ITablePanel tablePanel) {
-		 if(Modules.useTabulator) {
-			 String query = TAPUtils.getTAPQuery(URL.encodeQueryString(getHeaderAdql()), EsaSkyConstants.JSON);
-			 Log.debug("[FetchHeader] Query " + query );
-			 tablePanel.insertHeader(query);
-		 }
-	 }
+	
 	
 	public void setDrawer(IShapeDrawer drawer) {
 		this.drawer = drawer;
