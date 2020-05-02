@@ -357,7 +357,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
 
     @Override
     public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
-        Log.debug("Count is " + getCountStatus().getCount(descriptor.getMission()));
         drawer.addShapes(rowList, javaScriptObject);
     }
 
@@ -614,7 +613,6 @@ public class ExtTapEntity implements GeneralEntityInterface {
             @Override
             public void onSecondaryShapeScaleChanged(double value) {
                 combinedDrawer.setSecondaryScale(value);
-               
             }
 
             @Override
