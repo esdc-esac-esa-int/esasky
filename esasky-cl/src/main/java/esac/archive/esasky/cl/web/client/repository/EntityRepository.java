@@ -9,7 +9,6 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
