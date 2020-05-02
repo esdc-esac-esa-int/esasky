@@ -121,7 +121,6 @@ public class DescriptorRepository {
 	private boolean catDescriptorsIsReady = false;
 	private boolean obsDescriptorsIsReady = false;
 	private boolean spectraDescriptorsIsReady = false;
-	private boolean publicationsDescriptorsIsReady = false;
 
 	private final boolean isInitialPositionDescribedInCoordinates;
 	private boolean isExtTapOpen = false;
@@ -456,7 +455,6 @@ public class DescriptorRepository {
 							public void onCountUpdate(int newCount) {
 							}
 						});
-				publicationsDescriptorsIsReady = true;
 				for(PublicationDescriptorLoadObserver observer : publicationDescriptorLoadObservers) {
 					observer.onLoad();
 				}
@@ -467,7 +465,6 @@ public class DescriptorRepository {
 			@Override
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initPubDescriptors ERROR: " + errorCause);
-				publicationsDescriptorsIsReady = true;
 				checkDoCountAll();
 			}
 
@@ -759,21 +756,6 @@ public class DescriptorRepository {
 		return null;
 	}
 
-	// public IDescriptor initUserDescriptor(List<MetadataDescriptor> metadata,
-	// JSONWrapper jsonWrapper) {
-	//
-	// if
-	// (jsonWrapper.getOverlaySet().getType().equals(DefaultValues.JSON_TYPE_FOOTPRINT))
-	// {
-	// return initUserDescriptor4Footprint(metadata, jsonWrapper);
-	// } else if
-	// (jsonWrapper.getOverlaySet().getType().equals(DefaultValues.JSON_TYPE_CATALOGUE))
-	// {
-	// return initUserDescriptor4Catalogue(metadata, jsonWrapper);
-	// }
-	// return null;
-	// }
-
 	private ObservationDescriptor initUserDescriptor4Footprint(List<MetadataDescriptor> metadata,
 			FootprintListJSONWrapper footprintsSet) {
 		ObservationDescriptor descriptor = new ObservationDescriptor();
@@ -786,28 +768,18 @@ public class DescriptorRepository {
 		descriptor.setPrimaryColor(footprintsSet.getOverlaySet().getColor());
 		
 		descriptor.setTapObservationId(APIMetadataConstants.OBS_NAME);
-		descriptor.setUniqueIdentifierField(APIMetadataConstants.ID);
 		
 		descriptor.setTapSTCSColumn("stcs");
 		descriptor.setSampEnabled(false);
 		descriptor.setIsSurveyMission(false);
 
 		descriptor.setFovLimit(360.0);
-		descriptor.setArchiveURL("<not_set>");
-		descriptor.setArchiveProductURI("<not_set>");
 
 		descriptor.setTapTable("<not_set>");
 		descriptor.setCountColumn("<not_set>");
 		descriptor.setCountFovLimit(0);
 		descriptor.setAdsPublicationsMaxRows(0);
 		descriptor.setTabCount(0);
-		descriptor.setMocTapTable("<not_set>");
-		descriptor.setMocSTCSColumn("<not_set>");
-		descriptor.setDdBaseURL("<not_set>");
-		descriptor.setDdProductIDParameter("<not_set>");
-		descriptor.setDdProductIDColumn("<not_set>");
-		descriptor.setSsoCardReductionTapTable("<not_set>");
-		descriptor.setSsoXMatchTapTable("<not_set>");
 
 		return descriptor;
 	}
@@ -822,11 +794,8 @@ public class DescriptorRepository {
 		descriptor.setGuiLongName(userCatalogue.getOverlaySet().getOverlayName());
 		descriptor.setGuiShortName(userCatalogue.getOverlaySet().getOverlayName());
 		descriptor.setPrimaryColor(userCatalogue.getOverlaySet().getColor());
-		descriptor.setUniqueIdentifierField(APIMetadataConstants.ID);
 
 		descriptor.setFovLimit(360.0);
-		descriptor.setArchiveURL("<not_set>");
-		descriptor.setArchiveProductURI("<not_set>");
 		
 		descriptor.setShapeLimit(10000);
 		descriptor.setShapeLimitDescription("sourceLimitDescription");
