@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -97,8 +96,8 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
     
 
     
-    private void getMocMetadata() {
-        Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
+//    private void getMocMetadata() {
+//        Log.debug("[getMocMetadata][" + descriptor.toString() + "]");
 
 //        tablePanel.clearTable();
 //        String adql = .getInstance().getMetadataAdql(getDescriptor());
@@ -121,7 +120,7 @@ public abstract class ObservationAndSpectraEntity extends CommonObservationEntit
 //        }
 
 //        tablePanel.setADQLQueryUrl("");
-    }
+//    }
 
 	@Override
 	public ITablePanel createTablePanel() {
