@@ -312,13 +312,13 @@ public class SearchPresenter {
         }
         Double raDeg = null;
         Double decDeg = null;
-        Double[] raDecDeg = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(), userInput,
+        double[] raDecDeg = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(), userInput,
                 AladinLiteWrapper.getCoordinatesFrame(), AladinLiteWrapper.getCoordinatesFrame());
 
         Log.debug("RA " + raDeg);
         Log.debug("DEC " + decDeg);
-        Log.debug("RA " + raDecDeg[0].toString());
-        Log.debug("DEC " + raDecDeg[1].toString());
+        Log.debug("RA " + raDecDeg[0]);
+        Log.debug("DEC " + raDecDeg[1]);
 
         AladinLiteWrapper.getInstance().goToObject(
                 Double.toString(raDecDeg[0]) + " " + Double.toString(raDecDeg[1]), false);

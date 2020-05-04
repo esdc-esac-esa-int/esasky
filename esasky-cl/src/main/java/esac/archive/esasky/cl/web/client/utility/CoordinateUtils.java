@@ -13,7 +13,7 @@ public class CoordinateUtils {
         if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(AladinLiteWrapper
                 .getInstance().getCooFrame())) {
             // convert to J2000
-            Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(ra, dec);
+            double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(ra, dec);
             ra = ccInJ2000[0];
             dec = ccInJ2000[1];
         }
@@ -27,7 +27,7 @@ public class CoordinateUtils {
     	if (!EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(AladinLiteWrapper
     			.getInstance().getCooFrame())) {
     		// convert to Galactic
-    		Double[] ccInGal = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
+    		double[] ccInGal = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
     		ra = ccInGal[0];
     		dec = ccInGal[1];
     	}
@@ -38,7 +38,7 @@ public class CoordinateUtils {
     	if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(AladinLiteWrapper
     			.getInstance().getCooFrame())) {
     		// convert to J2000
-    		Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(ra, dec);
+    		double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(ra, dec);
     		ra = ccInJ2000[0];
     		dec = ccInJ2000[1];
     	}

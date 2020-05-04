@@ -173,7 +173,7 @@ public class TAPCatalogueService extends AbstractTAPService {
             String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
             if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
                 // convert to J2000
-                Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
+                double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
                         AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg(),
                         AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg());
                 shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";

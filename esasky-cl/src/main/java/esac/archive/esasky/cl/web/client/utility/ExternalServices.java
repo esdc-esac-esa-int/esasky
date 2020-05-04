@@ -86,7 +86,7 @@ public class ExternalServices {
 
         // Convert Galactic to Equatorial
         if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-            Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
+            double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
                     decDeg);
             finalRa = ccInJ2000[0];
             finalDec = ccInJ2000[1];
@@ -126,7 +126,7 @@ public class ExternalServices {
     	double finalDec = decDeg;
     	
     	if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-    		Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
+    		double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
     				decDeg);
     		finalRa = ccInJ2000[0];
     		finalDec = ccInJ2000[1];
@@ -207,7 +207,7 @@ public class ExternalServices {
     
     public static String buildWwtURL(double raDeg, double decDeg, String cooFrame) {
     	if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-    		Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg, decDeg);
+    		double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg, decDeg);
     		raDeg = ccInJ2000[0];
     		decDeg = ccInJ2000[1];
     	}

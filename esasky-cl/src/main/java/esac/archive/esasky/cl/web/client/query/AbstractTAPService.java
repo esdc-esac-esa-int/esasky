@@ -67,7 +67,7 @@ public abstract class AbstractTAPService {
                 }
             } else {
                 // convert to J2000
-                Double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
+                double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
                         AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg(),
                         AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg());
                 shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
@@ -110,7 +110,7 @@ public abstract class AbstractTAPService {
                     + "}') as esasky_dynamic_count from dual";
         } else {// not accurate search based on a circle
             String cooFrame = aladinLite.getCooFrame();
-            Double[] ccInJ2000 = { aladinLite.getCenterLongitudeDeg(),
+            double[] ccInJ2000 = { aladinLite.getCenterLongitudeDeg(),
                     aladinLite.getCenterLatitudeDeg() };
             if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
                 // convert to J2000

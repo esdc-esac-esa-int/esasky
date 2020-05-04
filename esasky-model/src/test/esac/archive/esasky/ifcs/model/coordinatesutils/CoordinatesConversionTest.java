@@ -13,7 +13,7 @@ public class CoordinatesConversionTest {
         Double raDegGal = 104.85;
         Double decDegGal = 68.561;
 
-        Double[] toBeTested = CoordinatesConversion.convertPointGalacticToJ2000(raDegGal,
+        double[] toBeTested = CoordinatesConversion.convertPointGalacticToJ2000(raDegGal,
                 decDegGal);
         double[] toBeTestedInRawDouble = { toBeTested[0], toBeTested[1] };
 
@@ -25,7 +25,7 @@ public class CoordinatesConversionTest {
     public void convertPointEquatorialToGalactic() {
         Double myRADegEq = 202.470257;
         Double myDECDegEq = 47.194821;
-        Double[] toBeTested = CoordinatesConversion.convertPointEquatorialToGalactic(myRADegEq,
+        double[] toBeTested = CoordinatesConversion.convertPointEquatorialToGalactic(myRADegEq,
                 myDECDegEq);
         double[] toBeTestedInRawDouble = { toBeTested[0], toBeTested[1] };
         double[] expecteds = { 104.85, 68.561 };

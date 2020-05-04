@@ -10,7 +10,7 @@ public class CoordinatesConversion {
         -0.4838350155267381, 0.4941094279435681, -0.4448296299195045, 0.7469822444763707,
         -0.8676661489811610, -0.1980763734646737, 0.4559837762325372 };
 
-    public static Double[] convertPointGalacticToJ2000(Double latitude, Double longitude) {
+    public static double[] convertPointGalacticToJ2000(double latitude, double longitude) {
 
         latitude = latitude * Math.PI / 180;
         longitude = longitude * Math.PI / 180;
@@ -27,7 +27,7 @@ public class CoordinatesConversion {
 
         Double r = Math.sqrt(s0[0] * s0[0] + s0[1] * s0[1] + s0[2] * s0[2]);
 
-        Double[] result = { 0.0, 0.0 };
+        double[] result = { 0.0, 0.0 };
         result[1] = Math.asin(s0[2] / r); // New dec in range -90.0 -- +90.0
         // or use sin^2 + cos^2 = 1.0
         Double cosaa = ((s0[0] / r) / Math.cos(result[1]));
@@ -42,7 +42,7 @@ public class CoordinatesConversion {
         return result;
     }
 
-    public static Double[] convertPointEquatorialToGalactic(Double latitude, Double longitude) {
+    public static double[] convertPointEquatorialToGalactic(double latitude, double longitude) {
         latitude = latitude * Math.PI / 180;
         longitude = longitude * Math.PI / 180;
         Double[] r0 = { Math.cos(latitude) * Math.cos(longitude),
@@ -58,7 +58,7 @@ public class CoordinatesConversion {
 
         Double r = Math.sqrt(s0[0] * s0[0] + s0[1] * s0[1] + s0[2] * s0[2]);
 
-        Double[] result = { 0.0, 0.0 };
+        double[] result = { 0.0, 0.0 };
         result[1] = Math.asin(s0[2] / r); // New dec in range -90.0 -- +90.0
         // or use sin^2 + cos^2 = 1.0
         Double cosaa = ((s0[0] / r) / Math.cos(result[1]));
@@ -78,7 +78,7 @@ public class CoordinatesConversion {
         String result = "";
         String[] token = commaSeparatedList.split(",");
         for (int i = 0; i < token.length; i = i + 2) {
-            Double[] pointConverted = CoordinatesConversion.convertPointGalacticToJ2000(
+            double[] pointConverted = CoordinatesConversion.convertPointGalacticToJ2000(
                     Double.parseDouble(token[0]), Double.parseDouble(token[1]));
             result += pointConverted[0] + "," + pointConverted[1];
             if (i < token.length - 2) {

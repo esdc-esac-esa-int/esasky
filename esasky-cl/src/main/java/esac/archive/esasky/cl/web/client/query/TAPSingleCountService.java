@@ -24,7 +24,7 @@ public class TAPSingleCountService {
     public String getCount(AladinLiteWidget aladinLite) {
 
         String cooFrame = aladinLite.getCooFrame();
-        Double[] ccInJ2000 = { aladinLite.getCenterLongitudeDeg(),
+        double[] ccInJ2000 = { aladinLite.getCenterLongitudeDeg(),
                                aladinLite.getCenterLatitudeDeg() };
         
         if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {

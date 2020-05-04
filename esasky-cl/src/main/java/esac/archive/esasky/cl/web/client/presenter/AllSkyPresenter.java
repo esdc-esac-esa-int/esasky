@@ -183,7 +183,7 @@ public class AllSkyPresenter {
         double decDeg = futureFootprintRow.getCenterDecDeg();
 
         if (AladinLiteWrapper.getCoordinatesFrame() == CoordinatesFrame.GALACTIC) {
-            Double galacticCoordinates[] = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
+            double galacticCoordinates[] = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
                     decDeg);
             raDeg = galacticCoordinates[0];
             decDeg = galacticCoordinates[1];

@@ -24,7 +24,7 @@ public class PlanningDetectorCenterTooltip extends Tooltip {
                 .getDataDetailsByKey(PlanningConstant.REFERENCE_RA));
         Double decSource = Double.parseDouble(this.source
                 .getDataDetailsByKey(PlanningConstant.REFERENCE_DEC));
-        Double[] raDec = { raSource, decSource };
+        double[] raDec = { raSource, decSource };
         Log.debug(logPrefix + " source RA: " + raDec[0] + " source DEc: " + raDec[1]);
         Log.debug(logPrefix + "SOURCE COOFRAME:"
                 + this.source.getDataDetailsByKey(PlanningConstant.COO_FRAME));

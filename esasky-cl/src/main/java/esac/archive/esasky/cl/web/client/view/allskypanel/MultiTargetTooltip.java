@@ -48,7 +48,7 @@ public class MultiTargetTooltip extends Tooltip {
                 .getDataDetailsByKey(MultiTargetSourceConstants.RA_DEG));
         Double decSource = Double.parseDouble(this.source
                 .getDataDetailsByKey(MultiTargetSourceConstants.DEC_DEG));
-        Double[] raDec = { raSource, decSource };
+        double[] raDec = { raSource, decSource };
         Log.debug(logPrefix + " source RA: " + raDec[0] + " source Dec: " + raDec[1]);
         Log.debug("SOURCE COOFRAME:" + this.source.getDataDetailsByKey(SourceConstant.COO_FRAME));        
         String tooltipCooFrameLabel = "";
@@ -112,7 +112,7 @@ public class MultiTargetTooltip extends Tooltip {
         
         String sourceCooFrame = this.source.getDataDetailsByKey(SourceConstant.COO_FRAME);
         if(sourceCooFrame != null && sourceCooFrame.equalsIgnoreCase(AladinLiteConstants.FRAME_GALACTIC)) {
-        	Double [] raDec = CoordinatesConversion.convertPointGalacticToJ2000(raSource, decSource);
+        	double [] raDec = CoordinatesConversion.convertPointGalacticToJ2000(raSource, decSource);
         	raSource = raDec[0];
         	decSource = raDec[1];
         }

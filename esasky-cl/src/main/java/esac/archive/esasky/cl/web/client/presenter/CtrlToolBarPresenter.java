@@ -126,7 +126,7 @@ public class CtrlToolBarPresenter {
                                 Log.debug("Clicked on source uploaded with FRAME GALACTIC");
                                 Log.debug("mtl source SIMBADinput [" + target.getSimbadRaDeg() + ","
                                 		+ target.getSimbadDecDeg() + "]");
-                                Double[] raDecDegJ2000 = CoordinatesConversion
+                                double[] raDecDegJ2000 = CoordinatesConversion
                                         .convertPointGalacticToJ2000(
                                                 Double.parseDouble(target.getSimbadRaDeg()),
                                                 Double.parseDouble(target.getSimbadDecDeg()));

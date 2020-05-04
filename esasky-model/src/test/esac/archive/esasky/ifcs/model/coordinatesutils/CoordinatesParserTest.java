@@ -40,7 +40,7 @@ public class CoordinatesParserTest {
 
 	private void assertCoordToDegrees(String inputCoords, Double[] expected, CoordinatesFrame inputCooFrame,
             CoordinatesFrame outputCooFrame){
-		Double[] actual = CoordinatesParser.convertCoordsToDegrees(new ServerRegexClass(), inputCoords, inputCooFrame, outputCooFrame);
+		double[] actual = CoordinatesParser.convertCoordsToDegrees(new ServerRegexClass(), inputCoords, inputCooFrame, outputCooFrame);
 
 		assertThat(actual[0], is(closeTo(expected[0], 0.0001)));
 		assertThat(actual[1], is(closeTo(expected[1], 0.0001)));
@@ -87,7 +87,7 @@ public class CoordinatesParserTest {
 	}
 	
 	private void assertParseCoords(String inputCoords, Double[] expected, CoordinatesFrame cooFrame) {
-		Double[] actual = CoordinatesParser.parseCoords(new ServerRegexClass(), inputCoords, cooFrame);
+		double[] actual = CoordinatesParser.parseCoords(new ServerRegexClass(), inputCoords, cooFrame);
 		
 		assertThat(actual[0], is(closeTo(expected[0], 0.0001)));
 		assertThat(actual[1], is(closeTo(expected[1], 0.0001)));

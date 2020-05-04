@@ -494,7 +494,7 @@ public class TargetListPanel extends DialogBox {
         jsDec = currEntity.getSimbadDecDeg();
 
         if (currEntity.getCooFrame() != null &&currEntity.getCooFrame().equals(AladinLiteConstants.FRAME_GALACTIC)) {
-    		Double[] raDecDegJ2000 = CoordinatesConversion.convertPointEquatorialToGalactic(
+    		double[] raDecDegJ2000 = CoordinatesConversion.convertPointEquatorialToGalactic(
     				Double.parseDouble(jsRa), Double.parseDouble(jsDec));
     		details.put(MultiTargetSourceConstants.RA_DEG, Double.toString(raDecDegJ2000[0]));
     		details.put(MultiTargetSourceConstants.DEC_DEG, Double.toString(raDecDegJ2000[1]));

@@ -416,7 +416,7 @@ public class HeaderPresenter {
 				coordinate = formatJ200Ra(ra).getSpacedString() + " "+ formatJ200Dec(dec);
 			}
 		} else {
-			Double [] coord = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
+			double [] coord = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
 			coordinate = formatGalacticRa(coord[0]) + " " + formatGalacticDec(coord[1]);
 		}
 		view.setCoordinate(coordinate);

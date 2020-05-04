@@ -358,7 +358,7 @@ public class AladinLiteWrapper {
         details.put("cooFrame", AladinLiteConstants.FRAME_J2000);
         details.put("catalogue", "Searched Target Catalog");
 
-        Double[] raDec = { Double.parseDouble(ra), Double.parseDouble(dec) };
+        double[] raDec = { Double.parseDouble(ra), Double.parseDouble(dec) };
         if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
             Log.debug("@@@ CONVERSION TO J2000 ");
             raDec = CoordinatesConversion.convertPointGalacticToJ2000(Double.parseDouble(ra),

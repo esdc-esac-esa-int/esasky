@@ -5,12 +5,12 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.Searc
 
 public class CoordinatesParser {
 
-    public static Double[] parseCoords(RegexClass regexClass, String userInput, CoordinatesFrame cooFrame) {
+    public static double[] parseCoords(RegexClass regexClass, String userInput, CoordinatesFrame cooFrame) {
 
         return convertCoordsToDegrees(regexClass, userInput, cooFrame, CoordinatesFrame.J2000);
     }
 
-    public static Double[] convertCoordsToDegrees(RegexClass regexClass, String userInput, CoordinatesFrame inputCooFrame,
+    public static double[] convertCoordsToDegrees(RegexClass regexClass, String userInput, CoordinatesFrame inputCooFrame,
             CoordinatesFrame outputCooFrame) {
 
         CoordinateValidator.SearchInputType inputType = CoordinateValidator.checkInputType(regexClass,
@@ -50,9 +50,9 @@ public class CoordinatesParser {
         } else {
             decDeg = Double.parseDouble(decString);
         }
-        Double[] raDecDeg = null;
+        double[] raDecDeg = null;
         if (raDeg != null && decDeg != null) {
-            raDecDeg = new Double[] { raDeg, decDeg };
+            raDecDeg = new double[] { raDeg, decDeg };
             if (inputCooFrame != outputCooFrame && CoordinatesFrame.J2000 == outputCooFrame) {
                 raDecDeg = CoordinatesConversion.convertPointGalacticToJ2000(raDeg, decDeg);
             } else if (inputCooFrame != outputCooFrame
