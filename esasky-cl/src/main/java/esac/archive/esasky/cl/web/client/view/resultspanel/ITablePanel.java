@@ -9,6 +9,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -23,6 +24,7 @@ public interface ITablePanel {
 	public void exposeOpenFilterBoxMethodToJs(ITablePanel tab);
 
 	public void insertData(List<TableRow> data, String url);
+	public void insertData(GeneralJavaScriptObject data);
 
 	public void createSortableColumn(List<TableRow> list, Column<TableRow, ?> col, final int colIdx);
 
@@ -107,4 +109,5 @@ public interface ITablePanel {
 	public void setPlaceholderText(String text);
 
 	public void insertHeader(String tapQuery, String mode);
+	public void goToCoordinateOfFirstRow();
 }

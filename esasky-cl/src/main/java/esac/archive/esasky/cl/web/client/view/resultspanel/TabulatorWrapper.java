@@ -9,6 +9,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
@@ -22,8 +23,8 @@ public class TabulatorWrapper{
 
     public interface TabulatorCallback {
         public void onDataLoaded(GeneralJavaScriptObject javaScriptObject);
-        public void onRowSelection(int rowId);
-        public void onRowDeselection(int rowId);
+        public void onRowSelection(GeneralJavaScriptObject row);
+        public void onRowDeselection(GeneralJavaScriptObject row);
         public void onRowMouseEnter(int rowId);
         public void onRowMouseLeave(int rowId);
         public void onFilterChanged(String label, String filter);
@@ -193,12 +194,22 @@ public class TabulatorWrapper{
     	}
     }
     
+    public void goToCoordinateOfFirstRow(){
+        tabulatorCallback.onCenterClicked(tableJsObject.invokeFunction("getRow", "0").invokeFunction("getData"));
+    }
+    public void insertData(GeneralJavaScriptObject data){
+        setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
+    }
+    
+    private native String convertDataToTabulatorFormat(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject data, String aladinFrame)/*-{
+        return tableJsObject.convertDataToTabulatorFormat(data, aladinFrame);
+    }-*/;
     
     public void setData(String dataOrUrl){
         setData(tableJsObject, dataOrUrl);
     }
 
-    private native void setData(GeneralJavaScriptObject tableJsObject, String dataOrUrl)/*-{
+    private native void setData(GeneralJavaScriptObject tableJsObject, Object dataOrUrl)/*-{
         tableJsObject.setData(dataOrUrl);
     }-*/;
     
@@ -893,12 +904,12 @@ public class TabulatorWrapper{
 		    	rows.forEach(function(item, index, array){
 		    		selectionMap[item.getIndex()] = true;
 		    		if(!previouslySelectedMap[item.getIndex()]){
-			    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowSelection(I)(item.getIndex());
+			    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowSelection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(item);
 		    		}
 		    	});
 		    	Object.keys(previouslySelectedMap).forEach(function(item, index, array){
 		    		if(!selectionMap[item]){
-			    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowDeselection(I)(item);
+			    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowDeselection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(table.getRow(item));
 		    		}
 		    	});
 		    	previouslySelectedMap = selectionMap;
@@ -986,6 +997,74 @@ public class TabulatorWrapper{
 		    setFileContents(table.getVoTableString(data.data, options.resourceName), "application/x-votable+xml");
 		}
 		
+		
+		table.convertDataToTabulatorFormat = function(userData, aladinCoordinateFrame) {
+            var metadata = [];
+            var skyObjectList = userData.overlaySet.skyObjectList;
+            var data = [];
+            var cooFrame = userData.overlaySet.cooframe || 'J2000';
+            var coordinateConversionFunction = function (ra, dec){
+                return [ra, dec];
+            }
+            
+            if (cooFrame.toLowerCase() === 'galactic' || cooFrame.toLowerCase() === 'gal') {
+                coordinateConversionFunction = function (ra, dec) {
+                    return @esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion::convertPointGalacticToJ2000(DD)(ra, dec);
+                }
+            }
+            var i = 0;
+            skyObjectList.forEach(function (skyObject) {
+                var row = {id:i};
+                i++;
+                var ra, dec = undefined;
+                Object.keys(skyObject).forEach(function(key) {
+                    if(key === "data"){
+                        skyObject[key].forEach(function(extraData){
+                            metadata.push({name:extraData.name, displayName: extraData.name});
+                            if(extraData.type === "DOUBLE"){
+                                row[extraData.name] = parseFloat(extraData.value);
+                                if(isNaN(row[extraData.name])){
+                                    row[extraData.name] = undefined;
+                                }
+                            } else {
+                                row[extraData.name] = extraData.value;
+                            }
+                        });
+                        
+                    } else if(key !== 'id'){
+                        if(key.toLowerCase() === 'ra' || key.toLowerCase() === 'ra_deg'){
+                            ra = skyObject[key];
+                            if(dec){
+                                setRaDec(ra, dec, row, metadata);
+                            }
+                        } else if(key.toLowerCase() === 'dec' || key.toLowerCase() === 'dec_deg'){
+                            dec = skyObject[key];
+                            if(ra){
+                                setRaDec(ra, dec, row, metadata);
+                            }
+                        } else {
+                            row[key] = skyObject[key];
+                            metadata.push({name:key, displayName: key});
+                        }
+                    }
+                });
+                data.push(row);
+            });
+    
+            function setRaDec(ra, dec, row, metadata) {
+                convertedCoordinate = coordinateConversionFunction(ra, dec);
+                row["ra_deg"] = convertedCoordinate[0];
+                row["dec_deg"] = convertedCoordinate[1];
+                metadata.push({name:"ra_deg", displayName: "RA_J2000"});
+                metadata.push({name:"dec_deg", displayName: "DEC_J2000"});
+            }
+            
+            table.metadata = metadata;
+            
+            return data;
+    
+        };
+        
         table.filterData = [];
         table.metadata = [];
 		isInitializing = false;
@@ -1034,12 +1113,12 @@ public class TabulatorWrapper{
         tabulatorCallback.onSourcesInPublicationClicked(rowData);
     }
 
-    public void onRowSelection(int rowId) {
-        tabulatorCallback.onRowSelection(rowId);
+    public void onRowSelection(GeneralJavaScriptObject row) {
+        tabulatorCallback.onRowSelection(row);
     }
 
-    public void onRowDeselection(int rowId) {
-        tabulatorCallback.onRowDeselection(rowId);
+    public void onRowDeselection(GeneralJavaScriptObject row) {
+        tabulatorCallback.onRowDeselection(row);
     }
 
     public void onFilterChanged(String label, String filter) {

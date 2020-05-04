@@ -58,6 +58,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.DefaultSelectionEventManager.SelectAction;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -1742,6 +1743,18 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		// TODO Auto-generated method stub
 		
 	}
+	
+    @Override
+    public void goToCoordinateOfFirstRow() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void insertData(GeneralJavaScriptObject data) {
+        // TODO Auto-generated method stub
+        
+    }
 	
 
 }

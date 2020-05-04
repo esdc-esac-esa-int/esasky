@@ -43,6 +43,7 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
+import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TableRow;
@@ -496,6 +497,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 	
 	@Override
+	public void insertData(GeneralJavaScriptObject data) {
+	    table.insertData(data);
+	    tableNotShowingContainer.addStyleName("displayNone");
+	}
+	
+	@Override
 	public void insertHeader(String url, String mode) {
 	    table.setHeaderQueryMode(mode);
 		table.setData(url);
@@ -642,27 +649,27 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     }
 
     @Override
-    public void onRowSelection(final int rowId) {
+    public void onRowSelection(final GeneralJavaScriptObject row) {
         HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
         selectionId.add(new ShapeId() {
             
             @Override
             public int getShapeId() {
-                return rowId;
+                return GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex"));
             }
         });
         entity.selectShapes(selectionId);
-        
+        CommonEventBus.getEventBus().fireEvent(new TableRowSelectedEvent(row.invokeFunction("getData")));
     }
 
     @Override
-    public void onRowDeselection(final int rowId) {
+    public void onRowDeselection(final GeneralJavaScriptObject row) {
         HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
         selectionId.add(new ShapeId() {
             
             @Override
             public int getShapeId() {
-                return rowId;
+                return GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex"));
             }
         });
         entity.deselectShapes(selectionId);
@@ -903,5 +910,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public GeneralJavaScriptObject getDescriptorMetaData() {
 		return entity.getDescriptor().getMetaDataJSONObject();
 	}
+
+    @Override
+    public void goToCoordinateOfFirstRow() {
+        table.goToCoordinateOfFirstRow();
+    }
 
 }

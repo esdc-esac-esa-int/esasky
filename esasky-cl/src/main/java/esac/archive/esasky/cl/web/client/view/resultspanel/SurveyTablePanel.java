@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
@@ -58,4 +59,11 @@ public class SurveyTablePanel extends AbstractTablePanel {
 	public final CommonObservationDescriptor getDescriptor() {
 		return entity.getDescriptor();
 	}
+
+    @Override
+    public void insertData(GeneralJavaScriptObject data) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

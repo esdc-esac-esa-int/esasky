@@ -2,7 +2,6 @@ package esac.archive.esasky.cl.web.client.presenter;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -19,7 +18,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -27,7 +26,6 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.ReturnType;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.event.AddTableEvent;
 import esac.archive.esasky.cl.web.client.event.AddTableEventHandler;
@@ -48,7 +46,6 @@ import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.model.converter.TapToMmiDataConverter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -185,22 +182,12 @@ public class ResultsPresenter implements ICountRequestHandler {
         return this.view.getTabPanel();
     }
     
-    protected final void getUserMetadataAndPolygons(final GeneralEntityInterface entity, final boolean showProgress,
-    		ITablePanel panel, IJSONWrapper userData, CoordinatesFrame convertToFrame) {
+    protected final void getUserMetadataAndPolygons(final GeneralEntityInterface entity, GeneralJavaScriptObject userData) {
     	Log.debug("[ResultPresenter][getUserMetadataAndPolygons]");
-    	if (panel == null) {
-    		panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-            		"User defined metadata table for "+entity.getDescriptor().getGuiLongName());
-        }
-    	panel.clearTable();
-    	TapRowList rowList = TapToMmiDataConverter.convertCSVToTAPRowList(userData, convertToFrame);
-    	
-    	if (rowList != null){
-    		List<TableRow> tabRowList = TapToMmiDataConverter.convertTapToMMIData(rowList, entity.getDescriptor());
-            entity.setMetadata(rowList);
-            panel.insertData(tabRowList, null);	
-            entity.addShapes(rowList, null);
-    	}
+		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+        		"User defined metadata table for " + entity.getDescriptor().getGuiLongName());
+        panel.insertData(userData);
+        panel.goToCoordinateOfFirstRow();
     }
 
     protected final void coneSearch(final GeneralEntityInterface entity, final SkyViewPosition conePos) {

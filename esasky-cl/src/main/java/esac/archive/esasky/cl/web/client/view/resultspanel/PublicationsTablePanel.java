@@ -5,6 +5,7 @@ import java.util.List;
 
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class PublicationsTablePanel extends TabulatorTablePanel {
     
@@ -34,12 +35,12 @@ public class PublicationsTablePanel extends TabulatorTablePanel {
     }
     
     @Override
-    public void onRowSelection(final int rowId) {
+    public void onRowSelection(final GeneralJavaScriptObject row) {
         //Do nothing
     }
     
     @Override
-    public void onRowDeselection(int rowId) {
+    public void onRowDeselection(GeneralJavaScriptObject row) {
         //Do nothing
     }
     
