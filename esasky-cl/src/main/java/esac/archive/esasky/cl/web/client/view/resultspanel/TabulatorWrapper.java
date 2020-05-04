@@ -692,7 +692,7 @@ public class TabulatorWrapper{
                         headerSort:false,
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
                         minWidth: 50,
-                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"recenter.png", 
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"recenter.png", 
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnShape")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
@@ -706,7 +706,7 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
                         minWidth: 50,
-                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"send_small.png", 
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"send_small.png", 
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
@@ -721,7 +721,7 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
                         minWidth: 62,
-                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"link2archive.png",
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"link2archive.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
@@ -735,7 +735,7 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
                         minWidth: 65,
-                        formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"target_list.png",
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"target_list.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
@@ -753,7 +753,7 @@ public class TabulatorWrapper{
 	                            headerSort:false, 
 	                            headerTooltip:this.metadata[i].description,
 	                            minWidth: 85,
-	                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"download_small.png", 
+	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"download_small.png", 
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
 	                                cellClick:function(e, cell){
 	                                    e.stopPropagation();
@@ -773,7 +773,7 @@ public class TabulatorWrapper{
 	                            headerSort:false, 
 	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
 	                            minWidth: 50,
-	                            formatter:imageButtonFormatter, width:40, align:"center", formatterParams:{image:"preview.png", 
+	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"preview.png", 
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
 	                                cellClick:function(e, cell){
 	                                    e.stopPropagation();
