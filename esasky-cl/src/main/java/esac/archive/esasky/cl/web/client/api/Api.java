@@ -15,9 +15,8 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -34,7 +33,6 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
@@ -50,6 +48,8 @@ import esac.archive.esasky.cl.web.client.api.model.MetadataAPI;
 import esac.archive.esasky.cl.web.client.api.model.Source;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
+import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
+import esac.archive.esasky.cl.web.client.event.TableRowSelectedEventHandler;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -92,8 +92,6 @@ public class Api {
 	public Api(EsaSkyWeb esaSkyWeb) {
 		Log.debug("[Api]");
 
-		Api.onJavaApiReady();
-
 		this.controller = esaSkyWeb.getController();
 
 		ApiMessageParser.init(this);
@@ -101,27 +99,13 @@ public class Api {
 		Log.debug("[Api] Ready!!");
 	}
 
-	public static native void onJavaApiReady() /*-{
-		$wnd.JavaApiReady();
-	}-*/;
-	
 	public void registerShapeSelectionCallback(final JavaScriptObject widget) {
-		setDataPanelHidden(true);
-		CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
-                new AladinLiteShapeSelectedEventHandler() {
+		CommonEventBus.getEventBus().addHandler(TableRowSelectedEvent.TYPE,
+                new TableRowSelectedEventHandler() {
 
             @Override
-            public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
-//            	 if (!selectEvent.getOverlayName().equals(EntityContext.PUBLICATIONS.toString())) {
-//
-//                     // Selects a table row
-//                     ITablePanel tableContainingShape = controller.getRootPresenter().getResultsPresenter().getTabPanel().getAbstractTablePanelFromId(selectEvent.getOverlayName());
-//                     
-//                     String data = tableContainingShape.getUnfilteredRow(selectEvent.getShapeId());
-//                     JSONObject values = new JSONObject();
-//                     values.put("data", new JSONString(data));
-//                     sendBackToWidget(values, widget);
-//                 }
+            public void onEvent(TableRowSelectedEvent selectEvent) {
+                 sendBackToWidget(selectEvent.getRowData(), widget);
             }
         });
 	}
@@ -449,13 +433,7 @@ public class Api {
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
 		getCounts(descriptors, widget);
 	}
-	
-	public void getPublicationsCount(JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getPublicationsCount);
-		DescriptorListAdapter<PublicationsDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getPublicationsDescriptors();
-		getCounts(descriptors, widget);
-	}
-	
+
 	private void getExtTapCount(final ExtTapDescriptor descriptor, final JavaScriptObject widget) {
 		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
 		if(!countStatus.hasMoved(descriptor.getMission())) {
@@ -559,6 +537,15 @@ public class Api {
 		}
 		if(extras != null){
 			msg["extras"] = Object.values(extras)[0];
+		}
+		msg["msgId"] = widget.data.msgId;
+		widget.source.postMessage(msg, widget.origin);
+	}-*/;
+	
+	private native void sendBackToWidget(JavaScriptObject values, JavaScriptObject widget) /*-{
+		var msg = {}
+		if(values != null){
+			msg["values"] = values;
 		}
 		msg["msgId"] = widget.data.msgId;
 		widget.source.postMessage(msg, widget.origin);
@@ -771,15 +758,6 @@ public class Api {
 			mName.setVisible(true);
 			metadata.add(mName);
 
-			MetadataDescriptor mId = new MetadataDescriptor();
-			mId.setIndex(0);
-			mId.setLabel(APIMetadataConstants.ID);
-			mId.setMaxDecimalDigits(null);
-			mId.setTapName(APIMetadataConstants.ID);
-			mId.setType(ColumnType.STRING);
-			mId.setVisible(false);
-			metadata.add(mId);
-
 			MetadataDescriptor mStcs = new MetadataDescriptor();
 			mStcs.setIndex(0);
 			mStcs.setLabel(APIMetadataConstants.FOOTPRINT_STCS);
@@ -825,7 +803,7 @@ public class Api {
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, footprintsSet);
 
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, footprintsSet, null);
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON));
 
 			AladinLiteWrapper.getAladinLite().goToRaDec(
 					((Footprint) fooprintList.getSkyObjectList().get(0)).getRa_deg(),
@@ -864,21 +842,6 @@ public class Api {
 			SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(userCatalogueJSON);
 			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayCatalogueWithDetails, userCatalogue.getOverlaySet().getOverlayName());
 
-			CoordinatesFrame convertToFrame = null;
-
-			if (!userCatalogue.getOverlaySet().getCooframe()
-					.equals(AladinLiteWrapper.getCoordinatesFrame().getValue())) {
-				if (AladinLiteWrapper.getCoordinatesFrame() == CoordinatesFrame.GALACTIC) {
-					convertToFrame = CoordinatesFrame.GALACTIC;
-				} else {
-					convertToFrame = CoordinatesFrame.J2000;
-				}
-			} else if (userCatalogue.getOverlaySet().getCooframe()
-					.equals(AladinLiteWrapper.getCoordinatesFrame().getValue())
-					&& userCatalogue.getOverlaySet().getCooframe().equals(CoordinatesFrame.GALACTIC.getValue())) {
-				convertToFrame = CoordinatesFrame.J2000;
-			}
-
 			List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
 			
 			MetadataDescriptor mName = new MetadataDescriptor();
@@ -889,15 +852,6 @@ public class Api {
 			mName.setType(ColumnType.STRING);
 			mName.setVisible(true);
 			metadata.add(mName);
-
-			MetadataDescriptor mId = new MetadataDescriptor();
-			mId.setIndex(0);
-			mId.setLabel(APIMetadataConstants.ID);
-			mId.setMaxDecimalDigits(null);
-			mId.setTapName(APIMetadataConstants.ID);
-			mId.setType(ColumnType.STRING);
-			mId.setVisible(false);
-			metadata.add(mId);
 
 			MetadataDescriptor mRa = new MetadataDescriptor();
 			mRa.setIndex(0);
@@ -933,10 +887,7 @@ public class Api {
 
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, userCatalogue);
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, userCatalogue, convertToFrame);
-
-			centerAladinLite(((Source) sourceList.getSkyObjectList().get(0)).getRa_deg(),
-					((Source) sourceList.getSkyObjectList().get(0)).getDec_deg(), convertToFrame);
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON));
 
 		} catch (Exception ex) {
 			Log.error(ex.getMessage());
@@ -945,7 +896,7 @@ public class Api {
 
 	private void centerAladinLite(String raDeg, String decDeg, CoordinatesFrame convertToFrame) {
 
-		Double[] raDecConverted;
+		double[] raDecConverted;
 		if (convertToFrame == CoordinatesFrame.GALACTIC) {
 			raDecConverted = CoordinatesConversion.convertPointEquatorialToGalactic(Double.parseDouble(raDeg),
 					Double.parseDouble(decDeg));

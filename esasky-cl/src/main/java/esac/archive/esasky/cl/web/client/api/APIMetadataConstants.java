@@ -6,7 +6,6 @@ public class APIMetadataConstants {
 	
 	public static final String OBS_NAME = "observation_id";
 
-	public static final String ID = "id";
 	public static final String FOOTPRINT_STCS = "stcs";
 
 	public static final String CENTER_RA_DEG = "ra_deg";
