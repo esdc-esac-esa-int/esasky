@@ -127,17 +127,17 @@ public class TreeMapContainer extends DialogBox {
 		FlowPanel textPanel = new FlowPanel();
 		textPanel.addStyleName("treeMap__filter__text__container");
 		
-		Label leftLabel = new Label();
-		leftLabel.setText("Gamma-ray");
-		leftLabel.addStyleName("treeMap__filter__text__left");
-		
-		Label centerLabel = new Label();
-		centerLabel.setText("Optical");
-		centerLabel.addStyleName("treeMap__filter__text__center");
-		
-		Label rightLabel = new Label();
-		rightLabel.setText("Radio");
-		rightLabel.addStyleName("treeMap__filter__text__right");
+        Label leftLabel = new Label();
+        leftLabel.setText(TextMgr.getInstance().getText("wavelength_GAMMA_RAY"));
+        leftLabel.addStyleName("treeMap__filter__text__left");
+        
+        Label centerLabel = new Label();
+        centerLabel.setText(TextMgr.getInstance().getText("wavelength_OPTICAL"));
+        centerLabel.addStyleName("treeMap__filter__text__center");
+        
+        Label rightLabel = new Label();
+        rightLabel.setText(TextMgr.getInstance().getText("wavelength_RADIO"));
+        rightLabel.addStyleName("treeMap__filter__text__right");
 		
 		textPanel.add(leftLabel);
 		textPanel.add(centerLabel);
