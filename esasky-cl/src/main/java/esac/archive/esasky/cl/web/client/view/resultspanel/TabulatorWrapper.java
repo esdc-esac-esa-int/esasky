@@ -236,15 +236,13 @@ public class TabulatorWrapper{
 						metadata[j].displayName = descriptorMetaData[metadata[j].name]["label"];
 					}
 				}
-				
-				displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+				displayName = $wnd.esasky.getColumnDisplayText(metadata[j].displayName);
 				
 				metadata[j].displayName = displayName;
 			}
 			var data = [];
 			for(var i = 0; i < response.data.length; i++){
-				var row = {};
-				row['id'] = i;
+				var row = {id:i};
 				for(var j = 0; j < metadata.length; j++){
 	    			if(metadata[j].datatype === "DOUBLE" || metadata[j].datatype === "REAL" || metadata[j].datatype === "INTEGER"){
 						row[metadata[j].name] = parseFloat(response.data[i][j]);
@@ -440,9 +438,9 @@ public class TabulatorWrapper{
 				var maxVal = -Infinity;
 				
 				name = cell.getColumn()._column.definition.field;
-				if(filterData[name]){
-					minVal = filterData[name].min;
-					maxVal = filterData[name].max;
+				if(table.filterData[name]){
+					minVal = table.filterData[name].min;
+					maxVal = table.filterData[name].max;
 				}else{
 					cell.getColumn()._column.cells.forEach(function (row){
 						if(row.getValue() != undefined){
@@ -1020,8 +1018,8 @@ public class TabulatorWrapper{
                 Object.keys(skyObject).forEach(function(key) {
                     if(key === "data"){
                         skyObject[key].forEach(function(extraData){
-                            metadata.push({name:extraData.name, displayName: extraData.name});
-                            if(extraData.type === "DOUBLE"){
+                            metadata.push({name:extraData.name, displayName: $wnd.esasky.getColumnDisplayText(extraData.name), datatype:extraData.type, visible: true});
+                            if(extraData.type === "DOUBLE" || extraData.type === "REAL" || extraData.type === "INTEGER"){
                                 row[extraData.name] = parseFloat(extraData.value);
                                 if(isNaN(row[extraData.name])){
                                     row[extraData.name] = undefined;
@@ -1044,7 +1042,7 @@ public class TabulatorWrapper{
                             }
                         } else {
                             row[key] = skyObject[key];
-                            metadata.push({name:key, displayName: key});
+                            metadata.push({name:key, displayName: $wnd.esasky.getColumnDisplayText(key), datatype:"STRING", visible: true});
                         }
                     }
                 });
@@ -1053,10 +1051,10 @@ public class TabulatorWrapper{
     
             function setRaDec(ra, dec, row, metadata) {
                 convertedCoordinate = coordinateConversionFunction(ra, dec);
-                row["ra_deg"] = convertedCoordinate[0];
-                row["dec_deg"] = convertedCoordinate[1];
-                metadata.push({name:"ra_deg", displayName: "RA_J2000"});
-                metadata.push({name:"dec_deg", displayName: "DEC_J2000"});
+                row["ra_deg"] = parseFloat(convertedCoordinate[0]);
+                row["dec_deg"] = parseFloat(convertedCoordinate[1]);
+                metadata.push({name:"ra_deg", displayName: $wnd.esasky.getColumnDisplayText("RA_J2000"), datatype:"DOUBLE", visible: true});
+                metadata.push({name:"dec_deg", displayName: $wnd.esasky.getColumnDisplayText("DEC_J2000"), datatype:"DOUBLE", visible: true});
             }
             
             table.metadata = metadata;
