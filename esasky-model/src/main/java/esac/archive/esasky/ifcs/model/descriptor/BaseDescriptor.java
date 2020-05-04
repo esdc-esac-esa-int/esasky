@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -479,13 +480,14 @@ public abstract class BaseDescriptor implements IDescriptor {
         this.shapeLimit = shapeLimit;
     }
     
+    @JsonIgnore
     public GeneralJavaScriptObject getMetaDataJSONObject() {
     	
     	GeneralJavaScriptObject object = GeneralJavaScriptObject.createJsonObject("{}");
     	int i = 0;
     	for(MetadataDescriptor md : getMetadata()) {
     		GeneralJavaScriptObject mdObject = md.toJSONObject();
-    		mdObject.setProperty("index", i);
+    		mdObject.setProperty("index", Integer.toString(i));
     		object.setProperty(md.getTapName(), mdObject);
     		i++;
     	}
