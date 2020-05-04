@@ -10,6 +10,7 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
@@ -56,8 +57,10 @@ public class SSOOrbitMetadataCallback extends JsonRequestCallback {
             
             if(raDecTokens.length > 0) {
             	String[] raAndDec = raDecTokens[0].split("\\s");
-            	this.entity.setSkyViewPosition(new SkyViewPosition(new Coordinate(Double.valueOf(raAndDec[0]), Double.valueOf(raAndDec[1])), 
-            	        entity.getSkyViewPosition().getFov()));
+            	SkyViewPosition pos = new SkyViewPosition(new Coordinate(Double.valueOf(raAndDec[0]), Double.valueOf(raAndDec[1])), 
+                        entity.getSkyViewPosition().getFov());
+            	this.entity.setSkyViewPosition(pos);
+            	AladinLiteWrapper.getInstance().goToTarget(raAndDec[0], raAndDec[1], pos.getFov(), false, AladinLiteWrapper.getCoordinatesFrame().getValue());
             }
         }
     }
