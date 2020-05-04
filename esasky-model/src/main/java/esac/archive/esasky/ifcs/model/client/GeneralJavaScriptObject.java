@@ -69,5 +69,8 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
     public static native String convertToString(GeneralJavaScriptObject javaScriptObject)/*-{
     	return javaScriptObject;
     }-*/;
+    public static native int convertToInteger(GeneralJavaScriptObject javaScriptObject)/*-{
+    	return javaScriptObject;
+    }-*/;
 }
 
