@@ -178,7 +178,6 @@ public final class GoogleAnalytics {
     public static final String ACT_Pyesasky_count = "count";
     public static final String ACT_Pyesasky_getCataloguesCount = "getCataloguesCount";
     public static final String ACT_Pyesasky_getSpectraCount = "getSpectraCount";
-    public static final String ACT_Pyesasky_getPublicationsCount = "getPublicationsCount";
     public static final String ACT_Pyesasky_plotObservations = "plotObservations";
     public static final String ACT_Pyesasky_plotCatalogues = "plotCatalogues";
     public static final String ACT_Pyesasky_plotSpectra = "plotSpectra";
