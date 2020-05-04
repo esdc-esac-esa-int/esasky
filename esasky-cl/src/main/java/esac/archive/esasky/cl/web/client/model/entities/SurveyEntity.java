@@ -413,4 +413,9 @@ public class SurveyEntity implements GeneralEntityInterface{
         
     }
 
+    @Override
+    public void setRefreshable(boolean isRefreshable) {
+        defaultEntity.setRefreshable(isRefreshable);
+    }
+
 }

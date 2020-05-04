@@ -447,4 +447,9 @@ public abstract class CommonObservationEntity implements GeneralEntityInterface 
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public void setRefreshable(boolean isRefreshable) {
+        defaultEntity.setRefreshable(isRefreshable);
+    }
 }

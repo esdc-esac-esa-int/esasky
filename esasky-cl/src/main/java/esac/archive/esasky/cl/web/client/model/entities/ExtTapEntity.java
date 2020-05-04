@@ -671,5 +671,9 @@ public class ExtTapEntity implements GeneralEntityInterface {
     public void select() {
         tablePanel.selectTablePanel();
     }
+    @Override
+    public void setRefreshable(boolean isRefreshable) {
+        defaultEntity.setRefreshable(isRefreshable);
+    }
 
 }

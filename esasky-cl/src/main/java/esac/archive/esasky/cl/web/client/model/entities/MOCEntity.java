@@ -1001,5 +1001,10 @@ public class MOCEntity implements GeneralEntityInterface {
     		overlay.setProperty("opacity", value);
     	}
     }
+    
+    @Override
+    public void setRefreshable(boolean isRefreshable) {
+        defaultEntity.setRefreshable(isRefreshable);
+    }    
 
 }

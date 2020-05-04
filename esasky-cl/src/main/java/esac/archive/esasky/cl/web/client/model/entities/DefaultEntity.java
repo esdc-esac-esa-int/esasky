@@ -38,6 +38,7 @@ public class DefaultEntity implements GeneralEntityInterface{
     private IDescriptor descriptor;
     private IShapeDrawer drawer;
     private AbstractTAPService metadataService;
+    private boolean isRefreshable = true;
     
     protected EntityContext context;
 
@@ -369,7 +370,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 
 	@Override
 	public boolean isRefreshable() {
-		return true;
+		return isRefreshable;
 	}
 
 	@Override
@@ -443,5 +444,11 @@ public class DefaultEntity implements GeneralEntityInterface{
     public void select() {
         // TODO Auto-generated method stub
         
+    }
+
+
+    @Override
+    public void setRefreshable(boolean isRefreshable) {
+        this.isRefreshable = isRefreshable;
     }
 }

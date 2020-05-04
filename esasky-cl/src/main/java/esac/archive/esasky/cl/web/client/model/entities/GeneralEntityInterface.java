@@ -55,6 +55,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     
     public boolean isSampEnabled();
     public boolean isRefreshable();
+    public void setRefreshable(boolean isRefreshable);
     public boolean hasDownloadableDataProducts();
 	public boolean isCustomizable();
 	
