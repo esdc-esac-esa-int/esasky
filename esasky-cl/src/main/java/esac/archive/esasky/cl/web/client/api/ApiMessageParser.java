@@ -209,11 +209,6 @@ public class ApiMessageParser {
 				instance.@esac.archive.esasky.cl.web.client.api.Api::getSpectraCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 				break;	
 				
-			case 'getPublicationsCount':
-				console.log('getPublicationsCount event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::getPublicationsCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
-				break;	
-
 			case 'plotObservations':
 				console.log('plotObservations event captured');
 				if(msg.content.ra != null){
