@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE Internationalization>
+<!DOCTYPE internationalization [
+<!ELEMENT text (#PCDATA)>
+<!ATTLIST text key ID #REQUIRED>
+]>
+
 <Internationalization langCode="en">
 
 	<text key="headerPresenter_languageNameAbbreviation">
@@ -92,7 +96,7 @@
 	<text key="PublicationsBySourceCallback_helpTitle">
 		Publications
 	</text>
-	<text key="resultsPresenter_helpDescription_PUBLICATIONS_ADS PUB">
+	<text key="resultsPresenter_helpDescription_PUBLICATIONS_ADS-PUB">
 		Publications associated to this source in SIMBAD plus
 		access to sources for each of the publications.
 		&lt;br&gt;&lt;br&gt;
@@ -956,7 +960,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia DR2">
+		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR2">
 		The Gaia DR2 catalogue provides positions, parallaxes and proper
 		motions for more
 		than 1.3 billion stars between G-magnitudes 3 and 21,
@@ -980,7 +984,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2MASS">
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_TwoMASS">
 		The Two-Micron All Sky Survey (2MASS) covered 99.998% of
 		the sky in three near-
 		infrared bands, J, H and Ks. The 2MASS Point
@@ -1324,7 +1328,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST(UV)">
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-UV">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1353,7 +1357,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST(OPTICAL)">
+		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-OPTICAL">
 		The Hubble Space Telescope (HST) observational data provided by
 		ESASky are science products from the two Hubble data collections:
 		&lt;ul&gt;
@@ -1379,7 +1383,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST(IR)">
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-IR">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1407,7 +1411,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_ISO(IR)">
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_ISO-IR">
 		The Infrared Space Observatory (ISO) was the world's
 		first true orbiting infrared observatory launched in November 1995. It
 		carried four scientific instruments: two spectrometers (SWS and LWS),
@@ -2294,11 +2298,8 @@
 	<text key="HST_Collection">
 		Collection
 	</text>
-	<text key="Observation ObjectId">
-		Observation ObjectId
-	</text>
-	<text key="BIBCODE_preview">
-		BIBCODE_preview
+	<text key="ObservationObjectId">
+		Observation Object ID
 	</text>
 
 	<text key="GalaxyClusters">
@@ -2352,22 +2353,22 @@
 	<text key="CESAR_Colours">
 		CESAR Colours
 	</text>
-	<text key="2MASS_J_Mag">
+	<text key="TwoMASS_J_Mag">
 		J mag
 	</text>
-	<text key="2MASS_J_Mag_err">
+	<text key="TwoMASS_J_Mag_err">
 		&amp;Delta;J mag
 	</text>
-	<text key="2MASS_H_Mag">
+	<text key="TwoMASS_H_Mag">
 		H mag
 	</text>
-	<text key="2MASS_H_Mag_err">
+	<text key="TwoMASS_H_Mag_err">
 		&amp;Delta;H mag
 	</text>
-	<text key="2MASS_KS_Mag">
+	<text key="TwoMASS_KS_Mag">
 		Ks mag
 	</text>
-	<text key="2MASS_KS_Mag_err">
+	<text key="TwoMASS_KS_Mag_err">
 		&amp;Delta;Ks mag
 	</text>
 
