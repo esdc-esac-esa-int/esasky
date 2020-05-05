@@ -218,7 +218,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
                 getDescriptor().getArchiveProductURI() != null, 
                 getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
                 && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
-                getDescriptor().getMission().equals("ADS PUB"));
+                getDescriptor().getMission().equals("ADS-PUB"));
 	}
 
 	private int scrollLeft = 0;
