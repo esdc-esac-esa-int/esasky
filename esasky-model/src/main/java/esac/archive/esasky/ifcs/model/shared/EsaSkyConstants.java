@@ -266,7 +266,7 @@ public class EsaSkyConstants {
     		Arrays.asList(
     				new SimpleEntry<String, String>("en", "En"),
     				new SimpleEntry<String, String>("es", "Es")
-//    				,new SimpleEntry<String, String>("zh", "中文")
+    				,new SimpleEntry<String, String>("zh", "中文")
     				)
     		);
     
