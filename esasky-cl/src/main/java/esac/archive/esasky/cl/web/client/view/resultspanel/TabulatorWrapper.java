@@ -76,7 +76,7 @@ public class TabulatorWrapper{
     }
 
     private native void downloadCsv(GeneralJavaScriptObject tableJsObject, String fileName)/*-{
-        tableJsObject.download("csv", fileName, {bom:true});
+        tableJsObject.download("csv", fileName);
     }-*/;
 
     public void downloadVot(String fileName, String resourceName){
@@ -952,15 +952,19 @@ public class TabulatorWrapper{
 			// Add VOT XML Schema
 			var votData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
                 votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
-				votData += "<RESOURCE name=\"" + resourceName + "\">\n";
+				votData += "<RESOURCE name=\"" + $wnd.esasky.escapeXml(resourceName) + "\">\n";
 				votData += "<TABLE>\n";
 
 			// Adds headers to xml
 			table.metadata.forEach(function (columnInfo) {
 				votData += "<FIELD";
 				Object.keys(columnInfo).forEach(function (key) {
-					if(columnInfo[key] !== null) {
-						votData += " " + key + "=\"" + columnInfo[key] + "\"";
+				    var value = columnInfo[key];
+					if(value !== null) {
+					    if(value === 'linklist' || value === 'link2archive') {//ESASky specific types
+					        value = 'char'
+					    }
+						votData += " " + key + "=\"" + $wnd.esasky.escapeXml(value) + "\"";
 					}
 
 				});
@@ -974,7 +978,7 @@ public class TabulatorWrapper{
 			data.forEach(function (row) {
 				votData += "<TR>\n";
 				table.metadata.forEach(function (columnInfo) {
-					var value = row[columnInfo.name] || "";
+					var value = $wnd.esasky.escapeXml(row[columnInfo.name]);
 					votData += "<TD>"
 							+ value
 							+ "</TD>\n";

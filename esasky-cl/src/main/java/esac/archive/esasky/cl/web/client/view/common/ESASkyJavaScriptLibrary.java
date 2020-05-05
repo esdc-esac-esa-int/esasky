@@ -4,9 +4,26 @@ public class ESASkyJavaScriptLibrary {
 
     public static void initialize() {
         createLinkListFormatter();
+        javaScriptInit();
     }
     
 
+    public static native void javaScriptInit() /*-{
+        $wnd.esasky.escapeXml = function(unsafe) {
+            if(!unsafe){ return ""} 
+            if(!unsafe.replace) {return unsafe}
+            return unsafe.replace(/[<>&'"]/g, function (c) {
+                switch (c) {
+                    case '<': return '&lt;';
+                    case '>': return '&gt;';
+                    case '&': return '&amp;';
+                    case '\'': return '&apos;';
+                    case '"': return '&quot;';
+                }
+            });
+        }
+    }-*/;
+        
     public static native void createLinkListFormatter() /*-{
         if(!$wnd.esasky){$wnd.esasky = {}}
         $wnd.esasky.linkListFormatter = function(value, maxShowingLinks){ 
