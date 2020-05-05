@@ -313,12 +313,13 @@
 }
 
 .tabulator .tabulator-footer {
-  padding: 5px 10px;
-  border-top: 1px solid #999;
-  background-color: #333;
+  padding: 5px 30px 5px 10px;
+  background-color: transparent;
   text-align: right;
   color: #333;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
   white-space: nowrap;
   -ms-user-select: none;
       user-select: none;
@@ -917,4 +918,14 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
   height: 1px;
   width: 7px;
   background: #fff;
+}
+.footerCounter{
+	z-index: 1002;
+	border-top-left-radius: 10px;
+	border: 1px solid white;
+	padding: 5px;
+	font-size:16px;
+	color:#FFF;
+	background: rgba(0, 0, 0, 0.65);
+	width: max-content;
 }
