@@ -344,12 +344,15 @@ public class ResultsPresenter implements ICountRequestHandler {
         
         if(Modules.useTabulator) {
         	
+            String eventCategory = "";
         	if (type.equals(ReturnType.CSV)) {
         		view.getTabPanel().getSelectedWidget().exportAsCsv();
         	} else {
         		view.getTabPanel().getSelectedWidget().exportAsVot();
+        		eventCategory = GoogleAnalytics.CAT_Download_VOT;
         	}
-        	//TODO google events
+        	GoogleAnalytics.sendEventWithURL(eventCategory, view.getTabPanel().getSelectedWidget().getFullId(), "");
+
         	return;
         }
 
