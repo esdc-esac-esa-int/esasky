@@ -296,7 +296,8 @@ public class TabulatorWrapper{
 				for(var j = 0; j < metadata.length; j++){
 	    			
 	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
-	    			displayName = $wnd.esasky.getColumnDisplayText(name);
+					displayName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
+	    			displayName = $wnd.esasky.getColumnDisplayText(displayName);
 	    			
     				//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
 					var metaDataIndex = metadata.length + newMeta.length;
@@ -993,6 +994,17 @@ public class TabulatorWrapper{
                 votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
 				votData += "<RESOURCE name=\"" + $wnd.esasky.escapeXml(resourceName) + "\">\n";
 				votData += "<TABLE>\n";
+				
+			var esaskyToVOStandardType = {};
+			esaskyToVOStandardType["DOUBLE"] = "double"
+			esaskyToVOStandardType["INTEGER"] = "int"
+			esaskyToVOStandardType["BIGINT"] = "long";
+			esaskyToVOStandardType["STRING"] = "char";
+			esaskyToVOStandardType["VARCHAR"] = "char";
+			esaskyToVOStandardType["REAL"] = "float";
+			esaskyToVOStandardType["SMALLINT"] = "int";
+			esaskyToVOStandardType["TIMESTAMP"] = "char";
+			esaskyToVOStandardType["BOOLEAN"] = "boolean";
 
 			// Adds headers to xml
 			table.metadata.forEach(function (columnInfo) {
@@ -1000,8 +1012,11 @@ public class TabulatorWrapper{
 				Object.keys(columnInfo).forEach(function (key) {
 				    var value = columnInfo[key];
 					if(value !== null) {
-					    if(value === 'linklist' || value === 'link2archive') {//ESASky specific types
-					        value = 'char'
+					    if(key == "datatype"){
+					    	value = esaskyToVOStandardType[value.toUpperCase()];
+					    	if(value == "char" && !columnInfo.hasOwnProperty("arraysize")){
+					    		votData += " arraysize =\"*\""
+					    	}
 					    }
 						votData += " " + key + "=\"" + $wnd.esasky.escapeXml(value) + "\"";
 					}
