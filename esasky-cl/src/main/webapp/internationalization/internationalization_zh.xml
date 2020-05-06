@@ -10,12 +10,12 @@
 	<text key="header_getURLCurrentView">
 		分享当前视图的网址
 	</text>
-	<text key="header_viewInWWTAbbr">
-		显示于WWT
-	</text>
-	<text key="header_viewInWWTFull">
-		在万维望远镜中显示
-	</text>
+    <text key="header_viewInWWTAbbr">
+		WWT视图
+    </text>
+    <text key="header_viewInWWTFull">
+		在万维望远镜中显示当前视图
+    </text>
 	<text key="header_takeScreenshotFull">
 		获取当前页面截屏
 	</text>
