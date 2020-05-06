@@ -256,6 +256,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		tableNotShowingContainer.removeStyleName("displayNone");
 		emptyTableLabel.setText(TextMgr.getInstance().getText("abstractTablePanel_loadingData"));
 		loadingSpinner.setVisible(true);
+		table.clearTable();
 	}
 
 	private ColumnSettingInfo[] columnInformationList;

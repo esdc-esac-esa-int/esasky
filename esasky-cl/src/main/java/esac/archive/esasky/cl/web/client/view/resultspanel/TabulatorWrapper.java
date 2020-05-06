@@ -128,21 +128,23 @@ public class TabulatorWrapper{
     		
     		DoubleFilterDialogBox filterDialog = new DoubleFilterDialogBox(tapName, title, filterButtonId, filterObserver);
     		
-    		boolean isInt = false;
     		
-    		NumberFormat numberFormat = NumberFormat.getFormat("0.##");
     		
-    		if((minVal - Math.floor(minVal)) == 0 && (maxVal - Math.floor(maxVal)) == 0) {
-    			numberFormat = NumberFormat.getFormat("0");
-    			isInt = true;
-    		}
     		
-    		filterDialog.setRange(minVal, maxVal, numberFormat, 2);
-    		filterDialog.setInt(isInt);
     		filterDialogs.put(tapName, filterDialog);
     	}
     	
-    	FilterDialogBox filterDialogBox = filterDialogs.get(tapName);
+    	DoubleFilterDialogBox filterDialogBox = (DoubleFilterDialogBox) filterDialogs.get(tapName);
+
+    	NumberFormat numberFormat = NumberFormat.getFormat("0.##");
+    	boolean isInt = false;
+		if((minVal - Math.floor(minVal)) == 0 && (maxVal - Math.floor(maxVal)) == 0) {
+			numberFormat = NumberFormat.getFormat("0");
+			isInt = true;
+		}
+		
+		filterDialogBox.setRange(minVal, maxVal, numberFormat, 2);
+		filterDialogBox.setInt(isInt);
     	filterDialogBox.show();
     	
     }
@@ -209,8 +211,22 @@ public class TabulatorWrapper{
     	setData(tableJsObject, dataOrUrl);
     }
 
+    public void clearTable(){
+    	clearTable(tableJsObject);
+    	for(String key : filterDialogs.keySet()) {
+    		onFilterChanged(key, "");
+    	}
+    	filterDialogs.clear();
+    }
+    
+    private native void clearTable(GeneralJavaScriptObject tableJsObject)/*-{
+    	tableJsObject.clearData();
+    	tableJsObject.filterData = [];
+    	tableJsObject.metadata = [];
+    	previouslySelectedMap = [];
+    }-*/;
+
     private native void setData(GeneralJavaScriptObject tableJsObject, Object dataOrUrl)/*-{
-    	console.log(tableJsObject.element);
         tableJsObject.setData(dataOrUrl);
         
         var observer = new MutationObserver(function(mutations){
@@ -274,6 +290,7 @@ public class TabulatorWrapper{
 				data[i] = row;
 			}		
 			tableJsObject.metadata = metadata;
+			tableJsObject.filterData = []
 	        return data;
 	    }
     }-*/;
