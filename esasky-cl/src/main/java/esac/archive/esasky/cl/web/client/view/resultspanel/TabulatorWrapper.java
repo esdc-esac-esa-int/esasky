@@ -206,11 +206,29 @@ public class TabulatorWrapper{
     }-*/;
     
     public void setData(String dataOrUrl){
-        setData(tableJsObject, dataOrUrl);
+    	setData(tableJsObject, dataOrUrl);
     }
 
     private native void setData(GeneralJavaScriptObject tableJsObject, Object dataOrUrl)/*-{
+    	console.log(tableJsObject.element);
         tableJsObject.setData(dataOrUrl);
+        
+        var observer = new MutationObserver(function(mutations){
+    		  for (var i=0; i < mutations.length; i++){
+    		    for (var j=0; j < mutations[i].addedNodes.length; j++){
+    		      if(mutations[i].addedNodes[j].classList && mutations[i].addedNodes[j].classList.contains("tabulator-cell")){
+    		      	tableJsObject.redraw(true);
+    		      	this.disconnect();
+    		      	return;
+    		      }
+    		    }
+    		  }
+    		});
+
+    		observer.observe(tableJsObject.element, {
+    		  childList: true,
+    		  subtree: true
+    		});
     }-*/;
     
     public void setDefaultQueryMode(){
@@ -273,10 +291,18 @@ public class TabulatorWrapper{
 				newMeta = [];
 				filterData = {};
 				
+				var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
+				
 				for(var j = 0; j < metadata.length; j++){
 	    			
 	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
 	    			displayName = $wnd.esasky.getColumnDisplayText(name);
+	    			
+    				//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
+					var metaDataIndex = metadata.length + newMeta.length;
+					if(descMetaData.hasOwnProperty(name)){
+						metaDataIndex = parseInt(descMetaData[name].index);
+					}
 	    			
 	    			if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
 	    				datatype = "TIMESTAMP";
@@ -324,7 +350,8 @@ public class TabulatorWrapper{
 	    			}
 	    			
 				}
-
+				
+				newMeta = newMeta.filter(function(e){return e})
 				tableJsObject.metadata = newMeta;
 				tableJsObject.filterData = filterData;
 		        return [];
@@ -346,23 +373,33 @@ public class TabulatorWrapper{
 						colNameIndex = j
 					}
 				}
+				
+				var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
+				
 				for(var i = 0; i < response.data.length; i++){
 					
-					name = response.data[i][colNameIndex];
-					name = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
+					var name = response.data[i][colNameIndex];
 					
-					displayName = $wnd.esasky.getColumnDisplayText(name);
+					displayName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
+					displayName = $wnd.esasky.getColumnDisplayText(displayName);
+					
+					
+					//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
+					var metaDataIndex = response.data.length + newMeta.length;
+					if(descMetaData.hasOwnProperty(name)){
+						metaDataIndex = parseInt(descMetaData[name].index);
+					}
 					
 					minVal = parseFloat(response.data[i][minIndex]);
 					maxVal = parseFloat(response.data[i][maxIndex]);
 					
-					if(minVal){
+					if(maxVal > minVal){
 						if(Math.floor(minVal) == minVal && Math.floor(maxVal) == maxVal){
 		    				meta = {name:name, displayName:displayName, datatype:"INTEGER", visible:true}
-		    				newMeta.push(meta)
+		    				newMeta[metaDataIndex] = meta
 						}else{
 		    				meta = {name:name, displayName:displayName, datatype:"DOUBLE", visible:true}
-		    				newMeta.push(meta)
+		    				newMeta[metaDataIndex] = meta
 						}
 						
 	    				if(!filterData[name]){
@@ -373,10 +410,12 @@ public class TabulatorWrapper{
 					}
 	    			else{
 	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible:true}
-	    				newMeta.push(meta)
+	    				newMeta[metaDataIndex] = meta
 	    			}
     			}
 
+				//Removes empty slots
+				newMeta = newMeta.filter(function(e){return e})
 				tableJsObject.metadata = newMeta;
 				tableJsObject.filterData = filterData;
 		        return [];
@@ -498,9 +537,9 @@ public class TabulatorWrapper{
 				var maxVal = "1800-01-01";
 				
 				name = cell.getColumn()._column.definition.field;
-				if(filterData[name]){
-					minVal = filterData[name].min;
-					maxVal = filterData[name].max;
+				if(table.filterData[name]){
+					minVal = table.filterData[name].min;
+					maxVal = table.filterData[name].max;
 				}else{
 					cell.getColumn()._column.cells.forEach(function (row){
 						if(row.getValue() != undefined){
@@ -562,7 +601,7 @@ public class TabulatorWrapper{
 			    e.stopPropagation();
 				if(table.filterData != []){
 					name = cell.getColumn()._column.definition.field;
-					list = filterData[name]["list"];
+					list = table.filterData[name]["list"];
 					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
 						(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
 				}				
@@ -742,7 +781,7 @@ public class TabulatorWrapper{
                     });
                 }
 
-				if(!isInitializing){
+				if(!isInitializing && this.metadata){
 			    	for(var i = 0; i < this.metadata.length; i++){
 			    		if(this.metadata[i].name.toLowerCase() === "access_url"){
 	                        activeColumnGroup.push({
@@ -1068,7 +1107,6 @@ public class TabulatorWrapper{
         };
         
         table.filterData = [];
-        table.metadata = [];
 		isInitializing = false;
 		return table;
 	}-*/;
