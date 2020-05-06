@@ -11,6 +11,7 @@ import com.google.gwt.user.client.Timer;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
+import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
 import esac.archive.esasky.cl.web.client.model.TrackedSso;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -33,6 +34,7 @@ public class GUISessionStatus {
 	private static boolean isInScienceMode = false;
 	private static boolean doCountOnEnteringScienceMode = false;
 	private static boolean hideSwitch = false;
+	private static boolean showCoordinatesInDegrees = false;
 	
 	private static String currentLanguage;
 
@@ -186,6 +188,17 @@ public class GUISessionStatus {
 	}
 	public static boolean isHidingSwitch(){
 		return GUISessionStatus.hideSwitch;
+	}
+	
+	public static void toggleShowCoordinatesInDegrees(){
+	    GUISessionStatus.setShowCoordinatesInDegrees(!GUISessionStatus.showCoordinatesInDegrees);
+	}
+	public static void setShowCoordinatesInDegrees(boolean showInDegrees){
+	    GUISessionStatus.showCoordinatesInDegrees = showInDegrees;
+	    CommonEventBus.getEventBus().fireEvent(new IsShowingCoordintesInDegreesChangeEvent());
+	}
+	public static boolean isShowingCoordinatesInDegrees(){
+	    return GUISessionStatus.showCoordinatesInDegrees;
 	}
 	
 	public static boolean getIsInScienceMode(){

@@ -26,6 +26,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoV
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
@@ -39,6 +40,8 @@ import esac.archive.esasky.cl.web.client.event.banner.ToggleSkyPanelEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.DecPosition;
+import esac.archive.esasky.cl.web.client.model.RaPosition;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -107,7 +110,6 @@ public class HeaderPresenter {
 
 	private long timeSinceLastMouseDownInsideDropdownContainer;
 	private boolean isSciModeChecked = GUISessionStatus.getIsInScienceMode();
-	private boolean isCoordinateTextToggled = false;
 
 	public HeaderPresenter(final View inputView, String coordinateFrameFromUrl) {
 		this.view = inputView;
@@ -182,8 +184,10 @@ public class HeaderPresenter {
 			public void onChange(ChangeEvent changeEvent) {
 				if(view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString())){
 					AladinLiteWrapper.getInstance().setCooFrame(CoordinateFrame.J2000);
+					GUISessionStatus.setShowCoordinatesInDegrees(false);
 				} else {
 					AladinLiteWrapper.getInstance().setCooFrame(CoordinateFrame.GALACTIC);
+					GUISessionStatus.setShowCoordinatesInDegrees(true);
 				}
 			}
 		});
@@ -200,7 +204,8 @@ public class HeaderPresenter {
 			
 			@Override
 			public void onClick(final ClickEvent event) {
-				isCoordinateTextToggled = !isCoordinateTextToggled;
+			    if(AladinLiteWrapper.getCoordinatesFrame() == CoordinatesFrame.GALACTIC) {return;}
+			    GUISessionStatus.toggleShowCoordinatesInDegrees();
 				Coordinate coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
 				setCoordinates(coordinate.ra, coordinate.dec);
 			}
@@ -410,102 +415,18 @@ public class HeaderPresenter {
 	private void setCoordinates(double ra, double dec) {
 		String coordinate = "";
 		if(view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString())) {
-			if(isCoordinateTextToggled) {
-				coordinate = formatGalacticRa(ra) + " " + formatGalacticDec(dec);
-			}else {
-				coordinate = formatJ200Ra(ra).getSpacedString() + " "+ formatJ200Dec(dec);
+		    RaPosition raPosition = new RaPosition(ra);
+		    DecPosition decPosition = new DecPosition(dec);
+			if(GUISessionStatus.isShowingCoordinatesInDegrees()) {
+				coordinate = raPosition.getDegreeStringWithoutDegreeSymbol() + " " + decPosition.getDegreeStringWithoutDegreeSymbol();
+			} else {
+				coordinate = raPosition.getSpacedHmsString() + " " + decPosition.getSpacedDmsString();
 			}
 		} else {
 			double [] coord = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
-			coordinate = formatGalacticRa(coord[0]) + " " + formatGalacticDec(coord[1]);
+			coordinate = new RaPosition(coord[0]).getDegreeStringWithoutDegreeSymbol() + " " + new DecPosition(coord[1]).getDegreeStringWithoutDegreeSymbol();
 		}
 		view.setCoordinate(coordinate);
-	}
-
-	private class HoursMinutesSeconds{
-		private final String hours;
-		private final String minutes;
-		private final String seconds;
-
-		private HoursMinutesSeconds(String hours, String minutes, String seconds) {
-			this.hours = hours;
-			this.minutes = minutes;
-			this.seconds = seconds;
-		}
-
-		private String getSpacedString() {
-			return hours + " " + minutes + " " + seconds;
-		}
-	}
-
-	private HoursMinutesSeconds formatJ200Ra(double ra) {
-		double hours = (ra / 360) * 24;
-		double minutes = (hours - (int) hours) * 60;
-		Double seconds = (minutes - (int) minutes) * 60;
-		String secondsFormat = "00.000";
-
-		if(NumberFormat.getFormat(secondsFormat).format(seconds).equals("60.000")) {
-			seconds = 0.0;
-			minutes += 1;
-			if(minutes >= 60) {
-				minutes = 0;
-				hours += 1;
-				if(hours >= 24) {
-					hours = 0;
-				}
-			}
-		}
-
-		return new HoursMinutesSeconds(NumberFormat.getFormat("00").format((int) hours),
-				NumberFormat.getFormat("00").format((int) minutes), 
-				NumberFormat.getFormat(secondsFormat).format(seconds));
-	}
-
-	private String formatJ200Dec(double degrees) {
-		String sign = "+";
-		if(degrees < 0) {
-			sign = "-";
-			degrees = Math.abs(degrees);
-		}
-		double minutes = (degrees - (int) degrees) * 60;
-		Double seconds = (minutes - (int) minutes) * 60;
-		String secondsFormat = "00.00";
-
-		if(NumberFormat.getFormat(secondsFormat).format(seconds).equals("60.00")) {
-			seconds = 0.0;
-			minutes += 1;
-			if(minutes >= 60) {
-				minutes = 0;
-				degrees += 1;
-			}
-		}
-
-		return sign + NumberFormat.getFormat("00").format((int) degrees) + " " + NumberFormat.getFormat("00").format((int) minutes) + " "  + NumberFormat.getFormat(secondsFormat).format(seconds);
-	}
-
-	private String formatGalacticRa(double ra) {
-		String format = "000.0000000";
-
-		if(NumberFormat.getFormat(format).format(ra).equals("360.0000000")) {
-			ra = 0.0;
-		}
-
-		return NumberFormat.getFormat(format).format(ra);
-	}
-
-	private String formatGalacticDec(double dec) {
-		String sign = "+";
-		if(dec < 0) {
-			sign = "-";
-			dec = Math.abs(dec);
-		}
-		String format = "00.0000000";
-
-		if(NumberFormat.getFormat(format).format(dec).equals("90.0000000")) {
-			dec = 0.0;
-		}
-
-		return sign + NumberFormat.getFormat(format).format(dec);
 	}
 
 	private String formatFov(double fovDeg) {

@@ -7,6 +7,9 @@ import java.util.Map;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
+import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -48,6 +51,13 @@ public class TabulatorWrapper{
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addCentreColumn, boolean addSourcesInPublicationColumn) {
         this.tabulatorCallback = tabulatorCallback;
         tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addCentreColumn, addSourcesInPublicationColumn);
+        CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
+            
+            @Override
+            public void onEvent() {
+                redraw(tableJsObject);
+            }
+        });
     }
     
     public void selectRow(int rowId) {
@@ -75,6 +85,9 @@ public class TabulatorWrapper{
         downloadCsv(tableJsObject, fileName);
     }
 
+    private native void redraw(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.redraw(true);
+    }-*/;
     private native void downloadCsv(GeneralJavaScriptObject tableJsObject, String fileName)/*-{
         tableJsObject.download("csv", fileName);
     }-*/;
@@ -642,6 +655,33 @@ public class TabulatorWrapper{
 
 		}
 		
+		var raFormatter = function(cell, formatterParams, onRendered){
+		    if(cell.getValue() === undefined || cell.getValue() === ""){
+		        return "";
+		    }
+            var raDeg = cell.getValue();
+    	    if(@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()){
+                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
+                .@esac.archive.esasky.cl.web.client.model.RaPosition::getDegreeString()();
+    	    } else {
+                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
+                .@esac.archive.esasky.cl.web.client.model.RaPosition::getHmsString()();
+            }
+		}
+		var decFormatter = function(cell, formatterParams, onRendered){
+            var formattedValue = "";
+            var decDeg = cell.getValue();
+    	    if(decDeg === undefined || decDeg === ""){
+    	        return "";
+    	    }
+    	    if(@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()){
+                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
+                .@esac.archive.esasky.cl.web.client.model.DecPosition::getDegreeString()();
+    	    } else {
+                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
+                .@esac.archive.esasky.cl.web.client.model.DecPosition::getSymbolDmsString()();
+            }
+		}
 		var doubleFormatter = function(cell, formatterParams, onRendered){
 			
 			if(cell.getValue() == undefined){
@@ -855,7 +895,37 @@ public class TabulatorWrapper{
 			    		    activeColumnGroup = [];
 			    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
 			    		}
-			    		if(this.metadata[i].datatype === "DOUBLE" || this.metadata[i].datatype === "REAL"){
+			    		if(this.metadata[i].name.toLowerCase() === "ra" || this.metadata[i].name.toLowerCase() === "ra_deg"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:raFormatter,
+				    			sorter: "number",
+				    			headerFilter:numericFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:DoubleFilter,
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+		    				});
+			    		}
+			    		else if(this.metadata[i].name.toLowerCase() === "dec" || this.metadata[i].name.toLowerCase() === "dec_deg"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:decFormatter,
+				    			sorter: "number",
+				    			headerFilter:numericFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:DoubleFilter,
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+		    				});
+			    		}
+			    		else if(this.metadata[i].datatype === "DOUBLE" || this.metadata[i].datatype === "REAL"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
