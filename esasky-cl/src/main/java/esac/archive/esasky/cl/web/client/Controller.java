@@ -69,7 +69,8 @@ public class Controller implements ValueChangeHandler<String> {
 				&& (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"))
 						)
 				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet())
-				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true"))
+				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && sciMode == null && sciMode != "false"
+					&& sciMode != "off" && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true"))
 				) {
 			GUISessionStatus.setInitialIsInScienceMode();
 		}
