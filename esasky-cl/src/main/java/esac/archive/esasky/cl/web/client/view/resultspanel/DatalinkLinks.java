@@ -34,7 +34,7 @@ public class DatalinkLinks {
 				typeAndSizeDisplayText = typeAndSizeDisplayText.substring(0, typeAndSizeDisplayText.length() - 1) + ", ";
 			}
 			try {
-				typeAndSizeDisplayText += SizeFormatter.formatBytes(new Long(content_length), 0) + ")";
+				typeAndSizeDisplayText += SizeFormatter.formatBytes(new Integer(content_length), 0) + ")";
 			} catch (NumberFormatException e) {
 				typeAndSizeDisplayText += content_length + ")";
 			}

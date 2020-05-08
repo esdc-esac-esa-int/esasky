@@ -2,7 +2,7 @@ package esac.archive.esasky.cl.web.client.utility;
 
 public final class SizeFormatter {
 
-	public final native static String formatBytes(Long bytes, int decimals) /*-{ 
+	public final native static String formatBytes(int bytes, int decimals) /*-{ 
 	   if(bytes == 0) return '0 Bytes';
 	   var k = 1024, 
 	   dm = decimals <= 0 ? 0 : decimals || 2, 

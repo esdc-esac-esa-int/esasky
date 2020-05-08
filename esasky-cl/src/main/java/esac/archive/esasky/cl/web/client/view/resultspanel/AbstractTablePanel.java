@@ -835,7 +835,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 								final String url = row.getElementByLabel(label).getValue();
 								Window.open(url, "_blank", "_blank");
 								GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), row.getElementByLabel(label).getValue());
-								Log.debug("Size: " + SizeFormatter.formatBytes(new Long(row.getElementByTapName("access_estsize").getValue()), 0));
+								Log.debug("Size: " + SizeFormatter.formatBytes(new Integer(row.getElementByTapName("access_estsize").getValue()), 0));
 								Log.debug("ElementByLabel : " + row.getElementByLabel(label).getValue());
 							}
 							
