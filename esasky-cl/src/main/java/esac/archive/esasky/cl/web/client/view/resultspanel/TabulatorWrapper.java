@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
 import com.google.gwt.i18n.client.NumberFormat;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -46,6 +47,8 @@ public class TabulatorWrapper{
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
+    private long lastHoverTime = 0;
+    private int lastHoveredRow = 0;
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addCentreColumn, boolean addSourcesInPublicationColumn) {
@@ -1041,10 +1044,8 @@ public class TabulatorWrapper{
 		    },
 
 		    rowMouseEnter:function(e, row){
+		    	console.log(e);
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowEnter(I)(row.getIndex());
-		    },
-		    rowMouseLeave:function(e, row){
-		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowLeave(I)(row.getIndex());
 		    },
 
 		 	movableColumns: true,
@@ -1214,12 +1215,15 @@ public class TabulatorWrapper{
 	}-*/;
 
     public void onRowEnter(int rowId) {
-        tabulatorCallback.onRowMouseEnter(rowId);
+    	long currentTime = System.currentTimeMillis();
+    	if(currentTime - lastHoverTime > 5) {
+    		lastHoverTime = currentTime;
+    		tabulatorCallback.onRowMouseEnter(rowId);
+			tabulatorCallback.onRowMouseLeave(lastHoveredRow);
+    		lastHoveredRow = rowId;
+    	}
     }
 
-    public void onRowLeave(int rowId) {
-        tabulatorCallback.onRowMouseLeave(rowId);
-    }
 
     public void onDataLoaded() {
         if(tableJsObject != null) {
