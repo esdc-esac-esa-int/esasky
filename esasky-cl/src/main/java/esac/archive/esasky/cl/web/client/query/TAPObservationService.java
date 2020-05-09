@@ -7,6 +7,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
@@ -65,7 +66,13 @@ public class TAPObservationService extends AbstractTAPService {
     @Override
 	protected String getGeometricConstraint(IDescriptor descriptor) {
     	final String debugPrefix = "[TAPObservationService.getGeometricConstraint]";
-    	String constraint = "1=INTERSECTS(fov,";
+    	String containsOrIntersect;
+    	if(descriptor.getUseIntersectPolygonInsteadOfContainsPoint()) {
+    	    containsOrIntersect = "1=INTERSECTS(fov,";
+    	} else {
+    	    containsOrIntersect = "1=CONTAINS(POINT('ICRS',"
+                    + EsaSkyConstants.SOURCE_TAP_RA + ", " + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
+    	}
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
@@ -94,7 +101,7 @@ public class TAPObservationService extends AbstractTAPService {
             }
 
         }
-        return constraint + shape + ")";
+        return containsOrIntersect + shape + ")";
     }
     
     public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos) {
