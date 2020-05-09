@@ -23,6 +23,10 @@ public abstract class BaseDescriptor implements IDescriptor {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private int shapeLimit;
     
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    protected Boolean useIntersectPolygonInsteadOfContainsPoint;
+    
     /** DB table name. */
     private String tapTable;
 
@@ -59,10 +63,10 @@ public abstract class BaseDescriptor implements IDescriptor {
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private String tapRaColumn;
+    protected String tapRaColumn;
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private String tapDecColumn;
+    protected String tapDecColumn;
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -478,6 +482,13 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     public void setShapeLimit(int shapeLimit) {
         this.shapeLimit = shapeLimit;
+    }
+    
+    public Boolean getUseIntersectPolygonInsteadOfContainsPoint() {
+        return this.useIntersectPolygonInsteadOfContainsPoint;
+    }
+    public void setUseIntersectPolygonInsteadOfContainsPoint(boolean useInstersect) {
+        this.useIntersectPolygonInsteadOfContainsPoint = useInstersect;
     }
     
     @JsonIgnore

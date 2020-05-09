@@ -79,6 +79,9 @@ public interface IDescriptor {
     String getSecondaryColor();
     void setSecondaryColor(String secondaryColor);
     
+    Boolean getUseIntersectPolygonInsteadOfContainsPoint();
+    void setUseIntersectPolygonInsteadOfContainsPoint(boolean useInstersect);
+    
     String getExtraPopupDetailsByTapName();
 
     void setExtraPopupDetailsByTapName(String extraPopupDetailsByTapName);

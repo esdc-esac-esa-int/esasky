@@ -131,12 +131,17 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     
     @Override
     public String getTapRaColumn() {
-        return "ra_deg";
+        return tapRaColumn == null ? "ra_deg": tapRaColumn;
     }
 
     @Override
     public String getTapDecColumn() {
-        return "dec_deg";
+        return tapDecColumn == null ? "dec_deg": tapDecColumn;
+    }
+    
+    @Override
+    public Boolean getUseIntersectPolygonInsteadOfContainsPoint() {
+        return useIntersectPolygonInsteadOfContainsPoint == null ? true: useIntersectPolygonInsteadOfContainsPoint;
     }
 
 }
