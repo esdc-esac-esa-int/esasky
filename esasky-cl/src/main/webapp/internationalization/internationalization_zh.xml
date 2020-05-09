@@ -1778,6 +1778,17 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST">
+    郭守敬望远镜（LAMOST，大天区面积多目标光纤光谱天文望远镜）是一架新类型的大视场兼备大口径望远镜。LAMOST应用薄镜面主动光学加拼接镜面主动光学技术，在曝光1.5小时内可以观测到暗达20.5等的天体，使其成为大口径兼大视场光学望远镜的世界之最。同时，采用并行可控的光纤定位技术，在5度视场，直径为1.75米的焦面上放置4000根光纤，同时获得4000个天体的光谱，使其成为世界上光谱获取率最高的望远镜。LAMOST安放在中国科学院国家天文台兴隆观测站。    
+		&lt;br&gt;&lt;br&gt;
+		LAMOST第五次巡天观测数据(LAMOST DR5)包括了截至2017年6月的观测数据。总星表包含了9,026,365个观测目标，其中恒星8183160颗,星系152863个,类星体52453颗以及637889个未知天体。在g波段信噪比大于10的星体有5808985个，i波段信噪比大于10的星体有7701235个，两个波段信噪比都大于10的星体有5734239个。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
     ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接下载自日本ISAS数据存档和传输系统（DARTS）。该IRC红外相机包含NIR、MIR-S和MIR-L三个独立的系统，分别可观测1.7-5.5微米、5.8-14.1微米和12.4-26.5微米三个波段。每个系统都有三个滤光片可用。NIR和MIR-S视场相同，而MIR-L的视场与它们没有重叠。该设备的简要说明和数据产品请参考这个文档：
 		&lt;a
