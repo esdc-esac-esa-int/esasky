@@ -9,6 +9,7 @@ import java.util.Map;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dev.protobuf.Descriptors;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
@@ -115,8 +116,8 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
 
 	/** Descriptor and CountStatus hashMaps for improve counts */
-	private HashMap<String, IDescriptor> descriptorsMap;
-	private HashMap<String, CountStatus> countStatusMap;
+	private HashMap<String, List<IDescriptor>> descriptorsMap; //TODO use unique missionId as key when ids are unique across types
+	private HashMap<String, List<CountStatus>> countStatusMap;
 
 	private boolean catDescriptorsIsReady = false;
 	private boolean obsDescriptorsIsReady = false;
@@ -643,21 +644,27 @@ public class DescriptorRepository {
 				List<IDescriptor> descriptors = new ArrayList<IDescriptor>();
 				List<Integer> counts = new ArrayList<Integer>();
 				
-				for(IDescriptor descriptor : descriptorsMap.values()) {
-					CountStatus cs = countStatusMap.get(descriptor.getTapTable());
-					final int count = 0;
-					cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
-		
-					if (!(descriptor instanceof PublicationsDescriptor)) {
-						// Publications do not use Treemap
-						descriptors.add(descriptor);
-						counts.add(count);
-					}
+				for(List<IDescriptor> descriptorList : descriptorsMap.values()) {
+				    for(IDescriptor descriptor : descriptorList) {
+				        if(descriptors.contains(descriptor)) {
+				    
+        					List<CountStatus> countStatuses = countStatusMap.get(descriptor.getTapTable());
+        					for(CountStatus cs: countStatuses) {
+            					final int count = 0;
+            					cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+            		
+        						descriptors.add(descriptor);
+        						counts.add(count);
+        					}
+				        }
+				    }
 				}
 				if (descriptors.size() > 0) {
 					CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
 					for (String key : countStatusMap.keySet()) {
-						countStatusMap.get(key).updateCount();
+					    for(CountStatus cs: countStatusMap.get(key)) {
+					        cs.updateCount();
+					    }
 					}
 				}
 				
@@ -667,8 +674,8 @@ public class DescriptorRepository {
 	}
 
 	private void prepareDescriptorsMap() {
-		descriptorsMap = new HashMap<String, IDescriptor>();
-		countStatusMap = new HashMap<String, CountStatus>();
+		descriptorsMap = new HashMap<String, List<IDescriptor>>();
+		countStatusMap = new HashMap<String, List<CountStatus>>();
 
 		addDescriptorsToHashMaps(catDescriptors);
 		addDescriptorsToHashMaps(obsDescriptors);
@@ -680,8 +687,16 @@ public class DescriptorRepository {
 		if (descriptorListAdapter != null) {
 			final CountStatus cs = descriptorListAdapter.getCountStatus();
 			for (IDescriptor descriptor : descriptorListAdapter.getDescriptors()) {
-				descriptorsMap.put(descriptor.getTapTable(), descriptor);
-				countStatusMap.put(descriptor.getTapTable(), cs);
+			    if(!descriptorsMap.containsKey(descriptor.getTapTable())) {
+			        descriptorsMap.put(descriptor.getTapTable(), new LinkedList<IDescriptor>());
+			    }
+			    if(!countStatusMap.containsKey(descriptor.getTapTable())) {
+			        countStatusMap.put(descriptor.getTapTable(), new LinkedList<CountStatus>());
+			    }
+			    List<IDescriptor> descriptorList = descriptorsMap.get(descriptor.getTapTable());
+			    List<CountStatus> countStatusList = countStatusMap.get(descriptor.getTapTable());
+			    descriptorList.add(descriptor);
+				countStatusList.add(cs);
 			}
 		}
 	}
@@ -705,18 +720,20 @@ public class DescriptorRepository {
 
 			if (descriptorsMap.containsKey(singleCount.getTableName())) {
 
-				IDescriptor descriptor = descriptorsMap.get(singleCount.getTableName());
-				CountStatus cs = countStatusMap.get(singleCount.getTableName());
-				final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
-				cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
-				
-				remainingDescriptors.remove(singleCount.getTableName());
-
-				if (!(descriptor instanceof PublicationsDescriptor)) {
-					// Publications do not use Treemap
+				List<IDescriptor> descriptorList = descriptorsMap.get(singleCount.getTableName());
+				List<CountStatus> countList = countStatusMap.get(singleCount.getTableName());
+				int i = 0;
+				for(IDescriptor descriptor : descriptorList) {
+				    CountStatus cs = countList.get(i);
+		            i++;
+    				final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
+    				cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+    				
+    				remainingDescriptors.remove(singleCount.getTableName());
+    
 					descriptors.add(descriptor);
 					counts.add(count);
-				}
+    			}
 
 			} else {
 				Log.warn("[DescriptorRepository] doUpdateSingleCount. TABLE_NAME: '" + singleCount.getTableName()
@@ -727,23 +744,27 @@ public class DescriptorRepository {
 		
 		//Handling that the fast count doesn't give any results for missing missions in the area so we set them to 0
 		for(String mission : remainingDescriptors) {
-			IDescriptor descriptor = descriptorsMap.get(mission);
-			CountStatus cs = countStatusMap.get(mission);
-			final int count = 0;
-			cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
-			
-			if (!(descriptor instanceof PublicationsDescriptor)) {
-				// Publications do not use Treemap
-				descriptors.add(descriptor);
-				counts.add(count);
-			}
+			List<IDescriptor> descriptorList = descriptorsMap.get(mission);
+			List<CountStatus> countStatusList = countStatusMap.get(mission);
+            int i = 0;
+            for(IDescriptor descriptor : descriptorList) {
+                CountStatus cs = countStatusList.get(i);
+                i++;
+    			final int count = 0;
+    			cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+    			
+    			descriptors.add(descriptor);
+    			counts.add(count);
+            }
 		}
 
 		if (descriptors.size() > 0) {
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
-			for (String key : countStatusMap.keySet()) {
-				countStatusMap.get(key).updateCount();
-			}
+            for (String key : countStatusMap.keySet()) {
+                for(CountStatus cs: countStatusMap.get(key)) {
+                    cs.updateCount();
+                }
+            }
 		}
 	}
 
