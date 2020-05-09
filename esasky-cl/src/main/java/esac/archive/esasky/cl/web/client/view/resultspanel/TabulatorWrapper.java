@@ -143,10 +143,6 @@ public class TabulatorWrapper{
 			};
     		
     		DoubleFilterDialogBox filterDialog = new DoubleFilterDialogBox(tapName, title, filterButtonId, filterObserver);
-    		
-    		
-    		
-    		
     		filterDialogs.put(tapName, filterDialog);
     	}
     	
@@ -685,6 +681,19 @@ public class TabulatorWrapper{
                 .@esac.archive.esasky.cl.web.client.model.DecPosition::getSymbolDmsString()();
             }
 		}
+		var fileSizeFormatter = function(cell, formatterParams, onRendered){
+            var formattedValue = "";
+            var value = cell.getValue();
+    	    if(value === undefined || value === ""){
+    	        return "";
+    	    }
+    	    console.log(divId);
+    	    if(divId.includes("MAST-")){ //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
+    	    } else {
+                return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
+    	    }
+		}
 		var doubleFormatter = function(cell, formatterParams, onRendered){
 			
 			if(cell.getValue() == undefined){
@@ -920,6 +929,21 @@ public class TabulatorWrapper{
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:decFormatter,
+				    			sorter: "number",
+				    			headerFilter:numericFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:DoubleFilter,
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+		    				});
+			    		}
+			    		else if(this.metadata[i].name.toLowerCase() === "access_estsize"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			formatter:fileSizeFormatter,
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
@@ -1211,6 +1235,9 @@ public class TabulatorWrapper{
         table.filterData = [];
 		isInitializing = false;
 		table.element.onmouseleave = function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onTableMouseLeave()()};
+        
+//		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
+//		$wnd.tabulatorTables.push(table);
 		return table;
 	}-*/;
 
