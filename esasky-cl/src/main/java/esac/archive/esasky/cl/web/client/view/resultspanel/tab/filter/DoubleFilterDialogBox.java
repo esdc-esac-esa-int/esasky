@@ -56,7 +56,8 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
     private final String doubleFilterContainerId;
     
     protected FilterTimer filterTimer = new FilterTimer();
-	
+	private ValueFormatter valueFormatter;
+    
     public interface Resources extends ClientBundle {
         @Source("doubleFilterDialogBox.css")
         @CssResource.NotStrict
@@ -66,10 +67,15 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 		ImageResource resetIcon();
     }
     
-	public DoubleFilterDialogBox(String tapName, String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+    public DoubleFilterDialogBox(String tapName, String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+        this(tapName, columnName, new DefaultValueFormatter(), filterButtonId, filterObserver);
+    }
+	public DoubleFilterDialogBox(String tapName, String columnName, ValueFormatter valueFormatter,
+	        final String filterButtonId, final FilterObserver filterObserver) {
 		super(tapName, filterButtonId);
         this.style = this.resources.style();
         this.style.ensureInjected();
+        this.valueFormatter = valueFormatter;
         doubleFilterContainerId = filterButtonId.replaceAll("(\\(|\\)| )", "_") + "doubleColumn";
         sliderSelectorContainerId = "selectorId_WTIH_NO_TITLE_" + doubleFilterContainerId;
         this.filterObserver = filterObserver;
@@ -201,6 +207,8 @@ public class DoubleFilterDialogBox extends FilterDialogBox {
 		if(Double.isNaN(fromValue) || Double.isNaN(toValue)) {
 			return;
 		}
+//    	fromTextBox.setText(valueFormatter.formatValue(fromValue));
+//    	toTextBox.setText(valueFormatter.formatValue(toValue));
     	fromTextBox.setText(numberFormat.format(fromValue));
     	toTextBox.setText(numberFormat.format(toValue));
     	if(Double.isInfinite(fromValue) || Double.isInfinite(toValue)) {
