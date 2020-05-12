@@ -303,6 +303,7 @@ public class TabulatorWrapper{
 			}		
 			tableJsObject.metadata = metadata;
 			tableJsObject.filterData = []
+			tableJsObject.columnDef = [];
 	        return data;
 	    }
     }-*/;
@@ -317,7 +318,7 @@ public class TabulatorWrapper{
         if(mode == 'localMinMax'){
         	tableJsObject.options.ajaxResponse = function(url, params, response){
 				var metadata = response.metadata;
-				newMeta = [];
+				var newMeta = [];
 				filterData = {};
 				
 				var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
@@ -389,7 +390,7 @@ public class TabulatorWrapper{
         }else{
         	tableJsObject.options.ajaxResponse = function(url, params, response){
 				var md = response.metadata;
-				newMeta = [];
+				var newMeta = [];
 				var filterData = {};
 				var colNameIndex, minIndex, maxIndex;
 				for(var j = 0; j < md.length; j++){
@@ -782,6 +783,7 @@ public class TabulatorWrapper{
 		    },
 		    dataLoading:function(data){
 		        var activeColumnGroup = [];
+		        var isSSO = false;
 		    	activeColumnGroup.push({formatter:"rowSelection", titleFormatter:"rowSelection", sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
 					return bRow.isSelected() - aRow.isSelected();
 					
@@ -902,6 +904,7 @@ public class TabulatorWrapper{
 	                        continue;
 	                    }
 			    		if(this.metadata[i].name.toLowerCase() === "sso_name"){
+			    			isSSO = true;
 			    		    columnDef.push(activeColumnGroup[0]); //Selection column
 			    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
 			    		    activeColumnGroup = [];
@@ -1030,7 +1033,7 @@ public class TabulatorWrapper{
 			    			});
 			    		}
 		    		}
-			    	if(columnDef.length == 0){
+			    	if(!isSSO){
 			    	    columnDef = activeColumnGroup;
 			    	}
 			    	
@@ -1075,6 +1078,9 @@ public class TabulatorWrapper{
 		 	autoColumns: true,
 		 	layout: "fitDataFill"
 		});
+		
+		//Remove the clearSelection function to make sure that it is possible to select and copy text from the table
+		table._clearSelection = function (){};
 		
 		table.rowManager.adjustTableSize = function () {
 		//Change to remove that it changes with the footer height
