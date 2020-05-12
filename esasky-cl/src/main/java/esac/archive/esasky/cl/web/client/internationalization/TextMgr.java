@@ -111,12 +111,9 @@ public class TextMgr {
         $wnd.esasky.getDefaultLanguageText = function(text) {
             return defaultInstance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;)(text);
         }
-     	$wnd.esasky.getColumnDisplayText = function(text){
-	        displayText = $wnd.esasky.getDefaultLanguageText(text);
-			if(displayText == text){
-				displayText = displayText.replace(/_/g," ");
-				displayText = displayText.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase();} );
-			}
+     	$wnd.esasky.getColumnDisplayText = function(displayText){
+			displayText = displayText.replace(/_/g," ");
+			displayText = displayText.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase();} );
 			return displayText;	
      	}
     }-*/;

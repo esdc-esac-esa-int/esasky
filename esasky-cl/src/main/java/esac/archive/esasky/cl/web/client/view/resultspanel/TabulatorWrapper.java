@@ -271,7 +271,7 @@ public class TabulatorWrapper{
 			for(var j = 0; j < metadata.length; j++){
 				
 				metadata[j]["visible"] = true;
-				metadata[j]["displayName"] = metadata[j].name;
+				metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
 				
 				if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
 				
@@ -279,12 +279,10 @@ public class TabulatorWrapper{
 						metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
 					}
 					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label")){
-						metadata[j].displayName = descriptorMetaData[metadata[j].name]["label"];
+				        metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
 					}
 				}
-				displayName = $wnd.esasky.getColumnDisplayText(metadata[j].displayName);
 				
-				metadata[j].displayName = displayName;
 			}
 			var data = [];
 			for(var i = 0; i < response.data.length; i++){
@@ -857,7 +855,7 @@ public class TabulatorWrapper{
 			    	for(var i = 0; i < this.metadata.length; i++){
 			    		if(this.metadata[i].name.toLowerCase() === "access_url"){
 	                        activeColumnGroup.push({
-	                            title:this.metadata[i].name,
+	                            title:this.metadata[i].displayName,
 	                            field:this.metadata[i].name,
 	                            headerSort:false, 
 	                            headerTooltip:this.metadata[i].description,
@@ -893,7 +891,7 @@ public class TabulatorWrapper{
 			    		}
 			    		if(this.metadata[i].name.toLowerCase() === "author"){
 	                        activeColumnGroup.push({
-	                            title:this.metadata[i].name,
+	                            title:this.metadata[i].displayName,
 	                            field:this.metadata[i].name,
 	    		    			sorter: "string",
 	    		    			headerFilter:true,
