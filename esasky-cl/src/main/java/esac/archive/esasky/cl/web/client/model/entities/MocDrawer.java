@@ -52,28 +52,31 @@ public class MocDrawer implements IShapeDrawer{
 	@Override
 	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
 		removeAllShapes();
+		
+		if(rowList != null) {
 
-		int healpixOrderIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_ORDER);
-		int healpixIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_IPIX);
-		if(healpixIndex != -1) {
-			String healpixOrder = "";
-			boolean first = true;
-			String mocJSON = "{";
-			for(int i = 0; i < rowList.getData().size(); i++) {
-				String currentOrder = (String) rowList.getDataRow(i).get(healpixOrderIndex);
-				if(currentOrder != healpixOrder) {
-					healpixOrder = currentOrder;
-					if(!first) {
-						mocJSON += "], ";
+			int healpixOrderIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_ORDER);
+			int healpixIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_IPIX);
+			if(healpixIndex != -1) {
+				String healpixOrder = "";
+				boolean first = true;
+				String mocJSON = "{";
+				for(int i = 0; i < rowList.getData().size(); i++) {
+					String currentOrder = (String) rowList.getDataRow(i).get(healpixOrderIndex);
+					if(currentOrder != healpixOrder) {
+						healpixOrder = currentOrder;
+						if(!first) {
+							mocJSON += "], ";
+						}
+						mocJSON += "\" " + healpixOrder + "\":[";
+						first = false;
 					}
-					mocJSON += "\" " + healpixOrder + "\":[";
-					first = false;
+					mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
 				}
-				mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
+				mocJSON = mocJSON.substring(0,mocJSON.length()-1) + "]}";
+				AladinLiteWrapper.getAladinLite().addMOCData(moc, mocJSON);
+				AladinLiteWrapper.getAladinLite().addMOC(moc);
 			}
-			mocJSON = mocJSON.substring(0,mocJSON.length()-1) + "]}";
-			AladinLiteWrapper.getAladinLite().addMOCData(moc, mocJSON);
-			AladinLiteWrapper.getAladinLite().addMOC(moc);
 		}
 	}
 	

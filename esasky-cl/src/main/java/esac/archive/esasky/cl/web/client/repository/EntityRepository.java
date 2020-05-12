@@ -18,8 +18,9 @@ import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.entities.CatalogEntity;
 import esac.archive.esasky.cl.web.client.model.entities.CombinedSourceFootprintDrawer;
+import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
+import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity.SecondaryShapeAdder;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
-import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity.SecondaryShapeAdder;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
@@ -83,7 +84,7 @@ public class EntityRepository {
     public GeneralEntityInterface createEntity(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = null;
         if (descriptor instanceof ObservationDescriptor && ((ObservationDescriptor) descriptor).getIsSurveyMission()) {
-            newEntity = new ExtTapEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(),
+            newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getObsDescriptors().getCountStatus(),
                     CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(),
                     TAPSurveyService.getInstance(), 20, SourceShapeType.CROSS.getName());
             addEntity(newEntity);
@@ -99,16 +100,17 @@ public class EntityRepository {
         } else if (descriptor instanceof CatalogDescriptor) {
             return createCatalogueEntity((CatalogDescriptor) descriptor);
         } else if (descriptor instanceof ExtTapDescriptor) {
-            return createEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(),
-                    TAPExtTapService.getInstance());
+        	newEntity =  new ExtTapEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(),
+                    CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPExtTapService.getInstance());
 
+            addEntity(newEntity);
         }
         return newEntity;
     }
 
     private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus,
             AbstractTAPService metadataService) {
-        GeneralEntityInterface newEntity = new ExtTapEntity(descriptor, countStatus,
+        GeneralEntityInterface newEntity = new EsaSkyEntity(descriptor, countStatus,
                 CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), metadataService);
         addEntity(newEntity);
         return newEntity;
@@ -120,7 +122,7 @@ public class EntityRepository {
         SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
         GeneralEntityInterface newCatEntity = null;
         if (Modules.useTabulator) {
-            newCatEntity = new ExtTapEntity(descriptor, descriptorRepo.getCatDescriptors().getCountStatus(),
+            newCatEntity = new EsaSkyEntity(descriptor, descriptorRepo.getCatDescriptors().getCountStatus(),
                     skyViewPosition, esaSkyUniqId, TAPCatalogueService.getInstance(), new SecondaryShapeAdder() {
 
                         @Override

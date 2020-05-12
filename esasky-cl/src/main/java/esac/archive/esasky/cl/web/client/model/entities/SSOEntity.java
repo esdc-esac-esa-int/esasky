@@ -16,7 +16,7 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 
-public class SSOEntity extends ExtTapEntity {
+public class SSOEntity extends EsaSkyEntity {
     
     private final TrackedSso sso;
 	public SSOEntity(IDescriptor descriptor) {

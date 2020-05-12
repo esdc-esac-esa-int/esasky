@@ -20,7 +20,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePanel;
 
-public class PublicationsBySourceEntity extends ExtTapEntity {
+public class PublicationsBySourceEntity extends EsaSkyEntity {
 
     public PublicationsBySourceEntity(PublicationsDescriptor descriptor,
             CountStatus countStatus, SkyViewPosition skyViewPosition,

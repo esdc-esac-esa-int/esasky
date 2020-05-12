@@ -13,7 +13,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PublicationTooltip;
 
-public class PublicationsEntity extends ExtTapEntity {
+public class PublicationsEntity extends EsaSkyEntity {
 
     public PublicationsEntity(PublicationsDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId) {

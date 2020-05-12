@@ -236,7 +236,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 //    	MainPresenter.getInstance().getRelatedMetadataWithFilter(descriptor, tablePanel.getFilterString());
     	
-    	((ExtTapEntity) parentEntity).fetchDataWithoutMOC();
+    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC();
     	shouldBeShown = false;
     	clearAll();
     	updateOverlay();

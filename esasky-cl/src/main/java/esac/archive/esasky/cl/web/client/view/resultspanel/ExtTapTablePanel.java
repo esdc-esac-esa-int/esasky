@@ -13,6 +13,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
+import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -25,10 +26,10 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 
 	
 	/** Current entity. */
-	private ExtTapEntity entity;
+	private EsaSkyEntity entity;
 
 	public ExtTapTablePanel(final String inputLabel, final String inputEsaSkyUniqID,
-			final ExtTapEntity inputentity) {
+			final EsaSkyEntity inputentity) {
 		super(inputLabel, inputEsaSkyUniqID, inputentity);
 
 		this.entity = inputentity;
@@ -100,7 +101,7 @@ public class ExtTapTablePanel extends AbstractTablePanel {
 	}
 
 	@Override
-	public final ExtTapEntity getEntity() {
+	public final EsaSkyEntity getEntity() {
 		return entity;
 	}
 
