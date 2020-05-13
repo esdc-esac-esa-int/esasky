@@ -118,6 +118,12 @@ public class Api {
 		
 	}
 	
+	public void addQ3CMOC(String options, String mocData) {
+		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+		AladinLiteWrapper.getAladinLite().addMOCData(moc, mocData);
+		AladinLiteWrapper.getAladinLite().addMOC(moc);
+	}
+	
 	public void getVisibleNpix(int norder) {
 		JavaScriptObject js = AladinLiteWrapper.getAladinLite().getVisibleNpix(norder);
 		Log.debug(js.toString());
@@ -287,6 +293,20 @@ public class Api {
 			controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
 		}catch(IndexOutOfBoundsException e) {
 			Log.error(e.toString());
+		}
+	}
+	
+	public void closeAllResultPanelTabs() {
+		try {
+			while(true) {
+				ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+				tablePanel.closeTablePanel();
+				String id = tablePanel.getEntity().getEsaSkyUniqId();
+				MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
+				controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
+			}
+		}catch(Exception e) {
+			//Runs until it comes here when no tablePanel exists
 		}
 	}
 	
@@ -718,24 +738,25 @@ public class Api {
 		FootprintListJSONWrapper footprintsSet = (FootprintListJSONWrapper) mapper.read(footprintsSetJSON);
 
 		JavaScriptObject overlay;
-		FootprintListOverlay fooprintList = (FootprintListOverlay) footprintsSet.getOverlaySet();
+		FootprintListOverlay footprintList = (FootprintListOverlay) footprintsSet.getOverlaySet();
 		
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayFootprints, fooprintList.getOverlayName());
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayFootprints, footprintList.getOverlayName());
 
-		if (setOfFootprints.containsKey(fooprintList.getOverlayName())) {
-			overlay = setOfFootprints.get(fooprintList.getOverlayName());
+		if (setOfFootprints.containsKey(footprintList.getOverlayName())) {
+			overlay = setOfFootprints.get(footprintList.getOverlayName());
 		} else {
-			overlay = AladinLiteWrapper.getAladinLite().createOverlay(fooprintList.getOverlayName(),
-					fooprintList.getColor());
+			overlay = AladinLiteWrapper.getAladinLite().createOverlay(footprintList.getOverlayName(),
+					footprintList.getColor());
+			setOfFootprints.put(footprintList.getOverlayName(), overlay);
 		}
-		for (Object currSkyObj : fooprintList.getSkyObjectList()) {
+		for (Object currSkyObj : footprintList.getSkyObjectList()) {
 			Footprint currFoot = (Footprint) currSkyObj;
 			JavaScriptObject footprintJS = AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(currFoot.getStcs(),
 					currFoot.getId());
 			AladinLiteWrapper.getAladinLite().addFootprintToOverlay(overlay, footprintJS);
 		}
-		AladinLiteWrapper.getAladinLite().goToRaDec(((Footprint) fooprintList.getSkyObjectList().get(0)).getRa_deg(),
-				((Footprint) fooprintList.getSkyObjectList().get(0)).getDec_deg());
+		AladinLiteWrapper.getAladinLite().goToRaDec(((Footprint) footprintList.getSkyObjectList().get(0)).getRa_deg(),
+				((Footprint) footprintList.getSkyObjectList().get(0)).getDec_deg());
 	}
 
 	public void overlayFootprintsWithData(String footprintsSetJSON) {
@@ -979,15 +1000,19 @@ public class Api {
 	public void clearCatalogue(String catalogueName) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearCatalogue, catalogueName);
 		// remove all sources from the catalogue but not the catalogue itself
-		AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(userCatalogues.get(catalogueName));
+		if (userCatalogues.containsKey(catalogueName)) {
+			AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(userCatalogues.get(catalogueName));
+		}
 	}
 
 	public void removeCatalogue(String catalogueName) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeCatalogue, catalogueName);
-		AladinLiteWrapper.getInstance();
 		// Remove the catalogue from the map
-		AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(userCatalogues.get(catalogueName));
-		userCatalogues.remove(catalogueName);
+		if (userCatalogues.containsKey(catalogueName)) {
+			JavaScriptObject overlay = userCatalogues.get(catalogueName);
+			AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(overlay);
+			userCatalogues.remove(catalogueName);
+		}
 	}
 
 	public void getAvailableHiPS(String wavelength, JavaScriptObject widget) {
