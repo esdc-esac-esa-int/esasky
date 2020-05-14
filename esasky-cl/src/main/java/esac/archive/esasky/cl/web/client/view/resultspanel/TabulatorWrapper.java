@@ -318,6 +318,7 @@ public class TabulatorWrapper{
 			tableJsObject.metadata = metadata;
 			tableJsObject.filterData = []
 			tableJsObject.columnDef = [];
+			tableJsObject.showCount = true;
 	        return data;
 	    }
     }-*/;
@@ -402,6 +403,7 @@ public class TabulatorWrapper{
 				newMeta = newMeta.filter(function(e){return e})
 				tableJsObject.metadata = newMeta;
 				tableJsObject.filterData = filterData;
+				tableJsObject.showCount = false;
 		        return [];
 		    }
         } else{
@@ -469,6 +471,7 @@ public class TabulatorWrapper{
 				newMeta = newMeta.filter(function(e){return e})
 				tableJsObject.metadata = newMeta;
 				tableJsObject.filterData = filterData;
+				tableJsObject.showCount = false;
 		        return [];
 			}
         }
@@ -1139,8 +1142,11 @@ public class TabulatorWrapper{
     
                 this.height = this.element.clientHeight;
                 this.vDomWindowBuffer = this.table.options.virtualDomBuffer || this.height;
-                
-                footerOffset = (this.table.footerManager && !this.table.footerManager.external ? this.table.footerManager.getElement().offsetHeight : 0);
+                if(this.table.showCount){
+                	footerOffset = (this.table.footerManager && !this.table.footerManager.external ? this.table.footerManager.getElement().offsetHeight : 0);
+                }else{
+                	footerOffset = 0;
+                }
                 this.table.footerManager.element.style.marginTop = -  footerOffset + "px";
     
                 //check if the table has changed size when dealing with variable height tables
@@ -1288,6 +1294,7 @@ public class TabulatorWrapper{
         };
         
         table.filterData = [];
+        table.showCount = true;
 		isInitializing = false;
 		table.element.onmouseleave = function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onTableMouseLeave()()};
         
