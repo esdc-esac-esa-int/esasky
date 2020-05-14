@@ -283,7 +283,7 @@ public class TabulatorWrapper{
 			metadata = response.metadata;
 			for(var j = 0; j < metadata.length; j++){
 				
-				metadata[j]["visible"] = true;
+				metadata[j]["visible"] = (metadata[j].name !== "s_region");
 				metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
 				
 				if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
@@ -401,7 +401,7 @@ public class TabulatorWrapper{
 				tableJsObject.filterData = filterData;
 		        return [];
 		    }
-        }else{
+        } else{
         	tableJsObject.options.ajaxResponse = function(url, params, response){
 				var md = response.metadata;
 				var newMeta = [];
