@@ -88,10 +88,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.column.DateTimeColumn
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DecColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.DoubleColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.ImageColumn;
-import esac.archive.esasky.cl.web.client.view.resultspanel.column.IntegerColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.Link2ArchiveColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.LinkListColumn;
-import esac.archive.esasky.cl.web.client.view.resultspanel.column.LongColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.RaColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.SortableColumn;
 import esac.archive.esasky.cl.web.client.view.resultspanel.column.StringColumn;
@@ -998,38 +996,38 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 
 				} else if (ColumnType.INT.equals(type) || ColumnType.INTEGER.equals(type)) {
-					final IntegerColumn column = new IntegerColumn(currentMTD.getTapName(), label, filterButtonId,
-							new RowsFilterObserver() {
-
-								@Override
-								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
-									calculateChangedRows(rowsToRemove, rowsToAdd);
-								}
-								
-								@Override
-								public void onFilterChanged(String tapFilter) {
-									addTapFilter(label, tapFilter);
-								}
-							});
-					table.getColumnSortList().push(column);
-					addColumn(column, headerWithFilterButton, i, label, currentMTD);
+//					final IntegerColumn column = new IntegerColumn(currentMTD.getTapName(), label, filterButtonId,
+//							new RowsFilterObserver() {
+//
+//								@Override
+//								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
+//									calculateChangedRows(rowsToRemove, rowsToAdd);
+//								}
+//								
+//								@Override
+//								public void onFilterChanged(String tapFilter) {
+//									addTapFilter(label, tapFilter);
+//								}
+//							});
+//					table.getColumnSortList().push(column);
+//					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 					
 				}else if (ColumnType.LONG.equals(type)) {
-					final LongColumn column = new LongColumn(currentMTD.getTapName(), label, filterButtonId,
-							new RowsFilterObserver() {
-
-								@Override
-								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
-									calculateChangedRows(rowsToRemove, rowsToAdd);
-								}
-								
-								@Override
-								public void onFilterChanged(String tapFilter) {
-									addTapFilter(label, tapFilter);
-								}
-							});
-					table.getColumnSortList().push(column);
-					addColumn(column, headerWithFilterButton, i, label, currentMTD);
+//					final LongColumn column = new LongColumn(currentMTD.getTapName(), label, filterButtonId,
+//							new RowsFilterObserver() {
+//
+//								@Override
+//								public void onRowsFiltered(Set<Integer> rowsToRemove, Set<Integer> rowsToAdd) {
+//									calculateChangedRows(rowsToRemove, rowsToAdd);
+//								}
+//								
+//								@Override
+//								public void onFilterChanged(String tapFilter) {
+//									addTapFilter(label, tapFilter);
+//								}
+//							});
+//					table.getColumnSortList().push(column);
+//					addColumn(column, headerWithFilterButton, i, label, currentMTD);
 					
 				}else if (ColumnType.LINK2ARCHIVE.equals(type)) {
 					Link2ArchiveColumn column = new Link2ArchiveColumn(currentMTD.getTapName(), label,
