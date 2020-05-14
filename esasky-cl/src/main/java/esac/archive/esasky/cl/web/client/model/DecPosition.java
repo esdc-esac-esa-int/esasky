@@ -1,6 +1,9 @@
 package esac.archive.esasky.cl.web.client.model;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.i18n.client.NumberFormat;
+
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 
 public class DecPosition {
     private final double decDeg;
@@ -8,7 +11,7 @@ public class DecPosition {
     private String degStringFloored;
     private String minutesString;
     private String secondsString;
-    private String sign;
+    private final String sign;
     
     
     public DecPosition(double decDeg) {
@@ -18,6 +21,41 @@ public class DecPosition {
             sign = "+";
         }
         this.decDeg = Math.abs(decDeg);
+    }
+    
+    public DecPosition(String dmsOrDegrees) {
+        String dmsSplit [] = dmsOrDegrees.split("\u00B0|d|m|s| |'|\"");
+        if(dmsSplit.length > 3){
+            for(int i = 0; i < dmsSplit.length; i++) {
+                if(NumberFormatter.isNumber(dmsSplit[i])) {
+                    setNextDms(dmsSplit[i]);
+                }
+            }
+            
+            decDeg = Double.parseDouble(degString)
+                    + Double.parseDouble(minutesString) / 60
+                    + Double.parseDouble(secondsString) / 60 / 60;
+        } else {
+            String degreeSplit [] = dmsOrDegrees.split("d|\u00B0");
+            decDeg = Double.parseDouble(degreeSplit[0]);
+        }
+        if(decDeg < 0) {
+            sign = "-";
+        } else {
+            sign = "+";
+        }
+    }
+    
+    private void setNextDms(String dmsPart) {
+        if(degString == null) {
+            degString = dmsPart;
+        } else if(minutesString == null) {
+            minutesString = dmsPart;
+        } else if(secondsString == null) {
+            secondsString = dmsPart;
+        } else {
+            Log.warn("Degrees, minutes & seconds already set");
+        }
     }
 
     private void copmuteDegreesMinutesSeconds() {
@@ -80,7 +118,14 @@ public class DecPosition {
         return sign + degString;
     }
     
+    public double getDecDeg() {
+        return decDeg;
+    }
+    
     public static DecPosition construct(double decDeg) { //for JSNI
         return new DecPosition(decDeg);
+    }
+    public static DecPosition construct(String decDmsOrDegrees) { //for JSNI
+        return new DecPosition(decDmsOrDegrees);
     }
 }

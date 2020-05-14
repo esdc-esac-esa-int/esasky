@@ -1,6 +1,10 @@
 package esac.archive.esasky.cl.web.client.model;
 
+
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.i18n.client.NumberFormat;
+
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 
 public class RaPosition {
     private final double raDeg;
@@ -12,6 +16,36 @@ public class RaPosition {
     
     public RaPosition(double raDeg) {
         this.raDeg = raDeg;
+    }
+
+    public RaPosition(String hmsOrDegrees) {
+        String hmsSplit [] = hmsOrDegrees.split("h|m|s| ");
+        if(hmsSplit.length > 1){
+            for(int i = 0; i < hmsSplit.length; i++) {
+                if(NumberFormatter.isNumber(hmsSplit[i])) {
+                    setNextHms(hmsSplit[i]);
+                }
+            }
+            
+            this.raDeg = Double.parseDouble(hours) / 24 * 360
+                    + Double.parseDouble(minutes) / 60 / 24 * 360
+                    + Double.parseDouble(seconds) / 60 / 60 / 24 * 360;
+        } else {
+            String degreeSplit [] = hmsOrDegrees.split("d|\u00B0");
+            raDeg = Double.parseDouble(degreeSplit[0]);
+        }
+    }
+    
+    private void setNextHms(String hmsPart) {
+        if(hours == null) {
+            hours = hmsPart;
+        } else if(minutes == null) {
+            minutes = hmsPart;
+        } else if(seconds == null) {
+            seconds = hmsPart;
+        } else {
+            Log.warn("Hours, minutes & seconds already set");
+        }
     }
     
     private void computeHoursMinutesSeconds() {
@@ -75,8 +109,15 @@ public class RaPosition {
         }
     }
     
+    public double getRaDeg() {
+        return raDeg;
+    }
+    
     
     public static RaPosition construct(double raDeg) { //for JSNI
         return new RaPosition(raDeg);
+    }
+    public static RaPosition construct(String raHmsOrDegrees) { //for JSNI
+        return new RaPosition(raHmsOrDegrees);
     }
 }
