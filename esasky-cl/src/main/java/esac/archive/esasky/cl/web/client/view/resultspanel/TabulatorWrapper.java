@@ -1108,27 +1108,39 @@ public class TabulatorWrapper{
 		table._clearSelection = function (){};
 		
 		table.rowManager.adjustTableSize = function () {
-		//Change to remove that it changes with the footer height
-		if (this.renderMode === "virtual") {
-
-			this.height = this.element.clientHeight;
-
-			this.vDomWindowBuffer = this.table.options.virtualDomBuffer || this.height;
-
-			var otherHeight = this.columnManager.getElement().offsetHeight ;
-			
-			this.element.style.minHeight = "calc(100% - " + otherHeight + "px)";
-
-			this.element.style.height = "calc(100% - " + otherHeight + "px)";
-
-			this.element.style.maxHeight = "calc(100% - " + otherHeight + "px)";
-			
-			footerOffset = (this.table.footerManager && !this.table.footerManager.external ? this.table.footerManager.getElement().offsetHeight : 0);
-			
-			this.table.footerManager.element.style.marginTop = -  footerOffset + "px";
-			
-		}
-	};
+    		//Adapted from Tabulator 4.6.2. Change to remove that it changes with the footer height
+    		var initialHeight = this.element.clientHeight,
+                modExists;
+    
+            if (this.renderMode === "virtual") {
+                var otherHeight = this.columnManager.getElement().offsetHeight;
+    
+                if (this.fixedHeight) {
+                    this.element.style.minHeight = "calc(100% - " + otherHeight + "px)";
+                    this.element.style.height = "calc(100% - " + otherHeight + "px)";
+                    this.element.style.maxHeight = "calc(100% - " + otherHeight + "px)";
+                } else {
+                    this.element.style.height = "";
+                    this.element.style.height = this.table.element.clientHeight - otherHeight + "px";
+                    this.element.scrollTop = this.scrollTop;
+                }
+    
+                this.height = this.element.clientHeight;
+                this.vDomWindowBuffer = this.table.options.virtualDomBuffer || this.height;
+                
+                footerOffset = (this.table.footerManager && !this.table.footerManager.external ? this.table.footerManager.getElement().offsetHeight : 0);
+                this.table.footerManager.element.style.marginTop = -  footerOffset + "px";
+    
+                //check if the table has changed size when dealing with variable height tables
+                if (!this.fixedHeight && initialHeight != this.element.clientHeight) {
+                    modExists = this.table.modExists("resizeTable");
+    
+                    if (modExists && !this.table.modules.resizeTable.autoResize || !modExists) {
+                        this.redraw();
+                    }
+                }
+            }
+        };
 	
 		table.getVoTableString = function(data, resourceName){
 			// Add VOT XML Schema
