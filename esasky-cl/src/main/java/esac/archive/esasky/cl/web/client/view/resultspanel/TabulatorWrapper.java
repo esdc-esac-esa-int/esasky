@@ -932,7 +932,9 @@ public class TabulatorWrapper{
 			    		    activeColumnGroup = [];
 			    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
 			    		}
-			    		if(this.metadata[i].name.toLowerCase() === "ra" || this.metadata[i].name.toLowerCase() === "ra_deg"){
+			    		if(this.metadata[i].name.toLowerCase() === "ra" 
+			    		    || this.metadata[i].name.toLowerCase() === "ra_deg"
+			    		    || this.metadata[i].name.toLowerCase() === "s_ra"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -947,7 +949,9 @@ public class TabulatorWrapper{
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
-			    		else if(this.metadata[i].name.toLowerCase() === "dec" || this.metadata[i].name.toLowerCase() === "dec_deg"){
+			    		else if(this.metadata[i].name.toLowerCase() === "dec" 
+			    		    || this.metadata[i].name.toLowerCase() === "dec_deg"
+			    		    || this.metadata[i].name.toLowerCase() === "s_dec"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -964,7 +968,7 @@ public class TabulatorWrapper{
 			    		}
 			    		else if(this.metadata[i].name.toLowerCase() === "access_estsize"){
 			    			activeColumnGroup.push({
-				    			title:this.$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
+				    			title:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
