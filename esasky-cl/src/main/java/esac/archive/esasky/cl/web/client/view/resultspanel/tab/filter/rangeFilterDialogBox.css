@@ -17,7 +17,7 @@
 	display: none;
 }
 
-.resetDoubleFilterButton{
+.resetRangeFilterButton{
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -31,7 +31,7 @@
 	box-sizing: border-box;
 	margin: 0px 4px;
 	vertical-align: middle;
-	width: 100px;
+	width: 110px;
 	text-align: center;
 	border: 2px solid #777777;
 	border-radius: 2px;

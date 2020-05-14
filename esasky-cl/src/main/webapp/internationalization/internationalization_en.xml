@@ -380,7 +380,7 @@
 	<text key="dateFilter_resetFilter">
 		Reset filter
 	</text>
-	<text key="doubleFilter_resetFilter">
+	<text key="rangeFilter_resetFilter">
 		Reset filter
 	</text>
 

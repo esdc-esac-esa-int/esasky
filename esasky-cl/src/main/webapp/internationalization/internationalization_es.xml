@@ -744,7 +744,7 @@
 	<text key="dateFilter_resetFilter">
 		Quitar filtro
 	</text>
-	<text key="doubleFilter_resetFilter">
+	<text key="rangeFilter_resetFilter">
 		Quitar filtro
 	</text>
 	<text key="planObservationPanel_helpMessageText">

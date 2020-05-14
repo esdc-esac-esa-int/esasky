@@ -329,7 +329,7 @@
 	<text key="dateFilter_resetFilter">
 		重置过滤条件
 	</text>
-	<text key="doubleFilter_resetFilter">
+	<text key="rangeFilter_resetFilter">
 		重置过滤条件
 	</text>
 

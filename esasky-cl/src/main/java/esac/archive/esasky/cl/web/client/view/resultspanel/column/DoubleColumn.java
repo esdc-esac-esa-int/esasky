@@ -11,12 +11,12 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.model.TableElement;
 import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.RowsFilterObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DoubleFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 
 public class DoubleColumn extends SortableColumn<String> {
 
-	private DoubleFilterDialogBox doubleFilter;
+	private RangeFilterDialogBox doubleFilter;
 
 	private final String tapName;
 	private final String filterButtonId;
@@ -134,21 +134,21 @@ public class DoubleColumn extends SortableColumn<String> {
 	
 	public void createFilter(Double min, Double max) {
 		if (doubleFilter == null) {
-			this.doubleFilter = new DoubleFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
-	
-				@Override
-				public void onNewFilter(String filter) {
-					filter();
-				}
-			});
+//			this.doubleFilter = new RangeFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
+//	
+//				@Override
+//				public void onNewFilter(String filter) {
+//					filter();
+//				}
+//			});
 		}
 		
 		updateNumberFormat();
 		
 		if(min != null && max != null) {
-			doubleFilter.setRange(min, max, numberFormat, precision);
+//			doubleFilter.setRange(min, max, numberFormat, precision);
 		}else {
-			doubleFilter.setRange(0.0, 100.0, numberFormat, precision);
+//			doubleFilter.setRange(0.0, 100.0, numberFormat, precision);
 		}
 	}
 
@@ -187,16 +187,16 @@ public class DoubleColumn extends SortableColumn<String> {
 			maxValue = Double.POSITIVE_INFINITY;
 		}
 		if (doubleFilter == null) {
-			this.doubleFilter = new DoubleFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
-
-				@Override
-				public void onNewFilter(String filter) {
-					filter();
-				}
-			});
+//			this.doubleFilter = new RangeFilterDialogBox(tapName, label, filterButtonId, new FilterObserver() {
+//
+//				@Override
+//				public void onNewFilter(String filter) {
+//					filter();
+//				}
+//			});
 		}
 		
-		doubleFilter.setRange(minValue, maxValue, numberFormat, precision);
+//		doubleFilter.setRange(minValue, maxValue, numberFormat, precision);
 		if(doubleFilter.isFilterActive()) {
 			filter();
 		}

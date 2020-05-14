@@ -24,7 +24,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
-public class IntegerFilterDialogBox extends FilterDialogBox {
+public class RangeFilterDialogBox extends FilterDialogBox {
     
     private final Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -34,11 +34,13 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
     private boolean hasSliderBeenAddedToDialogBox = false;
     private boolean reRenderingWouldTakeSignificantTime;
     
-    private int minValue;
-    private int maxValue;
-    private int currentLow = minValue;
-    private int currentHigh = maxValue;
-    private int range;
+    private double minValue;
+    private double maxValue;
+    private double currentLow = minValue;
+    private double currentHigh = maxValue;
+    private double range;
+    private double precision;
+    private double stepSize;
     
     private final int SLIDER_MAX = 10000;
     private double currentSliderFromFraction = 0;
@@ -48,12 +50,13 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
     private TextBox toTextBox = new TextBox();
     
     private final String sliderSelectorContainerId;
-    private final String intFilterContainerId;
+    private final String rangeFilterContainerId;
     
     protected FilterTimer filterTimer = new FilterTimer();
-	
+	private ValueFormatter valueFormatter;
+    
     public interface Resources extends ClientBundle {
-        @Source("doubleFilterDialogBox.css")
+        @Source("rangeFilterDialogBox.css")
         @CssResource.NotStrict
         CssResource style();
         
@@ -61,12 +64,14 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 		ImageResource resetIcon();
     }
     
-	public IntegerFilterDialogBox(String tapName, String columnName, final String filterButtonId, final FilterObserver filterObserver) {
+	public RangeFilterDialogBox(String tapName, String columnName, ValueFormatter valueFormatter,
+	        final String filterButtonId, final FilterObserver filterObserver) {
 		super(tapName, filterButtonId);
         this.style = this.resources.style();
         this.style.ensureInjected();
-        intFilterContainerId = filterButtonId.replaceAll("(\\(|\\)| )", "_") + "intColumn";
-        sliderSelectorContainerId = "selectorId_WTIH_NO_TITLE_" + intFilterContainerId;
+        this.valueFormatter = valueFormatter;
+        rangeFilterContainerId = filterButtonId.replaceAll("(\\(|\\)| )", "_") + "rangeColumn";
+        sliderSelectorContainerId = "selectorId_WTIH_NO_TITLE_" + rangeFilterContainerId;
         this.filterObserver = filterObserver;
         
         HTML columnNameHTML = new HTML(columnName.replaceAll("_", " "));
@@ -116,8 +121,8 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 		container.add(fromTextBox);
         
 		EsaSkyButton resetButton = new EsaSkyButton(this.resources.resetIcon());
-		resetButton.setTitle(TextMgr.getInstance().getText("doubleFilter_resetFilter"));
-		resetButton.addStyleName("resetDoubleFilterButton");
+		resetButton.setTitle(TextMgr.getInstance().getText("rangeFilter_resetFilter"));
+		resetButton.addStyleName("resetRangeFilterButton");
 		resetButton.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -132,10 +137,11 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 		container.add(resetButton);
 		container.add(toTextBox);
 		
-		container.getElement().setId(intFilterContainerId);
+		container.getElement().setId(rangeFilterContainerId);
 		setWidget(container);
 		
-		addStyleName("doubleFilterDialogBox");
+		addStyleName("rangeFilterDialogBox");
+		
 	}
 	
 	@Override
@@ -143,7 +149,8 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 		super.show();
 		if(!hasSliderBeenAddedToDialogBox) {
 			hasSliderBeenAddedToDialogBox = true;
-			slider = createSliderFilter(this, intFilterContainerId, sliderSelectorContainerId, SLIDER_MAX);
+			stepSize = 1;
+			slider = createSliderFilter(this, rangeFilterContainerId, sliderSelectorContainerId, 0, SLIDER_MAX, stepSize);
 			setTextBoxValues(minValue, maxValue);
 			addElementNotAbleToInitiateMoveOperation("slider-" + sliderSelectorContainerId);
 		}
@@ -156,16 +163,16 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 				&& 	!(Double.isInfinite(minValue) || Double.isInfinite(maxValue));
 	}
 	
-    private native JavaScriptObject createSliderFilter(IntegerFilterDialogBox instance, String containerId, String sliderSelectorId, int multiple) /*-{
+    private native JavaScriptObject createSliderFilter(RangeFilterDialogBox instance, String containerId, String sliderSelectorId, int minValue, int maxValue, double fixedStep) /*-{
 	    var sliderSelector = $wnd.createSliderSelector(sliderSelectorId,
 	                                      "",
-	                                      0,
-	                                      multiple,
+	                                      minValue,
+	                                      maxValue,
 	                                      $entry(function (selector) {
-	                                      	instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.IntegerFilterDialogBox::fireRangeChangedEvent(DD)(selector.fromValue, selector.toValue);
+	                                      	instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox::fireRangeChangedEvent(DD)(selector.fromValue, selector.toValue);
 	                                      	}),
 	                                      20,
-	                                      1e-20);
+	                                      fixedStep);
 		$wnd.$("#" + containerId).append(sliderSelector.$html);
 		return sliderSelector;
     }-*/;
@@ -174,22 +181,28 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
     	currentSliderFromFraction = fromValue;
     	currentSliderToFraction = toValue;
     	
-    	int fromValueInt = minValue + (int) ( fromValue * range / SLIDER_MAX );
-    	int toValueInt = minValue + (int) ( toValue * range / SLIDER_MAX );
-    	setTextBoxValues(fromValueInt, toValueInt);
-    	filterTimer.setNewRange(fromValueInt, toValueInt);
+    	fromValue = minValue + fromValue * range / SLIDER_MAX;
+    	toValue = minValue + toValue * range / SLIDER_MAX;
+    	
+    	setTextBoxValues(fromValue, toValue);
+    	filterTimer.setNewRange(fromValue, toValue);
     }
     
-    private void setTextBoxValues(int fromValue, int toValue) {
+    private void setTextBoxValues(double fromValue, double toValue) {
 		if(Double.isNaN(fromValue) || Double.isNaN(toValue)) {
 			return;
 		}
-    	fromTextBox.setText(Integer.toString(fromValue));
-    	toTextBox.setText(Integer.toString(toValue));
+    	fromTextBox.setText(valueFormatter.formatValue(fromValue));
+    	toTextBox.setText(valueFormatter.formatValue(toValue));
     }
     
-    public void setRange(int minValue, int maxValue){
+    public void changeFormatter(ValueFormatter formatter) {
+        this.valueFormatter = formatter;
+    }
+    
+    public void setRange(Double minValue, Double maxValue, int precision){
     	range = Math.abs(maxValue - minValue);
+    	this.precision = precision;
     	
     	boolean filterWasActive = isFilterActive();
     	
@@ -216,10 +229,10 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
     
     private void onChangeFromTextBox() {
     	try {
-    		int fromValue = Integer.parseInt(fromTextBox.getText());
-    		int toValue = Integer.parseInt(toTextBox.getText());
+    		double fromValue = valueFormatter.getValueFromFormat(fromTextBox.getText());
+    		double toValue = valueFormatter.getValueFromFormat(toTextBox.getText());
     		if(toValue < fromValue) {
-    			int temp = fromValue;
+    			double temp = fromValue;
     			fromValue = toValue;
     			toValue = temp;
     		}
@@ -242,17 +255,17 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
     	}
     }
     
-    public int getCurrentLow() {
+    public double getCurrentLow() {
     	return currentLow;
     }
     
-    public int getCurrentHigh() {
+    public double getCurrentHigh() {
     	return currentHigh;
     }
     
-	private void setSliderValues(int currentLow, int currentHigh) {
-		currentSliderFromFraction = (currentLow - minValue) * ( new Double(SLIDER_MAX) / range);
-		currentSliderToFraction = (currentHigh - minValue) * ( new Double(SLIDER_MAX) / range);
+	private void setSliderValues(double currentLow, double currentHigh) {
+		currentSliderFromFraction = (currentLow - minValue) / range * SLIDER_MAX;
+		currentSliderToFraction = (currentHigh - minValue) / range * SLIDER_MAX;
 		setSliderFraction(slider, currentSliderFromFraction, currentSliderToFraction);
     }
     
@@ -266,8 +279,8 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
     
 	protected class FilterTimer extends Timer{
 		
-		private int lastLow = currentLow;
-		private int lastHigh = currentHigh;
+		private double lastLow = currentLow;
+		private double lastHigh = currentHigh;
 		
 		@Override
 		public void run() {
@@ -278,11 +291,24 @@ public class IntegerFilterDialogBox extends FilterDialogBox {
 			if(!(Math.abs(lastLow - currentLow) < range * 10e-6 && Math.abs(lastHigh - currentHigh) < range * 10e-6)) {
 				lastLow = currentLow;
 				lastHigh = currentHigh;
-				filterObserver.onNewFilter("");
+				if(isFilterActive()) {
+					String filter = "";
+					if(currentSliderFromFraction > 0) {
+						filter += Double.toString(currentLow);
+					}
+					filter += ",";
+					if((SLIDER_MAX - currentSliderToFraction) > stepSize) {
+						filter += Double.toString(currentHigh);
+					}
+					
+					filterObserver.onNewFilter(filter);
+				}else {
+					filterObserver.onNewFilter("");
+				}
 			}
 		}
 		
-		public void setNewRange(int low, int high) {
+		public void setNewRange(double low, double high) {
 			currentLow = low;
 			currentHigh = high;
 			ensureCorrectFilterButtonStyle();
