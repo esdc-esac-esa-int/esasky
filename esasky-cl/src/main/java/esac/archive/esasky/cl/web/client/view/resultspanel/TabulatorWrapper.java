@@ -718,7 +718,7 @@ public class TabulatorWrapper{
 		}
 		var fileSizeFormatter = function(cell, formatterParams, onRendered){
             var value = cell.getValue();
-                if(formatterParams.convertBack && formatterParams.convertBack === true){
+            if(formatterParams.convertBack && formatterParams.convertBack === true){
         	    if(divId.includes("MAST-")){ //MAST has incorrect unit for access_estsize. Should be in kilobytes
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value);
         	    } else {
@@ -736,11 +736,14 @@ public class TabulatorWrapper{
             }
 		}
 		var doubleFormatter = function(cell, formatterParams, onRendered){
-			
-			if(cell.getValue() == undefined){
-				return "";
-			}
-            return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(cell.getValue(), formatterParams.maxDecimalDigits)
+            if(formatterParams.convertBack && formatterParams.convertBack === true){
+                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatStringToDouble(Ljava/lang/String;I)(cell.getValue(), formatterParams.maxDecimalDigits);
+            } else {			
+    			if(cell.getValue() == undefined){
+    				return "";
+    			}
+                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(cell.getValue(), formatterParams.maxDecimalDigits);
+            }
 		}
 
 		function DoubleFilter(headerValue, rowValue, rowData, filterParams){

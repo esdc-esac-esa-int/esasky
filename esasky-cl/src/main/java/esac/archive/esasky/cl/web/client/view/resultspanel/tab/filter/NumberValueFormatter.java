@@ -24,8 +24,10 @@ public class NumberValueFormatter implements ValueFormatter{
         }
         if(numberOfDecimals > 0) {
             pattern = "0." + pattern;
+        } else {
+            pattern = "0";
         }
-        format = NumberFormat.getFormat(pattern);
+        format = NumberFormat.getDecimalFormat().overrideFractionDigits(0, numberOfDecimals);
         scientificFormat = NumberFormat.getFormat(pattern + "E0");
     }
     
@@ -49,5 +51,8 @@ public class NumberValueFormatter implements ValueFormatter{
     //for JSNI
     public static String formatDouble(double value, int numberOfDecimals) {
         return new NumberValueFormatter(numberOfDecimals).formatValue(value);
+    }
+    public static double formatStringToDouble(String value, int numberOfDecimals) {
+        return new NumberValueFormatter(numberOfDecimals).getValueFromFormat(value);
     }
 }
