@@ -14,6 +14,10 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 	public final native GeneralJavaScriptObject setProperty(String propertyName, Object propertyValue)/*-{
     	return this[propertyName] = propertyValue;
 	}-*/;
+
+	public final native GeneralJavaScriptObject setProperty(String propertyName, boolean propertyValue)/*-{
+    	return this[propertyName] = propertyValue;
+	}-*/;
 	
 	public final native GeneralJavaScriptObject getProperty(String propertyName)/*-{
     	return this[propertyName];
@@ -35,6 +39,9 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
         }
     }
     
+    public final native GeneralJavaScriptObject invokeSelf(Object... parameters)/*-{
+    	return this.apply(this, parameters);
+	}-*/;
     public final native GeneralJavaScriptObject invokeFunction(String functionName)/*-{
     	return this[functionName]();
 	}-*/;
@@ -70,6 +77,9 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
     	return javaScriptObject;
     }-*/;
     public static native int convertToInteger(GeneralJavaScriptObject javaScriptObject)/*-{
+    	return javaScriptObject;
+    }-*/;
+    public static native double convertToDouble(GeneralJavaScriptObject javaScriptObject)/*-{
     	return javaScriptObject;
     }-*/;
 }
