@@ -3165,6 +3165,12 @@
 	<text key="tabulator_rowCount">
 		#Rows: $count$
 	</text>
+	<text key="tabulator_accessEstSize_header">
+		File Size
+	</text>
+	<text key="tabulator_accessEstSize_headerTooltip">
+		Estimated size of the downloadable data product
+	</text>
 
 
 

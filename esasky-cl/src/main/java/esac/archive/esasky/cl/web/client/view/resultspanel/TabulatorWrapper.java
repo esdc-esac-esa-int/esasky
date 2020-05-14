@@ -964,10 +964,10 @@ public class TabulatorWrapper{
 			    		}
 			    		else if(this.metadata[i].name.toLowerCase() === "access_estsize"){
 			    			activeColumnGroup.push({
-				    			title:this.metadata[i].displayName,
+				    			title:this.$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
-				    			headerTooltip:this.metadata[i].description,
+				    			headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
 				    			formatter:fileSizeFormatter,
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
