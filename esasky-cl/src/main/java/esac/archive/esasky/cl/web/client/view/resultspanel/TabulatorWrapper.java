@@ -340,8 +340,11 @@ public class TabulatorWrapper{
 				for(var j = 0; j < metadata.length; j++){
 	    			
 	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
-					displayName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
-	    			displayName = $wnd.esasky.getColumnDisplayText(displayName);
+					var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
+					var displayName = $wnd.esasky.getDefaultLanguageText(label);
+					if(displayName == label){
+						displayName = $wnd.esasky.getColumnDisplayText(displayName);
+					}
 	    			
     				//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
 					var metaDataIndex = metadata.length + newMeta.length;
@@ -425,8 +428,11 @@ public class TabulatorWrapper{
 					
 					var name = response.data[i][colNameIndex];
 					
-					displayName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
-					displayName = $wnd.esasky.getColumnDisplayText(displayName);
+					var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
+					var displayName = $wnd.esasky.getDefaultLanguageText(label);
+					if(displayName == label){
+						displayName = $wnd.esasky.getColumnDisplayText(displayName);
+					}
 					
 					
 					//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
@@ -526,10 +532,11 @@ public class TabulatorWrapper{
 					minVal = table.filterData[name].min;
 					maxVal = table.filterData[name].max;
 				}else{
-					cell.getColumn()._column.cells.forEach(function (row){
-						if(row.getValue() != undefined){
-							minVal = Math.min(minVal, row.getValue())
-							maxVal = Math.max(maxVal, row.getValue())
+					cell.getColumn()._column.table.rowManager.rows.forEach(function (row){
+						
+						if(row.data[name] && row.data[name] != undefined){
+							minVal = Math.min(minVal, row.data[name])
+							maxVal = Math.max(maxVal, row.data[name])
 						}
 					});
 				}
@@ -586,13 +593,14 @@ public class TabulatorWrapper{
 					minVal = table.filterData[name].min;
 					maxVal = table.filterData[name].max;
 				}else{
-					cell.getColumn()._column.cells.forEach(function (row){
-						if(row.getValue() != undefined){
-							if(minVal > row.getValue()){
-								minVal = row.getValue();
+					cell.getColumn()._column.table.rowManager.rows.forEach(function (row){
+						
+						if(row.data[name] && row.data[name] != undefined){
+							if(minVal > row.data[name]){
+								minVal = row.data[name];
 							}
-							if(maxVal < row.getValue()){
-								maxVal = row.getValue();
+							if(maxVal < row.data[name]){
+								maxVal = row.data[name];
 							}
 						}
 					});
@@ -988,7 +996,7 @@ public class TabulatorWrapper{
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:doubleFormatter,
-				    			formatterParams: {maxDecimalDigits: metadata[i].maxDecimalDigits || 4},
+				    			formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
@@ -1005,7 +1013,7 @@ public class TabulatorWrapper{
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:doubleFormatter,
-				    			formatterParams: {maxDecimalDigits: metadata[i].maxDecimalDigits || 4},
+				    			formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
 				    			sorter: "string",
 				    			formatter: "plaintext",
 				    			headerFilter:dateFilterEditor,
