@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 
-import com.google.gwt.i18n.client.NumberFormat;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
@@ -18,7 +16,8 @@ import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
-import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DoubleFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
@@ -130,7 +129,24 @@ public class TabulatorWrapper{
         tabulatorCallback.onDataFiltered(indexArray);
     }
     
-    public void showNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, double maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    public void showNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, 
+            double maxVal, final GeneralJavaScriptObject onChangeFunc, final GeneralJavaScriptObject formatter, 
+            GeneralJavaScriptObject formatterParamsIfExisting) {
+        final GeneralJavaScriptObject formatterParams = verifyFormatterParams(formatterParamsIfExisting);
+        final ValueFormatter valueFormatter = new ValueFormatter() {
+            
+            @Override
+            public double getValueFromFormat(String formattedValue) {
+                formatterParams.setProperty("convertBack", true);
+                return GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
+            }
+            
+            @Override
+            public String formatValue(double value) {
+                formatterParams.setProperty("convertBack", false);
+                return GeneralJavaScriptObject.convertToString(formatter.invokeSelf(createPretendCell(value), formatterParams));
+            }
+        };
 
     	if(!filterDialogs.containsKey(tapName)) {
     		FilterObserver filterObserver = new FilterObserver() {
@@ -142,25 +158,22 @@ public class TabulatorWrapper{
 				}
 			};
     		
-    		DoubleFilterDialogBox filterDialog = new DoubleFilterDialogBox(tapName, title, filterButtonId, filterObserver);
+    		RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
     		filterDialogs.put(tapName, filterDialog);
     	}
-    	
-    	DoubleFilterDialogBox filterDialogBox = (DoubleFilterDialogBox) filterDialogs.get(tapName);
-
-    	NumberFormat numberFormat = NumberFormat.getFormat("0.##");
-    	boolean isInt = false;
-		if((minVal - Math.floor(minVal)) == 0 && (maxVal - Math.floor(maxVal)) == 0) {
-			numberFormat = NumberFormat.getFormat("0");
-			isInt = true;
-		}
+    	RangeFilterDialogBox filterDialogBox = (RangeFilterDialogBox) filterDialogs.get(tapName);
 		
-		filterDialogBox.setRange(minVal, maxVal, numberFormat, 2);
-		filterDialogBox.setInt(isInt);
+		filterDialogBox.setRange(minVal, maxVal, 2);
     	filterDialogBox.show();
-    	
     }
 
+    private native GeneralJavaScriptObject verifyFormatterParams(GeneralJavaScriptObject formatterParams)/*-{
+        return formatterParams || {};
+    }-*/;
+    
+    private native GeneralJavaScriptObject createPretendCell(Object value)/*-{
+        return {getValue: function() {return value}};
+    }-*/;
     public void showDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
     	
     	if(!filterDialogs.containsKey(tapName)) {
@@ -280,6 +293,9 @@ public class TabulatorWrapper{
 					}
 					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label")){
 				        metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
+					}
+					if(descriptorMetaData[metadata[j].name].hasOwnProperty("maxDecimalDigits")){
+				        metadata[j].maxDecimalDigits = descriptorMetaData[metadata[j].name].maxDecimalDigits;
 					}
 				}
 				
@@ -523,8 +539,8 @@ public class TabulatorWrapper{
 					maxVal = 100;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-					(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+					(editorParams["tapName"], editorParams["title"], filterButtonId, minVal, maxVal, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
 			});	
 			var container = $wnd.$("<span></span>")
 			 
@@ -654,58 +670,66 @@ public class TabulatorWrapper{
 		}
 		
 		var raFormatter = function(cell, formatterParams, onRendered){
-		    if(cell.getValue() === undefined || cell.getValue() === ""){
-		        return "";
-		    }
             var raDeg = cell.getValue();
-    	    if(@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()){
-                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
-                .@esac.archive.esasky.cl.web.client.model.RaPosition::getDegreeString()();
-    	    } else {
-                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
-                .@esac.archive.esasky.cl.web.client.model.RaPosition::getHmsString()();
-            }
+		    if(formatterParams.convertBack && formatterParams.convertBack === true){
+                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(Ljava/lang/String;)(raDeg)
+                .@esac.archive.esasky.cl.web.client.model.RaPosition::getRaDeg()();
+		    } else {
+    		    if(raDeg === undefined || raDeg === ""){
+    		        return "";
+    		    }
+        	    if(@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()){
+                    return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
+                    .@esac.archive.esasky.cl.web.client.model.RaPosition::getDegreeString()();
+        	    } else {
+                    return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
+                    .@esac.archive.esasky.cl.web.client.model.RaPosition::getHmsString()();
+                }
+		    }
 		}
 		var decFormatter = function(cell, formatterParams, onRendered){
-            var formattedValue = "";
             var decDeg = cell.getValue();
-    	    if(decDeg === undefined || decDeg === ""){
-    	        return "";
-    	    }
-    	    if(@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()){
-                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
-                .@esac.archive.esasky.cl.web.client.model.DecPosition::getDegreeString()();
-    	    } else {
-                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
-                .@esac.archive.esasky.cl.web.client.model.DecPosition::getSymbolDmsString()();
+            if(formatterParams.convertBack && formatterParams.convertBack === true){
+                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(Ljava/lang/String;)(decDeg)
+                .@esac.archive.esasky.cl.web.client.model.DecPosition::getDecDeg()();
+            } else {
+        	    if(decDeg === undefined || decDeg === ""){
+        	        return "";
+        	    }
+        	    if(@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()){
+                    return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
+                    .@esac.archive.esasky.cl.web.client.model.DecPosition::getDegreeString()();
+        	    } else {
+                    return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
+                    .@esac.archive.esasky.cl.web.client.model.DecPosition::getSymbolDmsString()();
+                }
             }
 		}
 		var fileSizeFormatter = function(cell, formatterParams, onRendered){
-            var formattedValue = "";
             var value = cell.getValue();
-    	    if(value === undefined || value === ""){
-    	        return "";
-    	    }
-    	    console.log(divId);
-    	    if(divId.includes("MAST-")){ //MAST has incorrect unit for access_estsize. Should be in kilobytes
-                return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
-    	    } else {
-                return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
-    	    }
+                if(formatterParams.convertBack && formatterParams.convertBack === true){
+        	    if(divId.includes("MAST-")){ //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value);
+        	    } else {
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value) / 1024;
+        	    }
+            } else {
+        	    if(value === undefined || value === ""){
+        	        return "";
+        	    }
+        	    if(divId.includes("MAST-")){ //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
+        	    } else {
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
+        	    }
+            }
 		}
 		var doubleFormatter = function(cell, formatterParams, onRendered){
 			
 			if(cell.getValue() == undefined){
 				return "";
 			}
-			
-			var decimals = 4;
-
-			if(Math.abs(cell.getValue()) > Math.pow(10, -decimals)){
-				return cell.getValue().toFixed(decimals)
-			}
-			
-			return cell.getValue().toExponential(decimals - 1);
+            return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(cell.getValue(), formatterParams.maxDecimalDigits)
 		}
 
 		function DoubleFilter(headerValue, rowValue, rowData, filterParams){
@@ -960,6 +984,7 @@ public class TabulatorWrapper{
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:doubleFormatter,
+				    			formatterParams: {maxDecimalDigits: metadata[i].maxDecimalDigits || 4},
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
@@ -976,6 +1001,7 @@ public class TabulatorWrapper{
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:doubleFormatter,
+				    			formatterParams: {maxDecimalDigits: metadata[i].maxDecimalDigits || 4},
 				    			sorter: "string",
 				    			formatter: "plaintext",
 				    			headerFilter:dateFilterEditor,
@@ -992,6 +1018,7 @@ public class TabulatorWrapper{
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:doubleFormatter,
+				    			formatterParams: {maxDecimalDigits: 0},
 				    			sorter: "number",
 				    			formatter:"plaintext",
 				    			headerFilter:numericFilterEditor,
@@ -1086,7 +1113,7 @@ public class TabulatorWrapper{
 
 			this.height = this.element.clientHeight;
 
-//			this.vDomWindowBuffer = this.table.options.virtualDomBuffer || this.height;
+			this.vDomWindowBuffer = this.table.options.virtualDomBuffer || this.height;
 
 			var otherHeight = this.columnManager.getElement().offsetHeight ;
 			
