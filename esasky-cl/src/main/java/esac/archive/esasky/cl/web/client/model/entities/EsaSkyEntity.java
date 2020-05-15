@@ -150,10 +150,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
             details.put(SourceConstant.EXTRA_PARAMS, null);
         } else {
-            details.put(SourceConstant.EXTRA_PARAMS,
-                    this.getDescriptor().getExtraPopupDetailsByTapName());
             String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
                     .split(",");
+            String extraDetailsLabels = "";
+            for (String currTapName : extraDetailsTapName) {
+                extraDetailsLabels += TextMgr.getDefaultInstance().getText(descriptor.getMetadataDescriptorByTapName(currTapName).getLabel()) + ",";
+            }
+            if(extraDetailsLabels.length() > 0) {
+                extraDetailsLabels = extraDetailsLabels.substring(0, extraDetailsLabels.length() - 1);
+            }
+            details.put(SourceConstant.EXTRA_PARAMS, extraDetailsLabels);
 
             for (String currTapName : extraDetailsTapName) {
                 MetadataDescriptor cmd = this.getDescriptor()
@@ -175,7 +181,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     }
                     value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
                 }
-                details.put(currTapName, value);
+                details.put(TextMgr.getInstance().getText(descriptor.getMetadataDescriptorByTapName(currTapName).getLabel()), value);
             }
         }
 

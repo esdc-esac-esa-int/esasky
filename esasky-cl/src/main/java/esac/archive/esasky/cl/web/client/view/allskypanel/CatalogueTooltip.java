@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.allskypanel;
 
-import com.google.gwt.i18n.client.NumberFormat;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.model.DecPosition;
@@ -38,7 +37,7 @@ public class CatalogueTooltip extends Tooltip {
             keys = this.source.getKeys().split(",");
             for (String cKey : keys) {
                 if (this.source.getDataDetailsByKey(cKey) != null) {
-                    sb.append(" <b >" + cKey + ":</b>&nbsp;"
+                    sb.append("<b>&nbsp;&nbsp;" + cKey + ":</b>&nbsp;"
                             + this.source.getDataDetailsByKey(cKey));
                 }
             }
