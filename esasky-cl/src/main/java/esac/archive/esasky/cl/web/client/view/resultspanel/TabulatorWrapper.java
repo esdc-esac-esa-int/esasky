@@ -304,7 +304,9 @@ public class TabulatorWrapper{
 			for(var i = 0; i < response.data.length; i++){
 				var row = {id:i};
 				for(var j = 0; j < metadata.length; j++){
-	    			if(metadata[j].datatype === "DOUBLE" || metadata[j].datatype === "REAL" || metadata[j].datatype === "INTEGER"){
+	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"
+	    			    || metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"
+	    			    || this.metadata[i].datatype.toUpperCase() === "LONG"){
 						row[metadata[j].name] = parseFloat(response.data[i][j]);
 		    			if(isNaN(row[metadata[j].name])){
 							row[metadata[j].name] = undefined;
@@ -995,7 +997,7 @@ public class TabulatorWrapper{
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
-			    		else if(this.metadata[i].datatype === "DOUBLE" || this.metadata[i].datatype === "REAL"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "REAL"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -1012,7 +1014,7 @@ public class TabulatorWrapper{
 		    				});
 		    				
 			    		}
-			    		else if(this.metadata[i].datatype === "TIMESTAMP"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -1021,7 +1023,6 @@ public class TabulatorWrapper{
 				    			formatter:doubleFormatter,
 				    			formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
 				    			sorter: "string",
-				    			formatter: "plaintext",
 				    			headerFilter:dateFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1029,7 +1030,9 @@ public class TabulatorWrapper{
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
-			    		else if(this.metadata[i].datatype === "INTEGER"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "INTEGER" 
+			    		    || this.metadata[i].datatype.toUpperCase() === "INT"
+			    		    || this.metadata[i].datatype.toUpperCase() === "LONG"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -1038,7 +1041,6 @@ public class TabulatorWrapper{
 				    			formatter:doubleFormatter,
 				    			formatterParams: {maxDecimalDigits: 0},
 				    			sorter: "number",
-				    			formatter:"plaintext",
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1046,7 +1048,7 @@ public class TabulatorWrapper{
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
-			    		else if(this.metadata[i].datatype === "LIST"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "LIST"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -1252,7 +1254,10 @@ public class TabulatorWrapper{
                     if(key === "data"){
                         skyObject[key].forEach(function(extraData){
                             metadata.push({name:extraData.name, displayName: $wnd.esasky.getColumnDisplayText(extraData.name), datatype:extraData.type, visible: true});
-                            if(extraData.type === "DOUBLE" || extraData.type === "REAL" || extraData.type === "INTEGER"){
+                            if(extraData.type.toUpperCase() === "DOUBLE" || extraData.type.toUpperCase() === "REAL" 
+                                || extraData.type.toUpperCase() === "INTEGER"
+                                || extraData.type.toUpperCase() === "LONG"
+                                || extraData.type.toUpperCase() === "INT"){
                                 row[extraData.name] = parseFloat(extraData.value);
                                 if(isNaN(row[extraData.name])){
                                     row[extraData.name] = undefined;
