@@ -280,7 +280,7 @@ public class TabulatorWrapper{
         tableJsObject.options.ajaxResponse = function(url, params, response){
 			descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 			
-			metadata = response.metadata;
+			var metadata = response.metadata;
 			for(var j = 0; j < metadata.length; j++){
 				
 				metadata[j]["visible"] = (metadata[j].name !== "s_region");
@@ -306,7 +306,7 @@ public class TabulatorWrapper{
 				for(var j = 0; j < metadata.length; j++){
 	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"
 	    			    || metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"
-	    			    || this.metadata[i].datatype.toUpperCase() === "LONG"){
+	    			    || metadata[j].datatype.toUpperCase() === "LONG"){
 						row[metadata[j].name] = parseFloat(response.data[i][j]);
 		    			if(isNaN(row[metadata[j].name])){
 							row[metadata[j].name] = undefined;
@@ -1020,8 +1020,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
-				    			formatter:doubleFormatter,
-				    			formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
+                                formatter: "plaintext",
 				    			sorter: "string",
 				    			headerFilter:dateFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
