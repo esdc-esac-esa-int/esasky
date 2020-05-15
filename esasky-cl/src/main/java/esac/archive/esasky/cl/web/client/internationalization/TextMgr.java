@@ -126,7 +126,7 @@ public class TextMgr {
 		if (!isInitialized()) {
 			Log.error("TextMgr not initialized!!"); 
 		}
-		return instance;
+		return defaultInstance;
 	}
 
 	public static TextMgr getInstance() {
