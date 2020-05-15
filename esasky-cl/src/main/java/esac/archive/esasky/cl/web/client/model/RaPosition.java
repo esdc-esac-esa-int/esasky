@@ -100,7 +100,7 @@ public class RaPosition {
     }
     
     private void computeFormattedDegree() {
-        String format = "000.0000000";
+        String format = "###.0000000";
 
         if(NumberFormat.getFormat(format).format(raDeg).equals("360.0000000")) {
             this.raDegString =  NumberFormat.getFormat(format).format(0.0);
