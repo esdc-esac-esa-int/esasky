@@ -3,6 +3,9 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 import com.google.gwt.i18n.client.NumberFormat;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.cl.web.client.model.DecPosition;
+import esac.archive.esasky.cl.web.client.model.RaPosition;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 
 public class CatalogueTooltip extends Tooltip {
 
@@ -11,12 +14,19 @@ public class CatalogueTooltip extends Tooltip {
     }
 
     protected void fillContent(String cooFrame) {
-
-        String formattedRa = NumberFormat.getFormat("##0.#####").format(
-                Double.parseDouble(this.source.getRa()));
-        String formattedDec = NumberFormat.getFormat("##0.#####").format(
-                Double.parseDouble(this.source.getDec()));
-
+        RaPosition raPosition = new RaPosition(Double.parseDouble(this.source.getRa()));
+        DecPosition decPosition = new DecPosition(Double.parseDouble(this.source.getDec()));
+        
+        String formattedRa;
+        String formattedDec;
+        if(GUISessionStatus.isShowingCoordinatesInDegrees()) {
+            formattedRa = raPosition.getDegreeString();
+            formattedDec = decPosition.getDegreeString();
+        } else {
+            formattedRa = raPosition.getHmsString();
+            formattedDec = decPosition.getSymbolDmsString();
+        }
+        
         StringBuilder sb = new StringBuilder();
         sb.append(this.source.getSourceName());
         sb.append("<hr/>");
