@@ -889,7 +889,8 @@ public class TabulatorWrapper{
 
 				if(!isInitializing && this.metadata){
 			    	for(var i = 0; i < this.metadata.length; i++){
-			    		if(this.metadata[i].name.toLowerCase() === "access_url"){
+			    		if(this.metadata[i].name.toLowerCase() === "access_url"
+			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
 	                        activeColumnGroup.push({
 	                            title:this.metadata[i].displayName,
 	                            field:this.metadata[i].name,
@@ -903,7 +904,7 @@ public class TabulatorWrapper{
 	                                    if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
 	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
 	                                    } else {
-	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getData().access_url);
+	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
 	                                    }
 	                                }
 	                        });
@@ -915,7 +916,7 @@ public class TabulatorWrapper{
 	                            field:this.metadata[i].name,
 	                            headerSort:false, 
 	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
-	                            minWidth: 50,
+	                            minWidth: 62,
 	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"preview.png", 
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
 	                                cellClick:function(e, cell){

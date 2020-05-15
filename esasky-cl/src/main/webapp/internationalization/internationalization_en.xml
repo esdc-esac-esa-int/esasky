@@ -1970,7 +1970,7 @@
 		Validation
 	</text>
 	<text key="productURL">
-		ProductURL
+		Download
 	</text>
 	<text key="instrument">
 		Instrument
@@ -3034,6 +3034,12 @@
 	</text>
 	<text key="AKARI_IRC_orderBy_flux_s9w">
 		Flux S9W
+	</text>
+	<text key="archiveUrl">
+		Archive
+	</text>
+	<text key="access_url">
+		Download
 	</text>
 	
 	<text key="publicationPanel_helpText">
