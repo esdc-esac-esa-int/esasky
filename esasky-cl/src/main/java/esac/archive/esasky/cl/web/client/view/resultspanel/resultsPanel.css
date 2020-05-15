@@ -142,3 +142,8 @@
 .dataPanelHeaderColumnTitle i {
     text-transform: none;
 }
+
+.tabulator-placeholder{
+	text-align: center;
+	justify-content: center;
+}
