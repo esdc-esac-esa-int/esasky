@@ -10,7 +10,6 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
-import esac.archive.esasky.cl.web.client.model.TableColumnHelper;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
@@ -491,13 +490,10 @@ public class TabulatorWrapper{
 		var columnDef = [];
 		
         var createFilterButton = function(filterButtonId){
-            filterIcon = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getFilterIcon()();
-
             var filterButton = $wnd.$( "" + "<div id=\'" + filterButtonId
                         + "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
                         + "title=\""  + "\""
-                        + "\"" + ">" + "<img src=\"" + filterIcon
-                        + "\" class=\"fillParent\" />" + "</div>");
+                        + "\"" + ">" + "<img src=\"images/filter.png\" class=\"fillParent\" />" + "</div>");
 		    
             filterButton.on("mouseenter", function(e){
                 filterButton.toggleClass("gwt-PushButton-up-hovering");
@@ -1382,9 +1378,4 @@ public class TabulatorWrapper{
     public GeneralJavaScriptObject getDescriptorMetaData() {
     	return tabulatorCallback.getDescriptorMetaData();
     }
-    
-    public String getFilterIcon() {
-    	return TableColumnHelper.resources.filterIcon().getSafeUri().asString();
-    }
-
 }
