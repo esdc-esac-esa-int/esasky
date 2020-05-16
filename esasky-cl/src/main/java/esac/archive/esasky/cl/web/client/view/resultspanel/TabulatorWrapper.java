@@ -108,6 +108,14 @@ public class TabulatorWrapper{
     private native String getVot(GeneralJavaScriptObject tableJsObject, String resourceName)/*-{
         return tableJsObject.getVoTableString(tableJsObject.getData(), resourceName);
     }-*/;
+
+    public GeneralJavaScriptObject[] getSelectedRows(){
+        return getSelectedRows(tableJsObject);
+    }
+    
+    private native GeneralJavaScriptObject[] getSelectedRows(GeneralJavaScriptObject tableJsObject)/*-{
+        return tableJsObject.getSelectedData();
+    }-*/;
     
     public void setPlaceholderText(String text){
         setPlaceholderText(tableJsObject, text);

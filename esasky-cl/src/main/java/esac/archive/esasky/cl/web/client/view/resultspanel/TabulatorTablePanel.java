@@ -30,6 +30,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,6 +38,8 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
+import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -50,6 +53,7 @@ import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.CommonObservationEntity.DescriptorMapper;
+import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
@@ -303,20 +307,21 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public final String getADQLQueryForChosenRows() {
-		String uniqueIdentifierField = getEntity().getDescriptor().getUniqueIdentifierField();
-		IDescriptor descriptor = getEntity().getDescriptor();
-
-		String adql = "SELECT * FROM " + descriptor.getTapTable() + " WHERE " + uniqueIdentifierField + " IN(";
-		List<TableRow> subset = new ArrayList<TableRow>(getSelectedRows());
-		if (subset.size() == 0) {
-			subset = getFilteredRows();
-		}
-
-		for (TableRow row : subset) {
-			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue() + "',";
-		}
-		adql = adql.substring(0, adql.length() - 1) + ")";
-		return adql;
+//		String uniqueIdentifierField = getEntity().getDescriptor().getUniqueIdentifierField();
+//		IDescriptor descriptor = getEntity().getDescriptor();
+//
+//		String adql = "SELECT * FROM " + descriptor.getTapTable() + " WHERE " + uniqueIdentifierField + " IN(";
+//		List<TableRow> subset = new ArrayList<TableRow>(getSelectedRows());
+//		if (subset.size() == 0) {
+//			subset = getFilteredRows();
+//		}
+//
+//		for (TableRow row : subset) {
+//			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue() + "',";
+//		}
+//		adql = adql.substring(0, adql.length() - 1) + ")";
+//		return adql;
+	    return "";
 	}
 
 	public void selectRow(int rowId) {
@@ -465,6 +470,41 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void downloadSelected(DDRequestForm ddForm) {
+	       
+        MultiRetrievalBeanList multiRetrievalList = new MultiRetrievalBeanList();
+        
+        for (GeneralJavaScriptObject tableRow : getSelectedRows()) {
+
+            String url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("product_url"));
+            if (url == null || url.trim().isEmpty()) {
+                url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("access_url"));
+            }
+            if (url == null || url.trim().isEmpty()) {
+                continue;
+            } else {
+                MultiRetrievalBean multiRetrievalItem = new MultiRetrievalBean(
+                        MultiRetrievalBean.TYPE_OBSERVATIONAL, getDescriptor().getMission(), url);
+                multiRetrievalList.add(multiRetrievalItem);
+                Log.debug("[Download Selected] DD URL: " + url);
+            }
+        }
+
+        final int files = multiRetrievalList.getMultiRetrievalBeanList().size();
+        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Download_DD, getFullId(), "Files: " + files);
+        
+        if (files < 1) {
+            Window.alert("Cannot find any URL to download");
+            return;
+        }
+
+        MultiRetrievalBeanListMapper mapper = GWT.create(MultiRetrievalBeanListMapper.class);
+
+        String json = mapper.write(multiRetrievalList);
+
+        ddForm.setAction(EsaSkyWebConstants.DATA_REQUEST_URL);
+        ddForm.setMethod(FormPanel.METHOD_POST);
+        ddForm.setJsonRequest(json);
+        ddForm.submit();
 	}
 
 	public void updateData() {
@@ -517,9 +557,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public Set<TableRow> getSelectedRows() {
-		// TODO Auto-generated method stub
-		return new HashSet<TableRow>();
+	public GeneralJavaScriptObject[] getSelectedRows() {
+		return table.getSelectedRows();
 	}
 
 	@Override

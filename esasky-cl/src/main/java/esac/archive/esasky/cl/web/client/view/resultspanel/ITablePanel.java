@@ -32,7 +32,7 @@ public interface ITablePanel {
 
 	public GeneralEntityInterface getEntity();
 
-	public Set<TableRow> getSelectedRows();
+	public GeneralJavaScriptObject[] getSelectedRows();
 
 	public List<TableRow> getFilteredRows();
 

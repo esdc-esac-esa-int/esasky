@@ -328,10 +328,10 @@ public class ResultsPresenter implements ICountRequestHandler {
         int currentTab = view.getTabPanel().getSelectedTabIndex();
         ITablePanel tab = view.getTabPanel().getWidget(currentTab);
 
-        Set<TableRow> subset = tab.getSelectedRows();
+        GeneralJavaScriptObject[] subset = tab.getSelectedRows();
         Log.debug("[ResultPresenter][updateNumberOfObservationsSelected]NUMBER OF SELECTED OBS "
-                + subset.size());
-        saveAllView.updateNumberOfSelectedElementsLabel(subset.size());
+                + subset.length);
+        saveAllView.updateNumberOfSelectedElementsLabel(subset.length);
     }
 
     /**

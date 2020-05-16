@@ -424,11 +424,11 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 				Set<ShapeId> changedRows;
 
 				if(value) {
-					changedRows = new HashSet<ShapeId>(getSelectedRows());
+//					changedRows = new HashSet<ShapeId>(getSelectedRows());
 				} else {
 					changedRows = new HashSet<ShapeId>(dataProvider.getList());
 				}
-				fireSelectionEvent(value, changedRows);
+//				fireSelectionEvent(value, changedRows);
 			}
 		});
 
@@ -674,16 +674,19 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		return entity;
 	}
 
-	public final Set<TableRow> getSelectedRows() {
-		Set<TableRow> visibleSet = new HashSet<TableRow>();
-
-		for (TableRow item : dataProvider.getList()) {
-			if (table.getSelectionModel().isSelected(item)) {
-				visibleSet.add(item);
-			}
-		}
-		return visibleSet;
+	public final GeneralJavaScriptObject[] getSelectedRows() {
+	    return null;
 	}
+//	public final Set<TableRow> getSelectedRows() {
+//		Set<TableRow> visibleSet = new HashSet<TableRow>();
+//
+//		for (TableRow item : dataProvider.getList()) {
+//			if (table.getSelectionModel().isSelected(item)) {
+//				visibleSet.add(item);
+//			}
+//		}
+//		return visibleSet;
+//	}
 
 	public final List<TableRow> getFilteredRows() {
 		return filteredList;
@@ -1158,14 +1161,14 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		IDescriptor descriptor = getEntity().getDescriptor();
 
 		String adql = "SELECT * FROM " + descriptor.getTapTable() + " WHERE " + uniqueIdentifierField + " IN(";
-		List<TableRow> subset = new ArrayList<TableRow>(getSelectedRows());
-		if (subset.size() == 0) {
-			subset = getFilteredRows();
-		}
-
-		for (TableRow row : subset) {
-			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue() + "',";
-		}
+//		List<TableRow> subset = new ArrayList<TableRow>(getSelectedRows());
+//		if (subset.size() == 0) {
+//			subset = getFilteredRows();
+//		}
+//
+//		for (TableRow row : subset) {
+//			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue() + "',";
+//		}
 		adql = adql.substring(0, adql.length() - 1) + ")";
 		return adql;
 	}
@@ -1183,7 +1186,7 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 					}
 					TableRow obsObject = dataProvider.getList().get(i);
 					this.table.getSelectionModel().setSelected(obsObject, true);
-					getEntity().selectShapes(new HashSet<ShapeId>(getSelectedRows()));
+//					getEntity().selectShapes(new HashSet<ShapeId>(getSelectedRows()));
 					afterForeignRowSelection(true, obsObject);
 					
 					deferredScrollIntoView(rowId);
@@ -1494,32 +1497,32 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		}
 		csvData += "\n";
 
-		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
-		if (setToDownload.size() == 0) {
-			setToDownload = getFilteredRows();
-		}
-		// Adds data to csv
-		for (TableRow row : setToDownload) {
-			boolean firstCellOfRow = true;
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				String tapName = rowList.getMetadata().get(cellIndex).getName();
-				if (!tapName.isEmpty()) {
-					TableElement cell = row.getElementByTapName(tapName);
-					if(firstCellOfRow) {
-						firstCellOfRow = false;
-					} else {
-						csvData += separator;
-					}
-					csvData += "\"";
-					if(cell.getValue() != null) {
-						csvData += cell.getValue().toString().replace("\"", "\"\"") + "\"";
-					}else {
-						csvData += "\"";
-					}
-				}
-			}
-			csvData += "\n";
-		}
+//		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
+//		if (setToDownload.size() == 0) {
+//			setToDownload = getFilteredRows();
+//		}
+//		// Adds data to csv
+//		for (TableRow row : setToDownload) {
+//			boolean firstCellOfRow = true;
+//			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+//				String tapName = rowList.getMetadata().get(cellIndex).getName();
+//				if (!tapName.isEmpty()) {
+//					TableElement cell = row.getElementByTapName(tapName);
+//					if(firstCellOfRow) {
+//						firstCellOfRow = false;
+//					} else {
+//						csvData += separator;
+//					}
+//					csvData += "\"";
+//					if(cell.getValue() != null) {
+//						csvData += cell.getValue().toString().replace("\"", "\"\"") + "\"";
+//					}else {
+//						csvData += "\"";
+//					}
+//				}
+//			}
+//			csvData += "\n";
+//		}
 		
 		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv", csvData, ReturnType.CSV.getMimeType());
 	}
@@ -1547,32 +1550,32 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
 		// Adds data to xml
 		votData += "<DATA>\n";
 		votData += "<TABLEDATA>\n";
-		
-		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
-		if (setToDownload.size() == 0) {
-			setToDownload = getFilteredRows();
-		}
-		// Adds data to csv
-		for (TableRow row : setToDownload) {
-			votData += "    <TR>\n";
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				String tapName = rowList.getMetadata().get(cellIndex).getName();
-				TableElement cell = row.getElementByTapName(tapName);
-				String value = cell.getValue();
-				if(value == null) {
-					value = "";
-				}
-				votData += "        <TD>"
-						+ value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
-						+ "</TD>\n";
-			}
-			votData += "    </TR>\n";
-		}
-		votData += "</TABLEDATA>\n";
-		votData += "</DATA>\n";
-		votData += "</TABLE>\n";
-		votData += "</RESOURCE>\n";
-		votData += "</VOTABLE>\n";
+//		
+//		List<TableRow> setToDownload = new ArrayList<TableRow>(getSelectedRows());
+//		if (setToDownload.size() == 0) {
+//			setToDownload = getFilteredRows();
+//		}
+//		// Adds data to csv
+//		for (TableRow row : setToDownload) {
+//			votData += "    <TR>\n";
+//			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
+//				String tapName = rowList.getMetadata().get(cellIndex).getName();
+//				TableElement cell = row.getElementByTapName(tapName);
+//				String value = cell.getValue();
+//				if(value == null) {
+//					value = "";
+//				}
+//				votData += "        <TD>"
+//						+ value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;")
+//						+ "</TD>\n";
+//			}
+//			votData += "    </TR>\n";
+//		}
+//		votData += "</TABLEDATA>\n";
+//		votData += "</DATA>\n";
+//		votData += "</TABLE>\n";
+//		votData += "</RESOURCE>\n";
+//		votData += "</VOTABLE>\n";
 
 		DownloadUtils.downloadFile(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", votData, ReturnType.VOTABLE.getMimeType());
 	}

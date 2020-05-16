@@ -186,28 +186,28 @@ public class CommonObservationsTablePanel extends AbstractTablePanel {
         }
 
         String join = "";
-
-        for (TableRow tableRow : getSelectedRows()) {
-
-            String url = "";
-
-            if (ddUrl != null) {
-            	String[] archiveProductURI = getDescriptor().getDdProductURI().split("@@@");
-                String tapName = archiveProductURI[1];
-                String valueURI = tableRow.getElementByTapName(tapName).getValue();
-                ddUrl.append(join).append(getDescriptor().getDdProductURI().replace("@@@" + tapName + "@@@", valueURI));
-                join = "&";
-            } else if (tableRow.getElementByTapName("product_url") != null && !tableRow.getElementByTapName("product_url").getValue().trim().isEmpty()) {
-                url = tableRow.getElementByTapName("product_url").getValue();
-                MultiRetrievalBean multiRetrievalItem = new MultiRetrievalBean(
-                        MultiRetrievalBean.TYPE_OBSERVATIONAL, getDescriptor().getMission(), url);
-                multiRetrievalList.add(multiRetrievalItem);
-                Log.debug("[ResultsPresenter] DD URL: " + url);
-            } else {
-                continue;
-            }
-
-        }
+//
+//        for (TableRow tableRow : getSelectedRows()) {
+//
+//            String url = "";
+//
+//            if (ddUrl != null) {
+//            	String[] archiveProductURI = getDescriptor().getDdProductURI().split("@@@");
+//                String tapName = archiveProductURI[1];
+//                String valueURI = tableRow.getElementByTapName(tapName).getValue();
+//                ddUrl.append(join).append(getDescriptor().getDdProductURI().replace("@@@" + tapName + "@@@", valueURI));
+//                join = "&";
+//            } else if (tableRow.getElementByTapName("product_url") != null && !tableRow.getElementByTapName("product_url").getValue().trim().isEmpty()) {
+//                url = tableRow.getElementByTapName("product_url").getValue();
+//                MultiRetrievalBean multiRetrievalItem = new MultiRetrievalBean(
+//                        MultiRetrievalBean.TYPE_OBSERVATIONAL, getDescriptor().getMission(), url);
+//                multiRetrievalList.add(multiRetrievalItem);
+//                Log.debug("[ResultsPresenter] DD URL: " + url);
+//            } else {
+//                continue;
+//            }
+//
+//        }
 
         // Send multiple file retrieval if available
         if (ddUrl != null) {
