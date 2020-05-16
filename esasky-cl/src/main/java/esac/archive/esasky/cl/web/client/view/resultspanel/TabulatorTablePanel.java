@@ -1,12 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
@@ -244,17 +242,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public GeneralEntityInterface getEntity() {
 		return entity;
 	}
-
-//	public final Set<TableRow> getSelectedRows() {
-//		Set<TableRow> visibleSet = new HashSet<TableRow>();
-//
-//		for (TableRow item : dataProvider.getList()) {
-//			if (table.getSelectionModel().isSelected(item)) {
-//				visibleSet.add(item);
-//			}
-//		}
-//		return visibleSet;
-//	}
 
 	public final void clearTable() {
 		tableNotShowingContainer.removeStyleName("displayNone");
@@ -797,7 +784,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_SendToVOTools, getFullId(), uniqueIdentifierField);
         String sampUrl = null;
-        if (!getEntity().getDescriptor().getDdBaseURL().isEmpty()) {
+        if (getEntity().getDescriptor().getDdBaseURL() != null && !getEntity().getDescriptor().getDdBaseURL().isEmpty()) {
             String tapName = getEntity().getDescriptor().getDdProductURI().split("@@@")[1];
             String valueURI = rowData.getStringProperty(tapName);
             sampUrl = getEntity().getDescriptor().getDdBaseURL() + getEntity().getDescriptor().getDdProductURI().replace("@@@" + tapName + "@@@", valueURI);
@@ -805,6 +792,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         
         if (sampUrl == null) {
             sampUrl = rowData.getStringProperty("product_url");
+        } 
+        if (sampUrl == null) {
+            sampUrl = rowData.getStringProperty("access_url");
         } 
         if (sampUrl == null) {
             Log.error("[sendSelectedProductToSampApp()] No DD Base URL "

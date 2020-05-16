@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
@@ -250,10 +251,9 @@ public class CloseableTabLayoutPanel extends Composite {
                         new UpdateNumRowsSelectedEvent(selectedTabId, saveAllView));
                 GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
                 List<MetadataDescriptor> metadataDescriptors = entity.getDescriptor().getMetadata();
-                boolean hasProductUrl = false;
+                boolean hasProductUrl = entity.getDescriptor() instanceof ExtTapDescriptor;
                 for(MetadataDescriptor descriptor : metadataDescriptors) {
-                	if(descriptor.getTapName().equals("product_url")
-                	        || descriptor.getTapName().equals("access_url")) {
+                	if(descriptor.getTapName().equals("product_url")) {
                 		hasProductUrl = true;
                 		break;
                 	}
