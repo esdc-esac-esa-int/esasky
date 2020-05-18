@@ -26,5 +26,9 @@ public class LoadingSpinner extends FlowPanel{
 			getElement().setInnerHTML("<div class=\"esasky__spinner\"><div></div><div></div><div></div><div></div><div></div></div>");
 		}
 	}
+	
+	public static String getLoadingSpinner() {
+	    return new LoadingSpinner(true).getElement().getString();
+	}
 }
 

@@ -147,3 +147,12 @@
 	text-align: center;
 	justify-content: center;
 }
+.tabulator .tabulator-loader .tabulator-loader-msg.tabulator-loading{
+	background: transparent !important;
+	border: 0;
+}
+.tabulator .tabulator-loader .tabulator-loader-msg.tabulator-error{
+	background: transparent !important;
+	border: 0 !important;
+	color: #B05A39 !important;
+}

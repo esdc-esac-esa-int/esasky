@@ -1100,6 +1100,8 @@ public class TabulatorWrapper{
 			    }
 		    },
 		 	selectable:true,
+		 	ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
+		 	ajaxLoaderError:$wnd.esasky.getInternationalizationText("tabulator_loadFailed"),
 		    rowSelectionChanged:function(data, rows){
 		    	if(isInitializing){
 		    		return;

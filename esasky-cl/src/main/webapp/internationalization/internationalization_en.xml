@@ -3177,6 +3177,9 @@
 	<text key="tabulator_accessEstSize_headerTooltip">
 		Estimated size of the downloadable data product
 	</text>
+	<text key="tabulator_loadFailed">
+		Failed to load data
+	</text>
 
 
 

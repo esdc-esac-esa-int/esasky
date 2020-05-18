@@ -8540,10 +8540,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 					self.showError();
 
-					setTimeout(function () {
-						self.hideLoader();
-					}, 3000);
-
 					self.loading = false;
 
 					reject();
