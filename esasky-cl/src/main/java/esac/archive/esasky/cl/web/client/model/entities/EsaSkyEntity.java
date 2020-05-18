@@ -154,7 +154,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     .split(",");
             String extraDetailsLabels = "";
             for (String currTapName : extraDetailsTapName) {
-                extraDetailsLabels += TextMgr.getDefaultInstance().getText(descriptor.getMetadataDescriptorByTapName(currTapName).getLabel()) + ",";
+                extraDetailsLabels += getKeyToShow(currTapName) + ",";
             }
             if(extraDetailsLabels.length() > 0) {
                 extraDetailsLabels = extraDetailsLabels.substring(0, extraDetailsLabels.length() - 1);
@@ -181,7 +181,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     }
                     value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
                 }
-                details.put(TextMgr.getInstance().getText(descriptor.getMetadataDescriptorByTapName(currTapName).getLabel()), value);
+                details.put(getKeyToShow(currTapName), value);
             }
         }
 
@@ -194,6 +194,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         return mySource;
     }
 
+    private String getKeyToShow(String tapName) {
+        MetadataDescriptor metadataDescriptor = descriptor.getMetadataDescriptorByTapName(tapName);
+        return metadataDescriptor == null ? tapName : TextMgr.getDefaultInstance().getText(metadataDescriptor.getLabel());
+    }
+    
     private String makeSureSTCSHasFrame(String input) {
         String stcs = input.toUpperCase();
         if(stcs.contains("J2000")  || stcs.contains("ICRS")) {
