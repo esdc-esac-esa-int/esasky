@@ -1114,7 +1114,7 @@ public class TabulatorWrapper{
 		    		}
 		    	});
 		    	Object.keys(previouslySelectedMap).forEach(function(item, index, array){
-		    		if(!selectionMap[item]){
+		    		if(!selectionMap[item] && table.getRow(item)){
 			    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowDeselection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(table.getRow(item));
 		    		}
 		    	});
