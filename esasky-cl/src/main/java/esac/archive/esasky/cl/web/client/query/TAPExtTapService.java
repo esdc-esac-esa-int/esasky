@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.allen_sauer.gwt.log.client.Log;
 
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -171,19 +172,25 @@ public class TAPExtTapService extends AbstractTAPService {
     @Override
     public String getMocAdql(IDescriptor descriptorInput, String filter) {
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-        String adql = "SELECT " + EsaSkyConstants.HEALPIX_ORDER + ", " + EsaSkyConstants.HEALPIX_IPIX;
-//            		+ ", " + EsaSkyConstants.HEALPIX_COUNT + " ";
-    	
-    	adql += " from " + descriptor.getIngestedTable();
-    	adql += " WHERE ";
-        adql += npixSearch(getNorderFromFov());
-        
-    	if(descriptor.getWhereADQL() != null) {
-    		adql += " AND " + descriptor.getWhereADQL();
-    	}
-    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
-    	
+        Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
+        String adql = "SELECT esasky_healpix_moc_query(\'" + descriptor.getIngestedTable()
+    			+ "\', " + getGeometricConstraint() + ", \'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
+    			+ "\',\'" + descriptor.getWhereADQL().replaceAll("'", "''") + "\',7)  as moc from dual";
     	return adql;
+        
+        //        String adql = "SELECT " + EsaSkyConstants.HEALPIX_ORDER + ", " + EsaSkyConstants.HEALPIX_IPIX;
+////            		+ ", " + EsaSkyConstants.HEALPIX_COUNT + " ";
+//    	
+//    	adql += " from " + descriptor.getIngestedTable();
+//    	adql += " WHERE ";
+//        adql += npixSearch(getNorderFromFov());
+//        
+//    	if(descriptor.getWhereADQL() != null) {
+//    		adql += " AND " + descriptor.getWhereADQL();
+//    	}
+//    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
+//    	
+//    	return adql;
     }
     
     @Override
@@ -272,5 +279,24 @@ public class TAPExtTapService extends AbstractTAPService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	private String getGeometricConstraint() {
+    	final String debugPrefix = "[TAPMOCService.getGeometricConstraint]";
+        String shape = null;
+        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
+        if (AladinLiteWrapper.isCornersInsideHips()) {
+            if (fovDeg < 1) {
+                Log.debug(debugPrefix + " FoV < 1d");
+                shape = "\'(" +  AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")\'";
+
+            } else {
+                shape =  "\'(" +  AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")\'";
+            }
+        } else {
+
+            shape = "\'\'";
+        }
+        return shape;
+    }
 
 }
