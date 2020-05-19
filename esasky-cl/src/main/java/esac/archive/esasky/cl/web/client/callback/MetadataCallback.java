@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class MetadataCallback extends JsonRequestCallback {
 
@@ -55,9 +56,17 @@ public class MetadataCallback extends JsonRequestCallback {
 				if(tablePanel.hasBeenClosed()) {
 					return;
 				}
+				
+				String text = response.getText();
+				text = text.replace("{\"name\":\"moc\",\"datatype\":\"record\"}",""
+						+ "{\"name\":\"" + EsaSkyConstants.HEALPIX_ORDER + "\",\"datatype\":\"INTEGER\"},"
+						+ "{\"name\":\"" + EsaSkyConstants.HEALPIX_IPIX + "\",\"datatype\":\"INTEGER\"},"
+						+ "{\"name\":\"" + EsaSkyConstants.HEALPIX_COUNT + "\",\"datatype\":\"INTEGER\"}");
+				text = text.replace("\"(", "");
+				text = text.replace(")\"", "");
 
 				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-				TapRowList rowList = mapper.read(response.getText());
+				TapRowList rowList = mapper.read(text);
 
 				entity.addShapes(rowList, null);
 				entity.setMetadata(rowList);

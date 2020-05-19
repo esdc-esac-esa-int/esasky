@@ -57,8 +57,6 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 				if(tablePanel.hasBeenClosed()) {
 					return;
 				}
-				Long time2 = System.currentTimeMillis();
-				
 				
 				String text = response.getText();
 				text = text.replace("{\"name\":\"moc\",\"datatype\":\"record\"}",""
@@ -68,35 +66,11 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 				text = text.replace("\"(", "");
 				text = text.replace(")\"", "");
 				
-				Long time = System.currentTimeMillis();
-				Log.debug("REPLACE TIME:" + Long.toString(time - time2));
 
 				GeneralJavaScriptObject jsonData = GeneralJavaScriptObject.createJsonObject(text);
 				
-				time2 = System.currentTimeMillis();
-				Log.debug("CREATE JSON TIME:" + Long.toString(time2 - time));
 
 				mocEntity.addJSON(tablePanel, jsonData);
-				
-				time = System.currentTimeMillis();
-				Log.debug("ADD JSON TIME:" + Long.toString(time - time2));
-				
-				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-//				TapRowList rowList = mapper.read(text);
-
-				time2 = System.currentTimeMillis();
-				Log.debug("MAPPER TIME:" + Long.toString(time2 - time));
-				
-				
-//				rowList.createMOCFromIntegers();
-				
-				time = System.currentTimeMillis();
-				Log.debug("CREATE MOC TIME:" + Long.toString(time - time2));
-				
-//				mocEntity.addData(tablePanel, rowList.getMOC());
-
-				time2 = System.currentTimeMillis();
-				Log.debug("ADD MOC TIME:" + Long.toString(time2 - time));
 				
 				
 				if(onComplete != null) {
