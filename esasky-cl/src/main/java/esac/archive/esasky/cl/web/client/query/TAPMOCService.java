@@ -1,10 +1,12 @@
 package esac.archive.esasky.cl.web.client.query;
 
+
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
@@ -40,20 +42,32 @@ public class TAPMOCService {
 		    	+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
 		    	+ "\',\'" + Integer.toString(order) + "\') as moc from dual";
     	
-    	//		String adql = "SELECT " + Integer.toString(order) + " as moc_order,"
-//				+ "esasky_q3c_bitshift_right(q3c_ang2ipix(ra,dec), " + Integer.toString(60 - 2 * order) + ") as moc_ipix, count(*) as moc_count"
-//				+ " FROM " + descriptor.getTapTable() + " WHERE \'1\' = q3c_radial_query(ra,dec, "
-//				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
-//				+ Double.toString(pos.getFov()/2) + ")" + filter + " GROUP BY moc_ipix";
-		
 		return adql;
+    }
+    
+
+    public String getFilteredCatalogueMOCAdql(IDescriptor descriptor, GeneralJavaScriptObject visibleIpixels, String filter) {
+    	
+    	int targetOrder = MocRepository.getTargetOrderFromFoV();
+    	
+    	String whereADQL = getVisibleWhereQuery(descriptor, visibleIpixels, filter);
+    	
+    	String adql = "SELECT " + Integer.toString(targetOrder) + " as moc_order,"
+			+"esasky_q3c_bitshift_right(q3c_ang2ipix(" + descriptor.getTapRaColumn() + "," + descriptor.getTapDecColumn() +"), "
+			+ Integer.toString(60 - 2 * targetOrder) + ") as moc_ipix,"
+    		+ " count(*) as moc_count FROM " + descriptor.getTapTable()
+    		+ whereADQL;
+    	
+    	adql += " GROUP BY moc_ipix";
+    	
+    	return adql;
     }
 				
 	public String getFilteredObservationMOCAdql(IDescriptor descriptor, String filter) {
 		
 		Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
 		
-		String adql = "SELECT esasky_q3c_filtered_obs_moc_query(\'" + descriptor.getTapTable()
+		String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
 		+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
 		+ "\',\'8\') as moc from dual";
 		
@@ -77,6 +91,54 @@ public class TAPMOCService {
             shape = "\'\'";
         }
         return shape;
+    }
+    
+    public String getVisibleWhereQuery(IDescriptor descriptor, GeneralJavaScriptObject visibleIpixels, String filter) {
+    	String visibelOrderString = visibleIpixels.getProperties().split(",")[0];
+    	int pixelOrder = Integer.parseInt(visibelOrderString);
+    	
+    	String pixelString = GeneralJavaScriptObject.convertToString(visibleIpixels.getProperty(visibelOrderString).invokeFunction("toString"));
+
+    	long start = -2;
+    	long previous = -2;
+    	String whereADQL = " WHERE (";
+    	boolean first = true;
+    	String[] pixelStringArray = pixelString.split(",");
+    	String raColumn = descriptor.getTapRaColumn();
+    	String decColumn = descriptor.getTapDecColumn();
+    	
+    	for(int  i = 0; i<pixelStringArray.length;i++){
+    		int pixel = Integer.parseInt(pixelStringArray[i]);
+    		if(pixel != previous + 1) {
+    			if(start > 0) {
+    				if(first) {
+    					first = false;
+    				}else {
+    					whereADQL += " OR";
+    				}
+	    			whereADQL += " q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(start << (60 - 2 * pixelOrder))
+	    			+ " AND " + Long.toString((previous + 1) << (60 - 2 * pixelOrder));
+    			}
+    			start = pixel;
+    		}
+    		previous = pixel;
+    	}
+    	
+    	if(!first) {
+    		whereADQL += " OR ";
+    	}
+    	
+    	whereADQL += "q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(start << (60 - 2 * pixelOrder))
+		+ " AND " + Long.toString((previous + 1) << (60 - 2 * pixelOrder));
+    	
+    	whereADQL += ")";
+    	
+    	if(filter != "") {
+    		whereADQL += " AND " + filter;
+    	
+    	}
+    	
+    	return whereADQL;
     }
     
 }

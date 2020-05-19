@@ -74,7 +74,7 @@ public class TAPCatalogueService extends AbstractTAPService {
 
         return parsedAdql;
     }
-    
+
     @Override
     public String getRetreivingDataTextKey() {
     	return "MetadataCallback_retrievingMissionData";

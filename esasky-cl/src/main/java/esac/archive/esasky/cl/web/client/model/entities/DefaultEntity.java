@@ -451,4 +451,8 @@ public class DefaultEntity implements GeneralEntityInterface{
     public void setRefreshable(boolean isRefreshable) {
         this.isRefreshable = isRefreshable;
     }
+
+	public String getMetadataFromMOCPixelsADQL(String whereQuery) {
+		return metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery);
+	}
 }

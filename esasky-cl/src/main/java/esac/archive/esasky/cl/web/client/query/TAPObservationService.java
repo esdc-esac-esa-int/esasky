@@ -123,5 +123,5 @@ public class TAPObservationService extends AbstractTAPService {
 
         return parsedAdql;
     }
-
+    
 }

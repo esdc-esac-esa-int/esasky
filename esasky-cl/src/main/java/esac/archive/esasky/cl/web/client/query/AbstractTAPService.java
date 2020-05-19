@@ -178,8 +178,8 @@ public abstract class AbstractTAPService {
 //            } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
 //                adql += " " + currentMetadata.getTapName() + " as "
 //                        + currentMetadata.getTapName() + ", ";
-            } else if(currentMetadata.getTapName() == "filter"){
-                adql += "ARRAY_AGG(DISTINCT_FUNC(" + currentMetadata.getTapName() +")) as " + currentMetadata.getTapName() + "_lst , ";
+//            } else if(currentMetadata.getTapName() == "filter"){
+//                adql += "ARRAY_AGG(DISTINCT_FUNC(" + currentMetadata.getTapName() +")) as " + currentMetadata.getTapName() + "_lst , ";
 	        } else {
 	        	adql += "'' as " + currentMetadata.getTapName() + "_str , ";
 	        }
@@ -189,8 +189,73 @@ public abstract class AbstractTAPService {
         String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
 //        String parsedAdql = adql;
         parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " from " + descriptor.getTapTable() + " WHERE " + getGeometricConstraint(descriptor);
+        parsedAdql += " from " + descriptor.getTapTable() + " WHERE " + getGeometricPointConstraint(descriptor);
 
         return parsedAdql;
+    }
+    
+    public String getMetadataFromMOCPixelsADQL(IDescriptor descriptor, String whereADQL) {
+//    	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
+//    	IDescriptor descriptor = descriptorInput;
+    	
+    	String adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
+    	
+    	for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
+    		if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
+    			adql += " " + currentMetadata.getTapName() + " as "
+    					+ descriptor.getTapDecColumn() + ", ";
+    		} else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
+    			adql += " " + currentMetadata.getTapName() + " as "
+    					+ descriptor.getTapRaColumn() + ", ";
+    		} else {
+    			adql += " " + currentMetadata.getTapName();
+    			adql += ", ";
+    		}
+    	}
+    	
+    	String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+    	parsedAdql.replace("\\s*,\\s*$", "");
+    	parsedAdql += " from " + descriptor.getTapTable() + whereADQL;
+    	
+    	Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + parsedAdql);
+    	
+    	return parsedAdql;
+    }
+    
+    protected String getGeometricPointConstraint(IDescriptor descriptor) {
+    	String adql = "1=CONTAINS(POINT('ICRS',"
+                + descriptor.getTapRaColumn()+ ", " + descriptor.getTapDecColumn() + "), ";
+        // + catalogue.getPosTapColumn() + ",";
+
+        String shape = null;
+        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
+        if (AladinLiteWrapper.isCornersInsideHips()) {
+            if (fovDeg < 1) {
+                Log.debug("[TAPQueryBuilder/getMetadata4Sources()] FoV < 1d");
+                shape = "POLYGON('ICRS', "
+                        + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
+            } else {
+                shape = "POLYGON('ICRS', "
+                        + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")";
+            }
+        } else {
+
+            String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
+            if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
+                // convert to J2000
+                double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
+                        AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg(),
+                        AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg());
+                shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
+            } else {
+                shape = "CIRCLE('ICRS', "
+                        + AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg() + ","
+                        + AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg() + ",90)";
+            }
+
+        }
+        adql += shape + ")";
+        
+        return adql;
     }
 }

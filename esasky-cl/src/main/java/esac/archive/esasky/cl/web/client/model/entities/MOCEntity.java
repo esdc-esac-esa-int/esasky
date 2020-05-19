@@ -66,6 +66,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private boolean globalMinMaxLoaded = false;
     private boolean filterRequested = false;
     private boolean loadMOCRequested = false;
+    private boolean freshLoad = true;
     
     private AbstractTableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
@@ -79,7 +80,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			}
 			
 			if(filterRequested && newCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
-				refreshMOC();
+				loadFilteredMOC();
 				filterRequested = false;
 			}
 
@@ -99,7 +100,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	    		filterRequested = true;
 	    	} else if( getCountStatus().getCount(descriptor.getMission()) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
 	    		filterRequested = true;
-	    		refreshMOC();
+	    		loadFilteredMOC();
 	    		filterRequested = false;
 	    	}
 		}
@@ -110,6 +111,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			super.schedule(delayMillis);
 		}
 	};
+	
 
 	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent, DefaultEntity defaultEntity) {
 		
@@ -151,17 +153,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
     	
     
-    public void updateCountMap() {
-    	countMap = new HashMap<Integer, Map<Long, Integer>>();
-    	
-//    	int index = 0;
-//    	int minOrder = MocRepository.getMinOrderFromFoV();
-//    	int maxOrder = MocRepository.getMaxOrderFromFoV();
-    	
-//		moc.populateCountMap(countMap, index, minOrder, maxOrder);
-//		moc.populateCountMapAll(countMap);
-    	
-    }
     
     public String MOCClicked(final String orders, final String ipixels) {
     	Log.debug("[MOCEntity] MOCClicked " + orders + ", " + ipixels );
@@ -186,24 +177,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	    	}
     	}
 		return tooltipText;
-		
-//		MOCTooltip tooltip = new MOCTooltip();
-//		tooltip.registerObserver(new MOCTooltipObserver() {
-//			
-//			@Override
-//			public void onSplit() {
-//				sendSplitQuery(order, ipix);
-//				
-//			}
-//			
-//			@Override
-//			public void onLoad() {
-//				sendLoadQuery(order, ipix);
-//				
-//			}
-//		});
-//		
-//		tooltip.show(tooltipText);
 		
     }
     
@@ -230,74 +203,41 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void sendLoadQuery() {
-//    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
-//    	
-//    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 
-//    	MainPresenter.getInstance().getRelatedMetadataWithFilter(descriptor, tablePanel.getFilterString());
+		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
     	
-    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC();
+    	String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
+    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
     	shouldBeShown = false;
     	clearAll();
     	updateOverlay();
     	
-//        String adql = TAPCatalogueService.getInstance().getMetadataAdqlRadial(descriptor, pos, filter);
-//        
-//    	
-//    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
-//        
-//        Log.debug(debugPrefix + "Query [" + url + "]");
-//        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-//        try {
-//            builder.sendRequest(null,
-//                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingData"), new MetadataCallback.OnComplete() {
-//					
-//					@Override
-//					public void onComplete() {
-//						shouldBeShown = false;
-//						clearMOC();
-//						
-//					}
-//				}));
-//        } catch (RequestException e) {
-//            Log.error(e.getMessage());
-//            Log.error("[getMocMetadata] Error fetching JSON data from server");
-//        }
 
-    }
-    
-    public void sendSplitQuery(int order, int ipix) {
-    	
-//    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
-//    	
-//    	String pixelPart = Integer.toString(order) + "," + Integer.toString(ipix) + ", " + Integer.toString(order+2);
-//    	String filter = "";
-////        for(String key : tablePanel.tapFilters.keySet()) {
-////			filter += " AND ";
-////			filter += tablePanel.tapFilters.get(key);
-////    	}
-//        
-//    	String adql = "SELECT esasky_q3c_moc_split('" + descriptor.getTapTable() + "'," + pixelPart +", '" + filter + "' ) as rec from dual";
-//    		
-//    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
-//    	
-//    	Log.debug(debugPrefix + "Query [" + url + "]");
-//    	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-//    	try {
-//    		builder.sendRequest(null,
-//    				new MOCAsRecordCallback(tablePanel, adql,this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingData")
-//    						));
-//    	} catch (RequestException e) {
-//    		Log.error(e.getMessage());
-//    		Log.error("[getMocMetadata] Error fetching JSON data from server");
-//    	}
-    	
     }
     
     public void refreshMOC() {
     	if(shouldBeShown) {
+    		freshLoad = true;
     		clearAll();
     		checkLoadMOC();
+    	}
+    }
+
+    public void loadFilteredMOC() {
+    	if(shouldBeShown) {
+    		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
+    		
+    		String adql = "";
+	    	if(visibleIpixels.jsonStringify().length() > 2) {
+
+		    	if(descriptor instanceof CatalogDescriptor) {
+	        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
+		    	}else {
+		    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, tablePanel.getFilterString());
+		    	}
+		    	clearAll();
+		    	loadMOC(adql);
+	    	}
     	}
     }
     
@@ -326,6 +266,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
+    		freshLoad = false;
     		return;
     	}
     	
@@ -337,10 +278,11 @@ public class MOCEntity implements GeneralEntityInterface {
     		currentDataOrder = 8;
     	}
     	else {
-    		getSplitMOC(targetOrder);
+			getSplitMOC(targetOrder);
     		currentDataOrder = targetOrder;
     	}
     	
+    	freshLoad = false;
     }
     
     public interface IpixMapper extends ObjectMapper<HashMap<String,Long[]>> {
@@ -404,18 +346,32 @@ public class MOCEntity implements GeneralEntityInterface {
     }
 
     private void getSplitMOC(int order) {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
     	
     	String filter = tablePanel.getFilterString();
     	
     	String adql;
 
-    	if(descriptor instanceof CatalogDescriptor) {
-    		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, filter);
-    	}else {
-    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, filter);
+    	GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, 8, true);
+    	if(visibleIpixels.jsonStringify().length() > 2 || freshLoad) {
+
+	    	if(descriptor instanceof CatalogDescriptor) {
+	        	if(freshLoad) {
+	        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, tablePanel.getFilterString());
+	        	}else {
+	        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
+	        	}
+	    	}else {
+	    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, filter);
+	    	}
+			
+	    	loadMOC(adql);
+	    	
     	}
-				
+    }
+    
+    private void loadMOC(String adql) {
+    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
+
     	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
     	
     	Log.debug(debugPrefix + "Query [" + url + "]");
@@ -515,14 +471,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 	
 	public void updateOverlay() {
-		
 		if(overlay == null) {
 			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
-		
-//		updateCountMap();
 		
 		AladinLiteWrapper.getAladinLite().clearMOC(overlay);
 		
@@ -530,24 +483,8 @@ public class MOCEntity implements GeneralEntityInterface {
     	int maxOrder = MocRepository.getMaxOrderFromFoV();
 		
     	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
-//		overlay.setProperty("maxShowOrder",maxOrder);
-    
-//		String mocData = getAladinMOCString(minOrder, maxOrder);
-//		String mocData = getAladinMOCStringAll();
-		
-//		AladinLiteWrapper.getAladinLite().addMOCData(overlay, mocData);
 	}
 	
-	private int getTotalCount() {
-		int count = 0;
-//		for(Map <Long, Integer> order : countMap.values()) {
-//			for(int c : order.values()) {
-//				count += c;
-//			}
-//		}
-//		Log.debug("MOC count: " + Integer.toString(count));
-		return count;
-	}
 	
 	Timer updateTimer = new Timer() {
 		
@@ -591,13 +528,12 @@ public class MOCEntity implements GeneralEntityInterface {
 		    	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
 				currentDisplayOrder = maxOrder;
 				currentMinOrder = minOrder;
-				
 			}
 		}
 	}
 
 	public void onMove() {
-		
+    	
 		if(shouldBeShown) {
 			updateTimer.schedule(300);
 		}

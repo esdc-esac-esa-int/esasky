@@ -290,7 +290,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
     }
 
-    public void fetchDataWithoutMOC(String filter) {
+    public void fetchDataWithoutMOC(String whereQuery) {
     	Log.debug("Showing real data");
     	drawer = combinedDrawer;
     	defaultEntity.setDrawer(drawer);
@@ -300,7 +300,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
     	
     	clearAll();
-    	tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(filter), EsaSkyConstants.JSON));
+    	tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataFromMOCPixelsADQL(whereQuery), EsaSkyConstants.JSON));
     }
 
     public void setDescriptorMetaData() {
