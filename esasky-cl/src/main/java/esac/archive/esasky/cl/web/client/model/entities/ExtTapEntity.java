@@ -9,23 +9,29 @@ import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
+import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class ExtTapEntity extends EsaSkyEntity {
 
+	private MocDrawer mocDrawer;
 
     public ExtTapEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
             AbstractTAPService metadataService) {
     	super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
+    	MocRepository.getInstance().addExtTapMocEntity(this);
+    	mocDrawer = new MocDrawer(descriptor.getPrimaryColor());
     }
 
     @Override
     public void fetchData() {
     	if(hasReachedFovLimit()) {
 	    	Log.debug("Showing fov limit moc. FoVLimit = " + descriptor.getFovLimit());
-	    	drawer = new MocDrawer(descriptor.getPrimaryColor());
+	    	drawer = mocDrawer;
 	        defaultEntity.setDrawer(drawer);
 	        getMocMetadata();
 	    } else {
@@ -47,9 +53,31 @@ public class ExtTapEntity extends EsaSkyEntity {
             @Override
             public void onComplete() {
                 tablePanel.setEmptyTable(TextMgr.getInstance().getText("commonObservationTablePanel_showingGlobalSkyCoverage"));
+                onFoVChanged();
             }
         }));
 
         tablePanel.setADQLQueryUrl("");
+		tablePanel.registerClosingObserver(new ClosingObserver() {
+			
+			@Override
+			public void onClose() {
+				closingPanel(tablePanel);
+				
+			}
+		});
+        
+    }
+    
+    public void closingPanel(ITablePanel tablePanel) {
+    	drawer.removeAllShapes();
+    	MocRepository.getInstance().removeExtTapEntity(this);
+    }
+    
+    public void onFoVChanged() {
+		int minOrder =  Math.min(7, MocRepository.getMinOrderFromFoV());
+		int maxOrder = Math.min(7,MocRepository.getMaxOrderFromFoV());
+		
+    	mocDrawer.getOverlay().invokeFunction("setShowOrders", minOrder, maxOrder);
     }
 }

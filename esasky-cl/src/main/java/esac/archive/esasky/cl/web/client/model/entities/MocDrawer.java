@@ -3,8 +3,6 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -18,12 +16,12 @@ public class MocDrawer implements IShapeDrawer{
 	public static final int MAX_LINEWIDTH = 12;
 
 	private double ratio = DEFAULT_LINEWIDTH / MAX_LINEWIDTH;
-	JavaScriptObject moc;
+	GeneralJavaScriptObject moc;
 
 
 	public MocDrawer(String color) {
 		String options = "{\"opacity\":0.2, \"color\":\"" + color + "\"}";
-		moc = AladinLiteWrapper.getAladinLite().createMOC(options);
+		moc = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createMOC(options);
 	}
 
 	@Override
@@ -46,6 +44,7 @@ public class MocDrawer implements IShapeDrawer{
 	public void removeAllShapes() {
 		if(moc != null) {
 			AladinLiteWrapper.getAladinLite().clearMOC(moc);
+			AladinLiteWrapper.getAladinLite().removeMOC(moc);
 		}
 	}
 
@@ -62,13 +61,13 @@ public class MocDrawer implements IShapeDrawer{
 				boolean first = true;
 				String mocJSON = "{";
 				for(int i = 0; i < rowList.getData().size(); i++) {
-					String currentOrder = (String) rowList.getDataRow(i).get(healpixOrderIndex);
+					String currentOrder = rowList.getDataRow(i).get(healpixOrderIndex).toString();
 					if(currentOrder != healpixOrder) {
 						healpixOrder = currentOrder;
 						if(!first) {
 							mocJSON += "], ";
 						}
-						mocJSON += "\" " + healpixOrder + "\":[";
+						mocJSON += "\"" + healpixOrder + "\":[";
 						first = false;
 					}
 					mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
@@ -78,6 +77,10 @@ public class MocDrawer implements IShapeDrawer{
 				AladinLiteWrapper.getAladinLite().addMOC(moc);
 			}
 		}
+	}
+	
+	public GeneralJavaScriptObject getOverlay() {
+		return moc;
 	}
 	
 	@Override
