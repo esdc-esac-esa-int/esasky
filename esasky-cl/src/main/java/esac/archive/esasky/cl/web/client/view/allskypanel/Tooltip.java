@@ -54,6 +54,13 @@ public abstract class Tooltip extends AutoHidePanel{
 		ImageResource wwt();
     }
     
+    public Tooltip(int left, int top) {
+    	this.left = left;
+    	this.top = top;
+    	initView(false);
+    	DOM.sinkEvents(getElement(), Event.ONMOUSEWHEEL);
+    }
+
     public Tooltip(AladinShape source) {
     	this(source, true);
     }

@@ -3,6 +3,8 @@ package esac.archive.esasky.cl.web.client.repository;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.user.client.ui.Label;
+
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
@@ -12,7 +14,9 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOC
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
 
 public class MocRepository {
@@ -39,14 +43,16 @@ public class MocRepository {
 
 			@Override
 			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
-				String tooltipText = "";
-				for(MOCEntity entity : allEntities){
-					tooltipText += entity.MOCClicked(event.getOrders(), event.getIpixels());
-				}
+				String tooltipText = event.getText().replaceAll("\n", "<br>");
+//				for(MOCEntity entity : allEntities){
+//					tooltipText += entity.MOCClicked(event.getOrders(), event.getIpixels(), event.getCounts());
+//				}
 
 				if(tooltipText != "") {
-					MOCTooltip tooltip = new MOCTooltip();
-					tooltip.show(tooltipText);
+					MOCTooltip tooltip = new MOCTooltip(tooltipText, event.getX(), event.getY());
+//					tooltip.setPosition(event.getX(), event.getY());;
+//					DisplayUtils.showInsideMainAreaPointingAtPosition(tooltip, );
+					tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
 				}
 				
 			}
