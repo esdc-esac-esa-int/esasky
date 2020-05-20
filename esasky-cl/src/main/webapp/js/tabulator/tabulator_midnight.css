@@ -161,11 +161,11 @@
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort="asc"] .tabulator-col-content .tabulator-arrow {
   border-top: none;
-  border-bottom: 6px solid #666;
+  border-bottom: 6px solid #20a4d8;
 }
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort="desc"] .tabulator-col-content .tabulator-arrow {
-  border-top: 6px solid #666;
+  border-top: 6px solid #20a4d8;
   border-bottom: none;
 }
 
