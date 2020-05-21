@@ -2,6 +2,8 @@ package esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
+
 public class NumberValueFormatter implements ValueFormatter{
 
     private NumberFormat format;
@@ -27,14 +29,14 @@ public class NumberValueFormatter implements ValueFormatter{
         } else {
             pattern = "0";
         }
-        format = NumberFormat.getDecimalFormat().overrideFractionDigits(0, numberOfDecimals);
+        format = NumberFormat.getFormat(pattern.substring(1));
         scientificFormat = NumberFormat.getFormat(pattern + "E0");
     }
     
     @Override
     public String formatValue(double value) {
         if(Math.abs(value) > Math.pow(10, -numberOfDecimals)){
-            return format.format(value);
+            return NumberFormatter.formatToNumberWithSpaces((int)value) + format.format(value % 1);
         }
         String sciFormatResult = scientificFormat.format(value);
         if(sciFormatResult.equals("0E0")) {
