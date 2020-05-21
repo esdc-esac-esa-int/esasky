@@ -36,7 +36,11 @@ public class NumberValueFormatter implements ValueFormatter{
     @Override
     public String formatValue(double value) {
         if(Math.abs(value) > Math.pow(10, -numberOfDecimals)){
-            return NumberFormatter.formatToNumberWithSpaces((int)value) + format.format(value % 1);
+            if(format.format(value % 1).equals(".0")) {
+                return NumberFormatter.formatToNumberWithSpaces((int)value);
+            } else {
+                return NumberFormatter.formatToNumberWithSpaces((int)value) + format.format(value % 1);
+            }
         }
         String sciFormatResult = scientificFormat.format(value);
         if(sciFormatResult.equals("0E0")) {
