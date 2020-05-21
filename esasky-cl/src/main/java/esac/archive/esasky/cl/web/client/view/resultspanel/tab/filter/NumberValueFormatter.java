@@ -13,7 +13,7 @@ public class NumberValueFormatter implements ValueFormatter{
     }
 
     public NumberValueFormatter(int numberOfDecimals) {
-        setFormat(4);
+        setFormat(numberOfDecimals);
     }
     
     private void setFormat(int numberOfDecimals) {
