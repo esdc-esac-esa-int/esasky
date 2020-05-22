@@ -13,8 +13,6 @@ public class CatalogDescriptor extends BaseDescriptor {
 
     private String polygonNameTapColumn;
 
-    private String orderBy;
-
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String drawSourcesFunction;
@@ -77,14 +75,6 @@ public class CatalogDescriptor extends BaseDescriptor {
 
     public void setPolygonNameTapColumn(String polygonNameTapColumn) {
         this.polygonNameTapColumn = polygonNameTapColumn;
-    }
-
-    public String getOrderBy() {
-        return orderBy;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
     }
 
     public String getDrawSourcesFunction() {

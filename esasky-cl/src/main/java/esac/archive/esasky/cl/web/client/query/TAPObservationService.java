@@ -43,7 +43,7 @@ public class TAPObservationService extends AbstractTAPService {
 
         Log.debug(debugPrefix);
 
-        String adql = "SELECT DISTINCT";
+        String adql = "SELECT";
         for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
             MetadataDescriptor castMetadata = currMetadata;
             adql += " " + castMetadata.getTapName() + ", ";

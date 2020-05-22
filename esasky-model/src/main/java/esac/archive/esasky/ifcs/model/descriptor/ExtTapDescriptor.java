@@ -20,7 +20,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String whereADQL;
     private String dateADQL;
     private String selectADQL;
-    private String orderBy;
     private String responseFormat;
     private String searchFunction;
     private Map<String, Map<String, ArrayList<String>>> collections;
@@ -43,7 +42,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	whereADQL = parent.getWhereADQL();
     	dateADQL = parent.getDateADQL();
     	selectADQL = parent.getSelectADQL();
-        orderBy = parent.getOrderBy();
     	responseFormat = parent.getResponseFormat();
     	searchFunction = parent.getSearchFunction();
     	isInBackend = false;
@@ -158,14 +156,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setIngestedTable(String ingestedTable) {
 		this.ingestedTable = ingestedTable;
-	}
-
-	public String getOrderBy() {
-		return orderBy;
-	}
-
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
 	}
 
 	public double[] getWavelengthRange() {

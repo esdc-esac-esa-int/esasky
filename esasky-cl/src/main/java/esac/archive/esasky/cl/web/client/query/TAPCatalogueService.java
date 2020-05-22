@@ -66,10 +66,6 @@ public class TAPCatalogueService extends AbstractTAPService {
         	parsedAdql += " AND " + filters;
         }
 
-        if (null != descriptor.getOrderBy() && !"".equals(descriptor.getOrderBy().trim())) {
-            parsedAdql += " ORDER BY " + descriptor.getOrderBy();
-        }
-
         Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + parsedAdql);
 
         return parsedAdql;
@@ -144,10 +140,6 @@ public class TAPCatalogueService extends AbstractTAPService {
         
         parsedAdql += filters;
         
-        if (null != descriptor.getOrderBy() && !"".equals(descriptor.getOrderBy().trim())) {
-            parsedAdql += " ORDER BY " + descriptor.getOrderBy();
-        }
-
         return parsedAdql;
     }
     
