@@ -56,7 +56,7 @@ public class TabulatorWrapper{
             
             @Override
             public void onEvent() {
-                redraw(tableJsObject);
+            	reformat(tableJsObject);
             }
         });
     }
@@ -89,6 +89,13 @@ public class TabulatorWrapper{
     private native void redraw(GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.redraw(true);
     }-*/;
+
+    private native void reformat(GeneralJavaScriptObject tableJsObject)/*-{
+		tableJsObject.rowManager.rows.forEach(function(row){
+			row.reinitialize()
+		});
+    }-*/;
+    
     private native void downloadCsv(GeneralJavaScriptObject tableJsObject, String fileName)/*-{
         tableJsObject.download("csv", fileName);
     }-*/;
