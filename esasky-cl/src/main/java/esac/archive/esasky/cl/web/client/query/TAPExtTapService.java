@@ -232,11 +232,6 @@ public class TAPExtTapService extends AbstractTAPService {
         }  
     }
     
-    @Override
-    public String getRetreivingDataTextKey() {
-    	return "MetadataCallback_retrievingMissionData";
-    }
-
 	@Override
 	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
 		// TODO Auto-generated method stub

@@ -71,11 +71,6 @@ public class TAPCatalogueService extends AbstractTAPService {
         return parsedAdql;
     }
 
-    @Override
-    public String getRetreivingDataTextKey() {
-    	return "MetadataCallback_retrievingMissionData";
-    }
-    
     public String getMetadataAdqlFromIpix(IDescriptor descriptorInput, int order, int ipix) {
     	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
     	

@@ -22,10 +22,6 @@ public abstract class AbstractTAPService {
     protected abstract String getGeometricConstraint(IDescriptor descriptor);
     public abstract String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos);
     
-    public String getRetreivingDataTextKey() {
-    	return "MetadataCallback_retrievingMissionMetadata";
-    }
-
     protected int getResultsLimit(int descriptorLimit){
         
         if (DeviceUtils.isMobile()){
