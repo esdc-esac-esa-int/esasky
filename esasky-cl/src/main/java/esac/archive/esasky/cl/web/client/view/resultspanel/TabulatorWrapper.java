@@ -38,6 +38,8 @@ public class TabulatorWrapper{
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
         public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
         public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
+        public void onAjaxResponse();
+        public void onAjaxResponseError(String error);
         public String getLabelFromTapName(String tapName);
         public GeneralJavaScriptObject getDescriptorMetaData();
     }
@@ -292,6 +294,7 @@ public class TabulatorWrapper{
     
     private native void setDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.options.ajaxResponse = function(url, params, response){
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponse()();
 			descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 			
 			var metadata = response.metadata;
@@ -424,6 +427,7 @@ public class TabulatorWrapper{
 		    }
         } else{
         	tableJsObject.options.ajaxResponse = function(url, params, response){
+        	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponse()();
 				var md = response.metadata;
 				var newMeta = [];
 				var filterData = {};
@@ -878,7 +882,7 @@ public class TabulatorWrapper{
                         title:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeader"),
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
-                        minWidth: 62,
+                        minWidth: 63,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"link2archive.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
                             cellClick:function(e, cell){
@@ -931,7 +935,7 @@ public class TabulatorWrapper{
 	                            field:this.metadata[i].name,
 	                            headerSort:false, 
 	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
-	                            minWidth: 62,
+	                            minWidth: 66,
 	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"preview.png", 
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
 	                                cellClick:function(e, cell){
@@ -1073,7 +1077,7 @@ public class TabulatorWrapper{
 				    								title:this.metadata[i].displayName},
 				    			headerFilterFunc:"like",
 		    				});
-			    		}else{
+			    		} else{
 				    		activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
@@ -1107,6 +1111,9 @@ public class TabulatorWrapper{
 			    }
 		    },
 		 	selectable:true,
+            ajaxError:function(error){
+		 	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(error.message);
+            },
 		 	ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
 		 	ajaxLoaderError:$wnd.esasky.getInternationalizationText("tabulator_loadFailed"),
 		    rowSelectionChanged:function(data, rows){
@@ -1395,5 +1402,11 @@ public class TabulatorWrapper{
 
     public GeneralJavaScriptObject getDescriptorMetaData() {
     	return tabulatorCallback.getDescriptorMetaData();
+    }
+    public void onAjaxResponse() {
+        tabulatorCallback.onAjaxResponse();
+    }
+    public void onAjaxResponseError(String error) {
+        tabulatorCallback.onAjaxResponseError(error);
     }
 }

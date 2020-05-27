@@ -42,6 +42,7 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
 import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
@@ -519,6 +520,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void insertData(List<TableRow> data, String url) {
+	    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("FetchingRealData" + esaSkyUniqID, 
+	                    TextMgr.getInstance().getText("tabulator_retrievingMissionData").replace("$NAME$", tabTitle),  url));
+	    
 	    table.setDefaultQueryMode();
 		table.setData(url);
 		tableNotShowingContainer.addStyleName("displayNone");
@@ -944,6 +948,21 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public void goToCoordinateOfFirstRow() {
         table.goToCoordinateOfFirstRow();
+    }
+
+    @Override
+    public void onAjaxResponse() {
+        removeStatusMessage();
+    }
+
+    @Override
+    public void onAjaxResponseError(String error) {
+        removeStatusMessage();
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_RequestError, this.getClass().getSimpleName(), 
+                "Error fetching table data from server. " + " Error message: " + error);
+    }
+    private void removeStatusMessage() {
+        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("FetchingRealData" + esaSkyUniqID));
     }
 
 }

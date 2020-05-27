@@ -21,6 +21,8 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -235,9 +237,12 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void fetchData() {
         if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() == 0 ) {
+            CommonEventBus.getEventBus().fireEvent(
+                    new ProgressIndicatorPushEvent("WaitingForCount" + getEsaSkyUniqId(), "Checking availability of " + descriptor.getGuiShortName() + " data"));
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
+				    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("WaitingForCount" + getEsaSkyUniqId()));
 	                fetchShapesAndMetadata();
 					getCountStatus().unregisterObserver(this);
 				}
@@ -285,9 +290,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
+        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON);
 
         clearAll();
-        tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON));
+        tablePanel.insertData(null, url);
     }
 
     public void fetchDataWithoutMOC(String whereQuery) {

@@ -79,11 +79,6 @@
 		Counting Available Data
 	</text>
 
-	<!-- getMissionDataCountRequestCallback -->
-	<text key="GetMissionDataCountRequestCallback_searchingInArchive">
-		Searching $NAME$ archive
-	</text>
-
 	<!-- publicationsSourcesCallback -->
 	<text key="PublicationsSourcesCallback_retrievingPubSources">
 		Retrieving sources with publications
@@ -107,10 +102,7 @@
 		&lt;/a&gt; </text>
 
 	<!-- metadataCallback -->
-	<text key="MetadataCallback_retrievingMissionMetadata">
-		Retrieving $NAME$ metadata
-	</text>
-	<text key="MetadataCallback_retrievingMissionData">
+	<text key="tabulator_retrievingMissionData">
 		Retrieving $NAME$ data
 	</text>
 	<text key="MetadataCallback_retrievingSSOMetadata">
@@ -1529,9 +1521,6 @@
 	</text>
 	<text key="closeableTabLayoutPanel_styleBtn">
 		Customize style
-	</text>
-	<text key="abstractTablePanel_loadingData">
-		Loading data...
 	</text>
 	<text key="abstractTablePanel_filterTooltip">
 		Filter

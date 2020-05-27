@@ -24,11 +24,6 @@
 		Contando datos disponibles...
 	</text>
 
-	<!-- getMissionDataCountRequestCallback -->
-	<text key="GetMissionDataCountRequestCallback_searchingInArchive">
-		Buscando archivo $NAME$...
-	</text>
-
 	<!-- publicationsSourcesCallback -->
 	<text key="PublicationsSourcesCallback_retrievingPubSources">
 		Obteniendo objetos con publicaciones...
@@ -39,11 +34,7 @@
 		Obteniendo publicaciones de $NAME$...
 	</text>
 
-	<!-- metadataCallback -->
-	<text key="MetadataCallback_retrievingMissionMetadata">
-		Obteniendo metadatos de $NAME$...
-	</text>
-	<text key="MetadataCallback_retrievingMissionData">
+	<text key="tabulator_retrievingMissionData">
 		Obteniendo datos de $NAME$...
 	</text>
 	<text key="MetadataCallback_retrievingSSOMetadata">
@@ -421,9 +412,6 @@
 	</text>
 	<text key="closeableTabLayoutPanel_refreshData">
 		Actualizar datos
-	</text>
-	<text key="abstractTablePanel_loadingData">
-		Cargando datos...
 	</text>
 	<text key="abstractTablePanel_filterTooltip">
 		Filtro

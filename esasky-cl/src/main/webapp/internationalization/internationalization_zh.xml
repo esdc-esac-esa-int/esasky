@@ -66,11 +66,6 @@
 		数据刷新中……
 	</text>
 
-	<!-- getMissionDataCountRequestCallback -->
-	<text key="GetMissionDataCountRequestCallback_searchingInArchive">
-		检索 $NAME$ 归档数据
-	</text>
-
 	<!-- publicationsSourcesCallback -->
 	<text key="PublicationsSourcesCallback_retrievingPubSources">
 		获取与文章相关的资源
@@ -93,11 +88,7 @@
 		&lt;/a&gt; 
 	</text>
 
-	<!-- metadataCallback -->
-	<text key="MetadataCallback_retrievingMissionMetadata">
-		获取 $NAME$ 元数据
-	</text>
-	<text key="MetadataCallback_retrievingMissionData">
+	<text key="tabulator_retrievingMissionData">
 		获取 $NAME$ 数据
 	</text>
 	<text key="MetadataCallback_retrievingSSOMetadata">
@@ -907,9 +898,6 @@
 	</text>
 	<text key="closeableTabLayoutPanel_styleBtn">
 		自定义类型
-	</text>
-	<text key="abstractTablePanel_loadingData">
-		数据加载中...
 	</text>
 	<text key="abstractTablePanel_filterTooltip">
 		过滤器	
