@@ -921,7 +921,7 @@ public class TabulatorWrapper{
                         title:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeader"),
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
-                        minWidth: 65,
+                        minWidth: 67,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"target_list.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")},
                             cellClick:function(e, cell){
@@ -977,7 +977,7 @@ public class TabulatorWrapper{
 	    		    			sorter: "string",
 	    		    			headerFilter:true,
 	    		    			headerFilterFunc:"like",
-	    		    			headerFilterFuncParams:{tapName:metadata[i].name},
+	    		    			headerFilterFuncParams:{tapName:this.metadata[i].name},
 	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
 	                            formatter:linkListFormatter});
 	                        continue;
