@@ -183,8 +183,10 @@ public class MainPresenter {
 
                     @Override
                     public void onShapeHoverStartEvent(AladinLiteShapeHoverStartEvent hoverEvent) {
-                        entityRepo.getEntity(hoverEvent.getOverlayName()).onShapeHover(hoverEvent.getShape());
-
+                        GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
+                    	if(entity!= null) {
+                    		entity.onShapeHover(hoverEvent.getShape());
+                    	}
                     }
                 });
 
@@ -193,7 +195,10 @@ public class MainPresenter {
 
                     @Override
                     public void onShapeHoverStopEvent(AladinLiteShapeHoverStopEvent hoverEvent) {
-                        entityRepo.getEntity(hoverEvent.getOverlayName()).onShapeUnhover(hoverEvent.getShape());
+                    	GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
+                    	if(entity!= null) {
+                    		entity.onShapeUnhover(hoverEvent.getShape());
+                    	}
                     }
                 });
 
