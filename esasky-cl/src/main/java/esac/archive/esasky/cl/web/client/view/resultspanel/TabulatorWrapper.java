@@ -366,7 +366,13 @@ public class TabulatorWrapper{
 						displayName = $wnd.esasky.getColumnDisplayText(displayName);
 					}
 	    			
-    				//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
+			        var visible = (name !== "s_region");
+                    if(descMetaData.hasOwnProperty(name)){
+                        if(descMetaData[name].hasOwnProperty("visible")){
+                            visible = descMetaData[name]["visible"];
+                        }
+                    }
+    				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
 					var metaDataIndex = metadata.length + newMeta.length;
 					if(descMetaData.hasOwnProperty(name)){
 						metaDataIndex = parseInt(descMetaData[name].index);
@@ -374,12 +380,12 @@ public class TabulatorWrapper{
 	    			
 	    			if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
 	    				datatype = "TIMESTAMP";
-	    			}else{
+	    			} else{
     					datatype = "DOUBLE";
     				}
 
 	    			if(metadata[j].name.endsWith("_min")){
-	    				meta = {name:name, displayName:displayName, datatype:datatype}
+	    				meta = {name:name, displayName:displayName, datatype:datatype, visible: visible}
 	    				newMeta.push(meta)
 	    				if(!filterData[name]){
 	    					filterData[name] = {};
@@ -409,11 +415,11 @@ public class TabulatorWrapper{
     						filterData[name] = {};
 	    				}
 						filterData[name]["list"] = list;
-						meta = {name:name, displayName:displayName, datatype:"LIST"}
+						meta = {name:name, displayName:displayName, datatype:"LIST", visible: visible}
 						newMeta.push(meta)
 	    			}
 	    			else{
-	    				meta = {name:name, displayName:displayName, datatype:"STRING"}
+	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible: visible}
 	    				newMeta.push(meta)
 	    			}
 	    			
@@ -455,6 +461,13 @@ public class TabulatorWrapper{
 					if(displayName == label){
 						displayName = $wnd.esasky.getColumnDisplayText(displayName);
 					}
+    	            
+    	            var visible = (name !== "s_region");
+                    if(descMetaData.hasOwnProperty(name)){
+                        if(descMetaData[name].hasOwnProperty("visible")){
+                            visible = descMetaData[name]["visible"];
+                        }
+                    }
 					
 					
 					//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
@@ -468,10 +481,10 @@ public class TabulatorWrapper{
 					
 					if(maxVal > minVal){
 						if(Math.floor(minVal) == minVal && Math.floor(maxVal) == maxVal){
-		    				meta = {name:name, displayName:displayName, datatype:"INTEGER", visible:true}
+		    				meta = {name:name, displayName:displayName, datatype:"INTEGER", visible:visible}
 		    				newMeta[metaDataIndex] = meta
 						}else{
-		    				meta = {name:name, displayName:displayName, datatype:"DOUBLE", visible:true}
+		    				meta = {name:name, displayName:displayName, datatype:"DOUBLE", visible:visible}
 		    				newMeta[metaDataIndex] = meta
 						}
 						
@@ -482,7 +495,7 @@ public class TabulatorWrapper{
 						filterData[name]["max"] = maxVal;
 					}
 	    			else{
-	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible:true}
+	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible:visible}
 	    				newMeta[metaDataIndex] = meta
 	    			}
     			}
