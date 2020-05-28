@@ -200,6 +200,16 @@ public class CloseableTabLayoutPanel extends Composite {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
         }
     	ensureCorrectButtonClickability();
+    	
+    	ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
+    	if(tabPanel.isMOCMode()) {
+    		sendButton.setEnabled(false);
+    		saveButton.setEnabled(false);
+    	}
+    	else{
+    		sendButton.setEnabled(true);
+    		saveButton.setEnabled(true);
+    	}
     }
 
     private EsaSkyButton createSaveButton() {
@@ -409,6 +419,14 @@ public class CloseableTabLayoutPanel extends Composite {
             public void onSelection(ITablePanel selectedTablePanel) {
                 selectTab(selectedTablePanel);
             }
+
+            @Override
+            public void onUpdateStyle(ITablePanel panel) {
+            	if(getSelectedWidget() == panel) {
+            		final GeneralEntityInterface entity = tabPanel.getEntity();
+                    ensureCorrectRelatedInformationVisibilty(entity);
+            	}
+            }
         });
         this.tabLayout.add(tabPanel.getWidget(), tab);
 	    updateStyleOnTab(getWidgetIndex(tabPanel.getWidget()));
@@ -532,4 +550,5 @@ public class CloseableTabLayoutPanel extends Composite {
 		tablePanel.showStylePanel(styleButton.getAbsoluteLeft() + styleButton.getOffsetWidth() + 2, 
                 styleButton.getAbsoluteTop());
 	}
+	
 }

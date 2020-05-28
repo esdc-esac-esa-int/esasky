@@ -266,6 +266,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             }
             mocEntity.setTablePanel(tablePanel);
             mocEntity.setShouldBeShown(true);
+            tablePanel.setMOCMode(true);
+            tablePanel.notifyObservers();
             mocEntity.refreshMOC();
         } else {
             fetchDataWithoutMOC();
@@ -286,6 +288,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         Log.debug("Showing real data");
         drawer = combinedDrawer;
         defaultEntity.setDrawer(drawer);
+        tablePanel.setMOCMode(false);
+        tablePanel.notifyObservers();
+
         if(mocEntity != null){
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
@@ -300,6 +305,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	Log.debug("Showing real data");
     	drawer = combinedDrawer;
     	defaultEntity.setDrawer(drawer);
+        tablePanel.setMOCMode(false);
+        tablePanel.notifyObservers();
     	if(mocEntity != null){
     		mocEntity.clearAll();
     		mocEntity.setShouldBeShown(false);

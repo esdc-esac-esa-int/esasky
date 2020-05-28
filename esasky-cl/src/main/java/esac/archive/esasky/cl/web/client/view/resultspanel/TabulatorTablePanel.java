@@ -115,6 +115,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private boolean isHidingTable = false;
 	private boolean hasBeenClosed = false;
 	protected boolean isShowing = false;
+	private boolean inMOCMode = false;
 
 	private IPreviewClickedHandler previewClickedHandler;
 	protected GeneralEntityInterface entity;
@@ -349,6 +350,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
+	public void notifyObservers() {
+		for(AbstractTableObserver observer : observers) {
+		    observer.onUpdateStyle(this);
+		}
+	}
+	
 	private StylePanel stylePanel;
 
 	public void deselectTablePanel() {
@@ -950,6 +957,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         table.goToCoordinateOfFirstRow();
     }
 
+	@Override
+	public boolean isMOCMode() {
+		return inMOCMode;
+	}
+	
+	public void setMOCMode(boolean input) {
+		this.inMOCMode = input;
+	}
+    
     @Override
     public void onAjaxResponse() {
         removeStatusMessage();

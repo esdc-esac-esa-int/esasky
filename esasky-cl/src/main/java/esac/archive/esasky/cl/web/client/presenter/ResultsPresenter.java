@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.presenter;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -44,7 +43,6 @@ import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
 import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEvent;
 import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;

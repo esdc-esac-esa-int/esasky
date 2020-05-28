@@ -2,7 +2,6 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.cellview.client.Column;
@@ -110,4 +109,8 @@ public interface ITablePanel {
 
 	public void insertHeader(String tapQuery, String mode);
 	public void goToCoordinateOfFirstRow();
+	
+	public boolean isMOCMode();
+	public void setMOCMode(boolean input);
+	public void notifyObservers();
 }

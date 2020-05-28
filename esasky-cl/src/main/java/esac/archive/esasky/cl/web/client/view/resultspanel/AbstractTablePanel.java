@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1756,6 +1755,20 @@ public abstract class AbstractTablePanel extends Composite implements ITablePane
         // TODO Auto-generated method stub
         
     }
-	
 
+	@Override
+	public boolean isMOCMode() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setMOCMode(boolean input) {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void notifyObservers() {
+		
+	}
 }
