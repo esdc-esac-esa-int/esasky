@@ -154,22 +154,22 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     
     
-    public String MOCClicked(final String orders, final String ipixels) {
+    public String MOCClicked(final String orders, final String ipixels, String counts) {
     	Log.debug("[MOCEntity] MOCClicked " + orders + ", " + ipixels );
     	String tooltipText = "";
     	String[] orderArray = orders.split(",");
     	String[] ipixArray = ipixels.split(",");
+    	String[] countsArray = counts.split(",");
     	for(int i = 0; i < orderArray.length; i++) {
     	
     		int order = Integer.parseInt(orderArray[i]);
     		int ipix = Integer.parseInt(ipixArray[i]);
+    		int count = Integer.parseInt(countsArray[i]);
 	    	try {
-				int count = countMap.get(order).get((long)ipix);
-				
 				
 				if(count > 0) {
 		
-					tooltipText += descriptor.getMission() + ": " + count + "\n";
+					tooltipText += descriptor.getMission() + ": Order: " + order + " Ipix: " + ipix + " Count: " + count + "<br>\n";
 					
 				}
 	    	}catch(Exception e){
