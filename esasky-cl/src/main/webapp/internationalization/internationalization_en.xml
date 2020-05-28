@@ -64,10 +64,6 @@
 	
 	
 
-	<!-- JsonRequestCallback -->
-	<text key="JsonRequestCallback_retrievingMOC">
-		Retrieving MOC
-	</text>
 
 	<!-- SSOOrbitMetadataCallback -->
 	<text key="SSOOrbitMetadataCallback_retrievingOrbitPoints">
@@ -1970,6 +1966,10 @@
 	<text key="duration">
 		Duration &lt;i&gt;(s)&lt;/i&gt; </text>
 		
+	<text key="band">
+		Band </text>
+	<text key="s_fov">
+		S FoV </text>
 	<text key="min_frequency_ghz">
 		Min Frequency (GHz) </text>
 	<text key="max_frequency_ghz">
@@ -3169,13 +3169,15 @@
 	<text key="tabulator_loadFailed">
 		Failed to load data
 	</text>
+	<text key="mocEntity_retrievingMissionCoverage">
+		Retrieving $MISSIONNAME$ coverage
+	</text>
 	<text key="tabulator_no_data">
 		No data available in this area of the sky
 	</text>
 	<text key="tabulator_filtered_empty">
 		No data available with the current filters active
 	</text>
-
 
 
 </Internationalization>

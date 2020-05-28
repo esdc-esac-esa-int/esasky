@@ -194,7 +194,7 @@ public class MOCEntity implements GeneralEntityInterface {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
             builder.sendRequest(null,
-                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC")));
+                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName())));
         } catch (RequestException e) {
             Log.error(e.getMessage());
             Log.error("[getMocMetadata] Error fetching JSON data from server");
@@ -308,7 +308,7 @@ public class MOCEntity implements GeneralEntityInterface {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
             builder.sendRequest(null,
-                new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MOCAsRecordCallback.OnComplete() {
+                new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MOCAsRecordCallback.OnComplete() {
                	 
                 	@Override
                 	public void onComplete() {
@@ -378,7 +378,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     	try {
     		builder.sendRequest(null,
-    				new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("JsonRequestCallback_retrievingMOC"), new MOCAsRecordCallback.OnComplete() {
+    				new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MOCAsRecordCallback.OnComplete() {
 	                	 
 	                 	@Override
 	                 	public void onComplete() {

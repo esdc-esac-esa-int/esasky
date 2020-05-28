@@ -9,11 +9,6 @@
 		Es
 	</text>
 
-	<!-- JsonRequestCallback -->
-	<text key="JsonRequestCallback_retrievingMOC">
-		Recuperando MOC...
-	</text>
-
 	<!-- SSOOrbitMetadataCallback -->
 	<text key="SSOOrbitMetadataCallback_retrievingOrbitPoints">
 		Recuperando puntos de la &#243;rbita de $SSONAME$...
