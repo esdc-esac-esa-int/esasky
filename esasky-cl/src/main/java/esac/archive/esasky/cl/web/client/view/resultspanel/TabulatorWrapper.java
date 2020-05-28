@@ -264,6 +264,7 @@ public class TabulatorWrapper{
     	tableJsObject.clearData();
     	tableJsObject.filterData = [];
     	tableJsObject.metadata = [];
+    	tableJsObject.clearHeaderFilter();
     	previouslySelectedMap = [];
     }-*/;
 
