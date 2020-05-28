@@ -3169,6 +3169,12 @@
 	<text key="tabulator_loadFailed">
 		Failed to load data
 	</text>
+	<text key="tabulator_no_data">
+		No data available in this area of the sky
+	</text>
+	<text key="tabulator_filtered_empty">
+		No data available with the current filters active
+	</text>
 
 
 

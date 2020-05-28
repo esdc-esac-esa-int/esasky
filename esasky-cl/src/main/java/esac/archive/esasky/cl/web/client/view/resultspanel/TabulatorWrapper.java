@@ -42,6 +42,7 @@ public class TabulatorWrapper{
         public void onAjaxResponseError(String error);
         public String getLabelFromTapName(String tapName);
         public GeneralJavaScriptObject getDescriptorMetaData();
+        public boolean isMOCMode();
     }
 
     private TabulatorCallback tabulatorCallback;
@@ -258,6 +259,7 @@ public class TabulatorWrapper{
     		onFilterChanged(key, "");
     	}
     	filterDialogs.clear();
+    	lastHoveredRow = -1;
     }
     
     private native void clearTable(GeneralJavaScriptObject tableJsObject)/*-{
@@ -843,10 +845,19 @@ public class TabulatorWrapper{
 			   	if(footerCounter){
 					footerCounter.innerHTML = text;
 			   	}
+			   	if(!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()()){
+				   	if(rows.length == 0 && this.getHeaderFilters().length > 0){
+				   		this.options.placeholder.innerText = $wnd.esasky.getInternationalizationText("tabulator_filtered_empty");
+				   	}
+			   	}
 		    },
 		    dataLoaded:function(data){
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    	this.rowManager.adjustTableSize();
+			   	if(this.metadata && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() &&  data.length == 0){
+			   		this.options.placeholder.innerText = $wnd.esasky.getInternationalizationText("tabulator_no_data");
+			   	}
+		    	
 		    },
 		    dataLoading:function(data){
 		        var activeColumnGroup = [];
@@ -1417,10 +1428,16 @@ public class TabulatorWrapper{
     public GeneralJavaScriptObject getDescriptorMetaData() {
     	return tabulatorCallback.getDescriptorMetaData();
     }
+    
     public void onAjaxResponse() {
         tabulatorCallback.onAjaxResponse();
     }
+    
     public void onAjaxResponseError(String error) {
         tabulatorCallback.onAjaxResponseError(error);
+    }
+    
+    public boolean isMOCMode() {
+    	return tabulatorCallback.isMOCMode();
     }
 }
