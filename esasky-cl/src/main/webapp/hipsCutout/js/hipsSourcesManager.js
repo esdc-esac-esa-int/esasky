@@ -16,8 +16,8 @@ function HipsSourcesManager (onHipsReadyFn) {
     var url = CONFIG.BASE_URL + CONFIG.HIPS_SOURCES_ENDPOINT + "?_=" + new Date().getTime();
     $.ajax({
       url: url,
-      success: function( hipsSourcesStr ) {
-        currentObj.setHipsSources(JSON.parse(hipsSourcesStr));
+      success: function( hipsSources ) {
+        currentObj.setHipsSources(hipsSources);
       },
       error: function( result ) {
         alert("Error downloading HiPS Sources: " + url);
