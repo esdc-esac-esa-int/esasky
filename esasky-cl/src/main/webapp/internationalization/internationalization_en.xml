@@ -1779,6 +1779,61 @@
 		Flux error&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
+
+
+
+	<text key="i1_f_ap1">
+		Flux IRAC1 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i1_df_ap1">
+		Flux Error IRAC1 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i2_f_ap1">
+		Flux IRAC2 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i2_df_ap1">
+		Flux Error IRAC1 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i3_f_ap1">
+		Flux IRAC3 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i3_df_ap1">
+		Flux Error IRAC3 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i4_f_ap1">
+		Flux IRAC4 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="i4_df_ap1">
+		Flux Error IRAC4 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="m1_f_psf">
+		Flux MIPS 24 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="m1_df_psf">
+		Flux Error MIPS 24 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_2MASS_J">
+		Flux 2MASS J &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_2MASS_H">
+		Flux 2MASS H &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_2MASS_K">
+		Flux 2MASS K &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_wise1">
+		Flux WISE W1 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_wise2">
+		Flux WISE W2 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_wise3">
+		Flux WISE W3 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+	<text key="Spitzer_wise4">
+		Flux WISE W4 &lt;i&gt;(&#181;Jy)&lt;/i&gt;
+	</text>
+
 	<text key="observation_id">
 		Observation ID
 	</text>
