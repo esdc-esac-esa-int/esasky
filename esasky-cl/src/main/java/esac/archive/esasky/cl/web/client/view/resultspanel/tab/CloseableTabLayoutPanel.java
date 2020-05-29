@@ -44,6 +44,7 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
@@ -67,6 +68,7 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton toggleDataPanelButton = new EsaSkyButton(this.resources.arrowIcon());
     
     private VerticalPanel tabButtonsPanel;
+    private EsaSkyButton closeAllButton;
     private EsaSkyButton refreshButton;
     private EsaSkyButton styleButton;
     private EsaSkyButton recenterButton;
@@ -137,10 +139,13 @@ public class CloseableTabLayoutPanel extends Composite {
 		buttonsAndObservationPanel.add(toggleDataPanelButton);
 
         tabButtonsPanel = new VerticalPanel();
+        
+        closeAllButton = createCloseAllButton();
         refreshButton = createRefreshButton();
         styleButton = createStyleButton();
         recenterButton = createRecenterButton();
         
+        tabButtonsPanel.add(closeAllButton);
         tabButtonsPanel.add(refreshButton);
         tabButtonsPanel.add(styleButton);
         tabButtonsPanel.add(recenterButton);
@@ -330,24 +335,52 @@ public class CloseableTabLayoutPanel extends Composite {
         return recenterButton;
     }
 
-    private EsaSkyButton createRefreshButton() {
+    private EsaSkyButton createCloseAllButton() {
         
-        	EsaSkyButton refreshButton = new EsaSkyButton(resources.refreshIcon());
-        	refreshButton.setMediumStyle();
-        refreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
-        refreshButton.addClickHandler(new ClickHandler() {
+    	EsaSkyButton closeAllButton = new CloseButton();
+    	closeAllButton.setMediumStyle();
+    	closeAllButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_closeAll"));
+    	closeAllButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent arg0) {
-                ITablePanel tabPanel = getSelectedWidget();
-                tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
-                tabPanel.updateData();
+            	try {
+        			while(true) {
+        				ITablePanel tablePanel = getSelectedWidget();
+        				tablePanel.closeTablePanel();
+        				String id = tablePanel.getEntity().getEsaSkyUniqId();
+        				MissionTabButtons tab = getTabFromId(id);
+        				removeTab(tab);
+        			}
+        		}catch(Exception e) {
+        			//Runs until it comes here when no tablePanel exists
+        		}
                 
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Refresh, tabPanel.getFullId());
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_CloseAll, "");
             }
         });
-        refreshButton.addStyleName("tabButton");
-        return refreshButton;
+    	closeAllButton.addStyleName("tabButton");
+        return closeAllButton;
+    }
+
+    private EsaSkyButton createRefreshButton() {
+    	
+    	EsaSkyButton refreshButton = new EsaSkyButton(resources.refreshIcon());
+    	refreshButton.setMediumStyle();
+    	refreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+    	refreshButton.addClickHandler(new ClickHandler() {
+    		
+    		@Override
+    		public void onClick(final ClickEvent arg0) {
+    			ITablePanel tabPanel = getSelectedWidget();
+    			tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
+    			tabPanel.updateData();
+    			
+    			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Refresh, tabPanel.getFullId());
+    		}
+    	});
+    	refreshButton.addStyleName("tabButton");
+    	return refreshButton;
     }
 
     private EsaSkyButton createStyleButton() {
@@ -371,6 +404,7 @@ public class CloseableTabLayoutPanel extends Composite {
     
     public void selectTab(ITablePanel tablePanel) {
     	tabLayout.selectTab(tablePanel.getWidget());
+//    	tablePanel.redraw();
     }
     
     public final void addTab(final ITablePanel tabPanel,  final String helpTitle, final String helpDescription) {
