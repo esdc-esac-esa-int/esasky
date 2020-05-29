@@ -156,3 +156,12 @@
 	border: 0 !important;
 	color: #B05A39 !important;
 }
+
+.tabulator-col-content{
+	display: flex !important;
+	flex-direction: column !important;
+	justify-content: space-between !important;
+}
+.tabulator-col-content{
+	height: 100% !important;
+}
