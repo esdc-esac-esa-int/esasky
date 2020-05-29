@@ -276,7 +276,10 @@ public class TabulatorWrapper{
         var observer = new MutationObserver(function(mutations){
     		  for (var i=0; i < mutations.length; i++){
     		    for (var j=0; j < mutations[i].addedNodes.length; j++){
-    		      if(mutations[i].addedNodes[j].classList && mutations[i].addedNodes[j].classList.contains("tabulator-cell")){
+    		      if(mutations[i].addedNodes[j].classList && 
+    		      				(mutations[i].addedNodes[j].classList.contains("tabulator-cell") ||
+    		      				mutations[i].addedNodes[j].getAttribute('role') == 'Header'))
+      				{
     		      	tableJsObject.redraw(true);
     		      	this.disconnect();
     		      	return;
