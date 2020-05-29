@@ -29,7 +29,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -106,7 +105,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	private List<AbstractTableObserver> observers = new LinkedList<AbstractTableObserver>();
 
-	protected Label emptyTableLabel = new Label();
 	protected LoadingSpinner loadingSpinner = new LoadingSpinner(false);
 
 	private FlowPanel tableNotShowingContainer = new FlowPanel();
@@ -196,8 +194,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		tableNotShowingContainer.addStyleName("tableNotShowingContainer");
 		tableNotShowingContainer.add(loadingSpinner);
-		emptyTableLabel.setText(TextMgr.getInstance().getText("abstractTablePanel_loadingData"));
-		tableNotShowingContainer.add(emptyTableLabel);
 		container.add(tableNotShowingContainer);
 
 		tableAndGroupHeader.getElement().setId(tabulatorContainerId);
@@ -247,7 +243,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public final void clearTable() {
 		tableNotShowingContainer.removeStyleName("displayNone");
-		emptyTableLabel.setText(TextMgr.getInstance().getText("abstractTablePanel_loadingData"));
 		loadingSpinner.setVisible(true);
 		table.clearTable();
 	}
@@ -452,7 +447,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public void setEmptyTable(String emptyTableText) {
 		loadingSpinner.setVisible(false);
-		emptyTableLabel.setText(emptyTableText);
 	}
 
 	public void showStylePanel(int x, int y) {
