@@ -60,9 +60,9 @@
 	pointer-events: auto;
 }
 	
-.toggleDataPanelButton.minimised{
+.closeAllTabsButton{
 	margin-left: 9px;
-	margin-top: 10px;
+	margin-top: 4px;
 	pointer-events: auto;
 }
 

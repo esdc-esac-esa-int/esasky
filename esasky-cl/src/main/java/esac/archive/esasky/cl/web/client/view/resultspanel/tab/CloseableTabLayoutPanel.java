@@ -32,6 +32,8 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
+import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEventHandler;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEvent;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEventHandler;
 import esac.archive.esasky.cl.web.client.event.ExportCSVEvent;
@@ -44,6 +46,7 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
@@ -66,6 +69,25 @@ public class CloseableTabLayoutPanel extends Composite {
     private SaveAllView saveAllView;
     private final HTML emptyTableMessage;
     private EsaSkyButton toggleDataPanelButton = new EsaSkyButton(this.resources.arrowIcon());
+    private EsaSkyAnimation toggleDataPanelButtonMoveAnimation = new EsaSkyAnimation() {
+        
+        @Override
+        protected void setCurrentPosition(double newPosition) {
+            toggleDataPanelButton.getElement().getStyle().setMarginTop(newPosition, Unit.PX);
+        }
+        
+        @Override
+        protected Double getCurrentPosition() {
+            String marginLeftString = toggleDataPanelButton.getElement().getStyle().getMarginTop();
+            if (marginLeftString.equals("")){
+                marginLeftString = "0px";
+            }
+            //remove suffix "px"
+            marginLeftString = marginLeftString.substring(0, marginLeftString.length()-2);
+            Double currentPosition = new Double(marginLeftString);
+            return currentPosition;
+        }
+    };
     
     private VerticalPanel tabButtonsPanel;
     private EsaSkyButton closeAllButton;
@@ -139,15 +161,27 @@ public class CloseableTabLayoutPanel extends Composite {
 			public void onDataPanelResize(DataPanelResizeEvent event) {
 				if(event.getNewHeight() > 40) {
 					toggleDataPanelButton.rotate(180, 1000);
-					closeAllButton.removeStyleName("minimised");
-					toggleDataPanelButton.removeStyleName("minimised");
+					toggleDataPanelButtonMoveAnimation.animateTo(2, 1000);
+					closeAllButton.removeStyleName("hidden");
 				} else {
 					toggleDataPanelButton.rotate(0, 1000);
-					closeAllButton.addStyleName("minimised");
-					toggleDataPanelButton.addStyleName("minimised");
+					toggleDataPanelButtonMoveAnimation.animateTo(10, 1000);
+					closeAllButton.addStyleName("hidden");
 				}
 			}
 		});
+        
+        CommonEventBus.getEventBus().addHandler(DataPanelAnimationCompleteEvent.TYPE, new DataPanelAnimationCompleteEventHandler() {
+            
+            @Override
+            public void onDataPanelAnimationComplete(DataPanelAnimationCompleteEvent event) {
+                if(GUISessionStatus.isDataPanelOpen()) {
+                    closeAllButton.removeStyleName("hidden");
+                } else {
+                    closeAllButton.addStyleName("hidden");
+                }
+            }
+        });
 
 
         tabButtonsPanel = new VerticalPanel();
@@ -191,14 +225,11 @@ public class CloseableTabLayoutPanel extends Composite {
 		if(GUISessionStatus.isDataPanelOpen()){
             	toggleDataPanelButton.removeStyleName("hidden");
             	closeAllButton.removeStyleName("hidden");
-            	
-            	closeAllButton.removeStyleName("minimised");
-				toggleDataPanelButton.removeStyleName("minimised");
             	toggleDataPanelButton.rotate(180, 1000);
+            	toggleDataPanelButtonMoveAnimation.animateTo(2, 1000);
 		} else {
-				closeAllButton.addStyleName("minimised");
-				toggleDataPanelButton.addStyleName("minimised");
         	    toggleDataPanelButton.rotate(0, 1000);
+        	    toggleDataPanelButtonMoveAnimation.animateTo(10, 1000);
 		}
 	}
 	
@@ -375,7 +406,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_CloseAll, "");
             }
         });
-    	closeAllButton.addStyleName("toggleDataPanelButton");
+    	closeAllButton.addStyleName("closeAllTabsButton");
     	closeAllButton.setNonTransparentBackground();
         return closeAllButton;
     }
@@ -494,6 +525,13 @@ public class CloseableTabLayoutPanel extends Composite {
 			}
 		});
         styleButton.setCircleColor(tabPanel.getDescriptor().getPrimaryColor());
+        setCloseAllButtonVisibility();
+    }
+    
+    private void setCloseAllButtonVisibility() {
+        closeAllButton.setVisible(this.tabs.size() > 1);
+        int margin = this.tabs.size() > 1 ? 38 : 66;
+        tabButtonsPanel.getElement().getStyle().setMarginTop(margin, Unit.PX);
     }
     
     public boolean checkIfIdExists(String id) {
@@ -552,6 +590,7 @@ public class CloseableTabLayoutPanel extends Composite {
             	toggleDataPanelButton.addStyleName("hidden");
             	closeAllButton.addStyleName("hidden");
         }
+        setCloseAllButtonVisibility();
     }
 
     public final String getIdFromTab(final Widget w) {

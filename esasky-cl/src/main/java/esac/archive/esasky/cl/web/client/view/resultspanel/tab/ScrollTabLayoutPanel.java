@@ -66,6 +66,7 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 	private final DockLayoutPanel scrollBar = new DockLayoutPanel(Unit.PX);
 	private ScrollDisablablePushButton scrollLeftButton;
 	private ScrollDisablablePushButton scrollRightButton;
+	private ScrollDisablablePushButton closeAllButton;
 	private ResizeHandler mainAreaResizeHandler;
 	private static final int SCROLL_INTERVAL = 250;
 	private HandlerRegistration selectionHandler;
@@ -381,6 +382,12 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		scrollRightButton.getElement().addClassName("scrollRightButton");
 		scrollRightButton.setNonTransparentBackground();
 		scrollRightButton.addClickHandler(createScrollClickHandler(-1 * SCROLL_INTERVAL));
+		
+		closeAllButton = new ScrollDisablablePushButton(
+		        resources.enabledScrollRightArrow(), resources.disabledScrollRightArrow());
+		closeAllButton.getElement().addClassName("scrollRightButton");
+		closeAllButton.setNonTransparentBackground();
+		closeAllButton.addClickHandler(createScrollClickHandler(-1 * SCROLL_INTERVAL));
 
 		tabBar.setStyleName(TABS_STYLE);
 		tabBar.addStyleName("notSelectable");
