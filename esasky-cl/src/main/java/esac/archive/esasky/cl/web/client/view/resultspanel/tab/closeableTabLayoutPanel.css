@@ -53,8 +53,14 @@
 	pointer-events: none;
 	z-index: 200;
 }
-
+	
 .toggleDataPanelButton {
+	margin-left: 9px;
+	margin-top: 2px;
+	pointer-events: auto;
+}
+	
+.toggleDataPanelButton.minimised{
 	margin-left: 9px;
 	margin-top: 10px;
 	pointer-events: auto;

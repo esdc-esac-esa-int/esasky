@@ -114,6 +114,8 @@ public class CloseableTabLayoutPanel extends Composite {
 
         FlowPanel buttonsAndObservationPanel = new FlowPanel();
         buttonsAndObservationPanel.addStyleName("observationPanel");
+        
+        VerticalPanel closeMinimizeButtonsPanel = new VerticalPanel();
 		
         toggleDataPanelButton.addStyleName("toggleDataPanelButton");
         toggleDataPanelButton.setNonTransparentBackground();
@@ -125,27 +127,35 @@ public class CloseableTabLayoutPanel extends Composite {
 			}
 		});
         
+		closeAllButton = createCloseAllButton();
+		
+    	closeMinimizeButtonsPanel.add(toggleDataPanelButton);
+    	closeMinimizeButtonsPanel.add(closeAllButton);
+        
+    	buttonsAndObservationPanel.add(closeMinimizeButtonsPanel);
         CommonEventBus.getEventBus().addHandler(DataPanelResizeEvent.TYPE, new DataPanelResizeEventHandler() {
 			
 			@Override
 			public void onDataPanelResize(DataPanelResizeEvent event) {
 				if(event.getNewHeight() > 40) {
 					toggleDataPanelButton.rotate(180, 1000);
+					closeAllButton.removeStyleName("minimised");
+					toggleDataPanelButton.removeStyleName("minimised");
 				} else {
 					toggleDataPanelButton.rotate(0, 1000);
+					closeAllButton.addStyleName("minimised");
+					toggleDataPanelButton.addStyleName("minimised");
 				}
 			}
 		});
-		buttonsAndObservationPanel.add(toggleDataPanelButton);
+
 
         tabButtonsPanel = new VerticalPanel();
         
-        closeAllButton = createCloseAllButton();
         refreshButton = createRefreshButton();
         styleButton = createStyleButton();
         recenterButton = createRecenterButton();
         
-        tabButtonsPanel.add(closeAllButton);
         tabButtonsPanel.add(refreshButton);
         tabButtonsPanel.add(styleButton);
         tabButtonsPanel.add(recenterButton);
@@ -180,8 +190,14 @@ public class CloseableTabLayoutPanel extends Composite {
 	private void toggleButtonRotation(){
 		if(GUISessionStatus.isDataPanelOpen()){
             	toggleDataPanelButton.removeStyleName("hidden");
+            	closeAllButton.removeStyleName("hidden");
+            	
+            	closeAllButton.removeStyleName("minimised");
+				toggleDataPanelButton.removeStyleName("minimised");
             	toggleDataPanelButton.rotate(180, 1000);
 		} else {
+				closeAllButton.addStyleName("minimised");
+				toggleDataPanelButton.addStyleName("minimised");
         	    toggleDataPanelButton.rotate(0, 1000);
 		}
 	}
@@ -338,7 +354,7 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton createCloseAllButton() {
         
     	EsaSkyButton closeAllButton = new CloseButton();
-    	closeAllButton.setMediumStyle();
+    	closeAllButton.setSmallStyle();
     	closeAllButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_closeAll"));
     	closeAllButton.addClickHandler(new ClickHandler() {
 
@@ -359,7 +375,8 @@ public class CloseableTabLayoutPanel extends Composite {
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_CloseAll, "");
             }
         });
-    	closeAllButton.addStyleName("tabButton");
+    	closeAllButton.addStyleName("toggleDataPanelButton");
+    	closeAllButton.setNonTransparentBackground();
         return closeAllButton;
     }
 
@@ -533,6 +550,7 @@ public class CloseableTabLayoutPanel extends Composite {
         if(tabs.isEmpty()){
             	ResultsPanel.closeDataPanel();
             	toggleDataPanelButton.addStyleName("hidden");
+            	closeAllButton.addStyleName("hidden");
         }
     }
 
