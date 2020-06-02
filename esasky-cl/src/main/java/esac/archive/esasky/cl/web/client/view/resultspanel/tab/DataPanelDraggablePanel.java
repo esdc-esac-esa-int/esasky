@@ -91,12 +91,12 @@ public class DataPanelDraggablePanel extends FlowPanel {
 				@Override
 				public void execute() {
 					if(isGoingToChangeSize()) {
-						isBeingDragged = false;
+						isBeingDragged = isMouseDown;
 						resultPanelStyle.setHeight(height, Unit.PX);
 						CommonEventBus.getEventBus().fireEvent(new DataPanelResizeEvent(height));
 					}
-					if(setNewExpandedDataPanelSize) {
-						GUISessionStatus.setCurrentHeightForExpandedDataPanel(height);
+					if(setNewExpandedDataPanelSize && height > 40) {
+				        GUISessionStatus.setCurrentHeightForExpandedDataPanel(height);
 					}
 					GUISessionStatus.setDataPanelOpen(height > MIN_DISTANCE_FROM_BOTTOM);
 					CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("ResizeDataPanel"));
