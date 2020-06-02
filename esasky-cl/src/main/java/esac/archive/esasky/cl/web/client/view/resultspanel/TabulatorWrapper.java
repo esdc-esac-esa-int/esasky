@@ -961,6 +961,7 @@ public class TabulatorWrapper{
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
 	                            field:this.metadata[i].name,
+	                            visible:this.metadata[i].visible,
 	                            headerSort:false, 
 	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
 	                            minWidth: 66,
