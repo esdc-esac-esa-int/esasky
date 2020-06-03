@@ -263,6 +263,8 @@ public class TabulatorWrapper{
     }
     
     private native void clearTable(GeneralJavaScriptObject tableJsObject)/*-{
+    	tableJsObject.dataLoaded = false;
+    	tableJsObject.showCount = false;
     	tableJsObject.clearData();
     	tableJsObject.filterData = [];
     	tableJsObject.metadata = [];
@@ -271,6 +273,7 @@ public class TabulatorWrapper{
     }-*/;
 
     private native void setData(GeneralJavaScriptObject tableJsObject, Object dataOrUrl)/*-{
+    	tableJsObject.dataLoaded = false;
         tableJsObject.setData(dataOrUrl);
         
         var observer = new MutationObserver(function(mutations){
@@ -344,6 +347,7 @@ public class TabulatorWrapper{
 			tableJsObject.filterData = []
 			tableJsObject.columnDef = [];
 			tableJsObject.showCount = true;
+			tableJsObject.dataLoaded = true;
 	        return data;
 	    }
     }-*/;
@@ -827,6 +831,19 @@ public class TabulatorWrapper{
 		   	return true;
 		}
 		
+		var stringFilterEditor =  function(cell, onRendered, success, cancel, editorParams){
+		
+			var editor = this.table.modules.edit.editors["input"];
+			
+			var successFunc = function(filter){
+				success(filter);
+				var filterString = cell.getField() + " like '%" + filter + "%'";
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filterString);
+			}
+			
+			return editor(cell, onRendered, successFunc, cancel, editorParams);
+		}
+		
 		var footerCounter = "<div></div><div class=\"footerCounter\">0</div>"
 		
 
@@ -857,8 +874,10 @@ public class TabulatorWrapper{
 		    dataLoaded:function(data){
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    	this.rowManager.adjustTableSize();
-			   	if(this.metadata && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() &&  data.length == 0){
+			   	if(this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() &&  data.length == 0){
 			   		this.options.placeholder.innerText = $wnd.esasky.getInternationalizationText("tabulator_no_data");
+			   	}else{
+			   		this.options.placeholder.innerText = "";
 			   	}
 		    	
 		    },
@@ -1114,7 +1133,7 @@ public class TabulatorWrapper{
 				    			headerTooltip:this.metadata[i].description,
 				    			formatter:"plaintext",
 				    			sorter:  "string",
-				    			headerFilter:true,
+				    			headerFilter:stringFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
 				    			headerFilterFunc:"like",
@@ -1351,8 +1370,10 @@ public class TabulatorWrapper{
         };
         
         table.filterData = [];
-        table.showCount = true;
+        table.showCount = false;
 		isInitializing = false;
+		table.dataLoaded = false;
+		
 		table.element.onmouseleave = function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onTableMouseLeave()()};
         
 //		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
