@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.repository;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
@@ -12,12 +11,13 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoV
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class MocRepository {
 
@@ -43,15 +43,43 @@ public class MocRepository {
 
 			@Override
 			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
-				String tooltipText = event.getText().replaceAll("\n", "<br>");
+				
+				
+				GeneralJavaScriptObject mocsClicked = (GeneralJavaScriptObject) event.getObject();
+				int length = GeneralJavaScriptObject.convertToInteger(mocsClicked.getProperty("length"));
+				
+				StringBuilder sb = new StringBuilder();
+				
+				for(int i = 0;i < length; i++) {
+					GeneralJavaScriptObject data = mocsClicked.getProperty(Integer.toString(i));
+					String name = data.getProperty("name").toString();
+					for(MOCEntity entity : allEntities) {
+						if(name.startsWith(entity.getDescriptor().getDescriptorId())) {
+							name = entity.getDescriptor().getGuiShortName();
+							break;
+						}
+					}
+					
+					sb.append("<h2>");
+					sb.append(name);
+					sb.append(":</h2> <b>Order:</b> ");
+					sb.append(data.getProperty("order"));
+					sb.append(" <b>Ipix:</b> ");
+					sb.append(data.getProperty("ipix"));
+					sb.append(" <b>Count:</b> ");
+					sb.append(data.getProperty("count"));
+					if(i < length - 1) {
+						sb.append("<hr/>");
+					}
+				}
+				String tooltipText = sb.toString();
+//				String tooltipText = event.getObject().replaceAll("\n", "<hr/>");
 //				for(MOCEntity entity : allEntities){
 //					tooltipText += entity.MOCClicked(event.getOrders(), event.getIpixels(), event.getCounts());
 //				}
 
 				if(tooltipText != "") {
 					MOCTooltip tooltip = new MOCTooltip(tooltipText, event.getX(), event.getY());
-//					tooltip.setPosition(event.getX(), event.getY());;
-//					DisplayUtils.showInsideMainAreaPointingAtPosition(tooltip, );
 					tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
 				}
 				

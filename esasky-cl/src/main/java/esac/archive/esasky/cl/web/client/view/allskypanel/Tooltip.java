@@ -55,6 +55,8 @@ public abstract class Tooltip extends AutoHidePanel{
     }
     
     public Tooltip(int left, int top) {
+    	style = resources.style();
+    	style.ensureInjected();
     	this.left = left;
     	this.top = top;
     	initView(false);
