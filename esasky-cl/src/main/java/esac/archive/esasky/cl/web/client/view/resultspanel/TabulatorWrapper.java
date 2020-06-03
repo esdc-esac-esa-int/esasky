@@ -439,6 +439,7 @@ public class TabulatorWrapper{
 				tableJsObject.metadata = newMeta;
 				tableJsObject.filterData = filterData;
 				tableJsObject.showCount = false;
+				tableJsObject.dataLoaded = true;
 		        return [];
 		    }
         } else{
@@ -515,6 +516,7 @@ public class TabulatorWrapper{
 				tableJsObject.metadata = newMeta;
 				tableJsObject.filterData = filterData;
 				tableJsObject.showCount = false;
+				tableJsObject.dataLoaded = true;
 		        return [];
 			}
         }
@@ -876,7 +878,7 @@ public class TabulatorWrapper{
 		    	this.rowManager.adjustTableSize();
 			   	if(this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() &&  data.length == 0){
 			   		this.options.placeholder.innerText = $wnd.esasky.getInternationalizationText("tabulator_no_data");
-			   	}else{
+			   	}else if(!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() ){
 			   		this.options.placeholder.innerText = "";
 			   	}
 		    	
