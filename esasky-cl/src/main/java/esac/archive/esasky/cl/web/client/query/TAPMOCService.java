@@ -38,6 +38,8 @@ public class TAPMOCService {
     	int order = MocRepository.getTargetOrderFromFoV();
     	Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
     	
+    	filter = filter.replaceAll("'","''");
+    	
     	String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
 		    	+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
 		    	+ "\',\'" + Integer.toString(order) + "\') as moc from dual";
@@ -66,6 +68,7 @@ public class TAPMOCService {
 	public String getFilteredObservationMOCAdql(IDescriptor descriptor, String filter) {
 		
 		Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
+		filter = filter.replaceAll("'","''");
 		
 		String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
 		+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)

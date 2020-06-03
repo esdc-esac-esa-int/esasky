@@ -191,6 +191,7 @@ public class TabulatorWrapper{
     private native GeneralJavaScriptObject createPretendCell(Object value)/*-{
         return {getValue: function() {return value}};
     }-*/;
+    
     public void showDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
     	
     	if(!filterDialogs.containsKey(tapName)) {
@@ -669,13 +670,13 @@ public class TabulatorWrapper{
 				values = input.split(",");
 				var filter = "";
 				if(values[0].length > 0 ){
-					filter += cell.getField() + " >=  " + values[0]
+					filter += cell.getField() + " >=  '" + values[0] + "'";
 				}
 				if(values.length > 1 && values[1].length > 0 ){
 					if(filter.length > 0){
 						filter += " AND ";
 					}
-					filter += cell.getField() + " <=  " + values[1]
+					filter += cell.getField() + " <=  '" + values[1] + "'";
 				}
 				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
 			}
