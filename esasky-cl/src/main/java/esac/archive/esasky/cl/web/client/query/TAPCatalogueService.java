@@ -65,6 +65,8 @@ public class TAPCatalogueService extends AbstractTAPService {
         if(filters != "") {
         	parsedAdql += " AND " + filters;
         }
+        
+        parsedAdql += getOrderBy(descriptor);
 
         Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + parsedAdql);
 
@@ -97,6 +99,8 @@ public class TAPCatalogueService extends AbstractTAPService {
     	+ "esasky_q3c_bitshift_left(" + Integer.toString(ipix) + "," + Integer.toString(60 -  2 * order) + " ) <= q3c_ang2ipix(ra,dec)"
     			+ " AND esasky_q3c_bitshift_left(" + Integer.toString(ipix + 1) + "," + Integer.toString(60 -  2 * order) + " ) > q3c_ang2ipix(ra,dec)";
 
+        parsedAdql += getOrderBy(descriptor);
+        
         return parsedAdql;
     }
     
@@ -134,6 +138,8 @@ public class TAPCatalogueService extends AbstractTAPService {
 				+ Double.toString(pos.getFov()/2) +")";
         
         parsedAdql += filters;
+        
+        parsedAdql += getOrderBy(descriptor);
         
         return parsedAdql;
     }

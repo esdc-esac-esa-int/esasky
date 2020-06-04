@@ -47,6 +47,8 @@ public class TAPSurveyService extends AbstractTAPService {
         
         parsedAdql += filter;
 
+        parsedAdql += getOrderBy(descriptor);
+
         Log.debug("[TAPQueryBuilder/getMetadata4Footprints()] ADQL " + parsedAdql);
         return parsedAdql;
     }

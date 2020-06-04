@@ -58,6 +58,8 @@ public class TAPObservationService extends AbstractTAPService {
         if(filter != "") {
         	parsedAdql += " AND " + filter;
         }
+        
+        parsedAdql += getOrderBy(descriptor);
 
         Log.debug(debugPrefix + " ADQL " + parsedAdql);
         return parsedAdql;
@@ -121,6 +123,8 @@ public class TAPObservationService extends AbstractTAPService {
 				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
 				+ Double.toString(pos.getFov()/2) +"))";
 
+        parsedAdql += getOrderBy(descriptor);
+        
         return parsedAdql;
     }
     

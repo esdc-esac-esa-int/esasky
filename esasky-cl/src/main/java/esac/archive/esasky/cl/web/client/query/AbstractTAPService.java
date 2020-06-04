@@ -254,4 +254,11 @@ public abstract class AbstractTAPService {
         
         return adql;
     }
+    
+    protected String getOrderBy(IDescriptor descriptor) {
+    	if(descriptor.getOrderBy() != null) {
+    		return " ORDER BY " + descriptor.getOrderBy();
+    	}
+    	return "";
+    }
 }

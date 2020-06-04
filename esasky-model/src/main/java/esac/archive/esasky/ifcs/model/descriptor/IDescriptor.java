@@ -110,4 +110,6 @@ public interface IDescriptor {
     
     public GeneralJavaScriptObject getMetaDataJSONObject();
     
+	String getOrderBy();
+    void setOrderBy(String orderBy);
 }
