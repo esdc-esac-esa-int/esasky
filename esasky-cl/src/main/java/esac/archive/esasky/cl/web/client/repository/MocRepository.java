@@ -11,7 +11,6 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoV
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -73,10 +72,6 @@ public class MocRepository {
 					}
 				}
 				String tooltipText = sb.toString();
-//				String tooltipText = event.getObject().replaceAll("\n", "<hr/>");
-//				for(MOCEntity entity : allEntities){
-//					tooltipText += entity.MOCClicked(event.getOrders(), event.getIpixels(), event.getCounts());
-//				}
 
 				if(tooltipText != "") {
 					MOCTooltip tooltip = new MOCTooltip(tooltipText, event.getX(), event.getY());

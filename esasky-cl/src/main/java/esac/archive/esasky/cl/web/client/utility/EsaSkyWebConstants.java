@@ -92,6 +92,8 @@ public class EsaSkyWebConstants {
     public static final int MAX_SOURCES_IN_TARGETLIST = 3000;
     public static final int MAX_SHAPES_FOR_MOBILE = 200;
     
+    public static final double EXTTAP_FOV_LIMIT = 5.0;
+    
     public enum SourceType {
         MULTITARGET("Multitarget"), PLANNING("Planning");
 

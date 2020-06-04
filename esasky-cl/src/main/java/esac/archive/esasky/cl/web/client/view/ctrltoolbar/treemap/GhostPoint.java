@@ -8,6 +8,7 @@ public class GhostPoint extends Point{
 	private String loadingText;
 	private String noResultsText;
 	private String notInRangeText;
+	private String largeFovText;
 	
 	public GhostPoint(String loadingText, String noResultsText, String notInRangeText) {
 		super(loadingText, 0.2);
@@ -16,7 +17,7 @@ public class GhostPoint extends Point{
 		this.notInRangeText = notInRangeText;
 		setColor("#000");
 	}
-	
+
 	public void setLoading(){
 		setName(loadingText);
 	}
@@ -47,6 +48,14 @@ public class GhostPoint extends Point{
 
 	public String getNotInRangeText() {
 		return notInRangeText;
+	}
+	
+	public String getLargeFovText() {
+		return largeFovText;
+	}
+	
+	public void setLargeFovText(String largeFovText) {
+		this.largeFovText= largeFovText;
 	}
 	
 	

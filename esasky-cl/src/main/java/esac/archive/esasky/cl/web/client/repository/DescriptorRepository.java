@@ -45,6 +45,7 @@ import esac.archive.esasky.cl.web.client.callback.ExtTapCheckCallback;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
+import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
@@ -507,17 +508,18 @@ public class DescriptorRepository {
 	}
 	
 	public void updateCount4AllExtTaps() {
-		for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
-			if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
-				if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
-					if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < descriptor.getFovLimit()) {
+		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+		CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
+		if(fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+			for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
+				if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+					if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
 						updateCount4ExtTap(descriptor);
-					} else {
-						updateMOCCount4ExtTap(descriptor);
 					}
 				}
 			}
 		}
+
 	}
 	
 	public void updateCount4ExtTap(ExtTapDescriptor descriptor) {

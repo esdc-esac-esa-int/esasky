@@ -3233,6 +3233,12 @@
 	<text key="tabulator_filtered_empty">
 		No data available with the current filters active
 	</text>
+	<text key="closeableTabLayoutPanel_closeAll">
+		Close all tabs
+	</text>
+	<text key="treeMap_large_fov">
+		Data from external services is only availabe at field of view below $fov_limit$ degrees
+	</text>
 
 
 </Internationalization>
