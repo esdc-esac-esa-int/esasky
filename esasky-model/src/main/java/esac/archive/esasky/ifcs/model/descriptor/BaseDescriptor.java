@@ -124,6 +124,10 @@ public abstract class BaseDescriptor implements IDescriptor {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private int adsPublicationsMaxRows;
     
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String orderBy;
+    
     /** List of MetadataDescriptors. */
     protected List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
 
@@ -505,4 +509,13 @@ public abstract class BaseDescriptor implements IDescriptor {
     	
     	return object;
     }
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
+    
 }

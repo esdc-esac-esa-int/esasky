@@ -65,6 +65,10 @@ public class TAPExtTapService extends AbstractTAPService {
     		adql += descriptor.getDateADQL();
     	}
     	
+       	if(descriptor.getOrderBy() != null) {
+    		adql += " ORDER BY " + descriptor.getOrderBy();
+    	}
+    	
     	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
     	
     	return adql;
@@ -217,6 +221,10 @@ public class TAPExtTapService extends AbstractTAPService {
         		adql += " AND " + descriptor.getWhereADQL();
         	}
         	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
+        	
+           	if(descriptor.getOrderBy() != null) {
+        		adql += " ORDER BY " + descriptor.getOrderBy();
+        	}
         	
         	return adql;
     	}
