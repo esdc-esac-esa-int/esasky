@@ -11,7 +11,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -21,10 +20,12 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePane
 
 public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
+    private PublicationsDescriptor descriptor;
     public PublicationsByAuthorEntity(PublicationsDescriptor descriptor,
             CountStatus countStatus, SkyViewPosition skyViewPosition,
             String esaSkyUniqId) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance());
+        this.descriptor = descriptor; 
     }
 
     @Override
@@ -39,8 +40,8 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
             
             @Override
             public void execute() {
-                tablePanel.insertData(null, EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL + "?AUTHOR=" + URL.encodeQueryString(getEsaSkyUniqId()) 
-                + "&ROWS=" + getDescriptor().getAdsPublicationsMaxRows()); 
+                tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL + "?AUTHOR=" + URL.encodeQueryString(getEsaSkyUniqId()) 
+                + "&ROWS=" + descriptor.getAdsPublicationsMaxRows()); 
             }
         });
     }
@@ -66,7 +67,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     }
     
     @Override
-    public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
     }
     
     @Override

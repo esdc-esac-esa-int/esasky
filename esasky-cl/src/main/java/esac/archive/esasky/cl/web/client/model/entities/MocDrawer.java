@@ -49,33 +49,32 @@ public class MocDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+	}
+	public void addShapes(TapRowList rowList) {
 		removeAllShapes();
 		
-		if(rowList != null) {
-
-			int healpixOrderIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_ORDER);
-			int healpixIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_IPIX);
-			if(healpixIndex != -1) {
-				String healpixOrder = "";
-				boolean first = true;
-				String mocJSON = "{";
-				for(int i = 0; i < rowList.getData().size(); i++) {
-					String currentOrder = rowList.getDataRow(i).get(healpixOrderIndex).toString();
-					if(currentOrder != healpixOrder) {
-						healpixOrder = currentOrder;
-						if(!first) {
-							mocJSON += "], ";
-						}
-						mocJSON += "\"" + healpixOrder + "\":[";
-						first = false;
+		int healpixOrderIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_ORDER);
+		int healpixIndex = rowList.getColumnIndex(EsaSkyConstants.HEALPIX_IPIX);
+		if(healpixIndex != -1) {
+			String healpixOrder = "";
+			boolean first = true;
+			String mocJSON = "{";
+			for(int i = 0; i < rowList.getData().size(); i++) {
+				String currentOrder = rowList.getDataRow(i).get(healpixOrderIndex).toString();
+				if(currentOrder != healpixOrder) {
+					healpixOrder = currentOrder;
+					if(!first) {
+						mocJSON += "], ";
 					}
-					mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
+					mocJSON += "\"" + healpixOrder + "\":[";
+					first = false;
 				}
-				mocJSON = mocJSON.substring(0,mocJSON.length()-1) + "]}";
-				AladinLiteWrapper.getAladinLite().addMOCData(moc, mocJSON);
-				AladinLiteWrapper.getAladinLite().addMOC(moc);
+				mocJSON += rowList.getDataRow(i).get(healpixIndex) + ",";
 			}
+			mocJSON = mocJSON.substring(0,mocJSON.length()-1) + "]}";
+			AladinLiteWrapper.getAladinLite().addMOCData(moc, mocJSON);
+			AladinLiteWrapper.getAladinLite().addMOC(moc);
 		}
 	}
 	

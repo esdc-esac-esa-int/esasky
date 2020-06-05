@@ -17,6 +17,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -415,7 +416,7 @@ public class MainPresenter {
     }
 
     private void loadAuthorInformationFromSimbad(String author) {
-        final IDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
+        final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
 
         getCtrlTBPresenter().showAuthorInfo(author, descriptor.getAdsAuthorSeparator(), descriptor.getAdsAuthorUrl(),
                 descriptor.getAdsAuthorUrlReplace());

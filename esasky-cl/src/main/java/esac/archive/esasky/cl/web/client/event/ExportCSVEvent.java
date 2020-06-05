@@ -15,21 +15,17 @@ public class ExportCSVEvent extends GwtEvent<ExportCSVEventHandler> {
 
     /** ESASkyUniqID. */
     private String esaSkyUniqID;
-    /** tab type can be ObservationsTablePanel or SourcesTablePanel. */
-    private String tabType;
     /** SaveAllView local instance. */
     private SaveAllView saveAllView;
 
     /**
      * Class constructor.
      * @param inputEsaSkyUniqID Input String
-     * @param inputTabType Input String
      * @param inputSaveAllView Input SaveAllView
      */
-    public ExportCSVEvent(final String inputEsaSkyUniqID, final String inputTabType,
+    public ExportCSVEvent(final String inputEsaSkyUniqID,
             final SaveAllView inputSaveAllView) {
         this.esaSkyUniqID = inputEsaSkyUniqID;
-        this.tabType = inputTabType;
         this.saveAllView = inputSaveAllView;
     }
 
@@ -49,14 +45,6 @@ public class ExportCSVEvent extends GwtEvent<ExportCSVEventHandler> {
      */
     public final String getEsaSkyUniqID() {
         return esaSkyUniqID;
-    }
-
-    /**
-     * getTapType().
-     * @return String
-     */
-    public final String getTabType() {
-        return tabType;
     }
 
     /**

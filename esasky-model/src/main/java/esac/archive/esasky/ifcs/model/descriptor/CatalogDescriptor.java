@@ -7,12 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class CatalogDescriptor extends BaseDescriptor {
 
-    private String shapeLimitDescription;
-
-    private String posTapColumn;
-
-    private String polygonNameTapColumn;
-
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String drawSourcesFunction;
@@ -53,30 +47,16 @@ public class CatalogDescriptor extends BaseDescriptor {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private Double pmArrowWidth;
 
-    public String getShapeLimitDescription() {
-        return shapeLimitDescription;
+    @Override
+    public String getTapRaColumn() {
+        return tapRaColumn == null ? "ra": tapRaColumn;
     }
 
-    public void setShapeLimitDescription(String sourceLimitDescription) {
-        this.shapeLimitDescription = sourceLimitDescription;
+    @Override
+    public String getTapDecColumn() {
+        return tapDecColumn == null ? "dec": tapDecColumn;
     }
-
-    public String getPosTapColumn() {
-        return posTapColumn;
-    }
-
-    public void setPosTapColumn(String posTapColumn) {
-        this.posTapColumn = posTapColumn;
-    }
-
-    public String getPolygonNameTapColumn() {
-        return polygonNameTapColumn;
-    }
-
-    public void setPolygonNameTapColumn(String polygonNameTapColumn) {
-        this.polygonNameTapColumn = polygonNameTapColumn;
-    }
-
+    
     public String getDrawSourcesFunction() {
         return drawSourcesFunction;
     }
@@ -157,16 +137,6 @@ public class CatalogDescriptor extends BaseDescriptor {
         this.pmArrowWidth = pmArrowWidth;
     }
     
-	@Override
-	public String getUniqueIdentifierField() {
-		return polygonNameTapColumn;
-	}
-	
-	@Override
-	public void setUniqueIdentifierField(String field) {
-		polygonNameTapColumn = field;
-	}
-
     @Override
     public String getIcon() {
         return "catalog";

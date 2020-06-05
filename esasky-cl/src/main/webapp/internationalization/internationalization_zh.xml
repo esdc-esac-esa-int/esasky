@@ -292,24 +292,8 @@
 		调色板
 	</text>
 
-	<!-- abstractTablePanel -->
 	<text key="tabulator_download">
 		下载行
-	</text>
-	<text key="abstractTablePanel_preview">
-		预览
-	</text>
-	<text key="abstractTablePanel_sourceInPublication">
-	</text>
-	<text key="abstractTablePanel_name">
-		名称
-	</text>
-	<text key="abstractTablePanel_observation">
-		观测
-	</text>
-
-	<text key="abstractTablePanel_noDataMatching">
-		没有符合过滤条件的数据
 	</text>
 
 	<text key="dateFilter_resetFilter">
@@ -512,9 +496,6 @@
 	</text>
 
 	<!-- resultsPresenter -->
-	<text key="resultsPresenter_noDataFound">
-		找不到数据
-	</text>
 	<text key="resultsPresenter_computingDataCrossMatch">
 		与 $SSOTEXT$ 进行交叉证认
 	</text>
@@ -1039,9 +1020,6 @@
 	<text key="stylePanel_removeMedianCheckBox">
 		减去中位自行
 	</text>
-	<text key="sourceLimitDescription">
-		显示$orderBy$排序中第一个$sourceLimit$源	
-	</text>
 	<text key="sourceLimitNumImages">
 		显示观测次数最多的$sourceLimit$源
 	</text>
@@ -1204,15 +1182,6 @@
 	</text>
 	<text key="ResizingDataPanel">
 		调整数据面板大小
-	</text>
-	<text key="dataPanelPager_of">
-		的
-	</text>
-	<text key="dataPanelPager_nextPagerTooltip">
-		下一页
-	</text>
-	<text key="dataPanelPager_previousPagerTooltip">
-		上一页
 	</text>
 	<text key="wavelength_GAMMA_RAY">
 		伽马射线
@@ -1707,9 +1676,6 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
-	<text key="sourceLimitDescription_EXTTAP">
-    显示最前面$sourceLimit$个结果。放大以获得更小区域内的所有数据。
-	</text>
 	<text key="datalink_loadFailed">
 		数据链接加载失败
 	</text>

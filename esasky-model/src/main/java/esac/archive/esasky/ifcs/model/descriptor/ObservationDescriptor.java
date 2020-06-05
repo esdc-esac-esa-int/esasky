@@ -6,17 +6,6 @@ package esac.archive.esasky.ifcs.model.descriptor;
  */
 public class ObservationDescriptor extends CommonObservationDescriptor {
 
-    /** for mission with a very large fov like INTEGRAL */
-    private Boolean isSurveyMission;
-
-    public Boolean getIsSurveyMission() {
-        return isSurveyMission;
-    }
-
-    public void setIsSurveyMission(Boolean isSurveyMission) {
-        this.isSurveyMission = isSurveyMission;
-    }
-
     @Override
     public String getIcon() {
         return "galaxy";

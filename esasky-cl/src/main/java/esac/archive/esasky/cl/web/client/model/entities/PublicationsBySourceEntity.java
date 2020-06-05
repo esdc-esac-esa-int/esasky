@@ -10,7 +10,6 @@ import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -22,11 +21,13 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePane
 
 public class PublicationsBySourceEntity extends EsaSkyEntity {
 
+    private PublicationsDescriptor descriptor;
     public PublicationsBySourceEntity(PublicationsDescriptor descriptor,
             CountStatus countStatus, SkyViewPosition skyViewPosition,
             String esaSkyUniqId, double ra, double dec, String bibcount) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
-        super.addShapes(null, getTableShapeInfo(ra, dec, bibcount, getEsaSkyUniqId()));
+        super.addShapes(getTableShapeInfo(ra, dec, bibcount, getEsaSkyUniqId()));
+        this.descriptor = descriptor;
     }
 
     @Override
@@ -41,8 +42,8 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
             
             @Override
             public void execute() {
-                tablePanel.insertData(null, EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId()) 
-                    + "&ROWS=" + getDescriptor().getAdsPublicationsMaxRows()); 
+                tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId()) 
+                    + "&ROWS=" + descriptor.getAdsPublicationsMaxRows()); 
             }
         });
     }
@@ -68,7 +69,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
     }
     
     @Override
-    public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
+    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
     }
     
     private native GeneralJavaScriptObject getTableShapeInfo(double ra, double dec, String bibcount, String name)/*-{

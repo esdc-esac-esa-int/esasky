@@ -518,7 +518,6 @@ public class DescriptorRepository {
 				}
 			}
 		}
-
 	}
 	
 	public void updateCount4ExtTap(ExtTapDescriptor descriptor) {
@@ -789,18 +788,14 @@ public class DescriptorRepository {
 		descriptor.setGuiShortName(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setPrimaryColor(footprintsSet.getOverlaySet().getColor());
 		
-		descriptor.setTapObservationId(APIMetadataConstants.OBS_NAME);
+		descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
 		
 		descriptor.setTapSTCSColumn("stcs");
 		descriptor.setSampEnabled(false);
-		descriptor.setIsSurveyMission(false);
 
 		descriptor.setFovLimit(360.0);
 
 		descriptor.setTapTable("<not_set>");
-		descriptor.setCountColumn("<not_set>");
-		descriptor.setCountFovLimit(0);
-		descriptor.setAdsPublicationsMaxRows(0);
 		descriptor.setTabCount(0);
 
 		return descriptor;
@@ -820,17 +815,13 @@ public class DescriptorRepository {
 		descriptor.setFovLimit(360.0);
 		
 		descriptor.setShapeLimit(10000);
-		descriptor.setShapeLimitDescription("sourceLimitDescription");
 
 		descriptor.setTapTable("<not_set>");
-		descriptor.setCountColumn("<not_set>");
-		descriptor.setCountFovLimit(0);
-		descriptor.setAdsPublicationsMaxRows(0);
 		descriptor.setTabCount(0);
 
 		descriptor.setTapRaColumn(APIMetadataConstants.CENTER_RA_DEG);
 		descriptor.setTapDecColumn(APIMetadataConstants.CENTER_DEC_DEG);
-		descriptor.setPolygonNameTapColumn(APIMetadataConstants.CAT_NAME);
+		descriptor.setUniqueIdentifierField(APIMetadataConstants.CAT_NAME);
 
 		return descriptor;
 	}

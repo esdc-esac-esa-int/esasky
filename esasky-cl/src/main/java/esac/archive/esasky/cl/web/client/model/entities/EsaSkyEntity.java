@@ -17,7 +17,6 @@ import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
@@ -35,14 +34,12 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ExtTapTablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
@@ -228,7 +225,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
     }
 
-
     @Override
     public void fetchData() {
         if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() == 0 ) {
@@ -293,7 +289,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         String url = descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON);
 
         clearAll();
-        tablePanel.insertData(null, url);
+        tablePanel.insertData(url);
     }
 
     public void fetchDataWithoutMOC(String whereQuery) {
@@ -308,7 +304,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
     	
     	clearAll();
-    	tablePanel.insertData(null, descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataFromMOCPixelsADQL(whereQuery), EsaSkyConstants.JSON));
+    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataFromMOCPixelsADQL(whereQuery), EsaSkyConstants.JSON));
     }
 
     public void setDescriptorMetaData() {
@@ -349,8 +345,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
-        drawer.addShapes(rowList, javaScriptObject);
+    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+        drawer.addShapes(javaScriptObject);
     }
 
     @Override
@@ -504,11 +500,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public EntityContext getContext() {
-        return defaultEntity.getContext();
-    }
-
-    @Override
     public void clearAll() {
         defaultEntity.clearAll();
     }
@@ -525,27 +516,18 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public ITablePanel createTablePanel() {
-        if(Modules.useTabulator) {
-            tablePanel = new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
-        } else {
-            tablePanel = new ExtTapTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
-        }
+        tablePanel = new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
         return tablePanel;
     }
 
     @Override
     public boolean isSampEnabled() {
-        return true;
+        return defaultEntity.isSampEnabled();
     }
 
     @Override
     public boolean isRefreshable() {
         return defaultEntity.isRefreshable();
-    }
-
-    @Override
-    public boolean hasDownloadableDataProducts() {
-        return false;
     }
 
     @Override

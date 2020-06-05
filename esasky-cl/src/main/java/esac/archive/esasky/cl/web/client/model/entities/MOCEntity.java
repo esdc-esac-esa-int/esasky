@@ -25,11 +25,9 @@ import esac.archive.esasky.ifcs.model.shared.ESASkyResultMOC;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
-import esac.archive.esasky.cl.web.client.callback.MetadataCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
@@ -38,7 +36,7 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
@@ -68,7 +66,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private boolean loadMOCRequested = false;
     private boolean freshLoad = true;
     
-    private AbstractTableFilterObserver filterObserver;
+    private TableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
     
     private CountObserver countObserver = new CountObserver() {
@@ -124,7 +122,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		parentEntity = parent;
 		
 		MocRepository.getInstance().addMocEntity(this);
-		filterObserver = new AbstractTableFilterObserver() {
+		filterObserver = new TableFilterObserver() {
 			
 			@Override
 			public void filterChanged(Map<String, String> tapFilters) {
@@ -178,28 +176,6 @@ public class MOCEntity implements GeneralEntityInterface {
     	}
 		return tooltipText;
 		
-    }
-    
-    public void sendLoadQuery(int order, int ipix) {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
-
-        String adql = TAPCatalogueService.getInstance().getMetadataAdqlFromIpix(descriptor, order, ipix);
-        
-    	String filter = tablePanel.getFilterString();
-        adql += filter;
-    	
-    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
-        
-        Log.debug(debugPrefix + "Query [" + url + "]");
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        try {
-            builder.sendRequest(null,
-                new MetadataCallback(tablePanel, adql, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName())));
-        } catch (RequestException e) {
-            Log.error(e.getMessage());
-            Log.error("[getMocMetadata] Error fetching JSON data from server");
-        }
-
     }
     
     public void sendLoadQuery() {
@@ -812,12 +788,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public EntityContext getContext() {
-		return defaultEntity.getContext();
-	}
-
-
-	@Override
 	public String getColor() {
 		return defaultEntity.getColor();
 	}
@@ -842,18 +812,13 @@ public class MOCEntity implements GeneralEntityInterface {
 		return defaultEntity.isRefreshable();
 	}
 
-	@Override
-	public boolean hasDownloadableDataProducts() {
-		return false;
-	}
-
     @Override
     public boolean isCustomizable() {
     	return defaultEntity.isCustomizable();
     }
 
 	@Override
-	public void addShapes(TapRowList shapeList, GeneralJavaScriptObject javaScriptObject) {
+	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
 		// TODO Auto-generated method stub
 		
 	}

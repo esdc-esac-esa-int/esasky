@@ -472,8 +472,7 @@ public class TargetListPanel extends DialogBox {
 
         details.put(MultiTargetSourceConstants.SIMBAD_MAIN_ID, currEntity.getSimbadMainId());
         details.put(
-                MultiTargetSourceConstants.CATALOGUE_NAME,
-                TextMgr.getInstance().getText("uploadTargetListPanel_MultiTargetCatalog"));
+                MultiTargetSourceConstants.CATALOGUE_NAME, MultiTargetSourceConstants.OVERLAY_NAME);
         details.put(MultiTargetSourceConstants.SOURCE_ID, id.toString());
         String targetName;
         if (currEntity.getUserInputType() == SearchInputType.BIBCODE
@@ -483,8 +482,6 @@ public class TargetListPanel extends DialogBox {
             targetName = currEntity.getUserInput();
         }
         details.put(MultiTargetSourceConstants.USER_INPUT, targetName);
-        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-                EsaSkyWebConstants.SourceType.MULTITARGET.toString());
 
         details.put("cooFrame", currEntity.getCooFrame());
         String jsRa = currEntity.getUserRaDeg();

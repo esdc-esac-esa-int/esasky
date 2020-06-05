@@ -70,7 +70,7 @@ public abstract class BaseDescriptor implements IDescriptor {
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private String tapSTCSColumn;
+    protected String tapSTCSColumn;
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -103,26 +103,6 @@ public abstract class BaseDescriptor implements IDescriptor {
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private List<ColorChangeObserver> colorObservers = new LinkedList<ColorChangeObserver>();
-    
-    /** ADS Author search related URL, must have a adsAuthorUrlReplace string value to replace by author name */
-    @JsonInclude(Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private String adsAuthorUrl;
-
-    /** ADS Author search value to replace in adsAuthorUrl for author name */
-    @JsonInclude(Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private String adsAuthorUrlReplace;
-    
-    /** ADS names separator value for authors in authors field for publications by source response */
-    @JsonInclude(Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private String adsAuthorSeparator;
-
-    /** ADS max returned rows for publications by source response */
-    @JsonInclude(Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private int adsPublicationsMaxRows;
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -234,66 +214,6 @@ public abstract class BaseDescriptor implements IDescriptor {
     public void setArchiveProductURI(String archiveProductURI) {
         this.archiveProductURI = archiveProductURI;
     }
-    
-    @Override
-    public String getAdsAuthorUrl() {
-        return adsAuthorUrl;
-    }
-
-    @Override
-    public void setAdsAuthorUrl(String adsAuthorURL) {
-        this.adsAuthorUrl = adsAuthorURL;
-    }
-
-    @Override
-    public String getAdsAuthorUrlReplace() {
-        return adsAuthorUrlReplace;
-    }
-
-    @Override
-    public void setAdsAuthorUrlReplace(String adsAuthorUrlReplace) {
-        this.adsAuthorUrlReplace = adsAuthorUrlReplace;
-    }
-
-    @Override
-    public String getAdsAuthorSeparator(){
-        return adsAuthorSeparator;
-    }
-
-    @Override
-    public void setAdsAuthorSeparator(String adsAuthorSeparator){
-        this.adsAuthorSeparator = adsAuthorSeparator;
-    }
-    
-    @Override
-    public int getAdsPublicationsMaxRows(){
-        return adsPublicationsMaxRows;
-    }
-
-    @Override
-    public void setAdsPublicationsMaxRows(int adsPublicationsMaxRows){
-        this.adsPublicationsMaxRows = adsPublicationsMaxRows;
-    }
-    
-    @Override
-    public final String getCountColumn() {
-        return countColumn;
-    }
-
-    @Override
-    public final void setCountColumn(final String inputCountColumn) {
-        this.countColumn = inputCountColumn;
-    }
-
-    @Override
-    public final double getCountFovLimit() {
-        return countFovLimit;
-    }
-
-    @Override
-    public final void setCountFovLimit(final double inputCountFovLimit) {
-        this.countFovLimit = inputCountFovLimit;
-    }
 
     @Override
     public List<MetadataDescriptor> getMetadata() {
@@ -391,8 +311,8 @@ public abstract class BaseDescriptor implements IDescriptor {
         return this.sampEnabled;
     }
    
-    public final String getTapSTCSColumn() {
-        return tapSTCSColumn;
+    public String getTapSTCSColumn() {
+        return tapSTCSColumn == null ? "" : tapSTCSColumn;
     }
 
     public final void setTapSTCSColumn(final String inputTapSTCSColumn) {

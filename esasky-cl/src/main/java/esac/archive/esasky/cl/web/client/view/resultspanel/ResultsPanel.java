@@ -70,9 +70,7 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 			
 			@Override
 			public void onComplete(double currentPosition) {
-				if(GUISessionStatus.isDataPanelOpen()){
-					tabPanel.refreshHeight();
-				} else {
+				if(!GUISessionStatus.isDataPanelOpen()){
 					CommonEventBus.getEventBus().fireEvent(new DataPanelAnimationCompleteEvent());
 				}
 			}
@@ -121,7 +119,7 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	
 	@Override
 	public final Widget getTabFromTableId(final String id) {
-		return tabPanel.getAbstractTablePanelFromId(id).getWidget();
+		return tabPanel.getTablePanelFromId(id).getWidget();
 	}
 	
 	public static final void toggleOpenCloseDataPanel(){

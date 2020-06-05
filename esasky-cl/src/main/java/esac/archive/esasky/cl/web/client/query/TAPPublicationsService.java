@@ -6,7 +6,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
@@ -33,7 +32,7 @@ public class TAPPublicationsService extends AbstractTAPService {
     public static String getMetadataAdqlFromEsaSkyTap(PublicationsDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit
                 + " name, ra, dec, bibcount  from " + descriptor.getTapTable()
-                + " where bibcount>0 AND " + getStaticGeometricConstraint(descriptor);
+                + " where bibcount>0 AND " + TAPPublicationsService.getInstance().getGeometricConstraint(descriptor);
         
         adql += " ORDER BY " + orderBy;
 
@@ -50,8 +49,8 @@ public class TAPPublicationsService extends AbstractTAPService {
     public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit 
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
-                + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
+                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
+                + descriptor.getTapDecColumn() + "), ";
 
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
@@ -107,9 +106,10 @@ public class TAPPublicationsService extends AbstractTAPService {
         return null;
     }
 
-	protected static String getStaticGeometricConstraint(IDescriptor descriptor) {
-		String adql =  "1=CONTAINS(POINT('ICRS'," + EsaSkyConstants.SOURCE_TAP_RA + ", "
-	                + EsaSkyConstants.SOURCE_TAP_DEC + "), ";
+    @Override
+	protected String getGeometricConstraint(IDescriptor descriptor) {
+		String adql =  "1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
+	                + descriptor.getTapDecColumn() + "), ";
 
 	        String shape = null;
 	        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
@@ -140,11 +140,5 @@ public class TAPPublicationsService extends AbstractTAPService {
 	        }
 	        adql += shape + ")";
 	        return adql;
-	}
-
-	@Override
-	protected String getGeometricConstraint(IDescriptor descriptor) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

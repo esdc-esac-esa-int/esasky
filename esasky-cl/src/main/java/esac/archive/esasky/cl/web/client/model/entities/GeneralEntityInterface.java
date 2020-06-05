@@ -37,7 +37,6 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public CountStatus getCountStatus();
 
     public IDescriptor getDescriptor();
-    public EntityContext getContext();
 
     public void clearAll();
     
@@ -56,7 +55,6 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public boolean isSampEnabled();
     public boolean isRefreshable();
     public void setRefreshable(boolean isRefreshable);
-    public boolean hasDownloadableDataProducts();
 	public boolean isCustomizable();
 	
 	public void onShapeSelection(AladinShape shape);

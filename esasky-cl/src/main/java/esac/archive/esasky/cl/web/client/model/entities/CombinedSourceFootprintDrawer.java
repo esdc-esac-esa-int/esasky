@@ -11,7 +11,6 @@ import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
@@ -83,25 +82,18 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList, GeneralJavaScriptObject rows) {
+	public void addShapes(GeneralJavaScriptObject rows) {
 	    removeAllSourcesAndFootprints();
 		
-		if(rowList == null) {
-			GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
-			for(int i = 0; i < rowDataArray.length; i++) {
-				storeShape(shapeBuilder.buildShape(i, null, rowDataArray[i]));
-			}
-			Log.debug("Added " + rowDataArray.length + " rows and shapes");
-		} else {
-			for(int i = 0; i < rowList.getData().size(); i++) {
-				storeShape(shapeBuilder.buildShape(i, rowList, null));
-			}
+		GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
+		for(int i = 0; i < rowDataArray.length; i++) {
+			storeShape(shapeBuilder.buildShape(i, null, rowDataArray[i]));
 		}
+		Log.debug("Added " + rowDataArray.length + " rows and shapes");
 		
 		if(sourceShapes.size() > 0) {
 			AladinLiteWrapper.getAladinLite().addCatalogToAladin(sourceOverlay);
 		}
-		
 		
 		for (Shape shape : sourceShapes) {
 			AladinLiteWrapper.getAladinLite().newApi_addSourceToCatalogue(sourceOverlay, shape.getJsObject());

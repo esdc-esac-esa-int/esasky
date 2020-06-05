@@ -16,7 +16,6 @@ public class ExportVOTableEvent extends GwtEvent<ExportVOTableEventHandler> {
     /** ESASkyUniqID. */
     private String esaSkyUniqID;
     /** tab type can be ObservationsTablePanel or SourcesTablePanel. */
-    private String tabType;
     /** SaveAllView local instance. */
     private SaveAllView saveAllView;
 
@@ -26,10 +25,9 @@ public class ExportVOTableEvent extends GwtEvent<ExportVOTableEventHandler> {
      * @param inputTabType Input String
      * @param inputSaveAllView Input SaveAllView
      */
-    public ExportVOTableEvent(final String inputEsaSkyUniqID, final String inputTabType,
+    public ExportVOTableEvent(final String inputEsaSkyUniqID,
             final SaveAllView inputSaveAllView) {
         this.esaSkyUniqID = inputEsaSkyUniqID;
-        this.tabType = inputTabType;
         this.saveAllView = inputSaveAllView;
     }
 
@@ -51,13 +49,6 @@ public class ExportVOTableEvent extends GwtEvent<ExportVOTableEventHandler> {
         return esaSkyUniqID;
     }
 
-    /**
-     * getTapType().
-     * @return String
-     */
-    public final String getTabType() {
-        return tabType;
-    }
 
     /**
      * getSaveAllView().

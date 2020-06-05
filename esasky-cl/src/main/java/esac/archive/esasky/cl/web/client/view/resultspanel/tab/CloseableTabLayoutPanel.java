@@ -31,7 +31,6 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
 import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEventHandler;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEvent;
@@ -49,8 +48,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 
@@ -251,17 +249,6 @@ public class CloseableTabLayoutPanel extends Composite {
         } else {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
         }
-    	ensureCorrectButtonClickability();
-    	
-    	ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
-    	if(tabPanel.isMOCMode()) {
-    		sendButton.setEnabled(false);
-    		saveButton.setEnabled(false);
-    	}
-    	else{
-    		sendButton.setEnabled(true);
-    		saveButton.setEnabled(true);
-    	}
     }
 
     private EsaSkyButton createSaveButton() {
@@ -269,7 +256,6 @@ public class CloseableTabLayoutPanel extends Composite {
         saveButton.setMediumStyle();
         saveButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_saveResultsTableOrDownload"));
 
-        final String tabType = AbstractTablePanel.class.getSimpleName();
         saveAllView = new SaveAllView();
         // Bind download products Anchor.
         saveAllView.getDowloadProductsAnchor().addClickHandler(new ClickHandler() {
@@ -287,7 +273,7 @@ public class CloseableTabLayoutPanel extends Composite {
             public void onClick(final ClickEvent event) {
                 String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
                 CommonEventBus.getEventBus().fireEvent(
-                        new ExportVOTableEvent(selectedTabId, tabType, saveAllView));
+                        new ExportVOTableEvent(selectedTabId, saveAllView));
             }
 
         });
@@ -299,7 +285,7 @@ public class CloseableTabLayoutPanel extends Composite {
             public void onClick(final ClickEvent event) {
                 String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
                 CommonEventBus.getEventBus().fireEvent(
-                        new ExportCSVEvent(selectedTabId, tabType, saveAllView));
+                        new ExportCSVEvent(selectedTabId, saveAllView));
             }
         });
 
@@ -490,11 +476,11 @@ public class CloseableTabLayoutPanel extends Composite {
         this.tabs.add(tab);
         this.tabWidgetIds.put(tab, tab.getId());
         
-        tabPanel.registerObserver(new AbstractTableObserver() {
+        tabPanel.registerObserver(new TableObserver() {
             
 			@Override
 			public void numberOfShownRowsChanged(int numberOfShownRows) {
-				ensureCorrectButtonClickability();
+				ensureCorrectButtonClickability(numberOfShownRows);
 			}
 
             @Override
@@ -542,20 +528,10 @@ public class CloseableTabLayoutPanel extends Composite {
     	return false;
     }
     
-    private void ensureCorrectButtonClickability() {
+    private void ensureCorrectButtonClickability(int numberOfShownRows) {
         ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
-        if(Modules.improvedDownload){
-            if(Modules.useTabulator){
-                saveButton.setEnabled(true);
-                sendButton.setEnabled(true);
-            } else {
-                sendButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
-                saveButton.setEnabled(tabPanel.getFilteredRows().size() > 0 && !tabPanel.getIsHidingTable());
-            }
-        } else {
-        	sendButton.setEnabled(!tabPanel.getIsHidingTable());
-        	saveButton.setEnabled(!tabPanel.getIsHidingTable());
-        }
+        sendButton.setEnabled(!tabPanel.isMOCMode() && numberOfShownRows > 0 && !tabPanel.getIsHidingTable());
+        saveButton.setEnabled(!tabPanel.isMOCMode() && numberOfShownRows > 0 && !tabPanel.getIsHidingTable());
     }
 
     public final int getSelectedTabIndex() {
@@ -601,7 +577,7 @@ public class CloseableTabLayoutPanel extends Composite {
         return this.tabWidgetIds.inverse().get(id);
     }
 
-    public final ITablePanel getAbstractTablePanelFromId(final String id) {
+    public final ITablePanel getTablePanelFromId(final String id) {
     	MissionTabButtons tab = getTabFromId(id);
         if (tab != null) {
             return this.tabLayout.getWidget(this.tabs.indexOf(tab));
@@ -624,20 +600,13 @@ public class CloseableTabLayoutPanel extends Composite {
     public final BiMap<MissionTabButtons, String> getTabWidgetIds() {
         return tabWidgetIds;
     }
-
-	public void refreshHeight() {
-		tabLayout.refreshHeight();
-	}
 	
 	public void notifyDataPanelToggled() {
 		toggleButtonRotation();
-		if(getSelectedWidget() != null) {
-			getSelectedWidget().toggleVisibilityOfFreeFlowingElements();
-		}
 	}
 	
 	private void fireShowStylePanel(String tabId) {
-		ITablePanel tablePanel = getAbstractTablePanelFromId(tabId);
+		ITablePanel tablePanel = getTablePanelFromId(tabId);
 		tablePanel.showStylePanel(styleButton.getAbsoluteLeft() + styleButton.getOffsetWidth() + 2, 
                 styleButton.getAbsoluteTop());
 	}

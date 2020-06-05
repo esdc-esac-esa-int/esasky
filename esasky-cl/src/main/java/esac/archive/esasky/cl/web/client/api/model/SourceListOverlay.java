@@ -11,7 +11,7 @@ public class SourceListOverlay implements IOverlay {
 	String cooframe;
 	String color;
 	Integer lineWidth;
-	List<Source> skyObjectList = new LinkedList<Source>();
+	List<GeneralSkyObject> skyObjectList = new LinkedList<GeneralSkyObject>();
 
 	@Override
 	public String getOverlayName() {
@@ -50,13 +50,13 @@ public class SourceListOverlay implements IOverlay {
 	}
 
 	@Override
-	public List<Source> getSkyObjectList() {
+	public List<GeneralSkyObject> getSkyObjectList() {
 		return skyObjectList;
 	}
 
 	@Override
-	public void setSkyObjectList(List<? extends GeneralSkyObject> skyObjects) {
-		this.skyObjectList = (List<Source>) skyObjects;
+	public void setSkyObjectList(List<GeneralSkyObject> skyObjects) {
+		this.skyObjectList = skyObjects;
 	}
 
 	@Override

@@ -14,14 +14,12 @@ import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
-import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -40,8 +38,6 @@ public class DefaultEntity implements GeneralEntityInterface{
     private AbstractTAPService metadataService;
     private boolean isRefreshable = true;
     
-    protected EntityContext context;
-
     public DefaultEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
     		String esaSkyUniqObsId, IShapeDrawer drawer, AbstractTAPService metadataService) {
     	this.descriptor = descriptor;
@@ -51,7 +47,6 @@ public class DefaultEntity implements GeneralEntityInterface{
         this.lastUpdate = System.currentTimeMillis();
         this.drawer = drawer;
         this.metadataService = metadataService;
-        this.context = EntityContext.ASTRO_IMAGING; //TODO remove together with getContext
         setTabNumber(descriptor.getTabCount());
         
 		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
@@ -123,10 +118,6 @@ public class DefaultEntity implements GeneralEntityInterface{
     	return descriptor;
     }
 
-    public EntityContext getContext() {
-        return context;
-    }
-
     public void clearAll() {
         if (this.getMetadata() != null) {
             if (this.getMetadata().getMetadata() != null) {
@@ -175,7 +166,7 @@ public class DefaultEntity implements GeneralEntityInterface{
 //	 }
     
 	@Override
-	public AbstractTablePanel createTablePanel() {
+	public ITablePanel createTablePanel() {
 		return null;
 	}
     
@@ -210,32 +201,8 @@ public class DefaultEntity implements GeneralEntityInterface{
         	
         	@Override
         	public void execute() {
-        		if(Modules.useTabulator) {
-            		drawer.removeAllShapes();
-        			clearAll();
-//        			String filter = tablePanel.getFilterString();
-//        			String adql = getMetadataAdql(filter);
-//        			tablePanel.insertData(null, TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON));
-//        		} else {
-//        			clearAll();
-//        			final String debugPrefix = "[fetchData][" + getDescriptor().getGuiShortName() + "]";
-//        			// Get Query in ADQL format.
-//        			final String adql = getMetadataAdql();
-//        			
-//        			String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-//        			
-//        			Log.debug(debugPrefix + "Query [" + url + "]");
-//        			
-//        			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-//        			try {
-//        				builder.sendRequest(null, new MetadataCallback(tablePanel, adql,
-//        						TextMgr.getInstance().getText(metadataService.getRetreivingDataTextKey()).replace("$NAME$", getDescriptor().getGuiShortName())));
-//        				
-//        			} catch (RequestException e) {
-//        				Log.error(e.getMessage());
-//        				Log.error(debugPrefix + "Error fetching JSON data from server");
-//        			}
-        		}
+        		drawer.removeAllShapes();
+    			clearAll();
         	}
         });
 	}
@@ -354,8 +321,8 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void addShapes(TapRowList rowList, GeneralJavaScriptObject javaScriptObject) {
-		drawer.addShapes(rowList, javaScriptObject);
+	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+		drawer.addShapes(javaScriptObject);
 	}
 
 	@Override
@@ -371,11 +338,6 @@ public class DefaultEntity implements GeneralEntityInterface{
 	@Override
 	public boolean isRefreshable() {
 		return isRefreshable;
-	}
-
-	@Override
-	public boolean hasDownloadableDataProducts() {
-		return true;
 	}
 
 	@Override

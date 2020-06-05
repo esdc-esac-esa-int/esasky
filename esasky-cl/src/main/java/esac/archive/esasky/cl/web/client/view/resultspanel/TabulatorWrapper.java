@@ -126,6 +126,15 @@ public class TabulatorWrapper{
     private native GeneralJavaScriptObject[] getSelectedRows(GeneralJavaScriptObject tableJsObject)/*-{
         return tableJsObject.getSelectedData();
     }-*/;
+
+    public int getVisibleRowCount(){
+        return getVisibleRowCount(tableJsObject);
+    }
+    
+    private native int getVisibleRowCount(GeneralJavaScriptObject tableJsObject)/*-{
+        console.log("active: " + tableJsObject.getDataCount("active"));
+        return tableJsObject.getDataCount("active");
+    }-*/;
     
     public void setPlaceholderText(String text){
         setPlaceholderText(tableJsObject, text);
@@ -864,7 +873,7 @@ public class TabulatorWrapper{
 
 			   	var footerCounter = this.footerManager.element.getElementsByClassName("footerCounter")[0];
 			   	var text = $wnd.esasky.getInternationalizationText("tabulator_rowCount");
-			   	text = text.replace("$count$", rows.length);
+			   	text = text.replace("$count$", @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(rows.length, 0));
 			   	if(footerCounter){
 					footerCounter.innerHTML = text;
 			   	}

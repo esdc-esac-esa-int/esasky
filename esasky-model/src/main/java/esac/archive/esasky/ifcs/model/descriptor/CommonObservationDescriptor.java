@@ -7,39 +7,10 @@ package esac.archive.esasky.ifcs.model.descriptor;
 public abstract class CommonObservationDescriptor extends BaseDescriptor {
 
 
-    /** Tap DB ObsId column name. */
-    private String tapObservationId;
-
     /** MOC DB table name. */
     private String mocTapTable;
     /** MOC Tap DB STC_S column name. */
     private String mocSTCSColumn;
-
-    /** DD product URL. */
-    private String ddProductIDParameter;
-
-    /** DD Product ID. */
-    private String ddProductIDColumn;
-    
-	private String ssoCardReductionTapTable;
-
-    private String ssoXMatchTapTable;
-
-    /**
-     * getTapObservationId().
-     * @return String.
-     */
-    public final String getTapObservationId() {
-        return tapObservationId;
-    }
-
-    /**
-     * tapObservationId().
-     * @param inputTapObservationId Input String
-     */
-    public final void setTapObservationId(final String inputTapObservationId) {
-        this.tapObservationId = inputTapObservationId;
-    }
 
     /**
      * getMocTapTable().
@@ -73,62 +44,6 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
         this.mocSTCSColumn = inputMocSTCSColumn;
     }
 
-    /**
-     * getDdProductIDParameter().
-     * @return String.
-     */
-    public final String getDdProductIDParameter() {
-        return ddProductIDParameter;
-    }
-
-    /**
-     * setDdProductIDParameter().
-     * @param inputDDProductIDParameter Input String
-     */
-    public final void setDdProductIDParameter(final String inputDDProductIDParameter) {
-        this.ddProductIDParameter = inputDDProductIDParameter;
-    }
-
-    /**
-     * getDdProductIDColumn().
-     * @return String.
-     */
-    public final String getDdProductIDColumn() {
-        return ddProductIDColumn;
-    }
-
-    /**
-     * setDdProductIDColumn().
-     * @param inputDDProductIDColumn Input String
-     */
-    public final void setDdProductIDColumn(final String inputDDProductIDColumn) {
-        this.ddProductIDColumn = inputDDProductIDColumn;
-    }
-
-    public String getSsoCardReductionTapTable() {
-        return ssoCardReductionTapTable;
-    }
-
-    public void setSsoCardReductionTapTable(String ssoCardReductionTapTable) {
-        this.ssoCardReductionTapTable = ssoCardReductionTapTable;
-    }
-
-    public String getSsoXMatchTapTable() {
-        return ssoXMatchTapTable;
-    }
-
-    public void setSsoXMatchTapTable(String ssoXMatchTapTable) {
-        this.ssoXMatchTapTable = ssoXMatchTapTable;
-    }
-    
-    public String getUniqueIdentifierField(){
-    	return tapObservationId;
-    }
-    
-    public void setUniqueIdentifierField(String field){
-    	tapObservationId = field;
-    }
-    
     @Override
     public String getTapRaColumn() {
         return tapRaColumn == null ? "ra_deg": tapRaColumn;
@@ -140,8 +55,12 @@ public abstract class CommonObservationDescriptor extends BaseDescriptor {
     }
     
     @Override
+    public String getTapSTCSColumn() {
+        return tapSTCSColumn == null ? "stc_s": tapSTCSColumn;
+    }
+    
+    @Override
     public Boolean getUseIntersectPolygonInsteadOfContainsPoint() {
         return useIntersectPolygonInsteadOfContainsPoint == null ? true: useIntersectPolygonInsteadOfContainsPoint;
     }
-
 }

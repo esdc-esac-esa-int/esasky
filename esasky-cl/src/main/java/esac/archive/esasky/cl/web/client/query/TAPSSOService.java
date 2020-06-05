@@ -118,11 +118,4 @@ public class TAPSSOService extends AbstractTAPService {
         Log.debug("SSO COUNT ADQL " + adql);
         return adql;
     }
-
-	@Override
-	protected String getGeometricConstraint(IDescriptor descriptor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

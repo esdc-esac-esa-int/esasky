@@ -219,15 +219,6 @@
 	<text key="tabulator_preview">
 		Previsualizar
 	</text>
-	<text key="abstractTablePanel_sourceInPublication">
-		Fuentes citadas en la publicaci&#243;n
-	</text>
-	<text key="abstractTablePanel_name">
-		Nombre
-	</text>
-	<text key="abstractTablePanel_observation">
-		Observaci&#243;n
-	</text>
 
 	<!-- commonObservationTablePanel -->
 	<text key="tabulator_sendRowToVOA">
@@ -383,9 +374,6 @@
 	</text>
 
 	<!-- resultsPresenter -->
-	<text key="resultsPresenter_noDataFound">
-		Datos no encontrados.
-	</text>
 	<text key="resultsPresenter_computingDataCrossMatch">
 		Cruzando datos para $SSOTEXT$
 	</text>
@@ -720,9 +708,6 @@
 		target="_blank"&gt;
 		Documentaci&#243;n completa de esta funcionalidad.
 		&lt;/a&gt; </text>
-	<text key="abstractTablePanel_noDataMatching">
-		No hay datos que correspondan con el filtro aplicado.
-	</text>
 
 	<text key="dateFilter_resetFilter">
 		Quitar filtro
@@ -2028,11 +2013,6 @@
 	<text key="stylePanel_removeMedianCheckBox">
 		Sustraer la mediana del MP
 	</text>
-	<text key="sourceLimitDescription">
-		Mostrando las primeras $sourceLimit$ fuentes,
-		ordenadas
-		por $orderBy$
-	</text>
 	<text key="sourceLimitNumImages">
 		Mostrando las $sourceLimit$ fuentes con m&#225;s
 		observaciones
@@ -2437,15 +2417,6 @@
 	</text>
 	<text key="header_sciModeSwitchTooltip">
 		Cambiar de modo (Cient&#237;fico o Explorador)
-	</text>
-	<text key="dataPanelPager_of">
-		de
-	</text>
-	<text key="dataPanelPager_nextPagerTooltip">
-		P&#225;gina siguiente
-	</text>
-	<text key="dataPanelPager_previousPagerTooltip">
-		P&#225;gina anterior
 	</text>
 	<text key="wavelength_GAMMA_RAY">
 		Rayos gamma

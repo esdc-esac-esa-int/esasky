@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -18,9 +19,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
@@ -39,7 +37,6 @@ import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
@@ -47,10 +44,8 @@ import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
 import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ShapeId;
-import esac.archive.esasky.cl.web.client.model.TableRow;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.model.entities.CommonObservationEntity.DescriptorMapper;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -91,31 +86,25 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			}
 		}
 	}
-
-	public interface IPreviewClickedHandler {
-		public void onPreviewClicked(final String id);
-	}
-
+	public interface DescriptorMapper extends ObjectMapper<IDescriptor> {}
 	private TabulatorWrapper table;
 	/** is the esaSkyUniqID, the same saved into the Entities. */
 	private String esaSkyUniqID;
 	private String tabulatorContainerId;
 	private String tabTitle;
-	private String adqlQueryUrl;
 
-	private List<AbstractTableObserver> observers = new LinkedList<AbstractTableObserver>();
+	private List<TableObserver> observers = new LinkedList<TableObserver>();
 
-	protected LoadingSpinner loadingSpinner = new LoadingSpinner(false);
+	private LoadingSpinner loadingSpinner = new LoadingSpinner(false);
 
 	private FlowPanel tableNotShowingContainer = new FlowPanel();
 	private FlowPanel tableAndGroupHeader = new FlowPanel();
 
 	private boolean isHidingTable = false;
 	private boolean hasBeenClosed = false;
-	protected boolean isShowing = false;
+	private boolean isShowing = false;
 	private boolean inMOCMode = false;
 
-	private IPreviewClickedHandler previewClickedHandler;
 	protected GeneralEntityInterface entity;
 
 	private class TableFocusPanel extends FocusPanel {
@@ -187,7 +176,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         this.tabTitle = inputLabel;
         this.entity = entity;
         this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll("[^A-Za-z0-9-_]", "_");
-		exposeOpenFilterBoxMethodToJs(this);
 
 		FlowPanel container = new FlowPanel();
 		container.addStyleName("dataPanelContainer");
@@ -221,18 +209,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
                 getDescriptor().getMission().equals("ADS-PUB"));
 	}
 
-	private int scrollLeft = 0;
-
-	public void setPreviewClickedHandler(IPreviewClickedHandler previewClickedHandler) {
-		this.previewClickedHandler = previewClickedHandler;
-	}
-
-	public native void exposeOpenFilterBoxMethodToJs(ITablePanel tab) /*-{
-		$wnd.openFilterBox = function(columnNumber) {
-			tab.@esac.archive.esasky.cl.web.client.view.resultspanel.CommonObservationsTablePanel::openFilterBox(I)(columnNumber);
-		}
-	}-*/;
-
 	public IDescriptor getDescriptor() {
 		return entity.getDescriptor();
 	}
@@ -246,33 +222,33 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		loadingSpinner.setVisible(true);
 		table.clearTable();
 	}
-
-	private ColumnSettingInfo[] columnInformationList;
-
-	private void addColumn(Column<TableRow, ?> column, SafeHtml header, int index, String label,
-			MetadataDescriptor currentMTD) {
-		if (header == null) {
-//			table.addColumn(column, "");
-//			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, SafeHtmlUtils.fromSafeConstant(table.getHeader(table.getColumnCount() - 1).toString()), index));
-		} else {
-//			table.addColumn(column, header);
-//			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, header, index));
-		}
-		columnInformationList[index - 1] = ColumnSettingInfo.createColumnSetting(currentMTD.getVisible(), index, label,
-				"Placeholder for description of column");
-		columnInformationList[index - 1].setIntegerProperty("id", index);
-		columnInformationList[index - 1].setStringProperty("label", label);
-		columnInformationList[index - 1].setStringProperty("description", "placeholder description");
-		columnInformationList[index - 1].setStringProperty("tap_name", currentMTD.getTapName());
-
-//		public boolean isVisible;
-//		public int initialIndex;
-//		public String label;
-//		public String description;
-// 		{formatter:"rowSelection", titleFormatter:"rowSelection", align:"center", headerSort:false},
-//	 	{title:"Name", field:"name", width:150, headerFilter:"input"},
-//	 	{title:"Age", field:"age", align:"left", formatter:"progress",headerFilter:"input"},
-	}
+//
+//	private ColumnSettingInfo[] columnInformationList;
+//
+//	private void addColumn(Column<TableRow, ?> column, SafeHtml header, int index, String label,
+//			MetadataDescriptor currentMTD) {
+//		if (header == null) {
+////			table.addColumn(column, "");
+////			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, SafeHtmlUtils.fromSafeConstant(table.getHeader(table.getColumnCount() - 1).toString()), index));
+//		} else {
+////			table.addColumn(column, header);
+////			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, header, index));
+//		}
+//		columnInformationList[index - 1] = ColumnSettingInfo.createColumnSetting(currentMTD.getVisible(), index, label,
+//				"Placeholder for description of column");
+//		columnInformationList[index - 1].setIntegerProperty("id", index);
+//		columnInformationList[index - 1].setStringProperty("label", label);
+//		columnInformationList[index - 1].setStringProperty("description", "placeholder description");
+//		columnInformationList[index - 1].setStringProperty("tap_name", currentMTD.getTapName());
+//
+////		public boolean isVisible;
+////		public int initialIndex;
+////		public String label;
+////		public String description;
+//// 		{formatter:"rowSelection", titleFormatter:"rowSelection", align:"center", headerSort:false},
+////	 	{title:"Name", field:"name", width:150, headerFilter:"input"},
+////	 	{title:"Age", field:"age", align:"left", formatter:"progress",headerFilter:"input"},
+//	}
 
 	public final String getEsaSkyUniqID() {
 		return this.esaSkyUniqID;
@@ -280,32 +256,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public final String getLabel() {
 		return tabTitle;
-	}
-
-	public final String getADQLQueryUrl() {
-		return adqlQueryUrl;
-	}
-
-	public final void setADQLQueryUrl(final String inputADQLQueryUrl) {
-		this.adqlQueryUrl = inputADQLQueryUrl;
-	}
-
-	public final String getADQLQueryForChosenRows() {
-//		String uniqueIdentifierField = getEntity().getDescriptor().getUniqueIdentifierField();
-//		IDescriptor descriptor = getEntity().getDescriptor();
-//
-//		String adql = "SELECT * FROM " + descriptor.getTapTable() + " WHERE " + uniqueIdentifierField + " IN(";
-//		List<TableRow> subset = new ArrayList<TableRow>(getSelectedRows());
-//		if (subset.size() == 0) {
-//			subset = getFilteredRows();
-//		}
-//
-//		for (TableRow row : subset) {
-//			adql += "'" + row.getElementByTapName(uniqueIdentifierField).getValue() + "',";
-//		}
-//		adql = adql.substring(0, adql.length() - 1) + ")";
-//		return adql;
-	    return "";
 	}
 
 	public void selectRow(int rowId) {
@@ -330,23 +280,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		entity.hoverStop(rowId);
 	}
 
-	private boolean addColumnBoolean = false;
-
-	public void openFilterBox(int columnNumber) {
-//		((SortableColumn<?>) table.getColumn(columnNumber)).showFilter();
-	}
-
 	public void selectTablePanel() {
 	    if(isShowing) return;
 		isShowing = true;
-//		exposeOpenFilterBoxMethodToJs(this);
-		for(AbstractTableObserver observer : observers) {
+		for(TableObserver observer : observers) {
 		    observer.onSelection(this);
 		}
 	}
 
 	public void notifyObservers() {
-		for(AbstractTableObserver observer : observers) {
+		for(TableObserver observer : observers) {
 		    observer.onUpdateStyle(this);
 		}
 	}
@@ -379,30 +322,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		return isHidingTable;
 	}
 
-	public void registerObserver(AbstractTableObserver observer) {
+	public void registerObserver(TableObserver observer) {
 		observers.add(observer);
 	}
 
-	public void unregisterObserver(AbstractTableObserver observer) {
+	public void unregisterObserver(TableObserver observer) {
 		if (observers.contains(observer)) {
 			observers.remove(observer);
 		}
-	}
-
-	private void notifyObserversRowsChange(int numberOfVisibleRows) {
-		for (AbstractTableObserver observer : observers) {
-			observer.numberOfShownRowsChanged(numberOfVisibleRows);
-		}
-	}
-
-	public String getUnfilteredRow(int rowIndex) {
-	    if(Modules.useTabulator) {
-	        //TODO
-	        return null;
-	    } else {
-	        TapRowList rowList = getEntity().getMetadata();
-	        return rowList.getData().get(rowIndex).toString();
-	    }
 	}
 
 	public JSONObject exportAsJSON() {
@@ -500,19 +427,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		clearTable();
 		getEntity().fetchData();
 	}
-
-	@Override
-	public void toggleVisibilityOfFreeFlowingElements() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setPreviewClickedHandler(
-			esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTablePanel.IPreviewClickedHandler previewClickedHandler) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	@Override
 	public void setPlaceholderText(String text) {
@@ -520,7 +434,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void insertData(List<TableRow> data, String url) {
+	public void insertData(String url) {
 	    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("FetchingRealData" + esaSkyUniqID, 
 	                    TextMgr.getInstance().getText("tabulator_retrievingMissionData").replace("$NAME$", tabTitle),  url));
 	    
@@ -543,69 +457,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void createSortableColumn(List<TableRow> list, Column<TableRow, ?> col, int colIdx) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public GeneralJavaScriptObject[] getSelectedRows() {
 		return table.getSelectedRows();
 	}
 
-	@Override
-	public List<TableRow> getFilteredRows() {
-		// TODO Auto-generated method stub
-		return new LinkedList<TableRow>();
-	}
-
-	@Override
-	public void clearSelectionModel() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void refreshHeight() {
-
-	}
-
-	@Override
-	public void removeData() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resizeColumnGroupHeader() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setSeparator(int index) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void activateGroupHeaders() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hoverStartEntity(RowHoverEvent hoverEvent) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hoverStopEntity(RowHoverEvent hoverEvent) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private LinkedList<ClosingObserver> closingObservers = new LinkedList<ClosingObserver>();
     
     public void registerClosingObserver(ClosingObserver observer) {
@@ -655,9 +510,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		return filter;
 	}
 	
-	LinkedList<AbstractTableFilterObserver> filterObservers = new LinkedList<>();
+	private LinkedList<TableFilterObserver> filterObservers = new LinkedList<>();
 	
-	public void registerFilterObserver(AbstractTableFilterObserver observer){
+	public void registerFilterObserver(TableFilterObserver observer){
 		if(!filterObservers.contains(observer)) {
 			filterObservers.add(observer);
 		}
@@ -665,7 +520,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 	
 	private void notifyFilterObservers() {
-		for(AbstractTableFilterObserver obs : filterObservers) {
+		for(TableFilterObserver obs : filterObservers) {
 			obs.filterChanged(tapFilters);
 		}
 	}
@@ -677,7 +532,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	
     @Override
     public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
-        entity.addShapes(null, javaScriptObject);
+        entity.addShapes(javaScriptObject);
+    }
+    
+    private void notifyNumberOfRowsShowingChanged(int count) {
+        for (TableObserver obs : observers) {
+            Log.debug("Setting number manually " + count);
+            obs.numberOfShownRowsChanged(count);
+        }
     }
 
     @Override
@@ -711,6 +573,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     public void onDataFiltered(List<Integer> indexArray) {
         entity.hideAllShapes();
         entity.showShapes(indexArray);
+        notifyNumberOfRowsShowingChanged(indexArray.size());
     }
 
     @Override

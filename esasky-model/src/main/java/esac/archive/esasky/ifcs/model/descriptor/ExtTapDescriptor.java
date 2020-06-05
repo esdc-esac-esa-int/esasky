@@ -55,7 +55,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setCreditedInstitutions(parent.getCreditedInstitutions());
     	setPrimaryColor(parent.getPrimaryColor());
     	setTapTable(parent.getTapTable());
-    	setArchiveURL(parent.getAdsAuthorUrl());
     	setArchiveProductURI(parent.getArchiveProductURI());
     	setFovLimit(parent.getFovLimit());
     	setTapRaColumn(parent.getTapRaColumn());

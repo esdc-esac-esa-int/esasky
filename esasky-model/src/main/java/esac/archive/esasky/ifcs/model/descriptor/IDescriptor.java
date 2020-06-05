@@ -32,24 +32,6 @@ public interface IDescriptor {
     String getArchiveProductURI();
     void setArchiveProductURI(String archiveProductURI);
 
-    String getAdsAuthorUrl();
-    void setAdsAuthorUrl(String adsAuthorURL);
-
-    String getAdsAuthorUrlReplace();
-    void setAdsAuthorUrlReplace(String adsAuthorUrlReplace);
-
-    String getAdsAuthorSeparator();
-    void setAdsAuthorSeparator(String adsAuthorSeparator);
-    
-    int getAdsPublicationsMaxRows();
-    void setAdsPublicationsMaxRows(int adsPublicationsMaxRows);
-    
-    String getCountColumn();
-    void setCountColumn(String inputCountColumn);
-
-    double getCountFovLimit();
-    void setCountFovLimit(double inputCountFovLimit);
-
     List<MetadataDescriptor> getMetadata();
     void setMetadata(List<MetadataDescriptor> inputMetadata);
 

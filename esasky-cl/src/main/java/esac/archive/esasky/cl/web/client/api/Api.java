@@ -59,7 +59,7 @@ import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.AbstractTableObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
@@ -251,7 +251,7 @@ public class Api {
 		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		JSONObject callback = tablePanel.exportAsJSON();
 		if(callback.size() == 0) {
-			tablePanel.registerObserver( new AbstractTableObserver() {
+			tablePanel.registerObserver( new TableObserver() {
 
 				@Override
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
@@ -262,6 +262,12 @@ public class Api {
 
                 @Override
                 public void onSelection(ITablePanel selectedTablePanel) {
+                }
+
+                @Override
+                public void onUpdateStyle(ITablePanel panel) {
+                    // TODO Auto-generated method stub
+                    
                 }
 				
 			});

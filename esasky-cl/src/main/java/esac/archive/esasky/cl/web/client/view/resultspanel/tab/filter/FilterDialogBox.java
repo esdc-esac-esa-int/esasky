@@ -44,6 +44,4 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
 	}
 	
 	public abstract boolean isFilterActive();
-	
-	public abstract String getAdqlForFilterCondition();
 }

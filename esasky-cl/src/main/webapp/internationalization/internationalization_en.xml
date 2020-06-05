@@ -350,19 +350,8 @@
 		Colour palette
 	</text>
 
-	<!-- abstractTablePanel -->
 	<text key="tabulator_preview">
 		Preview
-	</text>
-	<text key="abstractTablePanel_name">
-		Name
-	</text>
-	<text key="abstractTablePanel_observation">
-		Observation
-	</text>
-
-	<text key="abstractTablePanel_noDataMatching">
-		No data matching the applied filter
 	</text>
 
 	<text key="dateFilter_resetFilter">
@@ -587,9 +576,6 @@
 	</text>
 
 	<!-- resultsPresenter -->
-	<text key="resultsPresenter_noDataFound">
-		No data found
-	</text>
 	<text key="resultsPresenter_computingDataCrossMatch">
 		Computing data cross-match for $SSOTEXT$
 	</text>
@@ -1716,10 +1702,6 @@
 	<text key="error">
 		error
 	</text>
-	<text key="sourceLimitDescription">
-		Showing the first $sourceLimit$ sources ordered by
-		$orderBy$
-	</text>
 	<text key="sourceLimitNumImages">
 		Showing the $sourceLimit$ most observed sources (Number
 		of Images)
@@ -2591,15 +2573,6 @@
 	</text>
 	<text key="PreviewDialog_loading_postcard">
 		Loading preview
-	</text>
-	<text key="dataPanelPager_of">
-		of
-	</text>
-	<text key="dataPanelPager_nextPagerTooltip">
-		Next page
-	</text>
-	<text key="dataPanelPager_previousPagerTooltip">
-		Previous page
 	</text>
 	<text key="wavelength_GAMMA_RAY">
 		Gamma-ray

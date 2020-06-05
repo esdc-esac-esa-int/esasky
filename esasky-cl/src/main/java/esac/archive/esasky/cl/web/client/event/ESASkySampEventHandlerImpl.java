@@ -16,7 +16,6 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.gsamp.client.GSampManager;
 import esac.archive.esasky.cl.gsamp.client.model.SampClient;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -147,131 +146,62 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
     
                 for (String tableName : event.getSampUrlsPerMissionMap().keySet()) {
     
-                	if(Modules.useTabulator) {
-                		// Get URL
-                		String voTable = event.getSampUrlsPerMissionMap().get(tableName);
-                		final String tableId = tableName;
-                		
-            			final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
-            			
-            			final String votableBufferUrl = Window.Location.getProtocol() + "//"
-            					+ Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
-            					+ EsaSkyConstants.HttpServlet.VOTABLE_BUFFER_SERVLET;
-            			
-            			Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Votable buffer servlet"
-            					+ votableBufferUrl);
-            			
-            			RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, votableBufferUrl);
-            			
-            			try {
-            				final String data = "vot=" + voTable;
-            				requestBuilder.sendRequest(data, new RequestCallback() {
-            					
-            					@Override
-            					public void onError(final com.google.gwt.http.client.Request request,
-            							final Throwable exception) {
-            						sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
-            						Log.debug(
-            								"[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-            								exception);
-            					}
-            					
-            					@Override
-            					public void onResponseReceived(
-            							final com.google.gwt.http.client.Request request,
-            							final Response response) {
-            						String id = "";
-            						id = response.getText();
-            						String resourceUrl = votableBufferUrl + "id=" + id;
-            						Log.debug(resourceUrl);
-            						try {
-            							gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
-            						} catch (Exception e) {
-            							sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + votableBufferUrl + ", Exception: " + e.toString());
-            							Log.debug(
-            									"[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
-            									e);
-            							
-            							CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
-            							throw new IllegalStateException(
-            									"[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
-            						}
-            					}
-            					
-            				});
-            			} catch (RequestException e) {
-            				Log.debug(
-            						"[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-            						e);
-            			}
-                		
-                	} else {
-	                    // Get URL
-	                    String url = event.getSampUrlsPerMissionMap().get(tableName);
-	                    final String tableId = tableName;
-	    
-	                    if (url.length() > 1000) {
-	    
-	                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Url request to SAMP with more than 1000 characters");
-	    
-	                        final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
-	    
-	                        final String tinyURL = Window.Location.getProtocol() + "//"
-	                                + Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
-	                                + EsaSkyConstants.HttpServlet.TINY_URL_SERVLET;
-	    
-	                        Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Tiny Url servlet"
-	                                + tinyURL);
-	    
-	                        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, tinyURL);
-	    
-	                        try {
-	                            final String data = "url=" + url;
-	                            requestBuilder.sendRequest(data, new RequestCallback() {
-	    
-	                                @Override
-	                                public void onError(final com.google.gwt.http.client.Request request,
-	                                        final Throwable exception) {
-	                                	sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
-	                                    Log.debug(
-	                                            "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-	                                            exception);
-	                                }
-	    
-	                                @Override
-	                                public void onResponseReceived(
-	                                        final com.google.gwt.http.client.Request request,
-	                                        final Response response) {
-	                                    String id = "";
-	                                    id = response.getText();
-	                                    String resourceUrl = tinyURL + "id=" + id;
-	                                    Log.debug(resourceUrl);
-	                                    try {
-	                                        gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
-	                                    } catch (Exception e) {
-	                                    	sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + tinyURL + ", Exception: " + e.toString());
-	                                        Log.debug(
-	                                                "[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
-	                                                e);
-	    
-	                                        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
-	                                        throw new IllegalStateException(
-	                                                "[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
-	                                    }
-	                                }
-	    
-	                            });
-	                        } catch (RequestException e) {
-	                            Log.debug(
-	                                    "[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
-	                                    e);
-	                        }
-	                    } else {
-	    
-	                        String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableId;
-	                        gsampManager.loadVoTable(url, tableId, sendingMessage);
-	                    }
-                	}
+            		// Get URL
+            		String voTable = event.getSampUrlsPerMissionMap().get(tableName);
+            		final String tableId = tableName;
+            		
+        			final String sendingMessage = EsaSkyConstants.APP_NAME + "-" + tableName;
+        			
+        			final String votableBufferUrl = Window.Location.getProtocol() + "//"
+        					+ Window.Location.getHost() + EsaSkyWebConstants.BACKEND_CONTEXT
+        					+ EsaSkyConstants.HttpServlet.VOTABLE_BUFFER_SERVLET;
+        			
+        			Log.debug("[ESASkySampEventHandlerImpl/processEvent()] Votable buffer servlet"
+        					+ votableBufferUrl);
+        			
+        			RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, votableBufferUrl);
+        			
+        			try {
+        				final String data = "vot=" + voTable;
+        				requestBuilder.sendRequest(data, new RequestCallback() {
+        					
+        					@Override
+        					public void onError(final com.google.gwt.http.client.Request request,
+        							final Throwable exception) {
+        						sendGoogleAnalyticsErrorEvent("Failed to send data to " + data + ", Exception: " + exception.toString());
+        						Log.debug(
+        								"[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
+        								exception);
+        					}
+        					
+        					@Override
+        					public void onResponseReceived(
+        							final com.google.gwt.http.client.Request request,
+        							final Response response) {
+        						String id = "";
+        						id = response.getText();
+        						String resourceUrl = votableBufferUrl + "id=" + id;
+        						Log.debug(resourceUrl);
+        						try {
+        							gsampManager.loadVoTable(resourceUrl, tableId, sendingMessage);
+        						} catch (Exception e) {
+        							sendGoogleAnalyticsErrorEvent("Failed to load VO Table: " + votableBufferUrl + ", Exception: " + e.toString());
+        							Log.debug(
+        									"[ESASkySampEventHandlerImpl/processEvent()] Exception in ESASkySampEventHandlerImpl.processEvent",
+        									e);
+        							
+        							CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(event.getAction().toString()));
+        							throw new IllegalStateException(
+        									"[ESASkySampEventHandlerImpl.processEvent] Unexpected SampAction: SEND_VO_TABLE");
+        						}
+        					}
+        					
+        				});
+        			} catch (RequestException e) {
+        				Log.debug(
+        						"[ESASkySampEventHandlerImpl/processEvent()] Failed file reading",
+        						e);
+        			}
                 } // end 1st for
                 break;
     

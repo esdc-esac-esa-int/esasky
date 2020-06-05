@@ -54,32 +54,6 @@
 	background: #D0D0D0!important;
 }
 
-.tablePanel_groupHeader{
-	width: 100%;
-	background: #e3e3e3;
-	border-bottom: 1px solid #545454;
-	color: #000000;
-	font-weight: bold;
-	font-size: 15px;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-}
-
-.tablePanel_group_observation{
-	position: absolute;
-	display: inline;
-	text-align: center;
-	padding: 2px;
-}
-.tablePanel_group_sso{
-	position: absolute;
-	display: inline;
-	text-align: center;
-	border-left: 1px solid #545454;
-	padding: 2px;
-}
-
 .dataPanelHeaderHover:active{
 	background: #C0C0C0!important;
 }
@@ -112,29 +86,9 @@
 	border-top: 0px;
 }
 
-.dataPanelHoverDetector{
-/* 	overflow-x: auto; */
-}
-
-.dataPanelHoverDetector, .tableAndColumnGroupHeader{
+.dataPanelHoverDetector {
 	height: 100%;
 }
-
-.pagerContainer{
-    position: absolute;
-    z-index: 200;
-    background: rgba(0, 0, 0, 0.65);
-    padding: 5px;
-    border: 1px solid white;
-    width: auto;
-    right: 0;
-    bottom: 0;
-}
-
-.dataGridHoveredRowUserDefined {
-  background: rgba(255, 255, 255, 0.15) !important;
-}
-
 .dataPanelHeaderColumnTitle{
 	text-transform: capitalize;
 }

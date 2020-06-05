@@ -2,7 +2,6 @@ package esac.archive.esasky.cl.web.client.query;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
@@ -19,7 +18,6 @@ public abstract class AbstractTAPService {
 
     public abstract String getMetadataAdql(IDescriptor descriptor);
     public abstract String getMetadataAdql(IDescriptor descriptor, String filter);
-    protected abstract String getGeometricConstraint(IDescriptor descriptor);
     public abstract String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos);
     
     protected int getResultsLimit(int descriptorLimit){
@@ -33,64 +31,6 @@ public abstract class AbstractTAPService {
     
     public String getRequestUrl() {
         return EsaSkyWebConstants.TAP_CONTEXT;
-    }
-    
-    public String getMocAdql(IDescriptor inputDescriptor, String filter) {
-        CommonObservationDescriptor descriptor = (CommonObservationDescriptor) inputDescriptor;
-        Log.debug("[TAPQueryBuilder/getMOC()] Cooframe "
-                + AladinLiteWrapper.getAladinLite().getCooFrame());
-        String adql = "select " + descriptor.getMocSTCSColumn() + " from "
-                + descriptor.getMocTapTable() + " where 1=INTERSECTS(fov,";
-
-        String shape = null;
-
-        String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
-        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-
-        if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
-            if (AladinLiteWrapper.isCornersInsideHips()) {
-                if (fovDeg < 1) {
-                    Log.debug("[TAPQueryBuilder/getMOC()] FoV < 1d");
-                    shape = "POLYGON('ICRS', "
-                            + CoordinatesConversion
-                                    .convertPointListGalacticToJ2000(AladinLiteWrapper
-                                            .getAladinLite().getFovCorners(1).toString()) + ")";
-                } else {
-                    shape = "POLYGON('ICRS', "
-                            + CoordinatesConversion
-                                    .convertPointListGalacticToJ2000(AladinLiteWrapper
-                                            .getAladinLite().getFovCorners(2).toString()) + ")";
-                }
-            } else {
-                // convert to J2000
-                double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
-                        AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg(),
-                        AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg());
-                shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
-            }
-        } else {
-            if (AladinLiteWrapper.isCornersInsideHips()) {
-                if (fovDeg < 1) {
-                    Log.debug("[TAPQueryBuilder/getMOC()] FoV < 1d");
-                    shape = "POLYGON('ICRS', "
-                            + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
-                } else {
-                    shape = "POLYGON('ICRS', "
-                            + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")";
-                }
-            } else {
-                shape = "CIRCLE('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg() + ","
-                        + AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg() + ",90)";
-            }
-        }
-
-        adql += shape + ")";
-        
-        adql += filter;
-
-        Log.debug("[TAPQueryBuilder/getMOC()] ADQL " + adql);
-        return adql;
     }
     
     public String getCount(final AladinLiteWidget aladinLite, IDescriptor descriptor) {
@@ -185,7 +125,7 @@ public abstract class AbstractTAPService {
         String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
 //        String parsedAdql = adql;
         parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " from " + descriptor.getTapTable() + " WHERE " + getGeometricPointConstraint(descriptor);
+        parsedAdql += " from " + descriptor.getTapTable() + " WHERE " + getGeometricConstraint(descriptor);
 
         return parsedAdql;
     }
@@ -218,18 +158,23 @@ public abstract class AbstractTAPService {
     	return parsedAdql;
     }
     
-    protected String getGeometricPointConstraint(IDescriptor descriptor) {
-    	String adql = "1=CONTAINS(POINT('ICRS',"
-                + descriptor.getTapRaColumn()+ ", " + descriptor.getTapDecColumn() + "), ";
-        // + catalogue.getPosTapColumn() + ",";
-
+    protected String getGeometricConstraint(IDescriptor descriptor) {
+        final String debugPrefix = "[TAPService.getGeometricConstraint]";
+        String containsOrIntersect;
+        if(descriptor.getUseIntersectPolygonInsteadOfContainsPoint()) {
+            containsOrIntersect = "1=INTERSECTS(fov,";
+        } else {
+            containsOrIntersect = "1=CONTAINS(POINT('ICRS',"
+                    + descriptor.getTapRaColumn() + ", " + descriptor.getTapDecColumn() + "), ";
+        }
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
-                Log.debug("[TAPQueryBuilder/getMetadata4Sources()] FoV < 1d");
+                Log.debug(debugPrefix + " FoV < 1d");
                 shape = "POLYGON('ICRS', "
                         + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
+
             } else {
                 shape = "POLYGON('ICRS', "
                         + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")";
@@ -250,9 +195,7 @@ public abstract class AbstractTAPService {
             }
 
         }
-        adql += shape + ")";
-        
-        return adql;
+        return containsOrIntersect + shape + ")";
     }
     
     protected String getOrderBy(IDescriptor descriptor) {

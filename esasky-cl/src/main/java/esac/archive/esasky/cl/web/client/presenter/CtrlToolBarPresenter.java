@@ -52,7 +52,6 @@ import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.cl.web.client.view.resultspanel.column.LinkListColumn;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -356,7 +355,7 @@ public class CtrlToolBarPresenter {
             public void onSuccess(String responseText) {
             	try {
             		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
-            		String authorHtml = LinkListColumn.getLinkList(author, 
+            		String authorHtml = getLinkList(author, 
             				splitByString,
             				authorsLinkUrl,
             				replaceString,
@@ -382,6 +381,52 @@ public class CtrlToolBarPresenter {
             }
             
         });
+    }
+    
+    private SafeHtml getLinkList(String linkListValue, String splitByString, String linkUrl, String replaceString, String showAllString, int maxLinks) {
+        SafeHtmlBuilder sb = new SafeHtmlBuilder();
+
+        String[] valueList = linkListValue.split(splitByString);
+        String styleStr = "";
+        int appendedLinks = 0;
+        boolean showAllAppended = false;
+        for (String value : valueList) {
+            String finalURL = linkUrl.replace(replaceString, replaceLast(value.replaceAll("'", "%27").replaceAll(" ", "%20"), "%20", "%2C%20"));
+            final boolean isLastLink = (appendedLinks == valueList.length -1);
+            
+                sb.appendHtmlConstant("<a href='" + finalURL
+                                        + "' onclick=\"trackOutboundLink('" + finalURL
+                                        + "'); event.stopPropagation(); return false; \" target='_blank' " + styleStr + ">"
+                                        + value + ((!isLastLink) ? "," : "" ) + "</a>&nbsp;");
+                
+                if (appendedLinks > maxLinks && !showAllAppended && !isLastLink) {
+                
+                    sb.appendHtmlConstant("<a href='#' " 
+                                    + "onclick=\"$(this).parent().find('a').fadeIn(); $(this).hide(); " 
+                                    + "event.stopPropagation(); return false; \" >" 
+                                        + showAllString + "</a>");
+                    
+                styleStr = "style=\"display: none;\" ";
+                showAllAppended = true;
+            }
+            
+            appendedLinks ++;
+        }
+        
+        return sb.toSafeHtml();
+    }
+    
+    private String replaceLast(String string, String find, String replace) {
+        int lastIndex = string.lastIndexOf(find);
+        
+        if (lastIndex == -1) {
+            return string;
+        }
+        
+        String beginString = string.substring(0, lastIndex);
+        String endString = string.substring(lastIndex + find.length());
+        
+        return beginString + replace + endString;
     }
     
     private String getNumSourcesText(int numSources, int maxSources) {

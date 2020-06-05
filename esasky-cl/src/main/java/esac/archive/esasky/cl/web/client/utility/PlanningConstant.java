@@ -2,7 +2,8 @@ package esac.archive.esasky.cl.web.client.utility;
 
 public class PlanningConstant {
 
-    public static final String CATALOGE_NAME = "catalogue";
+    public static final String OVERLAY_PROPERTY = "catalogue";
+    public static final String OVERLAY_NAME = "planningCatalogue";
     public static final String INSTRUMENT = "instrument";
     public static final String DETECTOR = "detector";
     public static final String COO_FRAME = "cooFrame";

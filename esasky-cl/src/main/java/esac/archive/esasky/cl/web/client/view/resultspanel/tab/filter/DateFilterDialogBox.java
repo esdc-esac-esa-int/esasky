@@ -253,9 +253,4 @@ public class DateFilterDialogBox extends FilterDialogBox {
 			schedule(100);
 		}
 	}
-
-	@Override
-	public String getAdqlForFilterCondition() {
-		return "";
-	}
 }

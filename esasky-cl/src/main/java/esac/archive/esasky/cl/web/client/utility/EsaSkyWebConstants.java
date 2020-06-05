@@ -61,8 +61,6 @@ public class EsaSkyWebConstants {
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
 
-    public static final String SOURCE_TYPE = "sourceType";
-    
     public static final String URL_PARAM_TARGET = "target";
     public static final String URL_PARAM_HIPS = "hips";
     public static final String URL_PARAM_FOV = "fov";
@@ -93,29 +91,6 @@ public class EsaSkyWebConstants {
     public static final int MAX_SHAPES_FOR_MOBILE = 200;
     
     public static final double EXTTAP_FOV_LIMIT = 5.0;
-    
-    public enum SourceType {
-        MULTITARGET("Multitarget"), PLANNING("Planning");
-
-        String sourceType;
-
-        /**
-         * Class Constructor.
-         * @param value Input String
-         */
-        private SourceType(final String value) {
-            this.sourceType = value;
-        }
-
-        public String getSourceType() {
-            return this.sourceType;
-        }
-
-        @Override
-        public String toString() {
-            return this.sourceType;
-        }
-    }
 
     public static HiPS getInitialHiPS() {
         HiPS hips = new HiPS();

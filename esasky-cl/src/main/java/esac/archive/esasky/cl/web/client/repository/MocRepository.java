@@ -11,7 +11,6 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoV
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -22,7 +21,6 @@ public class MocRepository {
 
 	private static MocRepository _instance;
 	private List<MOCEntity> allEntities = new LinkedList<MOCEntity>();
-	private List<ExtTapEntity> extTapEntities = new LinkedList<ExtTapEntity>();
 
 	public static MocRepository init() {
 		_instance = new MocRepository();
@@ -88,9 +86,6 @@ public class MocRepository {
 				for(MOCEntity entity : allEntities){
 					entity.onFoVChanged(); 
 				}
-				for(ExtTapEntity entity : extTapEntities){
-					entity.onFoVChanged(); 
-				}
 			}
 		});
 		
@@ -112,13 +107,6 @@ public class MocRepository {
 	
 	public void removeEntity(MOCEntity entity) {
 		allEntities.remove(entity);
-	}
-	public void addExtTapMocEntity(ExtTapEntity entity){
-		extTapEntities.add(entity);
-	}
-	
-	public void removeExtTapEntity(ExtTapEntity entity) {
-		extTapEntities.remove(entity);
 	}
 	
 	public static int getMinOrderFromFoV() {

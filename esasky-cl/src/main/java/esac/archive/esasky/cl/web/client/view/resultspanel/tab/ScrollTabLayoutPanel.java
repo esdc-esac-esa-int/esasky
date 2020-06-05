@@ -503,9 +503,4 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 		String scrollTabLayoutPanel();
 	}
 
-	public void refreshHeight() {
-		if(selectedIndex != -1){
-			((ITablePanel)deckPanel.getWidget(selectedIndex)).refreshHeight();
-		}
-	}
 }

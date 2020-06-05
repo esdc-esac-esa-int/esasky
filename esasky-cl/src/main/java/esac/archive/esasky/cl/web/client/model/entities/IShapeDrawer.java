@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import esac.archive.esasky.cl.web.client.model.ShapeId;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public interface IShapeDrawer {
@@ -13,7 +12,7 @@ public interface IShapeDrawer {
 	public void setSizeRatio(double size);
 	public double getSize();
 	public void removeAllShapes();
-	public void addShapes(TapRowList shapeList, GeneralJavaScriptObject javaScriptObject);
+	public void addShapes(GeneralJavaScriptObject javaScriptObject);
 	public void selectShapes(Set<ShapeId> shapesToSelect);
     public void deselectShapes(Set<ShapeId> shapesToDeselect);
     public void deselectAllShapes();

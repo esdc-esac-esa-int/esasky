@@ -3,13 +3,11 @@ package esac.archive.esasky.cl.web.client.callback;
 import java.util.HashMap;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.Response;
 
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
-import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;

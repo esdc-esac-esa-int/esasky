@@ -37,7 +37,6 @@ public final class GoogleAnalytics {
     public static final String CAT_Preview = "Preview";
     public static final String CAT_Datalink = "Datalink";
     public static final String CAT_DownloadRow = "DownloadRow";
-    public static final String CAT_DataPanel_Pager = "DataPanel_Pager";
     public static final String CAT_Search = "Search";
     public static final String CAT_SAMP = "Samp";
     public static final String CAT_Count = "Count";
@@ -197,6 +196,7 @@ public final class GoogleAnalytics {
     public static final String ACT_ExtTap_count = "count";
     
     public static final String ACT_Outbound_click = "click";
+    public static final String CAT_TabToolbar_CloseAll = null;
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{

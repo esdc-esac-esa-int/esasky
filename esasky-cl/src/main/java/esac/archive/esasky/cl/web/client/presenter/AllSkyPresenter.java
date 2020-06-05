@@ -33,7 +33,6 @@ import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEven
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEventHandler;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEventHandler;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
@@ -41,6 +40,7 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.MultiTargetTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PlanningDetectorCenterTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.MultiTargetSourceConstants;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -127,9 +127,9 @@ public class AllSkyPresenter {
 			public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
 				AladinShape obj = selectEvent.getShape();
 				if (obj != null) {
-				    if(obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.MULTITARGET.toString())) {
+				    if(obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME).equals(MultiTargetSourceConstants.OVERLAY_NAME)) {
 				        AllSkyPresenter.this.view.showSourceTooltip(new MultiTargetTooltip(obj));
-				    } else if(obj.getDataDetailsByKey(EsaSkyWebConstants.SOURCE_TYPE).equals(EsaSkyWebConstants.SourceType.PLANNING.toString())) {
+				    } else if(obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY).equals(PlanningConstant.OVERLAY_NAME)) {
 				        AllSkyPresenter.this.view.showSourceTooltip(new PlanningDetectorCenterTooltip(obj));
 				    }
 				}
@@ -272,10 +272,7 @@ public class AllSkyPresenter {
                                 Double.toString(currCenter.getValue().get(0)[0]));
                         details.put(PlanningConstant.REFERENCE_DEC,
                                 Double.toString(currCenter.getValue().get(0)[1]));
-                        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-                                EsaSkyWebConstants.SourceType.PLANNING.toString());
-                        details.put(PlanningConstant.CATALOGE_NAME,
-                                TextMgr.getInstance().getText("AllSkyPresenter_futureSelectedDetectorCatalog"));
+                        details.put(PlanningConstant.OVERLAY_PROPERTY, PlanningConstant.OVERLAY_NAME);
                         details.put(PlanningConstant.COO_FRAME, AladinLiteWrapper
                                 .getCoordinatesFrame().name());
 
@@ -319,10 +316,6 @@ public class AllSkyPresenter {
                                 Double.toString(currCenter.getValue().get(0)[0]));
                         details.put(PlanningConstant.REFERENCE_DEC,
                                 Double.toString(currCenter.getValue().get(0)[1]));
-                        details.put(EsaSkyWebConstants.SOURCE_TYPE,
-                                EsaSkyWebConstants.SourceType.PLANNING.toString());
-                        details.put(PlanningConstant.CATALOGE_NAME,
-                                TextMgr.getInstance().getText("AllSkyPresenter_futureSelectedDetectorCatalog"));
                         details.put(PlanningConstant.COO_FRAME, AladinLiteWrapper
                                 .getCoordinatesFrame().name());
 

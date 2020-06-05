@@ -244,16 +244,6 @@ public class EsaSkyConstants {
 
     public static final String ERROR_MSG_SAMP = "Something went wrong in the comunication between SAMP applications. Please retry your search and if the problem persists, tell us using either the userecho page or the helpdesk.";
 
-    /**
-     * Model related constants
-     */
-    public static final String SOURCE_TAP_RA = "ra";
-    public static final String SOURCE_TAP_DEC = "dec";
-//    public static final String SOURCE_TAP_NAME = "name";
-
-    public static final String OBS_TAP_RA = "ra_deg";
-    public static final String OBS_TAP_DEC = "dec_deg";
-    public static final String OBS_TAP_NAME = "observation_id";
 
     public static final String DATALINK_URL_PARAM = "url";
     public static final String IMAGELOADER_URL_PARAM = "url";

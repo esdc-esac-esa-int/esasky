@@ -333,9 +333,4 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 			return className.contains("ui-slider-handle") && className.contains("ui-state-active");
 		}
 	}
-
-	@Override
-	public String getAdqlForFilterCondition() {
-		return "";
-	}
 }

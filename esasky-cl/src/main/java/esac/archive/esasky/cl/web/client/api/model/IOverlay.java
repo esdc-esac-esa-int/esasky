@@ -27,8 +27,8 @@ public interface IOverlay {
 
 	public void setLineWidth(Integer lineWidth);
 
-	public List<? extends GeneralSkyObject> getSkyObjectList();
+	public List<GeneralSkyObject> getSkyObjectList();
 
-	public void setSkyObjectList(List<? extends GeneralSkyObject> skyObjects);
+	public void setSkyObjectList(List<GeneralSkyObject> skyObjects);
 
 }
