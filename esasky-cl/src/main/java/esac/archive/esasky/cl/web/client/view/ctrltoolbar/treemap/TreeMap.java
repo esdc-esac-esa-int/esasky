@@ -481,6 +481,16 @@ public class TreeMap extends Chart {
 		return point.id;
     }-*/;
 
+    protected void zoomToRoot() {
+    	zoomToRoot(series.getNativeSeries());
+    }
+    
+    protected native void zoomToRoot(JavaScriptObject series)/*-{
+    	if(series.rootNode != ""){
+	    	series.drillToNode("")
+    	}
+    }-*/;
+    
     protected static native void zoomToPoint(JavaScriptObject series, String id) /*-{
 		try {
 			if(series.nodeMap.includes[id]){

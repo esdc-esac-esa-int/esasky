@@ -9,7 +9,6 @@ import java.util.Map;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dev.protobuf.Descriptors;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;

@@ -216,11 +216,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     }
 
-
-    public boolean hasReachedFovLimit() {
-        return descriptor.getFovLimit() > 0 && CoordinateUtils.getCenterCoordinateInJ2000().getFov() > descriptor.getFovLimit();
-    }
-
     public class MocBuilder implements ShapeBuilder{
 
         @Override

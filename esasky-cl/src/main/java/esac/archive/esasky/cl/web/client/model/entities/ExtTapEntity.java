@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -11,6 +10,8 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
@@ -30,16 +31,24 @@ public class ExtTapEntity extends EsaSkyEntity {
     @Override
     public void fetchData() {
     	if(hasReachedFovLimit()) {
-	    	Log.debug("Showing fov limit moc. FoVLimit = " + descriptor.getFovLimit());
-	    	drawer = mocDrawer;
-	        defaultEntity.setDrawer(drawer);
-	        getMocMetadata();
+//	    	Log.debug("Showing fov limit moc. FoVLimit = " + descriptor.getFovLimit());
+//	    	drawer = mocDrawer;
+//	        defaultEntity.setDrawer(drawer);
+//	        getMocMetadata();
+    		String text = TextMgr.getInstance().getText("exttap_too_large_fov");
+    		text = text.replace("$fovLimit$", Double.toString(descriptor.getFovLimit()));
+    		tablePanel.setPlaceholderText(text);
 	    } else {
 	    	drawer = combinedDrawer;
 	    	defaultEntity.setDrawer(combinedDrawer);
 	        fetchDataWithoutMOC();
 	    }
     }
+    
+    public boolean hasReachedFovLimit() {
+        return CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT;
+    }
+
     	
     private void getMocMetadata() {
 

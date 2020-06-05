@@ -19,6 +19,7 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -47,12 +48,17 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			
 			@Override
 			public void execute() {
-			 if(countStatus.getUpdateTime(descriptor.getMission()) != null 
+				if(countStatus.getUpdateTime(descriptor.getMission()) != null 
 		        		&& countStatus.getUpdateTime(descriptor.getMission()) > timecall) {
 		        	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
 		        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor.getMission()) - timecall));
 		        	return;
 		        }
+				if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT){
+					Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
+							+ Double.toString(CoordinateUtils.getCenterCoordinateInJ2000().getFov() ));
+		        	return;
+				}
 			 
 			 	String logPrefix = "[ExtTapCheckCallback]";
 			 

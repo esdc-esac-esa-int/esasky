@@ -12,6 +12,9 @@ import org.moxieapps.gwt.highcharts.client.ToolTipData;
 import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
 import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEvent;
 import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEventHandler;
+import org.moxieapps.gwt.highcharts.client.events.PointClickEvent;
+import org.moxieapps.gwt.highcharts.client.events.PointClickEventHandler;
+import org.moxieapps.gwt.highcharts.client.plotOptions.SeriesPlotOptions;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
@@ -19,8 +22,10 @@ import com.google.gwt.core.client.JsonUtils;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapFovEventHandler;
+import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -95,6 +100,25 @@ public class ExtTapTreeMap extends TreeMap {
                 return false;
             }
         });
+		
+	   setSeriesPlotOptions(new SeriesPlotOptions()
+                .setPointClickEventHandler(new PointClickEventHandler() {
+
+                    @Override
+                    public boolean onClick(PointClickEvent pointClickEvent) {
+                    	if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+	                        String id = pointClickEvent.getPoint().getText();
+	                        if (id != null) {
+	                            PointInformation pointInformation = allPoints.get(id);
+	
+	                            CommonEventBus.getEventBus().fireEvent(
+	                                    new TreeMapSelectionEvent(pointInformation));
+	                        }
+                    	}
+                        return false;
+                    }
+                }));
+
 	}
 	
 	private void setColor(Point point, String color) {
@@ -487,6 +511,7 @@ public class ExtTapTreeMap extends TreeMap {
     }
     
     protected void addLargeFovGhostPoint() {
+    	zoomToRoot();
     	clearAll();
 		addGhostPoint(ghostPoint.getLargeFovText());
     }
