@@ -24,7 +24,7 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 	}-*/;
 	
     public final native String getStringProperty(String propertyName)/*-{
-    	return this[propertyName];
+    	return this[propertyName].toString();
 	}-*/;
     
     public final native double getDoubleProperty(String propertyName)/*-{
