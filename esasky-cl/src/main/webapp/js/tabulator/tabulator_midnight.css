@@ -313,7 +313,7 @@
 }
 
 .tabulator .tabulator-footer {
-  padding: 5px 30px 5px 10px;
+  padding: 0px 30px;
   background-color: transparent;
   text-align: right;
   color: #333;
@@ -922,10 +922,13 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
 .footerCounter{
 	z-index: 1002;
 	border-top-left-radius: 10px;
-	border: 1px solid white;
+	border-top-right-radius: 10px;
 	padding: 5px;
 	font-size:16px;
 	color:#FFF;
 	background: rgba(0, 0, 0, 0.65);
 	width: max-content;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
 }

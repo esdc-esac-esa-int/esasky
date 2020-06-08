@@ -5,12 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Timer;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
@@ -50,6 +54,9 @@ public class TabulatorWrapper{
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
     private long lastHoverTime = 0;
     private int lastHoveredRow = -1;
+    private String rowCountFooterId;
+    private final Timer resultInformationAreaTimer;
+    private final OpacityAnimation resultInformationAnimation;
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addCentreColumn, boolean addSourcesInPublicationColumn) {
@@ -62,6 +69,28 @@ public class TabulatorWrapper{
             	reformat(tableJsObject);
             }
         });
+        
+        
+        rowCountFooterId = divId + "_rowCount";
+        final Element rowCountFooter = Document.get().getElementById(rowCountFooterId);
+        resultInformationAnimation = new OpacityAnimation(rowCountFooter);
+        
+        resultInformationAreaTimer = new Timer() {
+            
+            @Override
+            public void run() {
+                resultInformationAnimation.animateTo(1, 500);
+                rowCountFooter.getStyle().setProperty("pointerEvents", "auto");
+                cancel();
+            }
+        };
+    }
+    
+    public void onRowCountFooterMouseOver() {
+        Element rowCountFooter = Document.get().getElementById(rowCountFooterId);
+        resultInformationAnimation.animateTo(0, 500);
+        resultInformationAreaTimer.schedule(4000);
+        rowCountFooter.getStyle().setProperty("pointerEvents", "none");
     }
     
     public void selectRow(int rowId) {
@@ -856,9 +885,8 @@ public class TabulatorWrapper{
 			return editor(cell, onRendered, successFunc, cancel, editorParams);
 		}
 		
-		var footerCounter = "<div></div><div class=\"footerCounter\">0</div>"
+		var footerCounter = "<div></div><div id=\"" + divId + "_rowCount\" class=\"footerCounter\">0</div>"
 		
-
 		var table = new $wnd.Tabulator("#" + divId, {
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	placeholder:"",
@@ -1387,6 +1415,8 @@ public class TabulatorWrapper{
 		table.dataLoaded = false;
 		
 		table.element.onmouseleave = function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onTableMouseLeave()()};
+        $doc.getElementById(divId + "_rowCount").addEventListener("mouseover", function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowCountFooterMouseOver()()});
+        
         
 //		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
 //		$wnd.tabulatorTables.push(table);
