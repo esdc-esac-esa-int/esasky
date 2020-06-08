@@ -13,7 +13,7 @@ public class FootprintListOverlay implements IOverlay {
 	String color;
 	String cooframe;
 	Integer lineWidth;
-	List<GeneralSkyObject> skyObjectList = new LinkedList<GeneralSkyObject>();
+	List<Footprint> skyObjectList = new LinkedList<Footprint>();
 
 	public FootprintListOverlay() {
 		Log.debug("[FootprintListOverlay] Ready!!");
@@ -56,12 +56,11 @@ public class FootprintListOverlay implements IOverlay {
 	}
 
 	@Override
-	public List<GeneralSkyObject> getSkyObjectList() {
+	public List<Footprint> getSkyObjectList() {
 		return skyObjectList;
 	}
 
-	@Override
-	public void setSkyObjectList(List<GeneralSkyObject> skyObjects) {
+	public void setSkyObjectList(List<Footprint> skyObjects) {
 		this.skyObjectList = skyObjects;
 	}
 
