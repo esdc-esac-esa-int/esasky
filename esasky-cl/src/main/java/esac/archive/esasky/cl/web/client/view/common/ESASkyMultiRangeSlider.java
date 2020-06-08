@@ -9,8 +9,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-
+    
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
 
@@ -25,7 +24,6 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
     private static int ID;
     private String sliderID = "esaskySlider";
     private String sliderContainerID = "esaskySliderContainer";
-    private HTML slider;
     private double minValue;
     private double maxValue;
     private double currentValue1;
@@ -40,7 +38,7 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
     }
 
     public ESASkyMultiRangeSlider(double min, double max, int width) {
-    	ID++;
+    	ID = ID++;
     	sliderID += ID;
     	sliderContainerID += ID;
     	
@@ -58,15 +56,8 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 
     private void initView(int width) {
     	this.getElement().setId(sliderContainerID);
-//    	JavaScriptObject slider = createSliderFilter(this, sliderContainerID, sliderID, SLIDERMAX);
-
-//    	this.slider = new HTML("<div id=\"" + sliderID +"\"></div>");
-    	//initSlider(slider.getElement(), sliderID, 0, SLIDERMAX);
-//    	this.add(slider);
-//    	addSliderListener(this, slider.getElement());
     }
     
-    //Jquery slider
     public native void initSlider(Element element, String sliderID,int minValue,int maxValue) /*-{
     	$wnd.jQuery(element).slider({
 	        range: true,
@@ -114,14 +105,10 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 	}-*/;
 	
 	private void setSliderValue(double value1, double value2) {
-		setSliderValue(value1, value2, slider.getElement());
+		setSliderValueJs(value1, value2);
 	}
 	
-	public void addClassName(String className) {
-		slider.getElement().addClassName(className);
-	}
-	
-	private native void setSliderValue(double value1, double value2, Element slider) /*-{
+	private native void setSliderValueJs(double value1, double value2) /*-{
 		slider.values[0] = value1;
 		slider.values[1] = value2;
 	}-*/;
