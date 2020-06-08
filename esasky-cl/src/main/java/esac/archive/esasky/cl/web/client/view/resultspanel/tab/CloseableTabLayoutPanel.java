@@ -476,6 +476,7 @@ public class CloseableTabLayoutPanel extends Composite {
         this.tabs.add(tab);
         this.tabWidgetIds.put(tab, tab.getId());
         
+        this.tabLayout.add(tabPanel.getWidget(), tab);
         tabPanel.registerObserver(new TableObserver() {
             
 			@Override
@@ -496,7 +497,6 @@ public class CloseableTabLayoutPanel extends Composite {
             	}
             }
         });
-        this.tabLayout.add(tabPanel.getWidget(), tab);
 	    updateStyleOnTab(getWidgetIndex(tabPanel.getWidget()));
 
         
