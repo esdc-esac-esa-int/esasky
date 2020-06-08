@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.view.common;
 
 import java.util.LinkedList;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
