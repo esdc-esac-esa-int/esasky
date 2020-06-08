@@ -2,13 +2,11 @@ package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.cl.web.client.model.Shape;
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -114,32 +112,24 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     }
 	
 	@Override
-	public void selectShapes(Set<ShapeId> shapesToSelect) {
-		if(shapesToSelect.size() == 0) {
-			deselectAllShapes();
-		}
+	public void selectShapes(int shapeId) {
+		Integer[] index = allShapesIndexes.get(shapeId);
 		
-		for (ShapeId shapeId : shapesToSelect) {
-			Integer[] index = allShapesIndexes.get(shapeId.getShapeId());
-			
-			if(index[0] != -1) {
-				AladinLiteWrapper.getAladinLite().selectShape(sourceShapes.get(index[0]).getJsObject());
-			}else {
-				AladinLiteWrapper.getAladinLite().selectShape(footPrintshapes.get(index[1]).getJsObject());
-			}
+		if(index[0] != -1) {
+			AladinLiteWrapper.getAladinLite().selectShape(sourceShapes.get(index[0]).getJsObject());
+		}else {
+			AladinLiteWrapper.getAladinLite().selectShape(footPrintshapes.get(index[1]).getJsObject());
 		}
 	}
 	
 	@Override
-	public void deselectShapes(Set<ShapeId> shapesToDeSelect) {
-    	for (ShapeId shapeId : shapesToDeSelect) {
-			Integer[] index = allShapesIndexes.get(shapeId.getShapeId());
-			
-			if(index[0] != -1) {
-				AladinLiteWrapper.getAladinLite().deselectShape(sourceShapes.get(index[0]).getJsObject());
-			}else {
-				AladinLiteWrapper.getAladinLite().deselectShape(footPrintshapes.get(index[1]).getJsObject());
-			}
+	public void deselectShapes(int shapeId) {
+		Integer[] index = allShapesIndexes.get(shapeId);
+		
+		if(index[0] != -1) {
+			AladinLiteWrapper.getAladinLite().deselectShape(sourceShapes.get(index[0]).getJsObject());
+		}else {
+			AladinLiteWrapper.getAladinLite().deselectShape(footPrintshapes.get(index[1]).getJsObject());
 		}
 	}
 

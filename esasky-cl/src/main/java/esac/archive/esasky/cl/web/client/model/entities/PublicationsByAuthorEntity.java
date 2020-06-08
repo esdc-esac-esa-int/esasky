@@ -1,6 +1,5 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.Set;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -10,7 +9,6 @@ import com.google.gwt.user.client.ui.Image;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -83,7 +81,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     }
     
     @Override
-    public void selectShapes(Set<ShapeId> shapes) {
+    public void selectShapes(int shapeId) {
     }
   
     @Override

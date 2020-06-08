@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,6 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
 import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
@@ -544,29 +542,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
     @Override
     public void onRowSelection(final GeneralJavaScriptObject row) {
-        HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
-        selectionId.add(new ShapeId() {
-            
-            @Override
-            public int getShapeId() {
-                return GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex"));
-            }
-        });
-        entity.selectShapes(selectionId);
+        entity.selectShapes(GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex")));
         CommonEventBus.getEventBus().fireEvent(new TableRowSelectedEvent(row.invokeFunction("getData")));
     }
 
     @Override
     public void onRowDeselection(final GeneralJavaScriptObject row) {
-        HashSet<ShapeId> selectionId = new HashSet<ShapeId>(1);
-        selectionId.add(new ShapeId() {
-            
-            @Override
-            public int getShapeId() {
-                return GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex"));
-            }
-        });
-        entity.deselectShapes(selectionId);
+        entity.deselectShapes(GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex")));
     }
     
     @Override

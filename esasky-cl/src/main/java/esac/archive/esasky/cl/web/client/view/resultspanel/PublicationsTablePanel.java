@@ -1,9 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
-import java.util.HashSet;
 import java.util.List;
 
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
@@ -58,15 +56,7 @@ public class PublicationsTablePanel extends TabulatorTablePanel {
 	@Override
 	public void selectTablePanel() {
 		super.selectTablePanel();
-		HashSet<ShapeId> shapes = new HashSet<ShapeId>();
-		shapes.add(new ShapeId() {
-			
-			@Override
-			public int getShapeId() {
-				return 0;
-			}
-		});
-		entity.selectShapes(shapes);
+		entity.selectShapes(0);
 	}
 	
 }

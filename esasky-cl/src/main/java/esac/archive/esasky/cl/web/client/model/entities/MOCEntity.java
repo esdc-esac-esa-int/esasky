@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -26,7 +25,6 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -638,13 +636,13 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	
 	@Override
-	public void selectShapes(Set<ShapeId> shapes) {
-		defaultEntity.selectShapes(shapes);
+	public void selectShapes(int shapeId) {
+		defaultEntity.selectShapes(shapeId);
 	}
 
 	@Override
-	public void deselectShapes(Set<ShapeId> shapes) {
-		defaultEntity.deselectShapes(shapes);
+	public void deselectShapes(int shapeId) {
+		defaultEntity.deselectShapes(shapeId);
 	}
 
 	@Override

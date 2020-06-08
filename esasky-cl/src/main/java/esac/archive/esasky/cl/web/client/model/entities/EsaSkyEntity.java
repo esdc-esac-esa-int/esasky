@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -25,7 +24,6 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
@@ -350,13 +348,13 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void selectShapes(Set<ShapeId> shapes) {
-        defaultEntity.selectShapes(shapes);
+    public void selectShapes(int shapeId) {
+        defaultEntity.selectShapes(shapeId);
     }
 
     @Override
-    public void deselectShapes(Set<ShapeId> shapes) {
-        defaultEntity.deselectShapes(shapes);
+    public void deselectShapes(int shapeId) {
+        defaultEntity.deselectShapes(shapeId);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.List;
-import java.util.Set;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.Scheduler;
@@ -14,7 +13,6 @@ import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
-import esac.archive.esasky.cl.web.client.model.ShapeId;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
@@ -261,13 +259,13 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void selectShapes(Set<ShapeId> shapes) {
-		drawer.selectShapes(shapes);
+	public void selectShapes(int shapeId) {
+		drawer.selectShapes(shapeId);
 	}
 
 	@Override
-	public void deselectShapes(Set<ShapeId> shapes) {
-		drawer.deselectShapes(shapes);
+	public void deselectShapes(int shapeId) {
+		drawer.deselectShapes(shapeId);
 	}
 
 	@Override
