@@ -312,7 +312,7 @@ public abstract class BaseDescriptor implements IDescriptor {
     }
    
     public String getTapSTCSColumn() {
-        return tapSTCSColumn;
+        return tapSTCSColumn == null ? "" : tapSTCSColumn;
     }
 
     public final void setTapSTCSColumn(final String inputTapSTCSColumn) {
