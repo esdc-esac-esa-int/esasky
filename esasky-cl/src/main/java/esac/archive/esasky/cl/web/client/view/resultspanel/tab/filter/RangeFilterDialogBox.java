@@ -292,11 +292,7 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 				lastLow = currentLow;
 				lastHigh = currentHigh;
 				if(isFilterActive()) {
-					String filter = "";
-					if(currentSliderFromFraction > 0) {
-						filter += Double.toString(currentLow);
-					}
-					filter += ",";
+					String filter = Double.toString(currentLow) + ",";
 					if((SLIDER_MAX - currentSliderToFraction) > stepSize) {
 						filter += Double.toString(currentHigh);
 					}
