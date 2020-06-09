@@ -312,7 +312,7 @@ public abstract class BaseDescriptor implements IDescriptor {
     }
    
     public String getTapSTCSColumn() {
-        return tapSTCSColumn == null ? "" : tapSTCSColumn;
+        return tapSTCSColumn;
     }
 
     public final void setTapSTCSColumn(final String inputTapSTCSColumn) {
@@ -408,9 +408,11 @@ public abstract class BaseDescriptor implements IDescriptor {
         this.shapeLimit = shapeLimit;
     }
     
+    @Override
     public Boolean getUseIntersectPolygonInsteadOfContainsPoint() {
-        return this.useIntersectPolygonInsteadOfContainsPoint;
+        return useIntersectPolygonInsteadOfContainsPoint == null ? false: useIntersectPolygonInsteadOfContainsPoint;
     }
+    
     public void setUseIntersectPolygonInsteadOfContainsPoint(boolean useInstersect) {
         this.useIntersectPolygonInsteadOfContainsPoint = useInstersect;
     }
