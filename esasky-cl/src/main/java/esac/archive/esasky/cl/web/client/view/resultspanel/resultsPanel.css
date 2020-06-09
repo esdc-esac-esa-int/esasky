@@ -119,3 +119,11 @@
 .tabulator-col-content{
 	height: 100% !important;
 }
+
+.tabulator_emptyTable{
+	position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    color: red;
+    top: literal("calc(35% + 40px)");
+}

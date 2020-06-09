@@ -169,8 +169,12 @@ public class TabulatorWrapper{
         setPlaceholderText(tableJsObject, text);
     }
     
-    private native void setPlaceholderText(GeneralJavaScriptObject tableJsObject, String text)/*-{
-    	tableJsObject.options.placeholder.innerText = text;
+    public native void setPlaceholderText(GeneralJavaScriptObject tableJsObject, String text)/*-{
+        var div = $doc.createElement('div')
+        div.innerText = text;
+        div.className = "tabulator_emptyTable";
+    	tableJsObject.options.placeholder.innerText = "";
+    	tableJsObject.options.placeholder.appendChild(div);
 	}-*/;
 
 
@@ -907,7 +911,7 @@ public class TabulatorWrapper{
 			   	}
 			   	if(!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()()){
 				   	if(rows.length == 0 && this.getHeaderFilters().length > 0){
-				   		this.options.placeholder.innerText = $wnd.esasky.getInternationalizationText("tabulator_filtered_empty");
+				   	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_filtered_empty"));
 				   	}
 			   	}
 		    },
@@ -915,7 +919,7 @@ public class TabulatorWrapper{
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
 		    	this.rowManager.adjustTableSize();
 			   	if(this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() &&  data.length == 0){
-			   		this.options.placeholder.innerText = $wnd.esasky.getInternationalizationText("tabulator_no_data");
+			   	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_no_data"));
 			   	}else if(!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() ){
 			   		this.options.placeholder.innerText = "";
 			   	}
@@ -1418,8 +1422,8 @@ public class TabulatorWrapper{
         $doc.getElementById(divId + "_rowCount").addEventListener("mouseover", function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowCountFooterMouseOver()()});
         
         
-//		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
-//		$wnd.tabulatorTables.push(table);
+		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
+		$wnd.tabulatorTables.push(table);
 		return table;
 	}-*/;
 
