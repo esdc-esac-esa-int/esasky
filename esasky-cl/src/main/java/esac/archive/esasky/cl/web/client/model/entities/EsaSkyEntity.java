@@ -111,7 +111,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData) {
         	String stcs = null;
-        	if(getDescriptor().getTapSTCSColumn() != null) {
+        	if(getDescriptor().getTapSTCSColumn() != "") {
         		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
         	}
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
