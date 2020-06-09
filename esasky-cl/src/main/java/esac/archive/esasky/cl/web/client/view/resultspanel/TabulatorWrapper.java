@@ -837,7 +837,7 @@ public class TabulatorWrapper{
 
 			if(split.length == 2){
 				
-				if(!rowValue){
+				if(rowValue == null){
 					// If any filter is added Null should be removed
 					return false;
 				}
