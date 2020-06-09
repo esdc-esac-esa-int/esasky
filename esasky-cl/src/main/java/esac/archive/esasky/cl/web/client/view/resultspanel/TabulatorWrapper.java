@@ -622,7 +622,7 @@ public class TabulatorWrapper{
 				}else{
 					cell.getColumn()._column.table.rowManager.rows.forEach(function (row){
 						
-						if(row.data[name] && row.data[name] != undefined){
+						if(row.data.hasOwnProperty(name) && row.data[name] != undefined){
 							minVal = Math.min(minVal, row.data[name])
 							maxVal = Math.max(maxVal, row.data[name])
 						}
