@@ -35,6 +35,9 @@ public class NumberValueFormatter implements ValueFormatter{
     
     @Override
     public String formatValue(double value) {
+        if(numberOfDecimals == 0) {
+            return NumberFormatter.formatToNumberWithSpaces((int)Math.round(value));
+        }
         if(Math.abs(value) >= Math.pow(10, -numberOfDecimals)){
             if(format.format(value % 1).equals(".0") || format.format(value % 1).equals("0")) {
                 return NumberFormatter.formatToNumberWithSpaces((int)value);
