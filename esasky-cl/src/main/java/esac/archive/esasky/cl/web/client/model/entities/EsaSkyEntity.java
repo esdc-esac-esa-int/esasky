@@ -110,7 +110,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData) {
-            String stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
+        	String stcs = null;
+        	if(getDescriptor().getTapSTCSColumn() != null) {
+        		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
+        	}
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
                 return catalogBuilder(rowId, rowData);
             }
