@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
@@ -202,16 +201,21 @@ public class MOCEntity implements GeneralEntityInterface {
     		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
     		
     		String adql = "";
-	    	if(visibleIpixels.jsonStringify().length() > 2) {
-
-		    	if(descriptor instanceof CatalogDescriptor) {
-	        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
-		    	}else {
-		    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, tablePanel.getFilterString());
+    		if(tablePanel.getFilterString().length() > 0) {
+		    	if(visibleIpixels.jsonStringify().length() > 2) {
+	
+			    	if(descriptor instanceof CatalogDescriptor) {
+		        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
+			    	}else {
+			    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, tablePanel.getFilterString());
+			    	}
+			    	clearAll();
+			    	loadMOC(adql);
 		    	}
-		    	clearAll();
-		    	loadMOC(adql);
-	    	}
+    		}else {
+    			clearAll();
+    			loadMOC();
+    		}
     	}
     }
     
@@ -276,7 +280,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
         String adql = metadataService.getPrecomputedMOCAdql(descriptor);
-        String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
+        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -346,7 +350,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private void loadMOC(String adql) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
-    	String url = TAPUtils.getTAPQuery(URL.decodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
+    	String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
     	
     	Log.debug(debugPrefix + "Query [" + url + "]");
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -512,85 +516,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			updateTimer.schedule(300);
 		}
 	}
-	
-	private native int getMOCOrder(JavaScriptObject moc)/*-{
-		return moc.currentOrder;
-	}-*/;
-	
-	public String getAladinMOCString(int minOrder, int maxOrder) {
-		
-		String MOCString = "{";
-		boolean firstOrder = true;
-		
-		for(int order = 3; order <= maxOrder; order++) {
-			
-			if(countMap.containsKey(order)) {
-				
-				if(!firstOrder) {
-					MOCString += ",";
-				}else {
-					firstOrder = false;
-				}
-				
-				MOCString += "\"" +  Integer.toString(order) + "\":[";
-				boolean firstIpix = true;
-				
-				for(long ipix : countMap.get(order).keySet()) {
-					if(!firstIpix) {
-						MOCString += ",";
-					}else {
-						firstIpix = false;
-					}
-					MOCString += Long.toString(ipix);
-				}
-				
-				MOCString += "]";
-				
-			}
-		}
-		
-		MOCString += "}";
 
-		return MOCString;
-	}
-
-	public String getAladinMOCStringAll() {
-		
-		String MOCString = "{";
-		boolean firstOrder = true;
-		
-		for(int order = 3; order <= 14; order++) {
-			
-			if(countMap.containsKey(order)) {
-				
-				if(!firstOrder) {
-					MOCString += ",";
-				}else {
-					firstOrder = false;
-				}
-				
-				MOCString += "\"" +  Integer.toString(order) + "\":[";
-				boolean firstIpix = true;
-				
-				for(long ipix : countMap.get(order).keySet()) {
-					if(!firstIpix) {
-						MOCString += ",";
-					}else {
-						firstIpix = false;
-					}
-					MOCString += Long.toString(ipix);
-				}
-				
-				MOCString += "]";
-				
-			}
-		}
-		
-		MOCString += "}";
-		
-		return MOCString;
-	}
-	
 	public boolean isShouldBeShown() {
 		return shouldBeShown;
 	}
