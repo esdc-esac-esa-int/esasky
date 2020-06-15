@@ -91,9 +91,9 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 		@Override
 		public void run() {
-			if (getCountStatus().hasMoved(descriptor.getMission())) {
+			if (getCountStatus().hasMoved(descriptor)) {
 	    		filterRequested = true;
-	    	} else if( getCountStatus().getCount(descriptor.getMission()) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
+	    	} else if( getCountStatus().getCount(descriptor) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
 	    		filterRequested = true;
 	    		loadFilteredMOC();
 	    		filterRequested = false;
@@ -164,7 +164,7 @@ public class MOCEntity implements GeneralEntityInterface {
 				
 				if(count > 0) {
 		
-					tooltipText += descriptor.getMission() + ": Order: " + order + " Ipix: " + ipix + " Count: " + count + "<br>\n";
+					tooltipText += descriptor.getGuiLongName() + ": Order: " + order + " Ipix: " + ipix + " Count: " + count + "<br>\n";
 					
 				}
 	    	}catch(Exception e){
@@ -220,7 +220,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void checkLoadMOC() {
-    	if (getCountStatus().hasMoved(descriptor.getMission())) {
+    	if (getCountStatus().hasMoved(descriptor)) {
     		loadMOCRequested = true;
     	} else {
     		loadMOC();
@@ -229,7 +229,7 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private void loadMOC() {
     	
-    	int count = getCountStatus().getCount(descriptor.getMission());
+    	int count = getCountStatus().getCount(descriptor);
 
     	if(currentVisibleCount == 0 && !filterRequested) {
     		if(count > EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT) {
@@ -307,7 +307,7 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private void setTableCountText() {
     	String text = "";
-    	int count = getCountStatus().getCount(descriptor.getMission());
+    	int count = getCountStatus().getCount(descriptor);
     	
     	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
     		text = TextMgr.getInstance().getText("MOC_large_count_text");

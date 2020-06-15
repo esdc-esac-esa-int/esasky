@@ -11,7 +11,6 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 
 public class PointInformation {
 	public String longName;
-	public String missionName;
 	public int count;
 	public IDescriptor descriptor;
 	public String credits;
@@ -25,10 +24,9 @@ public class PointInformation {
 	private String parentColor;
 	
 	
-	public PointInformation(String longName, String missionName, String credits,
+	public PointInformation(String longName, String credits,
 			int count, IDescriptor descriptor, EntityContext context) {
 		this.longName = longName;
-		this.missionName = missionName;
 		this.credits = credits;
 		this.count = count;
 		this.descriptor = descriptor;

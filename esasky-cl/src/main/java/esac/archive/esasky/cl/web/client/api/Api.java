@@ -462,34 +462,23 @@ public class Api {
 
 	private void getExtTapCount(final ExtTapDescriptor descriptor, final JavaScriptObject widget) {
 		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
-		if(!countStatus.hasMoved(descriptor.getMission())) {
+		if(!countStatus.hasMoved(descriptor)) {
 			JSONObject obsCount = new  JSONObject();
-			
-			for(String key : countStatus.getKeys()) {
-				if(key.toLowerCase().startsWith(descriptor.getMission().toLowerCase())){
-					int c = countStatus.getDetailsByKey(key).getCount();
-					if(c == 1) {
-						obsCount.put(key, new JSONNumber(c));
-					}
-				}
+			int c = countStatus.getCount(descriptor);
+			if(c == 1) {
+			    obsCount.put(descriptor.getMission(), new JSONNumber(c));
 			}
-			
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 			sendBackToWidget(obsCount, widget);
 			
-		}else {
+		} else {
 			countStatus.registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
 					JSONObject obsCount = new  JSONObject();
-					
-					for(String key : countStatus.getKeys()) {
-						if(key.toLowerCase().startsWith(descriptor.getMission().toLowerCase())){
-							int c = countStatus.getDetailsByKey(key).getCount();
-							if(c == 1) {
-								obsCount.put(key, new JSONNumber(c));
-							}
-						}
+					int c = countStatus.getCount(descriptor);
+					if(c == 1) {
+					    obsCount.put(descriptor.getMission(), new JSONNumber(c));
 					}
 					
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
@@ -507,8 +496,7 @@ public class Api {
 			JSONObject obsCount = new  JSONObject();
 			
 			for (BaseDescriptor currObs : descriptors.getDescriptors()) {
-				int c = countStatus.getDetailsByKey(currObs.getMission()).getCount();
-				obsCount.put(currObs.getMission(), new JSONNumber(c));
+				obsCount.put(currObs.getDescriptorId(), new JSONNumber(countStatus.getCount(currObs)));
 			}
 			
 			obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
@@ -522,8 +510,7 @@ public class Api {
 					JSONObject obsCount = new  JSONObject();
 					
 					for (BaseDescriptor currObs : descriptors.getDescriptors()) {
-						int c = countStatus.getDetailsByKey(currObs.getMission()).getCount();
-						obsCount.put(currObs.getMission(), new JSONNumber(c));
+						obsCount.put(currObs.getMission(), new JSONNumber(countStatus.getCount(currObs)));
 					}
 					
 					obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
@@ -538,8 +525,7 @@ public class Api {
 	private Boolean checkCountUpdated(DescriptorListAdapter<? extends BaseDescriptor> descriptors) {
 		if(descriptors != null) {
 			CountStatus countStatus = descriptors.getCountStatus();
-			String firstMissionId = descriptors.getDescriptors().get(0).getMission();
-			return !countStatus.hasMoved(firstMissionId);
+			return !countStatus.hasMoved(descriptors.getDescriptors().get(0));
 		}
 		return false;
 	}

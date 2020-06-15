@@ -116,7 +116,7 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
 
 	/** Descriptor and CountStatus hashMaps for improve counts */
-	private HashMap<String, List<IDescriptor>> descriptorsMap; //TODO use unique missionId as key when ids are unique across types
+	private HashMap<String, List<IDescriptor>> descriptorsMap; 
 	private HashMap<String, List<CountStatus>> countStatusMap;
 
 	private boolean catDescriptorsIsReady = false;
@@ -512,7 +512,7 @@ public class DescriptorRepository {
 		if(fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
 			for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
 				if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
-					if(extTapDescriptors.getCountStatus().hasMoved(descriptor.getMission())) {
+					if(extTapDescriptors.getCountStatus().hasMoved(descriptor)) {
 						updateCount4ExtTap(descriptor);
 					}
 				}
@@ -651,7 +651,7 @@ public class DescriptorRepository {
         					List<CountStatus> countStatuses = countStatusMap.get(descriptor.getTapTable());
         					for(CountStatus cs: countStatuses) {
             					final int count = 0;
-            					cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+            					cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
             		
         						descriptors.add(descriptor);
         						counts.add(count);
@@ -727,7 +727,7 @@ public class DescriptorRepository {
 				    CountStatus cs = countList.get(i);
 		            i++;
     				final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
-    				cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+    				cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
     				
     				remainingDescriptors.remove(singleCount.getTableName());
     
@@ -751,7 +751,7 @@ public class DescriptorRepository {
                 CountStatus cs = countStatusList.get(i);
                 i++;
     			final int count = 0;
-    			cs.setCountDetails(descriptor.getMission(), count, System.currentTimeMillis(), skyViewPosition);
+    			cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
     			
     			descriptors.add(descriptor);
     			counts.add(count);

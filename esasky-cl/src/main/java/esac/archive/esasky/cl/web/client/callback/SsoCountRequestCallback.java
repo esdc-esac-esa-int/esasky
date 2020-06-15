@@ -110,7 +110,7 @@ public class SsoCountRequestCallback implements RequestCallback {
                     if (descriptor != null) {
                         Integer count = Integer
                                 .parseInt(rowList.getDataValue(currMtd.getName(), 0));
-                        descriptorList.getCountStatus().setCount(currMtd.getName(), count);
+                        descriptorList.getCountStatus().setCount(descriptor, count);
                         descriptors.add(descriptor);
                         counts.add(count);
                     }

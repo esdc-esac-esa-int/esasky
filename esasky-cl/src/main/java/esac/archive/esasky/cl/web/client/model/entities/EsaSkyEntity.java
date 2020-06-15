@@ -228,7 +228,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void fetchData() {
-        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() == 0 ) {
+        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 ) {
             CommonEventBus.getEventBus().fireEvent(
                     new ProgressIndicatorPushEvent("WaitingForCount" + getEsaSkyUniqId(), "Checking availability of " + descriptor.getGuiShortName() + " data"));
 	        getCountStatus().registerObserver(new CountObserver() {
@@ -251,7 +251,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             shapeLimit = EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
         }
 
-        if (shapeLimit > 0 && getCountStatus().getCount(descriptor.getMission()) > shapeLimit) {
+        if (shapeLimit > 0 && getCountStatus().getCount(descriptor) > shapeLimit) {
             Log.debug("Showing dynamic moc");
             if(mocEntity == null){
                 this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this, defaultEntity);
@@ -543,7 +543,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void coneSearch(final SkyViewPosition conePos) {
-        if (getCountStatus().hasMoved(descriptor.getMission()) && descriptor.getFovLimit() ==  0 ) {
+        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() ==  0 ) {
             updateCount(new GetMissionDataCountRequestCallback.OnComplete() {
 
                 @Override

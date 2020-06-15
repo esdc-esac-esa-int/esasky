@@ -505,7 +505,7 @@ public class CloseableTabLayoutPanel extends Composite {
 			
 			@Override
 			public void onColorChange(IDescriptor descriptor, String newColor) {
-				if (styleButton != null && styleButton.isVisible() && descriptor.getMission().equals(tabPanel.getDescriptor().getMission())) {
+				if (styleButton != null && styleButton.isVisible() && descriptor.getDescriptorId().equals(tabPanel.getDescriptor().getDescriptorId())) {
 					styleButton.setCircleColor(newColor);
 				}
 			}

@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.status;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -25,59 +24,46 @@ public class CountStatus {
     }
     
     public boolean containsDescriptor(IDescriptor descriptor) {
-    	return countStatus.containsKey(descriptor.getMission().toLowerCase());
+    	return countStatus.containsKey(descriptor.getDescriptorId());
     }
     
     public void addDescriptor(IDescriptor descriptor) {
-    	countStatus.put(descriptor.getMission().toLowerCase(), new CountDetails(0));
+    	countStatus.put(descriptor.getDescriptorId(), new CountDetails(0));
     }
 
-    public CountDetails getDetailsByKey(String missionId) {
-        return countStatus.get(missionId.toLowerCase());
+    public void setCountDetails(IDescriptor descriptor, Integer count, Long updateTime, SkyViewPosition skyViewPosition) {
+        setCount(descriptor, count);
+        countStatus.get(descriptor.getDescriptorId()).setUpdateTime(updateTime);
+        countStatus.get(descriptor.getDescriptorId()).setSkyViewPosition(skyViewPosition);
     }
 
-    public Set<String> getKeys() {
-    	return countStatus.keySet();
-    }
-
-    public void setCountDetails(String missionId, Integer count, Long updateTime, SkyViewPosition skyViewPosition) {
-        setCount(missionId, count);
-        countStatus.get(missionId.toLowerCase()).setUpdateTime(updateTime);
-        countStatus.get(missionId.toLowerCase()).setSkyViewPosition(skyViewPosition);
-    }
-
-    public Integer getCount(String missionId) {
-        return countStatus.get(missionId.toLowerCase()).getCount();
+    public Integer getCount(IDescriptor descriptor) {
+        return countStatus.get(descriptor.getDescriptorId()).getCount();
     }
     
     public Integer getTotalCount() {
     	return totalCount;
     }
 
-    public void setCount(String missionId, Integer count) {
-        	if(countStatus.get(missionId.toLowerCase()) == null){
-        		countStatus.put(missionId.toLowerCase(), new CountDetails(0));
+    public void setCount(IDescriptor descriptor, Integer count) {
+        	if(countStatus.get(descriptor.getDescriptorId()) == null){
+        		countStatus.put(descriptor.getDescriptorId(), new CountDetails(0));
         	}
-        countStatus.get(missionId.toLowerCase()).setCount(count);
-//        updateCount();
+        countStatus.get(descriptor.getDescriptorId()).setCount(count);
     }
 
-    public Long getUpdateTime(String missionId) {
-        return countStatus.get(missionId.toLowerCase()).getUpdateTime();
+    public Long getUpdateTime(IDescriptor descriptor) {
+        return countStatus.get(descriptor.getDescriptorId()).getUpdateTime();
     }
 
-    public void setUpdateTime(String missionId, Long updateTime) {
-        countStatus.get(missionId.toLowerCase()).setUpdateTime(updateTime);
+    public void setUpdateTime(IDescriptor descriptor, Long updateTime) {
+        countStatus.get(descriptor.getDescriptorId()).setUpdateTime(updateTime);
     }
 
-    public SkyViewPosition getSkyViewPosition(String missionId) {
-        return countStatus.get(missionId.toLowerCase()).getSkyViewPosition();
+    public SkyViewPosition getSkyViewPosition(IDescriptor descriptor) {
+        return countStatus.get(descriptor.getDescriptorId()).getSkyViewPosition();
     }
 
-    public void setSkyViewPosition(String missionId, SkyViewPosition skyViewPosition) {
-        countStatus.get(missionId.toLowerCase()).setSkyViewPosition(skyViewPosition);
-    }
-    
     public void updateCount(){
         	totalCount = 0;
         	for(String key : countStatus.keySet()){
@@ -104,10 +90,10 @@ public class CountStatus {
         	}
     }
     
-    public boolean hasMoved(String missionId) {
+    public boolean hasMoved(IDescriptor descriptor) {
     	try {
     		SkyViewPosition currPos = CoordinateUtils.getCenterCoordinateInJ2000();
-    		SkyViewPosition missionPos = getSkyViewPosition(missionId);
+    		SkyViewPosition missionPos = getSkyViewPosition(descriptor);
         	return !currPos.compare(missionPos, 0.01);
     	} catch(Exception e) {
     		// Handles if the we haven't received any data yet i.e. no missionPos exists.

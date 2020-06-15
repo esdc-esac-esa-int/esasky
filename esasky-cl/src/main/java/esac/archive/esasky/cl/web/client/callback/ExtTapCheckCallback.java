@@ -48,10 +48,10 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			
 			@Override
 			public void execute() {
-				if(countStatus.getUpdateTime(descriptor.getMission()) != null 
-		        		&& countStatus.getUpdateTime(descriptor.getMission()) > timecall) {
+				if(countStatus.getUpdateTime(descriptor) != null 
+		        		&& countStatus.getUpdateTime(descriptor) > timecall) {
 		        	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
-		        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor.getMission()) - timecall));
+		        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
 		        	return;
 		        }
 				if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT){
@@ -69,17 +69,17 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			 	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_count,
 			 			descriptor.getGuiLongName() + " Time for response (s): " + Double.toString(timeForReceiving));
 		        
-		        countStatus.setUpdateTime(descriptor.getMission(), timecall);
+		        countStatus.setUpdateTime(descriptor, timecall);
 				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 				TapRowList rowList = mapper.read(response.getText());
 	
 				int totalCount = rowList.getData().size();
 				SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 	
-		        countStatus.setCountDetails(descriptor.getMission(), totalCount, System.currentTimeMillis(),
+		        countStatus.setCountDetails(descriptor, totalCount, System.currentTimeMillis(),
 		        		skyViewPosition);
 		        
-		        Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getMission()
+		        Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getGuiLongName()
 		        	+ ": [" + totalCount + "] results found");
 		        
 		        
@@ -140,7 +140,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        					if(!descriptors.contains(collectionDesc)) {
 		        						descriptors.add(collectionDesc);
 		        						counts.add(1);
-		        						countStatus.setCountDetails(collectionDesc.getMission(), 1, System.currentTimeMillis(),
+		        						countStatus.setCountDetails(collectionDesc, 1, System.currentTimeMillis(),
 		        				        		skyViewPosition);
 		        					}
 	        					}else {

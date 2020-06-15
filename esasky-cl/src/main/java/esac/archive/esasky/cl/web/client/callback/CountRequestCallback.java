@@ -29,15 +29,15 @@ public class CountRequestCallback extends JsonRequestCallback {
 
     @Override
     protected void onSuccess(final Response response) {
-        if(countStatus.getUpdateTime(descriptor.getMission()) != null 
-        		&& countStatus.getUpdateTime(descriptor.getMission()) > timecall) {
+        if(countStatus.getUpdateTime(descriptor) != null 
+        		&& countStatus.getUpdateTime(descriptor) > timecall) {
         	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
-        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor.getMission()) - timecall));
+        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
         	return;
         }
         
-        countStatus.setUpdateTime(descriptor.getMission(), timecall);
-        Log.debug(this.getClass().getSimpleName() + " RESPONSE for " + descriptor.getMission()
+        countStatus.setUpdateTime(descriptor, timecall);
+        Log.debug(this.getClass().getSimpleName() + " RESPONSE for " + descriptor.getDescriptorId()
                 + " : " + response.getText());
         JsArray<JavaScriptObject> array = JSONUtils.evalJsonGetData("(" + response.getText() + ")");
 
@@ -49,9 +49,9 @@ public class CountRequestCallback extends JsonRequestCallback {
         int value = count.getCount();
 		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 
-        countStatus.setCountDetails(descriptor.getMission(), value, System.currentTimeMillis(),
+        countStatus.setCountDetails(descriptor, value, System.currentTimeMillis(),
         		skyViewPosition);
-        Log.debug(this.getClass().getSimpleName() + " " + descriptor.getMission() + ": [" + value
+        Log.debug(this.getClass().getSimpleName() + " " + descriptor.getDescriptorId() + ": [" + value
                 + "] results found");
         countStatus.updateCount();
     }

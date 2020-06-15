@@ -55,7 +55,7 @@ public class GetMissionDataCountRequestCallback extends JsonRequestCallback {
         JsArray<JavaScriptObject> array = JSONUtils.evalJsonGetData("(" + response.getText() + ")");
         DynamicCountObject countObject = JsonUtils.<DynamicCountObject> safeEval(array.get(0).toString());
 
-        entity.getCountStatus().setCount(entity.getDescriptor().getMission(), countObject.getCount());
+        entity.getCountStatus().setCount(entity.getDescriptor(), countObject.getCount());
         entity.getCountStatus().updateCount();
         
 		if(onComplete != null) {
