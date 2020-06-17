@@ -153,27 +153,69 @@ public class PlanObservationPanel extends DialogBox {
         verticalPanel.add(fr);
     }
     
-    public void addInstrumentRowAPI(String instrumentName, String detectorName, boolean showAllInstruments) {
+    public String addInstrumentRowAPI(String instrumentName, String detectorName, boolean showAllInstruments) {
     	final PlanningMission pm = PlanningMission.JWST;
     	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
+    	if(instrument == null) {
+    		List<Instrument> instruments = Instrument.getInstrumentsPerMission(pm);
+    		String returnText = "No instrument with that name exists. Available instrument names are: [";
+    		for(Instrument i : instruments) {
+    			returnText += i.getInstrumentName() + ", ";
+    		}
+    		returnText = returnText.substring(0,returnText.length()-1) + "]";
+    		return returnText;
+    	}
+    	
     	List<String> detectors = InstrumentMapping.getInstance().getApertureListForInstrument(instrumentName);
+    	boolean found = false;
+    	String detectorsString = "[";
     	for (String detector : detectors) {
-    		if(detector.equals(detectorName)) {
+    		if(detector.equalsIgnoreCase(detectorName)) {
     			FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments);
     			PlanObservationPanel.jwstPanel.add(fr);
+    			found = true;
     		}
+    		detectorsString += detector + ", ";
+		}
+    	if(found) {
+    		return "Showing instrument in the sky";
+    	}else {
+    		detectorsString = detectorsString.substring(0,detectorsString.length()-1) + "]";
+    		return "No detector with that name exists. Available detectors for instrument: " + instrumentName + " are: "
+    				+ detectorsString;
     	}
     }
     
-    public void addInstrumentRowWithCoordinatesAPI(String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
+    public String addInstrumentRowWithCoordinatesAPI(String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
     	final PlanningMission pm = PlanningMission.JWST;
     	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
+    	if(instrument == null) {
+    		List<Instrument> instruments = Instrument.getInstrumentsPerMission(pm);
+    		String returnText = "No instrument with that name exists. Available instrument names are: [";
+    		for(Instrument i : instruments) {
+    			returnText += i.getInstrumentName() + ", ";
+    		}
+    		returnText = returnText.substring(0,returnText.length()-1) + "]";
+    		return returnText;
+    	}
+    	
     	List<String> detectors = InstrumentMapping.getInstance().getApertureListForInstrument(instrumentName);
+    	boolean found = false;
+    	String detectorsString = "[";
     	for (String detector : detectors) {
     		if(detector.equals(detectorName)) {
     	    	FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation);
     	        PlanObservationPanel.jwstPanel.add(fr);
+    			found = true;
     		}
+    		detectorsString += detector + ", ";
+    	}
+    	if(found) {
+    		return "Showing instrument in the sky";
+    	}else {
+    		detectorsString = detectorsString.substring(0,detectorsString.length()-1) + "]";
+    		return "No detector with that name exists. Available detectors for instrument: " + instrumentName + " are: "
+    				+ detectorsString;
     	}
     }
     

@@ -61,14 +61,16 @@ public class ApiMessageParser {
 				console.log('changeHiPSWithParams event captured!');
 				console.log(msg);
 				console.log("HiPS URL "+msg.content.hips.url);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)
+					(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
 				break
 
 			case 'addHipsWithParams':
 				console.log('addHipsWithParams event captured!');
 				console.log(msg);
 				console.log("HiPS URL "+msg.content.hips.url);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::addHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::addHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)
+					(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
 				break
 				
 			case 'removeHips':
@@ -162,13 +164,15 @@ public class ApiMessageParser {
 			case 'addJwst':
 				console.log('addJwst event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::addJwst(Ljava/lang/String;Ljava/lang/String;Z)(msg.content.instrument, msg.content.detector, msg.content.showAllInstruments);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::addJwst(Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.instrument, msg.content.detector, msg.content.showAllInstruments, e);
 				break;
 
 			case 'addJwstWithCoordinates':
 				console.log('addJwstWithCoordinates event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::addJwstWithCoordinates(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)(msg.content.instrument, msg.content.detector, msg.content.showAllInstruments, msg.content.ra, msg.content.dec, msg.content.rotation);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::addJwstWithCoordinates(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.instrument, msg.content.detector, msg.content.showAllInstruments, msg.content.ra, msg.content.dec, msg.content.rotation, e);
 				break;
 				
 			case 'closeJwstPanel':
@@ -253,6 +257,11 @@ public class ApiMessageParser {
 				instance.@esac.archive.esasky.cl.web.client.api.Api::closeResultPanelTab(I)(msg.content.index);
 				break;	
 				
+			case 'closeAllResultPanelTabs':
+				console.log('closeResultPanelTab event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::closeAllResultPanelTabs()();
+				break;	
+				
 			case 'showCoordinateGrid':
 				console.log('showCoordinateGrid event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::showCoordinateGrid(Z)(msg.content.show);
@@ -297,7 +306,7 @@ public class ApiMessageParser {
 					msg.content['limit'] = -1;
 				}
 				if(!msg.content.hasOwnProperty('dataOnlyInView')){ 
-					msg.content['dataOnlyInView'] = true;
+					msg.content['dataOnlyInView'] = false;
 				}
 				instance.@esac.archive.esasky.cl.web.client.api.Api::plotExtTapWithDetails(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;I)
 					(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit);
@@ -313,6 +322,12 @@ public class ApiMessageParser {
 			case 'addMOC':
 				console.log('addMOC event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::addMOC(Ljava/lang/String;Ljava/lang/String;)
+					(msg.content.options, msg.content.mocData);
+				break;	
+				
+			case 'addQ3CMOC':
+				console.log('addQ3CMOC event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::addQ3CMOC(Ljava/lang/String;Ljava/lang/String;)
 					(msg.content.options, msg.content.mocData);
 				break;	
 				

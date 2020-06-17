@@ -77,7 +77,7 @@ public class Constants {
 
         public static Instrument getSingleInstrument(PlanningMission pm, String instrument) {
             for (Instrument curr : Instrument.values()) {
-                if (curr.getMission() == pm && curr.getInstrumentName().equals(instrument)) {
+                if (curr.getMission() == pm && curr.getInstrumentName().equalsIgnoreCase(instrument)) {
                     return curr;
                 }
             }

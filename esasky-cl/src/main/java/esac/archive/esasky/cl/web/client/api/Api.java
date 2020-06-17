@@ -269,7 +269,6 @@ public class Api {
                     // TODO Auto-generated method stub
                     
                 }
-				
 			});
 		}else {
 			sendBackToWidget(callback, msg);
@@ -582,20 +581,30 @@ public class Api {
 		planObservationPanel.show();
 	}
 	
-	public void addJwstWithCoordinates(String instrument, String detector,boolean allInstruments, String ra, String dec, String rotation) {
+	public void addJwstWithCoordinates(String instrument, String detector,boolean allInstruments, String ra, String dec, String rotation, JavaScriptObject widget) {
 		String allInfo = instrument + ";" + detector + ";" + Boolean.toString(allInstruments) + ";" + ra + ";" + dec + ";" + rotation;
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addJwstWithCoordinates, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
-		planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, detector, allInstruments, ra, dec, rotation);
+		String message = planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, detector, allInstruments, ra, dec, rotation);
+		if(message.length() > 0 ) {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString(message));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
 	}
 	
-	public void addJwst(String instrument, String detector, boolean allInstruments) {	
+	public void addJwst(String instrument, String detector, boolean allInstruments, JavaScriptObject widget) {	
 		String allInfo = instrument + ";" + detector + ";" + Boolean.toString(allInstruments);
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addJwst, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
-		planObservationPanel.addInstrumentRowAPI(instrument, detector, allInstruments);
+		String message = planObservationPanel.addInstrumentRowAPI(instrument, detector, allInstruments);
+		if(message.length() > 0 ) {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString(message));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
 	}
 
 	public void goTo(String ra, String dec) {
