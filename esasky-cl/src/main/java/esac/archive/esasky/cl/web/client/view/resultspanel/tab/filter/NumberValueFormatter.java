@@ -42,7 +42,7 @@ public class NumberValueFormatter implements ValueFormatter{
             if(format.format(value % 1).equals(".0") || format.format(value % 1).equals("0")) {
                 return NumberFormatter.formatToNumberWithSpaces((int)value);
             } else {
-                return NumberFormatter.formatToNumberWithSpaces((int)value) + format.format(value % 1);
+                return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value) + format.format(Math.abs(value) % 1);
             }
         }
         String sciFormatResult = scientificFormat.format(value);
