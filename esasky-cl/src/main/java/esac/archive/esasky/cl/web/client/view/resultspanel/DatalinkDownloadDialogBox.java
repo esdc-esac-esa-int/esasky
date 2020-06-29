@@ -55,8 +55,14 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 		}
 	};
 
-	public DatalinkDownloadDialogBox(final String url, String observationId) {
+	public DatalinkDownloadDialogBox(final String url, String title) {
 		super(GoogleAnalytics.CAT_Datalink);
+		
+		if(title == null || title.isEmpty()) {
+			title = "Datalink";
+		}
+		final String observationId = title;
+		
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 
@@ -99,6 +105,17 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 									anchorName += links.getTypeAndSizeDisplayText();
 								}
 								Anchor anchor = new Anchor(anchorName, links.access_url, "_blank");
+								if(anchorName.toLowerCase().contains("datalink")) {
+									anchor.setTarget("");
+									anchor.setHref("javascript:;");
+									anchor.addClickHandler(new ClickHandler() {
+										
+										@Override
+										public void onClick(ClickEvent event) {
+											new DatalinkDownloadDialogBox(links.access_url, observationId);
+										}
+									});
+								}
 								anchor.addClickHandler(new ClickHandler() {
 									
 									@Override
@@ -175,9 +192,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 			}
 		});
 
-		if(observationId == null || observationId.isEmpty()) {
-		    observationId = "Datalink";
-		}
+
 		datalinkIdLabel = new Label(observationId.replace("_", " "));
 		datalinkIdLabel.setStyleName("datalinkIdLabel");
 

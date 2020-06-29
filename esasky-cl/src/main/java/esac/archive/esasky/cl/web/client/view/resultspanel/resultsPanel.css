@@ -127,3 +127,7 @@
     color: red;
     top: literal("calc(35% + 40px)");
 }
+
+.tabulator-header-filter-disabled{
+	pointer-events:none;
+}

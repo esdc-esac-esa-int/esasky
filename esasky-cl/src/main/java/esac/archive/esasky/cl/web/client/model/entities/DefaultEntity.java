@@ -141,27 +141,12 @@ public class DefaultEntity implements GeneralEntityInterface{
     	return metadataService.getMetadataAdql(getDescriptor(), filter);
     }
 
-    public void fetchGlobalMinMaxHeaders(final ITablePanel tablePanel) {
-    	String adql =  metadataService.fetchGlobalMinMaxHeaders(getDescriptor());
+    public void fetchMinMaxHeaders(final ITablePanel tablePanel, boolean global) {
+    	String adql =  metadataService.fetchMinMaxHeaders(getDescriptor(), global);
     	String query = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
     	Log.debug("[FetchHeader] Query " + query );
-    	tablePanel.insertHeader(query, "globalMinMax");
+    	tablePanel.insertHeader(query, "maxMin");
     }
-
-    public void fetchLocalMinMaxHeaders(final ITablePanel tablePanel) {
-    	String adql = metadataService.fetchLocalMinMaxHeaders(getDescriptor());
-    	String query = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-    	Log.debug("[FetchHeader] Query " + query );
-    	tablePanel.insertHeader(query, "localMinMax");
-    }
-    
-//    public void fetchHeaders(final ITablePanel tablePanel) {
-//		 if(Modules.useTabulator) {
-//			 String query = TAPUtils.getTAPQuery(URL.encodeQueryString(getHeaderAdql()), EsaSkyConstants.JSON);
-//			 Log.debug("[FetchHeader] Query " + query );
-//			 tablePanel.insertHeader(query);
-//		 }
-//	 }
     
 	@Override
 	public ITablePanel createTablePanel() {

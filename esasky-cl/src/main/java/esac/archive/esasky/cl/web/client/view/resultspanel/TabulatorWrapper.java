@@ -13,6 +13,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
+import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
@@ -47,6 +48,7 @@ public class TabulatorWrapper{
         public String getLabelFromTapName(String tapName);
         public GeneralJavaScriptObject getDescriptorMetaData();
         public boolean isMOCMode();
+        public String getEsaSkyUniqId();
     }
 
     private TabulatorCallback tabulatorCallback;
@@ -401,167 +403,85 @@ public class TabulatorWrapper{
     
     private native void setHeaderQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject, String mode)/*-{
         tableJsObject.clearData();
+        tableJsObject.mocLoaded = false;
         
-        if(mode == 'localMinMax'){
-        	tableJsObject.options.ajaxResponse = function(url, params, response){
-				var metadata = response.metadata;
-				var newMeta = [];
-				filterData = {};
-				
-				var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
-				
-				for(var j = 0; j < metadata.length; j++){
-	    			
-	    			name = metadata[j].name.substring(0,metadata[j].name.length - 4)
-					var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
-					var displayName = $wnd.esasky.getDefaultLanguageText(label);
-					if(displayName == label){
-						displayName = $wnd.esasky.getColumnDisplayText(displayName);
-					}
-	    			
-			        var visible = (name !== "s_region");
-                    if(descMetaData.hasOwnProperty(name)){
-                        if(descMetaData[name].hasOwnProperty("visible")){
-                            visible = descMetaData[name]["visible"];
-                        }
-                    }
-    				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
-					var metaDataIndex = metadata.length + newMeta.length;
-					if(descMetaData.hasOwnProperty(name)){
-						metaDataIndex = parseInt(descMetaData[name].index);
-					}
-	    			
-	    			if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
-	    				datatype = "TIMESTAMP";
-	    			} else{
-    					datatype = "DOUBLE";
-    				}
+    	tableJsObject.options.ajaxResponse = function(url, params, response){
+//    		if(!this.mocLoaded){
+//				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::registerMocLoadedObserver()();
+//    			while(!this.mocLoaded){
+//    				setTimeout(function(){},5000);
+//    			}
+//    		}
 
-	    			if(metadata[j].name.endsWith("_min")){
-	    				meta = {name:name, displayName:displayName, datatype:datatype, visible: visible}
-	    				newMeta.push(meta)
-	    				if(!filterData[name]){
-	    					filterData[name] = {};
-	    				}
-	    				
-	    				if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
-							filterData[name]["min"] = response.data[0][j];
-		    			}else{
-							filterData[name]["min"] = parseFloat(response.data[0][j]);
-	    				}
-	    			}
-	    			else if(metadata[j].name.endsWith("_max")){
-    					if(!filterData[name]){
-	    					filterData[name] = {};
-	    				}
-	    				
-						if(metadata[j].datatype.toUpperCase() == "TIMESTAMP"){
-							filterData[name]["max"] = response.data[0][j];
-		    			}else{
-							filterData[name]["max"] = parseFloat(response.data[0][j]);
-	    				}	    			
-					}
-	    			else if(metadata[j].name.endsWith("_lst")){
-	    				list = response.data[0][j];
-	    				list = list.replace("{","[").replace("}","]");
-    					if(!filterData[name]){
-    						filterData[name] = {};
-	    				}
-						filterData[name]["list"] = list;
-						meta = {name:name, displayName:displayName, datatype:"LIST", visible: visible}
-						newMeta.push(meta)
-	    			}
-	    			else{
-	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible: visible}
-	    				newMeta.push(meta)
-	    			}
-	    			
-				}
+			var newMeta = [];
+			var filterData = {};
+			
+			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
+			var data = response.data[0][0].split(",");
+			for(var i = 0;i< data.length; i++){
+				var row = data[i].split(";")
+				var colName = row[0];
+				var val = row[1];
+				var metaName = colName.substring(0,colName.length - 4)
+				var datatype;
+
+				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
+				var metaDataIndex = data.length + newMeta.length;
+				var visible = false;
 				
-				newMeta = newMeta.filter(function(e){return e})
-				tableJsObject.metadata = newMeta;
-				tableJsObject.filterData = filterData;
-				tableJsObject.showCount = false;
-				tableJsObject.dataLoaded = true;
-		        return [];
-		    }
-        } else{
-        	tableJsObject.options.ajaxResponse = function(url, params, response){
-        	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponse()();
-				var md = response.metadata;
-				var newMeta = [];
-				var filterData = {};
-				var colNameIndex, minIndex, maxIndex;
-				for(var j = 0; j < md.length; j++){
-					if(md[j].name.endsWith("min_value")){
-						minIndex = j;
-					}
-					else if(md[j].name.endsWith("max_value")){
-						maxIndex = j
-					}
-					else if(md[j].name == "column_name"){
-						colNameIndex = j
+				
+				if(descMetaData.hasOwnProperty(metaName)){
+					metaDataIndex = parseInt(descMetaData[metaName].index);
+					datatype = descMetaData[metaName].type.toUpperCase();
+					if(descMetaData[metaName].hasOwnProperty("visible")){
+                        visible = descMetaData[metaName]["visible"];
+                    }
+				}else{
+					if(colName.endsWith('_min') || colName.endsWith('_max')){
+						datatype = "DOUBLE";
+					}else{
+						datatype = "STRING";
 					}
 				}
 				
-				var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
+				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+				var displayName = $wnd.esasky.getDefaultLanguageText(label);
 				
-				for(var i = 0; i < response.data.length; i++){
+				if(!filterData.hasOwnProperty(metaName)){	
+					filterData[metaName] = {};
+				}
+				
+				if(colName.endsWith("_min")){
+					if(datatype == "TIMESTAMP" || datatype == "DATETIME"){
+						filterData[metaName]["min"] = val;
+	    			}else{
+						filterData[metaName]["min"] = parseFloat(val);
+    				}	    			
+					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
+					newMeta.push(meta)
+				
+				}else if(colName.endsWith("_max")){
 					
-					var name = response.data[i][colNameIndex];
-					
-					var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(name);
-					var displayName = $wnd.esasky.getDefaultLanguageText(label);
-					if(displayName == label){
-						displayName = $wnd.esasky.getColumnDisplayText(displayName);
-					}
-    	            
-    	            var visible = (name !== "s_region");
-                    if(descMetaData.hasOwnProperty(name)){
-                        if(descMetaData[name].hasOwnProperty("visible")){
-                            visible = descMetaData[name]["visible"];
-                        }
-                    }
-					
-					
-					//If not in descMetaData add to uniqu spot in end and then we remove all empty slots in end
-					var metaDataIndex = response.data.length + newMeta.length;
-					if(descMetaData.hasOwnProperty(name)){
-						metaDataIndex = parseInt(descMetaData[name].index);
-					}
-					
-					minVal = parseFloat(response.data[i][minIndex]);
-					maxVal = parseFloat(response.data[i][maxIndex]);
-					
-					if(maxVal > minVal){
-						if(Math.floor(minVal) == minVal && Math.floor(maxVal) == maxVal){
-		    				meta = {name:name, displayName:displayName, datatype:"INTEGER", visible:visible}
-		    				newMeta[metaDataIndex] = meta
-						}else{
-		    				meta = {name:name, displayName:displayName, datatype:"DOUBLE", visible:visible}
-		    				newMeta[metaDataIndex] = meta
-						}
-						
-	    				if(!filterData[name]){
-	    					filterData[name] = {};
-	    				}
-						filterData[name]["min"] = minVal;
-						filterData[name]["max"] = maxVal;
-					}
-	    			else{
-	    				meta = {name:name, displayName:displayName, datatype:"STRING", visible:visible}
-	    				newMeta[metaDataIndex] = meta
-	    			}
-    			}
-
-				//Removes empty slots
-				newMeta = newMeta.filter(function(e){return e})
-				tableJsObject.metadata = newMeta;
-				tableJsObject.filterData = filterData;
-				tableJsObject.showCount = false;
-				tableJsObject.dataLoaded = true;
-		        return [];
+					if(datatype == "TIMESTAMP"|| datatype == "DATETIME"){
+						filterData[metaName]["max"] = val;
+	    			
+					}else{
+						filterData[metaName]["max"] = parseFloat(val);
+    				}	    			
+				
+				}else{
+					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
+					newMeta.push(meta)
+				}
 			}
+			
+			newMeta = newMeta.filter(function(e){return e})
+			tableJsObject.metadata = newMeta;
+			tableJsObject.filterData = filterData;
+			tableJsObject.showCount = false;
+			tableJsObject.dataLoaded = true;
+	        return [];
+				
         }
     }-*/;
 
@@ -978,7 +898,7 @@ public class TabulatorWrapper{
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
                             }
                     });
                 }
@@ -1495,7 +1415,7 @@ public class TabulatorWrapper{
     public String getLabelFromTapName(String tapName) {
     	return tabulatorCallback.getLabelFromTapName(tapName);
     }
-
+    
     public GeneralJavaScriptObject getDescriptorMetaData() {
     	return tabulatorCallback.getDescriptorMetaData();
     }
@@ -1511,4 +1431,44 @@ public class TabulatorWrapper{
     public boolean isMOCMode() {
     	return tabulatorCallback.isMOCMode();
     }
+    
+    public void disableFilters() {
+    	disableFilters(tableJsObject);
+    }
+    
+    private native void disableFilters(GeneralJavaScriptObject table) /*-{
+    	function loopChildren(el){
+    		el.classList.add("tabulator-header-filter-disabled");
+    		for(var i = 0; i < el.children.length; i++){
+    			loopChildren(el.children[i]);
+    		};
+    	}
+    	var list =  table.getElementsByClassName("tabulator-header-filter")
+    	for(var i = 0; i < list.length; i++){
+    		loopChildren(list[i]);
+    	};
+    }-*/;
+
+    public void enableFilters() {
+    	enableFilters(tableJsObject);
+    }
+    
+    private native void enableFilters(GeneralJavaScriptObject table) /*-{
+    	var list =  table.getElementsByClassName("tabulator-header-filter-disabled")
+    	for(var i = 0; i < list.length; i++){
+    		list[i].classList.remove("tabulator-header-filter-disabled");
+    	};
+    }-*/;
+    
+    public void registerMocLoadedObserver() {
+    	MocRepository.getInstance().registerMocLoadedObserver(tabulatorCallback.getEsaSkyUniqId(), new MocRepository.MocLoadedObserver() {
+			
+			@Override
+			public void onLoaded() {
+				tableJsObject.setProperty("mocLoaded", true);
+				MocRepository.getInstance().unRegisterMocLoadedObserver(tabulatorCallback.getEsaSkyUniqId());
+			}
+		});
+    }
+
 }

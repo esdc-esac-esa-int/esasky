@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.repository;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+
 
 public class MocRepository {
 
@@ -177,5 +179,19 @@ public class MocRepository {
 		}else {
 			return 14;
 		}					
+	}
+	
+	public interface MocLoadedObserver {
+		public void onLoaded();
+	}
+	
+	HashMap<String, MocLoadedObserver> mocLoadedObservers = new HashMap<>();
+	
+	public void registerMocLoadedObserver(String key, MocLoadedObserver observer) {
+		mocLoadedObservers.put(key, observer);
+	}
+	
+	public void unRegisterMocLoadedObserver(String key) {
+		mocLoadedObservers.remove(key);
 	}
 }

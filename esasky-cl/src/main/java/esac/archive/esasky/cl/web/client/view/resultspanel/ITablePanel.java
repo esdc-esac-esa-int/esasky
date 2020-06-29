@@ -77,4 +77,6 @@ public interface ITablePanel {
 	public boolean isMOCMode();
 	public void setMOCMode(boolean input);
 	public void notifyObservers();
+	public void disableFilters();
+	public void enableFilters();
 }

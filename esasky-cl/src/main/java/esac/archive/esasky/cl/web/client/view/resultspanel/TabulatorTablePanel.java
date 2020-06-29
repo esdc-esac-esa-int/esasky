@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
@@ -576,6 +577,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public void onDatalinkClicked(GeneralJavaScriptObject row) {
         String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
+        if(datalinkUrl == null || datalinkUrl.isEmpty()) {
+        	datalinkUrl = buildArchiveURL(row.invokeFunction("getData"));
+        }
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
         String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
 
@@ -751,10 +755,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     }
 
     @Override
-    public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData) {
-        String url = buildArchiveURL(rowData);
-        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Outbound, GoogleAnalytics.ACT_Outbound_click, url);
-        Window.open(url, "_blank", "");
+    public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
+        String url = buildArchiveURL(row.invokeFunction("getData"));
+        if(url.toLowerCase().contains("datalink")) {
+        	onDatalinkClicked(row);
+        }else {
+        	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Outbound, GoogleAnalytics.ACT_Outbound_click, url);
+        	Window.open(url, "_blank", "");
+        }
     }
     
     private String buildArchiveURL(GeneralJavaScriptObject rowData) {
@@ -819,5 +827,18 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     private void removeStatusMessage() {
         CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("FetchingRealData" + esaSkyUniqID));
     }
+    
+    public void disableFilters() {
+    	table.disableFilters();
+    }
+
+    public void enableFilters() {
+    	table.enableFilters();
+    }
+    
+	@Override
+	public String getEsaSkyUniqId() {
+		return entity.getEsaSkyUniqId();
+	}
 
 }

@@ -45,7 +45,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	
     private ESASkyResultMOC moc = new ESASkyResultMOC(2,-1);
     private ITablePanel tablePanel;
-    private TapRowList data;
     protected DefaultEntity defaultEntity;
     protected IShapeDrawer drawer;
     protected IShapeDrawer combinedDrawer;
@@ -58,10 +57,10 @@ public class MOCEntity implements GeneralEntityInterface {
     private boolean shouldBeShown = true;
     private GeneralEntityInterface parentEntity;
     private TAPMOCService metadataService;
-    private boolean globalMinMaxLoaded = false;
     private boolean filterRequested = false;
     private boolean loadMOCRequested = false;
     private boolean freshLoad = true;
+    private boolean waitingForHeaders = false;
     
     private TableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
@@ -72,7 +71,11 @@ public class MOCEntity implements GeneralEntityInterface {
 			
 			if(newCount > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				setTableCountText();
+				tablePanel.disableFilters();
+				return;
 			}
+			
+			tablePanel.enableFilters();
 			
 			if(filterRequested && newCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				loadFilteredMOC();
@@ -233,11 +236,9 @@ public class MOCEntity implements GeneralEntityInterface {
 
     	if(currentVisibleCount == 0 && !filterRequested) {
     		if(count > EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT) {
-    			defaultEntity.fetchGlobalMinMaxHeaders(tablePanel);
-    			globalMinMaxLoaded = true;
+    			defaultEntity.fetchMinMaxHeaders(tablePanel, true);
     		}else {
-    			defaultEntity.fetchLocalMinMaxHeaders(tablePanel);
-    			globalMinMaxLoaded = false;
+    			defaultEntity.fetchMinMaxHeaders(tablePanel, false);
     		}
     	}
 
