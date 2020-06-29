@@ -1042,7 +1042,7 @@ public class TabulatorWrapper{
 		    				});
 		    				
 			    		}
-			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP" || this.metadata[i].datatype.toUpperCase() === "DATETIME"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			field:this.metadata[i].name, 
