@@ -458,7 +458,7 @@ public class TabulatorWrapper{
 						filterData[metaName]["min"] = parseFloat(val);
     				}	    			
 					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.push(meta)
+					newMeta.splice(metaDataIndex,0,meta)
 				
 				}else if(colName.endsWith("_max")){
 					
@@ -471,7 +471,7 @@ public class TabulatorWrapper{
 				
 				}else{
 					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.push(meta)
+					newMeta.splice(metaDataIndex,0,meta)
 				}
 			}
 			
