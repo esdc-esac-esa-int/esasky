@@ -187,6 +187,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				}
 			});
 		}
+		if(Modules.shouldShowExtTap) {
+		    ctrlToolBarPanel.add(createExtTapBtn());
+		    ctrlToolBarPanel.add(extTapTreeMapContainer);
+		    extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
+		        @Override
+		        public void onClose() {
+		            extTapButton.setToggleStatus(false);
+		            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
+		        }
+		    });
+		}
 		if(Modules.ssoModule){
 			ctrlToolBarPanel.add(createSsoBtn());
 			ctrlToolBarPanel.add(ssoTreeMapContainer);
@@ -204,17 +215,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			publicationPanel.hide();
 		}
 		
-		if(Modules.shouldShowExtTap) {
-			ctrlToolBarPanel.add(createExtTapBtn());
-			ctrlToolBarPanel.add(extTapTreeMapContainer);
-			extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
-				@Override
-				public void onClose() {
-					extTapButton.setToggleStatus(false);
-					CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
-				}
-			});
-		}
 		
 		ctrlToolBarPanel.add(createTargetListBtn());
 		ctrlToolBarPanel.add(targetListPanel);
