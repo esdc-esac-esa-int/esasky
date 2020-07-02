@@ -166,17 +166,20 @@ public class MovablePanel extends FlowPanel {
 	private void setPosition(int left, int top) {
 		setPosition(left, top, false);
 	}
+	
+	private static int MIN_BOTTOM_DISTANCE = 2;
+	private static int MIN_RIGHT_DISTANCE = 1;
 	private void setPosition(int left, int top, boolean forceTopLeftDefinition) {
-		int snappingDistance = isSnappingEnabled ? SNAPPING_DISTANCE : 0;
+		int snappingDistance = isSnappingEnabled ? SNAPPING_DISTANCE : MIN_BOTTOM_DISTANCE;
 		if(isWindowResize && isBottom && !forceTopLeftDefinition) {
-			setBottom(0);
+			setBottom(MIN_BOTTOM_DISTANCE);
 		} else {
 			if(top < MIN_DISTANCE_FROM_TOP) {
 				top = MIN_DISTANCE_FROM_TOP;
 			}
 			if(top + snappingDistance > MainLayoutPanel.getMainAreaHeight() - getOffsetHeight()) {
 				if(!isWindowResize && !forceTopLeftDefinition) {
-					setBottom(0);
+					setBottom(MIN_BOTTOM_DISTANCE);
 				} else {
 					top = MainLayoutPanel.getMainAreaHeight() - getOffsetHeight();
 					if(top < MIN_DISTANCE_FROM_TOP) {
@@ -190,14 +193,14 @@ public class MovablePanel extends FlowPanel {
 		}
 		
 		if(isWindowResize && isRight && !forceTopLeftDefinition) {
-			setRight(0);
+			setRight(MIN_RIGHT_DISTANCE);
 		} else {
 			if(left < 0) {
 				left = 0;
 			}
 			if(left + snappingDistance > MainLayoutPanel.getMainAreaWidth() - getOffsetWidth()) {
 				if(!isWindowResize && !forceTopLeftDefinition) {
-					setRight(0);
+					setRight(MIN_RIGHT_DISTANCE);
 				} else {
 					left = MainLayoutPanel.getMainAreaWidth() - getOffsetWidth();
 					setLeft(left);
