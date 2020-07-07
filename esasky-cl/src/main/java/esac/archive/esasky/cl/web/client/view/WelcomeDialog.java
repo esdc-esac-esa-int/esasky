@@ -28,6 +28,7 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel.OnKeyPress;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
 
@@ -70,6 +71,13 @@ public class WelcomeDialog extends Composite {
 		descriptionText.addStyleName("welcomeDescription");
 		
 		final MovablePanel welcomeDialogConainer = new MovablePanel(GoogleAnalytics.CAT_Welcome, true);
+		welcomeDialogConainer.addHideOnEscapeKeyBehavior(new OnKeyPress() {
+            
+            @Override
+            public void onEscapeKey() {
+                close();
+            }
+        });
 		welcomeDialogConainer.add(esaSkyLogo);
 		welcomeDialogConainer.add(title);
 		welcomeDialogConainer.add(descriptionText);

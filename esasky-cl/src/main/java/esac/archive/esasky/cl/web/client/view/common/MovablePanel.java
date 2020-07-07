@@ -8,6 +8,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -16,12 +17,16 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 
-public class MovablePanel extends FlowPanel {
+public class MovablePanel extends FocusPanel {
+
+    public interface OnKeyPress {void onEscapeKey();}
 
 	private boolean isMouseDown = false;
 	private boolean isBeingDragged = false;
@@ -41,6 +46,14 @@ public class MovablePanel extends FlowPanel {
 	private boolean isRight = false;
 	private boolean isWindowResize = false;
 	private boolean isSnappingEnabled = true;
+	private FlowPanel container = new FlowPanel();
+	
+	private OnKeyPress onKeyPress = new OnKeyPress() {
+	    
+	    @Override
+	    public void onEscapeKey() {
+	    }
+	};
 	
 	private static int highestZIndex = 1000;
 
@@ -49,7 +62,7 @@ public class MovablePanel extends FlowPanel {
 		this.googleEventCategory = googleEventCategory;
 		this.isSuggestedPositionCenter = isSuggestedPositionCenter;
 		DOM.sinkEvents(getElement(), Event.ONMOUSEDOWN | Event.ONMOUSEMOVE
-				| Event.ONMOUSEUP | Event.ONMOUSEOVER | Event.ONTOUCHSTART | Event.ONTOUCHMOVE);
+				| Event.ONMOUSEUP | Event.ONMOUSEOVER | Event.ONTOUCHSTART | Event.ONTOUCHMOVE | Event.KEYEVENTS);
 		DOM.sinkEvents(RootPanel.get().getElement(), Event.ONMOUSEUP | Event.ONTOUCHEND | Event.ONTOUCHCANCEL);
 
 		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
@@ -62,6 +75,13 @@ public class MovablePanel extends FlowPanel {
 				}
 			}
 		});
+		super.add(container);
+        setFocus(true);
+    }
+    
+	@Override
+	public void add(Widget w) {
+	    container.add(w);
 	}
 
 	@Override
@@ -83,9 +103,18 @@ public class MovablePanel extends FlowPanel {
 		}
 	}
 	
+	public void addHideOnEscapeKeyBehavior(OnKeyPress onKeyPress) {
+	    this.onKeyPress = onKeyPress;
+	}
+	
 	@Override
 	public void onBrowserEvent(Event event) {
 		final int eventType = DOM.eventGetType(event);
+
+		if (Event.ONKEYUP == eventType && event.getKeyCode() == KeyCodes.KEY_ESCAPE) {
+		    onKeyPress.onEscapeKey();
+		    return;
+		}
 		if (Event.ONMOUSEOVER == eventType) {
 			if (elementCanStartDragOperation) {
 				getElement().getStyle().setProperty("cursor", "move");

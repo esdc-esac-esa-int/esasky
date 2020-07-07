@@ -13,7 +13,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
@@ -25,6 +24,13 @@ public class AutoHidingMovablePanel extends MovablePanel{
 	public AutoHidingMovablePanel(String googleEventCategoryForMoveOperation) {
 		super(googleEventCategoryForMoveOperation, true);
 		this.getElement().getStyle().setPosition(Position.ABSOLUTE);
+		addHideOnEscapeKeyBehavior(new OnKeyPress() {
+            
+            @Override
+            public void onEscapeKey() {
+                hide();
+            }
+        });
 	}
 	
 	public void show() {
@@ -46,11 +52,6 @@ public class AutoHidingMovablePanel extends MovablePanel{
 	public boolean isShowing() {
 		return isShowing;
 	}
-	
-	protected void setWidget(Widget widget) {
-		this.add(widget);
-	}
-	
 	
 	/*Auto hide functionality adapted from source code of
 	 * GWT PopupPanel

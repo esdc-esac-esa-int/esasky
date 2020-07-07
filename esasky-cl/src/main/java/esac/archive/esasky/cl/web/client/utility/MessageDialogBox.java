@@ -16,6 +16,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel.OnKeyPress;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 
 public class MessageDialogBox extends Composite{
@@ -43,6 +44,13 @@ public class MessageDialogBox extends Composite{
             final String dialogId) {
         super();
         movablePanel = new MovablePanel(inputHeaderText, true);
+        movablePanel.addHideOnEscapeKeyBehavior(new OnKeyPress() {
+            
+            @Override
+            public void onEscapeKey() {
+                hide();
+            }
+        });
         this.dialogId = dialogId;
         this.inputWidget = inputWidget;
         inputWidget.addStyleName("messageDialogBoxWidget");
