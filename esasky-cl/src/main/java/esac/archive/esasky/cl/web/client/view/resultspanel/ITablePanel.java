@@ -59,6 +59,7 @@ public interface ITablePanel {
 	public void downloadSelected(DDRequestForm ddForm);
 	
 	public void updateData();
+	public void openConfigurationPanel();
 	
 	public Widget getWidget();
 	public void registerClosingObserver(ClosingObserver closingObserver);

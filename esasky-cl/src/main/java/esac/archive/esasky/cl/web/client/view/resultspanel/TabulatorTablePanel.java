@@ -30,13 +30,14 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.MetadataVisibilityObserver;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
@@ -58,6 +59,7 @@ import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
 public class TabulatorTablePanel extends Composite implements ITablePanel, TabulatorCallback {
@@ -101,9 +103,31 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	private boolean isHidingTable = false;
 	private boolean hasBeenClosed = false;
-	private boolean isShowing = false;
+	private boolean isShowing = true;
 	private boolean inMOCMode = false;
+	
+	private MetadataVisibilityObserver metadataVisibilityObserver = new MetadataVisibilityObserver() {
+        
+        @Override
+        public void onVisibilityChange(String tapName, boolean visible) {
+            if(isShowing) {
+                setColumnVisibility(tapName, visible);
+            } else {
+                columnVisibilityChangeToDo.put(tapName, visible);
+            }
+        }
 
+    };
+    
+    private Map<String, Boolean> columnVisibilityChangeToDo = new HashMap<String, Boolean>();
+
+    private void setColumnVisibility(String tapName, boolean visible) {
+        if(visible) {
+            table.showColumn(tapName);
+        } else {
+            table.hideColumn(tapName);
+        }
+    }
 	protected GeneralEntityInterface entity;
 
 	private class TableFocusPanel extends FocusPanel {
@@ -114,62 +138,37 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		@Override
 		public final void onBrowserEvent(final Event event) {
 			if (DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
-//				this.openContextMenu(event);
+			    if(Modules.toggleColumns) {
+			        this.openContextMenu(event);
+			    }
 			} else {
 				super.onBrowserEvent(event);
 			}
 		}
 
-//		private void openContextMenu(final Event event) {
-////			ColumnSettingInfo[] columnDefinitions = new ColumnSettingInfo[4];
-//			ColumnSettingInfo[] columnDefinitions = new ColumnSettingInfo[3];
-////	 		{formatter:"rowSelection", titleFormatter:"rowSelection", align:"center", headerSort:false},
-////		 	{title:"Name", field:"name", width:150, headerFilter:"input"},
-////		 	{title:"Age", field:"age", align:"left", formatter:"progress",headerFilter:"input"},
-////		 	{title:"Favourite Color", field:"col", headerFilter:"input"},
-////		 	{title:"Date Of Birth", field:"dob", sorter:"date", align:"center",headerFilter:"input"},
-//			columnDefinitions[0] = ColumnSettingInfo.createColumnSetting();
-//			columnDefinitions[0].setStringProperty("formatter", "rowSelection");
-//			columnDefinitions[0].setStringProperty("titleFormatter", "rowSelection");
-//			columnDefinitions[0].setStringProperty("align", "center");
-//			columnDefinitions[0].setBooleanProperty("headerSort", false);
-//			columnDefinitions[1] = ColumnSettingInfo.createColumnSetting();
-//			columnDefinitions[1].setStringProperty("formatter", "html");
-//			columnDefinitions[1].setStringProperty("title", "Label");
-//			columnDefinitions[1].setStringProperty("field", "label");
-//			columnDefinitions[1].setStringProperty("align", "left");
-//			columnDefinitions[1].setStringProperty("headerFilter", "input");
-//			columnDefinitions[3] = ColumnSettingInfo.createColumnSetting();
-//			columnDefinitions[3].setStringProperty("title", "TAP name");
-//			columnDefinitions[3].setStringProperty("field", "tap_name");
-//			columnDefinitions[3].setStringProperty("align", "left");
-//			columnDefinitions[3].setStringProperty("headerFilter", "input");
-//			columnDefinitions[2] = ColumnSettingInfo.createColumnSetting();
-//			columnDefinitions[2].setStringProperty("title", "Description");
-//			columnDefinitions[2].setStringProperty("field", "description");
-//			columnDefinitions[2].setStringProperty("align", "left");
-//			columnDefinitions[2].setStringProperty("headerFilter", "input");
-//			new ToggleColumnsDialogBox(entity.getDescriptor().getGuiLongName(), columnInformationList, columnDefinitions,
-//					new TabulatorCallback() {
-//				
-//				@Override
-//				public void onAction(ColumnSettingInfo eventObject) {
-//					ColumnAndHeader addedColumn = columnMap.get(eventObject.getStringProperty("tap_name"));
-//					table.insertColumn(columnMap.get(eventObject.getStringProperty("tap_name")).initialIndex + 1, columnMap.get(eventObject.getStringProperty("tap_name")).column, columnMap.get(eventObject.getStringProperty("tap_name")).header);
-//					columnInformationList[addedColumn.initialIndex].setBooleanProperty("is_hidden", false);
-//				}
-//			}, new TabulatorCallback() {
-//				
-//				@Override
-//				public void onAction(ColumnSettingInfo eventObject) {
-//					ColumnAndHeader removedColumn = columnMap.get(eventObject.getStringProperty("tap_name"));
-//					table.removeColumn(removedColumn.column);
-//					columnInformationList[removedColumn.initialIndex].setBooleanProperty("is_hidden", true);
-//				}
-//			}).show();
-//		}
+		private void openContextMenu(final Event event) {
+		    openToggleColumnDialog();
+		}
+		
+		public void openToggleColumnDialog() {
+		    if(table.getColumns().length > 0) {
+		        new ToggleColumnsDialogBox(entity.getDescriptor().getGuiLongName(), table.getColumns(), new ToggleColumnAction() {
+		            
+		            @Override
+		            public void onShow(String field) {
+		                getDescriptor().setMetadataVisibility(field, true);
+		            }
+		            
+		            @Override
+		            public void onHide(String field) {
+		                getDescriptor().setMetadataVisibility(field, false);
+		            }
+		        }, esaSkyUniqID).show();
+		    }
+		}
 	}
 
+	private TableFocusPanel tableFocusPanel;
 	public TabulatorTablePanel(final String inputLabel, final String inputEsaSkyUniqID, GeneralEntityInterface entity) {
 		this.esaSkyUniqID = inputEsaSkyUniqID;
         this.tabTitle = inputLabel;
@@ -185,7 +184,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		tableAndGroupHeader.getElement().setId(tabulatorContainerId);
 
-		FocusPanel tableFocusPanel = new TableFocusPanel();
+		tableFocusPanel = new TableFocusPanel();
 		tableFocusPanel.addStyleName("dataPanelHoverDetector");
 		tableFocusPanel.add(tableAndGroupHeader);
 		container.add(tableFocusPanel);
@@ -203,9 +202,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	    super.onAttach();
         table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
                 getDescriptor().getArchiveProductURI() != null, 
-                getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapRaColumn()) != null
-                && getDescriptor().getMetadataDescriptorByTapName(getDescriptor().getTapDecColumn()) != null, 
                 getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
+        getDescriptor().registerMetadataVisibilityObserver(metadataVisibilityObserver);
+	}
+	
+	@Override
+	protected void onDetach() {
+	    super.onDetach();
+	    getDescriptor().unregisterMetadataVisibilityObserver(metadataVisibilityObserver);
 	}
 
 	public IDescriptor getDescriptor() {
@@ -221,33 +225,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		loadingSpinner.setVisible(true);
 		table.clearTable();
 	}
-//
-//	private ColumnSettingInfo[] columnInformationList;
-//
-//	private void addColumn(Column<TableRow, ?> column, SafeHtml header, int index, String label,
-//			MetadataDescriptor currentMTD) {
-//		if (header == null) {
-////			table.addColumn(column, "");
-////			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, SafeHtmlUtils.fromSafeConstant(table.getHeader(table.getColumnCount() - 1).toString()), index));
-//		} else {
-////			table.addColumn(column, header);
-////			columnMap.put(currentMTD.getTapName(), new ColumnAndHeader(column, header, index));
-//		}
-//		columnInformationList[index - 1] = ColumnSettingInfo.createColumnSetting(currentMTD.getVisible(), index, label,
-//				"Placeholder for description of column");
-//		columnInformationList[index - 1].setIntegerProperty("id", index);
-//		columnInformationList[index - 1].setStringProperty("label", label);
-//		columnInformationList[index - 1].setStringProperty("description", "placeholder description");
-//		columnInformationList[index - 1].setStringProperty("tap_name", currentMTD.getTapName());
-//
-////		public boolean isVisible;
-////		public int initialIndex;
-////		public String label;
-////		public String description;
-//// 		{formatter:"rowSelection", titleFormatter:"rowSelection", align:"center", headerSort:false},
-////	 	{title:"Name", field:"name", width:150, headerFilter:"input"},
-////	 	{title:"Age", field:"age", align:"left", formatter:"progress",headerFilter:"input"},
-//	}
 
 	public final String getEsaSkyUniqID() {
 		return this.esaSkyUniqID;
@@ -444,7 +421,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	
 	@Override
 	public void insertData(GeneralJavaScriptObject data) {
-	    table.insertData(data);
+	    table.insertUserData(data);
 	    tableNotShowingContainer.addStyleName("displayNone");
 	}
 	
@@ -536,7 +513,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     
     private void notifyNumberOfRowsShowingChanged(int count) {
         for (TableObserver obs : observers) {
-            Log.debug("Setting number manually " + count);
             obs.numberOfShownRowsChanged(count);
         }
     }
@@ -840,5 +816,28 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public String getEsaSkyUniqId() {
 		return entity.getEsaSkyUniqId();
 	}
+
+    @Override
+    public void onTableHeightChanged() {
+        for(String tapName : columnVisibilityChangeToDo.keySet()) {
+            setColumnVisibility(tapName, columnVisibilityChangeToDo.get(tapName));
+        }
+        columnVisibilityChangeToDo.clear();
+    }
+
+    @Override
+    public String getRaColumnName() {
+        return getDescriptor().getTapRaColumn();
+    }
+
+    @Override
+    public String getDecColumnName() {
+        return getDescriptor().getTapDecColumn();
+    }
+
+    @Override
+    public void openConfigurationPanel() {
+        tableFocusPanel.openToggleColumnDialog();
+    }
 
 }

@@ -48,6 +48,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Slider = "Slider";
     public static final String CAT_RequestError = "RequestError";
     public static final String CAT_ExternalTaps = "ExternalTaps";
+    public static final String CAT_ToggleColumns = "ToggleColumns";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
@@ -67,6 +68,10 @@ public final class GoogleAnalytics {
     public static final String ACT_Header_SciMode = "SciMode";
     public static final String ACT_Header_Language = "Language";
     public static final String ACT_Header_Status_Error = "Error";
+    
+    public static final String ACT_ToggleColumnsOpen = "ToggleColumnsOpen";
+    public static final String ACT_ToggleColumnsShow = "ShowingColumn";
+    public static final String ACT_ToggleColumnsHide = "HidingColumn";
     
     public static final String ACT_ContextMenu_ViewInWwt = "ViewInWWT";
     public static final String ACT_ContextMenu_SearchInSimbad = "SearchInSimbad";
