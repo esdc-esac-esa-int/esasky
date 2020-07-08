@@ -28,9 +28,9 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
 import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEventHandler;
 import esac.archive.esasky.cl.web.client.event.DataPanelResizeEvent;
@@ -116,6 +116,10 @@ public class CloseableTabLayoutPanel extends Composite {
         @Source("download_outline.png")
         @ImageOptions(flipRtl = true)
         ImageResource downloadIcon();
+        
+        @Source("gear_icon_outline.png")
+        @ImageOptions(flipRtl = true)
+        ImageResource configureIcon();
 
         @Source("closeableTabLayoutPanel.css")
         @CssResource.NotStrict
@@ -193,6 +197,9 @@ public class CloseableTabLayoutPanel extends Composite {
         tabButtonsPanel.add(recenterButton);
         tabButtonsPanel.add(createSendButton());
         tabButtonsPanel.add(createSaveButton());
+        if(Modules.toggleColumns){
+            tabButtonsPanel.add(createConfigureButton());
+        }
 
         tabButtonsPanel.addStyleName("tabButtons");
         buttonsAndObservationPanel.add(tabButtonsPanel);
@@ -298,14 +305,9 @@ public class CloseableTabLayoutPanel extends Composite {
                 CommonEventBus.getEventBus().fireEvent(
                         new UpdateNumRowsSelectedEvent(selectedTabId, saveAllView));
                 GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
-                List<MetadataDescriptor> metadataDescriptors = entity.getDescriptor().getMetadata();
-                boolean hasProductUrl = entity.getDescriptor() instanceof ExtTapDescriptor;
-                for(MetadataDescriptor descriptor : metadataDescriptors) {
-                	if(descriptor.getTapName().equals("product_url")) {
-                		hasProductUrl = true;
-                		break;
-                	}
-                }
+                boolean hasProductUrl = entity.getDescriptor() instanceof ExtTapDescriptor 
+                        || entity.getDescriptor().getMetadataDescriptorByTapName("product_url") != null;
+                
                 saveAllView.setProductsDownloadVisible(hasProductUrl);
                 // Set pop-up position.
                 saveAllView.getSaveOrDownloadDialog().setPopupPositionAndShow(
@@ -346,6 +348,22 @@ public class CloseableTabLayoutPanel extends Composite {
         return sendButton;
     }
 
+    private EsaSkyButton createConfigureButton() {
+        
+        EsaSkyButton configureButton = new EsaSkyButton(resources.configureIcon());
+        configureButton.setMediumStyle();
+        configureButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_configure"));
+        configureButton.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(final ClickEvent arg0) {
+                getSelectedWidget().openConfigurationPanel();
+            }
+        });
+        configureButton.addStyleName("tabButton");
+        
+        return configureButton;
+    }
     private EsaSkyButton createRecenterButton() {
         
         EsaSkyButton recenterButton = new EsaSkyButton(resources.recenterIcon());
@@ -438,7 +456,6 @@ public class CloseableTabLayoutPanel extends Composite {
     
     public void selectTab(ITablePanel tablePanel) {
     	tabLayout.selectTab(tablePanel.getWidget());
-//    	tablePanel.redraw();
     }
     
     public final void addTab(final ITablePanel tabPanel,  final String helpTitle, final String helpDescription) {
@@ -516,7 +533,12 @@ public class CloseableTabLayoutPanel extends Composite {
     
     private void setCloseAllButtonVisibility() {
         closeAllButton.setVisible(this.tabs.size() > 1);
-        int margin = this.tabs.size() > 1 ? 38 : 66;
+        int margin = 0;
+        if(Modules.toggleColumns){
+            margin = this.tabs.size() > 1 ? 5 : 33;
+        } else {
+            margin = this.tabs.size() > 1 ? 38 : 66;
+        }
         tabButtonsPanel.getElement().getStyle().setMarginTop(margin, Unit.PX);
     }
     
