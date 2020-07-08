@@ -68,6 +68,7 @@ public class EsaSkyWebConstants {
     public static final String URL_PARAM_FRAME_COORD = "cooframe";
     
     public static final String URL_PARAM_SCI_MODE = "sci";
+    public static final String URL_PARAM_TOGGLE_COLUMNS = "toggle_columns";
     
     public static final String URL_PARAM_HIDE_WELCOME = "hide_welcome";
     public static final String URL_PARAM_HIDE_SCI = "hide_sci_switch";
