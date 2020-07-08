@@ -78,6 +78,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: bottom;
+  text-align: center;
 }
 
 .tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title .tabulator-title-editor {

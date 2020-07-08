@@ -115,9 +115,10 @@
 	display: flex !important;
 	flex-direction: column !important;
 	justify-content: space-between !important;
-}
-.tabulator-col-content{
 	height: 100% !important;
+}
+.tabulator-col.tabulator-col-group .tabulator-col-content{
+	height: auto !important;
 }
 
 .tabulator_emptyTable{
