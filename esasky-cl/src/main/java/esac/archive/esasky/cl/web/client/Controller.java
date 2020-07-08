@@ -62,6 +62,11 @@ public class Controller implements ValueChangeHandler<String> {
 	private void initializePresenter() {
 		GUISessionStatus.initiateHipsLocationScheduler();
 		
+		String toggleColumns = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS);
+		if(toggleColumns != null 
+		        && (toggleColumns.toLowerCase().contains("on") || toggleColumns.toLowerCase().contains("true"))){
+		    Modules.toggleColumns = true;
+	    }
 		String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
 				(sciMode != null 

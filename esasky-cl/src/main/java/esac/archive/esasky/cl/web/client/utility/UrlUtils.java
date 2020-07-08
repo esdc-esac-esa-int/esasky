@@ -46,6 +46,10 @@ public final class UrlUtils {
 		if(Modules.internationalization) {
 			language = "&" + EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM + "=" + GUISessionStatus.getCurrentLanguage();
 		}
+		String toggleColumns = "";
+		if(Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS)) {
+		    toggleColumns = "&" + EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS + "=" + Window.Location.getParameterMap().get(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS).get(0);
+		}
 		
 		String bookmarkUrl = baseUrl 
 				+ "?" + EsaSkyWebConstants.URL_PARAM_TARGET + "=" + encodedRaDeg + "%20" + encodedDecDeg 
@@ -56,6 +60,7 @@ public final class UrlUtils {
 				+ language
 				+ bibcodeOrAuthor 
 				+ codeServer 
+				+ toggleColumns
 				+ logLevel;
 		return bookmarkUrl;
 	}
