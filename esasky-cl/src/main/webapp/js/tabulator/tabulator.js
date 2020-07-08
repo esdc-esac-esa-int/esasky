@@ -1042,6 +1042,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		});
 	};
 
+	Column.prototype.getFormattedValue = function (data) {
+		return this.cells[data.id].element.innerText;
+	};
+
 	Column.prototype.setField = function (field) {
 		this.field = field;
 		this.fieldStructure = field ? this.table.options.nestedFieldSeparator ? field.split(this.table.options.nestedFieldSeparator) : [field] : [];
@@ -6488,6 +6492,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		if (this.modExists("filter", true)) {
 			return this.modules.filter.search("rows", field, type, value);
 		}
+	};
+
+	Tabulator.prototype._currentCheckboxIndex = 0;
+	Tabulator.prototype.getUniqueCheckboxIndex = function () {
+		return Tabulator.prototype._currentCheckboxIndex++;
 	};
 
 	//search for specific data
@@ -13304,7 +13313,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								type = column.definition.headerFilterFunc;
 								filterFunc = function filterFunc(data) {
 									var params = column.definition.headerFilterFuncParams || {};
-									var fieldVal = column.getFieldValue(data);
+									var fieldVal = column.definition.formatter === "html" ? column.getFormattedValue(data) : column.getFieldValue(data);
 
 									params = typeof params === "function" ? params(value, fieldVal, data) : params;
 
@@ -14014,6 +14023,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			}
 		},
 
+		//contains the string in the formatted value
+		"likeFormattedValue": function like(filterVal, rowVal, rowData, filterParams) {
+			if (filterVal === null || typeof filterVal === "undefined") {
+				return rowVal === filterVal ? true : false;
+			} else {
+				if (typeof rowVal !== 'undefined' && rowVal !== null) {
+					return String(rowVal).toLowerCase().indexOf(filterVal.toLowerCase()) > -1;
+				} else {
+					return false;
+				}
+			}
+		},
+
 		//in array
 		"in": function _in(filterVal, rowVal, rowData, filterParams) {
 			if (Array.isArray(filterVal)) {
@@ -14709,12 +14731,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			return el;
 		},
 
-		rowSelection: function rowSelection(cell) {
+		rowSelection: function rowSelection(cell, formatterParams, onRendered) {
 			var _this51 = this;
 
 			var checkbox = document.createElement("input");
 
 			checkbox.type = 'checkbox';
+			var checkboxContainer = document.createElement("div");
+			checkboxContainer.className = "tabulator-checkbox-container";
 
 			if (this.table.modExists("selectRow", true)) {
 
@@ -14732,6 +14756,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					checkbox.checked = row.isSelected();
 					this.table.modules.selectRow.registerRowSelectCheckbox(row, checkbox);
 				} else {
+					var index = this.table.getUniqueCheckboxIndex();
+					checkboxContainer.className = "tabulator-checkbox-container";
+					var checkboxLabel = document.createElement("label");
+					checkboxLabel.htmlFor = 'tabulator-checkbox-' + index;
+					if (formatterParams.title) {
+						checkboxLabel.innerHTML = formatterParams.title;
+						checkboxLabel.className = 'tabulator-checkbox-label';
+					} else {
+						checkboxLabel.innerHTML = "_";
+						checkboxLabel.className = 'tabulator-checkbox-label-transparent';
+					}
+					checkbox.id = 'tabulator-checkbox-' + index;
+					checkboxContainer.appendChild(checkboxLabel);
 					checkbox.addEventListener("change", function (e) {
 						if (_this51.table.modules.selectRow.selectedRows.length) {
 							_this51.table.deselectRow();
@@ -14741,9 +14778,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					});
 
 					this.table.modules.selectRow.registerHeaderSelectCheckbox(checkbox);
+
+					checkboxContainer.appendChild(checkbox);
+					var invisibleDiv = checkboxLabel.cloneNode(true);
+					invisibleDiv.className += " tabulator-checkbox-invisible-div"; //invisible style
+
+					var checkboxAndInvisibleDivContainer = document.createElement("div");
+					checkboxAndInvisibleDivContainer.appendChild(checkboxContainer);
+					checkboxAndInvisibleDivContainer.appendChild(invisibleDiv);
+					return checkboxAndInvisibleDivContainer;
 				}
 			}
-			return checkbox;
+			checkboxContainer.appendChild(checkbox);
+			return checkboxContainer;
 		}
 	};
 

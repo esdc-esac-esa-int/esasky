@@ -932,3 +932,27 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
 	align-items: center;
 	box-sizing: border-box;
 }
+.tabulator-checkbox-label{
+	display: block;
+	padding-bottom: 5px;
+}
+
+.tabulator-checkbox-invisible-div{
+	visibility: hidden;
+}
+
+.tabulator-checkbox-container{
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+    position: absolute;
+    width: calc(100% - 8px);
+}
+
+.tabulator input[type=checkbox] {
+	margin: auto;
+}
+
+.tabulator-checkbox-label-transparent{
+	color: transparent;
+}
