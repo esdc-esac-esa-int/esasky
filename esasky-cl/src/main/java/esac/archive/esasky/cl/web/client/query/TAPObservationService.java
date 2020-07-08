@@ -2,8 +2,8 @@ package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
 
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CommonObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 
@@ -38,49 +38,55 @@ public class TAPObservationService extends AbstractTAPService {
         final String debugPrefix = "[TAPObservationService.getMetadata]";
 
         Log.debug(debugPrefix);
-
-        String adql = "SELECT";
-        for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-            MetadataDescriptor castMetadata = currMetadata;
-            adql += " " + castMetadata.getTapName() + ", ";
+        String adql;
+        
+        if(Modules.toggleColumns) {
+            adql = "SELECT *";
+        } else {
+            adql = "SELECT ";
+            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
+                MetadataDescriptor castMetadata = currMetadata;
+                adql += " " + castMetadata.getTapName() + ", ";
+            }
+    
+            adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
+        adql.replace("\\s*,\\s*$", "");
+        adql += " FROM " + descriptor.getTapTable() + " WHERE ";
 
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE ";
-
-        parsedAdql += getGeometricConstraint(descriptor);
+        adql += getGeometricConstraint(descriptor);
         
         if(filter != "") {
-        	parsedAdql += " AND " + filter;
+        	adql += " AND " + filter;
         }
         
-        parsedAdql += getOrderBy(descriptor);
+        adql += getOrderBy(descriptor);
 
-        Log.debug(debugPrefix + " ADQL " + parsedAdql);
-        return parsedAdql;
+        Log.debug(debugPrefix + " ADQL " + adql);
+        return adql;
     }
     
-    public String getMetadataAdqlRadial(IDescriptor descriptorInput, SkyViewPosition pos) {
-    	CommonObservationDescriptor descriptor = (CommonObservationDescriptor) descriptorInput;
-    	
-    	String adql = "SELECT ";
-
-    	for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-            MetadataDescriptor castMetadata = currMetadata;
-            adql += " " + castMetadata.getTapName() + ",";
-        }
-
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 1));
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " FROM " + descriptor.getTapTable() + " WHERE "
+    public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition pos) {
+    	String adql;
+    	if(Modules.toggleColumns) {
+    	    adql = "SELECT *";
+    	} else {
+            adql = "SELECT ";
+            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
+                MetadataDescriptor castMetadata = currMetadata;
+                adql += " " + castMetadata.getTapName() + ", ";
+            }
+            adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+    	}
+        adql.replace("\\s*,\\s*$", "");
+        adql += " FROM " + descriptor.getTapTable() + " WHERE "
         		+ "1=INTERSECTS(fov, CIRCLE(\'ICRS\', "
 				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
 				+ Double.toString(pos.getFov()/2) +"))";
 
-        parsedAdql += getOrderBy(descriptor);
+        adql += getOrderBy(descriptor);
         
-        return parsedAdql;
+        return adql;
     }
     
 }

@@ -12,6 +12,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
@@ -160,31 +161,35 @@ public abstract class AbstractTAPService {
     }
     
     public String getMetadataFromMOCPixelsADQL(IDescriptor descriptor, String whereADQL) {
-//    	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
-//    	IDescriptor descriptor = descriptorInput;
     	
-    	String adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
-    	
-    	for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-    		if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
-    			adql += " " + currentMetadata.getTapName() + " as "
-    					+ descriptor.getTapDecColumn() + ", ";
-    		} else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
-    			adql += " " + currentMetadata.getTapName() + " as "
-    					+ descriptor.getTapRaColumn() + ", ";
-    		} else {
-    			adql += " " + currentMetadata.getTapName();
-    			adql += ", ";
-    		}
+    	String adql;
+    	if(Modules.toggleColumns) {
+    	    adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " *";
+    	} else {
+    	       adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
+    	        
+    	        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
+    	            if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
+    	                adql += " " + currentMetadata.getTapName() + " as "
+    	                        + descriptor.getTapDecColumn() + ", ";
+    	            } else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
+    	                adql += " " + currentMetadata.getTapName() + " as "
+    	                        + descriptor.getTapRaColumn() + ", ";
+    	            } else {
+    	                adql += " " + currentMetadata.getTapName();
+    	                adql += ", ";
+    	            }
+    	        }
+    	        
+    	        adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
     	}
     	
-    	String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-    	parsedAdql.replace("\\s*,\\s*$", "");
-    	parsedAdql += " from " + descriptor.getTapTable() + whereADQL;
+    	adql.replace("\\s*,\\s*$", "");
+    	adql += " from " + descriptor.getTapTable() + whereADQL;
     	
-    	Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + parsedAdql);
+    	Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + adql);
     	
-    	return parsedAdql;
+    	return adql;
     }
     
     protected String getGeometricConstraint(IDescriptor descriptor) {
