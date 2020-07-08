@@ -44,6 +44,9 @@ public interface IDescriptor {
     void registerColorChangeObservers(ColorChangeObserver observer);
     void unregisterColorChangeObservers(ColorChangeObserver observer);
     
+    void registerMetadataVisibilityObserver(MetadataVisibilityObserver observer);
+    void unregisterMetadataVisibilityObserver(MetadataVisibilityObserver observer);
+    
     @JsonIgnoreProperties
     String getUniqueIdentifierField();
     void setUniqueIdentifierField(String field);
@@ -76,6 +79,9 @@ public interface IDescriptor {
     
     @JsonIgnoreProperties
     String getTapSTCSColumn();
+    
+    @JsonIgnoreProperties
+    void setMetadataVisibility(String tapName, boolean visibility);
     
     String getTapQuery(String tapContext, String metadataAdql, String responseFormat);
     

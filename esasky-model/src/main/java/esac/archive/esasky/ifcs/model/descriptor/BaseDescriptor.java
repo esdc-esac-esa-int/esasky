@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.gwt.http.client.URL;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 public abstract class BaseDescriptor implements IDescriptor {
@@ -103,6 +104,10 @@ public abstract class BaseDescriptor implements IDescriptor {
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private List<ColorChangeObserver> colorObservers = new LinkedList<ColorChangeObserver>();
+    
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private List<MetadataVisibilityObserver> metadataVisibilityObservers = new LinkedList<MetadataVisibilityObserver>();
     
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -233,6 +238,33 @@ public abstract class BaseDescriptor implements IDescriptor {
             }
         }
         return null;
+    }
+    
+    @Override
+    public void setMetadataVisibility(String tapName, boolean visibility) {
+        MetadataDescriptor metadataDescriptor = getMetadataDescriptorByTapName(tapName);
+        if(metadataDescriptor == null) {
+            metadataDescriptor = new MetadataDescriptor();
+            metadataDescriptor.setTapName(tapName);
+            metadataDescriptor.setType(ColumnType.STRING);
+            getMetadata().add(metadataDescriptor);
+        }
+        if(metadataDescriptor.getVisible() == null || metadataDescriptor.getVisible() != visibility) {
+            metadataDescriptor.setVisible(visibility);
+            for (MetadataVisibilityObserver observer : metadataVisibilityObservers) {
+                observer.onVisibilityChange(tapName, visibility);
+            }
+        }
+    }
+
+    @Override
+    public void registerMetadataVisibilityObserver(MetadataVisibilityObserver observer) {
+        metadataVisibilityObservers.add(observer);
+    }
+    
+    @Override
+    public void unregisterMetadataVisibilityObserver(MetadataVisibilityObserver observer) {
+        metadataVisibilityObservers.remove(observer);
     }
 
     protected int generateNextTabCount() {

@@ -62,6 +62,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setTapSTCSColumn(parent.getTapSTCSColumn());
     	setUniqueIdentifierField(parent.getUniqueIdentifierField());
     	setShapeLimit(parent.getShapeLimit());
+    	setSampEnabled(parent.getSampEnabled());
     }
 
 	@Override
