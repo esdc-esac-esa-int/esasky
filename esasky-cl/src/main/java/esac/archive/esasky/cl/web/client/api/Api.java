@@ -74,6 +74,7 @@ public class Api {
 	public interface CatalogDescriptorMapper extends ObjectMapper<CatalogDescriptor> {}
 
 	Map<String, JavaScriptObject> userCatalogues = new HashMap<String, JavaScriptObject>();
+	Map<String, JavaScriptObject> userMocs = new HashMap<String, JavaScriptObject>();
 	Map<String, JavaScriptObject> setOfFootprints = new HashMap<String, JavaScriptObject>();
 	Controller controller;
 	
@@ -110,12 +111,23 @@ public class Api {
         });
 	}
 		
-	public void addMOC(String options, String mocData) {
-		
+	public void addMOC(String name, String options, String mocData) {
+		if(userMocs.containsKey(name)) {
+			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
+			userMocs.remove(name);
+		}
 		JavaScriptObject moc = AladinLiteWrapper.getAladinLite().createMOC(options);
+		userMocs.put(name,moc);
 		AladinLiteWrapper.getAladinLite().addMOCData(moc, mocData);
 		AladinLiteWrapper.getAladinLite().addMOC(moc);
 		
+	}
+	
+	public void removeMOC(String name) {
+		if(userMocs.containsKey(name)) {
+			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
+			userMocs.remove(name);
+		}
 	}
 	
 	public void addQ3CMOC(String options, String mocData) {
