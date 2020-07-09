@@ -28,12 +28,14 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
+import esac.archive.esasky.cl.web.client.repository.MocRepository.MocLoadedObserver;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
@@ -235,6 +237,17 @@ public class MOCEntity implements GeneralEntityInterface {
     	int count = getCountStatus().getCount(descriptor);
 
     	if(currentVisibleCount == 0 && !filterRequested) {
+    		
+			MocRepository.getInstance().registerMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header", new MocLoadedObserver() {
+				
+				@Override
+				public void onLoaded() {
+					waitingForHeaders = false;
+					MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
+				}
+			});
+    		
+    		waitingForHeaders = true;
     		if(count > EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT) {
     			defaultEntity.fetchMinMaxHeaders(tablePanel, true);
     		}else {
@@ -426,17 +439,42 @@ public class MOCEntity implements GeneralEntityInterface {
 		updateOverlay();
 	}
 	
-	public void addJSON(final ITablePanel tablePanel, GeneralJavaScriptObject data) {
+	public void addJSON(final ITablePanel tablePanel, final GeneralJavaScriptObject data) {
 		
 		setTablePanel(tablePanel);
 		
-		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
-			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
-			AladinLiteWrapper.getAladinLite().addMOC(overlay);
-		}
+		MocRepository.getInstance().notifyMocLoaded(parentEntity.getEsaSkyUniqId() + "_moc");
 		
-		overlay.invokeFunction("dataFromESAJSON", data);
+		if(waitingForHeaders) {
+			MocRepository.getInstance().registerMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header", new MocLoadedObserver() {
+				
+				@Override
+				public void onLoaded() {
+					if(overlay == null) {
+						String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+						overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+						AladinLiteWrapper.getAladinLite().addMOC(overlay);
+					}
+					
+					overlay.invokeFunction("dataFromESAJSON", data);
+					waitingForHeaders = false;
+					getVisibleCount();
+             		setTableCountText();
+					MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
+					
+				}
+			});
+			
+		
+		}else {
+			if(overlay == null) {
+				String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+				overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+				AladinLiteWrapper.getAladinLite().addMOC(overlay);
+			}
+			
+			overlay.invokeFunction("dataFromESAJSON", data);
+		}
 	}
 	
 	private void closingPanel(ITablePanel tablePanel) {

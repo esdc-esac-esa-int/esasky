@@ -172,10 +172,6 @@ public class MocRepository {
 
 		if(fov > 4) {
 			return 8;
-//		}else if(fov > 1) {
-//			return 10;
-//		}else if(fov > .2) {
-//			return 12;
 		}else {
 			return 14;
 		}					
@@ -193,5 +189,12 @@ public class MocRepository {
 	
 	public void unRegisterMocLoadedObserver(String key) {
 		mocLoadedObservers.remove(key);
+	}
+	
+	public void notifyMocLoaded(String key) {
+		if(mocLoadedObservers.containsKey(key)) {
+			mocLoadedObservers.get(key).onLoaded();
+			unRegisterMocLoadedObserver(key);
+		}
 	}
 }

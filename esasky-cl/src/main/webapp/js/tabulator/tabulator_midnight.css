@@ -124,6 +124,10 @@
   pointer-events: none;
 }
 
+.tabulator-header-filter-disabled{
+	pointer-events:none !important;
+}
+
 .tabulator .tabulator-header .tabulator-col .tabulator-header-filter textarea {
   height: auto !important;
   pointer-events: auto;

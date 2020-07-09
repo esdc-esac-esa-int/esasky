@@ -62,6 +62,8 @@ public class TabulatorWrapper{
     private String rowCountFooterId;
     private final Timer resultInformationAreaTimer;
     private final OpacityAnimation resultInformationAnimation;
+    private boolean filtersShouldBeEnabled = true;
+    private boolean waitingForMoc = false;
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addSourcesInPublicationColumn) {
@@ -385,6 +387,7 @@ public class TabulatorWrapper{
     		      				mutations[i].addedNodes[j].getAttribute('role') == 'Header'))
       				{
     		      	tableJsObject.redraw(true);
+    		      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::setCorrectFilterBehaviour()();
     		      	this.disconnect();
     		      	return;
     		      }
@@ -463,19 +466,16 @@ public class TabulatorWrapper{
         tableJsObject.clearData();
         tableJsObject.mocLoaded = false;
         
+      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::registerMocLoadedObserver()();
+        
     	tableJsObject.options.ajaxResponse = function(url, params, response){
-//    		if(!this.mocLoaded){
-//				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::registerMocLoadedObserver()();
-//    			while(!this.mocLoaded){
-//    				setTimeout(function(){},5000);
-//    			}
-//    		}
-
 			var newMeta = [];
 			var filterData = {};
 			
 			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 			var data = response.data[0][0].split(",");
+			
+			newMeta = new Array(data.length);
 			for(var i = 0;i< data.length; i++){
 				var row = data[i].split(";")
 				var colName = row[0];
@@ -516,7 +516,7 @@ public class TabulatorWrapper{
 						filterData[metaName]["min"] = parseFloat(val);
     				}	    			
 					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.splice(metaDataIndex,0,meta)
+					newMeta.splice(metaDataIndex,1,meta)
 				
 				}else if(colName.endsWith("_max")){
 					
@@ -529,7 +529,7 @@ public class TabulatorWrapper{
 				
 				}else{
 					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.splice(metaDataIndex,0,meta)
+					newMeta.splice(metaDataIndex,1,meta)
 				}
 			}
 			
@@ -538,8 +538,20 @@ public class TabulatorWrapper{
 			tableJsObject.filterData = filterData;
 			tableJsObject.showCount = false;
 			tableJsObject.dataLoaded = true;
-	        return [];
-				
+			
+			
+			return new Promise(function (resolve, reject) {
+				if(tableJsObject.mocLoaded){
+			      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::notifyMocLoadedObserver()();
+					resolve([]);
+				}else{
+					tableJsObject.onMocLoaded = function () {
+						this.onMocLoaded = null;
+				      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::notifyMocLoadedObserver()();
+						resolve([]);
+					}
+				}
+			});
         }
     }-*/;
 
@@ -1576,16 +1588,19 @@ public class TabulatorWrapper{
     
     public void disableFilters() {
     	disableFilters(tableJsObject);
+    	filtersShouldBeEnabled = false;
     }
     
     private native void disableFilters(GeneralJavaScriptObject table) /*-{
     	function loopChildren(el){
     		el.classList.add("tabulator-header-filter-disabled");
+    		el.setAttribute("disabled", true);
     		for(var i = 0; i < el.children.length; i++){
     			loopChildren(el.children[i]);
     		};
     	}
-    	var list =  table.getElementsByClassName("tabulator-header-filter")
+    	
+    	var list =  table.element.getElementsByClassName("tabulator-header-filter")
     	for(var i = 0; i < list.length; i++){
     		loopChildren(list[i]);
     	};
@@ -1593,24 +1608,41 @@ public class TabulatorWrapper{
 
     public void enableFilters() {
     	enableFilters(tableJsObject);
+    	filtersShouldBeEnabled = true;
     }
     
     private native void enableFilters(GeneralJavaScriptObject table) /*-{
-    	var list =  table.getElementsByClassName("tabulator-header-filter-disabled")
+    	var list =  table.element.getElementsByClassName("tabulator-header-filter-disabled")
     	for(var i = 0; i < list.length; i++){
     		list[i].classList.remove("tabulator-header-filter-disabled");
+		    list[i].setAttribute("disabled", false);
     	};
     }-*/;
     
+    public void setCorrectFilterBehaviour() {
+    	if(filtersShouldBeEnabled) {
+    		enableFilters();
+    	}else {
+    		disableFilters();
+    	}
+    }
+    
     public void registerMocLoadedObserver() {
-    	MocRepository.getInstance().registerMocLoadedObserver(tabulatorCallback.getEsaSkyUniqId(), new MocRepository.MocLoadedObserver() {
+    	MocRepository.getInstance().registerMocLoadedObserver(tabulatorCallback.getEsaSkyUniqId() + "_moc", new MocRepository.MocLoadedObserver() {
 			
 			@Override
 			public void onLoaded() {
 				tableJsObject.setProperty("mocLoaded", true);
-				MocRepository.getInstance().unRegisterMocLoadedObserver(tabulatorCallback.getEsaSkyUniqId());
+				if(tableJsObject.hasProperty("onMocLoaded")) {
+					tableJsObject.invokeFunction("onMocLoaded");
+				}
+				MocRepository.getInstance().unRegisterMocLoadedObserver(tabulatorCallback.getEsaSkyUniqId() + "_moc");
 			}
 		});
     }
+
+    public void notifyMocLoadedObserver() {
+    	MocRepository.getInstance().notifyMocLoaded(tabulatorCallback.getEsaSkyUniqId() + "_header");
+    	    }
 
 }
