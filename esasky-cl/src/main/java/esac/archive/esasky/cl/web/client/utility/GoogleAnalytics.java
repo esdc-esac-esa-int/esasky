@@ -25,6 +25,7 @@ public final class GoogleAnalytics {
     public static final String CAT_PlanningTool = "PlanningTool";
     public static final String CAT_TabToolbar_Recenter = "TabToolbar_Recenter";
     public static final String CAT_TabToolbar_Refresh = "TabToolbar_Refresh";
+    public static final String CAT_TabToolbar_CloseAll = "TabToolbar_CloseAll";
     public static final String CAT_TabToolbar_SendToSAMP = "TabToolbar_SendToSAMP";
     public static final String CAT_TabToolbar_SetStyle = "TabToolbar_SetStyle";
     public static final String CAT_TabRow_SendToVOTools = "TabRow_SendToVOTools";
@@ -48,6 +49,7 @@ public final class GoogleAnalytics {
     public static final String CAT_Slider = "Slider";
     public static final String CAT_RequestError = "RequestError";
     public static final String CAT_ExternalTaps = "ExternalTaps";
+    public static final String CAT_TextManager = "TextManager";
     public static final String CAT_ToggleColumns = "ToggleColumns";
     
     //Actions
@@ -200,13 +202,14 @@ public final class GoogleAnalytics {
     public static final String ACT_ExtTap_browsing = "browsing";
     public static final String ACT_ExtTap_count = "count";
     
+    public static final String ACT_TextManager_SetLang = "setLang";
+    
     public static final String ACT_Outbound_click = "click";
-    public static final String CAT_TabToolbar_CloseAll = null;
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{
 		try{
-        	$wnd.ga('send', 'event', eventCategory, eventAction, eventLabel);
+        	$wnd._paq.push(['trackEvent', eventCategory, eventAction, eventLabel]);
         	@esac.archive.esasky.cl.web.client.utility.GoogleAnalytics::logEvent(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(eventCategory, eventAction, eventLabel);
 		}
 		catch(e){}			
