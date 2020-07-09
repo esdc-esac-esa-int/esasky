@@ -67,7 +67,9 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 		return JSON.parse(jsonText);
 	}-*/;
     
-    
+    public final native boolean hasProperty(String propertyName)/*-{
+		return this.hasOwnProperty(propertyName) && this[propertyName] != null;
+	}-*/;
     
     
     
