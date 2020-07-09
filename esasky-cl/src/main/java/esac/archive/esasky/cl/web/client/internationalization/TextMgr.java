@@ -179,6 +179,7 @@ public class TextMgr {
 	
 	public void setLangCode(String newLangCode) {
 		langCode = getTwoLetterLangCode(newLangCode);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TextManager,GoogleAnalytics.ACT_TextManager_SetLang,newLangCode);
 		Log.debug("TextMgr.setLangCode() langCode: " + langCode);
 		texts = new HashMap<String, String>();
 		
