@@ -7,6 +7,7 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 
 public class TAPSSOService extends AbstractTAPService {
@@ -23,41 +24,43 @@ public class TAPSSOService extends AbstractTAPService {
         return instance;
     }
 
-    @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
     	return getMetadataAdql(descriptorInput, "");
     }
     
     public String getMetadataAdql(final IDescriptor inputDescriptor, String filter) {
-    	//TODO
-    	//Include filters if needed
         final String debugPrefix = "[TAPSSOService.getMetadataAdql]";
         SSODescriptor descriptor = (SSODescriptor) inputDescriptor;
 
-        String adql = "SELECT ";
-        for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-        	boolean found = false;
-        	for(MetadataDescriptor ssoMetadata : descriptor.getSsoXMatchMetadata()) {
-        		if(ssoMetadata.getTapName().equals(currMetadata.getTapName())) {
-        			adql += " b." + currMetadata.getTapName() + ", ";
-        			found = true;
-        			break;
-        		}
-        	}
-        	if(!found) {
-        		adql += " a." + currMetadata.getTapName() + ", ";
-        	}
+        String adql;
+        if(Modules.toggleColumns) {
+            adql = "SELECT *";
+        } else {
+            adql = "SELECT ";
+            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
+                boolean found = false;
+                for(MetadataDescriptor ssoMetadata : descriptor.getSsoXMatchMetadata()) {
+                    if(ssoMetadata.getTapName().equals(currMetadata.getTapName())) {
+                        adql += " b." + currMetadata.getTapName() + ", ";
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found) {
+                    adql += " a." + currMetadata.getTapName() + ", ";
+                }
+            }
+            adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
 
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " FROM " + descriptor.getTapTable() + " AS a JOIN "
+        adql.replace("\\s*,\\s*$", "");
+        adql += " FROM " + descriptor.getTapTable() + " AS a JOIN "
                 + descriptor.getSsoXMatchTapTable()
                 + " AS b on a.observation_oid = b.observation_oid WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
 
-        Log.debug(debugPrefix + " ADQL " + parsedAdql);
+        Log.debug(debugPrefix + " ADQL " + adql);
 
-        return parsedAdql;
+        return adql;
     }
 
     public String getPolylineAdql(IDescriptor descriptor) {

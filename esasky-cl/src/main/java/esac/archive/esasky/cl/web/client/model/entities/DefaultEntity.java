@@ -132,11 +132,6 @@ public class DefaultEntity implements GeneralEntityInterface{
     	return this.getDescriptor().getPrimaryColor();
     }
     
-//    @Override
-    public String getMetadataAdql() {
-    	return metadataService.getMetadataAdql(getDescriptor());
-    }
-
     public String getMetadataAdql(String filter) {
     	return metadataService.getMetadataAdql(getDescriptor(), filter);
     }
