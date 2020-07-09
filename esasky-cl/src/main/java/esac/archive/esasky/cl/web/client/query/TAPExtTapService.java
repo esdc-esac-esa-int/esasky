@@ -45,6 +45,9 @@ public class TAPExtTapService extends AbstractTAPService {
     		
 	    }else if(descriptor.getSearchFunction().equals("raDecCenterSearch") ){
 	    	adql += " WHERE " + raDecCenterSearch(descriptor);
+	    
+	    }else if(descriptor.getSearchFunction().equals("heasarc") ){
+	    	adql += " WHERE " + heasarcSearch(descriptor);
 	    }
     	
     	if(descriptor.getWhereADQL() != null) {
@@ -115,25 +118,22 @@ public class TAPExtTapService extends AbstractTAPService {
     	return constraint + screenPolygon(descriptor);
     }
     
-    private String npixSearch( int order) {
-    	ArrayList<Integer> list = AladinLiteWrapper.getInstance().getVisibleNpix(order);
-    	if(list.size()>0) {
-    		String constraint = "healpix_order = " + Integer.toString(order);
-    		constraint += " AND healpix_index IN (";
-    		for(int ipix : list) {
-    			constraint += Integer.toString(ipix) + ",";
-    		}
-    		constraint = constraint.substring(0,constraint.length()-1) + ")";
-    		return constraint;
-    	}
-    	
-    	return null;
-    }
-
-    
     private String cointainsPointSearch(ExtTapDescriptor descriptor) {
     	String constraint = "1=CONTAINS( POINT(\'ICRS\', " + descriptor.getTapRaColumn() + ", " + descriptor.getTapDecColumn() + "), ";
     	return constraint + screenPolygon(descriptor);
+    }
+    
+    private String heasarcSearch(ExtTapDescriptor descriptor) {
+    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+    	double fov = pos.getFov();
+    	double ra = pos.getCoordinate().ra;
+    	double dec = pos.getCoordinate().dec;
+    	String constraint = " POWER(SIN((radians("+ descriptor.getTapDecColumn() + ") - radians(" + Double.toString(dec) + "))/2),2)"
+    			+ "+ cos(radians("+ descriptor.getTapDecColumn() + ")) * cos(radians(" + Double.toString(dec) + "))"
+    			+ "* POWER(SIN((radians(" + descriptor.getTapRaColumn() + ") - radians(" + Double.toString(ra) + "))/2),2)"
+    			+ "< POWER((radians(" + Double.toString(fov) +")/2),2) AND "+ descriptor.getTapDecColumn()
+    			+ " BETWEEN " + Double.toString(dec - fov) + " AND " + Double.toString(dec + fov);
+    	return constraint;
     }
     
     private String raDecCenterSearch(ExtTapDescriptor descriptor) {
@@ -179,33 +179,19 @@ public class TAPExtTapService extends AbstractTAPService {
         } else {
         	return getAdqlNewService(descriptor);
         }
-    }
-    
-    public String getCountAdql(IDescriptor descriptorInput, boolean MOC) {
-    	if(!MOC) {
-    		return getCountAdql(descriptorInput);
-    		
-    	}else {
-            ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-            String adql = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
-        	
-        	adql += " from " + descriptor.getIngestedTable() + " WHERE ";
-            adql += npixSearch(getNorderFromFov());
-            
-        	if(descriptor.getWhereADQL() != null) {
-        		adql += " AND " + descriptor.getWhereADQL();
-        	}
-        	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
-        	
-           	if(descriptor.getOrderBy() != null) {
-        		adql += " ORDER BY " + descriptor.getOrderBy();
-        	}
-        	
-        	return adql;
-    	}
-    }
+    }	
     
     public String getCountAdql(IDescriptor descriptorInput) {
+    	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+		if(descriptor.getSearchFunction() == "heasarc") {
+			return getHeasarcCountAdql(descriptor);
+		}
+		return getObsCoreCountAdql(descriptor);
+    		
+    }
+    
+    public String getObsCoreCountAdql(IDescriptor descriptorInput) {
+    	
         String selectADQL = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
         if(descriptor.isInBackend()) {
@@ -213,6 +199,15 @@ public class TAPExtTapService extends AbstractTAPService {
         }else {
         	return getAdqlNewService(descriptor);
         }  
+    }
+    
+    public String getHeasarcCountAdql(IDescriptor descriptorInput) {
+    	
+    	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+    	String adql = "SELECT table_name, count(*) ";
+    	adql = getAdql(descriptor, adql);
+    	adql += " group by table_name";
+    	return adql;
     }
     
 	@Override

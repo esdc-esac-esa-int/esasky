@@ -533,19 +533,6 @@ public class DescriptorRepository {
 					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
 	}
 	
-	public void updateMOCCount4ExtTap(ExtTapDescriptor descriptor) {
-		final CountStatus cs = extTapDescriptors.getCountStatus();
-		if(!cs.containsDescriptor(descriptor)) {
-			cs.addDescriptor(descriptor);
-		}
-		
-		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor, true);
-		
-		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
-		JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
-					countRequestHandler.getProgressIndicatorMessage() +  " " + descriptor.getMission()));
-	}
-	
 	private void updateCount4Catalogs() {
 		final CountStatus cs = catDescriptors.getCountStatus();
 		for (CatalogDescriptor currCat : catDescriptors.getDescriptors()) {

@@ -86,8 +86,8 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
 		        List<Integer> counts = new LinkedList<Integer>();
 
-		        descriptors.add(descriptor);
-		        counts.add(totalCount);
+//		        descriptors.add(descriptor);
+//		        counts.add(totalCount);
 
 		        
 		        if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
@@ -97,16 +97,31 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        		
 		        		
 		        		int collIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_COLLECTION);
+		        		if(collIndex == -1) {
+		        			collIndex = rowList.getColumnIndex(EsaSkyConstants.HEASARC_TABLE);
+		        		}
+		        		
 		        		int typeIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_DATAPRODUCT);
+		        		
 		        		for(ArrayList<Object> row : rowList.getData()) {
 		        			String collection = (String) row.get(collIndex);
-		        			String productType = (String) row.get(typeIndex);
-		        			
+		        			String productType;
+		        			if(typeIndex >= 0) {
+		        				productType = (String) row.get(typeIndex);
+		        			}else {
+		        				productType = EsaSkyConstants.CATALOGUE;
+		        			}
 		        				
 	        				boolean found = false;
 	        				String facilityName = "";
 	        				for(String key : descriptor.getCollections().keySet()) {
-	        					if(descriptor.getCollections().get(key).get(EsaSkyConstants.OBSCORE_COLLECTION).contains(collection)) {
+	        					if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.OBSCORE_COLLECTION)
+	        							&& descriptor.getCollections().get(key).get(EsaSkyConstants.OBSCORE_COLLECTION).contains(collection)) {
+	        						found = true;
+	        						facilityName = key;
+	        						break;
+	        					}else if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.TABLE_NAME) 
+	        							&& descriptor.getCollections().get(key).get(EsaSkyConstants.TABLE_NAME).contains(collection)) {
 	        						found = true;
 	        						facilityName = key;
 	        						break;
@@ -158,6 +173,10 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        	}
 		        }
 	        	
+		        if(descriptors.size() > 0) {
+			        descriptors.add(0,descriptor);
+			        counts.add(0,totalCount);
+		        }
 		        countStatus.updateCount();
 		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
 			}

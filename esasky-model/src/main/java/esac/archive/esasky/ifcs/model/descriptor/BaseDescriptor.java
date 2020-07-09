@@ -49,6 +49,8 @@ public abstract class BaseDescriptor implements IDescriptor {
     private double countFovLimit;
 
     /** Archive related base URL */
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private String archiveURL;
 
     /** Archive related URL parameter */

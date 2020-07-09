@@ -28,6 +28,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private ExtTapDescriptor parent;
     private String ingestedTable;
     private double[] wavelengthRange = new double[] {0,13};
+    private boolean isObsCore;
     
 
     @JsonInclude(Include.NON_NULL)
@@ -47,6 +48,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	isInBackend = false;
     	tapUrl = parent.getTapUrl();
     	ingestedTable = parent.getIngestedTable();
+    	isObsCore = parent.getIsObsCore();
     	
     	//From BaseDescriptor
     	setGuiShortName(parent.getGuiShortName());
@@ -62,6 +64,8 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	setTapSTCSColumn(parent.getTapSTCSColumn());
     	setUniqueIdentifierField(parent.getUniqueIdentifierField());
     	setShapeLimit(parent.getShapeLimit());
+    	
+    	setArchiveURL(parent.getArchiveURL());
     	setSampEnabled(parent.getSampEnabled());
     }
 
@@ -200,4 +204,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
         }
         return descriptorId;
     }
+
+	public boolean getIsObsCore() {
+		return isObsCore;
+	}
+
+	public void setIsObsCore(boolean isObsCore) {
+		this.isObsCore = isObsCore;
+	}
 }

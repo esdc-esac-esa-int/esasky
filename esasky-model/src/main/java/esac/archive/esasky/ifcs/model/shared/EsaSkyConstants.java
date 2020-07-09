@@ -281,6 +281,9 @@ public class EsaSkyConstants {
     public static final String OBSCORE_DATAPRODUCT = "dataproduct_type";
     public static final String OBSCORE_FOV = "s_fov";
     public static final String OBSCORE_SREGION = "s_region";
+    public static final String CATALOGUE = "catalogue";
+    public static final String TABLE_NAME = "table_name";
+    public static final String HEASARC_TABLE = "table_name";
     
     /*************************************************************************/
     /** TREE MAP **/
