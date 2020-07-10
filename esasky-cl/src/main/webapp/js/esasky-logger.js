@@ -24,7 +24,7 @@ console.error = function(){
 	    	}
 	    }
 	    //window.ga('send', 'event', "Error", "console.error", "Time since startup: " 
-	    $wnd._paq.push(['trackEvent',  "Error", "console.error", "Time since startup: " 
+	    window._paq.push(['trackEvent',  "Error", "console.error", "Time since startup: " 
 	    	+ (Date.now() - startupTime) + " (millis)"
 	    	+ " |||| Logged Errors: " + console.errors + " |||| Logged Warnings: " + console.warns 
 	    	+ " |||| Last Logged debugs: " + lastDebugs]);
@@ -52,7 +52,7 @@ console.debug = function(){
 window.addEventListener('error', function(e) {
 try{
     //window.ga('send', 'event', "Error", "Problem with source file: " + e.target.src, "Time since startup: " 
-    $wnd._paq.push(['trackEvent',   "Error", "Problem with source file: " + e.target.src, "Time since startup: " 
+    window._paq.push(['trackEvent',   "Error", "Problem with source file: " + e.target.src, "Time since startup: " 
     + (Date.now() - startupTime) + " (millis)"
     + " |||| Logged Errors: " + console.errors + " |||| Logged Warnings: " + console.warns 
     + " |||| Logged debugs: " + console.debugs + " |||| Logged logs: " + console.logs]);
@@ -139,6 +139,6 @@ function tellUserAboutReload(){
 		 +', navigator.userAgent = '+navigator.userAgent;
 		
 		//window.ga('send', 'event', "slowLoad", "HasNotLoadedAfter " + slowLoadTime + " milliseconds", debugInfo);
-		$wnd._paq.push(['trackEvent', "slowLoad", "HasNotLoadedAfter " + slowLoadTime + " milliseconds", debugInfo]);
+		window._paq.push(['trackEvent', "slowLoad", "HasNotLoadedAfter " + slowLoadTime + " milliseconds", debugInfo]);
 	}
 }
