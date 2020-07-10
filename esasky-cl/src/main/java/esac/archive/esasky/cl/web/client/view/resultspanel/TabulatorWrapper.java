@@ -387,7 +387,6 @@ public class TabulatorWrapper{
     		      				mutations[i].addedNodes[j].getAttribute('role') == 'Header'))
       				{
     		      	tableJsObject.redraw(true);
-    		      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::setCorrectFilterBehaviour()();
     		      	this.disconnect();
     		      	return;
     		      }
@@ -1643,6 +1642,6 @@ public class TabulatorWrapper{
 
     public void notifyMocLoadedObserver() {
     	MocRepository.getInstance().notifyMocLoaded(tabulatorCallback.getEsaSkyUniqId() + "_header");
-    	    }
+    }
 
 }
