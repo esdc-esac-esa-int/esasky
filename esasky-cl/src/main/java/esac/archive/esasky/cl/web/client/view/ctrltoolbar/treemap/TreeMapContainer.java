@@ -238,7 +238,7 @@ public class TreeMapContainer extends DialogBox {
 	};
 	
 	private void updateTreeMapSize() {
-		treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 20, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 32);
+		treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 22, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
 		slider.updateSize(TreeMapContainer.this.getOffsetWidth() - 30);
 	}
 
