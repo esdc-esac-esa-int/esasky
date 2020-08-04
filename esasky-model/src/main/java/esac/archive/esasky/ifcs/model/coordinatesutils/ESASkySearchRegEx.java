@@ -26,9 +26,9 @@ public class ESASkySearchRegEx {
     final static String base60_column = "(" + COLUMN + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
 
     final static String RA_hhmmss_space_pattern = RA_hh_space + "(" + base60_space + base60_space
-            + "?)?";
+            + "?)+";
     final static String RA_hhmmss_column_pattern = RA_hh_column + "(" + base60_column
-            + base60_column + "?)?";
+            + base60_column + "?)+";
     final static String RA_hhmmss_letters_pattern = RA_hh_column + "h?(\\s?(" + base60
     		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\\\"))?\\s?)";
 

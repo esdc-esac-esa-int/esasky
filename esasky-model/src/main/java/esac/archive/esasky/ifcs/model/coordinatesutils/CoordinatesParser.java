@@ -30,7 +30,6 @@ public class CoordinatesParser {
                 || inputType == SearchInputType.SPACE_RAhhmmssDECdeg
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECdeg)
         {
-
             if (CoordinatesFrame.GALACTIC == inputCooFrame) {
                 raDeg = CoordinatesConversion.convertGalacticRAdddmmssToDecimal(raString);
             } else {
