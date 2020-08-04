@@ -173,7 +173,7 @@ public class TabulatorWrapper{
     }
     
     private native void downloadCsv(GeneralJavaScriptObject tableJsObject, String fileName)/*-{
-        tableJsObject.download("csv", fileName);
+        tableJsObject.download("csv", fileName, {}, tableJsObject.getSelectedData().length > 0 ? "selected" : "active");
     }-*/;
 
     public void downloadVot(String fileName, String resourceName){
@@ -181,7 +181,7 @@ public class TabulatorWrapper{
     }
 
     private native void downloadVot(GeneralJavaScriptObject tableJsObject, String fileName, String resourceName)/*-{
-        tableJsObject.download(tableJsObject.voTableFormatter, fileName, {resourceName:resourceName});
+        tableJsObject.download(tableJsObject.voTableFormatter, fileName, {resourceName:resourceName}, tableJsObject.getSelectedData().length > 0 ? "selected" : "active");
     }-*/;
 
     public String getVot(String resourceName){
