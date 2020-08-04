@@ -1350,7 +1350,7 @@ public class TabulatorWrapper{
             }
         };
 	
-		table.getVoTableString = function(data, resourceName){
+		table.getVoTableString = function(list, resourceName){
 			// Add VOT XML Schema
 			var votData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
                 votData += "<VOTABLE version=\"1.3\" xmlns=\"//www.ivoa.net/xml/VOTable/v1.3\">\n";
@@ -1391,16 +1391,26 @@ public class TabulatorWrapper{
 			votData += "<DATA>\n";
 			votData += "<TABLEDATA>\n";
 
-			data.forEach(function (row) {
-				votData += "<TR>\n";
-				table.metadata.forEach(function (columnInfo) {
-					var value = $wnd.esasky.escapeXml(row[columnInfo.name]);
-					votData += "<TD>"
-							+ value
-							+ "</TD>\n";
-				});
-
-				votData += "</TR>\n";
+			list.forEach(function (row) {
+			    switch(row.type){
+			        case "row":
+        				votData += "<TR>\n";
+        				table.metadata.forEach(function (columnInfo) {
+        					var value = "";
+        					row.columns.some(function(column){
+        					    if(column.component.getField() == columnInfo.name){
+        					        value = column.value;
+        					        return true;
+        					    }
+        					});
+        					votData += "<TD>"
+        							+ $wnd.esasky.escapeXml(value)
+        							+ "</TD>\n";
+        				});
+        
+        				votData += "</TR>\n";
+        				break;
+			    }
 			})
 
 			votData += "</TABLEDATA>\n";
@@ -1411,8 +1421,8 @@ public class TabulatorWrapper{
 
 			return votData;
 		}
-		table.voTableFormatter = function(columns, data, options, setFileContents){
-		    setFileContents(table.getVoTableString(data.data, options.resourceName), "application/x-votable+xml");
+		table.voTableFormatter = function(list, options, setFileContents){
+		    setFileContents(table.getVoTableString(list, options.resourceName), "application/x-votable+xml");
 		}
 		
 		

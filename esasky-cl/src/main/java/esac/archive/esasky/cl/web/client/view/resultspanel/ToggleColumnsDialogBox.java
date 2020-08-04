@@ -97,7 +97,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
                     tap_name: column.getField(), 
                     description: column.getDefinition().headerTooltip
                 });
-            if (column.getVisibility()) {
+            if (column.isVisible()) {
                 selectedRows.push(i);
             }
             i++;
