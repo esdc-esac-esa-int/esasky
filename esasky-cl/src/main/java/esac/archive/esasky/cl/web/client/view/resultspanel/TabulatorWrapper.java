@@ -173,7 +173,7 @@ public class TabulatorWrapper{
     }
     
     private native void downloadCsv(GeneralJavaScriptObject tableJsObject, String fileName)/*-{
-        tableJsObject.download("csv", fileName, {}, tableJsObject.getSelectedData().length > 0 ? "selected" : "active");
+        tableJsObject.download(tableJsObject.csvTableFormatter, fileName, {}, tableJsObject.getSelectedData().length > 0 ? "selected" : "active");
     }-*/;
 
     public void downloadVot(String fileName, String resourceName){
@@ -1425,7 +1425,72 @@ public class TabulatorWrapper{
 		    setFileContents(table.getVoTableString(list, options.resourceName), "application/x-votable+xml");
 		}
 		
-		
+		table.csvTableFormatter = function csv(list, options, setFileContents) {
+            var delimiter = options && options.delimiter ? options.delimiter : ",",
+                fileContents = [],
+                headers = [];
+    
+            list.forEach(function (row) {
+                var item = [];
+    
+                switch (row.type) {
+                    case "group":
+                        console.warn("Download Warning - CSV downloader cannot process row groups");
+                        break;
+    
+                    case "calc":
+                        console.warn("Download Warning - CSV downloader cannot process column calculations");
+                        break;
+    
+                    case "header":
+                        row.columns.forEach(function (col, i) {
+                            if (col && col.depth === 1 && !nonDatabaseColumns.includes(col.component.getField())) {
+                                headers.push(typeof col.value == "undefined" || typeof col.value == "null" ? "" : col.value);
+                            }
+                        });
+                        
+                        
+                        
+                        break;
+    
+                    case "row":
+                        row.columns.forEach(function (col) {
+    
+                            if (col && !nonDatabaseColumns.includes(col.component.getField())) {
+    
+                                switch (typeof col.value) {
+                                    case "object":
+                                        col.value = JSON.stringify(col.value);
+                                        break;
+    
+                                    case "undefined":
+                                    case "null":
+                                        col.value = "";
+                                        break;
+                                }
+    
+                                item.push('"' + String(col.value).split('"').join('""') + '"');
+                            }
+                        });
+                        
+                        fileContents.push(item.join(delimiter));
+                        break;
+                }
+            });
+    
+            if (headers.length) {
+                fileContents = [headers].concat(fileContents);
+            }
+    
+            fileContents = fileContents.join("\n");
+    
+            if (options.bom) {
+                fileContents = "\uFEFF" + fileContents;
+            }
+    
+            setFileContents(fileContents, "text/csv");
+        }
+		    
 		table.convertDataToTabulatorFormat = function(userData, aladinCoordinateFrame) {
             var metadata = [];
             var skyObjectList = userData.overlaySet.skyObjectList;
