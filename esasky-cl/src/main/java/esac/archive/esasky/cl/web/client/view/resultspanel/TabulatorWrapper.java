@@ -1028,6 +1028,7 @@ public class TabulatorWrapper{
 			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
 	                        activeColumnGroup.push({
 	                            title:this.metadata[i].displayName,
+	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
 	                            headerSort:false, 
@@ -1049,6 +1050,7 @@ public class TabulatorWrapper{
 			    		if(this.metadata[i].name.toLowerCase() === "postcard_url"){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
+	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
 	                            headerSort:false, 
@@ -1066,6 +1068,7 @@ public class TabulatorWrapper{
 			    		if(this.metadata[i].name.toLowerCase() === "author"){
 	                        activeColumnGroup.push({
 	                            title:this.metadata[i].displayName,
+	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
 	    		    			sorter: "string",
@@ -1088,6 +1091,7 @@ public class TabulatorWrapper{
 			    		    || this.metadata[i].name.toLowerCase() === "s_ra"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
@@ -1105,6 +1109,7 @@ public class TabulatorWrapper{
 			    		    || this.metadata[i].name.toLowerCase() === "s_dec"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
@@ -1120,6 +1125,7 @@ public class TabulatorWrapper{
 			    		else if(this.metadata[i].name.toLowerCase() === "access_estsize"){
 			    			activeColumnGroup.push({
 				    			title:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
@@ -1135,6 +1141,7 @@ public class TabulatorWrapper{
 			    		else if(this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "REAL"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
@@ -1152,6 +1159,7 @@ public class TabulatorWrapper{
 			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP" || this.metadata[i].datatype.toUpperCase() === "DATETIME"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
@@ -1169,6 +1177,7 @@ public class TabulatorWrapper{
 			    		    || this.metadata[i].datatype.toUpperCase() === "LONG"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
@@ -1185,6 +1194,7 @@ public class TabulatorWrapper{
 			    		else if(this.metadata[i].datatype.toUpperCase() === "LIST"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
@@ -1200,6 +1210,7 @@ public class TabulatorWrapper{
 			    		else if(this.metadata[i].datatype.toUpperCase() === "HTML"){
 			    			activeColumnGroup.push({
                                 title:this.metadata[i].displayName,
+                                titleDownload:this.metadata[i].name, 
                                 field:this.metadata[i].name, 
                                 visible:this.metadata[i].visible,
                                 headerTooltip:this.metadata[i].description,
@@ -1215,6 +1226,7 @@ public class TabulatorWrapper{
 			    		else if(this.metadata[i].datatype.toUpperCase() === "STRING_HIDE_NON_DATABASE_VALUES"){
 			    			activeColumnGroup.push({
                                 title:this.metadata[i].displayName,
+                                titleDownload:this.metadata[i].name, 
                                 field:this.metadata[i].name, 
                                 visible:this.metadata[i].visible,
                                 headerTooltip:this.metadata[i].description,
@@ -1229,6 +1241,7 @@ public class TabulatorWrapper{
 			    		} else{
 				    		activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
