@@ -10,7 +10,7 @@ public class CoordinatesParserTest {
 
 	@Test
 	public void convertCoordsToDegrees_J2000ToJ2000_returnsCorrectDegrees() {
-		assertCoordToDegrees("20 +37 01 17.38", new Double[]{300.0000, 37.0215}, CoordinatesFrame.J2000,
+		assertCoordToDegrees("20 +37 01 17.38", new Double[]{20.0000, 37.0215}, CoordinatesFrame.J2000,
 				CoordinatesFrame.J2000);
 		assertCoordToDegrees("20 54 05.689 +37", new Double[]{313.52370417, 37.0}, CoordinatesFrame.J2000,
 				CoordinatesFrame.J2000);
@@ -48,7 +48,7 @@ public class CoordinatesParserTest {
 
 	@Test
 	public void parseCoords_J2000_returnsCorrectCoords() {
-		assertParseCoords("20 +37 01 17.38", new Double[]{300.0000, 37.0215}, CoordinatesFrame.J2000);
+		assertParseCoords("20 +37 01 17.38", new Double[]{20.0000, 37.0215}, CoordinatesFrame.J2000);
 		assertParseCoords("20 54 05.689 +37 01 17.38", new Double[]{313.5237, 37.0215}, CoordinatesFrame.J2000);
 		assertParseCoords("20 54 05.689 +37", new Double[]{313.5237, 37.0000}, CoordinatesFrame.J2000);
 		assertParseCoords("20 54 05.689 +37 01 17.38", new Double[]{313.52370417, 37.02149444}, CoordinatesFrame.J2000);
