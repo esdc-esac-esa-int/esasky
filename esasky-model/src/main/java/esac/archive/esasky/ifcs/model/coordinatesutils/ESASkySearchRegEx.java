@@ -41,11 +41,11 @@ public class ESASkySearchRegEx {
             + "|[0-2][0-9]\\d" + "|3[0-5]\\d" + "|360)";
 
     final static String RA_dddmmss_space_pattern = RA_DEGREES_integer_base360 + "(" + base60_space
-            + base60_space + "?)";
+            + base60_space + "?)?";
     final static String RA_dddmmss_column_pattern = RA_DEGREES_integer_base360 + "("
-            + base60_column + base60_column + "?)";
+            + base60_column + base60_column + "?)?";
     final static String RA_dddmmss_letters_pattern = RA_DEGREES_integer_base360 + "d(\\s?(" + base60
-    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\"))?\\s?)";
+    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\"))?\\s?)?";
     
     final static String DEC_DEGREES_decimal_base90 = "(\\d(\\.\\d+)?" + "|0\\d?(\\.\\d+)?"
             + "|[0-8]\\d(\\.\\d+)?" + "|90)";
@@ -142,6 +142,9 @@ public class ESASkySearchRegEx {
 
             // DEGREES_decimal + RADEC_SEPARATOR + DEGREES_decimal
             put(PATTERN_RAdeg_DECdeg, SearchInputType.RAdegDECdeg);
+            put(PATTERN_RAdddmmss_DECddmmss_space, SearchInputType.SPACE_RAdddmmssDECddmmss);
+            put(PATTERN_RAdddmmss_DECddmmss_letters, SearchInputType.LETTERS_RAdddmmssDECddmmss);
+            put(PATTERN_RAdddmmss_DECddmmss_column, SearchInputType.COLUMN_RAdddmmssDECddmmss);
 
             put(TARGET, SearchInputType.TARGET);
 

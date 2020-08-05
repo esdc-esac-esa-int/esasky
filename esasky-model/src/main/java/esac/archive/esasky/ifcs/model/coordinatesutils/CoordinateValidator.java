@@ -2,6 +2,8 @@ package esac.archive.esasky.ifcs.model.coordinatesutils;
 
 import java.util.Map.Entry;
 
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
+
 public class CoordinateValidator {
 
     /** Logger. */
@@ -29,11 +31,6 @@ public class CoordinateValidator {
     public static SearchInputType checkInputType(RegexClass regex, String input, CoordinatesFrame cooFrame) {
 
         input = input.trim();
-
-       
-        boolean matchFound = false;
-        // LOGGER.debug("@@@ COORD Validator @@@");
-
         if (CoordinatesFrame.J2000 == cooFrame) {
             for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainEquatorial
                     .entrySet()) {
@@ -52,9 +49,6 @@ public class CoordinateValidator {
 
         if (regex.test(ESASkySearchRegEx.TARGET, input)) {
             return SearchInputType.TARGET;
-        }
-        if (!matchFound) {
-            return SearchInputType.NOT_VALID;
         }
         return SearchInputType.NOT_VALID;
     }

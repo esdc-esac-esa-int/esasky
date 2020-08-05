@@ -43,7 +43,11 @@ public class CoordinatesParser {
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
                 || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
                 || inputType == SearchInputType.SPACE_RAdegDECddmmss
-                || inputType == SearchInputType.COLUMN_RAdegDECddmmss)
+                || inputType == SearchInputType.COLUMN_RAdegDECddmmss
+                || inputType == SearchInputType.SPACE_RAdddmmssDECddmmss
+                || inputType == SearchInputType.COLUMN_RAdddmmssDECddmmss
+                || inputType == SearchInputType.LETTERS_RAdddmmssDECddmmss
+                )
         {
             decDeg = CoordinatesConversion.convertDECddmmssToDecimal(decString);
         } else {
