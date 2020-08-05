@@ -52,7 +52,7 @@ public class CoordinatesParserTest {
 		assertParseCoords("20 54 05.689 +37 01 17.38", new Double[]{313.5237, 37.0215}, CoordinatesFrame.J2000);
 		assertParseCoords("20 54 05.689 +37", new Double[]{313.5237, 37.0000}, CoordinatesFrame.J2000);
 		assertParseCoords("20 54 05.689 +37 01 17.38", new Double[]{313.52370417, 37.02149444}, CoordinatesFrame.J2000);
-		assertParseCoords("10-45:17:50", new Double[]{150.00000000, -45.29722222}, CoordinatesFrame.J2000);
+		assertParseCoords("10-45:17:50", new Double[]{10.00000000, -45.29722222}, CoordinatesFrame.J2000);
 		assertParseCoords("10:12:45.3-45:17:50", new Double[]{153.18875000, -45.29722222}, CoordinatesFrame.J2000);
 		assertParseCoords("10:12:45.3-45", new Double[]{153.18875000, -45.0}, CoordinatesFrame.J2000);
 		assertParseCoords("10:12:45.3-45:17:50.876", new Double[]{153.18875000, -45.29746556}, CoordinatesFrame.J2000);
