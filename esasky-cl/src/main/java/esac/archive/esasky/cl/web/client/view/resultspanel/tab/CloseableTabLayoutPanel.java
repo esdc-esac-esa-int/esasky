@@ -262,7 +262,8 @@ public class CloseableTabLayoutPanel extends Composite {
         saveButton = new EsaSkyButton(resources.downloadIcon());
         saveButton.setMediumStyle();
         saveButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_saveResultsTableOrDownload"));
-
+        saveButton.getElement().setId("tabButtonDownload");
+        
         saveAllView = new SaveAllView();
         // Bind download products Anchor.
         saveAllView.getDowloadProductsAnchor().addClickHandler(new ClickHandler() {

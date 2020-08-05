@@ -25,6 +25,10 @@
 	margin-bottom: 3px;
 }
 
+#tabButtonDownload{
+	background: rgba(000, 100 ,255 , 0.6);
+}
+
 .tabIcon {
 	height: 25px;
 	width: 25px;
