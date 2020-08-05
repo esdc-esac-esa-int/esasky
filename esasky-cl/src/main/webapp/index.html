@@ -36,7 +36,7 @@
 <script defer type="text/javascript" src="js/datepicker/datepicker.min.js"></script>
 <script defer type="text/javascript" src="js/filesaver/filesaver.min.js"></script>
 <script defer type="text/javascript" src="js/filesaver/canvas-toBlob.min.js"></script>
-<script defer type="text/javascript" src="js/tabulator/tabulator.min.js"></script>
+<script defer type="text/javascript" src="js/tabulator/tabulator.js"></script>
 
 <script defer type="text/javascript" src="${modified.version}/${modified.version}.nocache.js"></script>
 
@@ -59,7 +59,7 @@
 
 
 </head>
-<body oncontextmenu="return false;">
+<body>
 	<!-- OPTIONAL: include this if you want history support -->
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
 		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
@@ -93,4 +93,11 @@
 </body>
 <script defer type="text/javascript"
 	src="js/xregexp/xregexp.js"></script>
+<script type="text/javascript">
+	window.oncontextmenu = function(e){
+		if(e.target.nodeName == "INPUT"){return true;}
+		return false;
+	};
+</script>
+	
 </html>
