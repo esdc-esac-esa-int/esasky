@@ -23,6 +23,8 @@ import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton.SignType;
 
 public class DateFilterDialogBox extends FilterDialogBox {
 
@@ -66,6 +68,17 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		
         HTML columnNameHTML = new HTML(columnName.replaceAll("_", " "));
         columnNameHTML.addStyleName("filterColumnName");
+        
+        SignButton minimizeButton = new SignButton(SignType.MINUS);
+        minimizeButton.addStyleName("filterButton__minimize");
+        minimizeButton.setSmallStyle();
+        minimizeButton.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                hide();
+            }
+        });
 
 		FlowPanel fromContainer = new FlowPanel();
 		fromContainer.addStyleName("dateInputContainer");
@@ -98,6 +111,7 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		
 		FlowPanel container = new FlowPanel();
 		container.add(columnNameHTML);
+		container.add(minimizeButton);
 		dateFilterContainer.addStyleName("dateFilterContainer");
 		
 		dateFilterContainer.add(fromContainer);

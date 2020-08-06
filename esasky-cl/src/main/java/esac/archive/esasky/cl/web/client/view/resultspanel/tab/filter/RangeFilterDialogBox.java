@@ -23,6 +23,8 @@ import com.google.gwt.dom.client.Element;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton.SignType;
 
 public class RangeFilterDialogBox extends FilterDialogBox {
     
@@ -76,6 +78,17 @@ public class RangeFilterDialogBox extends FilterDialogBox {
         
         HTML columnNameHTML = new HTML(columnName.replaceAll("_", " "));
         columnNameHTML.addStyleName("filterColumnName");
+        
+        SignButton minimizeButton = new SignButton(SignType.MINUS);
+        minimizeButton.addStyleName("filterButton__minimize");
+        minimizeButton.setSmallStyle();
+        minimizeButton.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                hide();
+            }
+        });
 
         fromTextBox.addStyleName("sliderTextBox");
         fromTextBox.addBlurHandler(new BlurHandler() {
@@ -118,6 +131,7 @@ public class RangeFilterDialogBox extends FilterDialogBox {
         
         FlowPanel container = new FlowPanel();
         container.add(columnNameHTML);
+        container.add(minimizeButton);
 		container.add(fromTextBox);
         
 		EsaSkyButton resetButton = new EsaSkyButton(this.resources.resetIcon());

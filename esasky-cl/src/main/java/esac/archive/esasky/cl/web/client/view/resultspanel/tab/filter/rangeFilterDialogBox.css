@@ -30,6 +30,7 @@
 .sliderTextBox{
 	box-sizing: border-box;
 	margin: 0px 4px;
+	margin-top: 5px;
 	vertical-align: middle;
 	width: 110px;
 	text-align: center;

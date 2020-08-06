@@ -15,6 +15,13 @@
 
 .filterColumnName{
 	text-align: center;
-	margin-bottom: 5px;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	text-transform: capitalize;
+}
+
+.filterButton__minimize{
+	position: absolute;
+	top: 5px;
+	right: 5px;
 }
