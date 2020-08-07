@@ -919,6 +919,10 @@ public class TabulatorWrapper{
 			   		this.options.placeholder.innerText = "";
 			   	}
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
+		    	var accessUrlColumn = this.getColumn("access_url");
+		    	if(accessUrlColumn){
+		    	    accessUrlColumn.move("centre", true);//unitl Metadata is properly defined for ext tap data
+		    	}
 		    	
 		    },
 		    dataLoading:function(data){
@@ -1303,7 +1307,7 @@ public class TabulatorWrapper{
 
 		 	movableColumns: true,
 		 	autoColumns: true,
-		 	layout: "fitDataFill"
+		 	layout: "fitData"
 		});
 		
 		//Remove the clearSelection function to make sure that it is possible to select and copy text from the table
