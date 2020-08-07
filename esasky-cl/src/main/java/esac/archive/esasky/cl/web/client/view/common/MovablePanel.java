@@ -3,6 +3,9 @@ package esac.archive.esasky.cl.web.client.view.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
@@ -185,11 +188,22 @@ public class MovablePanel extends FocusPanel {
 	
 	public void setSuggestedPositionCenter() {
 		isSuggestedPositionCenter = true;
-		suggestedPositionLeft = MainLayoutPanel.getMainAreaWidth() / 2 - getOffsetWidth() / 2;
-		suggestedPositionTop = MainLayoutPanel.getMainAreaHeight() / 2 - getOffsetHeight() / 2;
-		if(!hasBeenMovedByUser()) {
-			setPosition(suggestedPositionLeft, suggestedPositionTop);
-		}
+		Scheduler.get().scheduleFinally(new ScheduledCommand() {
+            
+            @Override
+            public void execute() {
+                setCenterPosition();
+            }
+        });
+		setCenterPosition();
+	}
+	
+	private void setCenterPosition() {
+	    suggestedPositionLeft = MainLayoutPanel.getMainAreaWidth() / 2 - getOffsetWidth() / 2;
+	    suggestedPositionTop = MainLayoutPanel.getMainAreaHeight() / 2 - getOffsetHeight() / 2;
+	    if(!hasBeenMovedByUser()) {
+	        setPosition(suggestedPositionLeft, suggestedPositionTop);
+	    }
 	}
 
 	private void setPosition(int left, int top) {

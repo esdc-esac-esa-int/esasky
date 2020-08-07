@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
@@ -159,10 +160,17 @@ public class DateFilterDialogBox extends FilterDialogBox {
     					+ "-" + ("0" +  (datePickerInstance.dateSelected.getMonth() + 1)).slice(-2) 
     					+ "-" + ("0" +  datePickerInstance.dateSelected.getDate()).slice(-2);
                   	instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox::fireDateChangedEvent(Ljava/lang/String;Ljava/lang/String;)(date, containerId);
-    			} 
+    			},
+    			onShow: 
+                    function(datePickerInstance) {
+                        instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox::fireShowEvent()();
+                    } 
     		});
     }-*/;
 
+	public void fireShowEvent() {
+	    setSuggestedPositionCenter();
+	}
 	public void fireDateChangedEvent(String newDate, String datePickerId) {
 		if(fromInputId.equals(datePickerId)) {
 			filterTimer.setNewRange(newDate, currentToDate);	
