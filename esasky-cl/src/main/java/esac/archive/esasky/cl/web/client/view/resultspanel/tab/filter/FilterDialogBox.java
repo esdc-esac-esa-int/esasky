@@ -17,6 +17,8 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
     private final String filterButtonId;
     protected final String tapName;
     
+    protected long timeAtLastClose = 0;
+    
     public interface Resources extends ClientBundle {
         @Source("filterDialogBox.css")
         @CssResource.NotStrict
@@ -41,6 +43,22 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
 		} else {
 			Document.get().getElementById(filterButtonId).removeClassName("filterActive");
 		}
+	}
+	
+	public void toggle() {
+	    if(!isShowing() && System.currentTimeMillis() - timeAtLastClose > 300) {
+	        show();
+	    } else {
+	        hide();
+	    }
+	}
+	
+	@Override
+	public void hide() {
+	    if(isShowing()) {
+	        timeAtLastClose = System.currentTimeMillis();
+	    }
+	    super.hide();
 	}
 	
 	public abstract boolean isFilterActive();

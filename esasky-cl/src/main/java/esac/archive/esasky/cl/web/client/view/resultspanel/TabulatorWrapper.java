@@ -239,7 +239,7 @@ public class TabulatorWrapper{
         tabulatorCallback.onDataFiltered(indexArray);
     }
     
-    public void showNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, 
+    public void toggleNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, 
             double maxVal, final GeneralJavaScriptObject onChangeFunc, final GeneralJavaScriptObject formatter, 
             GeneralJavaScriptObject formatterParamsIfExisting) {
         final GeneralJavaScriptObject formatterParams = verifyFormatterParams(formatterParamsIfExisting);
@@ -274,7 +274,7 @@ public class TabulatorWrapper{
     	RangeFilterDialogBox filterDialogBox = (RangeFilterDialogBox) filterDialogs.get(tapName);
 		
 		filterDialogBox.setRange(minVal, maxVal, 2);
-    	filterDialogBox.show();
+    	filterDialogBox.toggle();
     }
 
     private native GeneralJavaScriptObject verifyFormatterParams(GeneralJavaScriptObject formatterParams)/*-{
@@ -285,7 +285,7 @@ public class TabulatorWrapper{
         return {getValue: function() {return value}};
     }-*/;
     
-    public void showDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    public void toggleDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
     	
     	if(!filterDialogs.containsKey(tapName)) {
     		FilterObserver filterObserver = new FilterObserver() {
@@ -304,7 +304,7 @@ public class TabulatorWrapper{
     	}
     	
     	FilterDialogBox filterDialogBox = filterDialogs.get(tapName);
-    	filterDialogBox.show();
+    	filterDialogBox.toggle();
     	
     }
 
@@ -622,7 +622,7 @@ public class TabulatorWrapper{
 					maxVal = 100;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
 					(editorParams["tapName"], editorParams["title"], filterButtonId, minVal, maxVal, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
 			});	
 			var container = $wnd.$("<span></span>")
@@ -688,7 +688,7 @@ public class TabulatorWrapper{
 					maxVal = tmp;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::showDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
 					(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
 			});	
 			var container = $wnd.$("<span></span>")
