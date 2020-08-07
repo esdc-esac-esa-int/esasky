@@ -3073,8 +3073,8 @@
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	
-	<text key="tabulator_centreOnShape">
-		Centre on shape
+	<text key="tabulator_centreOnObservation">
+		Centre on observation
 	</text>
 	<text key="tabulator_centreHeader">
 		Go to
