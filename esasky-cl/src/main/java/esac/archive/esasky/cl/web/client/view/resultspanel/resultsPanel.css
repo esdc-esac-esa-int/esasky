@@ -124,9 +124,15 @@
 .tabulator_emptyTable{
 	position: fixed;
     left: 50%;
-    transform: translateX(-50%);
-    color: red;
-    top: literal("calc(35% + 40px)");
+    top: 50%;
+    transform: translateX(-50%, -50%);
+    color: white;
+    z-index: -1;
+    box-shadow: 0 0 20px #000;
+    border: 1px solid white;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
 }
 
 .tabulator-header-filter-disabled{
