@@ -262,6 +262,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		for(TableObserver observer : observers) {
 		    observer.onSelection(this);
 		}
+		
+		table.show();
 	}
 
 	public void notifyObservers() {

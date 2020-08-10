@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -553,6 +555,18 @@ public class TabulatorWrapper{
 			});
         }
     }-*/;
+    
+    public void show() {
+        if(isMOCMode()) { //In defaultQueryMode MutationObserver redraws, if necessary
+            Scheduler.get().scheduleFinally(new ScheduledCommand() {
+                
+                @Override
+                public void execute() {
+                    redraw(tableJsObject); 
+                }
+            });
+        }
+    }
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) /*-{
