@@ -3227,6 +3227,15 @@
 	<text key="toggleColumns_headerTitleDescription">
 		Description
 	</text>
+	<text key="MocTooltip_count">
+		Count
+	</text>
+	<text key="MocTooltip_order">
+		Order
+	</text>
+	<text key="MocTooltip_ipix">
+		Ipix
+	</text>
 
 
 </Internationalization>

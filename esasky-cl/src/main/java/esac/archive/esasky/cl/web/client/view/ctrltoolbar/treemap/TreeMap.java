@@ -30,7 +30,7 @@ import com.google.gwt.resources.client.CssResource;
 
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.WavelenthDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.WavelengthDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
@@ -552,7 +552,7 @@ public class TreeMap extends Chart {
     		PointInformation pointInformation = allPoints.get(point.getText());
     		if(pointInformation != null) {
     			
-    			for(WavelenthDescriptor waveLength : pointInformation.descriptor.getWavelengths()) {
+    			for(WavelengthDescriptor waveLength : pointInformation.descriptor.getWavelengths()) {
     				
 	    			ArrayList<Double> waveLengthRange = waveLength.getRange();
 	    			

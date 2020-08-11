@@ -12,11 +12,13 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoV
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 
 public class MocRepository {
@@ -47,34 +49,24 @@ public class MocRepository {
 				GeneralJavaScriptObject mocsClicked = (GeneralJavaScriptObject) event.getObject();
 				int length = GeneralJavaScriptObject.convertToInteger(mocsClicked.getProperty("length"));
 				
-				StringBuilder sb = new StringBuilder();
-				
-				for(int i = 0;i < length; i++) {
+				List<MOCInfo> mocInfos = new LinkedList<MOCInfo>();
+				for(int i = 0; i < length; i++) {
 					GeneralJavaScriptObject data = mocsClicked.getProperty(Integer.toString(i));
 					String name = data.getProperty("name").toString();
+					IDescriptor descriptor;
 					for(MOCEntity entity : allEntities) {
 						if(name.startsWith(entity.getDescriptor().getDescriptorId())) {
-							name = entity.getDescriptor().getGuiShortName();
+							descriptor = entity.getDescriptor();
+							mocInfos.add(new MOCInfo(descriptor, GeneralJavaScriptObject.convertToInteger(data.getProperty("count")), 
+							        GeneralJavaScriptObject.convertToInteger(data.getProperty("order")), 
+							        GeneralJavaScriptObject.convertToInteger(data.getProperty("ipix"))));
 							break;
 						}
 					}
-					
-					sb.append("<h2>");
-					sb.append(name);
-					sb.append(":</h2> <b>Order:</b> ");
-					sb.append(data.getProperty("order"));
-					sb.append(" <b>Ipix:</b> ");
-					sb.append(data.getProperty("ipix"));
-					sb.append(" <b>Count:</b> ");
-					sb.append(data.getProperty("count"));
-					if(i < length - 1) {
-						sb.append("<hr/>");
-					}
 				}
-				String tooltipText = sb.toString();
 
-				if(tooltipText != "") {
-					MOCTooltip tooltip = new MOCTooltip(tooltipText, event.getX(), event.getY());
+				if(mocInfos.size() > 0) {
+					MOCTooltip tooltip = new MOCTooltip(mocInfos, event.getX(), event.getY());
 					tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
 				}
 				

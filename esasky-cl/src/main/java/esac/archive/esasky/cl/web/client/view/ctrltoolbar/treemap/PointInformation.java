@@ -1,13 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 
-import java.util.List;
-
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.WavelenthDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 
 public class PointInformation {
 	public String longName;
@@ -33,18 +30,8 @@ public class PointInformation {
 		this.context = context;
 		
 		if(descriptor.getWavelengths() != null && descriptor.getWavelengths().size() > 0) {
-			List<WavelenthDescriptor> wavelengthDescriptors = descriptor.getWavelengths();
-			final WavelenthDescriptor firstWlDesc = wavelengthDescriptors.get(0);
-			this.wavelengthShortName = TextMgr.getInstance().getText(firstWlDesc.getPrefix() + firstWlDesc.getShortName());
-			this.wavelengthLongName = TextMgr.getInstance().getText(firstWlDesc.getPrefix() + firstWlDesc.getLongName());
-			if(descriptor.getWavelengths().size() > 1) {
-				final WavelenthDescriptor lastWlDesc = wavelengthDescriptors.get(descriptor.getWavelengths().size() - 1);
-				final String toText = TextMgr.getInstance().getText("PointInformation_to");
-				this.wavelengthShortName = toText.replace("$FROM$", this.wavelengthShortName)
-						.replace("$TO$", TextMgr.getInstance().getText(lastWlDesc.getPrefix() + lastWlDesc.getShortName()));
-				this.wavelengthLongName = toText.replace("$FROM$", this.wavelengthLongName)
-						.replace("$TO$", TextMgr.getInstance().getText(lastWlDesc.getPrefix() + lastWlDesc.getLongName()));
-			}
+			this.wavelengthShortName = WavelengthUtils.getShortName(descriptor);
+			this.wavelengthLongName = WavelengthUtils.getLongName(descriptor);
 		}
 		
 		if(context == EntityContext.EXT_TAP) {
