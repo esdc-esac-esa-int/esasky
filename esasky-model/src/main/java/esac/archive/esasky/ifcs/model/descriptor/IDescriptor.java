@@ -35,8 +35,8 @@ public interface IDescriptor {
     List<MetadataDescriptor> getMetadata();
     void setMetadata(List<MetadataDescriptor> inputMetadata);
 
-    List<WavelenthDescriptor> getWavelengths();
-    void setWavelengths(final List<WavelenthDescriptor> wavelengths);
+    List<WavelengthDescriptor> getWavelengths();
+    void setWavelengths(List<WavelengthDescriptor> wavelengths);
     
     String getCreditedInstitutions();
     void setCreditedInstitutions(final String creditedInstitutions);

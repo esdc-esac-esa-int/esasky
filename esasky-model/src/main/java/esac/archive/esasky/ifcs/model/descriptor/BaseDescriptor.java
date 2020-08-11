@@ -119,7 +119,7 @@ public abstract class BaseDescriptor implements IDescriptor {
     protected List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private List<WavelenthDescriptor> wavelengths = new LinkedList<WavelenthDescriptor>();
+    private List<WavelengthDescriptor> wavelengths;
    
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String creditedInstitutions;
@@ -285,17 +285,17 @@ public abstract class BaseDescriptor implements IDescriptor {
     };
 
     @Override
-    public final List<WavelenthDescriptor> getWavelengths() {
+    public final List<WavelengthDescriptor> getWavelengths() {
         return wavelengths;
     }
 
     @Override
-    public final void setWavelengths(final List<WavelenthDescriptor> wavelengths) {
+    public final void setWavelengths(List<WavelengthDescriptor> wavelengths) {
         this.wavelengths = wavelengths;
         if(getPrimaryColor() == null) {
             double minWavelength = 100;
             double maxWavelength = 0;
-            for(WavelenthDescriptor w : wavelengths) {
+            for(WavelengthDescriptor w : wavelengths) {
                 ArrayList<Double> range = w.getRange();
                 minWavelength = Math.min(range.get(0), minWavelength);
                 maxWavelength = Math.max(range.get(1), maxWavelength);

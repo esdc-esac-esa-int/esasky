@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class WavelenthDescriptor {
+public class WavelengthDescriptor {
 
     private String shortName;
     private String longName;
