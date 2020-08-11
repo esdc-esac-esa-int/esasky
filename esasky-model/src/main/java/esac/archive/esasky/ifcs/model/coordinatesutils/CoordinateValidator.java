@@ -2,8 +2,6 @@ package esac.archive.esasky.ifcs.model.coordinatesutils;
 
 import java.util.Map.Entry;
 
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
-
 public class CoordinateValidator {
 
     /** Logger. */
