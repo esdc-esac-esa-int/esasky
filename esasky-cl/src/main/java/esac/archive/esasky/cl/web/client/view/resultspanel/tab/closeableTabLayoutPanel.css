@@ -73,3 +73,7 @@
 .hidden {
 	visibility: hidden;
 }
+
+.missionTab__wavelengthCanvas{
+	margin-left: 3px;
+}

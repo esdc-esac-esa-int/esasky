@@ -141,6 +141,11 @@
 	margin-top: 8px;	
 }
 
+.dataPanelTabChild > * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .draggableArea__horizontal{
 	margin-top: 4px;
 	height: 1px;

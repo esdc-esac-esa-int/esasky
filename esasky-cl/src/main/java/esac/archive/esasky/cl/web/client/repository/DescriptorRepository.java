@@ -65,6 +65,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 
 public class DescriptorRepository {
@@ -308,6 +309,7 @@ public class DescriptorRepository {
 				catDescriptorsIsReady = true;
 
 				Log.debug("[DescriptorRepository] Total catalog entries: " + catDescriptors.getTotal());
+				WavelengthUtils.setWavelengthRangeMaxMin(catDescriptors.getDescriptors());
 				if (GUISessionStatus.getIsInScienceMode()) {
 					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
 						updateCount4Catalogs();
@@ -346,6 +348,7 @@ public class DescriptorRepository {
 				obsDescriptorsIsReady = true;
 
 				Log.debug("[DescriptorRepository] [init obs]Total observation entries: " + obsDescriptors.getTotal());
+				WavelengthUtils.setWavelengthRangeMaxMin(obsDescriptors.getDescriptors());
 				if (GUISessionStatus.getIsInScienceMode()) {
 					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
 						updateCount4Observations();
@@ -385,6 +388,7 @@ public class DescriptorRepository {
 				// obsDescriptorsIsReady = true;
 
 				Log.debug("[DescriptorRepository] [initSSODescriptors] Total observation entries: " + ssoDescriptors.getTotal());
+				WavelengthUtils.setWavelengthRangeMaxMin(ssoDescriptors.getDescriptors());
 				if (GUISessionStatus.getIsInScienceMode()) {
 					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
 						updateCount4Observations();
@@ -420,6 +424,7 @@ public class DescriptorRepository {
 						spectraDescriptorsIsReady = true;
 
 						Log.debug("[DescriptorRepository] Total spectra entries: " + spectraDescriptors.getTotal());
+						WavelengthUtils.setWavelengthRangeMaxMin(spectraDescriptors.getDescriptors());
 						if (GUISessionStatus.getIsInScienceMode()) {
 							if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
 								updateCount4Spectras();

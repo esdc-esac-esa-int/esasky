@@ -2,7 +2,7 @@ package esac.archive.esasky.cl.web.client.view.resultspanel.tab;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
@@ -10,6 +10,8 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ToggleImage;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
+import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
@@ -18,15 +20,17 @@ public class MissionTabButtons extends Composite {
 
     protected EsaSkyButton styleButton;
     protected CloseButton closeButton;
-    protected HorizontalPanel compositePanel;
+    protected FlowPanel compositePanel;
     protected final String esaSkyUniqId;
     protected ToggleImage toggleImage;
     private LabelWithHelpButton tabTitleLabel;
+    private String canvasId;
+    private IDescriptor descriptor;
 
     public MissionTabButtons(final String helpTitle, final String helpDescription, GeneralEntityInterface entity) {
         
         this.esaSkyUniqId = entity.getEsaSkyUniqId();
-        this.compositePanel = new HorizontalPanel();
+        this.compositePanel = new FlowPanel();
         
         this.tabTitleLabel = new LabelWithHelpButton(entity.getTabLabel(), helpDescription, helpTitle, "labelWithHelpButtonLabelNoFontSize");
         this.compositePanel.add(this.tabTitleLabel);
@@ -40,6 +44,17 @@ public class MissionTabButtons extends Composite {
             compositePanel.add(styleButton);
             setColor(entity.getColor());
         } 
+        if(entity.getDescriptor().getWavelengths() != null) {
+            canvasId = esaSkyUniqId + "_wavelengthCanvas";
+            FlowPanel wavelengthCanvas = new FlowPanel("canvas");
+            wavelengthCanvas.getElement().setAttribute("height", "25");
+            wavelengthCanvas.getElement().setAttribute("width", "30");
+            wavelengthCanvas.getElement().setId(canvasId);
+            wavelengthCanvas.addStyleName("missionTab__wavelengthCanvas");
+            compositePanel.add(wavelengthCanvas);
+            descriptor = entity.getDescriptor();
+            compositePanel.setTitle(WavelengthUtils.getLongName(descriptor));
+        }
         if(entity.getTypeLogo() != null) {
         	Image logo = entity.getTypeLogo();
         	logo.addStyleName("tabLogo");
@@ -65,6 +80,25 @@ public class MissionTabButtons extends Composite {
 				setColor(newColor);
 			}
 		});
+    }
+    
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        plotWavelengthWave(true);
+    }
+    
+    private void plotWavelengthWave(boolean isSelected) {
+        if(canvasId != null) {
+            double minWavelengthAllowed = WavelengthUtils.minWavelengthRange;
+            double maxWavelengthAllowed = WavelengthUtils.maxWavelengthRange;
+            double normalizedWavelength = (WavelengthUtils.getMeanWavelength(descriptor) - minWavelengthAllowed) 
+                    / (maxWavelengthAllowed - minWavelengthAllowed); // Normalized range to 0-1
+            double invertedMean = -1 * (normalizedWavelength - 1);
+            
+            String color = isSelected ? "black" : "white";
+            ESASkyJavaScriptLibrary.plotSine(canvasId, 12, invertedMean * 3.5 + 1, color); // Accepted frequency is 1-4.5
+        }
     }
     
     public final String getId() {
@@ -111,6 +145,7 @@ public class MissionTabButtons extends Composite {
                 toggleImage.setDefault();
             }
         }
+        plotWavelengthWave(selected);
     }
 
     private void setColor (String color) {

@@ -8,7 +8,9 @@ import esac.archive.esasky.ifcs.model.descriptor.WavelengthDescriptor;
 
 public class WavelengthUtils {
 
-    
+    public static double minWavelengthRange = Double.MAX_VALUE;
+    public static double maxWavelengthRange = Double.MIN_VALUE;
+
     public static String getShortName(IDescriptor descriptor) {
         List<WavelengthDescriptor> wavelengthDescriptors = descriptor.getWavelengths();
         final WavelengthDescriptor firstWlDesc = wavelengthDescriptors.get(0);
@@ -34,6 +36,22 @@ public class WavelengthUtils {
         }
         return wavelengthLongName;
     }
+
+    public static double getMeanWavelength(IDescriptor descriptor) {
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+        for(WavelengthDescriptor wavelengthDescriptor : descriptor.getWavelengths()) {
+            min = Math.min(min, wavelengthDescriptor.getRange().get(0));
+            max = Math.max(max, wavelengthDescriptor.getRange().get(1));
+        }
+        return (min + max) / 2;
+    }
     
-    //getIcon(List<WavelengthDescriptor> descriptors)
+    public static void setWavelengthRangeMaxMin(List<? extends IDescriptor> descriptors) {
+        for(IDescriptor descriptor : descriptors) {
+            double meanWavelength = getMeanWavelength(descriptor);
+            minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
+            maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
+        }
+    }
 }
