@@ -4,6 +4,7 @@ public class ESASkyJavaScriptLibrary {
 
     public static void initialize() {
         createLinkListFormatter();
+        createPlotSineFunction();
         javaScriptInit();
     }
     
@@ -24,7 +25,7 @@ public class ESASkyJavaScriptLibrary {
         }
     }-*/;
         
-    public static native void createLinkListFormatter() /*-{
+    private static native void createLinkListFormatter() /*-{
         if(!$wnd.esasky){$wnd.esasky = {}}
         $wnd.esasky.linkListFormatter = function(value, maxShowingLinks){ 
             var valueList = value.split("\n");
@@ -50,6 +51,39 @@ public class ESASkyJavaScriptLibrary {
                     
             });
             return linkList;
+        };
+       
+    }-*/;
+    
+    public static native void plotSine(String id, int amplitude, double frequency, String color) /*-{
+        return $wnd.esasky.plotSine(id, amplitude, frequency, color);
+    }-*/;
+    
+    private static native void createPlotSineFunction() /*-{
+        if(!$wnd.esasky){$wnd.esasky = {}}
+        $wnd.esasky.plotSine = function(id, amplitude, frequency, color){ 
+            var canvas = $doc.getElementById(id);
+            if(!canvas){return;}
+            var ctx = canvas.getContext("2d");
+            var width = ctx.canvas.width;
+            var height = ctx.canvas.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+        
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = color;
+            
+            var x = 0;
+            var y = 0;
+            var amplitude = amplitude || 14;
+            var frequency = frequency || 5;
+        
+            while (x < width) {
+                y = height/2 + amplitude * Math.sin(x/frequency);
+                ctx.lineTo(x, y);
+                x = x + 1;
+            }
+            ctx.stroke();
         };
        
     }-*/;
