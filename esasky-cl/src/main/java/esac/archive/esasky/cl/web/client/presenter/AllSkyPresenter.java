@@ -127,9 +127,11 @@ public class AllSkyPresenter {
 			public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
 				AladinShape obj = selectEvent.getShape();
 				if (obj != null) {
-				    if(obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME).equals(MultiTargetSourceConstants.OVERLAY_NAME)) {
+				    if(obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME) != null &&
+				    		obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME).equals(MultiTargetSourceConstants.OVERLAY_NAME)) {
 				        AllSkyPresenter.this.view.showSourceTooltip(new MultiTargetTooltip(obj));
-				    } else if(obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY).equals(PlanningConstant.OVERLAY_NAME)) {
+				    } else if(obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY) != null &&
+				    		obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY).equals(PlanningConstant.OVERLAY_NAME)) {
 				        AllSkyPresenter.this.view.showSourceTooltip(new PlanningDetectorCenterTooltip(obj));
 				    }
 				}
