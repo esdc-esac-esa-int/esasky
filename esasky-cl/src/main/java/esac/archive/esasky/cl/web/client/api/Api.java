@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
@@ -15,6 +14,8 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
@@ -101,14 +102,20 @@ public class Api {
 	}
 
 	public void registerShapeSelectionCallback(final JavaScriptObject widget) {
-		CommonEventBus.getEventBus().addHandler(TableRowSelectedEvent.TYPE,
-                new TableRowSelectedEventHandler() {
+		
+		 CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
+	                new AladinLiteShapeSelectedEventHandler() {
 
-            @Override
-            public void onEvent(TableRowSelectedEvent selectEvent) {
-                 sendBackToWidget(selectEvent.getRowData(), widget);
-            }
-        });
+	                    @Override
+	                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
+	                        String source = selectEvent.getShape().getSourceName();
+	                        String id = selectEvent.getShape().getId();
+	                		JSONObject result = new JSONObject();
+	                		result.put("name", new JSONString(source));
+	                		result.put("id", new JSONString(id));
+	                        sendBackToWidget(result, widget);
+	                    }
+	                });
 	}
 		
 	public void addMOC(String name, String options, String mocData) {

@@ -166,7 +166,10 @@ public class MainPresenter {
 
                     @Override
                     public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
-                        entityRepo.getEntity(selectEvent.getOverlayName()).onShapeSelection(selectEvent.getShape());
+                    	GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
+                    	if(entity != null) {
+                    		entity.onShapeSelection(selectEvent.getShape());
+                    	}
                     }
                 });
 
@@ -175,7 +178,10 @@ public class MainPresenter {
 
                     @Override
                     public void onShapeDeselectionEvent(AladinLiteShapeDeselectedEvent selectEvent) {
-                        entityRepo.getEntity(selectEvent.getOverlayName()).onShapeDeselection(selectEvent.getShape());
+                    	GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
+                    	if(entity != null) {
+                    		entity.onShapeDeselection(selectEvent.getShape());
+                    	}
                     }
                 });
 
