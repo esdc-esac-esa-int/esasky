@@ -226,7 +226,7 @@ public class ExtTapTreeMap extends TreeMap {
         String pointId = null;
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
-                descriptor.getCreditedInstitutions(), count, descriptor, context);
+                descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor, context);
         
         String color;
         if(((ExtTapDescriptor)descriptor).getParent() != null) {

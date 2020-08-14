@@ -265,7 +265,7 @@ public class TreeMap extends Chart {
         String pointId = null;
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
-                descriptor.getCreditedInstitutions(), count, descriptor, context);
+                descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor, context);
         boolean found = false;
         if (isRendered()) {
             Point point = getPoint(descriptor);
@@ -377,6 +377,7 @@ public class TreeMap extends Chart {
         return point.getName().contains(descriptor.getGuiShortName())
                 && pointInfo != null
                 && point.getName().contains(pointInfo.getWavelengthShortName())
+                && pointInfo.missionName.equals(descriptor.getMission())
                 && pointInfo.descriptor.getDescriptorId().equals(descriptor.getDescriptorId());
     }
 

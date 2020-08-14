@@ -7,23 +7,25 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 
 public class PointInformation {
-	public String longName;
-	public int count;
-	public IDescriptor descriptor;
-	public String credits;
-	public EntityContext context;
-	
-	private String wavelengthShortName;
-	private String wavelengthLongName;
-	private String type;
-	private String collectionName;
-	
-	private String parentColor;
-	
-	
-	public PointInformation(String longName, String credits,
-			int count, IDescriptor descriptor, EntityContext context) {
-		this.longName = longName;
+    public String longName;
+    public String missionName;
+    public int count;
+    public IDescriptor descriptor;
+    public String credits;
+    public EntityContext context;
+    
+    private String wavelengthShortName;
+    private String wavelengthLongName;
+    private String type;
+    private String collectionName;
+    
+    private String parentColor;
+    
+    
+    public PointInformation(String longName, String missionName, String credits,
+            int count, IDescriptor descriptor, EntityContext context) {
+        this.longName = longName;
+        this.missionName = missionName;
 		this.credits = credits;
 		this.count = count;
 		this.descriptor = descriptor;
