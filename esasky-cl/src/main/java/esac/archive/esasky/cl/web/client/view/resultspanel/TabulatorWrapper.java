@@ -983,7 +983,7 @@ public class TabulatorWrapper{
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
                         minWidth: 50,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"recenter.png", 
-                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnObservation")},
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnCoordinates")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
