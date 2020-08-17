@@ -33,7 +33,7 @@ public class MOCTooltip extends Tooltip {
 	@Override
 	protected void fillContent(String cooFrame) {
 	    FlowPanel container = new FlowPanel();
-	    for(MOCInfo mocInfo : mocInfos) {
+	    for(final MOCInfo mocInfo : mocInfos) {
     	    FlowPanel hiddenInformation = new FlowPanel();
     	    HTML wavelengthInfo = new HTML("(" + WavelengthUtils.getShortName(mocInfo.descriptor) + ")");
     	    wavelengthInfo.addStyleName("mocTooltip__wavelength");
