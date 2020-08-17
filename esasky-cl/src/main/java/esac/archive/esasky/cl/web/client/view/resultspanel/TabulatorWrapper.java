@@ -949,6 +949,8 @@ public class TabulatorWrapper{
 		    	    field:"rowSelection", 
                     visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
 		    	    title:"Selection", 
+		    	    width:50,
+		    	    minWidth:50,
 		    	    titleFormatter:"rowSelection", 
 		    	    sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
 					return bRow.isSelected() - aRow.isSelected();
@@ -1321,7 +1323,7 @@ public class TabulatorWrapper{
 
 		 	movableColumns: true,
 		 	autoColumns: true,
-		 	layout: "fitData"
+		 	layout: "fitDataStretch"
 		});
 		
 		//Remove the clearSelection function to make sure that it is possible to select and copy text from the table
