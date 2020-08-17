@@ -24,6 +24,7 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -35,7 +36,6 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
@@ -165,16 +165,10 @@ public class MOCEntity implements GeneralEntityInterface {
     		int order = Integer.parseInt(orderArray[i]);
     		int ipix = Integer.parseInt(ipixArray[i]);
     		int count = Integer.parseInt(countsArray[i]);
-	    	try {
-				
-				if(count > 0) {
-		
-					tooltipText += descriptor.getGuiLongName() + ": Order: " + order + " Ipix: " + ipix + " Count: " + count + "<br>\n";
-					
-				}
-	    	}catch(Exception e){
-	    		//Catch here if the countMap doesn't have that order or ipix
-	    	}
+			
+    		if(count > 0) {
+				tooltipText += descriptor.getGuiLongName() + ": Order: " + order + " Ipix: " + ipix + " Count: " + count + "<br>\n";
+			}
     	}
 		return tooltipText;
 		
@@ -189,8 +183,11 @@ public class MOCEntity implements GeneralEntityInterface {
     	shouldBeShown = false;
     	clearAll();
     	updateOverlay();
-    	
 
+    }
+
+    public void sendLoadQuery(MOCInfo mocInfo) {
+    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(mocInfo);
     }
     
     public void refreshMOC() {
@@ -791,15 +788,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void fetchData(String adql) {
+		// TODO Auto-generated method stub
+	}    
 
 	@Override
 	public void coneSearch(SkyViewPosition conePos) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void refreshData() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -869,6 +865,6 @@ public class MOCEntity implements GeneralEntityInterface {
     @Override
     public void setRefreshable(boolean isRefreshable) {
         defaultEntity.setRefreshable(isRefreshable);
-    }    
+    }
 
 }

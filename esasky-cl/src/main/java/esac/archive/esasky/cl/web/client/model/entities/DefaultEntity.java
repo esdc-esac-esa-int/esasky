@@ -184,6 +184,18 @@ public class DefaultEntity implements GeneralEntityInterface{
         	}
         });
 	}
+
+	@Override
+	public void fetchData(String adql) {
+		Scheduler.get().scheduleFinally(new ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				drawer.removeAllShapes();
+				clearAll();
+			}
+		});
+	}
 	
 	@Override
 	public void coneSearch(final SkyViewPosition conePos) {
@@ -329,12 +341,6 @@ public class DefaultEntity implements GeneralEntityInterface{
 	}
 
 	@Override
-	public void refreshData() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public StylePanel createStylePanel() {
 		// TODO Auto-generated method stub
 		return null;
@@ -385,7 +391,6 @@ public class DefaultEntity implements GeneralEntityInterface{
         // TODO Auto-generated method stub
         
     }
-
 
     @Override
     public void setRefreshable(boolean isRefreshable) {

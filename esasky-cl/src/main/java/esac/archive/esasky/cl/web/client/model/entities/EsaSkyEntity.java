@@ -22,12 +22,14 @@ import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
+import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -244,6 +246,24 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
     }
     
+    @Override
+    public void fetchData(String adql) {
+    	 Log.debug("Showing real data");
+         drawer = combinedDrawer;
+         defaultEntity.setDrawer(drawer);
+         tablePanel.setMOCMode(false);
+         tablePanel.notifyObservers();
+
+         if(mocEntity != null){
+ 	        mocEntity.clearAll();
+ 	        mocEntity.setShouldBeShown(false);
+         }
+         String url = descriptor.getTapQuery(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
+
+         clearAll();
+         tablePanel.insertData(url);
+    }
+    
     protected void fetchShapesAndMetadata() {
         clearAll();
         int shapeLimit = descriptor.getShapeLimit();
@@ -306,6 +326,19 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	
     	clearAll();
     	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataFromMOCPixelsADQL(whereQuery), EsaSkyConstants.JSON));
+    }
+    
+    public void fetchDataWithoutMOC(MOCInfo mocInfo) {
+
+    	//Open this in a new table
+    	
+    	String adql = metadataService.getMetadataFromMOCPixel(descriptor, mocInfo);
+    	
+    	String filter = tablePanel.getFilterString();
+        adql += filter;
+        
+        MainPresenter.getInstance().getRelatedMetadata(descriptor, adql);
+    	
     }
 
     public void setDescriptorMetaData() {
@@ -537,11 +570,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void refreshData() {
-        fetchData();
-    }
-
-    @Override
     public void coneSearch(final SkyViewPosition conePos) {
         if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() ==  0 ) {
             updateCount(new GetMissionDataCountRequestCallback.OnComplete() {
@@ -616,8 +644,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
     public void onShapeSelection(AladinShape shape) {
-        select();
-        tablePanel.selectRow(new Integer(shape.getId()));
+    	if(tablePanel != null) {
+    		select();
+    		tablePanel.selectRow(new Integer(shape.getId()));
+    	}
         if(shape.getRa() != null && shape.getDec() != null) {
             tooltip = new CatalogueTooltip(shape);
             CommonEventBus.getEventBus().fireEvent(new AddShapeTooltipEvent(tooltip));
@@ -626,7 +656,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
     public void onShapeDeselection(AladinShape shape) {
-        tablePanel.deselectRow(new Integer(shape.getId()));
+        if(tablePanel != null) {
+        	tablePanel.deselectRow(new Integer(shape.getId()));
+        }
         if(tooltip != null) {
             tooltip.removeFromParent();
             tooltip = null;
@@ -635,17 +667,23 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void onShapeHover(AladinShape shape) {
-        tablePanel.hoverStartRow(new Integer(shape.getId()));
-    }
+    	if(tablePanel != null) {
+    		tablePanel.hoverStartRow(new Integer(shape.getId()));
+    	}
+	}
 
     @Override
     public void onShapeUnhover(AladinShape shape) {
-        tablePanel.hoverStopRow(new Integer(shape.getId()));
+        if(tablePanel != null) {
+        	tablePanel.hoverStopRow(new Integer(shape.getId()));
+        }
     }
 
     @Override
     public void select() {
-        tablePanel.selectTablePanel();
+    	if(tablePanel != null) {
+    		tablePanel.selectTablePanel();
+    	}
     }
     @Override
     public void setRefreshable(boolean isRefreshable) {

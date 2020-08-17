@@ -17,6 +17,7 @@ import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
+import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltipObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
@@ -57,7 +58,8 @@ public class MocRepository {
 					for(MOCEntity entity : allEntities) {
 						if(name.startsWith(entity.getDescriptor().getDescriptorId())) {
 							descriptor = entity.getDescriptor();
-							mocInfos.add(new MOCInfo(descriptor, GeneralJavaScriptObject.convertToInteger(data.getProperty("count")), 
+							mocInfos.add(new MOCInfo(descriptor, entity, 
+									GeneralJavaScriptObject.convertToInteger(data.getProperty("count")), 
 							        GeneralJavaScriptObject.convertToInteger(data.getProperty("order")), 
 							        GeneralJavaScriptObject.convertToInteger(data.getProperty("ipix"))));
 							break;
@@ -67,6 +69,14 @@ public class MocRepository {
 
 				if(mocInfos.size() > 0) {
 					MOCTooltip tooltip = new MOCTooltip(mocInfos, event.getX(), event.getY());
+					
+					tooltip.registerObserver(new MOCTooltipObserver() {
+					
+						@Override
+						public void onLoad(MOCInfo mocInfo) {
+							mocInfo.entity.sendLoadQuery(mocInfo);
+						}
+					});
 					tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
 				}
 				

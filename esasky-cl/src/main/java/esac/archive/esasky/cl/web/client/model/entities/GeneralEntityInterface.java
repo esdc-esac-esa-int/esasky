@@ -44,9 +44,9 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void setPrimaryColor(String color);
     
     public void fetchData();
+    public void fetchData(String adql);
     public void fetchDataWithoutMOC();
     public void coneSearch(SkyViewPosition conePos);
-    public void refreshData();
     
     public ITablePanel createTablePanel();
     public StylePanel createStylePanel();

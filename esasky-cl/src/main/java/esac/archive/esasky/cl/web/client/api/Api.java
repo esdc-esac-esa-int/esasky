@@ -49,8 +49,6 @@ import esac.archive.esasky.cl.web.client.api.model.MetadataAPI;
 import esac.archive.esasky.cl.web.client.api.model.Source;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
-import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
-import esac.archive.esasky.cl.web.client.event.TableRowSelectedEventHandler;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountObserver;

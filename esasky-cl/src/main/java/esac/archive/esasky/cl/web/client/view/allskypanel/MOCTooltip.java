@@ -3,6 +3,8 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 
@@ -10,6 +12,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.view.common.Toggler;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 
 
 public class MOCTooltip extends Tooltip {
@@ -32,15 +35,33 @@ public class MOCTooltip extends Tooltip {
 	    FlowPanel container = new FlowPanel();
 	    for(MOCInfo mocInfo : mocInfos) {
     	    FlowPanel hiddenInformation = new FlowPanel();
-    	    hiddenInformation.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_order") + ":</b> " + mocInfo.order));
-    	    hiddenInformation.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_ipix") + ":</b> " + mocInfo.ipix));
-    	    Toggler toggler = new Toggler(hiddenInformation);
     	    HTML wavelengthInfo = new HTML("(" + WavelengthUtils.getShortName(mocInfo.descriptor) + ")");
     	    wavelengthInfo.addStyleName("mocTooltip__wavelength");
     	    container.add(new HTML("<h2>" + mocInfo.descriptor.getGuiShortName() + "</h2>" + wavelengthInfo));
-            container.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_count") + ":</b> " + mocInfo.count));
-            container.add(toggler);
-            container.add(hiddenInformation);
+    	    container.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_count") + ":</b> " + mocInfo.count));
+
+    	    
+    	    
+    	    if(mocInfo.count < mocInfo.descriptor.getShapeLimit()) {
+//	    		hiddenInformation.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_order") + ":</b> " + mocInfo.order));
+//	    		hiddenInformation.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_ipix") + ":</b> " + mocInfo.ipix));
+				EsaSkyStringButton loadButton = new EsaSkyStringButton(TextMgr.getInstance().getText("mocDialog_loadData"));
+				loadButton.setMediumStyle();
+				loadButton.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						for(MOCTooltipObserver observer : observers) {
+							observer.onLoad(mocInfo);
+						}
+					}
+				});
+				hiddenInformation.add(loadButton);
+				Toggler toggler = new Toggler(hiddenInformation);
+				container.add(toggler);
+				container.add(hiddenInformation);
+		    }
+    	    
             if(mocInfos.indexOf(mocInfo) + 1 < mocInfos.size()) {
                 FlowPanel separator = new FlowPanel();
                 separator.addStyleName("mocTooltip__separator");

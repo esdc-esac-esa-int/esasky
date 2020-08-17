@@ -67,6 +67,8 @@ public class MainPresenter {
     
     private View view;
     
+    private static MainPresenter instance;
+    
     public interface View {
 
         Widget asWidget();
@@ -121,6 +123,12 @@ public class MainPresenter {
 
         bindSampRequests();
         bind();
+        
+        instance = this;
+    }
+    
+    public static MainPresenter getInstance() {
+    	return instance;
     }
 
     /**
@@ -277,6 +285,10 @@ public class MainPresenter {
 
     public void getRelatedMetadata(IDescriptor descriptor) {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor));
+    }
+
+    public void getRelatedMetadata(IDescriptor descriptor, String adql) {
+    	resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);
     }
 
     public void showUserRelatedMetadata(IDescriptor descriptor, GeneralJavaScriptObject userData) {

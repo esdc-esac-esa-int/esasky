@@ -13,6 +13,7 @@ import com.google.gwt.http.client.URL;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
@@ -186,6 +187,46 @@ public abstract class AbstractTAPService {
     	
     	adql.replace("\\s*,\\s*$", "");
     	adql += " from " + descriptor.getTapTable() + whereADQL;
+    	
+    	Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + adql);
+    	
+    	return adql;
+    }
+
+    public String getMetadataFromMOCPixel(IDescriptor descriptor, MOCInfo mocInfo) {
+    	
+    	String adql;
+    	if(Modules.toggleColumns) {
+    		adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " *";
+    	} else {
+    		adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
+    		
+    		for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
+    			if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
+    				adql += " " + currentMetadata.getTapName() + " as "
+    						+ descriptor.getTapDecColumn() + ", ";
+    			} else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
+    				adql += " " + currentMetadata.getTapName() + " as "
+    						+ descriptor.getTapRaColumn() + ", ";
+    			} else {
+    				adql += " " + currentMetadata.getTapName();
+    				adql += ", ";
+    			}
+    		}
+    		
+    		adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
+    	}
+    	
+    	adql.replace("\\s*,\\s*$", "");
+    	adql += " from " + descriptor.getTapTable();
+    	
+    	String raColumn = descriptor.getTapRaColumn();
+    	String decColumn = descriptor.getTapDecColumn();
+    	
+    	String whereADQL = " WHERE q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(new Long(mocInfo.ipix) << (60 - 2 * mocInfo.order))
+		+ " AND " + Long.toString(new Long((mocInfo.ipix + 1)) << (60 - 2 * mocInfo.order));
+    	
+    	adql += whereADQL;
     	
     	Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + adql);
     	
