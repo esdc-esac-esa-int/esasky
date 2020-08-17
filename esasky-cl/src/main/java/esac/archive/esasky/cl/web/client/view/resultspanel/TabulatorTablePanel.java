@@ -403,6 +403,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public void updateData() {
 		clearTable();
+		clearFilters();
 		getEntity().fetchData();
 	}
 	
@@ -486,6 +487,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			filter += getTapFilters().get(key);
 		}
 		return filter;
+	}
+	
+	public void clearFilters() {
+		tapFilters = new HashMap<String, String>();
 	}
 	
 	private LinkedList<TableFilterObserver> filterObservers = new LinkedList<>();
