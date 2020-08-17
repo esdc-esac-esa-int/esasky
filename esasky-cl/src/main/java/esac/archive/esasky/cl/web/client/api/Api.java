@@ -97,6 +97,7 @@ public class Api {
 		ApiMessageParser.init(this);
 
 		Log.debug("[Api] Ready!!");
+		
 	}
 
 	public void registerShapeSelectionCallback(final JavaScriptObject widget) {
