@@ -27,7 +27,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String treeMapType;
     private ExtTapDescriptor parent;
     private String ingestedTable;
-    private double[] wavelengthRange = new double[] {0,13};
     private boolean isObsCore;
     
 
@@ -160,14 +159,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setIngestedTable(String ingestedTable) {
 		this.ingestedTable = ingestedTable;
-	}
-
-	public double[] getWavelengthRange() {
-		return wavelengthRange;
-	}
-
-	public void setWavelengthRange(double[] wavelengthRange) {
-		this.wavelengthRange = wavelengthRange;
 	}
 
     public String getTapQuery(String tapContext, String metadataAdql, String responseFormat) {

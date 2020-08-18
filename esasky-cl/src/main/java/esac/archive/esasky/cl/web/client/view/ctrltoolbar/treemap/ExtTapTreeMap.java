@@ -30,7 +30,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ExtTapTreeMap extends TreeMap {
@@ -453,43 +452,7 @@ public class ExtTapTreeMap extends TreeMap {
     
     @Override
     public void onSliderValueChange(double low, double high) {
-    	sliderValueLow = low;
-    	sliderValueHigh = high;
-		double highWavelength = ESASkyColors.valueToWaveLength(low);
-		double lowWavelength = ESASkyColors.valueToWaveLength(high);
-		
-		boolean anyPointsAreShown = false;
-		
-    	for(Point point : series.getPoints()) {
-    		boolean shouldBeShown = false;
-    		PointInformation pointInformation = allPoints.get(point.getText());
-    		if(pointInformation != null) {
-    			
-    			ExtTapDescriptor descriptor = (ExtTapDescriptor) pointInformation.descriptor;
-    				
-    			double[] waveLengthRange = descriptor.getWavelengthRange();
-	    			
-    			if(waveLengthRange.length > 0) {
-    				if(lowWavelength <= waveLengthRange[1] && highWavelength >= waveLengthRange[0]) {
-    					shouldBeShown = true;
-    				}
-    			}
-    			
-    			Point pointInSeries = getPoint(pointInformation.descriptor);
-    			if(!shouldBeShown) {
-    				pointInSeries.update(0, false);
-    			}else if(shouldBeShown) {
-    				pointInSeries.update(logCount(pointInformation.count), false);
-    				anyPointsAreShown = true;
-    			}
-    		}
-		}
-    
-	    if(anyPointsAreShown) {
-			removeGhostPoint();
-		}else {
-			addNoResultsGhostPoint();
-		}
+    	super.onSliderValueChange(low, high);
 	    updateParentCount(series.getNativeSeries());
 		update(true);
     }

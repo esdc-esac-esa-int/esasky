@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -52,6 +54,60 @@ public class WavelengthUtils {
             double meanWavelength = getMeanWavelength(descriptor);
             minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
             maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
+        }
+    }
+
+    public static List<WavelengthDescriptor> createWavelengthDescriptor(double minWavelength, double maxWavelength) {
+        List<WavelengthDescriptor> wavelengths = new LinkedList<WavelengthDescriptor>();
+        
+        addWavelengthDescriptor(minWavelength, maxWavelength, wavelengths, 0);
+        
+        return wavelengths;
+    }
+    
+    public static class WavelengthName {
+        public String shortName;
+        public String longName;
+        public double maxWavelength;
+        
+        public WavelengthName(String shortName, String longName, double maxWavelength) {
+            this.shortName = shortName;
+            this.longName = longName;
+            this.maxWavelength = maxWavelength;
+        }
+    }
+    
+    public static WavelengthName [] wavelengthNames = new WavelengthName[] {
+            new WavelengthName("Radio", "Radio", 1),
+            new WavelengthName("Submm", "Submillimeter", 3),
+            new WavelengthName("IR", "Infrared", 6),
+            new WavelengthName("Optical", "Optical", 6.5),
+            new WavelengthName("UV", "Ultraviolet", 8),
+            new WavelengthName("X-ray", "X-ray", 11),
+            new WavelengthName("Gamma-ray", "Gamma-ray", Double.MAX_VALUE)
+    };
+    
+    private static void addWavelengthDescriptor(double minWavelength, double maxWavelength, List<WavelengthDescriptor> wavelengths, int wavelengthIndex) {
+        WavelengthDescriptor wavelengthDescriptor = new WavelengthDescriptor();
+        
+        ArrayList<Double> wavelengthRange = new ArrayList<Double>();
+        wavelengthRange.add(minWavelength);
+        WavelengthName wavelengthName = wavelengthNames[wavelengthIndex];
+        if(minWavelength < wavelengthName.maxWavelength) {
+            wavelengthDescriptor.setShortName(wavelengthName.shortName);
+            wavelengthDescriptor.setLongName(wavelengthName.longName);
+            wavelengthDescriptor.setPrefix("");
+            if(maxWavelength <= wavelengthName.maxWavelength) {
+                wavelengthRange.add(maxWavelength);
+                wavelengthDescriptor.setRange(wavelengthRange);
+                wavelengths.add(wavelengthDescriptor);
+                return;
+            } else {
+                wavelengthRange.add(wavelengthName.maxWavelength);
+                wavelengthDescriptor.setRange(wavelengthRange);
+                wavelengths.add(wavelengthDescriptor);
+                addWavelengthDescriptor(wavelengthName.maxWavelength, maxWavelength, wavelengths, wavelengthIndex++);
+            }
         }
     }
 }
