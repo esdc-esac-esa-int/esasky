@@ -363,7 +363,7 @@
 
 	<!-- commonObservationTablePanel -->
 	<text key="tabulator_sendRowToVOA">
-		Send row to virtual observatory application
+		Send row to Virtual Observatory application
 	</text>
 
 	<!-- planObservationPanel -->
