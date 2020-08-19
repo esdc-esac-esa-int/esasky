@@ -101,13 +101,14 @@ public class WavelengthUtils {
                 wavelengthRange.add(maxWavelength);
                 wavelengthDescriptor.setRange(wavelengthRange);
                 wavelengths.add(wavelengthDescriptor);
-                return;
             } else {
                 wavelengthRange.add(wavelengthName.maxWavelength);
                 wavelengthDescriptor.setRange(wavelengthRange);
                 wavelengths.add(wavelengthDescriptor);
-                addWavelengthDescriptor(wavelengthName.maxWavelength, maxWavelength, wavelengths, wavelengthIndex++);
+                addWavelengthDescriptor(wavelengthName.maxWavelength, maxWavelength, wavelengths, wavelengthIndex + 1);
             }
+        } else {
+            addWavelengthDescriptor(minWavelength, maxWavelength, wavelengths, wavelengthIndex + 1);
         }
     }
 }
