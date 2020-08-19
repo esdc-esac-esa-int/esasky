@@ -191,7 +191,8 @@ public class TabulatorWrapper{
     }
 
     private native String getVot(GeneralJavaScriptObject tableJsObject, String resourceName)/*-{
-        return tableJsObject.getVoTableString(tableJsObject.getData(), resourceName);
+        return tableJsObject.getVoTableString(tableJsObject.getSelectedRows().length > 0 
+            ? tableJsObject.modules.download.generateExportList("selected") : tableJsObject.modules.download.generateExportList("active"), resourceName);
     }-*/;
 
     public GeneralJavaScriptObject[] getSelectedRows(){
@@ -951,6 +952,7 @@ public class TabulatorWrapper{
 		    	    title:"Selection", 
 		    	    width:50,
 		    	    minWidth:50,
+		    	    download: false,
 		    	    titleFormatter:"rowSelection", 
 		    	    sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
 					return bRow.isSelected() - aRow.isSelected();
@@ -984,6 +986,7 @@ public class TabulatorWrapper{
                         headerSort:false,
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
                         minWidth: 50,
+                        download: false,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"recenter.png", 
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnCoordinates")},
                             cellClick:function(e, cell){
@@ -1000,6 +1003,7 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
                         minWidth: 50,
+                        download: false,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"send_small.png", 
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")},
                             cellClick:function(e, cell){
@@ -1017,6 +1021,7 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
                         minWidth: 63,
+                        download: false,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"link2archive.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
                             cellClick:function(e, cell){
@@ -1033,6 +1038,7 @@ public class TabulatorWrapper{
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
                         minWidth: 67,
+                        download: false,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"target_list.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")},
                             cellClick:function(e, cell){
@@ -1054,6 +1060,7 @@ public class TabulatorWrapper{
 	                            headerSort:false, 
 	                            headerTooltip:this.metadata[i].description,
 	                            minWidth: 85,
+	                            download: true,
 	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"download_small.png", 
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
 	                                cellClick:function(e, cell){
@@ -1076,6 +1083,7 @@ public class TabulatorWrapper{
 	                            headerSort:false, 
 	                            headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
 	                            minWidth: 66,
+	                            download: true,
 	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"preview.png", 
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
 	                                cellClick:function(e, cell){
@@ -1091,6 +1099,7 @@ public class TabulatorWrapper{
 	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
+	                            download: true,
 	    		    			sorter: "string",
 	    		    			headerFilter:true,
 	    		    			headerFilterFunc:"like",
@@ -1115,6 +1124,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
 				    			formatter:raFormatter,
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
@@ -1133,6 +1143,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
 				    			formatter:decFormatter,
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
@@ -1149,6 +1160,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
+				    			download: true,
 				    			formatter:fileSizeFormatter,
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
@@ -1165,6 +1177,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
 				    			formatter:doubleFormatter,
 				    			formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
 				    			sorter: "number",
@@ -1183,6 +1196,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
                                 formatter: "plaintext",
 				    			sorter: "string",
 				    			headerFilter:dateFilterEditor,
@@ -1201,6 +1215,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
 				    			formatter:doubleFormatter,
 				    			formatterParams: {maxDecimalDigits: 0},
 				    			sorter: "number",
@@ -1218,6 +1233,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
 				    			formatter:doubleFormatter,
 				    			sorter: "number",
 				    			formatter:"plaintext",
@@ -1234,6 +1250,7 @@ public class TabulatorWrapper{
                                 field:this.metadata[i].name, 
                                 visible:this.metadata[i].visible,
                                 headerTooltip:this.metadata[i].description,
+                                download: true,
                                 formatter:"html",
                                 sorter:  "string",
                                 headerFilter:stringFilterEditor,
@@ -1250,6 +1267,7 @@ public class TabulatorWrapper{
                                 field:this.metadata[i].name, 
                                 visible:this.metadata[i].visible,
                                 headerTooltip:this.metadata[i].description,
+                                download: true,
                                 formatter:hideNonDatabaseColumnFormatter,
                                 sorter:  "string",
                                 headerFilter:stringFilterEditor,
@@ -1265,6 +1283,7 @@ public class TabulatorWrapper{
 				    			field:this.metadata[i].name, 
 				    			visible:this.metadata[i].visible,
 				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
 				    			formatter:"plaintext",
 				    			sorter:  "string",
 				    			headerFilter:stringFilterEditor,
