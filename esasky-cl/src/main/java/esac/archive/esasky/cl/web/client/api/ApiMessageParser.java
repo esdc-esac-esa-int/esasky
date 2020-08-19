@@ -114,7 +114,7 @@ public class ApiMessageParser {
 				console.log('overlayFootprintsWithDetails event captured!');
 				console.log(msg);
 				var footprintSetJSON = JSON.stringify(msg.content);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayFootprintsWithData(Ljava/lang/String;)(footprintSetJSON);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayFootprints(Ljava/lang/String;Z)(footprintSetJSON, true);
 				break;
 			
 			case 'clearFootprintsOverlay':
@@ -256,6 +256,22 @@ public class ApiMessageParser {
 				console.log('closeResultPanelTab event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::closeResultPanelTab(I)(msg.content.index);
 				break;	
+
+			//Keeping this for legacy
+			case 'closeDataPanel':
+				console.log('closeDataPanel event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::hideResultPanel()();
+				break;	
+
+			case 'hideResultPanel':
+				console.log('hideResultPanel event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::hideResultPanel()();
+				break;	
+
+			case 'showResultPanel':
+				console.log('hideResultPanel event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::showResultPanel()();
+				break;	
 				
 			case 'closeAllResultPanelTabs':
 				console.log('closeResultPanelTab event captured');
@@ -344,11 +360,6 @@ public class ApiMessageParser {
 					(e);
 				break;	
 				
-			case 'closeDataPanel':
-				console.log('closeDataPanel event captured');
-				instance.@esac.archive.esasky.cl.web.client.api.Api::closeDataPanel()();
-				break;	
-
 			default:
 				console.log('No event associated');
 		}

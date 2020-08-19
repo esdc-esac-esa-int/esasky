@@ -107,10 +107,17 @@ public class Api {
 
 	                    @Override
 	                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
-	                        String source = selectEvent.getShape().getSourceName();
-	                        String id = selectEvent.getShape().getId();
+	                    	GeneralJavaScriptObject shape = (GeneralJavaScriptObject) selectEvent.getShape().cast();
+	                    	if(shape.getProperty("data") != null) {
+	                    		//To handle sources which have all info in data 
+	                    		shape = shape.getProperty("data");
+	                    	}
+	                    	String name = shape.getStringProperty("name");
+	                    	if(name == null) {name="";};
+                			String id = shape.getStringProperty("id");
+                			if(id == null) {id="";};
 	                		JSONObject result = new JSONObject();
-	                		result.put("name", new JSONString(source));
+	                		result.put("name", new JSONString(name));
 	                		result.put("id", new JSONString(id));
 	                        sendBackToWidget(result, widget);
 	                    }
@@ -293,8 +300,12 @@ public class Api {
 		}
 	}
 	
-	public void closeDataPanel() {
+	public void hideResultPanel() {
 		ResultsPanel.closeDataPanel();
+	}
+	
+	public void showResultPanel() {
+		ResultsPanel.openDataPanel();
 	}
 	
 	public void setDataPanelHidden(boolean input) {
@@ -696,7 +707,7 @@ public class Api {
 		JSONObject countObj = new JSONObject();
 		int count = SelectSkyPanel.getInstance().getNumberOfSkyRows();
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getNumberOfSkyRows, Integer.toString(count));
-		countObj.put("",new JSONNumber(count));
+		countObj.put("Count",new JSONNumber(count));
 		sendBackToWidget(countObj, null, widget);
 	}
 	
@@ -770,15 +781,20 @@ public class Api {
 		}
 		for (Object currSkyObj : footprintList.getSkyObjectList()) {
 			Footprint currFoot = (Footprint) currSkyObj;
-			JavaScriptObject footprintJS = AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(currFoot.getStcs(),
+			GeneralJavaScriptObject footprintJS = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(currFoot.getStcs(),
 					currFoot.getId());
+			footprintJS.getProperty("0").setProperty("name", currFoot.getName());
 			AladinLiteWrapper.getAladinLite().addFootprintToOverlay(overlay, footprintJS);
 		}
+//		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+//				.initUserDescriptor(metadata, footprintsSet);
+//		controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), true);
+
 		AladinLiteWrapper.getAladinLite().goToRaDec(((Footprint) footprintList.getSkyObjectList().get(0)).getRa_deg(),
 				((Footprint) footprintList.getSkyObjectList().get(0)).getDec_deg());
 	}
 
-	public void overlayFootprintsWithData(String footprintsSetJSON) {
+	public void overlayFootprints(String footprintsSetJSON, boolean shouldBeInTablePanel) {
 
 		FootprintsSetMapper mapper = GWT.create(FootprintsSetMapper.class);
 
@@ -1003,6 +1019,7 @@ public class Api {
 
 			details = new HashMap<String, String>();
 			details.put("name", currSource.getName());
+			details.put("id", Integer.toString(currSource.getId()));
 
 			JavaScriptObject source = AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(currSource.getRa(),
 					currSource.getDec(), details);
