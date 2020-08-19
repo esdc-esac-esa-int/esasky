@@ -103,7 +103,7 @@ public final class DisplayUtils {
      * @param dialogId Input String
      */
     public static MessageDialogBox showMessageDialogBox(final String messageText, final String headerTitle,
-            final String dialogId) {
+            final String dialogId, String analyticsId) {
         
         if(lastShownMessageDialogBox != null && lastShownMessageDialogBox.isShowing() 
                 && lastShownMessageDialogBox.getId() != null && lastShownMessageDialogBox.getId() == dialogId){
@@ -114,17 +114,17 @@ public final class DisplayUtils {
         CssResource style = resources.style();
         style.ensureInjected();
         
-        lastShownMessageDialogBox = new MessageDialogBox(new HTML(messageText), headerTitle, dialogId);
+        lastShownMessageDialogBox = new MessageDialogBox(new HTML(messageText), headerTitle, dialogId, analyticsId);
         
         lastShownMessageDialogBox.show();
         return lastShownMessageDialogBox;
     }
     
-    public static MessageDialogBox showAndOverrideLastShownDialogBox(final String messageText, final String headerTitle, final String dialogId) {
+    public static MessageDialogBox showAndOverrideLastShownDialogBox(final String messageText, final String headerTitle, final String dialogId, String analyticsId) {
     	if(lastShownMessageDialogBox != null) {
     		lastShownMessageDialogBox.hide();
     	}
-    	return showMessageDialogBox(messageText, headerTitle, dialogId);
+    	return showMessageDialogBox(messageText, headerTitle, dialogId, analyticsId);
     }
 
     public static void showInsideMainAreaPointingAtPosition(AutoHidePanel panel, int x, int y) {

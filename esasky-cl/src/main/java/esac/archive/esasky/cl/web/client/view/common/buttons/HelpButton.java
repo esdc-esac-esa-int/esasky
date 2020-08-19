@@ -49,7 +49,7 @@ public class HelpButton extends ChangeableIconButton{
         addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                DisplayUtils.showMessageDialogBox(HelpButton.this.messageText, HelpButton.this.headerTitle, messageId);
+                DisplayUtils.showMessageDialogBox(HelpButton.this.messageText, HelpButton.this.headerTitle, messageId, "HelpDialog");
                 GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Help, HelpButton.this.headerTitle, "");
             }
         });

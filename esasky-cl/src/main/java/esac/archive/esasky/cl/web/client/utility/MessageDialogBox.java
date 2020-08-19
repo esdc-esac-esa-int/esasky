@@ -41,9 +41,9 @@ public class MessageDialogBox extends Composite{
     private boolean isShowing = false;
     
     public MessageDialogBox(final Widget inputWidget, final String inputHeaderText,
-            final String dialogId) {
+            final String dialogId, String analyticsMoveId) {
         super();
-        movablePanel = new MovablePanel(inputHeaderText, true);
+        movablePanel = new MovablePanel(analyticsMoveId, true);
         movablePanel.addHideOnEscapeKeyBehavior(new OnKeyPress() {
             
             @Override

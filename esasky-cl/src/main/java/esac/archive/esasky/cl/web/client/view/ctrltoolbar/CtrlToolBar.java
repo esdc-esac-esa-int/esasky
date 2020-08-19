@@ -535,7 +535,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	//if the mouse never leaves the button itself. Caused by problems in gwt buttons
 	private boolean exploreActionInProgress = false;
 	
-	private MessageDialogBox targetDialogBox = new MessageDialogBox(new HTML(), "", "skyObject");
+	private MessageDialogBox targetDialogBox = new MessageDialogBox(new HTML(), "", "skyObject", "TargetDescriptionDialog");
 	
 	private void showRandomSource () {
 	    exploreActionInProgress = true;

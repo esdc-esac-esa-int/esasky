@@ -278,7 +278,7 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
                         // Create an ancillary widget to show the links to Aladin/Topcat/DS9
                         DisplayUtils.showMessageDialogBox(DisplayUtils.createSampAppsWidgets(),
                                 TextMgr.getInstance().getText("sampConstants_help"),
-                                event.getAction().toString());
+                                event.getAction().toString(), "FailedToFindSAMPHubDialog");
 
                         // Enable again the button
                         isFirstTime = true;

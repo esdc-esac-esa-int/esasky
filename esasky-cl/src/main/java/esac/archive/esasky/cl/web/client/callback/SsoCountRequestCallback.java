@@ -94,7 +94,7 @@ public class SsoCountRequestCallback implements RequestCallback {
             DisplayUtils
             .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsMessage").replace("$MISSIONS$", missions.subSequence(0, missions.length() - 2)),
                     TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsTitle"),
-                    progressIndicatorId);
+                    progressIndicatorId, "NoSSOCrossMatchFoundDialog");
             GUISessionStatus.setIsTrackingSSO(false);
         } else {
         	List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
