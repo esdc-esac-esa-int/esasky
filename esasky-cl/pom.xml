@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava-gwt</artifactId>
-			<version>17.0</version>
+			<version>29.0-jre</version>
 		</dependency>
 		<dependency>
 			<groupId>org.moxieapps.gwt</groupId>
@@ -234,6 +234,7 @@
 				<version>${gwt.version}</version>
 				<configuration>
 					<module>esac.archive.esasky.cl.web.EsaSkyWeb</module>
+			         <extraJvmArgs> -Xmx2048m</extraJvmArgs> 
 				</configuration>
 				<executions>
 					<execution>
