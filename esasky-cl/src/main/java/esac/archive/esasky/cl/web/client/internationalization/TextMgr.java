@@ -183,9 +183,7 @@ public class TextMgr {
 		Log.debug("TextMgr.setLangCode() langCode: " + langCode);
 		texts = new HashMap<String, String>();
 		
-		//Requests the translations file with the "v" parameter to avoid caching issues if EsaSky version changes
-		//TODO use build number and not hard coded version number
-		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName() + "3.2", this);
+		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName(), this);
 		if(instance == null || this == getInstance()) {
 			GUISessionStatus.setCurrentLanguage(langCode);
 		}
