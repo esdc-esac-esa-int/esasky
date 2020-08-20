@@ -13,6 +13,8 @@ package esac.archive.esasky.cl.web.client.view.resultspanel.tab;
  * the License.
  */
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
@@ -117,6 +119,15 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 	public final ITablePanel getWidget(final int index) {
 		return (ITablePanel) this.deckPanel.getWidget(index);
 	}
+	
+    public List<ITablePanel> getTablePanels() {
+        List<ITablePanel> tablePanels = new LinkedList<ITablePanel>();
+        
+        for(int i = 0; i < deckPanel.getWidgetCount(); i++) {
+            tablePanels.add((ITablePanel) deckPanel.getWidget(i));
+        }
+        return tablePanels;
+    }
 	
 	public final void add(final Widget child, final MissionTabButtons tabButtons) {
 		final Tab tab = new Tab(tabButtons);
@@ -502,5 +513,7 @@ public class ScrollTabLayoutPanel extends ResizeComposite implements ProvidesRes
 
 		String scrollTabLayoutPanel();
 	}
+
+
 
 }

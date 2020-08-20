@@ -396,18 +396,13 @@ public class CloseableTabLayoutPanel extends Composite {
 
             @Override
             public void onClick(final ClickEvent arg0) {
-            	try {
-        			while(true) {
-        				ITablePanel tablePanel = getSelectedWidget();
-        				tablePanel.closeTablePanel();
-        				String id = tablePanel.getEntity().getEsaSkyUniqId();
-        				MissionTabButtons tab = getTabFromId(id);
-        				removeTab(tab);
-        			}
-        		}catch(Exception e) {
-        			//Runs until it comes here when no tablePanel exists
-        		}
-                
+                List<ITablePanel> tablePanels = tabLayout.getTablePanels();
+                for(ITablePanel tablePanel : tablePanels) {
+    				tablePanel.closeTablePanel();
+    				String id = tablePanel.getEntity().getEsaSkyUniqId();
+    				MissionTabButtons tab = getTabFromId(id);
+    				removeTab(tab);
+    			}
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_CloseAll, "");
             }
         });
@@ -552,7 +547,9 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     private void ensureCorrectButtonClickability(int numberOfShownRows) {
-        ITablePanel tabPanel = tabLayout.getWidget(getSelectedTabIndex());
+        int selectedIndex = getSelectedTabIndex();
+        if (selectedIndex == -1) {return;}
+        ITablePanel tabPanel = tabLayout.getWidget(selectedIndex);
         sendButton.setEnabled(!tabPanel.isMOCMode() && numberOfShownRows > 0 && !tabPanel.getIsHidingTable());
         saveButton.setEnabled(!tabPanel.isMOCMode() && numberOfShownRows > 0 && !tabPanel.getIsHidingTable());
     }
@@ -585,9 +582,9 @@ public class CloseableTabLayoutPanel extends Composite {
         this.tabWidgetIds.remove(tab);
         
         if(tabs.isEmpty()){
-            	ResultsPanel.closeDataPanel();
-            	toggleDataPanelButton.addStyleName("hidden");
-            	closeAllButton.addStyleName("hidden");
+        	ResultsPanel.closeDataPanel();
+        	toggleDataPanelButton.addStyleName("hidden");
+        	closeAllButton.addStyleName("hidden");
         }
         setCloseAllButtonVisibility();
     }

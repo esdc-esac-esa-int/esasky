@@ -515,7 +515,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	
     @Override
     public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
-        entity.addShapes(javaScriptObject);
+        if(!hasBeenClosed) {
+            entity.addShapes(javaScriptObject);
+        }
     }
     
     private void notifyNumberOfRowsShowingChanged(int count) {
