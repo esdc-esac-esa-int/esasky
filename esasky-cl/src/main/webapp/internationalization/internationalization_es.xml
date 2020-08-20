@@ -2812,5 +2812,170 @@
 	<text key="searchPanel_target">
 		Destino
 	</text>
+		<text key="tabulator_centreOnCoordinates">
+		Centrar en coordenadas
+	</text>
+	<text key="tabulator_centreHeader">
+		Ir a
+	</text>
+	<text key="tabulator_centreHeaderTooltip">
+		Desplazar vista a la posición de cada figura
+	</text>
+	<text key="tabulator_sendToVOApplicationHeader">
+		Enviar
+	</text>
+	
+	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
+		Enviar productos/datos a la aplicación del Observatorio Virtual 
+	</text>
+
+	
+	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+		Datos externos proporcionados por 
+		&lt;a
+		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
+		target="_blank"&gt;
+		el Centro de Datos Astronómicos de Canada (CADC)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido curados por el equipo de ESASky.
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+		Datos externos proporcionados por
+		&lt;a
+		href="//www.eso.org/"
+		target="_blank"&gt;
+		el Observatorio Austral Europeo (ESO)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido curados por el equipo de ESASky.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+		Datos externos proporcionados por
+		&lt;a
+		href="//archive.stsci.edu/"
+		target="_blank"&gt;
+		el Archivo Mikulski de Telescopios Espaciales (MAST)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido curados por el equipo de ESASky.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="tabulator_previewHeaderTooltip">
+		Preview de los datos
+	</text>
+	<text key="tabulator_link2ArchiveHeader">
+		Archivo
+	</text>
+	<text key="tabulator_link2ArchiveHeaderTooltip">
+		Hacer click en una fila cualquiera para abrir los datos en el archivo correspondiente
+	</text>
+	<text key="tabulator_link2ArchiveButtonTooltip">
+		Abrir los datos en el sitio web del archivo
+	</text>
+	<text key="MOC_count_text">
+		Número total de objectos en el campo: $count$ 
+		
+		Los objetos se muestran por debajo del limite: $limit$
+		
+		Para reducir el número de objetos, usar filtros o ampliar la imagen
+	</text>
+	
+	<text key="tabulator_authorHeaderTooltip">
+		Clicar en el nombre de cualquier autor para ver su lista de publicaciones en ADS
+	</text>
+	<text key="tabulator_SourcesInPublicationHeader">
+		Fuentes
+	</text>
+	<text key="tabulator_SourcesInPublicationHeaderTooltip">
+		Clicar para mostrar las fuentes mencionadas en una publicación
+	</text>
+	<text key="tabulator_SourcesInPublication">
+		Mostrar las fuentes mencionadas en esta publicación
+	</text>
+	<text key="MOC_large_count_text">
+		Número total de objetos en el campo: $count$ 
+		
+		Sólo es posible filtrar por debajo de 10 000 000
+		
+		Ampliar la imagen para reducir la cantidad
+	</text>
+
+	<text key="tabulator_rowCount">
+		Filas: $count$
+	</text>
+	<text key="tabulator_accessEstSize_header">
+		Tamaño del fichero
+	</text>
+	<text key="tabulator_accessEstSize_headerTooltip">
+		Tamaño estimado del producto a descargar
+	</text>
+	<text key="tabulator_loadFailed">
+		Fallo al cargar los datos
+	</text>
+	<text key="mocEntity_retrievingMissionCoverage">
+		Obteniendo mapa de cobertura de $MISSIONNAME$
+	</text>
+	<text key="tabulator_no_data">
+		No hay datos disponibles en este área del cielo
+	</text>
+	<text key="tabulator_filtered_empty">
+		No hay datos disponibles con los actuales filtros activos 
+	</text>
+	<text key="closeableTabLayoutPanel_closeAll">
+		Cerrar todas las pestañas
+	</text>
+	<text key="treeMap_large_fov">
+		Data from external services is only availabe at field of view below $fov_limit$ degrees
+		Datos de servicios externos únicamente disponibles  para campos menores de $fov_limit$ grados
+	</text>
+	<text key="closeableTabLayoutPanel_configure">
+		Configurar tabla
+	</text>
+	<text key="toggleColumns_rowSelectionTitle">
+		Visible
+	</text>
+	<text key="toggleColumns_headerTitleColumn">
+		Columna
+	</text>
+	<text key="toggleColumns_headerTitleDatabaseName">
+		Nombre de base de datos
+	</text>
+	<text key="toggleColumns_headerTitleDescription">
+		Descripcion 
+	</text>
+	<text key="MocTooltip_count">
+		Número objetos/celda
+	</text>
+	<text key="Infrared">
+		Infrarrojo
+	</text>
+	<text key="IR">
+		IR
+	</text>
+	<text key="X-ray">
+		Rayos-X
+	</text>
 </Internationalization>
 

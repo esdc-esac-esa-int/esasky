@@ -3070,7 +3070,6 @@
 		&lt;/a&gt;
 	</text>
 	
-	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	
 	<text key="tabulator_centreOnCoordinates">
@@ -3239,5 +3238,6 @@
 	<text key="X-ray">
 		X-ray
 	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
 
 </Internationalization>
