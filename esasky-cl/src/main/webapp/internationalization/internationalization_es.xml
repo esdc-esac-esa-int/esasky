@@ -2947,7 +2947,6 @@
 		Cerrar todas las pestañas
 	</text>
 	<text key="treeMap_large_fov">
-		Data from external services is only availabe at field of view below $fov_limit$ degrees
 		Datos de servicios externos únicamente disponibles  para campos menores de $fov_limit$ grados
 	</text>
 	<text key="closeableTabLayoutPanel_configure">
