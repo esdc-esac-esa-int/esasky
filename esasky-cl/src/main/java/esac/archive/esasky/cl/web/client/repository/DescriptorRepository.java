@@ -778,6 +778,7 @@ public class DescriptorRepository {
 		descriptor.setMission(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setGuiLongName(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setGuiShortName(footprintsSet.getOverlaySet().getOverlayName());
+		descriptor.setDescriptorId(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setPrimaryColor(footprintsSet.getOverlaySet().getColor());
 		
 		descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);

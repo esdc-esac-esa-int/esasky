@@ -53,7 +53,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         void addSecondaryShape(GeneralJavaScriptObject rowData, String ra, String dec, Map<String, String> details);
     }
 
-    protected DefaultEntity defaultEntity;
     protected IShapeDrawer drawer;
     protected CombinedSourceFootprintDrawer combinedDrawer;
     protected IDescriptor descriptor;
@@ -62,6 +61,13 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private SecondaryShapeAdder secondaryShapeAdder;
     protected ITablePanel tablePanel;
     protected Tooltip tooltip;
+    private SkyViewPosition skyViewPosition;
+    private String histoLabel;
+    private String esaSkyUniqId;
+    private TapRowList metadata;
+    private CountStatus countStatus;
+    private boolean isRefreshable = true;
+
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
@@ -104,9 +110,12 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
         drawer = combinedDrawer;
+        
+        this.skyViewPosition = skyViewPosition;
+        this.esaSkyUniqId = esaSkyUniqId;
+        this.metadataService = metadataService;
+        this.countStatus = countStatus;
 
-        defaultEntity = new DefaultEntity(descriptor, countStatus, skyViewPosition, esaSkyUniqId,
-                drawer, metadataService);
     }
 
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
@@ -124,8 +133,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             PolygonShape polygon = new PolygonShape();
             polygon.setShapeId(rowId);
             polygon.setStcs(stcs);
-            polygon.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
-                    polygon.getStcs(), rowId));
+            polygon.setJsObject(((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
+                    polygon.getStcs(), rowId)).getProperty("0"));
+            
+            polygon.setShapeId(rowId);
+            String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
+            polygon.setShapeName(shapeName);
+            String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
+            String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+            polygon.setRa(ra);
+            polygon.setDec(dec);
             return polygon;
         }
     };
@@ -140,11 +157,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         mySource.setRa(ra);
         mySource.setDec(dec);
-        mySource.setSourceName(sourceName);
+        mySource.setShapeName(sourceName);
 
         Map<String, String> details = new HashMap<String, String>();
 
-        details.put(SourceConstant.SOURCE_NAME, mySource.getSourceName());
+        details.put(SourceConstant.SOURCE_NAME, mySource.getShapeName());
 
         details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
         details.put(SourceConstant.ID, Integer.toString(shapeId));
@@ -191,7 +208,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             secondaryShapeAdder.addSecondaryShape(rowData, ra, dec, details);
         }
 
-        mySource.setJsObject(AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
+        mySource.setJsObject((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(
                 mySource.getRa(), mySource.getDec(), details, shapeId));
         return mySource;
     }
@@ -223,7 +240,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             PolygonShape shape = new PolygonShape();
             String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
             shape.setStcs(stcs);
-            shape.setJsObject(AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs()));
+            shape.setJsObject(((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs())).getProperty("0"));
             return shape;
         }
     }
@@ -250,7 +267,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public void fetchData(String adql) {
     	 Log.debug("Showing real data");
          drawer = combinedDrawer;
-         defaultEntity.setDrawer(drawer);
          tablePanel.setMOCMode(false);
          tablePanel.notifyObservers();
 
@@ -274,7 +290,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         if (shapeLimit > 0 && getCountStatus().getCount(descriptor) > shapeLimit) {
             Log.debug("Showing dynamic moc");
             if(mocEntity == null){
-                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this, defaultEntity);
+                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this);
             }
             mocEntity.setTablePanel(tablePanel);
             mocEntity.setShouldBeShown(true);
@@ -299,7 +315,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public void fetchDataWithoutMOC() {
         Log.debug("Showing real data");
         drawer = combinedDrawer;
-        defaultEntity.setDrawer(drawer);
         tablePanel.setMOCMode(false);
         tablePanel.notifyObservers();
 
@@ -307,7 +322,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataAdql(tablePanel.getFilterString()), EsaSkyConstants.JSON);
+        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString()), EsaSkyConstants.JSON);
 
         clearAll();
         tablePanel.insertData(url);
@@ -316,7 +331,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public void fetchDataWithoutMOC(String whereQuery) {
     	Log.debug("Showing real data");
     	drawer = combinedDrawer;
-    	defaultEntity.setDrawer(drawer);
         tablePanel.setMOCMode(false);
         tablePanel.notifyObservers();
     	if(mocEntity != null){
@@ -325,7 +339,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
     	
     	clearAll();
-    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), defaultEntity.getMetadataFromMOCPixelsADQL(whereQuery), EsaSkyConstants.JSON));
+    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery), EsaSkyConstants.JSON));
     }
     
     public void fetchDataWithoutMOC(MOCInfo mocInfo) {
@@ -365,17 +379,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void setSizeRatio(double size) {
-        defaultEntity.setSizeRatio(size);
+    	drawer.setSizeRatio(size);
     }
 
     @Override
     public double getSize() {
-        return defaultEntity.getSize();
+        return drawer.getSize();
     }
 
     @Override
     public void removeAllShapes() {
-        defaultEntity.removeAllShapes();
+    	drawer.removeAllShapes();
     }
 
     @Override
@@ -385,112 +399,102 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void selectShapes(int shapeId) {
-        defaultEntity.selectShapes(shapeId);
+    	drawer.selectShapes(shapeId);
     }
 
     @Override
     public void deselectShapes(int shapeId) {
-        defaultEntity.deselectShapes(shapeId);
+    	drawer.deselectShapes(shapeId);
     }
 
     @Override
     public void deselectAllShapes() {
-        defaultEntity.deselectAllShapes();
+    	drawer.deselectAllShapes();
     }
 
     @Override
     public void showShape(int rowId) {
-        defaultEntity.showShape(rowId);
+    	drawer.showShape(rowId);
     }
 
     @Override
     public void showShapes(List<Integer> shapeIds) {
-        defaultEntity.showShapes(shapeIds);
+    	drawer.showShapes(shapeIds);
     }
 
     @Override
     public void showAndHideShapes(List<Integer> rowIdsToShow, List<Integer> rowIdsToHide) {
-        defaultEntity.showAndHideShapes(rowIdsToShow, rowIdsToHide);
+    	drawer.showAndHideShapes(rowIdsToShow, rowIdsToHide);
     }
 
     @Override
     public void setShapeBuilder(ShapeBuilder shapeBuilder) {
-        defaultEntity.setShapeBuilder(shapeBuilder);
+    	drawer.setShapeBuilder(shapeBuilder);
     }
 
     @Override
     public void hideShape(int rowId) {
-        defaultEntity.hideShape(rowId);
+    	drawer.hideShape(rowId);
     }
 
     @Override
     public void hideShapes(List<Integer> shapeIds) {
-        defaultEntity.hideShapes(shapeIds);
+    	drawer.hideShapes(shapeIds);
     }
 
     @Override
     public void hideAllShapes() {
-        defaultEntity.hideAllShapes();
+    	drawer.hideAllShapes();
     }
 
     @Override
     public void hoverStart(int hoveredRowId) {
-        defaultEntity.hoverStart(hoveredRowId);
+    	drawer.hoverStart(hoveredRowId);
     }
 
     @Override
     public void hoverStop(int hoveredRowId) {
-        defaultEntity.hoverStop(hoveredRowId);
+    	drawer.hoverStop(hoveredRowId);
     }
 
     @Override
     public SkyViewPosition getSkyViewPosition() {
-        return defaultEntity.getSkyViewPosition();
+        return skyViewPosition;
     }
 
     @Override
     public void setSkyViewPosition(SkyViewPosition skyViewPosition) {
-        defaultEntity.setSkyViewPosition(skyViewPosition);
+        this.skyViewPosition = skyViewPosition;
     }
 
     @Override
     public String getHistoLabel() {
-        return defaultEntity.getHistoLabel();
+        return histoLabel;
     }
 
     @Override
     public void setHistoLabel(String histoLabel) {
-        defaultEntity.setHistoLabel(histoLabel);
+        this.histoLabel = histoLabel;
     }
 
     @Override
     public String getEsaSkyUniqId() {
-        return defaultEntity.getEsaSkyUniqId();
+        return esaSkyUniqId;
     }
 
     @Override
     public void setEsaSkyUniqId(String esaSkyUniqId) {
-        defaultEntity.setEsaSkyUniqId(esaSkyUniqId);
+        this.esaSkyUniqId = esaSkyUniqId;
     }
 
     @Override
     public TapRowList getMetadata() {
-        return defaultEntity.getMetadata();
+        return metadata;
     }
-
+    
     @Override
     public void setMetadata(TapRowList metadata) {
-        defaultEntity.setMetadata(metadata);
-    }
-
-    @Override
-    public Long getLastUpdate() {
-        return defaultEntity.getLastUpdate();
-    }
-
-    @Override
-    public void setLastUpdate(Long lastUpdate) {
-        defaultEntity.setLastUpdate(lastUpdate);
+        this.metadata = metadata;
     }
 
     @Override
@@ -499,28 +503,33 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public int getTabNumber() {
-        return defaultEntity.getTabNumber();
-    }
-
-    @Override
-    public void setTabNumber(int number) {
-        defaultEntity.setTabNumber(number);
-    }
-
-    @Override
     public Image getTypeLogo() {
-        return defaultEntity.getTypeLogo();
+        return null;
     }
-
+    
     @Override
     public Object getTAPDataByTAPName(TapRowList tapRowList, int rowIndex, String tapName) {
-        return defaultEntity.getTAPDataByTAPName(tapRowList, rowIndex, tapName);
+    	Object data = null;
+        for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
+            if (tapMetadata.getName().equals(tapName)) {
+                int dataIndex = new Integer(tapRowList.getMetadata().indexOf(tapMetadata));
+                data = (tapRowList.getData().get(rowIndex)).get(dataIndex);
+                break;
+            }
+        }
+        return data;
     }
 
     @Override
     public Double getDoubleByTAPName(TapRowList tapRowList, int rowIndex, String tapName, Double defaultValue) {
-        return defaultEntity.getDoubleByTAPName(tapRowList, rowIndex, tapName, defaultValue);
+        if (tapName != null) {
+            String value = getTAPDataByTAPName(tapRowList, rowIndex, tapName).toString();
+            if ((value != null) && (!value.isEmpty()) && (!value.equals("null"))) {
+                return Double.parseDouble(value);
+            }
+        }
+        
+        return defaultValue;
     }
 
     @Override
@@ -530,22 +539,31 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public CountStatus getCountStatus() {
-        return defaultEntity.getCountStatus();
+        return countStatus;
     }
 
     @Override
     public void clearAll() {
-        defaultEntity.clearAll();
+    	if (this.getMetadata() != null) {
+            if (this.getMetadata().getMetadata() != null) {
+                this.getMetadata().getMetadata().clear();
+            }
+            if (this.getMetadata().getData() != null) {
+                this.getMetadata().getData().clear();
+            }
+        }
+        drawer.removeAllShapes();
     }
 
     @Override
     public String getColor() {
-        return defaultEntity.getColor();
+        return this.getDescriptor().getPrimaryColor();
     }
 
     @Override
     public void setPrimaryColor(String color) {
-        defaultEntity.setPrimaryColor(color);
+    	getDescriptor().setPrimaryColor(color);
+    	drawer.setPrimaryColor(color);
     }
 
     @Override
@@ -556,17 +574,22 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public boolean isSampEnabled() {
-        return defaultEntity.isSampEnabled();
+        return true;
     }
 
     @Override
     public boolean isRefreshable() {
-        return defaultEntity.isRefreshable();
+        return isRefreshable;
+    }
+    
+    @Override
+    public void setRefreshable(boolean isRefreshable) {
+        this.isRefreshable = isRefreshable;
     }
 
     @Override
     public boolean isCustomizable() {
-        return defaultEntity.isCustomizable();
+        return true;
     }
 
     @Override
@@ -576,7 +599,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
                 @Override
                 public void onComplete() {
-                    defaultEntity.coneSearch(conePos);
+                    //TODO Fix conesearch
                 }
             });
         } 
@@ -603,7 +626,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
             @Override
             public void onShapeColorChanged(String color) {
-                getDescriptor().setPrimaryColor(color);
+               setPrimaryColor(color);
                 if(mocEntity != null) {
                 	mocEntity.setColor(color);
                 }
@@ -634,12 +657,12 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public String getShapeType() {
-        return defaultEntity.getShapeType();
+        return drawer.getShapeType();
     }
 
     @Override
     public void setShapeType(String shapeType) {
-        defaultEntity.setShapeType(shapeType);
+        drawer.setShapeType(shapeType);
     }
     
     @Override
@@ -685,9 +708,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     		tablePanel.selectTablePanel();
     	}
     }
-    @Override
-    public void setRefreshable(boolean isRefreshable) {
-        defaultEntity.setRefreshable(isRefreshable);
-    }
+
+	@Override
+	public ITablePanel getTablePanel() {
+		return tablePanel;
+	}
+	
+	@Override
+	public void setTablePanel(ITablePanel panel) {
+		this.tablePanel = panel;
+	}
+    
+    
 
 }

@@ -138,10 +138,23 @@ public class TAPMOCService {
     	
     	if(filter != "") {
     		whereADQL += " AND " + filter;
-    	
+    		
     	}
     	
     	return whereADQL;
+    }
+    
+    public String fetchMinMaxHeaders(IDescriptor descriptor, boolean global) {
+    	String adql = "SELECT esasky_q3c_maxmin_query('" + descriptor.getTapTable() + "',";
+    	 if (AladinLiteWrapper.isCornersInsideHips()) {
+    		 adql += "'{" + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString()+ "}','',''";
+    	 }else {
+    		 Coordinate coor =  CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
+    		 adql += "'','" + Double.toString(coor.ra) + "','" + Double.toString(coor.dec) + "'";
+    	 }
+    	 
+    	 adql += ", '" +  global + "') from public.function_dummy";
+    	return adql;
     }
     
 }

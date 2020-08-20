@@ -1,11 +1,9 @@
 package esac.archive.esasky.cl.web.client.query;
 
-import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -15,7 +13,6 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 public abstract class AbstractTAPService {
@@ -71,94 +68,6 @@ public abstract class AbstractTAPService {
         Log.debug("[TAPQueryBuilder/FastCountQuery()] Fast count ADQL " + adqlQuery);
         url = TAPUtils.getTAPQuery(URL.encodeQueryString(adqlQuery), EsaSkyConstants.JSON);
         return url;
-    }
-    
-    public String fetchMinMaxHeaders(IDescriptor descriptor, boolean global) {
-    	String adql = "SELECT esasky_q3c_maxmin_query('" + descriptor.getTapTable() + "',";
-    	 if (AladinLiteWrapper.isCornersInsideHips()) {
-    		 adql += "'{" + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString()+ "}','',''";
-    	 }else {
-    		 Coordinate coor =  CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-    		 adql += "'','" + Double.toString(coor.ra) + "','" + Double.toString(coor.dec) + "'";
-    	 }
-    	 
-    	 adql += ", '" +  global + "') from public.function_dummy";
-    	return adql;
-    }
-    
-    public String fetchGlobalMinMaxHeaders2(IDescriptor descriptor) {
-    	String tableName = descriptor.getTapTable().replace("public", "moc_schema") + "_maxmin";
-    	String adql = "select ";
-    	for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-         	if(currentMetadata.getType().equals(ColumnType.DOUBLE) || currentMetadata.getType().equals(ColumnType.INTEGER)
-         			|| currentMetadata.getType().equals(ColumnType.DATETIME)) {
-         		adql += "min(" + currentMetadata.getTapName() + "_minval) as " +
-         				currentMetadata.getTapName() + "_min , ";
-         		adql += "max(" + currentMetadata.getTapName() + "_maxval) as " +
-         				currentMetadata.getTapName() + "_max , ";
-         	}
-         	else if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
-             	adql += "min(" + currentMetadata.getTapName() + "_minval) as " +
-             			descriptor.getTapDecColumn() + "_min , ";
-             	adql += "max(" + currentMetadata.getTapName() + "_maxval) as " +
-             			descriptor.getTapDecColumn() + "_max , ";
-             } 
-             else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
-             	adql += "min(" + currentMetadata.getTapName() + "_minval) as " +
-             			descriptor.getTapRaColumn() + "_min , ";
-             	adql += "max(" + currentMetadata.getTapName() + "_maxval) as " +
-             			descriptor.getTapRaColumn() + "_max , ";
- 	        } else {
- 	        	adql += "'' as " + currentMetadata.getTapName() + "_str , ";
- 	        }
-    	}
-    	
-    	adql += " FROM " + tableName + " WHERE 1 = INTERSECTS(fov,";
-    	adql += "POLYGON('ICRS', "
-                + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + "))";
-    	return adql;
-    }
-    
-    public String fetchLocalMinMaxHeaders(IDescriptor descriptor) {
-
-        String adql = "select ";
-
-        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
-        	if(currentMetadata.getType().equals(ColumnType.DOUBLE) || currentMetadata.getType().equals(ColumnType.INTEGER)
-        			|| currentMetadata.getType().equals(ColumnType.DATETIME)) {
-        		adql += "min(" + currentMetadata.getTapName() + ") as " +
-        				currentMetadata.getTapName() + "_min , ";
-        		adql += "max(" + currentMetadata.getTapName() + ") as " +
-        				currentMetadata.getTapName() + "_max , ";
-        	}
-        	else if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
-            	adql += "min(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapDecColumn() + "_min , ";
-            	adql += "max(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapDecColumn() + "_max , ";
-            } 
-            else if (descriptor.getTapRaColumn().equals(currentMetadata.getTapName())) {
-            	adql += "min(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapRaColumn() + "_min , ";
-            	adql += "max(" + currentMetadata.getTapName() + ") as " +
-            			descriptor.getTapRaColumn() + "_max , ";
-//            } else if (descriptor.getPolygonNameTapColumn().equals(currentMetadata.getTapName())) {
-//                adql += " " + currentMetadata.getTapName() + " as "
-//                        + currentMetadata.getTapName() + ", ";
-//            } else if(currentMetadata.getTapName() == "filter"){
-//                adql += "ARRAY_AGG(DISTINCT_FUNC(" + currentMetadata.getTapName() +")) as " + currentMetadata.getTapName() + "_lst , ";
-	        } else {
-	        	adql += "'' as " + currentMetadata.getTapName() + "_str , ";
-	        }
-        
-        }
-
-        String parsedAdql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-//        String parsedAdql = adql;
-        parsedAdql.replace("\\s*,\\s*$", "");
-        parsedAdql += " from " + descriptor.getTapTable() + " WHERE " + getGeometricConstraint(descriptor);
-
-        return parsedAdql;
     }
     
     public String getMetadataFromMOCPixelsADQL(IDescriptor descriptor, String whereADQL) {

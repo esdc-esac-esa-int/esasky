@@ -49,8 +49,11 @@ import esac.archive.esasky.cl.web.client.api.model.MetadataAPI;
 import esac.archive.esasky.cl.web.client.api.model.Source;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
+import esac.archive.esasky.cl.web.client.model.SourceShapeType;
+import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -108,10 +111,10 @@ public class Api {
 	                    @Override
 	                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
 	                    	GeneralJavaScriptObject shape = (GeneralJavaScriptObject) selectEvent.getShape().cast();
-	                    	if(shape.getProperty("data") != null) {
-	                    		//To handle sources which have all info in data 
-	                    		shape = shape.getProperty("data");
-	                    	}
+//	                    	if(shape.getProperty("data") != null) {
+//	                    		//To handle sources which have all info in data 
+//	                    		shape = shape.getProperty("data");
+//	                    	}
 	                    	String name = shape.getStringProperty("name");
 	                    	if(name == null) {name="";};
                 			String id = shape.getStringProperty("id");
@@ -859,7 +862,7 @@ public class Api {
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, footprintsSet);
 
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON));
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), shouldBeInTablePanel);
 
 			AladinLiteWrapper.getAladinLite().goToRaDec(
 					((Footprint) fooprintList.getSkyObjectList().get(0)).getRa_deg(),
@@ -943,7 +946,7 @@ public class Api {
 
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, userCatalogue);
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON));
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), true);
 
 		} catch (Exception ex) {
 			Log.error(ex.getMessage());
@@ -1094,5 +1097,66 @@ public class Api {
 			}
 		}
 		return hiPSMap;
+	}
+	
+	public void setOverlayColor(String overlayName, String color,  JavaScriptObject widget) {
+		GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(overlayName);
+		if(entity != null) {
+			entity.setPrimaryColor(color);
+		}else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("No overlay with name: " + overlayName + " active:\n Check getActiveOverlays() for available overlays"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+	}
+
+	public void setOverlaySize(String overlayName, double size,  JavaScriptObject widget) {
+		GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(overlayName);
+		if(entity != null) {
+			entity.setSizeRatio(size);
+		}else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("No overlay with name: " + overlayName + " active:\n Check getActiveOverlays() for available overlays"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+	}
+
+	public void setOverlayShape(String overlayName, String shape, JavaScriptObject widget) {
+		GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(overlayName);
+		if(entity != null) {
+			
+			LinkedList<String> sourceTypes = new LinkedList<String>();
+			boolean found = false;
+			for(SourceShapeType s : SourceShapeType.values()) {
+				if(shape.equalsIgnoreCase(s.getName())) {
+					found = true;
+				}else {
+					sourceTypes.add(s.getName());
+				}
+			}
+			if(found) {
+				entity.setShapeType(shape);
+			}else {
+				JSONObject callbackMessage = new JSONObject();
+				callbackMessage.put("message", new JSONString("No such shape possible. \n Available shapes are " + String.join(",", sourceTypes.toArray(new String[0]))));
+				sendBackToWidget(null, callbackMessage, widget);
+			}
+		}else {
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("No overlay with name: " + overlayName + " active:\n Check getActiveOverlays() for available overlays"));
+			sendBackToWidget(null, callbackMessage, widget);
+		}
+	}
+	
+	public void getActiveOverlays(JavaScriptObject widget) {
+		List<String> list = EntityRepository.getInstance().getAllEntityNames();
+	
+		JSONArray arr = new JSONArray();
+		for(String ent : list) {
+			arr.set(arr.size(),new JSONString(ent));
+		}
+		JSONObject result = new JSONObject();
+		result.put("Overlays", arr);
+		sendBackToWidget(result, widget);
 	}
 }

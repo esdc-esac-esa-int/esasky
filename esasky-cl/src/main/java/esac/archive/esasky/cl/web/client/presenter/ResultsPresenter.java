@@ -163,12 +163,22 @@ public class ResultsPresenter implements ICountRequestHandler {
         return this.view.getTabPanel();
     }
     
-    protected final void getUserMetadataAndPolygons(final GeneralEntityInterface entity, GeneralJavaScriptObject userData) {
+    protected final void getUserMetadataAndPolygons(final GeneralEntityInterface entity, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
     	Log.debug("[ResultPresenter][getUserMetadataAndPolygons]");
-		ITablePanel panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-        		"User defined metadata table for " + entity.getDescriptor().getGuiLongName());
-        panel.insertData(userData);
-        panel.goToCoordinateOfFirstRow();
+		if(shouldHavePanel) {
+			
+	    	ITablePanel panel = entity.getTablePanel();
+	    	if(panel == null) {
+	    		panel = this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+	    				"User defined metadata table for " + entity.getDescriptor().getGuiLongName());
+	    	}
+	        panel.insertData(userData);
+	        panel.goToCoordinateOfFirstRow();
+	        entity.setTablePanel(panel);
+    	}else {
+    		GeneralJavaScriptObject footprintList = userData.getProperty("overlaySet").getProperty("skyObjectList");
+    		entity.addShapes(footprintList);
+    	}
     }
 
     protected final void coneSearch(final GeneralEntityInterface entity, final SkyViewPosition conePos) {

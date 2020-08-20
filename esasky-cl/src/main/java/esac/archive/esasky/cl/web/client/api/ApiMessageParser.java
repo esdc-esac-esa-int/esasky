@@ -107,7 +107,7 @@ public class ApiMessageParser {
 				console.log('overlayFootprints event captured!');
 				console.log(msg);
 				var footprintSetJSON = JSON.stringify(msg.content);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayFootprints(Ljava/lang/String;)(footprintSetJSON);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayFootprints(Ljava/lang/String;Z)(footprintSetJSON, false);
 				break;
 
 			case 'overlayFootprintsWithDetails':
@@ -129,11 +129,38 @@ public class ApiMessageParser {
 				instance.@esac.archive.esasky.cl.web.client.api.Api::deleteFootprints(Ljava/lang/String;)(msg.content.overlayName);
 				break;
 
+			case 'setOverlayColor':
+				console.log('setOverlayColor event captured!');
+				console.log(msg);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::setOverlayColor(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, msg.content.color, e);
+				break;
+
+			case 'setOverlaySize':
+				console.log('setOverlayColor event captured!');
+				console.log(msg);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::setOverlaySize(Ljava/lang/String;DLcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, msg.content.size, e);
+				break;
+				
+			case 'setOverlayShape':
+				console.log('setOverlayColor event captured!');
+				console.log(msg);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::setOverlayShape(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, msg.content.shape, e);
+				break;
+
 			case 'overlayCatalogue':
 				console.log('overlayCatalogue event captured!');
 				console.log(msg);
 				var catJSON = JSON.stringify(msg.content);
 				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogue(Ljava/lang/String;)(catJSON);
+				break;
+				
+			case 'getActiveOverlays':
+				console.log('getActiveOverlays event captured!');
+				console.log(msg);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::getActiveOverlays(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 				break;
 
 			case 'overlayCatalogueWithDetails':

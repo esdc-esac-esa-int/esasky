@@ -76,6 +76,14 @@ public class EntityRepository {
         allEntities.remove(entity);
     }
 
+    public List<String> getAllEntityNames() {
+    	LinkedList<String> list = new LinkedList<String>();
+    	for(GeneralEntityInterface ent : allEntities) {
+    		list.add(ent.getEsaSkyUniqId());
+    	}
+    	return list;
+    }
+
     public GeneralEntityInterface createEntity(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = null;
         if (descriptor instanceof SSODescriptor) {

@@ -291,17 +291,17 @@ public class MainPresenter {
     	resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);
     }
 
-    public void showUserRelatedMetadata(IDescriptor descriptor, GeneralJavaScriptObject userData) {
+    public void showUserRelatedMetadata(IDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
         Log.debug("[MainPresenter][showUserRelatedMetadata]");
 
-        // To make sure that no tab with the same ID already exists in the layout panel
-        while (resultsPresenter.getTabPanel().checkIfIdExists(descriptor.generateId())) {
+        GeneralEntityInterface entity = entityRepo.getEntity(descriptor.getDescriptorId());
+        if(entity == null) {
+        	entity = entityRepo.createEntity(descriptor);
+        	entity.setEsaSkyUniqId(descriptor.getDescriptorId());
         }
-        descriptor.setTabCount(descriptor.getTabCount() - 1);
-
-        GeneralEntityInterface entity = entityRepo.createEntity(descriptor);
+        
         entity.setRefreshable(false);
-        resultsPresenter.getUserMetadataAndPolygons(entity, userData);
+        resultsPresenter.getUserMetadataAndPolygons(entity, userData, shouldHavePanel);
     }
 
     private void getObservationsList() {

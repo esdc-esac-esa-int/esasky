@@ -47,7 +47,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	
     private ESASkyResultMOC moc = new ESASkyResultMOC(2,-1);
     private ITablePanel tablePanel;
-    protected DefaultEntity defaultEntity;
     protected IShapeDrawer drawer;
     protected IShapeDrawer combinedDrawer;
     private IDescriptor descriptor;
@@ -113,14 +112,13 @@ public class MOCEntity implements GeneralEntityInterface {
 	};
 	
 
-	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent, DefaultEntity defaultEntity) {
+	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent) {
 		
 		overlay = null;
 		drawer = null;
 		this.descriptor = descriptor;
 		
 		metadataService = TAPMOCService.getInstance();
-		this.defaultEntity = defaultEntity;
 		parentEntity = parent;
 		
 		MocRepository.getInstance().addMocEntity(this);
@@ -136,6 +134,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 	}
 	
+	@Override
 	public void setTablePanel(ITablePanel panel) {
 		if(this.tablePanel != panel) {
 			this.tablePanel = panel;
@@ -151,10 +150,12 @@ public class MOCEntity implements GeneralEntityInterface {
 			});
 		}
 	}
-    	
-    
-    
-    public String MOCClicked(final String orders, final String ipixels, String counts) {
+	
+	public ITablePanel getTablePanel() {
+		return tablePanel;
+	}
+
+	public String MOCClicked(final String orders, final String ipixels, String counts) {
     	Log.debug("[MOCEntity] MOCClicked " + orders + ", " + ipixels );
     	String tooltipText = "";
     	String[] orderArray = orders.split(",");
@@ -246,9 +247,9 @@ public class MOCEntity implements GeneralEntityInterface {
     		
     		waitingForHeaders = true;
     		if(count > EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT) {
-    			defaultEntity.fetchMinMaxHeaders(tablePanel, true);
+    			fetchMinMaxHeaders(tablePanel, true);
     		}else {
-    			defaultEntity.fetchMinMaxHeaders(tablePanel, false);
+    			fetchMinMaxHeaders(tablePanel, false);
     		}
     	}
 
@@ -386,17 +387,17 @@ public class MOCEntity implements GeneralEntityInterface {
     
 	@Override
 	public void setSizeRatio(double size) {
-		defaultEntity.setSizeRatio(size);
+		parentEntity.setSizeRatio(size);
 	}
 	
 	@Override
 	public double getSize() {
-		return defaultEntity.getSize();
+		return parentEntity.getSize();
 	}
 
 	@Override
 	public void removeAllShapes() {
-		defaultEntity.removeAllShapes();
+		clearAll();
 	}
 	
 	public ESASkyResultMOC getMOC(){
@@ -599,112 +600,102 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	@Override
 	public void selectShapes(int shapeId) {
-		defaultEntity.selectShapes(shapeId);
+		return;
 	}
 
 	@Override
 	public void deselectShapes(int shapeId) {
-		defaultEntity.deselectShapes(shapeId);
+		return;
 	}
 
 	@Override
 	public void deselectAllShapes() {
-		defaultEntity.deselectAllShapes();
+		return;
 	}
 
 	@Override
 	public void showShape(int rowId) {
-		defaultEntity.showShape(rowId);
+		return;
 	}
 
 	@Override
 	public void showShapes(List<Integer> shapeIds) {
-		defaultEntity.showShapes(shapeIds);
+		return;
 	}
 
 	@Override
 	public void showAndHideShapes(List<Integer> rowIdsToShow, List<Integer> rowIdsToHide) {
-		defaultEntity.showAndHideShapes(rowIdsToShow, rowIdsToHide);
+		return;
 	}
 	
 	@Override
 	public void setShapeBuilder(ShapeBuilder shapeBuilder) {
-		defaultEntity.setShapeBuilder(shapeBuilder);
+		return;
 	}
 
 	@Override
 	public void hideShape(int rowId) {
-		defaultEntity.hideShape(rowId);
+		return;
 	}
 
 	@Override
 	public void hideShapes(List<Integer> shapeIds) {
-		defaultEntity.hideShapes(shapeIds);
+		return;
 	}
 	
 	@Override
 	public void hideAllShapes() {
-		defaultEntity.hideAllShapes();
+		return;
 	}
 
 	@Override
 	public void hoverStart(int hoveredRowId) {
-		defaultEntity.hoverStart(hoveredRowId);
+		return;
 	}
 
 	@Override
 	public void hoverStop(int hoveredRowId) {
-		defaultEntity.hoverStop(hoveredRowId);
+		return;
 	}
 
 	@Override
 	public SkyViewPosition getSkyViewPosition() {
-		return defaultEntity.getSkyViewPosition();
+		return parentEntity.getSkyViewPosition();
 	}
 
 	@Override
 	public void setSkyViewPosition(SkyViewPosition skyViewPosition) {
-		defaultEntity.setSkyViewPosition(skyViewPosition);
+		parentEntity.setSkyViewPosition(skyViewPosition);
 	}
 
 	@Override
 	public String getHistoLabel() {
-		return defaultEntity.getHistoLabel();
+		return parentEntity.getHistoLabel();
 	}
 
 	@Override
 	public void setHistoLabel(String histoLabel) {
-		defaultEntity.setHistoLabel(histoLabel);
+		parentEntity.setHistoLabel(histoLabel);
 	}
 
 	@Override
 	public String getEsaSkyUniqId() {
-		return defaultEntity.getEsaSkyUniqId();
+		return parentEntity.getEsaSkyUniqId();
 	}
 
 	@Override
 	public void setEsaSkyUniqId(String esaSkyUniqId) {
-		defaultEntity.setEsaSkyUniqId(esaSkyUniqId);
+		parentEntity.setEsaSkyUniqId(esaSkyUniqId);
 	}
 
 	@Override
 	public TapRowList getMetadata() {
-		return defaultEntity.getMetadata();
+		return parentEntity.getMetadata();
 	}
 
 	@Override
 	public void setMetadata(TapRowList metadata) {
-		defaultEntity.setMetadata(metadata);
-	}
-
-	@Override
-	public Long getLastUpdate() {
-		return defaultEntity.getLastUpdate();
-	}
-
-	@Override
-	public void setLastUpdate(Long lastUpdate) {
-		defaultEntity.setLastUpdate(lastUpdate);
+		parentEntity.setMetadata(metadata);
 	}
 
 	@Override
@@ -713,28 +704,18 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 	
 	@Override
-	public int getTabNumber() {
-		return defaultEntity.getTabNumber();
-	}
-
-	@Override
-	public void setTabNumber(int number) {
-		defaultEntity.setTabNumber(number);
-	}
-	
-	@Override
 	public Image getTypeLogo() {
-		return defaultEntity.getTypeLogo();
+		return parentEntity.getTypeLogo();
 	}
 
 	@Override
 	public Object getTAPDataByTAPName(TapRowList tapRowList, int rowIndex, String tapName) {
-		return defaultEntity.getTAPDataByTAPName(tapRowList, rowIndex, tapName);
+		return parentEntity.getTAPDataByTAPName(tapRowList, rowIndex, tapName);
 	}
 
 	@Override
 	public Double getDoubleByTAPName(TapRowList tapRowList, int rowIndex, String tapName, Double defaultValue) {
-		return defaultEntity.getDoubleByTAPName(tapRowList, rowIndex, tapName, defaultValue);
+		return parentEntity.getDoubleByTAPName(tapRowList, rowIndex, tapName, defaultValue);
 	}
 
 	@Override
@@ -744,17 +725,17 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public CountStatus getCountStatus() {
-		return defaultEntity.getCountStatus();
+		return parentEntity.getCountStatus();
 	}
 
 	@Override
 	public String getColor() {
-		return defaultEntity.getColor();
+		return parentEntity.getColor();
 	}
 
 	@Override
 	public void setPrimaryColor(String color) {
-		defaultEntity.setPrimaryColor(color);
+		parentEntity.setPrimaryColor(color);
 	}
 
 	@Override
@@ -769,12 +750,12 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public boolean isRefreshable() {
-		return defaultEntity.isRefreshable();
+		return parentEntity.isRefreshable();
 	}
 
     @Override
     public boolean isCustomizable() {
-    	return defaultEntity.isCustomizable();
+    	return parentEntity.isCustomizable();
     }
 
 	@Override
@@ -813,7 +794,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
     public String getShapeType() {
-        return defaultEntity.getShapeType();
+        return parentEntity.getShapeType();
     }
 
     @Override
@@ -864,7 +845,14 @@ public class MOCEntity implements GeneralEntityInterface {
     
     @Override
     public void setRefreshable(boolean isRefreshable) {
-        defaultEntity.setRefreshable(isRefreshable);
+        parentEntity.setRefreshable(isRefreshable);
     }
 
+    
+    public void fetchMinMaxHeaders(final ITablePanel tablePanel, boolean global) {
+    	String adql =  metadataService.fetchMinMaxHeaders(getDescriptor(), global);
+    	String query = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+    	Log.debug("[FetchHeader] Query " + query );
+    	tablePanel.insertHeader(query, "maxMin");
+    }
 }

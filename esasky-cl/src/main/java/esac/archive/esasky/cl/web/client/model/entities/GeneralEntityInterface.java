@@ -21,12 +21,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void setEsaSkyUniqId(String esaSkyUniqId);
     public TapRowList getMetadata();
     public void setMetadata(TapRowList metadata);
-    public Long getLastUpdate();
-    public void setLastUpdate(Long lastUpdate);
     public String getTabLabel();
-    public int getTabNumber();
-
-    public void setTabNumber(int number);
 
     public Image getTypeLogo();
 
@@ -49,6 +44,9 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void coneSearch(SkyViewPosition conePos);
     
     public ITablePanel createTablePanel();
+    public ITablePanel getTablePanel();
+    public void setTablePanel(ITablePanel panel);
+    
     public StylePanel createStylePanel();
     public void select();
     

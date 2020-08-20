@@ -4,7 +4,7 @@ public class APIMetadataConstants {
 	
 	public static final String CAT_NAME = "name";
 	
-	public static final String OBS_NAME = "observation_id";
+	public static final String OBS_NAME = "name";
 
 	public static final String FOOTPRINT_STCS = "stcs";
 

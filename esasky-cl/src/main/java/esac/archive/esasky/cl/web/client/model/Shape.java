@@ -1,13 +1,15 @@
 package esac.archive.esasky.cl.web.client.model;
 
-import com.google.gwt.core.client.JavaScriptObject;
+
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class Shape {
 
     private String ra;
     private String dec;
+    private String shapeName;
     private int shapeId;
-    private JavaScriptObject jsObject;
+    private GeneralJavaScriptObject jsObject;
 
     public String getRa() {
         return ra;
@@ -31,13 +33,28 @@ public class Shape {
 
     public void setShapeId(int rowId) {
         this.shapeId = rowId;
+        if(jsObject != null) {
+        	jsObject.setProperty("id", rowId);
+        }
+    }
+    public String getShapeName() {
+    	return shapeName;
+    }
+    
+    public void setShapeName(String shapeName) {
+    	this.shapeName = shapeName;
+    	if(jsObject != null) {
+    		jsObject.setProperty("name", shapeName);
+    	}
     }
 
-    public JavaScriptObject getJsObject() {
+    public GeneralJavaScriptObject getJsObject() {
         return jsObject;
     }
 
-    public void setJsObject(JavaScriptObject jsObject) {
+    public void setJsObject(GeneralJavaScriptObject jsObject) {
+    	jsObject.setProperty("id", this.shapeId);
+    	jsObject.setProperty("name", this.shapeName);
         this.jsObject = jsObject;
     }
 }
