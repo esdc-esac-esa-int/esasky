@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HTML;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.view.common.Toggler;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
@@ -38,7 +39,7 @@ public class MOCTooltip extends Tooltip {
     	    HTML wavelengthInfo = new HTML("(" + WavelengthUtils.getShortName(mocInfo.descriptor) + ")");
     	    wavelengthInfo.addStyleName("mocTooltip__wavelength");
     	    container.add(new HTML("<h2>" + mocInfo.descriptor.getGuiShortName() + "</h2>" + wavelengthInfo));
-    	    container.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_count") + ":</b> " + mocInfo.count));
+    	    container.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_count") + ":</b> " + NumberFormatter.formatToNumberWithSpaces(mocInfo.count)));
 
     	    
     	    

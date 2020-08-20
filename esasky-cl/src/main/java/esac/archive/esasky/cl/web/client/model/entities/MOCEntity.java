@@ -327,7 +327,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	else {
     		count = currentVisibleCount;
     		text = TextMgr.getInstance().getText("MOC_count_text");
-    		text = text.replace("$limit$", Integer.toString(descriptor.getShapeLimit()));
+    		text = text.replace("$limit$", NumberFormatter.formatToNumberWithSpaces(descriptor.getShapeLimit()));
     	}
 
     	String countString = NumberFormatter.formatToNumberWithSpaces(count);

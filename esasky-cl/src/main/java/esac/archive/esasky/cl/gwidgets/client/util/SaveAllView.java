@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.DDRequestForm;
 
 public class SaveAllView {
@@ -82,7 +83,7 @@ public class SaveAllView {
 	public final void updateNumberOfSelectedElementsLabel(final int newNumberOfSelectedElements) {
 		enableDownloadProductsAnchor(newNumberOfSelectedElements > 0);
 		final String count = (newNumberOfSelectedElements > 0) ? newNumberOfSelectedElements + "" : "0";
-		downloadProdAnchor.setText("Data products ($COUNT$ selected)".replace("$COUNT$", count));
+		downloadProdAnchor.setText(TextMgr.getInstance().getText("DownloadDataProducts").replace("$COUNT$", NumberFormatter.formatToNumberWithSpaces(count)));
 	}
 	
 	public void setProductsDownloadVisible(boolean visible) {
