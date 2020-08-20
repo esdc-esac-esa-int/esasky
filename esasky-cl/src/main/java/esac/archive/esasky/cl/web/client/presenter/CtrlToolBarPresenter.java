@@ -395,8 +395,7 @@ public class CtrlToolBarPresenter {
             final boolean isLastLink = (appendedLinks == valueList.length -1);
             
                 sb.appendHtmlConstant("<a href='" + finalURL
-                                        + "' onclick=\"trackOutboundLink('" + finalURL
-                                        + "'); event.stopPropagation(); return false; \" target='_blank' " + styleStr + ">"
+                                        + "' onclick=\"esasky.trackOutbound(this)\" target='_blank' " + styleStr + ">"
                                         + value + ((!isLastLink) ? "," : "" ) + "</a>&nbsp;");
                 
                 if (appendedLinks > maxLinks && !showAllAppended && !isLastLink) {
@@ -457,8 +456,7 @@ public class CtrlToolBarPresenter {
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
         
         sb.appendHtmlConstant("<a href='" + finalURI.toString()
-                + "' onclick=\"trackOutboundLink('" + finalURI.toString()
-                + "'); return false; \" target='_blank' >"
+                + "' onclick=\"esasky.trackOutbound(this)\" target='_blank' >"
                 + value + "</a>");
      
         return sb.toSafeHtml();

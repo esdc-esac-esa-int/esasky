@@ -23,6 +23,10 @@ public class ESASkyJavaScriptLibrary {
                 }
             });
         }
+        $wnd.esasky.trackOutbound = function(element) {
+            $wnd._paq.push(['trackEvent', 'Outbound', 'Click', element.href]);
+        }
+        
     }-*/;
         
     private static native void createLinkListFormatter() /*-{
@@ -36,8 +40,7 @@ public class ESASkyJavaScriptLibrary {
             valueList.forEach(function(item, index, array){
                 var url = "https://ui.adsabs.harvard.edu/#search/q=author%3A%22" + encodeURIComponent(item) + "%22&sort=date%20desc%2C%20bibcode%20desc";
                 var isLastLink = (appendedLinks == valueList.length - 1);
-                linkList += "<a href='" + url + "' onclick=\"trackOutboundLink('" + url 
-                    + "'); event.stopPropagation(); return false; \" target='_blank' " 
+                linkList += "<a href='" + url + "' target='_blank' onclick=\"esasky.trackOutbound(this); event.stopPropagation();\"" 
                     + styleStr + ">" + item + ((!isLastLink) ? "," : "" ) + "</a>&nbsp;";
                                         
                 if (appendedLinks > maxShowingLinks && !showAllAppended && !isLastLink) {

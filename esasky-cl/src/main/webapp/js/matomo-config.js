@@ -2,6 +2,7 @@
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   var siteId = '@matomo.site.id@';
   if(siteId == '2' || siteId == '3'){
+  	_paq.push(['alwaysUseSendBeacon']);
   	_paq.push(['trackPageView']);
   	_paq.push(['enableLinkTracking']);
   	(function() {
