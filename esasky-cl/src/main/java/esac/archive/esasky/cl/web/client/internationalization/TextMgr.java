@@ -85,7 +85,7 @@ public class TextMgr {
 					DisplayUtils.showMessageDialogBox(
 							"If you have time, please consider informing us by reporting the following keys to esdc_esasky@sciops.esa.int: "
 							+ missedTranslationList, 
-							"Missing translations (This dialog is deactivated in operational versions)", UUID.randomUUID().toString());
+							"Missing translations (This dialog is deactivated in operational versions)", UUID.randomUUID().toString(), "MissingTranslationsDialog");
 				}
 			}
 		}.scheduleRepeating(15000);
