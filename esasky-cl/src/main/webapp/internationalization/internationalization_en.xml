@@ -3186,7 +3186,7 @@
 	</text>
 
 	<text key="tabulator_rowCount">
-		#Rows: $count$
+		Rows: $count$
 	</text>
 	<text key="tabulator_accessEstSize_header">
 		File Size
@@ -3230,12 +3230,14 @@
 	<text key="MocTooltip_count">
 		Count
 	</text>
-	<text key="MocTooltip_order">
-		Order
+	<text key="Infrared">
+		Infrared
 	</text>
-	<text key="MocTooltip_ipix">
-		Ipix
+	<text key="IR">
+		IR
 	</text>
-
+	<text key="X-ray">
+		X-ray
+	</text>
 
 </Internationalization>
