@@ -33,6 +33,7 @@ import esac.archive.esasky.cl.web.client.repository.MocRepository.MocLoadedObser
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
@@ -155,32 +156,13 @@ public class MOCEntity implements GeneralEntityInterface {
 		return tablePanel;
 	}
 
-	public String MOCClicked(final String orders, final String ipixels, String counts) {
-    	Log.debug("[MOCEntity] MOCClicked " + orders + ", " + ipixels );
-    	String tooltipText = "";
-    	String[] orderArray = orders.split(",");
-    	String[] ipixArray = ipixels.split(",");
-    	String[] countsArray = counts.split(",");
-    	for(int i = 0; i < orderArray.length; i++) {
-    	
-    		int order = Integer.parseInt(orderArray[i]);
-    		int ipix = Integer.parseInt(ipixArray[i]);
-    		int count = Integer.parseInt(countsArray[i]);
-			
-    		if(count > 0) {
-				tooltipText += descriptor.getGuiLongName() + ": Order: " + order + " Ipix: " + ipix + " Count: " + count + "<br>\n";
-			}
-    	}
-		return tooltipText;
-		
-    }
-    
     public void sendLoadQuery() {
 
 		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
     	
     	String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
     	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
+    	parentEntity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     	shouldBeShown = false;
     	clearAll();
     	updateOverlay();

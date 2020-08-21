@@ -9,6 +9,8 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
+
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -31,6 +33,7 @@ import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -351,7 +354,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	String filter = tablePanel.getFilterString();
         adql += filter;
         
-        MainPresenter.getInstance().getRelatedMetadata(descriptor, adql);
+        GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(descriptor);
+        MainPresenter.getInstance().getRelatedMetadata(entity, adql);
+        GeneralJavaScriptObject positionInfo = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getQ3CIpix2Ang(mocInfo.order, mocInfo.ipix);
+        GeneralJavaScriptObject center = positionInfo.getProperty("center");
+        entity.setSkyViewPosition(new SkyViewPosition(new Coordinate(center.getDoubleProperty("0"), center.getDoubleProperty("1")), positionInfo.getDoubleProperty("fov")));
     	
     }
 

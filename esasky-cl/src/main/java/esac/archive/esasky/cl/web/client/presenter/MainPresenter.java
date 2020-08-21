@@ -287,8 +287,8 @@ public class MainPresenter {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor));
     }
 
-    public void getRelatedMetadata(IDescriptor descriptor, String adql) {
-    	resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);
+    public void getRelatedMetadata(GeneralEntityInterface entity, String adql) {
+    	resultsPresenter.getMetadata(entity, adql);
     }
 
     public void showUserRelatedMetadata(IDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
