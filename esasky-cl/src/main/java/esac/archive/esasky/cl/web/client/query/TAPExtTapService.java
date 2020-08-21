@@ -1,7 +1,5 @@
 package esac.archive.esasky.cl.web.client.query;
 
-import java.util.ArrayList;
-
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -212,35 +210,11 @@ public class TAPExtTapService extends AbstractTAPService {
     
 	@Override
 	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
-		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	private int getNorderFromFov() {
-		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
-		if(fov > 60) {
-			return 3;
-		}
-		else if(fov > 40) {
-			return 4;
-		}
-		else if(fov > 20) {
-			return 5;
-		}
-		else if(fov > 10) {
-			return 6;
-		}
-		else if(fov > 5) {
-			return 7;
-		}
-		else {
-			return 8;
-		}
 	}
 
 	@Override
 	public String getMetadataAdql(IDescriptor descriptor, String filter) {
-		// TODO proper filtering
 		return getMetadataAdql(descriptor);
 	}
 
