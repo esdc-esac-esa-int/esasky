@@ -8,6 +8,7 @@ import java.util.Map;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -15,7 +16,6 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
@@ -44,7 +44,6 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
 import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -311,27 +310,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public JSONObject exportAsJSON() {
-		JSONObject jsonData = new JSONObject();
-		TapRowList rowList = getEntity().getMetadata();
-		if (rowList == null) {
-			return new JSONObject();
-		}
-
-		for (int rowIndex = 0; rowIndex < rowList.getData().size(); rowIndex++) {
-			JSONObject rowData = new JSONObject();
-			for (int cellIndex = 0; cellIndex < rowList.getMetadata().size(); cellIndex++) {
-				Object cellData = rowList.getData().get(rowIndex).get(cellIndex);
-				String cellString;
-				if (cellData != null) {
-					cellString = cellData.toString();
-				} else {
-					cellString = "";
-				}
-				rowData.put(rowList.getMetadata().get(cellIndex).getName(), new JSONString(cellString));
-			}
-			jsonData.put(Integer.toString(rowIndex), rowData);
-		}
-		return jsonData;
+	    return new JSONObject(JsonUtils.safeEval(table.exportTableAsJson()));
 	}
 
 	public void exportAsCsv() {
@@ -499,7 +478,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		if(!filterObservers.contains(observer)) {
 			filterObservers.add(observer);
 		}
-		
 	}
 	
 	private void notifyFilterObservers() {

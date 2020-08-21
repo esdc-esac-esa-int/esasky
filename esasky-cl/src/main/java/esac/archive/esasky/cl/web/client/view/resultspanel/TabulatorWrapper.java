@@ -194,6 +194,20 @@ public class TabulatorWrapper{
         return tableJsObject.getVoTableString(tableJsObject.getSelectedRows().length > 0 
             ? tableJsObject.modules.download.generateExportList("selected") : tableJsObject.modules.download.generateExportList("active"), resourceName);
     }-*/;
+    
+    public String exportTableAsJson(){
+        return exportTableAsJson(tableJsObject);
+    }
+    
+    private native String exportTableAsJson(GeneralJavaScriptObject tableJsObject)/*-{
+        var json = "";
+        tableJsObject.modules.download.download("json", "json.json", {}, tableJsObject.getSelectedRows().length > 0 
+            ? "selected" : "active", function(data){
+                json = data;
+                return false;
+            });
+            return json;
+    }-*/;
 
     public GeneralJavaScriptObject[] getSelectedRows(){
         return getSelectedRows(tableJsObject);
