@@ -1,16 +1,19 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -20,6 +23,8 @@ import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton.SignType;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
 public class StylePanel extends DialogBox {
@@ -244,15 +249,33 @@ public class StylePanel extends DialogBox {
 	
     private void initInteractiveElements() {
         createColorPicker(this, primaryShapeColorPickerId, primaryShapeColorPickerId + "_Container", primaryColor);
+        
+        addCloseButtonToColorPicker(primaryShapeColorPickerId);
+        
         createSlider(this, primaryShapeSizeId);
         
         if (secondaryShapeColorPickerId != null) {
             createColorPicker(this, secondaryShapeColorPickerId, secondaryShapeColorPickerId + "_Container", secondaryColor);
+            addCloseButtonToColorPicker(secondaryShapeColorPickerId);
             if (secondaryShapeScaleId != null) {
             	createSlider(this, secondaryShapeScaleId);
             }
         }
         interactiveElementsHaveBeenInitialized = true;
+    }
+    
+    private void addCloseButtonToColorPicker(String colorPickerId) {
+        SignButton closePrimaryColorPickerButton = new SignButton(SignType.MINUS);
+        closePrimaryColorPickerButton.addStyleName("colorPicker__closeButton");
+        closePrimaryColorPickerButton.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                hideColorPickers();
+            }
+        });
+        
+        HTMLPanel.wrap(Document.get().getElementById(colorPickerId)).add(closePrimaryColorPickerButton);
     }
     
 	public void toggle() {
@@ -266,7 +289,10 @@ public class StylePanel extends DialogBox {
     public void hide(boolean autoClosed){
         timeLastHiddenTime = System.currentTimeMillis();
         super.hide(autoClosed);
-
+        hideColorPickers();
+    }
+    
+    private void hideColorPickers() {
         hideColorPicker(primaryShapeColorPickerId);
         
         if (secondaryShapeColorPickerId != null) {
@@ -345,10 +371,42 @@ public class StylePanel extends DialogBox {
     private void fireColorChangedEvent(String colorPickerId, String color) {
         if (colorPickerId.equals(primaryShapeColorPickerId)) {
         	primaryColor = color;
-            stylePanelCallback.onShapeColorChanged(color);
+            shapeColorChangedTimer.onColorChange(color);
         } else if (colorPickerId.equals(secondaryShapeColorPickerId)) {
         	secondaryColor = color;
-            stylePanelCallback.onSecondaryColorChanged(color);
+        	secondaryColorChangedTimer.onColorChange(color);
+        }
+    }
+    
+    private ShapeColorChangedTimer shapeColorChangedTimer = new ShapeColorChangedTimer(false);
+    private ShapeColorChangedTimer secondaryColorChangedTimer = new ShapeColorChangedTimer(true);
+    
+    private class ShapeColorChangedTimer extends Timer{
+        private boolean isSecondaryColor;
+        private String color;
+        private long timeAtLastRun;
+        
+        public ShapeColorChangedTimer(boolean isSecondaryColor) {
+            super();
+            this.isSecondaryColor = isSecondaryColor;
+        }
+        @Override
+        public void run() {
+            if(isSecondaryColor) {
+                stylePanelCallback.onSecondaryColorChanged(color);
+            } else {
+                stylePanelCallback.onShapeColorChanged(color);
+            }
+            timeAtLastRun = System.currentTimeMillis();
+        }
+        
+        public void onColorChange(String newColor) {
+            color = newColor;
+            if(System.currentTimeMillis() - timeAtLastRun > 100) {
+                run();
+            } else {
+                schedule(100);
+            }
         }
     }
     

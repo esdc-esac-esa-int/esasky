@@ -126,3 +126,9 @@
 .arrowAvgCheckBox input, .arrowAvgCheckBox label {
     vertical-align: middle;
 }
+
+.colorPicker__closeButton{
+	position: absolute;
+	top: 5px;
+	right: 10px;
+}
