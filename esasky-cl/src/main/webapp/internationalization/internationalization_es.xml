@@ -132,9 +132,6 @@
 	<text key="treeMap_SSO">
 		Observaciones de objetos del Sistema Solar (OSS)
 	</text>
-	<text key="treeMap_EXT_TAP">
- 		Servicios TAP externos
- 	</text>
 	<text key="treeMap_loading_ASTRO_IMAGING">
 		Cargando observaciones...
 	</text>
@@ -147,9 +144,6 @@
 	<text key="treeMap_loading_SSO">
 		Cargando observaciones del Sistema Solar...
 	</text>
-	<text key="treeMap_loading_EXT_TAP">
-		Cargando datos de servicios TAP externos...
-	</text>
 	<text key="treeMap_noData_ASTRO_IMAGING">
 		No se encontraron observaciones.
 	</text>
@@ -161,9 +155,6 @@
 	</text>
 	<text key="treeMap_noData_SSO">
 		No se encontraron observaciones del Sistema Solar.
-	</text>
-	<text key="treeMap_noData_EXT_TAP">
-		No se encontraron datos de servicios TAP externos
 	</text>
 	<text key="treeMap_nameOfSelectedLabel">
 		OSS: $SSONAME$ ($SSOTYPE$)
@@ -180,9 +171,6 @@
 	</text>
 	<text key="treeMap_notInRange_SSO">
 		Ninguna observaci&#xF3;n de objetos del sistema solar encontrada en este rango de longitudes de onda.
-	</text>
-	<text key="treeMap_notInRange_EXT_TAP">
-		Ning&#xFA;n dato de taps externos encontrado en este rango de longitudes de onda.
 	</text>
 
 	<!-- HiPS Details Popup -->
@@ -349,9 +337,6 @@
 	</text>
 	<text key="webConstants_exploreRandomTarget">
 		Investigue un objeto aleatorio
-	</text>
-	<text key="webConstants_exploreExtTaps">
-		Inspeccione datos de servicios TAP externos en esta región
 	</text>
 
 	<!-- displayUtils -->
@@ -2350,8 +2335,7 @@
 	  que disponen de ese tipo de producto.
 	&lt;br&gt;&lt;br&gt;
 	Al pinchar en una colecci&#243;n se cargar&#225;n los datos en el panel y se mostrar&#225;n las correspondientes
-	 huellas de las observaciones. Si el campo de visi&#243;n es mayor de 10&#176; se mostrar&#225; el mapa de
-	 cobertura en lugar de las observaciones individuales.
+	 huellas de las observaciones.
 	</text>
 	
 	<text key="ResizingDataPanel">

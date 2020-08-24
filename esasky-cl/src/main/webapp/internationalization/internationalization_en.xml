@@ -216,9 +216,6 @@
 	<text key="treeMap_SSO">
 		Solar System Object Observations
 	</text>
-	<text key="treeMap_EXT_TAP">
-		External TAP Services
-	</text>
 	<text key="treeMap_loading_ASTRO_IMAGING">
 		Loading Observations
 	</text>
@@ -227,9 +224,6 @@
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
 		Loading Spectra
-	</text>
-	<text key="treeMap_loading_EXT_TAP">
-		Loading data from external TAP services
 	</text>
 	<text key="treeMap_loading_SSO">
 		Loading Solar System Objects
@@ -246,9 +240,6 @@
 	<text key="treeMap_noData_SSO">
 		No SSO Observations Found
 	</text>
-	<text key="treeMap_noData_EXT_TAP">
-		No External TAP Data Found
-	</text>
 	<text key="treeMap_nameOfSelectedLabel">
 		SSO: $SSONAME$ ($SSOTYPE$)
 	</text>
@@ -263,9 +254,6 @@
 	</text>
 	<text key="treeMap_notInRange_SSO">
 		No SSO Observations found in this wavelength range.
-	</text>
-	<text key="treeMap_notInRange_EXT_TAP">
-		No data from external taps found in this wavelength range.
 	</text>
 
 	<!-- Sky -->
@@ -534,9 +522,6 @@
 	</text>
 	<text key="webConstants_exploreData">
 		Explore data for $TARGET$
-	</text>
-	<text key="webConstants_exploreExtTaps">
-		Explore data from External TAP services in this region
 	</text>
 	<text key="webConstants_trackSSO">
 		Track solar system objects through the search box
@@ -2899,7 +2884,7 @@
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
 		<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external data Services
+		In ESASky you can now explore data from external data centres
 		which conforms with Virtual Observatory (IVOA) standards.
 
 		Services which have any data in the current region will appear
@@ -2908,8 +2893,7 @@
 		on a prdouct type will show the available collections these product exist in.
 
 		Clicking on the collection/facility will load the data into the data panel and display
-		the corresponding footprints in the sky. For FoV larger than 10° a map of observation coverage (MOC)
-		 of the available regions will be shown instead.
+		the corresponding footprints in the sky.
 		</text>
 
 
@@ -3084,12 +3068,9 @@
 	<text key="tabulator_sendToVOApplicationHeader">
 		Send
 	</text>
-	
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		Send data product to Virtual Observatory application
 	</text>
-
-	
 	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
 		External data provided by 
 		&lt;a
@@ -3242,6 +3223,22 @@
 	<text key="DownloadDataProducts">
 		Data products ($COUNT$ selected)
 	</text>
-	
-
+	<text key="treeMap_notInRange_EXT_TAP">
+		No data from external data centres found in this wavelength range.
+	</text>
+	<text key="webConstants_exploreExtTaps">
+		Explore data from external data centres in this region
+	</text>
+	<text key="treeMap_noData_EXT_TAP">
+		No Data Found in External Data Centres
+	</text>
+	<text key="treeMap_loading_EXT_TAP">
+		Loading data from external data centres
+	</text>
+	<text key="treeMap_EXT_TAP">
+		External Data Centres
+	</text>
+	<text key="mocDialog_loadData">
+		Load Data
+	</text>
 </Internationalization>

@@ -1318,20 +1318,8 @@
 	<text key="searchPanel_targetNotFound">
 		未找到
 	</text>
-	<text key="treeMap_EXT_TAP">
-		TAP服务
-	</text>
-	<text key="treeMap_loading_EXT_TAP">
-		从外部TAP服务导入数据
-	</text>
-	<text key="treeMap_noData_EXT_TAP">
-		没有找到外部TAP数据
-	</text>
 	<text key="ctrlToolBarPresenter_loadingAuthorSources">
 		在$AUTHOR$的文献中搜寻目标
-	</text>
-	<text key="webConstants_exploreExtTaps">
-		从外部TAP服务导入数据
 	</text>
 	<text key="PreviewDialog_loading_postcard">
 		加载预览
@@ -1472,9 +1460,6 @@
 	</text>
 	<text key="treeMap_notInRange_SSO">
 		在此波长范围内未找到太阳系天体观测数据
-	</text>
-	<text key="treeMap_notInRange_EXT_TAP">
-		在此波长范围内未找到外部VO数据
 	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-OPTICAL">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
@@ -1712,7 +1697,7 @@
 	
 		在当前视图中有数据的服务都会出现在树状图中。点击一个服务将显示当前视图中可用的数据产品类型（图像、光谱等）。点击产品类型将显示该类产品包含的全部数据集。
 		
-    点击数据集或设备将加载其数据到数据面板，同时显示数据的天区覆盖。当视场大于10°时则使用MOC显示其大致覆盖区。
+    点击数据集或设备将加载其数据到数据面板，同时显示数据的天区覆盖。
 	</text>
 	
 	
