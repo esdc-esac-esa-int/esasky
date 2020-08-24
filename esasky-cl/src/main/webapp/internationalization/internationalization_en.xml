@@ -3219,7 +3219,6 @@
 	<text key="X-ray">
 		X-ray
 	</text>
-	<!-- internationalization_es.xml is up to date for everything above -->
 	<text key="DownloadDataProducts">
 		Data products ($COUNT$ selected)
 	</text>
@@ -3241,4 +3240,5 @@
 	<text key="mocDialog_loadData">
 		Load Data
 	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

@@ -2960,5 +2960,26 @@
 	<text key="X-ray">
 		Rayos-X
 	</text>
+	<text key="DownloadDataProducts">
+		Productos de datos ($COUNT$ seleccionados)
+	</text>
+	<text key="treeMap_notInRange_EXT_TAP">
+		No se han encontrado datos de Centros de Datos externos en este rango de longitud de onda.
+	</text>
+	<text key="webConstants_exploreExtTaps">
+		Explorar datos de Centros de Datos externos en esta region
+	</text>
+	<text key="treeMap_noData_EXT_TAP">
+		No se han encontrado datos en Centros de Datos externos
+	</text>
+	<text key="treeMap_loading_EXT_TAP">
+		Cargando datos de Centros de Datos externos
+	</text>
+	<text key="treeMap_EXT_TAP">
+		Centros de Datos externos
+	</text>
+	<text key="mocDialog_loadData">
+		Cargando datos
+	</text>
 </Internationalization>
 
