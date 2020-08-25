@@ -287,6 +287,14 @@ public class MainPresenter {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor));
     }
 
+    public void getRelatedMetadataWithoutMOC(IDescriptor descriptor) {
+    	resultsPresenter.getMetadataWithoutMOC(entityRepo.createEntity(descriptor));
+    }
+
+    public void getRelatedMetadata(IDescriptor descriptor, String adql) {
+    	resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);
+    }
+    
     public void getRelatedMetadata(GeneralEntityInterface entity, String adql) {
     	resultsPresenter.getMetadata(entity, adql);
     }

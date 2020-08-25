@@ -198,6 +198,15 @@ public class ResultsPresenter implements ICountRequestHandler {
                 TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
         entity.fetchData();
     }
+   
+    protected final void getMetadataWithoutMOC(final GeneralEntityInterface entity) {
+    	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
+    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+    	
+    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
+    			TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
+    	entity.fetchDataWithoutMOC();
+    }
     
     protected final void getMetadata(final GeneralEntityInterface entity, String adql) {
     	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";

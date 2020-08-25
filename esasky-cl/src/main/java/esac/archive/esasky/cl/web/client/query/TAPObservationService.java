@@ -41,9 +41,9 @@ public class TAPObservationService extends AbstractTAPService {
         String adql;
         
         if(Modules.toggleColumns) {
-            adql = "SELECT *";
+            adql = "SELECT TOP " + descriptor.getShapeLimit()  + " *";
         } else {
-            adql = "SELECT ";
+            adql = "SELECT TOP " + descriptor.getShapeLimit() + " ";
             for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
                 MetadataDescriptor castMetadata = currMetadata;
                 adql += " " + castMetadata.getTapName() + ", ";

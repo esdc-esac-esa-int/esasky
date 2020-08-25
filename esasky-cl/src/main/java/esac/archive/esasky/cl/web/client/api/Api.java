@@ -46,7 +46,6 @@ import esac.archive.esasky.cl.web.client.api.model.FootprintListOverlay;
 import esac.archive.esasky.cl.web.client.api.model.GeneralSkyObject;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.MetadataAPI;
-import esac.archive.esasky.cl.web.client.api.model.Source;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
@@ -278,6 +277,7 @@ public class Api {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
 		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		JSONObject callback = tablePanel.exportAsJSON();
+		sendBackToWidget(callback, msg);
 		if(callback.size() == 0) {
 			tablePanel.registerObserver( new TableObserver() {
 
@@ -353,7 +353,7 @@ public class Api {
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs);
+			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Image observations from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -390,7 +390,7 @@ public class Api {
 		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs);
+			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -426,7 +426,7 @@ public class Api {
 		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadata(currObs);
+			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Spectra from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -527,7 +527,7 @@ public class Api {
 			JSONObject obsCount = new  JSONObject();
 			
 			for (BaseDescriptor currObs : descriptors.getDescriptors()) {
-				obsCount.put(currObs.getDescriptorId(), new JSONNumber(countStatus.getCount(currObs)));
+				obsCount.put(currObs.getMission(), new JSONNumber(countStatus.getCount(currObs)));
 			}
 			
 			obsCount.put("Total", new JSONNumber(countStatus.getTotalCount()));		
@@ -763,40 +763,6 @@ public class Api {
 		//AladinLiteWrapper.getInstance().setColorPalette(colorPaletteEnum);
 	}
 	
-
-	public void overlayFootprints(String footprintsSetJSON) {
-
-		FootprintsSetMapper mapper = GWT.create(FootprintsSetMapper.class);
-
-		FootprintListJSONWrapper footprintsSet = (FootprintListJSONWrapper) mapper.read(footprintsSetJSON);
-
-		JavaScriptObject overlay;
-		FootprintListOverlay footprintList = (FootprintListOverlay) footprintsSet.getOverlaySet();
-		
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayFootprints, footprintList.getOverlayName());
-
-		if (setOfFootprints.containsKey(footprintList.getOverlayName())) {
-			overlay = setOfFootprints.get(footprintList.getOverlayName());
-		} else {
-			overlay = AladinLiteWrapper.getAladinLite().createOverlay(footprintList.getOverlayName(),
-					footprintList.getColor());
-			setOfFootprints.put(footprintList.getOverlayName(), overlay);
-		}
-		for (Object currSkyObj : footprintList.getSkyObjectList()) {
-			Footprint currFoot = (Footprint) currSkyObj;
-			GeneralJavaScriptObject footprintJS = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(currFoot.getStcs(),
-					currFoot.getId());
-			footprintJS.getProperty("0").setProperty("name", currFoot.getName());
-			AladinLiteWrapper.getAladinLite().addFootprintToOverlay(overlay, footprintJS);
-		}
-//		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
-//				.initUserDescriptor(metadata, footprintsSet);
-//		controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), true);
-
-		AladinLiteWrapper.getAladinLite().goToRaDec(((Footprint) footprintList.getSkyObjectList().get(0)).getRa_deg(),
-				((Footprint) footprintList.getSkyObjectList().get(0)).getDec_deg());
-	}
-
 	public void overlayFootprints(String footprintsSetJSON, boolean shouldBeInTablePanel) {
 
 		FootprintsSetMapper mapper = GWT.create(FootprintsSetMapper.class);
@@ -873,31 +839,28 @@ public class Api {
 
 	}
 
-	public void clearFootprints(String overlayName) {
+	public void removeOverlay(String overlayName, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, overlayName);
-		JavaScriptObject overlay;
-		if (setOfFootprints.containsKey(overlayName)) {
-			overlay = setOfFootprints.get(overlayName);
-			AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(overlay);
+		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+		if (ent != null) {
+			ent.clearAll();
+			EntityRepository.getInstance().removeEntity(ent);
+		}
+		else{
+			JSONObject callbackMessage = new JSONObject();
+			callbackMessage.put("message", new JSONString("No overlay with name: " + overlayName + " active:\n Check getActiveOverlays() for available overlays"));
+			sendBackToWidget(null, callbackMessage, widget);
 		}
 	}
 
-	public void deleteFootprints(String overlayName) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_deleteFootprintsOverlay, overlayName);
-		JavaScriptObject overlay;
-		if (setOfFootprints.containsKey(overlayName)) {
-			overlay = setOfFootprints.get(overlayName);
-			AladinLiteWrapper.getAladinLite().removeAllFootprintsFromOverlay(overlay);
-			overlay = null;
-			setOfFootprints.remove(overlayName);
-		}
-	}
-
-	public void overlayCatalogueWithData(String userCatalogueJSON) {
+	public void overlayCatalogue(String userCatalogueJSON, boolean shouldBeInTablePanel) {
 
 
 		CatalogueMapper mapper = GWT.create(CatalogueMapper.class);
 		try {
+			
+			userCatalogueJSON = userCatalogueJSON.replace("\"ra\":", "\"ra_deg\":");
+			userCatalogueJSON = userCatalogueJSON.replace("\"dec\":", "\"dec_deg\":");
 			SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(userCatalogueJSON);
 			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayCatalogueWithDetails, userCatalogue.getOverlaySet().getOverlayName());
 
@@ -946,7 +909,7 @@ public class Api {
 
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, userCatalogue);
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), true);
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), shouldBeInTablePanel);
 
 		} catch (Exception ex) {
 			Log.error(ex.getMessage());
@@ -969,89 +932,6 @@ public class Api {
 		}
 
 		AladinLiteWrapper.getAladinLite().goToRaDec(raDeg, decDeg);
-	}
-
-	public void overlayCatalogue(String catalogueJSON) {
-
-		CatalogueMapper mapper = GWT.create(CatalogueMapper.class);
-		SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(catalogueJSON);
-
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayCatalogue, userCatalogue.getOverlaySet().getOverlayName());
-
-		CoordinatesFrame convertToFrame = null;
-
-		// TODO TO BE REVIEWED. this is not te linewidth but the square size
-		int sourceSize = userCatalogue.getOverlaySet().getLineWidth();
-		if (sourceSize < 6) {
-			sourceSize = 6;
-		}
-
-		if ("".equals(userCatalogue.getOverlaySet().getOverlayName())
-				|| userCatalogue.getOverlaySet().getOverlayName() == null) {
-			userCatalogue.getOverlaySet().setOverlayName("user catalogue");
-		}
-
-		if (!userCatalogue.getOverlaySet().getCooframe().equals(AladinLiteWrapper.getCoordinatesFrame().getValue())) {
-			if (AladinLiteWrapper.getCoordinatesFrame() == CoordinatesFrame.GALACTIC) {
-				convertToFrame = CoordinatesFrame.GALACTIC;
-			} else {
-				convertToFrame = CoordinatesFrame.J2000;
-			}
-		} else if (userCatalogue.getOverlaySet().getCooframe()
-				.equals(AladinLiteWrapper.getCoordinatesFrame().getValue())
-				&& userCatalogue.getOverlaySet().getCooframe().equals(CoordinatesFrame.GALACTIC.getValue())) {
-			convertToFrame = CoordinatesFrame.J2000;
-		}
-
-		// check if the catalogue already exists
-		JavaScriptObject catalogueOverlay;
-		if (userCatalogues.containsKey(userCatalogue.getOverlaySet().getOverlayName())) {
-			catalogueOverlay = userCatalogues.get(userCatalogue.getOverlaySet().getOverlayName());
-		} else {
-			catalogueOverlay = AladinLiteWrapper.getAladinLite().createCatalog(
-					userCatalogue.getOverlaySet().getOverlayName(), userCatalogue.getOverlaySet().getColor(),
-					sourceSize);
-		}
-
-		// loop over SourceAPI obj and add them to the created Aladin Catalogue
-		Map<String, String> details = new HashMap<String, String>();
-
-		for (Object currSkyObj : userCatalogue.getOverlaySet().getSkyObjectList()) {
-
-			Source currSource = (Source) currSkyObj;
-
-			details = new HashMap<String, String>();
-			details.put("name", currSource.getName());
-			details.put("id", Integer.toString(currSource.getId()));
-
-			JavaScriptObject source = AladinLiteWrapper.getAladinLite().newApi_createSourceJSObj(currSource.getRa(),
-					currSource.getDec(), details);
-			AladinLiteWrapper.getAladinLite().newApi_addSourceToCatalogue(catalogueOverlay, source);
-		}
-		userCatalogues.put(userCatalogue.getOverlaySet().getOverlayName(), catalogueOverlay);
-
-		SourceListOverlay sourceList = (SourceListOverlay) userCatalogue.getOverlaySet();
-		Source firstSource = ((Source) sourceList.getSkyObjectList().get(0));
-
-		centerAladinLite(firstSource.getRa(), firstSource.getDec(), convertToFrame);
-	}
-
-	public void clearCatalogue(String catalogueName) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearCatalogue, catalogueName);
-		// remove all sources from the catalogue but not the catalogue itself
-		if (userCatalogues.containsKey(catalogueName)) {
-			AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(userCatalogues.get(catalogueName));
-		}
-	}
-
-	public void removeCatalogue(String catalogueName) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeCatalogue, catalogueName);
-		// Remove the catalogue from the map
-		if (userCatalogues.containsKey(catalogueName)) {
-			JavaScriptObject overlay = userCatalogues.get(catalogueName);
-			AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(overlay);
-			userCatalogues.remove(catalogueName);
-		}
 	}
 
 	public void getAvailableHiPS(String wavelength, JavaScriptObject widget) {
@@ -1149,14 +1029,22 @@ public class Api {
 	}
 	
 	public void getActiveOverlays(JavaScriptObject widget) {
-		List<String> list = EntityRepository.getInstance().getAllEntityNames();
+		List<GeneralEntityInterface> list = EntityRepository.getInstance().getAllEntities();
 	
 		JSONArray arr = new JSONArray();
-		for(String ent : list) {
-			arr.set(arr.size(),new JSONString(ent));
+		for(GeneralEntityInterface ent : list) {
+			arr.set(arr.size(),new JSONString(ent.getEsaSkyUniqId()));
 		}
 		JSONObject result = new JSONObject();
 		result.put("Overlays", arr);
 		sendBackToWidget(result, widget);
 	}
+
+	public void clearAllOverlays() {
+		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
+			ent.clearAll();
+			EntityRepository.getInstance().removeEntity(ent);
+		}
+	}
+
 }

@@ -84,6 +84,10 @@ public class EntityRepository {
     	return list;
     }
 
+    public List<GeneralEntityInterface> getAllEntities() {
+    	return allEntities;
+    }
+
     public GeneralEntityInterface createEntity(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = null;
         if (descriptor instanceof SSODescriptor) {

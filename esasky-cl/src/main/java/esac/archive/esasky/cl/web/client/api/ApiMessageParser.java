@@ -120,13 +120,15 @@ public class ApiMessageParser {
 			case 'clearFootprintsOverlay':
 				console.log('clearFootprintsOverlay event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::clearFootprints(Ljava/lang/String;)(msg.content.overlayName);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, e);
 				break;
-				
+
 			case 'deleteFootprintsOverlay':
 				console.log('deleteFootprintsOverlay event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::deleteFootprints(Ljava/lang/String;)(msg.content.overlayName);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, e);
 				break;
 
 			case 'setOverlayColor':
@@ -150,36 +152,38 @@ public class ApiMessageParser {
 					(msg.content.overlayName, msg.content.shape, e);
 				break;
 
-			case 'overlayCatalogue':
-				console.log('overlayCatalogue event captured!');
-				console.log(msg);
-				var catJSON = JSON.stringify(msg.content);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogue(Ljava/lang/String;)(catJSON);
-				break;
-				
 			case 'getActiveOverlays':
 				console.log('getActiveOverlays event captured!');
 				console.log(msg);
 				instance.@esac.archive.esasky.cl.web.client.api.Api::getActiveOverlays(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 				break;
 
+			case 'overlayCatalogue':
+				console.log('overlayCatalogue event captured!');
+				console.log(msg);
+				var catJSON = JSON.stringify(msg.content);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogue(Ljava/lang/String;Z)(catJSON, false);
+				break;
+
 			case 'overlayCatalogueWithDetails':
 				console.log('overlayCatalogueWithDetails event captured!');
 				console.log(msg);
 				var userCatalogueJSON = JSON.stringify(msg.content);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogueWithData(Ljava/lang/String;)(userCatalogueJSON);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::overlayCatalogue(Ljava/lang/String;Z)(userCatalogueJSON, true);
 				break;
 			
 			case 'clearCatalogue':
 				console.log('clear catalgue event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::clearCatalogue(Ljava/lang/String;)(msg.content.overlayName);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, e);
 				break;
 
 			case 'deleteCatalogue':
 				console.log('remove catalgue event captured!');
 				console.log(msg);
-				instance.@esac.archive.esasky.cl.web.client.api.Api::removeCatalogue(Ljava/lang/String;)(msg.content.overlayName);
+				instance.@esac.archive.esasky.cl.web.client.api.Api::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.overlayName, e);
 				break;
 
 			case 'getAvailableHiPS':
