@@ -146,7 +146,6 @@ public class MOCEntity implements GeneralEntityInterface {
 				@Override
 				public void onClose() {
 					closingPanel(tablePanel);
-					
 				}
 			});
 		}
@@ -157,7 +156,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
     public void sendLoadQuery() {
-
 		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
     	
     	String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
@@ -409,7 +407,6 @@ public class MOCEntity implements GeneralEntityInterface {
 			@Override
 			public void onClose() {
 				closingPanel(tablePanel);
-				
 			}
 		});
 		
@@ -430,6 +427,11 @@ public class MOCEntity implements GeneralEntityInterface {
 				
 				@Override
 				public void onLoaded() {
+				    if(tablePanel.hasBeenClosed()) {
+				        waitingForHeaders = false;
+				        MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
+				        return;
+				    }
 					if(overlay == null) {
 						String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
 						overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
