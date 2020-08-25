@@ -87,7 +87,7 @@ public class CloseableTabLayoutPanel extends Composite {
         }
     };
     
-    private VerticalPanel tabButtonsPanel;
+    private VerticalPanel shadedArea;
     private EsaSkyButton closeAllButton;
     private EsaSkyButton refreshButton;
     private EsaSkyButton styleButton;
@@ -156,7 +156,6 @@ public class CloseableTabLayoutPanel extends Composite {
     	closeMinimizeButtonsPanel.add(toggleDataPanelButton);
     	closeMinimizeButtonsPanel.add(closeAllButton);
         
-    	buttonsAndObservationPanel.add(closeMinimizeButtonsPanel);
         CommonEventBus.getEventBus().addHandler(DataPanelResizeEvent.TYPE, new DataPanelResizeEventHandler() {
 			
 			@Override
@@ -186,23 +185,24 @@ public class CloseableTabLayoutPanel extends Composite {
         });
 
 
-        tabButtonsPanel = new VerticalPanel();
+        shadedArea = new VerticalPanel();
+        shadedArea.add(closeMinimizeButtonsPanel);
         
         refreshButton = createRefreshButton();
         styleButton = createStyleButton();
         recenterButton = createRecenterButton();
         
-        tabButtonsPanel.add(refreshButton);
-        tabButtonsPanel.add(styleButton);
-        tabButtonsPanel.add(recenterButton);
-        tabButtonsPanel.add(createSendButton());
-        tabButtonsPanel.add(createSaveButton());
+        shadedArea.add(refreshButton);
+        shadedArea.add(styleButton);
+        shadedArea.add(recenterButton);
+        shadedArea.add(createSendButton());
+        shadedArea.add(createSaveButton());
         if(Modules.toggleColumns){
-            tabButtonsPanel.add(createConfigureButton());
+            shadedArea.add(createConfigureButton());
         }
 
-        tabButtonsPanel.addStyleName("tabButtons");
-        buttonsAndObservationPanel.add(tabButtonsPanel);
+        shadedArea.addStyleName("tabButtons");
+        buttonsAndObservationPanel.add(shadedArea);
 
         tabLayout = new ScrollTabLayoutPanel(height, unit, showScroll);
         tabLayout.addSelectionHandler(new SelectionHandler<Integer>() {
@@ -488,6 +488,7 @@ public class CloseableTabLayoutPanel extends Composite {
         
         this.tabs.add(tab);
         this.tabWidgetIds.put(tab, tab.getId());
+        shadedArea.removeStyleName("hidden");
         
         this.tabLayout.add(tabPanel.getWidget(), tab);
         tabPanel.registerObserver(new TableObserver() {
@@ -528,14 +529,11 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     private void setCloseAllButtonVisibility() {
-        closeAllButton.setVisible(this.tabs.size() > 1);
-        int margin = 0;
-        if(Modules.toggleColumns){
-            margin = this.tabs.size() > 1 ? 5 : 33;
+        if(this.tabs.size() > 1) {
+            closeAllButton.removeStyleName("hidden");
         } else {
-            margin = this.tabs.size() > 1 ? 38 : 66;
+            closeAllButton.addStyleName("hidden");
         }
-        tabButtonsPanel.getElement().getStyle().setMarginTop(margin, Unit.PX);
     }
     
     public boolean checkIfIdExists(String id) {
@@ -585,6 +583,7 @@ public class CloseableTabLayoutPanel extends Composite {
         	ResultsPanel.closeDataPanel();
         	toggleDataPanelButton.addStyleName("hidden");
         	closeAllButton.addStyleName("hidden");
+        	shadedArea.addStyleName("hidden");
         }
         setCloseAllButtonVisibility();
     }
