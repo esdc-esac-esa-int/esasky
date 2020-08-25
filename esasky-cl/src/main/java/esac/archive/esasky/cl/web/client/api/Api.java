@@ -277,14 +277,16 @@ public class Api {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
 		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		JSONObject callback = tablePanel.exportAsJSON();
-		sendBackToWidget(callback, msg);
+
 		if(callback.size() == 0) {
 			tablePanel.registerObserver( new TableObserver() {
 
 				@Override
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
 					JSONObject callback = tablePanel.exportAsJSON();
-					sendBackToWidget(callback, msg);
+					JSONObject res = new JSONObject();
+					res.put("value", callback);
+					sendBackToWidget(res, msg);
 					tablePanel.unregisterObserver(this);
 				}
 
@@ -299,7 +301,9 @@ public class Api {
                 }
 			});
 		}else {
-			sendBackToWidget(callback, msg);
+			JSONObject res = new JSONObject();
+			res.put("value", callback);
+			sendBackToWidget(res, msg);
 		}
 	}
 	
