@@ -8144,8 +8144,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 				if (gap > lastCol.getWidth() && flexibleColumns.length > 0) {
 					var extraWidth = (gap - lastCol.getWidth()) / flexibleColumns.length;
+					var roundingError = 0;
 					flexibleColumns.forEach(function (column) {
-						column.setWidth(column.getWidth() + extraWidth);
+						if (lastCol === column) {
+							column.setWidth(column.getWidth() + Math.floor(extraWidth + Math.floor(roundingError)));
+						} else {
+							var newWidth = column.getWidth() + extraWidth;
+							roundingError += newWidth % 1;
+							column.setWidth(Math.floor(newWidth));
+						}
 					});
 				}
 			} else {
