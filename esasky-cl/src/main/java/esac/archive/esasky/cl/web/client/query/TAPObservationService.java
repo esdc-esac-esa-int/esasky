@@ -68,10 +68,13 @@ public class TAPObservationService extends AbstractTAPService {
     
     public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition pos) {
     	String adql;
+    	
+    	int top = getResultsLimit(descriptor.getShapeLimit());
+    	
     	if(Modules.toggleColumns) {
-    	    adql = "SELECT *";
+    	    adql = "SELECT top " + top +  " * ";
     	} else {
-            adql = "SELECT ";
+            adql = "SELECT top " + top + " ";
             for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
                 MetadataDescriptor castMetadata = currMetadata;
                 adql += " " + castMetadata.getTapName() + ", ";

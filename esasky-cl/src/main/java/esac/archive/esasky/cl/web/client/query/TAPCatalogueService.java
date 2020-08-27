@@ -124,7 +124,7 @@ public class TAPCatalogueService extends AbstractTAPService {
             adql = "select top " + top + " *";
             
         } else {
-            adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
+            adql = "select top " + top + " ";
 
             for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
                 if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {

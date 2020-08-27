@@ -601,15 +601,18 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void coneSearch(final SkyViewPosition conePos) {
-        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() ==  0 ) {
-            updateCount(new GetMissionDataCountRequestCallback.OnComplete() {
+        drawer = combinedDrawer;
+        tablePanel.setMOCMode(false);
+        tablePanel.notifyObservers();
 
-                @Override
-                public void onComplete() {
-                    //TODO Fix conesearch
-                }
-            });
-        } 
+        if(mocEntity != null){
+	        mocEntity.clearAll();
+	        mocEntity.setShouldBeShown(false);
+        }
+        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
+
+        clearAll();
+        tablePanel.insertData(url);
     }
 
     @Override
