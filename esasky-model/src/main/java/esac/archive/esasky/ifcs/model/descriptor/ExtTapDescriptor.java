@@ -203,4 +203,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public void setIsObsCore(boolean isObsCore) {
 		this.isObsCore = isObsCore;
 	}
+	
+	public boolean hasParent(ExtTapDescriptor possibleParent) {
+		if(parent != null && (possibleParent == parent || (parent.getParent() != null && possibleParent == parent.getParent()))) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }
