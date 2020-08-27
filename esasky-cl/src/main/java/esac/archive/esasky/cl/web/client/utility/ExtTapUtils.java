@@ -17,7 +17,7 @@ public class ExtTapUtils {
 		collectionDescriptor.setGuiShortName(facilityName);
 		collectionDescriptor.setGuiLongName(collectionDescriptor.getGuiLongName() + "-" + facilityName);
 		collectionDescriptor.setMission(collectionDescriptor.getMission() + "-" + facilityName);
-		
+		collectionDescriptor.setDescriptorId(collectionDescriptor.getMission());
 		if(tapService.getCollections().get(facilityName).containsKey(EsaSkyConstants.TABLE_NAME)) {
 			collectionDescriptor.setTapTable(tapService.getCollections().get(facilityName).get(EsaSkyConstants.TABLE_NAME).get(0));
 		}
@@ -65,6 +65,7 @@ public class ExtTapUtils {
 		typeDescriptor.setGuiLongName(typeDescriptor.getMission() + "-" + name);
 		
 		typeDescriptor.setMission(typeDescriptor.getMission() + "-" + name);
+		typeDescriptor.setDescriptorId(typeDescriptor.getMission());
 		
 		String whereADQL = typeDescriptor.getWhereADQL();
 		if(typeDescriptor.getIsObsCore()) {

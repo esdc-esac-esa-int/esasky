@@ -51,6 +51,7 @@ import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -495,25 +496,34 @@ public class Api {
 		getCounts(descriptors, widget);
 	}
 
-	private void getExtTapCount(final ExtTapDescriptor descriptor, final JavaScriptObject widget) {
+	private void getExtTapCount(final ExtTapDescriptor parent, final JavaScriptObject widget) {
 		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
-		if(!countStatus.hasMoved(descriptor)) {
+		if(!countStatus.hasMoved(parent)) {
 			JSONObject obsCount = new  JSONObject();
-			int c = countStatus.getCount(descriptor);
-			if(c == 1) {
-			    obsCount.put(descriptor.getMission(), new JSONNumber(c));
+			
+			for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
+				if(desc.hasParent(parent)) {
+					if(countStatus.containsDescriptor(desc)) {
+						obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
+					}
+				}
 			}
+			
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 			sendBackToWidget(obsCount, widget);
 			
-		} else {
+		}else {
 			countStatus.registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
 					JSONObject obsCount = new  JSONObject();
-					int c = countStatus.getCount(descriptor);
-					if(c == 1) {
-					    obsCount.put(descriptor.getMission(), new JSONNumber(c));
+					
+					for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
+						if(desc.hasParent(parent)) {
+							if(countStatus.containsDescriptor(desc)) {
+								obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
+							}
+						}
 					}
 					
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
