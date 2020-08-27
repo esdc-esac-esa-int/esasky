@@ -93,7 +93,7 @@ public class SearchPresenter {
 
         void showSSOTargetNotFoundMessage();
 
-        void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList);
+        void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList, String targetName, boolean unrecognizedInput);
 
         FocusPanel getSearchResultsListPanel();
         
@@ -133,19 +133,14 @@ public class SearchPresenter {
                     CoordinateValidator.SearchInputType inputType = CoordinateValidator
                             .checkInputType(new ClientRegexClass(), userInput, AladinLiteWrapper.getCoordinatesFrame());
 
-                    if (inputType == CoordinateValidator.SearchInputType.NOT_VALID) {
-                        SearchPresenter.this.view.showCoordsInputErrorMessage();
-                        Log.debug("ERROR FOR WRONG INPUT FORMAT");
-                        
-                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchWrongCoords, userInput);
-                    } else {
-                    	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchQuery, userInput);
-                    	if (inputType == CoordinateValidator.SearchInputType.TARGET) {
-                    		doSearch4Target();
-                    	} else {
-                    		doSearchByCoords(inputType);
-                    	}
-                    }
+                	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchQuery, userInput);
+                	if (inputType == CoordinateValidator.SearchInputType.TARGET
+                	        || inputType == CoordinateValidator.SearchInputType.NOT_VALID
+                	        ) {
+                		doSearch4Target(inputType);
+                	} else {
+                		doSearchByCoords(inputType);
+                	}
                 }
             }
         });
@@ -326,9 +321,9 @@ public class SearchPresenter {
     }
 
     private static long latestTimecall = System.currentTimeMillis();
-    private void doSearch4Target() {
+    private void doSearch4Target(final CoordinateValidator.SearchInputType inputType) {
         final String debugPrefix = "[doSearchTarget]";
-        String targetName = this.view.getSearchTextBox().getValue();
+        final String targetName = this.view.getSearchTextBox().getValue();
         if(targetName.trim().isEmpty()) {
         	return;
         }
@@ -362,11 +357,17 @@ public class SearchPresenter {
                 					.create(ESASkyGeneralSearchResultMapper.class);
                 			ESASkyGeneralResultList result = mapper.read(response.getText());
                 			if (result == null) {
-                				SearchPresenter.this.view.showTargetNotFoundMessage();
-                				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, "SIMBAD: " + view.getSearchTextBox().getValue());
+                			    if(targetName.equals(view.getSearchTextBox().getValue()) && inputType == SearchInputType.NOT_VALID) {
+                                    SearchPresenter.this.view.showCoordsInputErrorMessage();
+                                    Log.debug("ERROR FOR WRONG INPUT FORMAT");
+                                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchWrongCoords, targetName);
+                			    } else {
+                			        SearchPresenter.this.view.showTargetNotFoundMessage();
+                			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, "SIMBAD: " + view.getSearchTextBox().getValue());
+                			    }
                 				
                 			} else {
-                				SearchPresenter.this.view.showGeneralTargetResultsPanel(result);
+                				SearchPresenter.this.view.showGeneralTargetResultsPanel(result, targetName, targetName.equals(view.getSearchTextBox().getValue()) && inputType == SearchInputType.NOT_VALID);
                 			}
                 			setMaxHeight();
                 			

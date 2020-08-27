@@ -312,7 +312,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
     
     @Override
-    public void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList) {
+    public void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList, String input, boolean unrecognizedInput) {
         this.resultsList.clear();
         final ESASkySearchResult simbadResult = resultList.getSimbadResult();
 
@@ -446,8 +446,14 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         
         if (!foundInSimbad && !foundInSSODnet && !foundAuthorInSimbad && !foundBibcodeInSimbad) {
             this.resultsList.clear();
-            showTargetNotFoundMessage();
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, searchTextBox.getText());
+            if(unrecognizedInput) {
+                showCoordsInputErrorMessage();
+                Log.debug("ERROR FOR WRONG INPUT FORMAT");
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchWrongCoords, input);                
+            } else {
+                showTargetNotFoundMessage();
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, searchTextBox.getText());
+            }
 
         } else if (foundInSimbad && !foundInSSODnet && !foundAuthorInSimbad && !foundBibcodeInSimbad) {
             this.resultsList.clear();
