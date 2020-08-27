@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE internationalization [
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text key ID #REQUIRED>
@@ -1785,6 +1785,191 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; 
+	</text>
+		<text key="tabulator_centreOnCoordinates">
+		居中于坐标
+	</text>
+	<text key="tabulator_centreHeader">
+		前往
+	</text>
+	<text key="tabulator_centreHeaderTooltip">
+		移动视图至每个形状的坐标处
+	</text>
+	<text key="tabulator_sendToVOApplicationHeader">
+		发送
+	</text>
+	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
+		发送数据至虚拟天文台程序
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+		外部数据提供
+		&lt;a
+		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
+		target="_blank"&gt;
+		加拿大天文数据中心（CADC）
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		需要提醒注意的是与通过图像、光谱、星表功能提供的数据不同，这些数据并非出自ESASky团队。
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+		外部数据提供
+		&lt;a
+		href="//www.eso.org/"
+		target="_blank"&gt;
+		欧洲南方天文台（ESO）
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		需要提醒注意的是与通过图像、光谱、星表功能提供的数据不同，这些数据并非出自ESASky团队。
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+		外部数据提供
+		&lt;a
+		href="//archive.stsci.edu/"
+		target="_blank"&gt;
+		米库斯基空间望远镜数据库（MAST）
+		
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		需要提醒注意的是与通过图像、光谱、星表功能提供的数据不同，这些数据并非出自ESASky团队。
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="tabulator_previewHeaderTooltip">
+		展示数据的一个预览
+	</text>
+	<text key="tabulator_link2ArchiveHeader">
+		数据库
+	</text>
+	<text key="tabulator_link2ArchiveHeaderTooltip">
+		点击任一行打开相应数据库中对应的数据
+	</text>
+	<text key="tabulator_link2ArchiveButtonTooltip">
+		在数据库网站上打开本数据
+	</text>
+	<text key="MOC_count_text">
+		当前显示的MOC中的对象总数：$count$
+		
+		目标显示的数量上限：$limit$
+		
+		使用过滤器或者放大功能来减小对象数量
+	</text>
+	
+	<text key="tabulator_authorHeaderTooltip">
+		点击任一作者的名字查看其在ADS系统中的论文发表信息
+	</text>
+	<text key="tabulator_SourcesInPublicationHeader">
+		目标源
+	</text>
+	<text key="tabulator_SourcesInPublicationHeaderTooltip">
+		点击显示一篇文献中涉及到的目标源
+	</text>
+	<text key="tabulator_SourcesInPublication">
+		显示本篇文献中涉及到的目标源
+	</text>
+	<text key="MOC_large_count_text">
+		当前显示的MOC中的对象总数：$count$
+		
+		过滤功能可用的数量上限10 000 000
+		
+		放大显示来减小数量
+	</text>
+
+	<text key="tabulator_rowCount">
+		行数：$count$
+	</text>
+	<text key="tabulator_accessEstSize_header">
+		文件大小
+	</text>
+	<text key="tabulator_accessEstSize_headerTooltip">
+		可下载数据的预估大小
+	</text>
+	<text key="tabulator_loadFailed">
+		加载数据失败
+	</text>
+	<text key="mocEntity_retrievingMissionCoverage">
+		获取$MISSIONNAME$ 覆盖图
+	</text>
+	<text key="tabulator_no_data">
+		本天区无可用数据
+	</text>
+	<text key="tabulator_filtered_empty">
+		当前过滤条件设置下无可用数据
+	</text>
+	<text key="closeableTabLayoutPanel_closeAll">
+		关闭全部标签页
+	</text>
+	<text key="treeMap_large_fov">
+		来自外部服务的数据只在视场小于$fov_limit$度的时候可用
+	</text>
+	<text key="closeableTabLayoutPanel_configure">
+		配置表
+	</text>
+	<text key="toggleColumns_rowSelectionTitle">
+		可见
+	</text>
+	<text key="toggleColumns_headerTitleColumn">
+		列
+	</text>
+	<text key="toggleColumns_headerTitleDatabaseName">
+		数据库名称
+	</text>
+	<text key="toggleColumns_headerTitleDescription">
+		描述
+	</text>
+	<text key="MocTooltip_count">
+		总计
+	</text>
+	<text key="Infrared">
+		红外
+	</text>
+	<text key="IR">
+		红外
+	</text>
+	<text key="X-ray">
+		X射线
+	</text>
+	<text key="DownloadDataProducts">
+		数据集（已选$COUNT$个）
+	</text>
+	<text key="treeMap_notInRange_EXT_TAP">
+		在这个波段范围无法从外部数据中心找到可用数据
+	</text>
+	<text key="webConstants_exploreExtTaps">
+		从外部数据中心搜索这个区域的数据
+	</text>
+	<text key="treeMap_noData_EXT_TAP">
+		没有从外部数据中心找到数据
+	</text>
+	<text key="treeMap_loading_EXT_TAP">
+		从外部数据中心加载数据
+	</text>
+	<text key="treeMap_EXT_TAP">
+		外部数据中心
+	</text>
+	<text key="mocDialog_loadData">
+		加载数据
 	</text>
 	
 </Internationalization>
