@@ -24,7 +24,7 @@ public final class DisplayUtils {
 
     /** default message for launching a VOApp. */
     private static final String LAUNCH_VO_APP_MESSAGE = "[Launch @@ ]";
-    
+    private final static int MIN_DISTANCE_FROM_TOP = 30;
     private static MessageDialogBox lastShownMessageDialogBox;
 
     public static interface Resources extends ClientBundle {
@@ -131,6 +131,7 @@ public final class DisplayUtils {
     	panel.setPosition(x, y);
 		panel.getElement().getStyle().setProperty("borderRadius", "0px 10px 10px 10px");
 		panel.getElement().getStyle().setProperty("boxSizing", "border-box");
+		panel.getElement().getStyle().setProperty("maxHeight", "auto");
 		panel.show();
 		panel.setWidth("auto");
 		boolean isWayOffToTheRight = false;
@@ -148,11 +149,25 @@ public final class DisplayUtils {
 		if(y + panel.getOffsetHeight() > MainLayoutPanel.getMainAreaHeight()) {
 			if(isWayOffToTheRight) {
 				panel.setPosition(0, 0);
-				panel.setPosition(x - panel.getOffsetWidth(), y - panel.getOffsetHeight());
+                int newY = y - panel.getOffsetHeight();
+                if(newY < MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP) {
+                    panel.getElement().getStyle().setProperty("maxHeight", y - MIN_DISTANCE_FROM_TOP + "px");
+                    panel.getElement().getStyle().setProperty("overflow", "auto");
+                    panel.setPosition(x - panel.getOffsetWidth(), MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP);
+                } else {
+                    panel.setPosition(x - panel.getOffsetWidth(), y - panel.getOffsetHeight());
+                }
 				panel.getElement().getStyle().setProperty("borderRadius", "10px 10px 0px 10px");
 			} else {
 				panel.setPosition(x, 0); //To make getOffsetHeight return full width
-				panel.setPosition(x, y - panel.getOffsetHeight());
+				int newY = y - panel.getOffsetHeight();
+				if(newY < MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP) {
+				    panel.getElement().getStyle().setProperty("maxHeight", y - MIN_DISTANCE_FROM_TOP + "px");
+				    panel.getElement().getStyle().setProperty("overflow", "auto");
+				    panel.setPosition(x, MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP);
+				} else {
+				    panel.setPosition(x, newY);
+				}
 				panel.getElement().getStyle().setProperty("borderRadius", "10px 10px 10px 0px");
 			}
 		}
