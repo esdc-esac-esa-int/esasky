@@ -136,5 +136,5 @@
 }
 
 .tabulator-header-filter-disabled{
-	pointer-events:none;
+	pointer-events:none !important;
 }
