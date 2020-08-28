@@ -60,4 +60,6 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 	public void onShapeHover(AladinShape shape);
 	public void onShapeUnhover(AladinShape shape);
 	
+	public String getHelpText();
+	
 }

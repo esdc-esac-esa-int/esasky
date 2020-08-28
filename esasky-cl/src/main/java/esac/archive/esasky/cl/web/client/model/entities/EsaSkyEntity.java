@@ -728,6 +728,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	public void setTablePanel(ITablePanel panel) {
 		this.tablePanel = panel;
 	}
+
+	@Override
+	public String getHelpText() {
+		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getDescriptorId());
+	}
     
     
 

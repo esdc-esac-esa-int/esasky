@@ -185,8 +185,8 @@ public class ResultsPresenter implements ICountRequestHandler {
         final String debugPrefix = "[coneSearch][" + entity.getDescriptor().getGuiShortName() + "]";
         Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
         
-        this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-                TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
+    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
+
         entity.coneSearch(conePos);
     }
 
@@ -194,8 +194,8 @@ public class ResultsPresenter implements ICountRequestHandler {
         final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
         Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
 
-        this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-                TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
+    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
+
         entity.fetchData();
     }
    
@@ -203,8 +203,8 @@ public class ResultsPresenter implements ICountRequestHandler {
     	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
     	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
     	
-    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-    			TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
+    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
+
     	entity.fetchDataWithoutMOC();
     }
     
@@ -212,8 +212,7 @@ public class ResultsPresenter implements ICountRequestHandler {
     	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
     	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
     	
-    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), 
-    			TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + entity.getDescriptor().getDescriptorId()));
+    	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
     	entity.fetchData(adql);
     }
 

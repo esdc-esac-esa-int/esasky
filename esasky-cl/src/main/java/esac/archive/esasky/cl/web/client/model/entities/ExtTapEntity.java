@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
@@ -29,5 +30,11 @@ public class ExtTapEntity extends EsaSkyEntity {
     
     public boolean hasReachedFovLimit() {
         return CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT;
+    }
+    
+    @Override
+	public String getHelpText() {
+    	ExtTapDescriptor parent = ((ExtTapDescriptor) getDescriptor()).getLastParent();
+    	return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + parent.getDescriptorId());
     }
 }

@@ -390,6 +390,8 @@ public class TabulatorWrapper{
     	tableJsObject.metadata = [];
     	tableJsObject.clearHeaderFilter();
     	previouslySelectedMap = [];
+    	tableJsObject.dataLoaded = false;
+        tableJsObject.setData([]);
     }-*/;
 
     private native void setData(GeneralJavaScriptObject tableJsObject, Object dataOrUrl)/*-{

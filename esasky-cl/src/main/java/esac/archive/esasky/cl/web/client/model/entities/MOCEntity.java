@@ -840,4 +840,11 @@ public class MOCEntity implements GeneralEntityInterface {
     	Log.debug("[FetchHeader] Query " + query );
     	tablePanel.insertHeader(query, "maxMin");
     }
+
+	@Override
+	public String getHelpText() {
+		return parentEntity.getHelpText();
+	}
+    
+    
 }

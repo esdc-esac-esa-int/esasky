@@ -211,4 +211,12 @@ public class ExtTapDescriptor extends BaseDescriptor {
 			return false;
 		}
 	}
+	
+	public ExtTapDescriptor getLastParent() {
+		if(parent != null) {
+			return parent.getLastParent();
+		}else {
+			return this;
+		}
+	}
 }
