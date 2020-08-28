@@ -19,9 +19,9 @@ public class ExtTapEntity extends EsaSkyEntity {
     @Override
     public void fetchData() {
     	if(hasReachedFovLimit()) {
-    		String text = TextMgr.getInstance().getText("exttap_too_large_fov");
-    		text = text.replace("$fovLimit$", Double.toString(descriptor.getFovLimit()));
-    		tablePanel.setPlaceholderText(text);
+    		String text = TextMgr.getInstance().getText("treeMap_large_fov");
+    		text = text.replace("$fov_limit$", Double.toString(descriptor.getFovLimit()));
+    		tablePanel.setEmptyTable(text);
 	    } else {
 	        super.fetchData();
 	    }
