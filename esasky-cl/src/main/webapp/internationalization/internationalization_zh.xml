@@ -1786,8 +1786,8 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-		<text key="tabulator_centreOnCoordinates">
-		居中于坐标
+	<text key="tabulator_centreOnCoordinates">
+		居中于本坐标
 	</text>
 	<text key="tabulator_centreHeader">
 		前往
