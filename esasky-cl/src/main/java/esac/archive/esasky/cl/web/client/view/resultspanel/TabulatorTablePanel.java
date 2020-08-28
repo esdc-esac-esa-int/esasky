@@ -331,6 +331,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	public void setEmptyTable(String emptyTableText) {
 		loadingSpinner.setVisible(false);
+		setPlaceholderText(emptyTableText);
+		tableNotShowingContainer.addStyleName("displayNone");
 	}
 
 	public void showStylePanel(int x, int y) {

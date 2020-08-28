@@ -1654,7 +1654,8 @@ public class TabulatorWrapper{
 
     public void onDataLoaded() {
         if(tableJsObject != null) {
-            tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"));
+        	setCorrectFilterBehaviour();
+        	tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"));
         }
     }
 

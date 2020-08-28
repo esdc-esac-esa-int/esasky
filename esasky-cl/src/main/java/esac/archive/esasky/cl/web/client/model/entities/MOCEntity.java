@@ -236,6 +236,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
+    		tablePanel.disableFilters();
     		freshLoad = false;
     		return;
     	}
