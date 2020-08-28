@@ -469,7 +469,7 @@ public class TreeMap extends Chart {
         }
     }
 
-    private void update() {
+    protected void update() {
         series.update(this.series);
     }
 
@@ -549,22 +549,9 @@ public class TreeMap extends Chart {
 		boolean anyPointsAreShown = false;
 		
     	for(Point point : series.getPoints()) {
-    		boolean shouldBeShown = false;
     		PointInformation pointInformation = allPoints.get(point.getText());
     		if(pointInformation != null) {
-    			
-    			for(WavelengthDescriptor waveLength : pointInformation.descriptor.getWavelengths()) {
-    				
-	    			ArrayList<Double> waveLengthRange = waveLength.getRange();
-	    			
-	    			if(waveLengthRange.size() > 0) {
-	    				if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)
-	    						&& pointInformation.count > 0) {
-	    					shouldBeShown = true;
-	    				}
-	    			}
-    			}
-    			
+    		    boolean shouldBeShown = shouldBeShown(highWavelength, lowWavelength, pointInformation);
     			Point pointInSeries = getPoint(pointInformation.descriptor);
     			if(!shouldBeShown) {
     				pointInSeries.update(0, false);
@@ -581,6 +568,26 @@ public class TreeMap extends Chart {
     		addNotInRangeGhostPoint();
     	}
     	update();
+    }
+
+
+    private boolean shouldBeShown(double highWavelength, double lowWavelength,
+            PointInformation pointInformation) {
+        if(pointInformation.descriptor.getWavelengths() == null) {
+            return false;
+        }
+        for(WavelengthDescriptor wavelength : pointInformation.descriptor.getWavelengths()) {
+        	
+        	ArrayList<Double> waveLengthRange = wavelength.getRange();
+        	
+        	if(waveLengthRange.size() > 0) {
+        		if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)
+        				&& pointInformation.count > 0) {
+        			return true;
+        		}
+        	}
+        }
+        return false;
     }
 
 }

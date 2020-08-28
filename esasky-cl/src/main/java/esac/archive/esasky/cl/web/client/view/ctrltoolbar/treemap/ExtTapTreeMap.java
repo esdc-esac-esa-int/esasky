@@ -326,6 +326,9 @@ public class ExtTapTreeMap extends TreeMap {
         }
     }
     
+    protected void update() {
+        update(true);
+    }
     private void update(boolean redraw) {
     	nativeSetData(series.getNativeSeries(), redraw);
     	String id = getIdOfSelectedLevel(series.getNativeSeries());
