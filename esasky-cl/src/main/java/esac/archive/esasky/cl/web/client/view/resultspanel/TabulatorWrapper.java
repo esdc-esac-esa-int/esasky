@@ -456,7 +456,7 @@ public class TabulatorWrapper{
 				for(var j = 0; j < metadata.length; j++){
 	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"
 	    			    || metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"
-	    			    || metadata[j].datatype.toUpperCase() === "LONG"){
+	    			    || metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
 						row[metadata[j].name] = parseFloat(response.data[i][j]);
 		    			if(isNaN(row[metadata[j].name])){
 							row[metadata[j].name] = undefined;
@@ -1224,6 +1224,7 @@ public class TabulatorWrapper{
 			    		}
 			    		else if(this.metadata[i].datatype.toUpperCase() === "INTEGER" 
 			    		    || this.metadata[i].datatype.toUpperCase() === "INT"
+			    		    || this.metadata[i].datatype.toUpperCase() === "BIGINT"
 			    		    || this.metadata[i].datatype.toUpperCase() === "LONG"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
@@ -1573,6 +1574,7 @@ public class TabulatorWrapper{
                             if(extraData.type.toUpperCase() === "DOUBLE" || extraData.type.toUpperCase() === "REAL" 
                                 || extraData.type.toUpperCase() === "INTEGER"
                                 || extraData.type.toUpperCase() === "LONG"
+                                || extraData.type.toUpperCase() === "BIGINT"
                                 || extraData.type.toUpperCase() === "INT"){
                                 row[extraData.name] = parseFloat(extraData.value);
                                 if(isNaN(row[extraData.name])){
