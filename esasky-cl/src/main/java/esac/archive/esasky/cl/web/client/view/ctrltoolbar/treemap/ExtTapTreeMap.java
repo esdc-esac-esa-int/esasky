@@ -181,7 +181,6 @@ public class ExtTapTreeMap extends TreeMap {
         if ((descriptors.size() > 0)
                 && (descriptors.size() == counts.size())) {
             
-        	String rootNodeId = getIdOfSelectedLevel(series.getNativeSeries());
         	boolean redraw = false;
             List<Integer> zeroCountList = new ArrayList<Integer>();
             
@@ -201,9 +200,7 @@ public class ExtTapTreeMap extends TreeMap {
                     zeroCountList.add(i);
                 }
                 
-                if(rootNodeId.equals("") || getNativePointId(getPoint(desc).getNativePoint()).equals(rootNodeId)) {
-                	redraw = true;
-                }
+            	redraw = true;
             }
             
             for (int i : zeroCountList) {
@@ -326,9 +323,6 @@ public class ExtTapTreeMap extends TreeMap {
         }
     }
     
-    protected void update() {
-        update(true);
-    }
     private void update(boolean redraw) {
     	nativeSetData(series.getNativeSeries(), redraw);
     	String id = getIdOfSelectedLevel(series.getNativeSeries());
