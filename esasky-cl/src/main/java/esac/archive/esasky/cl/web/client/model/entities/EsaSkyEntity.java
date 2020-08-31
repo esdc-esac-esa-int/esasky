@@ -18,8 +18,6 @@ import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback;
-import esac.archive.esasky.cl.web.client.callback.GetMissionDataCountRequestCallback.OnComplete;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
@@ -39,7 +37,6 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
@@ -303,15 +300,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         } else {
             fetchDataWithoutMOC();
         }
-    }
-    
-    private void updateCount(OnComplete onComplete) {
-        String url = metadataService.getCount(AladinLiteWrapper.getAladinLite(), descriptor);
-        tablePanel.clearTable();
-        JSONUtils.getJSONFromUrl(url, new GetMissionDataCountRequestCallback(this, 
-                tablePanel, 
-                TextMgr.getInstance().getText("GetMissionDataCountRequestCallback_searchingInArchive").replace("$NAME$", getDescriptor().getGuiShortName()),
-                url, onComplete));
     }
 
     @Override
