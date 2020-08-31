@@ -829,4 +829,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         tableFocusPanel.openToggleColumnDialog();
     }
 
+    @Override
+    public boolean isDataProductDatalink() {
+        return table.isDataProductDatalink();
+    }
+
 }

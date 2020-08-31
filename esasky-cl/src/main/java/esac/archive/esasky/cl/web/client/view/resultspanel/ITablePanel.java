@@ -81,4 +81,6 @@ public interface ITablePanel {
 	public void notifyObservers();
 	public void disableFilters();
 	public void enableFilters();
+	
+	public boolean isDataProductDatalink();
 }

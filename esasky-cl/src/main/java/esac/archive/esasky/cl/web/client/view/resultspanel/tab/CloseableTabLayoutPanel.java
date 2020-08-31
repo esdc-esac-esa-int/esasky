@@ -309,7 +309,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 boolean hasProductUrl = entity.getDescriptor() instanceof ExtTapDescriptor 
                         || entity.getDescriptor().getMetadataDescriptorByTapName("product_url") != null;
                 
-                saveAllView.setProductsDownloadVisible(hasProductUrl);
+                saveAllView.setProductsDownloadVisible(hasProductUrl && !getSelectedWidget().isDataProductDatalink());
                 // Set pop-up position.
                 saveAllView.getSaveOrDownloadDialog().setPopupPositionAndShow(
                         new PopupPanel.PositionCallback() {

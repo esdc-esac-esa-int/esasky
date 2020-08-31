@@ -1796,4 +1796,15 @@ public class TabulatorWrapper{
     	MocRepository.getInstance().notifyMocLoaded(tabulatorCallback.getEsaSkyUniqId() + "_header");
     }
 
+    public boolean isDataProductDatalink() {
+        return isDataProductDatalink(tableJsObject);
+    }
+    
+    private native boolean isDataProductDatalink(GeneralJavaScriptObject tableJsObject)/*-{
+        var firstRow = tableJsObject.getRows()[0];
+        if(!firstRow) {return false;}
+        var cell = firstRow.getCell();
+        return cell && cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink");
+    }-*/;
+    
 }
