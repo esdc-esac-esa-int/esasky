@@ -33,3 +33,11 @@
 .addInstrumentButton{
 	margin-bottom: 5px;
 }
+
+.planObservationPanel__addButtonAndSiafContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 7px;
+    font-size: 0.6rem;
+ }

@@ -95,3 +95,7 @@
 .directionalControls{
 	width: 120px !important;
 }
+
+#aperturesDropDownMenu, .aperturesDropDownMenu .dropdownLabel{
+	font-size: 0.75rem !important;
+}

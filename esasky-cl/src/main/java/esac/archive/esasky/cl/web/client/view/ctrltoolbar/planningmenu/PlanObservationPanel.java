@@ -12,6 +12,8 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
@@ -39,6 +41,7 @@ public class PlanObservationPanel extends DialogBox {
 
     private final int PADDINGS_AND_MARGINS = 23;
     private static VerticalPanel jwstPanel; 
+    private final String SIAF_VERSION = "SIAF: PRDOPSSOC-M-026";
     
     private static PlanObservationPanel instance = null;
 
@@ -86,7 +89,12 @@ public class PlanObservationPanel extends DialogBox {
 
         VerticalPanel container = new VerticalPanel();
         container.add(jwstPanel);
-        container.add(addInstrumentButton);
+        FlowPanel addButtonAndSiafContainer = new FlowPanel();
+        addButtonAndSiafContainer.addStyleName("planObservationPanel__addButtonAndSiafContainer");
+        addButtonAndSiafContainer.add(addInstrumentButton);
+        Label siafVersion = new Label(SIAF_VERSION);
+        addButtonAndSiafContainer.add(siafVersion);
+        container.add(addButtonAndSiafContainer);
         		
         this.add(container);
         this.getElement().setId(COMPONENT_ID);
@@ -149,7 +157,7 @@ public class PlanObservationPanel extends DialogBox {
 	}
 
     private void addInstrumentRow(Instrument instrument, String detector, VerticalPanel verticalPanel) {
-        FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, false);
+        FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, false, SIAF_VERSION);
         verticalPanel.add(fr);
     }
     
@@ -171,7 +179,7 @@ public class PlanObservationPanel extends DialogBox {
     	String detectorsString = "[";
     	for (String detector : detectors) {
     		if(detector.equalsIgnoreCase(detectorName)) {
-    			FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments);
+    			FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, SIAF_VERSION);
     			PlanObservationPanel.jwstPanel.add(fr);
     			found = true;
     		}
@@ -204,7 +212,7 @@ public class PlanObservationPanel extends DialogBox {
     	String detectorsString = "[";
     	for (String detector : detectors) {
     		if(detector.equals(detectorName)) {
-    	    	FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation);
+    	    	FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation, SIAF_VERSION);
     	        PlanObservationPanel.jwstPanel.add(fr);
     			found = true;
     		}

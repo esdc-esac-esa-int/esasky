@@ -62,10 +62,11 @@ public class FutureFootprintRow extends Composite {
 	private final String RA_TEXT = "RA \u00B0";
 	private final String DEC_TEXT = "Dec \u00B0";
 	private final String ROTATION_TEXT = TextMgr.getInstance().getText("futureFootprintRow_rotation") + " \u00B0";
+	private final String SIAF_VERSION;
 
 	private final Label raLabel = new Label(RA_TEXT);
 	private final Label decLabel = new Label(DEC_TEXT);
-	private final Label rotationLabel = new Label(ROTATION_TEXT);
+	private final Label rotationLabel = new Label("APA");
 
 	private CheckBox allInstrumentsCheckBox;
 	private EsaSkyButton copyButton;
@@ -97,10 +98,11 @@ public class FutureFootprintRow extends Composite {
 		ImageResource rotateRightArrow();
 	}
 
-	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments) {
+	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments, String SIAF_VERSION) {
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 
+		this.SIAF_VERSION = SIAF_VERSION;
 		this.instrument = instrument;
 		this.aperture = detector;
 		
@@ -115,10 +117,11 @@ public class FutureFootprintRow extends Composite {
 		}
 	}
 	
-	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments, String ra, String dec, String rotation ) {
+	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments, String ra, String dec, String rotation, String SIAF_VERSION) {
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 
+		this.SIAF_VERSION = SIAF_VERSION;
 		this.instrument = instrument;
 		this.aperture = detector;
 		
@@ -134,6 +137,7 @@ public class FutureFootprintRow extends Composite {
 	}
 
 	private void initView() {
+	    rotationLabel.getElement().setTitle(ROTATION_TEXT);
 		VerticalPanel container = new VerticalPanel();
 		container.setStyleName("planningMenu");
 
@@ -198,7 +202,7 @@ public class FutureFootprintRow extends Composite {
 
 	private DropDownMenu<String> createDetectorDropDownMenu() {
 		final DropDownMenu<String> aperturesDropDownMenu = new DropDownMenu<String>(
-				TextMgr.getInstance().getText("futureFootprintRow_aperture"), TextMgr.getInstance().getText("futureFootprintRow_aperture"), 125, "aperturesDropDownMenu");
+				TextMgr.getInstance().getText("futureFootprintRow_aperture"), TextMgr.getInstance().getText("futureFootprintRow_aperture"), 135, "aperturesDropDownMenu");
 
 //		List<Detectors> aperturesNames = Detectors.getDetectorsForInstrument(instrument
 //				.getInstrumentName());
@@ -356,8 +360,9 @@ public class FutureFootprintRow extends Composite {
 				}
 				String texToCopy = TextMgr.getInstance().getText("futureFootprintRow_centre") + ": " + RA_TEXT + " " + getCenterRaDeg() 
 						+ "  " + DEC_TEXT + " " + getCenterDecDeg()
-						+ "  ;  " + ROTATION_TEXT + ": " + getRotationDeg()
-						+ " ; " + TextMgr.getInstance().getText("futureFootprintRow_coordinateSystem") + " "+ coordinatesFormat;
+						+ "  ; APA (" + ROTATION_TEXT + "): " + getRotationDeg()
+						+ " ; " + TextMgr.getInstance().getText("futureFootprintRow_coordinateSystem") + " " + coordinatesFormat 
+						+ " ; " + SIAF_VERSION;
 				CopyToClipboardHelper.getInstance().copyToClipBoard(texToCopy, TextMgr.getInstance().getText("futureFootprintRow_dataCopiedToClipboard"));
 				
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_CopyCoordinates, instrument.getInstrumentName());

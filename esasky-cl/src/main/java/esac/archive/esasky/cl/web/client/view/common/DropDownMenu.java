@@ -425,6 +425,7 @@ public class DropDownMenu<T> extends Composite {
 					selectedArea.getAbsoluteTop() + selectedArea.getOffsetHeight() - MainLayoutPanel.getMainAreaAbsoluteTop());
 			
 			menuBarContainer.show();
+			menuBarContainer.getElement().addClassName(id);
 			setMaxHeight();
 			MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
 				
