@@ -54,7 +54,7 @@ public class NumberValueFormatter implements ValueFormatter{
 
     @Override
     public double getValueFromFormat(String formattedValue) {
-        return format.parse(formattedValue);
+        return format.parse(formattedValue.replaceAll("\u2009| ", ""));
     }
     
     //for JSNI
