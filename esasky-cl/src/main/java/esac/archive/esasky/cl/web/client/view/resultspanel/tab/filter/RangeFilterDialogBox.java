@@ -183,7 +183,7 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 	                                      minValue,
 	                                      maxValue,
 	                                      $entry(function (selector) {
-	                                      	instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox::fireRangeChangedEvent(DD)(selector.fromValue, selector.toValue);
+	                                      	instance.@esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox::fireRangeChangedEvent(DDI)(selector.fromValue, selector.toValue, selector.movedHandle);
 	                                      	}),
 	                                      20,
 	                                      fixedStep);
@@ -191,14 +191,20 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 		return sliderSelector;
     }-*/;
 
-    private void fireRangeChangedEvent(double fromValue, double toValue) {
+    private void fireRangeChangedEvent(double fromValue, double toValue, int movedHandle) {
     	currentSliderFromFraction = fromValue;
     	currentSliderToFraction = toValue;
     	
-    	fromValue = minValue + fromValue * range / SLIDER_MAX;
-    	toValue = minValue + toValue * range / SLIDER_MAX;
+    	if(movedHandle == 0) {
+    	    fromValue = minValue + fromValue * range / SLIDER_MAX;
+    	    fromTextBox.setText(valueFormatter.formatValue(fromValue));
+            toValue = valueFormatter.getValueFromFormat(toTextBox.getText());
+    	} else {
+    	    fromValue = valueFormatter.getValueFromFormat(fromTextBox.getText());
+    	    toValue = minValue + toValue * range / SLIDER_MAX;
+    	    toTextBox.setText(valueFormatter.formatValue(toValue));
+    	}
     	
-    	setTextBoxValues(fromValue, toValue);
     	filterTimer.setNewRange(fromValue, toValue);
     }
     

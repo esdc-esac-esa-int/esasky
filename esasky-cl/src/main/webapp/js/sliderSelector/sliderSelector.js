@@ -107,6 +107,7 @@ function SliderSelector(id, title, fromValue, toValue, onSelectorValuesChangedFn
     var sliderId = event.target.id.replace("slider-", "");
     var sliderWdg = selectors_array[sliderId];
     sliderWdg.setValues( ui.values[ 0 ], ui.values[ 1 ], "slider");
+    sliderWdg.movedHandle = ui.handleIndex;
     sliderWdg.onSelectorValuesChanged(sliderWdg);
   };
 
