@@ -40,6 +40,7 @@ import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 public class PublicationPanelPresenter {
 
@@ -209,7 +210,11 @@ public class PublicationPanelPresenter {
         
     }
     
-    private void getPublications() {
+    public void getPublications() {
+    	getPublications(null);
+    }
+    
+    public void getPublications(SkyViewPosition conePos) {
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_Publication_BoxQuery, UrlUtils.getUrlForCurrentState());
 		view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_updating"));
 		view.setLoadingSpinnerVisible(true);
@@ -228,10 +233,15 @@ public class PublicationPanelPresenter {
         final String debugPrefix = "[getPublicationsSources][" + descriptor.getGuiShortName() + "]";
         
         // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
-        String url = "";
+        String url = "";	
         if (EsaSkyWebConstants.PUBLICATIONS_RETRIEVE_DATA_FROM_SIMBAD) {
-            final String adql = TAPPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
-            url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
+        	if(conePos != null) {
+        		final String adql = TAPPublicationsService.getConeSearchMetadataAdqlforSIMBAD(descriptor, conePos, view.getLimit(), mostOrLeastAdql);
+        		url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
+        	}else {
+        		final String adql = TAPPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
+        		url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
+        	}
         } else {
             final String adql = TAPPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
             url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
