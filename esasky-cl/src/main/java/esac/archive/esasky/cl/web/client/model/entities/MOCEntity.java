@@ -158,8 +158,17 @@ public class MOCEntity implements GeneralEntityInterface {
     public void sendLoadQuery() {
 		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
     	
-    	String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
-    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
+		if(descriptor instanceof CatalogDescriptor) {
+			String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
+			((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
+		}else {
+			if(tablePanel.getFilterString() == ""){
+				((EsaSkyEntity) parentEntity).fetchDataWithoutMOC();
+			}else {
+				String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
+				((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
+			}
+		}
     	parentEntity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     	shouldBeShown = false;
     	clearAll();
@@ -190,7 +199,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			    	if(descriptor instanceof CatalogDescriptor) {
 		        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
 			    	}else {
-			    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, tablePanel.getFilterString());
+			    		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, tablePanel.getFilterString());
 			    	}
 			    	clearAll();
 			    	loadMOC(adql);
@@ -325,16 +334,11 @@ public class MOCEntity implements GeneralEntityInterface {
     	GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, 8, true);
     	if(visibleIpixels.jsonStringify().length() > 2 || freshLoad) {
 
-	    	if(descriptor instanceof CatalogDescriptor) {
-	        	if(freshLoad) {
-	        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, tablePanel.getFilterString());
-	        	}else {
-	        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
-	        	}
-	    	}else {
-	    		adql = metadataService.getFilteredObservationMOCAdql(descriptor, filter);
-	    	}
-			
+        	if(freshLoad) {
+        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
+        	}else {
+        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, tablePanel.getFilterString());
+        	}
 	    	loadMOC(adql);
 	    	
     	}
