@@ -243,7 +243,8 @@ public class DateFilterDialogBox extends FilterDialogBox {
 
 		@Override
 		public void run() {
-			if(lastFromDate.equals(currentFromDate) && lastToDate.equals(currentToDate)) {
+			if(lastFromDate != null && lastFromDate.equals(currentFromDate)
+					&& lastToDate != null && lastToDate.equals(currentToDate)) {
 				return;
 			}
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
