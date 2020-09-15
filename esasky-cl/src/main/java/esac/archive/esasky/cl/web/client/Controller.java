@@ -67,6 +67,10 @@ public class Controller implements ValueChangeHandler<String> {
 		        && (toggleColumns.toLowerCase().contains("on") || toggleColumns.toLowerCase().contains("true"))){
 		    Modules.toggleColumns = true;
 	    }
+		
+		String mode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
+		Modules.setMode(mode);
+		
 		String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
 				(sciMode != null 
@@ -75,7 +79,9 @@ public class Controller implements ValueChangeHandler<String> {
 				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet())
 				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && sciMode == null && sciMode != "false"
 					&& sciMode != "off" && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true"))
+				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE)
 				) {
+			
 			GUISessionStatus.setInitialIsInScienceMode();
 		}
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
@@ -83,6 +89,8 @@ public class Controller implements ValueChangeHandler<String> {
 		String hideSwitchString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_SCI);
 		GUISessionStatus.sethideSwitch(hideSwitchString != null && hideSwitchString.toLowerCase().contains("true") ? true: false);
 
+
+		
 		if (Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS) != null
 				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) != null
 				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TARGET) != null) {
