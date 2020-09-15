@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -212,6 +213,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		}
 	}
 	
+	@JsonIgnore
 	public ExtTapDescriptor getLastParent() {
 		if(parent != null) {
 			return parent.getLastParent();
