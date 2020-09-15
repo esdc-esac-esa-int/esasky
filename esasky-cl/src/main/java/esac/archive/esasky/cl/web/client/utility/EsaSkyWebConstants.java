@@ -72,6 +72,7 @@ public class EsaSkyWebConstants {
     
     public static final String URL_PARAM_HIDE_WELCOME = "hide_welcome";
     public static final String URL_PARAM_HIDE_SCI = "hide_sci_switch";
+    public static final String URL_PARAM_LAYOUT = "layout";
     
     public static final String SCI_MODE_COOKIE = "IsInSciMode";
     
@@ -133,5 +134,29 @@ public class EsaSkyWebConstants {
     
     public static int MOC_FILTER_LIMIT = 10000000;
     public static int MOC_GLOBAL_MINMAX_LIMIT = 5000000;
+    
+
+    /*************************************************************************/
+    /** MODULES **/
+    /*************************************************************************/
+    public static final String MODULE_SCIENTIFIC = "scientific_toggle";
+    public static final String MODULE_LANGUAGE = "language";
+    public static final String MODULE_COOR_GRID = "coordinate_grid";
+    public static final String MODULE_SCREENSHOT = "screenshot";
+    public static final String MODULE_SHARE = "share";
+    public static final String MODULE_HELP = "help";
+    public static final String MODULE_DROPDOWN = "dropdown";
+    public static final String MODULE_SKIESMENU = "skies_menu";
+    public static final String MODULE_FEEDBACK = "feedback";
+    public static final String MODULE_OBS = "observations";
+    public static final String MODULE_CAT = "catalogues";
+    public static final String MODULE_SPE = "spectra";
+    public static final String MODULE_EXTTAP = "exttap";
+    public static final String MODULE_SSO = "sso";
+    public static final String MODULE_PUBLICATIONS = "publications";
+    public static final String MODULE_TARGETLIST = "target_list";
+    public static final String MODULE_JWST_PLANNING = "jwst_planning";
+    public static final String MODULE_EXPLORE = "explore";
+    public static final String MODULE_SCIENCE = "science";
     
 }

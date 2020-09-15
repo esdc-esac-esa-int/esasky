@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -16,6 +17,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
@@ -76,6 +78,7 @@ public class CtrlToolBarPresenter {
         void enterScienceMode();
         void leaveScienceMode();
         void closeAllOtherPanels(Widget button);
+        void updateModuleVisibility();
 
         void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title);
         
@@ -86,14 +89,20 @@ public class CtrlToolBarPresenter {
         PublicationPanelPresenter.View getPublicationPanelView();
 
         void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts);
+        
+        void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
         this.view = inputView;
-        selectSkyPresenter = new SelectSkyPanelPresenter(view.getSelectSkyView());
-        publicationPresenter = new PublicationPanelPresenter(view.getPublicationPanelView(), descriptorRepo, entityRepo);
+        
+		selectSkyPresenter = new SelectSkyPanelPresenter(view.getSelectSkyView());
+
+		publicationPresenter = new PublicationPanelPresenter(view.getPublicationPanelView(), descriptorRepo, entityRepo);
+			
         bind();
         updateScienceModeElements();
+        view.updateModuleVisibility();
     }
 
     private void bind() {
@@ -172,7 +181,6 @@ public class CtrlToolBarPresenter {
 			}
 		});
          
-        
         view.getPublicationButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -460,5 +468,35 @@ public class CtrlToolBarPresenter {
                 + value + "</a>");
      
         return sb.toSafeHtml();
+    }
+    
+    public void createMissionButton(String name, List<IDescriptor> descriptors) {
+    	
+    }
+    
+    List<CustomTreeMapDescriptor> treeMapDescriptors = new LinkedList<CustomTreeMapDescriptor>();
+    
+    public void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor){
+    	treeMapDescriptors.add(customTreeMapDescriptor);
+    	view.addCustomTreeMap(customTreeMapDescriptor);
+    }
+    
+    public void customTreeMapClicked(TreeMapSelectionEvent event) {
+    	for(CustomTreeMapDescriptor treeMapDescriptor : treeMapDescriptors) {
+    		for(IDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
+    			if(event.getDescriptor() == desc) {
+    				treeMapDescriptor.getOnMissionClicked().onMissionClicked(desc.getMission());
+    				return;
+				}
+    		}
+    	}
+    }
+    
+    public void updateModuleVisibility() {
+    	view.updateModuleVisibility();
+    }
+    
+    public PublicationPanelPresenter getPublicationPresenter() {
+    	return publicationPresenter;
     }
 }

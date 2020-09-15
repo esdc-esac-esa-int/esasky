@@ -92,6 +92,7 @@ public final class GoogleAnalytics {
     public static final String ACT_CtrlToolbar_PlanningTool = "PlanningTool";
     public static final String ACT_CtrlToolbar_Publications = "Publications";
     public static final String ACT_CtrlToolbar_Dice = "Dice";
+    public static final String ACT_CtrlToolbar_CustomButton = "CustomButton";
     
     public static final String ACT_SkiesMenu_SelectedSky = "SelectedSky";
     public static final String ACT_SkiesMenu_SkyInfoShown = "SkyInfoShown";
@@ -187,6 +188,7 @@ public final class GoogleAnalytics {
     public static final String ACT_Pyesasky_plotObservations = "plotObservations";
     public static final String ACT_Pyesasky_plotCatalogues = "plotCatalogues";
     public static final String ACT_Pyesasky_plotSpectra = "plotSpectra";
+    public static final String ACT_Pyesasky_plotPublications = "plotPublications";
     public static final String ACT_Pyesasky_getResultPanelData = "getResultPanelData";
     public static final String ACT_Pyesasky_showCoordinateGrid = "showCoordinateGrid";
     public static final String ACT_Pyesasky_openSkyPanel = "openSkyPanel";

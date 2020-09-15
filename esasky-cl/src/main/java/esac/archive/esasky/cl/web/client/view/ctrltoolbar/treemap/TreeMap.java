@@ -66,6 +66,7 @@ public class TreeMap extends Chart {
     protected List<Point> pointsToAdd = new LinkedList<Point>();
     protected double sliderValueLow = 0;
     protected double sliderValueHigh = Double.MAX_VALUE;
+    private boolean hasSlider = true;
 
     private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
     
@@ -541,33 +542,35 @@ public class TreeMap extends Chart {
     }
     
     public void onSliderValueChange(double low, double high) {
-    	sliderValueLow = low;
-    	sliderValueHigh = high;
-		double highWavelength = ESASkyColors.valueToWaveLength(low);
-		double lowWavelength = ESASkyColors.valueToWaveLength(high);
-		
-		boolean anyPointsAreShown = false;
-		
-    	for(Point point : series.getPoints()) {
-    		PointInformation pointInformation = allPoints.get(point.getText());
-    		if(pointInformation != null) {
-    		    boolean shouldBeShown = shouldBeShown(highWavelength, lowWavelength, pointInformation);
-    			Point pointInSeries = getPoint(pointInformation.descriptor);
-    			if(!shouldBeShown) {
-    				pointInSeries.update(0, false);
-    			}else if(shouldBeShown) {
-    				pointInSeries.update(logCount(pointInformation.count), false);
-    				anyPointsAreShown = true;
-    			}
-    		}
+    	if(hasSlider) {
+	    	sliderValueLow = low;
+	    	sliderValueHigh = high;
+			double highWavelength = ESASkyColors.valueToWaveLength(low);
+			double lowWavelength = ESASkyColors.valueToWaveLength(high);
+			
+			boolean anyPointsAreShown = false;
+			
+	    	for(Point point : series.getPoints()) {
+	    		PointInformation pointInformation = allPoints.get(point.getText());
+	    		if(pointInformation != null) {
+	    		    boolean shouldBeShown = shouldBeShown(highWavelength, lowWavelength, pointInformation);
+	    			Point pointInSeries = getPoint(pointInformation.descriptor);
+	    			if(!shouldBeShown) {
+	    				pointInSeries.update(0, false);
+	    			}else if(shouldBeShown) {
+	    				pointInSeries.update(logCount(pointInformation.count), false);
+	    				anyPointsAreShown = true;
+	    			}
+	    		}
+	    	}
+	    	
+	    	if(anyPointsAreShown) {
+	    		removeGhostPoint();
+	    	}else {
+	    		addNotInRangeGhostPoint();
+	    	}
+	    	update();
     	}
-    	
-    	if(anyPointsAreShown) {
-    		removeGhostPoint();
-    	}else {
-    		addNotInRangeGhostPoint();
-    	}
-    	update();
     }
 
 
@@ -590,4 +593,14 @@ public class TreeMap extends Chart {
         return false;
     }
 
+
+	public boolean isHasSlider() {
+		return hasSlider;
+	}
+
+
+	public void setHasSlider(boolean hasSlider) {
+		this.hasSlider = hasSlider;
+	}
+    
 }

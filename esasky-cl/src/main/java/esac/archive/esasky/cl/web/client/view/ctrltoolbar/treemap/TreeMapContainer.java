@@ -51,6 +51,7 @@ public class TreeMapContainer extends DialogBox {
 	private ESASkyMultiRangeSlider slider;
 	private Element sliderUiHeader = null;
 	private FlowPanel sliderContainer;
+	boolean haveSlider = true;
 	
 	private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
 	
@@ -64,9 +65,13 @@ public class TreeMapContainer extends DialogBox {
 		@MimeType("image/svg+xml")
 		DataResource ssoDNetLogo();
 	}
-	
 	public TreeMapContainer(EntityContext context){
+		this(context, true);
+	}
+	
+	public TreeMapContainer(EntityContext context, boolean shouldHaveSlider){
 		super(false, false);
+		this.haveSlider = shouldHaveSlider;
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -101,8 +106,12 @@ public class TreeMapContainer extends DialogBox {
 		allContent.add(header);
 		allContent.add(treeMap);
 		
-		sliderContainer = initSliderContainer();
-		allContent.add(sliderContainer);
+		if(shouldHaveSlider) {
+			sliderContainer = initSliderContainer();
+			allContent.add(sliderContainer);
+		}
+
+		treeMap.setHasSlider(shouldHaveSlider);
 		add(allContent);
 		
 		header.setText(TextMgr.getInstance().getText("treeMap_" + context));
@@ -238,8 +247,12 @@ public class TreeMapContainer extends DialogBox {
 	};
 	
 	private void updateTreeMapSize() {
-		treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 22, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
-		slider.updateSize(TreeMapContainer.this.getOffsetWidth() - 30);
+		if(haveSlider) {
+			treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 22, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
+			slider.updateSize(TreeMapContainer.this.getOffsetWidth() - 30);
+		}else {
+			treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 22, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - 34);
+		}
 	}
 
 	
@@ -274,9 +287,12 @@ public class TreeMapContainer extends DialogBox {
 			}
 			addResizeHandler(context.toString());
 			addResizeCursorToBottomRightCorner(context.toString());
-			slider.firstOpening();
-			getSliderUiHeader();
-			updateSliderColor(0, ESASkyColors.maxIndex());
+
+			if(haveSlider) {
+				slider.firstOpening();
+				getSliderUiHeader();
+				updateSliderColor(0, ESASkyColors.maxIndex());
+			}
 			updateTreeMapSize();
 		}
 		isOpen = true;

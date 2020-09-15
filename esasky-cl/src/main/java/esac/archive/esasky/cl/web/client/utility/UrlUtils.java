@@ -50,6 +50,10 @@ public final class UrlUtils {
 		if(Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS)) {
 		    toggleColumns = "&" + EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS + "=" + Window.Location.getParameterMap().get(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS).get(0);
 		}
+		String layout = "";
+		if(Modules.mode != "") {
+			layout = "&" + EsaSkyWebConstants.URL_PARAM_LAYOUT + "=" + Modules.mode;
+		}
 		
 		String bookmarkUrl = baseUrl 
 				+ "?" + EsaSkyWebConstants.URL_PARAM_TARGET + "=" + encodedRaDeg + "%20" + encodedDecDeg 
@@ -61,7 +65,8 @@ public final class UrlUtils {
 				+ bibcodeOrAuthor 
 				+ codeServer 
 				+ toggleColumns
-				+ logLevel;
+				+ logLevel
+				+ layout;
 		return bookmarkUrl;
 	}
 	

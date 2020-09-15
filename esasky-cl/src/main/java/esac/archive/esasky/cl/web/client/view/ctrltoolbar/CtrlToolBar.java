@@ -46,6 +46,7 @@ import esac.archive.esasky.cl.web.client.utility.MessageDialogBox;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;
@@ -54,6 +55,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.TargetListPanel;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
@@ -80,6 +82,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
 	private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
 	private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
+	
+	private List<CustomTreeMap> customTreeMaps = new LinkedList<CustomTreeMap>();
 	
 	private EsaSkyButton exploreBtn;
 	private EsaSkyToggleButton selectSkyButton;
@@ -169,6 +173,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				observationButton.setToggleStatus(false);
 			}
 		});
+		
 		ctrlToolBarPanel.add(createCatalogBtn());
 		ctrlToolBarPanel.add(catalogTreeMapContainer);
 		catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
@@ -177,6 +182,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				catalogButton.setToggleStatus(false);
 			}
 		});
+		
 		if(Modules.spectraModule){
 			ctrlToolBarPanel.add(createSpectraBtn());
 			ctrlToolBarPanel.add(spectraTreeMapContainer);
@@ -187,17 +193,20 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				}
 			});
 		}
-		if(Modules.shouldShowExtTap) {
-		    ctrlToolBarPanel.add(createExtTapBtn());
-		    ctrlToolBarPanel.add(extTapTreeMapContainer);
-		    extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
-		        @Override
-		        public void onClose() {
-		            extTapButton.setToggleStatus(false);
-		            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
-		        }
-		    });
-		}
+		
+		ctrlToolBarPanel.add(createExtTapBtn());
+		ctrlToolBarPanel.add(extTapTreeMapContainer);
+		extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
+			@Override
+			public void onClose() {
+				extTapButton.setToggleStatus(false);
+				CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
+			}
+		});
+			if(!Modules.shouldShowExtTap) {
+				hideWidget(extTapButton);
+			}
+		
 		if(Modules.ssoModule){
 			ctrlToolBarPanel.add(createSsoBtn());
 			ctrlToolBarPanel.add(ssoTreeMapContainer);
@@ -208,13 +217,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				}
 			});
 		}
+		
 		if(Modules.publicationsModule){
 			publicationPanel = new PublicationPanel();
 			ctrlToolBarPanel.add(createPublicationsBtn());
 			ctrlToolBarPanel.add(publicationPanel);
 			publicationPanel.hide();
 		}
-		
 		
 		ctrlToolBarPanel.add(createTargetListBtn());
 		ctrlToolBarPanel.add(targetListPanel);
@@ -238,6 +247,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		});
 		
 		initWidget(ctrlToolBarPanel);
+		
+		updateModuleVisibility();
 	}
 
 	private EsaSkyButton createSkiesMenuBtn() {
@@ -478,6 +489,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		if(!button.equals(extTapButton)) {
 			extTapTreeMapContainer.hide();
 		}
+		
+		for(CustomTreeMap customTreeMap : customTreeMaps) {
+			if(!button.equals(customTreeMap.button)) {
+				customTreeMap.treeMapContainer.hide();
+			}
+		}
+		
 	}
 	
 	
@@ -501,6 +519,68 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		hideWidget(ssoButton);
 		hideWidget(extTapButton);
 		showWidget(exploreBtn);
+	}
+	
+	public void updateModuleVisibility() {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU)) {
+			showWidget(selectSkyPanel);
+		}else {
+			hideWidget(selectSkyPanel);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
+			showWidget(observationButton);
+		}else {
+			hideWidget(observationButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
+			showWidget(catalogButton);
+		}else {
+			hideWidget(catalogButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
+			showWidget(spectraButton);
+		}else {
+			hideWidget(spectraButton);
+		}
+
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
+			showWidget(publicationsButton);
+		}else {
+			hideWidget(publicationsButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
+			showWidget(extTapButton);
+		}else {
+			hideWidget(extTapButton);
+		}
+
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
+			showWidget(ssoButton);
+		}else {
+			hideWidget(ssoButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST)) {
+			showWidget(targetListButton);
+		}else {
+			hideWidget(targetListButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
+			showWidget(planObservationButton);
+		}else {
+			hideWidget(planObservationButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EXPLORE)) {
+			showWidget(exploreBtn);
+		}else {
+			hideWidget(exploreBtn);
+		}
 	}
 	
 	private void hideWidget(Widget widget) {
@@ -716,5 +796,51 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		if(extTapDescriptors.size() > 0) {
 			extTapTreeMapContainer.addData(extTapDescriptors, extTapCounts);
 		}
+	}
+	
+	public class CustomTreeMap{
+		public TreeMapContainer treeMapContainer;
+		public EsaSkyToggleButton button;
+		
+		public CustomTreeMap(TreeMapContainer treeMapContainer, EsaSkyToggleButton button) {
+			this.button = button;
+			this.treeMapContainer = treeMapContainer;
+		}
+	}
+	
+	public void addCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
+		TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
+		
+		EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
+//		EsaSkyToggleButton button = new EsaSkyToggleButton(resources.extTapIcon());
+		
+		customTreeMaps.add(new CustomTreeMap(treeMapContainer, button));
+		
+		addCommonButtonStyle(button, treeMapDescriptor.getDescription());
+		button.addClickHandler(
+				new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				treeMapContainer.toggleTreeMap();
+				closeAllOtherPanels(button);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, GoogleAnalytics.ACT_CtrlToolbar_PlanningTool, treeMapDescriptor.getName());
+			}
+		});
+		ctrlToolBarPanel.add(button);
+		ctrlToolBarPanel.add(treeMapContainer);
+		catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
+			@Override
+			public void onClose() {
+				button.setToggleStatus(false);
+			}
+		});
+		
+		LinkedList<Integer> counts = new LinkedList<Integer>();
+    	for(IDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
+    		counts.add(1);
+    	}
+    	treeMapContainer.addData(treeMapDescriptor.getMissionDescriptors(), counts);
+		
 	}
 }

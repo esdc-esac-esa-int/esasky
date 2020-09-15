@@ -30,6 +30,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -41,6 +42,7 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.EsaSkyWeb;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.model.Footprint;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListOverlay;
 import esac.archive.esasky.cl.web.client.api.model.GeneralSkyObject;
@@ -450,15 +452,24 @@ public class Api {
 		if(currObs != null ) {
 			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
 			controller.getRootPresenter().coneSearch(currObs, conePos);
-			JSONObject callbackMessage = new JSONObject();
-			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
-			sendBackToWidget(null, callbackMessage, widget);
+			String message = "Catalogs from missionId: " + missionId + " displayed in the ESASky";
+			sendBackMessageToWidget(message, widget);
 		}
 		else {
-			JSONObject callbackMessage = new JSONObject();
-			callbackMessage.put("message", new JSONString("Unknown mission: " + missionId + "\n Check getSpectraCount() for available mission names"));
-			sendBackToWidget(null, callbackMessage, widget);
+			String message = "Unknown mission: " + missionId + "\n Check getSpectraCount() for available mission names";
+			sendBackMessageToWidget(message, widget);
 		}
+	}
+	
+	public void plotPublications(JavaScriptObject widget) {
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotPublications);
+		controller.getRootPresenter().getCtrlTBPresenter().getPublicationPresenter().getPublications();
+	}
+
+	public void coneSearchPublications(double ra, double dec, double radius, JavaScriptObject widget) {
+		SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);
+		controller.getRootPresenter().getCtrlTBPresenter().getPublicationPresenter().getPublications(conePos);
+
 	}
 	
 	public void getCenter(String cooFrame, JavaScriptObject widget){
@@ -586,6 +597,12 @@ public class Api {
 		sendBackToWidget(values,null,widget);
 	}
 	
+	private void sendBackMessageToWidget(String message, JavaScriptObject widget) {
+		JSONObject callbackMessage = new JSONObject();
+		callbackMessage.put("message", new JSONString(message));
+		sendBackToWidget(null, callbackMessage, widget);
+	}
+	
 	private native void sendBackToWidget(JSONObject values, JSONObject extras, JavaScriptObject widget) /*-{
 		// Javascript adds a wrapper object around the values and extras which we remove
 		var msg = {}
@@ -634,9 +651,7 @@ public class Api {
 		planObservationPanel.show();
 		String message = planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, detector, allInstruments, ra, dec, rotation);
 		if(message.length() > 0 ) {
-			JSONObject callbackMessage = new JSONObject();
-			callbackMessage.put("message", new JSONString(message));
-			sendBackToWidget(null, callbackMessage, widget);
+			sendBackMessageToWidget(message, widget);
 		}
 	}
 	
@@ -647,9 +662,7 @@ public class Api {
 		planObservationPanel.show();
 		String message = planObservationPanel.addInstrumentRowAPI(instrument, detector, allInstruments);
 		if(message.length() > 0 ) {
-			JSONObject callbackMessage = new JSONObject();
-			callbackMessage.put("message", new JSONString(message));
-			sendBackToWidget(null, callbackMessage, widget);
+			sendBackMessageToWidget(message, widget);
 		}
 	}
 
@@ -708,16 +721,15 @@ public class Api {
 	
 	public void removeSkyRow(int index, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeHipsOnIndex, "");
-		JSONObject callbackMessage = new JSONObject();
+		String msg = "";
 		if(index < 0) {
 			for(int i = SelectSkyPanel.getInstance().getNumberOfSkyRows() -1; i > 0 ;i--) {
 				SelectSkyPanel.getInstance().removeSky(i);
 			}
 		}else if(!SelectSkyPanel.getInstance().removeSky(index)) {
-			String msg = "Index out of bounds. Max number is: " + Integer.toString(SelectSkyPanel.getInstance().getNumberOfSkyRows());
-			callbackMessage.put("message",new JSONString(msg));
+			msg = "Index out of bounds. Max number is: " + Integer.toString(SelectSkyPanel.getInstance().getNumberOfSkyRows());
 		}
-		sendBackToWidget(null, callbackMessage, widget);
+		sendBackMessageToWidget(msg, widget);
 	}
 	
 	public void getNumberOfSkyRows(JavaScriptObject widget) {
@@ -739,14 +751,14 @@ public class Api {
 	public boolean setHiPS(String wantedHiPSName, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPS, wantedHiPSName);
 		JSONObject callbackMessage = new JSONObject();
+		String text = "";
 		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, true, false)) {
-			String text =  "No HiPS called: " + wantedHiPSName + " found."
+			text =  "No HiPS called: " + wantedHiPSName + " found."
 					+ " Try getAvailableHiPS() for existing HiPS names";
-			callbackMessage.put("message",new JSONString(text));
-			sendBackToWidget(null, callbackMessage, widget);
+
 			return false;
 		}
-		sendBackToWidget(null, callbackMessage, widget);
+		sendBackMessageToWidget(text, widget);
 		return true;
 	}
 
@@ -864,6 +876,7 @@ public class Api {
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("No overlay with name: " + overlayName + " active:\n Check getActiveOverlays() for available overlays"));
 			sendBackToWidget(null, callbackMessage, widget);
+			
 		}
 	}
 
@@ -1058,6 +1071,116 @@ public class Api {
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 			ent.clearAll();
 			EntityRepository.getInstance().removeEntity(ent);
+		}
+	}
+	
+	public void addCustomTreeMap(GeneralJavaScriptObject input, JavaScriptObject widget) {
+				
+		String name = "Custom treeMap";
+		if(input.hasProperty("name")) {
+			name = input.getStringProperty("name");
+		}else {
+			sendBackMessageToWidget("ERROR: Missing treeMap property name", widget);
+			return;
+		}
+		
+		String description = "";
+		if(input.hasProperty("description")) {
+			description = input.getStringProperty("description");
+		}
+		
+		String iconText = name;
+		if(input.hasProperty("iconText")) {
+			iconText = input.getStringProperty("iconText");
+		}
+		
+		GeneralJavaScriptObject descriptorArray = input.getProperty("missions");
+		if(descriptorArray == null) {
+			sendBackMessageToWidget("ERROR: Missing treeMap missions", widget);
+			return;
+		}
+		int i = 0;
+		List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
+		while(descriptorArray.hasProperty(Integer.toString(i))) {
+			GeneralJavaScriptObject mission = descriptorArray.getProperty(Integer.toString(i));
+			
+			BaseDescriptor descriptor = new BaseDescriptor() {
+				
+				@Override
+				public String getIcon() {
+					return null;
+				}
+			};
+			
+			String missionName = "";
+			if(mission.hasProperty("name")) {
+				missionName = mission.getStringProperty("name");
+			}else {
+				sendBackMessageToWidget("ERROR: Missing mission property \"name\"", widget);
+				return;
+			}
+			
+			String color = "";
+			if(mission.hasProperty("color")) {
+				color = mission.getStringProperty("color");
+			}else {
+				sendBackMessageToWidget("ERROR: Missing mission property \"color\"", widget);
+				return;
+			}
+			
+			descriptor.setMission(missionName);
+			descriptor.setGuiShortName(missionName);
+			descriptor.setGuiLongName(missionName);
+			descriptor.setDescriptorId(missionName);
+			descriptor.setPrimaryColor(color);
+			descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
+			
+			descriptor.setTapSTCSColumn("stcs");
+			descriptor.setSampEnabled(false);
+
+			descriptor.setFovLimit(360.0);
+
+			descriptor.setTapTable("<not_set>");
+			descriptor.setTabCount(0);
+			descriptors.add(descriptor);
+			i++;
+		}
+		
+		CustomTreeMapDescriptor customTreeMapDescriptor = new CustomTreeMapDescriptor(name, description, iconText, descriptors);
+		
+		customTreeMapDescriptor.setOnMissionClicked(new CustomTreeMapDescriptor.OnMissionClicked() {
+			
+			@Override
+			public void onMissionClicked(String mission) {
+				JSONObject result = new JSONObject();
+				JSONObject treeMap = new JSONObject();
+				treeMap.put("treemap:" , new JSONString(customTreeMapDescriptor.getName()));
+				treeMap.put("mission:" , new JSONString(mission));
+				result.put("action", new JSONString("treemap_mission_clicked"));
+				result.put("info", treeMap);
+                sendBackToWidget(result, widget);
+			}
+		});
+		
+		controller.getRootPresenter().getCtrlTBPresenter().addCustomTreeMap(customTreeMapDescriptor);
+	
+	}
+	
+	public void setViewModuleVisibility(GeneralJavaScriptObject data, JavaScriptObject widget) {
+		try {
+			for(String key : data.getProperties().split(",")) {
+				Modules.setModule(key, GeneralJavaScriptObject.convertToBoolean(data.getProperty(key)));
+			}
+			controller.getRootPresenter().updateModuleVisibility();
+			
+		}catch(Exception e) {
+			String message = "Input needs to be on format {key:boolean}. \n Possible keys are: \n";
+			for(String module : Modules.getModuleKeys()) {
+				message += module + ", ";
+			}
+			message = message.substring(0, message.length() - 2);
+			
+			sendBackMessageToWidget(message, widget);
 		}
 	}
 

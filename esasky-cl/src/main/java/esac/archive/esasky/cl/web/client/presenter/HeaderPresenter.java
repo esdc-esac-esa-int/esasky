@@ -103,6 +103,8 @@ public class HeaderPresenter {
 		boolean isGridOn();
 
 		StatusPresenter.View getStatusView();
+		
+		void updateModuleVisibility();
 	}
 
 
@@ -116,6 +118,7 @@ public class HeaderPresenter {
 		this.coordinateFrameFromUrl = coordinateFrameFromUrl;
 		bind();
 		new StatusPresenter(inputView.getStatusView());
+		view.updateModuleVisibility();
 	}
 
 	private void bind() {
@@ -484,4 +487,8 @@ public class HeaderPresenter {
 	public void toggleGrid(boolean show) {
 		view.toggleGrid(show);		
 	}
+	
+	public void updateModuleVisibility() {
+    	view.updateModuleVisibility();
+    }
 }

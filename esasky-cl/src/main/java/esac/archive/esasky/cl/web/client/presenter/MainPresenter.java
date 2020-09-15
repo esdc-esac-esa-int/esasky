@@ -236,7 +236,10 @@ public class MainPresenter {
                                 GoogleAnalytics.ACT_ExtTap_browsing, pointInformation.longName);
                     }
 
-                } else {
+                }else if(event.getContext() == EntityContext.USER_TREEMAP) {
+                		ctrlTBPresenter.customTreeMapClicked(event);
+                }
+                else {
                     getRelatedMetadata(event.getDescriptor());
                 }
             }
@@ -454,6 +457,11 @@ public class MainPresenter {
     private void loadBibcodeInformaitonFromSimbad(String bibcode) {
         getCtrlTBPresenter().showPublicationInfo(bibcode);
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
+    }
+    
+    public void updateModuleVisibility() {
+    	ctrlTBPresenter.updateModuleVisibility();
+    	headerPresenter.updateModuleVisibility();
     }
 
 }

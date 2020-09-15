@@ -276,6 +276,17 @@ public class ApiMessageParser {
 						(msg.content.missionId,e);
 				}
 				break;	
+
+			case 'plotPublications':
+				console.log('plotPublications event captured');
+				if(msg.content.ra != null){
+					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::coneSearchPublications(DDDLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.missionId, msg.content.ra, msg.content.dec, msg.content.radius, e);
+				}else{
+					var callbackMessage = instance.@esac.archive.esasky.cl.web.client.api.Api::plotPublications(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+				}
+				break;	
 				
 			case 'getResultPanelData':
 				console.log('getResultPanelData event captured');
@@ -389,6 +400,18 @@ public class ApiMessageParser {
 				console.log('registerShapeSelectionCallback event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::registerShapeSelectionCallback(Lcom/google/gwt/core/client/JavaScriptObject;)
 					(e);
+				break;	
+				
+			case 'addCustomTreeMap':
+				console.log('addCustomTreeMap event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::addCustomTreeMap(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.treeMap,e);
+				break;	
+				
+			case 'setViewModuleVisibility':
+				console.log('setViewModuleVisibility event captured');
+				instance.@esac.archive.esasky.cl.web.client.api.Api::setViewModuleVisibility(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.viewModules, e);
 				break;	
 				
 			default:

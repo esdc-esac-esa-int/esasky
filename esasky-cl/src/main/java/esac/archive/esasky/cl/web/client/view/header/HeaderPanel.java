@@ -36,6 +36,7 @@ import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
@@ -200,9 +201,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			@Override
 			public void onScreenSizeChange() {
 				setResponsiveStyle();
+				updateModuleVisibility();
 			}
 		});
 		setResponsiveStyle();
+		updateModuleVisibility();
 	}
 
 	private FocusPanel createHamburgerMenu() {
@@ -651,6 +654,67 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			coordinateContainer.setWidth("355px");
 			coordinateFrameFull.setVisible(true);
 			coordinateFrameFirstLetter.setVisible(false);
+		}
+	}
+	
+	private void hideWidget(Widget widget) {
+		if(widget != null) {
+			widget.getElement().getStyle().setDisplay(Display.NONE);
+		}
+	}
+	private void showWidget(Widget widget) {
+		if(widget != null) {
+			widget.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		}
+	}
+	
+	public void updateModuleVisibility() {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENTIFIC)) {
+			headerScienceModeSwitch.setVisible(true);
+		}else {
+			headerScienceModeSwitch.setVisible(false);
+		}
+
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_LANGUAGE)) {
+			showWidget(languageBox);
+		}else {
+			hideWidget(languageBox);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_COOR_GRID)) {
+			showWidget(gridButton);
+		}else {
+			hideWidget(gridButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCREENSHOT)) {
+			showWidget(screenshotButton);
+		}else {
+			hideWidget(screenshotButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SHARE)) {
+			showWidget(shareButton);
+		}else {
+			hideWidget(shareButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_HELP)) {
+			showWidget(helpButton);
+		}else {
+			hideWidget(helpButton);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_DROPDOWN)) {
+			showWidget(dropdownContainer);
+		}else {
+			hideWidget(dropdownContainer);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_FEEDBACK)) {
+			showWidget(feedbackButton);
+		}else {
+			hideWidget(feedbackButton);
 		}
 	}
 

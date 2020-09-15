@@ -71,6 +71,17 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
         });
 	}
 	
+	public EsaSkyButton(String text){
+		FlowPanel container = new FlowPanel();
+		button = new PushButtonWithVisibleOnClick(text);
+		container.add(button);
+		
+		initWidget(container);
+		
+		initStyle();
+		
+	}
+	
 	public EsaSkyButton(String color, boolean isSmall){
 		FlowPanel container = new FlowPanel();
         button = new PushButtonWithVisibleOnClick();
@@ -238,6 +249,10 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 		
 		public PushButtonWithVisibleOnClick() {
 			super();
+		}
+		
+		public PushButtonWithVisibleOnClick(String text) {
+			super(text);
 		}
 		
 		public void onClick() {
