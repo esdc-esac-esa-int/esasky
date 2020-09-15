@@ -88,6 +88,28 @@ public class TAPPublicationsService extends AbstractTAPService {
         return adql;
     }
     
+    public static String getConeSearchMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, SkyViewPosition pos, int limit, String orderBy) {
+    	String adql = "select top " + limit 
+    			+ " main_id as name, ra, dec, nbref as bibcount from basic"
+    			+ " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
+    			+ descriptor.getTapDecColumn() + "), ";
+    	
+    	String shape = null;
+ 
+		shape = "CIRCLE('ICRS', "
+				+ pos.getCoordinate().ra + ","
+				+ pos.getCoordinate().dec + ","
+				+ pos.getFov() + ")";
+
+    	adql += shape + ") and nbref > 0";
+    	
+    	adql += " ORDER BY " + orderBy;
+    	
+    	Log.debug("[TAPPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
+    	
+    	return adql;
+    }
+    
     @Override
     public String getMetadataAdql(IDescriptor descriptor) {
         // TODO Auto-generated method stub
