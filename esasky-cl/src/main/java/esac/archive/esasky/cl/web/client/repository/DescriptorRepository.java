@@ -310,13 +310,7 @@ public class DescriptorRepository {
 
 				Log.debug("[DescriptorRepository] Total catalog entries: " + catDescriptors.getTotal());
 				WavelengthUtils.setWavelengthRangeMaxMin(catDescriptors.getDescriptors());
-				if (GUISessionStatus.getIsInScienceMode()) {
-					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
-						updateCount4Catalogs();
-					} else {
-						checkDoCountAll();
-					}
-				} else {
+				if (!GUISessionStatus.getIsInScienceMode()) {
 					GUISessionStatus.setDoCountOnEnteringScienceMode();
 				}
 			}
@@ -327,7 +321,6 @@ public class DescriptorRepository {
 				DescriptorList<CatalogDescriptor> list = new DescriptorList<CatalogDescriptor>() {};
 				catDescriptors = new DescriptorListAdapter<CatalogDescriptor>(list, countObserver);
 				catDescriptorsIsReady = true;
-				checkDoCountAll();
 			}
 
 		});
@@ -349,13 +342,7 @@ public class DescriptorRepository {
 
 				Log.debug("[DescriptorRepository] [init obs]Total observation entries: " + obsDescriptors.getTotal());
 				WavelengthUtils.setWavelengthRangeMaxMin(obsDescriptors.getDescriptors());
-				if (GUISessionStatus.getIsInScienceMode()) {
-					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
-						updateCount4Observations();
-					} else {
-						checkDoCountAll();
-					}
-				} else {
+				if (!GUISessionStatus.getIsInScienceMode()) {
 					GUISessionStatus.setDoCountOnEnteringScienceMode();
 				}
 			}
@@ -366,7 +353,6 @@ public class DescriptorRepository {
 				DescriptorList<ObservationDescriptor> list = new DescriptorList<ObservationDescriptor>() {};
 				obsDescriptors = new DescriptorListAdapter<ObservationDescriptor>(list, obsCountObserver);
 				obsDescriptorsIsReady = true;
-				checkDoCountAll();
 			}
 
 		});
@@ -389,13 +375,7 @@ public class DescriptorRepository {
 
 				Log.debug("[DescriptorRepository] [initSSODescriptors] Total observation entries: " + ssoDescriptors.getTotal());
 				WavelengthUtils.setWavelengthRangeMaxMin(ssoDescriptors.getDescriptors());
-				if (GUISessionStatus.getIsInScienceMode()) {
-					if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
-						updateCount4Observations();
-					} else {
-						checkDoCountAll();
-					}
-				} else {
+				if (!GUISessionStatus.getIsInScienceMode()) {
 					GUISessionStatus.setDoCountOnEnteringScienceMode();
 				}
 			}
@@ -425,13 +405,7 @@ public class DescriptorRepository {
 
 						Log.debug("[DescriptorRepository] Total spectra entries: " + spectraDescriptors.getTotal());
 						WavelengthUtils.setWavelengthRangeMaxMin(spectraDescriptors.getDescriptors());
-						if (GUISessionStatus.getIsInScienceMode()) {
-							if (!EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
-								updateCount4Spectras();
-							} else {
-								checkDoCountAll();
-							}
-						} else {
+						if (!GUISessionStatus.getIsInScienceMode()) {
 							GUISessionStatus.setDoCountOnEnteringScienceMode();
 						}
 					}
@@ -440,7 +414,6 @@ public class DescriptorRepository {
 					public void onError(String errorCause) {
 						Log.error("[DescriptorRepository] initSpectraDescriptors ERROR: " + errorCause);
 						spectraDescriptorsIsReady = true;
-						checkDoCountAll();
 					}
 
 				});
@@ -471,7 +444,6 @@ public class DescriptorRepository {
 			@Override
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initPubDescriptors ERROR: " + errorCause);
-				checkDoCountAll();
 			}
 
 		});
