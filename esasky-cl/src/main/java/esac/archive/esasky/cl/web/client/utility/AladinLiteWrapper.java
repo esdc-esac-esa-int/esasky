@@ -131,9 +131,12 @@ public class AladinLiteWrapper {
         Log.debug(prefix + " getSurveyId(): " + initialHiPS.getSurveyId());
         Log.debug(prefix + " getSurveyFrame(): " + initialHiPS.getSurveyFrame().toString());
         Log.debug(prefix + " target: " + target);
+        
 
         aladinLite = new AladinLiteWidget(CommonEventBus.getEventBus(),
-                EsaSkyConstants.ALADIN_DIV_NAME, new Double(1580), new Double(960),
+                EsaSkyConstants.ALADIN_DIV_NAME, 
+                new Double(inputParentWidget.getOffsetWidth()),
+                new Double(inputParentWidget.getOffsetHeight()),
                 initialHiPS.getSurveyId(), initialHiPS.getSurveyName(),
                 initialHiPS.getSurveyRootUrl(), initialHiPS.getSurveyFrame().getName(),
                 initialHiPS.getMaximumNorder(), initialHiPS.getImgFormat().name(),
