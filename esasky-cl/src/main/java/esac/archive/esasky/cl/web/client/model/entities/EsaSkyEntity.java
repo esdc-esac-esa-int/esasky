@@ -340,7 +340,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	String adql = metadataService.getMetadataFromMOCPixel(descriptor, mocInfo);
     	
     	String filter = tablePanel.getFilterString();
-        adql += filter;
+    	if(filter != "") {
+    		adql += " AND " + filter;
+    	}
         
         GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(descriptor);
         MainPresenter.getInstance().getRelatedMetadata(entity, adql);
