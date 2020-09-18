@@ -73,12 +73,12 @@ public class Controller implements ValueChangeHandler<String> {
 		
 		String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
-				(sciMode != null 
+				((sciMode != null 
 				&& (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"))
 						)
 				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet())
 				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && sciMode == null && sciMode != "false"
-					&& sciMode != "off" && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true"))
+					&& sciMode != "off" && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true")))
 				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE)
 				) {
 			
