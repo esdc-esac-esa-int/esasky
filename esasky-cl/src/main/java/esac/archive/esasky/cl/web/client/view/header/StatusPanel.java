@@ -23,9 +23,6 @@ import esac.archive.esasky.cl.web.client.event.banner.ServerProblemFoundEventHan
 import esac.archive.esasky.cl.web.client.event.banner.ServerProblemSolvedEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ServerProblemSolvedEventHandler;
 import esac.archive.esasky.cl.web.client.presenter.StatusPresenter.View;
-import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
-import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
-import esac.archive.esasky.cl.web.client.status.ScreenWidth;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 
@@ -69,14 +66,6 @@ public class StatusPanel extends Composite implements View{
 			}
 		});
 		
-		ScreenSizeService.getInstance().registerObserver(new ScreenSizeObserver() {
-			
-			@Override
-			public void onScreenSizeChange() {
-				setResponsiveStyle();
-			}
-		});
-		
 		CommonEventBus.getEventBus().addHandler(ServerProblemFoundEvent.TYPE, new ServerProblemFoundEventHandler() {
 			
 			@Override
@@ -91,7 +80,6 @@ public class StatusPanel extends Composite implements View{
 				resize();
 			}
 		});
-		setResponsiveStyle();
 		
 		initWidget(statusPanel);
 	}
@@ -122,6 +110,7 @@ public class StatusPanel extends Composite implements View{
 						Document.get().getElementById("coordinateContainer").getOffsetWidth() 
 						+ skyLabelAndMargin
 						, Unit.PX);
+				setResponsiveStyle();
 			}
 		});
 	}
@@ -217,8 +206,7 @@ public class StatusPanel extends Composite implements View{
 	};
 	
 	private void setResponsiveStyle() {
-		int pxWidth = ScreenSizeService.getInstance().getScreenSize().getWidth().getPxSize();
-		if(pxWidth <= ScreenWidth.MEDIUM.getPxSize()) {
+		if(statusPanel.getOffsetWidth() <= 150) {
 			statusLabel.setVisible(false);
 		} else {
 			statusLabel.setVisible(true);
