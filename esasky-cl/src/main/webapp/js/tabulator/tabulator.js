@@ -15196,10 +15196,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					var index = this.table.getUniqueCheckboxIndex();
 					checkboxContainer.className = "tabulator-checkbox-container";
 					var checkboxLabel = document.createElement("label");
-					checkboxLabel.htmlFor = 'tabulator-checkbox-' + index;
 					if (formatterParams.title) {
 						checkboxLabel.innerHTML = formatterParams.title;
 						checkboxLabel.className = 'tabulator-checkbox-label';
+						checkboxLabel.htmlFor = 'tabulator-checkbox-' + index;
 					} else {
 						checkboxLabel.innerHTML = "_";
 						checkboxLabel.className = 'tabulator-checkbox-label-transparent';
