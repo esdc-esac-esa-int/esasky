@@ -202,6 +202,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	    super.onAttach();
         table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
                 getDescriptor().getArchiveProductURI() != null, 
+                getDescriptor().getDescriptorId().contains("PUBLICATIONS"),
                 getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
         getDescriptor().registerMetadataVisibilityObserver(metadataVisibilityObserver);
 	}

@@ -68,14 +68,14 @@ public class TabulatorWrapper{
     private boolean waitingForMoc = false;
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addSourcesInPublicationColumn) {
-        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addSourcesInPublicationColumn, null);
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn) {
+        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null);
     }
     
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) {
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addSourcesInPublicationColumn, selectionHeaderTitle);
+        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle);
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -586,7 +586,7 @@ public class TabulatorWrapper{
     }
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) /*-{
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) /*-{
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
@@ -850,7 +850,7 @@ public class TabulatorWrapper{
             }
 		}
 
-        var nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "samp", "sourcesInPublication"];
+        var nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var hideNonDatabaseColumnFormatter = function(cell, formatterParams, onRendered){
 		    if (nonDatabaseColumns.includes(cell.getValue())) {
 		        return "";
@@ -1043,6 +1043,23 @@ public class TabulatorWrapper{
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                            }
+                    });
+                }
+                if(addLink2AdsColumn){
+                    activeColumnGroup.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_link2AdseHeader"),
+                        field:"link2archive",
+                        visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+                        headerSort:false, 
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2AdsHeaderTooltip"),
+                        minWidth: 63,
+                        download: false,
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"link2archive.png",
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2AdsButtonTooltip")},
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
                             }
                     });
                 }

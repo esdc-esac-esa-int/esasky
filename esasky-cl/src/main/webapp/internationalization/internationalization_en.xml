@@ -3239,4 +3239,13 @@
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
+	<text key="tabulator_link2AdsHeader">
+		ADS
+	</text>
+	<text key="tabulator_link2AdsHeaderTooltip">
+		Click any row to open the corresponding publication in the Astrophysics Data System
+	</text>
+	<text key="tabulator_link2AdsButtonTooltip">
+		Open this publication in the Astrophysics Data System
+	</text>
 </Internationalization>
