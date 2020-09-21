@@ -226,8 +226,8 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		toContainer.getElement().getStyle().setTop(190, Unit.PX);
 		
 		resetButton.getElement().getStyle().setPosition(Position.RELATIVE);
-		resetButton.getElement().getStyle().setLeft(227, Unit.PX);
-		resetButton.getElement().getStyle().setTop(-47, Unit.PX);
+		resetButton.getElement().getStyle().setLeft(204, Unit.PX);
+		resetButton.getElement().getStyle().setTop(-48, Unit.PX);
 	}
 	
 	private void setDefaultStyle() {
