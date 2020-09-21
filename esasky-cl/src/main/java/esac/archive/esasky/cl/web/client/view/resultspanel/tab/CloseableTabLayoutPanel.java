@@ -337,7 +337,7 @@ public class CloseableTabLayoutPanel extends Composite {
 
             @Override
             public void onClick(final ClickEvent event) {
-                String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
+                String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId() + "-" + GUISessionStatus.getNextUniqueSampNumber();
                 Log.debug("Samp on ObservationsTablePanel");
                 CommonEventBus.getEventBus().fireEvent(
                         new SendTableToEvent(selectedTabId));

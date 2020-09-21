@@ -37,6 +37,9 @@ public class GUISessionStatus {
 	private static boolean showCoordinatesInDegrees = false;
 	
 	private static String currentLanguage;
+	
+	//TOPCAT requires a uniqe ID, otherwise it rejects incoming message
+	private static int uniqueSampNumber = 0;
 
 	/** User's screen height. */
 	private static int userScreenHeight = 0;
@@ -291,6 +294,11 @@ public class GUISessionStatus {
 			}
 		});
 
+	}
+	
+	public static int getNextUniqueSampNumber(){
+	    uniqueSampNumber++;
+	    return uniqueSampNumber;
 	}
 	
 }

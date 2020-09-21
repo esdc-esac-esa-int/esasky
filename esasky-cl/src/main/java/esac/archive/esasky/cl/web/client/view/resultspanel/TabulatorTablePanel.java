@@ -47,6 +47,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -591,7 +592,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
             return;
         } 
 
-        String tableName = getLabel() + "-" + uniqueIdentifierField;
+        String tableName = getLabel() + "-" + uniqueIdentifierField + "-" + GUISessionStatus.getNextUniqueSampNumber();
         HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
 
         // Display top progress bar...
@@ -677,7 +678,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
                         HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
                         for (SampMessageItem i : messageItems) {
                             // Prepare sending message
-                            tableNameTmp = getDescriptor().getTapTable() + "_" + counter;
+                            tableNameTmp = getDescriptor().getTapTable() + "_" + counter + "-" + GUISessionStatus.getNextUniqueSampNumber();
                             String fullUrl = getDescriptor().getDdBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
                             if (fullUrl.contains("README")) {
                                 continue;
