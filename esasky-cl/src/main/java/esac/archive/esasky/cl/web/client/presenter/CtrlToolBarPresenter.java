@@ -470,10 +470,6 @@ public class CtrlToolBarPresenter {
         return sb.toSafeHtml();
     }
     
-    public void createMissionButton(String name, List<IDescriptor> descriptors) {
-    	
-    }
-    
     List<CustomTreeMapDescriptor> treeMapDescriptors = new LinkedList<CustomTreeMapDescriptor>();
     
     public void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor){
