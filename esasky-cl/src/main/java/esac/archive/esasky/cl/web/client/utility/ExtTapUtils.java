@@ -79,7 +79,7 @@ public class ExtTapUtils {
 		}
 		typeDescriptor.setWhereADQL(whereADQL);
 		
-		typeDescriptor.setSelectADQL("SELECT TOP " + Integer.toString(typeDescriptor.getShapeLimit()) + " *");
+		typeDescriptor.setSelectADQL("SELECT TOP " + Integer.toString(DeviceUtils.getDeviceShapeLimit(typeDescriptor)) + " *");
 		
 		return typeDescriptor;
 	}

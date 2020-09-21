@@ -21,15 +21,7 @@ public abstract class AbstractTAPService {
     public abstract String getMetadataAdql(IDescriptor descriptor, String filter);
     public abstract String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos);
     
-    protected int getResultsLimit(int descriptorLimit){
-        
-        if (DeviceUtils.isMobile()){
-            return EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
-        }
-         return descriptorLimit;  
-        
-    }
-    
+  
     public String getRequestUrl() {
         return EsaSkyWebConstants.TAP_CONTEXT;
     }
@@ -74,9 +66,9 @@ public abstract class AbstractTAPService {
     	
     	String adql;
     	if(Modules.toggleColumns) {
-    	    adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " *";
+    	    adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " *";
     	} else {
-    	       adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
+    	       adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
     	        
     	        for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
     	            if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {
@@ -106,9 +98,9 @@ public abstract class AbstractTAPService {
     	
     	String adql;
     	if(Modules.toggleColumns) {
-    		adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " *";
+    		adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " *";
     	} else {
-    		adql = "select top " + getResultsLimit(descriptor.getShapeLimit()) + " ";
+    		adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
     		
     		for (MetadataDescriptor currentMetadata : descriptor.getMetadata()) {
     			if (descriptor.getTapDecColumn().equals(currentMetadata.getTapName())) {

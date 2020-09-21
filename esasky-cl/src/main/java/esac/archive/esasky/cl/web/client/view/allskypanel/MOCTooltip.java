@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HTML;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
@@ -39,7 +40,7 @@ public class MOCTooltip extends Tooltip {
     	    container.add(new HTML("<h2>" + mocInfo.descriptor.getGuiShortName() + "</h2>" + wavelengthInfo));
     	    container.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_count") + ":</b> " + NumberFormatter.formatToNumberWithSpaces(mocInfo.count)));
     	    
-    	    if(mocInfo.count < mocInfo.descriptor.getShapeLimit()) {
+    	    if(mocInfo.count < DeviceUtils.getDeviceShapeLimit(mocInfo.descriptor)) {
 				EsaSkyStringButton loadButton = new EsaSkyStringButton(TextMgr.getInstance().getText("mocDialog_loadData"));
 				loadButton.setMediumStyle();
 				loadButton.addClickHandler(new ClickHandler() {

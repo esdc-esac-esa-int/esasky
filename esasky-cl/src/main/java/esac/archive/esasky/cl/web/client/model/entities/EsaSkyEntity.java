@@ -282,10 +282,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     protected void fetchShapesAndMetadata() {
         clearAll();
-        int shapeLimit = descriptor.getShapeLimit();
-        if (shapeLimit > 0 && DeviceUtils.isMobile()){
-            shapeLimit = EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
-        }
+        int shapeLimit = DeviceUtils.getDeviceShapeLimit(descriptor);
 
         if (shapeLimit > 0 && getCountStatus().getCount(descriptor) > shapeLimit) {
             Log.debug("Showing dynamic moc");

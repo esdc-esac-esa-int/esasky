@@ -9,6 +9,7 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPExtTapService extends AbstractTAPService {
@@ -170,7 +171,7 @@ public class TAPExtTapService extends AbstractTAPService {
     @Override
     public String getMetadataAdql(IDescriptor descriptorInput) {
         ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-        String selectADQL = "SELECT TOP " + Integer.toString(descriptor.getShapeLimit()) + " * ";
+        String selectADQL = "SELECT TOP " + Integer.toString(DeviceUtils.getDeviceShapeLimit(descriptor)) + " * ";
         
         if(descriptor.isInBackend()) {
         	return getAdql(descriptor, selectADQL);       

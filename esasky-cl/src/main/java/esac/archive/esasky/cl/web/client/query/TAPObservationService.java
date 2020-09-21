@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -41,9 +42,9 @@ public class TAPObservationService extends AbstractTAPService {
         String adql;
         
         if(Modules.toggleColumns) {
-            adql = "SELECT TOP " + descriptor.getShapeLimit()  + " *";
+            adql = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor)  + " *";
         } else {
-            adql = "SELECT TOP " + descriptor.getShapeLimit() + " ";
+            adql = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
             for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
                 MetadataDescriptor castMetadata = currMetadata;
                 adql += " " + castMetadata.getTapName() + ", ";
@@ -69,7 +70,7 @@ public class TAPObservationService extends AbstractTAPService {
     public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition pos) {
     	String adql;
     	
-    	int top = getResultsLimit(descriptor.getShapeLimit());
+    	int top = DeviceUtils.getDeviceShapeLimit(descriptor);
     	
     	if(Modules.toggleColumns) {
     	    adql = "SELECT top " + top +  " * ";

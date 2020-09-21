@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.utility;
 
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public final class DeviceUtils {
 
@@ -27,5 +28,14 @@ public final class DeviceUtils {
 	public static native boolean isIOS() /*-{
 		return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     }-*/;
+	
+	public static int getDeviceShapeLimit(IDescriptor descriptor) {
+	    int shapeLimit = descriptor.getShapeLimit();
+	    if(shapeLimit > 0 && DeviceUtils.isMobile()) {
+	        return EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;
+	    } else {
+	        return shapeLimit;
+	    }
+	}
 
 }

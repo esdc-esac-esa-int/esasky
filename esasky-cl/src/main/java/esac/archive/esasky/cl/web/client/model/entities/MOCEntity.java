@@ -34,6 +34,7 @@ import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
@@ -295,7 +296,7 @@ public class MOCEntity implements GeneralEntityInterface {
                 		getVisibleCount();
                 		setTableCountText();
                 		
-                		if(currentVisibleCount< descriptor.getShapeLimit() && currentVisibleCount > 0) {
+                		if(currentVisibleCount< DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
                 			sendLoadQuery();
                 		}
                 	}
@@ -317,7 +318,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	else {
     		count = currentVisibleCount;
     		text = TextMgr.getInstance().getText("MOC_count_text");
-    		text = text.replace("$limit$", NumberFormatter.formatToNumberWithSpaces(descriptor.getShapeLimit()));
+    		text = text.replace("$limit$", NumberFormatter.formatToNumberWithSpaces(DeviceUtils.getDeviceShapeLimit(descriptor)));
     	}
 
     	String countString = NumberFormatter.formatToNumberWithSpaces(count);
@@ -359,7 +360,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	                 	public void onComplete() {
 	                 		getVisibleCount();
 	                 		setTableCountText();
-	                 		if(currentVisibleCount < descriptor.getShapeLimit() && currentVisibleCount > 0) {
+	                 		if(currentVisibleCount < DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
 	                			sendLoadQuery();
 	                		}
 	                 	}
@@ -498,7 +499,7 @@ public class MOCEntity implements GeneralEntityInterface {
 				
 				setTableCountText();	
 				
-				if(currentVisibleCount < parentEntity.getDescriptor().getShapeLimit() && currentVisibleCount > 0) {
+				if(currentVisibleCount < DeviceUtils.getDeviceShapeLimit(parentEntity.getDescriptor()) && currentVisibleCount > 0) {
 					sendLoadQuery();
 					return;
 				}
