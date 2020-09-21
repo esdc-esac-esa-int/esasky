@@ -163,11 +163,9 @@ public class CloseableTabLayoutPanel extends Composite {
 				if(event.getNewHeight() > 40) {
 					toggleDataPanelButton.rotate(180, 1000);
 					toggleDataPanelButtonMoveAnimation.animateTo(2, 1000);
-					closeAllButton.removeStyleName("hidden");
 				} else {
 					toggleDataPanelButton.rotate(0, 1000);
 					toggleDataPanelButtonMoveAnimation.animateTo(10, 1000);
-					closeAllButton.addStyleName("hidden");
 				}
 			}
 		});
