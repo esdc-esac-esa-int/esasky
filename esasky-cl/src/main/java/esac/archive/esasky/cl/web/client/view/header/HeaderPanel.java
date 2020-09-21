@@ -200,11 +200,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			
 			@Override
 			public void onScreenSizeChange() {
-				setResponsiveStyle();
 				updateModuleVisibility();
 			}
 		});
-		setResponsiveStyle();
 		updateModuleVisibility();
 	}
 
@@ -596,56 +594,24 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		warningButton.setVisible(false);
 	}
 	
-	private void setResponsiveStyle() {
+	public void updateModuleVisibility() {
 		int pxWidth = ScreenSizeService.getInstance().getScreenSize().getWidth().getPxSize();
+		
+		
 		if(pxWidth <= ScreenWidth.LARGE.getPxSize()) {
 			hipsLabelButton.setVisible(false);
-			languageBox.setVisible(false);
-			dropdownLanguageBox.setVisible(true);
 		} else {
 			hipsLabelButton.setVisible(true);
-			languageBox.setVisible(true);
-			dropdownLanguageBox.setVisible(false);
 		}
-		if(pxWidth <= ScreenWidth.MEDIUM.getPxSize()) {
-			feedbackButton.setVisible(false);
-			dropdownFeedbackEntry.setVisible(true);
-		} else {
-			feedbackButton.setVisible(true);
-			dropdownFeedbackEntry.setVisible(false);
-		}
+		
 		if(pxWidth <= ScreenWidth.SMALL.getPxSize()) {
-			shareButton.setVisible(false);
-			helpButton.setVisible(false);
-			screenshotButton.setVisible(false);
-			gridButton.setVisible(false);
-			headerScienceModeSwitch.setVisible(false);
-			
 			coordinateLabel.setSidePadding(3, 3);
 			coordinateContainer.getElement().getStyle().setMarginRight(0, Unit.PX);
-			
-			dropdownHelpEntry.setVisible(true);
-			dropdownScienceModeSwitch.setVisible(true);
-			dropdownShareEntry.setVisible(true);
-			dropdownScreenshotEntry.setVisible(true);
-			dropdownGridEntry.setVisible(true);
-		} else {
-			shareButton.setVisible(true);
-			helpButton.setVisible(true);
-			screenshotButton.setVisible(true);
-			gridButton.setVisible(true);
-			headerScienceModeSwitch.setVisible(true);
-			
+		}else {
 			coordinateLabel.setSidePadding(5, 5);
 			coordinateContainer.getElement().getStyle().setMarginRight(0, Unit.PX);
-			
-			dropdownHelpEntry.setVisible(false);
-			dropdownScienceModeSwitch.setVisible(false);
-			dropdownShareEntry.setVisible(false);
-			dropdownScreenshotEntry.setVisible(false);
-			dropdownGridEntry.setVisible(false);
-			
 		}
+		
 		if(pxWidth <= ScreenWidth.MINI.getPxSize()) {
 			coordinateContainer.setWidth("305px");
 			coordinateFrameFull.setVisible(false);
@@ -655,66 +621,67 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			coordinateFrameFull.setVisible(true);
 			coordinateFrameFirstLetter.setVisible(false);
 		}
-	}
-	
-	private void hideWidget(Widget widget) {
-		if(widget != null) {
-			widget.getElement().getStyle().setDisplay(Display.NONE);
-		}
-	}
-	private void showWidget(Widget widget) {
-		if(widget != null) {
-			widget.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
-		}
-	}
-	
-	public void updateModuleVisibility() {
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENTIFIC)) {
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENTIFIC) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
 			headerScienceModeSwitch.setVisible(true);
+			dropdownScienceModeSwitch.setVisible(false);
 		}else {
 			headerScienceModeSwitch.setVisible(false);
+			dropdownScienceModeSwitch.setVisible(true);
 		}
 
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_LANGUAGE)) {
-			showWidget(languageBox);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_LANGUAGE) && pxWidth > ScreenWidth.LARGE.getPxSize()) {
+			languageBox.setVisible(true);
+			dropdownLanguageBox.setVisible(false);
 		}else {
-			hideWidget(languageBox);
+			languageBox.setVisible(false);
+			dropdownLanguageBox.setVisible(true);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_COOR_GRID)) {
-			showWidget(gridButton);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_COOR_GRID) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
+			gridButton.setVisible(true);
+			dropdownGridEntry.setVisible(false);
 		}else {
-			hideWidget(gridButton);
+			gridButton.setVisible(false);
+			dropdownGridEntry.setVisible(true);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCREENSHOT)) {
-			showWidget(screenshotButton);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCREENSHOT) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
+			screenshotButton.setVisible(true);
+			dropdownScreenshotEntry.setVisible(false);
 		}else {
-			hideWidget(screenshotButton);
+			screenshotButton.setVisible(false);
+			dropdownScreenshotEntry.setVisible(true);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SHARE)) {
-			showWidget(shareButton);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SHARE) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
+			shareButton.setVisible(true);
+			dropdownShareEntry.setVisible(false);
 		}else {
-			hideWidget(shareButton);
+			shareButton.setVisible(false);
+			dropdownShareEntry.setVisible(true);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_HELP)) {
-			showWidget(helpButton);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_HELP) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
+			helpButton.setVisible(true);
+			dropdownHelpEntry.setVisible(false);
 		}else {
-			hideWidget(helpButton);
+			helpButton.setVisible(false);
+			dropdownHelpEntry.setVisible(true);
 		}
 		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_DROPDOWN)) {
-			showWidget(dropdownContainer);
+			dropdownContainer.setVisible(true);
 		}else {
-			hideWidget(dropdownContainer);
+			dropdownContainer.setVisible(false);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_FEEDBACK)) {
-			showWidget(feedbackButton);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_FEEDBACK)&& pxWidth > ScreenWidth.MEDIUM.getPxSize()) {
+			feedbackButton.setVisible(true);
+			dropdownFeedbackEntry.setVisible(false);
 		}else {
-			hideWidget(feedbackButton);
+			feedbackButton.setVisible(false);
+			dropdownFeedbackEntry.setVisible(true);
 		}
 	}
 
