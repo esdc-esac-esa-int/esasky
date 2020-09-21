@@ -117,6 +117,7 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		dateFilterContainer.add(fromContainer);
 		dateFilterContainer.add(resetButton);
 		dateFilterContainer.add(toContainer);
+		addElementNotAbleToInitiateMoveOperation(dateFilterContainer.getElement());
 		
 		container.add(dateFilterContainer);
 		
