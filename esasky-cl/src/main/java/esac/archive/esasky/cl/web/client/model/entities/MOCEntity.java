@@ -328,17 +328,15 @@ public class MOCEntity implements GeneralEntityInterface {
 
     private void getSplitMOC(int order) {
     	
-    	String filter = tablePanel.getFilterString();
-    	
     	String adql;
 
     	GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, 8, true);
     	if(visibleIpixels.jsonStringify().length() > 2 || freshLoad) {
 
         	if(freshLoad) {
-        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
-        	}else {
         		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, tablePanel.getFilterString());
+        	}else {
+        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, visibleIpixels, tablePanel.getFilterString());
         	}
 	    	loadMOC(adql);
 	    	
