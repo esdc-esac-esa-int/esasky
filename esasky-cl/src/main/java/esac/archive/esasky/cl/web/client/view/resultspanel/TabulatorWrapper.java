@@ -440,7 +440,11 @@ public class TabulatorWrapper{
 						metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
 					}
 					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label") && descriptorMetaData[metadata[j].name].label != "" && descriptorMetaData[metadata[j].name].label != "undefined"){
-				        metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
+					    if(url.includes("publications-by")){					        
+				            metadata[j].displayName = $wnd.esasky.getInternationalizationText(descriptorMetaData[metadata[j].name]["label"]);
+					    } else {
+				            metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
+					    }
 					}
 					if(descriptorMetaData[metadata[j].name].hasOwnProperty("maxDecimalDigits") && descriptorMetaData[metadata[j].name].maxDecimalDigits != null){
 				        metadata[j].maxDecimalDigits = descriptorMetaData[metadata[j].name].maxDecimalDigits;
@@ -1048,7 +1052,7 @@ public class TabulatorWrapper{
                 }
                 if(addLink2AdsColumn){
                     activeColumnGroup.push({
-                        title:$wnd.esasky.getInternationalizationText("tabulator_link2AdseHeader"),
+                        title:$wnd.esasky.getInternationalizationText("tabulator_link2AdsHeader"),
                         field:"link2archive",
                         visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
                         headerSort:false, 
@@ -1086,7 +1090,7 @@ public class TabulatorWrapper{
 			    		if(this.metadata[i].name.toLowerCase() === "access_url"
 			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
 	                        activeColumnGroup.push({
-	                            title:this.metadata[i].displayName,
+	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),
 	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
@@ -1109,7 +1113,7 @@ public class TabulatorWrapper{
 			    		}
 			    		if(this.metadata[i].name.toLowerCase() === "postcard_url"){
 	                        activeColumnGroup.push({
-	                            title:$wnd.esasky.getInternationalizationText("tabulator_preview"),
+	                            title:$wnd.esasky.getInternationalizationText("tabulator_previewHeader"),
 	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
@@ -1128,7 +1132,7 @@ public class TabulatorWrapper{
 			    		}
 			    		if(this.metadata[i].name.toLowerCase() === "author"){
 	                        activeColumnGroup.push({
-	                            title:this.metadata[i].displayName,
+	                            title:$wnd.esasky.getInternationalizationText("Authors"),
 	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
@@ -1198,7 +1202,7 @@ public class TabulatorWrapper{
 				    			sorter: "number",
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
-				    								title:this.metadata[i].displayName},
+				    								title:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header")},
 				    			headerFilterFunc:DoubleFilter,
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
