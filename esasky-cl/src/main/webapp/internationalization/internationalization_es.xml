@@ -203,11 +203,6 @@
 		Paleta de colores
 	</text>
 
-	<!-- abstractTablePanel -->
-	<text key="tabulator_preview">
-		Previsualizar
-	</text>
-
 	<!-- commonObservationTablePanel -->
 	<text key="tabulator_sendRowToVOA">
 		Enviar fila a una aplicaci&#243;n de observatorio
@@ -2980,6 +2975,27 @@
 	</text>
 	<text key="mocDialog_loadData">
 		Cargando datos
+	</text>
+	<text key="tabulator_preview">
+		Previsualización de la postal
+	</text>
+	<text key="tabulator_previewHeader">
+		Previsualizar
+	</text>
+	<text key="productURL">
+		Descargar
+	</text>
+	<text key="archiveUrl">
+		Archivo
+	</text>
+	<text key="tabulator_link2AdsHeader">
+		ADS
+	</text>
+	<text key="tabulator_link2AdsHeaderTooltip">
+		Selecciona una fila para abrir la publicación correspondiente en ADS
+	</text>
+	<text key="tabulator_link2AdsButtonTooltip">
+		Abrir esta publicación en ADS
 	</text>
 </Internationalization>
 

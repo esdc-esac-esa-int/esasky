@@ -3226,7 +3226,6 @@
 		Download
 	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
-	<!-- internationalization_es.xml is up to date for everything above -->
 	<text key="tabulator_preview">
 		Visualize a preview of the postcard
 	</text>
@@ -3248,6 +3247,7 @@
 	<text key="tabulator_link2AdsButtonTooltip">
 		Open this publication in the Astrophysics Data System
 	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
 
 
 
