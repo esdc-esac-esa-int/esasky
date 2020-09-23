@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE internationalization [
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text key ID #REQUIRED>
@@ -1971,5 +1971,26 @@
 	<text key="mocDialog_loadData">
 		加载数据
 	</text>
+	<text key="tabulator_preview">
+		预览这张明信片
+	</text>
+	<text key="tabulator_previewHeader">
+		预览
+	</text>
+	<text key="productURL">
+		下载
+	</text>
+	<text key="archiveUrl">
+		数据库
+	</text>
+	<text key="tabulator_link2AdsHeader">
+		ADS
+	</text>
+	<text key="tabulator_link2AdsHeaderTooltip">
+		点击任一行在ADS系统中打开相应的文献
+	</text>
+	<text key="tabulator_link2AdsButtonTooltip">
+		在ADS系统中打开本文献
+	</text>  
 	
 </Internationalization>
