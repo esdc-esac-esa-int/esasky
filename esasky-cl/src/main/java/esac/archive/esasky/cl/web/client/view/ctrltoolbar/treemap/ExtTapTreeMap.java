@@ -454,6 +454,10 @@ public class ExtTapTreeMap extends TreeMap {
 		update(true);
     }
     
+    @Override
+    public void update() {
+        //Use other update function
+    }
     private void registerLargeFovEventObserver() {
     	CommonEventBus.getEventBus().addHandler(ExtTapFovEvent.TYPE,
                 new ExtTapFovEventHandler() {
