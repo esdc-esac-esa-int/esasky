@@ -50,7 +50,7 @@ public class TextMgr {
 	
 	
 	
-	private TextMgr(String langCode) {
+	private TextMgr(String langCode, boolean isPrimaryLanguage) {
 		
 	    //ctxConstants = GWT.create(ContextConstants.class);
 
@@ -62,7 +62,7 @@ public class TextMgr {
 //            baseUrl = LOCALE_URL;
         }
 	    
-	    setLangCode(langCode);
+	    setLangCode(langCode, isPrimaryLanguage);
 		new Timer() {
 			
 			@Override
@@ -94,11 +94,11 @@ public class TextMgr {
 	public static void Init(String localeLanguage, InitCallback initCallback) {
 		Log.debug("TextMgr.Init() langCode: " + localeLanguage);
 		TextMgr.initCallback = initCallback;
-		instance = new TextMgr(localeLanguage);
+		instance = new TextMgr(localeLanguage, true);
 		if(instance.getLangCode() == EsaSkyConstants.DEFAULT_LANGCODE) {
 			defaultInstance = instance;
 		}else {
-			defaultInstance = new TextMgr(EsaSkyConstants.DEFAULT_LANGCODE);
+			defaultInstance = new TextMgr(EsaSkyConstants.DEFAULT_LANGCODE, false);
 		}
 		exposeToJavascript(instance, defaultInstance);
 	}
@@ -177,19 +177,21 @@ public class TextMgr {
 		return EsaSkyConstants.DEFAULT_LANGCODE;
 	}
 	
-	public void setLangCode(String newLangCode) {
+	private void setLangCode(String newLangCode, boolean isPrimaryLanguage) {
 		langCode = getTwoLetterLangCode(newLangCode);
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TextManager,GoogleAnalytics.ACT_TextManager_SetLang,newLangCode);
-		Log.debug("TextMgr.setLangCode() langCode: " + langCode);
+		if(isPrimaryLanguage) {
+		    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TextManager,GoogleAnalytics.ACT_TextManager_SetLang,newLangCode);
+		    Log.debug("TextMgr.setLangCode() langCode: " + langCode);
+		}
 		texts = new HashMap<String, String>();
 		
-		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName(), this);
-		if(instance == null || this == getInstance()) {
+		readXML(baseUrl + "internationalization_" + langCode + ".xml?v=" + GWT.getModuleName(), this, isPrimaryLanguage);
+		if(isPrimaryLanguage) {
 			GUISessionStatus.setCurrentLanguage(langCode);
 		}
 	}
 	
-	private void getTextsFromXML(Document xmlDoc) {
+	private void getTextsFromXML(Document xmlDoc, boolean isPrimaryLanguage) {
 
 		try {
 			if (xmlDoc != null) {
@@ -206,17 +208,20 @@ public class TextMgr {
 					
 				}
 			}
-			
-			onInitialized(texts.size() > 0);
+			if(isPrimaryLanguage) {
+			    onInitialized(texts.size() > 0);
+			}
 			
 		} catch(Exception ex) {
 			Log.error("TextMgr.readAllTexts()", ex);
-			onInitialized(false);
+			if(isPrimaryLanguage) {
+			    onInitialized(false);
+			}
 		}
 	}
 	
 	//TODO: Sure this method is replicated somewhere in the project, move to some utils class
-	public static void readXML(String url, final TextMgr intManager) {
+	public static void readXML(String url, final TextMgr intManager, final boolean isPrimaryLanguage) {
 	    
 	    Log.debug("TextMgr.readXML() from url: " + url);
 	    
@@ -227,18 +232,22 @@ public class TextMgr {
                 
 	    			public void onError(Request request, Throwable ex) {
 	    				Log.error("TextMgr.readXML() onError", ex);
-	    				intManager.onInitialized(false);
+	    				if(isPrimaryLanguage) {
+	    				    intManager.onInitialized(false);
+	    				}
                 }
 
                 public void onResponseReceived(Request request, Response response) {
                     	try {
                     		final String result = response.getText();
                     		Document xmlDoc = XMLParser.parse(result); 
-                        	intManager.getTextsFromXML(xmlDoc);
+                        	intManager.getTextsFromXML(xmlDoc, isPrimaryLanguage);
                         	
                     	} catch(Exception ex) {
                     		Log.error("TextMgr.readXML().onResponseReceived", ex);
-                    		intManager.onInitialized(false);
+                    		if(isPrimaryLanguage) {
+                    		    intManager.onInitialized(false);
+                    		}
                     		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
                     	}
                 }
