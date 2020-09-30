@@ -268,6 +268,7 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_TARGET_FLAG = "TAP_TARGET";
     public static final String EXT_TAP_ADQL_FLAG = "ADQL";
     public static final String EXT_TAP_ACTION_DESCRIPTORS = "DESCRIPTORS";
+    public static final String EXT_TAP_ACTION_RESET = "RESET";
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
     public static final String EXT_TAP_URL = "TAP_URL";
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
