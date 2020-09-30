@@ -114,6 +114,16 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
         	allShapesIndexes.add(new Integer[] {-1, footPrintshapes.size()-1});
         }
     }
+    
+    public Shape getShape(int shapeId) {
+		Integer[] index = allShapesIndexes.get(shapeId);
+		
+		if(index[0] != -1) {
+			return sourceShapes.get(index[0]);
+		}else {
+			return footPrintshapes.get(index[1]);
+		}
+	}
 	
 	@Override
 	public void selectShapes(int shapeId) {

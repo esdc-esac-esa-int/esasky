@@ -44,9 +44,20 @@ public class Shape {
     public void setShapeName(String shapeName) {
     	this.shapeName = shapeName;
     	if(jsObject != null) {
-    		jsObject.setProperty("name", shapeName);
+    		setShapeName(jsObject, shapeName);
     	}
     }
+    
+    public native void setShapeName(GeneralJavaScriptObject obj, String shapeName) /*-{
+    	
+    	if(obj.length){
+    		for(var i = 0; i < obj.length;i++){
+    			obj[i].name = shapeName;
+    		}
+    	}
+    	obj.name = shapeName;
+    	
+     }-*/;
 
     public GeneralJavaScriptObject getJsObject() {
         return jsObject;

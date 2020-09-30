@@ -25,6 +25,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
+import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -848,6 +849,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	public String getHelpText() {
 		return parentEntity.getHelpText();
 	}
-    
+
+	@Override
+	public Shape getShape(int shapeId) {
+		return parentEntity.getShape(shapeId);
+	}
+	
     
 }

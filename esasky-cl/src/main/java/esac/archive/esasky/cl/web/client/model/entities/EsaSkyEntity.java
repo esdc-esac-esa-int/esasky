@@ -36,7 +36,6 @@ import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
@@ -134,7 +133,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             polygon.setShapeId(rowId);
             polygon.setStcs(stcs);
             polygon.setJsObject(((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
-                    polygon.getStcs(), rowId)).getProperty("0"));
+                    polygon.getStcs(), rowId)));
             
             polygon.setShapeId(rowId);
             String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
@@ -664,9 +663,12 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
     public void onShapeSelection(AladinShape shape) {
+    	int shapeId =  new Integer(shape.getId());
+    	selectShapes(shapeId);
+    	
     	if(tablePanel != null) {
     		select();
-    		tablePanel.selectRow(new Integer(shape.getId()));
+    		tablePanel.selectRow(shapeId);
     	}
         if(shape.getRa() != null && shape.getDec() != null) {
             tooltip = new CatalogueTooltip(shape);
@@ -721,6 +723,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getDescriptorId());
 	}
     
-    
+	@Override
+	public Shape getShape(int shapeId) {
+		return drawer.getShape(shapeId);
+	}
 
 }

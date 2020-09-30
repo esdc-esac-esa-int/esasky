@@ -113,15 +113,13 @@ public class Api {
 	                    @Override
 	                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
 	                    	GeneralJavaScriptObject shape = (GeneralJavaScriptObject) selectEvent.getShape().cast();
-//	                    	if(shape.getProperty("data") != null) {
-//	                    		//To handle sources which have all info in data 
-//	                    		shape = shape.getProperty("data");
-//	                    	}
+	                    	String overlayName = selectEvent.getOverlayName();
 	                    	String name = shape.getStringProperty("name");
 	                    	if(name == null) {name="";};
                 			String id = shape.getStringProperty("id");
                 			if(id == null) {id="";};
 	                		JSONObject result = new JSONObject();
+	                		result.put("overlay", new JSONString(overlayName));
 	                		result.put("name", new JSONString(name));
 	                		result.put("id", new JSONString(id));
 	                        sendBackToWidget(result, widget);
@@ -750,7 +748,6 @@ public class Api {
 
 	public boolean setHiPS(String wantedHiPSName, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPS, wantedHiPSName);
-		JSONObject callbackMessage = new JSONObject();
 		String text = "";
 		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, true, false)) {
 			text =  "No HiPS called: " + wantedHiPSName + " found."

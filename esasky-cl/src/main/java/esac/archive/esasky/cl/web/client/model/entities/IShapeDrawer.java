@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.List;
+
+import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public interface IShapeDrawer {
@@ -13,6 +15,7 @@ public interface IShapeDrawer {
 	public void selectShapes(int shapeId);
     public void deselectShapes(int shapeId);
     public void deselectAllShapes();
+    public Shape getShape(int shapeId);
     public void showShape(int shapeId);
     public void showShapes(List<Integer> shapeIds);
     public void showAndHideShapes(List<Integer> shapesIdsToShow, List<Integer> shapeIdsToHide);
