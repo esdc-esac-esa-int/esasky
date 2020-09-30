@@ -35,6 +35,7 @@ public class GUISessionStatus {
 	private static boolean doCountOnEnteringScienceMode = false;
 	private static boolean hideSwitch = false;
 	private static boolean showCoordinatesInDegrees = false;
+	public static boolean hideBannerInfo = false;
 	
 	private static String currentLanguage;
 	

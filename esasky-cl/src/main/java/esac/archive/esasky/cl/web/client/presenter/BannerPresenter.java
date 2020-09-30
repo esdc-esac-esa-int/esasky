@@ -144,7 +144,7 @@ public class BannerPresenter {
 				BannerMessageMapper mapper = GWT.create(BannerMessageMapper.class);
 				BannerMessage bannerMessage = mapper.read(responseText);
 				String message = bannerMessage.getMessage();
-				if(message == null || message.isEmpty()) {
+				if(message == null || message.isEmpty() || (GUISessionStatus.hideBannerInfo && !bannerMessage.getIsWarning())) {
 					if(!view.getText().isEmpty()) {
 						CommonEventBus.getEventBus().fireEvent(new ServerProblemSolvedEvent());
 					}
