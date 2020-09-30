@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.List;
 
+import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -148,5 +149,11 @@ public class MocDrawer implements IShapeDrawer{
     @Override
     public void setShapeType(String shapeType) {
     }
+
+	@Override
+	public Shape getShape(int shapeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
