@@ -165,10 +165,6 @@ public class Api {
 //		MOCEntity entity = new MOCEntity(descriptor);
 //		entity.addJSON(mocData, options);
 		
-		if(userMocs.containsKey(name)) {
-			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
-			userMocs.remove(name);
-		}
 	}
 	
 	public void removeMOC(String name) {
@@ -177,7 +173,7 @@ public class Api {
 			userMocs.remove(name);
 		}
 		
-		MocRepository.getInstance().removeEntity(name);
+//		MocRepository.getInstance().removeEntity(name);
 	}
 	
 	public void addQ3CMOC(String options, String mocData) {
