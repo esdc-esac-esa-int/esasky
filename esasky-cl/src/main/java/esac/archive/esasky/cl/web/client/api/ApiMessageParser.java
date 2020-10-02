@@ -408,7 +408,7 @@ public class ApiMessageParser {
 					(msg.content.treeMap,e);
 				break;	
 				
-			case 'setViewModuleVisibility':
+			case 'setModuleVisibility':
 				console.log('setViewModuleVisibility event captured');
 				instance.@esac.archive.esasky.cl.web.client.api.Api::setViewModuleVisibility(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
 					(msg.content.viewModules, e);
