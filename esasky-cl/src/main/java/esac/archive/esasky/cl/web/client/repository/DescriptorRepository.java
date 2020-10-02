@@ -724,10 +724,17 @@ public class DescriptorRepository {
 
 		if (descriptors.size() > 0) {
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
+			
+			LinkedList<CountStatus> statusToBeUpdated = new LinkedList<CountStatus>();
             for (String key : countStatusMap.keySet()) {
                 for(CountStatus cs: countStatusMap.get(key)) {
-                    cs.updateCount();
+                    if(!statusToBeUpdated.contains(cs)) {
+                    	statusToBeUpdated.add(cs);
+                    }
                 }
+            }
+            for(CountStatus cs: statusToBeUpdated) {
+            	cs.updateCount();
             }
 		}
 	}
