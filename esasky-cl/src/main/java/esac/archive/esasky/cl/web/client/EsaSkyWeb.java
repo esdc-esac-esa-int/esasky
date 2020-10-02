@@ -68,7 +68,7 @@ public class EsaSkyWeb implements EntryPoint {
 						}
 						loadControllers();
 						Log.debug("Loading ESASkyAPI");
-						new Api(EsaSkyWeb.this);
+						Api.init(EsaSkyWeb.this);
 					}
 				});
             }

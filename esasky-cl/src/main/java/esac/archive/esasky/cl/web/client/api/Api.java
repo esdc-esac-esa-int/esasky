@@ -14,6 +14,8 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
@@ -52,10 +54,12 @@ import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -82,6 +86,8 @@ public class Api {
 	Map<String, JavaScriptObject> setOfFootprints = new HashMap<String, JavaScriptObject>();
 	Controller controller;
 	
+	public static Api instance = null;
+	
 	private String googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
 	
 	private long lastGASliderSent = 0;
@@ -92,6 +98,18 @@ public class Api {
 
 	public void setGoogleAnalyticsCatToAPI() {
 		this.googleAnalyticsCat = GoogleAnalytics.CAT_JavaScriptAPI;
+	}
+	
+	public static Api getInstance() {
+			return instance;
+	}
+	
+	public static boolean isInitialised() {
+		return instance == null;
+	}
+	
+	public static void init(EsaSkyWeb esaSkyWeb) {
+		instance = new Api(esaSkyWeb);
 	}
 	
 	public Api(EsaSkyWeb esaSkyWeb) {
@@ -127,7 +145,7 @@ public class Api {
 	                });
 	}
 		
-	public void addMOC(String name, String options, String mocData) {
+	public void addMOC_Old(String name, String options, String mocData) {
 		if(userMocs.containsKey(name)) {
 			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
 			userMocs.remove(name);
@@ -138,12 +156,28 @@ public class Api {
 		AladinLiteWrapper.getAladinLite().addMOC(moc);
 		
 	}
+
+	public void addMOC(String name, GeneralJavaScriptObject options, GeneralJavaScriptObject mocData) {
+		MocRepository.getInstance().removeEntity(name);
+		
+		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+				.initUserDescriptor4MOC(name, options);
+		MOCEntity entity = new MOCEntity(descriptor);
+		entity.addJSON(mocData, options);
+		
+		if(userMocs.containsKey(name)) {
+			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
+			userMocs.remove(name);
+		}
+	}
 	
 	public void removeMOC(String name) {
 		if(userMocs.containsKey(name)) {
 			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
 			userMocs.remove(name);
 		}
+		
+		MocRepository.getInstance().removeEntity(name);
 	}
 	
 	public void addQ3CMOC(String options, String mocData) {
@@ -1190,6 +1224,23 @@ public class Api {
 			
 			sendBackMessageToWidget(message, widget);
 		}
+	}
+	
+	public void registerFoVChangedListener(JavaScriptObject widget) {
+		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
+
+			@Override
+			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
+				JSONObject result = new JSONObject();
+				JSONObject fov = new JSONObject();
+				fov.put("fov", new JSONNumber(fovEvent.getFov()));
+				fov.put("fovRa", new JSONNumber(fovEvent.getFov()));
+				fov.put("fovDec", new JSONNumber(fovEvent.getFovDec()));
+				result.put("action", new JSONString("FoV Changed"));
+				result.put("values", fov);
+				sendBackToWidget(result, widget);
+			}
+		});
 	}
 
 }
