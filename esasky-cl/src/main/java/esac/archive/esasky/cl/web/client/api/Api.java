@@ -1151,10 +1151,16 @@ public class Api {
 			public void onMissionClicked(String mission) {
 				JSONObject result = new JSONObject();
 				JSONObject treeMap = new JSONObject();
+				JSONObject location = new JSONObject();
 				treeMap.put("treemap:" , new JSONString(customTreeMapDescriptor.getName()));
 				treeMap.put("mission:" , new JSONString(mission));
+				SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+				location.put("ra", new JSONNumber(pos.getCoordinate().ra));
+				location.put("dec", new JSONNumber(pos.getCoordinate().dec));
+				location.put("fov", new JSONNumber(pos.getFov()));
 				result.put("action", new JSONString("treemap_mission_clicked"));
 				result.put("info", treeMap);
+				result.put("location", location);
                 sendBackToWidget(result, widget);
 			}
 		});
@@ -1163,9 +1169,14 @@ public class Api {
 	
 	}
 	
-	public void setViewModuleVisibility(GeneralJavaScriptObject data, JavaScriptObject widget) {
+	public void setModuleVisibility(GeneralJavaScriptObject data, JavaScriptObject widget) {
 		try {
-			for(String key : data.getProperties().split(",")) {
+			String propertiesString = data.getProperties();
+			String[] properties = {propertiesString};
+			if(propertiesString.contains(",")) {
+				properties = propertiesString.split(",");
+			}
+			for(String key : properties) {
 				Modules.setModule(key, GeneralJavaScriptObject.convertToBoolean(data.getProperty(key)));
 			}
 			controller.getRootPresenter().updateModuleVisibility();
