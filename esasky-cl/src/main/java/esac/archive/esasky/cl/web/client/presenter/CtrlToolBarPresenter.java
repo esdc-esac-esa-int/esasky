@@ -75,8 +75,6 @@ public class CtrlToolBarPresenter {
         void updateSsoCount(int newCount);
         void onIsTrackingSSOEventChanged();
         void closeTreeMap();
-        void enterScienceMode();
-        void leaveScienceMode();
         void closeAllOtherPanels(Widget button);
         void updateModuleVisibility();
 
@@ -226,11 +224,7 @@ public class CtrlToolBarPresenter {
     }
     
     private void updateScienceModeElements() {
-		if(GUISessionStatus.getIsInScienceMode()) {
-			view.enterScienceMode();
-		} else {
-			view.leaveScienceMode();
-		}
+		updateModuleVisibility();
     }
     
     public void updateObservationCount(int newCount){
