@@ -158,12 +158,12 @@ public class Api {
 	}
 
 	public void addMOC(String name, GeneralJavaScriptObject options, GeneralJavaScriptObject mocData) {
-		MocRepository.getInstance().removeEntity(name);
+//		MocRepository.getInstance().removeEntity(name);
 		
-		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
-				.initUserDescriptor4MOC(name, options);
-		MOCEntity entity = new MOCEntity(descriptor);
-		entity.addJSON(mocData, options);
+//		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+//				.initUserDescriptor4MOC(name, options);
+//		MOCEntity entity = new MOCEntity(descriptor);
+//		entity.addJSON(mocData, options);
 		
 		if(userMocs.containsKey(name)) {
 			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));

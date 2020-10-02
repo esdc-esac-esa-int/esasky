@@ -380,6 +380,13 @@ public class ApiMessageParser {
 				case 'addMOC':
 					console.log('addMOC event captured');
 					var name = msg.content.name || 'MOC';
+					instance.@esac.archive.esasky.cl.web.client.api.Api::addMOC_Old(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+						(name, msg.content.options, msg.content.mocData);
+					break;	
+
+				case 'addMOC_new':
+					console.log('addMOC event captured');
+					var name = msg.content.name || 'MOC';
 					instance.@esac.archive.esasky.cl.web.client.api.Api::addMOC(Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
 						(name, msg.content.options, msg.content.mocData);
 					break;	
