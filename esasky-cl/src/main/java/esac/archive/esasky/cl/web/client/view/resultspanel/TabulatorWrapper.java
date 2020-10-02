@@ -1784,7 +1784,7 @@ public class TabulatorWrapper{
     }
     
     private native void enableFilters(GeneralJavaScriptObject table) /*-{
-    	var list =  table.element.getElementsByClassName("tabulator-header-filter-disabled")
+    	var list =  Array.from(table.element.getElementsByClassName("tabulator-header-filter-disabled"))
     	for(var i = 0; i < list.length; i++){
     		list[i].classList.remove("tabulator-header-filter-disabled");
 		    list[i].setAttribute("disabled", false);
