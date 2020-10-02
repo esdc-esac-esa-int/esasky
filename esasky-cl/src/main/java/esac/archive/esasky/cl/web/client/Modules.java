@@ -56,6 +56,7 @@ public class Modules {
     public static void setModule(String key, boolean value) throws Exception {
     	if(modules.containsKey(key)) {
     		modules.put(key, value);
+    		return;
     	}
     	throw new Exception(key);
     }
@@ -85,7 +86,7 @@ public class Modules {
     		modules.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
     		modules.put(EsaSkyWebConstants.MODULE_TARGETLIST, false);
     		modules.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
-    		modules.put(EsaSkyWebConstants.MODULE_EXPLORE, false);
+    		modules.put(EsaSkyWebConstants.MODULE_DICE, false);
     		modules.put(EsaSkyWebConstants.MODULE_SCIENCE, false);
     	}
     	else {
@@ -106,7 +107,7 @@ public class Modules {
     		modules.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, true);
     		modules.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
     		modules.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
-    		modules.put(EsaSkyWebConstants.MODULE_EXPLORE, true);
+    		modules.put(EsaSkyWebConstants.MODULE_DICE, true);
     		modules.put(EsaSkyWebConstants.MODULE_SCIENCE, true);
     	}
     }

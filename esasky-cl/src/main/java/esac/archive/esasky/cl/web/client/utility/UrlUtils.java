@@ -51,7 +51,7 @@ public final class UrlUtils {
 		    toggleColumns = "&" + EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS + "=" + Window.Location.getParameterMap().get(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS).get(0);
 		}
 		String layout = "";
-		if(Modules.mode != "") {
+		if(Modules.mode != null && Modules.mode != "") {
 			layout = "&" + EsaSkyWebConstants.URL_PARAM_LAYOUT + "=" + Modules.mode;
 		}
 		

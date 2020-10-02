@@ -141,24 +141,24 @@ public class EsaSkyWebConstants {
     /*************************************************************************/
     /** MODULES **/
     /*************************************************************************/
-    public static final String MODULE_SCIENTIFIC = "scientific_toggle";
-    public static final String MODULE_LANGUAGE = "language";
-    public static final String MODULE_COOR_GRID = "coordinate_grid";
-    public static final String MODULE_SCREENSHOT = "screenshot";
-    public static final String MODULE_SHARE = "share";
-    public static final String MODULE_HELP = "help";
-    public static final String MODULE_DROPDOWN = "dropdown";
+    public static final String MODULE_SCIENTIFIC = "scientific_toggle_button";
+    public static final String MODULE_LANGUAGE = "language_button";
+    public static final String MODULE_COOR_GRID = "coordinate_grid_button";
+    public static final String MODULE_SCREENSHOT = "screenshot_button";
+    public static final String MODULE_SHARE = "share_button";
+    public static final String MODULE_HELP = "help_button";
+    public static final String MODULE_DROPDOWN = "dropdown_menu";
     public static final String MODULE_SKIESMENU = "skies_menu";
-    public static final String MODULE_FEEDBACK = "feedback";
-    public static final String MODULE_OBS = "observations";
-    public static final String MODULE_CAT = "catalogues";
-    public static final String MODULE_SPE = "spectra";
-    public static final String MODULE_EXTTAP = "exttap";
-    public static final String MODULE_SSO = "sso";
-    public static final String MODULE_PUBLICATIONS = "publications";
-    public static final String MODULE_TARGETLIST = "target_list";
-    public static final String MODULE_JWST_PLANNING = "jwst_planning";
-    public static final String MODULE_EXPLORE = "explore";
-    public static final String MODULE_SCIENCE = "science";
+    public static final String MODULE_FEEDBACK = "feedback_button";
+    public static final String MODULE_OBS = "observations_button";
+    public static final String MODULE_CAT = "catalogues_button";
+    public static final String MODULE_SPE = "spectra_button";
+    public static final String MODULE_EXTTAP = "exttap_button";
+    public static final String MODULE_SSO = "sso_button";
+    public static final String MODULE_PUBLICATIONS = "publications_button";
+    public static final String MODULE_TARGETLIST = "target_list_button";
+    public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
+    public static final String MODULE_DICE = "dice_button";
+    public static final String MODULE_SCIENCE = "science_mode";
     
 }

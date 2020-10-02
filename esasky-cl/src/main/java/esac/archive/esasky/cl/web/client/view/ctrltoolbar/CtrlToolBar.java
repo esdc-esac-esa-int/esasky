@@ -498,67 +498,47 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		
 	}
 	
-	
-	public void enterScienceMode() {
-		showWidget(observationButton);
-		showWidget(catalogButton);
-		showWidget(spectraButton);
-		showWidget(publicationsButton);
-		showWidget(planObservationButton);
-		showWidget(ssoButton);
-		showWidget(extTapButton);
-		hideWidget(exploreBtn);
-	}
-	
-	public void leaveScienceMode() {
-		hideWidget(observationButton);
-		hideWidget(catalogButton);
-		hideWidget(spectraButton);
-		hideWidget(publicationsButton);
-		hideWidget(planObservationButton);
-		hideWidget(ssoButton);
-		hideWidget(extTapButton);
-		showWidget(exploreBtn);
-	}
-	
 	public void updateModuleVisibility() {
+		
+		boolean isInScienceMode = GUISessionStatus.getIsInScienceMode();
+		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU)) {
 			showWidget(selectSkyPanel);
 		}else {
 			hideWidget(selectSkyPanel);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS) && isInScienceMode) {
 			showWidget(observationButton);
 		}else {
 			hideWidget(observationButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT) && isInScienceMode) {
 			showWidget(catalogButton);
 		}else {
 			hideWidget(catalogButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE) && isInScienceMode) {
 			showWidget(spectraButton);
 		}else {
 			hideWidget(spectraButton);
 		}
 
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS) && isInScienceMode) {
 			showWidget(publicationsButton);
 		}else {
 			hideWidget(publicationsButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP) && isInScienceMode) {
 			showWidget(extTapButton);
 		}else {
 			hideWidget(extTapButton);
 		}
 
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && isInScienceMode) {
 			showWidget(ssoButton);
 		}else {
 			hideWidget(ssoButton);
@@ -570,17 +550,18 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			hideWidget(targetListButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING) && isInScienceMode) {
 			showWidget(planObservationButton);
 		}else {
 			hideWidget(planObservationButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_EXPLORE) && !GUISessionStatus.getIsInScienceMode()) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
 			showWidget(exploreBtn);
 		}else {
 			hideWidget(exploreBtn);
 		}
+		
 	}
 	
 	private void hideWidget(Widget widget) {
