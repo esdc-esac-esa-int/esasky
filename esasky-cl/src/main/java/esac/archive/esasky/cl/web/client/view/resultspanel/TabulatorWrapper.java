@@ -916,8 +916,13 @@ public class TabulatorWrapper{
 				var filterString = cell.getField() + " like '%" + filter + "%'";
 				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filterString);
 			}
+
+			var cancelFunc = function(){
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), "");
+				cancel();
+			}
 			
-			return editor(cell, onRendered, successFunc, cancel, editorParams);
+			return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
 		}
 		
 		var footerCounter = "<div></div><div id=\"" + divId + "_rowCount\" class=\"footerCounter\">0</div>"
