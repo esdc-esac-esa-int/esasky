@@ -13,7 +13,9 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.DescriptorList;
@@ -770,6 +772,37 @@ public class DescriptorRepository {
 		descriptor.setTapTable("<not_set>");
 		descriptor.setTabCount(0);
 
+		return descriptor;
+	}
+
+	public BaseDescriptor initUserDescriptor4MOC(String name, GeneralJavaScriptObject options) {
+		BaseDescriptor descriptor = new BaseDescriptor() {
+			
+			@Override
+			public String getIcon() {
+				return "catalog";
+			}
+		};;
+		
+		descriptor.setMission(name);
+		descriptor.setGuiLongName(name);
+		descriptor.setGuiShortName(name);
+		descriptor.setDescriptorId(name);
+		if(options.hasProperty("color")) {
+			descriptor.setPrimaryColor(options.getStringProperty("color"));
+		}else {
+			descriptor.setPrimaryColor(ESASkyColors.getNext());
+		}
+		
+		descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
+		
+		descriptor.setSampEnabled(false);
+		
+		descriptor.setFovLimit(360.0);
+		
+		descriptor.setTapTable("<not_set>");
+		descriptor.setTabCount(0);
+		
 		return descriptor;
 	}
 

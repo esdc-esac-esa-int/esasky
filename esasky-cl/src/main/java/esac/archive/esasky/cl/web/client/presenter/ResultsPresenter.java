@@ -216,6 +216,13 @@ public class ResultsPresenter implements ICountRequestHandler {
     	entity.fetchData(adql);
     }
 
+    public final ITablePanel addResultsTab(final GeneralEntityInterface entity) {
+    	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
+    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+    	
+    	return this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
+    }
+
     private void sendToSamp() {
 
         Log.debug("[ResultsPresenter] Into sendToSamp()");

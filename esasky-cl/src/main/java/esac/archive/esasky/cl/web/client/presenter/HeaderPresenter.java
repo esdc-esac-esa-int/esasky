@@ -52,6 +52,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel.AllSkyFocusPanelObserver;
+import esac.archive.esasky.cl.web.client.view.header.HeaderPanel;
 import esac.archive.esasky.cl.web.client.view.header.ScreenshotDialogBox;
 
 public class HeaderPresenter {
@@ -491,4 +492,8 @@ public class HeaderPresenter {
 	public void updateModuleVisibility() {
     	view.updateModuleVisibility();
     }
+	
+	public HeaderPanel getView() {
+		return (HeaderPanel) view;
+	}
 }

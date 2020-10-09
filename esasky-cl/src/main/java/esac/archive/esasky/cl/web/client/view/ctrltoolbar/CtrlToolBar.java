@@ -46,7 +46,6 @@ import esac.archive.esasky.cl.web.client.utility.MessageDialogBox;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;

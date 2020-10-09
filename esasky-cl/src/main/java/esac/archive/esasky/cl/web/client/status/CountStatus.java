@@ -38,7 +38,11 @@ public class CountStatus {
     }
 
     public Integer getCount(IDescriptor descriptor) {
-        return countStatus.get(descriptor.getDescriptorId()).getCount();
+    	if(countStatus.containsKey(descriptor.getDescriptorId())){
+    		return countStatus.get(descriptor.getDescriptorId()).getCount();
+    	}else {
+    		return 0;
+    	}
     }
     
     public Integer getTotalCount() {
@@ -65,10 +69,10 @@ public class CountStatus {
     }
 
     public void updateCount(){
-        	totalCount = 0;
-        	for(String key : countStatus.keySet()){
-        		totalCount += countStatus.get(key).getCount();
-        	}
+    	totalCount = 0;
+    	for(String key : countStatus.keySet()){
+    		totalCount += countStatus.get(key).getCount();
+    	}
         notifyObservers();
     }
     

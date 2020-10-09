@@ -112,6 +112,15 @@ public class MocRepository {
 	public void removeEntity(MOCEntity entity) {
 		allEntities.remove(entity);
 	}
+
+	public void removeEntity(String name) {
+		for(MOCEntity entity : allEntities) {
+			if(entity.getEsaSkyUniqId() == name) {
+				entity.clearAll();
+				allEntities.remove(entity);
+			}
+		}
+	}
 	
 	public static int getMinOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
@@ -146,7 +155,10 @@ public class MocRepository {
 	public static int getMaxOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
 
-		if(fov > 20) {
+		if(fov > 40) {
+			return 6;
+		}
+		else if(fov > 20) {
 			return 7;
 		}else if(fov > 10) {
 			return 8;

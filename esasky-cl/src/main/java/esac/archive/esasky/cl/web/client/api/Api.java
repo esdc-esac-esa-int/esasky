@@ -52,6 +52,7 @@ import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.MetadataAPI;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListOverlay;
+import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
@@ -158,12 +159,31 @@ public class Api {
 	}
 
 	public void addMOC(String name, GeneralJavaScriptObject options, GeneralJavaScriptObject mocData) {
-//		MocRepository.getInstance().removeEntity(name);
+		MocRepository.getInstance().removeEntity(name);
+		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+				.initUserDescriptor4MOC(name, options);
+		MOCEntity entity = new MOCEntity(descriptor);
 		
-//		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
-//				.initUserDescriptor4MOC(name, options);
-//		MOCEntity entity = new MOCEntity(descriptor);
-//		entity.addJSON(mocData, options);
+		if(options.hasProperty("lineStyle")) {
+			entity.setLineStyle(options.getStringProperty("lineStyle"));
+		}else {
+			entity.setLineStyle(LineStyle.SOLID.getName());
+		}
+
+		if(options.hasProperty("opacity")) {
+			entity.setSizeRatio(options.getDoubleProperty("opacity"));
+		}
+		
+		if(!options.hasProperty("mode")) {
+			options.setProperty("mode", "healpix");
+		}
+		
+		if(options.hasProperty("addTab") && GeneralJavaScriptObject.convertToBoolean(options.getProperty("addTab"))) {
+			ITablePanel panel = controller.getRootPresenter().getResultsPresenter().addResultsTab(entity);
+			entity.setTablePanel(panel);
+		}
+		entity.addJSON(mocData, options);
+		entity.getTablePanel().setEmptyTable("Showing coverage of " + name);
 		
 	}
 	
