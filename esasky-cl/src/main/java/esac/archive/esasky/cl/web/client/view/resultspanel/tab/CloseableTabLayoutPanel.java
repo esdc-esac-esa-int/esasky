@@ -624,8 +624,12 @@ public class CloseableTabLayoutPanel extends Composite {
 	
 	private void fireShowStylePanel(String tabId) {
 		ITablePanel tablePanel = getTablePanelFromId(tabId);
+		int offset = styleButton.getAbsoluteTop();
+		if(refreshButton != null && refreshButton.getAbsoluteTop() > 0) {
+			offset = refreshButton.getAbsoluteTop();
+		}
 		tablePanel.showStylePanel(styleButton.getAbsoluteLeft() + styleButton.getOffsetWidth() + 2, 
-                styleButton.getAbsoluteTop());
+                offset);
 	}
 	
 }

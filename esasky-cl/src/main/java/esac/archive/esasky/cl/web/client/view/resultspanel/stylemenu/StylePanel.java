@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -15,9 +16,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
@@ -35,6 +38,7 @@ public class StylePanel extends DialogBox {
     	public void onShapeColorChanged (String color);
     	public void onSecondaryColorChanged (String color);
     	public void onShapeChanged (String shape);
+    	public void onLineStyleChanged (String lineStyle);
     	public void onShapeSizeChanged (double value);
     	public void onSecondaryShapeScaleChanged (double value);
         public void onArrowAvgCheckChanged (boolean checkedOne, boolean checkedTwo);
@@ -75,7 +79,8 @@ public class StylePanel extends DialogBox {
 
     private String id;
     private String mission;
-    private boolean interactiveElementsHaveBeenInitialized = false;
+    private boolean primaryElementsHaveBeenInitialized = false;
+    private boolean secondaryElementsHaveBeenInitialized = false;
     
     private String primaryShapeColorPickerId;
     private String primaryShapeSizeId;
@@ -87,6 +92,8 @@ public class StylePanel extends DialogBox {
     private String primaryColor;
     private double primarySizeRatio;
     private String primaryShapeType;
+
+    private String lineStyle;
     
     private String secondaryColor = null;
     private Double secondaryShapeScale = null; // A ratio from 0.01 to 1.0
@@ -97,12 +104,14 @@ public class StylePanel extends DialogBox {
     
     private long timeLastHiddenTime;
     
+    private String preparedId;
+    
     
     private CheckBox arrowAvgCheckBox;
     private CheckBox arrowMedianCheckBox;
     
     public StylePanel(String id, String mission, 
-                      String primaryColor, Double primarySizeRatio, String primaryShape,
+                      String primaryColor, Double primarySizeRatio, String primaryShape, String lineStyle,
                       String secondaryColor, Double secondarySizeRatio, Boolean arrowAvgChecked, Boolean useMedianOnAvgChecked,
                       StylePanelCallback callback) {
         
@@ -117,7 +126,7 @@ public class StylePanel extends DialogBox {
         this.id = id;
         this.mission = mission;
         
-        final String preparedId = DownloadUtils.getValidFilename(id);
+        this.preparedId = DownloadUtils.getValidFilename(id);
         this.primaryShapeColorPickerId = preparedId + "_primaryColor";
         this.primaryColor = primaryColor;
         
@@ -127,9 +136,12 @@ public class StylePanel extends DialogBox {
         if (primaryShape != null) {
             this.primaryShapeType = primaryShape;
         }
+
+        if (lineStyle != null) {
+        	this.lineStyle = lineStyle;
+        }
         
         if (secondaryColor != null) {
-            this.secondaryShapeColorPickerId = preparedId + "_secondaryColor";
             this.secondaryColor = secondaryColor;
             if (secondarySizeRatio != null) {
             	this.secondaryShapeScaleId = preparedId + "_secondaryScale";
@@ -149,6 +161,14 @@ public class StylePanel extends DialogBox {
     HTML secondarySlider;
     HTML srcColorPickerContainer;
     
+    FlowPanel shapeContainer;
+    FlowPanel secondaryContainer;
+    FlowPanel innerContainer;
+    
+    DropDownMenu<LineStyle> lineStyleDropDown;
+    DropDownMenu<SourceShapeType> shapeTypeDropDown;
+    
+    
     private void initView() {
         this.getElement().setId(CONTAINER_ID);
         
@@ -162,16 +182,18 @@ public class StylePanel extends DialogBox {
         container.add(header);
         
         //Adds the panel container 
-        FlowPanel innerContainer = new FlowPanel();
+        innerContainer = new FlowPanel();
         innerContainer.setStyleName("styleMenuInnerContainer");
         
         FlowPanel shapeContainer = new FlowPanel();
         shapeContainer.addStyleName("styleContainerRow");
         
+    	this.lineStyleDropDown = createLineShapeDropdown();
+    	shapeContainer.add(lineStyleDropDown);
+        
         //Adds the source shape selector
-        if (this.primaryShapeType != null) {
-            shapeContainer.add(createSourceShapeDropdown());
-        }
+    	this.shapeTypeDropDown = createSourceShapeDropdown();
+        shapeContainer.add(this.shapeTypeDropDown);
         
         //Adds the source color picker
         srcColorPickerContainer = new HTML("<div id='" + primaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
@@ -182,63 +204,9 @@ public class StylePanel extends DialogBox {
         shapeContainer.add(primarySlider);
         
         innerContainer.add(shapeContainer);
-        
-        FlowPanel secondaryShapeContainer = new FlowPanel();
-        secondaryShapeContainer.addStyleName("styleContainerRow");
-        
-        //Adds the arrow color picker
         if (secondaryShapeColorPickerId != null) {
-            if (arrowAvgChecked != null) {
-                Image arrowImage = new Image(resources.arrow().getSafeUri());
-                arrowImage.addStyleName("arrowImg");
-                secondaryShapeContainer.add(arrowImage);
-            }
-            
-            HTML secondaryShapeColorPickerContainer = new HTML("<div id='" + secondaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
-            secondaryShapeContainer.add(secondaryShapeColorPickerContainer);
-            
-            //Adds the arrow scale slider
-            if (secondaryShapeScaleId != null) {
-                
-                secondarySlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(secondaryShapeScale * MAX_SLIDER_VALUE) + "' class='slider secondarySlider' id='" + secondaryShapeScaleId + "'>");
-                secondaryShapeContainer.add(secondarySlider);
-            }
-            
-            innerContainer.add(secondaryShapeContainer);
-            
-            //Adds the remove proper motion average check box
-            if (arrowAvgChecked != null) {
-                
-                arrowAvgCheckBox = new CheckBox(TextMgr.getInstance().getText("stylePanel_removeAvgCheckBox"));
-                arrowAvgCheckBox.addStyleName("arrowAvgCheckBox");
-                arrowAvgCheckBox.setValue(arrowAvgChecked && !useMedianOnAvgChecked);
-                arrowAvgCheckBox.addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(ClickEvent arg0) {
-                        arrowMedianCheckBox.setValue(false);
-                        final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
-                        stylePanelCallback.onArrowAvgCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
-                    }
-                });
-                
-                innerContainer.add(arrowAvgCheckBox);
-                
-                arrowMedianCheckBox = new CheckBox(TextMgr.getInstance().getText("stylePanel_removeMedianCheckBox"));
-                arrowMedianCheckBox.addStyleName("arrowAvgCheckBox");
-                arrowMedianCheckBox.setValue(arrowAvgChecked && useMedianOnAvgChecked);
-                arrowMedianCheckBox.addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(ClickEvent arg0) {
-                        arrowAvgCheckBox.setValue(false);
-                        final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
-                        stylePanelCallback.onArrowAvgCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
-                    }
-                });
-                
-                innerContainer.add(arrowMedianCheckBox);
-            }
+        	this.secondaryContainer = createSecondaryContainer();
+        	innerContainer.add(this.secondaryContainer);
         }
 
         container.add(innerContainer);
@@ -247,21 +215,24 @@ public class StylePanel extends DialogBox {
         this.add(container);
     }
 	
-    private void initInteractiveElements() {
+    private void initPrimaryInteractiveElements() {
         createColorPicker(this, primaryShapeColorPickerId, primaryShapeColorPickerId + "_Container", primaryColor);
         
         addCloseButtonToColorPicker(primaryShapeColorPickerId);
         
         createSlider(this, primaryShapeSizeId);
-        
-        if (secondaryShapeColorPickerId != null) {
-            createColorPicker(this, secondaryShapeColorPickerId, secondaryShapeColorPickerId + "_Container", secondaryColor);
-            addCloseButtonToColorPicker(secondaryShapeColorPickerId);
-            if (secondaryShapeScaleId != null) {
-            	createSlider(this, secondaryShapeScaleId);
-            }
-        }
-        interactiveElementsHaveBeenInitialized = true;
+        primaryElementsHaveBeenInitialized = true;
+    }
+
+    private void initSecondaryInteractiveElements() {
+    	if (secondaryShapeColorPickerId != null) {
+    		createColorPicker(this, secondaryShapeColorPickerId, secondaryShapeColorPickerId + "_Container", secondaryColor);
+    		addCloseButtonToColorPicker(secondaryShapeColorPickerId);
+    		if (secondaryShapeScaleId != null) {
+    			createSlider(this, secondaryShapeScaleId);
+    		}
+    		secondaryElementsHaveBeenInitialized = true;
+    	}
     }
     
     private void addCloseButtonToColorPicker(String colorPickerId) {
@@ -307,8 +278,11 @@ public class StylePanel extends DialogBox {
     		return;
     	}
     	super.show();
-    	if(!interactiveElementsHaveBeenInitialized) {
-    		initInteractiveElements();
+    	if(!primaryElementsHaveBeenInitialized) {
+    		initPrimaryInteractiveElements();
+    	}
+    	if(!secondaryElementsHaveBeenInitialized) {
+    		initSecondaryInteractiveElements();
     	}
     }
     
@@ -347,6 +321,112 @@ public class StylePanel extends DialogBox {
         
         return srcShapeDropDown;
     }
+
+    private DropDownMenu<LineStyle> createLineShapeDropdown() {
+    	
+    	final DropDownMenu<LineStyle> lineShapeDropDown = new DropDownMenu<LineStyle> ("", "", 60, false, "lineStyleDropDown");
+    	
+    	lineShapeDropDown.registerObserver(new MenuObserver() {
+    		
+    		@Override
+    		public void onSelectedChange() {
+    			stylePanelCallback.onLineStyleChanged(lineShapeDropDown.selectedObject.getName());
+    		}
+    	});
+    	
+    	lineShapeDropDown.addStyleName("lineShapeDropDown");
+    	
+    	LineStyle selectedItem = null;
+    	for (LineStyle lineShapeType : LineStyle.values()) {
+    		MenuItem<LineStyle> dropdownItem = new MenuItem<LineStyle>(
+    				lineShapeType, lineShapeType.getView(), false);
+    		dropdownItem.addStyleName("srcShapeDropDownItem");
+    		if (lineShapeType.getName().equals(lineStyle)) {
+    			selectedItem = lineShapeType;
+    		}
+    		lineShapeDropDown.addMenuItem(dropdownItem);
+    	}
+    	
+    	if (selectedItem != null) {
+    		lineShapeDropDown.selectObject(selectedItem);
+    	}
+    	
+    	return lineShapeDropDown;
+    }
+    
+    
+    private FlowPanel createSecondaryContainer() {
+    	 FlowPanel secondaryShapeContainer = new FlowPanel();
+         secondaryShapeContainer.addStyleName("styleContainerRow");
+         
+         FlowPanel secondaryContainer = new FlowPanel();
+         secondaryContainer.setStyleName("styleMenuSecondContainer");
+         
+         if (secondaryColor != null) {
+             this.secondaryShapeColorPickerId = preparedId + "_secondaryColor";
+             if (this.secondaryShapeScale != null) {
+             	this.secondaryShapeScaleId = preparedId + "_secondaryScale";
+             }
+         }
+         
+         //Adds the arrow color picker
+         if (secondaryShapeColorPickerId != null) {
+             if (arrowAvgChecked != null) {
+                 Image arrowImage = new Image(resources.arrow().getSafeUri());
+                 arrowImage.addStyleName("arrowImg");
+                 secondaryShapeContainer.add(arrowImage);
+             }
+             
+             HTML secondaryShapeColorPickerContainer = new HTML("<div id='" + secondaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
+             secondaryShapeContainer.add(secondaryShapeColorPickerContainer);
+             
+             //Adds the arrow scale slider
+             if (secondaryShapeScaleId != null) {
+                 
+                 secondarySlider = new HTML("<input type='range' min='1' max='" + MAX_SLIDER_VALUE + "' value='" + (int)(secondaryShapeScale * MAX_SLIDER_VALUE) + "' class='slider secondarySlider' id='" + secondaryShapeScaleId + "'>");
+                 secondaryShapeContainer.add(secondarySlider);
+             }
+             
+             secondaryContainer.add(secondaryShapeContainer);
+             
+             //Adds the remove proper motion average check box
+             if (arrowAvgChecked != null) {
+                 
+                 arrowAvgCheckBox = new CheckBox(TextMgr.getInstance().getText("stylePanel_removeAvgCheckBox"));
+                 arrowAvgCheckBox.addStyleName("arrowAvgCheckBox");
+                 arrowAvgCheckBox.setValue(arrowAvgChecked && !useMedianOnAvgChecked);
+                 arrowAvgCheckBox.addClickHandler(new ClickHandler() {
+
+                     @Override
+                     public void onClick(ClickEvent arg0) {
+                         arrowMedianCheckBox.setValue(false);
+                         final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
+                         stylePanelCallback.onArrowAvgCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
+                     }
+                 });
+                 
+                 secondaryContainer.add(arrowAvgCheckBox);
+                 
+                 arrowMedianCheckBox = new CheckBox(TextMgr.getInstance().getText("stylePanel_removeMedianCheckBox"));
+                 arrowMedianCheckBox.addStyleName("arrowAvgCheckBox");
+                 arrowMedianCheckBox.setValue(arrowAvgChecked && useMedianOnAvgChecked);
+                 arrowMedianCheckBox.addClickHandler(new ClickHandler() {
+
+                     @Override
+                     public void onClick(ClickEvent arg0) {
+                         arrowAvgCheckBox.setValue(false);
+                         final boolean showAvgPM = arrowAvgCheckBox.getValue() || arrowMedianCheckBox.getValue();
+                         stylePanelCallback.onArrowAvgCheckChanged(showAvgPM, arrowMedianCheckBox.getValue());
+                     }
+                 });
+                 
+                 secondaryContainer.add(arrowMedianCheckBox);
+             }
+         }
+         
+         return secondaryContainer;
+         
+    }
     
     public static native void createColorPicker(StylePanel instance, String colorPickerId, String colorPickerContainerId, String color) /*-{
     
@@ -365,6 +445,12 @@ public class StylePanel extends DialogBox {
     public static native void hideColorPicker(String colorPickerId) /*-{
     
         $wnd.hideColorPicker(colorPickerId);
+          
+    }-*/;
+
+    public static native void setColor(String colorPickerId, String color) /*-{
+    
+        $wnd.setColorPickerColor(colorPickerId, color);
           
     }-*/;
     
@@ -418,6 +504,10 @@ public class StylePanel extends DialogBox {
         
     }-*/;
     
+    private native void setSliderValue(Element slider, double value ) /*-{
+		slider.children[0].value = value;
+	}-*/;
+    
     private void fireSliderChangedEvent(String sliderId, String value) {
         if (sliderId.equals(primaryShapeSizeId)) {
         	primarySizeRatio = ((double)Integer.parseInt(value))/((double)MAX_SLIDER_VALUE);
@@ -439,8 +529,12 @@ public class StylePanel extends DialogBox {
             return resources.triangleShape();
        } else if (shape.equals("circle")) {
             return resources.circleShape();
-       } else {
+       } else if (shape.equals("square")){
             return resources.squareShape();
+       } else if (shape.equals("solid")){
+    	   return resources.circleShape();
+       } else {
+    	   return resources.squareShape();
        }
     }
     
@@ -452,6 +546,80 @@ public class StylePanel extends DialogBox {
         if (secondaryShapeColorPickerId != null) {
             removeColorPicker(secondaryShapeColorPickerId);
         }
-        interactiveElementsHaveBeenInitialized = false;
+        primaryElementsHaveBeenInitialized = false;
+        secondaryElementsHaveBeenInitialized = false;
+    }
+    
+    public void showSecondaryContainer(String secondaryColor, Double secondarySizeRatio, Boolean arrowAvgChecked, Boolean useMedianOnAvgChecked) {
+    	this.secondaryColor = secondaryColor;
+    	this.secondaryShapeScale = secondarySizeRatio;
+    	this.arrowAvgChecked = arrowAvgChecked;
+    	this.useMedianOnAvgChecked = useMedianOnAvgChecked;
+    	
+    	if(secondaryContainer != null) {
+    		UIObject.setVisible(secondaryContainer.getElement(), true);
+    		setColor(secondaryShapeColorPickerId, primaryColor);
+        	setSliderValue(secondarySlider.getElement(), primarySizeRatio);
+
+    	}else {
+    		this.secondaryContainer = createSecondaryContainer();
+    		innerContainer.add(secondaryContainer);
+    	}
+    }
+
+    public void hideSecondaryContainer() {
+    	if(secondaryContainer != null) {
+    		UIObject.setVisible(secondaryContainer.getElement(), false);
+    	}
+    }
+    
+    public void showLineStyleDropDown(String lineStyle) {
+    	this.lineStyle = lineStyle;
+    	if(lineStyleDropDown != null) {
+    		UIObject.setVisible(lineStyleDropDown.getElement(), true);
+    		for(MenuItem<LineStyle> item : lineStyleDropDown.getMenuItems()) {
+    			if(item.getItem().getName() == lineStyle) {
+    				lineStyleDropDown.selectObject(item.getItem());
+    			}
+    		}
+    	}
+    }
+
+    public void hideLineStyleDropDown() {
+    	if(lineStyleDropDown != null) {
+    		UIObject.setVisible(lineStyleDropDown.getElement(), false);
+    	}
+    }
+
+    public void showShapeTypeDropDown(String primaryShape) {
+    	this.primaryShapeType = primaryShape;
+    	if(shapeTypeDropDown != null) {
+    		UIObject.setVisible(shapeTypeDropDown.getElement(), true);
+    		for(MenuItem<SourceShapeType> item : shapeTypeDropDown.getMenuItems()) {
+    			if(item.getItem().getName() == primaryShapeType) {
+    				shapeTypeDropDown.selectObject(item.getItem());
+    			}
+    		}
+    	}
+    }
+    
+    public void hideShapeTypeDropDown() {
+    	if(shapeTypeDropDown != null) {
+    		UIObject.setVisible(shapeTypeDropDown.getElement(), false);
+    	}
+    }
+    
+    public void showPrimary(String primaryColor, Double primarySizeRatio) {
+    	this.primaryColor = primaryColor;
+    	this.primarySizeRatio = primarySizeRatio;
+    	setColor(primaryShapeColorPickerId, primaryColor);
+    	setSliderValue(primarySlider.getElement(), primarySizeRatio);
+    	
+    }
+    
+    public void hidePrimary() {
+    	if(shapeTypeDropDown != null) {
+    		UIObject.setVisible(shapeTypeDropDown.getElement(), false);
+    	}
     }
 }

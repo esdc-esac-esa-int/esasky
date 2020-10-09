@@ -21,6 +21,12 @@
     margin-bottom: 3px;
 }
 
+.styleMenuSecondContainer{
+	min-width: 200px;
+    padding: 5px;
+    margin-bottom: 3px;
+}
+
 .styleContainerRow div{
 	display: inline-block;
     vertical-align: middle;

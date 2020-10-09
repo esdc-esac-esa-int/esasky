@@ -531,3 +531,7 @@ function removeColorPicker(colorPickerId) {
 function hideColorPicker(colorPickerId) {
   $("#" + colorPickerId).hide();
 }
+
+function setColorPickerColor(colorPickerId, color) {
+  $("#" + colorPickerId).ColorPickerSetColor(color);
+}

@@ -27,4 +27,6 @@ public interface IShapeDrawer {
     public void hoverStop(int hoveredShapeId);
     public String getShapeType();
     public void setShapeType(String shapeType);
+    public String getLineStyle();
+    public void setLineStyle(String lineStyle);
 }

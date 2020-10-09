@@ -22,6 +22,7 @@ import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.PolygonShape;
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -66,6 +67,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private TapRowList metadata;
     private CountStatus countStatus;
     private boolean isRefreshable = true;
+    private StylePanel stylePanel;
 
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -288,6 +290,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             if(mocEntity == null){
                 this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this);
             }
+            if(getLineStyle() == null) {
+            	setLineStyle(LineStyle.SOLID.getName());
+            }
             mocEntity.setTablePanel(tablePanel);
             mocEntity.setShouldBeShown(true);
             tablePanel.setMOCMode(true);
@@ -301,7 +306,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void fetchDataWithoutMOC() {
         Log.debug("Showing real data");
-        drawer = combinedDrawer;
         tablePanel.setMOCMode(false);
         tablePanel.notifyObservers();
 
@@ -317,7 +321,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     public void fetchDataWithoutMOC(String whereQuery) {
     	Log.debug("Showing real data");
-    	drawer = combinedDrawer;
         tablePanel.setMOCMode(false);
         tablePanel.notifyObservers();
     	if(mocEntity != null){
@@ -608,16 +611,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
         }
         
-        return new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), 
-                getShapeType(), descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
+        stylePanel = new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShapeType(),
+                getLineStyle(), descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
                 combinedDrawer.getUseMedianOnAvgProperMotion(), new StylePanelCallback() {
 
             @Override
             public void onShapeSizeChanged(double value) {
-                setSizeRatio(value);
-                if(mocEntity != null) {
-                	mocEntity.setScale(value);
-                }
+            	if(mocEntity != null && mocEntity.isShouldBeShown()) {
+            		mocEntity.setSizeRatio(value);
+            	}else {
+            		setSizeRatio(value);
+            	}
             }
 
             @Override
@@ -626,6 +630,15 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                 if(mocEntity != null) {
                 	mocEntity.setColor(color);
                 }
+            }
+                
+            @Override
+            public void onLineStyleChanged(String lineStyle) {
+            	if(mocEntity != null && mocEntity.isShouldBeShown()) {
+            		mocEntity.setLineStyle(lineStyle);
+            	}else {
+            		setLineStyle(lineStyle);
+            	}
             }
 
             @Override
@@ -649,9 +662,47 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                 combinedDrawer.setShowAvgProperMotion(checkedOne, checkedTwo);
             }
         });
+        
+        return stylePanel;
     }
+    
+    
 
     @Override
+	public void setStylePanelVisibility() {
+		if(stylePanel != null) {
+			
+			if(getShapeType() != null) {
+				stylePanel.showShapeTypeDropDown(getShapeType());
+			}else {
+				stylePanel.hideShapeTypeDropDown();
+			}
+			
+			if(mocEntity != null && mocEntity.isShouldBeShown()) {
+				stylePanel.showLineStyleDropDown(mocEntity.getLineStyle());
+			}else if (getLineStyle() != null){
+				stylePanel.showLineStyleDropDown(getLineStyle());
+			}else {
+				stylePanel.hideLineStyleDropDown();
+			}
+
+			if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
+				stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
+						combinedDrawer.getShowAvgProperMotion(), combinedDrawer.getUseMedianOnAvgProperMotion());
+			}else {
+				stylePanel.hideSecondaryContainer();
+			}
+			
+			if(mocEntity != null && mocEntity.isShouldBeShown()) {
+				stylePanel.showPrimary(mocEntity.getColor(), mocEntity.getSize() );
+			}else {
+				stylePanel.showPrimary(getColor(), getSize() );
+			}
+			
+		}
+	}
+    
+	@Override
     public String getShapeType() {
         return drawer.getShapeType();
     }
@@ -659,6 +710,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void setShapeType(String shapeType) {
         drawer.setShapeType(shapeType);
+    }
+    
+    @Override
+    public String getLineStyle() {
+    	return drawer.getLineStyle();
+    }
+    
+    @Override
+    public void setLineStyle(String lineStyle) {
+    	drawer.setLineStyle(lineStyle);
     }
     
     @Override
@@ -727,5 +788,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	public Shape getShape(int shapeId) {
 		return drawer.getShape(shapeId);
 	}
+	
+	public MOCEntity getMocEntity() {
+		return mocEntity;
+	}
+	
+	public void setMocEntity(MOCEntity mocEntity) {
+		this.mocEntity = mocEntity;
+	}
+	
+	
+	
 
 }

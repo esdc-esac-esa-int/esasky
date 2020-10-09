@@ -6,6 +6,7 @@ import java.util.List;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
+import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.SourceShape;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
@@ -34,6 +35,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	private ArrayList<Integer[]> allShapesIndexes = new ArrayList<>();
 	private ShapeBuilder shapeBuilder;
 	private Object shapeType;
+	private String lineStyle;
 
 
 	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder) {
@@ -266,6 +268,24 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     public void setSecondaryColor(String color) {
         AladinLiteWrapper.getAladinLite().setCatalogArrowColor(sourceOverlay, color);
         AladinLiteWrapper.getAladinLite().setOverlayColor(polylineOverlay, color);
+    }
+
+    @Override
+    public void setLineStyle(String lineStyle) {
+    	this.lineStyle = lineStyle;
+    	AladinLiteWrapper.getAladinLite().setOverlayLineStyle(footPrintOverlay, lineStyle);
+    }
+    
+    @Override
+    public String getLineStyle() {
+    	 if(footPrintshapes.size() > 0) {
+    		 if(lineStyle == null) {
+    			 lineStyle = LineStyle.SOLID.getName();
+    		 }
+    		 return this.lineStyle;
+    	 }
+    	 
+    	 return null;
     }
 
     // Must return a ratio between 0.01 and 1.0;

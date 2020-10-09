@@ -48,6 +48,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void setTablePanel(ITablePanel panel);
     
     public StylePanel createStylePanel();
+	public void setStylePanelVisibility();
     public void select();
     
     public boolean isSampEnabled();
@@ -61,5 +62,6 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 	public void onShapeUnhover(AladinShape shape);
 	
 	public String getHelpText();
+
 	
 }

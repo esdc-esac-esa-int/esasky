@@ -341,6 +341,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		if(stylePanel == null) {
 			stylePanel = getEntity().createStylePanel();
 		}
+		
+		getEntity().setStylePanelVisibility();
 
 		stylePanel.toggle();
 		stylePanel.setPopupPosition(x, y);

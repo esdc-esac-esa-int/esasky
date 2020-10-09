@@ -39,6 +39,7 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
@@ -65,7 +66,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private boolean loadMOCRequested = false;
     private boolean freshLoad = true;
     private boolean waitingForHeaders = false;
-    
+    private double size;
     private TableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
     
@@ -126,6 +127,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		metadataService = TAPMOCService.getInstance();
 		parentEntity = parent;
+		this.size = parentEntity.getSize();
 		
 		MocRepository.getInstance().addMocEntity(this);
 		filterObserver = new TableFilterObserver() {
@@ -138,6 +140,18 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		getCountStatus().registerObserver(countObserver);
 		
+	}
+
+	public MOCEntity(IDescriptor descriptor) {
+		overlay = null;
+		drawer = null;
+		this.descriptor = descriptor;
+		metadataService = TAPMOCService.getInstance();
+		EsaSkyEntity parentEntity = new EsaSkyEntity(descriptor,null, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), null);
+		parentEntity.setMocEntity(this);
+		this.parentEntity = parentEntity;
+		this.size = parentEntity.getSize();
+		MocRepository.getInstance().addMocEntity(this);
 	}
 	
 	@Override
@@ -313,6 +327,10 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     private void setTableCountText() {
+    	if(getCountStatus() == null || getCountStatus().getCount(descriptor) == null ) {
+    		return;
+    	}
+    	
     	String text = "";
     	int count = getCountStatus().getCount(descriptor);
     	
@@ -375,12 +393,15 @@ public class MOCEntity implements GeneralEntityInterface {
     
 	@Override
 	public void setSizeRatio(double size) {
-		parentEntity.setSizeRatio(size);
+		this.size = size;
+		if(overlay != null) {
+    		overlay.invokeFunction("setOpacity", size);
+    	}
 	}
 	
 	@Override
 	public double getSize() {
-		return parentEntity.getSize();
+		return size;
 	}
 
 	@Override
@@ -465,6 +486,15 @@ public class MOCEntity implements GeneralEntityInterface {
 			
 			overlay.invokeFunction("dataFromESAJSON", data);
 		}
+	}
+	
+	public void addJSON(final GeneralJavaScriptObject data, GeneralJavaScriptObject options) {
+		if(overlay == null) {
+			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+			AladinLiteWrapper.getAladinLite().addMOC(overlay);
+		}
+		
+		overlay.invokeFunction("dataFromJSON", data);
 	}
 	
 	private void closingPanel(ITablePanel tablePanel) {
@@ -732,7 +762,8 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public ITablePanel createTablePanel() {
-		return null;
+        tablePanel = new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+        return tablePanel;
 	}
 
 	@Override
@@ -742,12 +773,19 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public boolean isRefreshable() {
-		return parentEntity.isRefreshable();
+    	if(parentEntity != null) {
+
+    		return parentEntity.isRefreshable();
+    	}
+    	return false;
 	}
 
     @Override
     public boolean isCustomizable() {
-    	return parentEntity.isCustomizable();
+    	if(parentEntity != null) {
+    		return parentEntity.isCustomizable();
+    	}
+    	return true;
     }
 
 	@Override
@@ -775,8 +813,12 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public StylePanel createStylePanel() {
-		// TODO Auto-generated method stub
-		return null;
+		return parentEntity.createStylePanel();
+	}
+	
+    @Override
+	public void setStylePanelVisibility() {
+    	parentEntity.setStylePanelVisibility();
 	}
 
 	@Override
@@ -791,6 +833,20 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
     public void setShapeType(String shapeType) {
+    	parentEntity.setShapeType(shapeType);
+    }
+
+    @Override
+    public String getLineStyle() {
+    	return parentEntity.getLineStyle();
+    }
+    
+    @Override
+    public void setLineStyle(String lineStyle) {
+    	parentEntity.setLineStyle(lineStyle);
+    	if(overlay != null) {
+    		overlay.invokeFunction("setLineStyle", lineStyle);
+    	}
     }
 
     @Override
@@ -829,12 +885,6 @@ public class MOCEntity implements GeneralEntityInterface {
     	}
     }
 
-    public void setScale(double value) {
-    	if(overlay != null) {
-    		overlay.setProperty("opacity", value);
-    	}
-    }
-    
     @Override
     public void setRefreshable(boolean isRefreshable) {
         parentEntity.setRefreshable(isRefreshable);
@@ -850,7 +900,12 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getHelpText() {
-		return parentEntity.getHelpText();
+		if(parentEntity != null) {
+			return parentEntity.getHelpText();
+		}
+		else {
+			return "";
+		}
 	}
 
 	@Override
