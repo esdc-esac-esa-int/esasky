@@ -159,7 +159,11 @@ public class Api {
 	}
 
 	public void addMOC(String name, GeneralJavaScriptObject options, GeneralJavaScriptObject mocData) {
-		MocRepository.getInstance().removeEntity(name);
+		MOCEntity old = MocRepository.getInstance().getEntity(name);
+		if(old != null) {
+			old.closeFromAPI();
+		}
+		
 		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 				.initUserDescriptor4MOC(name, options);
 		MOCEntity entity = new MOCEntity(descriptor);

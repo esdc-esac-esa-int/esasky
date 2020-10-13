@@ -49,6 +49,7 @@ import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 
@@ -463,7 +464,6 @@ public class CloseableTabLayoutPanel extends Composite {
             @Override
             public void onClick(final ClickEvent event) {
                 tabPanel.closeTablePanel();
-                removeTab(tab);
             }
         });
         
@@ -483,6 +483,14 @@ public class CloseableTabLayoutPanel extends Composite {
                 timer.schedule((!tabs.get(tabLayout.getSelectedIndex()).getId().equals(tab.getId())) ? 300 : 5);
             }
         });
+        
+        tabPanel.registerClosingObserver(new ClosingObserver() {
+			
+			@Override
+			public void onClose() {
+				removeTab(tab);
+			}
+		});
         
         this.tabs.add(tab);
         this.tabWidgetIds.put(tab, tab.getId());

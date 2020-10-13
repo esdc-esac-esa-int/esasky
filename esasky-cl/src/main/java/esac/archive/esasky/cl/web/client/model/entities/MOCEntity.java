@@ -164,7 +164,7 @@ public class MOCEntity implements GeneralEntityInterface {
 				
 				@Override
 				public void onClose() {
-					closingPanel(tablePanel);
+					closingTablePanel(tablePanel);
 				}
 			});
 		}
@@ -422,7 +422,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void replaceData(ITablePanel tablePanel, ESASkyResultMOC newData) {
 		
-		this.tablePanel = tablePanel;
+		setTablePanel(tablePanel);
 		this.moc = newData;
 		updateOverlay();
 	}
@@ -430,14 +430,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void addData(final ITablePanel tablePanel, ESASkyResultMOC newData) {
 		
 		setTablePanel(tablePanel);
-		
-		tablePanel.registerClosingObserver(new ClosingObserver() {
-			
-			@Override
-			public void onClose() {
-				closingPanel(tablePanel);
-			}
-		});
 		
 		moc.addData(newData);
 		moc.updateCount();
@@ -497,14 +489,29 @@ public class MOCEntity implements GeneralEntityInterface {
 		overlay.invokeFunction("dataFromJSON", data);
 	}
 	
-	private void closingPanel(ITablePanel tablePanel) {
+	public void closingTablePanel(ITablePanel panel) {
 		
-		clearAll();
 		MocRepository.getInstance().removeEntity(this);
+		clearAll();
 		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
 		overlay = null;
 		shouldBeShown = false;
-		getCountStatus().unregisterObserver(countObserver);
+		if(getCountStatus() != null) {
+			getCountStatus().unregisterObserver(countObserver);
+		}
+		
+	}
+	
+	public void closeFromAPI() {
+		clearAll();
+		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
+		overlay = null;
+		shouldBeShown = false;
+		if(getCountStatus() != null) {
+			getCountStatus().unregisterObserver(countObserver);
+		}		if(tablePanel != null) {
+			tablePanel.closeTablePanel();
+		}
 	}
 	
 	public void updateOverlay() {
@@ -520,6 +527,8 @@ public class MOCEntity implements GeneralEntityInterface {
     	int maxOrder = MocRepository.getMaxOrderFromFoV();
 		
     	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
+    	overlay.invokeFunction("reportChange");
+
 	}
 	
 	
@@ -556,7 +565,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void onFoVChanged() {
 
-		if(shouldBeShown) {
+		if(shouldBeShown && overlay != null) {
 			
 			int minOrder = MocRepository.getMinOrderFromFoV();
 			int maxOrder = MocRepository.getMaxOrderFromFoV();
@@ -762,7 +771,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public ITablePanel createTablePanel() {
-        tablePanel = new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+        setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
         return tablePanel;
 	}
 

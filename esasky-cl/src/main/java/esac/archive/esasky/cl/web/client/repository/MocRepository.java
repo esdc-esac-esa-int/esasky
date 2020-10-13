@@ -113,13 +113,14 @@ public class MocRepository {
 		allEntities.remove(entity);
 	}
 
-	public void removeEntity(String name) {
+	public MOCEntity getEntity(String name) {
 		for(MOCEntity entity : allEntities) {
 			if(entity.getEsaSkyUniqId() == name) {
-				entity.clearAll();
-				allEntities.remove(entity);
+				return entity;
 			}
 		}
+		
+		return null;
 	}
 	
 	public static int getMinOrderFromFoV() {
