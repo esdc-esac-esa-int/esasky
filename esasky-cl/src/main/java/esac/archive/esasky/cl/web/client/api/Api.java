@@ -320,12 +320,12 @@ public class Api {
 		descriptor.setPrimaryColor(color);
 		descriptor.setShapeLimit(limit);
 		
-		if(options.hasProperty("STCS_column")) {
-			descriptor.setTapSTCSColumn(options.getStringProperty("STCS_column"));
+		if(options.hasProperty("STCSColumn")) {
+			descriptor.setTapSTCSColumn(options.getStringProperty("STCSColumn"));
 		}
 		
-		if(options.hasProperty("Intersect_column")) {
-			descriptor.setIntersectColumn(options.getStringProperty("Intersect_column"));
+		if(options.hasProperty("IntersectColumn")) {
+			descriptor.setIntersectColumn(options.getStringProperty("IntersectColumn"));
 		}
 		
 		
