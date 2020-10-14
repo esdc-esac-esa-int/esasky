@@ -89,12 +89,12 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	    allShapesIndexes.clear();
 	}
 	
-	public void close(){
-		removeAllShapes();
-		AladinLiteWrapper.getAladinLite().removeCatalog(sourceOverlay);
-		AladinLiteWrapper.getAladinLite().removeOverlay(footPrintOverlay);
-		AladinLiteWrapper.getAladinLite().removeOverlay(polylineOverlay);
-	}
+//	public void close(){
+//		removeAllShapes();
+//		AladinLiteWrapper.getAladinLite().removeCatalog(sourceOverlay);
+//		AladinLiteWrapper.getAladinLite().removeOverlay(footPrintOverlay);
+//		AladinLiteWrapper.getAladinLite().removeOverlay(polylineOverlay);
+//	}
 
 	@Override
 	public void addShapes(GeneralJavaScriptObject rows) {
