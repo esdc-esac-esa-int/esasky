@@ -24,6 +24,7 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -69,6 +70,8 @@ public class MOCEntity implements GeneralEntityInterface {
     private double size;
     private TableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
+    
+    private String lineStyle;
     
     private CountObserver countObserver = new CountObserver() {
 		@Override
@@ -129,6 +132,11 @@ public class MOCEntity implements GeneralEntityInterface {
 		parentEntity = parent;
 		this.size = parentEntity.getSize();
 		
+		this.lineStyle = parentEntity.getLineStyle();
+		if(this.lineStyle == null) {
+			this.lineStyle = LineStyle.SOLID.getName();
+		}
+		
 		MocRepository.getInstance().addMocEntity(this);
 		filterObserver = new TableFilterObserver() {
 			
@@ -150,6 +158,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		EsaSkyEntity parentEntity = new EsaSkyEntity(descriptor,null, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), null);
 		parentEntity.setMocEntity(this);
 		this.parentEntity = parentEntity;
+		this.lineStyle = LineStyle.SOLID.getName();
 		this.size = parentEntity.getSize();
 		MocRepository.getInstance().addMocEntity(this);
 	}
@@ -760,16 +769,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public String getColor() {
-		return parentEntity.getColor();
-	}
-
-	@Override
-	public void setPrimaryColor(String color) {
-		parentEntity.setPrimaryColor(color);
-	}
-
-	@Override
 	public ITablePanel createTablePanel() {
         setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
         return tablePanel;
@@ -847,12 +846,12 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
     public String getLineStyle() {
-    	return parentEntity.getLineStyle();
+    	return lineStyle;
     }
     
     @Override
     public void setLineStyle(String lineStyle) {
-    	parentEntity.setLineStyle(lineStyle);
+    	this.lineStyle = lineStyle;
     	if(overlay != null) {
     		overlay.invokeFunction("setLineStyle", lineStyle);
     	}
@@ -888,13 +887,37 @@ public class MOCEntity implements GeneralEntityInterface {
         
     }
     
-    public void setColor(String color) {
+    @Override
+    public void setPrimaryColor(String color) {
     	if(overlay != null) {
     		overlay.setProperty("color", color);
     	}
     }
+    
+    @Override
+    public String getPrimaryColor() {
+    	return parentEntity.getPrimaryColor();
+    }
+    
 
     @Override
+	public void setSecondaryColor(String color) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getSecondaryColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getColor() {
+		return getPrimaryColor();
+	}
+
+	@Override
     public void setRefreshable(boolean isRefreshable) {
         parentEntity.setRefreshable(isRefreshable);
     }
@@ -921,6 +944,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	public Shape getShape(int shapeId) {
 		return parentEntity.getShape(shapeId);
 	}
-	
+
+	@Override
+	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

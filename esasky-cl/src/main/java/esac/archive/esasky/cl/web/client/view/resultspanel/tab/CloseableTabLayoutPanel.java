@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
@@ -40,6 +39,7 @@ import esac.archive.esasky.cl.web.client.event.ExportVOTableEvent;
 import esac.archive.esasky.cl.web.client.event.SendTableToEvent;
 import esac.archive.esasky.cl.web.client.event.UpdateNumRowsSelectedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -521,11 +521,11 @@ public class CloseableTabLayoutPanel extends Composite {
 
         
         GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabOpened, tabPanel.getFullId());
-        tabPanel.getDescriptor().registerColorChangeObservers(new ColorChangeObserver() {
+        tabPanel.getEntity().registerColorChangeObserver(new ColorChangeObserver() {
 			
 			@Override
-			public void onColorChange(IDescriptor descriptor, String newColor) {
-				if (styleButton != null && styleButton.isVisible() && descriptor.getDescriptorId().equals(tabPanel.getDescriptor().getDescriptorId())) {
+			public void onColorChange(String newColor) {
+				if (styleButton != null && styleButton.isVisible()) {
 					styleButton.setCircleColor(newColor);
 				}
 			}

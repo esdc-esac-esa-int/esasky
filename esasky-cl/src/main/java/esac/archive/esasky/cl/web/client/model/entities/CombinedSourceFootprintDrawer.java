@@ -36,6 +36,8 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	private ShapeBuilder shapeBuilder;
 	private Object shapeType;
 	private String lineStyle;
+	private String primaryColor;
+	private String secondaryColor;
 
 
 	public CombinedSourceFootprintDrawer(JavaScriptObject sourceOverlay, JavaScriptObject footPrintOverlay , ShapeBuilder shapeBuilder) {
@@ -51,8 +53,14 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 
 	@Override
 	public void setPrimaryColor(String color) {
+		this.primaryColor = color;
 		AladinLiteWrapper.getAladinLite().setOverlayColor(sourceOverlay, color);
 		AladinLiteWrapper.getAladinLite().setOverlayColor(footPrintOverlay, color);
+	}
+
+	@Override
+	public String getPrimaryColor() {
+		return this.primaryColor;
 	}
 
 	@Override
@@ -79,6 +87,13 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	    sourceShapes.clear();
 	    footPrintshapes.clear();
 	    allShapesIndexes.clear();
+	}
+	
+	public void close(){
+		removeAllShapes();
+		AladinLiteWrapper.getAladinLite().removeCatalog(sourceOverlay);
+		AladinLiteWrapper.getAladinLite().removeOverlay(footPrintOverlay);
+		AladinLiteWrapper.getAladinLite().removeOverlay(polylineOverlay);
 	}
 
 	@Override
@@ -266,9 +281,15 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     }
 
     public void setSecondaryColor(String color) {
+    	this.secondaryColor = color;
         AladinLiteWrapper.getAladinLite().setCatalogArrowColor(sourceOverlay, color);
         AladinLiteWrapper.getAladinLite().setOverlayColor(polylineOverlay, color);
     }
+    
+	@Override
+	public String getSecondaryColor() {
+		return this.secondaryColor;
+	}
 
     @Override
     public void setLineStyle(String lineStyle) {

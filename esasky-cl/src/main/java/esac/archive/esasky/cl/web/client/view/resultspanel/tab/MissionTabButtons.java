@@ -5,10 +5,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 
-import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ToggleImage;
+import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
@@ -73,10 +73,10 @@ public class MissionTabButtons extends Composite {
         toggleImage.addStyleName("tabIcon");
         this.compositePanel.insert(toggleImage, 0);
         
-        entity.getDescriptor().registerColorChangeObservers(new ColorChangeObserver() {
+        entity.registerColorChangeObserver(new ColorChangeObserver() {
 			
 			@Override
-			public void onColorChange(IDescriptor descriptor, String newColor) {
+			public void onColorChange(String newColor) {
 				setColor(newColor);
 			}
 		});

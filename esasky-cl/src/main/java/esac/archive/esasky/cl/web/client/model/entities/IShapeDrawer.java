@@ -8,6 +8,9 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 public interface IShapeDrawer {
 
 	public void setPrimaryColor(String color);
+	public String getPrimaryColor();
+	public void setSecondaryColor(String color);
+	public String getSecondaryColor();
 	public void setSizeRatio(double size);
 	public double getSize();
 	public void removeAllShapes();

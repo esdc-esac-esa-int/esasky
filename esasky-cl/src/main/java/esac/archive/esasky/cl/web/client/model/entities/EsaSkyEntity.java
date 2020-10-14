@@ -112,10 +112,14 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
         drawer = combinedDrawer;
         
+        drawer.setPrimaryColor(descriptor.getPrimaryColor());
+        drawer.setSecondaryColor(descriptor.getSecondaryColor());
+        
         this.skyViewPosition = skyViewPosition;
         this.esaSkyUniqId = esaSkyUniqId;
         this.metadataService = metadataService;
         this.countStatus = countStatus;
+        
 
     }
 
@@ -553,18 +557,52 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public String getColor() {
-        return this.getDescriptor().getPrimaryColor();
+        return drawer.getPrimaryColor();
+    }
+
+    @Override
+    public String getPrimaryColor() {
+    	return drawer.getPrimaryColor();
     }
 
     @Override
     public void setPrimaryColor(String color) {
-    	getDescriptor().setPrimaryColor(color);
     	drawer.setPrimaryColor(color);
+    	if(mocEntity != null) {
+    		mocEntity.setPrimaryColor(color);
+    	}
+    	notifyColorChangeObservers(color);
+    }
+    
+    LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<ColorChangeObserver>();
+    
+    public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver) {
+    	colorChangeObservers.add(colorChangeObserver);
     }
 
+    public void unregisterColorChangeObserver(ColorChangeObserver colorChangeObserver) {
+    	colorChangeObservers.remove(colorChangeObserver);
+    }
+
+    private void notifyColorChangeObservers(String color) {
+    	for(ColorChangeObserver obs : colorChangeObservers) {
+    		obs.onColorChange(color);
+    	}
+    }
+    
     @Override
+	public void setSecondaryColor(String color) {
+    	drawer.setPrimaryColor(color);
+		
+	}
+	@Override
+	public String getSecondaryColor() {
+		return drawer.getPrimaryColor();
+	}
+	
+	@Override
     public ITablePanel createTablePanel() {
-        tablePanel = new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+        setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
         return tablePanel;
     }
 
@@ -612,7 +650,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
         
         stylePanel = new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShapeType(),
-                getLineStyle(), descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
+                getLineStyle(), getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
                 combinedDrawer.getUseMedianOnAvgProperMotion(), new StylePanelCallback() {
 
             @Override
@@ -627,9 +665,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             @Override
             public void onShapeColorChanged(String color) {
                setPrimaryColor(color);
-                if(mocEntity != null) {
-                	mocEntity.setColor(color);
-                }
             }
                 
             @Override
@@ -714,6 +749,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
     public String getLineStyle() {
+    	if(mocEntity != null && mocEntity.isShouldBeShown()) {
+    		return mocEntity.getLineStyle();
+    	}
     	return drawer.getLineStyle();
     }
     
@@ -777,6 +815,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	@Override
 	public void setTablePanel(ITablePanel panel) {
 		this.tablePanel = panel;
+		
 	}
 
 	@Override
