@@ -197,7 +197,10 @@ public class Api {
 			userMocs.remove(name);
 		}
 		
-//		MocRepository.getInstance().removeEntity(name);
+		MOCEntity entity = MocRepository.getInstance().getEntity(name);
+		if(entity != null) {
+			entity.closeFromAPI();
+		}
 	}
 	
 	public void addQ3CMOC(String options, String mocData) {
