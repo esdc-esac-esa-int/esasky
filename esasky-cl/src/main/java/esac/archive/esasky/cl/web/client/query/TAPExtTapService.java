@@ -113,7 +113,7 @@ public class TAPExtTapService extends AbstractTAPService {
     }
     
     private String polygonIntersectSearch(ExtTapDescriptor descriptor) {
-    	String constraint = "1=INTERSECTS(" + descriptor.getTapSTCSColumn() + ",";
+    	String constraint = "1=INTERSECTS(" + descriptor.getIntersectColumn() + ",";
     	return constraint + screenPolygon(descriptor);
     }
     

@@ -29,6 +29,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private ExtTapDescriptor parent;
     private String ingestedTable;
     private boolean isObsCore;
+    private String intersectColumn;
     
 
     @JsonInclude(Include.NON_NULL)
@@ -49,6 +50,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	tapUrl = parent.getTapUrl();
     	ingestedTable = parent.getIngestedTable();
     	isObsCore = parent.getIsObsCore();
+    	intersectColumn = parent.getIntersectColumn();
     	
     	//From BaseDescriptor
     	setGuiShortName(parent.getGuiShortName());
@@ -221,4 +223,17 @@ public class ExtTapDescriptor extends BaseDescriptor {
 			return this;
 		}
 	}
+
+	public String getIntersectColumn() {
+		if(intersectColumn != null && intersectColumn != "") {
+			return intersectColumn;
+		}
+		return getTapSTCSColumn();
+	}
+
+	public void setIntersectColumn(String intersectColumn) {
+		this.intersectColumn = intersectColumn;
+	}
+	
+	
 }

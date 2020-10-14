@@ -366,8 +366,8 @@ public class ApiMessageParser {
 					if(!msg.content.hasOwnProperty('dataOnlyInView')){ 
 						msg.content['dataOnlyInView'] = false;
 					}
-					instance.@esac.archive.esasky.cl.web.client.api.Api::plotExtTapWithDetails(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;I)
-						(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit);
+					instance.@esac.archive.esasky.cl.web.client.api.Api::plotExtTapWithDetails(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;ILesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject; )
+						(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit, msg.content);
 					
 					break;	
 	

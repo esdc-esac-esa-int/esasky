@@ -309,7 +309,7 @@ public class Api {
 		}
 	}
 	
-	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit) {
+	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit, GeneralJavaScriptObject options) {
 		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, dataOnlyInView, adql);
 		if(color == "") {
 			color = ESASkyColors.getNext();
@@ -319,6 +319,16 @@ public class Api {
 		}
 		descriptor.setPrimaryColor(color);
 		descriptor.setShapeLimit(limit);
+		
+		if(options.hasProperty("STCS_column")) {
+			descriptor.setTapSTCSColumn(options.getStringProperty("STCS_column"));
+		}
+		
+		if(options.hasProperty("Intersect_column")) {
+			descriptor.setIntersectColumn(options.getStringProperty("Intersect_column"));
+		}
+		
+		
 		controller.getRootPresenter().getEntityRepository().createEntity(descriptor);
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}

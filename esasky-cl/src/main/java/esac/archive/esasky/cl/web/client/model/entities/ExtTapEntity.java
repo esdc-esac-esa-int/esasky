@@ -29,7 +29,7 @@ public class ExtTapEntity extends EsaSkyEntity {
     }
     
     public boolean hasReachedFovLimit() {
-        return CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT;
+        return CoordinateUtils.getCenterCoordinateInJ2000().getFov() > descriptor.getFovLimit();
     }
     
     @Override
