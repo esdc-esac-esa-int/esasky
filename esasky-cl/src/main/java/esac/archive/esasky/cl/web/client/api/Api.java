@@ -162,6 +162,7 @@ public class Api {
 		MOCEntity old = MocRepository.getInstance().getEntity(name);
 		if(old != null) {
 			old.closeFromAPI();
+			MocRepository.getInstance().removeEntity(old);
 		}
 		
 		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
@@ -185,9 +186,9 @@ public class Api {
 		if(options.hasProperty("addTab") && GeneralJavaScriptObject.convertToBoolean(options.getProperty("addTab"))) {
 			ITablePanel panel = controller.getRootPresenter().getResultsPresenter().addResultsTab(entity);
 			entity.setTablePanel(panel);
+			panel.setEmptyTable("Showing coverage of " + name);
 		}
 		entity.addJSON(mocData, options);
-		entity.getTablePanel().setEmptyTable("Showing coverage of " + name);
 		
 	}
 	
@@ -200,6 +201,7 @@ public class Api {
 		MOCEntity entity = MocRepository.getInstance().getEntity(name);
 		if(entity != null) {
 			entity.closeFromAPI();
+			MocRepository.getInstance().removeEntity(entity);
 		}
 	}
 	
