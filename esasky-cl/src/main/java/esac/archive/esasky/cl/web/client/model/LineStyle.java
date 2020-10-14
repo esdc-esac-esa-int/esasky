@@ -3,16 +3,14 @@ package esac.archive.esasky.cl.web.client.model;
 
 public enum LineStyle {
     
-    SOLID(0, "solid","--"), DASHED(1, "dashed", "- -"), DOT(1, "dot", ". .");
+    SOLID(0, "solid"), DASHED(1, "dashed"), DOT(1, "dot");
 
     String name;
     int index;
-    String view;
 
-    LineStyle(int index, String name, String view) {
+    LineStyle(int index, String name) {
         this.index = index;
         this.name = name;
-        this.view = view;
     }
 
     public int getIndex() {
@@ -21,8 +19,5 @@ public enum LineStyle {
 
     public String getName() {
         return this.name;
-    }
-    public String getView() {
-    	return this.view;
     }
 }

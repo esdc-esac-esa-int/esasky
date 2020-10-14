@@ -69,6 +69,15 @@ public class StylePanel extends DialogBox {
         
         @Source("arrow.png")
         ImageResource arrow();
+
+        @Source("line.png")
+        ImageResource solidLine();
+        
+        @Source("dashed-line.png")
+        ImageResource dashedLine();
+        
+        @Source("dotted-line.png")
+        ImageResource dottedLine();
     }
     
     
@@ -324,7 +333,7 @@ public class StylePanel extends DialogBox {
 
     private DropDownMenu<LineStyle> createLineShapeDropdown() {
     	
-    	final DropDownMenu<LineStyle> lineShapeDropDown = new DropDownMenu<LineStyle> ("", "", 60, false, "lineStyleDropDown");
+    	final DropDownMenu<LineStyle> lineShapeDropDown = new DropDownMenu<LineStyle> ( 42, "lineStyleDropDown");
     	
     	lineShapeDropDown.registerObserver(new MenuObserver() {
     		
@@ -339,7 +348,7 @@ public class StylePanel extends DialogBox {
     	LineStyle selectedItem = null;
     	for (LineStyle lineShapeType : LineStyle.values()) {
     		MenuItem<LineStyle> dropdownItem = new MenuItem<LineStyle>(
-    				lineShapeType, lineShapeType.getView(), false);
+    				lineShapeType, getImageShape(lineShapeType.getName()));
     		dropdownItem.addStyleName("srcShapeDropDownItem");
     		if (lineShapeType.getName().equals(lineStyle)) {
     			selectedItem = lineShapeType;
@@ -532,8 +541,12 @@ public class StylePanel extends DialogBox {
        } else if (shape.equals("square")){
             return resources.squareShape();
        } else if (shape.equals("solid")){
-    	   return resources.circleShape();
-       } else {
+    	   return resources.solidLine();
+       }  else if (shape.equals("dashed")){
+    	   return resources.dashedLine();
+       } else if (shape.equals("dot")){
+    	   return resources.dottedLine();
+       }else {
     	   return resources.squareShape();
        }
     }
