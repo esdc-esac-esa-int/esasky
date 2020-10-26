@@ -549,7 +549,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			hideWidget(targetListButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING) && isInScienceMode) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
 			showWidget(planObservationButton);
 		}else {
 			hideWidget(planObservationButton);
