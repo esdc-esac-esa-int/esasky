@@ -77,8 +77,8 @@ public class MOCEntity implements GeneralEntityInterface {
 		@Override
 		public void onCountUpdate(int newCount) {
 			
-			newCount = getCountStatus().getCount(descriptor);
-			if(newCount > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
+			int perMissionNewCount = getCountStatus().getCount(descriptor);
+			if(perMissionNewCount > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				setTableCountText();
 				tablePanel.disableFilters();
 				return;
@@ -88,7 +88,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			getVisibleCount();
 			setTableCountText();
 			
-			if(filterRequested && newCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
+			if(filterRequested && perMissionNewCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				loadFilteredMOC();
 				filterRequested = false;
 			}

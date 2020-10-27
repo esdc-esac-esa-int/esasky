@@ -115,7 +115,7 @@ public class MocRepository {
 
 	public MOCEntity getEntity(String name) {
 		for(MOCEntity entity : allEntities) {
-			if(entity.getEsaSkyUniqId() == name) {
+			if(entity.getEsaSkyUniqId().equals(name)) {
 				return entity;
 			}
 		}

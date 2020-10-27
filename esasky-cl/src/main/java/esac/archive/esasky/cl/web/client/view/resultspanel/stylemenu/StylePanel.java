@@ -591,7 +591,7 @@ public class StylePanel extends DialogBox {
     	if(lineStyleDropDown != null) {
     		UIObject.setVisible(lineStyleDropDown.getElement(), true);
     		for(MenuItem<LineStyle> item : lineStyleDropDown.getMenuItems()) {
-    			if(item.getItem().getName() == lineStyle) {
+    			if(item.getItem().getName().equals(lineStyle)) {
     				lineStyleDropDown.selectObject(item.getItem());
     			}
     		}
@@ -609,7 +609,7 @@ public class StylePanel extends DialogBox {
     	if(shapeTypeDropDown != null) {
     		UIObject.setVisible(shapeTypeDropDown.getElement(), true);
     		for(MenuItem<SourceShapeType> item : shapeTypeDropDown.getMenuItems()) {
-    			if(item.getItem().getName() == primaryShapeType) {
+    			if(item.getItem().getName().equals(primaryShapeType)) {
     				shapeTypeDropDown.selectObject(item.getItem());
     			}
     		}
