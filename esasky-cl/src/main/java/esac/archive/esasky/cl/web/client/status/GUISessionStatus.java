@@ -35,7 +35,7 @@ public class GUISessionStatus {
 	private static boolean doCountOnEnteringScienceMode = false;
 	private static boolean hideSwitch = false;
 	private static boolean showCoordinatesInDegrees = false;
-	public static boolean hideBannerInfo = false;
+	private static boolean hideBannerInfo = false;
 	
 	private static String currentLanguage;
 	
@@ -242,6 +242,14 @@ public class GUISessionStatus {
 	public static String getCurrentLanguage() {
 		return currentLanguage;
 	}
+	
+    public static void setShouldHideBannerInfo(boolean shouldHideBannerInfo) {
+        hideBannerInfo = shouldHideBannerInfo;
+    }
+    
+    public static boolean getShouldHideBannerInfo() {
+        return hideBannerInfo;
+    }
 	
 	public static void initiateHipsLocationScheduler() {
 		checkHipsServerLocation();

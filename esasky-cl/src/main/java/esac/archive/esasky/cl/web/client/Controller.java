@@ -72,7 +72,7 @@ public class Controller implements ValueChangeHandler<String> {
 		Modules.setMode(mode);
 		
 		String hideBannerInfoString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_BANNER_INFO);
-		GUISessionStatus.hideBannerInfo = hideBannerInfoString != null && hideBannerInfoString.toLowerCase().contains("true") ? true: false;
+		GUISessionStatus.setShouldHideBannerInfo(hideBannerInfoString != null && hideBannerInfoString.toLowerCase().contains("true"));
         
 		String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(

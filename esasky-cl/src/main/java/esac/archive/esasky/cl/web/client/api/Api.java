@@ -87,7 +87,7 @@ public class Api {
 	Map<String, JavaScriptObject> setOfFootprints = new HashMap<String, JavaScriptObject>();
 	Controller controller;
 	
-	public static Api instance = null;
+	private static Api instance = null;
 	
 	private String googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
 	
