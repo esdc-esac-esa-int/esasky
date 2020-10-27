@@ -15,7 +15,6 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
@@ -146,7 +145,7 @@ public class Api {
 	                });
 	}
 		
-	public void addMOC_Old(String name, String options, String mocData) {
+	public void addMocOld(String name, String options, String mocData) {
 		if(userMocs.containsKey(name)) {
 			AladinLiteWrapper.getAladinLite().removeMOC(userMocs.get(name));
 			userMocs.remove(name);
@@ -1141,11 +1140,10 @@ public class Api {
 	}
 	
 	public void addCustomTreeMap(GeneralJavaScriptObject input, JavaScriptObject widget) {
-				
 		String name = "Custom treeMap";
 		if(input.hasProperty("name")) {
 			name = input.getStringProperty("name");
-		}else {
+		} else {
 			sendBackMessageToWidget("ERROR: Missing treeMap property name", widget);
 			return;
 		}
@@ -1166,12 +1164,10 @@ public class Api {
 			return;
 		}
 		int i = 0;
-		List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
+		List<IDescriptor> descriptors = new LinkedList<>();
 		while(descriptorArray.hasProperty(Integer.toString(i))) {
 			GeneralJavaScriptObject mission = descriptorArray.getProperty(Integer.toString(i));
-			
 			BaseDescriptor descriptor = new BaseDescriptor() {
-				
 				@Override
 				public String getIcon() {
 					return null;
@@ -1181,7 +1177,7 @@ public class Api {
 			String missionName = "";
 			if(mission.hasProperty("name")) {
 				missionName = mission.getStringProperty("name");
-			}else {
+			} else {
 				sendBackMessageToWidget("ERROR: Missing mission property \"name\"", widget);
 				return;
 			}
@@ -1189,7 +1185,7 @@ public class Api {
 			String color = "";
 			if(mission.hasProperty("color")) {
 				color = mission.getStringProperty("color");
-			}else {
+			} else {
 				sendBackMessageToWidget("ERROR: Missing mission property \"color\"", widget);
 				return;
 			}
@@ -1200,12 +1196,9 @@ public class Api {
 			descriptor.setDescriptorId(missionName);
 			descriptor.setPrimaryColor(color);
 			descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
-			
 			descriptor.setTapSTCSColumn("stcs");
 			descriptor.setSampEnabled(false);
-
 			descriptor.setFovLimit(360.0);
-
 			descriptor.setTapTable("<not_set>");
 			descriptor.setTabCount(0);
 			descriptors.add(descriptor);
@@ -1235,7 +1228,6 @@ public class Api {
 		});
 		
 		controller.getRootPresenter().getCtrlTBPresenter().addCustomTreeMap(customTreeMapDescriptor);
-	
 	}
 	
 	public void setModuleVisibility(GeneralJavaScriptObject data, JavaScriptObject widget) {
@@ -1262,20 +1254,18 @@ public class Api {
 	}
 	
 	public void registerFoVChangedListener(JavaScriptObject widget) {
-		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
-
-			@Override
-			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
-				JSONObject result = new JSONObject();
-				JSONObject fov = new JSONObject();
-				fov.put("fov", new JSONNumber(fovEvent.getFov()));
-				fov.put("fovRa", new JSONNumber(fovEvent.getFov()));
-				fov.put("fovDec", new JSONNumber(fovEvent.getFovDec()));
-				result.put("action", new JSONString("FoV Changed"));
-				result.put("values", fov);
-				sendBackToWidget(result, widget);
-			}
-		});
+	      CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, 
+	              (fovEvent) -> {
+	                JSONObject result = new JSONObject();
+	                JSONObject fov = new JSONObject();
+	                fov.put("fov", new JSONNumber(fovEvent.getFov()));
+	                fov.put("fovRa", new JSONNumber(fovEvent.getFov()));
+	                fov.put("fovDec", new JSONNumber(fovEvent.getFovDec()));
+	                result.put("action", new JSONString("FoV Changed"));
+	                result.put("values", fov);
+	                sendBackToWidget(result, widget);
+	                }
+          );
 	}
 
 }

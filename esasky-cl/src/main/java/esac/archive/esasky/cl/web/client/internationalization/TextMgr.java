@@ -242,7 +242,6 @@ public class TextMgr {
                     		final String result = response.getText();
                     		Document xmlDoc = XMLParser.parse(result); 
                         	intManager.getTextsFromXML(xmlDoc, isPrimaryLanguage);
-                        	
                     	} catch(Exception ex) {
                     		Log.error("TextMgr.readXML().onResponseReceived", ex);
                     		if(isPrimaryLanguage) {

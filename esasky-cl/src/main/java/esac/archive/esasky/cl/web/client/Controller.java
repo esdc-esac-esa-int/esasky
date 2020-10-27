@@ -68,13 +68,124 @@ public class Controller implements ValueChangeHandler<String> {
 		    Modules.toggleColumns = true;
 	    }
 		
-		String mode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
+		setSciMode();
+		setBasicLayoutFromParameters();
+		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
+		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");
+		
+		if (Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS) != null
+				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) != null
+				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TARGET) != null) {
+			startupWithChosenTargetOrHips(hideWelcome);
+		} else if (EsaSkyWebConstants.RANDOM_SOURCE_ON_STARTUP && !UrlUtils.urlHasBibcode() && !UrlUtils.urlHasAuthor()) {
+			//Retrieves a random source from backend and shows it
+			startupWithRandomSource(hideWelcome);
+		} else {
+			initESASkyWithURLParameters("", "", "", "", hideWelcome);
+		}
+	}
+
+    private void startupWithChosenTargetOrHips(final boolean hideWelcome) {
+        final String hiPSName = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS) == null ? "" : Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS);
+        final String cooFrame = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) == null ? AladinLiteConstants.FRAME_J2000 : Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD);
+        GUISessionStatus.setShowCoordinatesInDegrees(cooFrame.toLowerCase().contains("gal"));
+        String targetFromUrl = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TARGET);
+        Log.debug("[Controller] QUERYSTRING: " + Window.Location.getQueryString());
+
+
+        String target = "";
+        if(targetFromUrl != null){
+        	if(targetFromUrl.contains("-") || targetFromUrl.contains("+")){
+        		target = targetFromUrl;
+        	} else {
+        		if(countChar(targetFromUrl, ' ') == 1){
+        			//Since "+" in the coordinate cant be directly transmitted through the url, it is added here if needed.
+        			target = targetFromUrl.replaceFirst(" ([0-9])", " +$1");
+        		} else {
+        			String[] parts = targetFromUrl.split(" ");
+        			if(parts.length == 6){
+        				parts[3] = "+" + parts[3]; 
+        			}
+        			for(String part : parts){
+        				target += part + " ";
+        			}
+        			target = target.trim();
+        		}
+        	}
+        }
+
+        final String fov = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FOV);
+
+        initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+    }
+
+    private void startupWithRandomSource(final boolean hideWelcome) {
+        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.RANDOM_SOURCE_URL + "?lang=" + TextMgr.getInstance().getLangCode(), new IJSONRequestCallback() {
+
+        	@Override
+        	public void onSuccess(String responseText) {
+        		String target = "";
+        		String fov = "";
+        		String cooFrame = "";
+        		String hiPSName = "";
+
+        		try {
+        			final ESASkyTarget esaSkyTarget = ParseUtils.parseJsonTarget(responseText);
+        			target = esaSkyTarget.getRa() + " " + esaSkyTarget.getDec();
+        			fov = esaSkyTarget.getFovDeg();
+        			cooFrame = esaSkyTarget.getCooFrame() != null ? esaSkyTarget.getCooFrame() : CoordinateFrame.J2000.toString();
+        			hiPSName = esaSkyTarget.getHipsName();
+        			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+        			if (esaSkyTarget != null
+        					&& !esaSkyTarget.getTitle().isEmpty()
+        					&& !esaSkyTarget.getDescription().isEmpty()
+        					&& !GUISessionStatus.getIsInScienceMode()) {
+        				//Wait until target coordinate and position is found and set
+        				CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
+        					
+        					boolean isInitialEvent = true;
+        					@Override
+        					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
+        						if(isInitialEvent) {
+        							CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription()));
+        						}
+        						isInitialEvent = false;
+        					}
+        				});
+        			}
+
+        		} catch (Exception ex) {
+        			Log.error("[Controller] getRandomSource onSuccess ERROR: ", ex);
+        			target = "";
+        			fov = "";
+        			cooFrame = "";
+        			hiPSName = "";
+        			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+        		}
+        	}
+
+        	@Override
+        	public void onError(String errorCause) {
+        		Log.error("[Controller] getRandomSource ERROR: " + errorCause);
+        		initESASkyWithURLParameters("", "", "", "", hideWelcome);
+        	}
+
+        }, EsaSkyWebConstants.RANDOM_SOURCE_CALL_TIMEOUT);
+    }
+
+    private void setBasicLayoutFromParameters() {
+        String mode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
 		Modules.setMode(mode);
 		
 		String hideBannerInfoString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_BANNER_INFO);
 		GUISessionStatus.setShouldHideBannerInfo(hideBannerInfoString != null && hideBannerInfoString.toLowerCase().contains("true"));
         
-		String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
+		String hideSwitchString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_SCI);
+		GUISessionStatus.sethideSwitch(hideSwitchString != null && hideSwitchString.toLowerCase().contains("true"));
+    }
+
+    private void setSciMode() {
+        String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
 				((sciMode != null 
 				&& (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"))
@@ -87,111 +198,7 @@ public class Controller implements ValueChangeHandler<String> {
 			
 			GUISessionStatus.setInitialIsInScienceMode();
 		}
-		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
-		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true") ? true: false;
-		String hideSwitchString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_SCI);
-		GUISessionStatus.sethideSwitch(hideSwitchString != null && hideSwitchString.toLowerCase().contains("true") ? true: false);
-
-
-		
-		if (Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS) != null
-				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) != null
-				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TARGET) != null) {
-					
-			final String hiPSName = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS) == null ? "" : Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS);
-			final String cooFrame = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) == null ? AladinLiteConstants.FRAME_J2000 : Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD);
-			GUISessionStatus.setShowCoordinatesInDegrees(cooFrame.toLowerCase().contains("gal"));
-			String targetFromUrl = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TARGET);
-			Log.debug("[Controller] QUERYSTRING: " + Window.Location.getQueryString());
-
-
-			String target = "";
-			if(targetFromUrl != null){
-				if(targetFromUrl.contains("-") || targetFromUrl.contains("+")){
-					target = targetFromUrl;
-				} else {
-					if(countChar(targetFromUrl, ' ') == 1){
-						//Since "+" in the coordinate cant be directly transmitted through the url, it is added here if needed.
-						target = targetFromUrl.replaceFirst(" ([0-9])", " +$1");
-					} else {
-						String[] parts = targetFromUrl.split(" ");
-						if(parts.length == 6){
-							parts[3] = "+" + parts[3]; 
-						}
-						for(String part : parts){
-							target += part + " ";
-						}
-						target = target.trim();
-					}
-				}
-			}
-
-			final String fov = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FOV);
-
-			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
-
-		} else {
-
-			if (EsaSkyWebConstants.RANDOM_SOURCE_ON_STARTUP && !UrlUtils.urlHasBibcode() && !UrlUtils.urlHasAuthor()) {
-				//Retrieves a random source from backend and shows it
-				JSONUtils.getJSONFromUrl(EsaSkyWebConstants.RANDOM_SOURCE_URL + "?lang=" + TextMgr.getInstance().getLangCode(), new IJSONRequestCallback() {
-
-					@Override
-					public void onSuccess(String responseText) {
-						String target = "";
-						String fov = "";
-						String cooFrame = "";
-						String hiPSName = "";
-
-						try {
-							final ESASkyTarget esaSkyTarget = ParseUtils.parseJsonTarget(responseText);
-							target = esaSkyTarget.getRa() + " " + esaSkyTarget.getDec();
-							fov = esaSkyTarget.getFovDeg();
-							cooFrame = esaSkyTarget.getCooFrame() != null ? esaSkyTarget.getCooFrame() : CoordinateFrame.J2000.toString();
-							hiPSName = esaSkyTarget.getHipsName();
-							initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
-							if (esaSkyTarget != null
-									&& !esaSkyTarget.getTitle().isEmpty()
-									&& !esaSkyTarget.getDescription().isEmpty()
-									&& !GUISessionStatus.getIsInScienceMode()) {
-								//Wait until target coordinate and position is found and set
-								CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
-									
-									boolean isInitialEvent = true;
-									@Override
-									public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
-										if(isInitialEvent) {
-											CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription()));
-										}
-										isInitialEvent = false;
-									}
-								});
-							}
-
-						} catch (Exception ex) {
-							Log.error("[Controller] getRandomSource onSuccess ERROR: ", ex);
-							target = "";
-							fov = "";
-							cooFrame = "";
-							hiPSName = "";
-							initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
-						}
-					}
-
-					@Override
-					public void onError(String errorCause) {
-						Log.error("[Controller] getRandomSource ERROR: " + errorCause);
-						initESASkyWithURLParameters("", "", "", "", hideWelcome);
-					}
-
-				}, EsaSkyWebConstants.RANDOM_SOURCE_CALL_TIMEOUT);
-
-			} else {
-				initESASkyWithURLParameters("", "", "", "", hideWelcome);
-			}
-
-		}
-	}
+    }
 
 	private static int countChar(String str, char c) {
 		int start = -1;
