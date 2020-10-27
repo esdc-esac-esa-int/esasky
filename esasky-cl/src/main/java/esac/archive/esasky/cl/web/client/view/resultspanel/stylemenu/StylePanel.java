@@ -121,7 +121,6 @@ public class StylePanel extends DialogBox {
     
     private HTML primarySlider;
     private HTML secondarySlider;
-    private HTML srcColorPickerContainer;
     
     private FlowPanel secondaryContainer;
     private FlowPanel innerContainer;
@@ -203,7 +202,7 @@ public class StylePanel extends DialogBox {
         shapeContainer.add(this.shapeTypeDropDown);
         
         //Adds the source color picker
-        srcColorPickerContainer = new HTML("<div id='" + primaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
+        HTML srcColorPickerContainer = new HTML("<div id='" + primaryShapeColorPickerId + "_Container' class='colorPickerContainer'></div>");
         shapeContainer.add(srcColorPickerContainer);
         
         //Adds the source size slider

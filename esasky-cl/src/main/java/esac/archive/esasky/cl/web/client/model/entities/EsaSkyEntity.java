@@ -68,6 +68,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private CountStatus countStatus;
     private boolean isRefreshable = true;
     private StylePanel stylePanel;
+    private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
 
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -574,8 +575,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	notifyColorChangeObservers(color);
     }
     
-    LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<ColorChangeObserver>();
-    
     public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver) {
     	colorChangeObservers.add(colorChangeObserver);
     }
@@ -713,20 +712,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 				stylePanel.hideShapeTypeDropDown();
 			}
 			
-			if(mocEntity != null && mocEntity.isShouldBeShown()) {
-				stylePanel.showLineStyleDropDown(mocEntity.getLineStyle());
-			}else if (getLineStyle() != null){
-				stylePanel.showLineStyleDropDown(getLineStyle());
-			}else {
-				stylePanel.hideLineStyleDropDown();
-			}
-
-			if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
-				stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
-						combinedDrawer.getShowAvgProperMotion(), combinedDrawer.getUseMedianOnAvgProperMotion());
-			}else {
-				stylePanel.hideSecondaryContainer();
-			}
+			setStylePanelLineStyleVisibility();
+			setStylePanelSecondaryContainerVisibility();
 			
 			if(mocEntity != null && mocEntity.isShouldBeShown()) {
 				stylePanel.showPrimary(mocEntity.getColor(), mocEntity.getSize() );
@@ -736,6 +723,23 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 			
 		}
 	}
+    private void setStylePanelSecondaryContainerVisibility() {
+        if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
+        	stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
+        			combinedDrawer.getShowAvgProperMotion(), combinedDrawer.getUseMedianOnAvgProperMotion());
+        }else {
+        	stylePanel.hideSecondaryContainer();
+        }
+    }
+    private void setStylePanelLineStyleVisibility() {
+        if(mocEntity != null && mocEntity.isShouldBeShown()) {
+        	stylePanel.showLineStyleDropDown(mocEntity.getLineStyle());
+        }else if (getLineStyle() != null){
+        	stylePanel.showLineStyleDropDown(getLineStyle());
+        }else {
+        	stylePanel.hideLineStyleDropDown();
+        }
+    }
     
 	@Override
     public String getShapeType() {
@@ -762,7 +766,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
     public void onShapeSelection(AladinShape shape) {
-    	int shapeId =  new Integer(shape.getId());
+    	int shapeId =  Integer.parseInt(shape.getId());
     	selectShapes(shapeId);
     	
     	if(tablePanel != null) {

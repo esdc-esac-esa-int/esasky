@@ -76,7 +76,6 @@ public class MOCEntity implements GeneralEntityInterface {
     private CountObserver countObserver = new CountObserver() {
 		@Override
 		public void onCountUpdate(int newCount) {
-			
 			int perMissionNewCount = getCountStatus().getCount(descriptor);
 			if(perMissionNewCount > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				setTableCountText();
@@ -97,7 +96,6 @@ public class MOCEntity implements GeneralEntityInterface {
 				loadMOC();
 				loadMOCRequested = false;
 			}
-			
 		}
 	};
 	
@@ -155,9 +153,9 @@ public class MOCEntity implements GeneralEntityInterface {
 		drawer = null;
 		this.descriptor = descriptor;
 		metadataService = TAPMOCService.getInstance();
-		EsaSkyEntity parentEntity = new EsaSkyEntity(descriptor,null, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), null);
-		parentEntity.setMocEntity(this);
-		this.parentEntity = parentEntity;
+		EsaSkyEntity esaskyEntity = new EsaSkyEntity(descriptor,null, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), null);
+		esaskyEntity.setMocEntity(this);
+		this.parentEntity = esaskyEntity;
 		this.lineStyle = LineStyle.SOLID.getName();
 		this.size = parentEntity.getSize();
 		MocRepository.getInstance().addMocEntity(this);
@@ -173,7 +171,7 @@ public class MOCEntity implements GeneralEntityInterface {
 				
 				@Override
 				public void onClose() {
-					closingTablePanel(tablePanel);
+					closingTablePanel();
 				}
 			});
 		}
@@ -498,7 +496,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		overlay.invokeFunction("dataFromJSON", data);
 	}
 	
-	public void closingTablePanel(ITablePanel panel) {
+	public void closingTablePanel() {
 		
 		MocRepository.getInstance().removeEntity(this);
 		clearAll();
@@ -518,7 +516,8 @@ public class MOCEntity implements GeneralEntityInterface {
 		shouldBeShown = false;
 		if(getCountStatus() != null) {
 			getCountStatus().unregisterObserver(countObserver);
-		}		if(tablePanel != null) {
+		}		
+		if(tablePanel != null) {
 			tablePanel.closeTablePanel();
 		}
 	}
@@ -798,25 +797,18 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void fetchData() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
 	public void fetchData(String adql) {
-		// TODO Auto-generated method stub
-	}    
-
+	}
+	
 	@Override
 	public void coneSearch(SkyViewPosition conePos) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -859,32 +851,22 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
     public void onShapeSelection(AladinShape shape) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void onShapeDeselection(AladinShape shape) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void onShapeHover(AladinShape shape) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void onShapeUnhover(AladinShape shape) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void select() {
-        // TODO Auto-generated method stub
-        
     }
     
     @Override
@@ -902,13 +884,10 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
 	public void setSecondaryColor(String color) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public String getSecondaryColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -947,8 +926,6 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver) {
-		// TODO Auto-generated method stub
-		
 	}
     
 }

@@ -64,7 +64,7 @@ public class Controller implements ValueChangeHandler<String> {
 		
 		String toggleColumns = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS);
 		if(toggleColumns != null 
-		        && (toggleColumns.toLowerCase().contains("on") || toggleColumns.toLowerCase().contains("true"))){
+		        && isSciModeParameterPositive(toggleColumns)){
 		    Modules.toggleColumns = true;
 	    }
 		
@@ -95,28 +95,33 @@ public class Controller implements ValueChangeHandler<String> {
 
         String target = "";
         if(targetFromUrl != null){
-        	if(targetFromUrl.contains("-") || targetFromUrl.contains("+")){
-        		target = targetFromUrl;
-        	} else {
-        		if(countChar(targetFromUrl, ' ') == 1){
-        			//Since "+" in the coordinate cant be directly transmitted through the url, it is added here if needed.
-        			target = targetFromUrl.replaceFirst(" ([0-9])", " +$1");
-        		} else {
-        			String[] parts = targetFromUrl.split(" ");
-        			if(parts.length == 6){
-        				parts[3] = "+" + parts[3]; 
-        			}
-        			for(String part : parts){
-        				target += part + " ";
-        			}
-        			target = target.trim();
-        		}
-        	}
+        	target = extractTargetFromUrlParameter(targetFromUrl, target);
         }
 
         final String fov = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FOV);
 
         initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+    }
+
+    private String extractTargetFromUrlParameter(String targetFromUrl, String target) {
+        if(targetFromUrl.contains("-") || targetFromUrl.contains("+")){
+        	target = targetFromUrl;
+        } else {
+        	if(countChar(targetFromUrl, ' ') == 1){
+        		//Since "+" in the coordinate cant be directly transmitted through the url, it is added here if needed.
+        		target = targetFromUrl.replaceFirst(" ([0-9])", " +$1");
+        	} else {
+        		String[] parts = targetFromUrl.split(" ");
+        		if(parts.length == 6){
+        			parts[3] = "+" + parts[3]; 
+        		}
+        		for(String part : parts){
+        			target += part + " ";
+        		}
+        		target = target.trim();
+        	}
+        }
+        return target;
     }
 
     private void startupWithRandomSource(final boolean hideWelcome) {
@@ -187,17 +192,31 @@ public class Controller implements ValueChangeHandler<String> {
     private void setSciMode() {
         String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
-				((sciMode != null 
-				&& (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"))
-						)
-				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet())
-				|| (Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && sciMode == null && sciMode != "false"
-					&& sciMode != "off" && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true")))
+				(
+				    (sciMode != null && isSciModeParameterPositive(sciMode))
+				    || isDesktopWithNoCookieOrSciParameter(sciMode)
+				    || (hasPositiveCookie() && !isSciModeParameterNegative(sciMode))
+				)
 				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE)
-				) {
-			
+		) {
 			GUISessionStatus.setInitialIsInScienceMode();
 		}
+    }
+
+    private boolean isSciModeParameterNegative(String sciMode) {
+        return sciMode != null && (sciMode.toLowerCase().contains("false") || sciMode.toLowerCase().contains("off"));
+    }
+    
+    private boolean hasPositiveCookie() {
+        return Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true");
+    }
+
+    private boolean isDesktopWithNoCookieOrSciParameter(String sciMode) {
+        return Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet();
+    }
+
+    private boolean isSciModeParameterPositive(String sciMode) {
+        return sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true");
     }
 
 	private static int countChar(String str, char c) {

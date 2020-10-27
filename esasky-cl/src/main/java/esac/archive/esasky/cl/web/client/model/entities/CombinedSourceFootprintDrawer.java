@@ -88,13 +88,6 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	    footPrintshapes.clear();
 	    allShapesIndexes.clear();
 	}
-	
-//	public void close(){
-//		removeAllShapes();
-//		AladinLiteWrapper.getAladinLite().removeCatalog(sourceOverlay);
-//		AladinLiteWrapper.getAladinLite().removeOverlay(footPrintOverlay);
-//		AladinLiteWrapper.getAladinLite().removeOverlay(polylineOverlay);
-//	}
 
 	@Override
 	public void addShapes(GeneralJavaScriptObject rows) {
@@ -299,7 +292,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     
     @Override
     public String getLineStyle() {
-    	 if(footPrintshapes.size() > 0) {
+    	 if(!footPrintshapes.isEmpty()) {
     		 if(lineStyle == null) {
     			 lineStyle = LineStyle.SOLID.getName();
     		 }

@@ -1163,48 +1163,10 @@ public class Api {
 			sendBackMessageToWidget("ERROR: Missing treeMap missions", widget);
 			return;
 		}
-		int i = 0;
-		List<IDescriptor> descriptors = new LinkedList<>();
-		while(descriptorArray.hasProperty(Integer.toString(i))) {
-			GeneralJavaScriptObject mission = descriptorArray.getProperty(Integer.toString(i));
-			BaseDescriptor descriptor = new BaseDescriptor() {
-				@Override
-				public String getIcon() {
-					return null;
-				}
-			};
-			
-			String missionName = "";
-			if(mission.hasProperty("name")) {
-				missionName = mission.getStringProperty("name");
-			} else {
-				sendBackMessageToWidget("ERROR: Missing mission property \"name\"", widget);
-				return;
-			}
-			
-			String color = "";
-			if(mission.hasProperty("color")) {
-				color = mission.getStringProperty("color");
-			} else {
-				sendBackMessageToWidget("ERROR: Missing mission property \"color\"", widget);
-				return;
-			}
-			
-			descriptor.setMission(missionName);
-			descriptor.setGuiShortName(missionName);
-			descriptor.setGuiLongName(missionName);
-			descriptor.setDescriptorId(missionName);
-			descriptor.setPrimaryColor(color);
-			descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
-			descriptor.setTapSTCSColumn("stcs");
-			descriptor.setSampEnabled(false);
-			descriptor.setFovLimit(360.0);
-			descriptor.setTapTable("<not_set>");
-			descriptor.setTabCount(0);
-			descriptors.add(descriptor);
-			i++;
+		List<IDescriptor> descriptors = createTreeMapDescriptors(widget, descriptorArray);
+		if(descriptors == null) {
+		    return;
 		}
-		
 		CustomTreeMapDescriptor customTreeMapDescriptor = new CustomTreeMapDescriptor(name, description, iconText, descriptors);
 		
 		customTreeMapDescriptor.setOnMissionClicked(new CustomTreeMapDescriptor.OnMissionClicked() {
@@ -1229,6 +1191,52 @@ public class Api {
 		
 		controller.getRootPresenter().getCtrlTBPresenter().addCustomTreeMap(customTreeMapDescriptor);
 	}
+
+    private List<IDescriptor> createTreeMapDescriptors(JavaScriptObject widget,
+            GeneralJavaScriptObject descriptorArray) {
+        List<IDescriptor> descriptors = new LinkedList<>();
+		int i = 0;
+		while(descriptorArray.hasProperty(Integer.toString(i))) {
+			GeneralJavaScriptObject mission = descriptorArray.getProperty(Integer.toString(i));
+			BaseDescriptor descriptor = new BaseDescriptor() {
+				@Override
+				public String getIcon() {
+					return null;
+				}
+			};
+			
+			String missionName = "";
+			if(mission.hasProperty("name")) {
+				missionName = mission.getStringProperty("name");
+			} else {
+				sendBackMessageToWidget("ERROR: Missing mission property \"name\"", widget);
+				return null;
+			}
+			
+			String color = "";
+			if(mission.hasProperty("color")) {
+				color = mission.getStringProperty("color");
+			} else {
+				sendBackMessageToWidget("ERROR: Missing mission property \"color\"", widget);
+				return null;
+			}
+			
+			descriptor.setMission(missionName);
+			descriptor.setGuiShortName(missionName);
+			descriptor.setGuiLongName(missionName);
+			descriptor.setDescriptorId(missionName);
+			descriptor.setPrimaryColor(color);
+			descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
+			descriptor.setTapSTCSColumn("stcs");
+			descriptor.setSampEnabled(false);
+			descriptor.setFovLimit(360.0);
+			descriptor.setTapTable("<not_set>");
+			descriptor.setTabCount(0);
+			descriptors.add(descriptor);
+			i++;
+		}
+        return descriptors;
+    }
 	
 	public void setModuleVisibility(GeneralJavaScriptObject data, JavaScriptObject widget) {
 		try {
@@ -1255,7 +1263,7 @@ public class Api {
 	
 	public void registerFoVChangedListener(JavaScriptObject widget) {
 	      CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, 
-	              (fovEvent) -> {
+	              fovEvent -> {
 	                JSONObject result = new JSONObject();
 	                JSONObject fov = new JSONObject();
 	                fov.put("fov", new JSONNumber(fovEvent.getFov()));

@@ -14,11 +14,6 @@ import esac.archive.esasky.ifcs.model.client.HipsWavelength;
  */
 public class EsaSkyConstants {
 
-    /** Prevents Utility class calls. */
-    protected EsaSkyConstants() {
-        // prevents calls from subclass
-        throw new UnsupportedOperationException();
-    }
 
     /*************************************************************************/
     /** GENERAL CONSTANTS **/
@@ -51,70 +46,9 @@ public class EsaSkyConstants {
     public static final String VOTABLE = "votable";
 
     public static final String INTERNATIONALIZATION_LANGCODE_URL_PARAM = "lang";
-    /**
-     * HTTP GET actions enum.
-     * @author mhsarmiento
-     *
-     */
-    public enum HttpServlet {
-        DATA_GET_SERVLET("/servlet/data-action?"), METADATA_GET_SERVLET("/servlet/metadata-action?"), METADATA_COUNT_SERVLET(
-                "/servlet/metadata-count-action?"), SUGGESTION_SERVLET(
-                        "/servlet/suggestion-action?"), RSS_GET_SERVLET("/servlet/rss-action?"), TARGET_NAME_RESOLVER(
-                                "/servlet/targetresolver-action?"), FITS_SPECTRA_SERVLET(
-                "/servlet/fits-spectra-action?"), FITS_METADATA_SERVLET(
-                "/servlet/fits-metadata-action?"), FITS_IMAGE_SERVLET("/servlet/fits-image-action?"), QUERY_RESULTS_DOWNLOAD_SERVLET(
-                                                        "/servlet/query-results-download-action?"), TINY_URL_SERVLET(
-                                                                "/servlet/tiny-url-action?"), VOTABLE_BUFFER_SERVLET("/servlet/votable-buffer?");
-
-        /** enum attrubite. */
-        private String value;
-
-        /**
-         * classConstrutor.
-         * @param inputValue Input String.
-         */
-        HttpServlet(final String inputValue) {
-            this.value = inputValue;
-        }
-
-        @Override
-        public String toString() {
-            return value;
-        }
-
-        /**
-         * getValue().
-         * @return String
-         */
-        public String getValue() {
-            return value;
-        }
-
-    }
-
-    /*************************************************************************/
-    /** DEFAULT INIT VALUES **/
-    /*************************************************************************/
-    public enum ReturnType {
-        JSON("json", "application/json"), VOTABLE("vot", "application/x-votable+xml"), CSV("csv", "text/csv"), ASCII("ascii", "");
-
-    	private String name;
-    	private String mimeType;
-    	private ReturnType(String name, String mimeType) {
-    		this.name = name;
-    		this.mimeType = mimeType;
-    	}
-		@Override
-		public String toString() {
-			return name;
-		}
-		
-		public String getMimeType() {
-			return mimeType;
-		}
-        
-        
-    }
+    
+    
+    
 
     /*************************************************************************/
     /** DEFAULT INIT VALUES **/
@@ -372,5 +306,76 @@ public class EsaSkyConstants {
 		}
         
         
+    }
+    
+    /*************************************************************************/
+    /** DEFAULT INIT VALUES **/
+    /*************************************************************************/
+    public enum ReturnType {
+        JSON("json", "application/json"), VOTABLE("vot", "application/x-votable+xml"), CSV("csv", "text/csv"), ASCII("ascii", "");
+
+        private String name;
+        private String mimeType;
+        private ReturnType(String name, String mimeType) {
+            this.name = name;
+            this.mimeType = mimeType;
+        }
+        @Override
+        public String toString() {
+            return name;
+        }
+        
+        public String getMimeType() {
+            return mimeType;
+        }
+        
+        
+    }
+
+    /**
+     * HTTP GET actions enum.
+     * @author mhsarmiento
+     *
+     */
+    public enum HttpServlet {
+        DATA_GET_SERVLET("/servlet/data-action?"), METADATA_GET_SERVLET("/servlet/metadata-action?"), METADATA_COUNT_SERVLET(
+                "/servlet/metadata-count-action?"), SUGGESTION_SERVLET(
+                        "/servlet/suggestion-action?"), RSS_GET_SERVLET("/servlet/rss-action?"), TARGET_NAME_RESOLVER(
+                                "/servlet/targetresolver-action?"), FITS_SPECTRA_SERVLET(
+                "/servlet/fits-spectra-action?"), FITS_METADATA_SERVLET(
+                "/servlet/fits-metadata-action?"), FITS_IMAGE_SERVLET("/servlet/fits-image-action?"), QUERY_RESULTS_DOWNLOAD_SERVLET(
+                                                        "/servlet/query-results-download-action?"), TINY_URL_SERVLET(
+                                                                "/servlet/tiny-url-action?"), VOTABLE_BUFFER_SERVLET("/servlet/votable-buffer?");
+
+        /** enum attrubite. */
+        private String value;
+
+        /**
+         * classConstrutor.
+         * @param inputValue Input String.
+         */
+        HttpServlet(final String inputValue) {
+            this.value = inputValue;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+
+        /**
+         * getValue().
+         * @return String
+         */
+        public String getValue() {
+            return value;
+        }
+
+    }
+    
+    /** Prevents Utility class calls. */
+    protected EsaSkyConstants() {
+        // prevents calls from subclass
+        throw new UnsupportedOperationException();
     }
 }

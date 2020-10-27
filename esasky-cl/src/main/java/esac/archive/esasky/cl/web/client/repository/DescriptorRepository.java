@@ -128,6 +128,9 @@ public class DescriptorRepository {
 
 	private final boolean isInitialPositionDescribedInCoordinates;
 	private boolean isExtTapOpen = false;
+	
+	private final String NOT_SET = "<not_set>";
+	private final String COLOR_STRING = "color";
 
 	private ICountRequestHandler countRequestHandler;
 	
@@ -225,8 +228,8 @@ public class DescriptorRepository {
 								
 								collectionDesc.setWavelengths(WavelengthUtils.createWavelengthDescriptor(minWavelength, maxWavelength));
 								collectionDesc.setPrimaryColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
-							}else if(facility.containsKey("color")) {
-								collectionDesc.setPrimaryColor(facility.get("color").get(0));
+							}else if(facility.containsKey(COLOR_STRING)) {
+								collectionDesc.setPrimaryColor(facility.get(COLOR_STRING).get(0));
 							}
 							else {
 								collectionDesc.setPrimaryColor(ESASkyColors.getNext());
@@ -668,8 +671,6 @@ public class DescriptorRepository {
 	}
 
 	private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
-
-
 		if (descriptorsMap == null) {
 			prepareDescriptorsMap();
 		}
@@ -682,7 +683,35 @@ public class DescriptorRepository {
 		List<IDescriptor> descriptors = new ArrayList<IDescriptor>();
 		List<Integer> counts = new ArrayList<Integer>();
 
-		for (SingleCount singleCount : singleCountList) {
+		setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors, counts);
+		
+		//Handling that the fast count doesn't give any results for missing missions in the area so we set them to 0
+		setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors, counts);
+
+		if (descriptors.size() > 0) {
+			notifyCountChange(descriptors, counts);
+		}
+	}
+
+    private void notifyCountChange(List<IDescriptor> descriptors, List<Integer> counts) {
+        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
+        
+        LinkedList<CountStatus> statusToBeUpdated = new LinkedList<>();
+        for (String key : countStatusMap.keySet()) {
+            for(CountStatus cs: countStatusMap.get(key)) {
+                if(!statusToBeUpdated.contains(cs)) {
+                	statusToBeUpdated.add(cs);
+                }
+            }
+        }
+        for(CountStatus cs: statusToBeUpdated) {
+        	cs.updateCount();
+        }
+    }
+
+    private void setCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition,
+            ArrayList<String> remainingDescriptors, List<IDescriptor> descriptors, List<Integer> counts) {
+        for (SingleCount singleCount : singleCountList) {
 
 			if (descriptorsMap.containsKey(singleCount.getTableName())) {
 
@@ -706,10 +735,11 @@ public class DescriptorRepository {
 						+ "' NOT FOUND IN DESCRIPTORS!");
 			}
 		}
-		
-		
-		//Handling that the fast count doesn't give any results for missing missions in the area so we set them to 0
-		for(String mission : remainingDescriptors) {
+    }
+
+    private void setZeroCountOnNoResponseMissions(final SkyViewPosition skyViewPosition,
+            ArrayList<String> remainingDescriptors, List<IDescriptor> descriptors, List<Integer> counts) {
+        for(String mission : remainingDescriptors) {
 			List<IDescriptor> descriptorList = descriptorsMap.get(mission);
 			List<CountStatus> countStatusList = countStatusMap.get(mission);
             int i = 0;
@@ -723,23 +753,7 @@ public class DescriptorRepository {
     			counts.add(count);
             }
 		}
-
-		if (descriptors.size() > 0) {
-			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
-			
-			LinkedList<CountStatus> statusToBeUpdated = new LinkedList<CountStatus>();
-            for (String key : countStatusMap.keySet()) {
-                for(CountStatus cs: countStatusMap.get(key)) {
-                    if(!statusToBeUpdated.contains(cs)) {
-                    	statusToBeUpdated.add(cs);
-                    }
-                }
-            }
-            for(CountStatus cs: statusToBeUpdated) {
-            	cs.updateCount();
-            }
-		}
-	}
+    }
 
 	public IDescriptor initUserDescriptor(List<MetadataDescriptor> metadata, IJSONWrapper jsonWrapper) {
 		if (jsonWrapper instanceof FootprintListJSONWrapper) {
@@ -769,7 +783,7 @@ public class DescriptorRepository {
 
 		descriptor.setFovLimit(360.0);
 
-		descriptor.setTapTable("<not_set>");
+		descriptor.setTapTable(NOT_SET);
 		descriptor.setTabCount(0);
 
 		return descriptor;
@@ -782,14 +796,14 @@ public class DescriptorRepository {
 			public String getIcon() {
 				return "catalog";
 			}
-		};;
+		};
 		
 		descriptor.setMission(name);
 		descriptor.setGuiLongName(name);
 		descriptor.setGuiShortName(name);
 		descriptor.setDescriptorId(name);
-		if(options.hasProperty("color")) {
-			descriptor.setPrimaryColor(options.getStringProperty("color"));
+		if(options.hasProperty(COLOR_STRING)) {
+			descriptor.setPrimaryColor(options.getStringProperty(COLOR_STRING));
 		}else {
 			descriptor.setPrimaryColor(ESASkyColors.getNext());
 		}
@@ -800,7 +814,7 @@ public class DescriptorRepository {
 		
 		descriptor.setFovLimit(360.0);
 		
-		descriptor.setTapTable("<not_set>");
+		descriptor.setTapTable(NOT_SET);
 		descriptor.setTabCount(0);
 		
 		return descriptor;
@@ -821,7 +835,7 @@ public class DescriptorRepository {
 		
 		descriptor.setShapeLimit(10000);
 
-		descriptor.setTapTable("<not_set>");
+		descriptor.setTapTable(NOT_SET);
 		descriptor.setTabCount(0);
 
 		descriptor.setTapRaColumn(APIMetadataConstants.CENTER_RA_DEG);

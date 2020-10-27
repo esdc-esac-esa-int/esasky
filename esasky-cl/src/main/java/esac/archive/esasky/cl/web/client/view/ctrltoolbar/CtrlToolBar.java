@@ -520,44 +520,37 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	private void setScienceModeVisibility(boolean isInScienceMode) {
-       if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS) && isInScienceMode) {
-            showWidget(observationButton);
-        }else {
-            hideWidget(observationButton);
-        }
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT) && isInScienceMode) {
-            showWidget(catalogButton);
-        }else {
-            hideWidget(catalogButton);
-        }
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE) && isInScienceMode) {
-            showWidget(spectraButton);
-        }else {
-            hideWidget(spectraButton);
-        }
-
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS) && isInScienceMode) {
-            showWidget(publicationsButton);
-        }else {
-            hideWidget(publicationsButton);
-        }
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP) && isInScienceMode) {
-            showWidget(extTapButton);
-        }else {
-            hideWidget(extTapButton);
-        }
-
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && isInScienceMode) {
-            showWidget(ssoButton);
-        }else {
-            hideWidget(ssoButton);
-        }
-	    if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
-	        showWidget(exploreBtn);
-	    }else {
+	    if(!isInScienceMode) {
+	        hideWidget(observationButton);
+	        hideWidget(catalogButton);
+	        hideWidget(spectraButton);
+	        hideWidget(publicationsButton);
+	        hideWidget(extTapButton);
+	        hideWidget(ssoButton);
+	    } else {
+	        if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
+	            showWidget(observationButton);
+	        }	        
+	        if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
+	            showWidget(catalogButton);
+	        }
+	        if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
+	            showWidget(spectraButton);
+	        }
+	        if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
+	            showWidget(publicationsButton);
+	        }        
+	        if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
+	            showWidget(extTapButton);
+	        }
+	        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
+	            showWidget(ssoButton);
+	        }
+	    }
+	    
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
+            showWidget(exploreBtn);
+	    } else {
 	        hideWidget(exploreBtn);
 	    }
 	}

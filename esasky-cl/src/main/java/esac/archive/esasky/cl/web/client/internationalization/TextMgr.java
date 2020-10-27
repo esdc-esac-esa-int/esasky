@@ -220,7 +220,6 @@ public class TextMgr {
 		}
 	}
 	
-	//TODO: Sure this method is replicated somewhere in the project, move to some utils class
 	public static void readXML(String url, final TextMgr intManager, final boolean isPrimaryLanguage) {
 	    
 	    Log.debug("TextMgr.readXML() from url: " + url);
@@ -230,13 +229,12 @@ public class TextMgr {
         	
             builder.sendRequest(null, new RequestCallback() {
                 
-	    			public void onError(Request request, Throwable ex) {
+    			public void onError(Request request, Throwable ex) {
 	    				Log.error("TextMgr.readXML() onError", ex);
 	    				if(isPrimaryLanguage) {
 	    				    intManager.onInitialized(false);
 	    				}
                 }
-
                 public void onResponseReceived(Request request, Response response) {
                     	try {
                     		final String result = response.getText();
