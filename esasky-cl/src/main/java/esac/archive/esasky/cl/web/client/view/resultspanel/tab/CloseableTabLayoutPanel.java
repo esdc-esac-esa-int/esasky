@@ -26,7 +26,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -49,7 +48,6 @@ import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 
@@ -484,13 +482,8 @@ public class CloseableTabLayoutPanel extends Composite {
             }
         });
         
-        tabPanel.registerClosingObserver(new ClosingObserver() {
-			
-			@Override
-			public void onClose() {
-				removeTab(tab);
-			}
-		});
+        tabPanel.registerClosingObserver(() -> removeTab(tab));
+        
         
         this.tabs.add(tab);
         this.tabWidgetIds.put(tab, tab.getId());

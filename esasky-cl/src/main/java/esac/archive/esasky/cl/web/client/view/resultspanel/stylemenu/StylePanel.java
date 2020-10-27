@@ -119,6 +119,16 @@ public class StylePanel extends DialogBox {
     private CheckBox arrowAvgCheckBox;
     private CheckBox arrowMedianCheckBox;
     
+    private HTML primarySlider;
+    private HTML secondarySlider;
+    private HTML srcColorPickerContainer;
+    
+    private FlowPanel secondaryContainer;
+    private FlowPanel innerContainer;
+    
+    private DropDownMenu<LineStyle> lineStyleDropDown;
+    private DropDownMenu<SourceShapeType> shapeTypeDropDown;
+    
     public StylePanel(String id, String mission, 
                       String primaryColor, Double primarySizeRatio, String primaryShape, String lineStyle,
                       String secondaryColor, Double secondarySizeRatio, Boolean arrowAvgChecked, Boolean useMedianOnAvgChecked,
@@ -165,18 +175,6 @@ public class StylePanel extends DialogBox {
         
         initView();
     }
-
-    HTML primarySlider;
-    HTML secondarySlider;
-    HTML srcColorPickerContainer;
-    
-    FlowPanel shapeContainer;
-    FlowPanel secondaryContainer;
-    FlowPanel innerContainer;
-    
-    DropDownMenu<LineStyle> lineStyleDropDown;
-    DropDownMenu<SourceShapeType> shapeTypeDropDown;
-    
     
     private void initView() {
         this.getElement().setId(CONTAINER_ID);
@@ -333,21 +331,17 @@ public class StylePanel extends DialogBox {
 
     private DropDownMenu<LineStyle> createLineShapeDropdown() {
     	
-    	final DropDownMenu<LineStyle> lineShapeDropDown = new DropDownMenu<LineStyle> ( 42, "lineStyleDropDown");
+    	final DropDownMenu<LineStyle> lineShapeDropDown = new DropDownMenu<> ( 42, "lineStyleDropDown");
     	
-    	lineShapeDropDown.registerObserver(new MenuObserver() {
-    		
-    		@Override
-    		public void onSelectedChange() {
-    			stylePanelCallback.onLineStyleChanged(lineShapeDropDown.selectedObject.getName());
-    		}
-    	});
+    	lineShapeDropDown.registerObserver(() -> 
+    			stylePanelCallback.onLineStyleChanged(lineShapeDropDown.selectedObject.getName())
+    	);
     	
     	lineShapeDropDown.addStyleName("lineShapeDropDown");
     	
     	LineStyle selectedItem = null;
     	for (LineStyle lineShapeType : LineStyle.values()) {
-    		MenuItem<LineStyle> dropdownItem = new MenuItem<LineStyle>(
+    		MenuItem<LineStyle> dropdownItem = new MenuItem<>(
     				lineShapeType, getImageShape(lineShapeType.getName()));
     		dropdownItem.addStyleName("srcShapeDropDownItem");
     		if (lineShapeType.getName().equals(lineStyle)) {
@@ -368,7 +362,7 @@ public class StylePanel extends DialogBox {
     	 FlowPanel secondaryShapeContainer = new FlowPanel();
          secondaryShapeContainer.addStyleName("styleContainerRow");
          
-         FlowPanel secondaryContainer = new FlowPanel();
+         secondaryContainer = new FlowPanel();
          secondaryContainer.setStyleName("styleMenuSecondContainer");
          
          if (secondaryColor != null) {
@@ -528,23 +522,23 @@ public class StylePanel extends DialogBox {
     }
     
     private ImageResource getImageShape (String shape) {
-       if (shape.equals("plus")) {
+       if ("plus".equals(shape)) {
             return resources.plusShape();
-       } else if (shape.equals("cross")) {
+       } else if ("cross".equals(shape)) {
             return resources.crossShape();
-       } else if (shape.equals("rhomb")) {
+       } else if ("rhomb".equals(shape)) {
             return resources.rhombShape();
-       } else if (shape.equals("triangle")) {
+       } else if ("triangle".equals(shape)) {
             return resources.triangleShape();
-       } else if (shape.equals("circle")) {
+       } else if ("circle".equals(shape)) {
             return resources.circleShape();
-       } else if (shape.equals("square")){
+       } else if ("square".equals(shape)){
             return resources.squareShape();
-       } else if (shape.equals("solid")){
+       } else if ("solid".equals(shape)){
     	   return resources.solidLine();
-       }  else if (shape.equals("dashed")){
+       }  else if ("dashed".equals(shape)){
     	   return resources.dashedLine();
-       } else if (shape.equals("dot")){
+       } else if ("dot".equals(shape)){
     	   return resources.dottedLine();
        }else {
     	   return resources.squareShape();

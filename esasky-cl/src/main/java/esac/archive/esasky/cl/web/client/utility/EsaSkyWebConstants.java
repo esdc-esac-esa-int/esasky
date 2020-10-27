@@ -13,12 +13,6 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
  */
 public class EsaSkyWebConstants {
 
-    /** Prevents Utility class calls. */
-    protected EsaSkyWebConstants() {
-        // prevents calls from subclass
-        throw new UnsupportedOperationException();
-    }
-
     /*************************************************************************/
     /** GENERAL CONSTANTS **/
     /*************************************************************************/
@@ -94,27 +88,7 @@ public class EsaSkyWebConstants {
     public static final int MAX_SOURCES_IN_TARGETLIST = 3000;
     public static final int MAX_SHAPES_FOR_MOBILE = 200;
     
-    public static final double EXTTAP_FOV_LIMIT = 5.0;
-
-    public static HiPS getInitialHiPS() {
-        HiPS hips = new HiPS();
-        hips.setMission("Digitized Sky Survey");
-        hips.setMissionURL("//archive.stsci.edu/dss/");
-        hips.setInstrument("POSS-II, AAO and SERC plates");
-        hips.setCreator("Centre de Données astronomiques de Strasbourg");
-        hips.setCreatorURL("//cdsweb.u-strasbg.fr");
-        hips.setCreationDate("2010-05-01T19:05Z");
-        hips.setMoreInfoURL("//alasky.u-strasbg.fr/DSS/DSSColor/properties");
-        hips.setSurveyId("DSS2 color");
-        hips.setSurveyName("DSS2 color");
-        hips.setSurveyRootUrl("//cdn.skies.esac.esa.int/DSSColor/");
-        hips.setSurveyFrame(HiPSCoordsFrame.EQUATORIAL);
-        hips.setMaximumNorder(9);
-        hips.setImgFormat(HiPSImageFormat.jpg);
-        hips.setIsDefault(true);
-        hips.setColorPalette(ColorPalette.NATIVE);
-        return hips;
-    }
+    public static final double EXTTAP_FOV_LIMIT = 5.0;  
 
     /** ESA_SKY URLS **/
     public static final String ESA_SKY_RELEASE_NOTES_URL = "//www.cosmos.esa.int/web/esdc/esasky-release-notes";
@@ -161,4 +135,30 @@ public class EsaSkyWebConstants {
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE = "science_mode";
     
+    
+    /** Prevents Utility class calls. */
+    protected EsaSkyWebConstants() {
+        // prevents calls from subclass
+        throw new UnsupportedOperationException();
+    }
+    
+    public static HiPS getInitialHiPS() {
+        HiPS hips = new HiPS();
+        hips.setMission("Digitized Sky Survey");
+        hips.setMissionURL("//archive.stsci.edu/dss/");
+        hips.setInstrument("POSS-II, AAO and SERC plates");
+        hips.setCreator("Centre de Données astronomiques de Strasbourg");
+        hips.setCreatorURL("//cdsweb.u-strasbg.fr");
+        hips.setCreationDate("2010-05-01T19:05Z");
+        hips.setMoreInfoURL("//alasky.u-strasbg.fr/DSS/DSSColor/properties");
+        hips.setSurveyId("DSS2 color");
+        hips.setSurveyName("DSS2 color");
+        hips.setSurveyRootUrl("//cdn.skies.esac.esa.int/DSSColor/");
+        hips.setSurveyFrame(HiPSCoordsFrame.EQUATORIAL);
+        hips.setMaximumNorder(9);
+        hips.setImgFormat(HiPSImageFormat.jpg);
+        hips.setIsDefault(true);
+        hips.setColorPalette(ColorPalette.NATIVE);
+        return hips;
+    }
 }

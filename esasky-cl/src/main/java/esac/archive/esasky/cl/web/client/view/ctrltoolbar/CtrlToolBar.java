@@ -498,51 +498,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	public void updateModuleVisibility() {
-		
-		boolean isInScienceMode = GUISessionStatus.getIsInScienceMode();
-		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU)) {
 			showWidget(selectSkyPanel);
 		}else {
 			hideWidget(selectSkyPanel);
 		}
-		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS) && isInScienceMode) {
-			showWidget(observationButton);
-		}else {
-			hideWidget(observationButton);
-		}
-		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT) && isInScienceMode) {
-			showWidget(catalogButton);
-		}else {
-			hideWidget(catalogButton);
-		}
-		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE) && isInScienceMode) {
-			showWidget(spectraButton);
-		}else {
-			hideWidget(spectraButton);
-		}
-
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS) && isInScienceMode) {
-			showWidget(publicationsButton);
-		}else {
-			hideWidget(publicationsButton);
-		}
-		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP) && isInScienceMode) {
-			showWidget(extTapButton);
-		}else {
-			hideWidget(extTapButton);
-		}
-
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && isInScienceMode) {
-			showWidget(ssoButton);
-		}else {
-			hideWidget(ssoButton);
-		}
-		
+			
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST)) {
 			showWidget(targetListButton);
 		}else {
@@ -555,12 +516,50 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			hideWidget(planObservationButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
-			showWidget(exploreBtn);
-		}else {
-			hideWidget(exploreBtn);
-		}
-		
+		setScienceModeVisibility(GUISessionStatus.getIsInScienceMode());
+	}
+	
+	private void setScienceModeVisibility(boolean isInScienceMode) {
+       if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS) && isInScienceMode) {
+            showWidget(observationButton);
+        }else {
+            hideWidget(observationButton);
+        }
+        
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT) && isInScienceMode) {
+            showWidget(catalogButton);
+        }else {
+            hideWidget(catalogButton);
+        }
+        
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE) && isInScienceMode) {
+            showWidget(spectraButton);
+        }else {
+            hideWidget(spectraButton);
+        }
+
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS) && isInScienceMode) {
+            showWidget(publicationsButton);
+        }else {
+            hideWidget(publicationsButton);
+        }
+        
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP) && isInScienceMode) {
+            showWidget(extTapButton);
+        }else {
+            hideWidget(extTapButton);
+        }
+
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && isInScienceMode) {
+            showWidget(ssoButton);
+        }else {
+            hideWidget(ssoButton);
+        }
+	    if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
+	        showWidget(exploreBtn);
+	    }else {
+	        hideWidget(exploreBtn);
+	    }
 	}
 	
 	private void hideWidget(Widget widget) {
@@ -792,7 +791,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
 		
 		EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
-//		EsaSkyToggleButton button = new EsaSkyToggleButton(resources.extTapIcon());
 		
 		customTreeMaps.add(new CustomTreeMap(treeMapContainer, button));
 		
@@ -817,7 +815,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		});
 		
 		LinkedList<Integer> counts = new LinkedList<Integer>();
-    	for(IDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
+    	for(int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
     		counts.add(1);
     	}
     	treeMapContainer.addData(treeMapDescriptor.getMissionDescriptors(), counts);

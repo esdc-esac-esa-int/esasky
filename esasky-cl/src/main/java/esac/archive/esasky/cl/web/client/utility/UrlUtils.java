@@ -31,11 +31,7 @@ public final class UrlUtils {
             bibcodeOrAuthor = "&" + EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM + "=" + URL.encodeQueryString(Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM).get(0));
         }
         
-		String codeServer = "";
-		String userAgent = Navigator.getUserAgent();
-		if (hostName.contains("localhost") && userAgent.contains("Firefox") && new Double(userAgent.substring( (userAgent.indexOf("Firefox") + 8) )) < 30) {
-			codeServer = "&gwt.codesvr=127.0.0.1:9997";
-		}
+		String codeServer = getCodeServer(hostName);
 		
 		String logLevel = "";
 		if(Window.Location.getParameterMap().containsKey("log_level")){
@@ -51,7 +47,7 @@ public final class UrlUtils {
 		    toggleColumns = "&" + EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS + "=" + Window.Location.getParameterMap().get(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS).get(0);
 		}
 		String layout = "";
-		if(Modules.mode != null && !Modules.mode.equals("")) {
+		if(Modules.mode != null && !"".equals(Modules.mode)) {
 			layout = "&" + EsaSkyWebConstants.URL_PARAM_LAYOUT + "=" + Modules.mode;
 		}
 		
@@ -68,6 +64,15 @@ public final class UrlUtils {
 				+ logLevel
 				+ layout;
 		return bookmarkUrl;
+	}
+	
+	private static String getCodeServer(String hostName) {
+	    String codeServer = "";
+	    String userAgent = Navigator.getUserAgent();
+        if (hostName.contains("localhost") && userAgent.contains("Firefox") && new Double(userAgent.substring( (userAgent.indexOf("Firefox") + 8) )) < 30) {
+            codeServer = "&gwt.codesvr=127.0.0.1:9997";
+        }
+        return codeServer;
 	}
 	
 	public static native void updateURLWithoutReloadingJS(String newUrl) /*-{

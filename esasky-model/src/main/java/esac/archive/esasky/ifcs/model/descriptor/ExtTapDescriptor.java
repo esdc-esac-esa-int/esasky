@@ -225,7 +225,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	}
 
 	public String getIntersectColumn() {
-		if(intersectColumn != null && !intersectColumn.equals("")) {
+		if(intersectColumn != null && !"".equals(intersectColumn)) {
 			return intersectColumn;
 		}
 		return getTapSTCSColumn();
