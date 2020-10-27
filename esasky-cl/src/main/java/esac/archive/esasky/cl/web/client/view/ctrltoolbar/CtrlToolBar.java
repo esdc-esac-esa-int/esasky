@@ -528,24 +528,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	        hideWidget(extTapButton);
 	        hideWidget(ssoButton);
 	    } else {
-	        if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
-	            showWidget(observationButton);
-	        }	        
-	        if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
-	            showWidget(catalogButton);
-	        }
-	        if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
-	            showWidget(spectraButton);
-	        }
-	        if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
-	            showWidget(publicationsButton);
-	        }        
-	        if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
-	            showWidget(extTapButton);
-	        }
-	        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
-	            showWidget(ssoButton);
-	        }
+	        showScienceModeWidgets();
 	    }
 	    
         if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
@@ -554,6 +537,27 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	        hideWidget(exploreBtn);
 	    }
 	}
+
+    private void showScienceModeWidgets() {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
+            showWidget(observationButton);
+        }	        
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
+            showWidget(catalogButton);
+        }
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
+            showWidget(spectraButton);
+        }
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
+            showWidget(publicationsButton);
+        }        
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
+            showWidget(extTapButton);
+        }
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
+            showWidget(ssoButton);
+        }
+    }
 	
 	private void hideWidget(Widget widget) {
 		if(widget != null) {

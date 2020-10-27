@@ -129,8 +129,8 @@ public class DescriptorRepository {
 	private final boolean isInitialPositionDescribedInCoordinates;
 	private boolean isExtTapOpen = false;
 	
-	private final String NOT_SET = "<not_set>";
-	private final String COLOR_STRING = "color";
+	private static final String NOT_SET = "<not_set>";
+	private static final String COLOR_STRING = "color";
 
 	private ICountRequestHandler countRequestHandler;
 	

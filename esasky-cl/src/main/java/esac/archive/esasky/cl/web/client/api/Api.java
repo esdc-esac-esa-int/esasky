@@ -1164,7 +1164,7 @@ public class Api {
 			return;
 		}
 		List<IDescriptor> descriptors = createTreeMapDescriptors(widget, descriptorArray);
-		if(descriptors == null) {
+		if(descriptors.isEmpty()) {
 		    return;
 		}
 		CustomTreeMapDescriptor customTreeMapDescriptor = new CustomTreeMapDescriptor(name, description, iconText, descriptors);
@@ -1210,7 +1210,7 @@ public class Api {
 				missionName = mission.getStringProperty("name");
 			} else {
 				sendBackMessageToWidget("ERROR: Missing mission property \"name\"", widget);
-				return null;
+				return descriptors;
 			}
 			
 			String color = "";
@@ -1218,7 +1218,7 @@ public class Api {
 				color = mission.getStringProperty("color");
 			} else {
 				sendBackMessageToWidget("ERROR: Missing mission property \"color\"", widget);
-				return null;
+				return descriptors;
 			}
 			
 			descriptor.setMission(missionName);

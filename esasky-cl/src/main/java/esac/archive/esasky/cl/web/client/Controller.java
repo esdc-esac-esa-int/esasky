@@ -192,15 +192,17 @@ public class Controller implements ValueChangeHandler<String> {
     private void setSciMode() {
         String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
-				(
-				    (sciMode != null && isSciModeParameterPositive(sciMode))
-				    || isDesktopWithNoCookieOrSciParameter(sciMode)
-				    || (hasPositiveCookie() && !isSciModeParameterNegative(sciMode))
-				)
+				shouldEnterSciMode(sciMode)
 				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE)
 		) {
 			GUISessionStatus.setInitialIsInScienceMode();
 		}
+    }
+
+    private boolean shouldEnterSciMode(String sciMode) {
+        return isSciModeParameterPositive(sciMode)
+        || isDesktopWithNoCookieOrSciParameter(sciMode)
+        || (hasPositiveCookie() && !isSciModeParameterNegative(sciMode));
     }
 
     private boolean isSciModeParameterNegative(String sciMode) {
@@ -208,7 +210,7 @@ public class Controller implements ValueChangeHandler<String> {
     }
     
     private boolean hasPositiveCookie() {
-        return Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE).equalsIgnoreCase("true");
+        return Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) != null && "true".equalsIgnoreCase(Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE));
     }
 
     private boolean isDesktopWithNoCookieOrSciParameter(String sciMode) {
@@ -216,7 +218,7 @@ public class Controller implements ValueChangeHandler<String> {
     }
 
     private boolean isSciModeParameterPositive(String sciMode) {
-        return sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true");
+        return sciMode != null && (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"));
     }
 
 	private static int countChar(String str, char c) {

@@ -226,29 +226,7 @@ public class TextMgr {
 	    
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
-        	
-            builder.sendRequest(null, new RequestCallback() {
-                
-    			public void onError(Request request, Throwable ex) {
-	    				Log.error("TextMgr.readXML() onError", ex);
-	    				if(isPrimaryLanguage) {
-	    				    intManager.onInitialized(false);
-	    				}
-                }
-                public void onResponseReceived(Request request, Response response) {
-                    	try {
-                    		final String result = response.getText();
-                    		Document xmlDoc = XMLParser.parse(result); 
-                        	intManager.getTextsFromXML(xmlDoc, isPrimaryLanguage);
-                    	} catch(Exception ex) {
-                    		Log.error("TextMgr.readXML().onResponseReceived", ex);
-                    		if(isPrimaryLanguage) {
-                    		    intManager.onInitialized(false);
-                    		}
-                    		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
-                    	}
-                }
-            });
+            builder.sendRequest(null, new TextMgrRequestCallback(isPrimaryLanguage, intManager));
         } catch (RequestException ex) {
         	    Log.error("TextMgr.readXML()", ex);
         }
@@ -259,6 +237,37 @@ public class TextMgr {
 			TextMgr.initCallback.onInitialized(success);
 			TextMgr.initCallback = null;
 		}
+	}
+	
+	public static class TextMgrRequestCallback implements RequestCallback{
+	    private boolean isPrimaryLanguage;
+	    private TextMgr intManager;
+	    
+	    public TextMgrRequestCallback(boolean isPrimaryLanguage, TextMgr intManager) {
+	        this.isPrimaryLanguage = isPrimaryLanguage;
+	        this.intManager = intManager;
+	    }
+	    
+	    public void onError(Request request, Throwable ex) {
+            Log.error("TextMgr.readXML() onError", ex);
+            if(isPrimaryLanguage) {
+                intManager.onInitialized(false);
+            }
+	    }
+    
+	    public void onResponseReceived(Request request, Response response) {
+            try {
+                final String result = response.getText();
+                Document xmlDoc = XMLParser.parse(result); 
+                intManager.getTextsFromXML(xmlDoc, isPrimaryLanguage);
+            } catch(Exception ex) {
+                Log.error("TextMgr.readXML().onResponseReceived", ex);
+                if(isPrimaryLanguage) {
+                    intManager.onInitialized(false);
+                }
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
+            }
+	    }
 	}
 
 }

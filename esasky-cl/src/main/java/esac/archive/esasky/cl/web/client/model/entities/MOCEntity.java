@@ -73,7 +73,10 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private String lineStyle;
     
-    private CountObserver countObserver = new CountObserver() {
+    private CountObserver countObserver = new MOCCountObserver();
+    
+    private class MOCCountObserver implements CountObserver{
+        
 		@Override
 		public void onCountUpdate(int newCount) {
 			int perMissionNewCount = getCountStatus().getCount(descriptor);
@@ -797,18 +800,22 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+	  //This entity has only MOC data
 	}
 
 	@Override
 	public void fetchData() {
+	  //This entity has only MOC data
 	}
 	
 	@Override
 	public void fetchData(String adql) {
+	  //This entity has only MOC data
 	}
 	
 	@Override
 	public void coneSearch(SkyViewPosition conePos) {
+	  //This entity has only MOC data
 	}
 
 	@Override
@@ -823,7 +830,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void fetchDataWithoutMOC() {
-		
+	  //This entity has only MOC data
 	}
 
     @Override
@@ -851,22 +858,27 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
     public void onShapeSelection(AladinShape shape) {
+      //No hover events needed in MOCEntity
     }
 
     @Override
     public void onShapeDeselection(AladinShape shape) {
+      //No hover events needed in MOCEntity
     }
 
     @Override
     public void onShapeHover(AladinShape shape) {
+      //No hover events needed in MOCEntity
     }
 
     @Override
     public void onShapeUnhover(AladinShape shape) {
+        //No hover events needed in MOCEntity
     }
 
     @Override
     public void select() {
+        //Cannot be selected
     }
     
     @Override
@@ -884,6 +896,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
     @Override
 	public void setSecondaryColor(String color) {
+      //Has no secondarColor
 	}
 
 	@Override
@@ -926,6 +939,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver) {
+	    //There is no current reason to register an observer for this
 	}
     
 }
