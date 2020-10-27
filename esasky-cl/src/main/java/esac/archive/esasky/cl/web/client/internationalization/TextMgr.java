@@ -191,35 +191,6 @@ public class TextMgr {
 		}
 	}
 	
-	private void getTextsFromXML(Document xmlDoc, boolean isPrimaryLanguage) {
-
-		try {
-			if (xmlDoc != null) {
-				
-				NodeList nodes = xmlDoc.getElementsByTagName("text");
-				
-				for (int childIdx = 0; childIdx < nodes.getLength(); childIdx++) {
-					
-					Node textNode = nodes.item(childIdx);
-					
-					final String key = textNode.getAttributes().getNamedItem("key").getNodeValue();
-					final String value = textNode.getFirstChild().getNodeValue().trim();
-					texts.put(key, value);
-					
-				}
-			}
-			if(isPrimaryLanguage) {
-			    onInitialized(texts.size() > 0);
-			}
-			
-		} catch(Exception ex) {
-			Log.error("TextMgr.readAllTexts()", ex);
-			if(isPrimaryLanguage) {
-			    onInitialized(false);
-			}
-		}
-	}
-	
 	public static void readXML(String url, final TextMgr intManager, final boolean isPrimaryLanguage) {
 	    
 	    Log.debug("TextMgr.readXML() from url: " + url);
@@ -259,7 +230,7 @@ public class TextMgr {
             try {
                 final String result = response.getText();
                 Document xmlDoc = XMLParser.parse(result); 
-                intManager.getTextsFromXML(xmlDoc, isPrimaryLanguage);
+                getTextsFromXML(xmlDoc, isPrimaryLanguage);
             } catch(Exception ex) {
                 Log.error("TextMgr.readXML().onResponseReceived", ex);
                 if(isPrimaryLanguage) {
@@ -268,6 +239,36 @@ public class TextMgr {
                 GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
             }
 	    }
+	    
+	    private void getTextsFromXML(Document xmlDoc, boolean isPrimaryLanguage) {
+
+	        try {
+	            if (xmlDoc != null) {
+	                
+	                NodeList nodes = xmlDoc.getElementsByTagName("text");
+	                
+	                for (int childIdx = 0; childIdx < nodes.getLength(); childIdx++) {
+	                    
+	                    Node textNode = nodes.item(childIdx);
+	                    
+	                    final String key = textNode.getAttributes().getNamedItem("key").getNodeValue();
+	                    final String value = textNode.getFirstChild().getNodeValue().trim();
+	                    intManager.texts.put(key, value);
+	                    
+	                }
+	            }
+	            if(isPrimaryLanguage) {
+	                intManager.onInitialized(intManager.texts.size() > 0);
+	            }
+	            
+	        } catch(Exception ex) {
+	            Log.error("TextMgr.readAllTexts()", ex);
+	            if(isPrimaryLanguage) {
+	                intManager.onInitialized(false);
+	            }
+	        }
+	    }
+	    
 	}
 
 }

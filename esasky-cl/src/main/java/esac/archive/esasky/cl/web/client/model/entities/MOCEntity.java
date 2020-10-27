@@ -100,7 +100,7 @@ public class MOCEntity implements GeneralEntityInterface {
 				loadMOCRequested = false;
 			}
 		}
-	};
+	}
 	
 	Timer filterTimer = new Timer() {
 	
