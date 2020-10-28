@@ -203,13 +203,6 @@ public class TextMgr {
         }
 	}
 	
-	private void onInitialized(boolean success) {
-		if (TextMgr.initCallback != null) {
-			TextMgr.initCallback.onInitialized(success);
-			TextMgr.initCallback = null;
-		}
-	}
-	
 	public static class TextMgrRequestCallback implements RequestCallback{
 	    private boolean isPrimaryLanguage;
 	    private TextMgr intManager;
@@ -222,7 +215,7 @@ public class TextMgr {
 	    public void onError(Request request, Throwable ex) {
             Log.error("TextMgr.readXML() onError", ex);
             if(isPrimaryLanguage) {
-                intManager.onInitialized(false);
+                onInitialized(false);
             }
 	    }
     
@@ -234,7 +227,7 @@ public class TextMgr {
             } catch(Exception ex) {
                 Log.error("TextMgr.readXML().onResponseReceived", ex);
                 if(isPrimaryLanguage) {
-                    intManager.onInitialized(false);
+                    onInitialized(false);
                 }
                 GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
             }
@@ -258,14 +251,21 @@ public class TextMgr {
 	                }
 	            }
 	            if(isPrimaryLanguage) {
-	                intManager.onInitialized(intManager.texts.size() > 0);
+	                onInitialized(intManager.texts.size() > 0);
 	            }
 	            
 	        } catch(Exception ex) {
 	            Log.error("TextMgr.readAllTexts()", ex);
 	            if(isPrimaryLanguage) {
-	                intManager.onInitialized(false);
+	                onInitialized(false);
 	            }
+	        }
+	    }
+	    
+	    private void onInitialized(boolean success) {
+	        if (TextMgr.initCallback != null) {
+	            TextMgr.initCallback.onInitialized(success);
+	            TextMgr.initCallback = null;
 	        }
 	    }
 	    
