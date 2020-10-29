@@ -7,12 +7,12 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.Searc
 
 public class ESASkySearchRegEx {
 
-    final static String CONJ_2 = "(\\s?:\\s?|\\s)";
-    final static String CONJ_3 = "\\s?";
-    final static String COLUMN = "\\s?:\\s?";
-    final static String RADEC_SEPARATOR = "\\s?(\\+|-)";
+    final static String CONJ_2 = "(\\s*:\\s*|\\s)";
+    final static String CONJ_3 = "\\s*";
+    final static String COLUMN = "\\s*:\\s*";
+    final static String RADEC_SEPARATOR = "\\s*(\\+|-)";
     final static String SIGN = "(\\+|-)?";
-    final static String SPACE = "\\s";
+    final static String SPACE = "\\s+";
     final static String END = "$";
     final static String BEGIN = "^";
 
