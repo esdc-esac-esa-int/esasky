@@ -68,8 +68,8 @@ public class Controller implements ValueChangeHandler<String> {
 		    Modules.toggleColumns = true;
 	    }
 		
-		setSciMode();
 		setBasicLayoutFromParameters();
+		setSciMode();
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
 		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");
 		
