@@ -323,6 +323,7 @@ public class MOCEntity implements GeneralEntityInterface {
                 	public void onComplete() {
                 		getVisibleCount();
                 		setTableCountText();
+                		onFoVChanged();
                 		
                 		if(currentVisibleCount< DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
                 			sendLoadQuery();
@@ -390,6 +391,8 @@ public class MOCEntity implements GeneralEntityInterface {
 	                 	public void onComplete() {
 	                 		getVisibleCount();
 	                 		setTableCountText();
+	                		onFoVChanged();
+
 	                 		if(currentVisibleCount < DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
 	                			sendLoadQuery();
 	                		}
