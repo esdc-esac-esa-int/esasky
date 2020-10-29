@@ -476,6 +476,7 @@ public class MOCEntity implements GeneralEntityInterface {
 					waitingForHeaders = false;
 					getVisibleCount();
              		setTableCountText();
+             		onFoVChanged();
 					MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
 					
 				}
@@ -490,6 +491,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			}
 			
 			overlay.invokeFunction("dataFromESAJSON", data);
+			onFoVChanged();
 		}
 	}
 	
@@ -500,6 +502,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		overlay.invokeFunction("dataFromJSON", data);
+		onFoVChanged();
 	}
 	
 	public void closingTablePanel() {
