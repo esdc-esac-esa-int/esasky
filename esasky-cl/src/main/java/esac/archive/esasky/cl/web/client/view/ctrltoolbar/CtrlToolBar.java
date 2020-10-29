@@ -786,6 +786,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	
 	public void addCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
 		TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
+		treeMapContainer.setHeaderText(treeMapDescriptor.getIconText());
 		
 		EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
 		
