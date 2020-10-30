@@ -156,7 +156,10 @@ public class MocRepository {
 	public static int getMaxOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
 
-		if(fov > 40) {
+		if(fov > 80) {
+			return 5;
+		}
+		else if(fov > 40) {
 			return 6;
 		}
 		else if(fov > 20) {
