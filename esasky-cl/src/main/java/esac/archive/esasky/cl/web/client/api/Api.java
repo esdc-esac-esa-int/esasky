@@ -11,9 +11,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
@@ -70,6 +72,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPan
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.TabObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
 
 public class Api {
@@ -333,7 +336,7 @@ public class Api {
 		}
 		
 		
-		controller.getRootPresenter().getEntityRepository().createEntity(descriptor);
+//		controller.getRootPresenter().getEntityRepository().createEntity(descriptor);
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
 	
@@ -403,6 +406,12 @@ public class Api {
 			controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
 		}catch(IndexOutOfBoundsException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	public void closeResultPanelTabById(String id, JavaScriptObject widget) {
+		if(!controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTabById(id)) {
+			sendBackMessageToWidget("Tab not found with id: " + id, widget);
 		}
 	}
 	
@@ -1274,6 +1283,90 @@ public class Api {
 	                sendBackToWidget(result, widget);
 	                }
           );
+	}
+
+	public void registerEventListener(JavaScriptObject widget) {
+		Timer viewMovedTimer = new Timer() {
+			@Override
+			public void run() {
+				JSONObject result = new JSONObject();
+				JSONObject fov = new JSONObject();
+				SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+				
+				fov.put("ra", new JSONNumber(pos.getCoordinate().ra));
+				fov.put("dec", new JSONNumber(pos.getCoordinate().dec));
+				fov.put("fovRa", new JSONNumber(pos.getFov()));
+				result.put("action", new JSONString("View_Changed"));
+				result.put("values", fov);
+				sendBackToWidget(result, widget);
+			}
+			
+			@Override
+			public void schedule(int delayMillis) {
+				super.cancel();
+				super.schedule(delayMillis);
+			}
+		};
+
+		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, 
+				fovEvent -> {
+					viewMovedTimer.schedule(300);
+				}
+		);
+			
+		controller.getRootPresenter().getResultsPresenter().getTabPanel().registerClosingObserver(new TabObserver() {
+			
+			@Override
+			public void onClose(String id) {
+				JSONObject result = new JSONObject();
+				JSONObject item = new JSONObject();
+				
+				item.put("id", new JSONString(id));
+				result.put("action", new JSONString("Result_Panel_Closed"));
+				result.put("values", item);
+				sendBackToWidget(result, widget);
+			}
+
+			@Override
+			public void onOpen(String id) {
+				JSONObject result = new JSONObject();
+				JSONObject item = new JSONObject();
+				
+				item.put("id", new JSONString(id));
+				result.put("action", new JSONString("Result_Panel_Opened"));
+				result.put("values", item);
+				sendBackToWidget(result, widget);				
+			}
+		});
+		
+		 CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
+                new AladinLiteShapeSelectedEventHandler() {
+
+                    @Override
+                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
+                    	GeneralJavaScriptObject shape = (GeneralJavaScriptObject) selectEvent.getShape().cast();
+                    	String overlayName = selectEvent.getOverlayName();
+                    	String name = shape.getStringProperty("name");
+                    	if(name == null) {name="";};
+                    	
+	         			String id = shape.getStringProperty("id");
+	         			if(id == null) {id="";};
+                		JSONObject item = new JSONObject();
+                		item.put("overlay", new JSONString(overlayName));
+                		item.put("name", new JSONString(name));
+                		item.put("id", new JSONString(id));
+                		
+                		JSONObject result = new JSONObject();
+                		result.put("action", new JSONString("Shape_Selected"));
+        				result.put("values", item);
+                        sendBackToWidget(result, widget);
+                    }
+            });
+		
+		
+		
+		
+		
 	}
 
 }

@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tab;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -525,6 +526,8 @@ public class CloseableTabLayoutPanel extends Composite {
 		});
         styleButton.setCircleColor(tabPanel.getDescriptor().getPrimaryColor());
         setCloseAllButtonVisibility();
+        
+        notifyOpeningObservers(tab.getId());
     }
     
     private void setCloseAllButtonVisibility() {
@@ -570,12 +573,33 @@ public class CloseableTabLayoutPanel extends Composite {
     public final int getWidgetIndex(final Widget w) {
         return this.tabLayout.getWidgetIndex(w);
     }
+    
+    LinkedList<TabObserver> closingObservers = new LinkedList<TabObserver>();
+    
+    public void registerClosingObserver(TabObserver obs) {
+    	closingObservers.add(obs);
+    }
+
+    public void notifyClosingObservers(String id) {
+    	for(TabObserver obs : closingObservers) {
+    		obs.onClose(id);
+    	}
+    }
+
+    public void notifyOpeningObservers(String id) {
+    	for(TabObserver obs : closingObservers) {
+    		obs.onOpen(id);
+    	}
+    }
 
     public final void removeTab(final MissionTabButtons tab) {
         int index = this.tabs.indexOf(tab);
 
         this.tabs.remove(index);
         this.tabLayout.remove(index);
+        
+        String id = tabWidgetIds.get(tab);
+        notifyClosingObservers(id);
         this.tabWidgetIds.remove(tab);
         
         if(tabs.isEmpty()){
@@ -585,6 +609,16 @@ public class CloseableTabLayoutPanel extends Composite {
         	shadedArea.addStyleName("hidden");
         }
         setCloseAllButtonVisibility();
+    }
+    
+    public final boolean removeTabById(final String id) {
+    	MissionTabButtons tab = getTabFromId(id);
+    	if(tab != null) {
+    		removeTab(tab);
+    		return true;
+    	}
+    	
+    	return false;
     }
 
     public final String getIdFromTab(final Widget w) {

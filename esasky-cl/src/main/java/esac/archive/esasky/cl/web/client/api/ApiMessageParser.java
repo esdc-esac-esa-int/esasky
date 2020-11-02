@@ -315,6 +315,12 @@ public class ApiMessageParser {
 					instance.@esac.archive.esasky.cl.web.client.api.Api::showResultPanel()();
 					break;	
 					
+				case 'closeResultPanelTabById':
+					console.log('closeResultPanelTabById event captured');
+					instance.@esac.archive.esasky.cl.web.client.api.Api::closeResultPanelTabById(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+					(msg.content.id, e);
+					break;	
+
 				case 'closeAllResultPanelTabs':
 					console.log('closeResultPanelTab event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::closeAllResultPanelTabs()();
@@ -424,6 +430,12 @@ public class ApiMessageParser {
 				case 'registerFoVChangedListener':
 					console.log('registerFoVChangedListener event captured');
 					instance.@esac.archive.esasky.cl.web.client.api.Api::registerFoVChangedListener(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;	
+					
+				case 'registerEventListener':
+					console.log('registerEventListener event captured');
+					instance.@esac.archive.esasky.cl.web.client.api.Api::registerEventListener(Lcom/google/gwt/core/client/JavaScriptObject;)
 						(e);
 					break;	
 					
