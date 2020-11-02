@@ -471,17 +471,14 @@ public class MOCEntity implements GeneralEntityInterface {
 						overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 						AladinLiteWrapper.getAladinLite().addMOC(overlay);
 					}
-					
 					overlay.invokeFunction("dataFromESAJSON", data);
 					waitingForHeaders = false;
 					getVisibleCount();
              		setTableCountText();
              		onFoVChanged();
 					MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
-					
 				}
 			});
-			
 		
 		}else {
 			if(overlay == null) {

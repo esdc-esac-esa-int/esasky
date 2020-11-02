@@ -335,8 +335,6 @@ public class Api {
 			descriptor.setIntersectColumn(options.getStringProperty("IntersectColumn"));
 		}
 		
-		
-//		controller.getRootPresenter().getEntityRepository().createEntity(descriptor);
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
 	
@@ -1286,6 +1284,9 @@ public class Api {
 	}
 
 	public void registerEventListener(JavaScriptObject widget) {
+		final String ACTION = "action";
+		final String VALUES = "values";
+		
 		Timer viewMovedTimer = new Timer() {
 			@Override
 			public void run() {
@@ -1296,8 +1297,8 @@ public class Api {
 				fov.put("ra", new JSONNumber(pos.getCoordinate().ra));
 				fov.put("dec", new JSONNumber(pos.getCoordinate().dec));
 				fov.put("fovRa", new JSONNumber(pos.getFov()));
-				result.put("action", new JSONString("View_Changed"));
-				result.put("values", fov);
+				result.put(ACTION, new JSONString("view_changed"));
+				result.put(VALUES, fov);
 				sendBackToWidget(result, widget);
 			}
 			
@@ -1309,9 +1310,7 @@ public class Api {
 		};
 
 		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, 
-				fovEvent -> {
-					viewMovedTimer.schedule(300);
-				}
+				fovEvent -> viewMovedTimer.schedule(2000)
 		);
 			
 		controller.getRootPresenter().getResultsPresenter().getTabPanel().registerClosingObserver(new TabObserver() {
@@ -1322,8 +1321,8 @@ public class Api {
 				JSONObject item = new JSONObject();
 				
 				item.put("id", new JSONString(id));
-				result.put("action", new JSONString("Result_Panel_Closed"));
-				result.put("values", item);
+				result.put(ACTION, new JSONString("result_panel_closed"));
+				result.put(VALUES, item);
 				sendBackToWidget(result, widget);
 			}
 
@@ -1333,39 +1332,37 @@ public class Api {
 				JSONObject item = new JSONObject();
 				
 				item.put("id", new JSONString(id));
-				result.put("action", new JSONString("Result_Panel_Opened"));
-				result.put("values", item);
+				result.put(ACTION, new JSONString("result_panel_opened"));
+				result.put(VALUES, item);
 				sendBackToWidget(result, widget);				
 			}
 		});
 		
 		 CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
-                new AladinLiteShapeSelectedEventHandler() {
+				 selectEvent -> {
 
-                    @Override
-                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
                     	GeneralJavaScriptObject shape = (GeneralJavaScriptObject) selectEvent.getShape().cast();
                     	String overlayName = selectEvent.getOverlayName();
                     	String name = shape.getStringProperty("name");
-                    	if(name == null) {name="";};
+                    	if(name == null) {
+                    		name="";
+                		};
                     	
 	         			String id = shape.getStringProperty("id");
-	         			if(id == null) {id="";};
+	         			if(id == null) {
+	         				id="";
+         				};
                 		JSONObject item = new JSONObject();
                 		item.put("overlay", new JSONString(overlayName));
                 		item.put("name", new JSONString(name));
                 		item.put("id", new JSONString(id));
                 		
                 		JSONObject result = new JSONObject();
-                		result.put("action", new JSONString("Shape_Selected"));
-        				result.put("values", item);
+                		result.put(ACTION, new JSONString("shape_selected"));
+        				result.put(VALUES, item);
                         sendBackToWidget(result, widget);
                     }
-            });
-		
-		
-		
-		
+            );
 		
 	}
 

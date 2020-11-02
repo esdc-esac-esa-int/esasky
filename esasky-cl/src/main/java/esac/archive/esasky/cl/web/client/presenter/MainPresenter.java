@@ -297,7 +297,7 @@ public class MainPresenter {
     public void getRelatedMetadata(IDescriptor descriptor, String adql) {
     	
         // To make sure that no tab with the same ID already exists in the layout panel
-        while (resultsPresenter.getTabPanel().checkIfIdExists(descriptor.generateId())) {}
+        while (resultsPresenter.getTabPanel().checkIfIdExists(descriptor.generateId()));
         descriptor.setTabCount(descriptor.getTabCount() - 1);
 
     	resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);

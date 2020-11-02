@@ -95,6 +95,8 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton sendButton;
     private EsaSkyButton saveButton;
 
+    LinkedList<TabObserver> closingObservers = new LinkedList<>();
+
     public interface Resources extends ClientBundle {
 
         @Source("up_arrow_outline.png")
@@ -573,8 +575,6 @@ public class CloseableTabLayoutPanel extends Composite {
     public final int getWidgetIndex(final Widget w) {
         return this.tabLayout.getWidgetIndex(w);
     }
-    
-    LinkedList<TabObserver> closingObservers = new LinkedList<TabObserver>();
     
     public void registerClosingObserver(TabObserver obs) {
     	closingObservers.add(obs);
