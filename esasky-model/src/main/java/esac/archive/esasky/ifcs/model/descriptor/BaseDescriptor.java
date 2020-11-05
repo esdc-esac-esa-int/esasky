@@ -204,7 +204,7 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     @Override
     public String getArchiveURL() {
-        return archiveURL;
+        return archiveURL == null ? "" : archiveURL;
     }
 
     @Override
