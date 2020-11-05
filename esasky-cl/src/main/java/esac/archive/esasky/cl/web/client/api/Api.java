@@ -408,8 +408,13 @@ public class Api {
 	}
 
 	public void closeResultPanelTabById(String id, JavaScriptObject widget) {
-		if(!controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTabById(id)) {
+		
+		ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTablePanelFromId(id);
+		
+		if(tablePanel== null) {
 			sendBackMessageToWidget("Tab not found with id: " + id, widget);
+		}else {
+			tablePanel.closeTablePanel();
 		}
 	}
 	
