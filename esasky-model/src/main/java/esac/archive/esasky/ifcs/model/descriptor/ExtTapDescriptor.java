@@ -73,7 +73,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	@Override
 	public String generateId() {
-		return getMission() + " EXT_TAP_ " + generateNextTabCount();
+		return getMission() + "_" + generateNextTabCount();
 	}
 
 	public String getTapUrl() {
