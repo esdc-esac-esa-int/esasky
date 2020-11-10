@@ -33,6 +33,7 @@ import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.UserCatalogueDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -343,6 +344,17 @@ public class DescriptorRepository {
 
 				obsDescriptors = new DescriptorListAdapter<ObservationDescriptor>(mappedDescriptorList,
 						obsCountObserver);
+				
+				for(ObservationDescriptor desc : obsDescriptors.getDescriptors()) {
+					for(MetadataDescriptor md : desc.getMetadata()) {
+						if(md.getType() == ColumnType.RA) {
+							desc.setTapRaColumn(md.getTapName());
+						}
+						if(md.getType() == ColumnType.DEC) {
+							desc.setTapDecColumn(md.getTapName());
+						}
+					}
+				}
 				obsDescriptorsIsReady = true;
 
 				Log.debug("[DescriptorRepository] [init obs]Total observation entries: " + obsDescriptors.getTotal());
@@ -406,6 +418,19 @@ public class DescriptorRepository {
 						SpectraDescriptorListMapper mapper = GWT.create(SpectraDescriptorListMapper.class);
 						spectraDescriptors = new DescriptorListAdapter<SpectraDescriptor>(mapper.read(responseText),
 								countObserver);
+						
+						
+						for(SpectraDescriptor desc : spectraDescriptors.getDescriptors()) {
+							for(MetadataDescriptor md : desc.getMetadata()) {
+								if(md.getType() == ColumnType.RA) {
+									desc.setTapRaColumn(md.getTapName());
+								}
+								if(md.getType() == ColumnType.DEC) {
+									desc.setTapDecColumn(md.getTapName());
+								}
+							}
+						}
+						
 						spectraDescriptorsIsReady = true;
 
 						Log.debug("[DescriptorRepository] Total spectra entries: " + spectraDescriptors.getTotal());
