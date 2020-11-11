@@ -337,6 +337,48 @@ public class Api {
 		
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
+
+	public void plotExtTapADQL(GeneralJavaScriptObject options, JavaScriptObject widget) {
+		String name;
+		if(options.hasProperty("name")) {
+			name = options.getStringProperty("name");
+		}else {
+			sendBackMessageToWidget("ERROR: Missing name", widget);
+			return;
+		}
+
+		String tapUrl;
+		if(options.hasProperty("tapUrl")) {
+			tapUrl = options.getStringProperty("tapUrl");
+		}else {
+			sendBackMessageToWidget("ERROR: Missing tapUrl", widget);
+			return;
+		}
+		
+		String adql;
+		if(options.hasProperty("adql")) {
+			adql = options.getStringProperty("adql");
+		}else {
+			sendBackMessageToWidget("ERROR: Missing adql", widget);
+			return;
+		}
+		
+		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, false, adql);
+		
+		if(options.hasProperty("color")) {
+			descriptor.setPrimaryColor(options.getStringProperty("color"));
+		}else {
+			descriptor.setPrimaryColor(ESASkyColors.getNext());
+		}
+
+		descriptor.setShapeLimit(100000);
+		
+		if(options.hasProperty("STCSColumn")) {
+			descriptor.setTapSTCSColumn(options.getStringProperty("STCSColumn"));
+		}
+		
+		controller.getRootPresenter().getRelatedMetadata(descriptor, adql);
+	}
 	
 	public void showCoordinateGrid(boolean show) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_showCoordinateGrid,Boolean.toString(show));
