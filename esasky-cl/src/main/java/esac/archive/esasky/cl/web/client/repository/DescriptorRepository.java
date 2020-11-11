@@ -350,8 +350,11 @@ public class DescriptorRepository {
 						if(md.getType() == ColumnType.RA) {
 							desc.setTapRaColumn(md.getTapName());
 						}
-						if(md.getType() == ColumnType.DEC) {
+						else if(md.getType() == ColumnType.DEC) {
 							desc.setTapDecColumn(md.getTapName());
+						}
+						else if(md.getTapName().equalsIgnoreCase("s_region")){
+							desc.setTapSTCSColumn(md.getTapName());
 						}
 					}
 				}
@@ -425,8 +428,11 @@ public class DescriptorRepository {
 								if(md.getType() == ColumnType.RA) {
 									desc.setTapRaColumn(md.getTapName());
 								}
-								if(md.getType() == ColumnType.DEC) {
+								else if(md.getType() == ColumnType.DEC) {
 									desc.setTapDecColumn(md.getTapName());
+								}
+								else if(md.getTapName().equalsIgnoreCase("s_region")){
+									desc.setTapSTCSColumn(md.getTapName());
 								}
 							}
 						}
