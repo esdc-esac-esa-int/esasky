@@ -539,24 +539,43 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 
     private void showScienceModeWidgets() {
+    	
         if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
             showWidget(observationButton);
-        }	        
+        }else {
+        	hideWidget(observationButton);
+        }
+    
         if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
-            showWidget(catalogButton);
+        	showWidget(catalogButton);
+        }else {
+        	hideWidget(catalogButton);
         }
+
         if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
-            showWidget(spectraButton);
+        	showWidget(spectraButton);
+        }else {
+        	hideWidget(spectraButton);
         }
+        
         if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
             showWidget(publicationsButton);
-        }        
+        }else {
+        	hideWidget(publicationsButton);
+        }
+        
         if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
             showWidget(extTapButton);
+        }else {
+        	hideWidget(extTapButton);
         }
+        
         if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
             showWidget(ssoButton);
-        }
+        }else {
+        	hideWidget(ssoButton);
+        }    
+        
     }
 	
 	private void hideWidget(Widget widget) {

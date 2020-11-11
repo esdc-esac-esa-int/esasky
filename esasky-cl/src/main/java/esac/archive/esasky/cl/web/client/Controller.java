@@ -193,7 +193,7 @@ public class Controller implements ValueChangeHandler<String> {
         String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
 		if(
 				shouldEnterSciMode(sciMode)
-				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE)
+				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)
 		) {
 			GUISessionStatus.setInitialIsInScienceMode();
 		}

@@ -69,7 +69,7 @@ public class Modules {
     	Modules.mode = mode;
     	
     	if(mode == "JWST") {
-    		modules.put(EsaSkyWebConstants.MODULE_SCIENTIFIC, false);
+    		modules.put(EsaSkyWebConstants.MODULE_SCIENTIFIC, true);
     		modules.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
     		modules.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
     		modules.put(EsaSkyWebConstants.MODULE_SCREENSHOT, true);
@@ -79,7 +79,7 @@ public class Modules {
     		modules.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
     		modules.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
     		modules.put(EsaSkyWebConstants.MODULE_OBS, false);
-    		modules.put(EsaSkyWebConstants.MODULE_CAT, false);
+    		modules.put(EsaSkyWebConstants.MODULE_CAT, true);
     		modules.put(EsaSkyWebConstants.MODULE_SPE, false);
     		modules.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
     		modules.put(EsaSkyWebConstants.MODULE_SSO, false);
@@ -87,7 +87,7 @@ public class Modules {
     		modules.put(EsaSkyWebConstants.MODULE_TARGETLIST, false);
     		modules.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
     		modules.put(EsaSkyWebConstants.MODULE_DICE, false);
-    		modules.put(EsaSkyWebConstants.MODULE_SCIENCE, false);
+    		modules.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
     	}
     	else {
     		modules.put(EsaSkyWebConstants.MODULE_SCIENTIFIC, true);
@@ -108,7 +108,7 @@ public class Modules {
     		modules.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
     		modules.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
     		modules.put(EsaSkyWebConstants.MODULE_DICE, true);
-    		modules.put(EsaSkyWebConstants.MODULE_SCIENCE, true);
+    		modules.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
     	}
     }
     
