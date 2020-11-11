@@ -136,6 +136,16 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SCIENCE_MODE = "science_mode";
     
     
+    
+    /*************************************************************************/
+    /** STRING CONSTANTS **/
+    /*************************************************************************/
+    
+    public static final String S_RA = "s_ra";
+    public static final String S_DEC = "s_dec";
+    public static final String S_REGION = "s_region";
+    
+    
     /** Prevents Utility class calls. */
     protected EsaSkyWebConstants() {
         // prevents calls from subclass

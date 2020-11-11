@@ -77,7 +77,11 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons
 
 public class Api {
 	
-
+	private final String COLOR = "color";
+	private final String STCS_COLUMN = "STCSColumn";
+	
+	
+	
 	public interface CatalogueMapper extends ObjectMapper<SourceListJSONWrapper> {}
 
 	public interface FootprintsSetMapper extends ObjectMapper<FootprintListJSONWrapper> {}
@@ -365,16 +369,16 @@ public class Api {
 		
 		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, false, adql);
 		
-		if(options.hasProperty("color")) {
-			descriptor.setPrimaryColor(options.getStringProperty("color"));
+		if(options.hasProperty(COLOR)) {
+			descriptor.setPrimaryColor(options.getStringProperty(COLOR));
 		}else {
 			descriptor.setPrimaryColor(ESASkyColors.getNext());
 		}
 
 		descriptor.setShapeLimit(100000);
 		
-		if(options.hasProperty("STCSColumn")) {
-			descriptor.setTapSTCSColumn(options.getStringProperty("STCSColumn"));
+		if(options.hasProperty(STCS_COLUMN)) {
+			descriptor.setTapSTCSColumn(options.getStringProperty(STCS_COLUMN));
 		}
 		
 		controller.getRootPresenter().getRelatedMetadata(descriptor, adql);
@@ -1268,10 +1272,10 @@ public class Api {
 			}
 			
 			String color = "";
-			if(mission.hasProperty("color")) {
-				color = mission.getStringProperty("color");
+			if(mission.hasProperty(COLOR)) {
+				color = mission.getStringProperty(COLOR);
 			} else {
-				sendBackMessageToWidget("ERROR: Missing mission property \"color\"", widget);
+				sendBackMessageToWidget("ERROR: Missing mission property \"" + COLOR +"\"", widget);
 				return descriptors;
 			}
 			

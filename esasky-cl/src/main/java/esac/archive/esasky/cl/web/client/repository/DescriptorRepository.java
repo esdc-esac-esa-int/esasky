@@ -272,9 +272,9 @@ public class DescriptorRepository {
 		descriptor.setGuiLongName(name);
 		descriptor.setMission(name);
 		descriptor.setCreditedInstitutions(name);
-		descriptor.setTapRaColumn("s_ra");
-		descriptor.setTapDecColumn("s_dec");
-		descriptor.setTapSTCSColumn("s_region");
+		descriptor.setTapRaColumn(EsaSkyWebConstants.S_RA);
+		descriptor.setTapDecColumn(EsaSkyWebConstants.S_DEC);
+		descriptor.setTapSTCSColumn(EsaSkyWebConstants.S_REGION);
 		descriptor.setFovLimit(180.0);
 		descriptor.setShapeLimit(3000);
 		descriptor.setTapUrl(tapUrl);
@@ -353,7 +353,7 @@ public class DescriptorRepository {
 						else if(md.getType() == ColumnType.DEC) {
 							desc.setTapDecColumn(md.getTapName());
 						}
-						else if(md.getTapName().equalsIgnoreCase("s_region")){
+						else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
 							desc.setTapSTCSColumn(md.getTapName());
 						}
 					}
@@ -431,7 +431,7 @@ public class DescriptorRepository {
 								else if(md.getType() == ColumnType.DEC) {
 									desc.setTapDecColumn(md.getTapName());
 								}
-								else if(md.getTapName().equalsIgnoreCase("s_region")){
+								else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
 									desc.setTapSTCSColumn(md.getTapName());
 								}
 							}
