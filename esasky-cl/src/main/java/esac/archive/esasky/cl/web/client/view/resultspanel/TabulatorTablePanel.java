@@ -790,6 +790,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public void onAjaxResponseError(String error) {
         removeStatusMessage();
+        Log.error("Error fetching table data from server. " + " Error message: " + error);
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_RequestError, this.getClass().getSimpleName(), 
                 "Error fetching table data from server. " + " Error message: " + error);
     }

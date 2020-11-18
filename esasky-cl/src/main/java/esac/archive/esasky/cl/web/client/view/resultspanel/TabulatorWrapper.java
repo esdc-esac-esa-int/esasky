@@ -1356,7 +1356,10 @@ public class TabulatorWrapper{
 		    },
 		 	selectable:true,
             ajaxError:function(error){
-		 	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(error.message);
+            	error.text().then(function(e){
+            		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(e);
+        		});
+		 	    
             },
 		 	ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
 		 	ajaxLoaderError:$wnd.esasky.getInternationalizationText("tabulator_loadFailed"),
