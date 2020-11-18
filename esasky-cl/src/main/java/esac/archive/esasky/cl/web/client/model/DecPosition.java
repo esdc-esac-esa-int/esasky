@@ -101,7 +101,7 @@ public class DecPosition {
             copmuteDegreesMinutesSeconds();
         }
         
-        return sign + degStringFloored + "\u00B0 " + minutesString + "\" " + secondsString + "'";
+        return sign + degStringFloored + "\u00B0 " + minutesString + "' " + secondsString + "\"";
     }
     
     public String getDegreeString() {
