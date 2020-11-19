@@ -399,9 +399,6 @@ public class CloseableTabLayoutPanel extends Composite {
                 List<ITablePanel> tablePanels = tabLayout.getTablePanels();
                 for(ITablePanel tablePanel : tablePanels) {
     				tablePanel.closeTablePanel();
-    				String id = tablePanel.getEntity().getEsaSkyUniqId();
-    				MissionTabButtons tab = getTabFromId(id);
-    				removeTab(tab);
     			}
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_CloseAll, "");
             }
