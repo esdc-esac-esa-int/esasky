@@ -1244,6 +1244,8 @@ public class TabulatorWrapper{
 			    		}
 			    		if(this.metadata[i].name.toLowerCase() === "ra" 
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg"
+			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_1"
+			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_2"
 			    		    || this.metadata[i].name.toLowerCase() === "s_ra"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
@@ -1264,6 +1266,8 @@ public class TabulatorWrapper{
 			    		}
 			    		else if(this.metadata[i].name.toLowerCase() === "dec" 
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg"
+			    		    || this.metadata[i].name.toLowerCase() === "dec_deg_1"
+			    		    || this.metadata[i].name.toLowerCase() === "dec_deg_2"
 			    		    || this.metadata[i].name.toLowerCase() === "s_dec"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
