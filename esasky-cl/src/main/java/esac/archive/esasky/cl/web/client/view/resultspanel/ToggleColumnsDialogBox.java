@@ -102,10 +102,17 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
         var tableData = [];
         var selectedRows = [];
         var i = 0;
+        var numberOfObservationOidFound = 0;
         columns.forEach(function (column){
             var shouldHideColumn = false;
             for(var j = 0; j < $wnd.esasky.databaseColumnsToHide.length; j++){
                 if(column.getField().toLowerCase() === $wnd.esasky.databaseColumnsToHide[j]){
+                    shouldHideColumn = true;
+                }
+            }
+            if(column.getField().toLowerCase() === "observation_oid"){
+                numberOfObservationOidFound++;
+                if(numberOfObservationOidFound > 1){
                     shouldHideColumn = true;
                 }
             }

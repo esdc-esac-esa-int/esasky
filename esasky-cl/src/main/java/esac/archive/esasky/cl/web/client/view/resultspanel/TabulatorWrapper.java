@@ -1165,6 +1165,10 @@ public class TabulatorWrapper{
 			    	            shouldHideColumn = true;
 			    	        }
 			    	    }
+			    	    if(this.metadata[i].name.toLowerCase() === "observation_oid"
+			    	        && isSSO){
+		    	            shouldHideColumn = true;
+			    	    }
 			    	    if(shouldHideColumn && table.isEsaskyData){
 			    	        activeColumnGroup.push({
                                 download: false,
