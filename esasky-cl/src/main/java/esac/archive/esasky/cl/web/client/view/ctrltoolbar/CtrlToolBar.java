@@ -499,9 +499,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	
 	public void updateModuleVisibility() {
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU)) {
-			showWidget(selectSkyPanel);
+			showWidget(selectSkyButton);
 		}else {
-			hideWidget(selectSkyPanel);
+			hideWidget(selectSkyButton);
 		}
 			
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST)) {
