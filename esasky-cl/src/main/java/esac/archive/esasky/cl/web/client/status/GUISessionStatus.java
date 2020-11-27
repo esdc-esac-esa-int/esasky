@@ -47,7 +47,7 @@ public class GUISessionStatus {
 	/** User's screen width. */
 	private static int userScreenWidth = 0;
 	
-	private static int currentHeightForExpandedDataPanel = 300;
+	private static int currentHeightForExpandedDataPanel = 335;
 
 	/** current count for each catalogs. Key is the value of JSON mission CatalogDescriptor */
 	private static Map<String, Integer> catalogsCountMap = new HashMap<String, Integer>();
