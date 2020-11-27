@@ -54,6 +54,9 @@ public class TabulatorWrapper{
         public String getDecColumnName();
         public boolean isMOCMode();
         public String getEsaSkyUniqId();
+        public void multiSelectionInProgress();
+        public void multiSelectionFinished();
+        public boolean hasBeenClosed();
     }
 
     private TabulatorCallback tabulatorCallback;
@@ -69,13 +72,13 @@ public class TabulatorWrapper{
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn) {
-        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null);
+        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null, false, true);
     }
     
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) {
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle, boolean blockRedraw, boolean isEsaskyData) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle);
+        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle, blockRedraw, isEsaskyData);
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -147,6 +150,11 @@ public class TabulatorWrapper{
     private native void redraw(GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.redraw(true);
     }-*/;
+    
+    private native void reinitializeVdomHoz(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.vdomHoz.reinitialize();
+    }-*/;
+
 
     private native void reformat(GeneralJavaScriptObject tableJsObject)/*-{
 		tableJsObject.rowManager.rows.forEach(function(row){
@@ -159,7 +167,7 @@ public class TabulatorWrapper{
     }
     
     private native void showColumn(GeneralJavaScriptObject tableJsObject, String field)/*-{
-        tableJsObject.getColumn(field).show();
+        tableJsObject.getColumn(field).show(true);
     }-*/;
     
     public void hideColumn(String field){
@@ -167,7 +175,7 @@ public class TabulatorWrapper{
     }
     
     private native void hideColumn(GeneralJavaScriptObject tableJsObject, String field)/*-{
-        tableJsObject.getColumn(field).hide();
+        tableJsObject.getColumn(field).hide(true);
     }-*/;
     
     public void downloadCsv(String fileName){
@@ -231,6 +239,32 @@ public class TabulatorWrapper{
     
     private native GeneralJavaScriptObject[] getColumns(GeneralJavaScriptObject tableJsObject)/*-{
         return tableJsObject.getColumns();
+    }-*/;
+    
+    public void blockRedraw(){
+        blockRedraw(tableJsObject);
+    }
+
+    private native void blockRedraw(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.blockRedraw();
+    }-*/;
+    
+    public void restoreRedraw(){
+        restoreRedraw(tableJsObject);
+    }
+    
+    private native void restoreRedraw(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.restoreRedraw();
+    }-*/;
+
+    public void redrawAndReinitializeHozVDom(){
+        redrawAndReinitializeHozVDom(tableJsObject);
+    }
+    
+    private native void redrawAndReinitializeHozVDom(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.vdomHoz.reinitialize(undefined, true);
+        tableJsObject.redraw(true);
+        tableJsObject.vdomHoz.reinitialize();
     }-*/;
     
     public void setPlaceholderText(String text){
@@ -362,9 +396,14 @@ public class TabulatorWrapper{
     }-*/;
     
     public void insertUserData(GeneralJavaScriptObject data){
+        setIsUserDataBool(tableJsObject);
         setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
     }
     
+    private native void setIsUserDataBool(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.isEsaskyData = false;
+    }-*/;
+
     private native String convertDataToTabulatorFormat(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject data, String aladinFrame)/*-{
         return tableJsObject.convertDataToTabulatorFormat(data, aladinFrame);
     }-*/;
@@ -405,7 +444,10 @@ public class TabulatorWrapper{
     		      				(mutations[i].addedNodes[j].classList.contains("tabulator-cell") ||
     		      				mutations[i].addedNodes[j].getAttribute('role') == 'Header'))
       				{
+    		      	tableJsObject.vdomHoz.reinitialize(undefined, true);
     		      	tableJsObject.redraw(true);
+    		      	tableJsObject.vdomHoz.reinitialize();
+    		      	
     		      	this.disconnect();
     		      	return;
     		      }
@@ -429,6 +471,8 @@ public class TabulatorWrapper{
 			descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 			
 			var metadata = response.metadata;
+			var sortedMetadata = [];
+			var indexesMoved = [];
 			for(var j = 0; j < metadata.length; j++){
 				
 				metadata[j]["visible"] = (metadata[j].name !== "s_region");
@@ -449,11 +493,17 @@ public class TabulatorWrapper{
 					if(descriptorMetaData[metadata[j].name].hasOwnProperty("maxDecimalDigits") && descriptorMetaData[metadata[j].name].maxDecimalDigits != null){
 				        metadata[j].maxDecimalDigits = descriptorMetaData[metadata[j].name].maxDecimalDigits;
 					}
+					sortedMetadata[descriptorMetaData[metadata[j].name].index] = metadata[j];
+					indexesMoved.push(j);
 				} else if (!$wnd.$.isEmptyObject(descriptorMetaData)){
 					metadata[j].visible = false;
 				}
-				
 			}
+			
+			sortedMetadata = sortedMetadata.filter(function( element ) {
+               return element !== undefined;
+            });
+			
 			var data = [];
 			for(var i = 0; i < response.data.length; i++){
 				var row = {id:i};
@@ -471,6 +521,14 @@ public class TabulatorWrapper{
 				}
 				data[i] = row;
 			}		
+			
+	        var index = indexesMoved.pop();
+            while(index !== undefined){
+                metadata.splice(index, 1);
+                index = indexesMoved.pop();
+            }
+            metadata = sortedMetadata.concat(metadata);
+            
 			tableJsObject.metadata = metadata;
 			tableJsObject.filterData = []
 			tableJsObject.columnDef = [];
@@ -588,9 +646,13 @@ public class TabulatorWrapper{
             });
         }
     }
+    
+    
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle) /*-{
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
+            boolean blockRedraw, boolean isEsaskyData) /*-{
+		$wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
 
@@ -854,9 +916,8 @@ public class TabulatorWrapper{
             }
 		}
 
-        var nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var hideNonDatabaseColumnFormatter = function(cell, formatterParams, onRendered){
-		    if (nonDatabaseColumns.includes(cell.getValue())) {
+		    if ($wnd.esasky.nonDatabaseColumns.includes(cell.getValue())) {
 		        return "";
 		    }
 		    return cell.getValue();
@@ -931,6 +992,7 @@ public class TabulatorWrapper{
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	placeholder:"",
     		footerElement:footerCounter,
+    		virtualDomHoz:true,
 		    dataFiltered:function(filters, rows){
 		    	var returnString = "";
 		    	for(var i = 0; i < rows.length; i++){
@@ -952,6 +1014,10 @@ public class TabulatorWrapper{
 			   	}
 		    },
 		    dataLoaded:function(data){
+                if((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode())
+                    || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::hasBeenClosed()()){
+                    return;
+                }
 		    	this.rowManager.adjustTableSize();
 			   	if(this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode()() &&  data.length == 0){
 			   	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_no_data"));
@@ -963,9 +1029,12 @@ public class TabulatorWrapper{
 		    	if(accessUrlColumn){
 		    	    accessUrlColumn.move("centre", true);//unitl Metadata is properly defined for ext tap data
 		    	}
-		    	
 		    },
 		    dataLoading:function(data){
+                if((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::isMOCMode())
+                    || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::hasBeenClosed()()){
+                    return;
+                }
 		        var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 		        var activeColumnGroup = [];
 		        var isSSO = false;
@@ -975,8 +1044,6 @@ public class TabulatorWrapper{
 		    	    field:"rowSelection", 
                     visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
 		    	    title:"Selection", 
-		    	    width:50,
-		    	    minWidth:50,
 		    	    download: false,
 		    	    titleFormatter:"rowSelection", 
 		    	    sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
@@ -1089,9 +1156,23 @@ public class TabulatorWrapper{
                             }
                     });
                 }
-
+                
 				if(!isInitializing && this.metadata){
 			    	for(var i = 0; i < this.metadata.length; i++){
+			    	    var shouldHideColumn = false;
+			    	    for(var j = 0; j < $wnd.esasky.databaseColumnsToHide.length; j++){
+			    	        if(this.metadata[i].name.toLowerCase() === $wnd.esasky.databaseColumnsToHide[j]){
+			    	            shouldHideColumn = true;
+			    	        }
+			    	    }
+			    	    if(shouldHideColumn && table.isEsaskyData){
+			    	        activeColumnGroup.push({
+                                download: false,
+                                field:this.metadata[i].name,
+                                visible:false,
+                            });
+                            continue;
+			    	    }
 			    		if(this.metadata[i].name.toLowerCase() === "access_url"
 			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
 	                        activeColumnGroup.push({
@@ -1169,6 +1250,7 @@ public class TabulatorWrapper{
 				    			download: true,
 				    			formatter:raFormatter,
 				    			sorter: "number",
+				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1188,6 +1270,7 @@ public class TabulatorWrapper{
 				    			download: true,
 				    			formatter:decFormatter,
 				    			sorter: "number",
+				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1205,6 +1288,7 @@ public class TabulatorWrapper{
 				    			download: true,
 				    			formatter:fileSizeFormatter,
 				    			sorter: "number",
+				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:$wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header")},
@@ -1223,6 +1307,7 @@ public class TabulatorWrapper{
 				    			formatter:doubleFormatter,
 				    			formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
 				    			sorter: "number",
+				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1262,6 +1347,7 @@ public class TabulatorWrapper{
 				    			formatter:doubleFormatter,
 				    			formatterParams: {maxDecimalDigits: 0},
 				    			sorter: "number",
+				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:numericFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1279,6 +1365,7 @@ public class TabulatorWrapper{
 				    			download: true,
 				    			formatter:doubleFormatter,
 				    			sorter: "number",
+				    			sorterParams: {thousandSeperator: ""},
 				    			formatter:"plaintext",
 				    			headerFilter:listFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
@@ -1296,6 +1383,7 @@ public class TabulatorWrapper{
                                 download: true,
                                 formatter:"html",
                                 sorter:  "string",
+                                sorterParams: {thousandSeperator: ""},
                                 headerFilter:stringFilterEditor,
                                 headerFilterParams:{tapName:this.metadata[i].name,
                                                     title:this.metadata[i].displayName},
@@ -1313,6 +1401,7 @@ public class TabulatorWrapper{
                                 download: true,
                                 formatter:hideNonDatabaseColumnFormatter,
                                 sorter:  "string",
+                                sorterParams: {thousandSeperator: ""},
                                 headerFilter:stringFilterEditor,
                                 headerFilterParams:{tapName:this.metadata[i].name,
                                                     title:this.metadata[i].displayName},
@@ -1329,6 +1418,7 @@ public class TabulatorWrapper{
 				    			download: true,
 				    			formatter:"plaintext",
 				    			sorter:  "string",
+				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:stringFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
@@ -1368,6 +1458,8 @@ public class TabulatorWrapper{
 		    		return;
 		    	}
 			    selectionMap = [];
+			    
+	    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::multiSelectionInProgress()();
 		    	rows.forEach(function(item, index, array){
 		    		selectionMap[item.getIndex()] = true;
 		    		if(!previouslySelectedMap[item.getIndex()]){
@@ -1380,6 +1472,7 @@ public class TabulatorWrapper{
 		    		}
 		    	});
 		    	previouslySelectedMap = selectionMap;
+	    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::multiSelectionFinished()();
 		    },
 
 		    rowMouseEnter:function(e, row){
@@ -1388,9 +1481,15 @@ public class TabulatorWrapper{
 
 		 	movableColumns: true,
 		 	autoColumns: true,
-		 	layout: "fitDataStretch"
+		 	layout: "fitDataFill"
+//		 	layout: "fitDataStretch"
 		});
 		
+		if(blockRedraw){
+		    table.blockRedraw();
+		}
+		
+		table.isEsaskyData = isEsaskyData;
 		//Remove the clearSelection function to make sure that it is possible to select and copy text from the table
 		table._clearSelection = function (){};
 		
@@ -1430,6 +1529,7 @@ public class TabulatorWrapper{
     
                     if (modExists && !this.table.modules.resizeTable.autoResize || !modExists) {
                         this.redraw();
+                        this.vdomHoz.reinitialize();
                     }
                 }
             }
@@ -1529,7 +1629,7 @@ public class TabulatorWrapper{
     
                     case "header":
                         row.columns.forEach(function (col, i) {
-                            if (col && col.depth === 1 && !nonDatabaseColumns.includes(col.component.getField())) {
+                            if (col && col.depth === 1 && !$wnd.esasky.nonDatabaseColumns.includes(col.component.getField())) {
                                 headers.push(typeof col.value == "undefined" || typeof col.value == "null" ? "" : col.value);
                             }
                         });
@@ -1541,7 +1641,7 @@ public class TabulatorWrapper{
                     case "row":
                         row.columns.forEach(function (col) {
     
-                            if (col && !nonDatabaseColumns.includes(col.component.getField())) {
+                            if (col && !$wnd.esasky.nonDatabaseColumns.includes(col.component.getField())) {
     
                                 switch (typeof col.value) {
                                     case "object":
@@ -1662,8 +1762,8 @@ public class TabulatorWrapper{
         $doc.getElementById(divId + "_rowCount").addEventListener("mouseover", function(){wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onRowCountFooterMouseOver()()});
         
         
-		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
-		$wnd.tabulatorTables.push(table);
+//		if(!$wnd.tabulatorTables){$wnd.tabulatorTables = []}
+//		$wnd.tabulatorTables.push(table);
 		return table;
 	}-*/;
 
@@ -1761,6 +1861,19 @@ public class TabulatorWrapper{
     public void onAjaxResponseError(String error) {
         tabulatorCallback.onAjaxResponseError(error);
     }
+    
+    public void multiSelectionInProgress() {
+        tabulatorCallback.multiSelectionInProgress();
+    }
+    
+    public void multiSelectionFinished() {
+        tabulatorCallback.multiSelectionFinished();
+    }
+    
+    public boolean hasBeenClosed() {
+        return tabulatorCallback.hasBeenClosed();
+    }
+    
     
     public boolean isMOCMode() {
     	return tabulatorCallback.isMOCMode();

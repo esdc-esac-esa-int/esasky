@@ -46,3 +46,18 @@
 .toggleColumns__columnDescription{
 	display: inline;
 }
+
+.toggleColumnsLoadingSpinner{
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	pointer-events: none;
+	z-index: 10011;
+	user-drag: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}

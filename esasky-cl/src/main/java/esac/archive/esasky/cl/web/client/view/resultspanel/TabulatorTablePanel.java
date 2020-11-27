@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataVisibilityObserver;
@@ -105,6 +106,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private boolean hasBeenClosed = false;
 	private boolean isShowing = true;
 	private boolean inMOCMode = false;
+	private boolean toggleColumnsEnabled = true;
 	
 	private MetadataVisibilityObserver metadataVisibilityObserver = new MetadataVisibilityObserver() {
         
@@ -138,7 +140,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		@Override
 		public final void onBrowserEvent(final Event event) {
 			if (DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
-			    if(Modules.toggleColumns) {
+			    if(Modules.toggleColumns && toggleColumnsEnabled) {
 			        this.openContextMenu(event);
 			    }
 			} else {
@@ -163,7 +165,18 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		            public void onHide(String field) {
 		                getDescriptor().setMetadataVisibility(field, false);
 		            }
-		        }, esaSkyUniqID).show();
+
+                    @Override
+                    public void multiSelectionInProgress() {
+                        table.blockRedraw();
+                    }
+
+                    @Override
+                    public void multiSelectionInFinished() {
+                        table.restoreRedraw();
+                        table.redrawAndReinitializeHozVDom();
+                    }
+		        }, esaSkyUniqID);
 		    }
 		}
 	}
@@ -175,6 +188,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         this.entity = entity;
         this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll("[^A-Za-z0-9-_]", "_");
 
+        if(entity.getDescriptor() instanceof ExtTapDescriptor
+                || "publications".equals(entity.getDescriptor().getIcon())) {
+            disableToggleColumns();
+        }
+        
 		FlowPanel container = new FlowPanel();
 		container.addStyleName("dataPanelContainer");
 
@@ -211,6 +229,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	protected void onDetach() {
 	    super.onDetach();
 	    getDescriptor().unregisterMetadataVisibilityObserver(metadataVisibilityObserver);
+	}
+	
+	private void disableToggleColumns() {
+	    toggleColumnsEnabled = false;
 	}
 
 	public IDescriptor getDescriptor() {
@@ -757,7 +779,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public String getLabelFromTapName(String tapName) {
 		MetadataDescriptor md = entity.getDescriptor().getMetadataDescriptorByTapName(tapName);
-		if(md != null) {
+		if(md != null && md.getLabel() != null) {
 			return md.getLabel();
 		}
 		return tapName;
@@ -816,7 +838,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         for(String tapName : columnVisibilityChangeToDo.keySet()) {
             setColumnVisibility(tapName, columnVisibilityChangeToDo.get(tapName));
         }
-        columnVisibilityChangeToDo.clear();
+        if(columnVisibilityChangeToDo.size() > 0) {
+            table.redrawAndReinitializeHozVDom();
+            columnVisibilityChangeToDo.clear();
+        }
     }
 
     @Override
@@ -837,6 +862,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public boolean isDataProductDatalink() {
         return table.isDataProductDatalink();
+    }
+
+    @Override
+    public void multiSelectionInProgress() {
+    }
+
+    @Override
+    public void multiSelectionFinished() {
     }
 
 }

@@ -6,3 +6,8 @@ var serverProperties = {
  showExtTap: "${show.ext.tap}",
  showMissingTranslationBox: "${show.missing.translation.box}"
 };
+
+if(!window.esasky){
+	window.esasky = {}
+}
+window.esasky.databaseColumnsToHide = ["npix", "esasky_npix", "fov"];

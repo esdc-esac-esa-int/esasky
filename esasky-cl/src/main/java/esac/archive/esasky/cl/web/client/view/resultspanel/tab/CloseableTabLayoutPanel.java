@@ -94,6 +94,7 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton recenterButton;
     private EsaSkyButton sendButton;
     private EsaSkyButton saveButton;
+    private EsaSkyButton configureButton;
 
     LinkedList<TabObserver> closingObservers = new LinkedList<>();
 
@@ -198,7 +199,8 @@ public class CloseableTabLayoutPanel extends Composite {
         shadedArea.add(createSendButton());
         shadedArea.add(createSaveButton());
         if(Modules.toggleColumns){
-            shadedArea.add(createConfigureButton());
+            configureButton = createConfigureButton();
+            shadedArea.add(configureButton);
         }
 
         shadedArea.addStyleName("tabButtons");
@@ -256,6 +258,13 @@ public class CloseableTabLayoutPanel extends Composite {
         } else {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
         }
+        if (entity.getDescriptor() instanceof ExtTapDescriptor
+                || "publications".equals(entity.getDescriptor().getIcon())) {
+            configureButton.getElement().getStyle().setDisplay(Display.NONE);
+        } else {
+            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
+        }
+        
     }
 
     private EsaSkyButton createSaveButton() {

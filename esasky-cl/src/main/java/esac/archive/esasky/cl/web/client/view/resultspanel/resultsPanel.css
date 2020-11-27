@@ -97,6 +97,10 @@
     text-transform: none;
 }
 
+.scrollTabLayoutPanelContent .tabulator-row .tabulator-cell {
+	min-height: 34px;
+}
+
 .tabulator-placeholder{
 	text-align: center;
 	justify-content: center;
