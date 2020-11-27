@@ -142,3 +142,8 @@
 .tabulator-header-filter-disabled{
 	pointer-events:none !important;
 }
+
+.dataPanelContainer .esasky_column_header{
+	font-style: oblique;
+    color: #444444;
+}

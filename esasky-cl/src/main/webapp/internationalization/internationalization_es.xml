@@ -362,10 +362,6 @@
 	<text key="closeableTabLayoutPanel_closeTab">
 		Cerrar pestaña
 	</text>
-	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
-		Guarde la tabla de resultados o descargue los productos
-		seleccionados
-	</text>
 	<text key="closeableTabLayoutPanel_sendTableToVOA">
 		Enviar la tabla a una aplicaci&#243;n de observatorio
 		virtual
@@ -2795,13 +2791,13 @@
 		Centrar en coordenadas
 	</text>
 	<text key="tabulator_centreHeader">
-		Ir a
+		&lt;div class="esasky_column_header"&gt;Ir a&lt;/div&gt;
 	</text>
 	<text key="tabulator_centreHeaderTooltip">
 		Desplazar vista a la posición de cada figura
 	</text>
 	<text key="tabulator_sendToVOApplicationHeader">
-		Enviar
+		&lt;div class="esasky_column_header"&gt;Enviar&lt;/div&gt;
 	</text>
 	
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
@@ -2885,7 +2881,7 @@
 		Clicar en el nombre de cualquier autor para ver su lista de publicaciones en ADS
 	</text>
 	<text key="tabulator_SourcesInPublicationHeader">
-		Fuentes
+		&lt;div class="esasky_column_header"&gt;Fuentes&lt;/div&gt;
 	</text>
 	<text key="tabulator_SourcesInPublicationHeaderTooltip">
 		Clicar para mostrar las fuentes mencionadas en una publicación
@@ -2989,13 +2985,16 @@
 		Archivo
 	</text>
 	<text key="tabulator_link2AdsHeader">
-		ADS
+		&lt;div class="esasky_column_header"&gt;ADS&lt;/div&gt;
 	</text>
 	<text key="tabulator_link2AdsHeaderTooltip">
 		Selecciona una fila para abrir la publicación correspondiente en ADS
 	</text>
 	<text key="tabulator_link2AdsButtonTooltip">
 		Abrir esta publicación en ADS
+	</text>
+	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
+		Descargar datos de archivo
 	</text>
 </Internationalization>
 

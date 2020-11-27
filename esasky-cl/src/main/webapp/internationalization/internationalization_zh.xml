@@ -860,9 +860,6 @@
 	<text key="closeableTabLayoutPanel_closeTab">
 		关闭标签
 	</text>
-	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
-		保存结果表或者下载选择的产品
-	</text>
 	<text key="closeableTabLayoutPanel_sendTableToVOA">
 		发送表格至虚拟天文台应用
 	</text>
@@ -1790,13 +1787,13 @@
 		居中于本坐标
 	</text>
 	<text key="tabulator_centreHeader">
-		前往
+		&lt;div class="esasky_column_header"&gt;前往&lt;/div&gt;
 	</text>
 	<text key="tabulator_centreHeaderTooltip">
 		移动视图至每个形状的坐标处
 	</text>
 	<text key="tabulator_sendToVOApplicationHeader">
-		发送
+		&lt;div class="esasky_column_header"&gt;发送&lt;/div&gt;
 	</text>
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		发送数据至虚拟天文台程序
@@ -1880,7 +1877,7 @@
 		点击任一作者的名字查看其在ADS系统中的论文发表信息
 	</text>
 	<text key="tabulator_SourcesInPublicationHeader">
-		目标源
+		&lt;div class="esasky_column_header"&gt;目标源&lt;/div&gt;
 	</text>
 	<text key="tabulator_SourcesInPublicationHeaderTooltip">
 		点击显示一篇文献中涉及到的目标源
@@ -1984,7 +1981,7 @@
 		数据库
 	</text>
 	<text key="tabulator_link2AdsHeader">
-		ADS
+		&lt;div class="esasky_column_header"&gt;ADS&lt;/div&gt;
 	</text>
 	<text key="tabulator_link2AdsHeaderTooltip">
 		点击任一行在ADS系统中打开相应的文献
@@ -1992,5 +1989,8 @@
 	<text key="tabulator_link2AdsButtonTooltip">
 		在ADS系统中打开本文献
 	</text>  
+	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
+		保存结果表或者下载选择的产品
+	</text>
 	
 </Internationalization>

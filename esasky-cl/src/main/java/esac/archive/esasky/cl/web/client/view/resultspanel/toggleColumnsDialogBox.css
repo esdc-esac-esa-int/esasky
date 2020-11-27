@@ -61,3 +61,8 @@
 	-webkit-user-select: none;
 	-ms-user-select: none;
 }
+
+.toggleColumns__contentContainer .esasky_column_header{
+	font-style: oblique;
+    color: #CCCCCC;
+}
