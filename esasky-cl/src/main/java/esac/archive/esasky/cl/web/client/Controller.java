@@ -64,8 +64,8 @@ public class Controller implements ValueChangeHandler<String> {
 		
 		String toggleColumns = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS);
 		if(toggleColumns != null 
-		        && isSciModeParameterPositive(toggleColumns)){
-		    Modules.toggleColumns = true;
+		        && isParameterNegative(toggleColumns)){
+		    Modules.toggleColumns = false;
 	    }
 		
 		setBasicLayoutFromParameters();
@@ -200,13 +200,13 @@ public class Controller implements ValueChangeHandler<String> {
     }
 
     private boolean shouldEnterSciMode(String sciMode) {
-        return isSciModeParameterPositive(sciMode)
+        return isParameterPositive(sciMode)
         || isDesktopWithNoCookieOrSciParameter(sciMode)
-        || (hasPositiveCookie() && !isSciModeParameterNegative(sciMode));
+        || (hasPositiveCookie() && !isParameterNegative(sciMode));
     }
 
-    private boolean isSciModeParameterNegative(String sciMode) {
-        return sciMode != null && (sciMode.toLowerCase().contains("false") || sciMode.toLowerCase().contains("off"));
+    private boolean isParameterNegative(String parameter) {
+        return parameter != null && (parameter.toLowerCase().contains("false") || parameter.toLowerCase().contains("off"));
     }
     
     private boolean hasPositiveCookie() {
@@ -217,8 +217,8 @@ public class Controller implements ValueChangeHandler<String> {
         return Cookies.getCookie(EsaSkyWebConstants.SCI_MODE_COOKIE) == null && sciMode == null && !DeviceUtils.isMobileOrTablet();
     }
 
-    private boolean isSciModeParameterPositive(String sciMode) {
-        return sciMode != null && (sciMode.toLowerCase().contains("on") || sciMode.toLowerCase().contains("true"));
+    private boolean isParameterPositive(String parameter) {
+        return parameter != null && (parameter.toLowerCase().contains("on") || parameter.toLowerCase().contains("true"));
     }
 
 	private static int countChar(String str, char c) {

@@ -16,7 +16,7 @@ public class Modules {
     public static boolean spectraModule = true;
     public static boolean publicationsModule = true;
     public static boolean wwtLink = true;
-    public static boolean toggleColumns = false; // set from Controller with toggle_column URL flag
+    public static boolean toggleColumns = true; // set from Controller with toggle_column URL flag
     public static String mode = "";
     
     public static final boolean shouldShowExtTap = Boolean.parseBoolean(Dictionary.getDictionary("serverProperties")
