@@ -94,6 +94,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private String esaSkyUniqID;
 	private String tabulatorContainerId;
 	private String tabTitle;
+    private int numberOfShownRows;
 
 	private List<TableObserver> observers = new LinkedList<TableObserver>();
 
@@ -547,9 +548,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     public void onDataFiltered(List<Integer> indexArray) {
         entity.hideAllShapes();
         entity.showShapes(indexArray);
-        notifyNumberOfRowsShowingChanged(indexArray.size());
+        this.numberOfShownRows = indexArray.size();
+        notifyNumberOfRowsShowingChanged(numberOfShownRows);
     }
 
+    @Override
+    public int getNumberOfShownRows() {
+        return numberOfShownRows;
+    }
+    
     @Override
     public void onRowMouseEnter(int rowId) {
         getEntity().hoverStart(rowId);

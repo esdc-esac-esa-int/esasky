@@ -219,6 +219,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 final GeneralEntityInterface entity = tabPanel.getEntity();
                 
                 ensureCorrectRelatedInformationVisibilty(entity);
+                ensureCorrectButtonClickability(getSelectedWidget().getNumberOfShownRows());
             }
         });
         buttonsAndObservationPanel.add(tabLayout);
