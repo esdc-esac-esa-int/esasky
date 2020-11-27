@@ -10,4 +10,4 @@ var serverProperties = {
 if(!window.esasky){
 	window.esasky = {}
 }
-window.esasky.databaseColumnsToHide = ["npix", "esasky_npix", "fov"];
+window.esasky.databaseColumnsToHide = ["npix", "esasky_npix", "fov", "pos"];
