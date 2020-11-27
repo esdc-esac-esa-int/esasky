@@ -83,4 +83,5 @@ public interface ITablePanel {
 	public void enableFilters();
 	
 	public boolean isDataProductDatalink();
+    public int getNumberOfShownRows();
 }
