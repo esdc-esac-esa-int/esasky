@@ -62,6 +62,17 @@ public class NumberValueFormatter implements ValueFormatter{
         return new NumberValueFormatter(numberOfDecimals).formatValue(value);
     }
     public static double formatStringToDouble(String value, int numberOfDecimals) {
-        return new NumberValueFormatter(numberOfDecimals).getValueFromFormat(value);
+        if(NumberValueFormatter.isString(value)) {
+            return new NumberValueFormatter(numberOfDecimals).getValueFromFormat(value);
+        }
+        return NumberValueFormatter.convertToDouble(value);
     }
+    
+    private static native boolean isString(String text)/*-{
+        return typeof text === 'string';
+    }-*/;
+    
+    private static native double convertToDouble(String object)/*-{
+        return object;
+    }-*/;
 }
