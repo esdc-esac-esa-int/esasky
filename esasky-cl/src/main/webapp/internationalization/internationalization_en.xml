@@ -1470,6 +1470,9 @@
 	<text key="closeableTabLayoutPanel_closeTab">
 		Close tab
 	</text>
+	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
+		Save results table or download selected products
+	</text>
 	<text key="closeableTabLayoutPanel_sendTableToVOA">
 		Send table to virtual observatory application
 	</text>
@@ -2073,6 +2076,10 @@
 		RA &lt;i&gt;(J2015.5)&lt;/i&gt; </text>
 	<text key="DEC_J2015.5">
 		Dec &lt;i&gt;(J2015.5)&lt;/i&gt; </text>
+	<text key="RA_J2016">
+		RA &lt;i&gt;(J2016)&lt;/i&gt; </text>
+	<text key="DEC_J2016">
+		Dec &lt;i&gt;(J2016)&lt;/i&gt; </text>
 	<text key="SoftX-ray">
 		Soft X-ray
 	</text>
@@ -2423,6 +2430,15 @@
 	</text>
 	<text key="Gaia_DR2_br_rp">
 		(BP - RP) mag
+	</text>
+	<text key="Gaia_eDR3_bp_g">
+		(BP - G) mag
+	</text>
+		<text key="Gaia_eDR3_g_rp">
+		(G - RP) mag
+	</text>
+	<text key="Gaia_DR2_Ruwe">
+		Ruwe
 	</text>
 	<text key="Gaia_DR2_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
@@ -3041,13 +3057,13 @@
 		Centre on coordinates
 	</text>
 	<text key="tabulator_centreHeader">
-		&lt;div class="esasky_column_header"&gt;Go to&lt;/div&gt;
+		Go to
 	</text>
 	<text key="tabulator_centreHeaderTooltip">
 		Move view to the position of each shape
 	</text>
 	<text key="tabulator_sendToVOApplicationHeader">
-		&lt;div class="esasky_column_header"&gt;Send&lt;/div&gt;
+		Send
 	</text>
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		Send data product to Virtual Observatory application
@@ -3196,7 +3212,7 @@
 		Estimated size of the downloadable data product
 	</text>
 	<text key="tabulator_link2ArchiveHeader">
-		&lt;div class="esasky_column_header"&gt;Archive&lt;/div&gt;
+		Archive
 	</text>
 	<text key="tabulator_link2ArchiveHeaderTooltip">
 		Click any row to open that row's data in the corresponding archive
@@ -3208,7 +3224,7 @@
 		Visualize a preview of the data
 	</text>
 	<text key="tabulator_SourcesInPublicationHeader">
-		&lt;div class="esasky_column_header"&gt;Sources&lt;/div&gt;
+		Sources
 	</text>
 	<text key="tabulator_SourcesInPublicationHeaderTooltip">
 		Click to show the sources mentioned in a publication
@@ -3235,7 +3251,7 @@
 		Archive
 	</text>
 	<text key="tabulator_link2AdsHeader">
-		&lt;div class="esasky_column_header"&gt;ADS&lt;/div&gt;
+		ADS
 	</text>
 	<text key="tabulator_link2AdsHeaderTooltip">
 		Click any row to open the corresponding publication in the Astrophysics Data System
@@ -3244,10 +3260,8 @@
 		Open this publication in the Astrophysics Data System
 	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
-	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
-		Download archive data
-	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
+
 
 
 
