@@ -2250,6 +2250,20 @@
 	<text key="Gaia_DR2_radial_velocity_error">
 		&amp;Delta;Radial Velocity
 	</text>
+	<text key="RA_J2016">
+		RA &lt;i&gt;(J2016)&lt;/i&gt; </text>
+	<text key="DEC_J2016">
+		Dec &lt;i&gt;(J2016)&lt;/i&gt; </text>
+
+	<text key="Gaia_eDR3_bp_g">
+		(BP - G) mag
+	</text>
+		<text key="Gaia_eDR3_g_rp">
+		(G - RP) mag
+	</text>
+		<text key="Gaia_DR2_Ruwe">
+		Ruwe
+	</text>
 	<text key="Gaia_DR2_phot_variable_flag">
 		Variable flag
 	</text>

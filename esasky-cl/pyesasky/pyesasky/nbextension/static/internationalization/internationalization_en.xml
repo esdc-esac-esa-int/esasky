@@ -2206,6 +2206,20 @@
 	<text key="Gaia_DR2_br_rp">
 		(BP - RP) mag
 	</text>
+		<text key="RA_J2016">
+		RA &lt;i&gt;(J2016)&lt;/i&gt; </text>
+	<text key="DEC_J2016">
+		Dec &lt;i&gt;(J2016)&lt;/i&gt; </text>
+
+	<text key="Gaia_eDR3_bp_g">
+		(BP - G) mag
+	</text>
+		<text key="Gaia_eDR3_g_rp">
+		(G - RP) mag
+	</text>
+		<text key="Gaia_DR2_Ruwe">
+		Ruwe
+	</text>
 	<text key="Gaia_DR2_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
 	<text key="Gaia_DR2_radial_velocity_error">
