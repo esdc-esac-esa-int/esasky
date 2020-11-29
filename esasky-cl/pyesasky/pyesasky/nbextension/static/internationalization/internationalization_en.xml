@@ -2203,14 +2203,19 @@
 	<text key="Gaia_DR2_phot_g_mean_mag">
 		G mag
 	</text>
+	<text key="Gaia_eDR3_phot_bp_mean_mag">
+		BP mag
+	</text>
+	<text key="Gaia_eDR3_phot_rp_mean_mag">
+		RP mag
+	</text>	
 	<text key="Gaia_DR2_br_rp">
 		(BP - RP) mag
 	</text>
-		<text key="RA_J2016">
+	<text key="RA_J2016.0">
 		RA &lt;i&gt;(J2016)&lt;/i&gt; </text>
-	<text key="DEC_J2016">
+	<text key="DEC_J2016.0">
 		Dec &lt;i&gt;(J2016)&lt;/i&gt; </text>
-
 	<text key="Gaia_eDR3_bp_g">
 		(BP - G) mag
 	</text>
