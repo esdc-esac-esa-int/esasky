@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE internationalization [
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text key ID #REQUIRED>
@@ -644,17 +644,6 @@
 		&lt;/a&gt; 
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR2">
-		Gaia DR2星表提供了超过13亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据，以及超过720万颗G波段星等中值在4至13级之间、有效温度在3550K到6900K之间的恒星的平均径向速度。
-		视差不确定范围在0.04毫角秒（G&lt;17星等）到0.7毫角秒（G=20星等）之间。
-		自行不确定范围从小于0.06毫角秒/年（G&lt;15星等）到1.2毫角秒/年（G=20星等）。径向速度的精度范围从亮端200-300米/秒到暗端的1.2千米/秒（有效温度4750K）和2.5千米/秒（有效温度6500K）。
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-		target="_blank"&gt;
-		更多信息
-		&lt;/a&gt; 
-	</text>		
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_TwoMASS">
 		2微米全天巡视(2MASS)观测在三个近红外波段（J、H、Ks）覆盖了99.998%的星空。2MASS点源星表(PSC)包含470,992,970个点源的位置和测光信息。该星表中的源至少在一个波段的观测数据信噪比大于7，或三个波段的信噪比都大于5。此外，源的位置也必须满足一些条件，以确保它不是伪信号或存在源之间互相干扰。
 		&lt;br&gt;&lt;br&gt;
@@ -1990,7 +1979,22 @@
 		在ADS系统中打开本文献
 	</text>  
 	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
-		保存结果表或者下载选择的产品
+		下载数据库数据
+	</text>
+	
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-eDR3">
+		Gaia eDR3星表提供了超过14.6亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据
+		。天体测量解算结果还包含了RUWE（重归一化单位权重误差）以及源图像描述符。同时
+		，本版星表还提供了18.06亿颗源的G星等，15.42亿颗源的G&lt;sub&gt;BP&lt;/sub&gt; 星等，15.55亿颗源的G&lt;sub&gt;RP&lt;/sub&gt; 星等。源
+		位置误差在0.01毫角秒（G&lt;15 星等）至 1毫角秒（G=21 星等）之间，视差误差在0.02毫角秒
+		（G&lt;15星等）至1.3毫角秒（G=21星等）之间，自行误差在0.02毫角秒/年（G&lt;15星等）至
+		1.4毫角秒/年（G=21星等）。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
 	</text>
 	
 </Internationalization>

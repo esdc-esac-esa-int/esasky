@@ -914,31 +914,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR2">
-		The Gaia DR2 catalogue provides positions, parallaxes and proper
-		motions for more
-		than 1.3 billion stars between G-magnitudes 3 and 21,
-		and median radial velocities for
-		more than 7.2 million stars with
-		median G-magnitudes between 4 and 13 and effective
-		temperatures between
-		3550 and 6900 K. Parallax uncertainties span between 0.04 for
-		G&lt;17
-		mag and 0.7 mas at G=20. Proper motion uncertainties range from less
-		than
-		0.06 mas/yr for G&lt;15 mag to 1.2 mas/yr for G=20 mag. The radial
-		velocity precision
-		ranges from 200-300 m/s at the bright end to 1.2 and
-		2.5 km/s at the faint end for
-		stars of effective temperatures of 4750
-		and 6500 K, respectively.
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-		target="_blank"&gt;
-		More information
-		&lt;/a&gt; </text>
+
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_TwoMASS">
 		The Two-Micron All Sky Survey (2MASS) covered 99.998% of
 		the sky in three near-
@@ -1470,9 +1446,6 @@
 	<text key="closeableTabLayoutPanel_closeTab">
 		Close tab
 	</text>
-	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
-		Save results table or download selected products
-	</text>
 	<text key="closeableTabLayoutPanel_sendTableToVOA">
 		Send table to virtual observatory application
 	</text>
@@ -1865,13 +1838,13 @@
 		VT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="parallax">
 		Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-		<text key="Gaia_DR1_TGAS_parallax_error">
+		<text key="Gaia_eDR3_TGAS_parallax_error">
 		Parallax error&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-	<text key="Gaia_DR1_TGAS_pmra_error">
+	<text key="Gaia_eDR3_TGAS_pmra_error">
 		PM in RA error&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_DR1_TGAS_pmdec_error">
+	<text key="Gaia_eDR3_TGAS_pmdec_error">
 		PM in Dec error&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_DR1_TGAS_phot_g_mean_mag">
+	<text key="Gaia_eDR3_TGAS_phot_g_mean_mag">
 		G mean Mag&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="mag">
 		Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
@@ -1956,10 +1929,10 @@
 	<text key="PCCS2E_highest_reliability_cat">
 		Cat. Reliability
 	</text>
-	<text key="Gaia_DR1_ra_error">
+	<text key="Gaia_eDR3_ra_error">
 		RA error &lt;i&gt;(mas)&lt;/i&gt;
 	</text>
-	<text key="Gaia_DR1_dec_error">
+	<text key="Gaia_eDR3_dec_error">
 		Dec error &lt;i&gt;(mas)&lt;/i&gt;
 	</text>
 	<text key="PSZ_redshift">
@@ -2411,55 +2384,54 @@
 		&amp;Delta;W4 mag
 	</text>
 
-	<text key="Gaia_DR2_parallax">
+	<text key="Gaia_eDR3_parallax">
 		Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_parallax_error">
+	<text key="Gaia_eDR3_parallax_error">
 		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_pmra">
+	<text key="Gaia_eDR3_pmra">
 		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_pmra_error">
+	<text key="Gaia_eDR3_pmra_error">
 		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_pmdec">
+	<text key="Gaia_eDR3_pmdec">
 		Proper Motion in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_pmdec_error">
+	<text key="Gaia_eDR3_pmdec_error">
 		&amp;Delta;PM in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_phot_g_mean_mag">
+	<text key="Gaia_eDR3_phot_g_mean_mag">
 		G mag
 	</text>
-	<text key="Gaia_DR2_br_rp">
-		(BP - RP) mag
+	<text key="Gaia_eDR3_br_rp">
+		G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt; (mag)
 	</text>
 	<text key="Gaia_eDR3_bp_g">
-		(BP - G) mag
+		G&lt;sub&gt;BP&lt;/sub&gt; - G colour (mag)
 	</text>
 		<text key="Gaia_eDR3_g_rp">
-		(G - RP) mag
+		G - G&lt;sub&gt;RP&lt;/sub&gt; colour (mag)
 	</text>
 	<text key="Gaia_eDR3_phot_bp_mean_mag">
-		BP mag
+		Integrated G&lt;sub&gt;BP&lt;/sub&gt; mean mag
 	</text>
 	<text key="Gaia_eDR3_phot_rp_mean_mag">
-		RP mag
+		Integrated G&lt;sub&gt;RP&lt;/sub&gt; mean mag
 	</text>
-	<text key="Gaia_DR2_Ruwe">
-		Ruwe
+	<text key="Gaia_eDR3_Ruwe">
+		Renormalise unit weight error (ruwe)
 	</text>
-	<text key="Gaia_DR2_radial_velocity">
+	<text key="Gaia_eDR3_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_radial_velocity_error">
+	<text key="Gaia_eDR3_radial_velocity_error">
 		&amp;Delta;Radial Velocity
 	</text>
-	<text key="Gaia_DR2_phot_variable_flag">
+	<text key="Gaia_eDR3_phot_variable_flag">
 		Variable flag
 	</text>
-	<text key="Gaia_DR2_teff_val">
+	<text key="Gaia_eDR3_teff_val">
 		T_{eff}&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt; </text>
-	<text key="Gaia_DR2_a_g_val">
+	<text key="Gaia_eDR3_a_g_val">
 		A_{G} mag
 	</text>
-
 	<text key="treeMapContainer_help_ASTRO_IMAGING">
 		To search for imaging, catalogues or spectral data (and
 		to open the data panel) click on the respective imaging, catalogue and
@@ -3063,13 +3035,13 @@
 		Centre on coordinates
 	</text>
 	<text key="tabulator_centreHeader">
-		Go to
+		&lt;div class="esasky_column_header"&gt;Go to&lt;/div&gt;
 	</text>
 	<text key="tabulator_centreHeaderTooltip">
 		Move view to the position of each shape
 	</text>
 	<text key="tabulator_sendToVOApplicationHeader">
-		Send
+		&lt;div class="esasky_column_header"&gt;Send&lt;/div&gt;
 	</text>
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		Send data product to Virtual Observatory application
@@ -3218,7 +3190,7 @@
 		Estimated size of the downloadable data product
 	</text>
 	<text key="tabulator_link2ArchiveHeader">
-		Archive
+		&lt;div class="esasky_column_header"&gt;Archive&lt;/div&gt;
 	</text>
 	<text key="tabulator_link2ArchiveHeaderTooltip">
 		Click any row to open that row's data in the corresponding archive
@@ -3230,7 +3202,7 @@
 		Visualize a preview of the data
 	</text>
 	<text key="tabulator_SourcesInPublicationHeader">
-		Sources
+		&lt;div class="esasky_column_header"&gt;Sources&lt;/div&gt;
 	</text>
 	<text key="tabulator_SourcesInPublicationHeaderTooltip">
 		Click to show the sources mentioned in a publication
@@ -3257,7 +3229,7 @@
 		Archive
 	</text>
 	<text key="tabulator_link2AdsHeader">
-		ADS
+		&lt;div class="esasky_column_header"&gt;ADS&lt;/div&gt;
 	</text>
 	<text key="tabulator_link2AdsHeaderTooltip">
 		Click any row to open the corresponding publication in the Astrophysics Data System
@@ -3265,9 +3237,24 @@
 	<text key="tabulator_link2AdsButtonTooltip">
 		Open this publication in the Astrophysics Data System
 	</text>
+	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
+		Download archive data
+	</text>
+	
+	<text
+		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-eDR3">
+		The Gaia eDR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
+		The astrometric solution is accompanied with some new quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources, and G&lt;sub&gt;BP&lt;/sub&gt;
+		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.542 billion and 1.555 billion sources, respectively are also provided. 
+		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
-
 
 
 
