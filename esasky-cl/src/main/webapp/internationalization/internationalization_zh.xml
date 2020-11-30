@@ -584,7 +584,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO">
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO-IR">
 		1995年11月发射的红外空间天文台(ISO)是世界上第一个真正的在轨红外天文台。
 		它携带了四种科学仪器:两台光谱仪(SWS和LWS)、一台成像光偏振仪(ISOPHOT)和一台照相机(ISOCAM)。
 		ESASky仅能提供来自于ISOCAM的ISO图像数据，而来自全部四台仪器的光谱数据则均能提供。

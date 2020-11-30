@@ -774,7 +774,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO">
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO-IR">
 		The Infrared Space Observatory (ISO) was the world's
 		first true orbiting infrared observatory launched in November 1995. It
 		carried four scientific instruments: two spectrometers (SWS and LWS),
@@ -2402,22 +2402,22 @@
 		G mag
 	</text>
 	<text key="Gaia_eDR3_br_rp">
-		G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt; (mag)
+		BP - RP (mag)
 	</text>
 	<text key="Gaia_eDR3_bp_g">
-		G&lt;sub&gt;BP&lt;/sub&gt; - G colour (mag)
+		BP - G colour (mag)
 	</text>
-		<text key="Gaia_eDR3_g_rp">
-		G - G&lt;sub&gt;RP&lt;/sub&gt; colour (mag)
+	<text key="Gaia_eDR3_g_rp">
+		G - RP colour (mag)
 	</text>
 	<text key="Gaia_eDR3_phot_bp_mean_mag">
-		Integrated G&lt;sub&gt;BP&lt;/sub&gt; mean mag
+		Integrated BP mean mag
 	</text>
 	<text key="Gaia_eDR3_phot_rp_mean_mag">
-		Integrated G&lt;sub&gt;RP&lt;/sub&gt; mean mag
+		Integrated RP mean mag
 	</text>
 	<text key="Gaia_eDR3_Ruwe">
-		Renormalise unit weight error (ruwe)
+		Renormalised unit weight error (ruwe)
 	</text>
 	<text key="Gaia_eDR3_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
