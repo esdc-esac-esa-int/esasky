@@ -254,8 +254,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void fetchData() {
         if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 ) {
-            CommonEventBus.getEventBus().fireEvent(
-                    new ProgressIndicatorPushEvent("WaitingForCount" + getEsaSkyUniqId(), "Checking availability of " + descriptor.getGuiShortName() + " data"));
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(int newCount) {
