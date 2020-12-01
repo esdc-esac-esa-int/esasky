@@ -191,7 +191,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                         .getMetadataDescriptorByTapName(currTapName);
                 Integer precision = null;
                 String value = rowData.getStringProperty(currTapName);
-                if (cmd != null && cmd.getMaxDecimalDigits() != null
+                if (value != null && cmd != null && cmd.getMaxDecimalDigits() != null
                         && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
                         .getType() == ColumnType.DOUBLE)) {
                     StringBuilder sb = new StringBuilder();
@@ -204,9 +204,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     } else {
                         sb.append("00");
                     }
-                    if(value != null) {
-                    	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
-                    }
+                	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
                 }
                 details.put(getKeyToShow(currTapName), value);
             }
