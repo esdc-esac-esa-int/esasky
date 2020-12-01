@@ -1563,21 +1563,23 @@ public class TabulatorWrapper{
 
 			// Adds headers to xml
 			table.metadata.forEach(function (columnInfo) {
-				votData += "<FIELD";
-				Object.keys(columnInfo).forEach(function (key) {
-				    var value = columnInfo[key];
-					if(value !== null) {
-					    if(key == "datatype"){
-					    	value = esaskyToVOStandardType[value.toUpperCase()];
-					    	if(value == "char" && !columnInfo.hasOwnProperty("arraysize")){
-					    		votData += " arraysize =\"*\""
-					    	}
-					    }
-						votData += " " + key + "=\"" + $wnd.esasky.escapeXml(value) + "\"";
-					}
-
-				});
-				votData += "/>\n";
+			    if(table.getColumn(columnInfo.name).getDefinition().download){
+    				votData += "<FIELD";
+    				Object.keys(columnInfo).forEach(function (key) {
+    				    var value = columnInfo[key];
+    					if(value !== null) {
+    					    if(key == "datatype"){
+    					    	value = esaskyToVOStandardType[value.toUpperCase()];
+    					    	if(value == "char" && !columnInfo.hasOwnProperty("arraysize")){
+    					    		votData += " arraysize =\"*\""
+    					    	}
+    					    }
+    						votData += " " + key + "=\"" + $wnd.esasky.escapeXml(value) + "\"";
+    					}
+    
+    				});
+    				votData += "/>\n";
+			    }
 			});
 
 			// Adds data to xml
@@ -1589,16 +1591,18 @@ public class TabulatorWrapper{
 			        case "row":
         				votData += "<TR>\n";
         				table.metadata.forEach(function (columnInfo) {
-        					var value = "";
-        					row.columns.some(function(column){
-        					    if(column.component.getField() == columnInfo.name){
-        					        value = column.value;
-        					        return true;
-        					    }
-        					});
-        					votData += "<TD>"
-        							+ $wnd.esasky.escapeXml(value)
-        							+ "</TD>\n";
+            			    if(table.getColumn(columnInfo.name).getDefinition().download){
+            					var value = "";
+            					row.columns.some(function(column){
+            					    if(column.component.getField() == columnInfo.name){
+            					        value = column.value;
+            					        return true;
+            					    }
+            					});
+            					votData += "<TD>"
+            							+ $wnd.esasky.escapeXml(value)
+            							+ "</TD>\n";
+            			    }
         				});
         
         				votData += "</TR>\n";
