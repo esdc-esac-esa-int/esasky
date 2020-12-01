@@ -109,7 +109,7 @@ public class TextMgr {
             return instance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;)(text);
         }
         $wnd.esasky.getDefaultLanguageText = function(text) {
-            return defaultInstance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;)(text);
+            return defaultInstance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::getText(Ljava/lang/String;Z)(text, false);
         }
      	$wnd.esasky.getColumnDisplayText = function(displayText){
 			displayText = displayText.replace(/_/g," ");
@@ -137,6 +137,10 @@ public class TextMgr {
 	}
 	
 	public String getText (String key) {
+	    return this.getText(key, true);
+	}
+	
+	public String getText (String key, boolean reportMissingTranslation) {
 	    
         if (key.isEmpty()) {
             return key;
@@ -151,10 +155,11 @@ public class TextMgr {
 		if(this.langCode != EsaSkyConstants.DEFAULT_LANGCODE) {
 			return TextMgr.getDefaultInstance().getText(key);
 		}
-		
-		missingTranslations.add(key);
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_MissingTranslation + " " + langCode, key);
-		Log.warn("TextMgr.getText(), unknown key: " + key);
+		if(reportMissingTranslation) {
+		    missingTranslations.add(key);
+		    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_MissingTranslation + " " + langCode, key);
+		    Log.warn("TextMgr.getText(), unknown key: " + key);
+		}
 		return key;
 	}
 	
