@@ -2011,6 +2011,9 @@
 	<text key="PublicationTooltip_bibcount">
 		Num. pub.:
 	</text>
+	<text key="Designation">
+		Designation
+	</text>
 	<text key="XMM_EPIC_ep_8_n_contrib">
 		N. Contrib
 	</text>
