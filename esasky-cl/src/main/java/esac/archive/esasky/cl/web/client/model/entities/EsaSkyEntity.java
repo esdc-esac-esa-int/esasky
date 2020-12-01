@@ -204,7 +204,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     } else {
                         sb.append("00");
                     }
-                    value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
+                    if(value != null) {
+                    	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
+                    }
                 }
                 details.put(getKeyToShow(currTapName), value);
             }
