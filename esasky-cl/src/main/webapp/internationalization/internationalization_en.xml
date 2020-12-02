@@ -1844,7 +1844,7 @@
 		&amp;Delta; T Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="e_pm_ra">
 		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
-	<text key="e_pm_de>
+	<text key="e_pm_de">
 		&amp;Delta;PM in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
 	<text key="parallax">
 		Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
