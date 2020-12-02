@@ -94,7 +94,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private String esaSkyUniqID;
 	private String tabulatorContainerId;
 	private String tabTitle;
-    private int numberOfShownRows;
+    protected int numberOfShownRows;
 
 	private List<TableObserver> observers = new LinkedList<TableObserver>();
 
@@ -527,7 +527,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         }
     }
     
-    private void notifyNumberOfRowsShowingChanged(int count) {
+    protected void notifyNumberOfRowsShowingChanged(int count) {
         for (TableObserver obs : observers) {
             obs.numberOfShownRowsChanged(count);
         }

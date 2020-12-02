@@ -44,7 +44,8 @@ public class PublicationsTablePanel extends TabulatorTablePanel {
     
     @Override
     public void onDataFiltered(List<Integer> indexArray) {
-        //Do nothing
+        this.numberOfShownRows = indexArray.size();
+        notifyNumberOfRowsShowingChanged(numberOfShownRows);
     }
 
 	@Override
