@@ -478,7 +478,7 @@ public class ExtTapTreeMap extends TreeMap {
     	zoomToRoot();
     	clearAll();
 		addGhostPoint(ghostPoint.getLargeFovText());
+		update(true);
     }
-    
     
 }
