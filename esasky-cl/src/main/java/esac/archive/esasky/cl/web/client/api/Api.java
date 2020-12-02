@@ -1002,6 +1002,14 @@ public class Api {
 			
 		}
 	}
+	
+	public void removeAllOverlays(JavaScriptObject widget) {
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, "all");
+		
+		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
+			ent.getTablePanel().closeTablePanel();
+		}
+	}
 
 	public void overlayCatalogue(String userCatalogueJSON, boolean shouldBeInTablePanel) {
 
@@ -1190,13 +1198,6 @@ public class Api {
 		sendBackToWidget(result, widget);
 	}
 
-	public void clearAllOverlays() {
-		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
-			ent.clearAll();
-			EntityRepository.getInstance().removeEntity(ent);
-		}
-	}
-	
 	public void addCustomTreeMap(GeneralJavaScriptObject input, JavaScriptObject widget) {
 		String name = "Custom treeMap";
 		if(input.hasProperty("name")) {

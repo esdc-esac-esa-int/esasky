@@ -130,6 +130,13 @@ public class ApiMessageParser {
 					instance.@esac.archive.esasky.cl.web.client.api.Api::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.overlayName, e);
 					break;
+				
+				case 'removeAllOverlays':
+					console.log('removeAllOverlays event captured!');
+					console.log(msg);
+					instance.@esac.archive.esasky.cl.web.client.api.Api::removeAllOverlays(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;
 	
 				case 'setOverlayColor':
 					console.log('setOverlayColor event captured!');
