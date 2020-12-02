@@ -1828,16 +1828,33 @@
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="pm_ra">
-		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
 	<text key="pm_de">
 		Proper Motion in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Tycho_2_bt_mag">
 		BT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="Tycho_2_e_bt_mag">
+		&amp;Delta;BT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="e_mag">
+		&amp;Delta;Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="Tycho_2_vt_mag">
 		VT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="Tycho_2_e_vt_mag">
+		&amp;Delta; T Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="e_pm_ra">
+		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="e_pm_de>
+		&amp;Delta;PM in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
 	<text key="parallax">
 		Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	<text key="parallax_error">
+		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	<text key="b_v">
+		B - V colour&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	<text key="v_i">
+		V - I colour&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+	
 		<text key="Gaia_eDR3_TGAS_parallax_error">
 		Parallax error&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_eDR3_TGAS_pmra_error">
@@ -2405,19 +2422,19 @@
 		G &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_br_rp">
-		BP - RP &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
+		G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt; colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_bp_g">
-		BP - G colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
+		G&lt;sub&gt;BP&lt;/sub&gt; - G colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_g_rp">
-		G - RP colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
+		G - G&lt;sub&gt;RP&lt;/sub&gt; colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_phot_bp_mean_mag">
-		Integrated BP mean &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
+		Integrated G&lt;sub&gt;BP&lt;/sub&gt; mean mag &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_phot_rp_mean_mag">
-		Integrated RP mean &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
+		Integrated G&lt;sub&gt;RP&lt;/sub&gt; mean mag &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_Ruwe">
 		Renormalised unit weight error (ruwe)
