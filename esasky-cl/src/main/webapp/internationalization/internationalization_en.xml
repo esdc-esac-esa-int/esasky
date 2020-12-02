@@ -2402,22 +2402,22 @@
 		&amp;Delta;PM in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_eDR3_phot_g_mean_mag">
-		G mag
+		G &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_br_rp">
-		BP - RP (mag)
+		BP - RP &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_bp_g">
-		BP - G colour (mag)
+		BP - G colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_g_rp">
-		G - RP colour (mag)
+		G - RP colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_phot_bp_mean_mag">
-		Integrated BP mean mag
+		Integrated BP mean &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_phot_rp_mean_mag">
-		Integrated RP mean mag
+		Integrated RP mean &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_eDR3_Ruwe">
 		Renormalised unit weight error (ruwe)
@@ -2433,7 +2433,7 @@
 	<text key="Gaia_eDR3_teff_val">
 		T_{eff}&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt; </text>
 	<text key="Gaia_eDR3_a_g_val">
-		A_{G} mag
+		A_{G} &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="treeMapContainer_help_ASTRO_IMAGING">
 		To search for imaging, catalogues or spectral data (and
