@@ -71,7 +71,11 @@ public class CountStatus {
     public void updateCount(){
     	totalCount = 0;
     	for(String key : countStatus.keySet()){
-    		totalCount += countStatus.get(key).getCount();
+    	    if(2147483647 - totalCount - countStatus.get(key).getCount() < 0) {
+    	        totalCount = 2147483647;
+    	    } else {
+    	        totalCount += countStatus.get(key).getCount();
+    	    }
     	}
         notifyObservers();
     }
