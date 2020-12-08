@@ -1957,8 +1957,7 @@ public class TabulatorWrapper{
     private native boolean isDataProductDatalink(GeneralJavaScriptObject tableJsObject)/*-{
         var firstRow = tableJsObject.getRows()[0];
         if(!firstRow) {return false;}
-        var cell = firstRow.getCell();
-        return cell && cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink");
+        return firstRow.getData().access_format && firstRow.getData().access_format.toLowerCase().includes("datalink");
     }-*/;
     
 }

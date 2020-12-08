@@ -317,7 +317,9 @@ public class CloseableTabLayoutPanel extends Composite {
                         new UpdateNumRowsSelectedEvent(selectedTabId, saveAllView));
                 GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
                 boolean hasProductUrl = entity.getDescriptor() instanceof ExtTapDescriptor 
-                        || entity.getDescriptor().getMetadataDescriptorByTapName("product_url") != null;
+                        || entity.getDescriptor().getMetadataDescriptorByTapName("product_url") != null
+                        || (entity.getDescriptor().getMetadataDescriptorByTapName("access_url") != null
+                                && !entity.getDescriptor().getDescriptorId().equals("ASTRO_IMAGING_ALMA"));
                 
                 saveAllView.setProductsDownloadVisible(hasProductUrl && !getSelectedWidget().isDataProductDatalink());
                 // Set pop-up position.
