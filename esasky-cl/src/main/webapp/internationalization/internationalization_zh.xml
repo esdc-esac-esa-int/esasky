@@ -624,12 +624,12 @@
 	</text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-OM">
-		SUSS2.1 星表集合了XMM-Newton太空望远镜所搭载的光学监视器偶然观测到的目标。
-		它提供了超过500万个源的位置、星等，及其在六个宽域紫外、光学滤镜的流量，还包括了其诊断报告和变量统计。
+		SUSS5.0 星表集合了XMM-Newton太空望远镜所搭载的光学监视器偶然观测到的目标。
+		它提供了超过590万个源的位置、星等，及其在六个宽域紫外、光学滤镜的流量，还包括了其诊断报告和变量统计。
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#SUSS2.1"
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#SUSS"
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt;

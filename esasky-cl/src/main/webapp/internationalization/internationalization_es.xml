@@ -1178,11 +1178,11 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-OM">
-		SUSS2.1 es un cat&#225;logo de fuentes casualmente detectadas
+		SUSS5.0 es un cat&#225;logo de fuentes casualmente detectadas
 		por
 		el Optical Monitor (OM) a bordo del observatorio XMM-Newton.
 		El
-		cat&#225;logo proporciona las posiciones de m&#225;s de 5 millones de
+		cat&#225;logo proporciona las posiciones de m&#225;s de 5.9 millones de
 		fuentes y
 		sus magnitudes y flujos en seis filtros &#243;pticos y
 		ultravioletas de
@@ -1192,7 +1192,7 @@
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#SUSS2.1"
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#SUSS"
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
