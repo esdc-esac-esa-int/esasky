@@ -1851,9 +1851,9 @@
 	<text key="parallax_error">
 		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="b_v">
-		B - V colour&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+		B - V colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="v_i">
-		V - I colour&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+		V - I colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	
 		<text key="Gaia_eDR3_TGAS_parallax_error">
 		Parallax error&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
