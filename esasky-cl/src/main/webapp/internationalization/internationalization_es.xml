@@ -1135,9 +1135,9 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
-		El cat&#225;logo 3XMM-DR8 contiene fuentes detectadas
+		El cat&#225;logo 4XMM-DR10 contiene fuentes detectadas
 		a partir de
-		10242 observaciones con las c&#225;maras EPIC de
+		11647 observaciones con las c&#225;maras EPIC de
 		XMM-Newton,
 		las cuales
 		cubren el intervalo de energ&#237;a entre 0.2 y 12 keV.
@@ -1156,23 +1156,13 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
-		El cat&#225;logo 3XMM-DR7s ha sido compilado
-		a partir de 434 grupos
-		de observaciones de XMM-Newton de buena calidad
-		con solapamiento.
-		Los
-		grupos comprenden un total de 1789 observaciones,
-		seleccionadas entre
-		las observaciones p&#250;blicas
-		realizadas en el per&#237;odo del 3 de
-		febrero de 2000 al 15 de diciembre de
-		2016,
-		las cuales se emplearon para
-		generar el cat&#225;logo 3XMM-DR7.
-
+		El cat&#xE1;logo 4XMM-DR10s se ha compilado a partir de 1329 grupos, que comprenden 7803 observaciones superpuestas de buena calidad de XMM-Newton. 
+		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 3 de febrero de 2000 y el 14 de diciembre de 2019 que se superponen en al menos un radio de un 
+		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 335812 fuentes &#xFA;nicas, 218283 de ellas observadas en m&#xFA;ltiples ocasiones,  
+		con posiciones y par&#xE1;metros de las fuentes como flujos en las bandas de energ&#xED;a est&#xE1;ndar de XMM-Newton, estimaci&#xF3;n de calidad e informaci&#xF3;n sobre la variabilidad entre observaciones.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#3XMMs"
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#4XMMs"
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>

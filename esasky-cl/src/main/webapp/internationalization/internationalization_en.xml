@@ -839,7 +839,7 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
-    The 4XMM-DR9 catalogue contains source detections drawn from 11,204
+    The 4XMM-DR10 catalogue contains source detections drawn from 11647
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
 		(sources "good" or "with suspect parameters") are displayed in ESASky.
@@ -852,11 +852,11 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
-    The stacked catalogue 4XMM-DR9s has been compiled from 1329 groups,
-		comprising 6604 overlapping good-quality XMM-Newton observations. They
+    	The stacked catalogue 4XMM-DR10s has been compiled from 1329 groups,
+		comprising 7803 overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
-		3 and 2018 November 13 which overlap by at least one arcminute in radius
-		and are not affected by very high background emission. It contains 288191
+		3 and 2019 December 14 which overlap by at least one arcminute in radius
+		and are not affected by very high background emission. It contains 335812
 		unique sources, 218283 of them multiply observed, with positions and
 		source parameters like fluxes in the XMM-Newton standard energy bands,
 		hardness ratios, quality estimate, and information on inter-observation
