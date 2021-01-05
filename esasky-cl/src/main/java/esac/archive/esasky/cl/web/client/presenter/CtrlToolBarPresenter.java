@@ -68,10 +68,10 @@ public class CtrlToolBarPresenter {
     
     public interface View {
 
-        void updateObservationCount(int newCount);
-        void updateCatalogCount(int newCount);
-        void updateSpectraCount(int newCount);
-        void updateSsoCount(int newCount);
+        void updateObservationCount(long newCount);
+        void updateCatalogCount(long newCount);
+        void updateSpectraCount(long newCount);
+        void updateSsoCount(long newCount);
         void onIsTrackingSSOEventChanged();
         void closeTreeMap();
         void closeAllOtherPanels(Widget button);
@@ -226,19 +226,19 @@ public class CtrlToolBarPresenter {
 		updateModuleVisibility();
     }
     
-    public void updateObservationCount(int newCount){
+    public void updateObservationCount(long newCount){
         view.updateObservationCount(newCount);
     }
     
-    public void updateCatalogCount(int newCount){
+    public void updateCatalogCount(long newCount){
         view.updateCatalogCount(newCount);
     }
     
-    public void updateSpectraCount(int newCount){
+    public void updateSpectraCount(long newCount){
         view.updateSpectraCount(newCount);
     }
     
-    public void updateSsoCount(int newCount){
+    public void updateSsoCount(long newCount){
         view.updateSsoCount(newCount);
     }
     

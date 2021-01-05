@@ -20,7 +20,6 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
@@ -256,7 +255,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 ) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
-				public void onCountUpdate(int newCount) {
+				public void onCountUpdate(long newCount) {
 				    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("WaitingForCount" + getEsaSkyUniqId()));
 	                fetchShapesAndMetadata();
 					getCountStatus().unregisterObserver(this);

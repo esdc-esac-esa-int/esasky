@@ -412,25 +412,25 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	@Override
-	public void updateObservationCount(int newCount) {
+	public void updateObservationCount(long newCount) {
 		observationButton.updateCount(newCount);
 		
 	}
 
 	@Override
-	public void updateCatalogCount(int newCount) {
+	public void updateCatalogCount(long newCount) {
 		catalogButton.updateCount(newCount);
 		
 	}
 
 	@Override
-	public void updateSpectraCount(int newCount) {
+	public void updateSpectraCount(long newCount) {
 		spectraButton.updateCount(newCount);
 		
 	}
 
 	@Override
-	public void updateSsoCount(int newCount) {
+	public void updateSsoCount(long newCount) {
 		ssoButton.updateCount(newCount);
 		
 	}

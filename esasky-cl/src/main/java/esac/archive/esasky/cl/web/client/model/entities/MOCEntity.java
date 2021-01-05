@@ -78,7 +78,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private class MOCCountObserver implements CountObserver{
         
 		@Override
-		public void onCountUpdate(int newCount) {
+		public void onCountUpdate(long newCount) {
 			int perMissionNewCount = getCountStatus().getCount(descriptor);
 			if(perMissionNewCount > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				setTableCountText();

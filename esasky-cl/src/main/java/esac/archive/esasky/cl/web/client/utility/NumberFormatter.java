@@ -3,7 +3,7 @@ package esac.archive.esasky.cl.web.client.utility;
 public final class NumberFormatter {
 
 	public static String formatToNumberWithSpaces(String string) {
-	    if(new Integer(string) < 10000) {
+	    if(new Long(string) < 10000) {
 	        return string;
 	    }
     	int currentIndex = string.length() - 3;
@@ -15,7 +15,7 @@ public final class NumberFormatter {
     }
 	
 	public static String formatToNumberWithSpaces(int number) {
-		return formatToNumberWithSpaces(new Integer(number).toString());
+		return formatToNumberWithSpaces(new Long(number).toString());
 	}
 	
     public static native boolean isNumber(String text) /*-{

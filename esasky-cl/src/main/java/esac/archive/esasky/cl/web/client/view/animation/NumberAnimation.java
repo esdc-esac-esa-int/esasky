@@ -16,12 +16,12 @@ public class NumberAnimation extends EsaSkyAnimation {
  
     @Override
 	protected Double getCurrentPosition() {
-    	    return new Double(currentNumber);
+        return new Double(currentNumber);
 	}
     
     @Override
 	protected void setCurrentPosition(double newPosition){
-        	currentNumber = Math.round(newPosition);
-        	label.setText(NumberFormatter.formatToNumberWithSpaces(Long.toString(currentNumber)));
+        currentNumber = Math.round(newPosition);
+        label.setText(NumberFormatter.formatToNumberWithSpaces(Long.toString(currentNumber)));
 	}
 }

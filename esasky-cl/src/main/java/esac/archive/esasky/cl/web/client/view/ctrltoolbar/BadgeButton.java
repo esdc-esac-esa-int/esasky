@@ -34,7 +34,7 @@ public class BadgeButton extends FlowPanel{
 		this.disabledTooltip = disabledTooltip;
 	}
 	
-	public void updateCount(int newCount){
+	public void updateCount(long newCount){
 		numberAnimation.animateTo(newCount, 1000);
 	}
 	

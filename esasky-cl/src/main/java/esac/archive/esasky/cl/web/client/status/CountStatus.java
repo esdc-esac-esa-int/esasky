@@ -14,7 +14,7 @@ public class CountStatus {
     private Map<String, CountDetails> countStatus;
 
     LinkedList<CountObserver> observers = new LinkedList<CountObserver>();
-    private int totalCount = 0;
+    private long totalCount = 0;
     
     public CountStatus (IDescriptorList<?> descriptor) {
         countStatus = new HashMap<String, CountDetails>();
@@ -45,14 +45,14 @@ public class CountStatus {
     	}
     }
     
-    public Integer getTotalCount() {
+    public Long getTotalCount() {
     	return totalCount;
     }
 
     public void setCount(IDescriptor descriptor, Integer count) {
-        	if(countStatus.get(descriptor.getDescriptorId()) == null){
-        		countStatus.put(descriptor.getDescriptorId(), new CountDetails(0));
-        	}
+        if(countStatus.get(descriptor.getDescriptorId()) == null){
+        	countStatus.put(descriptor.getDescriptorId(), new CountDetails(0));
+        }
         countStatus.get(descriptor.getDescriptorId()).setCount(count);
     }
 
@@ -71,11 +71,7 @@ public class CountStatus {
     public void updateCount(){
     	totalCount = 0;
     	for(String key : countStatus.keySet()){
-    	    if(2147483647 - totalCount - countStatus.get(key).getCount() < 0) {
-    	        totalCount = 2147483647;
-    	    } else {
-    	        totalCount += countStatus.get(key).getCount();
-    	    }
+            totalCount += countStatus.get(key).getCount();
     	}
         notifyObservers();
     }
@@ -93,9 +89,9 @@ public class CountStatus {
     }
     
     public void notifyObservers(){
-        	for(CountObserver observer : observers){
-        		observer.onCountUpdate(totalCount);
-        	}
+        for(CountObserver observer : observers){
+            observer.onCountUpdate(totalCount);
+        }
     }
     
     public boolean hasMoved(IDescriptor descriptor) {

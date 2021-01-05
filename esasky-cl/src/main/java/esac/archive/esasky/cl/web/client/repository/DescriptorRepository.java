@@ -467,7 +467,7 @@ public class DescriptorRepository {
 						new CountObserver() {
 							
 							@Override
-							public void onCountUpdate(int newCount) {
+							public void onCountUpdate(long newCount) {
 							}
 						});
 				for(PublicationDescriptorLoadObserver observer : publicationDescriptorLoadObservers) {

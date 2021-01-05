@@ -650,7 +650,7 @@ public class Api {
 		}else {
 			countStatus.registerObserver(new CountObserver() {
 				@Override
-				public void onCountUpdate(int newCount) {
+				public void onCountUpdate(long newCount) {
 					JSONObject obsCount = new  JSONObject();
 					
 					for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
@@ -686,7 +686,7 @@ public class Api {
 		}else {
 			countStatus.registerObserver(new CountObserver() {
 				@Override
-				public void onCountUpdate(int newCount) {
+				public void onCountUpdate(long newCount) {
 					JSONObject obsCount = new  JSONObject();
 					
 					for (BaseDescriptor currObs : descriptors.getDescriptors()) {

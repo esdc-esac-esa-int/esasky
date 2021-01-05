@@ -325,7 +325,7 @@ public class MainPresenter {
         descriptorRepo.initObsDescriptors(new CountObserver() {
 
             @Override
-            public void onCountUpdate(int newCount) {
+            public void onCountUpdate(long newCount) {
                 ctrlTBPresenter.updateObservationCount(newCount);
             }
         });
@@ -336,7 +336,7 @@ public class MainPresenter {
         descriptorRepo.initSSODescriptors(new CountObserver() {
 
             @Override
-            public void onCountUpdate(int newCount) {
+            public void onCountUpdate(long newCount) {
                 ctrlTBPresenter.updateSsoCount(newCount);
             }
         });
@@ -346,7 +346,7 @@ public class MainPresenter {
         Log.debug("[MainPresenter] Into MainPresenter.getSpectrasList");
         descriptorRepo.initSpectraDescriptors(new CountObserver() {
             @Override
-            public void onCountUpdate(int newCount) {
+            public void onCountUpdate(long newCount) {
                 ctrlTBPresenter.updateSpectraCount(newCount);
             }
         });
@@ -357,7 +357,7 @@ public class MainPresenter {
         descriptorRepo.initCatDescriptors(new CountObserver() {
 
             @Override
-            public void onCountUpdate(int newCount) {
+            public void onCountUpdate(long newCount) {
                 ctrlTBPresenter.updateCatalogCount(newCount);
             }
         });
@@ -367,7 +367,7 @@ public class MainPresenter {
         Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
         descriptorRepo.initExtDescriptors(new CountObserver() {
             @Override
-            public void onCountUpdate(int newCount) {
+            public void onCountUpdate(long newCount) {
             }
         });
     }
