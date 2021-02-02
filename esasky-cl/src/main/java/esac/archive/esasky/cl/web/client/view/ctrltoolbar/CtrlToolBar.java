@@ -510,12 +510,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			hideWidget(targetListButton);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
-			showWidget(planObservationButton);
-		}else {
-			hideWidget(planObservationButton);
-		}
-		
 		setScienceModeVisibility(GUISessionStatus.getIsInScienceMode());
 	}
 	
@@ -527,6 +521,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	        hideWidget(publicationsButton);
 	        hideWidget(extTapButton);
 	        hideWidget(ssoButton);
+	        hideWidget(planObservationButton);
 	    } else {
 	        showScienceModeWidgets();
 	    }
@@ -575,6 +570,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }else {
         	hideWidget(ssoButton);
         }    
+        
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
+			showWidget(planObservationButton);
+		}else {
+			hideWidget(planObservationButton);
+		}
         
     }
 	
