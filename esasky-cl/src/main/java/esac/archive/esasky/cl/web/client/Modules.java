@@ -78,8 +78,8 @@ public class Modules {
     		modules.put(EsaSkyWebConstants.MODULE_DROPDOWN, false);
     		modules.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
     		modules.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
-    		modules.put(EsaSkyWebConstants.MODULE_OBS, false);
-    		modules.put(EsaSkyWebConstants.MODULE_CAT, true);
+    		modules.put(EsaSkyWebConstants.MODULE_OBS, true);
+    		modules.put(EsaSkyWebConstants.MODULE_CAT, false);
     		modules.put(EsaSkyWebConstants.MODULE_SPE, false);
     		modules.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
     		modules.put(EsaSkyWebConstants.MODULE_SSO, false);
