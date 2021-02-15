@@ -515,6 +515,9 @@ public class TabulatorWrapper{
 		    			}
 	    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"){
 						row[metadata[j].name] = parseInt(response.data[i][j]);
+		    			if(isNaN(row[metadata[j].name])){
+							row[metadata[j].name] = undefined;
+		    			}
 	    			} else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
 						row[metadata[j].name] = response.data[i][j];
 	    			} else {
@@ -1731,17 +1734,20 @@ public class TabulatorWrapper{
                         	if(i==0){
                             	metadata.push({name:extraData.name, displayName: $wnd.esasky.getColumnDisplayText(extraData.name), datatype:extraData.type, visible: true});
                         	}
-                           if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"){
-								row[metadata[j].name] = parseFloat(response.data[i][j]);
-				    			if(isNaN(row[metadata[j].name])){
-									row[metadata[j].name] = undefined;
+                           if(extraData.type.toUpperCase() === "DOUBLE" || extraData.type.toUpperCase() === "REAL"){
+								row[extraData.name] = parseFloat(extraData.value);
+				    			if(isNaN(row[extraData.name])){
+									row[extraData.name] = undefined;
 				    			}
-				    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"){
-									row[metadata[j].name] = parseInt(response.data[i][j]);
-				    			} else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
-									row[metadata[j].name] = response.data[i][j];
+				    			} else if(extraData.type.toUpperCase() === "INTEGER" || extraData.type.toUpperCase() === "INT"){
+									row[extraData.name] = parseInt(extraData.value);
+					    			if(isNaN(row[extraData.name])){
+										row[extraData.name] = undefined;
+					    			}
+				    			} else if(extraData.type.toUpperCase() === "BIGINT"|| extraData.type.toUpperCase() === "LONG"){
+									row[extraData.name] = extraData.value;
 				    			} else {
-									row[metadata[j].name] = response.data[i][j];
+									row[extraData.name] = extraData.value;
 				    			}
                         });
                         
