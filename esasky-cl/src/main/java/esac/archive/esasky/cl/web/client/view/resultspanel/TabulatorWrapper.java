@@ -508,13 +508,15 @@ public class TabulatorWrapper{
 			for(var i = 0; i < response.data.length; i++){
 				var row = {id:i};
 				for(var j = 0; j < metadata.length; j++){
-	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"
-	    			    || metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"
-	    			    || metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
+	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"){
 						row[metadata[j].name] = parseFloat(response.data[i][j]);
 		    			if(isNaN(row[metadata[j].name])){
 							row[metadata[j].name] = undefined;
 		    			}
+	    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"){
+						row[metadata[j].name] = parseInt(response.data[i][j]);
+	    			} else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
+						row[metadata[j].name] = response.data[i][j];
 	    			} else {
 						row[metadata[j].name] = response.data[i][j];
 	    			}
@@ -1342,9 +1344,7 @@ public class TabulatorWrapper{
 		    				});
 			    		}
 			    		else if(this.metadata[i].datatype.toUpperCase() === "INTEGER" 
-			    		    || this.metadata[i].datatype.toUpperCase() === "INT"
-			    		    || this.metadata[i].datatype.toUpperCase() === "BIGINT"
-			    		    || this.metadata[i].datatype.toUpperCase() === "LONG"){
+			    		    || this.metadata[i].datatype.toUpperCase() === "INT"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
@@ -1362,6 +1362,25 @@ public class TabulatorWrapper{
 				    			headerFilterFunc:DoubleFilter,
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
+			    		}
+			    		else if(this.metadata[i].datatype.toUpperCase() === "BIGINT" 
+			    		    || this.metadata[i].datatype.toUpperCase() === "LONG"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
+				    			formatter:"plaintext",
+				    			sorter:  "string",
+				    			sorterParams: {thousandSeperator: ""},
+				    			headerFilter:stringFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:"like",
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
+			    			});
 			    		}
 			    		else if(this.metadata[i].datatype.toUpperCase() === "LIST"){
 			    			activeColumnGroup.push({
@@ -1712,18 +1731,18 @@ public class TabulatorWrapper{
                         	if(i==0){
                             	metadata.push({name:extraData.name, displayName: $wnd.esasky.getColumnDisplayText(extraData.name), datatype:extraData.type, visible: true});
                         	}
-                            if(extraData.type.toUpperCase() === "DOUBLE" || extraData.type.toUpperCase() === "REAL" 
-                                || extraData.type.toUpperCase() === "INTEGER"
-                                || extraData.type.toUpperCase() === "LONG"
-                                || extraData.type.toUpperCase() === "BIGINT"
-                                || extraData.type.toUpperCase() === "INT"){
-                                row[extraData.name] = parseFloat(extraData.value);
-                                if(isNaN(row[extraData.name])){
-                                    row[extraData.name] = undefined;
-                                }
-                            } else {
-                                row[extraData.name] = extraData.value;
-                            }
+                           if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"){
+								row[metadata[j].name] = parseFloat(response.data[i][j]);
+				    			if(isNaN(row[metadata[j].name])){
+									row[metadata[j].name] = undefined;
+				    			}
+				    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"){
+									row[metadata[j].name] = parseInt(response.data[i][j]);
+				    			} else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
+									row[metadata[j].name] = response.data[i][j];
+				    			} else {
+									row[metadata[j].name] = response.data[i][j];
+				    			}
                         });
                         
                     } else if(key !== 'id'){
