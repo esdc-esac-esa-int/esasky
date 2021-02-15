@@ -136,7 +136,7 @@ public class TAPMOCService {
     	
     	whereADQL += ")";
     	
-    	if(filter != "") {
+    	if(!"".contentEquals(filter)) {
     		whereADQL += " AND " + filter;
     		
     	}

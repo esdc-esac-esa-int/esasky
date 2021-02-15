@@ -124,7 +124,7 @@ public class ESASkyPlayerPanel extends Composite {
     }
     
     private void setGoogleAanalyticsProperties() {
-    	if (playerName == "TargetListPlayer") {
+    	if ("TargetListPlayer".equals(playerName)) {
     		googleAnalyticsCat = GoogleAnalytics.CAT_TargetList;
     	}else {
     		googleAnalyticsCat = GoogleAnalytics.CAT_SkiesMenu;

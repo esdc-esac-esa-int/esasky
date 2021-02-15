@@ -118,7 +118,6 @@ public abstract class AbstractTAPService {
     		adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
     	}
     	
-    	adql.replace("\\s*,\\s*$", "");
     	adql += " from " + descriptor.getTapTable();
     	
     	String raColumn = descriptor.getTapRaColumn();

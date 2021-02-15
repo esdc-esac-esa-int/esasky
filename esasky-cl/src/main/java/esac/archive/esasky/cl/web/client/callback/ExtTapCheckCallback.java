@@ -90,7 +90,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 //		        counts.add(totalCount);
 
 		        
-		        if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+		        if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals(descriptor.getTreeMapType())) {
 		        	
 		        	if(totalCount > 0) {
 		        		DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();

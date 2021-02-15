@@ -57,7 +57,7 @@ public class TAPObservationService extends AbstractTAPService {
 
         adql += getGeometricConstraint(descriptor);
         
-        if(filter != "") {
+        if(!"".equals(filter)) {
         	adql += " AND " + filter;
         }
         

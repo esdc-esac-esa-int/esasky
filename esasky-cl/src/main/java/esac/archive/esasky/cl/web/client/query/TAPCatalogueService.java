@@ -65,7 +65,7 @@ public class TAPCatalogueService extends AbstractTAPService {
         adql.replace("\\s*,\\s*$", "");
         adql += " from " + descriptor.getTapTable() + " where " + getGeometricConstraint(descriptor);
         
-        if(filters != "") {
+        if(!"".equals(filters)) {
         	adql += " AND " + filters;
         }
         

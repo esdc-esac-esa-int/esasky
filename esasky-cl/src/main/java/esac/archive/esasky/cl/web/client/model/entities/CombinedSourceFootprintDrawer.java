@@ -21,7 +21,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	public static final int MAX_LINEWIDTH = 12;
 	private static final double MAX_SECONDARY_SCALE = 10.0;
 
-	private double ratio = DEFAULT_LINEWIDTH / MAX_LINEWIDTH;
+	private double ratio = DEFAULT_LINEWIDTH / (double) MAX_LINEWIDTH;
 
     private double secondaryScale = 1.0;
     private boolean showAvgPM = false;

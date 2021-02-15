@@ -182,7 +182,7 @@ public class TAPExtTapService extends AbstractTAPService {
     
     public String getCountAdql(IDescriptor descriptorInput) {
     	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-		if(descriptor.getSearchFunction() == "heasarc") {
+		if("heasarc".equals(descriptor.getSearchFunction())) {
 			return getHeasarcCountAdql(descriptor);
 		}
 		return getObsCoreCountAdql(descriptor);

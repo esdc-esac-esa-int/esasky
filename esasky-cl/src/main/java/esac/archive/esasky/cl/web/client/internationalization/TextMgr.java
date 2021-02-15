@@ -95,7 +95,7 @@ public class TextMgr {
 		Log.debug("TextMgr.Init() langCode: " + localeLanguage);
 		TextMgr.initCallback = initCallback;
 		instance = new TextMgr(localeLanguage, true);
-		if(instance.getLangCode() == EsaSkyConstants.DEFAULT_LANGCODE) {
+		if(EsaSkyConstants.DEFAULT_LANGCODE.equals(instance.getLangCode())) {
 			defaultInstance = instance;
 		}else {
 			defaultInstance = new TextMgr(EsaSkyConstants.DEFAULT_LANGCODE, false);
@@ -152,7 +152,7 @@ public class TextMgr {
 			}
 		}
 		
-		if(this.langCode != EsaSkyConstants.DEFAULT_LANGCODE) {
+		if(!EsaSkyConstants.DEFAULT_LANGCODE.equals(this.langCode)) {
 			return TextMgr.getDefaultInstance().getText(key);
 		}
 		if(reportMissingTranslation) {

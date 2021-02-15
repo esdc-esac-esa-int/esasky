@@ -68,7 +68,7 @@ public class Modules {
     public static void setMode(String mode) {
     	Modules.mode = mode;
     	
-    	if(mode == "JWST") {
+    	if("JWST".equalsIgnoreCase(mode)) {
     		modules.put(EsaSkyWebConstants.MODULE_SCIENTIFIC, true);
     		modules.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
     		modules.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);

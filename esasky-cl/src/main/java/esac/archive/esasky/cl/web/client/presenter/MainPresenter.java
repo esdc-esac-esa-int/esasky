@@ -224,7 +224,7 @@ public class MainPresenter {
                 if (event.getContext() == EntityContext.EXT_TAP) {
                     PointInformation pointInformation = event.getPointInformation();
 
-                    if (pointInformation.getType() == EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION) {
+                    if (EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION.equals(pointInformation.getType())) {
 
                         getRelatedMetadata(event.getDescriptor());
                         GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps,
