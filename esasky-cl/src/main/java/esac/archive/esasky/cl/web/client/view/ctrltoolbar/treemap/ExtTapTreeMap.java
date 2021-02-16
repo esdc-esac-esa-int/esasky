@@ -187,13 +187,13 @@ public class ExtTapTreeMap extends TreeMap {
             
             for (int i = 0; i < descriptors.size(); i ++) {
             	ExtTapDescriptor desc = (ExtTapDescriptor) descriptors.get(i);
-            	if(desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+            	if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals( desc.getTreeMapType())) {
             		cleanChildren(desc);            	
             	}
             	
                 if (counts.get(i) > 0) {
                     //Only add descriptors with non zero count
-            		addPoints(desc, counts.get(i), false);
+                	addLeafPoints(desc, counts.get(i), false);
             		
                 } else {
                     //Store this index for later removing
@@ -204,7 +204,7 @@ public class ExtTapTreeMap extends TreeMap {
             }
             
             for (int i : zeroCountList) {
-                addPoints(descriptors.get(i), counts.get(i), false);
+            	addLeafPoints(descriptors.get(i), counts.get(i), false);
             }
             
             update(redraw);
@@ -218,7 +218,7 @@ public class ExtTapTreeMap extends TreeMap {
     	return null;
     }
     
-    private void addPoints(IDescriptor descriptor, int count, boolean updateView) {
+    private void addLeafPoints(IDescriptor descriptor, int count, boolean updateView) {
         String pointId = null;
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
@@ -257,7 +257,8 @@ public class ExtTapTreeMap extends TreeMap {
                 final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
 
             	ExtTapDescriptor desc = (ExtTapDescriptor) descriptor;
-            	if(desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION || desc.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT) {
+            	if(EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION.equals(desc.getTreeMapType())
+            			|| EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT.equals(desc.getTreeMapType())) {
                     Point parentPoint = getPoint2(desc.getParent());
                     newPoint.setParent(parentPoint);
             	}

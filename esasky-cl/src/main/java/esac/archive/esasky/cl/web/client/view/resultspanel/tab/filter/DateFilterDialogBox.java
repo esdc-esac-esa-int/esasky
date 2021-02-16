@@ -253,13 +253,13 @@ public class DateFilterDialogBox extends FilterDialogBox {
 				@Override
 				public void execute() {
 					String filter = "";
-					if(currentFromDate != startDate) {
+					if(!currentFromDate.equals(startDate)) {
 						filter += currentFromDate;
 					}
 					
 					filter += ",";
 					
-					if(currentToDate != endDate) {
+					if(!currentToDate.equals(endDate)) {
 						filter += currentToDate;
 					}
 					

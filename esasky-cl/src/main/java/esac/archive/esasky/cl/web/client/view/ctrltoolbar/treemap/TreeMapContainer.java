@@ -183,7 +183,7 @@ public class TreeMapContainer extends DialogBox {
 				styleString += ESASkyColors.getColor(i);
 				if(nShown == 1) {
 					styleString += " " + Double.toString(botPosition*100) + "%";
-				}else if(nShown == Math.ceil(high) - Math.floor(low) - 1) {
+				}else if(nShown == (int) Math.ceil(high) - (int) Math.floor(low) - 1) {
 					styleString += " " + Double.toString(100 - topPosition * 100) + "%";
 				}
 				nShown++;

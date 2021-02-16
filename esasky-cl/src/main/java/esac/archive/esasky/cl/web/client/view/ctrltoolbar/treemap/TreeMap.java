@@ -402,7 +402,7 @@ public class TreeMap extends Chart {
     }
 
     protected void addNoResultsGhostPoint() {
-    	if (ghostPoint.isRemoved() || ghostPoint.getName() != ghostPoint.getNoResultsText()) {
+    	if (ghostPoint.isRemoved() || !ghostPoint.getName().equals(ghostPoint.getNoResultsText())) {
     		addGhostPoint(ghostPoint.getNoResultsText());
     	}
     }

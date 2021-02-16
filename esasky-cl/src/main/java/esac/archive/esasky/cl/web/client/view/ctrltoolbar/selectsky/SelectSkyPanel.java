@@ -194,7 +194,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		}
 
 		if(opacity > 0.5) {
-			if(!secondSky.isSelected()) {
+			if(secondSky != null && !secondSky.isSelected()) {
 				secondSky.setChosenFromSlider(true);
 				secondSky.setSelected();
 			}
@@ -287,7 +287,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private void ensureCorrectSkyStyle() {
-		slider.setMaxValue(skies.size() - 1);
+		slider.setMaxValue(skies.size() - 1.0);
 		if(skies.size() <= 1){
 			for(SkyRow sky: skies){
 				sky.addOnlyOneSkyActiveStyle();
