@@ -262,7 +262,25 @@ public class TreeMap extends Chart {
     	return null;
     }
     
-    private void addPoints(IDescriptor descriptor, int count, boolean updateView) {
+    protected String generateNewPoint(IDescriptor descriptor, String color, PointInformation pointInformation, int count) {
+    	String pointId = descriptor.generateId();
+        
+    	if(isRendered()) {
+    		 final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
+             series.addPoint(newPoint, false, false, false);
+    	}
+    	
+		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
+			@Override
+			public void onColorChange(IDescriptor descriptor, String newColor) {
+				setPointColor(descriptor, newColor);
+			}
+		});
+		
+		return pointId;
+    }
+    
+    protected void addPoints(IDescriptor descriptor, int count, boolean updateView) {
         String pointId = null;
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
@@ -282,21 +300,7 @@ public class TreeMap extends Chart {
             
             if (!found) {
                 
-                pointId = descriptor.generateId();
-                final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
-
-                series.addPoint(newPoint, false, false, false);
-                
-                if (updateView) {
-                    update();
-                }
-                
-        		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
-					@Override
-					public void onColorChange(IDescriptor descriptor, String newColor) {
-						setPointColor(descriptor, newColor);
-					}
-				});
+                pointId = generateNewPoint(descriptor, descriptor.getPrimaryColor(), pointInformation, count);
             }
             
         } else {
@@ -310,15 +314,7 @@ public class TreeMap extends Chart {
             }
             
             if (!found) {
-                pointId = descriptor.generateId();
-                
-        		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
-					
-					@Override
-					public void onColorChange(IDescriptor descriptor, String newColor) {
-						setPointColor(descriptor, newColor);
-					}
-				});
+            	pointId = generateNewPoint(descriptor, descriptor.getPrimaryColor(), pointInformation, count);
             }
             
             final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
