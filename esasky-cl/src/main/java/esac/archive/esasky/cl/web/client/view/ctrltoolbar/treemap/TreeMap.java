@@ -280,47 +280,62 @@ public class TreeMap extends Chart {
 		return pointId;
     }
     
+    protected String addRenderedPoint(IDescriptor descriptor, PointInformation pointInformation, String color, int count, boolean updateView) {
+        String pointId = null;
+        boolean found = false;
+        Point point = getPoint(descriptor);
+        if(point != null) {
+        	pointId = point.getText();
+        	if (count == 0) {
+        		removePoint(point, updateView);
+        	} else {
+        		point.update(logCount(count), updateView);
+        	}
+        	found = true;
+        }
+        
+        if (!found) {
+            
+            pointId = generateNewPoint(descriptor, color, pointInformation, count);
+        }
+        
+        return pointId;
+    }
+    
+    protected String addNotRenderedPoint(IDescriptor descriptor, PointInformation pointInformation, String color,  int count, boolean updateView) {
+        String pointId = null;
+        boolean found = false;
+    	for (Point point : pointsToAdd) {
+            if (isMatch(descriptor, point)) {
+                pointId = point.getText();
+                pointsToAdd.remove(point);
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+        	pointId = generateNewPoint(descriptor, color, pointInformation, count);
+        }
+        
+        final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
+        
+        pointsToAdd.add(newPoint);
+        addPointsOnNextRender = true;
+        return pointId;
+    }
+    
     protected void addPoints(IDescriptor descriptor, int count, boolean updateView) {
         String pointId = null;
 
         PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
                 descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor, context);
-        boolean found = false;
+        
         if (isRendered()) {
-            Point point = getPoint(descriptor);
-            if(point != null) {
-            	pointId = point.getText();
-            	if (count == 0) {
-            		removePoint(point, updateView);
-            	} else {
-            		point.update(logCount(count), updateView);
-            	}
-            	found = true;
-            }
-            
-            if (!found) {
-                
-                pointId = generateNewPoint(descriptor, descriptor.getPrimaryColor(), pointInformation, count);
-            }
+        	pointId = addRenderedPoint(descriptor, pointInformation, descriptor.getPrimaryColor(), count, updateView);
             
         } else {
-            for (Point point : pointsToAdd) {
-                if (isMatch(descriptor, point)) {
-                    pointId = point.getText();
-                    pointsToAdd.remove(point);
-                    found = true;
-                    break;
-                }
-            }
-            
-            if (!found) {
-            	pointId = generateNewPoint(descriptor, descriptor.getPrimaryColor(), pointInformation, count);
-            }
-            
-            final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
-            
-            pointsToAdd.add(newPoint);
-            addPointsOnNextRender = true;
+            pointId = addNotRenderedPoint(descriptor, pointInformation, descriptor.getPrimaryColor(), count, updateView);
         }
 
         allPoints.put(pointId, pointInformation);

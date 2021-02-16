@@ -270,41 +270,11 @@ public class ExtTapTreeMap extends TreeMap {
         String color = getDescriptorColor(descriptor);
         pointInformation.setParentColor(color);
         
-        boolean found = false;
         if (isRendered()) {
-            Point point = getPoint(descriptor);
-            if(point != null) {
-            	pointId = point.getText();
-            	if (count == 0) {
-            		point.update(0, updateView);
-            	} else {
-            		point.update(logCount(count), updateView);
-            	}
-            	found = true;
-            }
-            
-            if (!found) {
-            	pointId = generateNewPoint(descriptor, color, pointInformation, count);
-            }
+            pointId = addRenderedPoint(descriptor, pointInformation, color, count, updateView);
             
         } else {
-            for (Point point : pointsToAdd) {
-                if (isMatch(descriptor, point)) {
-                    pointId = point.getText();
-                    pointsToAdd.remove(point);
-                    found = true;
-                    break;
-                }
-            }
-            
-            if (!found) {
-            	pointId = generateNewPoint(descriptor, color, pointInformation, count);
-            }
-            
-            final Point newPoint = getNewPoint (pointId, descriptor, descriptor.getPrimaryColor(), pointInformation, logCount(count));
-            
-            pointsToAdd.add(newPoint);
-            addPointsOnNextRender = true;
+        	pointId = addNotRenderedPoint(descriptor, pointInformation, color, count, updateView);
         }
 
         allPoints.put(pointId, pointInformation);
