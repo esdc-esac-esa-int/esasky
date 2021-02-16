@@ -32,6 +32,10 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	private long timecall;
 	private CountStatus countStatus;
 	private ExtTapDescriptor descriptor;
+	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
+    private List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
+    private List<Integer> counts = new LinkedList<Integer>();
+	
 
 	
 	public ExtTapCheckCallback(String adql, ExtTapDescriptor descriptor, CountStatus countStatus,
@@ -42,59 +46,141 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		this.descriptor = descriptor;
 	}
 	
+	private boolean checkValidUpdate() {
+		if(countStatus.getUpdateTime(descriptor) != null 
+        		&& countStatus.getUpdateTime(descriptor) > timecall) {
+        	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
+        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
+        	return false;
+        }
+		if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT){
+			Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
+					+ Double.toString(CoordinateUtils.getCenterCoordinateInJ2000().getFov() ));
+        	return false;
+		}
+		return true;
+	}
+	
+	private void logReceived(String logPrefix, int totalCount) {
+	 	double timeForReceiving = (double) (System.currentTimeMillis() - timecall)/1000.0;
+	 	Log.debug(logPrefix + descriptor.getGuiLongName() + " Time for response (s): "
+	 			+ Double.toString(timeForReceiving));
+	 	
+	 	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_count,
+	 			descriptor.getGuiLongName() + " Time for response (s): " + Double.toString(timeForReceiving));
+        
+        Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getGuiLongName()
+    	+ ": [" + totalCount + "] results found");
+    
+	}
+	
+	private void updateCountStatus(int totalCount) {
+		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+		countStatus.setUpdateTime(descriptor, timecall);
+        countStatus.setCountDetails(descriptor, totalCount, System.currentTimeMillis(),
+        		skyViewPosition);
+	}
+	
+	private String findFacility(String collection) {
+		String facilityName = null;
+
+		for(String key : descriptor.getCollections().keySet()) {
+			if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.OBSCORE_COLLECTION)
+					&& descriptor.getCollections().get(key).get(EsaSkyConstants.OBSCORE_COLLECTION).contains(collection)) {
+				facilityName = key;
+				break;
+			}else if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.TABLE_NAME) 
+					&& descriptor.getCollections().get(key).get(EsaSkyConstants.TABLE_NAME).contains(collection)) {
+				facilityName = key;
+				break;
+			}
+		}
+		
+		return facilityName;
+	}
+	
+	private String getType(ArrayList<Object> row, int typeIndex ){
+		if(typeIndex >= 0) {
+			return (String) row.get(typeIndex);
+		}else {
+			return EsaSkyConstants.CATALOGUE;
+		}
+		
+	}
+	
+	private void logMissingProductType(String collection, String productType) {
+		String extra = descriptor.getCreditedInstitutions() + "-" + collection + "-" + productType;
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
+				GoogleAnalytics.ACT_ExtTap_missingProductType, extra);
+	}
+	private void logMissingCollection(String collection) {
+		String extra = descriptor.getCreditedInstitutions() + "-" + collection;
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
+				GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
+	}
+	
+	private ExtTapDescriptor addTypeDesc(String productType) {
+		ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+				descriptor.getMission() + "-" + ObsCoreCollection.get(productType));
+		
+		if(typeDesc == null) {
+			typeDesc = ExtTapUtils.createDataproductDescriptor(descriptor, productType);
+		}
+		
+		if(!descriptors.contains(typeDesc)) {
+			descriptors.add(typeDesc);
+			counts.add(1);
+		}
+		
+		return typeDesc;
+	}
+	
+	private void addCollectionDesc(ExtTapDescriptor typeDesc, String productType, String facilityName) {
+		String combinedName = ObsCoreCollection.get(productType) + "-" + facilityName;
+
+		ExtTapDescriptor collectionDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+				descriptor.getMission() + "-" + combinedName);
+		
+		if(collectionDesc == null) {
+			collectionDesc = ExtTapUtils.createCollectionDescriptor(descriptor, typeDesc, facilityName);
+			extTapDescriptors.getDescriptors().add(collectionDesc);
+		}
+		
+		if(!descriptors.contains(collectionDesc)) {
+			descriptors.add(collectionDesc);
+			counts.add(1);
+			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+			countStatus.setCountDetails(collectionDesc, 1, System.currentTimeMillis(),
+	        		skyViewPosition);
+		}
+	}
+	
 	@Override
 	protected void onSuccess(final Response response) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
 			
 			@Override
 			public void execute() {
-				if(countStatus.getUpdateTime(descriptor) != null 
-		        		&& countStatus.getUpdateTime(descriptor) > timecall) {
-		        	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
-		        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
-		        	return;
-		        }
-				if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT){
-					Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
-							+ Double.toString(CoordinateUtils.getCenterCoordinateInJ2000().getFov() ));
-		        	return;
+				
+				if(!checkValidUpdate()) {
+					return;
 				}
 			 
 			 	String logPrefix = "[ExtTapCheckCallback]";
 			 
-			 	double timeForReceiving = (double) (System.currentTimeMillis() - timecall)/1000.0;
-			 	Log.debug(logPrefix + descriptor.getGuiLongName() + " Time for response (s): "
-			 			+ Double.toString(timeForReceiving));
 			 	
-			 	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_count,
-			 			descriptor.getGuiLongName() + " Time for response (s): " + Double.toString(timeForReceiving));
-		        
-		        countStatus.setUpdateTime(descriptor, timecall);
 				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 				TapRowList rowList = mapper.read(response.getText());
 	
 				int totalCount = rowList.getData().size();
-				SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-	
-		        countStatus.setCountDetails(descriptor, totalCount, System.currentTimeMillis(),
-		        		skyViewPosition);
-		        
-		        Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getGuiLongName()
-		        	+ ": [" + totalCount + "] results found");
-		        
-		        
-		        List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
-		        List<Integer> counts = new LinkedList<Integer>();
-
-//		        descriptors.add(descriptor);
-//		        counts.add(totalCount);
+				logReceived(logPrefix, totalCount);
+				updateCountStatus(totalCount);
 
 		        
 		        if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals(descriptor.getTreeMapType())) {
 		        	
 		        	if(totalCount > 0) {
-		        		DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();
-		        		
+		        		extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();
 		        		
 		        		int collIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_COLLECTION);
 		        		if(collIndex == -1) {
@@ -105,69 +191,20 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        		
 		        		for(ArrayList<Object> row : rowList.getData()) {
 		        			String collection = (String) row.get(collIndex);
-		        			String productType;
-		        			if(typeIndex >= 0) {
-		        				productType = (String) row.get(typeIndex);
-		        			}else {
-		        				productType = EsaSkyConstants.CATALOGUE;
-		        			}
-		        				
-	        				boolean found = false;
-	        				String facilityName = "";
-	        				for(String key : descriptor.getCollections().keySet()) {
-	        					if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.OBSCORE_COLLECTION)
-	        							&& descriptor.getCollections().get(key).get(EsaSkyConstants.OBSCORE_COLLECTION).contains(collection)) {
-	        						found = true;
-	        						facilityName = key;
-	        						break;
-	        					}else if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.TABLE_NAME) 
-	        							&& descriptor.getCollections().get(key).get(EsaSkyConstants.TABLE_NAME).contains(collection)) {
-	        						found = true;
-	        						facilityName = key;
-	        						break;
-	        					}
-	        				}
+		        			String productType = getType(row, typeIndex);
+	        				String facilityName = findFacility(collection);
 	        				
-	        				if(found) {
+	        				if(facilityName != null) {
 	        					if(descriptor.getCollections().get(facilityName).get(EsaSkyConstants.OBSCORE_DATAPRODUCT).contains(productType)) {
-	        					
-		        					ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-		        							descriptor.getMission() + "-" + ObsCoreCollection.get(productType));
+		        					ExtTapDescriptor typeDesc = addTypeDesc(productType);
+		        					addCollectionDesc(typeDesc, productType, facilityName);
 		        					
-		        					if(typeDesc == null) {
-		        						typeDesc = ExtTapUtils.createDataproductDescriptor(descriptor, productType);
-		        					}
-		        					
-		        					if(!descriptors.contains(typeDesc)) {
-		        						descriptors.add(typeDesc);
-		        						counts.add(1);
-		        					}
-		        					
-		        					String combinedName = ObsCoreCollection.get(productType) + "-" + facilityName;
-		        					ExtTapDescriptor collectionDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-		        							descriptor.getMission() + "-" + combinedName);
-		        					
-		        					if(collectionDesc == null) {
-		        						collectionDesc = ExtTapUtils.createCollectionDescriptor(descriptor, typeDesc, facilityName);
-		        						extTapDescriptors.getDescriptors().add(collectionDesc);
-		        					}
-		        					
-		        					if(!descriptors.contains(collectionDesc)) {
-		        						descriptors.add(collectionDesc);
-		        						counts.add(1);
-		        						countStatus.setCountDetails(collectionDesc, 1, System.currentTimeMillis(),
-		        				        		skyViewPosition);
-		        					}
 	        					}else {
-		        					String extra = descriptor.getCreditedInstitutions() + "-" + collection + "-" + productType;
-		        					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
-		        							GoogleAnalytics.ACT_ExtTap_missingProductType, extra);
+	        						logMissingProductType(collection, productType);
 		        				}
 	        					
 	        				}else {
-	        					String extra = descriptor.getCreditedInstitutions() + "-" + collection;
-	        					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
-	        							GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
+	        					logMissingCollection(collection);
 		        			}
 		        		}
 		        	}
