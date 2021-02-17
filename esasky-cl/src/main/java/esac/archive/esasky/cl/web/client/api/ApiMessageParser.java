@@ -13,13 +13,13 @@ public class ApiMessageParser {
 			
 			if('origin' in msg){
 				if(msg.origin == 'pyesasky'){
-					api.@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToPython()();
+					@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToPython()();
 				}
 				else{
-					api.@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToAPI()();
+					@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToAPI()();
 				}
 			}else{
-					api.@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToAPI()();
+					@esac.archive.esasky.cl.web.client.api.Api::setGoogleAnalyticsCatToAPI()();
 			}
 			
 			//Handling of empty properties on java side
