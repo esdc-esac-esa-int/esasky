@@ -113,13 +113,9 @@ public class MainPresenter {
         
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
 
-        if (Modules.spectraModule) {
-            getSpectraList();
-        }
+        getSpectraList();
 
-        if (Modules.publicationsModule) {
-            descriptorRepo.initPubDescriptors();
-        }
+        descriptorRepo.initPubDescriptors();
 
         bindSampRequests();
         bind();
@@ -141,7 +137,7 @@ public class MainPresenter {
         this.resultsPresenter = getResultsPresenter();
         this.headerPresenter = new HeaderPresenter(view.getHeaderPanel(), coordinateFrameFromUrl);
         new BannerPresenter(view.getBannerPanel());
-        if (Modules.bannersOnAllSides) {
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_BANNERS_ALL_SIDE)) {
             new BannerPresenter(view.getBannerPanelLeftSide());
             new BannerPresenter(view.getBannerPanelRightSide());
             new BannerPresenter(view.getBannerPanelBottom());
@@ -156,7 +152,7 @@ public class MainPresenter {
         getTargetPresenter();
         AladinLiteWrapper.getAladinLite().enableReduceDeformations();
 
-        if (Modules.publicationsModule) {
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
             if (UrlUtils.urlHasAuthor()) {
                 loadOrQueueAuthorInformationFromSimbad(
                         Window.Location.getParameterMap().get(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM).get(0));

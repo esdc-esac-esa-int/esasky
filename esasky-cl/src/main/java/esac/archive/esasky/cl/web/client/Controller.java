@@ -26,6 +26,7 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
+import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 
 /**
@@ -65,7 +66,11 @@ public class Controller implements ValueChangeHandler<String> {
 		String toggleColumns = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS);
 		if(toggleColumns != null 
 		        && isParameterNegative(toggleColumns)){
-		    Modules.toggleColumns = false;
+		    try {
+				Modules.setModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS, false);
+			} catch (MapKeyException e) {
+				Log.debug(e.getMessage(), e);
+			}
 	    }
 		
 		setBasicLayoutFromParameters();

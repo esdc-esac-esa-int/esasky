@@ -44,6 +44,7 @@ import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -198,7 +199,7 @@ public class CloseableTabLayoutPanel extends Composite {
         shadedArea.add(recenterButton);
         shadedArea.add(createSendButton());
         shadedArea.add(createSaveButton());
-        if(Modules.toggleColumns){
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)){
             configureButton = createConfigureButton();
             shadedArea.add(configureButton);
         }

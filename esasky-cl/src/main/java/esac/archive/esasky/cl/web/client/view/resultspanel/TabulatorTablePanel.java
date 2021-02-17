@@ -141,7 +141,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		@Override
 		public final void onBrowserEvent(final Event event) {
 			if (DOM.eventGetType(event) == Event.ONCONTEXTMENU) {
-			    if(Modules.toggleColumns && toggleColumnsEnabled) {
+			    if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS) && toggleColumnsEnabled) {
 			        this.openContextMenu(event);
 			    }
 			} else {

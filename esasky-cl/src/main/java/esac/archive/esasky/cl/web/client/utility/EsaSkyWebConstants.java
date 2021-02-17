@@ -105,6 +105,7 @@ public class EsaSkyWebConstants {
      * getAladinLite().getCooFrame()
      */
     public static final String ALADIN_GALACTIC_COOFRAME = "galactic";
+    public static final String ALADIN_J2000_COOFRAME = "J2000";
 
     public static String INTERNET_EXPLORER_APPNAME = "Microsoft Internet Explorer";
     
@@ -115,7 +116,12 @@ public class EsaSkyWebConstants {
     /*************************************************************************/
     /** MODULES **/
     /*************************************************************************/
-    public static final String MODULE_SCIENTIFIC = "scientific_toggle_button";
+    public static final String MODULE_MODE_ESASKY = "ESASKY";
+    public static final String MODULE_MODE_JWST = "JWST";
+    public static final String MODULE_MODE_CLEAN = "CLEAN";
+
+    
+    public static final String MODULE_SCIENTIFIC_BUTTON = "scientific_toggle_button";
     public static final String MODULE_LANGUAGE = "language_button";
     public static final String MODULE_COOR_GRID = "coordinate_grid_button";
     public static final String MODULE_SCREENSHOT = "screenshot_button";
@@ -134,6 +140,13 @@ public class EsaSkyWebConstants {
     public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE_MODE = "science_mode";
+    
+    
+    // DEFAULT ONES
+    public static final String MODULE_WWT_LINK = "wwtLink";
+    public static final String MODULE_BANNERS_ALL_SIDE = "bannersOnAllSides";
+    public static final String MODULE_TOGGLE_COLUMNS = "toggleColumns";
+    public static final String MODULE_INTERNATIONALIZATION = "internationalization";
     
     
     

@@ -25,6 +25,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ExternalServices;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
@@ -235,7 +236,7 @@ public class AllSkyFocusPanel extends FocusPanel {
 				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.ra, j2000Coordinate.dec), "_blank", "");
 			}
 		});
-		if (!Modules.wwtLink) {
+		if (!Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			wwtButton.getElement().getStyle().setDisplay(Display.NONE);
 		}
 
@@ -247,7 +248,7 @@ public class AllSkyFocusPanel extends FocusPanel {
 		searchButtons.add(searchInNedButton);
 		searchButtons.add(searchInVizierPhotometryButton);
 		searchButtons.add(searchInVizierButton);
-		if (Modules.wwtLink) {
+		if (Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			searchButtons.add(wwtButton);
 		}
 

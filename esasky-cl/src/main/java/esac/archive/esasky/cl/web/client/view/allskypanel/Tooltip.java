@@ -17,6 +17,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesOb
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ExternalServices;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidePanel;
@@ -180,7 +181,7 @@ public abstract class Tooltip extends AutoHidePanel{
         						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
         	}
         });
-        if(Modules.wwtLink) {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
         	links.add(wwtButton);
         }
         

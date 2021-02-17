@@ -179,7 +179,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		if(!GUISessionStatus.isHidingSwitch()) {
 			rightSideHeader.add(headerScienceModeSwitch);
 		}
-		if(Modules.internationalization) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_INTERNATIONALIZATION)) {
 			languageBox.addStyleName("languageSelector");
 			rightSideHeader.add(languageBox);
 		}
@@ -234,7 +234,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			dropdownContent.add(dropdownScienceModeSwitch);
 		}
 
-		if(Modules.internationalization) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_INTERNATIONALIZATION)) {
 			dropdownLanguageBox.getElement().setId("header__dropdown__language");
 			dropdownContent.add(dropdownLanguageBox);
 		}
@@ -243,7 +243,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(createGridDropdownEntry());
 		dropdownContent.add(createShareDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
-		if(Modules.wwtLink) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
 		}
 
@@ -622,7 +622,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			coordinateFrameFirstLetter.setVisible(false);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENTIFIC) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON) && pxWidth > ScreenWidth.SMALL.getPxSize()) {
 			headerScienceModeSwitch.setVisible(true);
 			dropdownScienceModeSwitch.setVisible(false);
 		}else {

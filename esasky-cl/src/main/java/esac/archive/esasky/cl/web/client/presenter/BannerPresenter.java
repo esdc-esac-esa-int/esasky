@@ -118,7 +118,7 @@ public class BannerPresenter {
 		checkBackendMessages();
 		
 		
-		if(Modules.bannersOnAllSides){
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_BANNERS_ALL_SIDE)){
 			String newMessage = "Drag me to resize";
 			view.setText(newMessage);
 			show();

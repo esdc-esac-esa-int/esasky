@@ -39,16 +39,18 @@ public final class UrlUtils {
 		}
 		
 		String language = "";
-		if(Modules.internationalization) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_INTERNATIONALIZATION)) {
 			language = "&" + EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM + "=" + GUISessionStatus.getCurrentLanguage();
 		}
+		
 		String toggleColumns = "";
 		if(Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS)) {
 		    toggleColumns = "&" + EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS + "=" + Window.Location.getParameterMap().get(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS).get(0);
 		}
+		
 		String layout = "";
-		if(Modules.mode != null && !"".equals(Modules.mode)) {
-			layout = "&" + EsaSkyWebConstants.URL_PARAM_LAYOUT + "=" + Modules.mode;
+		if(Modules.getMode() != null && !"".equals(Modules.getMode())) {
+			layout = "&" + EsaSkyWebConstants.URL_PARAM_LAYOUT + "=" + Modules.getMode();
 		}
 		
 		String bookmarkUrl = baseUrl 

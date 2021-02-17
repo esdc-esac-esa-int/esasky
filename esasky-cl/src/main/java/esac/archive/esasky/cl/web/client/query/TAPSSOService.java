@@ -9,6 +9,7 @@ import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPSSOService extends AbstractTAPService {
 
@@ -33,7 +34,7 @@ public class TAPSSOService extends AbstractTAPService {
         SSODescriptor descriptor = (SSODescriptor) inputDescriptor;
 
         String adql;
-        if(Modules.toggleColumns) {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
             adql = "SELECT *";
         } else {
             adql = "SELECT ";

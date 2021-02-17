@@ -65,7 +65,7 @@ public abstract class AbstractTAPService {
     public String getMetadataFromMOCPixelsADQL(IDescriptor descriptor, String whereADQL) {
     	
     	String adql;
-    	if(Modules.toggleColumns) {
+    	if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
     	    adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " *";
     	} else {
     	       adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
@@ -97,7 +97,7 @@ public abstract class AbstractTAPService {
     public String getMetadataFromMOCPixel(IDescriptor descriptor, MOCInfo mocInfo) {
     	
     	String adql;
-    	if(Modules.toggleColumns) {
+    	if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
     		adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " *";
     	} else {
     		adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";

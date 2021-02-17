@@ -182,16 +182,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			}
 		});
 		
-		if(Modules.spectraModule){
-			ctrlToolBarPanel.add(createSpectraBtn());
-			ctrlToolBarPanel.add(spectraTreeMapContainer);
-			spectraTreeMapContainer.registerObserver(new TreeMapChanged() {
-				@Override
-				public void onClose() {
-					spectraButton.setToggleStatus(false);
-				}
-			});
-		}
+		ctrlToolBarPanel.add(createSpectraBtn());
+		ctrlToolBarPanel.add(spectraTreeMapContainer);
+		spectraTreeMapContainer.registerObserver(new TreeMapChanged() {
+			@Override
+			public void onClose() {
+				spectraButton.setToggleStatus(false);
+			}
+		});
 		
 		ctrlToolBarPanel.add(createExtTapBtn());
 		ctrlToolBarPanel.add(extTapTreeMapContainer);
@@ -202,37 +200,31 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
 			}
 		});
-			if(!Modules.shouldShowExtTap) {
-				hideWidget(extTapButton);
+		if(!Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
+			hideWidget(extTapButton);
+		}
+		
+		ctrlToolBarPanel.add(createSsoBtn());
+		ctrlToolBarPanel.add(ssoTreeMapContainer);
+		ssoTreeMapContainer.registerObserver(new TreeMapChanged() {
+			@Override
+			public void onClose() {
+				ssoButton.setToggleStatus(false);
 			}
+		});
 		
-		if(Modules.ssoModule){
-			ctrlToolBarPanel.add(createSsoBtn());
-			ctrlToolBarPanel.add(ssoTreeMapContainer);
-			ssoTreeMapContainer.registerObserver(new TreeMapChanged() {
-				@Override
-				public void onClose() {
-					ssoButton.setToggleStatus(false);
-				}
-			});
-		}
-		
-		if(Modules.publicationsModule){
-			publicationPanel = new PublicationPanel();
-			ctrlToolBarPanel.add(createPublicationsBtn());
-			ctrlToolBarPanel.add(publicationPanel);
-			publicationPanel.hide();
-		}
-		
+		publicationPanel = new PublicationPanel();
+		ctrlToolBarPanel.add(createPublicationsBtn());
+		ctrlToolBarPanel.add(publicationPanel);
+		publicationPanel.hide();
+	
 		ctrlToolBarPanel.add(createTargetListBtn());
 		ctrlToolBarPanel.add(targetListPanel);
 		targetListPanel.hide();
 		
-		if (Modules.proposalModule) {
-			planObservationPanel = PlanObservationPanel.getInstance();
-			ctrlToolBarPanel.add(createPlanObservationBtn());
-			ctrlToolBarPanel.add(planObservationPanel);
-		}
+		planObservationPanel = PlanObservationPanel.getInstance();
+		ctrlToolBarPanel.add(createPlanObservationBtn());
+		ctrlToolBarPanel.add(planObservationPanel);
 
 		exploreBtn = createExploreButton();
 		ctrlToolBarPanel.add(exploreBtn);

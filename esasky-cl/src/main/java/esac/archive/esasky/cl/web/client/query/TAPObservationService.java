@@ -4,6 +4,7 @@ import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -41,7 +42,7 @@ public class TAPObservationService extends AbstractTAPService {
         Log.debug(debugPrefix);
         String adql;
         
-        if(Modules.toggleColumns) {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
             adql = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor)  + " *";
         } else {
             adql = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
@@ -72,7 +73,7 @@ public class TAPObservationService extends AbstractTAPService {
     	
     	int top = DeviceUtils.getDeviceShapeLimit(descriptor);
     	
-    	if(Modules.toggleColumns) {
+    	if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
     	    adql = "SELECT top " + top +  " * ";
     	} else {
             adql = "SELECT top " + top + " ";

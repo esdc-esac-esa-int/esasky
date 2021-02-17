@@ -32,13 +32,13 @@ import esac.archive.esasky.ifcs.model.descriptor.SSODescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.UserCatalogueDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.UserObservationDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.api.APIMetadataConstants;
+import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
@@ -495,27 +495,10 @@ public class DescriptorRepository {
 
 	public void doCountAll() {
 
-		if (EsaSkyWebConstants.SINGLE_COUNT_ENABLED) {
-			// Single dynamic count
-			requestSingleCount();	
-			if(isExtTapOpen) {
-				updateCount4AllExtTaps();
-			}
-
-		} else {
-
-			// Normal dynamic count per mission
-			updateCount4Catalogs();
-			updateCount4Observations();
-
-			if (Modules.spectraModule) {
-				updateCount4Spectras();
-			}
-
-			if(isExtTapOpen) {
-				updateCount4AllExtTaps();
-			}
-			
+		// Single dynamic count
+		requestSingleCount();	
+		if(isExtTapOpen) {
+			updateCount4AllExtTaps();
 		}
 	}
 	
@@ -524,7 +507,7 @@ public class DescriptorRepository {
 		CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
 		if(fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
 			for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
-				if(descriptor.getTreeMapType() == EsaSkyConstants.TREEMAP_TYPE_SERVICE) {
+				if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals(descriptor.getTreeMapType())) {
 					if(extTapDescriptors.getCountStatus().hasMoved(descriptor)) {
 						updateCount4ExtTap(descriptor);
 					}
@@ -546,27 +529,6 @@ public class DescriptorRepository {
 					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
 	}
 	
-	private void updateCount4Catalogs() {
-		final CountStatus cs = catDescriptors.getCountStatus();
-		for (CatalogDescriptor currCat : catDescriptors.getDescriptors()) {
-			doUpdateCount(currCat, cs);
-		}
-	}
-
-	private void updateCount4Observations() {
-		final CountStatus cs = obsDescriptors.getCountStatus();
-		for (ObservationDescriptor currObs : obsDescriptors.getDescriptors()) {
-			doUpdateCount(currObs, cs);
-		}
-	}
-
-	private void updateCount4Spectras() {
-		final CountStatus cs = spectraDescriptors.getCountStatus();
-		for (SpectraDescriptor currSpectra : spectraDescriptors.getDescriptors()) {
-			doUpdateCount(currSpectra, cs);
-		}
-	}
-
 	private final void doUpdateCount(IDescriptor descriptor, CountStatus cs) {
 
 		Log.debug("[doUpdateCount][" + descriptor.getGuiShortName() + "]");
@@ -797,7 +759,7 @@ public class DescriptorRepository {
 
 	private ObservationDescriptor initUserDescriptor4Footprint(List<MetadataDescriptor> metadata,
 			FootprintListJSONWrapper footprintsSet) {
-		ObservationDescriptor descriptor = new ObservationDescriptor();
+		ObservationDescriptor descriptor = new UserObservationDescriptor();
 
 		descriptor.setMetadata(metadata);
 
@@ -807,7 +769,7 @@ public class DescriptorRepository {
 		descriptor.setDescriptorId(footprintsSet.getOverlaySet().getOverlayName());
 		descriptor.setPrimaryColor(footprintsSet.getOverlaySet().getColor());
 		
-		descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
+		descriptor.setUniqueIdentifierField(ApiConstants.OBS_NAME);
 		
 		descriptor.setTapSTCSColumn("stcs");
 		descriptor.setSampEnabled(false);
@@ -839,7 +801,7 @@ public class DescriptorRepository {
 			descriptor.setPrimaryColor(ESASkyColors.getNext());
 		}
 		
-		descriptor.setUniqueIdentifierField(APIMetadataConstants.OBS_NAME);
+		descriptor.setUniqueIdentifierField(ApiConstants.OBS_NAME);
 		
 		descriptor.setSampEnabled(false);
 		
@@ -869,9 +831,9 @@ public class DescriptorRepository {
 		descriptor.setTapTable(NOT_SET);
 		descriptor.setTabCount(0);
 
-		descriptor.setTapRaColumn(APIMetadataConstants.CENTER_RA_DEG);
-		descriptor.setTapDecColumn(APIMetadataConstants.CENTER_DEC_DEG);
-		descriptor.setUniqueIdentifierField(APIMetadataConstants.CAT_NAME);
+		descriptor.setTapRaColumn(ApiConstants.CENTER_RA_DEG);
+		descriptor.setTapDecColumn(ApiConstants.CENTER_DEC_DEG);
+		descriptor.setUniqueIdentifierField(ApiConstants.CAT_NAME);
 
 		return descriptor;
 	}

@@ -4,6 +4,7 @@ import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -38,7 +39,7 @@ public class TAPCatalogueService extends AbstractTAPService {
 	public String getMetadataAdql(IDescriptor descriptorInput, String filters) {
         CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
         String adql = "";
-        if(Modules.toggleColumns) {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
             adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " * ";
         } else {
             adql = "select top " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
@@ -79,7 +80,7 @@ public class TAPCatalogueService extends AbstractTAPService {
     public String getMetadataAdqlFromIpix(IDescriptor descriptorInput, int order, int ipix) {
     	CatalogDescriptor descriptor = (CatalogDescriptor) descriptorInput;
         String adql = "";
-        if(Modules.toggleColumns) {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
             adql = "select *";
         } else {
             adql = "select  ";
@@ -121,7 +122,7 @@ public class TAPCatalogueService extends AbstractTAPService {
         int top = DeviceUtils.getDeviceShapeLimit(descriptor);
 
         String adql;
-        if (Modules.toggleColumns) {
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
             adql = "select top " + top + " *";
             
         } else {
