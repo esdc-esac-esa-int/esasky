@@ -83,6 +83,7 @@ public class ApiConstants {
 	public static final String ERROR = "error";
 	public static final String EVENT = "event";
 	public static final String VALUES = "values";
+	public static final String VALUE = "value";
 	public static final String MESSAGE = "message";
 	public static final String INITIALISED = "initialised";
 	public static final String MSGID = "msgId";

@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.api;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -135,6 +136,9 @@ public class ApiModules extends ApiBase{
 			controller.getRootPresenter().updateModuleVisibility();
 			
 		}catch(MapKeyException e) {
+			
+			Log.debug("[ApiModules]" + e.getMessage(), e);
+			
 			String message = "Input needs to be on format {key:boolean}";
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString(message));

@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.api;
 
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
@@ -201,10 +202,15 @@ public class ApiHips extends ApiBase{
 		SkiesMenu skiesMenu = controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getSkiesMenu();
 		
 		HipsWavelength hipsWavelength;
-		try {
-			hipsWavelength = HipsWavelength.valueOf(wavelength);	
-		}catch(Exception e) {
+		if(wavelength == null && "".equals(wavelength)) {
 			hipsWavelength = null;
+		}else {
+			try {
+				hipsWavelength = HipsWavelength.valueOf(wavelength);	
+			}catch(Exception e) {
+				Log.debug("[APIHips]" + e.getMessage(),e);
+				hipsWavelength = null;
+			}
 		}
 		if (null == hipsWavelength) {
 			JSONObject wavelengthMap = new  JSONObject();

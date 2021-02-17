@@ -42,18 +42,24 @@ public class ApiExtTap extends ApiBase{
 		}
 	}
 	
+	private JSONObject countToJSON(final ExtTapDescriptor parent, CountStatus countStatus) {
+		JSONObject obsCount = new  JSONObject();
+		
+		for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
+			if(desc.hasParent(parent)) {
+				if(countStatus.containsDescriptor(desc)) {
+					obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
+				}
+			}
+		}
+		
+		return obsCount;
+	}
+	
 	private void getExtTapCount(final ExtTapDescriptor parent, final JavaScriptObject widget) {
 		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
 		if(!countStatus.hasMoved(parent)) {
-			JSONObject obsCount = new  JSONObject();
-			
-			for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
-				if(desc.hasParent(parent)) {
-					if(countStatus.containsDescriptor(desc)) {
-						obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
-					}
-				}
-			}
+			JSONObject obsCount = countToJSON(parent, countStatus);
 			
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 			sendBackToWidget(obsCount, widget);
@@ -62,15 +68,7 @@ public class ApiExtTap extends ApiBase{
 			countStatus.registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {
-					JSONObject obsCount = new  JSONObject();
-					
-					for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
-						if(desc.hasParent(parent)) {
-							if(countStatus.containsDescriptor(desc)) {
-								obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
-							}
-						}
-					}
+					JSONObject obsCount = countToJSON(parent, countStatus);
 					
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
 					sendBackToWidget(obsCount, widget);

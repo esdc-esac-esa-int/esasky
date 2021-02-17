@@ -13,11 +13,11 @@ public abstract class ApiBase {
 	protected Controller controller;
 	protected static String googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
 	
-	public void setGoogleAnalyticsCatToPython() {
+	public static void setGoogleAnalyticsCatToPython() {
 		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
 	}
 
-	public void setGoogleAnalyticsCatToAPI() {
+	public static void setGoogleAnalyticsCatToAPI() {
 		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_JavaScriptAPI;
 	}
 	

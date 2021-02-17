@@ -4,22 +4,11 @@ package esac.archive.esasky.cl.web.client.api;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
-import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.EsaSkyWeb;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 
 public class Api extends ApiBase{
 	
-
-
-	Controller controller;
-	
 	private static Api instance = null;
-	
-
-	
 	
 	public static Api getInstance() {
 			return instance;

@@ -117,7 +117,7 @@ public class ApiOverlay extends ApiBase{
 					((Footprint) fooprintList.getSkyObjectList().get(0)).getRa_deg(),
 					((Footprint) fooprintList.getSkyObjectList().get(0)).getDec_deg());
 		} catch (Exception ex) {
-			Log.error(ex.getMessage());
+			Log.error(ex.getMessage(), ex);
 		}
 
 	}
@@ -181,7 +181,7 @@ public class ApiOverlay extends ApiBase{
 			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), shouldBeInTablePanel);
 
 		} catch (Exception ex) {
-			Log.error(ex.getMessage());
+			Log.error(ex.getMessage(), ex);
 		}
 	}
 	

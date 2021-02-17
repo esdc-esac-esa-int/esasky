@@ -32,24 +32,24 @@ public class ApiPanel extends ApiBase{
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
 					JSONObject callback = tablePanel.exportAsJSON();
 					JSONObject res = new JSONObject();
-					res.put("value", callback);
+					res.put(ApiConstants.VALUE, callback);
 					sendBackToWidget(res, msg);
 					tablePanel.unregisterObserver(this);
 				}
 
                 @Override
                 public void onSelection(ITablePanel selectedTablePanel) {
+                	//Don't need this here
                 }
 
                 @Override
                 public void onUpdateStyle(ITablePanel panel) {
-                    // TODO Auto-generated method stub
-                    
+                	//Don't need this here
                 }
 			});
 		}else {
 			JSONObject res = new JSONObject();
-			res.put("value", callback);
+			res.put(ApiConstants.VALUE, callback);
 			sendBackToWidget(res, msg);
 		}
 	}
@@ -80,7 +80,7 @@ public class ApiPanel extends ApiBase{
 			MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
 			controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
 		}catch(IndexOutOfBoundsException e) {
-			Log.error(e.toString());
+			Log.error(e.toString(), e);
 		}
 	}
 
@@ -99,11 +99,15 @@ public class ApiPanel extends ApiBase{
 		while(true) {
 			try {
 				ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+				if(tablePanel == null) {
+					break;
+				}
 				tablePanel.closeTablePanel();
 				String id = tablePanel.getEntity().getEsaSkyUniqId();
 				MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
 				controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
 			}catch(Exception e) {
+				Log.debug(e.getMessage(), e);
 				break;
 			}
 		}
