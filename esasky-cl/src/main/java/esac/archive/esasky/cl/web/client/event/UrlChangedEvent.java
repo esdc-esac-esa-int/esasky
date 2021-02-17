@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class UrlChangedEvent extends GwtEvent<UrlChangedEventHandler> {
 
     /** Event type. */
-    public static Type<UrlChangedEventHandler> TYPE = new Type<UrlChangedEventHandler>();
+    public final static Type<UrlChangedEventHandler> TYPE = new Type<UrlChangedEventHandler>();
 
     public UrlChangedEvent() {
     }

@@ -10,7 +10,7 @@ import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 public class UpdateNumRowsSelectedEvent extends GwtEvent<UpdateNumRowsSelectedEventHandler> {
 
     /** Event type. */
-    public static Type<UpdateNumRowsSelectedEventHandler> TYPE = new Type<UpdateNumRowsSelectedEventHandler>();
+    public final static Type<UpdateNumRowsSelectedEventHandler> TYPE = new Type<UpdateNumRowsSelectedEventHandler>();
 
     /** ESASkyUniqID. */
     private String esaSkyUniqID;

@@ -12,7 +12,7 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 public class HipsChangeEvent extends GwtEvent<HipsChangeEventHandler> {
 
     /** Event type. */
-    public static Type<HipsChangeEventHandler> TYPE = new Type<HipsChangeEventHandler>();
+    public final static Type<HipsChangeEventHandler> TYPE = new Type<HipsChangeEventHandler>();
 
     private HiPS hips;
     private ColorPalette colorPalette;

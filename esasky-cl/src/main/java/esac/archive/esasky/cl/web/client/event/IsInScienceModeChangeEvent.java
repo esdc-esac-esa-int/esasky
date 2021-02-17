@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class IsInScienceModeChangeEvent extends GwtEvent<IsInScienceModeEventHandler> {
 
-    public static Type<IsInScienceModeEventHandler> TYPE = new Type<IsInScienceModeEventHandler>();
+    public final static Type<IsInScienceModeEventHandler> TYPE = new Type<IsInScienceModeEventHandler>();
 
     public IsInScienceModeChangeEvent() {
     }

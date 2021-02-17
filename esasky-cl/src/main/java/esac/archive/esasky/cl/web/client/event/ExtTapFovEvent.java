@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class ExtTapFovEvent extends GwtEvent<ExtTapFovEventHandler> {
 
-    public static Type<ExtTapFovEventHandler> TYPE = new Type<ExtTapFovEventHandler>();
+    public final static Type<ExtTapFovEventHandler> TYPE = new Type<ExtTapFovEventHandler>();
 
     private double fov;
     

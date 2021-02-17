@@ -10,7 +10,7 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 public class MultiTargetClickEvent extends GwtEvent<MultiTargetClickEventHandler> {
 
     /** Event type. */
-    public static Type<MultiTargetClickEventHandler> TYPE = new Type<MultiTargetClickEventHandler>();
+    public final static Type<MultiTargetClickEventHandler> TYPE = new Type<MultiTargetClickEventHandler>();
 
     /** class attribute with type MultiTargetObject. */
     private ESASkySearchResult target;

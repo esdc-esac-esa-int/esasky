@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class TargetDescriptionEvent extends GwtEvent<TargetDescriptionEventHandler> {
 
     /** Event type. */
-    public static Type<TargetDescriptionEventHandler> TYPE = new Type<TargetDescriptionEventHandler>();
+    public final static Type<TargetDescriptionEventHandler> TYPE = new Type<TargetDescriptionEventHandler>();
 
     private String targetName;
     private String targetDescription;

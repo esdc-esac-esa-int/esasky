@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class ToggleServerProblemBannerEvent extends GwtEvent<ToggleServerProblemBannerEventHandler> {
 
-    public static Type<ToggleServerProblemBannerEventHandler> TYPE = new Type<ToggleServerProblemBannerEventHandler>();
+    public final static Type<ToggleServerProblemBannerEventHandler> TYPE = new Type<ToggleServerProblemBannerEventHandler>();
 
     public ToggleServerProblemBannerEvent() {
     }

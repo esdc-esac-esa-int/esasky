@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class ServerProblemFoundEvent extends GwtEvent<ServerProblemFoundEventHandler> {
 
-    public static Type<ServerProblemFoundEventHandler> TYPE = new Type<ServerProblemFoundEventHandler>();
+    public final static Type<ServerProblemFoundEventHandler> TYPE = new Type<ServerProblemFoundEventHandler>();
 
     public ServerProblemFoundEvent() {
     }

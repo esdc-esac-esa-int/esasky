@@ -11,7 +11,7 @@ import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 public class ExportCSVEvent extends GwtEvent<ExportCSVEventHandler> {
 
     /** Event type. */
-    public static Type<ExportCSVEventHandler> TYPE = new Type<ExportCSVEventHandler>();
+    public final static Type<ExportCSVEventHandler> TYPE = new Type<ExportCSVEventHandler>();
 
     /** ESASkyUniqID. */
     private String esaSkyUniqID;

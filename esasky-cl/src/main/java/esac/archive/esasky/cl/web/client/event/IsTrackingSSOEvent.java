@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class IsTrackingSSOEvent extends GwtEvent<IsTrackingSSOEventHandler> {
 
-    public static Type<IsTrackingSSOEventHandler> TYPE = new Type<IsTrackingSSOEventHandler>();
+    public final static Type<IsTrackingSSOEventHandler> TYPE = new Type<IsTrackingSSOEventHandler>();
 
     public IsTrackingSSOEvent() {
     }

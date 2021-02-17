@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class CheckForServerMessagesEvent extends GwtEvent<CheckForServerMessagesEventHandler> {
 
-    public static Type<CheckForServerMessagesEventHandler> TYPE = new Type<CheckForServerMessagesEventHandler>();
+    public final static Type<CheckForServerMessagesEventHandler> TYPE = new Type<CheckForServerMessagesEventHandler>();
 
     public CheckForServerMessagesEvent() {
     }

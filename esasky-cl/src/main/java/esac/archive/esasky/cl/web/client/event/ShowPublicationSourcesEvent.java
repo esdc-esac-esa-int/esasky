@@ -6,7 +6,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class ShowPublicationSourcesEvent extends GwtEvent<ShowPublicationSourcesEventHandler> {
 
-    public static Type<ShowPublicationSourcesEventHandler> TYPE = new Type<ShowPublicationSourcesEventHandler>();
+    public final static Type<ShowPublicationSourcesEventHandler> TYPE = new Type<ShowPublicationSourcesEventHandler>();
 
     public final GeneralJavaScriptObject rowData;
     

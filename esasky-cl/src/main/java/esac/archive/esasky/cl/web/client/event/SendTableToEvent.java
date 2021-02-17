@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class SendTableToEvent extends GwtEvent<SendTableToEventHandler> {
 
     /** Event type. */
-    public static Type<SendTableToEventHandler> TYPE = new Type<SendTableToEventHandler>();
+    public final static Type<SendTableToEventHandler> TYPE = new Type<SendTableToEventHandler>();
 
     /** ESASkyUniqID. */
     private String esaSkyUniqID;

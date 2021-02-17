@@ -8,7 +8,7 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class TreeMapNewDataEvent extends GwtEvent<TreeMapNewDataEventHandler> {
 
-    public static Type<TreeMapNewDataEventHandler> TYPE = new Type<TreeMapNewDataEventHandler>();
+    public final static Type<TreeMapNewDataEventHandler> TYPE = new Type<TreeMapNewDataEventHandler>();
     
     private List<IDescriptor> descriptors;
     private List<Integer> counts;

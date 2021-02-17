@@ -11,7 +11,7 @@ import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 public class ExportVOTableEvent extends GwtEvent<ExportVOTableEventHandler> {
 
     /** Event type. */
-    public static Type<ExportVOTableEventHandler> TYPE = new Type<ExportVOTableEventHandler>();
+    public final static Type<ExportVOTableEventHandler> TYPE = new Type<ExportVOTableEventHandler>();
 
     /** ESASkyUniqID. */
     private String esaSkyUniqID;

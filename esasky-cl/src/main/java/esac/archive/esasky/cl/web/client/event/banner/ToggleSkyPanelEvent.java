@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class ToggleSkyPanelEvent extends GwtEvent<ToggleSkyPanelEventHandler> {
 
-    public static Type<ToggleSkyPanelEventHandler> TYPE = new Type<ToggleSkyPanelEventHandler>();
+    public final static Type<ToggleSkyPanelEventHandler> TYPE = new Type<ToggleSkyPanelEventHandler>();
 
     public ToggleSkyPanelEvent() {
     }

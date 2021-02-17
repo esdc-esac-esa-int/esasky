@@ -8,7 +8,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformati
 
 public class TreeMapSelectionEvent extends GwtEvent<TreeMapSelectionEventHandler> {
 
-    public static Type<TreeMapSelectionEventHandler> TYPE = new Type<TreeMapSelectionEventHandler>();
+    public final static Type<TreeMapSelectionEventHandler> TYPE = new Type<TreeMapSelectionEventHandler>();
 
     private PointInformation pointInformation;
     

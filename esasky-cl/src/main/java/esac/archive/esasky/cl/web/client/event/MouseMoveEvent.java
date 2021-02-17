@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class MouseMoveEvent extends GwtEvent<MouseMoveEventHandler> {
 
     /** Event type. */
-    public static Type<MouseMoveEventHandler> TYPE = new Type<MouseMoveEventHandler>();
+    public final static Type<MouseMoveEventHandler> TYPE = new Type<MouseMoveEventHandler>();
 
     private double raDeg;
 

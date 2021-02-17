@@ -12,7 +12,7 @@ public class ProgressIndicatorPopEvent extends GwtEvent<ProgressIndicatorPopEven
     private String id;
 
     /** Event Type. */
-    public static Type<ProgressIndicatorPopEventHandler> TYPE = new Type<ProgressIndicatorPopEventHandler>();
+    public final static Type<ProgressIndicatorPopEventHandler> TYPE = new Type<ProgressIndicatorPopEventHandler>();
 
     /**
      * Class Constructor.

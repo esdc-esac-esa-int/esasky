@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class ExtTapToggleEvent extends GwtEvent<ExtTapToggleEventHandler> {
 
-    public static Type<ExtTapToggleEventHandler> TYPE = new Type<ExtTapToggleEventHandler>();
+    public final static Type<ExtTapToggleEventHandler> TYPE = new Type<ExtTapToggleEventHandler>();
     boolean isOpen;
     
 

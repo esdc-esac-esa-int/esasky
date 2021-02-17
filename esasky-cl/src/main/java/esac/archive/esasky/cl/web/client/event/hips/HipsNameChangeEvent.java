@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class HipsNameChangeEvent extends GwtEvent<HipsNameChangeEventHandler> {
 
     /** Event type. */
-    public static Type<HipsNameChangeEventHandler> TYPE = new Type<HipsNameChangeEventHandler>();
+    public final static Type<HipsNameChangeEventHandler> TYPE = new Type<HipsNameChangeEventHandler>();
 
     private String hipsName;
 

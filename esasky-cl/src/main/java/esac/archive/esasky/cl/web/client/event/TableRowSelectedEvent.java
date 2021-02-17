@@ -6,7 +6,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class TableRowSelectedEvent extends GwtEvent<TableRowSelectedEventHandler> {
 
-    public static Type<TableRowSelectedEventHandler> TYPE = new Type<TableRowSelectedEventHandler>();
+    public final static Type<TableRowSelectedEventHandler> TYPE = new Type<TableRowSelectedEventHandler>();
 
     private GeneralJavaScriptObject rowData;
 

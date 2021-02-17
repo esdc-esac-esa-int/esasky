@@ -19,7 +19,7 @@ public class ProgressIndicatorPushEvent extends GwtEvent<ProgressIndicatorPushEv
     private String googleAnalyticsErrorMessage;
 
     /** Event type. */
-    public static Type<ProgressIndicatorPushEventHandler> TYPE = new Type<ProgressIndicatorPushEventHandler>();
+    public final static Type<ProgressIndicatorPushEventHandler> TYPE = new Type<ProgressIndicatorPushEventHandler>();
 
     public ProgressIndicatorPushEvent(final String inputId, final String inputMessage) {
     	this(inputId, inputMessage, "", false);

@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class HipsOpacCngEvent extends GwtEvent<HipsOpacCngEventHandler> {
 
     /** event type. */
-    public static Type<HipsOpacCngEventHandler> TYPE = new Type<HipsOpacCngEventHandler>();
+    public final static Type<HipsOpacCngEventHandler> TYPE = new Type<HipsOpacCngEventHandler>();
 
     /** opacity. */
     private double opacity;

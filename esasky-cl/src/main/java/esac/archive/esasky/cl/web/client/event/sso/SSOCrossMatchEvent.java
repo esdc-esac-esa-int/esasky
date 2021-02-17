@@ -7,7 +7,7 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjT
 public class SSOCrossMatchEvent extends GwtEvent<SSOCrossMatchEventHandler> {
 
     /** Event type. */
-    public static Type<SSOCrossMatchEventHandler> TYPE = new Type<SSOCrossMatchEventHandler>();
+    public final static Type<SSOCrossMatchEventHandler> TYPE = new Type<SSOCrossMatchEventHandler>();
 
     String ssoName;
     ESASkySSOObjType ssoType;

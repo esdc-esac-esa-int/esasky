@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class IsShowingCoordintesInDegreesChangeEvent extends GwtEvent<IsShowingCoordintesInDegreesChangeEventHandler> {
 
-    public static Type<IsShowingCoordintesInDegreesChangeEventHandler> TYPE = new Type<IsShowingCoordintesInDegreesChangeEventHandler>();
+    public final static Type<IsShowingCoordintesInDegreesChangeEventHandler> TYPE = new Type<IsShowingCoordintesInDegreesChangeEventHandler>();
 
     public IsShowingCoordintesInDegreesChangeEvent() {
     }

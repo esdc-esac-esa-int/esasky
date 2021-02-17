@@ -10,7 +10,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFoo
 public class FutureFootprintClearEvent extends GwtEvent<FutureFootprintClearEventHandler> {
 
     /** evnet type. */
-    public static Type<FutureFootprintClearEventHandler> TYPE = new Type<FutureFootprintClearEventHandler>();
+    public final static Type<FutureFootprintClearEventHandler> TYPE = new Type<FutureFootprintClearEventHandler>();
 
     private FutureFootprintRow futureFootprintRow;
 
