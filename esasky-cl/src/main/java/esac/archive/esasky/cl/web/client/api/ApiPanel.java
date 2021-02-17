@@ -1,0 +1,111 @@
+package esac.archive.esasky.cl.web.client.api;
+
+
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONObject;
+
+import esac.archive.esasky.cl.web.client.Controller;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
+
+public class ApiPanel extends ApiBase{
+	
+	
+	public ApiPanel(Controller controller) {
+		this.controller = controller;
+	}
+	
+	
+	public void getResultPanelData(final JavaScriptObject msg) {
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
+		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+		JSONObject callback = tablePanel.exportAsJSON();
+
+		if(callback.size() == 0) {
+			tablePanel.registerObserver( new TableObserver() {
+
+				@Override
+				public void numberOfShownRowsChanged(int numberOfShownRows) {
+					JSONObject callback = tablePanel.exportAsJSON();
+					JSONObject res = new JSONObject();
+					res.put("value", callback);
+					sendBackToWidget(res, msg);
+					tablePanel.unregisterObserver(this);
+				}
+
+                @Override
+                public void onSelection(ITablePanel selectedTablePanel) {
+                }
+
+                @Override
+                public void onUpdateStyle(ITablePanel panel) {
+                    // TODO Auto-generated method stub
+                    
+                }
+			});
+		}else {
+			JSONObject res = new JSONObject();
+			res.put("value", callback);
+			sendBackToWidget(res, msg);
+		}
+	}
+	
+	public void hideResultPanel() {
+		ResultsPanel.closeDataPanel();
+	}
+	
+	public void showResultPanel() {
+		ResultsPanel.openDataPanel();
+	}
+	
+	public void setDataPanelHidden(boolean input) {
+		ResultsPanel.shouldBeHidden(input);
+	}
+	
+	public void closeResultPanelTab(int index) {
+		final ITablePanel tablePanel;
+		try {
+			if(index == -1) {
+				tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+			}else {
+				tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getWidget(index);
+			}
+			
+			tablePanel.closeTablePanel();
+			String id = tablePanel.getEntity().getEsaSkyUniqId();
+			MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
+			controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
+		}catch(IndexOutOfBoundsException e) {
+			Log.error(e.toString());
+		}
+	}
+
+	public void closeResultPanelTabById(String id, JavaScriptObject widget) {
+		
+		ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTablePanelFromId(id);
+		
+		if(tablePanel== null) {
+			sendBackMessageToWidget("Tab not found with id: " + id, widget);
+		}else {
+			tablePanel.closeTablePanel();
+		}
+	}
+	
+	public void closeAllResultPanelTabs() {
+		while(true) {
+			try {
+				ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+				tablePanel.closeTablePanel();
+				String id = tablePanel.getEntity().getEsaSkyUniqId();
+				MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
+				controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
+			}catch(Exception e) {
+				break;
+			}
+		}
+	}
+}

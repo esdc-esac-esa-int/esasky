@@ -68,6 +68,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private boolean isRefreshable = true;
     private StylePanel stylePanel;
     private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
+    private LinkedList<Integer> shapeRecentlySelected = new LinkedList<Integer>();
 
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -127,7 +128,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData) {
         	String stcs = null;
-        	if(getDescriptor().getTapSTCSColumn() != "") {
+        	if(!"".equals(getDescriptor().getTapSTCSColumn())) {
         		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
         	}
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
@@ -341,7 +342,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	String adql = metadataService.getMetadataFromMOCPixel(descriptor, mocInfo);
     	
     	String filter = tablePanel.getFilterString();
-    	if(filter != "") {
+    	if(!"".equals(filter)) {
     		adql += " AND " + filter;
     	}
         
@@ -397,6 +398,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void selectShapes(int shapeId) {
+    	shapeRecentlySelected.add(shapeId);
     	drawer.selectShapes(shapeId);
     }
 
@@ -510,7 +512,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	Object data = null;
         for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
             if (tapMetadata.getName().equals(tapName)) {
-                int dataIndex = new Integer(tapRowList.getMetadata().indexOf(tapMetadata));
+                int dataIndex = tapRowList.getMetadata().indexOf(tapMetadata);
                 data = (tapRowList.getData().get(rowIndex)).get(dataIndex);
                 break;
             }
@@ -768,6 +770,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void onShapeSelection(AladinShape shape) {
     	int shapeId =  Integer.parseInt(shape.getId());
+    	if(shapeRecentlySelected.contains(shapeId)) {
+    		shapeRecentlySelected.remove(shapeId);
+    		return;
+    	}
+    	
     	selectShapes(shapeId);
     	
     	if(tablePanel != null) {

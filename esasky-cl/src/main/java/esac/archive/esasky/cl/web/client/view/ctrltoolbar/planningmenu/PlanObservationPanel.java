@@ -9,6 +9,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -161,69 +165,50 @@ public class PlanObservationPanel extends DialogBox {
         verticalPanel.add(fr);
     }
     
-    public String addInstrumentRowAPI(String instrumentName, String detectorName, boolean showAllInstruments) {
-    	final PlanningMission pm = PlanningMission.JWST;
-    	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
-    	if(instrument == null) {
-    		List<Instrument> instruments = Instrument.getInstrumentsPerMission(pm);
-    		String returnText = "No instrument with that name exists. Available instrument names are: [";
-    		for(Instrument i : instruments) {
-    			returnText += i.getInstrumentName() + ", ";
-    		}
-    		returnText = returnText.substring(0,returnText.length()-1) + "]";
-    		return returnText;
-    	}
-    	
-    	List<String> detectors = InstrumentMapping.getInstance().getApertureListForInstrument(instrumentName);
-    	boolean found = false;
-    	String detectorsString = "[";
-    	for (String detector : detectors) {
-    		if(detector.equalsIgnoreCase(detectorName)) {
-    			FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, SIAF_VERSION);
-    			PlanObservationPanel.jwstPanel.add(fr);
-    			found = true;
-    		}
-    		detectorsString += detector + ", ";
-		}
-    	if(found) {
-    		return "Showing instrument in the sky";
-    	}else {
-    		detectorsString = detectorsString.substring(0,detectorsString.length()-1) + "]";
-    		return "No detector with that name exists. Available detectors for instrument: " + instrumentName + " are: "
-    				+ detectorsString;
-    	}
+    public JSONValue addInstrumentRowAPI(String instrumentName, String detectorName, boolean showAllInstruments) {
+    	return addInstrumentRowWithCoordinatesAPI(instrumentName, detectorName, showAllInstruments, null, null, null);
     }
     
-    public String addInstrumentRowWithCoordinatesAPI(String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
+    public JSONValue addInstrumentRowWithCoordinatesAPI(String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
     	final PlanningMission pm = PlanningMission.JWST;
     	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
     	if(instrument == null) {
     		List<Instrument> instruments = Instrument.getInstrumentsPerMission(pm);
-    		String returnText = "No instrument with that name exists. Available instrument names are: [";
-    		for(Instrument i : instruments) {
-    			returnText += i.getInstrumentName() + ", ";
+    		JSONArray availableModules = new JSONArray();
+    		int i = 0;
+    		for(Instrument inst : instruments) {
+    			availableModules.set(i, new JSONString(inst.getInstrumentName()));
+    			i++;
     		}
-    		returnText = returnText.substring(0,returnText.length()-1) + "]";
-    		return returnText;
+    		return availableModules;
     	}
     	
     	List<String> detectors = InstrumentMapping.getInstance().getApertureListForInstrument(instrumentName);
     	boolean found = false;
-    	String detectorsString = "[";
+    	JSONArray availableModules = new JSONArray();
+    	int i = 0;
     	for (String detector : detectors) {
     		if(detector.equals(detectorName)) {
-    	    	FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation, SIAF_VERSION);
+    			FutureFootprintRow fr;
+    			if(ra != null && dec != null && rotation != null) {
+    				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation, SIAF_VERSION);
+    			}
+    			else {
+    				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, SIAF_VERSION);
+    			}
     	        PlanObservationPanel.jwstPanel.add(fr);
     			found = true;
     		}
-    		detectorsString += detector + ", ";
+    		availableModules.set(i, new JSONString(detector));
+    		i++;
     	}
     	if(found) {
-    		return "Showing instrument in the sky";
+    		return null;
     	}else {
-    		detectorsString = detectorsString.substring(0,detectorsString.length()-1) + "]";
-    		return "No detector with that name exists. Available detectors for instrument: " + instrumentName + " are: "
-    				+ detectorsString;
+    		JSONObject obj = new JSONObject();
+    		obj.put(instrumentName, availableModules);
+    		return obj;
+    	
     	}
     }
     
