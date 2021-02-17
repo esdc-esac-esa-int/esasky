@@ -6,7 +6,7 @@ import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 
 public class AddTableEvent extends GwtEvent<AddTableEventHandler> {
 
-    public static Type<AddTableEventHandler> TYPE = new Type<AddTableEventHandler>();
+    public final static Type<AddTableEventHandler> TYPE = new Type<AddTableEventHandler>();
 
     private GeneralEntityInterface entity;
 

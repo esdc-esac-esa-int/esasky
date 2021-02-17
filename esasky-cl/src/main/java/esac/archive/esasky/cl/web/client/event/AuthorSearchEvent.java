@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class AuthorSearchEvent extends GwtEvent<AuthorSearchEventHandler> {
 
     /** Event type. */
-    public static Type<AuthorSearchEventHandler> TYPE = new Type<AuthorSearchEventHandler>();
+    public final static Type<AuthorSearchEventHandler> TYPE = new Type<AuthorSearchEventHandler>();
 
     String authorName;
 

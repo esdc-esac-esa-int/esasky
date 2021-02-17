@@ -6,7 +6,7 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 
 public class AddShapeTooltipEvent extends GwtEvent<AddShapeTooltipEventHandler> {
 
-    public static Type<AddShapeTooltipEventHandler> TYPE = new Type<AddShapeTooltipEventHandler>();
+    public final static Type<AddShapeTooltipEventHandler> TYPE = new Type<AddShapeTooltipEventHandler>();
 
     private Tooltip tooltip;
 

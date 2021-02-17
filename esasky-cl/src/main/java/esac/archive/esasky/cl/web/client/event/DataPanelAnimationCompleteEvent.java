@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class DataPanelAnimationCompleteEvent extends GwtEvent<DataPanelAnimationCompleteEventHandler> {
 
-    public static Type<DataPanelAnimationCompleteEventHandler> TYPE = new Type<DataPanelAnimationCompleteEventHandler>();
+    public final static Type<DataPanelAnimationCompleteEventHandler> TYPE = new Type<DataPanelAnimationCompleteEventHandler>();
 
     public DataPanelAnimationCompleteEvent() {
     }

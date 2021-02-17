@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class DataPanelResizeEvent extends GwtEvent<DataPanelResizeEventHandler> {
 
-    public static Type<DataPanelResizeEventHandler> TYPE = new Type<DataPanelResizeEventHandler>();
+    public final static Type<DataPanelResizeEventHandler> TYPE = new Type<DataPanelResizeEventHandler>();
 
     private final int height;
     

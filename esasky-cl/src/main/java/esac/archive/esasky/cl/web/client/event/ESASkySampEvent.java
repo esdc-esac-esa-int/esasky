@@ -15,7 +15,7 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 public class ESASkySampEvent extends GwtEvent<ESASkySampEventHandler> {
 
     /** Defining event type. */
-    public static Type<ESASkySampEventHandler> TYPE = new Type<ESASkySampEventHandler>();
+    public final static Type<ESASkySampEventHandler> TYPE = new Type<ESASkySampEventHandler>();
 
     /** Samp action: register, load.votable... */
     private SampAction action;

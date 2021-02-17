@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class BibcodeSearchEvent extends GwtEvent<BibcodeSearchEventHandler> {
 
     /** Event type. */
-    public static Type<BibcodeSearchEventHandler> TYPE = new Type<BibcodeSearchEventHandler>();
+    public final static Type<BibcodeSearchEventHandler> TYPE = new Type<BibcodeSearchEventHandler>();
 
     String bibcode;
 
