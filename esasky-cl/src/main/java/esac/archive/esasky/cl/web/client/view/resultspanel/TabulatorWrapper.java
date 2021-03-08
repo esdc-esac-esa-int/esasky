@@ -136,6 +136,10 @@ public class TabulatorWrapper{
         GeneralJavaScriptObject row = tableJsObject.invokeFunction("getRow", "" + rowId);
         row.invokeFunction("deselect");
     }
+    
+    public void deselectAllRows() {
+    	tableJsObject.invokeFunction("deselectRow");
+    }
 
     public void hoverStart(int rowId) {
         GeneralJavaScriptObject element = tableJsObject.invokeFunction("getRow", "" + rowId).invokeFunction("getElement").getProperty("style");

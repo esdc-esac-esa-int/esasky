@@ -432,6 +432,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void deselectAllShapes() {
     	drawer.deselectAllShapes();
+        if(tablePanel != null) {
+        	tablePanel.deselectAllRows();
+        }
     }
 
     @Override

@@ -147,11 +147,13 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		for(Shape shape : sourceShapes) {
 			if(shapeName.equals(shape.getShapeName())){
 				AladinLiteWrapper.getAladinLite().selectShape(shape.getJsObject());
+				shapeIds.add(shape.getShapeId());
 			}
 		}
 		for(Shape shape : footPrintshapes) {
 			if(shapeName.equals(shape.getShapeName())){
 				AladinLiteWrapper.getAladinLite().selectShape(shape.getJsObject());
+				shapeIds.add(shape.getShapeId());
 			}
 		}
 		return shapeIds;

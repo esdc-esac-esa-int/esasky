@@ -266,6 +266,13 @@ public class ApiMessageParser {
 					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::deselectShape(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.overlayName, msg.content.shapeName, e);
 					break;
+
+				case 'deselectAllShapes':
+					console.log('deselectAllShapes event captured!');
+					console.log(msg);
+					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::deselectAllShapes(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.overlayName, e);
+					break;
 	
 	
 				// API PLANNING

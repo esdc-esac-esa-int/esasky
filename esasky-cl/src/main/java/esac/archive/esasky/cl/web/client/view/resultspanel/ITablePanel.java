@@ -30,6 +30,8 @@ public interface ITablePanel {
 
 	public void deselectRow(int rowId);
 
+	public void deselectAllRows();
+
 	public void hoverStartRow(int rowId);
 
 	public void hoverStopRow(int rowId);

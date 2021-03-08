@@ -269,6 +269,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void deselectRow(int rowId) {
 		table.deselectRow(rowId);
 	}
+	
+	public void deselectAllRows() {
+		table.deselectAllRows();
+	}
 
 	public void hoverStartRow(int rowId) {
 		table.hoverStart(rowId);
