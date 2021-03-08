@@ -647,10 +647,20 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void selectShapes(int shapeId) {
 		return;
 	}
+	
+	@Override
+	public LinkedList<Integer> selectShapes(String shapeName) {
+		return null;
+	}
 
 	@Override
 	public void deselectShapes(int shapeId) {
 		return;
+	}
+
+	@Override
+	public LinkedList<Integer> deselectShapes(String shapeName) {
+		return null;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -18,6 +19,8 @@ public interface IShapeDrawer {
 	public void selectShapes(int shapeId);
     public void deselectShapes(int shapeId);
     public void deselectAllShapes();
+    public LinkedList<Integer>  selectShapes(String shapeName);
+    public LinkedList<Integer> deselectShapes(String shapeName);
     public Shape getShape(int shapeId);
     public void showShape(int shapeId);
     public void showShapes(List<Integer> shapeIds);

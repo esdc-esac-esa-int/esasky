@@ -406,6 +406,28 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public void deselectShapes(int shapeId) {
     	drawer.deselectShapes(shapeId);
     }
+    
+    @Override
+    public LinkedList<Integer> selectShapes(String shapeName) {
+    	LinkedList<Integer> shapeIds = drawer.selectShapes(shapeName);
+    	for(int id : shapeIds) {
+            if(tablePanel != null) {
+            	tablePanel.selectRow(new Integer(id));
+            }
+    	}
+    	return shapeIds;
+    }
+
+    @Override
+    public LinkedList<Integer> deselectShapes(String shapeName) {
+    	LinkedList<Integer> shapeIds = drawer.deselectShapes(shapeName);
+    	for(int id : shapeIds) {
+            if(tablePanel != null) {
+            	tablePanel.deselectRow(new Integer(id));
+            }
+    	}
+    	return shapeIds;
+    }
 
     @Override
     public void deselectAllShapes() {

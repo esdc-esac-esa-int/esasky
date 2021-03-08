@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -133,6 +134,50 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		}else {
 			return footPrintshapes.get(index[1]);
 		}
+	}
+
+    @Override
+	public LinkedList<Integer> selectShapes(String shapeName) {
+		if(shapeName == null) {
+			return null;
+		}
+		
+		LinkedList<Integer> shapeIds = new LinkedList<>();
+		
+		for(Shape shape : sourceShapes) {
+			if(shapeName.equals(shape.getShapeName())){
+				AladinLiteWrapper.getAladinLite().selectShape(shape.getJsObject());
+			}
+		}
+		for(Shape shape : footPrintshapes) {
+			if(shapeName.equals(shape.getShapeName())){
+				AladinLiteWrapper.getAladinLite().selectShape(shape.getJsObject());
+			}
+		}
+		return shapeIds;
+	}
+
+	@Override
+	public LinkedList<Integer>  deselectShapes(String shapeName) {
+		if(shapeName == null) {
+			return null;
+		}
+		
+		LinkedList<Integer> shapeIds = new LinkedList<>();
+		
+		for(Shape shape : sourceShapes) {
+			if(shapeName.equals(shape.getShapeName())){
+				AladinLiteWrapper.getAladinLite().deselectShape(shape.getJsObject());
+				shapeIds.add(shape.getShapeId());
+			}
+		}
+		for(Shape shape : footPrintshapes) {
+			if(shapeName.equals(shape.getShapeName())){
+				AladinLiteWrapper.getAladinLite().deselectShape(shape.getJsObject());
+				shapeIds.add(shape.getShapeId());
+			}
+		}
+		return shapeIds;
 	}
 	
 	@Override

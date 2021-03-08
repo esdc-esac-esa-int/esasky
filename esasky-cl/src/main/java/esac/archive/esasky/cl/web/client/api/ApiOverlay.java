@@ -46,6 +46,33 @@ public class ApiOverlay extends ApiBase{
 		this.controller = controller;
 	}
 	
+	public void selectShape(String overlayName, String shapeName, JavaScriptObject widget) {
+		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+		if (ent != null) {
+			ent.selectShapes(shapeName);
+		}
+	}
+
+	public void deselectShape(String overlayName, String shapeName, JavaScriptObject widget) {
+		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+		if (ent != null) {
+			ent.deselectShapes(shapeName);
+		}
+	}
+
+	public void deselectAllShapes(String overlayName, JavaScriptObject widget) {
+		
+		if(overlayName != null && !"".equals(overlayName)) {
+			GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+			if (ent != null) {
+				ent.deselectAllShapes();
+			}
+		}else {
+			for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
+				ent.deselectAllShapes();
+			}
+		}
+	}
 	public void overlayFootprints(String footprintsSetJSON, boolean shouldBeInTablePanel) {
 
 		FootprintsSetMapper mapper = GWT.create(FootprintsSetMapper.class);
@@ -204,8 +231,14 @@ public class ApiOverlay extends ApiBase{
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, "all");
 		
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
-			ent.getTablePanel().closeTablePanel();
+			if(ent.getTablePanel() != null) {
+				ent.getTablePanel().closeTablePanel();
+			}else {
+				ent.clearAll();
+				EntityRepository.getInstance().removeEntity(ent);
+			}
 		}
+		
 	}
 
 	
