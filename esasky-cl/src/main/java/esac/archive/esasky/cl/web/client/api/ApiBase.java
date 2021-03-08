@@ -24,9 +24,15 @@ public abstract class ApiBase {
 	
 	
 	protected void sendInitMessage( JavaScriptObject widget) {
+		
+		
 		JSONObject init = new JSONObject();
+		// New intialised response
 		init.put(ApiConstants.INITIALISED, JSONBoolean.getInstance(true));
+		//Kept for backward compatibility
+		init.put("Text", new JSONString("Initialised"));
 		sendBackToWidget(init, widget);
+		
 	}
 	
 	protected void sendBackToWidget(JSONObject values, JavaScriptObject widget) {
@@ -34,7 +40,7 @@ public abstract class ApiBase {
 	}
 	
 	protected void sendBackEventToWidget(JSONObject event, JavaScriptObject widget) {
-		sendBackToWidget(null, null, null, event, widget);
+		sendBackToWidget(event, null, null, event, widget);
 	}
 	
 	protected void sendBackMessageToWidget(String message, JavaScriptObject widget) {
@@ -82,7 +88,7 @@ public abstract class ApiBase {
 			msg.put(ApiConstants.MSGID, new JSONString(msgId));
 		}
 		
-		sendBackToWidgetJS(msg,widget);
+		sendBackToWidgetJS(msg, widget);
 	}
 
 	

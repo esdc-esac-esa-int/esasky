@@ -251,6 +251,21 @@ public class ApiMessageParser {
 					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.overlayName, e);
 					break;
+					
+					
+				case 'selectShape':
+					console.log('selectShape event captured!');
+					console.log(msg);
+					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::selectShape(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.overlayName, msg.content.shapeName, e);
+					break;
+	
+				case 'deselectShape':
+					console.log('deselectShape event captured!');
+					console.log(msg);
+					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::deselectShape(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.overlayName, msg.content.shapeName, e);
+					break;
 	
 	
 				// API PLANNING
@@ -524,6 +539,16 @@ public class ApiMessageParser {
 					apiEvents.@esac.archive.esasky.cl.web.client.api.ApiEvents::registerEventListener(Lcom/google/gwt/core/client/JavaScriptObject;)
 						(e);
 					break;	
+					
+					
+				// TESTING	
+					
+				case 'overlayJPG':
+					console.log('registerEventListener event captured');
+					api.@esac.archive.esasky.cl.web.client.api.Api::displayJPG(Ljava/lang/String;Ljava/lang/String;)
+						(msg.content.url, msg.content.opacity);
+					break;	
+					
 					
 				default:
 					console.log('No event associated');

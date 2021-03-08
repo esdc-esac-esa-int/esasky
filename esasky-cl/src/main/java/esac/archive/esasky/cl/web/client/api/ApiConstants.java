@@ -11,6 +11,7 @@ public class ApiConstants {
 	public static final String SHAPE_OVERLAY = "overlay";
 	
 	public static final String PANEL_ID = "id";
+	public static final String PANEL_DATA_ERROR = "No panel with data open";
 
 	public static final String TREEMAP = "treeMap";
 	public static final String TREEMAP_MISSION = "mission";
@@ -18,6 +19,8 @@ public class ApiConstants {
 	public static final String TREEMAP_MISSION_NAME = "name";
 	public static final String TREEMAP_MISSION_COLOR = "color";
 
+	public static final String TREEMAP_LOCATION = "location";
+	public static final String TREEMAP_INFO = "info";
 	public static final String TREEMAP_NAME = "name";
 	public static final String TREEMAP_ICON_TEXT = "iconText";
 	public static final String TREEMAP_DESCRIPTION = "description";

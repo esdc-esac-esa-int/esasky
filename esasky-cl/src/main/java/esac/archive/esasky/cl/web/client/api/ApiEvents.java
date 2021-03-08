@@ -147,13 +147,18 @@ public class ApiEvents extends ApiBase{
 			treeMap.put(ApiConstants.TREEMAP_MISSION , new JSONString(mission));
 			
 			SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-			
-			treeMap.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().ra));
-			treeMap.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().dec));
-			treeMap.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
-			
+			JSONObject location = new JSONObject();
+
+			location.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().ra));
+			location.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().dec));
+			location.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
+
+			result.put(ApiConstants.TREEMAP_LOCATION , location);
 			result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_TREEMAP_MISSION_CLICKED));
 			result.put(ApiConstants.VALUES, treeMap);
+			
+			//To be removed
+			result.put(ApiConstants.TREEMAP_INFO, treeMap);
 			
             sendBackToWidget(result, widget);
 		}
