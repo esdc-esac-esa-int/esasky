@@ -20,21 +20,27 @@ public class ApiPanel extends ApiBase{
 	}
 	
 	
-	public void getResultPanelData(final JavaScriptObject msg) {
+	public void getResultPanelData(final JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
 		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
+		if(tablePanel == null) {
+			sendBackErrorMsgToWidget(ApiConstants.PANEL_DATA_ERROR, widget);
+		}
 		JSONObject callback = tablePanel.exportAsJSON();
 
+		
 		if(callback.size() == 0) {
 			tablePanel.registerObserver( new TableObserver() {
 
 				@Override
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
-					JSONObject callback = tablePanel.exportAsJSON();
-					JSONObject res = new JSONObject();
-					res.put(ApiConstants.VALUE, callback);
-					sendBackToWidget(res, msg);
-					tablePanel.unregisterObserver(this);
+					if(numberOfShownRows > 0) {
+						JSONObject callback = tablePanel.exportAsJSON();
+						if(callback.size() > 0) {
+							sendBackToWidget(callback, widget);
+							tablePanel.unregisterObserver(this);
+						}
+					}
 				}
 
                 @Override
@@ -48,9 +54,7 @@ public class ApiPanel extends ApiBase{
                 }
 			});
 		}else {
-			JSONObject res = new JSONObject();
-			res.put(ApiConstants.VALUE, callback);
-			sendBackToWidget(res, msg);
+			sendBackToWidget(callback, widget);
 		}
 	}
 	
