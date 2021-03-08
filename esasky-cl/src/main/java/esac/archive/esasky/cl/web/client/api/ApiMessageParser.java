@@ -543,11 +543,11 @@ public class ApiMessageParser {
 					
 				// TESTING	
 					
-				case 'overlayJPG':
-					console.log('registerEventListener event captured');
-					api.@esac.archive.esasky.cl.web.client.api.Api::displayJPG(Ljava/lang/String;Ljava/lang/String;)
-						(msg.content.url, msg.content.opacity);
-					break;	
+//				case 'overlayJPG':
+//					console.log('registerEventListener event captured');
+//					api.@esac.archive.esasky.cl.web.client.api.Api::displayJPG(Ljava/lang/String;Ljava/lang/String;)
+//						(msg.content.url, msg.content.opacity);
+//					break;	
 					
 					
 				default:
