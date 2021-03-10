@@ -21,6 +21,7 @@ import com.google.gwt.resources.client.DataResource;
 import com.google.gwt.resources.client.DataResource.MimeType;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -381,18 +382,8 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                 
         		FocusPanel menuEntry = new FocusPanel();
         		menuEntry.getElement().setId(SEARCH_RESULT_ENTRY);
-        		menuEntry.addClickHandler(new ClickHandler() {
-        			
-        			@Override
-        			public void onClick(ClickEvent event) {
-                        CommonEventBus.getEventBus().fireEvent(
-                                new SSOCrossMatchEvent(currSSO.getName(), currSSO.getSsoObjType()));
-                        SearchPanel.this.searchResultsFocusPanel.setVisible(false);
-                        
-                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SSO: " + currSSO.getName());
-        			}
-        		});
         		
+        		boolean isLinkToESAArchive = false;
         		
         		FlowPanel container = new FlowPanel();
         		container.addStyleName("searchPanel__firstResultOfItsKindContainer");
@@ -402,13 +393,70 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         		
         		Label ssoName = new Label();
         		ssoName.addStyleName("searchPanel__resultName");
-        		ssoName.setText(currSSO.getName());
+        		if("Earth".equals(currSSO.getName())) {
+        		    isLinkToESAArchive = true;
+        		    ssoName.setText("ESA Earth Online");
+        		    ssoTypeLabel.setText("");
+                    menuEntry.addClickHandler(new ClickHandler() {
+                            
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "ESA Earth Online");
+                            Window.open("https://earth.esa.int/eogateway/", "_blank", "");
+                            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+                            
+                        }
+                    });
+        		} else if("Sun".equals(currSSO.getName())) {
+        		    isLinkToESAArchive = true;
+                    ssoName.setText("Solar Orbiter Archive");
+                    ssoTypeLabel.setText("");
+                    menuEntry.addClickHandler(new ClickHandler() {
+                            
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "Solar Orbiter Archive");
+                            Window.open("http://soar.esac.esa.int/", "_blank", "");
+                            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+                            
+                        }
+                    });
+                } else if("Moon".equals(currSSO.getName())) {
+                    isLinkToESAArchive = true;
+                    ssoName.setText("Moon data from SMART-1");
+                    ssoTypeLabel.setText("");
+                    menuEntry.addClickHandler(new ClickHandler() {
+                            
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "PSA SMART-1");
+                            Window.open("https://archives.esac.esa.int/psa/#!Table%20View/SMART-1=mission", "_blank", "");
+                            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+                            
+                        }
+                    });
+                } else {
+        		    ssoName.setText(currSSO.getName());
+        		    menuEntry.addClickHandler(new ClickHandler() {
+        		        
+        		        @Override
+        		        public void onClick(ClickEvent event) {
+        		            CommonEventBus.getEventBus().fireEvent(
+        		                    new SSOCrossMatchEvent(currSSO.getName(), currSSO.getSsoObjType()));
+        		            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+        		            
+        		            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SSO: " + currSSO.getName());
+        		        }
+        		    });
+        		}
         		container.add(ssoName);
         		menuEntry.add(container);
         		if(!foundInSSODnet) {
         			foundInSSODnet = true;
-    				ssoName.addStyleName("searchPanel__firstResultOfItsKindLabel");
-    				container.add(ssoDNetLogo);
+    				if(!isLinkToESAArchive) {
+    				    ssoName.addStyleName("searchPanel__firstResultOfItsKindLabel");
+    				    container.add(ssoDNetLogo);
+    				}
     				if(foundInSimbad || foundAuthorInSimbad || foundBibcodeInSimbad) {
     					menuEntry.addStyleName("searchPanel__firstResultOfItsKind");
     				}
