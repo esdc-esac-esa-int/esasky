@@ -9,8 +9,13 @@ public class UserObservationDescriptor extends ObservationDescriptor {
     @Override
     public String getDescriptorId() {
         if(descriptorId == null || descriptorId.isEmpty()) {
-            return "USER_IMAGING_" + getMission();
+            return getMission();
         }
         return descriptorId;
+    }
+    
+    @Override
+    public String generateId() {
+         return getDescriptorId();
     }
 }

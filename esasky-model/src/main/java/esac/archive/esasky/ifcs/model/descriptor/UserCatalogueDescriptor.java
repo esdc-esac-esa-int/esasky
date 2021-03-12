@@ -8,8 +8,13 @@ public class UserCatalogueDescriptor extends CatalogDescriptor {
     @Override
     public String getDescriptorId() {
         if(descriptorId == null || descriptorId.isEmpty()) {
-            return "USER_CATALOGUE_" + getMission();
+            return getMission();
         }
         return descriptorId;
+    }
+    
+    @Override
+    public String generateId() {
+         return getDescriptorId();
     }
 }
