@@ -506,6 +506,18 @@ public class ApiMessageParser {
 					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::addCustomTreeMap(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.treeMap,e);
 					break;	
+
+				case 'addTreeMapMission':
+					console.log('updateTreeMapMission event captured');
+					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::updateTreeMapMission(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.treeMap, true, e);
+					break;	
+
+				case 'removeTreeMapMission':
+					console.log('removeTreeMapMission event captured');
+					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::updateTreeMapMission(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.treeMap, false, e);
+					break;	
 					
 				case 'setModuleVisibility':
 					console.log('setModuleVisibility event captured');

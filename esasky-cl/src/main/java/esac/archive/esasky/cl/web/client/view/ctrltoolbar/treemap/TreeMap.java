@@ -214,6 +214,15 @@ public class TreeMap extends Chart {
         pointsToRemove.removeAll(matches);
         update();
     }
+    
+    public void updateData(final List<IDescriptor> descriptors, List<Integer> counts) {
+    	 for (Point point : series.getPoints()) {
+    		 PointInformation pointInformation = allPoints.get(point.getText());
+    		 Point pointInSeries = getPoint(pointInformation.descriptor);
+    		 pointInSeries.update(0,true);
+    	 }
+    	 addData(descriptors, counts);
+    }
 
     public void addData(final List<IDescriptor> descriptors, List<Integer> counts) {
         

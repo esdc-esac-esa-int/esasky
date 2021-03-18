@@ -21,7 +21,8 @@ public class ApiConstants {
 
 	public static final String TREEMAP_LOCATION = "location";
 	public static final String TREEMAP_INFO = "info";
-	public static final String TREEMAP_NAME = "name";
+	public static final String TREEMAP_NAME_OLD = "name";
+	public static final String TREEMAP_NAME = "treeMapName";
 	public static final String TREEMAP_ICON_TEXT = "iconText";
 	public static final String TREEMAP_DESCRIPTION = "description";
 	

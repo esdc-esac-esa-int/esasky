@@ -63,6 +63,8 @@ public class CtrlToolBarPresenter {
     
     private SelectSkyPanelPresenter selectSkyPresenter;
     private PublicationPanelPresenter publicationPresenter;
+    List<CustomTreeMapDescriptor> treeMapDescriptors = new LinkedList<CustomTreeMapDescriptor>();
+
 
     public interface SkiesMenuMapper extends ObjectMapper<SkiesMenu> {}
     
@@ -88,6 +90,8 @@ public class CtrlToolBarPresenter {
         void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts);
         
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
+        void updateCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
+
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
@@ -463,11 +467,13 @@ public class CtrlToolBarPresenter {
         return sb.toSafeHtml();
     }
     
-    List<CustomTreeMapDescriptor> treeMapDescriptors = new LinkedList<CustomTreeMapDescriptor>();
-    
     public void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor){
     	treeMapDescriptors.add(customTreeMapDescriptor);
     	view.addCustomTreeMap(customTreeMapDescriptor);
+    }
+    
+    public void updateCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor) {
+    	view.updateCustomTreeMap(customTreeMapDescriptor);
     }
     
     public void customTreeMapClicked(TreeMapSelectionEvent event) {
@@ -479,6 +485,16 @@ public class CtrlToolBarPresenter {
 				}
     		}
     	}
+    }
+    
+    public CustomTreeMapDescriptor getCustomTreeMapDescriptor(String name){
+    	for(CustomTreeMapDescriptor treeMapDescriptor : treeMapDescriptors) {
+    		if(treeMapDescriptor.getName().equals(name)) {
+    			return treeMapDescriptor;
+    		}
+    	}
+    	
+    	return null;
     }
     
     public void updateModuleVisibility() {

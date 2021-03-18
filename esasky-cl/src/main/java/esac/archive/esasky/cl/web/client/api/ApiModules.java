@@ -33,9 +33,13 @@ public class ApiModules extends ApiBase{
 	}
 
 	public void addCustomTreeMap(GeneralJavaScriptObject input, JavaScriptObject widget) {
-		String name = "";
-		if(input.hasProperty(ApiConstants.TREEMAP_NAME)) {
-			name = input.getStringProperty(ApiConstants.TREEMAP_NAME);
+		String treeMapName = "";
+		if(input.hasProperty(ApiConstants.TREEMAP_NAME_OLD)) {
+			treeMapName = input.getStringProperty(ApiConstants.TREEMAP_NAME_OLD);
+			
+		}else if(input.hasProperty(ApiConstants.TREEMAP_NAME)) {
+				treeMapName = input.getStringProperty(ApiConstants.TREEMAP_NAME);
+		
 		} else {
 			sendBackErrorMsgToWidget("Missing treeMap property name", widget);
 			return;
@@ -46,7 +50,7 @@ public class ApiModules extends ApiBase{
 			description = input.getStringProperty(ApiConstants.TREEMAP_DESCRIPTION);
 		}
 		
-		String iconText = name;
+		String iconText = treeMapName;
 		if(input.hasProperty(ApiConstants.TREEMAP_ICON_TEXT)) {
 			iconText = input.getStringProperty(ApiConstants.TREEMAP_ICON_TEXT);
 		}
@@ -62,7 +66,7 @@ public class ApiModules extends ApiBase{
 		    return;
 		}
 		
-		CustomTreeMapDescriptor customTreeMapDescriptor = new CustomTreeMapDescriptor(name, description, iconText, descriptors);
+		CustomTreeMapDescriptor customTreeMapDescriptor = new CustomTreeMapDescriptor(treeMapName, description, iconText, descriptors);
 		
 		customTreeMapDescriptor.setOnMissionClicked(new CustomTreeMapDescriptor.OnMissionClicked() {
 			
@@ -73,6 +77,43 @@ public class ApiModules extends ApiBase{
 		});
 		
 		controller.getRootPresenter().getCtrlTBPresenter().addCustomTreeMap(customTreeMapDescriptor);
+	}
+	
+	public void updateTreeMapMission(GeneralJavaScriptObject input, boolean add, JavaScriptObject widget) {
+		
+		String treeMapName = "";
+		if(input.hasProperty(ApiConstants.TREEMAP_NAME_OLD)) {
+			treeMapName = input.getStringProperty(ApiConstants.TREEMAP_NAME_OLD);
+			
+		}else if(input.hasProperty(ApiConstants.TREEMAP_NAME)) {
+				treeMapName = input.getStringProperty(ApiConstants.TREEMAP_NAME);
+		
+		} else {
+			sendBackErrorMsgToWidget("Missing treeMap property name", widget);
+			return;
+		}
+		
+		GeneralJavaScriptObject descriptorArray = input.getProperty(ApiConstants.TREEMAP_MISSIONS);
+		if(descriptorArray == null) {
+			sendBackErrorMsgToWidget("Missing treeMap missions", widget);
+			return;
+		}
+		
+		CustomTreeMapDescriptor customTreeMapDescriptor = controller.getRootPresenter().getCtrlTBPresenter().getCustomTreeMapDescriptor(treeMapName);
+		List<IDescriptor> newMissions = createTreeMapDescriptors(widget, descriptorArray);
+		if(add) {
+			customTreeMapDescriptor.getMissionDescriptors().addAll(newMissions);
+		}else {
+			for(IDescriptor missionToRemove : newMissions) {
+				for(IDescriptor existingMission : customTreeMapDescriptor.getMissionDescriptors()) {
+					if(missionToRemove.getDescriptorId().equals(existingMission.getDescriptorId())){
+						customTreeMapDescriptor.getMissionDescriptors().remove(existingMission);
+					}
+				}
+			}
+		}
+		controller.getRootPresenter().getCtrlTBPresenter().updateCustomTreeMap(customTreeMapDescriptor);
+		
 	}
 
     private List<IDescriptor> createTreeMapDescriptors(JavaScriptObject widget,

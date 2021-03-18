@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
 	private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
 	
-	private List<CustomTreeMap> customTreeMaps = new LinkedList<CustomTreeMap>();
+	private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
 	
 	private EsaSkyButton exploreBtn;
 	private EsaSkyToggleButton selectSkyButton;
@@ -481,7 +482,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			extTapTreeMapContainer.hide();
 		}
 		
-		for(CustomTreeMap customTreeMap : customTreeMaps) {
+		for(CustomTreeMap customTreeMap : customTreeMaps.values()) {
 			if(!button.equals(customTreeMap.button)) {
 				customTreeMap.treeMapContainer.hide();
 			}
@@ -796,13 +797,28 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		}
 	}
 	
+
+	
+	public void updateCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor ) {
+		CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
+		if(customTreeMap != null) {
+			LinkedList<Integer> counts = new LinkedList<Integer>();
+
+	    	for(int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
+	    		counts.add(1);
+	    	}
+			customTreeMap.treeMapContainer.updateData(treeMapDescriptor.getMissionDescriptors(), counts);
+		}
+		
+	}
+	
 	public void addCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
 		TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
 		treeMapContainer.setHeaderText(treeMapDescriptor.getIconText());
 		
 		EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
 		
-		customTreeMaps.add(new CustomTreeMap(treeMapContainer, button));
+		customTreeMaps.put(treeMapDescriptor.getName(), new CustomTreeMap(treeMapContainer, button));
 		
 		addCommonButtonStyle(button, treeMapDescriptor.getDescription());
 		button.addClickHandler(

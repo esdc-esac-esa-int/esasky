@@ -315,6 +315,10 @@ public class TreeMapContainer extends DialogBox {
 		}
 	}
 	
+	public void updateData(List<IDescriptor> descriptors, List<Integer> counts) {
+		treeMap.updateData(descriptors, counts);
+	}
+	
 	public void addData(List<IDescriptor> descriptors, List<Integer> counts) {
 		treeMap.addData(descriptors, counts);
 		if(context == EntityContext.SSO) {
