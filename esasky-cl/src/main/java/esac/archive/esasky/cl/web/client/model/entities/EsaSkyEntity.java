@@ -796,7 +796,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public void onShapeSelection(AladinShape shape) {
     	int shapeId =  Integer.parseInt(shape.getId());
     	if(shapeRecentlySelected.contains(shapeId)) {
-    		shapeRecentlySelected.remove(shapeId);
+    		shapeRecentlySelected.remove(new Integer(shapeId));
     		return;
     	}
     	
