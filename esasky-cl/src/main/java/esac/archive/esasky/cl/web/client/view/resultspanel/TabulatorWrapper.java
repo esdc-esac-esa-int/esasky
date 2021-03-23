@@ -41,7 +41,7 @@ public class TabulatorWrapper{
         public void onDataFiltered(List<Integer> filteredRows);
         public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
         public void onAccessUrlClicked(String url);
-        public void onPostcardUrlClicked(GeneralJavaScriptObject rowData);
+        public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName);
         public void onCenterClicked(GeneralJavaScriptObject rowData);
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
         public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
@@ -1034,9 +1034,17 @@ public class TabulatorWrapper{
 			   		this.options.placeholder.innerText = "";
 			   	}
 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDataLoaded()();
+		    	
+		    	// Fix for setting the access_url and preview column next to the center button
+		    	// until we get some better handling of external tap metadata
+		    	// preview column is from ASTRON
 		    	var accessUrlColumn = this.getColumn("access_url");
 		    	if(accessUrlColumn){
-		    	    accessUrlColumn.move("centre", true);//unitl Metadata is properly defined for ext tap data
+		    	    accessUrlColumn.move("centre", true);
+		    	}
+		    	var previewColumn = this.getColumn("preview");
+		    	if(previewColumn){
+		    	    previewColumn.move("centre", true);
 		    	}
 		    },
 		    dataLoading:function(data){
@@ -1210,7 +1218,7 @@ public class TabulatorWrapper{
 	                        });
 	                        continue;
 			    		}
-			    		if(this.metadata[i].name.toLowerCase() === "postcard_url"){
+			    		if(this.metadata[i].name.toLowerCase() === "postcard_url" || this.metadata[i].name.toLowerCase() === "preview"){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_previewHeader"),
 	                            titleDownload:this.metadata[i].name,
@@ -1224,7 +1232,7 @@ public class TabulatorWrapper{
 	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_preview")}, 
 	                                cellClick:function(e, cell){
 	                                    e.stopPropagation();
-	                    		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+	                    		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
 	                                }
 	                        });
 	                        continue;
@@ -1847,8 +1855,8 @@ public class TabulatorWrapper{
         tabulatorCallback.onAccessUrlClicked(url);
     }
     
-    public void onPostcardUrlClicked(final GeneralJavaScriptObject rowData){
-        tabulatorCallback.onPostcardUrlClicked(rowData);
+    public void onPostcardUrlClicked(final GeneralJavaScriptObject rowData, String columnName){
+        tabulatorCallback.onPostcardUrlClicked(rowData, columnName);
     }
     
     public void onCenterClicked(final GeneralJavaScriptObject rowData) {

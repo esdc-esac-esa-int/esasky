@@ -596,8 +596,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     }
 
     @Override
-    public void onPostcardUrlClicked(GeneralJavaScriptObject row) {
-        String url = row.invokeFunction("getData").getStringProperty("postcard_url");
+    public void onPostcardUrlClicked(GeneralJavaScriptObject row, String columnName) {
+        String url = row.invokeFunction("getData").getStringProperty(columnName);
         String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
         selectRowWhileDialogBoxIsOpen(row, new PreviewDialogBox(url, title));
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Download_Preview, getFullId(), title);        

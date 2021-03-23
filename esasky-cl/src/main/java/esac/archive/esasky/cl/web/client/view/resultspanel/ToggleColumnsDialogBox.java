@@ -243,7 +243,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
     }
 
     @Override
-    public void onPostcardUrlClicked(GeneralJavaScriptObject rowData) {
+    public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName) {
     }
 
     @Override
