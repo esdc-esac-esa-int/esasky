@@ -9,6 +9,8 @@ public class ApiConstants {
 	public static final String SHAPE_NAME = "name";
 	public static final String SHAPE_ID = "id";
 	public static final String SHAPE_OVERLAY = "overlay";
+	public static final String SHAPE_OVERLAYS = "overlays";
+	public static final String SHAPE_AREA_POLYGON = "selection_area";
 	
 	public static final String PANEL_ID = "id";
 	public static final String PANEL_DATA_ERROR = "No panel with data open";
@@ -62,6 +64,7 @@ public class ApiConstants {
 	public static final String EXTTAP_MSG_MISING = "Missing option: ";
 	
 	public static final String EVENT_SHAPE_SELECTION = "shape_selected";
+	public static final String EVENT_SHAPE_AREA_SELECTION = "area_shape_selection";
 	public static final String EVENT_VIEW_CHANGED = "view_changed";
 	public static final String EVENT_PANEL_OPENED = "result_panel_opened";
 	public static final String EVENT_PANEL_CLOSED = "result_panel_closed";

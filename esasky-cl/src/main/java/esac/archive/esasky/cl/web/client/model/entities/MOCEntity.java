@@ -954,5 +954,15 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver) {
 	    //There is no current reason to register an observer for this
 	}
+
+	@Override
+	public void onMultipleShapesSelection(LinkedList<AladinShape> shapes) {
+		
+	}
+
+	@Override
+	public void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList) {
+		
+	}
     
 }

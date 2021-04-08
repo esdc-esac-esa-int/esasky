@@ -1,17 +1,22 @@
 package esac.archive.esasky.cl.web.client.api;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Controller;
+import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.TabObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -52,6 +57,66 @@ public class ApiEvents extends ApiBase{
       				sendBackEventToWidget(result, widget);
                   }
           );
+	}
+
+	public void registerShapeAreaSelectionCallback(final JavaScriptObject widget) {
+		
+		CommonEventBus.getEventBus().addHandler(AladinLiteSelectAreaEvent.TYPE,
+				selectEvent -> {
+					
+					GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
+	        		int i = 0;
+	        		HashMap<String, LinkedList<GeneralJavaScriptObject>> shapesToadd = new HashMap<String, LinkedList<GeneralJavaScriptObject>>();
+	        		for(GeneralJavaScriptObject shape : shapes) {
+	        			String overlayName = null;
+	        			if(shape.hasProperty("overlay")) {
+	        				overlayName = shape.getProperty("overlay").getStringProperty("name");
+	        			}else if(shape.hasProperty("catalog")) {
+	        				overlayName = shape.getProperty("catalog").getStringProperty("name");
+	        			}
+	        			
+	        			if(!shapesToadd.containsKey(overlayName)) {
+	        				shapesToadd.put(overlayName, new LinkedList<GeneralJavaScriptObject>());
+	        			}
+	        			
+	        			shapesToadd.get(overlayName).add((GeneralJavaScriptObject) shape);
+	        		}
+	        		
+	        		JSONObject overlays = new JSONObject();
+	        		
+	        		
+	        		for(String overlayName : shapesToadd.keySet()) {
+	        			JSONArray shapeArray = new JSONArray();
+	        			for(GeneralJavaScriptObject shape : shapesToadd.get(overlayName)) {
+	        				String name = shape.getStringProperty(ApiConstants.SHAPE_NAME);
+	                      	if(name == null) {
+	                      		name = "";
+	                  		}
+	                      	
+	             			String id = shape.getStringProperty(ApiConstants.SHAPE_ID);
+	             			if(id == null) {
+	    	         				id = "";
+	           				}
+	             			JSONObject item = new JSONObject();
+	             			item.put(ApiConstants.SHAPE_NAME, new JSONString(name));
+	             			item.put(ApiConstants.SHAPE_ID, new JSONString(id));
+	             			shapeArray.set(shapeArray.size(), item);
+	        			}
+	        			
+	        			overlays.put(overlayName, shapeArray);
+	        			
+	        		}
+	        		
+	        		JSONObject values = new JSONObject();
+	        		values.put(ApiConstants.SHAPE_OVERLAYS, overlays);
+	        		values.put(ApiConstants.SHAPE_AREA_POLYGON, new JSONObject(selectEvent.getArea()));
+	        		
+	        		
+    				JSONObject result = new JSONObject();
+	        		result.put(ApiConstants.VALUES, values);
+	        		result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_SHAPE_AREA_SELECTION));
+	        		sendBackEventToWidget(result, widget);
+				});
 	}
 	
 	public void registerFoVChangedListener(JavaScriptObject widget) {
@@ -130,6 +195,7 @@ public class ApiEvents extends ApiBase{
 		registerTabListener(widget);
 		registerShapeSelectionCallback(widget);
 		registerTreeMapListener(widget);
+		registerShapeAreaSelectionCallback(widget);;
 		
 	}
 	

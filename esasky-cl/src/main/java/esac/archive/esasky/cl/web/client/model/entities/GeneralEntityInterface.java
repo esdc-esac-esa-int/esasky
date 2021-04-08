@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
+import java.util.LinkedList;
+
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -64,6 +66,8 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 	public String getHelpText();
 	
 	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver);
+	public void onMultipleShapesSelection(LinkedList<AladinShape> shapes);
+	public void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList);
 
 	
 }

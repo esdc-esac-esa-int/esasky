@@ -27,8 +27,12 @@ public interface ITablePanel {
 	public String getLabel();
 
 	public void selectRow(int rowId);
+	
+	public void selectRows(int[] rowIds);
 
 	public void deselectRow(int rowId);
+	
+	public void deselectRows(int[] rowIds);
 
 	public void deselectAllRows();
 

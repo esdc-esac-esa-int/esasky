@@ -265,9 +265,17 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			new SelectTimer(rowId).schedule(50);
 		}
 	}
+	
+	public void selectRows(int[] rowIds) {
+		table.selectRows(rowIds);
+	}
 
 	public void deselectRow(int rowId) {
 		table.deselectRow(rowId);
+	}
+
+	public void deselectRows(int[] rowIds) {
+		table.deselectRows(rowIds);
 	}
 	
 	public void deselectAllRows() {

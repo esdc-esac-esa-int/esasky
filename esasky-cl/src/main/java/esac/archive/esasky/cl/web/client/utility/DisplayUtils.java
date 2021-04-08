@@ -128,49 +128,104 @@ public final class DisplayUtils {
     }
 
     public static void showInsideMainAreaPointingAtPosition(AutoHidePanel panel, int x, int y) {
-    	panel.setPosition(x, y);
-		panel.getElement().getStyle().setProperty("borderRadius", "0px 10px 10px 10px");
+    	showInsideMainAreaPointingAtPosition(panel, x, y, PreferredDirection.SOUTHEAST);
+    }
+    
+    public static void showInsideMainAreaPointingAtPosition(AutoHidePanel panel, int x, int y, PreferredDirection direction) {
+    	
+    	
+    	panel.setPosition(0, 0); //To make getOffsetHeight return full width
 		panel.getElement().getStyle().setProperty("boxSizing", "border-box");
 		panel.getElement().getStyle().setProperty("maxHeight", "auto");
 		panel.show();
 		panel.setWidth("auto");
-		boolean isWayOffToTheRight = false;
+		
 		if(x + panel.getOffsetWidth() > MainLayoutPanel.getMainAreaWidth()) {
-			isWayOffToTheRight = true;
-			panel.setPosition(0, y);
-			panel.setPosition(x - panel.getOffsetWidth(), y);
-			if(panel.getOffsetWidth() > x) {
-				panel.setWidth(x + "px");
-				panel.setPosition(x - panel.getOffsetWidth(), y);
-			} 
-			panel.getElement().getStyle().setProperty("borderRadius", "10px 0px 10px 10px");
+			direction = direction.goWest();
 		}
-
+		else if( x <  panel.getOffsetWidth()) {
+			direction = direction.goEast();
+		}
+		
 		if(y + panel.getOffsetHeight() > MainLayoutPanel.getMainAreaHeight()) {
-			if(isWayOffToTheRight) {
-				panel.setPosition(0, 0);
-                int newY = y - panel.getOffsetHeight();
-                if(newY < MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP) {
-                    panel.getElement().getStyle().setProperty("maxHeight", y - MIN_DISTANCE_FROM_TOP + "px");
-                    panel.getElement().getStyle().setProperty("overflow", "auto");
-                    panel.setPosition(x - panel.getOffsetWidth(), MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP);
-                } else {
-                    panel.setPosition(x - panel.getOffsetWidth(), y - panel.getOffsetHeight());
-                }
-				panel.getElement().getStyle().setProperty("borderRadius", "10px 10px 0px 10px");
-			} else {
-				panel.setPosition(x, 0); //To make getOffsetHeight return full width
-				int newY = y - panel.getOffsetHeight();
-				if(newY < MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP) {
-				    panel.getElement().getStyle().setProperty("maxHeight", y - MIN_DISTANCE_FROM_TOP + "px");
-				    panel.getElement().getStyle().setProperty("overflow", "auto");
-				    panel.setPosition(x, MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP);
-				} else {
-				    panel.setPosition(x, newY);
-				}
-				panel.getElement().getStyle().setProperty("borderRadius", "10px 10px 10px 0px");
+			direction = direction.goNorth();
+			if(y - panel.getOffsetHeight() < MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP) {
+				panel.getElement().getStyle().setProperty("maxHeight", y - MIN_DISTANCE_FROM_TOP + "px");
+				panel.getElement().getStyle().setProperty("overflow", "auto");
+				y = MainLayoutPanel.getMainAreaAbsoluteTop() + MIN_DISTANCE_FROM_TOP + panel.getOffsetHeight();
 			}
 		}
+		
+		else if(y < panel.getOffsetHeight()) {
+			direction = direction.goSouth();
+		}
+		
+		if(direction.equals(PreferredDirection.NORTHWEST)) {
+    		panel.getElement().getStyle().setProperty("borderRadius", "10px 10px 0px 10px");
+    		panel.setPosition(x - panel.getOffsetWidth(), y - panel.getOffsetHeight());
+    	}else if(direction.equals(PreferredDirection.NORTHEAST)) {
+    		panel.getElement().getStyle().setProperty("borderRadius", "10px 10px 10px 0px");
+    		panel.setPosition(x, y - panel.getOffsetHeight());
+    	}else if(direction.equals(PreferredDirection.SOUTHEAST)) {
+    		panel.getElement().getStyle().setProperty("borderRadius", "0px 10px 10px 10px");
+    		panel.setPosition(x, y);
+    	}else if(direction.equals(PreferredDirection.SOUTHWEST)) {
+    		panel.getElement().getStyle().setProperty("borderRadius", "10px 0px 10px 10px");
+    		panel.setPosition(x - panel.getOffsetWidth(), y);
+    	}
+    	
+    }
+    
+    public static enum PreferredDirection{
+    	SOUTHWEST("sw"), NORTHWEST("nw"), SOUTHEAST("se"), NORTHEAST("ne"),;
+    	
+    	private String direction;
 
+        private PreferredDirection(String direction) {
+            this.direction = direction;
+        }
+
+        public String getName() {
+            return this.direction;
+        }
+        
+        public PreferredDirection goEast() {
+        	if(this.getName().contains("s")) {
+        		return SOUTHEAST;
+        	}
+        	
+        	return NORTHEAST;
+        }
+        
+        public PreferredDirection goWest() {
+        	if(this.getName().contains("s")) {
+        		return SOUTHWEST;
+        	}
+        	
+        	return NORTHWEST;
+        }
+        
+        public PreferredDirection goNorth() {
+        	if(this.getName().contains("w")) {
+        		return NORTHWEST;
+        	}
+        	
+        	return NORTHEAST;
+        }
+        
+        public PreferredDirection goSouth() {
+        	if(this.getName().contains("w")) {
+        		return SOUTHWEST;
+        	}
+        	
+        	return SOUTHEAST;
+        }
+
+        @Override
+        public String toString() {
+            return this.direction;
+        }
+    	
     }
 }
+

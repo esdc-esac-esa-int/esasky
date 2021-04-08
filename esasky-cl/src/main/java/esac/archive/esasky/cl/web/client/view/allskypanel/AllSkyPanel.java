@@ -194,6 +194,11 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     }
 
     @Override
+    public final void showSelectionToolBox(final SelectionToolBoxPanel selectionToolBoxPanel) {
+    	selectionToolBoxPanel.show("");
+    }
+
+    @Override
     public final HasClickHandlers getZoomInClickHandler() {
         return this.zoomControlPanel.getZoomInClickHandler();
     }

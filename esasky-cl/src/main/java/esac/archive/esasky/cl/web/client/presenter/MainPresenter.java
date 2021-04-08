@@ -1,10 +1,18 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteDeselectAreaEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteDeselectAreaEventHandler;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEvent;
@@ -13,6 +21,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSha
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -176,6 +185,74 @@ public class MainPresenter {
                     	}
                     }
                 });
+        
+        CommonEventBus.getEventBus().addHandler(AladinLiteSelectAreaEvent.TYPE,
+        		new AladinLiteSelectAreaEventHandler() {
+        	
+        	@Override
+        	public void onSelectionAreaEvent(AladinLiteSelectAreaEvent selectEvent) {
+        		GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
+        		int i = 0;
+        		HashMap<String, LinkedList<AladinShape>> shapesToadd = new HashMap<String, LinkedList<AladinShape>>();
+        		for(GeneralJavaScriptObject shape : shapes) {
+        			String overlayName = null;
+        			if(shape.hasProperty("overlay")) {
+        				overlayName = shape.getProperty("overlay").getStringProperty("name");
+        			}else if(shape.hasProperty("catalog")) {
+        				overlayName = shape.getProperty("catalog").getStringProperty("name");
+        			}
+        			
+        			if(!shapesToadd.containsKey(overlayName)) {
+        				shapesToadd.put(overlayName, new LinkedList<AladinShape>());
+        			}
+        			
+        			shapesToadd.get(overlayName).add((AladinShape)(JavaScriptObject) shape);
+        		}
+        		
+        		for(String overlayName : shapesToadd.keySet()) {
+        			
+        			GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
+        			
+        			if(entity != null) {
+        				entity.onMultipleShapesSelection(shapesToadd.get(overlayName));
+        			}
+        		}
+        	}
+        });
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteDeselectAreaEvent.TYPE,
+        		new AladinLiteDeselectAreaEventHandler() {
+        	
+        	@Override
+        	public void onDeselectionAreaEvent(AladinLiteDeselectAreaEvent deselectEvent) {
+        		GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) deselectEvent.getObjects());
+        		int i = 0;
+        		HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<String, LinkedList<AladinShape>>();
+        		for(GeneralJavaScriptObject shape : shapes) {
+        			String overlayName = null;
+        			if(shape.hasProperty("overlay")) {
+        				overlayName = shape.getProperty("overlay").getStringProperty("name");
+        			}else if(shape.hasProperty("catalog")) {
+        				overlayName = shape.getProperty("catalog").getStringProperty("name");
+        			}
+        			
+        			if(!shapesToRemove.containsKey(overlayName)) {
+        				shapesToRemove.put(overlayName, new LinkedList<AladinShape>());
+        			}
+        			
+        			shapesToRemove.get(overlayName).add((AladinShape)(JavaScriptObject) shape);
+        		}
+        		
+        		for(String overlayName : shapesToRemove.keySet()) {
+        			
+        			GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
+        			
+        			if(entity != null) {
+        				entity.onMultipleShapesDeselection(shapesToRemove.get(overlayName));
+        			}
+        		}
+        	}
+        });
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeDeselectedEvent.TYPE,
                 new AladinLiteShapeDeselectedEventHandler() {

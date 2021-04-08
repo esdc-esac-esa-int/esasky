@@ -116,12 +116,44 @@ public class TabulatorWrapper{
         row.invokeFunction("scrollTo");
     }
 
+    public void selectRows(int[] rowIds) {
+    	String json = "[";
+    	for(int rowId : rowIds) {
+    		json += rowId;
+    		json += ",";
+    	}
+    	json = json.substring(0, json.length() - 1 );
+    	json += "]";
+    	GeneralJavaScriptObject rows = GeneralJavaScriptObject.createJsonObject(json);
+    	selectRows(rows);
+    }
+
+    public void deselectRows(int[] rowIds) {
+    	String json = "[";
+    	for(int rowId : rowIds) {
+    		json += rowId;
+    		json += ",";
+    	}
+    	json = json.substring(0, json.length() - 1 );
+    	json += "]";
+    	GeneralJavaScriptObject rows = GeneralJavaScriptObject.createJsonObject(json);
+    	deselectRows(rows);
+    }
+
     public void selectRows(GeneralJavaScriptObject rowIdArray) {
         selectRows(tableJsObject, rowIdArray);
     }
     
     private native void selectRows(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject rowIdArray)/*-{
         tableJsObject.selectRow(rowIdArray);
+    }-*/;
+
+    public void deselectRows(GeneralJavaScriptObject rowIdArray) {
+    	deselectRows(tableJsObject, rowIdArray);
+    }
+    
+    private native void deselectRows(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject rowIdArray)/*-{
+        tableJsObject.deselectRow(rowIdArray);
     }-*/;
 
     public int getTableHeight() {

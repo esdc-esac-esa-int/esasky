@@ -398,7 +398,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void selectShapes(int shapeId) {
-    	shapeRecentlySelected.add(shapeId);
     	drawer.selectShapes(shapeId);
     }
 
@@ -810,6 +809,38 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             tooltip = new CatalogueTooltip(shape);
             CommonEventBus.getEventBus().fireEvent(new AddShapeTooltipEvent(tooltip));
         }
+    }
+
+    @Override
+    public void onMultipleShapesSelection(LinkedList<AladinShape> shapes) {
+    	int[] shapeIds = new int[shapes.size()];
+    	int i = 0;
+    	for(AladinShape shape : shapes) {
+	    	int shapeId =  Integer.parseInt(shape.getId());
+	    	shapeIds[i++] = shapeId;
+	    	
+	    	selectShapes(shapeId);
+    	}
+    	if(tablePanel != null) {
+    		tablePanel.selectRows(shapeIds);
+    	}
+    	select();
+    	
+    }
+
+    @Override
+    public void onMultipleShapesDeselection(LinkedList<AladinShape> shapes) {
+    	int[] shapeIds = new int[shapes.size()];
+    	int i = 0;
+    	for(AladinShape shape : shapes) {
+    		int shapeId =  Integer.parseInt(shape.getId());
+    		shapeIds[i++] = shapeId;
+    		
+    		deselectShapes(shapeId);
+    	}
+    	if(tablePanel != null) {
+    		tablePanel.deselectRows(shapeIds);
+    	}
     }
     
     @Override
