@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>3.8-branchoff</version>
+		<version>3.9-SNAPSHOT</version>
 	</parent>
 <!--	<distributionManagement>
 		<repository>
