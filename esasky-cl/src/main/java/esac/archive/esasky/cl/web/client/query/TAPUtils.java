@@ -23,7 +23,7 @@ public class TAPUtils {
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
         return EsaSkyWebConstants.TAP_CONTEXT + "/tap/sync?request=doQuery&lang=ADQL&format="
-        + formatResponse + adqlParameterAndValue + "&timecall=" + timecall;
+        + formatResponse + adqlParameterAndValue + "&timecall=" + timecall + "&client=esasky-web-client";
     }
     
     /**
