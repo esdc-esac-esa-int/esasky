@@ -396,7 +396,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         		if("Earth".equals(currSSO.getName())) {
         		    isLinkToESAArchive = true;
         		    ssoName.setText("ESA Earth Online");
-        		    ssoTypeLabel.setText("");
+        		    ssoTypeLabel.setVisible(false);
                     menuEntry.addClickHandler(new ClickHandler() {
                             
                         @Override
@@ -410,7 +410,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         		} else if("Sun".equals(currSSO.getName())) {
         		    isLinkToESAArchive = true;
                     ssoName.setText("Solar Orbiter Archive");
-                    ssoTypeLabel.setText("");
+                    ssoTypeLabel.setVisible(false);
                     menuEntry.addClickHandler(new ClickHandler() {
                             
                         @Override
@@ -423,14 +423,16 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                     });
                 } else if("Moon".equals(currSSO.getName())) {
                     isLinkToESAArchive = true;
-                    ssoName.setText("Moon data from SMART-1");
-                    ssoTypeLabel.setText("");
+                    container.getElement().getStyle().setPropertyPx("marginLeft", -1);
+                    container.getElement().getStyle().setPropertyPx("marginRight", -3);
+                    ssoName.setText("Moon data from the Planetary Science Archive");
+                    ssoTypeLabel.setVisible(false);
                     menuEntry.addClickHandler(new ClickHandler() {
                             
                         @Override
                         public void onClick(ClickEvent event) {
-                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "PSA SMART-1");
-                            Window.open("https://archives.esac.esa.int/psa/#!Table%20View/SMART-1=mission", "_blank", "");
+                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "PSA Moon");
+                            Window.open("https://archives.esac.esa.int/psa/#!Table%20View/Moon=target", "_blank", "");
                             SearchPanel.this.searchResultsFocusPanel.setVisible(false);
                             
                         }
