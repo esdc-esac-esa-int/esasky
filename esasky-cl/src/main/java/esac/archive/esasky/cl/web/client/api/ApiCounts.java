@@ -52,7 +52,7 @@ public class ApiCounts extends ApiBase{
 			
 			obsCount.put(ApiConstants.COUNT_TOTAL, new JSONNumber(countStatus.getTotalCount()));		
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
-			sendBackToWidget(obsCount, widget);
+			sendBackValuesToWidget(obsCount, widget);
 			
 		}else {
 			countStatus.registerObserver(new CountObserver() {
@@ -66,7 +66,7 @@ public class ApiCounts extends ApiBase{
 					
 					obsCount.put(ApiConstants.COUNT_TOTAL, new JSONNumber(countStatus.getTotalCount()));		
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
-					sendBackToWidget(obsCount, widget);
+					sendBackValuesToWidget(obsCount, widget);
 					countStatus.unregisterObserver(this);
 				}
 			});

@@ -70,18 +70,25 @@ public class ApiHips extends ApiBase{
 			for(int i = SelectSkyPanel.getInstance().getNumberOfSkyRows() - 1; i > 0 ;i--) {
 				SelectSkyPanel.getInstance().removeSky(i);
 			}
-		}else if(!SelectSkyPanel.getInstance().removeSky(index)) {
-			msg = "Index out of bounds. Max number is: " + Integer.toString(SelectSkyPanel.getInstance().getNumberOfSkyRows());
-			sendBackErrorMsgToWidget(msg, widget);
+			sendBackSuccessToWidget(widget);
+
+		}else {
+			
+			if(SelectSkyPanel.getInstance().removeSky(index)) {
+				sendBackSuccessToWidget(widget);
+			}
+			
+			else {
+				msg = "Index out of bounds. Max number is: " + Integer.toString(SelectSkyPanel.getInstance().getNumberOfSkyRows());
+				sendBackErrorMsgToWidget(msg, widget);
+			}
 		}
 	}
 	
 	public void getNumberOfSkyRows(JavaScriptObject widget) {
-		JSONObject countObj = new JSONObject();
 		int count = SelectSkyPanel.getInstance().getNumberOfSkyRows();
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getNumberOfSkyRows, Integer.toString(count));
-		countObj.put("Count",new JSONNumber(count));
-		sendBackToWidget(countObj, null, widget);
+		sendBackSingleValueToWidget(new JSONNumber(count), widget);
 	}
 	
 	public void setHiPSSliderValue(double value) {
@@ -98,11 +105,12 @@ public class ApiHips extends ApiBase{
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString("No HiPS called: " + wantedHiPSName + " found"));
 
-			JSONObject wavelengthMap = getAvailableHiPS("");
+			JSONObject wavelengthMap = getAvailableHiPS("", true);
 			error.put(ApiConstants.ERROR_AVAILABLE, wavelengthMap);
 			sendBackErrorToWidget(error, widget);
 			return false;
 		}
+		sendBackSuccessToWidget(widget);
 		return true;
 	}
 
@@ -137,6 +145,8 @@ public class ApiHips extends ApiBase{
 				}else {
 					setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat);
 				}
+				sendBackSuccessToWidget(widget);
+
 			}
 			
 			@Override
@@ -191,10 +201,11 @@ public class ApiHips extends ApiBase{
 		}
 		
 		SelectSkyPanel.getSelectedSky().setColorPalette(colorPaletteEnum);
+		sendBackSuccessToWidget(widget);
 	}
 	
 	
-	public JSONObject getAvailableHiPS(String wavelength) {
+	public JSONObject getAvailableHiPS(String wavelength, boolean onlyName) {
 		//TODO Looks in skiesMenu which doesn't contain user added HiPS
 		
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, wavelength);
@@ -216,7 +227,17 @@ public class ApiHips extends ApiBase{
 			JSONObject wavelengthMap = new  JSONObject();
 			for (SkiesMenuEntry currSkiesMenuEntry : skiesMenu.getMenuEntries()) {
 				HipsWavelength currWavelength = currSkiesMenuEntry.getWavelength();
-				wavelengthMap.put(currWavelength.name(),getHiPSByWavelength(currWavelength));
+				JSONObject hips = getHiPSByWavelength(currWavelength);
+				if(onlyName) {
+					JSONArray hipsNames = new JSONArray();
+					int i = 0;
+					for(String key : hips.keySet()) {
+						hipsNames.set(i++, new JSONString(key));
+					}
+					wavelengthMap.put(currWavelength.name(), hipsNames);
+				}else {
+					wavelengthMap.put(currWavelength.name(), hips);
+				}
 			}
 			return wavelengthMap;
 		} else {
@@ -225,13 +246,13 @@ public class ApiHips extends ApiBase{
 	}
 	
 	public void getAvailableHiPS(String wavelength, JavaScriptObject widget) {
-		JSONObject wavelengthMap = getAvailableHiPS(wavelength);
+		JSONObject wavelengthMap = getAvailableHiPS(wavelength, false);
 		sendBackToWidget(wavelengthMap, null, widget);
 	}
 
 	private JSONObject getHiPSByWavelength(HipsWavelength wavelength) {
 
-		JSONObject hiPSMap = new JSONObject();
+		JSONObject hipsMap = new JSONObject();
 		SkiesMenu skiesMenu = controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getSkiesMenu();
 		for (SkiesMenuEntry currSkiesMenuEntry : skiesMenu.getMenuEntries()) {
 			if (currSkiesMenuEntry.getWavelength() == wavelength) {
@@ -242,10 +263,10 @@ public class ApiHips extends ApiBase{
 					currHiPSJSON.put(ApiConstants.HIPS_FRAME, new JSONString(currHiPS.getSurveyFrame().getName()));
 					currHiPSJSON.put(ApiConstants.HIPS_MAX_ORDER, new JSONString(Integer.toString(currHiPS.getMaximumNorder())));
 					currHiPSJSON.put(ApiConstants.HIPS_FORMAT, new JSONString(currHiPS.getImgFormat().name()));
-					hiPSMap.put(currHiPS.getSurveyId(),currHiPSJSON);
+					hipsMap.put(currHiPS.getSurveyId(),currHiPSJSON);
 				}
 			}
 		}
-		return hiPSMap;
+		return hipsMap;
 	}
 }

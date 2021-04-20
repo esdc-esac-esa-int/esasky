@@ -37,7 +37,7 @@ public class ApiView extends ApiBase{
 		coors.put(ApiConstants.FOV, new JSONNumber(skyViewPosition.getFov()));
 		
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getCenter, "Cooframe: " + cooFrame + " returned: " + coors.toString() );
-		sendBackToWidget(coors, widget);
+		sendBackValuesToWidget(coors, widget);
 	}
 	
 	public void goTo(String ra, String dec) {

@@ -44,7 +44,9 @@ public class ApiPlanning extends ApiBase{
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.ERROR_AVAILABLE, available);
 			sendBackErrorToWidget(error, widget);
+			return;
 		}
+		sendBackSuccessToWidget(widget);
 	}
 	
 	public void addJwst(String instrument, String detector, boolean allInstruments, JavaScriptObject widget) {	
@@ -57,6 +59,9 @@ public class ApiPlanning extends ApiBase{
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.ERROR_AVAILABLE, available);
 			sendBackErrorToWidget(error, widget);
+			return;
 		}
+		sendBackSuccessToWidget(widget);
+
 	}
 }

@@ -50,7 +50,7 @@ public class ApiConstants {
 	public static final String MOC_MODE = "mode";
 	public static final String MOC_HEALPIX = "healpix";
 	public static final String MOC_Q3C = "q3c";
-	public static final String MOC_ADD_TAB = "addTap";
+	public static final String MOC_ADD_TAB = "addTab";
 	
 	
 	public static final String EXTTAP_SERVICES = "tapServices";
@@ -89,6 +89,7 @@ public class ApiConstants {
 	public static final String EXTRAS = "extras";
 	public static final String ERROR = "error";
 	public static final String EVENT = "event";
+	public static final String SUCCESS = "success";
 	public static final String VALUES = "values";
 	public static final String VALUE = "value";
 	public static final String MESSAGE = "message";

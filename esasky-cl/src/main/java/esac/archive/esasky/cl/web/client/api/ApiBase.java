@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -35,36 +36,46 @@ public abstract class ApiBase {
 		
 	}
 	
-	protected void sendBackToWidget(JSONObject values, JavaScriptObject widget) {
-		sendBackToWidget(values, null, null, null, widget);
+	protected void sendBackValuesToWidget(JSONObject values, JavaScriptObject widget) {
+		sendBackToWidget(values, null, null, null, null, widget);
+	}
+	
+	protected void sendBackSingleValueToWidget(JSONValue value, JavaScriptObject widget) {
+		JSONObject msg = new JSONObject();
+		msg.put(ApiConstants.VALUES, value);
+		sendBackToWidget(msg, widget);
 	}
 	
 	protected void sendBackEventToWidget(JSONObject event, JavaScriptObject widget) {
-		sendBackToWidget(event, null, null, event, widget);
+		sendBackToWidget(event, null, null, event, null,  widget);
 	}
 	
 	protected void sendBackMessageToWidget(String message, JavaScriptObject widget) {
 		JSONObject callbackMessage = new JSONObject();
 		callbackMessage.put(ApiConstants.MESSAGE, new JSONString(message));
-		sendBackToWidget(null, callbackMessage, null, null, widget);
+		sendBackToWidget(null, callbackMessage, null, null, null, widget);
 	}
 
 	protected void sendBackErrorToWidget(JSONObject error, JavaScriptObject widget) {
-		sendBackToWidget(null, error, error, null, widget);
+		sendBackToWidget(null, error, error, null, null, widget);
+	}
+	
+	protected void sendBackSuccessToWidget(JavaScriptObject widget) {
+		sendBackToWidget(null, null, null, null, new JSONObject(), widget);
 	}
 	
 	protected void sendBackErrorMsgToWidget(String errorMsg, JavaScriptObject widget) {
 		JSONObject error = new JSONObject();
 		error.put(ApiConstants.MESSAGE, new JSONString(errorMsg));
-		sendBackToWidget(null, error, error, null, widget);
+		sendBackToWidget(null, error, error, null, null, widget);
 	}
 	
 	protected void sendBackToWidget(JSONObject values, JSONObject extras, JavaScriptObject widget) {
-		sendBackToWidget(values, extras, null, null, widget);
+		sendBackToWidget(values, extras, null, null, null, widget);
 	}
 	
 	
-	protected void sendBackToWidget(JSONObject values, JSONObject extras, JSONObject error, JSONObject event, JavaScriptObject widget) {
+	protected void sendBackToWidget(JSONObject values, JSONObject extras, JSONObject error, JSONObject event, JSONObject success, JavaScriptObject widget) {
 		JSONObject msg = new JSONObject();
 
 		if(values != null){
@@ -83,6 +94,14 @@ public abstract class ApiBase {
 			msg.put(ApiConstants.EVENT, event);
 		}
 		
+		if(success != null){
+			msg.put(ApiConstants.SUCCESS, success);
+		}
+		
+		sendBackToWidget(msg, widget);
+	}
+	
+	protected void sendBackToWidget(JSONObject msg, JavaScriptObject widget) {
 		String msgId = ((GeneralJavaScriptObject) widget).getProperty(ApiConstants.DATA).getStringProperty(ApiConstants.MSGID);
 		if(msgId != null && !"".equals(msgId)) {
 			msg.put(ApiConstants.MSGID, new JSONString(msgId));

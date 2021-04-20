@@ -194,7 +194,7 @@ public class ApiModules extends ApiBase{
 		JSONArray availableModules = getAvailableModules();
 		JSONObject obj = new JSONObject();
 		obj.put(ApiConstants.ERROR_AVAILABLE, availableModules);
-		sendBackToWidget(obj, widget);
+		sendBackValuesToWidget(obj, widget);
 	}
 	
 	public JSONArray getAvailableModules() {

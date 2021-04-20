@@ -300,6 +300,6 @@ public class ApiOverlay extends ApiBase{
 		}
 		JSONObject result = new JSONObject();
 		result.put("Overlays", arr);
-		sendBackToWidget(result, widget);
+		sendBackValuesToWidget(result, widget);
 	}
 }

@@ -62,7 +62,7 @@ public class ApiExtTap extends ApiBase{
 			JSONObject obsCount = countToJSON(parent, countStatus);
 			
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
-			sendBackToWidget(obsCount, widget);
+			sendBackValuesToWidget(obsCount, widget);
 			
 		}else {
 			countStatus.registerObserver(new CountObserver() {
@@ -71,7 +71,7 @@ public class ApiExtTap extends ApiBase{
 					JSONObject obsCount = countToJSON(parent, countStatus);
 					
 					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
-					sendBackToWidget(obsCount, widget);
+					sendBackValuesToWidget(obsCount, widget);
 					countStatus.unregisterObserver(this);
 				}
 			});
@@ -90,9 +90,7 @@ public class ApiExtTap extends ApiBase{
 
 	public void getAvailableTapServices(JavaScriptObject widget) {
 		JSONArray tapServices = getAvailableTapServices();
-		JSONObject result = new JSONObject();
-		result.put(ApiConstants.EXTTAP_SERVICES, tapServices);
-		sendBackToWidget(result, widget);
+		sendBackSingleValueToWidget(tapServices, widget);
 	}
 	
 	public JSONObject getAllAvailableTapMissions() {
@@ -106,7 +104,7 @@ public class ApiExtTap extends ApiBase{
 	
 	public void getAllAvailableTapMissions(JavaScriptObject widget) {
 		JSONObject tapServices = getAllAvailableTapMissions();
-		sendBackToWidget(tapServices, widget);
+		sendBackValuesToWidget(tapServices, widget);
 	}
 	
 	private JSONObject checkAndPutJSONObject(JSONObject object, ExtTapDescriptor desc) {

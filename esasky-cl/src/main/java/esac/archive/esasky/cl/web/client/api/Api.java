@@ -1,10 +1,12 @@
 package esac.archive.esasky.cl.web.client.api;
 
 
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.cl.web.client.EsaSkyWeb;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 
 public class Api extends ApiBase{
 	
@@ -45,6 +47,11 @@ public class Api extends ApiBase{
 
 		Log.debug("[Api] Ready!!");
 		
+	}
+	
+	public void displayJPG(String imageURL, String transparency) {
+		
+		AladinLiteWrapper.getAladinLite().displayJPG(imageURL, transparency, 1.0);
 	}
 	
 	public void noSuchEventError(String event, JavaScriptObject widget) {
