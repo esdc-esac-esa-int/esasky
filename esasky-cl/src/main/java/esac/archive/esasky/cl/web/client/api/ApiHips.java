@@ -205,12 +205,32 @@ public class ApiHips extends ApiBase{
 	}
 	
 	
+	public JSONObject getHipsAllWavelengths( boolean onlyName) {
+		SkiesMenu skiesMenu = controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getSkiesMenu();
+
+		JSONObject wavelengthMap = new  JSONObject();
+		for (SkiesMenuEntry currSkiesMenuEntry : skiesMenu.getMenuEntries()) {
+			HipsWavelength currWavelength = currSkiesMenuEntry.getWavelength();
+			JSONObject hips = getHiPSByWavelength(currWavelength);
+			if(onlyName) {
+				JSONArray hipsNames = new JSONArray();
+				int i = 0;
+				for(String key : hips.keySet()) {
+					hipsNames.set(i++, new JSONString(key));
+				}
+				wavelengthMap.put(currWavelength.name(), hipsNames);
+			}else {
+				wavelengthMap.put(currWavelength.name(), hips);
+			}
+		}
+		return wavelengthMap;
+
+	}	
+	
 	public JSONObject getAvailableHiPS(String wavelength, boolean onlyName) {
 		//TODO Looks in skiesMenu which doesn't contain user added HiPS
 		
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, wavelength);
-		
-		SkiesMenu skiesMenu = controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getSkiesMenu();
 		
 		HipsWavelength hipsWavelength;
 		if(wavelength == null && "".equals(wavelength)) {
@@ -224,22 +244,7 @@ public class ApiHips extends ApiBase{
 			}
 		}
 		if (null == hipsWavelength) {
-			JSONObject wavelengthMap = new  JSONObject();
-			for (SkiesMenuEntry currSkiesMenuEntry : skiesMenu.getMenuEntries()) {
-				HipsWavelength currWavelength = currSkiesMenuEntry.getWavelength();
-				JSONObject hips = getHiPSByWavelength(currWavelength);
-				if(onlyName) {
-					JSONArray hipsNames = new JSONArray();
-					int i = 0;
-					for(String key : hips.keySet()) {
-						hipsNames.set(i++, new JSONString(key));
-					}
-					wavelengthMap.put(currWavelength.name(), hipsNames);
-				}else {
-					wavelengthMap.put(currWavelength.name(), hips);
-				}
-			}
-			return wavelengthMap;
+			return getHipsAllWavelengths(onlyName);
 		} else {
 			return getHiPSByWavelength(hipsWavelength);
 		}
