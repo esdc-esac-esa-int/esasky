@@ -189,6 +189,14 @@ public class ApiMessageParser {
 					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.overlayName, e);
 					break;
+					
+				case 'removeOverlay':
+					console.log('clear catalgue event captured!');
+					console.log(msg);
+					apiOverlay.@esac.archive.esasky.cl.web.client.api.ApiOverlay::removeOverlay(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.overlayName, e);
+					break;
+	
 				
 				case 'removeAllOverlays':
 					console.log('removeAllOverlays event captured!');
