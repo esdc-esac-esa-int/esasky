@@ -210,11 +210,11 @@ public class ApiEvents extends ApiBase{
 	}
 
 	public void startSelectionEvent(JavaScriptObject widget) {
-		AladinLiteWrapper.getAladinLite().startSelectionMode();
+//		AladinLiteWrapper.getAladinLite().startSelectionMode();
 	}
 
 	public void endSelectionEvent(JavaScriptObject widget) {
-		AladinLiteWrapper.getAladinLite().endSelectionMode();
+//		AladinLiteWrapper.getAladinLite().endSelectionMode();
 	}
 	
 	private class TreeMapListener{
