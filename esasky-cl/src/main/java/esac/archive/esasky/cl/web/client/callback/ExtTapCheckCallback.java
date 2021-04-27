@@ -193,13 +193,15 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	        				
 	        				if(level1Name != null) {
 	        					ExtTapDescriptor descLevel1 = getLevelDesc(descriptor, 1,  level1Name, descriptor.getSubLevels().get(level1Name));
+	        					if(descLevel1 != null) {
 	        					String level2Name = findLevelName(descLevel1.getSubLevels(), level2Value);
-	        					if(level2Name != null) {
-	        						ExtTapDescriptor descLevel2 = getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
-	        					
-	        					}else {
-	        						logMissingProductType(level1Value, level2Value);
-		        				}
+		        					if(level2Name != null) {
+		        						ExtTapDescriptor descLevel2 = getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
+		        					
+		        					}else {
+		        						logMissingProductType(level1Value, level2Value);
+			        				}
+	        					}
 	        					
 	        				}else {
 	        					logMissingCollection(level1Value);
