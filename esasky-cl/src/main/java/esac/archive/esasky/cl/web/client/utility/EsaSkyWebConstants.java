@@ -147,6 +147,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_BANNERS_ALL_SIDE = "bannersOnAllSides";
     public static final String MODULE_TOGGLE_COLUMNS = "toggleColumns";
     public static final String MODULE_INTERNATIONALIZATION = "internationalization";
+    public static final String MODULE_SHOW_MISSING_TRANSLATIONS = "showMissingTranslations";
     
     
     

@@ -21,8 +21,10 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
 public class TextMgr {
@@ -45,9 +47,6 @@ public class TextMgr {
 	
 	private static final String LOCALE_URL = Dictionary.getDictionary("serverProperties")
             .get("localeFilesLocation");
-	private static final boolean shouldShowMissingTranslationBox = Boolean.parseBoolean(Dictionary.getDictionary("serverProperties")
-			.get("showMissingTranslationBox"));
-	
 	
 	
 	private TextMgr(String langCode, boolean isPrimaryLanguage) {
@@ -81,7 +80,7 @@ public class TextMgr {
 						
 					}
 				}
-				if(newMissingTranslationsFound && shouldShowMissingTranslationBox) {
+				if(newMissingTranslationsFound && Modules.getModule(EsaSkyWebConstants.MODULE_SHOW_MISSING_TRANSLATIONS)) {
 					DisplayUtils.showMessageDialogBox(
 							"If you have time, please consider informing us by reporting the following keys to esdc_esasky@sciops.esa.int: "
 							+ missedTranslationList, 
