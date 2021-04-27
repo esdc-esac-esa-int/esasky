@@ -94,15 +94,6 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		return null;
 	}
 	
-	private String getType(ArrayList<Object> row, int typeIndex ){
-		if(typeIndex >= 0) {
-			return (String) row.get(typeIndex);
-		}else {
-			return EsaSkyConstants.CATALOGUE;
-		}
-		
-	}
-	
 	private void logMissingProductType(String collection, String productType) {
 		String extra = descriptor.getCreditedInstitutions() + "-" + collection + "-" + productType;
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
@@ -136,25 +127,6 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		return levelDesc;
 	}
 	
-//	private void addLevel2DescToLevel1Desc(ExtTapDescriptor level2Desc, String level2Value, String level1Name) {
-//		String combinedName = ObsCoreCollection.get(level2Value) + "-" + level1Name;
-//
-//		ExtTapDescriptor level1Desc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-//				descriptor.getMission() + "-" + combinedName);
-//		
-//		if(level1Desc == null) {
-//			level1Desc = ExtTapUtils.createLevel1Descriptor(descriptor, level2Desc, level1Name);
-//			extTapDescriptors.getDescriptors().add(level1Desc);
-//		}
-//		
-//		if(!descriptors.contains(level1Desc)) {
-//			descriptors.add(level1Desc);
-//			counts.add(1);
-//			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-//			countStatus.setCountDetails(level1Desc, 1, System.currentTimeMillis(), skyViewPosition);
-//		}
-//	}
-	
 	@Override
 	protected void onSuccess(final Response response) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
@@ -187,25 +159,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        		
 		        		
 		        		for(ArrayList<Object> row : rowList.getData()) {
-		        			String level1Value = (String) row.get(level1Index);
-		        			String level2Value = (String) row.get(level2Index);
-	        				String level1Name = findLevelName(descriptor.getSubLevels(), level1Value);
-	        				
-	        				if(level1Name != null) {
-	        					ExtTapDescriptor descLevel1 = getLevelDesc(descriptor, 1,  level1Name, descriptor.getSubLevels().get(level1Name));
-	        					if(descLevel1 != null) {
-	        					String level2Name = findLevelName(descLevel1.getSubLevels(), level2Value);
-		        					if(level2Name != null) {
-		        						ExtTapDescriptor descLevel2 = getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
-		        					
-		        					}else {
-		        						logMissingProductType(level1Value, level2Value);
-			        				}
-	        					}
-	        					
-	        				}else {
-	        					logMissingCollection(level1Value);
-		        			}
+		        			createDescriptors(level1Index, level2Index, row);
 		        		}
 		        	}
 		        }
@@ -217,6 +171,28 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
 			}
 		});
+	}
+	
+	private void createDescriptors(int level1Index, int level2Index, ArrayList<Object> row) {
+		String level1Value = (String) row.get(level1Index);
+		String level2Value = (String) row.get(level2Index);
+		String level1Name = findLevelName(descriptor.getSubLevels(), level1Value);
+		
+		if(level1Name != null) {
+			ExtTapDescriptor descLevel1 = getLevelDesc(descriptor, 1,  level1Name, descriptor.getSubLevels().get(level1Name));
+			if(descLevel1 != null) {
+			String level2Name = findLevelName(descLevel1.getSubLevels(), level2Value);
+				if(level2Name != null) {
+					getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
+				
+				}else {
+					logMissingProductType(level1Value, level2Value);
+				}
+			}
+			
+		}else {
+			logMissingCollection(level1Value);
+		}
 	}
 	
 }
