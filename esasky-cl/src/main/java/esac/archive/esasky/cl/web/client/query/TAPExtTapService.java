@@ -66,10 +66,6 @@ public class TAPExtTapService extends AbstractTAPService {
     		adql += descriptor.getDateADQL();
     	}
     	
-       	if(descriptor.getOrderBy() != null) {
-    		adql += " ORDER BY " + descriptor.getOrderBy();
-    	}
-    	
     	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
     	
     	return adql;
@@ -185,7 +181,7 @@ public class TAPExtTapService extends AbstractTAPService {
 		if("heasarc".equals(descriptor.getSearchFunction())) {
 			return getHeasarcCountAdql(descriptor);
 		}
-		return getObsCoreCountAdql(descriptor);
+		return getDefaultCountAdql(descriptor);
     		
     }
     
@@ -198,6 +194,37 @@ public class TAPExtTapService extends AbstractTAPService {
         }else {
         	return getAdqlNewService(descriptor);
         }  
+    }
+    
+    public String getDefaultCountAdql(IDescriptor descriptorInput) {
+    	
+    	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
+    	String selectADQL = "SELECT count(*) as c";
+    	for(String column : descriptor.getLevelColumnNames()) {
+    		selectADQL += ", " + column;
+    	}
+    	String adql;
+    	if(descriptor.isInBackend()) {
+    		adql = getAdql(descriptor, selectADQL);       
+    	}else {
+    		adql = getAdqlNewService(descriptor);
+    	}  
+    	adql += " group by ";
+    	boolean first = true;
+    	for(String column : descriptor.getLevelColumnNames()) {
+    		if(first) {
+    			first = false;
+    		}else {
+    			adql += ", ";
+    		}
+    			adql += column;
+    	}
+    	
+      	if(descriptor.getOrderBy() != null) {
+    		adql += " ORDER BY " + descriptor.getOrderBy();
+    	}
+    	
+    	return adql;
     }
     
     public String getHeasarcCountAdql(IDescriptor descriptorInput) {

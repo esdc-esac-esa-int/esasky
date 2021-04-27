@@ -1,7 +1,8 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
+
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,13 +24,14 @@ public class ExtTapDescriptor extends BaseDescriptor {
     private String selectADQL;
     private String responseFormat;
     private String searchFunction;
-    private Map<String, Map<String, ArrayList<String>>> collections;
+    private ArrayList<String> levelColumnNames;
+    private HashMap<String, ExtTapTreeMapLevel> subLevels;
     private boolean isInBackend = true;
-    private String treeMapType;
+    private int treeMapLevel;
     private ExtTapDescriptor parent;
-    private String ingestedTable;
     private boolean isObsCore;
     private String intersectColumn;
+    private String baseMission;
     
 
     @JsonInclude(Include.NON_NULL)
@@ -46,9 +48,11 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	selectADQL = parent.getSelectADQL();
     	responseFormat = parent.getResponseFormat();
     	searchFunction = parent.getSearchFunction();
-    	isInBackend = false;
+    	levelColumnNames = parent.getLevelColumnNames();
+    	baseMission = parent.getBaseMission();
+    	
+    	isInBackend = true;
     	tapUrl = parent.getTapUrl();
-    	ingestedTable = parent.getIngestedTable();
     	isObsCore = parent.getIsObsCore();
     	intersectColumn = parent.getIntersectColumn();
     	
@@ -132,20 +136,29 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.selectADQL = selectADQL;
 	}
 
-	public Map<String, Map<String, ArrayList<String>>> getCollections() {
-		return collections;
+	public HashMap<String, ExtTapTreeMapLevel>  getSubLevels() {
+		return subLevels;
+	}
+	
+
+	public ArrayList<String> getLevelColumnNames() {
+		return levelColumnNames;
 	}
 
-	public void setCollections(Map<String, Map<String, ArrayList<String>>> collections) {
-		this.collections = collections;
+	public void setLevelColumnNames(ArrayList<String> levelColumnNames) {
+		this.levelColumnNames = levelColumnNames;
 	}
 
-	public String getTreeMapType() {
-		return treeMapType;
+	public void setSubLevels(HashMap<String, ExtTapTreeMapLevel> subLevels) {
+		this.subLevels = subLevels;
 	}
 
-	public void setTreeMapType(String treeMapType) {
-		this.treeMapType = treeMapType;
+	public int getTreeMapLevel() {
+		return treeMapLevel;
+	}
+
+	public void setTreeMapLevel(int treeMapLevel) {
+		this.treeMapLevel = treeMapLevel;
 	}
 
 	public ExtTapDescriptor getParent() {
@@ -154,14 +167,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setParent(ExtTapDescriptor parent) {
 		this.parent = parent;
-	}
-
-	public String getIngestedTable() {
-		return ingestedTable;
-	}
-
-	public void setIngestedTable(String ingestedTable) {
-		this.ingestedTable = ingestedTable;
 	}
 
     public String getTapQuery(String tapContext, String metadataAdql, String responseFormat) {
@@ -174,7 +179,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
         String url = tapContext + "&" + EsaSkyConstants.EXT_TAP_TARGET_FLAG
-                    + "=" + getMission();
+                    + "=" + getBaseMission();
         if(!isInBackend()) {
             String tapUrl = getTapUrl();
             if(!tapUrl.endsWith("/sync")) {
@@ -233,6 +238,17 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	public void setIntersectColumn(String intersectColumn) {
 		this.intersectColumn = intersectColumn;
+	}
+
+	public String getBaseMission() {
+		if(baseMission == null) {
+			return getMission();
+		}
+		return baseMission;
+	}
+
+	public void setBaseMission(String baseMission) {
+		this.baseMission = baseMission;
 	}
 	
 	

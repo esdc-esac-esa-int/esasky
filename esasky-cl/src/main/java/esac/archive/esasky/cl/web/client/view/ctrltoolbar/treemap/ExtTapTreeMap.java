@@ -30,6 +30,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ExtTapTreeMap extends TreeMap {
@@ -187,7 +188,7 @@ public class ExtTapTreeMap extends TreeMap {
             
             for (int i = 0; i < descriptors.size(); i ++) {
             	ExtTapDescriptor desc = (ExtTapDescriptor) descriptors.get(i);
-            	if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals( desc.getTreeMapType())) {
+            	if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == desc.getTreeMapLevel()) {
             		cleanChildren(desc);            	
             	}
             	
@@ -240,8 +241,7 @@ public class ExtTapTreeMap extends TreeMap {
 	        final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
 	
 	    	ExtTapDescriptor desc = (ExtTapDescriptor) descriptor;
-	    	if(EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION.equals(desc.getTreeMapType())
-	    			|| EsaSkyConstants.TREEMAP_TYPE_DATAPRODUCT.equals(desc.getTreeMapType())) {
+	    	if(desc.getTreeMapLevel() > EsaSkyConstants.TREEMAP_LEVEL_SERVICE) {
 	            Point parentPoint = getPoint2(desc.getParent());
 	            newPoint.setParent(parentPoint);
 	    	}

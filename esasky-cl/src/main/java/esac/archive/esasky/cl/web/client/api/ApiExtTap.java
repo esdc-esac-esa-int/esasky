@@ -81,7 +81,7 @@ public class ApiExtTap extends ApiBase{
 	public JSONArray getAvailableTapServices() {
 		JSONArray tapServices = new JSONArray();
 		for(ExtTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptors()) {
-			if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals(desc.getTreeMapType())) {
+			if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == desc.getTreeMapLevel()) {
 				tapServices.set(tapServices.size(), new JSONString(desc.getMission()));
 			}
 		}

@@ -228,6 +228,11 @@ public class EsaSkyConstants {
     public static final String TREEMAP_TYPE_SERVICE = "service";
     public static final String TREEMAP_TYPE_SUBCOLLECTION= "collection";
     public static final String TREEMAP_TYPE_DATAPRODUCT = "dataproduct";
+
+    public static final int TREEMAP_LEVEL_SERVICE = 0;
+    public static final int TREEMAP_LEVEL_1 = 1;
+    public static final int TREEMAP_LEVEL_2 = 2;
+    public static final int TREEMAP_LEVEL_3 = 3;
     
     /*************************************************************************/
     /** MOC **/

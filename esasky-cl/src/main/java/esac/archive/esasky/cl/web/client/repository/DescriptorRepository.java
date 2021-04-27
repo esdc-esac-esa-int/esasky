@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
@@ -204,41 +203,24 @@ public class DescriptorRepository {
 					tapService.setInBackend(true);
 					descriptorsList.add(tapService);
 					counts.add(0);
-					Map<String, ExtTapDescriptor> addedProductTypes = new HashMap<>();
 					
-					for(String facilityName : tapService.getCollections().keySet()) {
-						Map<String, ArrayList<String>> facility = tapService.getCollections().get(facilityName);
+					for(String level1Name : tapService.getSubLevels().keySet()) {
 						
-						for(String dataproductType : facility.get(EsaSkyConstants.OBSCORE_DATAPRODUCT)) {
-							
-							ExtTapDescriptor dataDesc;
-							if(addedProductTypes.containsKey(dataproductType)) {
-								dataDesc = addedProductTypes.get(dataproductType);
-							}else {
-								dataDesc = ExtTapUtils.createDataproductDescriptor(tapService, dataproductType);
-								addedProductTypes.put(dataproductType, dataDesc);
-								descriptorsList.add(dataDesc);
-								counts.add(0);
-							}
-
-							IDescriptor collectionDesc = ExtTapUtils.createCollectionDescriptor(tapService, dataDesc, facilityName);
-							
-							if(facility.containsKey("range")) {
-								double minWavelength = Double.parseDouble(facility.get("range").get(0));
-								double maxWavelength = Double.parseDouble(facility.get("range").get(1));
-								
-								collectionDesc.setWavelengths(WavelengthUtils.createWavelengthDescriptor(minWavelength, maxWavelength));
-								collectionDesc.setPrimaryColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
-							}else if(facility.containsKey(COLOR_STRING)) {
-								collectionDesc.setPrimaryColor(facility.get(COLOR_STRING).get(0));
-							}
-							else {
-								collectionDesc.setPrimaryColor(ESASkyColors.getNext());
-							}
-							
-							descriptorsList.add(collectionDesc);
+						ExtTapDescriptor level1Desc = ExtTapUtils.createLevelDescriptor(tapService, EsaSkyConstants.TREEMAP_LEVEL_1,
+								level1Name, tapService.getLevelColumnNames().get(0), tapService.getSubLevels().get(level1Name));
+						
+						descriptorsList.add(level1Desc);
+						counts.add(0);
+						
+						for(String level2Name : level1Desc.getSubLevels().keySet()) {
+							ExtTapDescriptor level2Desc = ExtTapUtils.createLevelDescriptor(level1Desc, EsaSkyConstants.TREEMAP_LEVEL_2,
+									level2Name, tapService.getLevelColumnNames().get(1), level1Desc.getSubLevels().get(level2Name));
+						
+							level2Desc.setInBackend(true);
+							descriptorsList.add(level2Desc);
 							counts.add(0);
 						}
+						
 						
 					}
 				}
@@ -250,6 +232,7 @@ public class DescriptorRepository {
 						extTapDescriptors.getDescriptors().add((ExtTapDescriptor) descriptor);
 					}
 				}
+				
 				Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
 			}
 
@@ -507,7 +490,7 @@ public class DescriptorRepository {
 		CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
 		if(fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
 			for(ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
-				if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals(descriptor.getTreeMapType())) {
+				if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getTreeMapLevel()) {
 					if(extTapDescriptors.getCountStatus().hasMoved(descriptor)) {
 						updateCount4ExtTap(descriptor);
 					}

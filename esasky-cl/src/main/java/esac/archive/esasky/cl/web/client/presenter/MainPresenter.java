@@ -192,7 +192,6 @@ public class MainPresenter {
         	@Override
         	public void onSelectionAreaEvent(AladinLiteSelectAreaEvent selectEvent) {
         		GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
-        		int i = 0;
         		HashMap<String, LinkedList<AladinShape>> shapesToadd = new HashMap<String, LinkedList<AladinShape>>();
         		for(GeneralJavaScriptObject shape : shapes) {
         			String overlayName = null;
@@ -226,7 +225,6 @@ public class MainPresenter {
         	@Override
         	public void onDeselectionAreaEvent(AladinLiteDeselectAreaEvent deselectEvent) {
         		GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) deselectEvent.getObjects());
-        		int i = 0;
         		HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<String, LinkedList<AladinShape>>();
         		for(GeneralJavaScriptObject shape : shapes) {
         			String overlayName = null;
@@ -297,7 +295,7 @@ public class MainPresenter {
                 if (event.getContext() == EntityContext.EXT_TAP) {
                     PointInformation pointInformation = event.getPointInformation();
 
-                    if (EsaSkyConstants.TREEMAP_TYPE_SUBCOLLECTION.equals(pointInformation.getType())) {
+                    if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
 
                         getRelatedMetadata(event.getDescriptor());
                         GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps,

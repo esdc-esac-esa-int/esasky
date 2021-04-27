@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.callback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapTreeMapLevel;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
@@ -81,22 +83,15 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
         		skyViewPosition);
 	}
 	
-	private String findFacility(String collection) {
-		String facilityName = null;
+	private String findLevelName(HashMap<String, ExtTapTreeMapLevel> levels, String value) {
 
-		for(String key : descriptor.getCollections().keySet()) {
-			if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.OBSCORE_COLLECTION)
-					&& descriptor.getCollections().get(key).get(EsaSkyConstants.OBSCORE_COLLECTION).contains(collection)) {
-				facilityName = key;
-				break;
-			}else if(descriptor.getCollections().get(key).containsKey(EsaSkyConstants.TABLE_NAME) 
-					&& descriptor.getCollections().get(key).get(EsaSkyConstants.TABLE_NAME).contains(collection)) {
-				facilityName = key;
-				break;
+		for(String key : levels.keySet()) {
+			if(levels.get(key).getValues().contains(value)) {
+				return key;
 			}
 		}
 		
-		return facilityName;
+		return null;
 	}
 	
 	private String getType(ArrayList<Object> row, int typeIndex ){
@@ -119,41 +114,46 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 				GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
 	}
 	
-	private ExtTapDescriptor addTypeDesc(String productType) {
-		ExtTapDescriptor typeDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-				descriptor.getMission() + "-" + ObsCoreCollection.get(productType));
+	private ExtTapDescriptor getLevelDesc(ExtTapDescriptor parent, int levelNumber, String levelName, ExtTapTreeMapLevel level) {
+		ExtTapDescriptor levelDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+				parent.getGuiLongName() + "-" + levelName);
 		
-		if(typeDesc == null) {
-			typeDesc = ExtTapUtils.createDataproductDescriptor(descriptor, productType);
+		if(levelDesc == null) {
+			String colName;
+			if(levelNumber > EsaSkyConstants.TREEMAP_LEVEL_SERVICE && levelNumber <= parent.getLevelColumnNames().size()) {
+				colName = parent.getLevelColumnNames().get(levelNumber - 1); 
+				levelDesc = ExtTapUtils.createLevelDescriptor(parent, levelNumber, levelName, colName, level);
+			}
 		}
 		
-		if(!descriptors.contains(typeDesc)) {
-			descriptors.add(typeDesc);
-			counts.add(1);
-		}
-		
-		return typeDesc;
-	}
-	
-	private void addCollectionDesc(ExtTapDescriptor typeDesc, String productType, String facilityName) {
-		String combinedName = ObsCoreCollection.get(productType) + "-" + facilityName;
-
-		ExtTapDescriptor collectionDesc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
-				descriptor.getMission() + "-" + combinedName);
-		
-		if(collectionDesc == null) {
-			collectionDesc = ExtTapUtils.createCollectionDescriptor(descriptor, typeDesc, facilityName);
-			extTapDescriptors.getDescriptors().add(collectionDesc);
-		}
-		
-		if(!descriptors.contains(collectionDesc)) {
-			descriptors.add(collectionDesc);
+		if(!descriptors.contains(levelDesc)) {
+			descriptors.add(levelDesc);
 			counts.add(1);
 			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-			countStatus.setCountDetails(collectionDesc, 1, System.currentTimeMillis(),
-	        		skyViewPosition);
+			countStatus.setCountDetails(levelDesc, 1, System.currentTimeMillis(), skyViewPosition);
 		}
+		
+		return levelDesc;
 	}
+	
+//	private void addLevel2DescToLevel1Desc(ExtTapDescriptor level2Desc, String level2Value, String level1Name) {
+//		String combinedName = ObsCoreCollection.get(level2Value) + "-" + level1Name;
+//
+//		ExtTapDescriptor level1Desc = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(
+//				descriptor.getMission() + "-" + combinedName);
+//		
+//		if(level1Desc == null) {
+//			level1Desc = ExtTapUtils.createLevel1Descriptor(descriptor, level2Desc, level1Name);
+//			extTapDescriptors.getDescriptors().add(level1Desc);
+//		}
+//		
+//		if(!descriptors.contains(level1Desc)) {
+//			descriptors.add(level1Desc);
+//			counts.add(1);
+//			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+//			countStatus.setCountDetails(level1Desc, 1, System.currentTimeMillis(), skyViewPosition);
+//		}
+//	}
 	
 	@Override
 	protected void onSuccess(final Response response) {
@@ -177,39 +177,36 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 				updateCountStatus(totalCount);
 
 		        
-		        if(EsaSkyConstants.TREEMAP_TYPE_SERVICE.equals(descriptor.getTreeMapType())) {
+		        if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getTreeMapLevel()) {
 		        	
 		        	if(totalCount > 0) {
 		        		extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();
 		        		
-		        		int collIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_COLLECTION);
-		        		if(collIndex == -1) {
-		        			collIndex = rowList.getColumnIndex(EsaSkyConstants.HEASARC_TABLE);
-		        		}
+		        		int level1Index = rowList.getColumnIndex(descriptor.getLevelColumnNames().get(0));
+		        		int level2Index = rowList.getColumnIndex(descriptor.getLevelColumnNames().get(1));
 		        		
-		        		int typeIndex = rowList.getColumnIndex(EsaSkyConstants.OBSCORE_DATAPRODUCT);
 		        		
 		        		for(ArrayList<Object> row : rowList.getData()) {
-		        			String collection = (String) row.get(collIndex);
-		        			String productType = getType(row, typeIndex);
-	        				String facilityName = findFacility(collection);
+		        			String level1Value = (String) row.get(level1Index);
+		        			String level2Value = (String) row.get(level2Index);
+	        				String level1Name = findLevelName(descriptor.getSubLevels(), level1Value);
 	        				
-	        				if(facilityName != null) {
-	        					if(descriptor.getCollections().get(facilityName).get(EsaSkyConstants.OBSCORE_DATAPRODUCT).contains(productType)) {
-		        					ExtTapDescriptor typeDesc = addTypeDesc(productType);
-		        					addCollectionDesc(typeDesc, productType, facilityName);
-		        					
+	        				if(level1Name != null) {
+	        					ExtTapDescriptor descLevel1 = getLevelDesc(descriptor, 1,  level1Name, descriptor.getSubLevels().get(level1Name));
+	        					String level2Name = findLevelName(descLevel1.getSubLevels(), level2Value);
+	        					if(level2Name != null) {
+	        						ExtTapDescriptor descLevel2 = getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
+	        					
 	        					}else {
-	        						logMissingProductType(collection, productType);
+	        						logMissingProductType(level1Value, level2Value);
 		        				}
 	        					
 	        				}else {
-	        					logMissingCollection(collection);
+	        					logMissingCollection(level1Value);
 		        			}
 		        		}
 		        	}
 		        }
-	        	
 		        if(descriptors.size() > 0) {
 			        descriptors.add(0,descriptor);
 			        counts.add(0,totalCount);

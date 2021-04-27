@@ -16,7 +16,7 @@ public class PointInformation {
     
     private String wavelengthShortName;
     private String wavelengthLongName;
-    private String type;
+    private int treemapLevel;
     private String collectionName;
     
     private String parentColor;
@@ -37,14 +37,14 @@ public class PointInformation {
 		}
 		
 		if(context == EntityContext.EXT_TAP) {
-			String type = ((ExtTapDescriptor) descriptor).getTreeMapType();
-			if(type != null) {
-				this.type = type;
+			int treemapLevel = ((ExtTapDescriptor) descriptor).getTreeMapLevel();
+			if(treemapLevel != -1) {
+				this.treemapLevel = treemapLevel;
 			}else {
-				this.type = EsaSkyConstants.TREEMAP_TYPE_SERVICE;
+				this.treemapLevel = EsaSkyConstants.TREEMAP_LEVEL_SERVICE;
 			}
 		}else {
-			this.type = EsaSkyConstants.TREEMAP_TYPE_MISSION;
+			this.treemapLevel = EsaSkyConstants.TREEMAP_LEVEL_1;
 		}
 	}
 
@@ -60,17 +60,6 @@ public class PointInformation {
 			return wavelengthLongName;
 		}
 		return "";
-	}
-
-	public String getType() {
-		if(type != null) {
-			return type;
-		}
-		return "";
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getCollectionName() {
@@ -90,6 +79,14 @@ public class PointInformation {
 
 	public void setParentColor(String parentColor) {
 		this.parentColor = parentColor;
+	}
+
+	public int getTreemapLevel() {
+		return treemapLevel;
+	}
+
+	public void setTreemapLevel(int treemapLevel) {
+		this.treemapLevel = treemapLevel;
 	}
 	
 }
