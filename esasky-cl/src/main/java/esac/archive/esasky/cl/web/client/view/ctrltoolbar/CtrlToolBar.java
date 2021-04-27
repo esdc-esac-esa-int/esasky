@@ -404,6 +404,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		button.setTitle(tooltip);
 	}
 	
+	public EsaSkyButton addCustomButton(String iconText, String description) {
+		EsaSkyButton button = new EsaSkyButton(iconText);
+		addCommonButtonStyle(button, description);
+		ctrlToolBarPanel.add(button);
+		return button;
+	}
+	
+	public void removeCustomButton(EsaSkyButton button) {
+		ctrlToolBarPanel.remove(button);
+	}
+	
 	@Override
 	public void updateObservationCount(long newCount) {
 		observationButton.updateCount(newCount);

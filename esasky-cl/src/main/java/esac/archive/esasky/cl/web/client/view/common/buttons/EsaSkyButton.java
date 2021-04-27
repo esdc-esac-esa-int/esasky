@@ -74,7 +74,10 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	public EsaSkyButton(String text){
 		FlowPanel container = new FlowPanel();
 		button = new PushButtonWithVisibleOnClick(text);
+		button.addStyleName("stringButton");
 		container.add(button);
+		 
+	        
 		
 		initWidget(container);
 		

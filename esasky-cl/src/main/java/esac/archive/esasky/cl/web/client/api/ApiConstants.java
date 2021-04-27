@@ -27,6 +27,12 @@ public class ApiConstants {
 	public static final String TREEMAP_NAME = "treeMapName";
 	public static final String TREEMAP_ICON_TEXT = "iconText";
 	public static final String TREEMAP_DESCRIPTION = "description";
+
+	
+	public static final String BUTTON = "button";
+	public static final String BUTTON_DESCRIPTION = "description";
+	public static final String BUTTON_NAME = "name";
+	public static final String BUTTON_ICON_TEXT = "iconText";
 	
 	
 	public static final String COUNT_TOTAL = "total";
@@ -69,6 +75,7 @@ public class ApiConstants {
 	public static final String EVENT_PANEL_OPENED = "result_panel_opened";
 	public static final String EVENT_PANEL_CLOSED = "result_panel_closed";
 	public static final String EVENT_TREEMAP_MISSION_CLICKED = "treemap_mission_clicked";
+	public static final String EVENT_BUTTON_CLICKED = "button_clicked";
 
 	public static final String FOOTPRINT_STCS = "stcs";
 

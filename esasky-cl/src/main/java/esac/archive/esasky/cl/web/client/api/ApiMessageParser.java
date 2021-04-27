@@ -141,7 +141,6 @@ public class ApiMessageParser {
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::getNumberOfSkyRows(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;
 
-				case 'getAvailableHiPS':
 				case 'getAvailableHips':
 					console.log('getAvailableHiPS event captured!');
 					console.log(msg);
@@ -526,6 +525,18 @@ public class ApiMessageParser {
 					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::updateTreeMapMission(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;ZLcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.treeMap, false, e);
 					break;	
+
+				case 'addCustomButton':
+					console.log('addCustomButton event captured');
+					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::addCustomButton(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.button,e);
+					break;	
+					
+				case 'removeCustomButton':
+					console.log('removeCustomButton event captured');
+					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::removeCustomButton(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.button,e);
+					break;	
 					
 				case 'setModuleVisibility':
 					console.log('setModuleVisibility event captured');
@@ -564,6 +575,17 @@ public class ApiMessageParser {
 				case 'registerEventListener':
 					console.log('registerEventListener event captured');
 					apiEvents.@esac.archive.esasky.cl.web.client.api.ApiEvents::registerEventListener(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;	
+				case 'startSelectionEvent':
+					console.log('startSelectionEvent event captured');
+					apiEvents.@esac.archive.esasky.cl.web.client.api.ApiEvents::startSelectionEvent(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;	
+					
+				case 'endSelectionEvent':
+					console.log('endSelectionEvent event captured');
+					apiEvents.@esac.archive.esasky.cl.web.client.api.ApiEvents::endSelectionEvent(Lcom/google/gwt/core/client/JavaScriptObject;)
 						(e);
 					break;	
 					

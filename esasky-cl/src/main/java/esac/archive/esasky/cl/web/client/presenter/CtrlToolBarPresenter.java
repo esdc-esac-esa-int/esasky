@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
@@ -64,6 +66,7 @@ public class CtrlToolBarPresenter {
     private SelectSkyPanelPresenter selectSkyPresenter;
     private PublicationPanelPresenter publicationPresenter;
     List<CustomTreeMapDescriptor> treeMapDescriptors = new LinkedList<CustomTreeMapDescriptor>();
+    HashMap<String, EsaSkyButton> customButtons = new HashMap<String, EsaSkyButton>();
 
 
     public interface SkiesMenuMapper extends ObjectMapper<SkiesMenu> {}
@@ -91,6 +94,9 @@ public class CtrlToolBarPresenter {
         
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
         void updateCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
+        
+        EsaSkyButton addCustomButton(String iconText, String description);
+        void removeCustomButton(EsaSkyButton button);
 
     }
 
@@ -475,6 +481,20 @@ public class CtrlToolBarPresenter {
     public void updateCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor) {
     	view.updateCustomTreeMap(customTreeMapDescriptor);
     }
+    
+    public EsaSkyButton addCustomButton(String name, String iconText, String description) {
+    	EsaSkyButton button = view.addCustomButton(iconText, description);
+    	removeCustomButton(name);
+    	customButtons.put(name, button);
+		return button;
+	}
+	
+    public void removeCustomButton(String name) {
+		if(customButtons.containsKey(name)) {
+    		view.removeCustomButton(customButtons.get(name));
+    		customButtons.remove(name);
+    	}
+	}
     
     public void customTreeMapClicked(TreeMapSelectionEvent event) {
     	for(CustomTreeMapDescriptor treeMapDescriptor : treeMapDescriptors) {

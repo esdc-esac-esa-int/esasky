@@ -13,10 +13,9 @@ import com.google.gwt.user.client.Timer;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Controller;
-import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.TabObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -24,7 +23,8 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 public class ApiEvents extends ApiBase{
 	
-	private LinkedList<TreeMapListener> treeMapListeners = new LinkedList<ApiEvents.TreeMapListener>();
+	private LinkedList<TreeMapListener> treeMapListeners = new LinkedList<TreeMapListener>();
+	private LinkedList<ButtonListener> buttonListeners = new LinkedList<ButtonListener>();
 	public ApiEvents(Controller controller) {
 		this.controller = controller;
 	}
@@ -65,7 +65,6 @@ public class ApiEvents extends ApiBase{
 				selectEvent -> {
 					
 					GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
-	        		int i = 0;
 	        		HashMap<String, LinkedList<GeneralJavaScriptObject>> shapesToadd = new HashMap<String, LinkedList<GeneralJavaScriptObject>>();
 	        		for(GeneralJavaScriptObject shape : shapes) {
 	        			String overlayName = null;
@@ -184,9 +183,19 @@ public class ApiEvents extends ApiBase{
 		treeMapListeners.add(new TreeMapListener(widget));
 	}
 	
+	public void registerButtonListener(JavaScriptObject widget) {
+		buttonListeners.add(new ButtonListener(widget));
+	}
+	
 	public void treeMapClicked(String treeMapName, String mission) {
 		for(TreeMapListener treeMapListener : treeMapListeners) {
 			treeMapListener.onTreeMapClicked(treeMapName, mission);
+		}
+	}
+
+	public void CtrlBarButtonClicked(String name) {
+		for(ButtonListener buttonListener : buttonListeners) {
+			buttonListener.onButtonClicked(name);
 		}
 	}
 
@@ -195,8 +204,17 @@ public class ApiEvents extends ApiBase{
 		registerTabListener(widget);
 		registerShapeSelectionCallback(widget);
 		registerTreeMapListener(widget);
-		registerShapeAreaSelectionCallback(widget);;
+		registerButtonListener(widget);
+		registerShapeAreaSelectionCallback(widget);
 		
+	}
+
+	public void startSelectionEvent(JavaScriptObject widget) {
+		AladinLiteWrapper.getAladinLite().startSelectionMode();
+	}
+
+	public void endSelectionEvent(JavaScriptObject widget) {
+		AladinLiteWrapper.getAladinLite().endSelectionMode();
 	}
 	
 	private class TreeMapListener{
@@ -225,6 +243,36 @@ public class ApiEvents extends ApiBase{
 			
 			//To be removed
 			result.put(ApiConstants.TREEMAP_INFO, treeMap);
+			
+			sendBackValuesToWidget(result, widget);
+		}
+		
+	}
+
+	private class ButtonListener{
+		private JavaScriptObject widget;
+		
+		public ButtonListener(JavaScriptObject widget) {
+			this.widget = widget;
+		}
+		
+		public void onButtonClicked(String name) {
+			JSONObject result = new JSONObject();
+			JSONObject button = new JSONObject();
+			
+			button.put(ApiConstants.BUTTON , new JSONString(name));
+			
+			SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+			JSONObject location = new JSONObject();
+			
+			location.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().ra));
+			location.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().dec));
+			location.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
+			
+			result.put(ApiConstants.TREEMAP_LOCATION , location);
+			result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_BUTTON_CLICKED));
+			result.put(ApiConstants.VALUES, button);
+			
 			
 			sendBackValuesToWidget(result, widget);
 		}
