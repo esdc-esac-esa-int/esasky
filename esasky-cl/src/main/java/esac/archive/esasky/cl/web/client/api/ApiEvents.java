@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.api;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
@@ -23,8 +24,8 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 public class ApiEvents extends ApiBase{
 	
-	private LinkedList<TreeMapListener> treeMapListeners = new LinkedList<TreeMapListener>();
-	private LinkedList<ButtonListener> buttonListeners = new LinkedList<ButtonListener>();
+	private LinkedList<TreeMapListener> treeMapListeners = new LinkedList<>();
+	private LinkedList<ButtonListener> buttonListeners = new LinkedList<>();
 	public ApiEvents(Controller controller) {
 		this.controller = controller;
 	}
@@ -58,6 +59,27 @@ public class ApiEvents extends ApiBase{
                   }
           );
 	}
+	
+	private HashMap<String, LinkedList<GeneralJavaScriptObject>> parseShapesToAdd(GeneralJavaScriptObject[] shapes){
+		HashMap<String, LinkedList<GeneralJavaScriptObject>> shapesToadd = new HashMap<>();
+		
+		for(GeneralJavaScriptObject shape : shapes) {
+			String overlayName = null;
+			if(shape.hasProperty("overlay")) {
+				overlayName = shape.getProperty("overlay").getStringProperty("name");
+			}else if(shape.hasProperty("catalog")) {
+				overlayName = shape.getProperty("catalog").getStringProperty("name");
+			}
+			
+			if(!shapesToadd.containsKey(overlayName)) {
+				shapesToadd.put(overlayName, new LinkedList<GeneralJavaScriptObject>());
+			}
+			
+			shapesToadd.get(overlayName).add(shape);
+		}
+		
+		return shapesToadd;
+	}
 
 	public void registerShapeAreaSelectionCallback(final JavaScriptObject widget) {
 		
@@ -65,28 +87,14 @@ public class ApiEvents extends ApiBase{
 				selectEvent -> {
 					
 					GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
-	        		HashMap<String, LinkedList<GeneralJavaScriptObject>> shapesToadd = new HashMap<String, LinkedList<GeneralJavaScriptObject>>();
-	        		for(GeneralJavaScriptObject shape : shapes) {
-	        			String overlayName = null;
-	        			if(shape.hasProperty("overlay")) {
-	        				overlayName = shape.getProperty("overlay").getStringProperty("name");
-	        			}else if(shape.hasProperty("catalog")) {
-	        				overlayName = shape.getProperty("catalog").getStringProperty("name");
-	        			}
-	        			
-	        			if(!shapesToadd.containsKey(overlayName)) {
-	        				shapesToadd.put(overlayName, new LinkedList<GeneralJavaScriptObject>());
-	        			}
-	        			
-	        			shapesToadd.get(overlayName).add((GeneralJavaScriptObject) shape);
-	        		}
+	        		
+					HashMap<String, LinkedList<GeneralJavaScriptObject>> shapesToadd = parseShapesToAdd(shapes);
 	        		
 	        		JSONObject overlays = new JSONObject();
 	        		
-	        		
-	        		for(String overlayName : shapesToadd.keySet()) {
+	        		for(Map.Entry<String,LinkedList<GeneralJavaScriptObject>> entry : shapesToadd.entrySet()) {
 	        			JSONArray shapeArray = new JSONArray();
-	        			for(GeneralJavaScriptObject shape : shapesToadd.get(overlayName)) {
+	        			for(GeneralJavaScriptObject shape : entry.getValue()) {
 	        				String name = shape.getStringProperty(ApiConstants.SHAPE_NAME);
 	                      	if(name == null) {
 	                      		name = "";
@@ -102,7 +110,7 @@ public class ApiEvents extends ApiBase{
 	             			shapeArray.set(shapeArray.size(), item);
 	        			}
 	        			
-	        			overlays.put(overlayName, shapeArray);
+	        			overlays.put(entry.getKey(), shapeArray);
 	        			
 	        		}
 	        		
@@ -193,7 +201,7 @@ public class ApiEvents extends ApiBase{
 		}
 	}
 
-	public void CtrlBarButtonClicked(String name) {
+	public void ctrlBarButtonClicked(String name) {
 		for(ButtonListener buttonListener : buttonListeners) {
 			buttonListener.onButtonClicked(name);
 		}

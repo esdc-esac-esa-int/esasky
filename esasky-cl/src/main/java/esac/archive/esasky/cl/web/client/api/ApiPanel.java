@@ -107,9 +107,6 @@ public class ApiPanel extends ApiBase{
 					break;
 				}
 				tablePanel.closeTablePanel();
-//				String id = tablePanel.getEntity().getEsaSkyUniqId();
-//				MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
-//				controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
 			}catch(Exception e) {
 				Log.debug(e.getMessage(), e);
 				break;

@@ -25,6 +25,8 @@ public class ApiModules extends ApiBase{
 	
 	private ApiEvents apiEvents;
 	
+	private final String MISSING_TREEMAP_PROPERTY = "Missing treeMap property name";
+	
 	public ApiModules(Controller controller, ApiEvents apiEvents) {
 		this.controller = controller;
 		this.apiEvents = apiEvents;
@@ -41,7 +43,7 @@ public class ApiModules extends ApiBase{
 			buttonName = input.getStringProperty(ApiConstants.BUTTON_NAME);
 			
 		} else {
-			sendBackErrorMsgToWidget("Missing treeMap property name", widget);
+			sendBackErrorMsgToWidget(MISSING_TREEMAP_PROPERTY, widget);
 			return;
 		}
 		controller.getRootPresenter().getCtrlTBPresenter().removeCustomButton(buttonName);
@@ -53,7 +55,7 @@ public class ApiModules extends ApiBase{
 			buttonName = input.getStringProperty(ApiConstants.BUTTON_NAME);
 			
 		} else {
-			sendBackErrorMsgToWidget("Missing treeMap property name", widget);
+			sendBackErrorMsgToWidget(MISSING_TREEMAP_PROPERTY, widget);
 			return;
 		}
 		
@@ -70,13 +72,8 @@ public class ApiModules extends ApiBase{
 		
 		EsaSkyButton button = controller.getRootPresenter().getCtrlTBPresenter().addCustomButton(buttonName, iconText, description);
 		final String returnName = buttonName;
-		button.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				apiEvents.CtrlBarButtonClicked(returnName);
-			}
-		});
+		button.addClickHandler(event -> apiEvents.ctrlBarButtonClicked(returnName));
+		
 	}
 
 	public void addCustomTreeMap(GeneralJavaScriptObject input, JavaScriptObject widget) {
@@ -88,7 +85,7 @@ public class ApiModules extends ApiBase{
 				treeMapName = input.getStringProperty(ApiConstants.TREEMAP_NAME);
 		
 		} else {
-			sendBackErrorMsgToWidget("Missing treeMap property name", widget);
+			sendBackErrorMsgToWidget(MISSING_TREEMAP_PROPERTY, widget);
 			return;
 		}
 		
@@ -104,7 +101,7 @@ public class ApiModules extends ApiBase{
 		
 		GeneralJavaScriptObject descriptorArray = input.getProperty(ApiConstants.TREEMAP_MISSIONS);
 		if(descriptorArray == null) {
-			sendBackErrorMsgToWidget("Missing treeMap missions", widget);
+			sendBackErrorMsgToWidget(MISSING_TREEMAP_PROPERTY, widget);
 			return;
 		}
 		
@@ -115,13 +112,7 @@ public class ApiModules extends ApiBase{
 		
 		CustomTreeMapDescriptor customTreeMapDescriptor = new CustomTreeMapDescriptor(treeMapName, description, iconText, descriptors);
 		
-		customTreeMapDescriptor.setOnMissionClicked(new CustomTreeMapDescriptor.OnMissionClicked() {
-			
-			@Override
-			public void onMissionClicked(String mission) {
-				apiEvents.treeMapClicked(customTreeMapDescriptor.getName(), mission);
-			}
-		});
+		customTreeMapDescriptor.setOnMissionClicked(mission -> apiEvents.treeMapClicked(customTreeMapDescriptor.getName(), mission));
 		
 		controller.getRootPresenter().getCtrlTBPresenter().addCustomTreeMap(customTreeMapDescriptor);
 	}
