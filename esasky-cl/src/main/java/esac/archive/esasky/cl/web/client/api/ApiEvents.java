@@ -217,12 +217,19 @@ public class ApiEvents extends ApiBase{
 		
 	}
 
-	public void startSelectionEvent(JavaScriptObject widget) {
-//		AladinLiteWrapper.getAladinLite().startSelectionMode();
+	public void startSelectionEvent(String mode, JavaScriptObject widget) {
+		
+		if(mode != null && (ApiConstants.SELECT_MODE_BOX.equals(mode.toUpperCase()) || ApiConstants.SELECT_MODE_CIRCLE.equals(mode.toUpperCase())
+				|| ApiConstants.SELECT_MODE_POLY.equals(mode.toUpperCase()))) {
+			AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
+			AladinLiteWrapper.getAladinLite().startSelectionMode(false);
+		}else {
+			AladinLiteWrapper.getAladinLite().startSelectionMode(true);
+		}
 	}
 
 	public void endSelectionEvent(JavaScriptObject widget) {
-//		AladinLiteWrapper.getAladinLite().endSelectionMode();
+		AladinLiteWrapper.getAladinLite().endSelectionMode();
 	}
 	
 	private class TreeMapListener{

@@ -579,8 +579,12 @@ public class ApiMessageParser {
 					break;	
 				case 'startSelectionEvent':
 					console.log('startSelectionEvent event captured');
-					apiEvents.@esac.archive.esasky.cl.web.client.api.ApiEvents::startSelectionEvent(Lcom/google/gwt/core/client/JavaScriptObject;)
-						(e);
+					var mode = null
+					if(msg.content.hasOwnProperty('mode')){
+						mode = msg.content['mode'];
+					}
+					apiEvents.@esac.archive.esasky.cl.web.client.api.ApiEvents::startSelectionEvent(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(mode, e);
 					break;	
 					
 				case 'endSelectionEvent':

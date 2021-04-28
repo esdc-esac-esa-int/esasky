@@ -88,6 +88,11 @@ public class ApiConstants {
 	public static final String FOV = "fov";
 	public static final String FOVRA = "fovRa";
 	public static final String FOVDEC = "fovDec";
+	
+	public static final String SELECT_MODE_BOX = "BOX";
+	public static final String SELECT_MODE_CIRCLE = "CIRCLE";
+	public static final String SELECT_MODE_POLY = "POLYGON";
+
 
 	
 	public static final String ERROR_AVAILABLE = "available";
