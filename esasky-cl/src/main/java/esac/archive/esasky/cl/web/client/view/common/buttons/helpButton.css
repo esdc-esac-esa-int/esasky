@@ -4,9 +4,11 @@
 .helpButton {
     height: 17px !important;
     width: 17px !important;
+    min-width: 17px !important;
 }
 
 .helpButton img{
     height: 7px !important;
     width: 7px !important;
+    min-width: 7px !important;
 }
