@@ -52,17 +52,19 @@
 	padding: 4px;
    	display: inline-flex;
    	align-items: center;
-   	width: auto;
+   	width: auto !important;
 }
 
 .stringButton .html-face{
 	color: white !important;
 	text-align: center;
+	font-size: 1em;
+	
 }
-.smallButton.stringButton,
-.mediumButton.stringButton,
-.bigButton.stringButton,
-.veryBigButton.stringButton{
+.smallButton .stringButton,
+.mediumButton .stringButton,
+.bigButton .stringButton,
+.veryBigButton .stringButton{
 	width: auto;
 }
 

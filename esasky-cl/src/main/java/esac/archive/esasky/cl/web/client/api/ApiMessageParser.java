@@ -531,6 +531,12 @@ public class ApiMessageParser {
 					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::addCustomButton(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.button,e);
 					break;	
+
+				case 'updateCustomButton':
+					console.log('updateCustomButton event captured');
+					apiModules.@esac.archive.esasky.cl.web.client.api.ApiModules::updateCustomButton(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.button,e);
+					break;	
 					
 				case 'removeCustomButton':
 					console.log('removeCustomButton event captured');

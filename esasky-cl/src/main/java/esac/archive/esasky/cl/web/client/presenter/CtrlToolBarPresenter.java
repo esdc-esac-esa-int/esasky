@@ -10,6 +10,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Widget;
@@ -95,7 +96,7 @@ public class CtrlToolBarPresenter {
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
         void updateCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
         
-        EsaSkyButton addCustomButton(String iconText, String description);
+        EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description);
         void removeCustomButton(EsaSkyButton button);
 
     }
@@ -482,15 +483,34 @@ public class CtrlToolBarPresenter {
     	view.updateCustomTreeMap(customTreeMapDescriptor);
     }
     
-    public EsaSkyButton addCustomButton(String name, String iconText, String description) {
-    	EsaSkyButton button = view.addCustomButton(iconText, description);
+    public EsaSkyButton addCustomButton(String name, ImageResource icon, String iconText, String description) {
+    	EsaSkyButton button = view.addCustomButton(icon, iconText, description);
     	removeCustomButton(name);
     	customButtons.put(name, button);
 		return button;
 	}
 	
+    public boolean updateCustomButton(String name, ImageResource icon, String iconText, String description) {
+    	
+    	if(customButtons.containsKey(name)) {
+    		EsaSkyButton button = customButtons.get(name);
+    		if(icon != null) {
+    			button.setButtonImage(icon);
+    			button.setImageStyle();
+    		}else {
+    			button.setButtonText(iconText);
+    			button.setTextStyle();
+    		}
+    		
+    		button.setTitle(description);
+    		return true;
+		}
+		
+		return false;
+    }
+    
     public void removeCustomButton(String name) {
-		if(customButtons.containsKey(name)) {
+    	if(customButtons.containsKey(name)) {
     		view.removeCustomButton(customButtons.get(name));
     		customButtons.remove(name);
     	}

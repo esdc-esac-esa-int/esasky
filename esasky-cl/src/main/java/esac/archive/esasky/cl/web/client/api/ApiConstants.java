@@ -33,6 +33,7 @@ public class ApiConstants {
 	public static final String BUTTON_DESCRIPTION = "description";
 	public static final String BUTTON_NAME = "name";
 	public static final String BUTTON_ICON_TEXT = "iconText";
+	public static final String BUTTON_ICON = "iconName";
 	
 	
 	public static final String COUNT_TOTAL = "total";

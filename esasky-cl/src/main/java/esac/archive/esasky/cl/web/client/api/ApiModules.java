@@ -8,12 +8,14 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.resources.client.ImageResource;
 
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
@@ -24,6 +26,8 @@ public class ApiModules extends ApiBase{
 	private ApiEvents apiEvents;
 	
 	private final String MISSING_TREEMAP_PROPERTY = "Missing treeMap property name";
+	private final String MISSING_BUTTON_PROPERTY = "Missing button property name";
+	private final String WRONG_BUTTON_ICON = "Wrong button icon name";
 	
 	public ApiModules(Controller controller, ApiEvents apiEvents) {
 		this.controller = controller;
@@ -34,43 +38,82 @@ public class ApiModules extends ApiBase{
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_showCoordinateGrid,Boolean.toString(show));
 		controller.getRootPresenter().getHeaderPresenter().toggleGrid(show);
 	}
-
-	public void removeCustomButton(GeneralJavaScriptObject input, JavaScriptObject widget) {
-		String buttonName = "";
-		if(input.hasProperty(ApiConstants.BUTTON_NAME)) {
-			buttonName = input.getStringProperty(ApiConstants.BUTTON_NAME);
+	
+	private class ButtonInput{
+		String name;
+		ImageResource icon;
+		String iconText;
+		String description;
+		boolean hasError = false;
+		
+		ButtonInput(GeneralJavaScriptObject input, JavaScriptObject widget){
+			name = "";
+			if(input.hasProperty(ApiConstants.BUTTON_NAME)) {
+				name = input.getStringProperty(ApiConstants.BUTTON_NAME);
+				
+			} else {
+				sendBackErrorMsgToWidget(MISSING_BUTTON_PROPERTY, widget);
+				hasError = true;
+			}
 			
-		} else {
-			sendBackErrorMsgToWidget(MISSING_TREEMAP_PROPERTY, widget);
-			return;
+			description = "";
+			if(input.hasProperty(ApiConstants.BUTTON_DESCRIPTION)) {
+				description = input.getStringProperty(ApiConstants.BUTTON_DESCRIPTION);
+			}
+			
+			iconText = name;
+			if(input.hasProperty(ApiConstants.BUTTON_ICON_TEXT)) {
+				iconText = input.getStringProperty(ApiConstants.BUTTON_ICON_TEXT);
+			}
+			
+			icon = null;
+			if(input.hasProperty(ApiConstants.BUTTON_ICON)) {
+				String iconName = input.getStringProperty(ApiConstants.BUTTON_ICON);
+				if(Icons.getIconMap().containsKey(iconName)) {
+					icon = Icons.getIconMap().get(iconName);
+				}else {
+					JSONObject error = new JSONObject();
+					error.put(ApiConstants.MESSAGE, new JSONString(WRONG_BUTTON_ICON));
+					error.put(ApiConstants.ERROR_AVAILABLE, new JSONString(Icons.getIconMap().keySet().toString()));
+					sendBackErrorToWidget(error, widget);
+					hasError = true;
+				}
+			}
 		}
-		controller.getRootPresenter().getCtrlTBPresenter().removeCustomButton(buttonName);
 		
 	}
+
 	public void addCustomButton(GeneralJavaScriptObject input, JavaScriptObject widget) {
-		String buttonName = "";
-		if(input.hasProperty(ApiConstants.BUTTON_NAME)) {
-			buttonName = input.getStringProperty(ApiConstants.BUTTON_NAME);
-			
-		} else {
-			sendBackErrorMsgToWidget(MISSING_TREEMAP_PROPERTY, widget);
+		
+		ButtonInput parsedInputs = new ButtonInput(input, widget);
+		if(parsedInputs.hasError) {
 			return;
 		}
 		
-		String description = "";
-		if(input.hasProperty(ApiConstants.BUTTON_DESCRIPTION)) {
-			description = input.getStringProperty(ApiConstants.BUTTON_DESCRIPTION);
-		}
-		
-		String iconText = buttonName;
-		if(input.hasProperty(ApiConstants.BUTTON_ICON_TEXT)) {
-			iconText = input.getStringProperty(ApiConstants.BUTTON_ICON_TEXT);
-		}
-		
-		
-		EsaSkyButton button = controller.getRootPresenter().getCtrlTBPresenter().addCustomButton(buttonName, iconText, description);
-		final String returnName = buttonName;
+		EsaSkyButton button = controller.getRootPresenter().getCtrlTBPresenter().addCustomButton(parsedInputs.name, parsedInputs.icon,
+				parsedInputs.iconText, parsedInputs.description);
+		final String returnName = parsedInputs.name;
 		button.addClickHandler(event -> apiEvents.ctrlBarButtonClicked(returnName));
+		
+	}
+
+	public void updateCustomButton(GeneralJavaScriptObject input, JavaScriptObject widget) {
+
+		ButtonInput parsedInputs = new ButtonInput(input, widget);
+		if(parsedInputs.hasError) {
+			return;
+		}
+		
+		controller.getRootPresenter().getCtrlTBPresenter().updateCustomButton(parsedInputs.name, parsedInputs.icon,
+				parsedInputs.iconText, parsedInputs.description);
+		
+	}
+	public void removeCustomButton(GeneralJavaScriptObject input, JavaScriptObject widget) {
+		ButtonInput parsedInputs = new ButtonInput(input, widget);
+		if(parsedInputs.hasError) {
+			return;
+		}
+		controller.getRootPresenter().getCtrlTBPresenter().removeCustomButton(parsedInputs.name);
 		
 	}
 

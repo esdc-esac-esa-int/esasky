@@ -117,6 +117,14 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 		this.removeStyleName("nonTransparentButton");
 	}
 	
+	public void setTextStyle(){
+		button.addStyleName("stringButton");
+	}
+	
+	public void setImageStyle(){
+		button.removeStyleName("stringButton");
+	}
+	
 	public void setDarkStyle(){
 		button.removeStyleName("lightStyle");
 		button.addStyleName("darkStyle");
@@ -204,6 +212,17 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	
 	public boolean isEnabled() {
 		return button.isEnabled();
+	}
+	
+	public void setButtonImage(ImageResource imageResource) {
+		Image image = new Image(imageResource);
+		this.enabledImage = image;
+        this.enabledImage.addStyleName("fillParent");
+        button.getUpFace().setImage(enabledImage);
+	}
+	
+	public void setButtonText(String text) {
+		button.getUpFace().setText(text);
 	}
 
 	@Override
