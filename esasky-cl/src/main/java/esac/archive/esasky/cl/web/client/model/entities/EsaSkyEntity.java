@@ -279,7 +279,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
  	        mocEntity.clearAll();
  	        mocEntity.setShouldBeShown(false);
          }
-         String url = descriptor.getTapQuery(metadataService.getRequestUrl(), URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+         String url = descriptor.getTapQuery(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
 
          clearAll();
          tablePanel.insertData(url);
@@ -317,9 +317,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.getTapQuery(metadataService.getRequestUrl(),
-        		URL.encodeQueryString(metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString())),
-        		EsaSkyConstants.JSON);
+        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString()), EsaSkyConstants.JSON);
 
         clearAll();
         tablePanel.insertData(url);
@@ -335,9 +333,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
     	
     	clearAll();
-    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(),
-    			URL.encodeQueryString(metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery)),
-    			EsaSkyConstants.JSON));
+    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery), EsaSkyConstants.JSON));
     }
     
     public void fetchDataWithoutMOC(MOCInfo mocInfo) {
@@ -663,9 +659,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.getTapQuery(metadataService.getRequestUrl(),
-        		URL.encodeQueryString(metadataService.getMetadataAdqlRadial(getDescriptor(), conePos)),
-        		EsaSkyConstants.JSON);
+        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
 
         clearAll();
         tablePanel.insertData(url);

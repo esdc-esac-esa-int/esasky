@@ -506,7 +506,7 @@ public class DescriptorRepository {
 		}
 			
 		String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
-		String url = descriptor.getTapQuery(EsaSkyWebConstants.EXT_TAP_REQUEST_URL, URL.encodeQueryString(adql), descriptor.getResponseFormat());
+		String url = descriptor.getTapQuery(EsaSkyWebConstants.EXT_TAP_REQUEST_URL, adql, descriptor.getResponseFormat());
 		
 		JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
 					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));

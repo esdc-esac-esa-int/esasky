@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.http.client.URL;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -170,18 +171,18 @@ public class TAPExtTapService extends AbstractTAPService {
         String selectADQL = "SELECT TOP " + Integer.toString(DeviceUtils.getDeviceShapeLimit(descriptor)) + " * ";
         
         if(descriptor.isInBackend()) {
-        	return getAdql(descriptor, selectADQL);       
+        	return URL.encodeQueryString(getAdql(descriptor, selectADQL));       
         } else {
-        	return getAdqlNewService(descriptor);
+        	return URL.encodeQueryString(getAdqlNewService(descriptor));
         }
     }	
     
     public String getCountAdql(IDescriptor descriptorInput) {
     	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
 		if("heasarc".equals(descriptor.getSearchFunction())) {
-			return getHeasarcCountAdql(descriptor);
+			return URL.encodeQueryString(getHeasarcCountAdql(descriptor));
 		}
-		return getDefaultCountAdql(descriptor);
+		return URL.encodeQueryString(getDefaultCountAdql(descriptor));
     		
     }
     
