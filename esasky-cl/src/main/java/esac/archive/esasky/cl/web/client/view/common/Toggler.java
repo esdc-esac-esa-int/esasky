@@ -5,8 +5,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -15,16 +13,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.animation.RotateAnimation;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class Toggler extends FocusPanel {
 	private final Resources resources;
 	private CssResource style;
 
 	public static interface Resources extends ClientBundle {
-		@Source("down-arrow.png")
-		@ImageOptions(width = 10, height = 10)
-		ImageResource downArrow();
-		
+
 		@Source("toggler.css")
 		@CssResource.NotStrict
 		CssResource style();
@@ -61,7 +57,7 @@ public class Toggler extends FocusPanel {
 		textAndArrowContainer.add(text);
 		text.addStyleName("toggler__text");
 		
-		Image downArrow = new Image(resources.downArrow());
+		Image downArrow = new Image(Icons.getDownArrowIcon());
 		downArrow.addStyleName("toggler__arrow");
 		textAndArrowContainer.add(downArrow);
 		arrowAnimation = new RotateAnimation(downArrow.getElement());

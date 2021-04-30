@@ -4,11 +4,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class MenuItem<T> extends FocusPanel{
 	private T item;
@@ -28,10 +29,6 @@ public class MenuItem<T> extends FocusPanel{
     
     public interface Resources extends ClientBundle {
 
-        @Source("selectedIcon.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource selectedIcon();
-    	
         @Source("menuItem.css")
         @CssResource.NotStrict
         CssResource style();
@@ -51,7 +48,7 @@ public class MenuItem<T> extends FocusPanel{
 		horizontalPanel.add(label);
         add(horizontalPanel);
         if(tickWhenSelected){
-            selectedImage = new Image(resources.selectedIcon().getSafeUri());
+            selectedImage = new Image(Icons.getSelectedIcon().getSafeUri());
             horizontalPanel.add(selectedImage);
             selectedImage.addStyleName("selectedIcon");
         }

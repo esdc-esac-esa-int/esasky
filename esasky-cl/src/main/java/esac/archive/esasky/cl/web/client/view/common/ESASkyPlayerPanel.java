@@ -9,8 +9,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -21,6 +19,7 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class ESASkyPlayerPanel extends Composite {
 
@@ -65,22 +64,6 @@ public class ESASkyPlayerPanel extends Composite {
      * A ClientBundle that provides images for this widget.
      */
     public static interface Resources extends ClientBundle {
-
-        @Source("previous.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource previous();
-
-        @Source("next.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource next();
-
-        @Source("play.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource play();
-
-        @Source("pause.png")
-        @ImageOptions(flipRtl = true)
-        ImageResource pause();
 
         @Source("esaSkyPlayerPanel.css")
         @CssResource.NotStrict
@@ -139,7 +122,7 @@ public class ESASkyPlayerPanel extends Composite {
 	}
 
 	private void initializeNext() {
-		this.next = new EsaSkyButton(this.resources.next());
+		this.next = new EsaSkyButton(Icons.getNextIcon());
         this.next.setTitle(TextMgr.getInstance().getText("playerPanel_next"));
         this.next.setSmallStyle();
         this.next.addStyleName("playerButton");
@@ -154,7 +137,7 @@ public class ESASkyPlayerPanel extends Composite {
 	}
 
 	private void initializePause() {
-		this.pause = new EsaSkyButton(this.resources.pause());
+		this.pause = new EsaSkyButton(Icons.getPauseIcon());
 		this.pause.setRoundStyle();
         this.pause.setTitle(TextMgr.getInstance().getText("playerPanel_pause"));
         this.pause.setMediumStyle();
@@ -170,7 +153,7 @@ public class ESASkyPlayerPanel extends Composite {
 	}
 
 	private void initializePlay() {
-		this.play = new EsaSkyButton(this.resources.play());
+		this.play = new EsaSkyButton(Icons.getPlayIcon());
 		this.play.setRoundStyle();
         this.play.setTitle(TextMgr.getInstance().getText("playerPanel_play"));
         this.play.setMediumStyle();
@@ -186,7 +169,7 @@ public class ESASkyPlayerPanel extends Composite {
 	}
 
 	private void initializePrevious() {
-		this.previous = new EsaSkyButton(this.resources.previous());
+		this.previous = new EsaSkyButton(Icons.getPreviousIcon());
         this.previous.setTitle(TextMgr.getInstance().getText("playerPanel_previous"));
         this.previous.setSmallStyle();
         this.previous.addStyleName("playerButton");

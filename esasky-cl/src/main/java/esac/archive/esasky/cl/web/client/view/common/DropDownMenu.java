@@ -20,7 +20,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
@@ -38,6 +37,7 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.animation.RotateAnimation;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class DropDownMenu<T> extends Composite {
 
@@ -69,9 +69,6 @@ public class DropDownMenu<T> extends Composite {
 		@CssResource.NotStrict
 		CssResource style();
 
-		@Source("down-arrow.png")
-		@ImageOptions(width = 10, height = 10)
-		ImageResource downArrow();
 	}
 
 	public class SelectedArea extends FlowPanel implements HasClickHandlers {
@@ -83,7 +80,7 @@ public class DropDownMenu<T> extends Composite {
 		public SelectedArea(int pxSize, boolean showImage){
 
 			hp = new HorizontalPanel();
-			Image downArrow = new Image(resources.downArrow());
+			Image downArrow = new Image(Icons.getDownArrowIcon());
 
 			if (!showImage) {
 				text = new Label();

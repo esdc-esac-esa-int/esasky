@@ -48,6 +48,7 @@ import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
@@ -103,36 +104,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 	public static interface Resources extends ClientBundle {
 
-		@Source("selectSky.png")
-		ImageResource selectSky();
-
-		@Source("target_list.png")
-		ImageResource targetList();
-		
-		@Source("plan_observation.png")
-		ImageResource planObservation();
-		
-		@Source("galaxy_light_outline.png")
-		ImageResource observationIcon();
-		
-		@Source("catalog_map_outline.png")
-		ImageResource catalogIcon();
-
-		@Source("extTap.png")
-		ImageResource extTapIcon();
-		
-		@Source("spectra_light_outline.png")
-		ImageResource spectraIcon();
-		
-		@Source("saturn_light_outline.png")
-		ImageResource ssoIcon();
-
-		@Source("publications_outline.png")
-        ImageResource publicationsIcon();
-		
-		@Source("random_dice.png")
-		ImageResource explore();
-		
 		@Source("ctrlToolBar.css")
 		@CssResource.NotStrict
 		CssResource style();
@@ -244,7 +215,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 
 	private EsaSkyButton createSkiesMenuBtn() {
-		selectSkyButton = new EsaSkyToggleButton(resources.selectSky());
+		selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon());
 		addCommonButtonStyle(selectSkyButton, TextMgr.getInstance().getText("webConstants_manageSkies"));
 
         selectSkyButton.addClickHandler(new ClickHandler() {
@@ -269,7 +240,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private EsaSkyButton createTargetListBtn() {
 		targetListPanel = new TargetListPanel();
 		
-		targetListButton = new EsaSkyToggleButton(resources.targetList());
+		targetListButton = new EsaSkyToggleButton(Icons.getTargetListIcon());
 		targetListButton.getElement().setId("targetListImg");
 		addCommonButtonStyle(targetListButton, TextMgr.getInstance().getText("webConstants_uploadTargetList"));
 		targetListButton.addClickHandler(new ClickHandler() {
@@ -294,7 +265,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 
 	private EsaSkyToggleButton createPlanObservationBtn() {
-		planObservationButton = new EsaSkyToggleButton(resources.planObservation());
+		planObservationButton = new EsaSkyToggleButton(Icons.getPlanObservationIcon());
 		addCommonButtonStyle(planObservationButton, TextMgr.getInstance().getText("webConstants_projectFutureObservations"));
 		planObservationButton.addClickHandler( 
 				new ClickHandler() {
@@ -319,14 +290,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	private BadgeButton createObservationBtn() {
-		observationButton = createDataPanelBtn(resources.observationIcon(), 
+		observationButton = createDataPanelBtn(Icons.getObservationIcon(), 
 		        TextMgr.getInstance().getText("webConstants_exploreImageObservations"), EntityContext.ASTRO_IMAGING, observationTreeMapContainer);
 		return observationButton;
 	}
 	
 	private EsaSkyToggleButton createExtTapBtn() {
 		
-		extTapButton = new EsaSkyToggleButton(resources.extTapIcon());
+		extTapButton = new EsaSkyToggleButton(Icons.getExtTapIcon());
 		addCommonButtonStyle(extTapButton, TextMgr.getInstance().getText("webConstants_exploreExtTaps"));
 		extTapButton.addClickHandler(
 				new ClickHandler() {
@@ -343,19 +314,19 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	private BadgeButton createCatalogBtn() {
-		catalogButton = createDataPanelBtn(resources.catalogIcon(), 
+		catalogButton = createDataPanelBtn(Icons.getCatalogIcon(), 
 		        TextMgr.getInstance().getText("webConstants_exploreCatalogue"), EntityContext.ASTRO_CATALOGUE, catalogTreeMapContainer);
 		return catalogButton;
 	}
 	
 	private BadgeButton createSpectraBtn() {
-		spectraButton = createDataPanelBtn(resources.spectraIcon(), 
+		spectraButton = createDataPanelBtn(Icons.getSpectraIcon(), 
 		        TextMgr.getInstance().getText("webConstants_exploreSpectral"), EntityContext.ASTRO_SPECTRA, spectraTreeMapContainer);
 		return spectraButton;
 	}
 	
 	private BadgeButton createSsoBtn() {
-		ssoButton = createDataPanelBtn(resources.ssoIcon(), 
+		ssoButton = createDataPanelBtn(Icons.getSsoIcon(), 
 		        TextMgr.getInstance().getText("webConstants_exploreData"), EntityContext.SSO, ssoTreeMapContainer);
 		ssoButton.setDisabledTooltip(TextMgr.getInstance().getText("webConstants_trackSSO"));
 		ssoButton.disable();
@@ -363,7 +334,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	private EsaSkyToggleButton createPublicationsBtn() {
-        publicationsButton = new EsaSkyToggleButton(resources.publicationsIcon());
+        publicationsButton = new EsaSkyToggleButton(Icons.getPublicationsIcon());
         addCommonButtonStyle(publicationsButton, TextMgr.getInstance().getText("webConstants_explorePublications"));
         
         publicationPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -404,8 +375,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		button.setTitle(tooltip);
 	}
 	
-	public EsaSkyButton addCustomButton(String iconText, String description) {
-		EsaSkyButton button = new EsaSkyButton(iconText);
+	public EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description) {
+		EsaSkyButton button;
+		if(icon != null) {
+			button = new EsaSkyButton(icon);
+		}else {
+			button = new EsaSkyButton(iconText);
+		}
 		addCommonButtonStyle(button, description);
 		ctrlToolBarPanel.add(button);
 		return button;
@@ -596,7 +572,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 	
 	public EsaSkyButton createExploreButton() {
-		final EsaSkyButton button = new EsaSkyButton(resources.explore());
+		final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon());
 		button.getElement().setId("exploreButton");
 		addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreRandomTarget"));
 		button.addClickHandler(new ClickHandler() {
