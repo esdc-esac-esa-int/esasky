@@ -139,7 +139,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public HashMap<String, ExtTapTreeMapLevel>  getSubLevels() {
 		return subLevels;
 	}
-	
 
 	public ArrayList<String> getLevelColumnNames() {
 		return levelColumnNames;
@@ -172,9 +171,8 @@ public class ExtTapDescriptor extends BaseDescriptor {
     public String getTapQuery(String tapContext, String metadataAdql, String responseFormat) {
         Long timecall = System.currentTimeMillis();
         String adqlParameterAndValue = "";
-        String adql = URL.encodeQueryString(metadataAdql);
-        if(!adql.isEmpty()) {
-            adqlParameterAndValue = "&" + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adql;
+        if(!metadataAdql.isEmpty()) {
+            adqlParameterAndValue = "&" + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + metadataAdql;
         }
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
@@ -185,7 +183,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
             if(!tapUrl.endsWith("/sync")) {
                 tapUrl += "/sync";
             }
-            url += "&" + EsaSkyConstants.EXT_TAP_URL + "=" + getTapUrl() +
+            url += "&" + EsaSkyConstants.EXT_TAP_URL + "=" + tapUrl +
                     "&" + EsaSkyConstants.EXT_TAP_RESPONSE_FORMAT + "=" + getResponseFormat();
         }
         return url + adqlParameterAndValue;
