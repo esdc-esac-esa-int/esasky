@@ -1,9 +1,8 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
-import static org.junit.Assert.*;
-
-
-import org.junit.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ExtTapDescriptorTest {
 	
@@ -22,7 +21,7 @@ public class ExtTapDescriptorTest {
 	
 	private ExtTapDescriptor descriptor;
 	
-	@Before
+	@BeforeEach
 	public void setup(){
 		descriptor = new ExtTapDescriptor();
 		descriptor.setMission(testMission);

@@ -1,7 +1,6 @@
 package esac.archive.esasky.ifcs.model.coordinatesutils;
 
-import static org.junit.Assert.*;
-import org.junit.*;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
