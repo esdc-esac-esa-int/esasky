@@ -25,6 +25,7 @@ public class ApiPanel extends ApiBase{
 		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		if(tablePanel == null) {
 			sendBackErrorMsgToWidget(ApiConstants.PANEL_DATA_ERROR, widget);
+			return;
 		}
 		JSONObject callback = tablePanel.exportAsJSON();
 

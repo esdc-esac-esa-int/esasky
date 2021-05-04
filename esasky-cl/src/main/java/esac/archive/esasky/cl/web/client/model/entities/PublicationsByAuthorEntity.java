@@ -18,12 +18,12 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePane
 
 public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
-    private PublicationsDescriptor descriptor;
+    private PublicationsDescriptor publicationsDescriptor;
     public PublicationsByAuthorEntity(PublicationsDescriptor descriptor,
             CountStatus countStatus, SkyViewPosition skyViewPosition,
             String esaSkyUniqId) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance());
-        this.descriptor = descriptor; 
+        this.publicationsDescriptor = descriptor; 
     }
 
     @Override
@@ -39,7 +39,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
             @Override
             public void execute() {
                 tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL + "?AUTHOR=" + URL.encodeQueryString(getEsaSkyUniqId()) 
-                + "&ROWS=" + descriptor.getAdsPublicationsMaxRows()); 
+                + "&ROWS=" + publicationsDescriptor.getAdsPublicationsMaxRows()); 
             }
         });
     }

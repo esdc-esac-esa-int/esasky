@@ -21,13 +21,13 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePane
 
 public class PublicationsBySourceEntity extends EsaSkyEntity {
 
-    private PublicationsDescriptor descriptor;
+    private PublicationsDescriptor publicationsDescriptor;
     public PublicationsBySourceEntity(PublicationsDescriptor descriptor,
             CountStatus countStatus, SkyViewPosition skyViewPosition,
             String esaSkyUniqId, double ra, double dec, String bibcount) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
         super.addShapes(getTableShapeInfo(ra, dec, bibcount, getEsaSkyUniqId()));
-        this.descriptor = descriptor;
+        this.publicationsDescriptor = descriptor;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
             @Override
             public void execute() {
                 tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId()) 
-                    + "&ROWS=" + descriptor.getAdsPublicationsMaxRows()); 
+                    + "&ROWS=" + publicationsDescriptor.getAdsPublicationsMaxRows()); 
             }
         });
     }
