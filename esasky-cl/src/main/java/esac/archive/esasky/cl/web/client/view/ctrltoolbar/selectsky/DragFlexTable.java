@@ -46,7 +46,9 @@ public class DragFlexTable extends FlexTable {
 
     public void removeSky(SkyRow sky) {
         TableRowElement tableRow = (TableRowElement) findNearestParentNodeByType(sky.getElement(), "tr");
-        tableRow.removeFromParent();
+        if(tableRow != null) {
+        	tableRow.removeFromParent();
+        }
         
         if(sky.isSelected()){
             for (int i = 0; i < this.getRowCount(); i++) {
