@@ -19,7 +19,6 @@ import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
-import esac.archive.esasky.ifcs.model.shared.ESASkyResultMOC;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
@@ -50,7 +49,6 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	final int DISPLAY_LIMIT = 2000;
 	
-    private ESASkyResultMOC moc = new ESASkyResultMOC(2,-1);
     private ITablePanel tablePanel;
     protected IShapeDrawer drawer;
     protected IShapeDrawer combinedDrawer;
@@ -422,34 +420,14 @@ public class MOCEntity implements GeneralEntityInterface {
 		clearAll();
 	}
 	
-	public ESASkyResultMOC getMOC(){
-		return moc;
-	}
 	
 	@Override
 	public void clearAll() {
-		moc = new ESASkyResultMOC(2, -1);
 		updateOverlay();
 		getVisibleCount();
 	}
 	
-	public void replaceData(ITablePanel tablePanel, ESASkyResultMOC newData) {
-		
-		setTablePanel(tablePanel);
-		this.moc = newData;
-		updateOverlay();
-	}
 
-	public void addData(final ITablePanel tablePanel, ESASkyResultMOC newData) {
-		
-		setTablePanel(tablePanel);
-		
-		moc.addData(newData);
-		moc.updateCount();
-		
-		updateOverlay();
-	}
-	
 	public void addJSON(final ITablePanel tablePanel, final GeneralJavaScriptObject data) {
 		
 		setTablePanel(tablePanel);
