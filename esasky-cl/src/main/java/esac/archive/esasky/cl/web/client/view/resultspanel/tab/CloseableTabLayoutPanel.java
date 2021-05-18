@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -308,21 +309,14 @@ public class CloseableTabLayoutPanel extends Composite {
             }
         });
 
-        saveButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
+        saveButton.addClickHandler((final ClickEvent event) -> {
                 String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
                 // Update number of observation selected before display the pop-up
                 CommonEventBus.getEventBus().fireEvent(
                         new UpdateNumRowsSelectedEvent(selectedTabId, saveAllView));
                 GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
-                boolean hasProductUrl = entity.getDescriptor() instanceof ExtTapDescriptor 
-                        || entity.getDescriptor().getMetadataDescriptorByTapName("product_url") != null
-                        || (entity.getDescriptor().getMetadataDescriptorByTapName("access_url") != null
-                                && !entity.getDescriptor().getDescriptorId().equals("ASTRO_IMAGING_ALMA"));
                 
-                saveAllView.setProductsDownloadVisible(hasProductUrl && !getSelectedWidget().isDataProductDatalink());
+                saveAllView.setProductsDownloadVisible(hasProductUrl(entity.getDescriptor()) && !getSelectedWidget().isDataProductDatalink());
                 // Set pop-up position.
                 saveAllView.getSaveOrDownloadDialog().setPopupPositionAndShow(
                         new PopupPanel.PositionCallback() {
@@ -333,12 +327,17 @@ public class CloseableTabLayoutPanel extends Composite {
                                 saveAllView.getSaveOrDownloadDialog().show();
                             }
                         });
-
-            }
         });
         saveButton.addStyleName("tabButton");
         
         return saveButton;
+    }
+    
+    private boolean hasProductUrl(IDescriptor descriptor) {
+        return descriptor instanceof ExtTapDescriptor 
+                || descriptor.getMetadataDescriptorByTapName("product_url") != null
+                || (descriptor.getMetadataDescriptorByTapName("access_url") != null
+                        && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId()));
     }
 
     private EsaSkyButton createSendButton() {
@@ -364,7 +363,7 @@ public class CloseableTabLayoutPanel extends Composite {
 
     private EsaSkyButton createConfigureButton() {
         
-        EsaSkyButton configureButton = new EsaSkyButton(resources.configureIcon());
+        configureButton = new EsaSkyButton(resources.configureIcon());
         configureButton.setMediumStyle();
         configureButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_configure"));
         configureButton.addClickHandler(new ClickHandler() {

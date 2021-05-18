@@ -158,10 +158,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
 	@Override
 	protected void onLoad() {
 		super.onLoad();   
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-            
-            @Override
-            public void execute() {
+		Scheduler.get().scheduleDeferred(() -> {
                 tabulatorTable = new TabulatorWrapper("toggleColumns__tabulatorContainer", ToggleColumnsDialogBox.this, false, false, false, false, TextMgr.getInstance().getText("toggleColumns_rowSelectionTitle"), true, false);
                 GeneralJavaScriptObject data[] = extractData(columns);
                 tabulatorTable.insertData(data[0], data[1]);
@@ -169,7 +166,6 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
                 tabulatorTable.restoreRedraw();
                 tabulatorTable.redrawAndReinitializeHozVDom();
                 isInitialized = true;
-            }
         });
 	}
 	private long timeAtLastResize;
@@ -206,7 +202,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
     public void onRowDeselection(GeneralJavaScriptObject row) {
         if(isInitialized) {
             String tapName = row.invokeFunction("getData").getStringProperty("tap_name");
-            if(tapName.equals("rowSelection")) {
+            if("rowSelection".equals(tapName)) {
                 return;
             }
             toggleColumnAction.onHide(tapName);
@@ -216,6 +212,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
     
     @Override
     public void onTableHeightChanged() {
+        //No need to do anything
     }
 
     @Override

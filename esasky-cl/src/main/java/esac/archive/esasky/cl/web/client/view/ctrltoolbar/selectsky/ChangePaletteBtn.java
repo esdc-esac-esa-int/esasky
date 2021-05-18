@@ -57,9 +57,7 @@ public class ChangePaletteBtn extends Composite{
         	changePaletteBtn.setStyleName(style.changePaletteBtn());
         changePaletteBtn.setTitle(TextMgr.getInstance().getText("changePaletteBtn_changePaletteTooltip"));
         initChangePaletteMenu();
-        changePaletteBtn.addMouseDownHandler((MouseDownEvent event) -> {
-                event.preventDefault();
-        });
+        changePaletteBtn.addMouseDownHandler((MouseDownEvent event) -> event.preventDefault());
         changePaletteBtn.addClickHandler(new ClickHandler() {
 
             @Override
