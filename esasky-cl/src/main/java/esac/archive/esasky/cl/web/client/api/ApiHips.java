@@ -137,7 +137,19 @@ public class ApiHips extends ApiBase{
 				}
 				
 				String surveyFrame = props.getStringProperty(ApiConstants.HIPS_PROP_FRAME);
-				String imgFormat = props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT);
+				String[] imgFormats = props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT).split(" ");
+				String imgFormat = "jpg";
+				if(imgFormats.length > 1) {
+					for(String format : imgFormats) {
+						if(format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
+							imgFormat = format;
+							break;
+						}
+					}
+				}else {
+					imgFormat = imgFormats[0];
+				}
+				
 				int maximumNorder = (int) props.getDoubleProperty(ApiConstants.HIPS_PROP_ORDER);
 				
 				if(add) {
