@@ -424,10 +424,9 @@ public class TargetListPanel extends DialogBox {
 
         targetsContainer.setVisible(true);
         playerPanel.resetPlayerEntries();
-        if (targetListScrollPanel != null) { // remove previous component
-            targetListScrollPanel.clear();
-            AladinLiteWrapper.getInstance().removeMultitargetPointer();
-        }
+        // remove previous component
+        targetListScrollPanel.clear();
+        AladinLiteWrapper.getInstance().removeMultitargetPointer();
 
         targetListTable = new FlexTable();
         targetListTable.getElement().setId("targetListTable");
