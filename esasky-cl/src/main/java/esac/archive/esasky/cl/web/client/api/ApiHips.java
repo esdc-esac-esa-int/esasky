@@ -123,32 +123,13 @@ public class ApiHips extends ApiBase{
 			protected void onSuccess(Response response) {
 				GeneralJavaScriptObject props = IniFileParser.parseIniString(response.getText());
 				
-				if(!props.hasProperty(ApiConstants.HIPS_PROP_FRAME )|| "".equals(props.getStringProperty(ApiConstants.HIPS_PROP_FRAME))) {
-					sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR + ApiConstants.HIPS_PROP_FRAME, widget);
-					return;
-				}
-				if(!props.hasProperty(ApiConstants.HIPS_PROP_FORMAT )|| "".equals(props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT))) {
-					sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR + ApiConstants.HIPS_PROP_FORMAT, widget);
-					return;
-				}
-				if(!props.hasProperty(ApiConstants.HIPS_PROP_ORDER )|| "".equals(props.getStringProperty(ApiConstants.HIPS_PROP_ORDER))) {
-					sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR + ApiConstants.HIPS_PROP_ORDER, widget);
+				if(detectHipSPropertyErrors(props, widget)) {
 					return;
 				}
 				
+				String imgFormat = parseImgFormat(props);
+				
 				String surveyFrame = props.getStringProperty(ApiConstants.HIPS_PROP_FRAME);
-				String[] imgFormats = props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT).split(" ");
-				String imgFormat = "jpg";
-				if(imgFormats.length > 1) {
-					for(String format : imgFormats) {
-						if(format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
-							imgFormat = format;
-							break;
-						}
-					}
-				}else {
-					imgFormat = imgFormats[0];
-				}
 				
 				int maximumNorder = (int) props.getDoubleProperty(ApiConstants.HIPS_PROP_ORDER);
 				
@@ -168,6 +149,40 @@ public class ApiHips extends ApiBase{
 			
 		});
 		
+	}
+	
+	public boolean detectHipSPropertyErrors(GeneralJavaScriptObject props, JavaScriptObject widget) {
+		if(!props.hasProperty(ApiConstants.HIPS_PROP_FRAME )|| "".equals(props.getStringProperty(ApiConstants.HIPS_PROP_FRAME))) {
+			sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR + ApiConstants.HIPS_PROP_FRAME, widget);
+			return true;
+		}
+		if(!props.hasProperty(ApiConstants.HIPS_PROP_FORMAT )|| "".equals(props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT))) {
+			sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR + ApiConstants.HIPS_PROP_FORMAT, widget);
+			return true;
+		}
+		if(!props.hasProperty(ApiConstants.HIPS_PROP_ORDER )|| "".equals(props.getStringProperty(ApiConstants.HIPS_PROP_ORDER))) {
+			sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR + ApiConstants.HIPS_PROP_ORDER, widget);
+			return true;
+		}
+		return false;
+	}
+	
+	public String parseImgFormat(GeneralJavaScriptObject props) {
+		String[] imgFormats = props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT).split(" ");
+
+		String imgFormat = "jpg";
+		if(imgFormats.length > 1) {
+			for(String format : imgFormats) {
+				if(format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
+					imgFormat = format;
+					break;
+				}
+			}
+		}else {
+			imgFormat = imgFormats[0];
+		}
+		
+		return imgFormat;
 	}
 	
 	public void setHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
