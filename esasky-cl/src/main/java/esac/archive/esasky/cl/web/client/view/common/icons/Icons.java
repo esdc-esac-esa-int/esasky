@@ -157,11 +157,11 @@ public class Icons {
 	
 	
 	public static ImageResource getPreviousIcon() {
-		return resources.selectSky();
+		return resources.previous();
 	}
 	
 	public static ImageResource getNextIcon() {
-		return resources.selectSky();
+		return resources.next();
 	}
 	
 	public static ImageResource getPlayIcon() {
