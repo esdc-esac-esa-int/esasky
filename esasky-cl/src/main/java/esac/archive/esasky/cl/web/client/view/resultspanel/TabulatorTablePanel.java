@@ -886,10 +886,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
     @Override
     public void multiSelectionInProgress() {
+        //Operation is fast enough for regular tables
     }
 
     @Override
     public void multiSelectionFinished() {
+        //Operation is fast enough for regular tables
     }
 
 }

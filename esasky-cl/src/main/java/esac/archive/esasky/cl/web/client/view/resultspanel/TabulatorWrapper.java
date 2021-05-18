@@ -186,11 +186,6 @@ public class TabulatorWrapper{
     private native void redraw(GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.redraw(true);
     }-*/;
-    
-    private native void reinitializeVdomHoz(GeneralJavaScriptObject tableJsObject)/*-{
-        tableJsObject.vdomHoz.reinitialize();
-    }-*/;
-
 
     private native void reformat(GeneralJavaScriptObject tableJsObject)/*-{
 		tableJsObject.rowManager.rows.forEach(function(row){

@@ -15,7 +15,7 @@ public final class NumberFormatter {
     }
 	
 	public static String formatToNumberWithSpaces(int number) {
-		return formatToNumberWithSpaces(new Long(number).toString());
+		return formatToNumberWithSpaces(Long.toString(number));
 	}
 	
     public static native boolean isNumber(String text) /*-{

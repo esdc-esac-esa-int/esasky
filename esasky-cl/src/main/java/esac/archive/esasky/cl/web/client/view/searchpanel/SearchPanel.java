@@ -396,60 +396,26 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         		if("Earth".equals(currSSO.getName())) {
         		    isLinkToESAArchive = true;
         		    ssoName.setText("ESA Earth Online");
-        		    ssoTypeLabel.setVisible(false);
-                    menuEntry.addClickHandler(new ClickHandler() {
-                            
-                        @Override
-                        public void onClick(ClickEvent event) {
-                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "ESA Earth Online");
-                            Window.open("https://earth.esa.int/eogateway/", "_blank", "");
-                            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
-                            
-                        }
-                    });
+                    addLinkToEsaArchive(menuEntry, ssoTypeLabel, "https://earth.esa.int/eogateway/", ssoName.getText());
         		} else if("Sun".equals(currSSO.getName())) {
+        		    ssoName.setText("Solar Orbiter Archive");
         		    isLinkToESAArchive = true;
-                    ssoName.setText("Solar Orbiter Archive");
-                    ssoTypeLabel.setVisible(false);
-                    menuEntry.addClickHandler(new ClickHandler() {
-                            
-                        @Override
-                        public void onClick(ClickEvent event) {
-                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "Solar Orbiter Archive");
-                            Window.open("http://soar.esac.esa.int/", "_blank", "");
-                            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
-                            
-                        }
-                    });
+        		    addLinkToEsaArchive(menuEntry, ssoTypeLabel, "http://soar.esac.esa.int/", "Solar Orbiter Archive");
                 } else if("Moon".equals(currSSO.getName())) {
                     isLinkToESAArchive = true;
                     container.getElement().getStyle().setPropertyPx("marginLeft", -1);
                     container.getElement().getStyle().setPropertyPx("marginRight", -3);
                     ssoName.setText("Moon data from the Planetary Science Archive");
-                    ssoTypeLabel.setVisible(false);
-                    menuEntry.addClickHandler(new ClickHandler() {
-                            
-                        @Override
-                        public void onClick(ClickEvent event) {
-                            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "PSA Moon");
-                            Window.open("https://archives.esac.esa.int/psa/#!Table%20View/Moon=target", "_blank", "");
-                            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
-                            
-                        }
-                    });
+                    addLinkToEsaArchive(menuEntry, ssoTypeLabel, "https://archives.esac.esa.int/psa/#!Table%20View/Moon=target", "PSA Moon");
                 } else {
         		    ssoName.setText(currSSO.getName());
-        		    menuEntry.addClickHandler(new ClickHandler() {
-        		        
-        		        @Override
-        		        public void onClick(ClickEvent event) {
+        		    menuEntry.addClickHandler((ClickEvent event)-> {
         		            CommonEventBus.getEventBus().fireEvent(
         		                    new SSOCrossMatchEvent(currSSO.getName(), currSSO.getSsoObjType()));
         		            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
         		            
         		            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SSO: " + currSSO.getName());
-        		        }
-        		    });
+    		        });
         		}
         		container.add(ssoName);
         		menuEntry.add(container);
@@ -517,6 +483,15 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
             this.searchResultsFocusPanel.setVisible(true);
         }
 
+    }
+
+    private void addLinkToEsaArchive(FocusPanel menuEntry, Label ssoTypeLabel, String link, String eventName) {
+        ssoTypeLabel.setVisible(false);
+        menuEntry.addClickHandler((ClickEvent event) -> {
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, eventName);
+                Window.open(link, "_blank", "");
+                SearchPanel.this.searchResultsFocusPanel.setVisible(false);
+        });
     }
 
     public TextBox getSearchTextBox() {

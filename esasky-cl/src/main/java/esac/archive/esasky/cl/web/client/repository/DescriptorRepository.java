@@ -41,7 +41,6 @@ import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
-import esac.archive.esasky.cl.web.client.callback.CountRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.ExtTapCheckCallback;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
@@ -55,8 +54,6 @@ import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
-import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPSingleCountService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -404,22 +401,7 @@ public class DescriptorRepository {
 						SpectraDescriptorListMapper mapper = GWT.create(SpectraDescriptorListMapper.class);
 						spectraDescriptors = new DescriptorListAdapter<SpectraDescriptor>(mapper.read(responseText),
 								countObserver);
-						
-						
-						for(SpectraDescriptor desc : spectraDescriptors.getDescriptors()) {
-							for(MetadataDescriptor md : desc.getMetadata()) {
-								if(md.getType() == ColumnType.RA) {
-									desc.setTapRaColumn(md.getTapName());
-								}
-								else if(md.getType() == ColumnType.DEC) {
-									desc.setTapDecColumn(md.getTapName());
-								}
-								else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
-									desc.setTapSTCSColumn(md.getTapName());
-								}
-							}
-						}
-						
+						initializeSpectraDescriptorPositions();
 						spectraDescriptorsIsReady = true;
 
 						Log.debug("[DescriptorRepository] Total spectra entries: " + spectraDescriptors.getTotal());
@@ -437,6 +419,22 @@ public class DescriptorRepository {
 
 				});
 	}
+	
+    private void initializeSpectraDescriptorPositions() {
+        for(SpectraDescriptor desc : spectraDescriptors.getDescriptors()) {
+            for(MetadataDescriptor md : desc.getMetadata()) {
+                if(md.getType() == ColumnType.RA) {
+                    desc.setTapRaColumn(md.getTapName());
+                }
+                else if(md.getType() == ColumnType.DEC) {
+                    desc.setTapDecColumn(md.getTapName());
+                }
+                else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
+                    desc.setTapSTCSColumn(md.getTapName());
+                }
+            }
+        }
+    }
 
 	public void initPubDescriptors() {
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initPubDescriptors");
@@ -510,24 +508,6 @@ public class DescriptorRepository {
 		
 		JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
 					countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
-	}
-	
-	private final void doUpdateCount(IDescriptor descriptor, CountStatus cs) {
-
-		Log.debug("[doUpdateCount][" + descriptor.getGuiShortName() + "]");
-
-		String url;
-
-		if (descriptor instanceof CatalogDescriptor) {
-
-			url = TAPCatalogueService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
-
-		} else {
-
-			url = TAPObservationService.getInstance().getCount(AladinLiteWrapper.getAladinLite(), descriptor);
-		}
-
-		JSONUtils.getJSONFromUrl(url, new CountRequestCallback(descriptor, cs, countRequestHandler, url));
 	}
 	
 	public void doCountExtTap(IDescriptor descriptor, CountStatus cs) {

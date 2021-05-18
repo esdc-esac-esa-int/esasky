@@ -7,7 +7,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -58,12 +57,8 @@ public class ChangePaletteBtn extends Composite{
         	changePaletteBtn.setStyleName(style.changePaletteBtn());
         changePaletteBtn.setTitle(TextMgr.getInstance().getText("changePaletteBtn_changePaletteTooltip"));
         initChangePaletteMenu();
-        changePaletteBtn.addMouseDownHandler(new MouseDownHandler() {
-            
-            @Override
-            public void onMouseDown(MouseDownEvent event) {
+        changePaletteBtn.addMouseDownHandler((MouseDownEvent event) -> {
                 event.preventDefault();
-            }
         });
         changePaletteBtn.addClickHandler(new ClickHandler() {
 
