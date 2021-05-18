@@ -39,7 +39,6 @@
 	background-color: #808080; 
 	border: 1px solid; 
 	padding: 5px; 
-	devicePixelRatio: auto; 
 }
 
 .okButton{
@@ -111,7 +110,6 @@ body {
 .buttonCell img{
 	display: block;
 	margin: auto;
-	user-drag: none; 
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-drag: none;

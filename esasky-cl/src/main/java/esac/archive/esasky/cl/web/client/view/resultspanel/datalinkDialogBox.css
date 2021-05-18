@@ -30,7 +30,6 @@
 	transform: translate(-50%, -50%);
 	position: absolute;
 	z-index: 10011;
-	user-drag: none;
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-drag: none;
