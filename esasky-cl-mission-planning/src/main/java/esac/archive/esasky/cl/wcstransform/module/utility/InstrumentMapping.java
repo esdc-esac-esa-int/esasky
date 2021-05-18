@@ -131,29 +131,12 @@ public class InstrumentMapping {
         double[] reference = null;
 
         if (detector == null) {
-            for (String d : apertureList.keySet()) {
+        	
+        	detector = getDefaultApertureForInstrument(instrument);
+        } 
 
-                if (d.equals(instrument) && instrument.equals(JWSTInstrument.FGS1.toString())) {
-                    reference = selectReferencePosVFrame(JWSTInstrument.FGS1.getAperName());
-                    break;
-                } else if (d.equals(instrument) && instrument.equals(JWSTInstrument.NIRISS_CEN.toString())) {
-                    reference = selectReferencePosVFrame(JWSTInstrument.NIRISS_CEN.getAperName());
-                    break;
-                } else if (d.equals(instrument) && instrument.equals(JWSTInstrument.NIRCAFULL.toString())) {
-                    reference = selectReferencePosVFrame(JWSTInstrument.NIRCAFULL.getAperName());
-                    break;
-                } else if (d.equals(instrument) && instrument.equals(JWSTInstrument.NIRSPEC_MSA.toString())) {
-                    reference = selectReferencePosVFrame(JWSTInstrument.NIRSPEC_MSA.getAperName());
-                    break;
-                } else if (d.equals(instrument) && instrument.equals(JWSTInstrument.MIRIM_FULL.toString())) {
-                    reference = selectReferencePosVFrame(JWSTInstrument.MIRIM_FULL.getAperName());
-                    break;
-                }
-            }
-        } else {
-            reference = selectReferencePosVFrame(detector);
+        reference = selectReferencePosVFrame(detector);
 
-        }
         return new double[] { reference[0] / 3600., reference[1] / 3600. };
 
     }
