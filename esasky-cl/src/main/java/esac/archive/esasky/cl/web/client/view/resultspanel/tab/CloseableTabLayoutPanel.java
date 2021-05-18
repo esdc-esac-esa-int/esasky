@@ -673,8 +673,12 @@ public class CloseableTabLayoutPanel extends Composite {
 		if(refreshButton != null && refreshButton.getAbsoluteTop() > 0) {
 			offset = refreshButton.getAbsoluteTop();
 		}
-		tablePanel.showStylePanel(styleButton.getAbsoluteLeft() + styleButton.getOffsetWidth() + 2, 
-                offset);
+		if(tablePanel != null ) {
+			tablePanel.showStylePanel(styleButton.getAbsoluteLeft() + styleButton.getOffsetWidth() + 2, 
+					offset);
+		}else {
+			Log.error("Can't show stylePanel. Panel not found for ID: " + tabId);
+		}
 	}
 	
 }
