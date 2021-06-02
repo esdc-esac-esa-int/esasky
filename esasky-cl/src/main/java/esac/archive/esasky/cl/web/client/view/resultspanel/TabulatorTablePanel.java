@@ -591,6 +591,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         if(datalinkUrl == null || datalinkUrl.isEmpty()) {
         	datalinkUrl = buildArchiveURL(row.invokeFunction("getData"));
         }
+        if("https:".equals(Window.Location.getProtocol()) && datalinkUrl.startsWith("http:")){
+            datalinkUrl = datalinkUrl.replaceFirst("http:", "https:");
+        }
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
         String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
 
@@ -599,6 +602,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     
     @Override
     public void onAccessUrlClicked(String url) {
+        if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+            url = url.replaceFirst("http:", "https:");
+        }
         Window.open(url, "_blank", "_blank");
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
     }
