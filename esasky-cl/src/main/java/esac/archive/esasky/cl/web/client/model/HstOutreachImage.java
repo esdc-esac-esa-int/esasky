@@ -9,6 +9,7 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Timer;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
@@ -31,11 +32,12 @@ public class HstOutreachImage {
 	private String baseUrl;
 	private String tilesUrl;
 	
+	private double opacity = 1.0;
+	
 	public HstOutreachImage(String id) {
 		this.id = id;
 		this.baseUrl = "https://esahubble.org/images/" + id;
 		this.tilesUrl = "https://cdn.spacetelescope.org/archives/images/zoomable/" + id +"/";
-
 	}
 	
 	public void parseHstPageForProperties() {
@@ -91,11 +93,22 @@ public class HstOutreachImage {
 		
 		AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.ra), Double.toString(coor.dec));
 		AladinLiteWrapper.getAladinLite().setZoom(fov * 3);
+		
+		Timer timer = new Timer() {
+
+			@Override
+			public void run() {
+				AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
+			}
+			
+		};
+		timer.schedule(200);
 
 		StringBuilder popupText = new StringBuilder(this.description);
 		popupText.append("<br>  Credit: ");
-		popupText.append(this.credits);
-		popupText.append("<br><br> Link to image origin on Hubble: <a href=\" " + this.baseUrl + "\">here</a>");
+		popupText.append(this.credits);			
+
+		popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + "\">ESA Hubble News</a>");
 		
 		CommonEventBus.getEventBus().fireEvent(
         		new TargetDescriptionEvent(this.title, popupText.toString()));
@@ -198,6 +211,9 @@ public class HstOutreachImage {
 		try {
 			ClientRegexClass regex = new ClientRegexClass();
 			description = GeneralJavaScriptObject.convertToArray(regex.match("</div>\\n+<p>(.*)", text))[1].toString();
+			description = description.replace("<p>", "");
+			description = description.replace("</p>", "");
+			description = description.replace("<a ", "<a target=\"_blank\" ");
 			
 		}catch(Exception e ) {
 			String errorMsg = "Error parsing description from HST, due to: " + e.getMessage();
@@ -211,12 +227,21 @@ public class HstOutreachImage {
 		try {
 			ClientRegexClass regex = new ClientRegexClass();
 			credits = GeneralJavaScriptObject.convertToArray(regex.match("<div class=\\\"credit\\\"><p>(.*)</p>", text))[1].toString();
-			
+			credits = credits.replace("<a ", "<a target=\"_blank\" ");
+
 		}catch(Exception e ) {
 			String errorMsg = "Error parsing credits from HST, due to: " + e.getMessage();
 			throw new IOException(errorMsg, e);
 		}
 		return credits;
+	}
+	
+	public double getOpacity() {
+		return opacity;
+	}
+
+	public void setOpacity(double opacity) {
+		this.opacity = opacity;
 	}
 
 	public class ImageSize{

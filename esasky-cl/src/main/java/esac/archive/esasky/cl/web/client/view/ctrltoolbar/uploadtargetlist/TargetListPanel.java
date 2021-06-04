@@ -187,7 +187,7 @@ public class TargetListPanel extends DialogBox {
 		
 		opacityLabel = new Label();
 		opacityLabel.setText(TextMgr.getInstance().getText("Opacity"));
-		opacityLabel.setStyleName("orUploadLabel");
+		opacityLabel.setStyleName("opacityLabel");
         
 		targetsContainer.add(opacityLabel);
 		targetsContainer.add(opacitySlider);
@@ -728,6 +728,7 @@ public class TargetListPanel extends DialogBox {
         final TargetWidget selectedWidget = (TargetWidget) targetListTable.getWidget(index, 0);
         selectedWidget.setSelectedStyle();
 		HstOutreachImage image = new HstOutreachImage(selectedWidget.getNameofSelected());
+		image.setOpacity(opacitySlider.getCurrentValue());
 		image.parseHstPageForProperties();
     }
 
