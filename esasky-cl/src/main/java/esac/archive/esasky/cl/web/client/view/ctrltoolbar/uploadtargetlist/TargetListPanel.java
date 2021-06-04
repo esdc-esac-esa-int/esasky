@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +56,7 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -63,6 +65,8 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.ScrollPanelAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
+import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -83,6 +87,7 @@ public class TargetListPanel extends DialogBox {
     private FlowPanel uploadContainer;
     private EsaSkyUploader uploader;
     private DropDownMenu<String> preparedListDropDown;
+    private DropDownMenu<String> outreachImageDropDown;
     private Resources resources;
     private CssResource style;
     private VerticalPanel targetsContainer;
@@ -93,9 +98,13 @@ public class TargetListPanel extends DialogBox {
     private FlexTable targetListTable;
     private int WIDTH = 275;
     private ESASkyPlayerPanel playerPanel;
+	private  ESASkySlider opacitySlider;
+	private  Label opacityLabel;
     private Image simbadLogo;
     private boolean isShowing = false;
     private boolean tryingBackupLanguage = false;
+    
+    private List<ESASkySearchResult> outreachImageList;
 
     private static final String TARGETLIST_FILES_URL = Dictionary.getDictionary("serverProperties")
             .get("targetListFilesLocation");
@@ -164,6 +173,25 @@ public class TargetListPanel extends DialogBox {
         playerPanel.setStyleName("uploadTargetPlayer");
         targetsContainer.add(playerPanel);
 
+        
+		opacitySlider = new ESASkySlider(0, 1.0, 250);
+		opacitySlider.addStyleName("hipsSlider");
+		opacitySlider.registerValueChangeObserver(new EsaSkySliderObserver() {
+
+			@Override
+			public void onValueChange(double value) {
+				AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(value);
+
+			}
+		});
+		
+		opacityLabel = new Label();
+		opacityLabel.setText(TextMgr.getInstance().getText("Opacity"));
+		opacityLabel.setStyleName("orUploadLabel");
+        
+		targetsContainer.add(opacityLabel);
+		targetsContainer.add(opacitySlider);
+		
         container = new FlowPanel();
 
         container.add(new PopupHeader(this, 
@@ -182,6 +210,12 @@ public class TargetListPanel extends DialogBox {
 
         initUploader();
         uploadContainer.add(uploader);
+
+        Label orUploadLabel2 = new Label();
+        orUploadLabel2.setText(TextMgr.getInstance().getText("uploadTargetList_orUpload"));
+        orUploadLabel2.setStyleName("orUploadLabel");
+        uploadContainer.add(orUploadLabel2);
+        uploadContainer.add(createOutreachImageDropDown());
 
         container.add(uploadContainer);
         container.add(targetsContainer);
@@ -378,6 +412,51 @@ public class TargetListPanel extends DialogBox {
 
         return preparedListDropDown;
     }
+    
+    public void addNewOutreachImage(String id, boolean shouldGoToTarget) {
+    	ESASkySearchResult searchResult = new ESASkySearchResult();
+    	searchResult.setUserInput(id);
+    	searchResult.setUserInputType(SearchInputType.TARGET);
+    	searchResult.setValidInput(true);
+    	outreachImageList.add(0, searchResult);
+    	if(shouldGoToTarget) {
+    		setOutreachImageTableData(outreachImageList, id);
+    		setSelectedOutreachImage(0);
+    	}
+    }
+    
+    private DropDownMenu<String> createOutreachImageDropDown() {
+    	
+    	outreachImageDropDown = new DropDownMenu<String>(
+    			TextMgr.getInstance().getText("Images"), 
+    			TextMgr.getInstance().getText("Images"), 207, "outreachImageDropDown");
+    	
+    	// Added these here for now. To be removed when HST gives us jsons with all of their images
+    	
+    	String[] ids = new String[]{"heic1110a", "heic1305a", "potw1441a", "heic1502a", "heic1502b", "heic2007a", "heic0707a",
+        		 "heic1901a", "heic2020b","heic1417a"};
+        outreachImageList = new LinkedList<ESASkySearchResult>();
+    	
+        for(String id : ids) {
+        	addNewOutreachImage(id, false);
+        }
+    	
+    	outreachImageDropDown.registerObserver(new MenuObserver() {
+    		
+    		@Override
+    		public void onSelectedChange() {
+    			String id = outreachImageDropDown.getSelectedObject();
+    			setOutreachImageTableData(outreachImageList, id);
+    		}
+    	});
+    	
+    	
+		String title = "HST";
+		MenuItem<String> dropdownItem = new MenuItem<String>(title, title, title, true);
+		outreachImageDropDown.addMenuItem(dropdownItem);
+    	
+    	return outreachImageDropDown;
+    }
 
     private final void setSelectedTarget(final int index) {
         int TARGET_OVERLAP_SIZE = 2;
@@ -458,11 +537,58 @@ public class TargetListPanel extends DialogBox {
         targetListScrollPanel.add(targetListTable);
 
         targetListTitle.setHTML(title);
+    	opacityLabel.setVisible(false);
+    	opacitySlider.setVisible(false);
         uploadContainer.setVisible(false);
 
         if (inputData.size() > 0 && firstValidTarget != null) {
             setSelectedTarget(inputData.indexOf(firstValidTarget));
         }
+    }
+    
+    public void setOutreachImageTableData(List<ESASkySearchResult> inputData, String title) {
+    	Log.debug("Setting table data...");
+    	
+    	targetsContainer.setVisible(true);
+    	playerPanel.resetPlayerEntries();
+    	// remove previous component
+    	targetListScrollPanel.clear();
+    	AladinLiteWrapper.getInstance().removeMultitargetPointer();
+    	
+    	targetListTable = new FlexTable();
+    	targetListTable.getElement().setId("targetListTable");
+    	
+    	Log.debug(inputData.size() + " target(s) found");
+    	
+    	ESASkySearchResult firstValidTarget = null;
+    	for (ESASkySearchResult currTarget : inputData) {
+    		final int index = inputData.indexOf(currTarget);
+    		TargetWidget currTargetWidget = new TargetWidget(currTarget, WIDTH);
+    		currTargetWidget.registerObserver(new TargetObserver() {
+    			
+    			@Override
+    			public void onTargetSelectionEvent(TargetWidget newlySelectedTarget) {
+    				setSelectedOutreachImage(index);
+    			}
+    		});
+    		targetListTable.setWidget(index, 0, currTargetWidget);
+    		if (currTarget.getValidInput()) {
+    			addPolygons(currTarget, index);
+    			playerPanel.addEntryToPlayer(currTargetWidget);
+    			if(firstValidTarget == null) {
+    				firstValidTarget = currTarget;
+    			}
+    		}
+    	}
+    	
+    	targetListScrollPanel.getElement().setId("targetListScrollPanel");
+    	targetListScrollPanel.add(targetListTable);
+    	
+    	targetListTitle.setHTML(title);
+    	opacityLabel.setVisible(true);
+    	opacitySlider.setVisible(true);
+    	uploadContainer.setVisible(false);
+    	
     }
 
     private void addPolygons(ESASkySearchResult currEntity, Integer id) {
@@ -510,6 +636,7 @@ public class TargetListPanel extends DialogBox {
         targetsContainer.setVisible(false);
         uploadContainer.setVisible(true);
         preparedListDropDown.clearSelection();
+        outreachImageDropDown.clearSelection();
     }
 
     public void toggle() {
@@ -584,5 +711,25 @@ public class TargetListPanel extends DialogBox {
                 GoogleAnalytics.ACT_TargetList_ListSelected,
                 preparedListDropDown.getSelectedObject());
     }
+    
+
+    private final void setSelectedOutreachImage(final int index) {
+        int TARGET_OVERLAP_SIZE = 2;
+        double widgetPosition = 0;
+        TargetWidget widget;
+        for (int i = 0; i < targetListTable.getRowCount(); i++) {
+            widget = (TargetWidget) targetListTable.getWidget(i, 0);
+            widget.removeSelectedStyle();
+            if (i < index) {
+                widgetPosition += (widget.getOffsetHeight() - TARGET_OVERLAP_SIZE);
+            }
+        }
+
+        final TargetWidget selectedWidget = (TargetWidget) targetListTable.getWidget(index, 0);
+        selectedWidget.setSelectedStyle();
+		HstOutreachImage image = new HstOutreachImage(selectedWidget.getNameofSelected());
+		image.parseHstPageForProperties();
+    }
+
 
 }

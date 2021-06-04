@@ -59,6 +59,8 @@ public class EsaSkyWebConstants {
     public static final String URL_PARAM_HIPS = "hips";
     public static final String URL_PARAM_FOV = "fov";
 
+    public static final String URL_PARAM_HST_IMAGE = "hst_image";
+    
     public static final String URL_PARAM_FRAME_COORD = "cooframe";
     
     public static final String URL_PARAM_SCI_MODE = "sci";

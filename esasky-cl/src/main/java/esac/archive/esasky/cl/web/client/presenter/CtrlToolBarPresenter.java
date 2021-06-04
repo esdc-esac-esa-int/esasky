@@ -98,6 +98,8 @@ public class CtrlToolBarPresenter {
         
         EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description);
         void removeCustomButton(EsaSkyButton button);
+        
+        public void addNewOutreachImage(String id);
 
     }
 
@@ -544,4 +546,8 @@ public class CtrlToolBarPresenter {
     public PublicationPanelPresenter getPublicationPresenter() {
     	return publicationPresenter;
     }
+    
+	public void addNewOutreachImage(String id) {
+		view.addNewOutreachImage(id);
+	}
 }

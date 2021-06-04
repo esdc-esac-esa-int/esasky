@@ -692,6 +692,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         targetListPanel.setTargetsTableData(searchResults, title);
 
     }
+    
+    @Override
+    public void addNewOutreachImage(String id) {
+    	targetListPanel.addNewOutreachImage(id, true);
+    	targetListPanel.show();
+    }
 
 	@Override
 	public EsaSkyToggleButton getPublicationButton() {

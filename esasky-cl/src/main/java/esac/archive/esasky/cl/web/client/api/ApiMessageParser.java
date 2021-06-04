@@ -4,7 +4,7 @@ public class ApiMessageParser {
 	
 	public static native void init(Api api,  ApiCounts apiCounts, ApiEvents apiEvents, 
 			ApiExtTap apiExtTap, ApiHips apiHips, ApiMoc apiMoc, ApiModules apiModules, ApiOverlay apiOverlay,
-			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView) /*-{
+			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage) /*-{
 	
 		function handleMessage(e){
 			var msg = e.data
@@ -600,6 +600,19 @@ public class ApiMessageParser {
 					break;	
 					
 					
+					
+				// API IMAGE
+				case 'addTiledImage':
+					console.log('addTiledImage event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::addTiledImage(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content);
+					break;	
+
+				case 'addTiledImageHst':
+					console.log('addTiledImage event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::parseHstImageData(Ljava/lang/String;)
+						(msg.content.name);
+					break;	
 				// TESTING	
 					
 //				case 'overlayJPG':

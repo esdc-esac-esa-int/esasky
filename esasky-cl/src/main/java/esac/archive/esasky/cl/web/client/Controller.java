@@ -7,6 +7,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -88,6 +89,8 @@ public class Controller implements ValueChangeHandler<String> {
 		} else {
 			initESASkyWithURLParameters("", "", "", "", hideWelcome);
 		}
+		
+		startupWithHstOutReachImage();
 	}
 
     private void startupWithChosenTargetOrHips(final boolean hideWelcome) {
@@ -106,6 +109,21 @@ public class Controller implements ValueChangeHandler<String> {
         final String fov = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FOV);
 
         initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+    }
+    
+    public void startupWithHstOutReachImage() {
+    	String id = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HST_IMAGE);
+    	if(id != null) {
+    		Timer timer = new Timer() {
+    			
+    			@Override
+    			public void run() {
+    				getRootPresenter().getCtrlTBPresenter().addNewOutreachImage(id);
+    			}
+    			
+    		};
+    		timer.schedule(500);
+    	}
     }
 
     private String extractTargetFromUrlParameter(String targetFromUrl, String target) {
