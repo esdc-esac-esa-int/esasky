@@ -72,7 +72,7 @@ public class HstOutreachImage {
         try {
             builder.sendRequest(null, callback);
         } catch (RequestException e) {
-            Log.error(e.getMessage());
+            Log.error(e.getMessage(), e);
             Log.error("[getJSONFromUrl] Error fetching JSON data from server");
         }
 	}

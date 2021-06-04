@@ -11,9 +11,6 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 public class ApiImage extends ApiBase{
 	
 	
-	public ApiImage() {
-	}
-	
 	public void parseHstImageData(final String name) {
 		HstOutreachImage image = new HstOutreachImage(name);
 		image.parseHstPageForProperties();
