@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.api;
 
 
+import java.io.IOException;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
@@ -29,84 +31,54 @@ public class ApiImage extends ApiBase{
 		addImage(parameters, widget);
 	}
 	
+	public String parseParameter(GeneralJavaScriptObject parameters, String parameter) throws IOException {
+		
+		if(parameters.hasProperty(parameter)) {
+			return parameters.getStringProperty(parameter);
+		}else {
+			throw new IOException(errorMsg.replace("@@@prop@@@", parameter));
+		}
+	}
+
+	public double parseDoubleParameter(GeneralJavaScriptObject parameters, String parameter) throws IOException {
+		
+		if(parameters.hasProperty(parameter)) {
+			return parameters.getDoubleProperty(parameter);
+		}else {
+			throw new IOException(errorMsg.replace("@@@prop@@@", parameter));
+		}
+	}
+	
 	public void addImage(JavaScriptObject input, JavaScriptObject widget) {
 		GeneralJavaScriptObject parameters = (GeneralJavaScriptObject) input;
-		
-		String name;
-		String url;
-		double ra;
-		double dec;
-		double fov;
-		double rot;
-		int width = 0;
-		int height = 0;
+	
 		OpenSeaDragonType type = null;
 		
-		if(parameters.hasProperty("name")) {
-			name = parameters.getStringProperty("name");
-		}else {
-			sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "name"), widget);
-			return;
-		}
 		
-		if(parameters.hasProperty("url")) {
-			url = parameters.getStringProperty("url");
-		}else {
-			sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "url"), widget);
-			return;
-		}
-		
-		if(parameters.hasProperty("ra")) {
-			ra = parameters.getDoubleProperty("ra");
-		}else {
-			sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "ra"), widget);
+		try {
+			String name = parseParameter(parameters, "name");
+			String url = parseParameter(parameters, "url");
+			double ra =  parseDoubleParameter(parameters, "ra");
+			double dec = parseDoubleParameter(parameters, "dec");
+			double fov = parseDoubleParameter(parameters, "fov");
+			double rot = parseDoubleParameter(parameters, "rot");
 
-			return;
-		}
-		
-		if(parameters.hasProperty("dec")) {
-			dec = parameters.getDoubleProperty("dec");
-		}else {
-			sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "dec"), widget);
-			return;
-		}
-		
-		if(parameters.hasProperty("fov")) {
-			fov = parameters.getDoubleProperty("fov");
-		}else {
-			sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "fov"), widget);
-			return;
-		}
-		
-		if(parameters.hasProperty("rot")) {
-			rot = parameters.getDoubleProperty("rot");
-		}else {
-			sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "rot"), widget);
-			return;
-		}
-		
-	
-		String typeName = parameters.getStringProperty("type");
-		type = OpenSeaDragonType.getImageType(typeName);
-		
-		if(type == OpenSeaDragonType.TILED) {
-			if(parameters.hasProperty("width")) {
-				width = Integer.parseInt(parameters.getStringProperty("width"));
-			}else {
-				sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "width"), widget);
-				return;
+			String typeName = parseParameter(parameters, "type");
+			type = OpenSeaDragonType.getImageType(typeName);
+			int width = 1;
+			int height = 1;
+			
+			if(type == OpenSeaDragonType.TILED) {
+				height = Integer.parseInt(parseParameter(parameters, "height"));
+				width = Integer.parseInt(parseParameter(parameters, "width"));
 			}
 			
-			if(parameters.hasProperty("height")) {
-				height = Integer.parseInt(parameters.getStringProperty("height"));
-			}else {
-				sendBackErrorMsgToWidget(errorMsg.replace("@@@prop@@@", "height"), widget);
-				return;
-			}
+			addTiledImage(name, url, ra, dec, fov, rot, width, height, type);
+
+		}catch(IOException e) {
+			sendBackErrorMsgToWidget(e.getMessage(), widget);
 		}
 		
-		
-		addTiledImage(name, url, ra, dec, fov, rot, width, height, type);
 	}
 	
 	private void addTiledImage(String name, String url, double ra, double dec, double fov,
