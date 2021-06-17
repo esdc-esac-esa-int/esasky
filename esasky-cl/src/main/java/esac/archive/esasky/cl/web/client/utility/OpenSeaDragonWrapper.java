@@ -33,7 +33,7 @@ public class OpenSeaDragonWrapper {
 	
 	public  JavaScriptObject createOpenSeaDragonObject() {
 		AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
-		return createOpenSeaDragonObject(id, url, type.getName(), ra, dec, fov, rotation, width, height);
+		return createOpenSeaDragonObject(id, url, type.getType(), ra, dec, fov, rotation, width, height);
 	}
 	
 	public void addOpenSeaDragonToAladin(JavaScriptObject openSeaDragonObject) {
@@ -43,6 +43,22 @@ public class OpenSeaDragonWrapper {
 	
 	private native JavaScriptObject createOpenSeaDragonObject(String name, String url, String type, double ra, double dec,
 			double fov, double rot, int width, int height)/*-{
+		
+		var tileSources;
+		if (type == 'image'){
+			tileSources = {
+		        type: 'image',
+        		url:  url
+			}
+		}else{
+			tileSources = 	[{
+		        type: type,
+		        width: width,
+		        height: height,
+		        tilesUrl: url,
+		    }]
+		};
+		
 		var openseadragon = $wnd.OpenSeadragon({
 		    id: "openseadragonCanvas",
 			maxZoomPixelRatio: 3,
@@ -50,12 +66,7 @@ public class OpenSeaDragonWrapper {
 		    showFullPageControl: false,
 		    showHomeControl: false,
 		    showZoomControl: false,
-		    tileSources: [{
-		        type: type,
-		        width: width,
-		        height: height,
-		        tilesUrl: url,
-		    }]
+		    tileSources: tileSources
 		});
 	    openseadragon.name = name;
 	    openseadragon.fov = fov;
@@ -72,14 +83,24 @@ public class OpenSeaDragonWrapper {
 	    
 		TILED("zoomifytileservice"), SINGLE("image");
 
-	    private String name;
+	    private String type;
 
-	    OpenSeaDragonType(String name) {
-	        this.name = name;
+	    OpenSeaDragonType(String type) {
+	        this.type = type;
 	    }
 
-	    public String getName() {
-	        return this.name;
+	    public String getType() {
+	        return this.type;
 	    }
+	    
+	    public static OpenSeaDragonType getImageType(String type){
+			for (OpenSeaDragonType openSeaDragonType : OpenSeaDragonType.values()) {
+				if (openSeaDragonType.getType().equals(type)) {
+					return openSeaDragonType;
+				}
+			}
+			
+			return null;
+		}
 	}
 }

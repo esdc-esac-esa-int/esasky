@@ -602,10 +602,17 @@ public class ApiMessageParser {
 					
 					
 				// API IMAGE
+				case 'addSingleImage':
+					console.log('addTiledImage event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::addSingleImage(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content, e);
+					break;	
+				
+				
 				case 'addTiledImage':
 					console.log('addTiledImage event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::addTiledImage(Lcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content);
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::addTiledImage(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content, e);
 					break;	
 
 				case 'addTiledImageHst':
@@ -613,14 +620,6 @@ public class ApiMessageParser {
 					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::parseHstImageData(Ljava/lang/String;)
 						(msg.content.name);
 					break;	
-				// TESTING	
-					
-//				case 'overlayJPG':
-//					console.log('registerEventListener event captured');
-//					api.@esac.archive.esasky.cl.web.client.api.Api::displayJPG(Ljava/lang/String;Ljava/lang/String;)
-//						(msg.content.url, msg.content.opacity);
-//					break;	
-					
 					
 				default:
 					console.log('No event associated');
