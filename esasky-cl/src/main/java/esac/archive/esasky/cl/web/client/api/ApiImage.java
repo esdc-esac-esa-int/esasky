@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.api;
 
 import java.io.IOException;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
@@ -77,6 +78,7 @@ public class ApiImage extends ApiBase{
 
 		}catch(IOException e) {
 			sendBackErrorMsgToWidget(e.getMessage(), widget);
+			Log.error(e.getMessage(), e);
 		}
 		
 	}
