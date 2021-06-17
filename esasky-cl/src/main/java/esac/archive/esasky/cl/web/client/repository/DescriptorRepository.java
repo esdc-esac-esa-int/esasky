@@ -51,8 +51,6 @@ import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.query.TAPSSOService;
 import esac.archive.esasky.cl.web.client.query.TAPSingleCountService;
@@ -532,8 +530,9 @@ public class DescriptorRepository {
 		
 		final long timecall = System.currentTimeMillis();
 		lastestSingleCountTimecall = timecall;
-		String url = TAPUtils.getTAPQuery(URL.encodeQueryString(
-				TAPSingleCountService.getInstance().getCount(AladinLiteWrapper.getAladinLite())), EsaSkyConstants.JSON);
+		String url = "";
+		url = TAPUtils.getTAPCountQuery(URL.encodeQueryString(
+				TAPSingleCountService.getInstance().getCountStcs(AladinLiteWrapper.getAladinLite())));
 		JSONUtils.getJSONFromUrl(url, new JsonRequestCallback(countRequestHandler.getProgressIndicatorMessage(), url) {
 
 			@Override
@@ -544,57 +543,16 @@ public class DescriptorRepository {
 								+ " , dif:" + (lastestSingleCountTimecall - timecall));
 						return;
 					}
-					TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-					TapRowList rowList = mapper.read(response.getText());
+					SingleCountListMapper scMapper = GWT.create(SingleCountListMapper.class);
+					List<SingleCount> singleCountList = scMapper.read(response.getText());
+					doUpdateSingleCount(singleCountList, skyViewPosition);
 
-					if (rowList.getData().size() > 0) {
-
-						SingleCountListMapper scMapper = GWT.create(SingleCountListMapper.class);
-						List<SingleCount> singleCountList = scMapper
-								.read(rowList.getDataValue("esasky_dynamic_count", 0));
-
-						doUpdateSingleCount(singleCountList, skyViewPosition);
-
-					} else {
-						Log.warn("[DescriptorRepository] requestSingleCount. TapRowList is empty!");
-					}
 
 				} catch (Exception ex) {
 					Log.error("[DescriptorRepository] requestSingleCount.onSuccess ERROR: " + ex.getMessage(), ex);
 				}
 			}
-			@Override
-			public void onError(Request request, Throwable exception) {
-				super.onError(request, exception);
-				List<IDescriptor> descriptors = new ArrayList<IDescriptor>();
-				List<Integer> counts = new ArrayList<Integer>();
-				
-				for(List<IDescriptor> descriptorList : descriptorsMap.values()) {
-				    for(IDescriptor descriptor : descriptorList) {
-				        if(descriptors.contains(descriptor)) {
-				    
-        					List<CountStatus> countStatuses = countStatusMap.get(descriptor.getTapTable());
-        					for(CountStatus cs: countStatuses) {
-            					final int count = 0;
-            					cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
-            		
-        						descriptors.add(descriptor);
-        						counts.add(count);
-        					}
-				        }
-				    }
-				}
-				if (descriptors.size() > 0) {
-					CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
-					for (String key : countStatusMap.keySet()) {
-					    for(CountStatus cs: countStatusMap.get(key)) {
-					        cs.updateCount();
-					    }
-					}
-				}
-				
-			}
-
+			
 		});
 	}
 

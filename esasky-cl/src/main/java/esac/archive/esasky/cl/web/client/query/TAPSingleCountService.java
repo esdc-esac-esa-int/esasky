@@ -4,7 +4,10 @@ import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.cl.web.client.model.SelectionArea;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPSingleCountService {
@@ -50,6 +53,19 @@ public class TAPSingleCountService {
         Log.debug("[TAPQueryBuilder/SingleFastCountQuery()] Single Fast count ADQL " + adqlQuery);
         
         return adqlQuery;
+    }
+    
+    public String getCountStcs(AladinLiteWidget aladinLite) {
+          String shape = "";
+          
+          if (AladinLiteWrapper.isCornersInsideHips()) {
+              shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
+          }else {
+        	  SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+        	  shape = "CIRCLE('ICRS'," + pos.getCoordinate().ra + "," + pos.getCoordinate().dec + ", 90.0)" ;
+          }
+          
+          return shape;
     }
 
 }

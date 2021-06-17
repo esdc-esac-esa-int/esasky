@@ -34,4 +34,20 @@ public class TAPUtils {
     public static String getSIMBADTAPQuery(final String responseType, final String adql, final String dataWrap) {
         return EsaSkyWebConstants.SIMBAD_TAP_URL + "?TYPE=" + responseType + "&QUERY=" + adql + ((dataWrap != null) ? "&DATAWRAP=" + dataWrap : "");
     }
+    
+    /**
+     * getTAPQuery().
+     * @param adql Input String
+     * @param formatResponse Input String containing the values JSON, VOTABLE, CSV or ASCII
+     * @return String
+     */
+    public static String getTAPCountQuery(final String stcs) {
+
+        // Get System time call
+        Long timecall = System.currentTimeMillis();
+
+        Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
+        return EsaSkyWebConstants.TAP_CONTEXT + "/tap/counts?stcs="
+        + stcs + "&timecall=" + timecall + "&client=esasky-web-client";
+    }
 }
