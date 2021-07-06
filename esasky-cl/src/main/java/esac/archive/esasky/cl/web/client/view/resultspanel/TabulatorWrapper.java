@@ -1222,7 +1222,8 @@ public class TabulatorWrapper{
                             continue;
 			    	    }
 			    		if(this.metadata[i].name.toLowerCase() === "access_url"
-			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
+			    		    || this.metadata[i].name.toLowerCase() === "product_url"
+			    		    || this.metadata[i].ucd == "meta.ref.url;meta.product"){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),
 	                            titleDownload:this.metadata[i].name,
