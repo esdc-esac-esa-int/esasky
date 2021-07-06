@@ -1369,7 +1369,9 @@ public class TabulatorWrapper{
 		    				});
 		    				
 			    		}
-			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP" || this.metadata[i].datatype.toUpperCase() === "DATETIME"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP" 
+			    			|| this.metadata[i].datatype.toUpperCase() === "DATETIME"
+			    			|| this.metadata[i].xtype == "adql:TIMESTAMP"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
