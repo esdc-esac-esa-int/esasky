@@ -125,7 +125,7 @@ public class AddSkyButton extends DisablablePushButton{
 	}
 	
 	public enum AddSkyMenuItems{
-		ESASky, URL, LOCAL;
+		ESASKY, URL, LOCAL;
 	}
 	
 
