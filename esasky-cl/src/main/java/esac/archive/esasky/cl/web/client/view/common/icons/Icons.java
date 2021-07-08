@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 
 
@@ -80,6 +81,16 @@ public class Icons {
 
         @Source("no_fullscreen.png")
         ImageResource endFullscreenIcon();
+        
+        //SkyPanel
+		@Source("information.png")
+		ImageResource info();
+
+		@Source("plus-sign-light.png")
+		ImageResource addSky();
+		
+        @Source("changePalette.png")
+        ImageResource changePalette();
 		
 	}
 	
@@ -104,6 +115,9 @@ public class Icons {
 		iconMap.put("selected", getSelectedIcon());
 		iconMap.put("fullscreen", getFullscreenIcon());
 		iconMap.put("endFullscreen", getEndFullscreenIcon());
+		iconMap.put("changePalette", getChangePaletteIcon());
+		iconMap.put("info", getInfoIcon());
+		iconMap.put("addSky", getAddSkyIcon());
 		
 	}
 	
@@ -114,6 +128,18 @@ public class Icons {
 		return iconMap;
 	}
 	
+
+	public static ImageResource getAddSkyIcon() {
+		return resources.addSky();
+	}
+	
+	public static ImageResource getInfoIcon() {
+		return resources.info();
+	}
+	
+	public static ImageResource getChangePaletteIcon() {
+		return resources.changePalette();
+	}
 
 	public static ImageResource getSelectSkyIcon() {
 		return resources.selectSky();
