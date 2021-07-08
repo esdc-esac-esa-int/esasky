@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 
 import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
@@ -25,8 +26,13 @@ public class HipsParser {
 		this(null);
 	}
 	
-	public void loadProperties(String surveyRootUrl) {
+	public void loadProperties(String url) {
 		
+		 if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+			 url = url.replaceFirst("http:", "https:");
+        }
+		
+		final String surveyRootUrl = url;
 	
 		final String propertiesUrl = surveyRootUrl +  "/" +  ApiConstants.HIPS_PROPERTIES_FILE;
 		JSONUtils.getJSONFromUrl(propertiesUrl, new JsonRequestCallback("", propertiesUrl) {
@@ -46,7 +52,7 @@ public class HipsParser {
 			
 			@Override
 			public void onError(Request request, Throwable exception) {
-				observer.onError(ApiConstants.HIPS_PROP_ERROR_LOADING + propertiesUrl);
+				observer.onError(ApiConstants.HIPS_PROP_ERROR_LOADING + propertiesUrl );
 			}
 			
 		});

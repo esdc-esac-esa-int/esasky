@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -10,6 +11,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.FileUpload;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
@@ -120,6 +122,7 @@ public class AddSkyButton extends DisablablePushButton{
 			hips.setLocal(true);
 			addSkyObserver.onSkyAddedWithUrl(hips);
 		} catch (IOException e) {
+			DisplayUtils.showMessageDialogBox(e.getMessage(),"Error", UUID.randomUUID().toString(), "");
 			Log.error(e.getMessage(), e);
 		}
 	}
