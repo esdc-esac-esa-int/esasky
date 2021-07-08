@@ -3,16 +3,21 @@ package esac.archive.esasky.cl.web.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 
+import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
+import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.SkiesMenuMapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyButton;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyObserver;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 
 public class SelectSkyPanelPresenter {
 
@@ -27,19 +32,56 @@ public class SelectSkyPanelPresenter {
     	void toggle();
     	boolean isShowing();
     	void setSkiesMenu(SkiesMenu skiesMenu);
+    	SkyRow createSky();
     	
-    	HasClickHandlers getAddSkyRowButton();
+    	AddSkyButton getAddSkyRowButton();
     }
     
     public SelectSkyPanelPresenter(final View inputView) {
         this.view = inputView;
         getHiPSMapsList();
+        setAddSkyObserver();
     }
 
     public SkiesMenu getSkiesMenu(){
     	return skiesMenu;
     }
     
+    private void setAddSkyObserver() {
+    	AddSkyObserver addSkyObserver = new AddSkyObserver() {
+			
+			@Override
+			public void onSkyAddedWithUrl(HiPS hips) {
+				addUrlHips(hips);
+			}
+			
+			@Override
+			public void onSkyAdded() {
+				view.createSky();
+			}
+
+		};
+		
+		view.getAddSkyRowButton().setObserver(addSkyObserver);
+    }
+    
+    private void addUrlHips(HiPS hips) {
+		
+		SkiesMenuEntry entry = skiesMenu.getHiPSListByWavelength(HipsWavelength.USER);
+		
+		if(entry == null) {
+			entry = new SkiesMenuEntry();
+			entry.getHips().add(hips);
+			entry.setTotal(1);
+			entry.setWavelength(HipsWavelength.USER);
+			getSkiesMenu().getMenuEntries().add(entry);
+		}
+		entry.getHips().add(hips);
+		SkyRow skyRow = view.createSky();
+		skyRow.setSelectHips(hips.getSurveyName(), false, false);
+
+    }
+
     private void getHiPSMapsList() {
         Log.debug("Into SelectSkyPresenter.getHiPSMapsList");
         String url = null;

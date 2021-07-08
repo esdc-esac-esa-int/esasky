@@ -49,6 +49,9 @@ public class ApiConstants {
 	public static final String HIPS_PROP_FRAME = "hips_frame";
 	public static final String HIPS_PROP_FORMAT = "hips_tile_format";
 	public static final String HIPS_PROP_ORDER = "hips_order";
+	public static final String HIPS_PROP_TITLE = "obs_title";
+	public static final String HIPS_PROP_DESC = "obs_description";
+	public static final String HIPS_PROP_DATE = "hips_creation_date";
 	public static final String HIPS_PROP_ERROR = "Failed to parse properties file for property: ";
 	public static final String HIPS_PROP_ERROR_LOADING = "Failed to load properties file: ";
 

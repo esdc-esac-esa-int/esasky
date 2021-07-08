@@ -396,9 +396,18 @@ public class AladinLiteWrapper {
     		}
         }
         
-        aladinLite.createAndSetImageSurveyWithImgFormat(hips.getSurveyId(), hips.getSurveyName(),
-                hips.getSurveyRootUrl(), hips.getSurveyFrame().name(), hips.getMaximumNorder(),
-                hips.getImgFormat().name());
+        if(hips.isLocal()) {
+        	
+        	aladinLite.createAndSetLocalImageSurvey(hips.getSurveyId(), hips.getSurveyName(),
+        			"", hips.getSurveyFrame().name(), hips.getMaximumNorder(),
+        			hips.getImgFormat().name(), hips.getFiles());
+        }else {
+        	aladinLite.createAndSetImageSurveyWithImgFormat(hips.getSurveyId(), hips.getSurveyName(),
+        			hips.getSurveyRootUrl(), hips.getSurveyFrame().name(), hips.getMaximumNorder(),
+        			hips.getImgFormat().name());
+        	
+        }
+        
     }
     
     public void setLoadHipsFromCDN(boolean loadFromCDN) {

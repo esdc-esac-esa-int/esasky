@@ -6,15 +6,11 @@ import java.util.List;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
@@ -28,7 +24,6 @@ import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
@@ -50,7 +45,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private boolean isShowing;
 
 	private ESASkyPlayerPanel player;
-	private DisablablePushButton addSkyButton;
+	private AddSkyButton addSkyButton;
 
 	private String hipsFromUrl = null;
 	private SkiesMenu skiesMenu;
@@ -61,12 +56,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private static List<SkyRow> skies = new LinkedList<SkyRow>();
 
 	public static interface Resources extends ClientBundle {
-
-		@Source("information.png")
-		ImageResource info();
-
-		@Source("plus-sign-light.png")
-		ImageResource addSky();
 
 		@Source("selectSkyPanel.css")
 		@CssResource.NotStrict
@@ -95,7 +84,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			}
 		});
 	}
-
+	
 	public static SelectSkyPanel getInstance() {
 		if (instance == null) {
 			throw new AssertionError("You have to call init first");
@@ -134,6 +123,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		hipsControllerContainer.add(createPlayer());
 
 		this.add(selectSkyPanel);
+		
 	}
 	
 	private PopupHeader createHeader() {
@@ -155,21 +145,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private DisablablePushButton createAddSkyBtn() {
-		addSkyButton = new DisablablePushButton(this.resources.addSky(), this.resources.addSky());
-		addSkyButton.setRoundStyle();
-		addSkyButton.addStyleName("addSkyBtn");
-		addSkyButton.setMediumStyle();
-		addSkyButton.disableButton();
-		addSkyButton.setTitle(TextMgr.getInstance().getText("selectSkyPanel_addSky"));
-		addSkyButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				final SkyRow newSky = createSky();
-
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddSkyClick, newSky.getFullId());
-			}
-		});
+		addSkyButton = new AddSkyButton();
 		return addSkyButton;
 	}
 	
@@ -269,12 +245,11 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	public void fillAllSkyPanelEntries(final SkiesMenu skiesMenu) {
 		this.skiesMenu = skiesMenu;
 		header.setText(TextMgr.getInstance().getText("sky_selectSky"));
-
 		createSky();
-
 		addSkyButton.enableButton();
 	}
 
+	@Override
 	public SkyRow createSky(){
 		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl);
 		newSky.registerObserver(this);
@@ -475,7 +450,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	@Override
-	public HasClickHandlers getAddSkyRowButton() {
+	public AddSkyButton getAddSkyRowButton() {
 		return addSkyButton;
 	}
 

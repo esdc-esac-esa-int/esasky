@@ -1,5 +1,7 @@
 package esac.archive.esasky.ifcs.model.client;
 
+import com.google.gwt.core.client.JavaScriptObject;
+
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 
 /**
@@ -48,6 +50,9 @@ public class HiPS {
      */
     ColorPalette colorPalette;
 
+    boolean isLocal;
+    JavaScriptObject files;
+    
     public String getMission() {
         return mission;
     }
@@ -184,4 +189,20 @@ public class HiPS {
         this.icon = icon;
     }
 
+	public boolean isLocal() {
+		return isLocal;
+	}
+
+	public JavaScriptObject getFiles() {
+		return files;
+	}
+
+	public void setLocal(boolean isLocal) {
+		this.isLocal = isLocal;
+	}
+
+	public void setFiles(JavaScriptObject files) {
+		this.files = files;
+	}
+    
 }

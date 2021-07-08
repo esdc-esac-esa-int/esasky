@@ -37,7 +37,6 @@ public class Controller implements ValueChangeHandler<String> {
 
     private HasWidgets container;
     private MainPresenter presenter;
-    public interface HiPSMapper extends ObjectMapper<HiPS> {}
     
     public Controller() {
         bind();

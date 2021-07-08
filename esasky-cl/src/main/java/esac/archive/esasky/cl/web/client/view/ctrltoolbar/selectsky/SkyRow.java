@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
@@ -35,6 +34,7 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyRadioButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyRadioButtonObserver;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class SkyRow extends Composite implements Selectable{
 
@@ -64,12 +64,6 @@ public class SkyRow extends Composite implements Selectable{
 	private boolean isMain = false;
 
 	public static interface Resources extends ClientBundle {
-
-		@Source("information.png")
-		ImageResource info();
-
-		@Source("changePalette.png")
-		ImageResource changePalette();
 
 		@Source("sky.css")
 		@CssResource.NotStrict
@@ -279,7 +273,7 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	private EsaSkyButton createSkyDetailsBtn() {
-		final EsaSkyButton skyDetailsBtn = new EsaSkyButton(this.resources.info());
+		final EsaSkyButton skyDetailsBtn = new EsaSkyButton(Icons.getInfoIcon());
 		skyDetailsBtn.addStyleName(this.style.skyInfoBtn());
 		skyDetailsBtn.setTitle(TextMgr.getInstance().getText("sky_skyDetails"));
 		skyDetailsBtn.setRoundStyle();

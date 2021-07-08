@@ -9,7 +9,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 
@@ -19,6 +18,7 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class ChangePaletteBtn extends Composite{
 
@@ -29,8 +29,6 @@ public class ChangePaletteBtn extends Composite{
     private List<PaletteObserver> observers = new LinkedList<PaletteObserver>();
     
 	public static interface Resources extends ClientBundle {
-        @Source("changePalette.png")
-        ImageResource changePalette();
         
         @Source("changePalette.css")
         @CssResource.NotStrict
@@ -53,7 +51,7 @@ public class ChangePaletteBtn extends Composite{
 	}
 	
     private Image createImageBtn() {
-        	final Image changePaletteBtn = new Image(resources.changePalette());
+        	final Image changePaletteBtn = new Image(Icons.getChangePaletteIcon());
         	changePaletteBtn.setStyleName(style.changePaletteBtn());
         changePaletteBtn.setTitle(TextMgr.getInstance().getText("changePaletteBtn_changePaletteTooltip"));
         initChangePaletteMenu();

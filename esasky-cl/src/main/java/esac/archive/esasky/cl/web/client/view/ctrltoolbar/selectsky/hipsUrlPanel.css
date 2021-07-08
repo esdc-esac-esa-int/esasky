@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+
+#hipsUrlPanel {
+	box-sizing: border-box;
+	border-radius: 5px;
+	padding: 5px;
+	cursor: pointer;
+	margin: auto;
+	display: block;
+	border: 1px solid #AAAAAA;
+}
+
+.hipsTextBox{
+	margin-top: 5px;
+	margin-bottom: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-flex;
+}
+
+.hipsErrorText{
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-flex;
+}
+
