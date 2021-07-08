@@ -66,7 +66,7 @@ public class AddSkyButton extends DisablablePushButton{
 			
 			@Override
 			public void onSelectedChange() {
-				if(menu.getSelectedObject() == AddSkyMenuItems.ESASky) {
+				if(menu.getSelectedObject() == AddSkyMenuItems.ESASKY) {
 					addSkyObserver.onSkyAdded();
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.URL) {
