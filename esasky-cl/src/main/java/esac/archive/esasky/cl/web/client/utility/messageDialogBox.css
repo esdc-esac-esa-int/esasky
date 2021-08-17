@@ -35,3 +35,13 @@
     color: #EEEEEE;
     padding-top: 10px;
 }
+
+.showMoreBtn {
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	pointer-events: auto;
+	display: flex;
+	width: max-content;
+	
+}

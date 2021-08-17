@@ -14,10 +14,12 @@ import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel.OnKeyPress;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
 public class MessageDialogBox extends Composite{
 
@@ -39,6 +41,8 @@ public class MessageDialogBox extends Composite{
     private String dialogId;
     private Widget inputWidget;
     private boolean isShowing = false;
+    private String contentText;
+    private EsaSkyButton showMoreButton;
     
     public MessageDialogBox(final Widget inputWidget, final String inputHeaderText,
             final String dialogId, String analyticsMoveId) {
@@ -113,11 +117,47 @@ public class MessageDialogBox extends Composite{
     }
     
     public void updateContent(String content, String title) {
+    	updateContent(content, title, false);
+    }
+    
+    public void updateContent(String content, String title, boolean forceLongText) {
     	headerText.setText(title);
     	contentPanel.remove(inputWidget);
+    	if(showMoreButton != null) {
+    		contentPanel.remove(showMoreButton);
+    		showMoreButton = null;
+    	}
+    	this.contentText = content;
+    	if(!forceLongText && content.length() > 400) {
+    		content = content.substring(0, 400) + "...";
+    	}
         inputWidget = new HTML(content);
         inputWidget.setStyleName("messageDialogBoxWidget");
-    	contentPanel.add(inputWidget);
+        
+        contentPanel.add(inputWidget);
+        if(!forceLongText) {
+        	showMoreButton = createShowMoreButton();
+        	contentPanel.add(showMoreButton);
+        }
+    }
+    
+    private EsaSkyButton createShowMoreButton() {
+    	EsaSkyButton button = new EsaSkyButton(TextMgr.getInstance().getText("show_more"));
+		button.setNonTransparentBackground();
+		button.setMediumStyle();
+		button.addStyleName("showMoreBtn");
+		button.setTitle(TextMgr.getInstance().getText("show_more_tooltip"));
+		button.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				updateContent(contentText, headerText.getText(), true);
+				
+			}
+		});
+    	
+    	return button;
+    	
     }
     
     public void setSuggestedPosition(int left, int top) {
