@@ -54,6 +54,7 @@ public class EsaSkyWebConstants {
     public static final String HIPS_STORAGE_URL = BACKEND_CONTEXT + "/location";
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
+    public static final String HST_IMAGE_URL = BACKEND_CONTEXT + "/hst-image";
 
     public static final String URL_PARAM_TARGET = "target";
     public static final String URL_PARAM_HIPS = "hips";

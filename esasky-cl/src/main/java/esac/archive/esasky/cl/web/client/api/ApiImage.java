@@ -17,7 +17,7 @@ public class ApiImage extends ApiBase{
 	
 	public void parseHstImageData(final String name) {
 		HstOutreachImage image = new HstOutreachImage(name);
-		image.parseHstPageForProperties();
+		image.getPropertiesFromBackend();
 	}
 	
 	public void addTiledImage(JavaScriptObject input, JavaScriptObject widget) {

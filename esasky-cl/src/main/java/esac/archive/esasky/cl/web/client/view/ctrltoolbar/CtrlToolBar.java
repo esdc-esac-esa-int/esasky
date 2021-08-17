@@ -694,9 +694,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
     
     @Override
-    public void addNewOutreachImage(String id) {
-    	targetListPanel.addNewOutreachImage(id, true);
-    	targetListPanel.show();
+    public void openOutreachImage(String id) {
+    	targetListPanel.openOutreachImage(id);
     }
 
 	@Override

@@ -20,6 +20,7 @@ import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.HstImageIdDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
@@ -99,7 +100,7 @@ public class CtrlToolBarPresenter {
         EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description);
         void removeCustomButton(EsaSkyButton button);
         
-        public void addNewOutreachImage(String id);
+        public void openOutreachImage(String id);
 
     }
 
@@ -547,7 +548,8 @@ public class CtrlToolBarPresenter {
     	return publicationPresenter;
     }
     
-	public void addNewOutreachImage(String id) {
-		view.addNewOutreachImage(id);
+	public void openOutreachImage(String id) {
+		view.openOutreachImage(id);
 	}
+
 }
