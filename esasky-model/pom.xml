@@ -10,14 +10,6 @@
 		<artifactId>esasky-app-parent-pom</artifactId>
 		<version>3.9-SNAPSHOT</version>
 	</parent>
-<!--	<distributionManagement>
-		<repository>
-			<id>esdc-public-repository</id>
-			<name>ESDC Maven Repository</name>
-			<url>https://scidockreg.esac.esa.int/repository/esdc-releases/</url>
-		</repository>
-	</distributionManagement>
--->
 	<build>
 		<testSourceDirectory>${project.basedir}/src/test/</testSourceDirectory>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -32,117 +24,8 @@
 			</resource>
 		</resources>
 
-		<plugins>
-
-			<!-- Deploys to nexus -->
-<!--			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>${maven-deploy-plugin.version}</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.5.1</version>
-				<executions>
-					<execution>
-						<id>default-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<serverId>esdc-public-repository</serverId>
-					<nexusUrl>https://scidockreg.esac.esa.int/repository/esdc-releases/</nexusUrl>
-					<skipStaging>true</skipStaging>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<forkMode>once</forkMode>
-					<forkCount>1</forkCount>
-					<argLine>@{argLine} -Xmx1024m -Dnet.sf.ehcache.disabled=true</argLine>
-					 <argLine>jaCoCoArgLine -Xmx1024m </argLine> 
-					<reuseForks>false</reuseForks>
-					<testSourceDirectory>src/test/</testSourceDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
-						</configuration>
-					</execution>
-					 attached to Maven test phase 
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			 Javadoc 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin> -->
-
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>gwt-maven-plugin</artifactId> 
-				<version>2.7.0</version> <executions> <execution> <goals> <goal>compile</goal> 
-				</goals> </execution> </executions> <configuration> <logLevel>INFO</logLevel> 
-				<failOnError>true</failOnError> </configuration> </plugin> -->
-		</plugins>
 	</build>
 
-<!--	<repositories>
-		<repository>
-			<id>esdc-public-repository</id>
-			<name>ESDC Maven Repository</name>
-			<url>https://scidockreg.esac.esa.int/repository/esdc-public/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-				<checksumPolicy>warning</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-				<checksumPolicy>warning</checksumPolicy>
-			</snapshots>
-		</repository>
-	</repositories>
--->
 	<dependencies>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -160,9 +43,10 @@
 			  <groupId>com.fasterxml.jackson.dataformat</groupId>
 			  <artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
-	<!--	<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>-->
+		<dependency>
+			<groupId>esac.archive.esasky.esasky-app</groupId>
+			<artifactId>esasky-cl-mission-planning</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>
