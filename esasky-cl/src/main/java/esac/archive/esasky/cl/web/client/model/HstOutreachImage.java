@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.model;
 
 import java.io.IOException;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -75,7 +76,7 @@ public class HstOutreachImage {
 
 			@Override
 			public void onError(String errorCause) {
-				
+				Log.error(errorCause);
 			}
 		});
 	}

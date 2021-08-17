@@ -480,7 +480,7 @@ public class TargetListPanel extends DialogBox {
 
 			@Override
 			public void onError(String errorCause) {
-				
+				Log.error(errorCause);
 			}
 		});
     }
