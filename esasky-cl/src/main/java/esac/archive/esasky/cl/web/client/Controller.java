@@ -117,7 +117,7 @@ public class Controller implements ValueChangeHandler<String> {
     			
     			@Override
     			public void run() {
-    				getRootPresenter().getCtrlTBPresenter().addNewOutreachImage(id);
+    				getRootPresenter().getCtrlTBPresenter().openOutreachImage(id);
     			}
     			
     		};
