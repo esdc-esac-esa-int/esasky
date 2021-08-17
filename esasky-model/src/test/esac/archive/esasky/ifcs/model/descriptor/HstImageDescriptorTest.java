@@ -2,6 +2,7 @@ package esac.archive.esasky.ifcs.model.descriptor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ public class HstImageDescriptorTest {
 	private HstImageDescriptor[] imageArray;
 	
 	@BeforeEach
-	public void readJson() throws JsonMappingException, JsonProcessingException {
+	public void readJson() throws JsonMappingException, JsonProcessingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		imageArray = mapper.readValue(jsonString, HstImageDescriptor[].class);
 		for(HstImageDescriptor image : imageArray) {
@@ -51,7 +52,7 @@ public class HstImageDescriptorTest {
 	}
 
 	@Test
-	public void testWritingAndParsingOnCl() throws JsonProcessingException {
+	public void testWritingAndParsingOnCl() throws JsonProcessingException, IOException {
 		HstImageDescriptor slDesc = imageArray[1];
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
