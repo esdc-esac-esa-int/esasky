@@ -1,11 +1,14 @@
 package esac.archive.esasky.ifcs.model.coordinatesutils;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Coordinate{
 	public double ra;
 	public double dec;
 	
-	public Coordinate(double ra, double dec){
+	@JsonCreator
+	public Coordinate(@JsonProperty("ra") double ra, @JsonProperty("dec")double dec){
 		this.ra = ra;
 		this.dec = dec;
 	}
