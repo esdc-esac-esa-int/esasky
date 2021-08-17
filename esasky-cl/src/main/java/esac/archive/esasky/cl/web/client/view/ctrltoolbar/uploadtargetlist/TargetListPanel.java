@@ -19,6 +19,7 @@ import org.moxieapps.gwt.uploader.client.events.UploadSuccessEvent;
 import org.moxieapps.gwt.uploader.client.events.UploadSuccessHandler;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -58,7 +59,6 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
-import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.HstImageIdDescriptorMapper;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -455,6 +455,8 @@ public class TargetListPanel extends DialogBox {
     		setSelectedOutreachImage(0);
     	}
     }
+    
+	public interface HstImageIdDescriptorMapper extends ObjectMapper<List<HstImageIdDescriptor>> {};
     
     private void fillOutreachList() {
         outreachImageList = new ArrayList<ESASkySearchResult>();
