@@ -87,14 +87,14 @@ public class HstImageCoordinateMetadata {
 	}
 	@JsonSetter("Scale")
 	public void setScale(List<Double> referenceScale) {
-		this.fov = Math.abs(referenceScale.get(0));
+		this.scale = referenceScale;
 	}
 	public void setFov(double fov) {
 		this.fov = fov;
 	}
 	@JsonSetter("ReferenceValue")
 	public void setReferenceValue(List<Double> referenceValues) {
-		this.coordinate = new Coordinate(referenceValues.get(0), referenceValues.get(1));
+		this.referenceValue = referenceValues;
 	}
 	public void setCoordinate(Coordinate coordinate) {
 		this.coordinate = coordinate;
@@ -107,19 +107,20 @@ public class HstImageCoordinateMetadata {
 	}
 	
 	public void scaleToCorrectValues() {
+		this.coordinate = new Coordinate(referenceValue.get(0), referenceValue.get(1));
 		moveReferenceToCenter();
 		scaleFoV();
 	}
 	
 	public void scaleFoV() {
-		this.fov = fov * imageDimensions.get(0);
+		this.fov = Math.abs(scale.get(0)) * imageDimensions.get(0);
 	}
 	
 	public void moveReferenceToCenter() {
 		WCSTransform wcs = new WCSTransform(coordinate.ra, coordinate.dec,
-				-this.fov * 3600, this.fov * 3600, referencePixels.get(0), referencePixels.get(1),
+				 scale.get(0) * 3600, scale.get(1) * 3600, referencePixels.get(0), referencePixels.get(1),
 				imageDimensions.get(0), imageDimensions.get(1), rotation, 2000, 2000, "-" + coordinateSystemProjection);
-		Point2D.Double pos = worldpos.getPosition(imageDimensions.get(0) / 2, imageDimensions.get(1) / 2, wcs);
+		Point2D.Double pos = worldpos.getPosition((double) imageDimensions.get(0) / 2, (double) imageDimensions.get(1) / 2, wcs);
 		this.coordinate.ra = pos.x;
 		this.coordinate.dec = pos.y;
 		this.referencePixels.set(0, imageDimensions.get(0) / 2.0);

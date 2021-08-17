@@ -77,12 +77,7 @@ public class HstImageDescriptor{
 	}
 	
 	public void setTiles(List<String> tiles) {
-		if(tiles.size() > 0) {
-			String first = tiles.get(0);
-			this.tilesUrl = first.split("TileGroup")[0];
-		}else {
-			this.tilesUrl = null;
-		}
+		this.tiles = tiles;
 	}
 	
 	public void setTilesUrl(String tilesUrl) {
@@ -104,6 +99,12 @@ public class HstImageDescriptor{
 	}
 	
 	public void scaleToCorrectValues() {
+		if(tiles.size() > 0) {
+			String first = tiles.get(0);
+			this.tilesUrl = first.split("TileGroup")[0];
+		}else {
+			this.tilesUrl = null;
+		}
 		coordinateMetadata.scaleToCorrectValues();
 	}
 	
