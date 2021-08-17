@@ -6,10 +6,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-import esac.archive.esasky.cl.wcstransform.module.jskycoords.Point2D;
-import esac.archive.esasky.cl.wcstransform.module.jskycoords.WCSTransform;
-import esac.archive.esasky.cl.wcstransform.module.jskycoords.worldpos;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
+import esac.archive.esasky.ifcs.model.wcstransform.Point2D;
+import esac.archive.esasky.ifcs.model.wcstransform.WCSTransform;
+import esac.archive.esasky.ifcs.model.wcstransform.worldpos;
 
 public class HstImageCoordinateMetadata {
 	@JsonProperty("CoordinateFrame")
