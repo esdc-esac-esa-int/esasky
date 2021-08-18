@@ -78,7 +78,7 @@ public class WavelengthUtils {
     }
     
     public static WavelengthName [] wavelengthNames = new WavelengthName[] {
-            new WavelengthName("Radio", "Radio", 1),
+            new WavelengthName("Radio", "Radio", 2.0),
             new WavelengthName("Submm", "Submillimeter", 3),
             new WavelengthName("IR", "Infrared", 6),
             new WavelengthName("Optical", "Optical", 6.5),
