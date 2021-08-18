@@ -34,7 +34,7 @@ public class HstImageDescriptorTest {
 	}
 	
 	@Test
-	public void testParsingNewJson() throws JsonMappingException, JsonProcessingException {
+	public void testParsingNewJson() throws JsonMappingException, JsonProcessingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		imageArray = mapper.readValue(jsonString2, HstImageDescriptor[].class);
 		for(HstImageDescriptor image : imageArray) {
