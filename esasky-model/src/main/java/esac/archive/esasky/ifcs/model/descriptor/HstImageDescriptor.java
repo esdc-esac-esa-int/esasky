@@ -24,6 +24,8 @@ public class HstImageDescriptor{
 	private List<String> tiles;
 
 	@JsonProperty("large")
+	private String largeUrl;
+	
 	private HstLargeImageMetadata largeImageMetaData;
 	
 	@JsonProperty("coordinate_metadata")
@@ -83,6 +85,12 @@ public class HstImageDescriptor{
 	public void setTilesUrl(String tilesUrl) {
 		this.tilesUrl = tilesUrl;
 
+	}
+	public String getLargeUrl() {
+		return largeUrl;
+	}
+	public void setLargeUrl(String largeUrl) {
+		this.largeUrl = largeUrl;
 	}
 	public HstLargeImageMetadata getLargeImageMetaData() {
 		return largeImageMetaData;
