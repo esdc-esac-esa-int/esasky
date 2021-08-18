@@ -128,14 +128,14 @@ public class MessageDialogBox extends Composite{
     		showMoreButton = null;
     	}
     	this.contentText = content;
-    	if(!forceLongText && content.length() > 400) {
-    		content = content.substring(0, 400) + "...";
+    	if(!forceLongText && content.length() > 500) {
+    		content = content.substring(0, 500) + "...";
     	}
         inputWidget = new HTML(content);
         inputWidget.setStyleName("messageDialogBoxWidget");
         
         contentPanel.add(inputWidget);
-        if(!forceLongText) {
+        if(!forceLongText && content.length() > 400) {
         	showMoreButton = createShowMoreButton();
         	contentPanel.add(showMoreButton);
         }
