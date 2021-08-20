@@ -1222,10 +1222,32 @@ public class TabulatorWrapper{
                             continue;
 			    	    }
 			    		if(this.metadata[i].name.toLowerCase() === "access_url"
-			    		    || this.metadata[i].name.toLowerCase() === "product_url"
-			    		    || this.metadata[i].ucd == "meta.ref.url;meta.product"){
+			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),
+	                            titleDownload:this.metadata[i].name,
+	                            field:this.metadata[i].name,
+	                            visible:this.metadata[i].visible,
+	                            headerSort:false, 
+	                            headerTooltip:this.metadata[i].description,
+	                            minWidth: 85,
+	                            download: true,
+	                            formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"download_small.png", 
+	                                tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
+	                                cellClick:function(e, cell){
+	                                    e.stopPropagation();
+	                                    if(cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")){
+	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+	                                    } else {
+	                        		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
+	                                    }
+	                                }
+	                        });
+	                        continue;
+			    		}
+			    		else if(this.metadata[i].ucd == "meta.ref.url;meta.product"){
+	                        activeColumnGroup.push({
+	                            title:$wnd.esasky.getInternationalizationText(this.metadata[i].displayName),
 	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,
