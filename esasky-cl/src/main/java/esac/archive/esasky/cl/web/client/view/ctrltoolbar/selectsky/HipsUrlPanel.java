@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
 import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyTextBox;
@@ -104,7 +105,7 @@ public class HipsUrlPanel extends PopupPanel{
 		});
 		return textBox;
 	}
-	private void urlChanged(String url) {
+	private void urlChanged(final String url) {
 		loadingSpinner.setVisible(true);
 		HipsParser parser = new HipsParser(new HipsParserObserver() {
 			
@@ -114,6 +115,7 @@ public class HipsUrlPanel extends PopupPanel{
 				addSkyObserver.onSkyAddedWithUrl(hips);
 				errorLabel.setVisible(false);
 				hide();
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl, url);
 			}
 			
 			@Override
@@ -123,6 +125,8 @@ public class HipsUrlPanel extends PopupPanel{
 				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
 				fullErrorText.replace("$DUE_TO$", errorMsg);
 				errorLabel.setText(fullErrorText);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl_Fail, url);
+
 				Log.error(errorMsg);
 				
 			}

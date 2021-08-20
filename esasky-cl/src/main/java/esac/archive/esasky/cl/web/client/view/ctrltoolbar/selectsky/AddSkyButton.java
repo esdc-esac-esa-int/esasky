@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.FileUpload;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
 import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
@@ -77,6 +78,7 @@ public class AddSkyButton extends DisablablePushButton{
 					openUrlPanel(x, y);
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.LOCAL) {
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddLocalClick, "");
 					openLocalHips();
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.BROWSE) {
@@ -122,6 +124,7 @@ public class AddSkyButton extends DisablablePushButton{
 			errorMsg.replace("$DUE_TO$", lastError);
 			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText("error"));
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl_Fail, urls.get(0));
 			return;
 		}
 		HipsParser parser = new HipsParser(new HipsParserObserver() {
@@ -129,6 +132,7 @@ public class AddSkyButton extends DisablablePushButton{
 			@Override
 			public void onSuccess(HiPS hips) {
 				addSkyObserver.onSkyAddedWithUrl(hips);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl, hips.getSurveyRootUrl());
 			}
 			
 			@Override
@@ -162,6 +166,7 @@ public class AddSkyButton extends DisablablePushButton{
 			hips.setFiles(files);
 			hips.setLocal(true);
 			addSkyObserver.onSkyAddedWithUrl(hips);
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddLocal, hips.getSurveyName());
 		} catch (IOException e) {
 			DisplayUtils.showMessageDialogBox(e.getMessage(),"Error", UUID.randomUUID().toString(), "");
 			Log.error(e.getMessage(), e);

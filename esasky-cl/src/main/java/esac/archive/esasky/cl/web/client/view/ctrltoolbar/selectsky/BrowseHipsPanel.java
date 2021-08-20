@@ -73,6 +73,8 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		add(contentAndCloseButton);
 		addStyleName("browseHips__dialogBox");
 		loadData();
+		
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_BrowseHips, "");
 	}
 	
 	private void loadData() {

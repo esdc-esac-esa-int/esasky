@@ -98,6 +98,11 @@ public final class GoogleAnalytics {
     public static final String ACT_SkiesMenu_SelectedSky = "SelectedSky";
     public static final String ACT_SkiesMenu_SkyInfoShown = "SkyInfoShown";
     public static final String ACT_SkiesMenu_AddSkyClick = "AddSkyClick";
+    public static final String ACT_SkiesMenu_AddUrl = "AddUrl";
+    public static final String ACT_SkiesMenu_AddUrl_Fail = "AddUrlFail";
+    public static final String ACT_SkiesMenu_BrowseHips = "BrowseHips";
+    public static final String ACT_SkiesMenu_AddLocal = "AddLocal";
+    public static final String ACT_SkiesMenu_AddLocalClick = "AddLocalClick";
     
     public static final String ACT_TargetList_ListSelected = "ListSelected";
     public static final String ACT_TargetList_UploadError = "UploadError";
