@@ -123,7 +123,7 @@ public class HipsUrlPanel extends PopupPanel{
 				loadingSpinner.setVisible(false);
 				errorLabel.setVisible(true);
 				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
-				fullErrorText.replace("$DUE_TO$", errorMsg);
+				fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
 				errorLabel.setText(fullErrorText);
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl_Fail, url);
 

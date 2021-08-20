@@ -121,7 +121,7 @@ public class AddSkyButton extends DisablablePushButton{
 	private void testParsingHipsList(List<String> urls, final int currentIndex, String lastError) {
 		if(currentIndex >= urls.size()) {
 			String errorMsg = TextMgr.getInstance().getText("addSky_errorParsingProperties");
-			errorMsg.replace("$DUE_TO$", lastError);
+			errorMsg = errorMsg.replace("$DUE_TO$", lastError);
 			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText("error"));
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl_Fail, urls.get(0));

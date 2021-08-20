@@ -89,7 +89,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 			@Override
 			public void onError(String errorCause) {
 				String errorMsg = TextMgr.getInstance().getText("browseHips_errorLoadingGlobal");
-				errorMsg.replace("$URL$", ALADIN_GLOBAL_HIPSLIST_URL);
+				errorMsg = errorMsg.replace("$URL$", ALADIN_GLOBAL_HIPSLIST_URL);
 				DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 						TextMgr.getInstance().getText("error"));
 				Log.error(errorCause);
