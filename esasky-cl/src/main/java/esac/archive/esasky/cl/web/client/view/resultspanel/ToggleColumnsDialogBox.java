@@ -320,4 +320,9 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
     public boolean hasBeenClosed() {
         return this.hasBeenClosed;
     }
+
+	@Override
+	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
+		// Not needed
+	}
 }

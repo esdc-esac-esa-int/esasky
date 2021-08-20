@@ -46,6 +46,7 @@ public class TabulatorWrapper{
         public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
         public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
         public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
+        public void onAddHipsClicked(GeneralJavaScriptObject rowData);
         public void onAjaxResponse();
         public void onAjaxResponseError(String error);
         public String getLabelFromTapName(String tapName);
@@ -101,6 +102,10 @@ public class TabulatorWrapper{
                 cancel();
             }
         };
+    }
+    
+    public void setAddHipsColumn(boolean addHipsColumn) {
+    	tableJsObject.setProperty("addHipsColumn", addHipsColumn);
     }
     
     public void onRowCountFooterMouseOver() {
@@ -314,7 +319,7 @@ public class TabulatorWrapper{
     public void onDataFiltered(String indexes) {
         List<Integer> indexArray = new LinkedList<Integer>();
         for(String s : indexes.split(",")) {
-            if(s.length() > 0) {
+            if(s.length() > 0 && !s.equals("undefined")) {
                 indexArray.add(Integer.parseInt(s));
             }
         }
@@ -420,6 +425,10 @@ public class TabulatorWrapper{
     public void insertData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
         setMetadata(tableJsObject, metadata);
         setData(tableJsObject, data);
+    }
+    public void insertData(String data, GeneralJavaScriptObject metadata){
+    	setMetadata(tableJsObject, metadata);
+    	setData(tableJsObject, data);
     }
     
     private native String setMetadata(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject metadata)/*-{
@@ -1199,6 +1208,23 @@ public class TabulatorWrapper{
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
+                }		
+                if(this.addHipsColumn){
+                    activeColumnGroup.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_addHipsColumn"),
+                        field:"addHipsColumn",
+                        visible: descriptorMetadata && descriptorMetadata.sourcesInPublication ? descriptorMetadata.sourcesInPublication.visible : true,
+                        headerSort:false, 
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
+                        minWidth: 67,
+                        download: false,
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"add_hips.png",
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_addHips")},
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAddHipsClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                            }			
+                    });
                 }
                 
 				if(!isInitializing && this.metadata){
@@ -1925,6 +1951,10 @@ public class TabulatorWrapper{
     
     public void onSourcesInPublicationClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onSourcesInPublicationClicked(rowData);
+    }
+
+    public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {
+    	tabulatorCallback.onAddHipsClicked(rowData);
     }
 
     public void onRowSelection(GeneralJavaScriptObject row) {

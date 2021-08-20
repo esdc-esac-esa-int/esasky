@@ -73,8 +73,8 @@ public class HipsUrlPanel extends PopupPanel{
         
         HorizontalPanel textAndSpinnerPanel = new HorizontalPanel();
         
-        PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("addUrlHeader"),
-        		TextMgr.getInstance().getText("addUrlDescription"));
+        PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("addUrl_Header"),
+        		TextMgr.getInstance().getText("addUrl_Description"));
         
         textBox = createTextBox();
         textBox.addStyleName("hipsTextBox");
@@ -120,7 +120,9 @@ public class HipsUrlPanel extends PopupPanel{
 			public void onError(String errorMsg) {
 				loadingSpinner.setVisible(false);
 				errorLabel.setVisible(true);
-				errorLabel.setText(errorMsg);
+				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
+				fullErrorText.replace("$DUE_TO$", errorMsg);
+				errorLabel.setText(fullErrorText);
 				Log.error(errorMsg);
 				
 			}

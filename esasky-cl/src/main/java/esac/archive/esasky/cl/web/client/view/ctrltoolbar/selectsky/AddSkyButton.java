@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -13,6 +14,7 @@ import com.google.gwt.user.client.ui.FileUpload;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
+import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
@@ -77,6 +79,9 @@ public class AddSkyButton extends DisablablePushButton{
 				if(menu.getSelectedObject() == AddSkyMenuItems.LOCAL) {
 					openLocalHips();
 				}
+				if(menu.getSelectedObject() == AddSkyMenuItems.BROWSE) {
+					browseHips();
+				}
 			}
 		});
         
@@ -98,6 +103,42 @@ public class AddSkyButton extends DisablablePushButton{
 		upload.getElement().setPropertyBoolean("multiple", true);
 		addFileUploadHandler(this, (JavaScriptObject) upload.getElement());
 		upload.click();
+	}
+
+	private void browseHips() {
+		BrowseHipsPanel browseHipsPanel = new BrowseHipsPanel();
+		browseHipsPanel.registerObserver(new BrowseHipsPanelObserver() {
+			
+			@Override
+			public void onHipsAdded(List<String> urls) {
+				testParsingHipsList(urls, 0, "");
+			}
+		});
+	}
+	
+	private void testParsingHipsList(List<String> urls, final int currentIndex, String lastError) {
+		if(currentIndex >= urls.size()) {
+			String errorMsg = TextMgr.getInstance().getText("addSky_errorParsingProperties");
+			errorMsg.replace("$DUE_TO$", lastError);
+			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+					TextMgr.getInstance().getText("error"));
+			return;
+		}
+		HipsParser parser = new HipsParser(new HipsParserObserver() {
+			
+			@Override
+			public void onSuccess(HiPS hips) {
+				addSkyObserver.onSkyAddedWithUrl(hips);
+			}
+			
+			@Override
+			public void onError(String errorMsg) {
+				Log.error(errorMsg);
+				testParsingHipsList(urls, currentIndex + 1, errorMsg);
+				
+			}
+		});
+		parser.loadProperties(urls.get(currentIndex));
 	}
 	
 	public native void addFileUploadHandler(AddSkyButton instance, JavaScriptObject element)/*-{
@@ -128,7 +169,7 @@ public class AddSkyButton extends DisablablePushButton{
 	}
 	
 	public enum AddSkyMenuItems{
-		ESASKY, URL, LOCAL;
+		ESASKY, URL, LOCAL, BROWSE;
 	}
 	
 

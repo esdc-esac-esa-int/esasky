@@ -900,4 +900,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         //Operation is fast enough for regular tables
     }
 
+	@Override
+	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
+		// Not needed
+	}
+
 }
