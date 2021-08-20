@@ -51,6 +51,7 @@ public final class GoogleAnalytics {
     public static final String CAT_ExternalTaps = "ExternalTaps";
     public static final String CAT_TextManager = "TextManager";
     public static final String CAT_ToggleColumns = "ToggleColumns";
+    public static final String CAT_BrowseHips = "BrowseHips";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
