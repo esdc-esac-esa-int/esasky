@@ -1,7 +1,5 @@
 package esac.archive.esasky.cl.web.client.model;
 
-import java.io.IOException;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
@@ -12,6 +10,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
@@ -57,7 +56,7 @@ public class HstOutreachImage {
 				String url = desc.getTilesUrl();
 				OpenSeaDragonType type = OpenSeaDragonType.TILED;
 				if(imageSize.height < 1000 || imageSize.width < 1000) {
-					url = desc.getLargeImageMetaData().getURL();
+					url = desc.getLargeUrl();
 					type = OpenSeaDragonType.SINGLE;
 				}
 				
@@ -71,12 +70,13 @@ public class HstOutreachImage {
 						type,
 						url);
 
-		        
+		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_Images_hstImage_Success, desc.getId());
 			}
 
 			@Override
 			public void onError(String errorCause) {
 				Log.error(errorCause);
+		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_Images_hstImage_Fail, id);
 			}
 		});
 	}

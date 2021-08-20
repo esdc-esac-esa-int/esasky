@@ -52,6 +52,7 @@ public final class GoogleAnalytics {
     public static final String CAT_TextManager = "TextManager";
     public static final String CAT_ToggleColumns = "ToggleColumns";
     public static final String CAT_BrowseHips = "BrowseHips";
+    public static final String CAT_IMAGES = "Images";
     
     //Actions
     public static final String ACT_MissingTranslation = "MissingTranslation";
@@ -213,6 +214,10 @@ public final class GoogleAnalytics {
     public static final String ACT_TextManager_SetLang = "setLang";
     
     public static final String ACT_Outbound_click = "click";
+    
+    public static final String ACT_Images_hstImage_Success = "hstImageSuccess";
+    public static final String ACT_Images_hstImage_Fail = "hstImageFail";
+
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{
