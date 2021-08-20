@@ -192,7 +192,7 @@ public class TargetListPanel extends DialogBox {
 		});
 		
 		opacityLabel = new Label();
-		opacityLabel.setText(TextMgr.getInstance().getText("Opacity"));
+		opacityLabel.setText(TextMgr.getInstance().getText("targetlist_opacity"));
 		opacityLabel.setStyleName("opacityLabel");
         
 		targetsContainer.add(opacityLabel);
@@ -487,8 +487,8 @@ public class TargetListPanel extends DialogBox {
     private DropDownMenu<String> createOutreachImageDropDown() {
     	
     	outreachImageDropDown = new DropDownMenu<String>(
-    			TextMgr.getInstance().getText("Images"), 
-    			TextMgr.getInstance().getText("Images"), 207, "outreachImageDropDown");
+    			TextMgr.getInstance().getText("targetlist_images"), 
+    			TextMgr.getInstance().getText("targetlist_images"), 207, "outreachImageDropDown");
     	
     	outreachImageDropDown.registerObserver(new MenuObserver() {
     		
@@ -500,7 +500,7 @@ public class TargetListPanel extends DialogBox {
     	});
     	
     	
-		String title = "HST";
+		String title = TextMgr.getInstance().getText("targetlist_hstTitle");
 		fillOutreachList();
 		MenuItem<String> dropdownItem = new MenuItem<String>(title, title, title, true);
 		outreachImageDropDown.addMenuItem(dropdownItem);
