@@ -306,6 +306,14 @@ public class TabulatorWrapper{
         tableJsObject.vdomHoz.reinitialize();
     }-*/;
     
+    public void filter(String column, String comparison, String value) {
+        this.filter(tableJsObject, column, comparison, value);
+    }
+    
+    public native void filter(GeneralJavaScriptObject tableJsObject, String column, String comparison, String value)/*-{
+        tableJsObject.setFilter(column, comparison, value);
+    }-*/;
+    
     public void setPlaceholderText(String text){
         setPlaceholderText(tableJsObject, text);
     }

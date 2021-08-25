@@ -163,7 +163,6 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
                 datatype:"DOUBLE", 
                 visible: true
             });
-            
            return metadata;
 	}-*/;
 
@@ -173,6 +172,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		GeneralJavaScriptObject metadata = createMetadata();
 		tabulatorTable.setAddHipsColumn(true);
 		tabulatorTable.insertData(jsonText, metadata);
+		tabulatorTable.filter("dataproduct_type", "like", "image");
 		tabulatorTable.restoreRedraw();
         tabulatorTable.redrawAndReinitializeHozVDom();
 	}
