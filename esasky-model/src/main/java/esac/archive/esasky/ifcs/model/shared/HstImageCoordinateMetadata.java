@@ -123,8 +123,6 @@ public class HstImageCoordinateMetadata {
 		Point2D.Double pos = worldpos.getPosition((double) imageDimensions.get(0) / 2, (double) imageDimensions.get(1) / 2, wcs);
 		this.coordinate.ra = pos.x;
 		this.coordinate.dec = pos.y;
-		this.referencePixels.set(0, imageDimensions.get(0) / 2.0);
-		this.referencePixels.set(1, imageDimensions.get(1) / 2.0);
 	}
 	
 	

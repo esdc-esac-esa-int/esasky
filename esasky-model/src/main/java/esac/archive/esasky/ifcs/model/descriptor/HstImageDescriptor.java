@@ -19,6 +19,9 @@ public class HstImageDescriptor{
 	@JsonProperty("last_modified")
 	private String lastModified;
 	private String credit;
+
+	@JsonProperty("pixel_size")
+	private List<Integer> pixelSize;
 	
 	private String tilesUrl;
 	private List<String> tiles;
@@ -114,6 +117,12 @@ public class HstImageDescriptor{
 			this.tilesUrl = null;
 		}
 		coordinateMetadata.scaleToCorrectValues();
+	}
+	public List<Integer> getPixelSize() {
+		return pixelSize;
+	}
+	public void setPixelSize(List<Integer> pixelSize) {
+		this.pixelSize = pixelSize;
 	}
 	
 }

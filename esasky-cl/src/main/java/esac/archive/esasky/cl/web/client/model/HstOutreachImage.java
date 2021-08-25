@@ -50,8 +50,8 @@ public class HstOutreachImage {
 
 				HstImageDescriptor desc = mapper.read(responseText);
 				
-				ImageSize imageSize = new ImageSize(desc.getCoordinateMetadata().getImageDimensions().get(0),
-						desc.getCoordinateMetadata().getImageDimensions().get(1));
+				ImageSize imageSize = new ImageSize(desc.getPixelSize().get(0),
+						desc.getPixelSize().get(1));
 				
 				String url = desc.getTilesUrl();
 				OpenSeaDragonType type = OpenSeaDragonType.TILED;
