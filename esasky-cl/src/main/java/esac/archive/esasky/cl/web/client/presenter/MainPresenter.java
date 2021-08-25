@@ -298,13 +298,13 @@ public class MainPresenter {
                     if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
 
                         getRelatedMetadata(event.getDescriptor());
-                        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps,
-                                GoogleAnalytics.ACT_ExtTap_gettingData, pointInformation.longName);
+                        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
+                                GoogleAnalytics.ACT_EXTTAP_GETTINGDATA, pointInformation.longName);
 
                     } else {
 
-                        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps,
-                                GoogleAnalytics.ACT_ExtTap_browsing, pointInformation.longName);
+                        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
+                                GoogleAnalytics.ACT_EXTTAP_BROWSING, pointInformation.longName);
                     }
 
                 }else if(event.getContext() == EntityContext.USER_TREEMAP) {
@@ -527,12 +527,12 @@ public class MainPresenter {
                 descriptor.getAdsAuthorUrlReplace());
         CommonEventBus.getEventBus().fireEvent(new AddTableEvent(entityRepo.createPublicationsByAuthorEntity(author)));
 
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AuthorInURL, author);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AUTHORINURL, author);
     }
 
     private void loadBibcodeInformaitonFromSimbad(String bibcode) {
         getCtrlTBPresenter().showPublicationInfo(bibcode);
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BibcodeInURL, bibcode);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BIBCODEINURL, bibcode);
     }
     
     public void updateModuleVisibility() {

@@ -96,7 +96,7 @@ public class ResultsPresenter implements ICountRequestHandler {
                     		GUISessionStatus.setDoCountOnEnteringScienceMode();
                     	}
                     	CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
-                    	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Count, GoogleAnalytics.CAT_Count);
+                    	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_COUNT, GoogleAnalytics.CAT_COUNT);
                     }
         });
         
@@ -250,7 +250,7 @@ public class ResultsPresenter implements ICountRequestHandler {
 						TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
 						.replace(EsaSkyConstants.REPLACE_PATTERN, tableName), "Table: " + tableName + ", voTable: " + voTableString));
 		
-		sendGAEventWithCurrentTab(GoogleAnalytics.CAT_TabToolbar_SendToSAMP, "");
+		sendGAEventWithCurrentTab(GoogleAnalytics.CAT_TABTOOLBAR_SENDTOSAMP, "");
     }
 
     private void sendGAEventWithCurrentTab (String eventCategory, String extra) {
@@ -287,10 +287,10 @@ public class ResultsPresenter implements ICountRequestHandler {
         String eventCategory = "";
     	if (type.equals(ReturnType.CSV)) {
     		view.getTabPanel().getSelectedWidget().exportAsCsv();
-    		eventCategory = GoogleAnalytics.CAT_Download_CSV;
+    		eventCategory = GoogleAnalytics.CAT_DOWNLOAD_CSV;
     	} else {
     		view.getTabPanel().getSelectedWidget().exportAsVot();
-    		eventCategory = GoogleAnalytics.CAT_Download_VOT;
+    		eventCategory = GoogleAnalytics.CAT_DOWNLOAD_VOT;
     	}
     	GoogleAnalytics.sendEventWithURL(eventCategory, view.getTabPanel().getSelectedWidget().getFullId(), "");
     }
