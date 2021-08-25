@@ -108,9 +108,9 @@ public class ESASkyPlayerPanel extends Composite {
     
     private void setGoogleAanalyticsProperties() {
     	if ("TargetListPlayer".equals(playerName)) {
-    		googleAnalyticsCat = GoogleAnalytics.CAT_TargetList;
+    		googleAnalyticsCat = GoogleAnalytics.CAT_TARGETLIST;
     	}else {
-    		googleAnalyticsCat = GoogleAnalytics.CAT_SkiesMenu;
+    		googleAnalyticsCat = GoogleAnalytics.CAT_SKIESMENU;
     	}
     }
 
@@ -207,13 +207,13 @@ public class ESASkyPlayerPanel extends Composite {
     public final void goToNextSurvey() {
         increaseCounter();
         select();
-        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Next);
+        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PLAYER_NEXT);
     }
 
     public final void goToPreviousSurvey() {
         decreaseCounter();
         select();
-        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Previous);
+        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PLAYER_PREVIOUS);
     }
     
     private void increaseValue() {
@@ -292,7 +292,7 @@ public class ESASkyPlayerPanel extends Composite {
         CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(playerId));
         double timePlayed = (System.currentTimeMillis()- timeSincePlayerStarted ) / 1000.0 ;
         if(timeSincePlayerStarted > 0.1) {
-            GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Pause, Double.toString(timePlayed));
+            GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PLAYER_PAUSE, Double.toString(timePlayed));
         }
     }
 
@@ -302,7 +302,7 @@ public class ESASkyPlayerPanel extends Composite {
         startTimer();
         updateProgressIndicatorMessage(TextMgr.getInstance().getText("playerPanel_surveyTourStarted"));
         timeSincePlayerStarted = System.currentTimeMillis();
-        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Player_Play);
+        GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PLAYER_PLAY);
     }
 
 	private void updateProgressIndicatorMessage(String message) {

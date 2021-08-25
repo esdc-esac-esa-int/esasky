@@ -118,7 +118,7 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 		currentValue2 = value2;
 		
 		if(System.currentTimeMillis() - lastSentGoogleAnalyticsTime > 1000) {
-			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Slider, GoogleAnalytics.ACT_Slider_Moved,
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_SLIDER, GoogleAnalytics.ACT_SLIDER_MOVED,
 					"val1: " + Double.toString(value1) + ", val2: " + Double.toString(value2));
 			lastSentGoogleAnalyticsTime = System.currentTimeMillis();
 		}

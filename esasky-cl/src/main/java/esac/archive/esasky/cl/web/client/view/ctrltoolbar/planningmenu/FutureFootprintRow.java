@@ -238,7 +238,7 @@ public class FutureFootprintRow extends Composite {
 					}
 				}
 				
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_DetectorSelected, instrument.getInstrumentName() + " - " + apertureName);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_DETECTORSELECTED, instrument.getInstrumentName() + " - " + apertureName);
 			}
 		});
 		return aperturesDropDownMenu;
@@ -262,7 +262,7 @@ public class FutureFootprintRow extends Composite {
 
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-			    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_AllInstrumentsClick, instrument.getInstrumentName());
+			    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_ALLINSTRUMENTSCLICK, instrument.getInstrumentName());
 			    
 				CommonEventBus.getEventBus().fireEvent(
 						new FutureFootprintEvent(FutureFootprintRow.this));
@@ -365,7 +365,7 @@ public class FutureFootprintRow extends Composite {
 						+ " ; " + SIAF_VERSION;
 				CopyToClipboardHelper.getInstance().copyToClipBoard(texToCopy, TextMgr.getInstance().getText("futureFootprintRow_dataCopiedToClipboard"));
 				
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_CopyCoordinates, instrument.getInstrumentName());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_COPYCOORDINATES, instrument.getInstrumentName());
 			}
 		});
 

@@ -155,7 +155,7 @@ public class MovablePanel extends FocusPanel {
 		} else if (Event.ONMOUSEUP == eventType || Event.ONTOUCHEND == eventType || Event.ONTOUCHCANCEL== eventType) {
 			DOM.releaseCapture(getElement());
 			if (isBeingDragged) {
-				GoogleAnalytics.sendEvent(googleEventCategory, GoogleAnalytics.ACT_Moved, "");
+				GoogleAnalytics.sendEvent(googleEventCategory, GoogleAnalytics.ACT_MOVED, "");
 			}
 			isMouseDown = false;
 		}

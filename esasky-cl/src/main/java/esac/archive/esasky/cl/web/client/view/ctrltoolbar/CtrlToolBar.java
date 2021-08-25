@@ -223,7 +223,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			@Override
 			public void onClick(ClickEvent event) {
 				closeAllOtherPanels(selectSkyButton);
-				sendGAEvent(GoogleAnalytics.ACT_CtrlToolbar_Skies);
+				sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_SKIES);
 			}
 		});
         
@@ -249,7 +249,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			public void onClick(ClickEvent event) {
 				CtrlToolBar.this.targetListPanel.toggle();
 				closeAllOtherPanels(targetListButton);
-				sendGAEvent(GoogleAnalytics.ACT_CtrlToolbar_TargetList);
+				sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST);
 			}
 		});
 		
@@ -274,7 +274,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			public void onClick(ClickEvent event) {
 				CtrlToolBar.this.planObservationPanel.toggle();
 				closeAllOtherPanels(planObservationButton);
-				sendGAEvent(GoogleAnalytics.ACT_CtrlToolbar_PlanningTool);
+				sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL);
 			}
 		});
 		
@@ -579,7 +579,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         	    	  public void onClick(ClickEvent event) {
         	    		  if(!exploreActionInProgress) {
         	    			  showRandomSource();
-        	    			  sendGAEvent(GoogleAnalytics.ACT_CtrlToolbar_Dice);
+        	    			  sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
         	    		  }
         	    	  }
 		});
@@ -723,7 +723,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	private void sendGAEvent(String eventAction) {
-	    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, eventAction, "");
+	    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, eventAction, "");
 	}
 
 	@Override
@@ -820,7 +820,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			public void onClick(ClickEvent event) {
 				treeMapContainer.toggleTreeMap();
 				closeAllOtherPanels(button);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, GoogleAnalytics.ACT_CtrlToolbar_PlanningTool, treeMapDescriptor.getName());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
 			}
 		});
 		ctrlToolBarPanel.add(button);

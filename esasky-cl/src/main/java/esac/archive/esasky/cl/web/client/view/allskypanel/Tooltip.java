@@ -103,7 +103,7 @@ public abstract class Tooltip extends AutoHidePanel{
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SourceTooltip, GoogleAnalytics.ACT_SourceTooltip_ViewInSimbad, 
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINSIMBAD, 
 						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
 						+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
 				Window.open(
@@ -121,7 +121,7 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SourceTooltip, GoogleAnalytics.ACT_SourceTooltip_ViewInNed, 
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINNED, 
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
 				Window.open(
@@ -138,7 +138,7 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SourceTooltip, GoogleAnalytics.ACT_SourceTooltip_ViewInVizierPhotometry, 
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIERPHOTOMETRY, 
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
         		Window.open(
@@ -155,7 +155,7 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SourceTooltip, GoogleAnalytics.ACT_SourceTooltip_ViewInVizier, 
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIER, 
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
         		Window.open(
@@ -172,7 +172,7 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SourceTooltip, GoogleAnalytics.ACT_SourceTooltip_ViewInWWT, 
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINWWT, 
         				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
         				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
         		Window.open(ExternalServices.buildWwtURL(AladinLiteWrapper.getAladinLite()

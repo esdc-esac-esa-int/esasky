@@ -181,7 +181,7 @@ public class GUISessionStatus {
 			GUISessionStatus.isTrackingSSO = isTrackingSso;
 			CommonEventBus.getEventBus().fireEvent(new IsTrackingSSOEvent());
 			if(isTrackingSso) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, 
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, 
 						"SSO", GUISessionStatus.trackedSso.name + "(" + GUISessionStatus.trackedSso.type + ")");
 			}
 		}
@@ -216,7 +216,7 @@ public class GUISessionStatus {
 	public static void setIsInScienceMode(boolean isInScienceMode){
 		if(GUISessionStatus.isInScienceMode != isInScienceMode){
 			GUISessionStatus.isInScienceMode = isInScienceMode;
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_SciMode, Boolean.toString(isInScienceMode));
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SCIMODE, Boolean.toString(isInScienceMode));
 			CommonEventBus.getEventBus().fireEvent(new IsInScienceModeChangeEvent());
 			if(isInScienceMode && doCountOnEnteringScienceMode) {
 				CommonEventBus.getEventBus().fireEvent(new AladinLiteCoordinatesOrFoVChangedEvent());

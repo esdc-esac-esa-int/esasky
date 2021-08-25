@@ -70,7 +70,7 @@ public class WelcomeDialog extends Composite {
 		Label descriptionText = new Label(TextMgr.getInstance().getText("WelcomeDialog_description"));
 		descriptionText.addStyleName("welcomeDescription");
 		
-		final MovablePanel welcomeDialogConainer = new MovablePanel(GoogleAnalytics.CAT_Welcome, true);
+		final MovablePanel welcomeDialogConainer = new MovablePanel(GoogleAnalytics.CAT_WELCOME, true);
 		welcomeDialogConainer.addHideOnEscapeKeyBehavior(new OnKeyPress() {
             
             @Override
@@ -98,7 +98,7 @@ public class WelcomeDialog extends Composite {
 			public void onClick(ClickEvent event) {
 				close();
 				GUISessionStatus.setIsInScienceMode(true);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_Science, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_SCIENCE, "");
 			}
 		});
 		
@@ -109,7 +109,7 @@ public class WelcomeDialog extends Composite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_Explorer, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_EXPLORER, "");
 				close();
 				GUISessionStatus.setIsInScienceMode(false);
 			}
@@ -120,7 +120,7 @@ public class WelcomeDialog extends Composite {
 			
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_DoNotShowAgain, event.getValue().toString());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_DONOTSHOWAGAIN, event.getValue().toString());
 			}
 		});
 		
@@ -173,7 +173,7 @@ public class WelcomeDialog extends Composite {
     		@Override
     		public void onClick(ClickEvent event) {
     			close();
-    			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Welcome, GoogleAnalytics.ACT_Welcome_Close, "");
+    			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_CLOSE, "");
     		}
     	});
     	

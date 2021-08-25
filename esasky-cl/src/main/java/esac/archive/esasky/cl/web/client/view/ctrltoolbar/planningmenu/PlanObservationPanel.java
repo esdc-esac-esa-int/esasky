@@ -136,7 +136,7 @@ public class PlanObservationPanel extends DialogBox {
                 String detector = InstrumentMapping.getInstance().getDefaultApertureForInstrument(instrument);
                 PlanObservationPanel.this.addInstrumentRow(Instrument.getSingleInstrument(pm, instrument), detector,jwstPanel);
                 
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_InstrumentSelected, instrument);
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_INSTRUMENTSELECTED, instrument);
             }
         });
         
