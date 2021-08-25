@@ -205,7 +205,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			
 			@Override
 			public void onResize(ResizeEvent event) {
-				ensureTargetDialogDoesNotCoverDiceButton();
+				setTargetDialogSuggestedPosition();
 			}
 		});
 		
@@ -646,7 +646,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private void addTargetBox(String targetName, String targetDescription) {
     	targetDialogBox.updateContent(targetDescription, targetName);
     	targetDialogBox.show();
-    	ensureTargetDialogDoesNotCoverDiceButton();
+    	setTargetDialogSuggestedPosition();
         if (latestHandler != null) {
             latestHandler.removeHandler();
         }
@@ -668,12 +668,19 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                 });
     }
 	
-	private void ensureTargetDialogDoesNotCoverDiceButton() {
-		int newLeft = (MainLayoutPanel.getMainAreaWidth())/2 - targetDialogBox.getOffsetWidth()/2;
-		if (newLeft < 0) {
-			newLeft = 0;
-		}
-    	targetDialogBox.setSuggestedPosition(newLeft, 30);
+	private void setTargetDialogSuggestedPosition() {
+	    int newLeft = 0;
+	    int newTop = 30;
+	    if(MainLayoutPanel.getMainAreaWidth() > 800) {
+	        newLeft = (MainLayoutPanel.getMainAreaWidth()) - targetDialogBox.getOffsetWidth();
+	        newTop = 77;
+	    } else {
+	        newLeft = (MainLayoutPanel.getMainAreaWidth())/2 - targetDialogBox.getOffsetWidth()/2;
+	        if (newLeft < 0) {
+	            newLeft = 0;
+	        }
+	    }
+    	targetDialogBox.setSuggestedPosition(newLeft, newTop);
     	if(targetDialogBox.getAbsoluteLeft() < (exploreBtn.getAbsoluteLeft() + exploreBtn.getOffsetWidth() + 5)) {
     		targetDialogBox.setSuggestedPosition(targetDialogBox.getAbsoluteLeft() - MainLayoutPanel.getMainAreaAbsoluteLeft(), exploreBtn.getAbsoluteTop() - MainLayoutPanel.getMainAreaAbsoluteTop() + exploreBtn.getOffsetHeight() + 5);
     	}
