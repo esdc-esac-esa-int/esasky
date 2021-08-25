@@ -150,7 +150,7 @@ public class HeaderPresenter {
 			@Override
 			public void onChangeEvent(final HipsNameChangeEvent changeEvent) {
 				view.setHipsName(changeEvent.getHiPSName());
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_HipsName, changeEvent.getHiPSName());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_Header_HipsName, changeEvent.getHiPSName());
 			}
 		});
 		
@@ -223,7 +223,7 @@ public class HeaderPresenter {
 				UrlUtils.updateURLWithoutReloadingJS(bookmarkUrl);
 				String hostName = Window.Location.getHost();
 				CopyToClipboardHelper.getInstance().copyToClipBoard(hostName + bookmarkUrl, TextMgr.getInstance().getText("ctrlToolBar_URLClipboard"));
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Share, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SHARE, "");
 				view.closeDropdownMenu();
 			}
 		});
@@ -233,7 +233,7 @@ public class HeaderPresenter {
 			@Override
 			public void onClick(final ClickEvent event) {
 				Window.open(TextMgr.getInstance().getText("headerPresenter_helpLink"), "_blank", "");
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Help, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_HELP, "");
 				view.closeDropdownMenu();
 			}
 		});
@@ -269,7 +269,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Menu, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_MENU, "");
 				view.toggleDropdownMenu();
 			}
 		});
@@ -278,7 +278,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Feedback, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_FEEDBACK, "");
 				Window.open(EsaSkyWebConstants.ESA_SKY_USER_ECHO, "_blank", "");
 				view.closeDropdownMenu();
 			}
@@ -288,7 +288,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_VideoTutorials, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_VIDEOTUTORIALS, "");
 				Window.open(EsaSkyWebConstants.ESA_SKY_HELP_PAGES_URL, "_blank", "");
 				view.closeDropdownMenu();
 			}
@@ -298,7 +298,7 @@ public class HeaderPresenter {
 			
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_CoordinateGrid, Boolean.toString(!view.isGridOn()));
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COORDINATEGRID, Boolean.toString(!view.isGridOn()));
 				view.toggleGrid();
 			}
 		});
@@ -307,7 +307,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_ReleaseNotes, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_RELEASENOTES, "");
 				Window.open(EsaSkyWebConstants.ESA_SKY_RELEASE_NOTES_URL, "_blank", "");
 				view.closeDropdownMenu();
 			}
@@ -317,7 +317,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Newsletter, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_NEWSLETTER, "");
 				Window.open(EsaSkyWebConstants.ESA_SKY_NEWSLETTER_URL, "_blank", "");
 				view.closeDropdownMenu();
 			}
@@ -327,7 +327,7 @@ public class HeaderPresenter {
 
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_AboutUs, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_ABOUTUS, "");
 				Window.open(EsaSkyWebConstants.ESA_SKY_ABOUTUS_URL, "_blank", "");
 				view.closeDropdownMenu();
 			}
@@ -339,7 +339,7 @@ public class HeaderPresenter {
 			public void onClick(final ClickEvent event) {
 				Coordinate j2000Coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
 				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.ra, j2000Coordinate.dec), "_blank", "");
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_ViewInWwt, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_VIEWINWWT, "");
 				view.closeDropdownMenu();
 			}
 		});
@@ -362,7 +362,7 @@ public class HeaderPresenter {
 				screenshotDialogBox.show();
 				view.closeDropdownMenu();
 				
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_ScreenShot, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SCREENSHOT, "");
 			}
 		});
 		
@@ -372,7 +372,7 @@ public class HeaderPresenter {
 			public void onSelectionChanged(String newValue, int index) {
 				view.setSelectedLanguage(index);
 				GUISessionStatus.setCurrentLanguage(newValue);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header, GoogleAnalytics.ACT_Header_Language, newValue);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_LANGUAGE, newValue);
 				Window.open(UrlUtils.getUrlForCurrentState(), "_self", "");
 			}
 		});

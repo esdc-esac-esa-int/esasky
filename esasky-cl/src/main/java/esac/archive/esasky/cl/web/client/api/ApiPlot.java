@@ -26,7 +26,7 @@ public class ApiPlot extends ApiBase{
 //	}
 	
 	public void plotObservations(String missionId, JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTOBSERVATIONS, missionId);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
@@ -42,7 +42,7 @@ public class ApiPlot extends ApiBase{
 	}
 	
 	public void coneSearchObservations(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotObservations, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTOBSERVATIONS, missionId);
 		DescriptorListAdapter<ObservationDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getObsDescriptors();
 		ObservationDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
@@ -59,7 +59,7 @@ public class ApiPlot extends ApiBase{
 	}
 	
 	public void plotCatalogues(String missionId, JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotCatalogues, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTCATALOGUES, missionId);
 		DescriptorListAdapter<CatalogDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getCatDescriptors();
 		CatalogDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
@@ -95,7 +95,7 @@ public class ApiPlot extends ApiBase{
 	}
 	
 	public void plotSpectra(String missionId, JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotSpectra, missionId);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTSPECTRA, missionId);
 		DescriptorListAdapter<SpectraDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
 		SpectraDescriptor currObs  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
@@ -129,7 +129,7 @@ public class ApiPlot extends ApiBase{
 	}
 	
 	public void plotPublications(JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_plotPublications);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTPUBLICATIONS);
 		controller.getRootPresenter().getCtrlTBPresenter().getPublicationPresenter().getPublications();
 	}
 

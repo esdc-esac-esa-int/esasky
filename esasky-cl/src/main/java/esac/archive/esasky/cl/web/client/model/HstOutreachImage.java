@@ -70,13 +70,13 @@ public class HstOutreachImage {
 						type,
 						url);
 
-		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_Images_hstImage_Success, desc.getId());
+		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS, desc.getId());
 			}
 
 			@Override
 			public void onError(String errorCause) {
 				Log.error(errorCause);
-		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_Images_hstImage_Fail, id);
+		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_FAIL, id);
 			}
 		});
 	}

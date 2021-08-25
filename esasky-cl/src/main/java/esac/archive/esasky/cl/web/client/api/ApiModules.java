@@ -35,7 +35,7 @@ public class ApiModules extends ApiBase{
 	}
 	
 	public void showCoordinateGrid(boolean show) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_showCoordinateGrid,Boolean.toString(show));
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_SHOWCOORDINATEGRID,Boolean.toString(show));
 		controller.getRootPresenter().getHeaderPresenter().toggleGrid(show);
 	}
 	

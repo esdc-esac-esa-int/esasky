@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
@@ -27,7 +28,6 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapTreeMapLevel;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.ifcs.model.shared.ObsCoreCollection;
 
 public class ExtTapCheckCallback extends JsonRequestCallback {
 
@@ -68,7 +68,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	 	Log.debug(logPrefix + descriptor.getGuiLongName() + " Time for response (s): "
 	 			+ Double.toString(timeForReceiving));
 	 	
-	 	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_ExternalTaps, GoogleAnalytics.ACT_ExtTap_count,
+	 	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS, GoogleAnalytics.ACT_EXTTAP_COUNT,
 	 			descriptor.getGuiLongName() + " Time for response (s): " + Double.toString(timeForReceiving));
         
         Log.debug(logPrefix + this.getClass().getSimpleName() + " " + descriptor.getGuiLongName()
@@ -85,9 +85,9 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	
 	private String findLevelName(HashMap<String, ExtTapTreeMapLevel> levels, String value) {
 
-		for(String key : levels.keySet()) {
-			if(levels.get(key).getValues().contains(value)) {
-				return key;
+		for(Map.Entry<String, ExtTapTreeMapLevel> entry : levels.entrySet()) {
+			if(entry.getValue().getValues().contains(value)) {
+				return entry.getKey();
 			}
 		}
 		
@@ -96,13 +96,13 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	
 	private void logMissingProductType(String collection, String productType) {
 		String extra = descriptor.getCreditedInstitutions() + "-" + collection + "-" + productType;
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
-				GoogleAnalytics.ACT_ExtTap_missingProductType, extra);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_EXTERNALTAPS,
+				GoogleAnalytics.ACT_EXTTAP_MISSINGPRODUCTTYPE, extra);
 	}
 	private void logMissingCollection(String collection) {
 		String extra = descriptor.getCreditedInstitutions() + "-" + collection;
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ExternalTaps,
-				GoogleAnalytics.ACT_ExtTap_missingCollection, extra);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_EXTERNALTAPS,
+				GoogleAnalytics.ACT_EXTTAP_MISSINGCOLLECTION, extra);
 	}
 	
 	private ExtTapDescriptor getLevelDesc(ExtTapDescriptor parent, int levelNumber, String levelName, ExtTapTreeMapLevel level) {

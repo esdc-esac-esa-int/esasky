@@ -17,26 +17,26 @@ public class ApiPlanning extends ApiBase{
 	}
 	
 	public void clearJwst() {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearJwstAll, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CLEARJWSTALL, "");
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.clearAllAPI();
 	}
 	
 	public void closeJwstPanel() {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_closeJwstPanel, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CLOSEJWSTPANEL, "");
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.hide();
 	}
 	
 	public void openJwstPanel() {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_openJwstPanel, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OPENJWSTPANEL, "");
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
 	}
 	
 	public void addJwstWithCoordinates(String instrument, String detector,boolean allInstruments, String ra, String dec, String rotation, JavaScriptObject widget) {
 		String allInfo = instrument + ";" + detector + ";" + Boolean.toString(allInstruments) + ";" + ra + ";" + dec + ";" + rotation;
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addJwstWithCoordinates, allInfo);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDJWSTWITHCOORDINATES, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
 		JSONValue available = planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, detector, allInstruments, ra, dec, rotation);
@@ -51,7 +51,7 @@ public class ApiPlanning extends ApiBase{
 	
 	public void addJwst(String instrument, String detector, boolean allInstruments, JavaScriptObject widget) {	
 		String allInfo = instrument + ";" + detector + ";" + Boolean.toString(allInstruments);
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addJwst, allInfo);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDJWST, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
 		JSONValue available = planObservationPanel.addInstrumentRowAPI(instrument, detector, allInstruments);

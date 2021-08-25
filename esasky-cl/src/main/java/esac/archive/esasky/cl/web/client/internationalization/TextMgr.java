@@ -156,7 +156,7 @@ public class TextMgr {
 		}
 		if(reportMissingTranslation) {
 		    missingTranslations.add(key);
-		    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_MissingTranslation + " " + langCode, key);
+		    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_INTERNATIONALIZATION, GoogleAnalytics.ACT_MISSINGTRANSLATION + " " + langCode, key);
 		    Log.warn("TextMgr.getText(), unknown key: " + key);
 		}
 		return key;
@@ -184,7 +184,7 @@ public class TextMgr {
 	private void setLangCode(String newLangCode, boolean isPrimaryLanguage) {
 		langCode = getTwoLetterLangCode(newLangCode);
 		if(isPrimaryLanguage) {
-		    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TextManager,GoogleAnalytics.ACT_TextManager_SetLang,newLangCode);
+		    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TEXTMANAGER,GoogleAnalytics.ACT_TEXTMANAGER_SETLANG,newLangCode);
 		    Log.debug("TextMgr.setLangCode() langCode: " + langCode);
 		}
 		texts = new HashMap<String, String>();
@@ -233,7 +233,7 @@ public class TextMgr {
                 if(isPrimaryLanguage) {
                     onInitialized(false);
                 }
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Internationalization, GoogleAnalytics.ACT_LoadingOfXMLFailed, getInstance().langCode);
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_INTERNATIONALIZATION, GoogleAnalytics.ACT_LOADINGOFXMLFAILED, getInstance().langCode);
             }
 	    }
 	    

@@ -12,14 +12,14 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public abstract class ApiBase {
 	protected Controller controller;
-	protected static String googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
+	protected static String googleAnalyticsCat = GoogleAnalytics.CAT_PYESASKY;
 	
 	public static void setGoogleAnalyticsCatToPython() {
-		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_Pyesasky;
+		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_PYESASKY;
 	}
 
 	public static void setGoogleAnalyticsCatToAPI() {
-		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_JavaScriptAPI;
+		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_JAVASCRIPTAPI;
 	}
 	
 	

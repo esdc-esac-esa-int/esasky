@@ -195,7 +195,7 @@ public class CtrlToolBarPresenter {
         view.getPublicationButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CtrlToolbar, GoogleAnalytics.ACT_CtrlToolbar_Publications, "");
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PUBLICATIONS, "");
                 publicationPresenter.toggle();
                 view.closeAllOtherPanels(view.getPublicationButton());
             }

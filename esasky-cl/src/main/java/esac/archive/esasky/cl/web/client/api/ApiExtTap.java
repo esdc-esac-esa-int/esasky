@@ -61,7 +61,7 @@ public class ApiExtTap extends ApiBase{
 		if(!countStatus.hasMoved(parent)) {
 			JSONObject obsCount = countToJSON(parent, countStatus);
 			
-			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
+			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
 			sendBackValuesToWidget(obsCount, widget);
 			
 		}else {
@@ -70,7 +70,7 @@ public class ApiExtTap extends ApiBase{
 				public void onCountUpdate(long newCount) {
 					JSONObject obsCount = countToJSON(parent, countStatus);
 					
-					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_count, obsCount.toString());
+					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
 					sendBackValuesToWidget(obsCount, widget);
 					countStatus.unregisterObserver(this);
 				}

@@ -80,7 +80,7 @@ public class ApiOverlay extends ApiBase{
 		try {
 			FootprintListJSONWrapper footprintsSet = (FootprintListJSONWrapper) mapper.read(footprintsSetJSON);
 
-			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayFootprintsWithDetails, footprintsSet.getOverlaySet().getOverlayName());
+			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OVERLAYFOOTPRINTSWITHDETAILS, footprintsSet.getOverlaySet().getOverlayName());
 
 			List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
 
@@ -158,7 +158,7 @@ public class ApiOverlay extends ApiBase{
 			userCatalogueJSON = userCatalogueJSON.replace("\"ra\":", "\"ra_deg\":");
 			userCatalogueJSON = userCatalogueJSON.replace("\"dec\":", "\"dec_deg\":");
 			SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(userCatalogueJSON);
-			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_overlayCatalogueWithDetails, userCatalogue.getOverlaySet().getOverlayName());
+			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OVERLAYCATALOGUEWITHDETAILS, userCatalogue.getOverlaySet().getOverlayName());
 
 			List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
 			
@@ -213,7 +213,7 @@ public class ApiOverlay extends ApiBase{
 	}
 	
 	public void removeOverlay(String overlayName, JavaScriptObject widget) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, overlayName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CLEARFOOTPRINTSOVERLAY, overlayName);
 		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
 		if (ent != null) {
 			ent.clearAll();
@@ -228,7 +228,7 @@ public class ApiOverlay extends ApiBase{
 	}
 	
 	public void removeAllOverlays(JavaScriptObject widget) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_clearFootprintsOverlay, "all");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CLEARFOOTPRINTSOVERLAY, "all");
 		
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 			if(ent.getTablePanel() != null) {

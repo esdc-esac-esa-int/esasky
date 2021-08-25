@@ -73,7 +73,7 @@ public class StatusPresenter {
 								errorMessage += " More information: " + pushEvent.getGoogleAnalyticsErrorMessage();
 							}
 							Log.error(errorMessage);
-							GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Header_Status, GoogleAnalytics.ACT_Header_Status_Error, errorMessage);
+							GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER_STATUS, GoogleAnalytics.ACT_HEADER_STATUS_ERROR, errorMessage);
 						}
 					}
 				}.schedule(POP_TIMEOUT_DELAY_IN_MILLIS);;

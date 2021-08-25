@@ -47,7 +47,7 @@ public abstract class JsonRequestCallback implements RequestCallback {
     public void onError(final Request request, final Throwable exception) {
         Log.error(exception.getMessage());
         Log.error(this.getClass().getSimpleName() + " Error fetching JSON data from server. " + " Response text = " + responseText + " GA error message = " + googleAnalyticsErrorMessage);
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_RequestError, this.getClass().getSimpleName(), exception.getMessage() + " Error fetching JSON data from server. " + " Response text = " + responseText + " GA error message = " + googleAnalyticsErrorMessage);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_REQUESTERROR, this.getClass().getSimpleName(), exception.getMessage() + " Error fetching JSON data from server. " + " Response text = " + responseText + " GA error message = " + googleAnalyticsErrorMessage);
         removeProgressIndicator();
     }
 

@@ -133,7 +133,7 @@ public class SearchPresenter {
                     CoordinateValidator.SearchInputType inputType = CoordinateValidator
                             .checkInputType(new ClientRegexClass(), userInput, AladinLiteWrapper.getCoordinatesFrame());
 
-                	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchQuery, userInput);
+                	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHQUERY, userInput);
                 	if (inputType == CoordinateValidator.SearchInputType.TARGET
                 	        || inputType == CoordinateValidator.SearchInputType.NOT_VALID
                 	        ) {
@@ -360,10 +360,10 @@ public class SearchPresenter {
                 			    if(targetName.equals(view.getSearchTextBox().getValue()) && inputType == SearchInputType.NOT_VALID) {
                                     SearchPresenter.this.view.showCoordsInputErrorMessage();
                                     Log.debug("ERROR FOR WRONG INPUT FORMAT");
-                                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchWrongCoords, targetName);
+                                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHWRONGCOORDS, targetName);
                 			    } else {
                 			        SearchPresenter.this.view.showTargetNotFoundMessage();
-                			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, "SIMBAD: " + view.getSearchTextBox().getValue());
+                			        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHTARGETNOTFOUND, "SIMBAD: " + view.getSearchTextBox().getValue());
                 			    }
                 				
                 			} else {

@@ -35,14 +35,14 @@ public class ApiHips extends ApiBase{
 	
 	
 	public void openSkyPanel() {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_openSkyPanel, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OPENSKYPANEL, "");
 		if(!controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().isShowing()) {
 			controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().toggle();
 		}
 	}
 
 	public void closeSkyPanel() {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_closeSkyPanel, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CLOSESKYPANEL, "");
 		if(controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().isShowing()) {
 			controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().toggle();
 		}
@@ -50,7 +50,7 @@ public class ApiHips extends ApiBase{
 	
 	public void addHiPS(String wantedHiPSName, JavaScriptObject widget) {
 		SelectSkyPanel.getInstance().createSky();
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addHips, wantedHiPSName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDHIPS, wantedHiPSName);
 		if(!setHiPS(wantedHiPSName, widget)) {
 			SelectSkyPanel.getSelectedSky().notifyClose();
 		}
@@ -58,13 +58,13 @@ public class ApiHips extends ApiBase{
 	
 	public void addHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_addHips, surveyRootUrl);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDHIPS, surveyRootUrl);
 		SelectSkyPanel.getInstance().createSky();
 		setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat);
 	}
 	
 	public void removeSkyRow(int index, JavaScriptObject widget) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_removeHipsOnIndex, "");
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_REMOVEHIPSONINDEX, "");
 		String msg = "";
 		if(index < 0) {
 			for(int i = SelectSkyPanel.getInstance().getNumberOfSkyRows() - 1; i > 0 ;i--) {
@@ -87,20 +87,20 @@ public class ApiHips extends ApiBase{
 	
 	public void getNumberOfSkyRows(JavaScriptObject widget) {
 		int count = SelectSkyPanel.getInstance().getNumberOfSkyRows();
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getNumberOfSkyRows, Integer.toString(count));
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GETNUMBEROFSKYROWS, Integer.toString(count));
 		sendBackSingleValueToWidget(new JSONNumber(count), widget);
 	}
 	
 	public void setHiPSSliderValue(double value) {
 		if(System.currentTimeMillis() - lastGASliderSent > 1000) {
 			lastGASliderSent = System.currentTimeMillis();
-			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setHipsSliderValue, Double.toString(value));
+			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_SETHIPSSLIDERVALUE, Double.toString(value));
 		}
 		SelectSkyPanel.getInstance().setSliderValue(value);
 	}
 
 	public boolean setHiPS(String wantedHiPSName, JavaScriptObject widget) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPS, wantedHiPSName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CHANGEHIPS, wantedHiPSName);
 		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, true, false)) {
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString("No HiPS called: " + wantedHiPSName + " found"));
@@ -188,7 +188,7 @@ public class ApiHips extends ApiBase{
 	public void setHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
 		
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_changeHiPSWithParams, surveyRootUrl);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CHANGEHIPSWITHPARAMS, surveyRootUrl);
 
 		HiPS hips = new HiPS();
 		hips.setSurveyId(surveyName);
@@ -205,7 +205,7 @@ public class ApiHips extends ApiBase{
 	}
 
 	public void setHiPSColorPalette(String colorPalette, JavaScriptObject widget) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setHiPSColorPalette, colorPalette);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_SETHIPSCOLORPALETTE, colorPalette);
 		
 		JSONArray available = new JSONArray();
 		int i = 0;
@@ -257,7 +257,7 @@ public class ApiHips extends ApiBase{
 	public JSONObject getAvailableHiPS(String wavelength, boolean onlyName) {
 		//TODO Looks in skiesMenu which doesn't contain user added HiPS
 		
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getAvailableHiPS, wavelength);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GETAVAILABLEHIPS, wavelength);
 		
 		HipsWavelength hipsWavelength;
 		if(wavelength == null && "".equals(wavelength)) {

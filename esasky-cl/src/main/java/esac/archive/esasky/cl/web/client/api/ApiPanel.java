@@ -21,7 +21,7 @@ public class ApiPanel extends ApiBase{
 	
 	
 	public void getResultPanelData(final JavaScriptObject widget) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getResultPanelData);
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GETRESULTPANELDATA);
 		final ITablePanel tablePanel = controller.getRootPresenter().getResultsPresenter().getTabPanel().getSelectedWidget();
 		if(tablePanel == null) {
 			sendBackErrorMsgToWidget(ApiConstants.PANEL_DATA_ERROR, widget);

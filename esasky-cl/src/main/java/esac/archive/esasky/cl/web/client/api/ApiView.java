@@ -36,12 +36,12 @@ public class ApiView extends ApiBase{
 		coors.put(ApiConstants.DEC, new JSONNumber(skyViewPosition.getCoordinate().dec));
 		coors.put(ApiConstants.FOV, new JSONNumber(skyViewPosition.getFov()));
 		
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_getCenter, "Cooframe: " + cooFrame + " returned: " + coors.toString() );
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GETCENTER, "Cooframe: " + cooFrame + " returned: " + coors.toString() );
 		sendBackValuesToWidget(coors, widget);
 	}
 	
 	public void goTo(String ra, String dec) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_goToRADec, "ra: " + ra + "dec: " + dec);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GOTORADEC, "ra: " + ra + "dec: " + dec);
 		AladinLiteWrapper.getInstance().goToObject(ra + " " + dec, false);
 	}
 
@@ -50,7 +50,7 @@ public class ApiView extends ApiBase{
 	}
 
 	public void goToTargetName(String targetName) {
-		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_goToTargetName, targetName);
+		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GOTOTARGETNAME, targetName);
 		AladinLiteWrapper.getInstance().goToObject(targetName, false);
 	}
 
@@ -60,7 +60,7 @@ public class ApiView extends ApiBase{
 	}
 
 	public void setFoV(double fov) {
-		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_Pyesasky_setFoV, Double.toString(fov));
+		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_SETFOV, Double.toString(fov));
 		AladinLiteWrapper.getAladinLite().setZoom(fov);
 	}
 }
