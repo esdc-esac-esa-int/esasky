@@ -158,7 +158,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
 	protected void onLoad() {
 		super.onLoad();   
 		Scheduler.get().scheduleDeferred(() -> {
-                tabulatorTable = new TabulatorWrapper("toggleColumns__tabulatorContainer", ToggleColumnsDialogBox.this, false, false, false, false, TextMgr.getInstance().getText("toggleColumns_rowSelectionTitle"), true, false);
+                tabulatorTable = new TabulatorWrapper("toggleColumns__tabulatorContainer", ToggleColumnsDialogBox.this, false, false, false, false, TextMgr.getInstance().getText("toggleColumns_rowSelectionTitle"), true, false, true);
                 GeneralJavaScriptObject data[] = extractData(columns);
                 tabulatorTable.insertData(data[0], data[1]);
                 tabulatorTable.selectRows(data[2]);

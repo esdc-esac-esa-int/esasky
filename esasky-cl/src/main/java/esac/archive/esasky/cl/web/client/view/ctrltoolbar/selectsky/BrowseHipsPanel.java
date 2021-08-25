@@ -20,6 +20,7 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
@@ -40,7 +41,9 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 	private final FlowPanel tabulatorContainer = new FlowPanel();
 	private final CloseButton closeButton;
 	private FlowPanel contentAndCloseButton;
-	
+    private final LoadingSpinner loadingSpinner = new LoadingSpinner(true);
+    
+    private static String aladinGlobalHipsListCache = null;
 	private final String ALADIN_GLOBAL_HIPSLIST_URL = "//aladin.u-strasbg.fr/hips/globalhipslist?fmt=json";
 	
 	private List<BrowseHipsPanelObserver> observers = new LinkedList<BrowseHipsPanelObserver>();
@@ -50,6 +53,9 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		super(GoogleAnalytics.CAT_BrowseHips);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
+		
+        loadingSpinner.addStyleName("browseHips__loadingSpinner");
+        MainLayoutPanel.addElementToMainArea(loadingSpinner);
 
 		closeButton = new CloseButton();
 		closeButton.addStyleName("browseHips__closeButton");
@@ -72,31 +78,37 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		contentAndCloseButton.add(contentContainer);
 		add(contentAndCloseButton);
 		addStyleName("browseHips__dialogBox");
+		addElementNotAbleToInitiateMoveOperation(contentContainer.getElement());
+
 		loadData();
 		
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_BrowseHips, "");
+		show();
 	}
 	
 	private void loadData() {
-		
-		JSONUtils.getJSONFromUrl(ALADIN_GLOBAL_HIPSLIST_URL, new IJSONRequestCallback() {
-
-			@Override
-			public void onSuccess(String responseText) {
-				onJsonloaded(responseText);
-			}
-
-			@Override
-			public void onError(String errorCause) {
-				String errorMsg = TextMgr.getInstance().getText("browseHips_errorLoadingGlobal");
-				errorMsg = errorMsg.replace("$URL$", ALADIN_GLOBAL_HIPSLIST_URL);
-				DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
-						TextMgr.getInstance().getText("error"));
-				Log.error(errorCause);
-			}
-			
-		});
-			
+		if (aladinGlobalHipsListCache != null) {
+		    onJsonLoaded(aladinGlobalHipsListCache);
+		} else {
+		    JSONUtils.getJSONFromUrl(ALADIN_GLOBAL_HIPSLIST_URL, new IJSONRequestCallback() {
+		        
+		        @Override
+		        public void onSuccess(String responseText) {
+		            aladinGlobalHipsListCache = responseText;
+		            onJsonLoaded(responseText);
+		        }
+		        
+		        @Override
+		        public void onError(String errorCause) {
+		            String errorMsg = TextMgr.getInstance().getText("browseHips_errorLoadingGlobal");
+		            errorMsg = errorMsg.replace("$URL$", ALADIN_GLOBAL_HIPSLIST_URL);
+		            DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+		                    TextMgr.getInstance().getText("error"));
+		            Log.error(errorCause);
+		        }
+		        
+		    });
+		}
 	}
 	
 	public native GeneralJavaScriptObject createMetadata() /*-{
@@ -134,7 +146,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
             {
                 name: "moc_sky_fraction",
                 displayName: $wnd.esasky.getInternationalizationText("coverage"), 
-                datatype:"DOUBLE", 
+                datatype:"PERCENT", 
                 visible: true
             });
         metadata.push(
@@ -155,9 +167,9 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
            return metadata;
 	}-*/;
 
-	public void onJsonloaded(String jsonText) {
+	public void onJsonLoaded(String jsonText) {
 		this.show();
-		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, false, false, false, false);
+		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, false, false, false, false, false);
 		GeneralJavaScriptObject metadata = createMetadata();
 		tabulatorTable.setAddHipsColumn(true);
 		tabulatorTable.insertData(jsonText, metadata);
@@ -166,10 +178,12 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 	}
 
 
-	@Override
-	public void onDataLoaded(GeneralJavaScriptObject rowData) {
-		// Not needed
-	}
+    @Override
+    public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+        MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+        setSuggestedPositionCenter();
+    }
+
 
 	@Override
 	public void onTableHeightChanged() {

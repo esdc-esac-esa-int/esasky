@@ -58,6 +58,7 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
@@ -222,7 +223,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
                 getDescriptor().getArchiveProductURI() != null && !getDescriptor().getDescriptorId().contains("PUBLICATIONS"), 
                 getDescriptor().getDescriptorId().contains("PUBLICATIONS"),
-                getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
+                getDescriptor().getDescriptorId().contains("PUBLICATIONS"), true);
         getDescriptor().registerMetadataVisibilityObserver(metadataVisibilityObserver);
 	}
 	
@@ -602,10 +603,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     
     @Override
     public void onAccessUrlClicked(String url) {
-        if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
-            url = url.replaceFirst("http:", "https:");
-        }
-        Window.open(url, "_blank", "_blank");
+        ESASkyJavaScriptLibrary.download(url, "ESASky-" + tabTitle);
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
     }
 

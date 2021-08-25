@@ -72,14 +72,17 @@ public class TabulatorWrapper{
     private boolean waitingForMoc = false;
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn) {
-        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null, false, true);
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn,
+            boolean addSelectionColumn) {
+        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null, false, true, addSelectionColumn);
     }
     
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle, boolean blockRedraw, boolean isEsaskyData) {
+            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle, blockRedraw, isEsaskyData);
+        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle,
+                blockRedraw, isEsaskyData, addSelectionColumn);
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -335,7 +338,9 @@ public class TabulatorWrapper{
             @Override
             public double getValueFromFormat(String formattedValue) {
                 formatterParams.setProperty("convertBack", true);
-                return GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
+                double value = GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
+                formatterParams.setProperty("convertBack", false);                
+                return value;
             }
             
             @Override
@@ -696,7 +701,7 @@ public class TabulatorWrapper{
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData) /*-{
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn) /*-{
 		$wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
@@ -960,6 +965,21 @@ public class TabulatorWrapper{
                 return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(cell.getValue(), formatterParams.maxDecimalDigits);
             }
 		}
+		
+      var percentFormatter = function(cell, formatterParams, onRendered){
+            if(formatterParams.convertBack && formatterParams.convertBack === true){
+                //TODO parseFloat / 100
+                //Or use cell value? Problem with pretend cell from filter maybe? 
+                return parseFloat(cell.getValue()) / 100;
+//                return 0.88;
+//                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatStringToDouble(Ljava/lang/String;I)(cell.getValue(), formatterParams.maxDecimalDigits);
+            } else {            
+                if(cell.getValue() == undefined){
+                    return "";
+                }
+                return Number(cell.getValue()).toLocaleString(undefined, {style: 'percent', maximumFractionDigits: formatterParams.maxDecimalDigits});
+            }
+        }
 
 		var hideNonDatabaseColumnFormatter = function(cell, formatterParams, onRendered){
 		    if ($wnd.esasky.nonDatabaseColumns.includes(cell.getValue())) {
@@ -1091,18 +1111,19 @@ public class TabulatorWrapper{
 		        var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 		        var activeColumnGroup = [];
 		        var isSSO = false;
-		    	activeColumnGroup.push({
-		    	    formatter:"rowSelection", 
-		    	    titleFormatterParams: {title:selectionHeaderTitle}, 
-		    	    field:"rowSelection", 
-                    visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
-		    	    title:"Selection", 
-		    	    download: false,
-		    	    titleFormatter:"rowSelection", 
-		    	    sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
-					return bRow.isSelected() - aRow.isSelected();
-				}});
-
+		        if (addSelectionColumn){
+    		    	activeColumnGroup.push({
+    		    	    formatter:"rowSelection", 
+    		    	    titleFormatterParams: {title:selectionHeaderTitle}, 
+    		    	    field:"rowSelection", 
+                        visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
+    		    	    title:"Selection", 
+    		    	    download: false,
+    		    	    titleFormatter:"rowSelection", 
+    		    	    sorter:function(a, b, aRow, bRow, column, dir, sorterParams){
+    					return bRow.isSelected() - aRow.isSelected();
+    				}});
+		        }
 		    	var imageButtonFormatter = function(cell, formatterParams, onRendered){ 
                     return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
                 };
@@ -1216,9 +1237,9 @@ public class TabulatorWrapper{
                         visible: descriptorMetadata && descriptorMetadata.sourcesInPublication ? descriptorMetadata.sourcesInPublication.visible : true,
                         headerSort:false, 
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
-                        minWidth: 67,
+                        minWidth: 50,
                         download: false,
-                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"add_hips.png",
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"plus-sign-light-small.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_addHips")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
@@ -1417,6 +1438,26 @@ public class TabulatorWrapper{
 		    				});
 		    				
 			    		}
+	                    else if(this.metadata[i].datatype.toUpperCase() === "PERCENT"){
+                            activeColumnGroup.push({
+                                title:this.metadata[i].displayName,
+                                titleDownload:this.metadata[i].name, 
+                                field:this.metadata[i].name, 
+                                visible:this.metadata[i].visible,
+                                headerTooltip:this.metadata[i].description,
+                                download: true,
+                                formatter:percentFormatter,
+                                formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
+                                sorter: "number",
+                                sorterParams: {thousandSeperator: ""},
+                                headerFilter:numericFilterEditor,
+                                headerFilterParams:{tapName:this.metadata[i].name,
+                                                    title:this.metadata[i].displayName},
+                                headerFilterFunc:DoubleFilter,
+                                headerFilterFuncParams:{tapName:this.metadata[i].name}
+                            });
+                            
+                        }
 			    		else if(this.metadata[i].datatype.toUpperCase() === "TIMESTAMP" 
 			    			|| this.metadata[i].datatype.toUpperCase() === "DATETIME"
 			    			|| this.metadata[i].xtype == "adql:TIMESTAMP"){
