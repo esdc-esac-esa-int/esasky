@@ -150,7 +150,7 @@ public class HeaderPresenter {
 			@Override
 			public void onChangeEvent(final HipsNameChangeEvent changeEvent) {
 				view.setHipsName(changeEvent.getHiPSName());
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_Header_HipsName, changeEvent.getHiPSName());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_HIPSNAME, changeEvent.getHiPSName());
 			}
 		});
 		

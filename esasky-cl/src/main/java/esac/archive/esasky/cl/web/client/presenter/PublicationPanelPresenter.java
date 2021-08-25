@@ -120,7 +120,7 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
 				if(isShowing() && !isShowingDataOrCallInProgress) {
-					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_MOVETRIGGEREDBOXQUERY, "");
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_MOVETRIGGEREDBOXQUERY, "");
 					getPublications();
 				}
 			}
@@ -131,7 +131,7 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onChangeEvent(AladinLiteCoordinatesOrFoVChangedEvent clickEvent) {
 				if(isUpdateOnMoveChecked) {
-					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_MOVETRIGGEREDBOXQUERY, "");
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_MOVETRIGGEREDBOXQUERY, "");
 					getPublications();
 				}
 			}
@@ -142,7 +142,7 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				isUpdateOnMoveChecked = !isUpdateOnMoveChecked;
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_UPDATEONMOVE, "UpdateOnMove: " + isUpdateOnMoveChecked);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_UPDATEONMOVE, "UpdateOnMove: " + isUpdateOnMoveChecked);
 				view.setUpdateOnMoveSwitchValue(isUpdateOnMoveChecked);
 				if(isUpdateOnMoveChecked
 						&& (entity == null || !entity.getSkyViewPosition().compare(CoordinateUtils.getCenterCoordinateInJ2000(), 0.01))
@@ -157,7 +157,7 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				isMostChecked = !isMostChecked;
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_MOSTORLEAST, "Most: " + isMostChecked);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_MOSTORLEAST, "Most: " + isMostChecked);
 				view.setIsMostCheckedValue(isMostChecked);
 				if(isShowingTruncatedDataset || isCallInProgress || numberOfShownSources > view.getLimit()) {
 					getPublications();
@@ -172,7 +172,7 @@ public class PublicationPanelPresenter {
 				removeProgressIndicator();
 				sourceLimitNotificationTimer.run();
 				numberOfShownSources = 0;
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_REMOVE, UrlUtils.getUrlForCurrentState());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_REMOVE, UrlUtils.getUrlForCurrentState());
 				entity.removeAllShapes();
 				entity = null;
 				isShowingDataOrCallInProgress = false;
@@ -184,7 +184,7 @@ public class PublicationPanelPresenter {
         	
         	@Override
         	public void onClick(ClickEvent event) {
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_UPDATE, UrlUtils.getUrlForCurrentState());
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_UPDATE, UrlUtils.getUrlForCurrentState());
         		getPublications();
         	}
         });
@@ -215,7 +215,7 @@ public class PublicationPanelPresenter {
     }
     
     public void getPublications(SkyViewPosition conePos) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_BOXQUERY, UrlUtils.getUrlForCurrentState());
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_BOXQUERY, UrlUtils.getUrlForCurrentState());
 		view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_updating"));
 		view.setLoadingSpinnerVisible(true);
 		
@@ -308,7 +308,7 @@ public class PublicationPanelPresenter {
 				public void onError(Request request, Throwable exception) {
 					isCallInProgress = false;
 					numberOfShownSources = 0;
-					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_BOXQUERYFAILED, "Exception: " + exception + " URL: " + UrlUtils.getUrlForCurrentState());
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_BOXQUERYFAILED, "Exception: " + exception + " URL: " + UrlUtils.getUrlForCurrentState());
 					if(timecall == lastTimecall) {
 						removeProgressIndicator();
 						view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextFailed"));
@@ -321,7 +321,7 @@ public class PublicationPanelPresenter {
         } catch (RequestException e) {
         	numberOfShownSources = 0;
         	isCallInProgress = false;
-        	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Publication, GoogleAnalytics.ACT_PUBLICATION_BOXQUERYFAILED, "Exception: " + e.toString() + " URL: " + UrlUtils.getUrlForCurrentState());
+        	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_BOXQUERYFAILED, "Exception: " + e.toString() + " URL: " + UrlUtils.getUrlForCurrentState());
             Log.error(e.getMessage());
             Log.error(debugPrefix + "Error fetching JSON data from server");
             if(timecall == lastTimecall) {
