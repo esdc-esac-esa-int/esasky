@@ -4,10 +4,12 @@
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 5px;
-	cursor: pointer;
 	margin: auto;
 	display: block;
 	border: 1px solid #AAAAAA;
+    z-index: 900000;
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow: auto !important;
 }
 
 .hipsTextBox{
@@ -15,16 +17,24 @@
 	margin-bottom: 3px;
     margin-left: 5px;
     margin-right: 5px;
-    width: 100%;
     box-sizing: border-box;
     display: inline-flex;
+    border-radius: 8px;
+    width: 500px;
+}
+
+.hipsTextBox:focus, .hipsTextBox:hover{
+	border-color: #20a4d8;
 }
 
 .hipsErrorText{
     margin-left: 5px;
     margin-right: 5px;
-    width: 100%;
     box-sizing: border-box;
-    display: inline-flex;
+	display: block;
+}
+
+.addUrl_textAndSpinner{
+	display: inline;
 }
 

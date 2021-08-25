@@ -2,20 +2,22 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
 import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyTextBox;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
@@ -67,12 +69,11 @@ public class HipsUrlPanel extends PopupPanel{
 		
 		setModal(false);
         setAutoHideEnabled(true);
-        setStyleName("popupPanel");
-        setWidth(200 + "px");
         
-        VerticalPanel container = new VerticalPanel();
+        FlowPanel container = new FlowPanel();
         
-        HorizontalPanel textAndSpinnerPanel = new HorizontalPanel();
+        FlowPanel textAndSpinnerPanel = new FlowPanel();
+        textAndSpinnerPanel.addStyleName("addUrl_textAndSpinner");
         
         PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("addUrl_Header"),
         		TextMgr.getInstance().getText("addUrl_Description"));
@@ -92,6 +93,14 @@ public class HipsUrlPanel extends PopupPanel{
         container.add(errorLabel);
 		add(container);
 		
+        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
+            
+            @Override
+            public void onResize(ResizeEvent event) {
+                setMaxSize();
+            }
+        });
+		
 	}
 	
 	private EsaSkyTextBox createTextBox() {
@@ -105,6 +114,7 @@ public class HipsUrlPanel extends PopupPanel{
 		});
 		return textBox;
 	}
+
 	private void urlChanged(final String url) {
 		loadingSpinner.setVisible(true);
 		HipsParser parser = new HipsParser(new HipsParserObserver() {
@@ -137,6 +147,14 @@ public class HipsUrlPanel extends PopupPanel{
 	public void focus() {
 		textBox.setFocus(true);
 	}
+	
+    private void setMaxSize() {
+        getElement().getStyle().setPropertyPx("maxWidth", getMaxPossibleWidth());
+    }
+    
+    private int getMaxPossibleWidth() {
+        return MainLayoutPanel.getMainAreaWidth() - getElement().getAbsoluteLeft();
+    }
 	
 	
 
