@@ -94,4 +94,9 @@ public class ESASkyJavaScriptLibrary {
     public static native String createLinkList(String value, int maxShowingLinks) /*-{
         return $wnd.esasky.linkListFormatter(value, maxShowingLinks);
     }-*/;
+    
+    public static native void download(String url, String fileName) /*-{
+        $wnd.esasky.download(url, fileName);
+    }-*/;
+
 }
