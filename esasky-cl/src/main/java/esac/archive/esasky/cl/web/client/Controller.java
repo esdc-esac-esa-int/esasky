@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.regexp.shared.RegExp;
@@ -15,7 +14,6 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants.CoordinateFrame;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
-import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
