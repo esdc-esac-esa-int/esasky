@@ -62,7 +62,7 @@ public class DataPanelDraggablePanel extends FlowPanel {
 		} else if (Event.ONMOUSEUP == eventType || Event.ONTOUCHEND == eventType || Event.ONTOUCHCANCEL== eventType) {
 			DOM.releaseCapture(getElement());
 			if (isBeingDragged) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Tab_Resize, GoogleAnalytics.ACT_Tab_Resize, "");
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TAB_RESIZE, GoogleAnalytics.ACT_TAB_RESIZE, "");
 				resizeDataPanelTimer.cancel();
 				resizeDataPanelTimer.setNewExpandedDataPanelSize = true;
 				resizeDataPanelTimer.schedule(1);

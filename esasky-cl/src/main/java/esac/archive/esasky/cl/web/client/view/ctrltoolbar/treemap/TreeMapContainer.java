@@ -242,7 +242,7 @@ public class TreeMapContainer extends DialogBox {
 		@Override
 		public void run() {
 			updateTreeMapSize();
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TreeMap_Resize, GoogleAnalytics.ACT_TreeMap_Resize, "");
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TREEMAP_RESIZE, GoogleAnalytics.ACT_TREEMAP_RESIZE, "");
 		}
 	};
 	

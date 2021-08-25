@@ -42,7 +42,7 @@ public class ScreenshotDialogBox extends AutoHidingMovablePanel {
     }       
     
 	public ScreenshotDialogBox(String url, final JavaScriptObject imageCanvas) {
-		super(GoogleAnalytics.CAT_Screenshot);
+		super(GoogleAnalytics.CAT_SCREENSHOT);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		

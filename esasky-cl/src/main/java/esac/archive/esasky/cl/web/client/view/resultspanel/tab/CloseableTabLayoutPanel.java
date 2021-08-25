@@ -391,7 +391,7 @@ public class CloseableTabLayoutPanel extends Composite {
                         Double.toString(entity.getSkyViewPosition().getCoordinate().dec));
                 AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
 
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Recenter, entity.getEsaSkyUniqId());
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_RECENTER, entity.getEsaSkyUniqId());
             }
         });
         recenterButton.addStyleName("tabButton");
@@ -412,7 +412,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 for(ITablePanel tablePanel : tablePanels) {
     				tablePanel.closeTablePanel();
     			}
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_CloseAll, "");
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_CLOSEALL, "");
             }
         });
     	closeAllButton.addStyleName("closeAllTabsButton");
@@ -433,7 +433,7 @@ public class CloseableTabLayoutPanel extends Composite {
     			tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     			tabPanel.updateData();
     			
-    			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_Refresh, tabPanel.getFullId());
+    			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_REFRESH, tabPanel.getFullId());
     		}
     	});
     	refreshButton.addStyleName("tabButton");
@@ -452,7 +452,7 @@ public class CloseableTabLayoutPanel extends Composite {
                 final String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
                 CloseableTabLayoutPanel.this.fireShowStylePanel(selectedTabId);
                 
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabToolbar_SetStyle, getSelectedWidget().getEsaSkyUniqID());
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_SETSTYLE, getSelectedWidget().getEsaSkyUniqID());
             }
         });
         styleButton.addStyleName("tabButton");
@@ -525,7 +525,7 @@ public class CloseableTabLayoutPanel extends Composite {
 	    updateStyleOnTab(getWidgetIndex(tabPanel.getWidget()));
 
         
-        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TabOpened, tabPanel.getFullId());
+        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TAB_OPENED, tabPanel.getFullId());
         tabPanel.getEntity().registerColorChangeObserver(new ColorChangeObserver() {
 			
 			@Override

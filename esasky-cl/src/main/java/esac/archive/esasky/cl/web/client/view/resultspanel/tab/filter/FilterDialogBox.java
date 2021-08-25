@@ -26,7 +26,7 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
     }
     
 	public FilterDialogBox(String tapName, String filterButtonId) {
-		super(GoogleAnalytics.CAT_Filter);
+		super(GoogleAnalytics.CAT_FILTER);
 		this.tapName = tapName;
 		this.filterButtonId = filterButtonId;
         this.style = this.resources.style();

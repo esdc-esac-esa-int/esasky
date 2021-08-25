@@ -56,7 +56,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 	};
 
 	public DatalinkDownloadDialogBox(final String url, String title) {
-		super(GoogleAnalytics.CAT_Datalink);
+		super(GoogleAnalytics.CAT_DATALINK);
 		
 		if(title == null || title.isEmpty()) {
 			title = "Datalink";
@@ -120,7 +120,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 									
 									@Override
 									public void onClick(ClickEvent event) {
-										GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Datalink, "Download", links.access_url);
+										GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DATALINK, "Download", links.access_url);
 									}
 								});
 								anchor.addStyleName("datalinkAnchor");
@@ -173,7 +173,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 		                	datalinkLoadFailedNotificationTimer.run();
 		                }
 		                datalinkLoadFailedNotificationTimer.schedule(5000);
-		                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Datalink, GoogleAnalytics.ACT_Datalink_LoadFailed, "Failed to load datalink: " + url);
+		                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DATALINK, GoogleAnalytics.ACT_DATALINK_LOADFAILED, "Failed to load datalink: " + url);
 
 					}
 				}));

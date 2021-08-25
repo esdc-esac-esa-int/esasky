@@ -115,7 +115,7 @@ public class HipsUrlPanel extends PopupPanel{
 				addSkyObserver.onSkyAddedWithUrl(hips);
 				errorLabel.setVisible(false);
 				hide();
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl, url);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL, url);
 			}
 			
 			@Override
@@ -125,7 +125,7 @@ public class HipsUrlPanel extends PopupPanel{
 				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
 				fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
 				errorLabel.setText(fullErrorText);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl_Fail, url);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL_FAIL, url);
 
 				Log.error(errorMsg);
 				

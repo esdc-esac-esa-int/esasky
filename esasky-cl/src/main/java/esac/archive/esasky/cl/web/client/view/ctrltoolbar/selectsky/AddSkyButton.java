@@ -78,7 +78,7 @@ public class AddSkyButton extends DisablablePushButton{
 					openUrlPanel(x, y);
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.LOCAL) {
-					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddLocalClick, "");
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDLOCALCLICK, "");
 					openLocalHips();
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.BROWSE) {
@@ -124,7 +124,7 @@ public class AddSkyButton extends DisablablePushButton{
 			errorMsg = errorMsg.replace("$DUE_TO$", lastError);
 			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText("error"));
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl_Fail, urls.get(0));
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL_FAIL, urls.get(0));
 			return;
 		}
 		HipsParser parser = new HipsParser(new HipsParserObserver() {
@@ -132,7 +132,7 @@ public class AddSkyButton extends DisablablePushButton{
 			@Override
 			public void onSuccess(HiPS hips) {
 				addSkyObserver.onSkyAddedWithUrl(hips);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddUrl, hips.getSurveyRootUrl());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL, hips.getSurveyRootUrl());
 			}
 			
 			@Override
@@ -166,7 +166,7 @@ public class AddSkyButton extends DisablablePushButton{
 			hips.setFiles(files);
 			hips.setLocal(true);
 			addSkyObserver.onSkyAddedWithUrl(hips);
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_AddLocal, hips.getSurveyName());
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDLOCAL, hips.getSurveyName());
 		} catch (IOException e) {
 			DisplayUtils.showMessageDialogBox(e.getMessage(),"Error", UUID.randomUUID().toString(), "");
 			Log.error(e.getMessage(), e);

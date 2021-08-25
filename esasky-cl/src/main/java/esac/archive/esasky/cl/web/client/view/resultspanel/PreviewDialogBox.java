@@ -111,7 +111,7 @@ public class PreviewDialogBox extends AutoHidingMovablePanel {
 	};
     
     public PreviewDialogBox(String url, String observationId) {
-    	super(GoogleAnalytics.CAT_Preview);
+    	super(GoogleAnalytics.CAT_PREVIEW);
         this.style = this.resources.style();
         this.style.ensureInjected();
         
@@ -181,7 +181,7 @@ public class PreviewDialogBox extends AutoHidingMovablePanel {
                 	postcardLoadFailedNotificationTimer.run();
                 }
                 postcardLoadFailedNotificationTimer.schedule(5000);
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Preview, GoogleAnalytics.ACT_Preview_PostcardLoadFailed, "Failed to load postcard: " + image.getUrl());
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PREVIEW, GoogleAnalytics.ACT_PREVIEW_POSTCARDLOADFAILED, "Failed to load postcard: " + image.getUrl());
 			}
 		});
 

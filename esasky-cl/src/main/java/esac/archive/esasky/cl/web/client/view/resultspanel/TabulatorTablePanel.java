@@ -405,7 +405,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         }
 
         final int files = multiRetrievalList.getMultiRetrievalBeanList().size();
-        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Download_DD, getFullId(), "Files: " + files);
+        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_DOWNLOAD_DD, getFullId(), "Files: " + files);
         
         if (files < 1) {
             Window.alert("Cannot find any URL to download");
@@ -595,7 +595,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         if("https:".equals(Window.Location.getProtocol()) && datalinkUrl.startsWith("http:")){
             datalinkUrl = datalinkUrl.replaceFirst("http:", "https:");
         }
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), datalinkUrl);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), datalinkUrl);
         String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
 
         selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(datalinkUrl, title));
@@ -604,7 +604,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public void onAccessUrlClicked(String url) {
         ESASkyJavaScriptLibrary.download(url, "ESASky-" + tabTitle);
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DownloadRow, getFullId(), url);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
     }
 
     @Override
@@ -612,7 +612,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         String url = row.invokeFunction("getData").getStringProperty(columnName);
         String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
         selectRowWhileDialogBoxIsOpen(row, new PreviewDialogBox(url, title));
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Download_Preview, getFullId(), title);        
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOAD_PREVIEW, getFullId(), title);        
     }
 
     @Override
@@ -629,7 +629,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         }
         
         AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_Recenter, getFullId(), 
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_RECENTER, getFullId(), 
                 rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
     }
 
@@ -651,7 +651,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
                         TextMgr.getInstance().getText("sampConstants_sendingViaSamp")
                         .replace(EsaSkyConstants.REPLACE_PATTERN, tableName)));
 
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_SendToVOTools, getFullId(), uniqueIdentifierField);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_SENDTOVOTOOLS, getFullId(), uniqueIdentifierField);
         String sampUrl = null;
         if (getEntity().getDescriptor().getDdBaseURL() != null && !getEntity().getDescriptor().getDdBaseURL().isEmpty()) {
             String tapName = getEntity().getDescriptor().getDdProductURI().split("@@@")[1];
@@ -775,7 +775,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         if(url.toLowerCase().contains("datalink")) {
         	onDatalinkClicked(row);
         }else {
-        	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_Outbound, GoogleAnalytics.ACT_Outbound_click, url);
+        	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
         	Window.open(url, "_blank", "");
         }
     }
@@ -796,7 +796,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
         CommonEventBus.getEventBus().fireEvent(new ShowPublicationSourcesEvent(rowData));
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TabRow_SourcesInPublication, getFullId(), rowData.getStringProperty("bibcode"));
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_SOURCESINPUBLICATION, getFullId(), rowData.getStringProperty("bibcode"));
     }
     
 
@@ -837,7 +837,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     public void onAjaxResponseError(String error) {
         removeStatusMessage();
         Log.error("Error fetching table data from server. " + " Error message: " + error);
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_RequestError, this.getClass().getSimpleName(), 
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_REQUESTERROR, this.getClass().getSimpleName(), 
                 "Error fetching table data from server. " + " Error message: " + error);
     }
     private void removeStatusMessage() {

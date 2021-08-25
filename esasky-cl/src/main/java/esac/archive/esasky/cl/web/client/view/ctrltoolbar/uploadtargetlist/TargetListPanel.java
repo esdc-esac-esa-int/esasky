@@ -293,8 +293,8 @@ public class TargetListPanel extends DialogBox {
                         + " [" + fileQueueErrorEvent.getErrorCode().toString() + "]: "
                         + fileQueueErrorEvent.getMessage());
 
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TargetList,
-                        GoogleAnalytics.ACT_TargetList_UploadError, fileQueueErrorEvent.getFile()
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TARGETLIST,
+                        GoogleAnalytics.ACT_TARGETLIST_UPLOADERROR, fileQueueErrorEvent.getFile()
                                 .getName()
                                 + " - QueueError: "
                                 + fileQueueErrorEvent.getErrorCode().toString());
@@ -317,8 +317,8 @@ public class TargetListPanel extends DialogBox {
                         + " [" + uploadErrorEvent.getErrorCode().toString() + "]: "
                         + uploadErrorEvent.getMessage());
 
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TargetList,
-                        GoogleAnalytics.ACT_TargetList_UploadError, uploadErrorEvent.getFile()
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TARGETLIST,
+                        GoogleAnalytics.ACT_TARGETLIST_UPLOADERROR, uploadErrorEvent.getFile()
                                 .getName()
                                 + " - Error: "
                                 + uploadErrorEvent.getErrorCode().toString());
@@ -360,8 +360,8 @@ public class TargetListPanel extends DialogBox {
                         searchResult,
                         TextMgr.getInstance().getText("uploadTargetList_targetList") + "<br>" + fileName);
 
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TargetList,
-                        GoogleAnalytics.ACT_TargetList_UploadSuccess, fileName);
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TARGETLIST,
+                        GoogleAnalytics.ACT_TARGETLIST_UPLOADSUCCESS, fileName);
 
                 return true;
             }
@@ -758,8 +758,8 @@ public class TargetListPanel extends DialogBox {
                 filename,
                 TextMgr.getInstance().getText(
                         preparedListDropDown.getSelectedObject()));
-        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TargetList,
-                GoogleAnalytics.ACT_TargetList_ListSelected,
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TARGETLIST,
+                GoogleAnalytics.ACT_TARGETLIST_LISTSELECTED,
                 preparedListDropDown.getSelectedObject());
     }
     

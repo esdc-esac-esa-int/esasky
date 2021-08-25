@@ -337,7 +337,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	                        AladinLiteConstants.FRAME_J2000);
 	                SearchPanel.this.searchResultsFocusPanel.setVisible(false);
 	                
-	                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SIMBAD: " + simbadResult.getSimbadMainId());
+	                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHRESULTCLICK, "SIMBAD: " + simbadResult.getSimbadMainId());
     			}
     		});
     		
@@ -414,7 +414,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         		                    new SSOCrossMatchEvent(currSSO.getName(), currSSO.getSsoObjType()));
         		            SearchPanel.this.searchResultsFocusPanel.setVisible(false);
         		            
-        		            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, "SSO: " + currSSO.getName());
+        		            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHRESULTCLICK, "SSO: " + currSSO.getName());
     		        });
         		}
         		container.add(ssoName);
@@ -450,7 +450,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 							label.setVisible(true);
 						}
 						showMoreSsoLabel.setVisible(false);
-						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchSsoResultShowMoreClick, "User input: " 
+						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHSSORESULTSHOWMORECLICK, "User input: " 
 						+ ssodnetResult.getUserInput() + " All SSOs: " + ssoList.values());
 					}
 				});
@@ -465,10 +465,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
             if(unrecognizedInput) {
                 showCoordsInputErrorMessage();
                 Log.debug("ERROR FOR WRONG INPUT FORMAT");
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchWrongCoords, input);                
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHWRONGCOORDS, input);                
             } else {
                 showTargetNotFoundMessage();
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchTargetNotFound, searchTextBox.getText());
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHTARGETNOTFOUND, searchTextBox.getText());
             }
 
         } else if (foundInSimbad && !foundInSSODnet && !foundAuthorInSimbad && !foundBibcodeInSimbad) {
@@ -477,7 +477,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
             AladinLiteWrapper.getInstance().goToTarget(simbadResult.getSimbadRaDeg(),
                     simbadResult.getSimbadDecDeg(), simbadResult.getFoVDeg(), false,
                     AladinLiteConstants.FRAME_J2000);
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultAuto, "SIMBAD: " + simbadResult.getSimbadMainId());
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHRESULTAUTO, "SIMBAD: " + simbadResult.getSimbadMainId());
             
         } else {
             this.searchResultsFocusPanel.setVisible(true);
@@ -488,7 +488,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private void addLinkToEsaArchive(FocusPanel menuEntry, Label ssoTypeLabel, String link, String eventName) {
         ssoTypeLabel.setVisible(false);
         menuEntry.addClickHandler((ClickEvent event) -> {
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchResultClick, eventName);
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHRESULTCLICK, eventName);
                 Window.open(link, "_blank", "");
                 SearchPanel.this.searchResultsFocusPanel.setVisible(false);
         });
@@ -569,7 +569,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	        				label.setVisible(true);
 	        			}
 	        			showMoreAuthorsLabel.setVisible(false);
-	        			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchAuthorResultShowMoreClick, "User input: " + simbadAuthorResult.getUserInput() + " All authors: " + authorList.values());
+	        			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHAUTHORRESULTSHOWMORECLICK, "User input: " + simbadAuthorResult.getUserInput() + " All authors: " + authorList.values());
 	        		}
 	        	});
 	        	
@@ -588,7 +588,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                 SearchPanel.this.searchResultsFocusPanel.setVisible(false);
                 
                 CommonEventBus.getEventBus().fireEvent(new AuthorSearchEvent(publicationResult.getName()));
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchAuthorResultClick, "SIMBAD: " + publicationResult.getName());
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHAUTHORRESULTCLICK, "SIMBAD: " + publicationResult.getName());
             }
         });
 
@@ -641,7 +641,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 							label.setVisible(true);
 						}
 						showMoreBibcodeLabel.setVisible(false);
-						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchBibcodeResultShowMoreClick, "User input: " + simbadBibcodeResult.getUserInput() + " All authors: " + authorList.values());
+						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHBIBCODERESULTSHOWMORECLICK, "User input: " + simbadBibcodeResult.getUserInput() + " All authors: " + authorList.values());
 					}
 				});
 				
@@ -660,7 +660,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 				SearchPanel.this.searchResultsFocusPanel.setVisible(false);
 				
 				CommonEventBus.getEventBus().fireEvent(new BibcodeSearchEvent(publicationResult.getName()));
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Search, GoogleAnalytics.ACT_Search_SearchBibcodeResultClick, "SIMBAD: " + publicationResult.getName());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHBIBCODERESULTCLICK, "SIMBAD: " + publicationResult.getName());
 			}
 		});
 		

@@ -57,7 +57,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
 	
 	
 	public ToggleColumnsDialogBox(String mission, GeneralJavaScriptObject[] columns, ToggleColumnAction toggleColumnAction, String datasetId){
-		super(GoogleAnalytics.CAT_ToggleColumns);
+		super(GoogleAnalytics.CAT_TOGGLECOLUMNS);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		this.columns = columns;
@@ -67,7 +67,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
         loadingSpinner.addStyleName("toggleColumnsLoadingSpinner");
         MainLayoutPanel.addElementToMainArea(loadingSpinner);
 		
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ToggleColumns, GoogleAnalytics.ACT_ToggleColumnsOpen, datasetId);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSOPEN, datasetId);
 
 		contentContainer.addStyleName("toggleColumns__contentContainer");
 		tabulatorContainer.getElement().setId("toggleColumns__tabulatorContainer");
@@ -193,7 +193,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
                 return;
             }
             toggleColumnAction.onShow(tapName);
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ToggleColumns, GoogleAnalytics.ACT_ToggleColumnsShow,"Column Name: " + tapName + "Dataset: " + datasetId);
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSSHOW,"Column Name: " + tapName + "Dataset: " + datasetId);
         }
     }
 
@@ -205,7 +205,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
                 return;
             }
             toggleColumnAction.onHide(tapName);
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_ToggleColumns, GoogleAnalytics.ACT_ToggleColumnsHide,"Column Name: " + tapName + "Dataset: " + datasetId);
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSHIDE,"Column Name: " + tapName + "Dataset: " + datasetId);
         }
     }
     

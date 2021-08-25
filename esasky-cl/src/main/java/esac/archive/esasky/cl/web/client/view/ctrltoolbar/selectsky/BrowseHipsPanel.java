@@ -50,7 +50,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 	TabulatorWrapper tabulatorTable;
 	
 	public BrowseHipsPanel() {
-		super(GoogleAnalytics.CAT_BrowseHips);
+		super(GoogleAnalytics.CAT_BROWSEHIPS);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		
@@ -82,7 +82,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 
 		loadData();
 		
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_BrowseHips, "");
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_BROWSEHIPS, "");
 		show();
 	}
 	

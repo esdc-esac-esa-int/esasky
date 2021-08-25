@@ -291,7 +291,7 @@ public class SkyRow extends Composite implements Selectable{
 				skyDetailsInfo.setPopupPosition(defaultLeft, 
 						skyDetailsBtn.getAbsoluteTop() + skyDetailsBtn.getOffsetHeight() / 2);
 				
-	            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SkyInfoShown, getFullId());
+	            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SKYINFOSHOWN, getFullId());
 			}
 		});
 
@@ -403,7 +403,7 @@ public class SkyRow extends Composite implements Selectable{
 			}
 			sendUpdateSkyName();
 			//Notify sky change to Google Analytics
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SkiesMenu, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getFullId());
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getFullId());
 	}
 
 	public void notifyClose(){
@@ -415,7 +415,7 @@ public class SkyRow extends Composite implements Selectable{
 	private void sendConvenienceEvent() {
 		if(!isSelected()) return;
 		//Convenience event for easy statistics gathering
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_Convenience, GoogleAnalytics.ACT_SkiesMenu_SelectedSky, getNameofSelected());
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONVENIENCE, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getNameofSelected());
 	}
 
 	@Override
