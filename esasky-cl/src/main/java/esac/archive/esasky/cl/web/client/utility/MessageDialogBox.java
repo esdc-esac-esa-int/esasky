@@ -135,7 +135,7 @@ public class MessageDialogBox extends Composite{
         inputWidget.setStyleName("messageDialogBoxWidget");
         
         contentPanel.add(inputWidget);
-        if(!forceLongText && content.length() > 400) {
+        if(!forceLongText && content.length() > 500) {
         	showMoreButton = createShowMoreButton();
         	contentPanel.add(showMoreButton);
         }
