@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.*;
 
 import esac.archive.esasky.ifcs.model.shared.HstImageCoordinateMetadata;
-import esac.archive.esasky.ifcs.model.shared.HstLargeImageMetadata;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HstImageDescriptor{
@@ -28,8 +27,6 @@ public class HstImageDescriptor{
 
 	@JsonProperty("large")
 	private String largeUrl;
-	
-	private HstLargeImageMetadata largeImageMetaData;
 	
 	@JsonProperty("coordinate_metadata")
 	private HstImageCoordinateMetadata coordinateMetadata;
@@ -94,12 +91,6 @@ public class HstImageDescriptor{
 	}
 	public void setLargeUrl(String largeUrl) {
 		this.largeUrl = largeUrl;
-	}
-	public HstLargeImageMetadata getLargeImageMetaData() {
-		return largeImageMetaData;
-	}
-	public void setLargeImageMetaData(HstLargeImageMetadata largeImageMetaData) {
-		this.largeImageMetaData = largeImageMetaData;
 	}
 	
 	public HstImageCoordinateMetadata getCoordinateMetadata() {
