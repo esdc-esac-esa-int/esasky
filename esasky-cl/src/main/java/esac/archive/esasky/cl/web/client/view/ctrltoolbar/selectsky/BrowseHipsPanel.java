@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
@@ -44,7 +45,6 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
     private final LoadingSpinner loadingSpinner = new LoadingSpinner(true);
     
     private static String aladinGlobalHipsListCache = null;
-	private final String ALADIN_GLOBAL_HIPSLIST_URL = "//aladin.u-strasbg.fr/hips/globalhipslist?fmt=json";
 	
 	private List<BrowseHipsPanelObserver> observers = new LinkedList<BrowseHipsPanelObserver>();
 	TabulatorWrapper tabulatorTable;
@@ -90,7 +90,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		if (aladinGlobalHipsListCache != null) {
 		    onJsonLoaded(aladinGlobalHipsListCache);
 		} else {
-		    JSONUtils.getJSONFromUrl(ALADIN_GLOBAL_HIPSLIST_URL, new IJSONRequestCallback() {
+		    JSONUtils.getJSONFromUrl(EsaSkyWebConstants.HIPSLIST_URL, new IJSONRequestCallback() {
 		        
 		        @Override
 		        public void onSuccess(String responseText) {
@@ -101,9 +101,10 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		        @Override
 		        public void onError(String errorCause) {
 		            String errorMsg = TextMgr.getInstance().getText("browseHips_errorLoadingGlobal");
-		            errorMsg = errorMsg.replace("$URL$", ALADIN_GLOBAL_HIPSLIST_URL);
+		            errorMsg = errorMsg.replace("$URL$", EsaSkyWebConstants.HIPSLIST_URL);
 		            DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 		                    TextMgr.getInstance().getText("error"));
+		            MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
 		            Log.error(errorCause);
 		        }
 		        
