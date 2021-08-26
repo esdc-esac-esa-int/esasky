@@ -393,6 +393,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
             if (url == null || url.trim().isEmpty()) {
                 url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("access_url"));
             }
+            if (url == null || "ASTRO_SPECTRA_CHEOPS".equals(entity.getDescriptor().getDescriptorId())) {
+            	url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("sci_cor_lc_opt_link"));
+            }
             if (url == null || url.trim().isEmpty()) {
                 continue;
             } else {
@@ -887,6 +890,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
     @Override
     public boolean isDataProductDatalink() {
+    	if(entity.getDescriptor().getDescriptorId().startsWith("HEASARC")) {
+    		return true;
+    	}
         return table.isDataProductDatalink();
     }
 

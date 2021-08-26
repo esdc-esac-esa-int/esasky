@@ -337,7 +337,8 @@ public class CloseableTabLayoutPanel extends Composite {
         return descriptor instanceof ExtTapDescriptor 
                 || descriptor.getMetadataDescriptorByTapName("product_url") != null
                 || (descriptor.getMetadataDescriptorByTapName("access_url") != null
-                        && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId()));
+                        && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId()))
+                || "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
     }
 
     private EsaSkyButton createSendButton() {
