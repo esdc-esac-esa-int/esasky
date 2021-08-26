@@ -976,11 +976,7 @@ public class TabulatorWrapper{
 		
       var percentFormatter = function(cell, formatterParams, onRendered){
             if(formatterParams.convertBack && formatterParams.convertBack === true){
-                //TODO parseFloat / 100
-                //Or use cell value? Problem with pretend cell from filter maybe? 
                 return parseFloat(cell.getValue()) / 100;
-//                return 0.88;
-//                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatStringToDouble(Ljava/lang/String;I)(cell.getValue(), formatterParams.maxDecimalDigits);
             } else {            
                 if(cell.getValue() == undefined){
                     return "";
