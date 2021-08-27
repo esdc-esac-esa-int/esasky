@@ -118,9 +118,9 @@ public class MultiTargetTooltip extends Tooltip {
         }
     	
         final String uid = UUID.randomUUID().toString();
-        final String url = 
-                EsaSkyWebConstants.GENERAL_RESOLVER_URL + "?action=bycoords&RA=" + URL.encodeQueryString(new Double(raSource).toString()) + "&DEC=" + URL.encodeQueryString(new Double(decSource).toString());
-
+        final String url = EsaSkyWebConstants.GENERAL_RESOLVER_URL + "?action=bycoords&RA="
+            		+ URL.encodeQueryString(Double.toString(raSource))
+            		+ "&DEC=" + URL.encodeQueryString(Double.toString(decSource));
         CommonEventBus.getEventBus().fireEvent(
                 new ProgressIndicatorPushEvent(uid, TextMgr.getInstance().getText("MultiTargetTooltip_resolvingNearbyTargets")));
 

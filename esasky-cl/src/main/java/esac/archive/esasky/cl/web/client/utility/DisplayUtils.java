@@ -106,7 +106,7 @@ public final class DisplayUtils {
             final String dialogId, String analyticsId) {
         
         if(lastShownMessageDialogBox != null && lastShownMessageDialogBox.isShowing() 
-                && lastShownMessageDialogBox.getId() != null && lastShownMessageDialogBox.getId() == dialogId){
+                && lastShownMessageDialogBox.getId() != null && lastShownMessageDialogBox.getId().equals(dialogId)){
             return lastShownMessageDialogBox;
         }
         

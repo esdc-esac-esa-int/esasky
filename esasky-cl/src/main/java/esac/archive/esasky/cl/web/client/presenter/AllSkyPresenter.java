@@ -299,7 +299,7 @@ public class AllSkyPresenter {
                         details.put(PlanningConstant.COO_FRAME, AladinLiteWrapper
                                 .getCoordinatesFrame().name());
 
-                        if (currCenter.getKey() == currentPlanningFootprintRow.getAperture()) {
+                        if (currCenter.getKey().equals(currentPlanningFootprintRow.getAperture())) {
 
                             AladinLiteWrapper.getInstance()
                             .addSourcesToFutureSelectedDetectorCatalogue(
@@ -342,7 +342,7 @@ public class AllSkyPresenter {
                         details.put(PlanningConstant.COO_FRAME, AladinLiteWrapper
                                 .getCoordinatesFrame().name());
 
-                        if (currCenter.getKey() == currentPlanningFootprintRow.getAperture()) {
+                        if (currCenter.getKey().equals(currentPlanningFootprintRow.getAperture())) {
                             AladinLiteWrapper.getInstance()
                             .addSourcesToFutureSelectedDetectorCatalogue(
                                     Double.toString(currCenter.getValue().get(0)[0]),

@@ -412,7 +412,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	LinkedList<Integer> shapeIds = drawer.selectShapes(shapeName);
     	for(int id : shapeIds) {
             if(tablePanel != null) {
-            	tablePanel.selectRow(new Integer(id));
+            	tablePanel.selectRow(id);
             }
     	}
     	return shapeIds;
@@ -423,7 +423,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	LinkedList<Integer> shapeIds = drawer.deselectShapes(shapeName);
     	for(int id : shapeIds) {
             if(tablePanel != null) {
-            	tablePanel.deselectRow(new Integer(id));
+            	tablePanel.deselectRow(id);
             }
     	}
     	return shapeIds;
