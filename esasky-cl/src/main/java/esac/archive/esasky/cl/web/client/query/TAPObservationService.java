@@ -53,7 +53,6 @@ public class TAPObservationService extends AbstractTAPService {
     
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
-        adql.replace("\\s*,\\s*$", "");
         adql += " FROM " + descriptor.getTapTable() + " WHERE ";
 
         adql += getGeometricConstraint(descriptor);
@@ -83,7 +82,6 @@ public class TAPObservationService extends AbstractTAPService {
             }
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
     	}
-        adql.replace("\\s*,\\s*$", "");
         adql += " FROM " + descriptor.getTapTable() + " WHERE "
         		+ "1=INTERSECTS(fov, CIRCLE(\'ICRS\', "
 				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "

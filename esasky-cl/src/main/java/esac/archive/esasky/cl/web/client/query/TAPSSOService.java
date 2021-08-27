@@ -54,7 +54,6 @@ public class TAPSSOService extends AbstractTAPService {
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
 
-        adql.replace("\\s*,\\s*$", "");
         adql += " FROM " + descriptor.getTapTable() + " AS a JOIN "
                 + descriptor.getSsoXMatchTapTable()
                 + " AS b on a.observation_oid = b.observation_oid WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;

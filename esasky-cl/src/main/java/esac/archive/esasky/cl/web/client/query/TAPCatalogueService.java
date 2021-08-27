@@ -63,7 +63,6 @@ public class TAPCatalogueService extends AbstractTAPService {
             
         }
 
-        adql.replace("\\s*,\\s*$", "");
         adql += " from " + descriptor.getTapTable() + " where " + getGeometricConstraint(descriptor);
         
         if(!"".equals(filters)) {
@@ -102,7 +101,6 @@ public class TAPCatalogueService extends AbstractTAPService {
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
 
-        adql.replace("\\s*,\\s*$", "");
         adql += " from " + descriptor.getTapTable() + " WHERE "
     	+ "esasky_q3c_bitshift_left(" + Integer.toString(ipix) + "," + Integer.toString(60 -  2 * order) + " ) <= q3c_ang2ipix(ra,dec)"
     			+ " AND esasky_q3c_bitshift_left(" + Integer.toString(ipix + 1) + "," + Integer.toString(60 -  2 * order) + " ) > q3c_ang2ipix(ra,dec)";
@@ -147,7 +145,6 @@ public class TAPCatalogueService extends AbstractTAPService {
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
 
-        adql.replace("\\s*,\\s*$", "");
         adql += " from " + descriptor.getTapTable() + " WHERE "
     	+ "'1' = q3c_radial_query(" +  descriptor.getTapRaColumn() + ", "  + descriptor.getTapDecColumn() + ", "
 				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "

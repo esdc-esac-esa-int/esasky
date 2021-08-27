@@ -86,7 +86,6 @@ public abstract class AbstractTAPService {
     	        adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
     	}
     	
-    	adql.replace("\\s*,\\s*$", "");
     	adql += " from " + descriptor.getTapTable() + whereADQL;
     	
     	Log.debug("[TAPQueryBuilder/getMetadata4Sources()] ADQL " + adql);
