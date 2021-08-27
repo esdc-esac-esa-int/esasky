@@ -334,11 +334,19 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     private boolean hasProductUrl(IDescriptor descriptor) {
-        return descriptor instanceof ExtTapDescriptor 
-                || descriptor.getMetadataDescriptorByTapName("product_url") != null
-                || (descriptor.getMetadataDescriptorByTapName("access_url") != null
-                        && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId()))
-                || "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
+    	
+    	if(descriptor instanceof ExtTapDescriptor) {
+    		return true;
+    	}
+    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null){
+    		return true;
+    		
+    	}
+    	if(descriptor.getMetadataDescriptorByTapName("access_url") != null
+                && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId())){
+    		return true;
+    	}
+        return "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
     }
 
     private EsaSkyButton createSendButton() {
