@@ -8,7 +8,7 @@ function SkyImageManager (containerId, hipsSources) {
 
   currentObj.container.find("[name='coordinates_radio']").change(function() {
     currentObj.updateCoordinatesMode();
-    ga('send', 'event', CONFIG.GA_CATEGORY, "ChangeInputAreaType", currentObj.container.find("input[name='coordinates_radio']:checked").val());
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "ChangeInputAreaType", currentObj.container.find("input[name='coordinates_radio']:checked").val()]);
   });
   currentObj.container.find(".polygon").change(function() {
     currentObj.refreshAladinPolygon();
@@ -24,19 +24,19 @@ function SkyImageManager (containerId, hipsSources) {
   });
   currentObj.container.find("[type='aspectRatio']").change(function() {
     getInputFloatValueCropped(currentObj.container.find("[type='aspectRatio']"), CONFIG.ASPECT_RATIO.DEFAULT, CONFIG.ASPECT_RATIO.MIN, CONFIG.ASPECT_RATIO.MAX);
-    ga('send', 'event', CONFIG.GA_CATEGORY, "aspectRatioChanged", currentObj.container.find("[type='aspectRatio']").val());
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "aspectRatioChanged", currentObj.container.find("[type='aspectRatio']").val()]);
   });
   currentObj.container.find("[type='norder']").change(function() {
     getInputIntValueCropped(currentObj.container.find("[type='norder']"), CONFIG.NORDER.DEFAULT, CONFIG.NORDER.MIN, CONFIG.NORDER.MAX);
-    ga('send', 'event', CONFIG.GA_CATEGORY, "norderChanged", currentObj.container.find("[type='norder']").val());
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "norderChanged", currentObj.container.find("[type='norder']").val()]);
   });
   currentObj.container.find("[type='size']").change(function() {
     getInputIntValueCropped(currentObj.container.find("[type='size']"), CONFIG.SIZE.DEFAULT, CONFIG.SIZE.MIN, CONFIG.SIZE.MAX);
-    ga('send', 'event', CONFIG.GA_CATEGORY, "sizeChanged", currentObj.container.find("[type='size']").val());
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "sizeChanged", currentObj.container.find("[type='size']").val()]);
   });
   currentObj.container.find("[type='timeout']").change(function() {
     getInputIntValueCropped(currentObj.container.find("[type='timeout']"), CONFIG.TIMEOUT.DEFAULT, CONFIG.TIMEOUT.MIN, CONFIG.TIMEOUT.MAX);
-    ga('send', 'event', CONFIG.GA_CATEGORY, "timeoutChanged", currentObj.container.find("[type='timeout']").val());
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "timeoutChanged", currentObj.container.find("[type='timeout']").val()]);
   });
   currentObj.container.find("#norderCheck").change(function() {
     if (currentObj.container.find("#norderCheck").is(":checked")){
@@ -44,7 +44,7 @@ function SkyImageManager (containerId, hipsSources) {
     } else {
       currentObj.container.find("[type='norder']").hide();
     }
-    ga('send', 'event', CONFIG.GA_CATEGORY, "nOrderCheckClick", currentObj.container.find("#norderCheck").is(":checked"));
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "nOrderCheckClick", currentObj.container.find("#norderCheck").is(":checked")]);
   });
   currentObj.container.find("#timeoutCheck").change(function() {
     if (currentObj.container.find("#timeoutCheck").is(":checked")){
@@ -52,11 +52,11 @@ function SkyImageManager (containerId, hipsSources) {
     } else {
       currentObj.container.find("[type='timeout']").hide();
     }
-    ga('send', 'event', CONFIG.GA_CATEGORY, "timeoutCheckClick", currentObj.container.find("#timeoutCheck").is(":checked"));
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "timeoutCheckClick", currentObj.container.find("#timeoutCheck").is(":checked")]);
   });
   currentObj.container.find("#aladinCheck").change(function() {
     currentObj.updateAladin();
-    ga('send', 'event', CONFIG.GA_CATEGORY, "aladinCheckClick", currentObj.container.find("#aladinCheck").is(":checked"));
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "aladinCheckClick", currentObj.container.find("#aladinCheck").is(":checked")]);
   });
   currentObj.container.find(".btnFovCorners").click(function(e) {
     e.preventDefault();
@@ -73,13 +73,13 @@ function SkyImageManager (containerId, hipsSources) {
     currentObj.container.find(".polygon").val(JSON.stringify(currentObj.aladin.getFovCorners(2)).replace(/\]/g, '').replace(/\[/g, ''));
     currentObj.refreshAladinPolygon();
 
-    ga('send', 'event', CONFIG.GA_CATEGORY, "getFovFromAladin", currentObj.container.find(".polygon").val());
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "getFovFromAladin", currentObj.container.find(".polygon").val()]);
   });
   currentObj.container.find(".btnRefresh").click(function(e) {
     e.preventDefault();
     currentObj.showPreview();
 
-    ga('send', 'event', CONFIG.GA_CATEGORY, "RefreshImage", currentObj.container.find(".skyPreviewContainer").find("img").attr("src"));
+    window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "RefreshImage", currentObj.container.find(".skyPreviewContainer").find("img").attr("src")]);
 
   });
 
@@ -148,7 +148,7 @@ function SkyImageManager (containerId, hipsSources) {
     var openLink = $("<a class=\"openTab btn btn-info\" href=\"" + imageUrl + "\" target=\"_blank\" style=\"float:right\">Open image in new tab</a>");
 
     openLink.click(function(e) {
-      ga('send', 'event', CONFIG.GA_CATEGORY, "OpenImageInTab", $(this).attr("href"));
+      window._paq.push(['trackEvent', CONFIG.GA_CATEGORY, "OpenImageInTab", $(this).attr("href")]);
     });
 
     currentObj.container.find(".skyPreviewContainer").html("");
