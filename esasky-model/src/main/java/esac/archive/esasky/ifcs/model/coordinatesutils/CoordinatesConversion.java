@@ -93,12 +93,12 @@ public class CoordinatesConversion {
      * @param coords Input String
      * @return String
      */
-    public static String getRaFromCoords(final String coords) {
+    public static String getRaFromCoords(String coords) {
 
         String[] aux;
         String auxRa = "";
 
-        coords.trim();
+        coords = coords.trim();
 
         if (coords.substring(0, 1).matches("\\+")) {
             aux = coords.split("\\+|-");
@@ -116,12 +116,12 @@ public class CoordinatesConversion {
      * @param coords Input String
      * @return String
      */
-    public static String getDecFromCoords(final String coords) {
+    public static String getDecFromCoords(String coords) {
 
         String[] aux;
         String auxDec = "";
 
-        coords.trim();
+        coords = coords.trim();
         String decSign = "+";
         int decSignIndex = coords.indexOf("+", 1);
         if (decSignIndex < 0) {
