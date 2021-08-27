@@ -484,7 +484,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private void addTapFilter(String label, String tapFilter) {
 		boolean shouldNotify = true;
 		if(tapFilter.length() > 0) {
-			if(tapFilters.containsKey(label) && tapFilter == tapFilters.get(label)){
+			if(tapFilters.containsKey(label) && tapFilter.equals(tapFilters.get(label))){
 					shouldNotify = false;
 			}
 			tapFilters.put(label, tapFilter);
