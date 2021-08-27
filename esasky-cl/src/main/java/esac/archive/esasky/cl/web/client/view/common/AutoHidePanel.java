@@ -28,13 +28,13 @@ public class AutoHidePanel extends FlowPanel{
 	public void show() {
 		MainLayoutPanel.addElementToMainArea(this);
 		isShowing = true;
-		updateHandlers();
+		updateHandlersEsaSky();
 	}
 
 	public void hide() {
 		MainLayoutPanel.removeElementFromMainArea(this);
 		isShowing = false;
-		updateHandlers();
+		updateHandlersEsaSky();
 	}
 	
 	public boolean isShowing() {
@@ -54,7 +54,7 @@ public class AutoHidePanel extends FlowPanel{
 	/*Auto hide functionality adapted from source code of
 	 * GWT PopupPanel
 	 * */
-	private void previewNativeEvent(NativePreviewEvent event) {
+	private void previewNativeEventEsasky(NativePreviewEvent event) {
 		// If the event has been canceled or consumed, ignore it
 		if (event.isCanceled() || (event.isConsumed())) {
 			// We need to ensure that we cancel the event even if its been consumed so
@@ -64,8 +64,8 @@ public class AutoHidePanel extends FlowPanel{
 
 		// If the event targets the popup or the partner, consume it
 		Event nativeEvent = Event.as(event.getNativeEvent());
-		boolean eventTargetsPopupOrPartner = eventTargetsPopup(nativeEvent)
-				|| eventTargetsPartner(nativeEvent);
+		boolean eventTargetsPopupOrPartner = eventTargetsPopupEsaSky(nativeEvent)
+				|| eventTargetsPartnerEsaSky(nativeEvent);
 
 		// Switch on the event type
 		int type = nativeEvent.getTypeInt();
@@ -86,14 +86,14 @@ public class AutoHidePanel extends FlowPanel{
 			break;
 		}
 	}
-	private boolean eventTargetsPopup(NativeEvent event) {
+	private boolean eventTargetsPopupEsaSky(NativeEvent event) {
 		EventTarget target = event.getEventTarget();
 		if (Element.is(target)) {
 			return getElement().isOrHasChild(Element.as(target));
 		}
 		return false;
 	}
-	private boolean eventTargetsPartner(NativeEvent event) {
+	private boolean eventTargetsPartnerEsaSky(NativeEvent event) {
 		if (autoHidePartners == null) {
 			return false;
 		}
@@ -110,7 +110,7 @@ public class AutoHidePanel extends FlowPanel{
 	}
 	private HandlerRegistration nativePreviewHandlerRegistration;
 
-	private void updateHandlers() {
+	private void updateHandlersEsaSky() {
 		// Remove any existing handlers.
 		if (nativePreviewHandlerRegistration != null) {
 			nativePreviewHandlerRegistration.removeHandler();
@@ -121,7 +121,7 @@ public class AutoHidePanel extends FlowPanel{
 		if (isShowing) {
 			nativePreviewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
 				public void onPreviewNativeEvent(NativePreviewEvent event) {
-					previewNativeEvent(event);
+					previewNativeEventEsasky(event);
 				}
 			});
 		}
