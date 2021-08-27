@@ -37,11 +37,15 @@ function fillSkySelector (skySelector, hipsSources){
   skySelector.html("");
 
   for (menuEntryIdx in hipsSources.menuEntries){
-    var menuEntry = hipsSources.menuEntries[menuEntryIdx];
-    for (hipsIdx in menuEntry.hips){
-      var hips = menuEntry.hips[hipsIdx];
-      var sky = "<option value=\"" + hips.surveyId + "\">" + hips.surveyName + "</option>"
-      skySelector.append(sky);
+   if (hipsSources.menuEntries.hasOwnProperty(menuEntryIdx)) {
+	    var menuEntry = hipsSources.menuEntries[menuEntryIdx];
+	    for (hipsIdx in menuEntry.hips){
+	    	 if (menuEntry.hips.hasOwnProperty(hipsIdx)) {
+		      var hips = menuEntry.hips[hipsIdx];
+		      var sky = "<option value=\"" + hips.surveyId + "\">" + hips.surveyName + "</option>"
+		      skySelector.append(sky);
+		     }
+	    }
     }
   }
 

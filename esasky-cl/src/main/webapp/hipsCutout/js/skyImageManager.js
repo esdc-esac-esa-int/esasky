@@ -244,8 +244,10 @@ function SkyImageManager (containerId, hipsSources) {
       var dec = 0;
 
       for (var idx in pointsArr) {
+      	if (pointsArr.hasOwnProperty(idx)) {
           ra += pointsArr[idx][0];
           dec += pointsArr[idx][1];
+        }
       }
 
       return { ra: ra / pointsArr.length, dec: dec / pointsArr.length };
