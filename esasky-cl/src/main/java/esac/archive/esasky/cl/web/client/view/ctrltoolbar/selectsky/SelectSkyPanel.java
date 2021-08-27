@@ -312,7 +312,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		}
 		ensureCorrectSkyStyle();
 		if(indexOfSelected > indexToRemove) {
-			slider.setValue(indexOfSelected - 1);
+			slider.setValue(indexOfSelected - 1.0);
 		} else {
 			slider.setValue(indexOfSelected);
 		}

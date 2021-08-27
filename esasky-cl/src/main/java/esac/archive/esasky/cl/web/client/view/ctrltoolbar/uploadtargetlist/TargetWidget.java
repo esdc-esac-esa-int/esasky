@@ -56,7 +56,7 @@ public class TargetWidget extends Composite implements Selectable {
 	 */
 	private void initView() {
 		this.label = new Label();
-		label.getElement().getStyle().setProperty("maxWidth", width - 26, Unit.PX);
+		label.getElement().getStyle().setProperty("maxWidth", width - 26.0, Unit.PX);
 		
 		String targetName;
 		if (this.target.getUserInputType() == SearchInputType.BIBCODE

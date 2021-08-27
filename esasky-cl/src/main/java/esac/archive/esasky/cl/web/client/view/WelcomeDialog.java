@@ -183,7 +183,7 @@ public class WelcomeDialog extends Composite {
     private void close() {
     	if(checkBox.getValue()){
 			Date expires = new Date();
-			long milliseconds = 120 * 24 * 60 * 60 * 1000;
+			long milliseconds = ((long) 120)  * 24 * 60 * 60 * 1000;
 			expires.setTime(expires.getTime() + milliseconds);
 			Cookies.setCookie(WELCOME_COOKIE_NAME, "", expires);
 		}

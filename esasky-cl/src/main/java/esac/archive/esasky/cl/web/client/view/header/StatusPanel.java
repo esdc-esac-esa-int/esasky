@@ -108,7 +108,7 @@ public class StatusPanel extends Composite implements View{
 				int skyLabelAndMargin = skyLabelWidth == 0 ? 10 : skyLabelWidth + 20;
 				statusPanel.getElement().getStyle().setMarginLeft(
 						Document.get().getElementById("coordinateContainer").getOffsetWidth() 
-						+ skyLabelAndMargin
+						+ (double) skyLabelAndMargin
 						, Unit.PX);
 				setResponsiveStyle();
 			}

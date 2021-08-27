@@ -274,7 +274,7 @@ public class TargetListPanel extends DialogBox {
                 if (uploadProgressEvent.getBytesTotal() > 0) {
                     progress = NumberFormat.getPercentFormat().format(
                             uploadProgressEvent.getBytesComplete()
-                                    / uploadProgressEvent.getBytesTotal());
+                                    / ((double) uploadProgressEvent.getBytesTotal()));
                 }
                 Log.info("Into onUploadProgress(" + progress + ")...");
                 return true;

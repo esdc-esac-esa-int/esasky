@@ -46,7 +46,7 @@ public class RangeFilterDialogBox extends FilterDialogBox {
     
     private final int SLIDER_MAX = 10000;
     private double currentSliderFromFraction = 0;
-    private double currentSliderToFraction = 1 * SLIDER_MAX;
+    private double currentSliderToFraction = 1.0 * SLIDER_MAX;
     
     private TextBox fromTextBox = new TextBox();
     private TextBox toTextBox = new TextBox();

@@ -224,7 +224,7 @@ public class GUISessionStatus {
 			}
 			UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
 			Date expires = new Date();
-			long milliseconds = 120 * 24 * 60 * 60 * 1000;
+			long milliseconds = ((long) 120)  * 24 * 60 * 60 * 1000;
 			expires.setTime(expires.getTime() + milliseconds);
 			Cookies.setCookie(EsaSkyWebConstants.SCI_MODE_COOKIE, Boolean.toString(isInScienceMode), expires);
 		}

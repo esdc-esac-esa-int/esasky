@@ -276,8 +276,8 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                 clearTextButton.getElement().getStyle().setTop(5, Unit.PX); 
             }
             else{
-                clearTextButton.getElement().getStyle().setTop((searchTextBox.getOffsetHeight() / 2) - 
-                		(clearTextButton.getOffsetHeight() / 2) , Unit.PX);
+                clearTextButton.getElement().getStyle().setTop((searchTextBox.getOffsetHeight() / 2.0) - 
+                		(clearTextButton.getOffsetHeight() / 2.0) , Unit.PX);
             }
         }
     }
