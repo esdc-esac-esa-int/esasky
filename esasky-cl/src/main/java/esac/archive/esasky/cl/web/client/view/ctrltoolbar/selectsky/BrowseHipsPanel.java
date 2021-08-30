@@ -131,37 +131,37 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
             });
         metadata.push(
             {
-                name: "hips_service_url",
-                displayName: $wnd.esasky.getInternationalizationText("URL"), 
-                datatype:"HTML", 
-                visible: true
-            });
-        metadata.push(
-            {
                 name: "moc_order",
-                displayName: $wnd.esasky.getInternationalizationText("order"), 
+                displayName: $wnd.esasky.getInternationalizationText("hips_order"), 
                 datatype:"INTEGER", 
                 visible: true
             });
         metadata.push(
             {
                 name: "moc_sky_fraction",
-                displayName: $wnd.esasky.getInternationalizationText("coverage"), 
+                displayName: $wnd.esasky.getInternationalizationText("hips_coverage"), 
                 datatype:"PERCENT", 
                 visible: true
             });
         metadata.push(
             {
                 name: "em_min",
-                displayName: $wnd.esasky.getInternationalizationText("em_min"), 
+                displayName: $wnd.esasky.getInternationalizationText("hips_em_min"), 
                 datatype:"DOUBLE", 
                 visible: true
             });
         metadata.push(
             {
                 name: "em_max",
-                displayName: $wnd.esasky.getInternationalizationText("em_max"), 
+                displayName: $wnd.esasky.getInternationalizationText("hips_em_max"), 
                 datatype:"DOUBLE", 
+                visible: true
+            });
+    	metadata.push(
+            {
+                name: "hips_service_url",
+                displayName: "URL", 
+                datatype:"HTML", 
                 visible: true
             });
            return metadata;

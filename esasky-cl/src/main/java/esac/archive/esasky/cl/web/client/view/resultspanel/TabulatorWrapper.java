@@ -1244,7 +1244,7 @@ public class TabulatorWrapper{
                         minWidth: 50,
                         download: false,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"plus-sign-light-small.png",
-                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_addHips")},
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_addHips_tooltip")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAddHipsClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
