@@ -3276,6 +3276,31 @@
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
 
+	<text key="addSkyMenuItem_ESASKY"> Add new row </text>
+	<text key="addSkyMenuItem_URL"> HiPS from URL </text>
+	<text key="addSkyMenuItem_LOCAL"> HiPS from Local computer </text>
+	<text key="addSkyMenuItem_BROWSE"> Browse HiPS registry </text>
+	
+	<text key="addUrl_Header"> Adding HiPS from URL </text>
+	<text key="addUrl_Description"> Add a HiPS into ESASky from an external URL.
+	Enter the URL of the HiPS you wish to visualise and ESASky will try to parse the URL for properties and display it on the sky
+	</text>
+	
+	<text key="addSky_errorParsingProperties">
+		Error parsing properties due to: $DUE_TO$ 
+		&lt;br&gt;&lt;br&gt;
+		Might be because HiPS service provider doesn't allow Cross origin requests (CORS)
+		or doesn't have a secure https protocol which unfortunately makes it impossible to load the HiPS into ESASky
+	</text>
+	
+	<text key="browseHips_headerLabel"> HiPS Registry Global List </text>
+	<text key="browseHips_errorLoadingGlobal">
+		ESASky could not load the global hips list from: $URL$ </text>
+
+	<text key="targetlist_images"> Images </text>
+	<text key="targetlist_hstTitle"> ESA/Hubble Pictures </text>
+
+
 
 
 </Internationalization>
