@@ -9,6 +9,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Window;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.Controller;
@@ -114,7 +115,13 @@ public class ApiHips extends ApiBase{
 		return true;
 	}
 
-	public void setHiPSWithParams(String surveyName, String surveyRootUrl, boolean add, final JavaScriptObject widget) {
+	public void setHiPSWithParams(String surveyName, String baseUrl, boolean add, final JavaScriptObject widget) {
+		
+		if("https:".equals(Window.Location.getProtocol()) && baseUrl.startsWith("http:")){
+			baseUrl = baseUrl.replaceFirst("http:", "https:");
+		}
+		
+		final String surveyRootUrl = baseUrl;
 		
 		final String propertiesUrl = surveyRootUrl +  "/" +  ApiConstants.HIPS_PROPERTIES_FILE;
 		JSONUtils.getJSONFromUrl(propertiesUrl, new JsonRequestCallback("", propertiesUrl) {
