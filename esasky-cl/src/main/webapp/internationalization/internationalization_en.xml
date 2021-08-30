@@ -514,7 +514,7 @@
 		Explore catalogue data for this region
 	</text>
 	<text key="webConstants_exploreSpectral">
-		Explore spectral or Lightcurve data for this region
+		Explore spectral or lightcurve data for this region
 	</text>
 	<text key="webConstants_exploreData">
 		Explore data for $TARGET$
@@ -3276,10 +3276,10 @@
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
 
-	<text key="addSkyMenuItem_ESASKY"> Add new row </text>
-	<text key="addSkyMenuItem_URL"> HiPS from URL </text>
-	<text key="addSkyMenuItem_LOCAL"> HiPS from Local computer </text>
-	<text key="addSkyMenuItem_BROWSE"> Browse HiPS registry </text>
+	<text key="addSkyMenuItem_ESASKY">Add new row</text>
+	<text key="addSkyMenuItem_URL">HiPS from URL</text>
+	<text key="addSkyMenuItem_LOCAL">HiPS from local computer</text>
+	<text key="addSkyMenuItem_BROWSE">Browse HiPS registry</text>
 	
 	<text key="addUrl_Header"> Adding HiPS from URL </text>
 	<text key="addUrl_Description"> Add a HiPS into ESASky from an external URL.
@@ -3293,12 +3293,12 @@
 		or doesn't have a secure https protocol which unfortunately makes it impossible to load the HiPS into ESASky
 	</text>
 	
-	<text key="browseHips_headerLabel"> HiPS Registry Global List </text>
+	<text key="browseHips_headerLabel">HiPS Registry Global List </text>
 	<text key="browseHips_errorLoadingGlobal">
 		ESASky could not load the global hips list from: $URL$ </text>
 
-	<text key="targetlist_images"> Images </text>
-	<text key="targetlist_hstTitle"> ESA/Hubble Pictures </text>
+	<text key="targetlist_images">Images </text>
+	<text key="targetlist_hstTitle">ESA/Hubble Pictures </text>
 	<text key="targetlist_opacity">Image Opacity</text>
 
 	<!-- Hips browse panel -->
