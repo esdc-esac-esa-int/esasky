@@ -16,6 +16,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -31,6 +32,7 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.View {
 
     private ZoomControlPanel zoomControlPanel;
+    private SelectionToolBoxPanel selectionPanel;
     private static Resources resources = GWT.create(Resources.class);
     private CssResource style;
     private VerticalPanel allSkyContainerPanel;
@@ -112,9 +114,14 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
             }
         });
 
+        FlowPanel zoomAndSelectionToolBox = new FlowPanel();
+        zoomAndSelectionToolBox.addStyleName("zoomAndSelectionContainer");
         // build zoom control panel
         this.zoomControlPanel = new ZoomControlPanel();
-
+        this.selectionPanel = new SelectionToolBoxPanel();
+        zoomAndSelectionToolBox.add(zoomControlPanel);
+        zoomAndSelectionToolBox.add(selectionPanel);
+        
         esaLogo = new Image(resources.logo());
         esaLogo.getElement().setId("allSkyESALogo");
         esaLogo.addClickHandler(new ClickHandler() {
@@ -132,7 +139,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         this.allSkyContainerPanel.add(this.aladinLiteFocusPanel);
         
         if(!DeviceUtils.isMobileOrTablet()) {
-            this.allSkyContainerPanel.add(this.zoomControlPanel);
+            this.allSkyContainerPanel.add(zoomAndSelectionToolBox);
         }
         
         this.allSkyContainerPanel.add(esaLogo);
@@ -194,8 +201,13 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     }
 
     @Override
-    public final void showSelectionToolBox(final SelectionToolBoxPanel selectionToolBoxPanel) {
-    	selectionToolBoxPanel.show("");
+    public final void deToggleSelectionMode() {
+    	this.selectionPanel.deToggleAllButtons();
+    }
+    
+    @Override
+    public final void areaSelectionKeyboardShortcutStart() {
+        this.selectionPanel.areaSelectionKeyboardShortcutStart();
     }
 
     @Override

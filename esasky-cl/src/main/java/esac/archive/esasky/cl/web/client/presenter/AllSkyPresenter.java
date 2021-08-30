@@ -14,8 +14,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectionToolBoxEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectionToolBoxEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
@@ -40,7 +38,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MultiTargetTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PlanningDetectorCenterTooltip;
-import esac.archive.esasky.cl.web.client.view.allskypanel.SelectionToolBoxPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.MultiTargetSourceConstants;
@@ -61,8 +58,6 @@ public class AllSkyPresenter {
     private List<SSOOverlayAndPolyline> ssoPolyline = null;
     private HiPS currentHiPS = EsaSkyWebConstants.getInitialHiPS();
     
-    private SelectionToolBoxPanel selectionToolBoxPanel = null;
-    
     /**
      * View interface.
      */
@@ -78,8 +73,9 @@ public class AllSkyPresenter {
 
         void hideTooltip();
 
-		void showSelectionToolBox(SelectionToolBoxPanel selectionToolBoxPanel);
+        void deToggleSelectionMode();
 
+        void areaSelectionKeyboardShortcutStart();
     }
 
     /**
@@ -152,21 +148,7 @@ public class AllSkyPresenter {
               AllSkyPresenter.this.view.showSourceTooltip(event.getTooltip());
             }
         });
-
-        CommonEventBus.getEventBus().addHandler(AladinLiteSelectionToolBoxEvent.TYPE, new AladinLiteSelectionToolBoxEventHandler() {
-        	
-        	@Override
-        	public void onSelectionToolBox(AladinLiteSelectionToolBoxEvent event) {
-        		
-        		if(selectionToolBoxPanel != null) {
-        			selectionToolBoxPanel.hide();
-        		}
-        		
-        		selectionToolBoxPanel = new SelectionToolBoxPanel(event.getX(), event.getY());
-        		AllSkyPresenter.this.view.showSelectionToolBox(selectionToolBoxPanel);
-        	}
-        });
-        
+     
         // Click on + (ZoomIn) button
         this.view.getZoomInClickHandler().addClickHandler(new ClickHandler() {
 
@@ -395,6 +377,14 @@ public class AllSkyPresenter {
 			AladinLiteWrapper.getInstance().createOverlayMap(hips, Math.pow(opacity,2), colorPalette);
 
         }
+    }
+    
+    public void areaSelectionFinished(){
+        view.deToggleSelectionMode();
+    }
+    
+    public void areaSelectionKeyboardShortcutStart(){
+        view.areaSelectionKeyboardShortcutStart();
     }
 
 

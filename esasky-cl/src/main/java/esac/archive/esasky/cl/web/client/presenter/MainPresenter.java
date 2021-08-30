@@ -129,6 +129,8 @@ public class MainPresenter {
         bindSampRequests();
         bind();
         
+        addShiftListener(this);
+        
         instance = this;
     }
     
@@ -216,6 +218,7 @@ public class MainPresenter {
         				entity.onMultipleShapesSelection(shapesToadd.get(overlayName));
         			}
         		}
+        		areaSelectionFinished();
         	}
         });
 
@@ -249,6 +252,7 @@ public class MainPresenter {
         				entity.onMultipleShapesDeselection(shapesToRemove.get(overlayName));
         			}
         		}
+        		areaSelectionFinished();
         	}
         });
 
@@ -345,6 +349,14 @@ public class MainPresenter {
         });
     }
 
+    private void areaSelectionFinished() {
+        if(isShiftPressed()) {
+            AladinLiteWrapper.getAladinLite().startSelectionMode();
+        } else {
+            allSkyPresenter.areaSelectionFinished();            
+        }
+    }
+    
     public DescriptorRepository getDescriptorRepository() {
         return descriptorRepo;
     }
@@ -539,5 +551,41 @@ public class MainPresenter {
     	ctrlTBPresenter.updateModuleVisibility();
     	headerPresenter.updateModuleVisibility();
     }
+    
+    public void onShiftPressed() {
+        if(EntityRepository.getInstance().checkNumberOfEntitesWithMultiSelection() > 0) {
+            AladinLiteWrapper.getAladinLite().startSelectionMode();
+            allSkyPresenter.areaSelectionKeyboardShortcutStart();        
+        }
+    }
+    
+    public void onShiftReleased() {
+        AladinLiteWrapper.getAladinLite().endSelectionMode();
+        allSkyPresenter.areaSelectionFinished();
+    }
+    
+    private native void addShiftListener(MainPresenter mainPresenter) /*-{
+        if(!$wnd.esasky){$wnd.esasky = {}}
+        $doc.addEventListener('keydown', function(e){
+            if(e.key == "Shift"){
+                if(!$wnd.esasky.isShiftPressed){
+                    $wnd.esasky.isShiftPressed = true;
+                    mainPresenter.@esac.archive.esasky.cl.web.client.presenter.MainPresenter::onShiftPressed()();
+                }
+            }
+        });
+        $doc.addEventListener('keyup', function(e){
+            if(e.key == "Shift"){
+                if($wnd.esasky.isShiftPressed){
+                    $wnd.esasky.isShiftPressed = false;
+                    mainPresenter.@esac.archive.esasky.cl.web.client.presenter.MainPresenter::onShiftReleased()();
+                }
+            }
+        });
+    }-*/;
+    
+    public static native boolean isShiftPressed() /*-{
+        return $wnd.esasky.isShiftPressed;
+    }-*/;
 
 }

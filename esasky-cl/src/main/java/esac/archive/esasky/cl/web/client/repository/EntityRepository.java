@@ -26,6 +26,8 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -70,10 +72,48 @@ public class EntityRepository {
         if (newEntity != null) {
             allEntities.add(newEntity);
         }
+        if(countEntitiesWithMultiSelectionEnabled() == 1 && !isPublicationEntityType(newEntity)) {
+            CommonEventBus.getEventBus().fireEvent(new MultiSelectableDataInSkyChangedEvent(true));
+        }
     }
 
     public void removeEntity(GeneralEntityInterface entity) {
         allEntities.remove(entity);
+        if(countEntitiesWithMultiSelectionEnabled() == 0) {
+            CommonEventBus.getEventBus().fireEvent(new MultiSelectableDataInSkyChangedEvent(false));
+        }
+    }
+    
+    private int countEntitiesWithMultiSelectionEnabled() {
+        int multiSelectionEntities = allEntities.size();
+        for(GeneralEntityInterface entity : allEntities) {
+            if(isPublicationEntityType(entity)
+                    || (entity instanceof EsaSkyEntity 
+                            && ((EsaSkyEntity)entity).getMocEntity() != null
+                            && ((EsaSkyEntity)entity).getMocEntity().isShouldBeShown()
+                       )
+              ) {
+                multiSelectionEntities--;
+            }
+        }
+        return multiSelectionEntities;
+    }
+    
+    public int checkNumberOfEntitesWithMultiSelection() {
+        int multiSelectionEntities = countEntitiesWithMultiSelectionEnabled();
+        if(multiSelectionEntities == 0) {
+            CommonEventBus.getEventBus().fireEvent(new MultiSelectableDataInSkyChangedEvent(false));
+        }
+        else if(multiSelectionEntities == 1) {
+            CommonEventBus.getEventBus().fireEvent(new MultiSelectableDataInSkyChangedEvent(true));
+        }
+        return multiSelectionEntities;
+    }
+    
+    private boolean isPublicationEntityType(GeneralEntityInterface entity) {
+        return entity instanceof PublicationsByAuthorEntity
+                || entity instanceof PublicationsBySourceEntity
+                || entity instanceof PublicationsEntity;
     }
 
     public List<String> getAllEntityNames() {
@@ -249,7 +289,7 @@ public class EntityRepository {
                     }
                 });
 
-        allEntities.add(newCatEntity);
+        addEntity(newCatEntity);
 
         return newCatEntity;
     }

@@ -29,6 +29,7 @@ import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository.MocLoadedObserver;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -146,7 +147,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		};
 		
 		getCountStatus().registerObserver(countObserver);
-		
+		setShouldBeShown(true);
 	}
 
 	public MOCEntity(IDescriptor descriptor) {
@@ -160,6 +161,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		this.lineStyle = LineStyle.SOLID.getName();
 		this.size = parentEntity.getSize();
 		MocRepository.getInstance().addMocEntity(this);
+		setShouldBeShown(true);
 	}
 	
 	@Override
@@ -197,7 +199,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			}
 		}
     	parentEntity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
-    	shouldBeShown = false;
+    	setShouldBeShown(false);
     	clearAll();
     	updateOverlay();
 
@@ -486,7 +488,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		clearAll();
 		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
 		overlay = null;
-		shouldBeShown = false;
+		setShouldBeShown(false);
 		if(getCountStatus() != null) {
 			getCountStatus().unregisterObserver(countObserver);
 		}
@@ -497,7 +499,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		clearAll();
 		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
 		overlay = null;
-		shouldBeShown = false;
+		setShouldBeShown(false);
 		if(getCountStatus() != null) {
 			getCountStatus().unregisterObserver(countObserver);
 		}		
@@ -583,6 +585,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	public void setShouldBeShown(boolean shouldBeShown) {
 		this.shouldBeShown = shouldBeShown;
+		EntityRepository.getInstance().checkNumberOfEntitesWithMultiSelection();
 	}
 
 	public void setDescriptorMetaData() {

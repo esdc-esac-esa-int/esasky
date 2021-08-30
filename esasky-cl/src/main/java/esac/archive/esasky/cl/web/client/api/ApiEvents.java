@@ -222,9 +222,9 @@ public class ApiEvents extends ApiBase{
 		if(mode != null && (ApiConstants.SELECT_MODE_BOX.equals(mode.toUpperCase()) || ApiConstants.SELECT_MODE_CIRCLE.equals(mode.toUpperCase())
 				|| ApiConstants.SELECT_MODE_POLY.equals(mode.toUpperCase()))) {
 			AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
-			AladinLiteWrapper.getAladinLite().startSelectionMode(false);
+			AladinLiteWrapper.getAladinLite().startSelectionMode();
 		}else {
-			AladinLiteWrapper.getAladinLite().startSelectionMode(true);
+			AladinLiteWrapper.getAladinLite().startSelectionMode();
 		}
 	}
 

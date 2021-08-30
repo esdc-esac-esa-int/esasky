@@ -3276,6 +3276,38 @@
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
 
+	<text key="selectionToolbox_showSelectionToolbox">
+		Show selection tools
+	</text>
+	<text key="selectionToolbox_hideSelectionToolbox">
+		Hide selection tools
+	</text>
+	<text key="selectionToolbox_helpText">
+		&lt;b&gt;Selection&lt;/b&gt;&lt;br&gt;
+		To select sources or footprints in the sky, press and drag to the &lt;b&gt;right&lt;/b&gt;, with either the box or circle tool selected.
+		A green box or circle will appear to indicate a selection area.
+		Once you are happy with an area, release the pointer and every source and footprint under the area will be selected.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Deselection&lt;/b&gt;&lt;br&gt;
+		To deselect, do the same operation, but press and drag to the &lt;b&gt;left&lt;/b&gt; instead. This will create a red deselection area.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Polygon&lt;/b&gt;&lt;br&gt;
+		The polygon selection tool allows you to select everything within an arbitrary shape. Each touch or click adds another point to the polygon.
+		Finish the polygon by either double clicking or pressing the first point.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Keyboard Shortcut&lt;/b&gt;&lt;br&gt;
+		You can enter selection mode by holding the Shift key.
+		You will stay in selection mode as long as the shift key is pressed, allowing you to do multiple subsequent selections.
+	</text>
+	<text key="selectionToolbox_helpHeader">
+		Selection Tools
+	</text>
+	<text key="selectionToolbox_boxButtonTooltip">
+		Box Selection Tool
+	</text>
+	<text key="selectionToolbox_circleButtonTooltip">
+		Circle Selection Tool
+	</text>
+	<text key="selectionToolbox_polygonButtonTooltip">
+		Polygon Selection Tool
+	</text>
 	<text key="addSkyMenuItem_ESASKY">Add new row</text>
 	<text key="addSkyMenuItem_URL">HiPS from URL</text>
 	<text key="addSkyMenuItem_LOCAL">HiPS from local computer</text>

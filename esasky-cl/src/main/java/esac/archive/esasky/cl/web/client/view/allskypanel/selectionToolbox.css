@@ -2,12 +2,16 @@
 
 #selectionToolbox{
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.9);
-    border-radius: 7px 0px 7px 7px;
+    border-radius: 7px;
     padding: 4px;
-    position: absolute;
     z-index: 210;
     border: 1px solid #CCCCCC;
     text-align: center;
+    pointer-events: auto;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .selectionToolboxButton{
@@ -19,5 +23,25 @@
 	margin: 2px;	
 }
 
+.selectionToolboxHelpButton {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+	pointer-events: auto;
+}
 
-sss
+#toggleSelectionToolboxPanelButton{
+	display: inline-block;	
+}
+
+.selectionToolBox__toggleAndHelpContainer{
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+}
+
+.selectionToolbox__shapeButtonContainer{
+	display: flex;
+	flex-direction: column;
+}
+
