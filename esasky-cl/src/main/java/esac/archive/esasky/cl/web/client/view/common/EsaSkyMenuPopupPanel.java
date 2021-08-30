@@ -41,6 +41,11 @@ public class EsaSkyMenuPopupPanel<T> extends PopupPanel {
     }
     
     public EsaSkyMenuPopupPanel(int pxSize) {
+    	this();
+    	setWidth(pxSize + "px");
+    }
+    
+    public EsaSkyMenuPopupPanel() {
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -50,8 +55,6 @@ public class EsaSkyMenuPopupPanel<T> extends PopupPanel {
         setAnimationEnabled(true);
         setAnimationType(AnimationType.ROLL_DOWN);
         setStyleName("popupPanel");
-        
-        setWidth(pxSize + "px");
         
         menuBarPanel = new VerticalPanel();
         

@@ -27,7 +27,6 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 public class AddSkyButton extends DisablablePushButton{
 
 	AddSkyObserver addSkyObserver;
-	private final int POPUP_SIZE = 90;
 	
 	public AddSkyButton() {
 		this(Icons.getAddSkyIcon(), Icons.getAddSkyIcon());
@@ -56,7 +55,7 @@ public class AddSkyButton extends DisablablePushButton{
 	}
 	
 	private EsaSkyMenuPopupPanel<AddSkyMenuItems> createPopupMenu() {
-		EsaSkyMenuPopupPanel<AddSkyMenuItems> menu = new EsaSkyMenuPopupPanel<AddSkyMenuItems>(POPUP_SIZE);
+		EsaSkyMenuPopupPanel<AddSkyMenuItems> menu = new EsaSkyMenuPopupPanel<AddSkyMenuItems>();
         for (final AddSkyMenuItems item : AddSkyMenuItems.values()) {
         	menu.addMenuItem(new MenuItem<AddSkyMenuItems>(item, TextMgr.getInstance().getText("addSkyMenuItem_" + item.name()), true));
         }
