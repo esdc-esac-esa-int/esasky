@@ -141,6 +141,7 @@ public class ApiMessageParser {
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::getNumberOfSkyRows(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;
 
+				case 'getAvailableHiPS':
 				case 'getAvailableHips':
 					console.log('getAvailableHiPS event captured!');
 					console.log(msg);
