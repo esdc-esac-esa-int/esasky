@@ -213,54 +213,11 @@ public class SelectionToolBoxPanel extends FlowPanel{
         add(toggleAndHelpContainer);
         
         boxButton = new EsaSkyToggleButton(resources.rect());
-		addCommonButtonStyle(boxButton, TextMgr.getInstance().getText("selectionToolbox_boxButtonTooltip"));
-		boxButton.addClickHandler( 
-				new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-			    if(boxButton.getToggleStatus()) {
-			        AladinLiteWrapper.getAladinLite().setSelectionMode("box");
-			        AladinLiteWrapper.getAladinLite().startSelectionMode();
-			        toggleOtherButtons(boxButton);
-			    } else {
-			        AladinLiteWrapper.getAladinLite().endSelectionMode();
-			    }
-			}
-		});
+		addButtonBehaviorAndStyle(boxButton, "box");
 		circleButton = new EsaSkyToggleButton(resources.circle());
-		addCommonButtonStyle(circleButton, TextMgr.getInstance().getText("selectionToolbox_circleButtonTooltip"));
-		circleButton.addClickHandler( 
-				new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-                        if(circleButton.getToggleStatus()) {
-                            AladinLiteWrapper.getAladinLite().setSelectionMode("circle");
-                            AladinLiteWrapper.getAladinLite().startSelectionMode();
-                            toggleOtherButtons(circleButton);
-                        } else {
-                            AladinLiteWrapper.getAladinLite().endSelectionMode();
-                        }
-					}
-				});
+		addButtonBehaviorAndStyle(circleButton, "circle");
 		polyButton = new EsaSkyToggleButton(resources.poly());
-		addCommonButtonStyle(polyButton, TextMgr.getInstance().getText("selectionToolbox_polygonButtonTooltip"));
-		polyButton.addClickHandler( 
-				new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-                        if(polyButton.getToggleStatus()) {
-                            AladinLiteWrapper.getAladinLite().setSelectionMode("polygon");
-                            AladinLiteWrapper.getAladinLite().startSelectionMode();
-                            toggleOtherButtons(polyButton);
-                        } else {
-                            AladinLiteWrapper.getAladinLite().endSelectionMode();
-                        }
-					}
-				});
-        
+		addButtonBehaviorAndStyle(polyButton, "polygon");
 
         shapeButtonContainer.addStyleName("selectionToolbox__shapeButtonContainer");
         
@@ -270,6 +227,24 @@ public class SelectionToolBoxPanel extends FlowPanel{
         add(shapeButtonContainer);
         
         this.getElement().setId("selectionToolbox");
+    }
+
+    private void addButtonBehaviorAndStyle(EsaSkyToggleButton button, String mode) {
+        addCommonButtonStyle(button, TextMgr.getInstance().getText("selectionToolbox_" + mode + "ButtonTooltip"));
+		button.addClickHandler( 
+				new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+			    if(button.getToggleStatus()) {
+			        AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
+			        AladinLiteWrapper.getAladinLite().startSelectionMode();
+			        toggleOtherButtons(button);
+			    } else {
+			        AladinLiteWrapper.getAladinLite().endSelectionMode();
+			    }
+			}
+		});
     }
 
 
