@@ -83,7 +83,8 @@ public class WavelengthUtils {
             new WavelengthName("IR", "Infrared", 6),
             new WavelengthName("Optical", "Optical", 6.5),
             new WavelengthName("UV", "Ultraviolet", 8),
-            new WavelengthName("X-ray", "X-ray", 11),
+            new WavelengthName("SoftX-ray", "SoftX-ray", 10.),
+            new WavelengthName("HardX-ray", "HardX-ray", 11),
             new WavelengthName("Gamma-ray", "Gamma-ray", Double.MAX_VALUE)
     };
     
