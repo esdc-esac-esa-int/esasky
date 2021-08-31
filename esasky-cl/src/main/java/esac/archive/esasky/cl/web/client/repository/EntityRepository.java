@@ -87,12 +87,7 @@ public class EntityRepository {
     private int countEntitiesWithMultiSelectionEnabled() {
         int multiSelectionEntities = allEntities.size();
         for(GeneralEntityInterface entity : allEntities) {
-            if(isPublicationEntityType(entity)
-                    || (entity instanceof EsaSkyEntity 
-                            && ((EsaSkyEntity)entity).getMocEntity() != null
-                            && ((EsaSkyEntity)entity).getMocEntity().isShouldBeShown()
-                       )
-              ) {
+            if(isPublicationEntityType(entity)) {
                 multiSelectionEntities--;
             }
         }
