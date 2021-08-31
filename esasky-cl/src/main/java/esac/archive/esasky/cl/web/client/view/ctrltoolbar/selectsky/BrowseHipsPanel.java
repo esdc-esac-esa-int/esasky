@@ -320,12 +320,16 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 
 	@Override
 	public void setMaxSize() {
-	    super.setMaxSize();
 	    int height = MainLayoutPanel.getMainAreaHeight();
 		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
 		}
 		contentContainer.getElement().getStyle().setPropertyPx("height", height - contentContainer.getAbsoluteTop());
+		
+		if(MainLayoutPanel.getMainAreaWidth() > 600) {
+			contentContainer.getElement().getStyle().setPropertyPx("width", (int) (MainLayoutPanel.getMainAreaWidth() * 0.8));
+			
+		}
 	}
 
 	public void registerObserver(BrowseHipsPanelObserver observer) {
