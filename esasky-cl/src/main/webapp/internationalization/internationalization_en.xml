@@ -3358,6 +3358,10 @@
 		&lt;/a&gt;
 	</text>
 
+	<text key="show_more">Show More</text>
+	<text key="show_more_tooltip">Click to expand and show the full text</text>
+
+
 	<!--  ALSO TO BE UPDATED IN EN AND ZH: ALL REFERENCES TO SPECTRA
 	treeMap_ASTRO_SPECTRA
 	treeMap_loading_ASTRO_SPECTRA
