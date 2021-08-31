@@ -28,6 +28,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
+import esac.archive.esasky.cl.web.client.view.common.MenuItem.OnRemove;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.Selectable;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -50,8 +51,9 @@ public class SkyRow extends Composite implements Selectable{
 	private DropDownMenu<HipsWavelength> wavelengthDropDown;
 	private DropDownMenu<HiPS> hipsDropDown;
 	private boolean onlyOneSkyActive = true;
-	private List<HiPS> listOfUserHips = new LinkedList<HiPS>();
+	private static List<HiPS> listOfUserHips = new LinkedList<HiPS>();
 	private boolean isChosenFromSlider = false;
+	private boolean blockNotifications = false;
 
 	private List<SkyObserver> observers = new LinkedList<SkyObserver>();
 
@@ -82,6 +84,7 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public SkyRow(SkiesMenu skiesMenu, String hipsName){
+	    blockNotifications = true;
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -93,6 +96,7 @@ public class SkyRow extends Composite implements Selectable{
 			hipsName = EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
 		}
 		initView(wavelength, hipsName);
+		blockNotifications = false;
 	}
 
 	private void initView(HipsWavelength defaultWavelength, String defaultHips) {
@@ -148,10 +152,11 @@ public class SkyRow extends Composite implements Selectable{
 				List<HiPS> listOfHipsByWavelength;
 				if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
 					listOfHipsByWavelength = listOfUserHips;
+					fillHiPSMenuBar(listOfHipsByWavelength, true);
 				} else {
 					listOfHipsByWavelength = skiesMenu.getHiPSListByWavelength(wavelengthDropDown.selectedObject).getHips();
+					fillHiPSMenuBar(listOfHipsByWavelength, false);
 				}
-				fillHiPSMenuBar(listOfHipsByWavelength);
 			}
 		});
 
@@ -173,11 +178,13 @@ public class SkyRow extends Composite implements Selectable{
 				final HiPS hips = hipsDropDown.getSelectedObject();
 				final ColorPalette colorPalette = hips.getColorPalette();
 				changePaletteBtn.setDefaultColorPallette(colorPalette);
-				if(isOverlay || isMain) {
-					isChosenFromSlider = true;
-					notifySkyChange();
+				if(!blockNotifications) {
+				    if(isOverlay || isMain) {
+				        isChosenFromSlider = true;
+				        notifySkyChange();
+				    }
+				    sendConvenienceEvent();
 				}
-				sendConvenienceEvent();
 			}
 		});
 
@@ -187,16 +194,20 @@ public class SkyRow extends Composite implements Selectable{
 	}    
 
 	private void fillDropDownMenus(HipsWavelength defaultWavelength, String defaultHips) {
+	    blockNotifications = true;
 		for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
 			if(menuEntry.getWavelength() == HipsWavelength.USER) {
 				for(HiPS hips: menuEntry.getHips()) {
-					listOfUserHips.add(hips);
+				    if(!listOfUserHips.contains(hips)) {
+				        listOfUserHips.add(hips);
+				    }
 				}
 			}
 			createWavelengthOption(menuEntry.getWavelength());
 		}
 		wavelengthDropDown.selectObject(defaultWavelength);
 		setSelectHips(defaultHips, false, false);
+		blockNotifications = false;
 	}
 
 	private void createWavelengthOption(HipsWavelength wavelength) {
@@ -206,12 +217,20 @@ public class SkyRow extends Composite implements Selectable{
 		wavelengthDropDown.addMenuItem(dropdownItem);
 	}  
 
-	private void fillHiPSMenuBar(final List<HiPS> hipsList) {
+	private void fillHiPSMenuBar(final List<HiPS> hipsList, boolean removable) {
 		hipsDropDown.clearItems();
 
 		HiPS defaultHips = null;
 		for (final HiPS hips : hipsList) {
-			MenuItem<HiPS> dropdownItem = new MenuItem<HiPS>(hips, hips.getSurveyName(), true);
+			MenuItem<HiPS> dropdownItem = new MenuItem<HiPS>(hips, hips.getSurveyName(), true, removable,
+			        new OnRemove<HiPS>() {
+
+                        @Override
+                        public void onRemove(MenuItem<HiPS> menuItem) {
+                            notifyMenuItemRemoveClicked(menuItem);
+                        }
+			    
+                    });
 			hipsDropDown.addMenuItem(dropdownItem);
 			if(hips.getIsDefault()){
 				defaultHips = hips;
@@ -222,7 +241,57 @@ public class SkyRow extends Composite implements Selectable{
 		}
 		hipsDropDown.selectObject(defaultHips);
 	}
+	
+	private void notifyMenuItemRemoveClicked(MenuItem<HiPS> menuItem) {
+	       for(SkyObserver observer: observers){
+	            observer.onMenuItemRemovalEvent(menuItem);
+	        }
+	}
 
+	public void onMenuItemRemoval(MenuItem<HiPS> menuItem) {
+        for(MenuItem<HiPS> menuItemToRemove : hipsDropDown.getMenuItems()) {
+            if(menuItemToRemove.getItem().equals(menuItem.getItem())){
+                hipsDropDown.removeMenuItem(menuItemToRemove);
+                listOfUserHips.remove(menuItemToRemove.getItem());
+                List<SkiesMenuEntry> entriesToDelete = new LinkedList<SkiesMenuEntry>();
+                for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
+                    if(menuEntry.getWavelength() == HipsWavelength.USER) {
+                        for(HiPS hips: menuEntry.getHips()) {
+                            if(menuItemToRemove.getItem().equals(hips)) {
+                                entriesToDelete.add(menuEntry);
+                            }
+                        }
+                    }
+                }
+                for (SkiesMenuEntry entry : entriesToDelete) {
+                    skiesMenu.getMenuEntries().remove(entry);
+                }
+                
+                if(menuItemToRemove.getIsSelected()) {
+                    if(hipsDropDown.getMenuItems().size() > 0) {
+                        for (MenuItem<HiPS> menuItemToSelect : hipsDropDown.getMenuItems()) {
+                            if(!menuItemToRemove.equals(menuItemToSelect)) {
+                                hipsDropDown.selectObject(menuItemToSelect.getItem());
+                                if(isSelected()) {
+                                    notifySkyChange();
+                                    sendConvenienceEvent();
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        hipsDropDown.hideMenuBar();
+                        notifyClose();
+                    }
+                } else if (hipsDropDown.getMenuItems().size() == 0) {
+                    hipsDropDown.hideMenuBar();
+                    notifyClose();
+                }
+                break;
+            }
+        }
+	}
+	
 	private HiPS lastCreatedUserHiPS;
 	public void setHiPSFromAPI(HiPS hips, boolean notifiyObservers, boolean newHips){
 		lastCreatedUserHiPS = hips;
@@ -260,7 +329,14 @@ public class SkyRow extends Composite implements Selectable{
 		}
 		if(newHips) {
 			listOfUserHips.add(lastCreatedUserHiPS);
-			MenuItem<HiPS> menuItem = new MenuItem<HiPS>(lastCreatedUserHiPS, hipsName, true); 
+			MenuItem<HiPS> menuItem = new MenuItem<HiPS>(lastCreatedUserHiPS, hipsName, true, true, new OnRemove<HiPS>() {
+
+                @Override
+                public void onRemove(MenuItem<HiPS> menuItem) {
+                    notifyMenuItemRemoveClicked(menuItem);
+                }
+        
+            }); 
 			hipsDropDown.addMenuItem(menuItem);
 			hipsDropDown.selectObject(menuItem.getItem());
 			if (notifiyObservers) {
@@ -398,12 +474,14 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public void notifySkyChange(){
+	    if(!blockNotifications) {
 			for(SkyObserver observer: observers){
 				observer.onUpdateSkyEvent(this);
 			}
 			sendUpdateSkyName();
 			//Notify sky change to Google Analytics
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getFullId());
+	    }
 	}
 
 	public void notifyClose(){
@@ -414,8 +492,10 @@ public class SkyRow extends Composite implements Selectable{
 	
 	private void sendConvenienceEvent() {
 		if(!isSelected()) return;
-		//Convenience event for easy statistics gathering
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONVENIENCE, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getNameofSelected());
+		if(!blockNotifications) {
+    		//Convenience event for easy statistics gathering
+    		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONVENIENCE, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getNameofSelected());
+		}
 	}
 
 	@Override
@@ -466,6 +546,16 @@ public class SkyRow extends Composite implements Selectable{
 		}else if(isOverlay) {
 			AladinLiteWrapper.getInstance().changeOverlayOpacity(Math.pow(opacity,2));
 		}
+	}
+	
+	public void refreshUserDropdown() {
+	    blockNotifications = true;
+	    if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
+	        HiPS selectedObject = hipsDropDown.getSelectedObject();
+	        fillHiPSMenuBar(listOfUserHips, true);
+	        hipsDropDown.selectObject(selectedObject);
+	    }
+	    blockNotifications = false;
 	}
     
     

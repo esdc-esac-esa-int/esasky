@@ -3,11 +3,15 @@
 .selectedIcon{
 	height: 15px;
 	width: 15px;
-	float: right;
+}
+
+.menuItem_removeRow{
+    position: absolute;
+    right: 2px;
+    background: black;
 }
 
 .dropdownLabel{
-	float:left;
 	font-weight: normal !important;
 }
 
@@ -17,6 +21,10 @@
 
 .fillWidth {
 	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .dropdownItem tr {

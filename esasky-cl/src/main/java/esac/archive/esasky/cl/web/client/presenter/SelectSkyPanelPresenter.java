@@ -34,6 +34,8 @@ public class SelectSkyPanelPresenter {
     	void setSkiesMenu(SkiesMenu skiesMenu);
     	SkyRow createSky();
     	
+    	void refreshUserDropdowns();
+    	
     	AddSkyButton getAddSkyRowButton();
     }
     
@@ -75,10 +77,12 @@ public class SelectSkyPanelPresenter {
 			entry.setTotal(1);
 			entry.setWavelength(HipsWavelength.USER);
 			getSkiesMenu().getMenuEntries().add(entry);
+		} else {
+		    entry.getHips().add(hips);
 		}
-		entry.getHips().add(hips);
 		SkyRow skyRow = view.createSky();
 		skyRow.setSelectHips(hips.getSurveyName(), false, false);
+		view.refreshUserDropdowns();
 
     }
 

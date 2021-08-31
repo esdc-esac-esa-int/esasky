@@ -29,6 +29,7 @@ import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyPlayerObserver;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
+import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
@@ -347,8 +348,22 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 	@Override
 	public void onCloseEvent(SkyRow sky) {
-		removeSky(sky);
+	    if(ongoingClean) {
+	        skiesToRemove.add(sky);
+	    } else {
+	        removeSky(sky);
+	    }
 	}
+	
+	private void removeClosedSkies() {
+	    for (SkyRow sky : skiesToRemove) {
+	        removeSky(sky);
+	    }
+	    skiesToRemove.clear();
+	}
+	private List<SkyRow> skiesToRemove = new LinkedList<SkyRow>();
+	
+	private boolean ongoingClean = false;
 
 	public static String getNameOfSelectedHips(){
 		final SkyRow sky = getSelectedSky();
@@ -381,6 +396,7 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			instance.player.addEntryToPlayer(skyTmp);
 			skies.add(skyTmp);
 			instance.ensureCorrectSkyStyle();
+			instance.refreshUserDropdowns();
 		}
 		final SkyRow sky = skyTmp;
 		sky.setHiPSFromAPI(hips, true, newHips);
@@ -460,6 +476,25 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 
 	public void setSkiesMenu(SkiesMenu skiesMenu) {
 		this.skiesMenu = skiesMenu;
+	}
+	
+	@Override
+	public void onMenuItemRemovalEvent(MenuItem<HiPS> menuItem) {
+	    ongoingClean = true;
+	    for (int i = 0; i < skyTable.getRowCount(); i++) {
+	        SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
+	        skyRow.onMenuItemRemoval(menuItem);
+	    }
+	    ongoingClean = false;
+	    removeClosedSkies();
+	}
+	
+	@Override
+	public void refreshUserDropdowns() {
+       for (int i = 0; i < skyTable.getRowCount(); i++) {
+            SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
+            skyRow.refreshUserDropdown();
+        }
 	}
 
 }
