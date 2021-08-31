@@ -250,20 +250,14 @@ public class SkyRow extends Composite implements Selectable{
 
 	public void onMenuItemRemoval(MenuItem<HiPS> menuItem) {
         MenuItem<HiPS> menuItemToRemove = findCorrespondingMenuItem(menuItem);
+        if(menuItemToRemove == null) {
+            return;
+        }
         removeEntries(menuItemToRemove);
         
         if(menuItemToRemove.getIsSelected()) {
             if(hipsDropDown.getMenuItems().size() > 0) {
-                for (MenuItem<HiPS> menuItemToSelect : hipsDropDown.getMenuItems()) {
-                    if(!menuItemToRemove.equals(menuItemToSelect)) {
-                        hipsDropDown.selectObject(menuItemToSelect.getItem());
-                        if(isSelected()) {
-                            notifySkyChange();
-                            sendConvenienceEvent();
-                        }
-                        break;
-                    }
-                }
+                selectFirstNextEntry(menuItemToRemove);
             } else {
                 hipsDropDown.hideMenuBar();
                 notifyClose();
@@ -273,6 +267,19 @@ public class SkyRow extends Composite implements Selectable{
             notifyClose();
         }
 	}
+
+    private void selectFirstNextEntry(MenuItem<HiPS> menuItemToRemove) {
+        for (MenuItem<HiPS> menuItemToSelect : hipsDropDown.getMenuItems()) {
+            if(!menuItemToRemove.equals(menuItemToSelect)) {
+                hipsDropDown.selectObject(menuItemToSelect.getItem());
+                if(isSelected()) {
+                    notifySkyChange();
+                    sendConvenienceEvent();
+                }
+                break;
+            }
+        }
+    }
 
     private void removeEntries(MenuItem<HiPS> menuItemToRemove) {
         hipsDropDown.removeMenuItem(menuItemToRemove);
