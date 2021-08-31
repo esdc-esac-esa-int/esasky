@@ -60,8 +60,7 @@ public class MocRepository {
 							descriptor = entity.getDescriptor();
 							mocInfos.add(new MOCInfo(descriptor, entity, 
 									GeneralJavaScriptObject.convertToInteger(data.getProperty("count")), 
-							        GeneralJavaScriptObject.convertToInteger(data.getProperty("order")), 
-							        GeneralJavaScriptObject.convertToInteger(data.getProperty("ipix"))));
+							        data.getProperty("pixels")));
 							break;
 						}
 					}

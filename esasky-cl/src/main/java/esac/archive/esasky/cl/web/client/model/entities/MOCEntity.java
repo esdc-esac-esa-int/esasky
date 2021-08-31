@@ -206,7 +206,9 @@ public class MOCEntity implements GeneralEntityInterface {
     }
 
     public void sendLoadQuery(MOCInfo mocInfo) {
-    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(mocInfo);
+    	String whereQuery = metadataService.getVisibleWhereQuery(descriptor, mocInfo.pixels, tablePanel.getFilterString());
+    	
+    	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(mocInfo, whereQuery);
     }
     
     public void refreshMOC() {

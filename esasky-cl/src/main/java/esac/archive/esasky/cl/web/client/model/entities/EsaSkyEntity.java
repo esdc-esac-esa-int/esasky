@@ -36,6 +36,7 @@ import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
@@ -335,12 +336,13 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	clearAll();
     	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery), EsaSkyConstants.JSON));
     }
-    
-    public void fetchDataWithoutMOC(MOCInfo mocInfo) {
+    public void fetchDataWithoutMOC(MOCInfo mocInfo, String whereQuery) {
 
     	//Open this in a new table
     	
-    	String adql = metadataService.getMetadataFromMOCPixel(descriptor, mocInfo);
+
+    	
+    	String adql = metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery);
     	
     	String filter = tablePanel.getFilterString();
     	if(!"".equals(filter)) {
@@ -349,9 +351,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         
         GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(descriptor);
         MainPresenter.getInstance().getRelatedMetadata(entity, adql);
-        GeneralJavaScriptObject positionInfo = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getQ3CIpix2Ang(mocInfo.order, mocInfo.ipix);
-        GeneralJavaScriptObject center = positionInfo.getProperty("center");
-        entity.setSkyViewPosition(new SkyViewPosition(new Coordinate(center.getDoubleProperty("0"), center.getDoubleProperty("1")), positionInfo.getDoubleProperty("fov")));
+        entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     	
     }
 
