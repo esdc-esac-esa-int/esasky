@@ -3361,6 +3361,42 @@
 	<text key="show_more">Show More</text>
 	<text key="show_more_tooltip">Click to expand and show the full text</text>
 
+	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+	External data provided by 
+		&lt;a
+		href="//heasarc.gsfc.nasa.gov"
+		target="_blank"&gt;
+		the High Energy Astrophysics Science Archive Research Center (HEASARC)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team. 
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+		External data provided by 
+		&lt;a
+		href="//astron.nl"
+		target="_blank"&gt;
+		Netherlands Institute for Radio Astronomy (ASTRON)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team. 
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
 
 	<!--  ALSO TO BE UPDATED IN EN AND ZH: ALL REFERENCES TO SPECTRA
 	treeMap_ASTRO_SPECTRA
