@@ -249,47 +249,56 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public void onMenuItemRemoval(MenuItem<HiPS> menuItem) {
-        for(MenuItem<HiPS> menuItemToRemove : hipsDropDown.getMenuItems()) {
-            if(menuItemToRemove.getItem().equals(menuItem.getItem())){
-                hipsDropDown.removeMenuItem(menuItemToRemove);
-                listOfUserHips.remove(menuItemToRemove.getItem());
-                List<SkiesMenuEntry> entriesToDelete = new LinkedList<SkiesMenuEntry>();
-                for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
-                    if(menuEntry.getWavelength() == HipsWavelength.USER) {
-                        for(HiPS hips: menuEntry.getHips()) {
-                            if(menuItemToRemove.getItem().equals(hips)) {
-                                entriesToDelete.add(menuEntry);
-                            }
+        MenuItem<HiPS> menuItemToRemove = findCorrespondingMenuItem(menuItem);
+        removeEntries(menuItemToRemove);
+        
+        if(menuItemToRemove.getIsSelected()) {
+            if(hipsDropDown.getMenuItems().size() > 0) {
+                for (MenuItem<HiPS> menuItemToSelect : hipsDropDown.getMenuItems()) {
+                    if(!menuItemToRemove.equals(menuItemToSelect)) {
+                        hipsDropDown.selectObject(menuItemToSelect.getItem());
+                        if(isSelected()) {
+                            notifySkyChange();
+                            sendConvenienceEvent();
                         }
+                        break;
                     }
                 }
-                for (SkiesMenuEntry entry : entriesToDelete) {
-                    skiesMenu.getMenuEntries().remove(entry);
-                }
-                
-                if(menuItemToRemove.getIsSelected()) {
-                    if(hipsDropDown.getMenuItems().size() > 0) {
-                        for (MenuItem<HiPS> menuItemToSelect : hipsDropDown.getMenuItems()) {
-                            if(!menuItemToRemove.equals(menuItemToSelect)) {
-                                hipsDropDown.selectObject(menuItemToSelect.getItem());
-                                if(isSelected()) {
-                                    notifySkyChange();
-                                    sendConvenienceEvent();
-                                }
-                                break;
-                            }
-                        }
-                    } else {
-                        hipsDropDown.hideMenuBar();
-                        notifyClose();
+            } else {
+                hipsDropDown.hideMenuBar();
+                notifyClose();
+            }
+        } else if (hipsDropDown.getMenuItems().size() == 0) {
+            hipsDropDown.hideMenuBar();
+            notifyClose();
+        }
+	}
+
+    private void removeEntries(MenuItem<HiPS> menuItemToRemove) {
+        hipsDropDown.removeMenuItem(menuItemToRemove);
+        listOfUserHips.remove(menuItemToRemove.getItem());
+        List<SkiesMenuEntry> entriesToDelete = new LinkedList<SkiesMenuEntry>();
+        for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
+            if(menuEntry.getWavelength() == HipsWavelength.USER) {
+                for(HiPS hips: menuEntry.getHips()) {
+                    if(menuItemToRemove.getItem().equals(hips)) {
+                        entriesToDelete.add(menuEntry);
                     }
-                } else if (hipsDropDown.getMenuItems().size() == 0) {
-                    hipsDropDown.hideMenuBar();
-                    notifyClose();
                 }
-                break;
             }
         }
+        for (SkiesMenuEntry entry : entriesToDelete) {
+            skiesMenu.getMenuEntries().remove(entry);
+        }
+    }
+	
+	private MenuItem<HiPS> findCorrespondingMenuItem(MenuItem<HiPS> menuItemFromOtherMenu){
+	    for(MenuItem<HiPS> menuItem : hipsDropDown.getMenuItems()) {
+            if(menuItem.getItem().equals(menuItemFromOtherMenu.getItem())){
+                return menuItem;
+            }
+	    }
+	    return null;
 	}
 	
 	private HiPS lastCreatedUserHiPS;
