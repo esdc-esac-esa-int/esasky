@@ -45,19 +45,6 @@ public class OpenSeaDragonWrapper {
 			double fov, double rot, int width, int height)/*-{
 		
 		var tileSources;
-		if (type == 'image'){
-			tileSources = {
-		        type: 'image',
-        		url:  url
-			}
-		}else{
-			tileSources = 	[{
-		        type: type,
-		        width: width,
-		        height: height,
-		        tilesUrl: url,
-		    }]
-		};
 		
 		var openseadragon = $wnd.OpenSeadragon({
 		    id: "openseadragonCanvas",
@@ -66,8 +53,30 @@ public class OpenSeaDragonWrapper {
 		    showFullPageControl: false,
 		    showHomeControl: false,
 		    showZoomControl: false,
-		    tileSources: tileSources
 		});
+		if (type == 'image'){
+			options = {
+				type: type,
+	       		url: url,
+				success: function(event) {
+	                   openseadragon.image = event.item;
+	            }
+			};
+			openseadragon.addSimpleImage(options)
+		}else{
+			options = {
+				tileSource :{
+			        type: type,
+			        width: width,
+			        height: height,
+			        tilesUrl: url
+		    	},
+				success: function(event) {
+	                   openseadragon.image = event.item;
+	            }
+			};
+			openseadragon.addTiledImage(options)
+		};
 	    openseadragon.name = name;
 	    openseadragon.fov = fov;
 	    openseadragon.ra = ra;
