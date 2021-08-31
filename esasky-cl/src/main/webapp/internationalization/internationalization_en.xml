@@ -3397,6 +3397,10 @@
 		More information
 		&lt;/a&gt; 
 	</text>
+	
+	<text key="Gamma-ray">
+		Gamma-ray
+	</text>
 
 	<!--  ALSO TO BE UPDATED IN EN AND ZH: ALL REFERENCES TO SPECTRA
 	treeMap_ASTRO_SPECTRA
