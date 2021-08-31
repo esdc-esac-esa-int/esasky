@@ -29,7 +29,6 @@ import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.query.TAPMOCService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
-import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository.MocLoadedObserver;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -587,7 +586,6 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	public void setShouldBeShown(boolean shouldBeShown) {
 		this.shouldBeShown = shouldBeShown;
-		EntityRepository.getInstance().checkNumberOfEntitesWithMultiSelection();
 	}
 
 	public void setDescriptorMetaData() {
