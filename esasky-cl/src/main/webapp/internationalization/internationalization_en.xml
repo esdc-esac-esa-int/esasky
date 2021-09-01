@@ -2947,6 +2947,24 @@
 	<text key="endTime">
 		End Time
 	</text>
+	<text key="startTimeCheops">
+		Observation Start Time (UTC)
+	</text>
+	<text key="endTimeCheops">
+		 Observation Stop Time (UTC)
+	</text>
+	<text key="magCheops">
+		 Magnitude Cheops Band
+	</text>
+	<text key="magG">
+		 Magnitude Gaia Band
+	</text>
+	<text key="ligthcurveLinkCheops">
+		 Optimal Lightcurve
+	</text>
+	<text key="reportLinkCheops">
+		  Data Reduction Pipeline Report 
+	</text>
 	<text key="LAMOST_obj_type">
 		Object Type
 	</text>
