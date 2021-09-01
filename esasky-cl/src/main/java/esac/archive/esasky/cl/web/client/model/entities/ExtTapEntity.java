@@ -36,4 +36,9 @@ public class ExtTapEntity extends EsaSkyEntity {
     	ExtTapDescriptor parent = ((ExtTapDescriptor) getDescriptor()).getLastParent();
     	return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + parent.getDescriptorId());
     }
+    
+    @Override
+    public String getTabLabel() {
+        return getDescriptor().getGuiShortName();
+    }
 }
