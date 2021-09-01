@@ -135,7 +135,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		this.selectADQL = selectADQL;
 	}
 
-	public HashMap<String, ExtTapTreeMapLevel>  getSubLevels() {
+	public HashMap<String, ExtTapTreeMapLevel> getSubLevels() {
 		return subLevels;
 	}
 

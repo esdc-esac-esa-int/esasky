@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tools.ant.types.Assertions.DisabledAssertion;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
@@ -219,12 +221,24 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	protected void onAttach() {
 	    super.onAttach();
-	    boolean addDatalinkLink2ArchiveColumn = getDescriptor().getArchiveProductURI() != null
-	            && getDescriptor().getArchiveURL().toLowerCase().contains("datalink");
+	    boolean addDatalinkLink2ArchiveColumn = false;
+	    boolean disableLink2ArchiveColumn = false;
+	    if (getDescriptor() instanceof ExtTapDescriptor) {
+	        
+	        if(getDescriptor().getArchiveProductURI() != null
+	                && getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
+	            disableLink2ArchiveColumn = true;
+	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
+	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
+	                addDatalinkLink2ArchiveColumn = true;
+	            }
+	        }
+	            
+	    }
         table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
                 getDescriptor().getArchiveProductURI() != null 
                     && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
-                    && !addDatalinkLink2ArchiveColumn, 
+                    && !disableLink2ArchiveColumn, 
                 getDescriptor().getDescriptorId().contains("PUBLICATIONS"),
                 getDescriptor().getDescriptorId().contains("PUBLICATIONS"), true,
                 addDatalinkLink2ArchiveColumn);
