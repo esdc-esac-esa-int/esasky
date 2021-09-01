@@ -219,10 +219,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	protected void onAttach() {
 	    super.onAttach();
+	    boolean addDatalinkLink2ArchiveColumn = getDescriptor().getArchiveProductURI() != null
+	            && getDescriptor().getArchiveURL().toLowerCase().contains("datalink");
         table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
-                getDescriptor().getArchiveProductURI() != null && !getDescriptor().getDescriptorId().contains("PUBLICATIONS"), 
+                getDescriptor().getArchiveProductURI() != null 
+                    && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
+                    && !addDatalinkLink2ArchiveColumn, 
                 getDescriptor().getDescriptorId().contains("PUBLICATIONS"),
-                getDescriptor().getDescriptorId().contains("PUBLICATIONS"), true);
+                getDescriptor().getDescriptorId().contains("PUBLICATIONS"), true,
+                addDatalinkLink2ArchiveColumn);
         getDescriptor().registerMetadataVisibilityObserver(metadataVisibilityObserver);
 	}
 	

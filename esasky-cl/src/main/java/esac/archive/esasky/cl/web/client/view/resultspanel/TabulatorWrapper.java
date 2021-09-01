@@ -73,16 +73,16 @@ public class TabulatorWrapper{
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn,
-            boolean addSelectionColumn) {
-        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null, false, true, addSelectionColumn);
+            boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
+        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null, false, true, addSelectionColumn, addDatalinkLink2ArchiveColumn);
     }
     
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn) {
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
         this.tabulatorCallback = tabulatorCallback;
         tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle,
-                blockRedraw, isEsaskyData, addSelectionColumn);
+                blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn);
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -709,7 +709,7 @@ public class TabulatorWrapper{
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn) /*-{
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) /*-{
 		$wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
@@ -1197,6 +1197,24 @@ public class TabulatorWrapper{
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                            }
+                    });
+                }
+                if(addDatalinkLink2ArchiveColumn){
+                    activeColumnGroup.push({
+                        title:$wnd.esasky.getInternationalizationText("tabulator_download"),
+                        titleDownload:$wnd.esasky.getInternationalizationText("tabulator_download"),
+                        field:"link2archive",
+                        visible:descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+                        headerSort:false, 
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_download"),
+                        minWidth: 85,
+                        download: true,
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"download_small.png", 
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
+                            cellClick:function(e, cell){
+                                e.stopPropagation();
+                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
                             }
                     });
                 }

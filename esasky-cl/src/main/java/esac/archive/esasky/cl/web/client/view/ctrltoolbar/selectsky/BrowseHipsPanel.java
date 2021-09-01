@@ -169,7 +169,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 
 	public void onJsonLoaded(String jsonText) {
 		this.show();
-		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, false, false, false, false, false);
+		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, false, false, false, false, false, false);
 		GeneralJavaScriptObject metadata = createMetadata();
 		tabulatorTable.setAddHipsColumn(true);
 		tabulatorTable.insertData(jsonText, metadata);
