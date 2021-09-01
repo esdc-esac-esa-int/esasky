@@ -119,7 +119,9 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         // build zoom control panel
         this.zoomControlPanel = new ZoomControlPanel();
         this.selectionPanel = new SelectionToolBoxPanel();
-        zoomAndSelectionToolBox.add(zoomControlPanel);
+        if(!DeviceUtils.isMobileOrTablet()) {
+            zoomAndSelectionToolBox.add(zoomControlPanel);
+        }
         zoomAndSelectionToolBox.add(selectionPanel);
         
         esaLogo = new Image(resources.logo());
@@ -138,9 +140,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         // wrap everything into the 'allSkyContainerPanel'
         this.allSkyContainerPanel.add(this.aladinLiteFocusPanel);
         
-        if(!DeviceUtils.isMobileOrTablet()) {
-            this.allSkyContainerPanel.add(zoomAndSelectionToolBox);
-        }
+        this.allSkyContainerPanel.add(zoomAndSelectionToolBox);
         
         this.allSkyContainerPanel.add(esaLogo);
 
