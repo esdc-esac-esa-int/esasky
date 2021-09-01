@@ -3271,7 +3271,7 @@
 		&lt;b&gt;Selection&lt;/b&gt;&lt;br&gt;
 		To select sources or footprints in the sky, press and drag from &lt;b&gt;left to right&lt;/b&gt;, with either the box or circle tool selected.
 		A green box or circle will appear to indicate a selection area.
-		Once you are happy with an area, release the pointer and every source and footprint under the area will be selected.
+		Once you are satisfied with an area, release the pointer and every source under the area will be selected.
 		&lt;br&gt;&lt;br&gt;&lt;b&gt;Deselection&lt;/b&gt;&lt;br&gt;
 		To deselect, do the same operation, but press and drag from &lt;b&gt;right to left&lt;/b&gt; instead. This will create a red deselection area.
 		&lt;br&gt;&lt;br&gt;&lt;b&gt;Polygon&lt;/b&gt;&lt;br&gt;
