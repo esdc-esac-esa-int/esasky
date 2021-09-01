@@ -30,7 +30,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ExtTapTreeMap extends TreeMap {
@@ -140,7 +139,8 @@ public class ExtTapTreeMap extends TreeMap {
                     PointInformation pointInformation = allPoints.get(point.getText());
                     String tooltipText = pointInformation.longName;
                    
-                    if(pointInformation.credits != null && !pointInformation.credits.isEmpty()) {
+                    if(pointInformation.credits != null && !pointInformation.credits.isEmpty()
+                            && !pointInformation.longName.equals(pointInformation.credits)) {
                     	 tooltipText += " [" + pointInformation.credits.replace("U+00F8", "\u00F8") + "]";
                     }
                     return "<div style=\"font-size: 12px !important;\">" + tooltipText + "</div>";

@@ -12,8 +12,8 @@ public class ExtTapUtils {
 		ExtTapDescriptor descriptor = new ExtTapDescriptor();
 		descriptor.copyParentValues(parent);
 		descriptor.setTreeMapLevel(levelNumber);
+		descriptor.setGuiLongName(levelName);
 		descriptor.setGuiShortName(levelName);
-		descriptor.setGuiLongName(descriptor.getGuiLongName() + "-" + levelName);
 		descriptor.setMission(descriptor.getMission()+ "-" + levelName);
 		descriptor.setDescriptorId(descriptor.getMission());
 		descriptor.setSubLevels( parent.getSubLevels().get(levelName).getSubLevels());
