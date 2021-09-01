@@ -234,7 +234,9 @@ public class TAPExtTapService extends AbstractTAPService {
     	String adql = "SELECT table_name, count(*) ";
     	adql = getAdql(descriptor, adql);
     	adql += " group by table_name";
-    	return adql;
+    	
+    	String finalAdql = adql + " UNION " + adql.replace("pos_small", "pos_big");
+     	return finalAdql;
     }
     
 	@Override
