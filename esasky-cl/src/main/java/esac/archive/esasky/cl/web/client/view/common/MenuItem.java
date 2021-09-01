@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
@@ -51,7 +52,7 @@ public class MenuItem<T> extends FocusPanel{
             removeRowButton.setSmallStyle();
             horizontalPanel.add(removeRowButton);
             removeRowButton.addStyleName("menuItem_removeRow");
-            removeRowButton.setTitle("menuItem_removeEntry");
+            removeRowButton.setTitle(TextMgr.getInstance().getText("menuItem_removeEntry"));
             removeRowButton.setVisible(false);
             removeRowButton.addClickHandler(new ClickHandler() {
                 

@@ -126,9 +126,6 @@
 	<text key="treeMap_ASTRO_CATALOGUE">
 		Cat&#225;logos
 	</text>
-	<text key="treeMap_ASTRO_SPECTRA">
-		Espectros
-	</text>
 	<text key="treeMap_SSO">
 		Observaciones de objetos del Sistema Solar (OSS)
 	</text>
@@ -138,9 +135,6 @@
 	<text key="treeMap_loading_ASTRO_CATALOGUE">
 		Cargando cat&#225;logos...
 	</text>
-	<text key="treeMap_loading_ASTRO_SPECTRA">
-		Cargando espectros...
-	</text>
 	<text key="treeMap_loading_SSO">
 		Cargando observaciones del Sistema Solar...
 	</text>
@@ -149,9 +143,6 @@
 	</text>
 	<text key="treeMap_noData_ASTRO_CATALOGUE">
 		No se encontraron entradas de cat&#225;logo.
-	</text>
-	<text key="treeMap_noData_ASTRO_SPECTRA">
-		No se encontraron datos espectrales.
 	</text>
 	<text key="treeMap_noData_SSO">
 		No se encontraron observaciones del Sistema Solar.
@@ -165,9 +156,6 @@
 	</text>
 	<text key="treeMap_notInRange_ASTRO_CATALOGUE">
 		Ningun cat&#225;logo encontrado en este rango de longitudes de onda.
-	</text>
-	<text key="treeMap_notInRange_ASTRO_SPECTRA">
-		Ning&#xFA;n Dato espectral encontrado en este rango de longitudes de onda. 
 	</text>
 	<text key="treeMap_notInRange_SSO">
 		Ninguna observaci&#xF3;n de objetos del sistema solar encontrada en este rango de longitudes de onda.
@@ -775,9 +763,6 @@
 	</text>
 	<text key="webConstants_exploreCatalogue">
 		Examine los datos de cat&#225;logo de esta regi&#243;n
-	</text>
-	<text key="webConstants_exploreSpectral">
-		Examine los datos espectrales de esta regi&#243;n
 	</text>
 	<text key="webConstants_exploreData">
 		Examine los datos para $TARGET$
@@ -2972,5 +2957,153 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
+	<text key="datalink_linkedProducts">
+		Productos vinculados
+	</text>
+	<text key="selectionToolbox_showSelectionToolbox">
+		Mostrar herramientas de selección
+	</text>
+	<text key="selectionToolbox_hideSelectionToolbox">
+        Esconder herramientas de selección
+	</text>
+	<text key="selectionToolbox_helpText">
+		&lt;b&gt;Selección&lt;/b&gt;&lt;br&gt;
+		Para seleccionar fuentes o regiones en un área del cielo, presione y arrastre de &lt;b&gt;izquierda&lt;/b&gt; a &lt;b&gt;derecha&lt;/b&gt;, con el cuadrado o cículo seleccionados.
+        Un cuadrado o un círculo verde aparecerán para indicar el área seleccionada.
+        Una vez esté satisfecho con el área seleccionada, suelte el botón y todas las las fuentes dentro de ese área serán seleccionadas.
+        &lt;br&gt;&lt;br&gt;&lt;b&gt;Anular la selección&lt;/b&gt;&lt;br&gt;
+		Para anular la selección, repita la misma operación pero presionando y arrastrando de derecha a izquierda.
+        Esto creará un área roja para anular la selección de fuentes.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Polígono&lt;/b&gt;&lt;br&gt;
+		La herramienta de selección polígono permite seleccionar un área con forma arbitraria. Cada click añade un punto
+        más al polígono.
+        Termine el polígono con un doble click o seleccionando el primer vértice.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Atajo de teclado&lt;/b&gt;&lt;br&gt;
+		Puede entrar en el modo de selección manteniendo presionada la tecla Shift. El modo de selección se mantiene activo
+        mientras tecla Shift se mantenga presionada, permitiendo  la selección múltiple de varias áreas.
+	</text>
+	<text key="selectionToolbox_helpHeader">
+        Herramientas de Selección
+	</text>
+	<text key="selectionToolbox_boxButtonTooltip">
+        Herramienta de Selección Cuadrado
+	</text>
+	<text key="selectionToolbox_circleButtonTooltip">
+        Herramienta de Selección Círculo
+	</text>
+	<text key="selectionToolbox_polygonButtonTooltip">
+        Herramienta de Selección Polígono
+	</text>
+	<text key="addSkyMenuItem_ESASKY">Añadir una nueva fila</text>
+	<text key="addSkyMenuItem_URL">HiPS desde una URL</text>
+	<text key="addSkyMenuItem_LOCAL">HiPS desde su ordenador</text>
+	<text key="addSkyMenuItem_BROWSE">Explorar lista de HiPS</text>
+	
+	<text key="addUrl_Header"> Añadir HiPS desde una URL </text>
+	<text key="addUrl_Description"> Añadir HiPS en ESASky desde una URL externa.
+    Introduzca la URL del HiPS que desea visualizar y ESASky examinará las propiedades en la URL y lo representará en el cielo
+	</text>
+	
+	<text key="addSky_errorParsingProperties">
+		Error en el análisis de las propiedades debido a: $DUE_TO$
+		&lt;br&gt;&lt;br&gt;
+		Puede ser que el proveedor del servicio HiPS no permita Cross origin requests (CORS) o que no tenga un protocolo
+        de seguridad https lo que hace imposible cargar el HiPS en ESASky
+	</text>
+	
+	<text key="browseHips_headerLabel">Listado de HiPS Global</text>
+	<text key="browseHips_errorLoadingGlobal">
+		ESASky no pudo cargar la listal de HiPS global desde: $URL$ </text>
+
+	<text key="targetlist_images">Imágenes </text>
+	<text key="targetlist_hstTitle">Imágenes ESA/Hubble </text>
+	<text key="targetlist_opacity">Opacidad</text>
+
+	<!-- Hips browse panel -->
+	<text key="ID">ID</text>
+	<text key="title">Título</text>
+	<text key="URL">URL</text>
+	<text key="hips_order">Orden</text>
+	<text key="hips_coverage">Cobertura celeste</text>
+	<text key="hips_em_min">Longitud de Onda Min &lt;i&gt;(m)&lt;/i&gt;</text>
+	<text key="hips_em_max">Longitud de Onda Max &lt;i&gt;(m)&lt;/i&gt;</text>
+	<text key="tabulator_addHipsColumn">Añadir</text>
+	<text key="tabulator_addHips_tooltip">Añadir HiPS como nueva fila en el panel cielo</text>
+	
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
+        El satélite CHEOPS, lanzado en Diciembre de 2019, es la primera misión dedicada a la búsqueda de exoplanetas en
+        tránsito a partir de fotometría de alta precisión de estrellas brillantes ya conocidas por albergar exoplanetas.
+        Posee un único instrumento: un telescopio reflector de apertura efectiva de 30 cm con un campo de visión
+        de diámetro 0.32˚. La longitud de onda cubre desde el infrarojo cercano hasta en visible en el rango 330-1100 nm.
+		&lt;br&gt;&lt;br&gt;
+		Los datos proporcionados por &lt;em&gt;ESASky&lt;/em&gt; consisten en las curvas de luz reducidas y sus metadatos asociados, que son datos de alto nivel extraídos por la pipeline de reducción de datos de CHEOPS.
+        Para más información visite  &lt;a href="https://cheops-archive.astro.unige.ch/archive_browser/" target="_blank"&gt;CHEOPS Archive Browser&lt;/a&gt;.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#CHEOPS"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="show_more">Mostrar más</text>
+	<text key="show_more_tooltip">Click para expandir y mostrar todo el texto</text>
+
+	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+	Datos externos proporcionados por
+		&lt;a
+		href="//heasarc.gsfc.nasa.gov"
+		target="_blank"&gt;
+		the High Energy Astrophysics Science Archive Research Center (HEASARC)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+		Es importante mencionar que estos datos, al contrario que los que aparecen en las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+        Datos externos proporcionados por
+		&lt;a
+		href="//astron.nl"
+		target="_blank"&gt;
+		Netherlands Institute for Radio Astronomy (ASTRON)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+        Es importante mencionar que estos datos, al contrario que los que aparecen en las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+        Más información
+		&lt;/a&gt; 
+	</text>
+	
+	<text key="Gamma-ray">
+		Rayos Gamma
+	</text>
+	<text key="menuItem_removeEntry">
+		Borrar entrada
+	</text>
+	<text key="treeMap_notInRange_ASTRO_SPECTRA">
+        No se ha encontrado ningún Espectro o Curva de Luz en este rango de longitud de onda.
+	</text>
+	<text key="treeMap_noData_ASTRO_SPECTRA">
+        No se ha encontrado ningún Espectro o Curva de Luz.
+	</text>
+		<text key="treeMap_ASTRO_SPECTRA">
+        Espectros y Curvas de Luz
+	</text>
+	<text key="treeMap_loading_ASTRO_SPECTRA">
+        Cargando Espectros y Curvas de Luz
+	</text>
+	<text key="webConstants_exploreSpectral">
+        Explorar Espectros y Curvas de Luz en esta región
+	</text>
+		
 </Internationalization>
 
