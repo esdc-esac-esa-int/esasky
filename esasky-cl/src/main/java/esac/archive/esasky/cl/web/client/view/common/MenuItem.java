@@ -51,6 +51,7 @@ public class MenuItem<T> extends FocusPanel{
             removeRowButton.setSmallStyle();
             horizontalPanel.add(removeRowButton);
             removeRowButton.addStyleName("menuItem_removeRow");
+            removeRowButton.setTitle("menuItem_removeEntry");
             removeRowButton.setVisible(false);
             removeRowButton.addClickHandler(new ClickHandler() {
                 

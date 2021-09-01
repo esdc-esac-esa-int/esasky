@@ -210,9 +210,6 @@
 	<text key="treeMap_ASTRO_CATALOGUE">
 		Catalogues
 	</text>
-	<text key="treeMap_ASTRO_SPECTRA">
-		Spectra and Lightcurves
-	</text>
 	<text key="treeMap_SSO">
 		Solar System Object Observations
 	</text>
@@ -222,9 +219,6 @@
 	<text key="treeMap_loading_ASTRO_CATALOGUE">
 		Loading Catalogues
 	</text>
-	<text key="treeMap_loading_ASTRO_SPECTRA">
-		Loading Spectra and Lightcurves
-	</text>
 	<text key="treeMap_loading_SSO">
 		Loading Solar System Objects
 	</text>
@@ -233,9 +227,6 @@
 	</text>
 	<text key="treeMap_noData_ASTRO_CATALOGUE">
 		No Catalogue Entries Found
-	</text>
-	<text key="treeMap_noData_ASTRO_SPECTRA">
-		No Spectral or Lightcurve Data Found
 	</text>
 	<text key="treeMap_noData_SSO">
 		No SSO Observations Found
@@ -248,9 +239,6 @@
 	</text>
 	<text key="treeMap_notInRange_ASTRO_CATALOGUE">
 		No Catalogue entries found in this wavelength range.
-	</text>
-	<text key="treeMap_notInRange_ASTRO_SPECTRA">
-		No Spectral or Lightcurve data found in this wavelength range.
 	</text>
 	<text key="treeMap_notInRange_SSO">
 		No SSO Observations found in this wavelength range.
@@ -512,9 +500,6 @@
 	</text>
 	<text key="webConstants_exploreCatalogue">
 		Explore catalogue data for this region
-	</text>
-	<text key="webConstants_exploreSpectral">
-		Explore spectral or lightcurve data for this region
 	</text>
 	<text key="webConstants_exploreData">
 		Explore data for $TARGET$
@@ -3334,13 +3319,13 @@
 	<text key="targetlist_opacity">Image Opacity</text>
 
 	<!-- Hips browse panel -->
-	<text key="ID">Id</text>
+	<text key="ID">ID</text>
 	<text key="title">Title</text>
 	<text key="URL">URL</text>
 	<text key="hips_order">Order</text>
 	<text key="hips_coverage">Sky Coverage</text>
-	<text key="hips_em_min">Min Wavelength</text>
-	<text key="hips_em_max">Max Wavelength</text>
+	<text key="hips_em_min">Min Wavelength &lt;i&gt;(m)&lt;/i&gt;</text>
+	<text key="hips_em_max">Max Wavelength &lt;i&gt;(m)&lt;/i&gt;</text>
 	<text key="tabulator_addHipsColumn">Add</text>
 	<text key="tabulator_addHips_tooltip">Adds this HiPS as a new row to the Sky panel</text>
 	
@@ -3401,13 +3386,23 @@
 	<text key="Gamma-ray">
 		Gamma-ray
 	</text>
-
-	<!--  ALSO TO BE UPDATED IN EN AND ZH: ALL REFERENCES TO SPECTRA
-	treeMap_ASTRO_SPECTRA
-	treeMap_loading_ASTRO_SPECTRA
-	treeMap_noData_ASTRO_SPECTRA
-	treeMap_notInRange_ASTRO_SPECTRA
-	webConstants_exploreSpectral -->
-
+	<text key="menuItem_removeEntry">
+		Remove entry
+	</text>
+	<text key="treeMap_notInRange_ASTRO_SPECTRA">
+		No Spectral or Lightcurve data found in this wavelength range.
+	</text>
+	<text key="treeMap_noData_ASTRO_SPECTRA">
+		No Spectral or Lightcurve Data Found
+	</text>
+		<text key="treeMap_ASTRO_SPECTRA">
+		Spectra and Lightcurves
+	</text>
+	<text key="treeMap_loading_ASTRO_SPECTRA">
+		Loading Spectra and Lightcurves
+	</text>
+	<text key="webConstants_exploreSpectral">
+		Explore spectral or lightcurve data for this region
+	</text>
 
 </Internationalization>
