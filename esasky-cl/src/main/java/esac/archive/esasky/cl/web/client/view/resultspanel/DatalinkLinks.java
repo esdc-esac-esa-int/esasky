@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 import java.util.LinkedList;
 import java.util.List;
 
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.SizeFormatter;
 
 public class DatalinkLinks {
@@ -25,7 +26,11 @@ public class DatalinkLinks {
 			} else {
 				typeAndSizeDisplayText = content_type;
 			}
-			typeAndSizeDisplayText = " (" + typeAndSizeDisplayText.toUpperCase() + ")";
+			if(typeAndSizeDisplayText.toLowerCase().contains("datalink")) {
+			    typeAndSizeDisplayText = " (" + TextMgr.getInstance().getText("datalink_linkedProducts") + ")";
+			} else {
+			    typeAndSizeDisplayText = " (" + typeAndSizeDisplayText.toUpperCase() + ")";
+			}
 		}
 		if(!content_length.isEmpty()) {
 			if(content_type.isEmpty()) {
