@@ -2960,7 +2960,7 @@
 		 Magnitude Gaia Band
 	</text>
 	<text key="ligthcurveLinkCheops">
-		 Optimal Lightcurve
+		 Optimal Light Curve
 	</text>
 	<text key="reportLinkCheops">
 		  Data Reduction Pipeline Report 
@@ -3407,19 +3407,19 @@
 		Remove entry
 	</text>
 	<text key="treeMap_notInRange_ASTRO_SPECTRA">
-		No Spectral or Lightcurve data found in this wavelength range.
+		No Spectral or Light Curve data found in this wavelength range.
 	</text>
 	<text key="treeMap_noData_ASTRO_SPECTRA">
-		No Spectral or Lightcurve Data Found
+		No Spectral or Light Curve Data Found
 	</text>
 		<text key="treeMap_ASTRO_SPECTRA">
-		Spectra and Lightcurves
+		Spectra and Light Curves
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
-		Loading Spectra and Lightcurves
+		Loading Spectra and Light Curves
 	</text>
 	<text key="webConstants_exploreSpectral">
-		Explore spectral or lightcurve data for this region
+		Explore spectral or light curve data for this region
 	</text>
 	<text key="datalink_linkedProducts">
 		Linked products
