@@ -2954,7 +2954,7 @@
 		 Observation Stop Time (UTC)
 	</text>
 	<text key="magCheops">
-		 Magnitude Cheops Band
+		 Magnitude CHEOPS Band
 	</text>
 	<text key="magG">
 		 Magnitude Gaia Band
@@ -3347,7 +3347,7 @@
 	<text key="tabulator_addHips_tooltip">Adds this HiPS as a new row to the Sky panel</text>
 	
 	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
-		The CHaracterising EXOPlanets Satellite (CHEOPS), launched on December 2019, is the first mission dedicated to the search for exoplanetary transist through high precision photometry of bright stars already known to host planets.
+		The CHaracterising EXOPlanets Satellite (CHEOPS), launched on December 2019, is the first mission dedicated to the search for exoplanetary transits through high precision photometry of bright stars already known to host planets.
 		It has a single instrument: a 30 effective aperture reflecting telescope with a field of view diameter of 0.32˚.
 		The CHEOPS bandpass covers the visible-near-infrared 330-1100 nm range.
 		&lt;br&gt;&lt;br&gt;
