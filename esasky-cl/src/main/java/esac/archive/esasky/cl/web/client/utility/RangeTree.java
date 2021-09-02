@@ -38,6 +38,8 @@ public class RangeTree {
 					tree.remove(b);
 					a.setStart(b.end);
 					break;
+				default:
+					break;
 			}
 		}
 		tree.add(a);
