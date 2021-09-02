@@ -338,8 +338,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     	//Open this in a new table
     	
-
-    	
     	String adql = metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery);
     	
     	String filter = tablePanel.getFilterString();

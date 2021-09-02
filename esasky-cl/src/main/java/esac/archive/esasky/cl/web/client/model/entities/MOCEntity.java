@@ -187,13 +187,13 @@ public class MOCEntity implements GeneralEntityInterface {
 		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
     	
 		if(descriptor instanceof CatalogDescriptor) {
-			String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
+			String whereQuery = metadataService.getWhereQueryFromPixels(descriptor, visibleIpixels, tablePanel.getFilterString());
 			((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
 		}else {
 			if("".equals(tablePanel.getFilterString())){
 				((EsaSkyEntity) parentEntity).fetchDataWithoutMOC();
 			}else {
-				String whereQuery = metadataService.getVisibleWhereQuery(descriptor, visibleIpixels, tablePanel.getFilterString());
+				String whereQuery = metadataService.getWhereQueryFromPixels(descriptor, visibleIpixels, tablePanel.getFilterString());
 				((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
 			}
 		}
@@ -205,7 +205,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
 
     public void sendLoadQuery(MOCInfo mocInfo) {
-    	String whereQuery = metadataService.getVisibleWhereQuery(descriptor, mocInfo.pixels, tablePanel.getFilterString());
+    	String whereQuery = metadataService.getWhereQueryFromPixels(descriptor, mocInfo.pixels, tablePanel.getFilterString());
     	
     	((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(mocInfo, whereQuery);
     }

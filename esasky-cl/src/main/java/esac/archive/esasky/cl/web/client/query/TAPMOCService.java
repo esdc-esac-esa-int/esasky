@@ -6,6 +6,8 @@ import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.RangeTree;
+import esac.archive.esasky.cl.web.client.utility.RangeTree.Interval;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -52,7 +54,7 @@ public class TAPMOCService {
     	
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	
-    	String whereADQL = getVisibleWhereQuery(descriptor, visibleIpixels, filter);
+    	String whereADQL = getWhereQueryFromPixels(descriptor, visibleIpixels, filter);
     	
     	String adql = "SELECT " + Integer.toString(targetOrder) + " as moc_order,"
 			+"esasky_q3c_bitshift_right(q3c_ang2ipix(" + descriptor.getTapRaColumn() + "," + descriptor.getTapDecColumn() +"), "
@@ -96,44 +98,33 @@ public class TAPMOCService {
         return shape;
     }
     
-    public String getVisibleWhereQuery(IDescriptor descriptor, GeneralJavaScriptObject visibleIpixels, String filter) {
-    	String visibelOrderString = visibleIpixels.getProperties().split(",")[0];
-    	int pixelOrder = Integer.parseInt(visibelOrderString);
+    public String getWhereQueryFromPixels(IDescriptor descriptor, GeneralJavaScriptObject pixels, String filter) {
+    	String[] orderArray = pixels.getProperties().split(",");
+    	RangeTree rangeTree = new RangeTree();
     	
-    	String pixelString = GeneralJavaScriptObject.convertToString(visibleIpixels.getProperty(visibelOrderString).invokeFunction("toString"));
-
-    	long start = -2;
-    	long previous = -2;
+    	for(String orderString : orderArray) {
+    		int pixelOrder = Integer.parseInt(orderString);
+        	String[] pixelArray = GeneralJavaScriptObject.convertToString(pixels.getProperty(orderString)
+        			.invokeFunction("toString")).split(",");
+        	for(String pixelString : pixelArray){
+        		long pixel = Long.parseLong(pixelString);
+        		long start = pixel << (60 - 2 * pixelOrder);
+        		long end = (pixel + 1) << (60 - 2 * pixelOrder);
+        		rangeTree.add(start, end);
+        	}
+    	}
+    	
     	String whereADQL = " WHERE (";
-    	boolean first = true;
-    	String[] pixelStringArray = pixelString.split(",");
     	String raColumn = descriptor.getTapRaColumn();
     	String decColumn = descriptor.getTapDecColumn();
     	
-    	for(int  i = 0; i<pixelStringArray.length;i++){
-    		int pixel = Integer.parseInt(pixelStringArray[i]);
-    		if(pixel != previous + 1) {
-    			if(start > 0) {
-    				if(first) {
-    					first = false;
-    				}else {
-    					whereADQL += " OR";
-    				}
-	    			whereADQL += " q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(start << (60 - 2 * pixelOrder))
-	    			+ " AND " + Long.toString((previous + 1) << (60 - 2 * pixelOrder));
-    			}
-    			start = pixel;
-    		}
-    		previous = pixel;
-    	}
-    	
-    	if(!first) {
+    	for(Interval i : rangeTree.getTree()) {
+    		whereADQL += " q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(i.getStart())
+				+ " AND " + Long.toString(i.getEnd());
     		whereADQL += " OR ";
     	}
     	
-    	whereADQL += "q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(start << (60 - 2 * pixelOrder))
-		+ " AND " + Long.toString((previous + 1) << (60 - 2 * pixelOrder));
-    	
+    	whereADQL = whereADQL.substring(0, whereADQL.length() - 3);
     	whereADQL += ")";
     	
     	if(!"".contentEquals(filter)) {
@@ -143,7 +134,7 @@ public class TAPMOCService {
     	
     	return whereADQL;
     }
-    
+
     public String fetchMinMaxHeaders(IDescriptor descriptor, boolean global) {
     	String adql = "SELECT esasky_q3c_maxmin_query('" + descriptor.getTapTable() + "',";
     	 if (AladinLiteWrapper.isCornersInsideHips()) {
