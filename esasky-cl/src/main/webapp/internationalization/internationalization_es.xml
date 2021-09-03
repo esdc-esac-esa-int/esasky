@@ -3104,6 +3104,15 @@
 	<text key="webConstants_exploreSpectral">
         Explorar Espectros y Curvas de Luz en esta región
 	</text>
+	<text key="tabulator_products">
+		Productos 
+	</text>
+	<text key="tabulator_columnHeader_browseProducts">
+		Explorar productos
+	</text>
+	<text key="tabulator_browseProducts">
+		Explorar productos para esta fila
+	</text>
 		
 </Internationalization>
 

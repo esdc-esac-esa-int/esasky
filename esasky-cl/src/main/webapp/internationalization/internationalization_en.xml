@@ -3424,6 +3424,15 @@
 	<text key="datalink_linkedProducts">
 		Linked products
 	</text>
+	<text key="tabulator_products">
+		Products
+	</text>
+	<text key="tabulator_columnHeader_browseProducts">
+		Browse products
+	</text>
+	<text key="tabulator_browseProducts">
+		Browse products for this row
+	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 
 </Internationalization>

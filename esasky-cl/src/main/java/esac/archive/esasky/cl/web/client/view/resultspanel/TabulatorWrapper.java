@@ -1202,16 +1202,16 @@ public class TabulatorWrapper{
                 }
                 if(addDatalinkLink2ArchiveColumn){
                     activeColumnGroup.push({
-                        title:$wnd.esasky.getInternationalizationText("tabulator_download"),
-                        titleDownload:$wnd.esasky.getInternationalizationText("tabulator_download"),
+                        title:$wnd.esasky.getInternationalizationText("tabulator_products"),
+                        titleDownload:$wnd.esasky.getInternationalizationText("tabulator_products"),
                         field:"link2archive",
                         visible:descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
                         headerSort:false, 
-                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_download"),
+                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_columnHeader_browseProducts"),
                         minWidth: 85,
                         download: true,
                         formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"download_small.png", 
-                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_download")}, 
+                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_browseProducts")}, 
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                                 wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
