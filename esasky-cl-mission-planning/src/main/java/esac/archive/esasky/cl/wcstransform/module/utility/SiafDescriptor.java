@@ -12,9 +12,9 @@ import com.google.gwt.http.client.Response;
 import esac.archive.esasky.ifcs.model.descriptor.SiafEntries;
 
 public class SiafDescriptor {
-	public static SiafEntries siafEntries;
+	private static SiafEntries siafEntries;
 	public static final String SIAF_JWST_SERVLET = "/siaf/jwst";
-	public static int timeout = 120000;
+	private static int timeout = 120000;
 
 	public interface SiafDescriptorListMapper extends ObjectMapper<SiafEntries> {
 	}

@@ -20,7 +20,7 @@ function HipsSourcesManager (onHipsReadyFn) {
         currentObj.setHipsSources(hipsSources);
       },
       error: function( result ) {
-        alert("Error downloading HiPS Sources: " + url);
+        console.error("Error downloading HiPS Sources: " + url);
       }
     });
   }

@@ -105,7 +105,7 @@ public class ESASkySearchRegEx {
     final static String TARGET = "^[0-9]*$|^\\[.+\\].*$|^[0-9].*[\\p{L}]+.*$|^[\\p{L}]+.*$|^[\\p{L}]+\\s[\\p{L}]+$|^[\\p{L}]+\\s[\\p{L}_0-9]+\\*$|^[\\p{L}]+\\s?\\d+$|^[\\p{L}]+\\s?\\+?\\s?[\\p{L}_0-9]+$|^[\\p{L}]+\\s?[\\p{L}]*-?[\\p{L}_0-9]+$";
 
 
-    public static Map<String, SearchInputType> explainEquatorial = new HashMap<String, SearchInputType>() {
+    public static final Map<String, SearchInputType> explainEquatorial = new HashMap<String, SearchInputType>() {
 
         /**
          *
@@ -131,7 +131,7 @@ public class ESASkySearchRegEx {
         }
     };
 
-    public static Map<String, SearchInputType> explainGeneral = new HashMap<String, SearchInputType>() {
+    public static final Map<String, SearchInputType> explainGeneral = new HashMap<String, SearchInputType>() {
 
         /**
          *
@@ -157,13 +157,13 @@ public class ESASkySearchRegEx {
     private static String RA_4 = BEGIN + SIGN + RA_hhmmss_column_pattern + END;
     private static String RA_7 = BEGIN + SIGN + RA_hhmmss_letters_pattern + END;
 
-    public static String[] RAValid = { RA_1, RA_2, RA_3, RA_4,RA_7};
+    public static final String[] RAValid = { RA_1, RA_2, RA_3, RA_4,RA_7};
 
-    public static String DEC_1 = BEGIN + SIGN + DEC_DEGREES_decimal_base90 + END;
-    public static String DEC_2 = BEGIN + SIGN + DEC_DEGREES_integer_base90 + END;
-    public static String DEC_3 = BEGIN + SIGN + DEC_ddmmss_space_pattern + END;
-    public static String DEC_4 = BEGIN + SIGN + DEC_ddmmss_column_pattern + END;
-    public static String DEC_5 = BEGIN + SIGN + DEC_ddmmss_letters_pattern + END;
-    public static String[] DECValid = { DEC_1, DEC_2, DEC_3, DEC_4, DEC_5 };
+    public static final String DEC_1 = BEGIN + SIGN + DEC_DEGREES_decimal_base90 + END;
+    public static final String DEC_2 = BEGIN + SIGN + DEC_DEGREES_integer_base90 + END;
+    public static final String DEC_3 = BEGIN + SIGN + DEC_ddmmss_space_pattern + END;
+    public static final String DEC_4 = BEGIN + SIGN + DEC_ddmmss_column_pattern + END;
+    public static final String DEC_5 = BEGIN + SIGN + DEC_ddmmss_letters_pattern + END;
+    public static final String[] DECValid = { DEC_1, DEC_2, DEC_3, DEC_4, DEC_5 };
 
 }
