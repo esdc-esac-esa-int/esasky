@@ -787,8 +787,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	public class CustomTreeMap{
-		public TreeMapContainer treeMapContainer;
-		public EsaSkyToggleButton button;
+		public final TreeMapContainer treeMapContainer;
+		public final EsaSkyToggleButton button;
 		
 		public CustomTreeMap(TreeMapContainer treeMapContainer, EsaSkyToggleButton button) {
 			this.button = button;

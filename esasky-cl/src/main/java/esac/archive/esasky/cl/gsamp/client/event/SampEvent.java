@@ -11,7 +11,7 @@ import esac.archive.esasky.cl.gsamp.client.model.SampMessage;
 public class SampEvent extends GwtEvent<SampEventHandler> {
 
     /** Samp Event Type. */
-    public static Type<SampEventHandler> TYPE = new Type<SampEventHandler>();
+    public static final Type<SampEventHandler> TYPE = new Type<SampEventHandler>();
 
     /** local var sampMessage. */
     private SampMessage sampMessage;

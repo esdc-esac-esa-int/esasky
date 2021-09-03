@@ -283,16 +283,16 @@ public class GUISessionStatus {
 						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(false);
 					} catch (AssertionError exception) {
 						//AladinLite not initialized
-						AladinLiteWrapper.loadInitialHipsFromEsac = true;
-						AladinLiteWrapper.loadHipsFromCDN = false;
+						AladinLiteWrapper.setLoadInitialHipsFromEsac(true);
+						AladinLiteWrapper.setLoadHipsFromCDNBeforeAladinInitialization(false);
 					}
 				} else {
 					try {
 						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(true);
 					} catch (AssertionError exception) {
 						//AladinLite not initialized
-						AladinLiteWrapper.loadInitialHipsFromEsac = false;
-						AladinLiteWrapper.loadHipsFromCDN = true;
+					    AladinLiteWrapper.setLoadInitialHipsFromEsac(false);
+						AladinLiteWrapper.setLoadHipsFromCDNBeforeAladinInitialization(true);
 					}
 				}
 			}

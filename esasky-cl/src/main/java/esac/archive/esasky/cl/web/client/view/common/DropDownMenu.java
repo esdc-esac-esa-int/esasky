@@ -57,7 +57,7 @@ public class DropDownMenu<T> extends Composite {
 	private int numberOfMenuItems = 0;
 	private Resources resources;
 
-	public T selectedObject;
+	private T selectedObject;
 
 	private CssResource style;
 

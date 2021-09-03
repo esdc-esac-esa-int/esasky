@@ -90,8 +90,8 @@ public class MissionTabButtons extends Composite {
     
     private void plotWavelengthWave(boolean isSelected) {
         if(canvasId != null) {
-            double minWavelengthAllowed = WavelengthUtils.minWavelengthRange;
-            double maxWavelengthAllowed = WavelengthUtils.maxWavelengthRange;
+            double minWavelengthAllowed = WavelengthUtils.getMinWavelengthRange();
+            double maxWavelengthAllowed = WavelengthUtils.getMaxWavelengthRange();
             double normalizedWavelength = (WavelengthUtils.getMeanWavelength(descriptor) - minWavelengthAllowed) 
                     / (maxWavelengthAllowed - minWavelengthAllowed); // Normalized range to 0-1
             double invertedMean = -1 * (normalizedWavelength - 1);

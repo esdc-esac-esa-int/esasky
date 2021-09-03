@@ -290,7 +290,7 @@ public class ExtTapTreeMap extends TreeMap {
     protected void makeSureGhostPointIsInGraph(String pointId) {
         for (PointInformation pointInformation : allPoints.values()) {
             if (!pointInformation.equals(allPoints.get(pointId))
-                    && pointInformation.count > 0) {
+                    && pointInformation.getCount() > 0) {
                 return;
             }
         }

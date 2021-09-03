@@ -340,8 +340,7 @@ public class ESASkySampEventHandlerImpl implements ESASkySampEventHandler {
 				try {
 					sendSampFits(event, item, regionMap);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				    Log.debug("Send of samp FITS failed. " + e);
 				}
 			}
 		};

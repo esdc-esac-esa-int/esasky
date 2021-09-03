@@ -7,12 +7,12 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 
 public class PointInformation {
-    public String longName;
-    public String missionName;
-    public int count;
-    public IDescriptor descriptor;
-    public String credits;
-    public EntityContext context;
+    public final String longName;
+    public final String missionName;
+    private int count;
+    public final IDescriptor descriptor;
+    public final String credits;
+    public final EntityContext context;
     
     private String wavelengthShortName;
     private String wavelengthLongName;
@@ -87,6 +87,10 @@ public class PointInformation {
 
 	public void setTreemapLevel(int treemapLevel) {
 		this.treemapLevel = treemapLevel;
+	}
+	
+	public int getCount() {
+	    return count;
 	}
 	
 }

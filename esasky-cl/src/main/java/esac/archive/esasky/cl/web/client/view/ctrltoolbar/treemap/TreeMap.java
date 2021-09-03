@@ -387,7 +387,7 @@ public class TreeMap extends Chart {
             final PointInformation pointInfo = allPoints.get(foundPoint.getText());
             
             //Only way it seems to update the color
-            final Point newPoint = getNewPoint (pointId, descriptor, color, pointInfo, logCount(pointInfo.count));
+            final Point newPoint = getNewPoint (pointId, descriptor, color, pointInfo, logCount(pointInfo.getCount()));
             foundPoint.update(newPoint);
 
         }
@@ -414,7 +414,7 @@ public class TreeMap extends Chart {
     protected void makeSureGhostPointIsInGraph(String pointId) {
         for (PointInformation pointInformation : allPoints.values()) {
             if (!pointInformation.equals(allPoints.get(pointId))
-                    && pointInformation.count > 0) {
+                    && pointInformation.getCount() > 0) {
                 return;
             }
         }
@@ -578,7 +578,7 @@ public class TreeMap extends Chart {
 	    			if(!shouldBeShown) {
 	    				pointInSeries.update(0, false);
 	    			}else if(shouldBeShown) {
-	    				pointInSeries.update(logCount(pointInformation.count), false);
+	    				pointInSeries.update(logCount(pointInformation.getCount()), false);
 	    				anyPointsAreShown = true;
 	    			}
 	    		}
@@ -605,7 +605,7 @@ public class TreeMap extends Chart {
         	
         	if(waveLengthRange.size() > 0) {
         		if(lowWavelength <= waveLengthRange.get(1) && highWavelength >= waveLengthRange.get(0)
-        				&& pointInformation.count > 0) {
+        				&& pointInformation.getCount() > 0) {
         			return true;
         		}
         	}

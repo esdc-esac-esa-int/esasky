@@ -304,7 +304,7 @@ public class StylePanel extends DialogBox {
 
             @Override
             public void onSelectedChange() {
-            	stylePanelCallback.onShapeChanged(srcShapeDropDown.selectedObject.getName());
+            	stylePanelCallback.onShapeChanged(srcShapeDropDown.getSelectedObject().getName());
             }
         });
 
@@ -333,7 +333,7 @@ public class StylePanel extends DialogBox {
     	final DropDownMenu<LineStyle> lineShapeDropDown = new DropDownMenu<> ( 42, "lineStyleDropDown");
     	
     	lineShapeDropDown.registerObserver(() -> 
-    			stylePanelCallback.onLineStyleChanged(lineShapeDropDown.selectedObject.getName())
+    			stylePanelCallback.onLineStyleChanged(lineShapeDropDown.getSelectedObject().getName())
     	);
     	
     	lineShapeDropDown.addStyleName("lineShapeDropDown");

@@ -10,8 +10,8 @@ import esac.archive.esasky.ifcs.model.descriptor.WavelengthDescriptor;
 
 public class WavelengthUtils {
 
-    public static double minWavelengthRange = Double.MAX_VALUE;
-    public static double maxWavelengthRange = Double.MIN_VALUE;
+    private static double minWavelengthRange = Double.MAX_VALUE;
+    private static double maxWavelengthRange = Double.MIN_VALUE;
 
     public static String getShortName(IDescriptor descriptor) {
         List<WavelengthDescriptor> wavelengthDescriptors = descriptor.getWavelengths();
@@ -66,9 +66,9 @@ public class WavelengthUtils {
     }
     
     public static class WavelengthName {
-        public String shortName;
-        public String longName;
-        public double maxWavelength;
+        public final String shortName;
+        public final String longName;
+        public final double maxWavelength;
         
         public WavelengthName(String shortName, String longName, double maxWavelength) {
             this.shortName = shortName;
@@ -77,7 +77,7 @@ public class WavelengthUtils {
         }
     }
     
-    public static WavelengthName [] wavelengthNames = new WavelengthName[] {
+    protected static WavelengthName [] wavelengthNames = new WavelengthName[] {
             new WavelengthName("Radio", "Radio", 2.0),
             new WavelengthName("Submm", "Submillimeter", 3),
             new WavelengthName("IR", "Infrared", 6),
@@ -111,5 +111,13 @@ public class WavelengthUtils {
         } else {
             addWavelengthDescriptor(minWavelength, maxWavelength, wavelengths, wavelengthIndex + 1);
         }
+    }
+    
+    public static double getMinWavelengthRange() {
+        return minWavelengthRange;
+    }
+    
+    public static double getMaxWavelengthRange() {
+        return maxWavelengthRange;
     }
 }

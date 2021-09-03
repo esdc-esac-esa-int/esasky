@@ -31,8 +31,8 @@ public class AladinLiteWrapper {
     /** Instance to ABSI aladinWidget. */
     private static AladinLiteWidget aladinLite;
     
-    public static boolean loadInitialHipsFromEsac;
-    public static boolean loadHipsFromCDN;
+    private static boolean loadInitialHipsFromEsac;
+    private static boolean loadHipsFromCDN;
     /** Instance to JavaScriptObject. */
     private JavaScriptObject multiTargetCatalogObject;
 
@@ -574,5 +574,13 @@ public class AladinLiteWrapper {
     		list.add(Integer.parseInt(cell));
     	}
         return list;
+    }
+    
+    public static void setLoadInitialHipsFromEsac(boolean loadInitialHipsFromEsac) {
+        AladinLiteWrapper.loadInitialHipsFromEsac = loadInitialHipsFromEsac;
+    }
+
+    public static void setLoadHipsFromCDNBeforeAladinInitialization(boolean loadHipsFromCDN) {
+        AladinLiteWrapper.loadHipsFromCDN = loadHipsFromCDN;
     }
 }
