@@ -61,7 +61,7 @@ public class TAPSingleCountService {
               shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
           }else {
         	  SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-        	  shape = "CIRCLE('ICRS'," + pos.getCoordinate().ra + "," + pos.getCoordinate().dec + ", 90.0)" ;
+        	  shape = "CIRCLE('ICRS'," + pos.getCoordinate().getRa() + "," + pos.getCoordinate().getDec() + ", 90.0)" ;
           }
           
           return shape;

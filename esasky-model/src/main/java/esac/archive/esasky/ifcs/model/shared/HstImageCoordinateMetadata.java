@@ -117,12 +117,12 @@ public class HstImageCoordinateMetadata {
 	}
 	
 	public void moveReferenceToCenter() {
-		WCSTransform wcs = new WCSTransform(coordinate.ra, coordinate.dec,
+		WCSTransform wcs = new WCSTransform(coordinate.getRa(), coordinate.getDec(),
 				 scale.get(0) * 3600, scale.get(1) * 3600, referencePixels.get(0), referencePixels.get(1),
 				imageDimensions.get(0), imageDimensions.get(1), rotation, 2000, 2000, "-" + coordinateSystemProjection);
 		Point2D.Double pos = worldpos.getPosition((double) imageDimensions.get(0) / 2, (double) imageDimensions.get(1) / 2, wcs);
-		this.coordinate.ra = pos.x;
-		this.coordinate.dec = pos.y;
+		this.coordinate.setRa(pos.x);
+		this.coordinate.setDec(pos.y);
 	}
 	
 	

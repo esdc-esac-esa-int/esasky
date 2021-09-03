@@ -32,8 +32,8 @@ public class ApiView extends ApiBase{
 		}
 		
 		JSONObject coors = new  JSONObject();
-		coors.put(ApiConstants.RA, new JSONNumber(skyViewPosition.getCoordinate().ra));
-		coors.put(ApiConstants.DEC, new JSONNumber(skyViewPosition.getCoordinate().dec));
+		coors.put(ApiConstants.RA, new JSONNumber(skyViewPosition.getCoordinate().getRa()));
+		coors.put(ApiConstants.DEC, new JSONNumber(skyViewPosition.getCoordinate().getDec()));
 		coors.put(ApiConstants.FOV, new JSONNumber(skyViewPosition.getFov()));
 		
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_GETCENTER, "Cooframe: " + cooFrame + " returned: " + coors.toString() );

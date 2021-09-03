@@ -122,8 +122,8 @@ public class TAPExtTapService extends AbstractTAPService {
     private String heasarcSearch(ExtTapDescriptor descriptor) {
     	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
     	double fov = pos.getFov();
-    	double ra = pos.getCoordinate().ra;
-    	double dec = pos.getCoordinate().dec;
+    	double ra = pos.getCoordinate().getRa();
+    	double dec = pos.getCoordinate().getDec();
     	String constraint = " POWER(SIN((radians("+ descriptor.getTapDecColumn() + ") - radians(" + Double.toString(dec) + "))/2),2)"
     			+ "+ cos(radians("+ descriptor.getTapDecColumn() + ")) * cos(radians(" + Double.toString(dec) + "))"
     			+ "* POWER(SIN((radians(" + descriptor.getTapRaColumn() + ") - radians(" + Double.toString(ra) + "))/2),2)"
@@ -140,10 +140,10 @@ public class TAPExtTapService extends AbstractTAPService {
 
         if(!AladinLiteWrapper.isCornersInsideHips()) {
         	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-        	minRa = pos.getCoordinate().ra - pos.getFov()/2;
-        	maxRa = pos.getCoordinate().ra + pos.getFov()/2;
-        	minDec = pos.getCoordinate().dec - pos.getFov()/2;
-        	maxDec = pos.getCoordinate().dec + pos.getFov()/2;
+        	minRa = pos.getCoordinate().getRa() - pos.getFov()/2;
+        	maxRa = pos.getCoordinate().getRa() + pos.getFov()/2;
+        	minDec = pos.getCoordinate().getDec() - pos.getFov()/2;
+        	maxDec = pos.getCoordinate().getDec() + pos.getFov()/2;
         	
         }else {
         	String[] fovCorners = AladinLiteWrapper.getAladinLite().getFovCorners(2).toString().split(",");

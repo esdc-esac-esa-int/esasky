@@ -211,7 +211,7 @@ public class HeaderPresenter {
 			    if(AladinLiteWrapper.getCoordinatesFrame() == CoordinatesFrame.GALACTIC) {return;}
 			    GUISessionStatus.toggleShowCoordinatesInDegrees();
 				Coordinate coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-				setCoordinates(coordinate.ra, coordinate.dec);
+				setCoordinates(coordinate.getRa(), coordinate.getDec());
 			}
 		});
 		
@@ -338,7 +338,7 @@ public class HeaderPresenter {
 			@Override
 			public void onClick(final ClickEvent event) {
 				Coordinate j2000Coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.ra, j2000Coordinate.dec), "_blank", "");
+				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_VIEWINWWT, "");
 				view.closeDropdownMenu();
 			}

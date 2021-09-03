@@ -136,8 +136,8 @@ public class ApiEvents extends ApiBase{
 				JSONObject fov = new JSONObject();
 				SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 				
-				fov.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().ra));
-				fov.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().dec));
+				fov.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().getRa()));
+				fov.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().getDec()));
 				fov.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
 				fov.put(ApiConstants.FOVRA, new JSONNumber(pos.getFov()));
 				result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_VIEW_CHANGED));
@@ -248,8 +248,8 @@ public class ApiEvents extends ApiBase{
 			SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 			JSONObject location = new JSONObject();
 
-			location.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().ra));
-			location.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().dec));
+			location.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().getRa()));
+			location.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().getDec()));
 			location.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
 
 			result.put(ApiConstants.TREEMAP_LOCATION , location);
@@ -280,8 +280,8 @@ public class ApiEvents extends ApiBase{
 			SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
 			JSONObject location = new JSONObject();
 			
-			location.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().ra));
-			location.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().dec));
+			location.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().getRa()));
+			location.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().getDec()));
 			location.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
 			
 			result.put(ApiConstants.TREEMAP_LOCATION , location);

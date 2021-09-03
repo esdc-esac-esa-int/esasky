@@ -23,8 +23,8 @@ public class HstImageCoordinateMetadataTest {
 		testObj.setRotation(-7.48466377426);
 		testObj.scaleToCorrectValues();
 		
-		assertThat(testObj.getCoordinate().ra, is(closeTo(308.5642583, 0.0001)));
-		assertThat(testObj.getCoordinate().dec, is(closeTo(41.1364, 0.0001)));
+		assertThat(testObj.getCoordinate().getRa(), is(closeTo(308.5642583, 0.0001)));
+		assertThat(testObj.getCoordinate().getDec(), is(closeTo(41.1364, 0.0001)));
 		assertThat(testObj.getFov(), is(closeTo(1.38807e-05*2938, 0.0001)));
 
 	}
@@ -42,8 +42,8 @@ public class HstImageCoordinateMetadataTest {
 		
 		testObj.scaleToCorrectValues();
 		
-		assertThat(testObj.getCoordinate().ra, is(closeTo(210.7987208, 0.0001)));
-		assertThat(testObj.getCoordinate().dec, is(closeTo(54.3505611, 0.0001)));
+		assertThat(testObj.getCoordinate().getRa(), is(closeTo(210.7987208, 0.0001)));
+		assertThat(testObj.getCoordinate().getDec(), is(closeTo(54.3505611, 0.0001)));
 		assertThat(testObj.getFov(), is(closeTo(1.38767541849e-05*15852, 0.0001)));
 
 	}

@@ -97,8 +97,8 @@ public class TAPPublicationsService extends AbstractTAPService {
     	String shape = null;
  
 		shape = "CIRCLE('ICRS', "
-				+ pos.getCoordinate().ra + ","
-				+ pos.getCoordinate().dec + ","
+				+ pos.getCoordinate().getRa() + ","
+				+ pos.getCoordinate().getDec() + ","
 				+ pos.getFov() + ")";
 
     	adql += shape + ") and nbref > 0";

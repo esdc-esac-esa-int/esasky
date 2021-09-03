@@ -88,11 +88,11 @@ public class HstOutreachImage {
 		this.credits = credits;
 		
 		OpenSeaDragonWrapper openseadragon = new OpenSeaDragonWrapper(this.id, url, type,
-				coor.ra, coor.dec, fov, rotation, imageSize.getWidth(), imageSize.getHeight());
+				coor.getRa(), coor.getDec(), fov, rotation, imageSize.getWidth(), imageSize.getHeight());
 		JavaScriptObject openSeaDragonObject = openseadragon.createOpenSeaDragonObject();
 		openseadragon.addOpenSeaDragonToAladin(openSeaDragonObject);
 		
-		AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.ra), Double.toString(coor.dec));
+		AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
 		AladinLiteWrapper.getAladinLite().setZoom(fov * 3);
 		
 		Timer timer = new Timer() {

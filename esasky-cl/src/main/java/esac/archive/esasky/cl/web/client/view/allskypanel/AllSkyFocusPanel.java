@@ -232,8 +232,8 @@ public class AllSkyFocusPanel extends FocusPanel {
 				Coordinate j2000Coordinate = CoordinateUtils.getCoordinateInJ2000(coordinateOfPress.getRaDeg(),
 						coordinateOfPress.getDecDeg());
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_VIEWINWWT,
-						"RA: " + j2000Coordinate.ra + " Dec: " + j2000Coordinate.dec);
-				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.ra, j2000Coordinate.dec), "_blank", "");
+						"RA: " + j2000Coordinate.getRa() + " Dec: " + j2000Coordinate.getDec());
+				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
 			}
 		});
 		if (!Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {

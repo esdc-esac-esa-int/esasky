@@ -30,7 +30,7 @@ public class TAPMOCService {
     	
     	Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
     	String adql = "SELECT esasky_q3c_moc_query(\'" + descriptor.getTapTable().replace("public", "moc_schema") 
-    			+ "\', " + getGeometricConstraint() + ", \'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
+    			+ "\', " + getGeometricConstraint() + ", \'" + Double.toString(pos.getRa()) + "\', \'" + Double.toString(pos.getDec())
     			+ "\')  as moc from dual";
     	return adql;
     }
@@ -43,7 +43,7 @@ public class TAPMOCService {
     	filter = filter.replaceAll("'","''");
     	
     	String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
-		    	+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
+		    	+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.getRa()) + "\', \'" + Double.toString(pos.getDec())
 		    	+ "\',\'" + Integer.toString(order) + "\') as moc from dual";
     	
 		return adql;
@@ -73,7 +73,7 @@ public class TAPMOCService {
 		filter = filter.replaceAll("'","''");
 		
 		String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
-		+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.ra) + "\', \'" + Double.toString(pos.dec)
+		+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.getRa()) + "\', \'" + Double.toString(pos.getDec())
 		+ "\',\'8\') as moc from dual";
 		
 		return adql;
@@ -141,7 +141,7 @@ public class TAPMOCService {
     		 adql += "'{" + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString()+ "}','',''";
     	 }else {
     		 Coordinate coor =  CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-    		 adql += "'','" + Double.toString(coor.ra) + "','" + Double.toString(coor.dec) + "'";
+    		 adql += "'','" + Double.toString(coor.getRa()) + "','" + Double.toString(coor.getDec()) + "'";
     	 }
     	 
     	 adql += ", '" +  global + "') from public.function_dummy";

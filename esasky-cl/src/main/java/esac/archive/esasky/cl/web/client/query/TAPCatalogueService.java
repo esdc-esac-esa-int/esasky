@@ -147,7 +147,7 @@ public class TAPCatalogueService extends AbstractTAPService {
 
         adql += " from " + descriptor.getTapTable() + " WHERE "
     	+ "'1' = q3c_radial_query(" +  descriptor.getTapRaColumn() + ", "  + descriptor.getTapDecColumn() + ", "
-				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
+				+ Double.toString(pos.getCoordinate().getRa()) + ", "  +  Double.toString(pos.getCoordinate().getDec()) + ", "
 				+ Double.toString(pos.getFov()/2) +")";
         
         adql += filters;

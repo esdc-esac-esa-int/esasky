@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Coordinate{
-	public double ra;
-	public double dec;
-	
-	@JsonCreator
+	private double ra;
+	private double dec;
+
+    @JsonCreator
 	public Coordinate(@JsonProperty("ra") double ra, @JsonProperty("dec")double dec){
 		this.ra = ra;
 		this.dec = dec;
@@ -25,4 +25,20 @@ public class Coordinate{
 		}
 		return false;
 	}
+	
+	public double getRa() {
+	    return ra;
+	}
+	
+	public void setRa(double ra) {
+	    this.ra = ra;
+	}
+	
+    public double getDec() {
+        return dec;
+    }
+
+    public void setDec(double dec) {
+        this.dec = dec;
+    }
 }

@@ -396,8 +396,8 @@ public class CloseableTabLayoutPanel extends Composite {
             @Override
             public void onClick(final ClickEvent arg0) {
                 GeneralEntityInterface entity = getSelectedWidget().getEntity();
-                AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(entity.getSkyViewPosition().getCoordinate().ra),
-                        Double.toString(entity.getSkyViewPosition().getCoordinate().dec));
+                AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(entity.getSkyViewPosition().getCoordinate().getRa()),
+                        Double.toString(entity.getSkyViewPosition().getCoordinate().getDec()));
                 AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
 
                 GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_RECENTER, entity.getEsaSkyUniqId());

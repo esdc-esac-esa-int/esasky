@@ -84,7 +84,7 @@ public class TAPObservationService extends AbstractTAPService {
     	}
         adql += " FROM " + descriptor.getTapTable() + " WHERE "
         		+ "1=INTERSECTS(fov, CIRCLE(\'ICRS\', "
-				+ Double.toString(pos.getCoordinate().ra) + ", "  +  Double.toString(pos.getCoordinate().dec) + ", "
+				+ Double.toString(pos.getCoordinate().getRa()) + ", "  +  Double.toString(pos.getCoordinate().getDec()) + ", "
 				+ Double.toString(pos.getFov()/2) +"))";
 
         adql += getOrderBy(descriptor);

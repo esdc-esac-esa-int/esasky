@@ -36,8 +36,8 @@ public class HstImageDescriptorTest {
 		assertEquals(70, image.getPriority());
 		assertEquals(2696, image.getPixelSize().get(0));
 		assertEquals(1926, image.getPixelSize().get(1));
-		assertEquals(149.19399355864303, image.getCoordinateMetadata().getCoordinate().ra);
-		assertEquals(28.825368261784188, image.getCoordinateMetadata().getCoordinate().dec);
+		assertEquals(149.19399355864303, image.getCoordinateMetadata().getCoordinate().getRa());
+		assertEquals(28.825368261784188, image.getCoordinateMetadata().getCoordinate().getDec());
 		assertEquals(0.02963532168, image.getCoordinateMetadata().getFov());
 	}
 	
@@ -49,8 +49,8 @@ public class HstImageDescriptorTest {
 		assertEquals(0, image.getPriority());
 		assertEquals(4066, image.getPixelSize().get(0));
 		assertEquals(3518, image.getPixelSize().get(1));
-		assertEquals(83.4262772356, image.getCoordinateMetadata().getCoordinate().ra);
-		assertEquals(-68.7663000658, image.getCoordinateMetadata().getCoordinate().dec);
+		assertEquals(83.4262772356, image.getCoordinateMetadata().getCoordinate().getRa());
+		assertEquals(-68.7663000658, image.getCoordinateMetadata().getCoordinate().getDec());
 		assertEquals(0.044783749678554, image.getCoordinateMetadata().getFov());
 	}
 
@@ -68,8 +68,8 @@ public class HstImageDescriptorTest {
 		assertEquals(0, clDesc.getPriority());
 		assertEquals(4066, clDesc.getPixelSize().get(0));
 		assertEquals(3518, clDesc.getPixelSize().get(1));
-		assertEquals(83.4262772356, clDesc.getCoordinateMetadata().getCoordinate().ra);
-		assertEquals(-68.7663000658, clDesc.getCoordinateMetadata().getCoordinate().dec);
+		assertEquals(83.4262772356, clDesc.getCoordinateMetadata().getCoordinate().getRa());
+		assertEquals(-68.7663000658, clDesc.getCoordinateMetadata().getCoordinate().getDec());
 		assertEquals(0.044783749678554, clDesc.getCoordinateMetadata().getFov());
 	}
 	
