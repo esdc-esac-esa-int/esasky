@@ -65,7 +65,7 @@ public class DatalinkLinks {
 				content_type = data[i];
 			} else if(metadata[i].getName().equals("content_length")) {
 				content_length = data[i];
-			} else {
+			} else if(!metadata[i].getName().equalsIgnoreCase("ID")){
 				others.add(metadata[i].getName() + ": " + data[i]);
 			}
 		}

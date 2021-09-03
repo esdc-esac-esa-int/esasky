@@ -105,7 +105,8 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 									anchorName += links.getTypeAndSizeDisplayText();
 								}
 								Anchor anchor = new Anchor(anchorName, links.getAccessUrl(), "_blank");
-								if(anchorName.toLowerCase().contains("datalink")) {
+								if(anchorName.toLowerCase().contains("datalink")
+								        || anchorName.toLowerCase().contains(TextMgr.getInstance().getText("datalink_linkedProducts").toLowerCase())) {
 									anchor.setTarget("");
 									anchor.setHref("javascript:;");
 									anchor.addClickHandler(new ClickHandler() {
