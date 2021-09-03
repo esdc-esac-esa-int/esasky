@@ -424,7 +424,7 @@ public class TargetListPanel extends DialogBox {
     }
     
     public void openOutreachImage(String id) {
-    	if(outreachImageList == null) {
+    	if(outreachImageList == null || outreachImageList.isEmpty()) {
     		outReachImageIdToBeOpened = id;
     	}else {
     		int index = 0;
@@ -432,6 +432,7 @@ public class TargetListPanel extends DialogBox {
 	    		if(image.getSimbadMainId().equalsIgnoreCase(id)) {
 	    			setOutreachImageTableData(outreachImageList, id);
 	    			setSelectedOutreachImage(index);
+	    			show();
 	    			break;
 	    		}
 	    		index++;
@@ -624,7 +625,6 @@ public class TargetListPanel extends DialogBox {
     		});
     		targetListTable.setWidget(index, 0, currTargetWidget);
     		if (currTarget.getValidInput()) {
-//    			addPolygons(currTarget, index);
     			playerPanel.addEntryToPlayer(currTargetWidget);
     			if(firstValidTarget == null) {
     				firstValidTarget = currTarget;
@@ -766,7 +766,6 @@ public class TargetListPanel extends DialogBox {
 
     private final void setSelectedOutreachImage(final int index) {
         TargetWidget widget;
-    	this.show();
 
         for (int i = 0; i < targetListTable.getRowCount(); i++) {
             widget = (TargetWidget) targetListTable.getWidget(i, 0);
