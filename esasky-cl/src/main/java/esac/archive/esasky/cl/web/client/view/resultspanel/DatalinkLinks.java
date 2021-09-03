@@ -7,15 +7,14 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.SizeFormatter;
 
 public class DatalinkLinks {
-	public String ID = "";
-	public String access_url = "";
-	public String service_def = "";
-	public String description = "";
-	public String error_message = "";
-	public String semantics = "";
-	public String content_type = "";
-	public String content_length = "";
-	public List<String> others = new LinkedList<String>();
+	private String access_url = "";
+	private String service_def = "";
+	private String description = "";
+	private String error_message = "";
+	private String semantics = "";
+	private String content_type = "";
+	private String content_length = "";
+	private List<String> others = new LinkedList<String>();
 	
 	public String getTypeAndSizeDisplayText() {
 		String typeAndSizeDisplayText = "";
@@ -47,32 +46,54 @@ public class DatalinkLinks {
 		return typeAndSizeDisplayText;
 	}
 	
-    public static DatalinkLinks parseDatalinkLinks(String [] data, DatalinkMetadata[] metadata) {
-    	DatalinkLinks datalinkLinks = new DatalinkLinks();
+    public DatalinkLinks (String [] data, DatalinkMetadata[] metadata) {
     	for(int i = 0; i < metadata.length; i++) {
 			if(data[i].isEmpty()) {
 				continue;
 			}
-			if(metadata[i].getName().equalsIgnoreCase("ID")) {
-				datalinkLinks.ID = data[i];
-			} else if(metadata[i].getName().equalsIgnoreCase("access_url")) {
-				datalinkLinks.access_url = data[i];
+			if(metadata[i].getName().equalsIgnoreCase("access_url")) {
+				access_url = data[i];
 			} else if(metadata[i].getName().equals("service_def")) {
-				datalinkLinks.service_def = data[i];
+				service_def = data[i];
 			} else if(metadata[i].getName().equals("error_message")) {
-				datalinkLinks.error_message = data[i];
+				error_message = data[i];
 			} else if(metadata[i].getName().equals("description")) {
-				datalinkLinks.description = data[i];
+				description = data[i];
 			} else if(metadata[i].getName().equals("semantics")) {
-				datalinkLinks.semantics = data[i];
+				semantics = data[i];
 			} else if(metadata[i].getName().equals("content_type")) {
-				datalinkLinks.content_type = data[i];
+				content_type = data[i];
 			} else if(metadata[i].getName().equals("content_length")) {
-				datalinkLinks.content_length = data[i];
+				content_length = data[i];
 			} else {
-				datalinkLinks.others.add(metadata[i].getName() + ": " + data[i]);
+				others.add(metadata[i].getName() + ": " + data[i]);
 			}
 		}
-    	return datalinkLinks;
+    }
+    
+    public String getAccessUrl() {
+        return access_url;
+    }
+    
+    public String getContentType() {
+        return content_type;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public String getErrorMessage() {
+        return error_message;
+    }
+
+    public String getSemantics() {
+        return semantics;
+    }
+    public String getServiceDef() {
+        return service_def;
+    }
+    public List<String> getOthers() {
+        return others;
     }
 }

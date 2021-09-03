@@ -14,7 +14,7 @@ import com.google.gwt.http.client.Response;
  */
 public class JSONUtils {
     
-    private static final int defaultJSONTimeout = 25000;
+    private static final int DEFAULT_JSON_TIMEOUT = 25000;
 
     public interface IJSONRequestCallback {
         public void onSuccess(final String responseText);
@@ -38,7 +38,7 @@ public class JSONUtils {
 
     /** Request a JSON String from url passed as parameter. */
     public static void getJSONFromUrl(final String url, final IJSONRequestCallback callback) {
-        getJSONFromUrl(url, callback, defaultJSONTimeout);
+        getJSONFromUrl(url, callback, DEFAULT_JSON_TIMEOUT);
     }
     
     public static void getJSONFromUrl(final String url, final IJSONRequestCallback callback, int timeoutMillis) {
