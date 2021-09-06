@@ -587,7 +587,7 @@
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Chandra">
 		The Chandra dataset includes all public observations
-		(images and spectra), up to 8th October 2017, from the ACIS, LETG,
+		(images and spectra), updated regularly, from the ACIS, LETG,
 		HETG and HRC instruments, available in the Chandra Data Archive
 		through Chaser
 		(&lt;a href="//cda.harvard.edu/chaser/"
@@ -1195,7 +1195,7 @@
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Chandra">
 		The Chandra dataset includes all public observations
-		(images and spectra), up to 8th October 2017, from the ACIS, LETG,
+		(images and spectra), updated regularly, from the ACIS, LETG,
 		HETG and HRC instruments, available in the Chandra Data Archive
 		through Chaser
 		(&lt;a href="//cda.harvard.edu/chaser/"
