@@ -401,10 +401,10 @@ public class HeaderPresenter {
 
 		view.setHipsName(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
 		
-		view.setAvailableLanguages(EsaSkyConstants.AVAILABLE_LANGUAGES);
-		for(SimpleEntry<String, String> entry : EsaSkyConstants.AVAILABLE_LANGUAGES) {
+		view.setAvailableLanguages(EsaSkyConstants.getAvailableLanguages());
+		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages()) {
 			if(entry.getKey().equalsIgnoreCase(GUISessionStatus.getCurrentLanguage())) {
-				view.setSelectedLanguage(EsaSkyConstants.AVAILABLE_LANGUAGES.indexOf(entry));
+				view.setSelectedLanguage(EsaSkyConstants.getAvailableLanguages().indexOf(entry));
 				break;
 			}
 		}
