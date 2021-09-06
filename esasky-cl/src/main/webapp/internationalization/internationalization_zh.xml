@@ -182,9 +182,6 @@
 	<text key="treeMap_ASTRO_CATALOGUE">
 		星表
 	</text>
-	<text key="treeMap_ASTRO_SPECTRA">
-		光谱
-	</text>
 	<text key="treeMap_SSO">
 		太阳系天体观测
 	</text>
@@ -194,9 +191,6 @@
 	<text key="treeMap_loading_ASTRO_CATALOGUE">
 		加载星表
 	</text>
-	<text key="treeMap_loading_ASTRO_SPECTRA">
-		加载光谱
-	</text>
 	<text key="treeMap_loading_SSO">
 		加载太阳系天体
 	</text>
@@ -205,9 +199,6 @@
 	</text>
 	<text key="treeMap_noData_ASTRO_CATALOGUE">
 		未找到星表条目
-	</text>
-	<text key="treeMap_noData_ASTRO_SPECTRA">
-		未找到光谱数据
 	</text>
 	<text key="treeMap_noData_SSO">
 		未找到太阳系天体观测结果
@@ -455,9 +446,6 @@
 	</text>
 	<text key="webConstants_exploreCatalogue">
 		星表数据
-	</text>
-	<text key="webConstants_exploreSpectral">
-		光谱数据
 	</text>
 	<text key="webConstants_exploreData">
 		浏览 $TARGET$ 的数据
@@ -1441,9 +1429,6 @@
 	<text key="treeMap_notInRange_ASTRO_CATALOGUE">
 		在此波长范围内未找到星表数据
 	</text>
-	<text key="treeMap_notInRange_ASTRO_SPECTRA">
-		在此波长范围内未找到光谱数据
-	</text>
 	<text key="treeMap_notInRange_SSO">
 		在此波长范围内未找到太阳系天体观测数据
 	</text>
@@ -1996,5 +1981,162 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
+﻿	<text key="selectionToolbox_showSelectionToolbox">
+		显示选择工具
+	</text>
+	<text key="selectionToolbox_hideSelectionToolbox">
+		隐藏选择工具
+	</text>
+	<text key="selectionToolbox_helpText">
+		&lt;b&gt;选择&lt;/b&gt;&lt;br&gt;
+		为选择天空中的源或者覆盖图，可以使用方框选择工具或者圆形选择工具，按住鼠标键然后&lt;b&gt;从左向右&lt;/b&gt;拖拽
+		将出现一个绿色方框或者圆形来表示选择的区域
+		满足要求后释放鼠标键，该区域下的源或者覆盖图将被选中
+		
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;取消选择&lt;/b&gt;&lt;br&gt;
+		想取消选择，操作方式类似，按住鼠标键&lt;b&gt;从右向左&lt;/b&gt; 拖拽，会出现一个红色的取消选择区域
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;多边形&lt;/b&gt;&lt;br&gt;
+		多边形选择工具允许您选择任意形状内的所有东西。每次触摸或点击都会在多边形上增加一个点。
+		通过双击或按第一个点来完成多边形。
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;键盘快捷键&lt;/b&gt;&lt;br&gt;
+		按住Shift键可以进入选择模式。
+		只要按住shift键，您将停留在选择模式，允许您进行多个后续选择。
+	</text>
+	<text key="selectionToolbox_helpHeader">
+		选择工具
+	</text>
+	<text key="selectionToolbox_boxButtonTooltip">
+		方框选择工具
+	</text>
+	<text key="selectionToolbox_circleButtonTooltip">
+		圆形选择工具
+	</text>
+	<text key="selectionToolbox_polygonButtonTooltip">
+		多边形选择工具
+	</text>
+	<text key="addSkyMenuItem_ESASKY">添加新行</text>
+	<text key="addSkyMenuItem_URL">从URL网址添加HiPS</text>
+	<text key="addSkyMenuItem_LOCAL">从本地电脑添加HiPS</text>
+	<text key="addSkyMenuItem_BROWSE">浏览HiPS注册</text>
+	
+	<text key="addUrl_Header">从URL网址添加HiPS</text>
+	<text key="addUrl_Description">从一个URL网址添加HiPS到ESASky。
+		输入你想要显示的HiPS数据集的网址，ESASky会尝试从该网址解析数据集并显示在天空上
+	</text>
+	
+	<text key="addSky_errorParsingProperties">
+		无法成功获取属性，原因是: $DUE_TO$ 
+		&lt;br&gt;&lt;br&gt;
+		也许是因为HiPS服务器截止跨域请求（CORS）
+		或者没有使用HTTPS协议导致ESASky无法加载数据
+	</text>
+	
+	<text key="browseHips_headerLabel">全球HiPS注册列表</text>
+	<text key="browseHips_errorLoadingGlobal">
+		ESASky无法从 $URL$ 加载全球HiPS注册列表
+  </text>
+
+	<text key="targetlist_images">图像</text>
+	<text key="targetlist_hstTitle">ESA/Hubble图片</text>
+	<text key="targetlist_opacity">图像透明度</text>
+
+	<!-- Hips browse panel -->
+	<text key="ID">ID</text>
+	<text key="title">标题</text>
+	<text key="URL">URL</text>
+	<text key="hips_order">级次</text>
+	<text key="hips_coverage">天空覆盖</text>
+	<text key="hips_em_min">最小波长 &lt;i&gt;(m)&lt;/i&gt;</text>
+	<text key="hips_em_max">最大波长 &lt;i&gt;(m)&lt;/i&gt;</text>
+	<text key="tabulator_addHipsColumn">添加</text>
+	<text key="tabulator_addHips_tooltip">作为新行把这个HiPS添加到天空面板</text>
+	
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
+		CHEOPS系外行星监测卫星，发射于2019年12月，是第一个通过高精度测光观测来研究系外行星凌星的计划。它的主要监测目标是那些已知具有行星的亮星。
+		CHEOPS只有一个仪器：一架有效口径30厘米的反射式望远镜，视场直径0.32度。
+		观测频带为330-1100纳米，覆盖可见光到近红外。
+		&lt;br&gt;&lt;br&gt;
+		&lt;em&gt;ESASky&lt;/em&gt;系统提供的数据产品包括处理后的光变曲线和相关元数据，这是数据处理管线处理后形成的高级数据产品。
+		For more information visit the &lt;a href="https://cheops-archive.astro.unige.ch/archive_browser/" target="_blank"&gt;CHEOPS Archive Browser&lt;/a&gt;.
+		更多信息可访问&lt;a href="https://cheops-archive.astro.unige.ch/archive_browser/" target="_blank"&gt;CHEOPS 数据库&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#CHEOPS"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+
+	<text key="show_more">显示更多</text>
+	<text key="show_more_tooltip">单击展开并显示全文</text>
+
+	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+		外部数据源自 
+		&lt;a
+		href="//heasarc.gsfc.nasa.gov"
+		target="_blank"&gt;
+		高能天体物理科学数据库研究中心(HEASARC)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+    	必须指出，这些数据与通过ESASky的图像、光谱和星表通道提供的数据不同，ESASky团队不对这些数据进行管理。	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+		外部数据源自 
+		&lt;a
+		href="//astron.nl"
+		target="_blank"&gt;
+		荷兰射电天文研究所(ASTRON)
+		&lt;/a&gt; 
+		
+		&lt;br&gt;&lt;br&gt;
+    	必须指出，这些数据与通过ESASky的图像、光谱和星表通道提供的数据不同，ESASky团队不对这些数据进行管理。	
+	
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	
+	<text key="Gamma-ray">
+		伽马射线
+	</text>
+	<text key="menuItem_removeEntry">
+		删除条目
+	</text>
+	<text key="treeMap_notInRange_ASTRO_SPECTRA">
+		在本波长范围没有光谱或者光变曲线数据
+	</text>
+	<text key="treeMap_noData_ASTRO_SPECTRA">
+		没有发现光谱或者光变曲线数据
+	</text>
+		<text key="treeMap_ASTRO_SPECTRA">
+		光谱和光变曲线
+	</text>
+	<text key="treeMap_loading_ASTRO_SPECTRA">
+		光谱和光变曲线加载中
+	</text>
+	<text key="webConstants_exploreSpectral">
+		搜索本区域的光谱和光变曲线数据
+	</text>
+	<text key="datalink_linkedProducts">
+		链接的数据产品
+	</text>
+	<text key="tabulator_products">
+    产品
+  </text>
+  <text key="tabulator_columnHeader_browseProducts">
+  	浏览产品
+  </text>
+  <text key="tabulator_browseProducts">
+  	从本行浏览产品
+  </text>
 	
 </Internationalization>

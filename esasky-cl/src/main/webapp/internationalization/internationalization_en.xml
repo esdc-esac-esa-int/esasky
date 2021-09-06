@@ -3276,7 +3276,6 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
 
 	<text key="selectionToolbox_showSelectionToolbox">
 		Show selection tools
@@ -3434,5 +3433,5 @@
 		Browse products for this row
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
-
+	<!-- internationalization_zh.xml is up to date for everything above -->
 </Internationalization>
