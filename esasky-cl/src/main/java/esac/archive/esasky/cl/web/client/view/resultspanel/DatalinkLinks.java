@@ -48,27 +48,31 @@ public class DatalinkLinks {
 	
     public DatalinkLinks (String [] data, DatalinkMetadata[] metadata) {
     	for(int i = 0; i < metadata.length; i++) {
-			if(data[i].isEmpty()) {
-				continue;
-			}
-			if(metadata[i].getName().equalsIgnoreCase("access_url")) {
-				access_url = data[i];
-			} else if(metadata[i].getName().equals("service_def")) {
-				service_def = data[i];
-			} else if(metadata[i].getName().equals("error_message")) {
-				error_message = data[i];
-			} else if(metadata[i].getName().equals("description")) {
-				description = data[i];
-			} else if(metadata[i].getName().equals("semantics")) {
-				semantics = data[i];
-			} else if(metadata[i].getName().equals("content_type")) {
-				content_type = data[i];
-			} else if(metadata[i].getName().equals("content_length")) {
-				content_length = data[i];
-			} else if(!metadata[i].getName().equalsIgnoreCase("ID")){
-				others.add(metadata[i].getName() + ": " + data[i]);
-			}
+			parseRow(data, metadata, i);
 		}
+    }
+
+    private void parseRow(String[] data, DatalinkMetadata[] metadata, int rowNumber) {
+        if(data[rowNumber].isEmpty()) {
+        	return;
+        }
+        if(metadata[rowNumber].getName().equalsIgnoreCase("access_url")) {
+        	access_url = data[rowNumber];
+        } else if(metadata[rowNumber].getName().equals("service_def")) {
+        	service_def = data[rowNumber];
+        } else if(metadata[rowNumber].getName().equals("error_message")) {
+        	error_message = data[rowNumber];
+        } else if(metadata[rowNumber].getName().equals("description")) {
+        	description = data[rowNumber];
+        } else if(metadata[rowNumber].getName().equals("semantics")) {
+        	semantics = data[rowNumber];
+        } else if(metadata[rowNumber].getName().equals("content_type")) {
+        	content_type = data[rowNumber];
+        } else if(metadata[rowNumber].getName().equals("content_length")) {
+        	content_length = data[rowNumber];
+        } else if(!metadata[rowNumber].getName().equalsIgnoreCase("ID")){
+        	others.add(metadata[rowNumber].getName() + ": " + data[rowNumber]);
+        }
     }
     
     public String getAccessUrl() {
