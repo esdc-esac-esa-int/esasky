@@ -19,6 +19,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.xml.client.impl.DOMParseException;
 
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -172,7 +173,7 @@ public class TextMgr {
 	private String getTwoLetterLangCode(String newLangCode) {
 		String twoLetterLangCode = newLangCode.substring(0, 2);
 		Log.debug(twoLetterLangCode + ":");
-		for(SimpleEntry<String, String> entry : EsaSkyConstants.AVAILABLE_LANGUAGES) {
+		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages()) {
 			if(entry.getKey().equalsIgnoreCase(twoLetterLangCode)) {
 				return twoLetterLangCode;
 			}
@@ -228,7 +229,7 @@ public class TextMgr {
                 final String result = response.getText();
                 Document xmlDoc = XMLParser.parse(result); 
                 getTextsFromXML(xmlDoc, isPrimaryLanguage);
-            } catch(Exception ex) {
+            } catch(DOMParseException ex) {
                 Log.error("TextMgr.readXML().onResponseReceived", ex);
                 if(isPrimaryLanguage) {
                     onInitialized(false);

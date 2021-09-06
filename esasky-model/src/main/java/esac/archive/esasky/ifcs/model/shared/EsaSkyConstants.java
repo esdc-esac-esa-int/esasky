@@ -187,13 +187,16 @@ public class EsaSkyConstants {
     /** INTERNATIONALIZATION VALUES **/
     /*************************************************************************/
     public static final String DEFAULT_LANGCODE = "en"; 
-    public static final List<SimpleEntry<String, String>> AVAILABLE_LANGUAGES = new LinkedList<SimpleEntry<String, String>>(
+    private static final List<SimpleEntry<String, String>> AVAILABLE_LANGUAGES = new LinkedList<SimpleEntry<String, String>>(
     		Arrays.asList(
     				new SimpleEntry<String, String>("en", "En"),
     				new SimpleEntry<String, String>("es", "Es")
     				,new SimpleEntry<String, String>("zh", "中文")
     				)
     		);
+    public static List<SimpleEntry<String, String>> getAvailableLanguages(){
+        return AVAILABLE_LANGUAGES;
+    }
     
     /*************************************************************************/
     /** COMMUNICATION CONSTANTS **/
