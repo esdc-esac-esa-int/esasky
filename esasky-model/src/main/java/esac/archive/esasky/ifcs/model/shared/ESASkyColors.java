@@ -112,8 +112,8 @@ public class ESASkyColors {
 	}
 	
 	private static class Color{
-		public String color;
-		public double wavelength;
+		public final String color;
+		public final double wavelength;
 		
 		public Color(String color, double wavelength) {
 			this.color = color;
