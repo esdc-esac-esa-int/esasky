@@ -194,9 +194,6 @@ public class EsaSkyConstants {
     				,new SimpleEntry<String, String>("zh", "中文")
     				)
     		);
-    public static List<SimpleEntry<String, String>> getAvailableLanguages(){
-        return AVAILABLE_LANGUAGES;
-    }
     
     /*************************************************************************/
     /** COMMUNICATION CONSTANTS **/
@@ -386,5 +383,9 @@ public class EsaSkyConstants {
     protected EsaSkyConstants() {
         // prevents calls from subclass
         throw new UnsupportedOperationException();
+    }
+    
+    public static List<SimpleEntry<String, String>> getAvailableLanguages(){
+        return AVAILABLE_LANGUAGES;
     }
 }
