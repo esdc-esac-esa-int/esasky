@@ -14,7 +14,7 @@ public class DatalinkLinks {
 	private String semantics = "";
 	private String contentType = "";
 	private String contentLength = "";
-	private List<String> others = new LinkedList<String>();
+	private List<String> others = new LinkedList<>();
 	
     public DatalinkLinks (String [] data, DatalinkMetadata[] metadata) {
     	for(int i = 0; i < metadata.length; i++) {
@@ -26,21 +26,21 @@ public class DatalinkLinks {
         if(data[rowNumber].isEmpty()) {
         	return;
         }
-        if(metadata[rowNumber].getName().equalsIgnoreCase("access_url")) {
+        if("access_url".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	accessUrl = data[rowNumber];
-        } else if(metadata[rowNumber].getName().equals("service_def")) {
+        } else if("service_def".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	serviceDef = data[rowNumber];
-        } else if(metadata[rowNumber].getName().equals("error_message")) {
+        } else if("error_message".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	errorMessage = data[rowNumber];
-        } else if(metadata[rowNumber].getName().equals("description")) {
+        } else if("description".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	description = data[rowNumber];
-        } else if(metadata[rowNumber].getName().equals("semantics")) {
+        } else if("semantics".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	semantics = data[rowNumber];
-        } else if(metadata[rowNumber].getName().equals("content_type")) {
+        } else if("content_type".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	contentType = data[rowNumber];
-        } else if(metadata[rowNumber].getName().equals("content_length")) {
+        } else if("content_length".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	contentLength = data[rowNumber];
-        } else if(!metadata[rowNumber].getName().equalsIgnoreCase("ID")){
+        } else if(!"ID".equalsIgnoreCase(metadata[rowNumber].getName())){
         	others.add(metadata[rowNumber].getName() + ": " + data[rowNumber]);
         }
     }
