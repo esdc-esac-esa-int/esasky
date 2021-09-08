@@ -561,12 +561,12 @@ public class TabulatorWrapper{
 			for(var i = 0; i < response.data.length; i++){
 				var row = {id:i};
 				for(var j = 0; j < metadata.length; j++){
-	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "REAL"){
+	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "FLOAT" || metadata[j].datatype.toUpperCase() === "REAL"){
 						row[metadata[j].name] = parseFloat(response.data[i][j]);
 		    			if(isNaN(row[metadata[j].name])){
 							row[metadata[j].name] = undefined;
 		    			}
-	    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT"){
+	    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT" || metadata[j].datatype.toUpperCase() === "SHORT"){
 						row[metadata[j].name] = parseInt(response.data[i][j]);
 		    			if(isNaN(row[metadata[j].name])){
 							row[metadata[j].name] = undefined;
@@ -1440,7 +1440,7 @@ public class TabulatorWrapper{
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
-			    		else if(this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "REAL"){
+			    		else if(this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "FLOAT" || this.metadata[i].datatype.toUpperCase() === "REAL"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
@@ -1500,7 +1500,8 @@ public class TabulatorWrapper{
 		    				});
 			    		}
 			    		else if(this.metadata[i].datatype.toUpperCase() === "INTEGER" 
-			    		    || this.metadata[i].datatype.toUpperCase() === "INT"){
+			    		    || this.metadata[i].datatype.toUpperCase() === "INT"
+			    		    || this.metadata[i].datatype.toUpperCase() === "SHORT"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
@@ -1728,10 +1729,13 @@ public class TabulatorWrapper{
 			var esaskyToVOStandardType = {};
 			esaskyToVOStandardType["DOUBLE"] = "double"
 			esaskyToVOStandardType["INTEGER"] = "int"
+			esaskyToVOStandardType["SHORT"] = "short"
 			esaskyToVOStandardType["BIGINT"] = "long";
 			esaskyToVOStandardType["STRING"] = "char";
 			esaskyToVOStandardType["VARCHAR"] = "char";
+			esaskyToVOStandardType["CHAR"] = "char";
 			esaskyToVOStandardType["REAL"] = "float";
+			esaskyToVOStandardType["FLOAT"] = "float";
 			esaskyToVOStandardType["SMALLINT"] = "int";
 			esaskyToVOStandardType["TIMESTAMP"] = "char";
 			esaskyToVOStandardType["BOOLEAN"] = "boolean";
@@ -1882,26 +1886,28 @@ public class TabulatorWrapper{
                 var row = {id:i};
                 var ra, dec = undefined;
                 Object.keys(skyObject).forEach(function(key) {
-                    if(key === "data"){
-                        skyObject[key].forEach(function(extraData){
+					if(key === "data"){
+						skyObject[key].forEach(function(extraData){
                         	if(i==0){
-                            	metadata.push({name:extraData.name, displayName: $wnd.esasky.getColumnDisplayText(extraData.name), datatype:extraData.type, visible: true});
+								metadata.push({name:extraData.name, displayName: $wnd.esasky.getColumnDisplayText(extraData.name), datatype:extraData.type, visible: true});
                         	}
-                           if(extraData.type.toUpperCase() === "DOUBLE" || extraData.type.toUpperCase() === "REAL"){
+							if(extraData.type.toUpperCase() === "DOUBLE"
+								|| extraData.type.toUpperCase() === "FLOAT"
+								|| extraData.type.toUpperCase() === "REAL"){
 								row[extraData.name] = parseFloat(extraData.value);
 				    			if(isNaN(row[extraData.name])){
 									row[extraData.name] = undefined;
 				    			}
-				    			} else if(extraData.type.toUpperCase() === "INTEGER" || extraData.type.toUpperCase() === "INT"){
-									row[extraData.name] = parseInt(extraData.value);
-					    			if(isNaN(row[extraData.name])){
-										row[extraData.name] = undefined;
-					    			}
-				    			} else if(extraData.type.toUpperCase() === "BIGINT"|| extraData.type.toUpperCase() === "LONG"){
-									row[extraData.name] = extraData.value;
-				    			} else {
-									row[extraData.name] = extraData.value;
+			    			} else if(extraData.type.toUpperCase() === "INTEGER" || extraData.type.toUpperCase() === "INT" || extraData.type.toUpperCase() === "SHORT"){
+								row[extraData.name] = parseInt(extraData.value);
+				    			if(isNaN(row[extraData.name])){
+									row[extraData.name] = undefined;
 				    			}
+			    			} else if(extraData.type.toUpperCase() === "BIGINT"|| extraData.type.toUpperCase() === "LONG"){
+								row[extraData.name] = extraData.value;
+			    			} else {
+								row[extraData.name] = extraData.value;
+			    			}
                         });
                         
                     } else if(key !== 'id'){
