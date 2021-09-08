@@ -57,7 +57,6 @@ package esac.archive.esasky.ifcs.model.wcstransform;
 /**
  * WCS - World Coordinate System
  */
-@SuppressWarnings({ "SuspiciousNameCombination" })
 public class wcscon {
 
     /*

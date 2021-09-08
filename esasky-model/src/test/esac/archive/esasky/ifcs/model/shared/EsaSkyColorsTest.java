@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 public class EsaSkyColorsTest {
 

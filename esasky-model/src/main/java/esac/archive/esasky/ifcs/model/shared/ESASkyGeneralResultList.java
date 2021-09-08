@@ -1,8 +1,5 @@
 package esac.archive.esasky.ifcs.model.shared;
 
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
-import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
-
 public class ESASkyGeneralResultList {
 
     private ESASkySSOSearchResultList ssoDnetResults;
