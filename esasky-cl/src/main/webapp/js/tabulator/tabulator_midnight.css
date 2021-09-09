@@ -1112,6 +1112,7 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
 	flex-direction: column;
     position: absolute;
     width: calc(100% - 8px);
+    height: calc(100% - 8px);
 }
 
 .tabulator input[type=checkbox] {
