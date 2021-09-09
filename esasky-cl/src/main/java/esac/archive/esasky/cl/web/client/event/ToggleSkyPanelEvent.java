@@ -1,4 +1,4 @@
-package esac.archive.esasky.cl.web.client.event.banner;
+package esac.archive.esasky.cl.web.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
