@@ -329,7 +329,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		ssoButton = createDataPanelBtn(Icons.getSsoIcon(), 
 		        TextMgr.getInstance().getText("webConstants_exploreData"), EntityContext.SSO, ssoTreeMapContainer);
 		ssoButton.setDisabledTooltip(TextMgr.getInstance().getText("webConstants_trackSSO"));
-		ssoButton.disable();
+		hideWidget(ssoButton);
 		return ssoButton;
 	}
 	
@@ -418,6 +418,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	@Override
 	public void onIsTrackingSSOEventChanged(){
 		if(GUISessionStatus.getIsTrackingSSO()){
+			showWidget(ssoButton);
 			ssoButton.setTargetName(GUISessionStatus.getTrackedSso().name);
 			ssoButton.setToggleStatus(true);
 			
@@ -425,7 +426,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			sendGAEvent(EntityContext.SSO.toString());
 			closeAllOtherPanels(ssoButton);
 		} else{
-			ssoButton.disable();
+			hideWidget(ssoButton);
 			ssoTreeMapContainer.close();
 			sendGAEvent(EntityContext.SSO.toString());
 		}
@@ -500,12 +501,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	        hideWidget(spectraButton);
 	        hideWidget(publicationsButton);
 	        hideWidget(extTapButton);
-	        hideWidget(ssoButton);
 	        hideWidget(planObservationButton);
 	    } else {
 	        showScienceModeWidgets();
 	    }
 	    
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && GUISessionStatus.getIsTrackingSSO()) {
+            showWidget(ssoButton);
+        } else {
+        	hideWidget(ssoButton);
+        }    
+        
         if(Modules.getModule(EsaSkyWebConstants.MODULE_DICE) && !isInScienceMode) {
             showWidget(exploreBtn);
 	    } else {
@@ -545,7 +551,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         	hideWidget(extTapButton);
         }
         
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO)) {
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && GUISessionStatus.getIsTrackingSSO()) {
             showWidget(ssoButton);
         }else {
         	hideWidget(ssoButton);
