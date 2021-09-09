@@ -243,7 +243,7 @@ public class TargetListPanel extends DialogBox {
     private void updateMaxSize() {
         int MIN_MARGIN_RIGHT = 30;
         int MIN_MARGIN_BOTTOM = 30;
-        int maxWidth = MainLayoutPanel.getMainAreaAbsoluteLeft() + MainLayoutPanel.getMainAreaWidth() - MIN_MARGIN_RIGHT - getAbsoluteLeft();
+        int maxWidth = MainLayoutPanel.getMainAreaAbsoluteLeft() + MainLayoutPanel.getMainAreaWidth() - MIN_MARGIN_RIGHT;
         int maxHeight = MainLayoutPanel.getMainAreaAbsoluteTop() + MainLayoutPanel.getMainAreaHeight() - MIN_MARGIN_BOTTOM - getAbsoluteTop();
 
         getElement().getStyle().setProperty("maxWidth", maxWidth + "px");

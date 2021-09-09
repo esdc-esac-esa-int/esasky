@@ -1,10 +1,12 @@
 package esac.archive.esasky.cl.web.client.view.searchpanel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,6 +15,8 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ClientBundle;
@@ -27,6 +31,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,17 +43,25 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
 import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
 import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SearchPresenter;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.CssPxAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.TargetListPanel;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -65,6 +78,8 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private FocusPanel searchResultsFocusPanel;
     private FlowPanel resultsList;
     private CloseButton clearTextButton;
+    private EsaSkyToggleButton targetListButton;
+    private TargetListPanel targetListPanel;
     private Image searchIcon;
     private Image ssoDNetLogo;
     private Image simbadLogo;
@@ -126,6 +141,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchPanel.add(searchIcon);
 
         clearTextButton = new CloseButton();
+        clearTextButton.getElement().getStyle().setTop(5, Unit.PX); 
         clearTextButton.setDarkStyle();
         clearTextButton.setDarkIcon();
         clearTextButton.addStyleName("clearSearchTextBtn");
@@ -237,6 +253,9 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchResultsFocusPanel.add(resultsList);
 
         textBoxHolder.add(this.searchTextBox);
+        textBoxHolder.add(createTargetListBtn());
+        MainLayoutPanel.addElementToMainArea(targetListPanel);
+		targetListPanel.hide();
         textBoxHolder.add(clearTextButton);
         searchPanel.add(textBoxHolder);
         searchPanel.add(this.tooltip);
@@ -267,18 +286,47 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     	ssoDNetLogo.addStyleName("searchPanel__logo");
     }
     
+	private EsaSkyButton createTargetListBtn() {
+		targetListPanel = new TargetListPanel();
+		
+		targetListButton = new EsaSkyToggleButton(Icons.getTargetListIcon());
+		targetListButton.getElement().setId("targetListImg");
+		targetListButton.setMediumStyle();
+		targetListButton.setDarkStyle();
+		targetListButton.addStyleName("searchPanel__targetListButton");
+		targetListButton.setTitle(TextMgr.getInstance().getText("webConstants_uploadTargetList"));
+        targetListButton.getElement().getStyle().setTop(1, Unit.PX);
+
+		targetListButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				SearchPanel.this.targetListPanel.toggle();
+				CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
+
+				//To keep relevant history of events, the old name of ctrlToolBar is kept
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
+			}
+		});
+		
+		targetListPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
+			
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				targetListButton.setToggleStatus(false);
+			}
+		});
+
+		return targetListButton;
+	}
+    
     private void ensureClearTextButtonVisibilty() {
         if (searchTextBox.getValue().isEmpty() ) {
             clearTextButton.addStyleName("collapse");
+            targetListButton.removeStyleName("collapse");
         } else {
+        	targetListButton.addStyleName("collapse");
             clearTextButton.removeStyleName("collapse");
-            if(searchTextBox.getOffsetHeight() == 0){
-                clearTextButton.getElement().getStyle().setTop(5, Unit.PX); 
-            }
-            else{
-                clearTextButton.getElement().getStyle().setTop((searchTextBox.getOffsetHeight() / 2.0) - 
-                		(clearTextButton.getOffsetHeight() / 2.0) , Unit.PX);
-            }
         }
     }
     
@@ -517,6 +565,11 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     public CloseButton getClearTextButton() {
         return this.clearTextButton;
     }
+    
+    @Override
+    public EsaSkyButton getTargetListButton() {
+    	return this.targetListButton;
+    }
 
     @Override
     public void showBackendMessage(String message) {
@@ -548,6 +601,13 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 			searchTextBoxError.setVisible(false);
 			
 			searchTextBox.setFocus(false);
+		}
+	}
+	
+	@Override
+	public void closeAllOtherPanels(Widget widgetNotToClose){
+		if(!widgetNotToClose.equals(targetListButton)) {
+			targetListPanel.hide();
 		}
 	}
 	
@@ -694,4 +754,25 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		}
 		this.resultsList.add(menuEntry);
 	}
+	
+	public void updateModuleVisibility() {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST)) {
+			targetListButton.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		}else {
+			targetListButton.getElement().getStyle().setDisplay(Display.NONE);
+		}
+	}
+	
+    @Override
+    public void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title) {
+        targetListPanel.show();
+        targetListButton.setToggleStatus(true);
+        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
+        targetListPanel.setTargetsTableData(searchResults, title);
+    }
+    
+    @Override
+    public void openOutreachImage(String id) {
+    	targetListPanel.openOutreachImage(id);
+    }
 }

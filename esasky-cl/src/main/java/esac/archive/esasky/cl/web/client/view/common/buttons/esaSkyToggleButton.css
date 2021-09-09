@@ -1,18 +1,34 @@
 @CHARSET "UTF-8";
 
 .toggleButtonOn{
-	background-color: rgba(255, 255, 255, 0.3) !important;;
-	border-color: #FFFFFF !important;;
+	background-color: rgba(255, 255, 255, 0.3) !important;
+	border-color: #FFFFFF !important;
 }
 
 .toggleButtonOn.gwt-PushButton-up-hovering{
 	background-color: rgba(255, 255, 255, 0.2) !important;
-	border-color: #EEEEEE !important;;
+	border-color: #EEEEEE !important;
 }
 
 .toggleButtonOn.gwt-PushButton-down-hovering{
 	background-color: rgba(255, 255, 255, 0.1) !important;
 	border-color: #CCCCCC !important;
+}
+
+.toggleButtonOn.darkStyle{
+	background-color: rgba(0, 0, 0, 0.3) !important;
+	border-color: #222222 !important;
+}
+
+.toggleButtonOn.darkStyle.gwt-PushButton-up-hovering{
+	border-color: #666666 !important;
+	background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.toggleButtonOn.darkStyle.gwt-PushButton-down,
+.toggleButtonOn.darkStyle.gwt-PushButton-down-hovering{
+	border-color: #000000 !important;
+	background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 .smallStringToggleButton{

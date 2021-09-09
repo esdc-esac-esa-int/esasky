@@ -177,3 +177,12 @@
 	display: inline-block;
 	margin-right: 4px;
 }
+
+.searchPanel__targetListButton{
+	position: absolute;
+	left:160px;
+}
+
+#targetListImg>div {
+	border: 0px;
+}

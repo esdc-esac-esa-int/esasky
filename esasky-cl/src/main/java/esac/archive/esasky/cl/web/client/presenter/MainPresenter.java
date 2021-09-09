@@ -535,7 +535,7 @@ public class MainPresenter {
     private void loadAuthorInformationFromSimbad(String author) {
         final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
 
-        getCtrlTBPresenter().showAuthorInfo(author, descriptor.getAdsAuthorSeparator(), descriptor.getAdsAuthorUrl(),
+        getTargetPresenter().showAuthorInfo(author, descriptor.getAdsAuthorSeparator(), descriptor.getAdsAuthorUrl(),
                 descriptor.getAdsAuthorUrlReplace());
         CommonEventBus.getEventBus().fireEvent(new AddTableEvent(entityRepo.createPublicationsByAuthorEntity(author)));
 
@@ -543,12 +543,13 @@ public class MainPresenter {
     }
 
     private void loadBibcodeInformaitonFromSimbad(String bibcode) {
-        getCtrlTBPresenter().showPublicationInfo(bibcode);
+        getTargetPresenter().showPublicationInfo(bibcode);
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BIBCODEINURL, bibcode);
     }
     
     public void updateModuleVisibility() {
     	ctrlTBPresenter.updateModuleVisibility();
+    	targetPresenter.updateModuleVisibility();
     	headerPresenter.updateModuleVisibility();
     }
     

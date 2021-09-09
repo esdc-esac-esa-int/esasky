@@ -83,7 +83,9 @@
     width: auto;
     z-index: 50;
     margin-left: 3px;
-    position: absolute;
+    position: fixed;
+    top: 75px;
+    right: 10px;
 }
 
 

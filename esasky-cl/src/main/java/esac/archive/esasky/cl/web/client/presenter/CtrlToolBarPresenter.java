@@ -6,13 +6,9 @@ import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
@@ -21,41 +17,29 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.Searc
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEventHandler;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEventHandler;
 import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
 import esac.archive.esasky.cl.web.client.event.MultiTargetClickEventHandler;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
-import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
-import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEventHandler;
 import esac.archive.esasky.cl.web.client.event.banner.ToggleSkyPanelEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ToggleSkyPanelEventHandler;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.utility.ParseUtils;
-import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -83,8 +67,6 @@ public class CtrlToolBarPresenter {
         void closeAllOtherPanels(Widget button);
         void updateModuleVisibility();
 
-        void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title);
-        
         EsaSkyToggleButton getPublicationButton();
         EsaSkyToggleButton getSkyPanelButton();
         
@@ -99,8 +81,6 @@ public class CtrlToolBarPresenter {
         EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description);
         void removeCustomButton(EsaSkyButton button);
         
-        public void openOutreachImage(String id);
-
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
@@ -218,13 +198,13 @@ public class CtrlToolBarPresenter {
 			}
 		});
         
-        CommonEventBus.getEventBus().addHandler(ShowPublicationSourcesEvent.TYPE, new ShowPublicationSourcesEventHandler() {
-            
-            @Override
-            public void onEvent(ShowPublicationSourcesEvent event) {
-                showPublicationInfo(event.rowData);
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, new CloseOtherPanelsEventHandler() {
+			
+			@Override
+			public void onCloseEvent(CloseOtherPanelsEvent event) {
+				view.closeAllOtherPanels(event.getWidgetNotToClose());
+			}
+		}); 
         
         view.getSkyPanelButton().addClickHandler(new ClickHandler() {
 
@@ -255,225 +235,8 @@ public class CtrlToolBarPresenter {
         view.updateSsoCount(newCount);
     }
     
-    private static long latestBibCodeTimeCall;
-    
-    public void showPublicationInfo (final GeneralJavaScriptObject rowData) {
-        String bibcode = rowData.getStringProperty("bibcode");
-        String authors = rowData.getStringProperty("author");
-        getPublicationSources(bibcode, rowData.getStringProperty("title"), authors, 
-                rowData.getStringProperty("pub"), rowData.getStringProperty("pubdate"));
-        
-    }
-    public void showPublicationInfo (final String bibcode) {
-        Log.info("[CtrlToolBarPresenter] showPublicationInfo BIBCODE received: " + bibcode + " , preparing publication info.");
-        final String publicationDetailsId = "Publication Details";
-        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent(publicationDetailsId, TextMgr.getInstance().getText("ctrlToolBarPresenter_loadPublicationDetails")));
-
-        
-        //Retrieves the publication details for this bibcode and checks if publications exists
-        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.PUBLICATIONS_DETAILS_URL + "?BIBCODE="
-                + URL.encodeQueryString(bibcode), new IJSONRequestCallback() {
-            
-            @Override
-            public void onSuccess(String responseText) {
-            	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(publicationDetailsId));
-                
-                TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-                TapRowList rowList = mapper.read(responseText);
-                
-                if (rowList.getData().size() > 0) {
-                    String authorList = "";
-                    
-                    for(int i = 0; i < rowList.getData().size(); i++) {
-                    	authorList += rowList.getDataValue("author", i) + "\n";
-                    }
-                    if(authorList.length() > 0) {
-                    	authorList = authorList.substring(0, authorList.length() - 1);
-                    }
-                    
-                    getPublicationSources(bibcode, rowList.getDataValue("title", 0), authorList, rowList.getDataValue("pub", 0), rowList.getDataValue("pubdate", 0));
-                    
-                } else {
-                    Log.warn("[CtrlToolBarPresenter] showPublicationInfo, no publication details found for bibcode: " + bibcode);
-                }
-            }
-
-            @Override
-            public void onError(String errorCause) {
-                Log.error("[CtrlToolBarPresenter] showPublicationInfo, error fetching details. ERROR: " + errorCause);
-                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(publicationDetailsId));
-            }
-            
-        });
-    }
-    
-
-    private void getPublicationSources(final String bibcode, final String title, final String authors, final String journal, final String date) {
-        final String retrievingSourcesId = "Retrieving Sources";
-        final int maxSources = (DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE : EsaSkyWebConstants.MAX_SOURCES_IN_TARGETLIST);
-        
-        final long timecall = System.currentTimeMillis();
-        latestBibCodeTimeCall = timecall;
-        
-        String url = EsaSkyWebConstants.PUBLICATIONS_SOURCES_BY_BIBCODE_URL + "?BIBCODE="
-                + URL.encodeQueryString(bibcode) + "&ROWS=" + maxSources;
-        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent(retrievingSourcesId, 
-                TextMgr.getInstance().getText("ctrlToolBarPresenter_retrievingPublicationTargetList"),
-                        url));
-        //Retrieves the sources for this bibcode and shows the upload panel
-        JSONUtils.getJSONFromUrl(url, new IJSONRequestCallback() {
-            
-            @Override
-            public void onSuccess(String responseText) {
-                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(retrievingSourcesId));
-
-                if(timecall < latestBibCodeTimeCall) {
-                    Log.warn("discarded bibcode " + bibcode + " target list, since there are newer list requests");
-                    return;
-                }
-                //Shows the sources for this publication
-                final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-                
-                
-                final PublicationsDescriptor descriptor = DescriptorRepository.getInstance().getPublicationsDescriptors().getDescriptors().get(0);   
-                final String titleHtml = "<h3 style='font-size: 0.85em;'>" + title + "</h3>" +
-                        "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace("$HTML$", getLinkHtml(bibcode, descriptor.getArchiveURL(), descriptor.getArchiveProductURI()).asString()) + "</h5>" + 
-                        "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace("$HTML$", ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + "</h5>" +
-                        "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace("$JOURNAL$", journal).replace("$DATE$", date) + "</h5>" +
-                        "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + "</h4>";
-                view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
-            }
-            
-            @Override
-            public void onError(String errorCause) {
-                Log.error("[CtrlToolBarPresenter] showPublicationInfo ERROR: " + errorCause);
-                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(retrievingSourcesId));
-            }
-            
-        });
-    }
-    
-    
-    public void showAuthorInfo (final String author, final String splitByString, final String authorsLinkUrl, final String replaceString) {
-        
-        Log.info("[CtrlToolBarPresenter] showAuthorInfo AUTHOR received: " + author + " , preparing author info.");
-        
-        final int maxSources = (DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE : EsaSkyWebConstants.MAX_SOURCES_IN_TARGETLIST);
-        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("LoadingAuthorPublicatoinSources", 
-        		TextMgr.getInstance().getText("ctrlToolBarPresenter_loadingAuthorSources").replace("$AUTHOR$", author)));
-        //Retrieves the sources for this bibcode and shows the upload panel
-        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.PUBLICATIONS_SOURCES_BY_AUTHOR_URL + "?AUTHOR="
-                + URL.encodeQueryString(author) + "&ROWS=" + maxSources, new IJSONRequestCallback() {
-            
-            @Override
-            public void onSuccess(String responseText) {
-            	try {
-            		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
-            		String authorHtml = getLinkList(author, 
-            				splitByString,
-            				authorsLinkUrl,
-            				replaceString,
-            				EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
-            				EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
-            		
-            		final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
-            				"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
-            				"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
-            		
-            		//Shows the sources for this publication
-            		final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-            		view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
-            	} catch(Exception e) {
-            		onError(e.getMessage());
-            	}
-            }
-            
-            @Override
-            public void onError(String errorCause) {
-                Log.error("[CtrlToolBarPresenter] showAuthorInfo ERROR: " + errorCause);
-                CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
-            }
-            
-        });
-    }
-    
-    private SafeHtml getLinkList(String linkListValue, String splitByString, String linkUrl, String replaceString, String showAllString, int maxLinks) {
-        SafeHtmlBuilder sb = new SafeHtmlBuilder();
-
-        String[] valueList = linkListValue.split(splitByString);
-        String styleStr = "";
-        int appendedLinks = 0;
-        boolean showAllAppended = false;
-        for (String value : valueList) {
-            String finalURL = linkUrl.replace(replaceString, replaceLast(value.replaceAll("'", "%27").replaceAll(" ", "%20"), "%20", "%2C%20"));
-            final boolean isLastLink = (appendedLinks == valueList.length -1);
-            
-                sb.appendHtmlConstant("<a href='" + finalURL
-                                        + "' onclick=\"esasky.trackOutbound(this)\" target='_blank' " + styleStr + ">"
-                                        + value + ((!isLastLink) ? "," : "" ) + "</a>&nbsp;");
-                
-                if (appendedLinks > maxLinks && !showAllAppended && !isLastLink) {
-                
-                    sb.appendHtmlConstant("<a href='#' " 
-                                    + "onclick=\"$(this).parent().find('a').fadeIn(); $(this).hide(); " 
-                                    + "event.stopPropagation(); return false; \" >" 
-                                        + showAllString + "</a>");
-                    
-                styleStr = "style=\"display: none;\" ";
-                showAllAppended = true;
-            }
-            
-            appendedLinks ++;
-        }
-        
-        return sb.toSafeHtml();
-    }
-    
-    private String replaceLast(String string, String find, String replace) {
-        int lastIndex = string.lastIndexOf(find);
-        
-        if (lastIndex == -1) {
-            return string;
-        }
-        
-        String beginString = string.substring(0, lastIndex);
-        String endString = string.substring(lastIndex + find.length());
-        
-        return beginString + replace + endString;
-    }
-    
-    private String getNumSourcesText(int numSources, int maxSources) {
-        if (numSources == maxSources) {
-            return "<div style='font-size: 0.7em; color: yellow;'>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_showingMaxSources").replace("$COUNT$", maxSources + "") + "</div>";
-        } else {
-            return "<div style='font-size: 0.7em; color: #CCCCCC;'>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_showingCountSources").replace("$COUNT$", numSources + "") + "</div>";
-        }
-    }
-    
     public SelectSkyPanelPresenter getSelectSkyPresenter(){
     	return selectSkyPresenter;
-    }
-    
-    private SafeHtml getLinkHtml(String value, String archiveURL, String archiveProductUrl) {
-        
-        String[] archiveProductURI = archiveProductUrl.split("@@@");
-
-        StringBuilder finalURI = new StringBuilder(archiveURL);
-        for (int i = 0; i < archiveProductURI.length; i++) {
-            if (i % 2 == 0) {
-                finalURI.append(archiveProductURI[i]);
-            } else {
-                finalURI.append(value);
-            }
-        }
-        
-        SafeHtmlBuilder sb = new SafeHtmlBuilder();
-        
-        sb.appendHtmlConstant("<a href='" + finalURI.toString()
-                + "' onclick=\"esasky.trackOutbound(this)\" target='_blank' >"
-                + value + "</a>");
-     
-        return sb.toSafeHtml();
     }
     
     public void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor){
@@ -547,8 +310,4 @@ public class CtrlToolBarPresenter {
     	return publicationPresenter;
     }
     
-	public void openOutreachImage(String id) {
-		view.openOutreachImage(id);
-	}
-
 }
