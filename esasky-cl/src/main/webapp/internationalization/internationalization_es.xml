@@ -1098,6 +1098,17 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ALMA">
+		ALMA (Atacama Large Millimeter/submillimeter Array) es el conjunto de telescopios terrestres en la banda milimétrica/submilimétrica  más grande
+		del mundo.  
+		ALMA es un sistema de antenas gigantes de 12 metros, que pueden configurarse de tal manera que alcancen una línea de base de 16 kilómetros. Están equipadas con sistemas
+		punteros que cubren todas las ventanas atmosféricas hasta una frecuencia de 1 THz.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#ALMA-OBS"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_CHANDRA">
 		El cat&#225;logo CSC (Chandra Source Catalog) contiene posiciones
@@ -2746,6 +2757,15 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Spitzer">
+		Spitzer Enhanced Imaging Products (SEIP), Cryogenic Release version 3.0. Estas imágenes combinadas de la misión criogénica Spitzer (denominadas "Super Mosaicos") incluyen las 4 bandas (3.6, 4.5, 5.8, 8 micrón) de la Cámara Infrared Array (IRAC), además de la banda 24 micrón del Multiband Imaging Photometer for Spitzer ("MIPS").
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#Spitzer"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Spitzer">
 		Como parte de la tercera remesa de datos de la fase criog&#233;nica (Cryogenic Release 3), el Spitzer Science Center y el Infrared Processing and Analysis Center (IPAC) han producido la lista de fuentes SEIP (SEIP Source List). Esta lista contiene la fotometr&#237;a de 42 millones de estrellas y galaxias medida con la c&#225;mara IRAC (Infrared Array Camera) en 3,6, 4,5, 5,8 y 8 micras y con el fot&#243;metro MIPS (Multiband Imaging Photometer) en 24 micras. Para producirla, se combinaron los datos archivados de m&#250;ltiples solicitudes de observaci&#243;n (Astronomical Observation Requests, AOR), lo que permiti&#243; la extracci&#243;n de fuentes m&#225;s d&#233;biles mediante un software de procesado uniforme, aprovechando  al m&#225;ximo la calibraci&#243;n final de las im&#225;genes de la fase criog&#233;nica.
