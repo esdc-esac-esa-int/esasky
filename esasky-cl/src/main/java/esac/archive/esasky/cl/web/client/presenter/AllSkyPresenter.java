@@ -40,7 +40,7 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.MultiTargetTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PlanningDetectorCenterTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.MultiTargetSourceConstants;
+import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.MultiTargetSourceConstants;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency

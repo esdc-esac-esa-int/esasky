@@ -27,7 +27,7 @@ import esac.archive.esasky.cl.web.client.presenter.SearchPresenter.ESASkySearchR
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.MultiTargetSourceConstants;
+import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.MultiTargetSourceConstants;
 
 public class MultiTargetTooltip extends Tooltip {
 

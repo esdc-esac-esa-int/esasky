@@ -61,7 +61,7 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.uploadtargetlist.TargetListPanel;
+import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency

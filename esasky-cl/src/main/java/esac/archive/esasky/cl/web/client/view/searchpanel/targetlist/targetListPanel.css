@@ -1,0 +1,168 @@
+@CHARSET "UTF-8";
+
+#uploader{
+ 	margin: auto;
+    z-index: 10;
+    width: 207px;
+}
+
+.uploaderButton {
+    cursor: pointer;
+    display: block;
+	text-align: center;
+    border-style: solid;
+    border-width: 1px;
+	border-color: #CCCCCC;
+	padding: 6px 5px;
+	font-size: 1.3em;
+	border-radius: 5px;
+}
+
+.uploaderButton:hover {
+	border-color: #EEEEEE;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+.uploaderButton:active{
+	border-color: #FFFFFF;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+#closeTargetsListIcon{
+    float: right;
+    margin-top: 3px;
+    margin-right: 3px;
+}
+
+#targetAndPlayerHeader{
+    border-left: 1px solid;
+    border-radius: 7px 7px 0 0;
+    border-right: 1px solid;
+    border-top: 1px solid;
+    border-color: #CCCCCC;
+    width: 100%;
+}
+
+
+#targetListHeaderLabel{
+    margin: 0px 5px;
+    margin-top: 2px; 
+    font-weight: bold;
+    padding: 5px;
+}
+
+/* Used for publications by bibcode, sets custom title with details*/
+#targetListHeaderLabel h3 {
+    margin-bottom: 1px;
+    margin-top: 0px;
+}
+
+#targetListHeaderLabel h4 {
+    margin: 0px;
+    margin-top: 10px;
+    font-size: 1.02em;
+}
+
+#targetListHeaderLabel h5 {
+    margin: 0px;
+    margin-bottom: 6px;
+    font-size: 0.7em;
+    color: #CCCCCC;
+}
+/* END - Used for publications by bibcode*/
+
+#uploadTargetListPanel{
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 1px solid;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 12px;
+    height: auto;
+    overflow: auto !important;
+    padding: 5px;
+    width: auto;
+    z-index: 50;
+    margin-left: 3px;
+    position: fixed;
+    top: 75px;
+    right: 10px;
+}
+
+
+#uploadTargetListPanel table{
+	width: 100%;
+}
+
+#targetListTable{
+	width: 100%;
+    padding: 5px;
+}
+
+#targetListScrollPanel{
+    border: 1px solid;
+    height: 200px;
+    overflow-y: scroll !important;
+    width: 100%;
+    border-color: #CCCCCC;
+}
+
+.targetDescription{
+	padding: 0px 5px 5px 5px;
+	font-size: 0.95em;
+    color: #e8e8e8;
+}
+
+.uploadTargetPlayer {
+    width: 120px;
+    margin: 5px 5px 5px 33%;
+}
+
+#preparedListDropDown {
+    font-size: 1.3em;
+    margin: auto;
+}
+
+#preparedListDropDown .dboxLabel {
+	width: 100%;
+    text-align: center;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    color: #FFFFFF !important;
+    font-weight: normal !important;
+}
+
+#outreachImageDropDown {
+    font-size: 1.3em;
+    margin: auto;
+}
+
+#outreachImageDropDown .dboxLabel {
+	width: 100%;
+    text-align: center;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    color: #FFFFFF !important;
+    font-weight: normal !important;
+}
+
+.uploadContainer{
+	padding-bottom: 5px;
+}
+
+.orUploadLabel {
+    margin: 10px auto;
+    text-align: center;
+}
+.opacityLabel {
+    margin: 10px auto 5px auto;
+    text-align: center;
+}
+
+.targetListPanel__simbadLogo{
+	position: absolute;
+    right: 16px;
+    transform: rotate(45deg);
+    margin-top: 7px;
+    width: 50px;
+    height: auto;
+}
