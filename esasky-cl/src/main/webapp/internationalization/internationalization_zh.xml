@@ -515,9 +515,9 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Chandra">
-		钱德拉(Chandra)数据集包括了截至2017年10月8日为止，可从Chandra数据存档中获得的，所有来自ACIS、LETG、HETG和HRC已公开的观测结果(图像和光谱)
+		钱德拉(Chandra)数据集包括Chandra数据中心提供的来自ACIS、LETG、HETG和HRC仪器的全部公开观测结果(图像和光谱)，并会持续更新
 		(&lt;a href="//cda.harvard.edu/chaser/"
-		target="_blank"&gt;cda.harvard.edu/chaser/&lt;/a&gt;).
+		target="_blank"&gt;cda.harvard.edu/chaser/&lt;/a&gt;)。
 		有关 Chandra 及其数据产品的详细资料，请浏览以下网址:
 		&lt;a href="//cxc.harvard.edu/" target="_blank"&gt;
 		cxc.harvard.edu/&lt;/a&gt;.
