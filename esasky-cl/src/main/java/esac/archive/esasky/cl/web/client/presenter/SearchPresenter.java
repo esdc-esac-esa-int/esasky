@@ -31,7 +31,6 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.googlecode.gwt.crypto.util.Str;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
@@ -45,11 +44,9 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
-import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEventHandler;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
-import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEventHandler;
 import esac.archive.esasky.cl.web.client.event.banner.CheckForServerMessagesEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
@@ -575,8 +572,7 @@ public class SearchPresenter {
             		parseSourcesByAuthorResponse(author, splitByString, authorsLinkUrl, replaceString, maxSources,
 							responseText);
             	} catch(Exception e) {
-            		Log.error(String.format("[SearchPresenter] showAuthorInfo ERROR: %s",  e));
-            		onError(e.getMessage());
+            		onError(e.toString());
             	}
             }
 
