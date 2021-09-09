@@ -5,10 +5,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class CloseOtherPanelsEvent extends GwtEvent<CloseOtherPanelsEventHandler> {
 
-    private Widget widgetNotToClose;
-    
-    /** Event type. */
-    public final static Type<CloseOtherPanelsEventHandler> TYPE = new Type<>();
+	/** Event type. */
+	public static final Type<CloseOtherPanelsEventHandler> TYPE = new Type<>();
+
+	private Widget widgetNotToClose;
 
     public CloseOtherPanelsEvent(Widget widgetNotToClose) {
         super();

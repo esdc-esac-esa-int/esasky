@@ -225,7 +225,7 @@ public class SearchPresenter {
 			}
 		});
         
-        this.view.getTargetListButton().addMouseOverHandler((event) -> {
+        this.view.getTargetListButton().addMouseOverHandler(event -> {
     		SearchPresenter.this.view.setFullSize(true);
     		SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
     		SearchPresenter.this.view.getTooltip().setVisible(false);
@@ -500,7 +500,7 @@ public class SearchPresenter {
         }
 	}
 
-	private synchronized static void updateLatestBibCodeTimeCall(long timecall) {
+	private static synchronized void updateLatestBibCodeTimeCall(long timecall) {
 		latestBibCodeTimeCall = timecall;
 	}
 	
@@ -530,21 +530,6 @@ public class SearchPresenter {
                 parseSourcesByBibcodeResponse(bibcode, title, authors, journal, date, maxSources, responseText);
             }
 
-			private void parseSourcesByBibcodeResponse(final String bibcode, final String title, final String authors,
-					final String journal, final String date, final int maxSources, String responseText) {
-				//Shows the sources for this publication
-                final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-                
-                
-                final PublicationsDescriptor descriptor = DescriptorRepository.getInstance().getPublicationsDescriptors().getDescriptors().get(0);   
-                final String titleHtml = "<h3 style='font-size: 0.85em;'>" + title + "</h3>" +
-                        "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace("$HTML$", getLinkHtml(bibcode, descriptor.getArchiveURL(), descriptor.getArchiveProductURI()).asString()) + "</h5>" + 
-                        "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace("$HTML$", ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + "</h5>" +
-                        "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace("$JOURNAL$", journal).replace("$DATE$", date) + "</h5>" +
-                        "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + "</h4>";
-                view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
-			}
-            
             @Override
             public void onError(String errorCause) {
                 Log.error("[SearchPresenter] showPublicationInfo ERROR: " + errorCause);
@@ -553,7 +538,21 @@ public class SearchPresenter {
             
         });
     }
-    
+
+	private void parseSourcesByBibcodeResponse(final String bibcode, final String title, final String authors,
+			final String journal, final String date, final int maxSources, String responseText) {
+		//Shows the sources for this publication
+        final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
+        
+        
+        final PublicationsDescriptor descriptor = DescriptorRepository.getInstance().getPublicationsDescriptors().getDescriptors().get(0);   
+        final String titleHtml = "<h3 style='font-size: 0.85em;'>" + title + "</h3>" +
+                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace("$HTML$", getLinkHtml(bibcode, descriptor.getArchiveURL(), descriptor.getArchiveProductURI()).asString()) + "</h5>" + 
+                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace("$HTML$", ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + "</h5>" +
+                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace("$JOURNAL$", journal).replace("$DATE$", date) + "</h5>" +
+                "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + "</h4>";
+        view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
+	}
     
     public void showAuthorInfo (final String author, final String splitByString, final String authorsLinkUrl, final String replaceString) {
         
@@ -572,30 +571,11 @@ public class SearchPresenter {
             		parseSourcesByAuthorResponse(author, splitByString, authorsLinkUrl, replaceString, maxSources,
 							responseText);
             	} catch(Exception e) {
+            		Log.error("SearchPresenter", "Could not parse content", e);
             		onError(e.toString());
             	}
             }
 
-			private void parseSourcesByAuthorResponse(final String author, final String splitByString,
-					final String authorsLinkUrl, final String replaceString, final int maxSources,
-					String responseText) {
-				CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
-				String authorHtml = getLinkList(author, 
-						splitByString,
-						authorsLinkUrl,
-						replaceString,
-						EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
-						EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
-				
-				final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
-						"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
-						"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
-				
-				//Shows the sources for this publication
-				final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-				view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
-			}
-            
             @Override
             public void onError(String errorCause) {
                 Log.error("[SearchPresenter] showAuthorInfo ERROR: " + errorCause);
@@ -604,6 +584,26 @@ public class SearchPresenter {
             
         });
     }
+    
+	private void parseSourcesByAuthorResponse(final String author, final String splitByString,
+			final String authorsLinkUrl, final String replaceString, final int maxSources,
+			String responseText) {
+		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
+		String authorHtml = getLinkList(author, 
+				splitByString,
+				authorsLinkUrl,
+				replaceString,
+				EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
+				EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
+		
+		final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
+				"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
+				"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
+		
+		//Shows the sources for this publication
+		final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
+		view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
+	}
     
     private SafeHtml getLinkList(String linkListValue, String splitByString, String linkUrl, String replaceString, String showAllString, int maxLinks) {
         SafeHtmlBuilder sb = new SafeHtmlBuilder();

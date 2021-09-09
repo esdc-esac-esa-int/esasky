@@ -294,7 +294,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		targetListButton.setTitle(TextMgr.getInstance().getText("webConstants_uploadTargetList"));
         targetListButton.getElement().getStyle().setTop(1, Unit.PX);
 
-		targetListButton.addClickHandler((event) -> {
+		targetListButton.addClickHandler(event -> {
 			SearchPanel.this.targetListPanel.toggle();
 			CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
 
