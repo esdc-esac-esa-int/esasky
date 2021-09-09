@@ -20,7 +20,6 @@ import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
-import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEventHandler;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
@@ -198,13 +197,9 @@ public class CtrlToolBarPresenter {
 			}
 		});
         
-        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, new CloseOtherPanelsEventHandler() {
-			
-			@Override
-			public void onCloseEvent(CloseOtherPanelsEvent event) {
-				view.closeAllOtherPanels(event.getWidgetNotToClose());
-			}
-		}); 
+        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, (event) -> 
+				view.closeAllOtherPanels(event.getWidgetNotToClose())
+		); 
         
         view.getSkyPanelButton().addClickHandler(new ClickHandler() {
 

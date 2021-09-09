@@ -297,25 +297,15 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		targetListButton.setTitle(TextMgr.getInstance().getText("webConstants_uploadTargetList"));
         targetListButton.getElement().getStyle().setTop(1, Unit.PX);
 
-		targetListButton.addClickHandler(new ClickHandler() {
+		targetListButton.addClickHandler((event) -> {
+			SearchPanel.this.targetListPanel.toggle();
+			CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
 
-			@Override
-			public void onClick(ClickEvent event) {
-				SearchPanel.this.targetListPanel.toggle();
-				CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
-
-				//To keep relevant history of events, the old name of ctrlToolBar is kept
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
-			}
+			//To keep relevant history of events, the old name of ctrlToolBar is kept
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
 		});
 		
-		targetListPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
-			
-			@Override
-			public void onClose(CloseEvent<PopupPanel> event) {
-				targetListButton.setToggleStatus(false);
-			}
-		});
+		targetListPanel.addCloseHandler(event -> targetListButton.setToggleStatus(false));
 
 		return targetListButton;
 	}

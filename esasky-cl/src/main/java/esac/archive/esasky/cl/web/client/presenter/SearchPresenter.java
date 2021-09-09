@@ -31,6 +31,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.gwt.crypto.util.Str;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
@@ -227,14 +228,10 @@ public class SearchPresenter {
 			}
 		});
         
-        this.view.getTargetListButton().addMouseOverHandler(new MouseOverHandler() {
-        	
-        	@Override
-        	public void onMouseOver(MouseOverEvent event) {
-        		SearchPresenter.this.view.setFullSize(true);
-        		SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
-        		SearchPresenter.this.view.getTooltip().setVisible(false);
-        	}
+        this.view.getTargetListButton().addMouseOverHandler((event) -> {
+    		SearchPresenter.this.view.setFullSize(true);
+    		SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
+    		SearchPresenter.this.view.getTooltip().setVisible(false);
         });
         
         
@@ -295,21 +292,13 @@ public class SearchPresenter {
 			}
 		});
 		
-        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, new CloseOtherPanelsEventHandler() {
-			
-			@Override
-			public void onCloseEvent(CloseOtherPanelsEvent event) {
-				view.closeAllOtherPanels(event.getWidgetNotToClose());
-			}
-		});
+        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, event ->
+			view.closeAllOtherPanels(event.getWidgetNotToClose())
+		);
         
-        CommonEventBus.getEventBus().addHandler(ShowPublicationSourcesEvent.TYPE, new ShowPublicationSourcesEventHandler() {
-            
-            @Override
-            public void onEvent(ShowPublicationSourcesEvent event) {
-                showPublicationInfo(event.rowData);
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(ShowPublicationSourcesEvent.TYPE, event ->
+            showPublicationInfo(event.rowData)
+        );
 
 		setMaxHeight();
 
@@ -480,26 +469,7 @@ public class SearchPresenter {
             
             @Override
             public void onSuccess(String responseText) {
-            	CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(publicationDetailsId));
-                
-                TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-                TapRowList rowList = mapper.read(responseText);
-                
-                if (rowList.getData().size() > 0) {
-                    String authorList = "";
-                    
-                    for(int i = 0; i < rowList.getData().size(); i++) {
-                    	authorList += rowList.getDataValue("author", i) + "\n";
-                    }
-                    if(authorList.length() > 0) {
-                    	authorList = authorList.substring(0, authorList.length() - 1);
-                    }
-                    
-                    getPublicationSources(bibcode, rowList.getDataValue("title", 0), authorList, rowList.getDataValue("pub", 0), rowList.getDataValue("pubdate", 0));
-                    
-                } else {
-                    Log.warn("[SearchPresenter] showPublicationInfo, no publication details found for bibcode: " + bibcode);
-                }
+            	parsePublicationBibcodeResponse(bibcode, publicationDetailsId, responseText);
             }
 
             @Override
@@ -511,13 +481,38 @@ public class SearchPresenter {
         });
     }
     
+	private void parsePublicationBibcodeResponse(final String bibcode, final String publicationDetailsId,
+			String responseText) {
+		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(publicationDetailsId));
+        
+        TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
+        TapRowList rowList = mapper.read(responseText);
+        
+        if (!rowList.getData().isEmpty()) {
+        	StringBuilder sb = new StringBuilder();
+            
+            for(int i = 0; i < rowList.getData().size(); i++) {
+            	sb.append(rowList.getDataValue("author", i) + "\n");
+            }
+            sb.setLength(Math.max(0, sb.length() - 1));
+            
+            getPublicationSources(bibcode, rowList.getDataValue("title", 0), sb.toString(), rowList.getDataValue("pub", 0), rowList.getDataValue("pubdate", 0));
+            
+        } else {
+            Log.warn("[SearchPresenter] showPublicationInfo, no publication details found for bibcode: " + bibcode);
+        }
+	}
 
+	private synchronized static void updateLatestBibCodeTimeCall(long timecall) {
+		latestBibCodeTimeCall = timecall;
+	}
+	
     private void getPublicationSources(final String bibcode, final String title, final String authors, final String journal, final String date) {
         final String retrievingSourcesId = "Retrieving Sources";
         final int maxSources = (DeviceUtils.isMobile() ? EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE : EsaSkyWebConstants.MAX_SOURCES_IN_TARGETLIST);
         
         final long timecall = System.currentTimeMillis();
-        latestBibCodeTimeCall = timecall;
+        SearchPresenter.updateLatestBibCodeTimeCall(timecall);
         
         String url = EsaSkyWebConstants.PUBLICATIONS_SOURCES_BY_BIBCODE_URL + "?BIBCODE="
                 + URL.encodeQueryString(bibcode) + "&ROWS=" + maxSources;
@@ -535,7 +530,12 @@ public class SearchPresenter {
                     Log.warn("discarded bibcode " + bibcode + " target list, since there are newer list requests");
                     return;
                 }
-                //Shows the sources for this publication
+                parseSourcesByBibcodeResponse(bibcode, title, authors, journal, date, maxSources, responseText);
+            }
+
+			private void parseSourcesByBibcodeResponse(final String bibcode, final String title, final String authors,
+					final String journal, final String date, final int maxSources, String responseText) {
+				//Shows the sources for this publication
                 final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
                 
                 
@@ -546,7 +546,7 @@ public class SearchPresenter {
                         "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace("$JOURNAL$", journal).replace("$DATE$", date) + "</h5>" +
                         "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + "</h4>";
                 view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
-            }
+			}
             
             @Override
             public void onError(String errorCause) {
@@ -572,25 +572,33 @@ public class SearchPresenter {
             @Override
             public void onSuccess(String responseText) {
             	try {
-            		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
-            		String authorHtml = getLinkList(author, 
-            				splitByString,
-            				authorsLinkUrl,
-            				replaceString,
-            				EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
-            				EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
-            		
-            		final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
-            				"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
-            				"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
-            		
-            		//Shows the sources for this publication
-            		final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-            		view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
+            		parseSourcesByAuthorResponse(author, splitByString, authorsLinkUrl, replaceString, maxSources,
+							responseText);
             	} catch(Exception e) {
+            		Log.error(String.format("[SearchPresenter] showAuthorInfo ERROR: %s",  e));
             		onError(e.getMessage());
             	}
             }
+
+			private void parseSourcesByAuthorResponse(final String author, final String splitByString,
+					final String authorsLinkUrl, final String replaceString, final int maxSources,
+					String responseText) {
+				CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("LoadingAuthorPublicatoinSources"));
+				String authorHtml = getLinkList(author, 
+						splitByString,
+						authorsLinkUrl,
+						replaceString,
+						EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
+						EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
+				
+				final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
+						"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
+						"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
+				
+				//Shows the sources for this publication
+				final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
+				view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
+			}
             
             @Override
             public void onError(String errorCause) {
