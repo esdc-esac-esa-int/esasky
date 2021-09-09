@@ -197,7 +197,7 @@ public class CtrlToolBarPresenter {
 			}
 		});
         
-        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, (event) -> 
+        CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, event -> 
 				view.closeAllOtherPanels(event.getWidgetNotToClose())
 		); 
         
