@@ -117,13 +117,6 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			}
 		}
 		
-		if(!descriptors.contains(levelDesc)) {
-			descriptors.add(levelDesc);
-			counts.add(1);
-			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-			countStatus.setCountDetails(levelDesc, 1, System.currentTimeMillis(), skyViewPosition);
-		}
-		
 		return levelDesc;
 	}
 	
@@ -181,10 +174,11 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		if(level1Name != null) {
 			ExtTapDescriptor descLevel1 = getLevelDesc(descriptor, 1,  level1Name, descriptor.getSubLevels().get(level1Name));
 			if(descLevel1 != null) {
-			String level2Name = findLevelName(descLevel1.getSubLevels(), level2Value);
+				String level2Name = findLevelName(descLevel1.getSubLevels(), level2Value);
 				if(level2Name != null) {
-					getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
-				
+					ExtTapDescriptor descLevel2 = getLevelDesc(descLevel1, 2,  level2Name, descLevel1.getSubLevels().get(level2Name));
+					addDescToCount(descLevel1);
+					addDescToCount(descLevel2);
 				}else {
 					logMissingProductType(level1Value, level2Value);
 				}
@@ -192,6 +186,15 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			
 		}else {
 			logMissingCollection(level1Value);
+		}
+	}
+	
+	private void addDescToCount(ExtTapDescriptor desc) {
+		if(!descriptors.contains(desc)) {
+			descriptors.add(desc);	
+			counts.add(1);
+			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+			countStatus.setCountDetails(desc, 1, System.currentTimeMillis(), skyViewPosition);
 		}
 	}
 	
