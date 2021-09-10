@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteHandler;
@@ -60,6 +61,7 @@ import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
@@ -428,14 +430,21 @@ public class TargetListPanel extends DialogBox {
     		outReachImageIdToBeOpened = id;
     	}else {
     		int index = 0;
+    		boolean found = false;
 	    	for(ESASkySearchResult image : outreachImageList) {
 	    		if(image.getSimbadMainId().equalsIgnoreCase(id)) {
 	    			setOutreachImageTableData(outreachImageList, id);
-	    			setSelectedOutreachImage(index);
 	    			show();
+	    			setSelectedOutreachImage(index);
+	    			found = true;
 	    			break;
 	    		}
 	    		index++;
+	    	}
+	    	if(!found) {
+	    		String errorMsg = TextMgr.getInstance().getText("targetList_imageNotFound") + id;
+				DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+						TextMgr.getInstance().getText("error"));
 	    	}
     	}
     }
