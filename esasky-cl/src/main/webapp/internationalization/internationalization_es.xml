@@ -38,7 +38,7 @@
 
 	<!-- searchPanel -->
 	<text key="searchPanel_inputByTargetName">
-		Ejemplos de entrada por nombre de destino:
+		Ejemplos de entradas por nombre de fuente:
 	</text>
 	<text key="searchPanel_solarSystemObjects">
 		Objetos del Sistema Solar:
@@ -313,13 +313,13 @@
 		del cuadro de b&#250;squeda
 	</text>
 	<text key="webConstants_projectFutureObservations">
-		Proyecte observaciones futuras
+		Proyectar observaciones futuras
 	</text>
 	<text key="webConstants_explorePublications">
-		Examine las publicaciones sobre esta regi&#243;n
+		Examinar las publicaciones sobre esta regi&#243;n
 	</text>
 	<text key="webConstants_exploreRandomTarget">
-		Investigue un objeto aleatorio
+		Investigar un objeto aleatorio
 	</text>
 
 	<!-- displayUtils -->
@@ -553,7 +553,7 @@
 		Tutoriales en v&#237;deo
 	</text>
 	<text key="header_comunity">
-		Comentarios
+		Sugerencias
 	</text>
 	<text key="header_aboutUs">
 		Sobre nosotros
@@ -756,16 +756,16 @@
 		Obteniendo la lista de objetos
 	</text>
 	<text key="webConstants_uploadTargetList">
-		Administre una lista de objetos
+		Administrar una lista de objetos
 	</text>
 	<text key="webConstants_exploreImageObservations">
-		Examine las im&#225;genes de esta regi&#243;n
+		Examinar las im&#225;genes de esta regi&#243;n
 	</text>
 	<text key="webConstants_exploreCatalogue">
-		Examine los datos de cat&#225;logo de esta regi&#243;n
+		Examinar los datos de cat&#225;logos de esta regi&#243;n
 	</text>
 	<text key="webConstants_exploreData">
-		Examine los datos para $TARGET$
+		Examinar los datos para $TARGET$
 	</text>
 	<text key="displayUtils_toCommunicateWithDS9">
 		Para comunicarse con DS9, es necesario lanzar
@@ -2628,8 +2628,7 @@
 		Ocultar panel
 	</text>
 	<text key="header_gridFull">
-		Muestra/oculta la cuadrícula de coordenadas sobre el
-		cielo
+		Mostrar/ocultar una cuadrícula de coordenadas sobre el cielo
 	</text>
 	<text key="header_gridDropdown">
 		Cuadrícula de coordenadas
@@ -2807,7 +2806,7 @@
 		&lt;/a&gt; 
 		
 		&lt;br&gt;&lt;br&gt;
-		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido curados por el equipo de ESASky.
+		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
 	
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2825,7 +2824,7 @@
 		&lt;/a&gt; 
 		
 		&lt;br&gt;&lt;br&gt;
-		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido curados por el equipo de ESASky.
+		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
@@ -2842,7 +2841,7 @@
 		&lt;/a&gt; 
 		
 		&lt;br&gt;&lt;br&gt;
-		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido curados por el equipo de ESASky.
+		Nótese que estos datos, al contrario que aquellos que se ofrecen a través de las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
