@@ -3,6 +3,8 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gwt.http.client.URL;
+
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.SizeFormatter;
 
@@ -27,7 +29,12 @@ public class DatalinkLinks {
         	return;
         }
         if("access_url".equalsIgnoreCase(metadata[rowNumber].getName())) {
-        	accessUrl = data[rowNumber];
+        	if(data[rowNumber].contains("?")) {
+        		String [] baseUrlAndQueryString = data[rowNumber].split("\\?");
+        		accessUrl = baseUrlAndQueryString[0] + "?" + URL.decodeQueryString(baseUrlAndQueryString[1]);
+        	} else {
+        		accessUrl = data[rowNumber];
+        	}
         } else if("service_def".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	serviceDef = data[rowNumber];
         } else if("error_message".equalsIgnoreCase(metadata[rowNumber].getName())) {
