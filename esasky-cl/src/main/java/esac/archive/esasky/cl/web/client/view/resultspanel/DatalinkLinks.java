@@ -29,12 +29,7 @@ public class DatalinkLinks {
         	return;
         }
         if("access_url".equalsIgnoreCase(metadata[rowNumber].getName())) {
-        	if(data[rowNumber].contains("?")) {
-        		String [] baseUrlAndQueryString = data[rowNumber].split("\\?");
-        		accessUrl = baseUrlAndQueryString[0] + "?" + URL.decodeQueryString(baseUrlAndQueryString[1]);
-        	} else {
-        		accessUrl = data[rowNumber];
-        	}
+        	accessUrl = extractEncodedAccessUrl(data[rowNumber]);
         } else if("service_def".equalsIgnoreCase(metadata[rowNumber].getName())) {
         	serviceDef = data[rowNumber];
         } else if("error_message".equalsIgnoreCase(metadata[rowNumber].getName())) {
@@ -51,6 +46,15 @@ public class DatalinkLinks {
         	others.add(metadata[rowNumber].getName() + ": " + data[rowNumber]);
         }
     }
+
+	private String extractEncodedAccessUrl(String encodedUrl) {
+		if(encodedUrl.contains("?")) {
+			String [] baseUrlAndQueryString = encodedUrl.split("\\?");
+			return baseUrlAndQueryString[0] + "?" + URL.decodeQueryString(baseUrlAndQueryString[1]);
+		} else {
+			return encodedUrl;
+		}
+	}
     
     public String getTypeAndSizeDisplayText() {
         String typeAndSizeDisplayText = "";
