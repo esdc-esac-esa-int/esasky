@@ -34,6 +34,9 @@ public class Icons {
 
 		@Source("extTap.png")
 		ImageResource extTapIcon();
+
+		@Source("gravitational-wave.png")
+		ImageResource gwIcon();
 		
 		@Source("spectra_light_outline.png")
 		ImageResource spectraIcon();
@@ -162,6 +165,10 @@ public class Icons {
 	
 	public static ImageResource getExtTapIcon() {
 		return resources.extTapIcon();
+	}
+
+	public static ImageResource getGwIcon() {
+		return resources.gwIcon();
 	}
 	
 	public static ImageResource getSpectraIcon() {

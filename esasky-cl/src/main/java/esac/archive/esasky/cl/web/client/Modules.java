@@ -85,6 +85,7 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_CAT, false);
         map.put(EsaSkyWebConstants.MODULE_SPE, false);
         map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
+        map.put(EsaSkyWebConstants.MODULE_GW, false);
         map.put(EsaSkyWebConstants.MODULE_SSO, false);
         map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
         map.put(EsaSkyWebConstants.MODULE_TARGETLIST, false);
@@ -112,6 +113,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_CAT, false);
 		map.put(EsaSkyWebConstants.MODULE_SPE, false);
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
+		map.put(EsaSkyWebConstants.MODULE_GW, false);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, false);
@@ -139,6 +141,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
 		map.put(EsaSkyWebConstants.MODULE_SPE, true);
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, Boolean.parseBoolean(Dictionary.getDictionary("serverProperties").get("showExtTap")));
+		map.put(EsaSkyWebConstants.MODULE_GW, true);
 		map.put(EsaSkyWebConstants.MODULE_SSO, true);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, true);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);

@@ -138,6 +138,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_CAT = "catalogues_button";
     public static final String MODULE_SPE = "spectra_button";
     public static final String MODULE_EXTTAP = "exttap_button";
+    public static final String MODULE_GW = "gw_button";
     public static final String MODULE_SSO = "sso_button";
     public static final String MODULE_PUBLICATIONS = "publications_button";
     public static final String MODULE_TARGETLIST = "target_list_button";

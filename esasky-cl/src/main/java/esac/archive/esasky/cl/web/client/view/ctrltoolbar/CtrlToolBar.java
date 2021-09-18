@@ -74,6 +74,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private SelectSkyPanel selectSkyPanel;
 	private PublicationPanel publicationPanel;
 	private PlanObservationPanel planObservationPanel;
+	private GwPanel gwPanel;
 	private String HiPSFromURL = null;
 	private String unwantedRandomTargets ="";
 	private final TreeMapContainer observationTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_IMAGING);
@@ -92,6 +93,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private BadgeButton spectraButton;
 	private BadgeButton ssoButton;
 	private EsaSkyToggleButton extTapButton;
+	private EsaSkyToggleButton gwButton;
 	private EsaSkyToggleButton publicationsButton;
 	
 	private final CssResource style;
@@ -181,6 +183,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				ssoButton.setToggleStatus(false);
 			}
 		});
+		
+		gwPanel = new GwPanel();
+		gwPanel.hide();
+		ctrlToolBarPanel.add(createGwBtn());
+		ctrlToolBarPanel.add(gwPanel);
+		if(!Modules.getModule(EsaSkyWebConstants.MODULE_GW)) {
+			hideWidget(gwButton);
+		}
 		
 		publicationPanel = new PublicationPanel();
 		ctrlToolBarPanel.add(createPublicationsBtn());
@@ -277,6 +287,32 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			}
 		});
 		return extTapButton;
+	}
+
+	private EsaSkyToggleButton createGwBtn() {
+		
+		gwButton = new EsaSkyToggleButton(Icons.getGwIcon());
+		//TODO tooltip
+		addCommonButtonStyle(gwButton, "TODO tooltip");
+		gwButton.addClickHandler(
+				new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						CtrlToolBar.this.gwPanel.toggle();
+						CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(gwButton));
+						sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_GW);
+					}
+				});
+		
+        gwPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
+			
+			@Override
+			public void onClose(CloseEvent<PopupPanel> event) {
+				gwButton.setToggleStatus(false);
+			}
+		});
+		return gwButton;
 	}
 	
 	private BadgeButton createCatalogBtn() {
@@ -432,6 +468,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		if(!button.equals(extTapButton)) {
 			extTapTreeMapContainer.hide();
 		}
+		if(!button.equals(gwButton)) {
+			gwPanel.hide();
+		}
 		
 		for(CustomTreeMap customTreeMap : customTreeMaps.values()) {
 			if(!button.equals(customTreeMap.button)) {
@@ -458,6 +497,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	        hideWidget(spectraButton);
 	        hideWidget(publicationsButton);
 	        hideWidget(extTapButton);
+	        hideWidget(gwButton);
 	        hideWidget(planObservationButton);
 	    } else {
 	        showScienceModeWidgets();
@@ -513,6 +553,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }else {
         	hideWidget(ssoButton);
         }    
+
+        
+        if(Modules.getModule(EsaSkyWebConstants.MODULE_GW)) {
+            showWidget(gwButton);
+        }else {
+        	hideWidget(gwButton);
+        }
         
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
 			showWidget(planObservationButton);

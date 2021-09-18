@@ -63,6 +63,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 
 public class DescriptorRepository {
 
@@ -101,6 +102,9 @@ public class DescriptorRepository {
 
 	public interface PublicationsDescriptorListMapper extends ObjectMapper<PublicationsDescriptorList> {
 	}
+	
+	public interface GwDescriptorListMapper extends ObjectMapper<ObservationDescriptorList> {
+	}
 
 	public interface SingleCountListMapper extends ObjectMapper<List<SingleCount>> {
 	}
@@ -111,6 +115,8 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<SpectraDescriptor> spectraDescriptors;
 	private DescriptorListAdapter<PublicationsDescriptor> publicationsDescriptors;
 	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
+	//TODO this should not have to be static
+	public static ObservationDescriptor gwDescriptors;
 
 	/** Descriptor and CountStatus hashMaps for improve counts */
 	private HashMap<String, List<IDescriptor>> descriptorsMap; 
@@ -350,6 +356,28 @@ public class DescriptorRepository {
 				DescriptorList<ObservationDescriptor> list = new DescriptorList<ObservationDescriptor>() {};
 				obsDescriptors = new DescriptorListAdapter<ObservationDescriptor>(list, obsCountObserver);
 				obsDescriptorsIsReady = true;
+			}
+
+		});
+	}
+	
+	
+	public void initGwDescriptors() {
+		//TODO currently reading json from frontend file - not recommended
+		JSONUtils.getJSONFromUrl("gw.json", new IJSONRequestCallback() {
+
+			@Override
+			public void onSuccess(String responseText) {
+				GwDescriptorListMapper mapper = GWT.create(GwDescriptorListMapper.class);
+				ObservationDescriptorList mappedDescriptorList = mapper.read(responseText);
+
+				gwDescriptors = mappedDescriptorList.getDescriptors().get(0);
+				GwPanel.instance.loadData();
+			}
+
+			@Override
+			public void onError(String errorCause) {
+				Log.error("[DescriptorRepository] initGwDescriptors ERROR: " + errorCause);
 			}
 
 		});

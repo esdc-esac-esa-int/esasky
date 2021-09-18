@@ -116,7 +116,9 @@ public class MetadataDescriptor {
 		if(maxDecimalDigits != null) {
 			jsonString  += ",\"maxDecimalDigits\":" + maxDecimalDigits.toString();
 		}
-		jsonString  += ",\"type\":\"" + type.toString() + "\"";
+		if(type != null) {
+			jsonString  += ",\"type\":\"" + type.toString() + "\"";
+		}
 		
 		jsonString += "}";
 		

@@ -15,6 +15,7 @@ import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.SkiesMenuMapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyObserver;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
@@ -65,6 +66,9 @@ public class SelectSkyPanelPresenter {
 		};
 		
 		view.getAddSkyRowButton().setObserver(addSkyObserver);
+		
+		//TODO fix ugliness - Use addSkyEvent?
+		GwPanel.addSkyObserver = addSkyObserver;
     }
     
     private void addUrlHips(HiPS hips) {

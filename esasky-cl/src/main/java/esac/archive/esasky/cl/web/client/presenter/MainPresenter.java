@@ -103,6 +103,9 @@ public class MainPresenter {
         
         // Creates the descriptors repository
         descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
+        //TODO fix ugliness
+        descriptorRepo.initGwDescriptors();
+        
         entityRepo = EntityRepository.init(descriptorRepo);
         MocRepository.init();
         

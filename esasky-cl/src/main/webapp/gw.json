@@ -1,0 +1,102 @@
+{
+  "descriptors" : [{
+   "mission" : "gw",
+    "wavelengths" :
+    [
+    	{
+    		"shortName" : "X-ray",
+    		"longName" : "X-ray",
+    		"prefix": "Hard",
+		    "range": [10, 12]	
+    		
+    	}
+	],
+    "tapTable" : "observations.mv_v_obscore_isla_fdw_fdw",
+    "uniqueIdentifierField" : "obs_id",
+    "guiShortName" : "gw",
+    "guiLongName" : "gw",
+    "mocTapTable" : "public.integral_moc",
+    "mocSTCSColumn" : "stcs_icrs_polygon",
+    "shapeLimit" : 15000,
+    "tapRaColumn": "s_ra",
+    "tapDecColumn" : "s_dec",
+    "metadata" : [ {
+      "tapName" : "alert_type",
+      "visible" : false
+    }, {
+      "tapName" : "event_page",
+      "visible" : true,
+      "type" : "LINK2ARCHIVE"
+    }, {
+      "tapName" : "bbh",
+      "visible" : false
+    }, {
+      "tapName" : "bns",
+      "visible" : false
+    }, {
+      "tapName" : "far",
+      "visible" : false
+    }, {
+      "tapName" : "fluence",
+      "visible" : false
+    }, {
+      "tapName" : "grace_id",
+      "visible" : true
+    }, {
+      "tapName" : "has_ns",
+      "visible" : false
+    }, {
+      "tapName" : "has_remnant",
+      "visible" : false
+    }, {
+      "tapName" : "id",
+      "visible" : false
+    }, {
+      "tapName" : "instruments",
+      "visible" : false
+    }, {
+      "tapName" : "internal",
+      "visible" : false
+    }, {
+      "tapName" : "iso_time",
+      "visible" : false
+    }, {
+      "tapName" : "mass_gap",
+      "visible" : false
+    }, {
+      "tapName" : "nsbh",
+      "visible" : false
+    }, {
+      "tapName" : "open_alert",
+      "visible" : false
+    }, {
+      "tapName" : "packet_type",
+      "visible" : false
+    }, {
+      "tapName" : "pipline",
+      "visible" : false
+    }, {
+      "tapName" : "pkt_ser_num",
+      "visible" : false
+    }, {
+      "tapName" : "search",
+      "visible" : false
+    }, {
+      "tapName" : "skymap_fits",
+      "visible" : true,
+      "type" : "LINK"
+    }, {
+      "tapName" : "terrestrial",
+      "visible" : false
+    } 
+    
+
+    
+    ],
+    "archiveURL" : "http://www.isdc.unige.ch/integral/archive?scw_type=pointing&obs_id=",
+    "archiveProductURI" : "@@@obs_id@@@",
+    "sampEnabled" : false,
+    "useIntersectPolygonInsteadOfContainsPoint":false
+    }],
+  "total" : 7
+}

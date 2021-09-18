@@ -71,6 +71,9 @@ public class TabulatorWrapper{
     private boolean filtersShouldBeEnabled = true;
     private boolean waitingForMoc = false;
 
+    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback) {
+    	this(divId, tabulatorCallback, false, false, false, false, null, false, false, false, false, 1);
+    }
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn,
             boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
@@ -78,11 +81,17 @@ public class TabulatorWrapper{
     }
     
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
+    		boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
+    		boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
+    	this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle, blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, null);
+    }
+    
+    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable) {
         this.tabulatorCallback = tabulatorCallback;
         tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle,
-                blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn);
+                blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, selectable);
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -709,7 +718,10 @@ public class TabulatorWrapper{
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) /*-{
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable) /*-{
+    	if(selectable == null){
+    		selectable = true;
+    	}
 		$wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var visibleTableData = [];
 		var visibleTableDataIndex = 0;
@@ -1290,8 +1302,35 @@ public class TabulatorWrapper{
                             });
                             continue;
 			    	    }
-			    		if(this.metadata[i].name.toLowerCase() === "access_url"
-			    		    || this.metadata[i].name.toLowerCase() === "product_url"){
+			    	    if(this.metadata[i].name.toLowerCase() === "sso_name"){
+			    			isSSO = true;
+			    		    columnDef.push(activeColumnGroup[0]); //Selection column
+			    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
+			    		    activeColumnGroup = [];
+			    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
+			    		}
+			    	    if(this.metadata[i].name.toLowerCase() == "event_page"){
+		                    activeColumnGroup.push({
+		                        title: this.metadata[i].displayName,
+		                        titleDownload: this.metadata[i].displayName,
+		                        field:this.metadata[i].name,
+		                        visible:descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+		                        headerSort:false, 
+		                        headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
+		                        minWidth: 85,
+		                        download: true,
+		                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"link2archive.png",
+		                            tooltip:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")},
+		                            cellClick:function(e, cell){
+		                                e.stopPropagation();
+		                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+		                            }
+		                    });
+			    	    }
+			    		else if(this.metadata[i].name.toLowerCase() === "access_url"
+			    		    || this.metadata[i].name.toLowerCase() === "product_url"
+			    		    || this.metadata[i].name.toLowerCase() === "skymap_fits"
+			    		    ){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),
 	                            titleDownload:this.metadata[i].name,
@@ -1337,7 +1376,7 @@ public class TabulatorWrapper{
 	                        });
 	                        continue;
 			    		}
-			    		if(this.metadata[i].name.toLowerCase() === "postcard_url" || this.metadata[i].name.toLowerCase() === "preview"){
+			    		else if(this.metadata[i].name.toLowerCase() === "postcard_url" || this.metadata[i].name.toLowerCase() === "preview"){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_previewHeader"),
 	                            titleDownload:this.metadata[i].name,
@@ -1356,7 +1395,7 @@ public class TabulatorWrapper{
 	                        });
 	                        continue;
 			    		}
-			    		if(this.metadata[i].name.toLowerCase() === "author"){
+			    		else if(this.metadata[i].name.toLowerCase() === "author"){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("Authors"),
 	                            titleDownload:this.metadata[i].name,
@@ -1371,14 +1410,7 @@ public class TabulatorWrapper{
 	                            formatter:linkListFormatter});
 	                        continue;
 	                    }
-			    		if(this.metadata[i].name.toLowerCase() === "sso_name"){
-			    			isSSO = true;
-			    		    columnDef.push(activeColumnGroup[0]); //Selection column
-			    		    columnDef.push({title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"), columns:activeColumnGroup.slice(1)});
-			    		    activeColumnGroup = [];
-			    		    columnDef.push({title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(), columns:activeColumnGroup});
-			    		}
-			    		if(this.metadata[i].name.toLowerCase() === "ra" 
+			    		else if(this.metadata[i].name.toLowerCase() === "ra" 
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg"
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_1"
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_2"
@@ -1628,7 +1660,7 @@ public class TabulatorWrapper{
                     });
 			    }
 		    },
-		 	selectable:true,
+		 	selectable:selectable,
             ajaxError:function(error){
             	error.text().then(function(e){
             		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(e);
