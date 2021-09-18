@@ -812,7 +812,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
             String valueURI = rowData.getStringProperty(rowColumn);
             productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
         }
-        return getDescriptor().getArchiveURL() + productURI;
+        String url = getDescriptor().getArchiveURL() + productURI;
+        if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+            url = url.replaceFirst("http:", "https:");
+        }
+        return url;
     }
 
     @Override
