@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import esac.archive.esasky.cl.web.client.api.ApiOverlay;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
 import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
@@ -95,8 +96,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
         	}
         }
 
-        //TODO fix url
-		tabulatorTable.setData("/esasky-tap/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+alerts.mv_gravitational_waves_fdw");
+		tabulatorTable.setData(EsaSkyWebConstants.TAP_CONTEXT + "/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+alerts.mv_gravitational_waves_fdw");
 	}
 	private void initView() {
 		this.getElement().addClassName("gwPanel");
