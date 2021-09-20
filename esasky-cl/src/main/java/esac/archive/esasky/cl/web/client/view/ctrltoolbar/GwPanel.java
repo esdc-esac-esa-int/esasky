@@ -28,6 +28,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCallback{
 
@@ -95,7 +96,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
         }
 
         //TODO fix url
-		tabulatorTable.setData("http://localhost:8080/esasky-sl/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+alerts.mv_gravitational_waves_fdw");
+		tabulatorTable.setData("/esasky-tap/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+alerts.mv_gravitational_waves_fdw");
 	}
 	private void initView() {
 		this.getElement().addClassName("gwPanel");
