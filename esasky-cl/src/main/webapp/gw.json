@@ -24,15 +24,21 @@
       "tapName" : "alert_type",
       "visible" : false
     }, {
-      "tapName" : "event_page",
-      "visible" : true,
-      "type" : "LINK2ARCHIVE"
-    }, {
       "tapName" : "bbh",
       "visible" : false
     }, {
       "tapName" : "bns",
       "visible" : false
+    }, {
+      "tapName" : "central_freq",
+      "visible" : false
+    }, {
+      "tapName" : "duration",
+      "visible" : false
+    }, {
+      "tapName" : "event_page",
+      "visible" : false,
+      "type" : "LINK2ARCHIVE"
     }, {
       "tapName" : "far",
       "visible" : false
@@ -42,6 +48,15 @@
     }, {
       "tapName" : "grace_id",
       "visible" : true
+    }, {
+      "tapName" : "gravitational_waves_oid",
+      "visible" : false
+    }, {
+      "tapName" : "group_id",
+      "visible" : false
+    }, {
+      "tapName" : "hardware_inj",
+      "visible" : false
     }, {
       "tapName" : "has_ns",
       "visible" : false
@@ -59,7 +74,7 @@
       "visible" : false
     }, {
       "tapName" : "iso_time",
-      "visible" : false
+      "visible" : true
     }, {
       "tapName" : "mass_gap",
       "visible" : false
@@ -73,7 +88,7 @@
       "tapName" : "packet_type",
       "visible" : false
     }, {
-      "tapName" : "pipline",
+      "tapName" : "pipeline",
       "visible" : false
     }, {
       "tapName" : "pkt_ser_num",
@@ -83,15 +98,18 @@
       "visible" : false
     }, {
       "tapName" : "skymap_fits",
-      "visible" : true,
+      "visible" : false,
       "type" : "LINK"
+    }, {
+      "tapName" : "stcs50",
+      "visible" : false
+    }, {
+      "tapName" : "stcs90",
+      "visible" : false
     }, {
       "tapName" : "terrestrial",
       "visible" : false
     } 
-    
-
-    
     ],
     "archiveURL" : "http://www.isdc.unige.ch/integral/archive?scw_type=pointing&obs_id=",
     "archiveProductURI" : "@@@obs_id@@@",
