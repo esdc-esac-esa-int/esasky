@@ -50,7 +50,7 @@ public class ApiHips extends ApiBase{
 	}
 	
 	public void addHiPS(String wantedHiPSName, JavaScriptObject widget) {
-		SelectSkyPanel.getInstance().createSky();
+		SelectSkyPanel.getInstance().createSky(true);
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDHIPS, wantedHiPSName);
 		if(!setHiPS(wantedHiPSName, widget)) {
 			SelectSkyPanel.getSelectedSky().notifyClose();
@@ -60,7 +60,7 @@ public class ApiHips extends ApiBase{
 	public void addHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
 			int maximumNorder, String imgFormat) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDHIPS, surveyRootUrl);
-		SelectSkyPanel.getInstance().createSky();
+		SelectSkyPanel.getInstance().createSky(true);
 		setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat);
 	}
 	

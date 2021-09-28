@@ -11,6 +11,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.FileUpload;
 
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -26,14 +28,8 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 
 public class AddSkyButton extends DisablablePushButton{
 
-	AddSkyObserver addSkyObserver;
-	
 	public AddSkyButton() {
 		this(Icons.getAddSkyIcon(), Icons.getAddSkyIcon());
-	}
-	
-	public void setObserver(AddSkyObserver addSkyObserver) {
-		this.addSkyObserver = addSkyObserver;
 	}
 	
 	private AddSkyButton(ImageResource enabledImage, ImageResource disabledImage) {
@@ -71,7 +67,7 @@ public class AddSkyButton extends DisablablePushButton{
 			@Override
 			public void onSelectedChange() {
 				if(menu.getSelectedObject() == AddSkyMenuItems.ESASKY) {
-					addSkyObserver.onSkyAdded();
+					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(null, false));
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.URL) {
 					openUrlPanel(x, y);
@@ -92,7 +88,7 @@ public class AddSkyButton extends DisablablePushButton{
 	}
 	
 	private void openUrlPanel(int x, int y) {
-		HipsUrlPanel urlPanel = new HipsUrlPanel(addSkyObserver);
+		HipsUrlPanel urlPanel = new HipsUrlPanel();
 		urlPanel.setPopupPosition(x, y);
 		urlPanel.show();
 		urlPanel.focus();
@@ -130,7 +126,7 @@ public class AddSkyButton extends DisablablePushButton{
 			
 			@Override
 			public void onSuccess(HiPS hips) {
-				addSkyObserver.onSkyAddedWithUrl(hips);
+				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true));
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL, hips.getSurveyRootUrl());
 			}
 			
@@ -164,7 +160,7 @@ public class AddSkyButton extends DisablablePushButton{
 			HiPS hips = parser.parseHipsProperties(propertiesText, "");
 			hips.setFiles(files);
 			hips.setLocal(true);
-			addSkyObserver.onSkyAddedWithUrl(hips);
+			CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true));
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDLOCAL, hips.getSurveyName());
 		} catch (IOException e) {
 			DisplayUtils.showMessageDialogBox(e.getMessage(),"Error", UUID.randomUUID().toString(), "");

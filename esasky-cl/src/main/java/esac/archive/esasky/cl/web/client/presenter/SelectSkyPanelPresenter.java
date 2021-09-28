@@ -13,11 +13,11 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.SkiesMenuMapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyButton;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyObserver;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 
 public class SelectSkyPanelPresenter {
@@ -33,7 +33,7 @@ public class SelectSkyPanelPresenter {
     	void toggle();
     	boolean isShowing();
     	void setSkiesMenu(SkiesMenu skiesMenu);
-    	SkyRow createSky();
+    	SkyRow createSky(boolean sendConvenienveEvent);
     	
     	void refreshUserDropdowns();
     	
@@ -43,32 +43,17 @@ public class SelectSkyPanelPresenter {
     public SelectSkyPanelPresenter(final View inputView) {
         this.view = inputView;
         getHiPSMapsList();
-        setAddSkyObserver();
+        CommonEventBus.getEventBus().addHandler(HipsAddedEvent.TYPE, changeEvent -> {
+        	if(changeEvent.isUserHips()) {
+        		addUrlHips(changeEvent.getHiPS());
+        	} else {
+        		view.createSky(true);
+        	}
+		});
     }
 
     public SkiesMenu getSkiesMenu(){
     	return skiesMenu;
-    }
-    
-    private void setAddSkyObserver() {
-    	AddSkyObserver addSkyObserver = new AddSkyObserver() {
-			
-			@Override
-			public void onSkyAddedWithUrl(HiPS hips) {
-				addUrlHips(hips);
-			}
-			
-			@Override
-			public void onSkyAdded() {
-				view.createSky();
-			}
-
-		};
-		
-		view.getAddSkyRowButton().setObserver(addSkyObserver);
-		
-		//TODO fix ugliness - Use addSkyEvent?
-		GwPanel.addSkyObserver = addSkyObserver;
     }
     
     private void addUrlHips(HiPS hips) {
@@ -84,7 +69,7 @@ public class SelectSkyPanelPresenter {
 		} else {
 		    entry.getHips().add(hips);
 		}
-		SkyRow skyRow = view.createSky();
+		SkyRow skyRow = view.createSky(false);
 		skyRow.setSelectHips(hips.getSurveyName(), false, false);
 		view.refreshUserDropdowns();
 
@@ -119,7 +104,6 @@ public class SelectSkyPanelPresenter {
                     } else {
                         Log.error("Couldn't retrieve JSON (" + response.getStatusText() + ")");
                         skiesMenu = new SkiesMenu();
-//                        view.fillAllSkyPanelEntries(skiesMenu);
                         view.setSkiesMenu(skiesMenu);
                     }
                 }

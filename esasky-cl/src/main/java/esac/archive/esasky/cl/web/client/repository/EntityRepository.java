@@ -89,7 +89,9 @@ public class EntityRepository {
     private int countEntitiesWithMultiSelectionEnabled() {
         int multiSelectionEntities = allEntities.size();
         for(GeneralEntityInterface entity : allEntities) {
-            if(isPublicationEntityType(entity)) {
+            if(isPublicationEntityType(entity) 
+            		|| "gw50".equals(entity.getEsaSkyUniqId()) //gw50 and gw90 are the gravitational waves special footprints
+            		|| "gw90".equals(entity.getEsaSkyUniqId())) {
                 multiSelectionEntities--;
             }
         }

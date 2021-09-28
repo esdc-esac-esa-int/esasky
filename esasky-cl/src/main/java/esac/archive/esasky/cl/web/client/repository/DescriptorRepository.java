@@ -65,7 +65,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 
 public class DescriptorRepository {
 
@@ -105,9 +104,6 @@ public class DescriptorRepository {
 	public interface PublicationsDescriptorListMapper extends ObjectMapper<PublicationsDescriptorList> {
 	}
 	
-	public interface GwDescriptorListMapper extends ObjectMapper<ObservationDescriptorList> {
-	}
-	
 	public interface ImageDescriptorListMapper extends ObjectMapper<ImageDescriptorList> {
 	}
 
@@ -121,8 +117,6 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<PublicationsDescriptor> publicationsDescriptors;
 	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
 	private DescriptorListAdapter<ImageDescriptor> imageDescriptors;
-	//TODO this should not have to be static
-	public static ObservationDescriptor gwDescriptors;
 
 	/** Descriptor and CountStatus hashMaps for improve counts */
 	private HashMap<String, List<IDescriptor>> descriptorsMap; 
@@ -415,28 +409,6 @@ public class DescriptorRepository {
 		});
 	}
 	
-	
-	public void initGwDescriptors() {
-		//TODO currently reading json from frontend file - not recommended
-		JSONUtils.getJSONFromUrl("gw.json", new IJSONRequestCallback() {
-
-			@Override
-			public void onSuccess(String responseText) {
-				GwDescriptorListMapper mapper = GWT.create(GwDescriptorListMapper.class);
-				ObservationDescriptorList mappedDescriptorList = mapper.read(responseText);
-
-				gwDescriptors = mappedDescriptorList.getDescriptors().get(0);
-				GwPanel.instance.loadData();
-			}
-
-			@Override
-			public void onError(String errorCause) {
-				Log.error("[DescriptorRepository] initGwDescriptors ERROR: " + errorCause);
-			}
-
-		});
-	}
-
 	public void initSSODescriptors(final CountObserver ssoCountObserver) {
 
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initSSODescriptors");
@@ -447,10 +419,8 @@ public class DescriptorRepository {
 
 				SSODescriptorListMapper mapperSSO = GWT.create(SSODescriptorListMapper.class);
 				SSODescriptorList ssoMappedDescriptorList = mapperSSO.read(responseText);
-				// ssoMappedDescriptorList.setIsSsoDescriptors();
 				ssoDescriptors = new DescriptorListAdapter<SSODescriptor>(ssoMappedDescriptorList, ssoCountObserver);
 
-				// obsDescriptorsIsReady = true;
 
 				Log.debug("[DescriptorRepository] [initSSODescriptors] Total observation entries: " + ssoDescriptors.getTotal());
 				WavelengthUtils.setWavelengthRangeMaxMin(ssoDescriptors.getDescriptors());
@@ -462,7 +432,6 @@ public class DescriptorRepository {
 			@Override
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initSSODescriptors ERROR: " + errorCause);
-				// obsDescriptorsIsReady = true;
 				checkDoCountAll();
 			}
 

@@ -13,6 +13,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.HipsParser;
@@ -29,7 +31,6 @@ public class HipsUrlPanel extends PopupPanel{
 	private EsaSkyTextBox textBox;
 	private LoadingSpinner loadingSpinner = new LoadingSpinner(false);
 	private Label errorLabel;
-	private AddSkyObserver addSkyObserver;
 	
 	private final Resources resources;
 	private CssResource style;
@@ -41,13 +42,12 @@ public class HipsUrlPanel extends PopupPanel{
 		CssResource style();
 	}
 
-	public HipsUrlPanel(AddSkyObserver addSkyObserver) {
+	public HipsUrlPanel() {
 		super();
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		initView();
-		this.addSkyObserver = addSkyObserver;
 	}
 	
 	Timer timer = new Timer() {
@@ -122,7 +122,7 @@ public class HipsUrlPanel extends PopupPanel{
 			@Override
 			public void onSuccess(HiPS hips) {
 				loadingSpinner.setVisible(false);
-				addSkyObserver.onSkyAddedWithUrl(hips);
+				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true));
 				errorLabel.setVisible(false);
 				hide();
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL, url);

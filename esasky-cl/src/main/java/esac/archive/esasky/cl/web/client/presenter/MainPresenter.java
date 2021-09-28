@@ -105,8 +105,6 @@ public class MainPresenter {
         
         // Creates the descriptors repository
         descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
-        //TODO fix ugliness
-        descriptorRepo.initGwDescriptors();
         
         entityRepo = EntityRepository.init(descriptorRepo);
         MocRepository.init();
@@ -468,7 +466,7 @@ public class MainPresenter {
     }
 
     private void getImageList() {
-    	Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
+    	Log.debug("[MainPresenter] Into MainPresenter.getImageList");
     	descriptorRepo.initImageDescriptors(newCount -> newCount++);
     }
 

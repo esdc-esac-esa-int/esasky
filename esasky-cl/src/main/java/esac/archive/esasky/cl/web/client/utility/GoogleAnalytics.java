@@ -17,6 +17,7 @@ public final class GoogleAnalytics {
     public static final String CAT_DOWNLOAD_DD = "Download_DD";
     public static final String CAT_CTRLTOOLBAR = "CtrlToolbar";
     public static final String CAT_SKIESMENU = "SkiesMenu";
+    public static final String CAT_GW = "GravitationalWaves";
     public static final String CAT_CONVENIENCE = "Convenience";
     public static final String CAT_HELP = "Help";
     public static final String CAT_HEADER = "Header";
@@ -105,6 +106,9 @@ public final class GoogleAnalytics {
     public static final String ACT_SKIESMENU_BROWSEHIPS = "BrowseHips";
     public static final String ACT_SKIESMENU_ADDLOCAL = "AddLocal";
     public static final String ACT_SKIESMENU_ADDLOCALCLICK = "AddLocalClick";
+
+    public static final String ACT_GW_SHOW_HIPS = "ShowHips";
+    public static final String ACT_GW_SHOW_HIPS_FAIL = "ShowHipsFail";
     
     public static final String ACT_TARGETLIST_LISTSELECTED = "ListSelected";
     public static final String ACT_TARGETLIST_UPLOADERROR = "UploadError";
