@@ -17,6 +17,7 @@ import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChang
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
@@ -26,6 +27,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilte
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 
 public class TabulatorWrapper{
@@ -313,6 +315,39 @@ public class TabulatorWrapper{
         tableJsObject.vdomHoz.reinitialize(undefined, true);
         tableJsObject.redraw(true);
         tableJsObject.vdomHoz.reinitialize();
+    }-*/;
+    
+    public void filterOnFov(String raCol, String decCol) {
+    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+    	
+    	if(pos.getFov() > 100.0) {
+    		//Clear filters
+    		setHeaderFilterValue(tableJsObject, raCol, "");
+    		setHeaderFilterValue(tableJsObject, decCol, "");
+    		return;
+    	}
+    	
+    	double ra = pos.getCoordinate().getRa();
+    	double dec = pos.getCoordinate().getDec();
+    	double fov = pos.getFov()/2.0;
+    	
+    	if(dec + fov > 90.0) {
+    		//Around north pole
+    		setHeaderFilterValue(tableJsObject, decCol, Double.toString(pos.getCoordinate().getDec() - fov) + ",");
+    	}else if(dec - pos.getFov() < -90.0) {
+    		//Around south pole
+    		setHeaderFilterValue(tableJsObject, decCol, "," + Double.toString(pos.getCoordinate().getDec() + fov));
+    	}
+    	
+    	
+    	double minVal = ra - fov;
+    	double maxVal = ra + fov % 360;
+    	
+    	setHeaderFilterValue(tableJsObject, raCol, minVal + "," + maxVal);
+    }
+    
+    public native void setHeaderFilterValue(GeneralJavaScriptObject tableJsObject, String column, String value)/*-{
+        tableJsObject.setHeaderFilterValue(column, value);
     }-*/;
     
     public void filter(String column, String comparison, String value) {
@@ -1355,7 +1390,7 @@ public class TabulatorWrapper{
 			    		}
 			    		else if(this.metadata[i].ucd == "meta.ref.url;meta.product"){
 	                        activeColumnGroup.push({
-	                            title:$wnd.esasky.getInternationalizationText(this.metadata[i].displayName),
+	                            title:this.metadata[i].displayName,
 	                            titleDownload:this.metadata[i].name,
 	                            field:this.metadata[i].name,
 	                            visible:this.metadata[i].visible,

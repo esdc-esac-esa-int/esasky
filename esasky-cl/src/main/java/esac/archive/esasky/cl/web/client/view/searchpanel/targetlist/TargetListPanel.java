@@ -792,7 +792,7 @@ public class TargetListPanel extends DialogBox {
         ESASkySearchResult imageId = outreachImageList.get(index);
 		HstOutreachImage image = new HstOutreachImage(imageId.getSimbadMainId());
 		image.setOpacity(opacitySlider.getCurrentValue());
-		image.getPropertiesFromBackend();
+		image.loadImage();
     }
 
 

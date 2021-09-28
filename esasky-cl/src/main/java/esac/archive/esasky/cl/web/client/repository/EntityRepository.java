@@ -18,12 +18,14 @@ import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity.SecondaryShapeAdder;
 import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
+import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -123,6 +125,13 @@ public class EntityRepository {
     	return allEntities;
     }
 
+    public GeneralEntityInterface createImageListEntity(IDescriptor descriptor) {
+    	ImageListEntity newEntity =  new ImageListEntity(descriptor, descriptorRepo.getImageDescriptors().getCountStatus(),
+                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPImageListService.getInstance());
+    	addEntity(newEntity);
+    	return newEntity;
+    }
+    
     public GeneralEntityInterface createEntity(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = null;
         if (descriptor instanceof SSODescriptor) {

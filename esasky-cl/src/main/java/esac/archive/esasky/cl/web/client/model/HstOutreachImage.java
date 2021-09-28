@@ -39,7 +39,10 @@ public class HstOutreachImage {
 	}
 
 	
-	public void getPropertiesFromBackend() {
+	public void loadImage() {
+		loadImage(true);
+	}
+	public void loadImage(boolean moveToCenter) {
 		String query = EsaSkyWebConstants.HST_IMAGE_URL + "?" + EsaSkyConstants.HST_IMAGE_ID_PARAM + "=" + this.id;
 		JSONUtils.getJSONFromUrl(query , new IJSONRequestCallback() {
 
@@ -68,7 +71,7 @@ public class HstOutreachImage {
 						desc.getDescription(),
 						desc.getCredit(),
 						type,
-						url);
+						url, moveToCenter);
 
 		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS, desc.getId());
 			}
@@ -82,7 +85,7 @@ public class HstOutreachImage {
 	}
 	
 	public void onResponseParsed(Coordinate coor, double fov, double rotation, ImageSize imageSize,
-			String title, String description, String credits, OpenSeaDragonType type, String url) {
+			String title, String description, String credits, OpenSeaDragonType type, String url, boolean moveToCenter) {
 		this.title = title;
 		this.description = description;
 		this.credits = credits;
@@ -92,8 +95,10 @@ public class HstOutreachImage {
 		JavaScriptObject openSeaDragonObject = openseadragon.createOpenSeaDragonObject();
 		openseadragon.addOpenSeaDragonToAladin(openSeaDragonObject);
 		
-		AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
-		AladinLiteWrapper.getAladinLite().setZoom(fov * 3);
+		if(moveToCenter) {
+			AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
+			AladinLiteWrapper.getAladinLite().setZoom(fov * 3);
+		}
 		
 		Timer timer = new Timer() {
 

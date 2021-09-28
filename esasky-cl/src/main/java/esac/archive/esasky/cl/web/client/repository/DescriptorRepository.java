@@ -20,6 +20,8 @@ import esac.archive.esasky.ifcs.model.descriptor.DescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptorList;
@@ -105,6 +107,9 @@ public class DescriptorRepository {
 	
 	public interface GwDescriptorListMapper extends ObjectMapper<ObservationDescriptorList> {
 	}
+	
+	public interface ImageDescriptorListMapper extends ObjectMapper<ImageDescriptorList> {
+	}
 
 	public interface SingleCountListMapper extends ObjectMapper<List<SingleCount>> {
 	}
@@ -115,6 +120,7 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<SpectraDescriptor> spectraDescriptors;
 	private DescriptorListAdapter<PublicationsDescriptor> publicationsDescriptors;
 	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
+	private DescriptorListAdapter<ImageDescriptor> imageDescriptors;
 	//TODO this should not have to be static
 	public static ObservationDescriptor gwDescriptors;
 
@@ -183,6 +189,10 @@ public class DescriptorRepository {
 
 	public DescriptorListAdapter<PublicationsDescriptor> getPublicationsDescriptors() {
 		return publicationsDescriptors;
+	}
+	
+	public DescriptorListAdapter<ImageDescriptor> getImageDescriptors() {
+		return imageDescriptors;
 	}
 	
 	public void initExtDescriptors(final CountObserver countObserver) {
@@ -358,6 +368,50 @@ public class DescriptorRepository {
 				obsDescriptorsIsReady = true;
 			}
 
+		});
+	}
+
+	public void initImageDescriptors(final CountObserver imageCountObserver) {
+		
+		Log.debug("[DescriptorRepository] Into DescriptorRepository.initObsDescriptors");
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.IMAGES_URL, new IJSONRequestCallback() {
+			
+			@Override
+			public void onSuccess(String responseText) {
+				ImageDescriptorListMapper mapper = GWT.create(ImageDescriptorListMapper.class);
+				DescriptorList<ImageDescriptor> mappedDescriptorList = mapper.read(responseText);
+				
+				imageDescriptors = new DescriptorListAdapter<ImageDescriptor>(mappedDescriptorList,
+						imageCountObserver);
+				
+				for(ObservationDescriptor desc : obsDescriptors.getDescriptors()) {
+					for(MetadataDescriptor md : desc.getMetadata()) {
+						if(md.getType() == ColumnType.RA) {
+							desc.setTapRaColumn(md.getTapName());
+						}
+						else if(md.getType() == ColumnType.DEC) {
+							desc.setTapDecColumn(md.getTapName());
+						}
+						else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
+							desc.setTapSTCSColumn(md.getTapName());
+						}
+					}
+				}
+				
+				Log.debug("[DescriptorRepository] [init image ]Total image entries: " + imageDescriptors.getTotal());
+				WavelengthUtils.setWavelengthRangeMaxMin(imageDescriptors.getDescriptors());
+				if (!GUISessionStatus.getIsInScienceMode()) {
+					GUISessionStatus.setDoCountOnEnteringScienceMode();
+				}
+			}
+			
+			@Override
+			public void onError(String errorCause) {
+				Log.error("[DescriptorRepository] initImageDescriptors ERROR: " + errorCause);
+				DescriptorList<ImageDescriptor> list = new DescriptorList<ImageDescriptor>() {};
+				imageDescriptors = new DescriptorListAdapter<ImageDescriptor>(list, imageCountObserver);
+			}
+			
 		});
 	}
 	
@@ -591,6 +645,7 @@ public class DescriptorRepository {
 		addDescriptorsToHashMaps(obsDescriptors);
 		addDescriptorsToHashMaps(spectraDescriptors);
 		addDescriptorsToHashMaps(publicationsDescriptors);
+		addDescriptorsToHashMaps(imageDescriptors);
 	}
 
 	private void addDescriptorsToHashMaps(DescriptorListAdapter<?> descriptorListAdapter) {

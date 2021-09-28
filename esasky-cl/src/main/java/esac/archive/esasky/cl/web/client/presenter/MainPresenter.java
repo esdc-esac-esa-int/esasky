@@ -38,6 +38,8 @@ import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
 import esac.archive.esasky.cl.web.client.event.BibcodeSearchEventHandler;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEventHandlerImpl;
+import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
+import esac.archive.esasky.cl.web.client.event.ShowImageListEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
@@ -126,6 +128,8 @@ public class MainPresenter {
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
 
         getSpectraList();
+        
+        getImageList();
 
         descriptorRepo.initPubDescriptors();
 
@@ -322,6 +326,16 @@ public class MainPresenter {
                 }
             }
         });
+        
+        CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, new ShowImageListEventHandler() {
+
+			@Override
+			public void onImageListSelected(ShowImageListEvent event) {
+				IDescriptor desc = descriptorRepo.getImageDescriptors().getDescriptors().get(0);
+				getImagesMetadata(desc);
+			}
+        	
+        });
 
         /*
          * When the url changed because the state has changed
@@ -370,6 +384,10 @@ public class MainPresenter {
 
     public void coneSearch(IDescriptor descriptor, SkyViewPosition conePos) {
         resultsPresenter.coneSearch(entityRepo.createEntity(descriptor), conePos);
+    }
+
+    public void getImagesMetadata(IDescriptor descriptor) {
+    	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor));
     }
 
     public void getRelatedMetadata(IDescriptor descriptor) {
@@ -456,6 +474,15 @@ public class MainPresenter {
             public void onCountUpdate(long newCount) {
             }
         });
+    }
+
+    private void getImageList() {
+    	Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
+    	descriptorRepo.initImageDescriptors(new CountObserver() {
+    		@Override
+    		public void onCountUpdate(long newCount) {
+    		}
+    	});
     }
 
     public final AllSkyPresenter getAllSkyPresenter() {

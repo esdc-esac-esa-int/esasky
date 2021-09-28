@@ -931,5 +931,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
 		// Not needed
 	}
-
+	
+	@Override
+	public void filterOnFoV(String raCol, String decCol) {
+		table.filterOnFov(raCol, decCol);
+	}
 }

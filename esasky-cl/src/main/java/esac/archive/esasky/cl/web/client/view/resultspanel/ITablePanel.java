@@ -90,4 +90,5 @@ public interface ITablePanel {
 	
 	public boolean isDataProductDatalink();
     public int getNumberOfShownRows();
+	void filterOnFoV(String raCol, String decCol);
 }
