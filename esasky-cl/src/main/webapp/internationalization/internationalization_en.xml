@@ -2389,6 +2389,34 @@
 		&amp;Delta;W4 mag
 	</text>
 
+	<text key="gw_grace_id">
+		Grace ID
+	</text>
+	<text key="gw_iso_time">
+		ISO Time
+	</text>
+	<text key="gw_far">
+		FAR
+	</text>
+	<text key="gw_bbh">
+		BBH
+	</text>
+	<text key="gw_bns">
+		BNS
+	</text>
+	<text key="gw_nsbh">
+		NSBH
+	</text>
+	<text key="gw_has_ns">
+		Has NS
+	</text>
+	<text key="gw_skymap_fits">
+		Skymap FITS
+	</text>
+	<text key="gw_id">
+		ID
+	</text>
+
 	<text key="Gaia_eDR3_parallax">
 		Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_eDR3_parallax_error">
