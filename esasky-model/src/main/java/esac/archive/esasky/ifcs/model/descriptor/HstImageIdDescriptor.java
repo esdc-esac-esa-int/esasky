@@ -8,11 +8,21 @@ public class HstImageIdDescriptor {
 	
 	private String id;
 	private String title;
+	private String stcs;
+	private String objectName;
+	private double ra;
+	private double dec;
    
 	@JsonCreator
-	public HstImageIdDescriptor(@JsonProperty("id") String id, @JsonProperty("title") String title) {
+	public HstImageIdDescriptor(@JsonProperty("id") String id, @JsonProperty("title") String title,
+			 @JsonProperty("stcs") String stcs,  @JsonProperty("object_name") String objectName,
+			 @JsonProperty("ra") double ra,  @JsonProperty("dec") double dec) {
 	   this.id = id;
 	   this.title = title;
+	   this.stcs = stcs;
+	   this.objectName = objectName;
+	   this.ra = ra;
+	   this.dec = dec;
 	}
    
 	public String getId() {
@@ -29,6 +39,38 @@ public class HstImageIdDescriptor {
 	
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getStcs() {
+		return stcs;
+	}
+
+	public void setStcs(String stcs) {
+		this.stcs = stcs;
+	}
+
+	public String getObjectName() {
+		return objectName;
+	}
+
+	public double getRa() {
+		return ra;
+	}
+
+	public double getDec() {
+		return dec;
+	}
+
+	public void setObjectName(String objectName) {
+		this.objectName = objectName;
+	}
+
+	public void setRa(double ra) {
+		this.ra = ra;
+	}
+
+	public void setDec(double dec) {
+		this.dec = dec;
 	}
 	
 }

@@ -43,6 +43,10 @@ public class HstImageCoordinateMetadata {
 	@JsonProperty("ReferencePixel")
 	private List<Double> referencePixels;
 	
+	@JsonProperty("Stcs")
+	private String stcs;
+	
+	
 	public String getCoordinateFrame() {
 		return coordinateFrame;
 	}
@@ -106,6 +110,12 @@ public class HstImageCoordinateMetadata {
 		this.referencePixels = referencePixels;
 	}
 	
+	public String getStcs() {
+		return stcs;
+	}
+	public void setStcs(String stcs) {
+		this.stcs = stcs;
+	}
 	public void scaleToCorrectValues() {
 		this.coordinate = new Coordinate(referenceValue.get(0), referenceValue.get(1));
 		moveReferenceToCenter();
@@ -123,6 +133,26 @@ public class HstImageCoordinateMetadata {
 		Point2D.Double pos = worldpos.getPosition((double) imageDimensions.get(0) / 2, (double) imageDimensions.get(1) / 2, wcs);
 		this.coordinate.setRa(pos.x);
 		this.coordinate.setDec(pos.y);
+		
+		createStcs(wcs);
+	}
+	
+	private void createStcs(WCSTransform wcs) {
+		String stcs = "POLYGON ICRS ";
+		
+		stcs += point2Stcs(wcs, 0.0, 0.0) + " ";
+		stcs += point2Stcs(wcs, imageDimensions.get(0), 0.0) + " ";
+		stcs += point2Stcs(wcs, imageDimensions.get(0), imageDimensions.get(1)) + " ";
+		stcs += point2Stcs(wcs, 0.0, imageDimensions.get(1));
+		
+		this.stcs = stcs;
+	}
+	
+	private String point2Stcs(WCSTransform wcs, double posX, double posY) {
+		Point2D.Double pos = worldpos.getPosition(posX, posY, wcs);
+		String stcs = Double.toString(pos.x) + " ";
+		stcs += Double.toString(pos.y);
+		return stcs;
 	}
 	
 	

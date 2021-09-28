@@ -18,6 +18,8 @@ public class HstImageDescriptor{
 	@JsonProperty("last_modified")
 	private String lastModified;
 	private String credit;
+	@JsonProperty("object_name")
+	private String objectName;
 
 	@JsonProperty("pixel_size")
 	private List<Integer> pixelSize;
@@ -93,6 +95,12 @@ public class HstImageDescriptor{
 		this.largeUrl = largeUrl;
 	}
 	
+	public String getObjectName() {
+		return objectName;
+	}
+	public void setObjectName(String objectName) {
+		this.objectName = objectName;
+	}
 	public HstImageCoordinateMetadata getCoordinateMetadata() {
 		return coordinateMetadata;
 	}
@@ -108,6 +116,7 @@ public class HstImageDescriptor{
 			this.tilesUrl = null;
 		}
 		coordinateMetadata.scaleToCorrectValues();
+		
 	}
 	public List<Integer> getPixelSize() {
 		return pixelSize;
