@@ -182,6 +182,7 @@ public class EsaSkyConstants {
     public static final String DATALINK_URL_PARAM = "url";
     public static final String IMAGELOADER_URL_PARAM = "url";
     public static final String HST_IMAGE_ID_PARAM = "id";
+    public static final String HST_IMAGE_ACTION_PARAM = "action";
     
     /*************************************************************************/
     /** INTERNATIONALIZATION VALUES **/
