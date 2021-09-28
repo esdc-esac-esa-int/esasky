@@ -101,4 +101,11 @@ public final class UrlUtils {
         Log.debug("Lang code empty");
         return "";
     }
+    
+    public static void openUrl(String url) {
+        if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+            url = url.replaceFirst("http:", "https:");
+        }
+        Window.open(url, "_blank", "");
+    }
 }

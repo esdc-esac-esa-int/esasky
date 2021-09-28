@@ -54,6 +54,7 @@ import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.UncachedRequestBuilder;
+import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
@@ -622,10 +623,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     
     @Override
     public void onAccessUrlClicked(String url) {
-        if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
-            url = url.replaceFirst("http:", "https:");
-        }
-        Window.open(url, "_blank", "_blank");
+        UrlUtils.openUrl(url);
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
     }
 
