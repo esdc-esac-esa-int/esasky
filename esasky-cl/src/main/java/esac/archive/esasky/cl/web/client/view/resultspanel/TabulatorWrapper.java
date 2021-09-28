@@ -580,7 +580,10 @@ public class TabulatorWrapper{
 					if(descriptorMetaData[metadata[j].name].hasOwnProperty("visible")){
 						metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
 					}
-					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label") && descriptorMetaData[metadata[j].name].label != "" && descriptorMetaData[metadata[j].name].label != "undefined"){
+					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label") 
+						&& descriptorMetaData[metadata[j].name].label != "" 
+						&& descriptorMetaData[metadata[j].name].label != "undefined"
+						&& descriptorMetaData[metadata[j].name].label != "null"){
 					    if(url.includes("publications-by")){					        
 				            metadata[j].displayName = $wnd.esasky.getInternationalizationText(descriptorMetaData[metadata[j].name]["label"]);
 					    } else {
