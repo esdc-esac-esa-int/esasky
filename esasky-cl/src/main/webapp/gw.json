@@ -20,14 +20,59 @@
     "shapeLimit" : 15000,
     "tapRaColumn": "s_ra",
     "tapDecColumn" : "s_dec",
+    
     "metadata" : [ {
+      "tapName" : "event_page",
+      "visible" : true,
+      "type" : "LINK2ARCHIVE"
+    }, {
       "tapName" : "alert_type",
       "visible" : false
     }, {
+      "tapName" : "grace_id",
+      "label" : "gw_grace_id",
+      "visible" : true
+    }, {
+      "tapName" : "iso_time",
+      "label" : "gw_iso_time",
+      "visible" : true
+    }, {
+      "tapName" : "far",
+      "label" : "gw_far",
+      "visible" : false
+    }, {
+      "tapName" : "instruments",
+      "visible" : false
+    }, {
+      "tapName" : "pipeline",
+      "visible" : false
+    }, {
       "tapName" : "bbh",
+      "label" : "gw_bbh",
       "visible" : false
     }, {
       "tapName" : "bns",
+      "label" : "gw_bns",
+      "visible" : false
+    }, {
+      "tapName" : "nsbh",
+      "label" : "gw_nsbh",
+      "visible" : false
+    }, {
+      "tapName" : "mass_gap",
+      "visible" : false
+    }, {
+      "tapName" : "has_ns",
+      "label" : "gw_has_ns",
+      "visible" : false
+    }, {
+      "tapName" : "has_remnant",
+      "visible" : false
+    }, {
+      "tapName" : "terrestrial",
+      "visible" : false
+    }, {
+      "tapName" : "fluence",
       "visible" : false
     }, {
       "tapName" : "central_freq",
@@ -35,19 +80,6 @@
     }, {
       "tapName" : "duration",
       "visible" : false
-    }, {
-      "tapName" : "event_page",
-      "visible" : false,
-      "type" : "LINK2ARCHIVE"
-    }, {
-      "tapName" : "far",
-      "visible" : false
-    }, {
-      "tapName" : "fluence",
-      "visible" : false
-    }, {
-      "tapName" : "grace_id",
-      "visible" : true
     }, {
       "tapName" : "gravitational_waves_oid",
       "visible" : false
@@ -58,37 +90,17 @@
       "tapName" : "hardware_inj",
       "visible" : false
     }, {
-      "tapName" : "has_ns",
-      "visible" : false
-    }, {
-      "tapName" : "has_remnant",
-      "visible" : false
-    }, {
       "tapName" : "id",
-      "visible" : false
-    }, {
-      "tapName" : "instruments",
+      "label" : "gw_id",
       "visible" : false
     }, {
       "tapName" : "internal",
-      "visible" : false
-    }, {
-      "tapName" : "iso_time",
-      "visible" : true
-    }, {
-      "tapName" : "mass_gap",
-      "visible" : false
-    }, {
-      "tapName" : "nsbh",
       "visible" : false
     }, {
       "tapName" : "open_alert",
       "visible" : false
     }, {
       "tapName" : "packet_type",
-      "visible" : false
-    }, {
-      "tapName" : "pipeline",
       "visible" : false
     }, {
       "tapName" : "pkt_ser_num",
@@ -98,6 +110,7 @@
       "visible" : false
     }, {
       "tapName" : "skymap_fits",
+      "label" : "gw_skymap_fits",
       "visible" : false,
       "type" : "LINK"
     }, {
@@ -105,9 +118,6 @@
       "visible" : false
     }, {
       "tapName" : "stcs90",
-      "visible" : false
-    }, {
-      "tapName" : "terrestrial",
       "visible" : false
     } 
     ],
