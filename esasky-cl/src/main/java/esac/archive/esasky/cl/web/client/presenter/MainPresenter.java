@@ -472,6 +472,7 @@ public class MainPresenter {
         descriptorRepo.initExtDescriptors(new CountObserver() {
             @Override
             public void onCountUpdate(long newCount) {
+            	//Don't need to count this
             }
         });
     }
@@ -481,6 +482,7 @@ public class MainPresenter {
     	descriptorRepo.initImageDescriptors(new CountObserver() {
     		@Override
     		public void onCountUpdate(long newCount) {
+    			//Don't need to count this
     		}
     	});
     }
