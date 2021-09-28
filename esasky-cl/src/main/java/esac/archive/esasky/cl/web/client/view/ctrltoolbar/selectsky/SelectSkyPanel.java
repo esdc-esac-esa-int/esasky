@@ -246,19 +246,19 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	public void fillAllSkyPanelEntries(final SkiesMenu skiesMenu) {
 		this.skiesMenu = skiesMenu;
 		header.setText(TextMgr.getInstance().getText("sky_selectSky"));
-		createSky();
+		createSky(true);
 		addSkyButton.enableButton();
 	}
 
 	@Override
-	public SkyRow createSky(){
+	public SkyRow createSky(boolean sendConvenienveEvent){
 		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl);
 		newSky.registerObserver(this);
 		skyTable.insertItem(newSky);
 		player.addEntryToPlayer(newSky);
 		skies.add(newSky);
 		ensureCorrectSkyStyle();
-		newSky.setSelected();
+		newSky.setSelected(sendConvenienveEvent);
 		return newSky;
 	}
 

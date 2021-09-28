@@ -178,11 +178,11 @@ public class SkyRow extends Composite implements Selectable{
 				final HiPS hips = hipsDropDown.getSelectedObject();
 				final ColorPalette colorPalette = hips.getColorPalette();
 				changePaletteBtn.setDefaultColorPallette(colorPalette);
-				if(!blockNotifications) {
-				    if(isOverlay || isMain) {
-				        isChosenFromSlider = true;
-				        notifySkyChange();
-				    }
+			    if(isOverlay || isMain) {
+			        isChosenFromSlider = true;
+			        notifySkyChange();
+			    }
+			    if(!blockNotifications) {
 				    sendConvenienceEvent();
 				}
 			}
@@ -315,6 +315,7 @@ public class SkyRow extends Composite implements Selectable{
 	}
 	
 	public boolean setSelectHips(String hipsName, boolean notifiyObservers, boolean newHips){
+		blockNotifications = true;
 	    HipsWavelength wavelength = skiesMenu.getWavelengthFromHiPSName(hipsName);
 	    if(wavelength == null) {
 	    	wavelength = HipsWavelength.USER;
@@ -326,7 +327,6 @@ public class SkyRow extends Composite implements Selectable{
 		if (wavelength != wavelengthDropDown.getSelectedObject()) {
 			wavelengthDropDown.selectObject(wavelength);
 		}
-		
 		for(MenuItem<HiPS> menuItem: hipsDropDown.getMenuItems()){
 			if(menuItem.getItem().getSurveyName().equalsIgnoreCase(hipsName)){
 
@@ -337,8 +337,9 @@ public class SkyRow extends Composite implements Selectable{
 					hipsDropDown.selectObject(menuItem.getItem());
 					if (notifiyObservers) {
 						notifySkyChange();
-						sendConvenienceEvent();
 					}
+					blockNotifications = false;
+					sendConvenienceEvent();
 					return true;
 				}
 			}
@@ -354,10 +355,8 @@ public class SkyRow extends Composite implements Selectable{
         
             }); 
 			hipsDropDown.addMenuItem(menuItem);
+			blockNotifications = false;
 			hipsDropDown.selectObject(menuItem.getItem());
-			if (notifiyObservers) {
-				notifySkyChange();
-			}
 			return true;
 		}
 		//No hips with correct name found
@@ -419,8 +418,22 @@ public class SkyRow extends Composite implements Selectable{
 	public boolean isSelected(){
 		return isSelectedBtn.isSelected();
 	}
-
+	
 	public void setSelected(){
+		setSelected(true);
+	}
+	
+	public void setSelected(boolean sendConvenienceEvent) {
+		if(!sendConvenienceEvent && !blockNotifications) {
+			blockNotifications = true;
+			select();
+			blockNotifications = false;
+		} else {
+			select();
+		}
+	}
+	
+	private void select() {
 		if(!isChosenFromSlider) {
 			setMain(true);
 		}
@@ -490,14 +503,12 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public void notifySkyChange(){
-	    if(!blockNotifications) {
-			for(SkyObserver observer: observers){
-				observer.onUpdateSkyEvent(this);
-			}
-			sendUpdateSkyName();
-			//Notify sky change to Google Analytics
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getFullId());
-	    }
+		for(SkyObserver observer: observers){
+			observer.onUpdateSkyEvent(this);
+		}
+		sendUpdateSkyName();
+		//Notify sky change to Google Analytics
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getFullId());
 	}
 
 	public void notifyClose(){
