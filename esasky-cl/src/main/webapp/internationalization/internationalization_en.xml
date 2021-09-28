@@ -2954,10 +2954,10 @@
 		 Observation Stop Time (UTC)
 	</text>
 	<text key="magCheops">
-		 Magnitude CHEOPS Band
+		 MagC
 	</text>
 	<text key="magG">
-		 Magnitude Gaia Band
+		 MagG
 	</text>
 	<text key="ligthcurveLinkCheops">
 		 Optimal Light Curve
