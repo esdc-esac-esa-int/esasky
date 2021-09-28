@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
@@ -13,18 +12,6 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class ImageListEntity extends EsaSkyEntity {
-
-	public ImageListEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
-			String esaSkyUniqId, AbstractTAPService metadataService) {
-		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
-		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler () {
-
-			@Override
-			public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
-				onFoVChanged(); 
-			}
-		});
-	}
 
 	Timer updateTimer = new Timer() {
 		
@@ -40,6 +27,13 @@ public class ImageListEntity extends EsaSkyEntity {
 		}
 	};
 	
+	public ImageListEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
+			String esaSkyUniqId, AbstractTAPService metadataService) {
+		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
+		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
+	}
+
+	
 	private void onFoVChanged() {
 		updateTimer.schedule(300);
 	}
@@ -47,6 +41,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	@Override
 	public void fetchData() {
 		fetchDataWithoutMOC();
+		updateTimer.schedule(5000);
 	}
 	
 	@Override

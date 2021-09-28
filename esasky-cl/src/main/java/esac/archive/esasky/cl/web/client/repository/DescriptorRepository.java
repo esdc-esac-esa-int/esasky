@@ -381,10 +381,10 @@ public class DescriptorRepository {
 				ImageDescriptorListMapper mapper = GWT.create(ImageDescriptorListMapper.class);
 				DescriptorList<ImageDescriptor> mappedDescriptorList = mapper.read(responseText);
 				
-				imageDescriptors = new DescriptorListAdapter<ImageDescriptor>(mappedDescriptorList,
+				imageDescriptors = new DescriptorListAdapter<>(mappedDescriptorList,
 						imageCountObserver);
 				
-				for(ObservationDescriptor desc : obsDescriptors.getDescriptors()) {
+				for(ImageDescriptor desc : imageDescriptors.getDescriptors()) {
 					for(MetadataDescriptor md : desc.getMetadata()) {
 						if(md.getType() == ColumnType.RA) {
 							desc.setTapRaColumn(md.getTapName());
@@ -409,7 +409,7 @@ public class DescriptorRepository {
 			public void onError(String errorCause) {
 				Log.error("[DescriptorRepository] initImageDescriptors ERROR: " + errorCause);
 				DescriptorList<ImageDescriptor> list = new DescriptorList<ImageDescriptor>() {};
-				imageDescriptors = new DescriptorListAdapter<ImageDescriptor>(list, imageCountObserver);
+				imageDescriptors = new DescriptorListAdapter<>(list, imageCountObserver);
 			}
 			
 		});

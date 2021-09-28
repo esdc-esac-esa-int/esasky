@@ -327,14 +327,9 @@ public class MainPresenter {
             }
         });
         
-        CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, new ShowImageListEventHandler() {
-
-			@Override
-			public void onImageListSelected(ShowImageListEvent event) {
+        CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> {
 				IDescriptor desc = descriptorRepo.getImageDescriptors().getDescriptors().get(0);
 				getImagesMetadata(desc);
-			}
-        	
         });
 
         /*
@@ -469,22 +464,12 @@ public class MainPresenter {
 
     private void getExtTapList() {
         Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
-        descriptorRepo.initExtDescriptors(new CountObserver() {
-            @Override
-            public void onCountUpdate(long newCount) {
-            	//Don't need to count this
-            }
-        });
+        descriptorRepo.initExtDescriptors(newCount -> newCount++);
     }
 
     private void getImageList() {
     	Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
-    	descriptorRepo.initImageDescriptors(new CountObserver() {
-    		@Override
-    		public void onCountUpdate(long newCount) {
-    			//Don't need to count this
-    		}
-    	});
+    	descriptorRepo.initImageDescriptors(newCount -> newCount++);
     }
 
     public final AllSkyPresenter getAllSkyPresenter() {

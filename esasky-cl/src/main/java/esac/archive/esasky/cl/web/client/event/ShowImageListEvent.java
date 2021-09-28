@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class ShowImageListEvent extends GwtEvent<ShowImageListEventHandler> {
 
     /** Event type. */
-    public final static Type<ShowImageListEventHandler> TYPE = new Type<ShowImageListEventHandler>();
+    public static final Type<ShowImageListEventHandler> TYPE = new Type<>();
 
     public ShowImageListEvent() {
         super();

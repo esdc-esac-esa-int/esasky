@@ -33,7 +33,6 @@ import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEventHandler;
-import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter;
@@ -55,7 +54,6 @@ import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
@@ -98,7 +96,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private EsaSkyToggleButton extTapButton;
 	private EsaSkyToggleButton gwButton;
 	private EsaSkyToggleButton publicationsButton;
-	private EsaSkyButton imageButton;
 
 	
 	private final CssResource style;
@@ -209,7 +206,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		exploreBtn = createExploreButton();
 		ctrlToolBarPanel.add(exploreBtn);
 
-		imageButton = createImageButton();
+		EsaSkyButton imageButton = createImageButton();
 		ctrlToolBarPanel.add(imageButton);
 		
 		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
@@ -609,12 +606,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon());
 		button.getElement().setId("imageButton");
 		addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
-		button.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-                CommonEventBus.getEventBus().fireEvent(
-                        new ShowImageListEvent());
+		button.addClickHandler(event -> {
+                CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
 			}
-		});
+		);
 		
 		return button;
 	}
