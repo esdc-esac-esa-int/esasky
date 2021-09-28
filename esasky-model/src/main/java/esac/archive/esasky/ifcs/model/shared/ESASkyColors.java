@@ -15,7 +15,8 @@ public class ESASkyColors {
 	// IR 		3-6
 	// OPtical	6-6.5
 	// UV 		6.5-8
-	// Xrays 	8-11
+	// Soft Xrays 	8-10
+	// Hard Xrays 	10-11
 	// Gamma	11+
 	private static int[] wavelength2ColorIndex;
 	
