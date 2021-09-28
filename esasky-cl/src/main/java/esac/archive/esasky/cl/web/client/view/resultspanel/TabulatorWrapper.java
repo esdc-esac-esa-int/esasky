@@ -339,9 +339,16 @@ public class TabulatorWrapper{
     		setHeaderFilterValue(tableJsObject, decCol, "," + Double.toString(pos.getCoordinate().getDec() + fov));
     	}
     	
+    	double minVal = dec - fov;
+    	double maxVal = dec + fov;
+		setHeaderFilterValue(tableJsObject, decCol,  minVal + "," + maxVal);
+
     	
-    	double minVal = ra - fov;
-    	double maxVal = ra + fov % 360;
+    	// To handle ra fov closer to the poles
+    	fov = Math.abs(fov / Math.cos(dec * Math.PI / 180.0));
+    	
+    	minVal = ra - fov;
+    	maxVal = ra + fov % 360;
     	
     	setHeaderFilterValue(tableJsObject, raCol, minVal + "," + maxVal);
     }
