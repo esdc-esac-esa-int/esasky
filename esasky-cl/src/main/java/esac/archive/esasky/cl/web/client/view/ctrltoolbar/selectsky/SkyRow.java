@@ -183,7 +183,7 @@ public class SkyRow extends Composite implements Selectable{
 			        notifySkyChange();
 			    }
 			    if(!blockNotifications) {
-				    sendConvenienceEvent();
+				    sendEvents();
 				}
 			}
 		});
@@ -274,7 +274,7 @@ public class SkyRow extends Composite implements Selectable{
                 hipsDropDown.selectObject(menuItemToSelect.getItem());
                 if(isSelected()) {
                     notifySkyChange();
-                    sendConvenienceEvent();
+                    sendEvents();
                 }
                 break;
             }
@@ -339,7 +339,7 @@ public class SkyRow extends Composite implements Selectable{
 						notifySkyChange();
 					}
 					blockNotifications = false;
-					sendConvenienceEvent();
+					sendEvents();
 					return true;
 				}
 			}
@@ -402,7 +402,7 @@ public class SkyRow extends Composite implements Selectable{
 					SelectSkyPanel.getInstance().clearAllOverlayStatus();
 					setMain(true);
 					notifySkyChange();
-					sendConvenienceEvent();
+					sendEvents();
 				}
 			}
 		});
@@ -506,9 +506,6 @@ public class SkyRow extends Composite implements Selectable{
 		for(SkyObserver observer: observers){
 			observer.onUpdateSkyEvent(this);
 		}
-		sendUpdateSkyName();
-		//Notify sky change to Google Analytics
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getFullId());
 	}
 
 	public void notifyClose(){
@@ -517,9 +514,10 @@ public class SkyRow extends Composite implements Selectable{
 		}
 	}
 	
-	private void sendConvenienceEvent() {
-		if(!isSelected()) return;
-		if(!blockNotifications) {
+	private void sendEvents() {
+		if(isSelected() && !blockNotifications) {
+			sendUpdateSkyName();
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getFullId());
     		//Convenience event for easy statistics gathering
     		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONVENIENCE, GoogleAnalytics.ACT_SKIESMENU_SELECTEDSKY, getNameofSelected());
 		}
