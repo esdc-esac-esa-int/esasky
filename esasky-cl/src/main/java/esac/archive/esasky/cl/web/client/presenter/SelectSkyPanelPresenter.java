@@ -34,6 +34,7 @@ public class SelectSkyPanelPresenter {
     	boolean isShowing();
     	void setSkiesMenu(SkiesMenu skiesMenu);
     	SkyRow createSky(boolean sendConvenienveEvent);
+    	boolean select(HiPS hips);
     	
     	void refreshUserDropdowns();
     	
@@ -44,10 +45,16 @@ public class SelectSkyPanelPresenter {
         this.view = inputView;
         getHiPSMapsList();
         CommonEventBus.getEventBus().addHandler(HipsAddedEvent.TYPE, changeEvent -> {
-        	if(changeEvent.isUserHips()) {
-        		addUrlHips(changeEvent.getHiPS());
+        	if(changeEvent.getAddIfAlreadyExist()) {
+        		if(changeEvent.isUserHips()) {
+        			addUrlHips(changeEvent.getHiPS());
+        		} else {
+        			view.createSky(true);
+        		}
         	} else {
-        		view.createSky(true);
+        		if(!view.select(changeEvent.getHiPS())) {
+        			addUrlHips(changeEvent.getHiPS());
+        		}
         	}
 		});
     }

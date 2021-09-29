@@ -408,7 +408,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		final SkyRow sky = getSelectedSky();
 		if (sky != null) {
 			if (!hipsName.equals(sky.getNameofSelected())) {
-				// TODO: Review this code... what happens if selected sky hasn't the hipsName passed, probably we need to change the selected Sky...
 				sky.setSelectHips(hipsName, true, false);
 			}
 		}
@@ -495,6 +494,17 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
             SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
             skyRow.refreshUserDropdown();
         }
+	}
+
+	@Override
+	public boolean select(HiPS hips) {
+		for(SkyRow sky : skies) {
+			if(sky.getSelectedHips().getSurveyId().equals(hips.getSurveyId())) {
+				sky.setSelected();
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
