@@ -74,7 +74,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, 
-                SourceShapeType.SQUARE.getName(), secondaryShapeAdder);
+                SourceShapeType.SQUARE.getName(), secondaryShapeAdder, "solid");
 
     }
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -83,21 +83,27 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                 CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName());
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, Object shapeType) {
-        this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null);
+    public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle) {
+    	this(descriptor, null, skyViewPosition, esaSkyUniqId, null, 
+    			CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
     }
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
             SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, Object shapeType, SecondaryShapeAdder secondaryShapeAdder) {
+            AbstractTAPService metadataService, int shapeSize, Object shapeType) {
+        this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null, "solid");
+    }
+
+    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
+            SkyViewPosition skyViewPosition, String esaSkyUniqId, 
+            AbstractTAPService metadataService, int shapeSize, Object shapeType, 
+            SecondaryShapeAdder secondaryShapeAdder, String lineStyle) {
         this.metadataService = metadataService;
         this.descriptor = descriptor;
         this.secondaryShapeAdder = secondaryShapeAdder;
 
         JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-                descriptor.getPrimaryColor());
+                descriptor.getPrimaryColor(), lineStyle);
 
         Map<String, Object> details = new HashMap<String, Object>();
 
@@ -149,6 +155,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
             polygon.setRa(ra);
             polygon.setDec(dec);
+            
             return polygon;
         }
     };

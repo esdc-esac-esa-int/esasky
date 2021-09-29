@@ -9,10 +9,16 @@ public class HipsAddedEvent extends GwtEvent<HipsAddedEventHandler> {
 
     private HiPS hips;
     private boolean isUserHips;
+    private boolean addIfAlreadyExist;
 
     public HipsAddedEvent(final HiPS inputHips, final boolean isUserHips) {
-        this.hips = inputHips;
-        this.isUserHips = isUserHips;
+    	this(inputHips, isUserHips, true);
+    }
+
+    public HipsAddedEvent(final HiPS inputHips, final boolean isUserHips, final boolean addIfAlreadyExist) {
+    	this.hips = inputHips;
+    	this.isUserHips = isUserHips;
+    	this.addIfAlreadyExist = addIfAlreadyExist;
     }
 
     public final HiPS getHiPS() {
@@ -21,6 +27,10 @@ public class HipsAddedEvent extends GwtEvent<HipsAddedEventHandler> {
     
     public final boolean isUserHips() {
     	return isUserHips;
+    }
+
+    public final boolean getAddIfAlreadyExist() {
+    	return addIfAlreadyExist;
     }
 
     @Override

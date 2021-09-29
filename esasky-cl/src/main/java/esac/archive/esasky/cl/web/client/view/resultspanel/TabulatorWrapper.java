@@ -129,10 +129,21 @@ public class TabulatorWrapper{
         rowCountFooter.getStyle().setProperty("pointerEvents", "none");
     }
     
+    public boolean isSelected(int rowId) {
+    	GeneralJavaScriptObject row = tableJsObject.invokeFunction("getRow", "" + rowId);
+    	return GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"));
+    }
+    
     public void selectRow(int rowId) {
+    	selectRow(rowId, true);
+    }
+    
+    public void selectRow(int rowId, boolean scrollTo) {
         GeneralJavaScriptObject row = tableJsObject.invokeFunction("getRow", "" + rowId);
         row.invokeFunction("select");
-        row.invokeFunction("scrollTo");
+        if(scrollTo) {
+        	row.invokeFunction("scrollTo");
+        }
     }
 
     public void selectRows(int[] rowIds) {

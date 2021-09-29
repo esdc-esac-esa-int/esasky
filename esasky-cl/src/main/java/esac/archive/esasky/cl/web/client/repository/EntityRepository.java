@@ -9,6 +9,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.GwDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
@@ -90,8 +91,7 @@ public class EntityRepository {
         int multiSelectionEntities = allEntities.size();
         for(GeneralEntityInterface entity : allEntities) {
             if(isPublicationEntityType(entity) 
-            		|| "gw50".equals(entity.getEsaSkyUniqId()) //gw50 and gw90 are the gravitational waves special footprints
-            		|| "gw90".equals(entity.getEsaSkyUniqId())) {
+            		|| entity.getDescriptor() instanceof GwDescriptor) {
                 multiSelectionEntities--;
             }
         }
@@ -158,8 +158,14 @@ public class EntityRepository {
         	newEntity =  new ExtTapEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(),
                     CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPExtTapService.getInstance());
             addEntity(newEntity);
-        }
+	    }
         return newEntity;
+    }
+    
+    public GeneralEntityInterface createGwEntity(IDescriptor descriptor, String id, String lineStyle) {
+    	GeneralEntityInterface newEntity = new EsaSkyEntity(descriptor, CoordinateUtils.getCenterCoordinateInJ2000(), id, lineStyle);
+    	addEntity(newEntity);
+    	return newEntity;
     }
 
     private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus,
