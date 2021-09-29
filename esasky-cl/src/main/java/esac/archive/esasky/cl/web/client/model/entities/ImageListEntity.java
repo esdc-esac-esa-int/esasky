@@ -51,7 +51,7 @@ public class ImageListEntity extends EsaSkyEntity {
     	for(GeneralJavaScriptObject row : rows) {
     		if(row.getStringProperty("id").equals(Integer.toString(shapeId))) {
     			HstOutreachImage image = new HstOutreachImage(row.getStringProperty("image_id"));
-    			image.loadImage(false);
+    			image.loadImage(true);
     		}
     	}
     }
