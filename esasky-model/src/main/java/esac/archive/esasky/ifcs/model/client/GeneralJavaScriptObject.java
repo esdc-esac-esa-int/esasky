@@ -71,6 +71,9 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 		return this.hasOwnProperty(propertyName) && this[propertyName] != null;
 	}-*/;
     
+    public final native GeneralJavaScriptObject wrapInArray()/*-{
+		return [this];
+	}-*/;
     
     
     
