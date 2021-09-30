@@ -22,6 +22,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -33,6 +34,8 @@ public class AladinLiteWrapper {
     
     private static boolean loadInitialHipsFromEsac;
     private static boolean loadHipsFromCDN;
+    
+    private boolean isGridActive = false;
     /** Instance to JavaScriptObject. */
     private JavaScriptObject multiTargetCatalogObject;
 
@@ -582,5 +585,18 @@ public class AladinLiteWrapper {
 
     public static void setLoadHipsFromCDNBeforeAladinInitialization(boolean loadHipsFromCDN) {
         AladinLiteWrapper.loadHipsFromCDN = loadHipsFromCDN;
+    }
+    
+    public void toggleGrid(boolean active) {
+    	if(active != isGridActive) {
+    		toggleGrid();
+    	}
+    }
+    
+    public void toggleGrid() {
+    	isGridActive = !isGridActive;
+		aladinLite.showGrid(isGridActive);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COORDINATEGRID, Boolean.toString(isGridActive));
+		CommonEventBus.getEventBus().fireEvent(new GridToggledEvent(isGridActive));
     }
 }

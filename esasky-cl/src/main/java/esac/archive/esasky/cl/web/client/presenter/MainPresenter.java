@@ -39,7 +39,6 @@ import esac.archive.esasky.cl.web.client.event.BibcodeSearchEventHandler;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEventHandlerImpl;
 import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
-import esac.archive.esasky.cl.web.client.event.ShowImageListEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;

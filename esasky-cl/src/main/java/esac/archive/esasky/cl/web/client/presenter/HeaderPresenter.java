@@ -29,6 +29,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
 import esac.archive.esasky.cl.web.client.event.ToggleSkyPanelEvent;
@@ -93,15 +94,12 @@ public class HeaderPresenter {
 		void addLanguageSelectionChangeHandler(StringValueSelectionChangedHandler handler);
 		void addWarningButtonClickHandler(ClickHandler handler);
 		void addGridButtonClickHandler(ClickHandler handler);
+		void setGridButtonToggled(boolean toggled);
 
 		void showWarningButton();
 		void hideWarningButton();
 		void toggleDropdownMenu();
 		void closeDropdownMenu();
-		void toggleGrid();
-		void toggleGrid(boolean show);
-		
-		boolean isGridOn();
 
 		StatusPresenter.View getStatusView();
 		
@@ -179,6 +177,10 @@ public class HeaderPresenter {
 				view.hideWarningButton();
 			}
 		});
+		CommonEventBus.getEventBus().addHandler(GridToggledEvent.TYPE, event -> {
+				view.setGridButtonToggled(event.isGridActive());
+			}
+		);
 
 		setInitialValues();
 
@@ -298,8 +300,7 @@ public class HeaderPresenter {
 			
 			@Override
 			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COORDINATEGRID, Boolean.toString(!view.isGridOn()));
-				view.toggleGrid();
+				AladinLiteWrapper.getInstance().toggleGrid();
 			}
 		});
 
@@ -483,10 +484,6 @@ public class HeaderPresenter {
 	
 	public interface StringValueSelectionChangedHandler{
 		public void onSelectionChanged(String newValue, int index);
-	}
-	
-	public void toggleGrid(boolean show) {
-		view.toggleGrid(show);		
 	}
 	
 	public void updateModuleVisibility() {

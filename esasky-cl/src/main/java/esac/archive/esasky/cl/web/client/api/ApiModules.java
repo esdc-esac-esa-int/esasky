@@ -12,6 +12,7 @@ import com.google.gwt.resources.client.ImageResource;
 
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
@@ -36,7 +37,7 @@ public class ApiModules extends ApiBase{
 	
 	public void showCoordinateGrid(boolean show) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_SHOWCOORDINATEGRID,Boolean.toString(show));
-		controller.getRootPresenter().getHeaderPresenter().toggleGrid(show);
+		AladinLiteWrapper.getInstance().toggleGrid(show);
 	}
 	
 	private class ButtonInput{
