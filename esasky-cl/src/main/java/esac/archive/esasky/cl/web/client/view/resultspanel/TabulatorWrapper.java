@@ -74,7 +74,7 @@ public class TabulatorWrapper{
     private boolean waitingForMoc = false;
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback) {
-    	this(divId, tabulatorCallback, false, false, false, false, null, false, false, false, false, 1);
+    	this(divId, tabulatorCallback, false, false, false, false, null, false, false, false, false, 1, true);
     }
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn,
@@ -85,15 +85,15 @@ public class TabulatorWrapper{
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
     		boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
     		boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
-    	this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle, blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, null);
+    	this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle, blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, null, false);
     }
     
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable) {
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable, boolean disableGotoColumn) {
         this.tabulatorCallback = tabulatorCallback;
         tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle,
-                blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, selectable);
+                blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, selectable, disableGotoColumn);
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -774,7 +774,7 @@ public class TabulatorWrapper{
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
             boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable) /*-{
+            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable, boolean disableGoToColumn) /*-{
     	if(selectable == null){
     		selectable = true;
     	}
@@ -1216,7 +1216,7 @@ public class TabulatorWrapper{
 			    	    }
 			    	}
 		    	}
-                if(raFound && decFound){
+                if(raFound && decFound && !disableGoToColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
                         field:"centre",
@@ -1385,7 +1385,6 @@ public class TabulatorWrapper{
 			    	    }
 			    		else if(this.metadata[i].name.toLowerCase() === "access_url"
 			    		    || this.metadata[i].name.toLowerCase() === "product_url"
-			    		    || this.metadata[i].name.toLowerCase() === "skymap_fits"
 			    		    ){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),
