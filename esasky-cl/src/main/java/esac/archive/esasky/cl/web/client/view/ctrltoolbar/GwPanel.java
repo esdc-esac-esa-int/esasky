@@ -304,8 +304,9 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 			case "ra":
 			case "dec":
 				return true;
+			default:
+				return false;
 		}
-		return false;
 	}
 
 	private void showOnlyBaseColumns() {

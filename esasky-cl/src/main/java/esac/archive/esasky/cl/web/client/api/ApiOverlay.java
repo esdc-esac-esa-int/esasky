@@ -44,10 +44,7 @@ public class ApiOverlay extends ApiBase{
 	
 	public ApiOverlay(Controller controller) {
 		this.controller = controller;
-		instance = this;
 	}
-	//TODO remove ugly temp static access
-	public static ApiOverlay instance;
 	
 	public void selectShape(String overlayName, String shapeName, JavaScriptObject widget) {
 		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
