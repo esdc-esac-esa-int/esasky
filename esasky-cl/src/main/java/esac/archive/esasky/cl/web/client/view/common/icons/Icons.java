@@ -93,7 +93,40 @@ public class Icons {
 		
         @Source("changePalette.png")
         ImageResource changePalette();
+        
+        //Header
+		@Source("share.png")
+		ImageResource shareIcon();
+
+		@Source("question_mark.png")
+		ImageResource questionMark();
+
+		@Source("screenshot.png")
+		ImageResource screenshotIcon();
+
+		@Source("menu.png")
+		ImageResource menuIcon();
+
+		@Source("wwt_logo.png")
+		ImageResource wwtLogo();
 		
+        @Source("warning.png")
+        ImageResource warning();
+
+        @Source("grid.png")
+        ImageResource gridIcon();
+        
+		@Source("download.png")
+		ImageResource download();
+		
+		@Source("exclamation.png")
+		ImageResource exclamationIcon();
+
+		@Source("expand.png")
+		ImageResource expandIcon();
+
+		@Source("contract.png")
+		ImageResource contractIcon();
 	}
 	
 	private static void initMap() {
@@ -120,6 +153,17 @@ public class Icons {
 		iconMap.put("changePalette", getChangePaletteIcon());
 		iconMap.put("info", getInfoIcon());
 		iconMap.put("addSky", getAddSkyIcon());
+		iconMap.put("share", getShareIcon());
+		iconMap.put("questionMark", getQuestionMarkIcon());
+		iconMap.put("screenshot", getScreenshotIcon());
+		iconMap.put("menuIcon", getMenuIcon());
+		iconMap.put("wwtLogo", getWwtLogoIcon());
+		iconMap.put("warning", getWarningIcon());
+		iconMap.put("grid", getGridIcon());
+		iconMap.put("download", getDownloadIcon());
+		iconMap.put("exclamation", getExclamationIcon());
+		iconMap.put("expand", getExpandIcon());
+		iconMap.put("contract", getContractIcon());
 		
 	}
 	
@@ -219,5 +263,51 @@ public class Icons {
 	
 	public static ImageResource getEndFullscreenIcon() {
 		return resources.endFullscreenIcon();
+	}
+
+	
+	public static ImageResource getShareIcon() {
+		return resources.shareIcon();
+	}
+	
+	public static ImageResource getQuestionMarkIcon() {
+		return resources.questionMark();
+	}
+	
+	public static ImageResource getScreenshotIcon() {
+		return resources.screenshotIcon();
+	}
+	
+	
+	public static ImageResource getMenuIcon() {
+		return resources.menuIcon();
+	}
+	
+	public static ImageResource getWwtLogoIcon() {
+		return resources.wwtLogo();
+	}
+
+	public static ImageResource getWarningIcon() {
+		return resources.warning();
+	}
+	
+	public static ImageResource getGridIcon() {
+		return resources.gridIcon();
+	}
+
+	public static ImageResource getDownloadIcon() {
+		return resources.download();
+	}
+	
+	public static ImageResource getExclamationIcon() {
+		return resources.exclamationIcon();
+	}
+
+	public static ImageResource getExpandIcon() {
+		return resources.expandIcon();
+	}
+	
+	public static ImageResource getContractIcon() {
+		return resources.contractIcon();
 	}
 }

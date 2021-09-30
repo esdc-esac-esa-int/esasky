@@ -10,7 +10,6 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -25,6 +24,7 @@ import esac.archive.esasky.cl.web.client.event.banner.ServerProblemSolvedEventHa
 import esac.archive.esasky.cl.web.client.presenter.StatusPresenter.View;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class StatusPanel extends Composite implements View{
 
@@ -43,9 +43,6 @@ public class StatusPanel extends Composite implements View{
 		@Source("statusPanel.css")
 		@CssResource.NotStrict
 		CssResource style();
-		
-		@Source("exclamation.png")
-		ImageResource exclamationIcon();
 	}
 
 	private final Widget statusPanel = createStatusPanel();
@@ -123,7 +120,7 @@ public class StatusPanel extends Composite implements View{
 		loadingSpinner.setVisible(false);
 		statusPanel.add(loadingSpinner);
 		
-		exclamationImage = new Image(resources.exclamationIcon());
+		exclamationImage = new Image(Icons.getExclamationIcon());
 		loadingSpinner.addStyleName("header__statusPanel__exclamationIcon");
 		exclamationImage.setVisible(false);
 		statusPanel.add(exclamationImage);

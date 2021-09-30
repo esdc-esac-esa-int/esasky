@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -35,22 +34,22 @@ import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private static Resources resources = GWT.create(Resources.class);
 	private CssResource style;
 
-	private EsaSkyButton shareButton = new EsaSkyButton(resources.shareIcon());
-	private EsaSkyButton helpButton = new EsaSkyButton(resources.helpIcon());
-	private EsaSkyButton screenshotButton = new EsaSkyButton(resources.screenshotIcon());
-	private EsaSkyToggleButton gridButton = new EsaSkyToggleButton(resources.gridIcon());
+	private EsaSkyButton shareButton = new EsaSkyButton(Icons.getShareIcon());
+	private EsaSkyButton helpButton = new EsaSkyButton(Icons.getQuestionMarkIcon());
+	private EsaSkyButton screenshotButton = new EsaSkyButton(Icons.getScreenshotIcon());
+	private EsaSkyToggleButton gridButton = new EsaSkyToggleButton(Icons.getGridIcon());
 	private EsaSkyStringButton feedbackButton = new EsaSkyStringButton(TextMgr.getInstance().getText("header_comunity"));
 	private EsaSkyStringButton hipsLabelButton = new EsaSkyStringButton(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
 
@@ -60,9 +59,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private EsaSkyStringButton coordinateLabel = new EsaSkyStringButton("");
 	private FlowPanel fovPanel = new FlowPanel();
 	private final ListBox languageBox = new ListBox();
-	private boolean isGridOn = false;
 
-	private Image dropdownIcon = new Image(resources.menuIcon());
+	private Image dropdownIcon = new Image(Icons.getMenuIcon());
 	private FocusPanel dropdownContainer = new FocusPanel();
 	private FlowPanel dropdownContent;
 	private FocusPanel dropdownShareEntry = new FocusPanel(); 
@@ -72,7 +70,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
 	private EsaSkySwitch dropdownScienceModeSwitch; 
-	private EsaSkyButton warningButton = new EsaSkyButton(resources.warning());
+	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
 	private final ListBox dropdownLanguageBox = new ListBox();
 	private String dropdownScienceModeSwitchId = Document.get().createUniqueId();
 	private Anchor dropdownVideoTutorialsEntry = new Anchor(TextMgr.getInstance().getText("header_videoTutorials"));
@@ -89,27 +87,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		@Source("headerPanel.css")
 		@CssResource.NotStrict
 		CssResource style();
-
-		@Source("share.png")
-		ImageResource shareIcon();
-
-		@Source("question_mark.png")
-		ImageResource helpIcon();
-
-		@Source("screenshot.png")
-		ImageResource screenshotIcon();
-
-		@Source("menu.png")
-		ImageResource menuIcon();
-
-		@Source("wwt_logo.png")
-		ImageResource wwtLogo();
-		
-        @Source("warning.png")
-        ImageResource warning();
-
-        @Source("grid.png")
-        ImageResource gridIcon();
 	}
 
 	public HeaderPanel() {
@@ -265,7 +242,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Widget createScreenshotDropdownEntry() {
 		FlowPanel dropdownScreenshotContainer = new FlowPanel();
 
-		Image screenshotImage = new Image(resources.screenshotIcon());
+		Image screenshotImage = new Image(Icons.getScreenshotIcon());
 		screenshotImage.addStyleName("header__dropdown__item__icon");
 		dropdownScreenshotContainer.add(screenshotImage);
 		Label screenshotLabel = new Label(TextMgr.getInstance().getText("header_takeScreenshot"));
@@ -281,7 +258,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Widget createGridDropdownEntry() {
 		FlowPanel dropdownGridContainer = new FlowPanel();
 
-		Image gridImage = new Image(resources.gridIcon());
+		Image gridImage = new Image(Icons.getGridIcon());
 		gridImage.addStyleName("header__dropdown__item__icon");
 		dropdownGridContainer.add(gridImage);
 		Label screenshotLabel = new Label(TextMgr.getInstance().getText("header_gridDropdown"));
@@ -297,7 +274,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Widget createShareDropdownEntry() {
 		FlowPanel dropdownShareContainer = new FlowPanel();
 
-		Image shareImage = new Image(resources.shareIcon());
+		Image shareImage = new Image(Icons.getShareIcon());
 		shareImage.addStyleName("header__dropdown__item__icon");
 		dropdownShareContainer.add(shareImage);
 
@@ -314,7 +291,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Widget createHelpDropdownEntry() {
 		FlowPanel helpContainer = new FlowPanel();
 
-		Image helpImage = new Image(resources.helpIcon());
+		Image helpImage = new Image(Icons.getQuestionMarkIcon());
 		helpImage.addStyleName("header__dropdown__item__icon");
 		helpContainer.add(helpImage);
 
@@ -331,7 +308,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Widget createViewInWWTDropdownEntry() {
 		FlowPanel viewInContainer = new FlowPanel();
 
-		Image wwtImage = new Image(resources.wwtLogo());
+		Image wwtImage = new Image(Icons.getWwtLogoIcon());
 		wwtImage.addStyleName("header__dropdown__item__icon");
 		viewInContainer.add(wwtImage);
 
@@ -480,25 +457,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 	
 	@Override
-	public void toggleGrid() {
-		isGridOn = !isGridOn;
-		
-		gridButton.setToggleStatus(isGridOn);
-		AladinLiteWrapper.getAladinLite().showGrid(isGridOn);
+	public void setGridButtonToggled(boolean toggled) {
+		gridButton.setToggleStatus(toggled);
 	}
 	
-	@Override
-	public void toggleGrid(boolean show) {
-		if(isGridOn != show) {
-			toggleGrid();
-		}
-	}
-
-	@Override
-	public boolean isGridOn() {
-		return isGridOn;
-	}
-
 	@Override
 	public void closeDropdownMenu() {
 		dropdownContent.getElement().getStyle().setDisplay(Display.NONE);

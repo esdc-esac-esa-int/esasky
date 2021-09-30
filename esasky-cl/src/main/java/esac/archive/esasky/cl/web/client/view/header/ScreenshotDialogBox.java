@@ -11,7 +11,6 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -23,6 +22,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class ScreenshotDialogBox extends AutoHidingMovablePanel {
     private final Resources resources = GWT.create(Resources.class);
@@ -36,9 +36,6 @@ public class ScreenshotDialogBox extends AutoHidingMovablePanel {
         @Source("screenshotDialogBox.css")
         @CssResource.NotStrict
         CssResource style();
-        
-		@Source("download.png")
-		ImageResource download();
     }       
     
 	public ScreenshotDialogBox(String url, final JavaScriptObject imageCanvas) {
@@ -77,7 +74,7 @@ public class ScreenshotDialogBox extends AutoHidingMovablePanel {
 		
 		imageHoverLayer.addStyleName("imageHoverLayer");
 		
-		Image downloadImage = new Image(resources.download());
+		Image downloadImage = new Image(Icons.getDownloadIcon());
 		downloadImage.addStyleName("imageHoverLayerIcon");
 		imageHoverLayer.add(downloadImage);
 		
