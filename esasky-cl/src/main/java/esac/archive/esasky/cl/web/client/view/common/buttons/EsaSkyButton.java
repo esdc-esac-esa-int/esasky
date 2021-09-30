@@ -298,5 +298,12 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 			}
 		}
 	}
+	
+	//GWT bug results in hover class not always being removed correctly.
+	//Common occurrence when button changes or moves
+	public void removeGwtHoverCssClass() {
+		button.removeStyleName("gwt-PushButton-down-hovering");
+		button.removeStyleName("gwt-PushButton-up-hovering");
+	}
 
 }
