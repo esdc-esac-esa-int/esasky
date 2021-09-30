@@ -140,7 +140,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         clearTextButton = new CloseButton();
         clearTextButton.getElement().getStyle().setTop(5, Unit.PX); 
         clearTextButton.setDarkStyle();
-        clearTextButton.setDarkIcon();
+        clearTextButton.setSecondaryIcon();
         clearTextButton.addStyleName("clearSearchTextBtn");
         clearTextButton.addClickHandler(new ClickHandler() {
 

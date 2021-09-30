@@ -56,12 +56,12 @@ public class LabelWithHelpButton extends FlowPanel{
 	}
 	
 	public void setButtonDarkIconAndStyle() {
-		button.setDarkIcon();
+		button.setSecondaryIcon();
 		button.setDarkStyle();
 	}
 	
 	public void setButtonLightIconAndStyle() {
-		button.setLightIcon();
+		button.setPrimaryIcon();
 		button.setLightStyle();
 		
 	}

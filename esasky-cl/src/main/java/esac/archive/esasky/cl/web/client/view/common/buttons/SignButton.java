@@ -71,7 +71,7 @@ public class SignButton extends ChangeableIconButton{
 	}
 	
 	@Override
-    public void setLightIcon() {
+    public void setPrimaryIcon() {
 		dark = false;
 		Image image;
 		if(outline) {
@@ -83,7 +83,7 @@ public class SignButton extends ChangeableIconButton{
 	}
 	
 	@Override
-    public void setDarkIcon() {
+    public void setSecondaryIcon() {
 		dark = true;
 		Image image;
 		if(outline) {

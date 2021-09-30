@@ -127,7 +127,7 @@ public class MissionTabButtons extends Composite {
             if (styleButton != null) {
             	styleButton.setDarkStyle();
             }
-            closeButton.setDarkIcon();
+            closeButton.setSecondaryIcon();
             closeButton.setDarkStyle();
             if(toggleImage != null){
                 toggleImage.setToggled();
@@ -139,7 +139,7 @@ public class MissionTabButtons extends Composite {
             if (styleButton != null) {
             	styleButton.setLightStyle();
             }
-            closeButton.setLightIcon();
+            closeButton.setPrimaryIcon();
             closeButton.setLightStyle();
             if(toggleImage != null){
                 toggleImage.setDefault();

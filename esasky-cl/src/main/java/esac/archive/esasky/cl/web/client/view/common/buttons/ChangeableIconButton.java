@@ -5,28 +5,28 @@ import com.google.gwt.user.client.ui.Image;
 
 public class ChangeableIconButton extends EsaSkyButton {
 
-    private Image lightImage;
-    private Image darkImage;
+    private Image primaryImage;
+    private Image secondaryImage;
 
-    public ChangeableIconButton(ImageResource lightImage, ImageResource darkImage) {
-        super(lightImage);
-        this.lightImage = new Image(lightImage);
-        this.darkImage = new Image(darkImage);
-		this.lightImage.addStyleName("fillParent");
-		this.darkImage.addStyleName("fillParent");
+    public ChangeableIconButton(ImageResource primaryImage, ImageResource secondaryImage) {
+        super(primaryImage);
+        this.primaryImage = new Image(primaryImage);
+        this.secondaryImage = new Image(secondaryImage);
+		this.primaryImage.addStyleName("fillParent");
+		this.secondaryImage.addStyleName("fillParent");
     }
 
-    public void setLightIcon() {
-    	button.getDownFace().setImage(lightImage);
-    	button.getUpFace().setImage(lightImage);
-    	button.getUpHoveringFace().setImage(lightImage);
-    	button.getDownHoveringFace().setImage(lightImage);
+    public void setPrimaryIcon() {
+    	button.getDownFace().setImage(primaryImage);
+    	button.getUpFace().setImage(primaryImage);
+    	button.getUpHoveringFace().setImage(primaryImage);
+    	button.getDownHoveringFace().setImage(primaryImage);
     }
 
-    public void setDarkIcon() {
-    	button.getDownFace().setImage(darkImage);
-    	button.getUpFace().setImage(darkImage);
-    	button.getUpHoveringFace().setImage(darkImage);
-    	button.getDownHoveringFace().setImage(darkImage);
+    public void setSecondaryIcon() {
+    	button.getDownFace().setImage(secondaryImage);
+    	button.getUpFace().setImage(secondaryImage);
+    	button.getUpHoveringFace().setImage(secondaryImage);
+    	button.getDownHoveringFace().setImage(secondaryImage);
     }
 }
