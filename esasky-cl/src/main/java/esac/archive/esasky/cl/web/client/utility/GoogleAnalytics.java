@@ -109,6 +109,7 @@ public final class GoogleAnalytics {
 
     public static final String ACT_GW_SHOW_HIPS = "ShowHips";
     public static final String ACT_GW_SHOW_HIPS_FAIL = "ShowHipsFail";
+    public static final String ACT_GW_ROW_SELECTED = "RowSelected";
     
     public static final String ACT_TARGETLIST_LISTSELECTED = "ListSelected";
     public static final String ACT_TARGETLIST_UPLOADERROR = "UploadError";

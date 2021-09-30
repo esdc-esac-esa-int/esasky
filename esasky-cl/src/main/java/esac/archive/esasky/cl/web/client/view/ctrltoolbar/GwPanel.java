@@ -9,6 +9,7 @@ import java.util.UUID;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -16,14 +17,19 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -34,10 +40,13 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
@@ -46,7 +55,6 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {}
 	private BaseDescriptor gwDescriptor;
-	private boolean loadingDescriptor = false;
 	
 	private List<String> defaultVisibleColumns = new LinkedList<>();
 	
@@ -58,15 +66,20 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	private boolean isShowingMore = false;
 
 	private FlowPanel gwPanel = new FlowPanel();
-	private EsaSkyStringButton showMoreButton = new EsaSkyStringButton("Show more/less");
-	private TabulatorWrapper tabulatorTable;
+	private Tab gwTab;
+	private Tab neutrinoTab;
+	//TODO create show more icons
+	private ChangeableIconButton expandOrCollapseColumnsButton;
+	private EsaSkyToggleButton gridButton;
+	private TabulatorWrapper gwTable;
 	private final FlowPanel tabulatorContainer = new FlowPanel();
 	private LoadingSpinner loadingSpinner = new LoadingSpinner(true);
 	private Map<String, Integer> rowIdHipsMap = new HashMap<>();
 	private boolean blockOpenHipsTrigger = false;
+	private boolean gridHasBeenDeactivatedByUserThroughGwPanel = false;
+	private boolean dataHasLoaded = false;
 	
 	public static interface Resources extends ClientBundle {
-
 		@Source("gw.css")
 		@CssResource.NotStrict
 		CssResource style();
@@ -78,7 +91,9 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
-
+		
+		initGwDescriptor();
+		
 		initView();
 		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
 
@@ -89,11 +104,16 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		});
 		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
 			Integer rowId = rowIdHipsMap.get(changeEvent.getHiPSName());
-			if(rowId != null && !tabulatorTable.isSelected(rowId)) {
-				tabulatorTable.deselectAllRows();
-				blockOpenHipsTrigger = true;
-				tabulatorTable.selectRow(rowId, false);
-				blockOpenHipsTrigger = false;
+			if(rowId != null) {
+				if(!gwTable.isSelected(rowId)) {
+					gwTable.deselectAllRows();
+					blockOpenHipsTrigger = true;
+					gwTable.selectRow(rowId, false);
+					blockOpenHipsTrigger = false;
+				}
+				if(!gridHasBeenDeactivatedByUserThroughGwPanel) {
+					AladinLiteWrapper.getInstance().toggleGrid(true);
+				}
 			}
 		});
 	}
@@ -116,7 +136,6 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 			}
 
 		});
-		loadingDescriptor = true;
 	}
 	
 	@Override
@@ -126,9 +145,8 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	}
 	
 	private void loadData() {
-		//TODO race condition between tabulatorTable initialization and call of this method?
-        tabulatorTable = new TabulatorWrapper("gwPanel__tabulatorContainer", GwPanel.this);
-        tabulatorTable.setDefaultQueryMode();
+        gwTable = new TabulatorWrapper("gwPanel__tabulatorContainer", GwPanel.this);
+        gwTable.setDefaultQueryMode();
 
         for(MetadataDescriptor md : gwDescriptor.getMetadata()) {
         	if(md.getVisible()) {
@@ -136,69 +154,171 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
         	}
         }
 
-		tabulatorTable.setData(EsaSkyWebConstants.TAP_CONTEXT + "/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+alerts.mv_gravitational_waves_fdw");
+		gwTable.setData(EsaSkyWebConstants.TAP_CONTEXT 
+				+ "/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+" 
+				+ gwDescriptor.getTapTable());
 	}
 
+	private class Tab extends FocusPanel{
+		private Label label;
+		public Tab(String name) {
+			FlowPanel tabContainer = new FlowPanel();
+			//TODO internationalization
+			label = new Label(name);
+			label.addStyleName("gwPanel__tabLabel");
+			tabContainer.add(label);
+			this.add(tabContainer);
+			addStyleName("gwPanel__tab");
+		}
+		
+		public void setSelectedStyle() {
+			this.removeStyleName("gwPanel__tabDeselected");
+			this.addStyleName("gwPanel__tabSelected");
+		}
+		
+		public void setDeselectedStyle() {
+			this.removeStyleName("gwPanel__tabSelected");
+			this.addStyleName("gwPanel__tabDeselected");
+		}
+	}
+	
+	private Widget createTabBar() {
+		FlowPanel tabs = new FlowPanel();
+		tabs.addStyleName("gwPanel__tabs");
+		//TODO texts
+		gwTab = new Tab("Gravitational Waves");
+		gwTab.addClickHandler((event) ->{
+			gwTab.setSelectedStyle();
+			neutrinoTab.setDeselectedStyle();
+		});
+		gwTab.setSelectedStyle();
+		tabs.add(gwTab);
+		
+		//TODO texts
+		neutrinoTab = new Tab("Neutrinos");
+		neutrinoTab.addClickHandler((event) ->{
+			neutrinoTab.setSelectedStyle();
+			gwTab.setDeselectedStyle();
+		});
+		neutrinoTab.setDeselectedStyle();
+		tabs.add(neutrinoTab);
+		
+		return tabs;
+	}
+	
+	private Widget createButtons() {
+		FlowPanel buttonContainer = new FlowPanel();
+		gridButton = new EsaSkyToggleButton(Icons.getGridIcon());
+		gridButton.setMediumStyle();
+		//TODO add tooltip
+		buttonContainer.add(gridButton);
+		gridButton.addClickHandler((event)->{
+			AladinLiteWrapper.getInstance().toggleGrid();
+			gridHasBeenDeactivatedByUserThroughGwPanel = true;
+		});
+
+		
+		expandOrCollapseColumnsButton = new ChangeableIconButton(Icons.getExpandIcon(), Icons.getContractIcon());
+		expandOrCollapseColumnsButton.setMediumStyle();
+		buttonContainer.add(expandOrCollapseColumnsButton);
+		//TODO add tooltip
+		expandOrCollapseColumnsButton.addClickHandler((event)->{
+			if(!dataHasLoaded) {
+				return;
+			}
+			if(isShowingMore) {
+				showOnlyBaseColumns();
+				expandOrCollapseColumnsButton.setPrimaryIcon();
+			} else {
+				showAllColumns();
+				expandOrCollapseColumnsButton.setSecondaryIcon();
+			}
+			isShowingMore = !isShowingMore;
+			
+			//gwt button bug - Button moved, so hover style is not always removed
+			Scheduler.get().scheduleFinally(() -> {
+				expandOrCollapseColumnsButton.removeGwtHoverCssClass();
+			});
+		});
+		expandOrCollapseColumnsButton.addStyleName("gwPanel_showMoreButton");
+		buttonContainer.addStyleName("gwPanel_buttonContainer");
+		return buttonContainer;
+	}
+	
 	private void initView() {
 		this.getElement().addClassName("gwPanel");
 
 		//TODO texts
-		header = new PopupHeader(this, "Gravitational Waves", 
+		header = new PopupHeader(this, "Astronomical Events", 
 				TextMgr.getInstance().getText("publicationPanel_helpText"), 
 				TextMgr.getInstance().getText("publicationPanel_title"));
 
 		gwPanel.add(header);
+		
+		FlowPanel rowAboveTable = new FlowPanel();
+		rowAboveTable.add(createTabBar());
+		rowAboveTable.add(createButtons());
+		rowAboveTable.addStyleName("gwPanel_headerRow");
+		gwPanel.add(rowAboveTable);
+		
 		tabulatorContainer.getElement().setId("gwPanel__tabulatorContainer");
 		gwPanel.add(tabulatorContainer);
-		gwPanel.add(showMoreButton);
+		
+		CommonEventBus.getEventBus().addHandler(GridToggledEvent.TYPE, event -> {
+				gridButton.setToggleStatus(event.isGridActive());
+				if(isShowing()) {
+					gridHasBeenDeactivatedByUserThroughGwPanel = true;
+				}
+			}
+		);
 		loadingSpinner.setVisible(false);
 		loadingSpinner.addStyleName("gwPanel_loadingHipsProperties");
 		gwPanel.add(loadingSpinner);
-		showMoreButton.addClickHandler((event)->{
-			if(isShowingMore) {
-				showOnlyBaseColumns();
-			} else {
-				showAllColumns();
-			}
-			isShowingMore = !isShowingMore;
-		});
 		
 		this.add(gwPanel);
 	}
 	
 	private void showAllColumns() {
-		tabulatorTable.blockRedraw();
+		gwTable.blockRedraw();
 		for(MetadataDescriptor md : gwDescriptor.getMetadata()) {
-			if(!md.getVisible()) {
-				tabulatorTable.showColumn(md.getTapName());
+			if(!md.getVisible() && !isAlwaysHiddenColumn(md.getTapName())) {
+				gwTable.showColumn(md.getTapName());
 			}
 		}
-		tabulatorTable.hideColumn("stcs50");
-		tabulatorTable.hideColumn("stcs90");
-		tabulatorTable.hideColumn("gravitational_waves_oid");
-		tabulatorTable.hideColumn("group_id");
-		tabulatorTable.hideColumn("hardware_inj");
-		tabulatorTable.hideColumn("internal");
-		tabulatorTable.hideColumn("open_alert");
-		tabulatorTable.hideColumn("pkt_ser_num");
-		tabulatorTable.hideColumn("search");
-		tabulatorTable.hideColumn("packet_type");
- 
-		tabulatorTable.restoreRedraw();
-		tabulatorTable.redrawAndReinitializeHozVDom();
+		gwTable.restoreRedraw();
+		gwTable.redrawAndReinitializeHozVDom();
+	}
+	
+	private boolean isAlwaysHiddenColumn(String tapName) {
+		switch (tapName) {
+			case "stcs50":
+			case "stcs90":
+			case "gravitational_waves_oid":
+			case "group_id":
+			case "hardware_inj":
+			case "internal":
+			case "open_alert":
+			case "pkt_ser_num":
+			case "search":
+			case "packet_type":
+			case "ra":
+			case "dec":
+				return true;
+		}
+		return false;
 	}
 
 	private void showOnlyBaseColumns() {
-		tabulatorTable.blockRedraw();
+		gwTable.blockRedraw();
 		for(MetadataDescriptor md : gwDescriptor.getMetadata()) {
 			if(!defaultVisibleColumns.contains(md.getTapName())) {
-				tabulatorTable.hideColumn(md.getTapName());
+				gwTable.hideColumn(md.getTapName());
 			} else {
-				tabulatorTable.showColumn(md.getTapName());
+				gwTable.showColumn(md.getTapName());
 			}
 		}
-		tabulatorTable.restoreRedraw();
-		tabulatorTable.redrawAndReinitializeHozVDom();
+		gwTable.restoreRedraw();
+		gwTable.redrawAndReinitializeHozVDom();
 	}
 	
 	
@@ -228,9 +348,6 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		setMaxSize();
-		if(gwDescriptor == null && !loadingDescriptor) {
-			initGwDescriptor();
-		}
 	}
 
 	@Override
@@ -260,6 +377,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	@Override
 	public void onTableHeightChanged() {
+		//No reason to do anything
 	}
 
 	@Override
@@ -270,6 +388,10 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		if(!blockOpenHipsTrigger) {
 			//TODO do not use skiesdev
 			testParsingHipsList("http://skiesdev.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
+			String ra = rowData.getStringProperty(gwDescriptor.getTapRaColumn());
+			String dec = rowData.getStringProperty(gwDescriptor.getTapDecColumn());
+			AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
 		}
 
 		String stcs90EntityId = gwDescriptor.getDescriptorId() + "_90";
@@ -326,22 +448,27 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	@Override
 	public void onRowMouseEnter(int rowId) {
+		//No reason to do anything
 	}
 
 	@Override
 	public void onRowMouseLeave(int rowId) {
+		//No reason to do anything
 	}
 
 	@Override
 	public void onFilterChanged(String label, String filter) {
+		//No reason to do anything
 	}
 
 	@Override
 	public void onDataFiltered(List<Integer> filteredRows) {
+		//No reason to do anything
 	}
 
 	@Override
 	public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject) {
+		//Column not visible
 	}
 
 	@Override
@@ -352,14 +479,17 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	@Override
 	public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName) {
+		//Column not visible
 	}
 
 	@Override
 	public void onCenterClicked(GeneralJavaScriptObject rowData) {
+		//Column not visible
 	}
 
 	@Override
 	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
+		//Column not visible
 	}
 
 	@Override
@@ -371,14 +501,17 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	@Override
 	public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
+		//Column not visible
 	}
 
 	@Override
 	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
+		//Column not visible
 	}
 
 	@Override
 	public void onAjaxResponse() {
+		dataHasLoaded = true;
 	}
 
 	@Override
@@ -388,7 +521,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	@Override
 	public String getLabelFromTapName(String tapName) {
-		return null;
+		return tapName;
 	}
 
 	@Override
@@ -398,12 +531,12 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	
 	@Override
 	public String getRaColumnName() {
-		return null;
+		return gwDescriptor.getTapRaColumn();
 	}
 
 	@Override
 	public String getDecColumnName() {
-		return null;
+		return gwDescriptor.getTapDecColumn();
 	}
 
 	@Override
@@ -413,15 +546,17 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 
 	@Override
 	public String getEsaSkyUniqId() {
-		return null;
+		return gwDescriptor.getDescriptorId();
 	}
 
 	@Override
 	public void multiSelectionInProgress() {
+		//No reason to do anything
 	}
 
 	@Override
 	public void multiSelectionFinished() {
+		//No reason to do anything
 	}
 
 	@Override

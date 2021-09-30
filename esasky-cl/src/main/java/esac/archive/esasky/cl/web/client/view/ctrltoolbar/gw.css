@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 
-.gwPanel{
+.gwPanel {
     background-color: rgba(0, 0, 0, 0.65);
     border: 1px solid;
     border-bottom-right-radius: 25px;
@@ -13,9 +13,65 @@
 }
 
 
-.gwPanel_loadingHipsProperties{
+.gwPanel_loadingHipsProperties {
 	position: absolute;
 	top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+
+.gwPanel__tabDeselected {
+	background: #555555;
+	color: #FFFFFF;
+}
+
+.gwPanel__tabDeselected:hover {
+	background: #666666;
+}
+
+.gwPanel__tabSelected {
+	background: #e3e3e3;
+	color: #343434;
+	font-weight: bold;
+}
+
+.gwPanel__tabSelected:hover {
+	background: #C3C3C3;
+	color: #343434;
+}
+
+.gwPanel__tabLabel{
+	pointer-events: none;	
+}
+
+.gwPanel__tab {
+	padding: 5px;
+	border-radius: 10px 10px 0px 0px;
+	cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: 2px;
+}
+
+.gwPanel__tabs {
+	display: flex;
+	flex-direction: row;
+}
+
+.gwPanel_showMoreButton{
+	margin-left: 5px;
+}
+
+.gwPanel_buttonContainer{
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 5px;
+	margin-left: 10px;
+}
+.gwPanel_headerRow{
+	display: flex;
+	flex-direction: row;
+    justify-content: space-between;
+    padding-top: 5px;
 }
