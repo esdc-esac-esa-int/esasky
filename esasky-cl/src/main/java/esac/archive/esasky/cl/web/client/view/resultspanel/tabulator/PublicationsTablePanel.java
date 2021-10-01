@@ -1,4 +1,4 @@
-package esac.archive.esasky.cl.web.client.view.resultspanel;
+package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
 import java.util.List;
 

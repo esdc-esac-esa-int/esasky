@@ -1,4 +1,4 @@
-package esac.archive.esasky.cl.web.client.view.resultspanel;
+package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
 import java.util.List;
 
@@ -70,6 +70,7 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
 	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
 	}
 
 	@Override

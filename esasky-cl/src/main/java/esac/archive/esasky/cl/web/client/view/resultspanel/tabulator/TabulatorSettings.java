@@ -1,4 +1,4 @@
-package esac.archive.esasky.cl.web.client.view.resultspanel;
+package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNull;

@@ -1,4 +1,4 @@
-package esac.archive.esasky.cl.web.client.view.resultspanel;
+package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -60,6 +60,14 @@ import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.DDRequestForm;
+import esac.archive.esasky.cl.web.client.view.resultspanel.DatalinkDownloadDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.PreviewDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 
