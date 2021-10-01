@@ -201,7 +201,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		tabs.addStyleName("gwPanel__tabs");
 		//TODO texts
 		gwTab = new Tab("Gravitational Waves");
-		gwTab.addClickHandler((event) ->{
+		gwTab.addClickHandler(event ->{
 			gwTab.setSelectedStyle();
 			neutrinoTab.setDeselectedStyle();
 		});
@@ -210,7 +210,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		
 		//TODO texts
 		neutrinoTab = new Tab("Neutrinos");
-		neutrinoTab.addClickHandler((event) ->{
+		neutrinoTab.addClickHandler(event ->{
 			neutrinoTab.setSelectedStyle();
 			gwTab.setDeselectedStyle();
 		});
@@ -226,7 +226,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		gridButton.setMediumStyle();
 		//TODO add tooltip
 		buttonContainer.add(gridButton);
-		gridButton.addClickHandler((event)->{
+		gridButton.addClickHandler(event->{
 			AladinLiteWrapper.getInstance().toggleGrid();
 			gridHasBeenDeactivatedByUserThroughGwPanel = true;
 		});
@@ -236,7 +236,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		expandOrCollapseColumnsButton.setMediumStyle();
 		buttonContainer.add(expandOrCollapseColumnsButton);
 		//TODO add tooltip
-		expandOrCollapseColumnsButton.addClickHandler((event)->{
+		expandOrCollapseColumnsButton.addClickHandler(event->{
 			if(!dataHasLoaded) {
 				return;
 			}

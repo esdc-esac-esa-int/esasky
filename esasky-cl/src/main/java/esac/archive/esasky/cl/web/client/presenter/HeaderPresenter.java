@@ -177,10 +177,7 @@ public class HeaderPresenter {
 				view.hideWarningButton();
 			}
 		});
-		CommonEventBus.getEventBus().addHandler(GridToggledEvent.TYPE, event -> {
-				view.setGridButtonToggled(event.isGridActive());
-			}
-		);
+		CommonEventBus.getEventBus().addHandler(GridToggledEvent.TYPE, event -> view.setGridButtonToggled(event.isGridActive()));
 
 		setInitialValues();
 
@@ -296,13 +293,7 @@ public class HeaderPresenter {
 			}
 		});
 
-		view.addGridButtonClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(final ClickEvent event) {
-				AladinLiteWrapper.getInstance().toggleGrid();
-			}
-		});
+		view.addGridButtonClickHandler(event -> AladinLiteWrapper.getInstance().toggleGrid());
 
 		view.addReleaseNotesClickHandler(new ClickHandler() {
 

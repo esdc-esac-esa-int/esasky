@@ -299,24 +299,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		gwButton = new EsaSkyToggleButton(Icons.getGwIcon());
 		//TODO tooltip
 		addCommonButtonStyle(gwButton, "TODO tooltip");
-		gwButton.addClickHandler(
-				new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						CtrlToolBar.this.gwPanel.toggle();
-						CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(gwButton));
-						sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_GW);
-					}
-				});
+		gwButton.addClickHandler(event -> {
+			CtrlToolBar.this.gwPanel.toggle();
+			CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(gwButton));
+			sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_GW);
+			});
 		
-        gwPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
-			
-			@Override
-			public void onClose(CloseEvent<PopupPanel> event) {
-				gwButton.setToggleStatus(false);
-			}
-		});
+        gwPanel.addCloseHandler(event -> gwButton.setToggleStatus(false));
 		return gwButton;
 	}
 	
@@ -522,56 +511,23 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 
     private void showScienceModeWidgets() {
-    	
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_OBS)) {
-            showWidget(observationButton);
-        }else {
-        	hideWidget(observationButton);
-        }
+        showOrHideWidget(observationButton, Modules.getModule(EsaSkyWebConstants.MODULE_OBS));
+        showOrHideWidget(catalogButton, Modules.getModule(EsaSkyWebConstants.MODULE_CAT));
+        showOrHideWidget(extTapButton, Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP));
+        showOrHideWidget(spectraButton, Modules.getModule(EsaSkyWebConstants.MODULE_SPE));
+        showOrHideWidget(publicationsButton, Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS));
+        showOrHideWidget(extTapButton, Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP));
+        showOrHideWidget(ssoButton, Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && GUISessionStatus.getIsTrackingSSO());
+        showOrHideWidget(gwButton, Modules.getModule(EsaSkyWebConstants.MODULE_GW));
+		showOrHideWidget(planObservationButton, Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING));
+    }
     
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_CAT)) {
-        	showWidget(catalogButton);
-        }else {
-        	hideWidget(catalogButton);
-        }
-
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_SPE)) {
-        	showWidget(spectraButton);
-        }else {
-        	hideWidget(spectraButton);
-        }
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
-            showWidget(publicationsButton);
-        }else {
-        	hideWidget(publicationsButton);
-        }
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_EXTTAP)) {
-            showWidget(extTapButton);
-        }else {
-        	hideWidget(extTapButton);
-        }
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_SSO) && GUISessionStatus.getIsTrackingSSO()) {
-            showWidget(ssoButton);
-        }else {
-        	hideWidget(ssoButton);
-        }    
-
-        
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_GW)) {
-            showWidget(gwButton);
-        }else {
-        	hideWidget(gwButton);
-        }
-        
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_JWST_PLANNING)) {
-			showWidget(planObservationButton);
-		}else {
-			hideWidget(planObservationButton);
-		}
-        
+    private void showOrHideWidget(Widget widget, boolean condition) {
+    	if(condition) {
+    		showWidget(widget);
+    	} else {
+    		hideWidget(widget);
+    	}
     }
 	
 	private void hideWidget(Widget widget) {
