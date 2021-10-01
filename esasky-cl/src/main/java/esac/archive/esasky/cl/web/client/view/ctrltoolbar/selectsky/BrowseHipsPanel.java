@@ -23,9 +23,9 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorCallback;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorSettings;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class BrowseHipsPanel extends AutoHidingMovablePanel implements TabulatorCallback{

@@ -17,7 +17,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PublicationTooltip;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.PublicationsTablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.PublicationsTablePanel;
 
 public class PublicationsBySourceEntity extends EsaSkyEntity {
 

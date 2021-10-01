@@ -41,9 +41,9 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.StylePanelCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
 
 public class EsaSkyEntity implements GeneralEntityInterface {
 
