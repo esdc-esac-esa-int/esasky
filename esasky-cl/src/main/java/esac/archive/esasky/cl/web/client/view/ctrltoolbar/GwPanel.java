@@ -42,6 +42,7 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButto
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
@@ -146,7 +147,11 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	}
 	
 	private void loadData() {
-        gwTable = new TabulatorWrapper("gwPanel__tabulatorContainer", GwPanel.this);
+		TabulatorSettings settings = new TabulatorSettings();
+		settings.disableGoToColumn = true;
+		settings.selectable = 1;
+		gwTable = new TabulatorWrapper("gwPanel__tabulatorContainer", GwPanel.this, settings);
+        
         gwTable.setDefaultQueryMode();
 
         for(MetadataDescriptor md : gwDescriptor.getMetadata()) {

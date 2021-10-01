@@ -220,7 +220,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	protected void onAttach() {
 	    super.onAttach();
-	    boolean addDatalinkLink2ArchiveColumn = false;
+	    TabulatorSettings settings = new TabulatorSettings();
 	    boolean disableLink2ArchiveColumn = false;
 	    if (getDescriptor() instanceof ExtTapDescriptor) {
 	        
@@ -229,18 +229,20 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	            disableLink2ArchiveColumn = true;
 	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
 	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
-	                addDatalinkLink2ArchiveColumn = true;
+	                settings.addDatalinkLink2ArchiveColumn = true;
 	            }
 	        }
 	            
 	    }
-        table = new TabulatorWrapper(tabulatorContainerId, this, getDescriptor().getSampEnabled(), 
-                getDescriptor().getArchiveProductURI() != null 
-                    && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
-                    && !disableLink2ArchiveColumn, 
-                getDescriptor().getDescriptorId().contains("PUBLICATIONS"),
-                getDescriptor().getDescriptorId().contains("PUBLICATIONS"), true,
-                addDatalinkLink2ArchiveColumn);
+		settings.addSendToVOApplicationColumn = getDescriptor().getSampEnabled();
+		settings.addLink2ArchiveColumn = getDescriptor().getArchiveProductURI() != null 
+                && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
+                && !disableLink2ArchiveColumn;
+		settings.addLink2AdsColumn = getDescriptor().getDescriptorId().contains("PUBLICATIONS"); 
+		settings.addSourcesInPublicationColumn = getDescriptor().getDescriptorId().contains("PUBLICATIONS");
+		settings.addSelectionColumn = true;
+	    
+        table = new TabulatorWrapper(tabulatorContainerId, this, settings);
         getDescriptor().registerMetadataVisibilityObserver(metadataVisibilityObserver);
 	}
 	

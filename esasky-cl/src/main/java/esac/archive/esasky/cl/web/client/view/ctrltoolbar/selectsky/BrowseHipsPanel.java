@@ -25,6 +25,7 @@ import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class BrowseHipsPanel extends AutoHidingMovablePanel implements TabulatorCallback{
@@ -169,7 +170,8 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 
 	public void onJsonLoaded(String jsonText) {
 		this.show();
-		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, false, false, false, false, false, false);
+		TabulatorSettings settings = new TabulatorSettings();
+		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, settings);
 		GeneralJavaScriptObject metadata = createMetadata();
 		tabulatorTable.setAddHipsColumn(true);
 		tabulatorTable.insertData(jsonText, metadata);

@@ -61,7 +61,7 @@ public class TabulatorWrapper{
         public void multiSelectionFinished();
         public boolean hasBeenClosed();
     }
-
+    
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
@@ -73,27 +73,9 @@ public class TabulatorWrapper{
     private boolean filtersShouldBeEnabled = true;
     private boolean waitingForMoc = false;
 
-    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback) {
-    	this(divId, tabulatorCallback, false, false, false, false, null, false, false, false, false, 1, true);
-    }
-    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn,  boolean addSourcesInPublicationColumn,
-            boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
-        this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, null, false, true, addSelectionColumn, addDatalinkLink2ArchiveColumn);
-    }
-    
-    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-    		boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-    		boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn) {
-    	this(divId, tabulatorCallback, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle, blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, null, false);
-    }
-    
-    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable, boolean disableGotoColumn) {
+    public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, TabulatorSettings settings) {
         this.tabulatorCallback = tabulatorCallback;
-        tableJsObject = createColumnTabulator(this, divId, addSendToVOApplicationColumn, addLink2ArchiveColumn, addLink2AdsColumn, addSourcesInPublicationColumn, selectionHeaderTitle,
-                blockRedraw, isEsaskyData, addSelectionColumn, addDatalinkLink2ArchiveColumn, selectable, disableGotoColumn);
+        tableJsObject = createColumnTabulator(this, divId, settings.convertToJsonString());
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
             
             @Override
@@ -101,7 +83,6 @@ public class TabulatorWrapper{
             	reformat(tableJsObject);
             }
         });
-        
         
         rowCountFooterId = divId + "_rowCount";
         final Element rowCountFooter = Document.get().getElementById(rowCountFooterId);
@@ -772,11 +753,10 @@ public class TabulatorWrapper{
     
     
 
-    private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, 
-            boolean addSendToVOApplicationColumn, boolean addLink2ArchiveColumn, boolean addLink2AdsColumn, boolean addSourcesInPublicationColumn, String selectionHeaderTitle,
-            boolean blockRedraw, boolean isEsaskyData, boolean addSelectionColumn, boolean addDatalinkLink2ArchiveColumn, Integer selectable, boolean disableGoToColumn) /*-{
-    	if(selectable == null){
-    		selectable = true;
+    private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
+		var settings = JSON.parse(settingsString); 
+    	if(settings.selectable == null){
+    		settings.selectable = true;
     	}
 		$wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
 		var visibleTableData = [];
@@ -1183,10 +1163,10 @@ public class TabulatorWrapper{
 		        var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::getDescriptorMetaData()();
 		        var activeColumnGroup = [];
 		        var isSSO = false;
-		        if (addSelectionColumn){
+		        if (settings.addSelectionColumn){
     		    	activeColumnGroup.push({
     		    	    formatter:"rowSelection", 
-    		    	    titleFormatterParams: {title:selectionHeaderTitle}, 
+    		    	    titleFormatterParams: {title:settings.selectionHeaderTitle}, 
     		    	    field:"rowSelection", 
                         visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
     		    	    title:"Selection", 
@@ -1216,7 +1196,7 @@ public class TabulatorWrapper{
 			    	    }
 			    	}
 		    	}
-                if(raFound && decFound && !disableGoToColumn){
+                if(raFound && decFound && !settings.disableGoToColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
                         field:"centre",
@@ -1233,7 +1213,7 @@ public class TabulatorWrapper{
                             }
                     });
                 }
-                if(addSendToVOApplicationColumn){
+                if(settings.addSendToVOApplicationColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_sendToVOApplicationHeader"),
                         field:"samp",
@@ -1251,7 +1231,7 @@ public class TabulatorWrapper{
                     });
                 }
                 
-                if(addLink2ArchiveColumn){
+                if(settings.addLink2ArchiveColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeader"),
                         field:"link2archive",
@@ -1268,7 +1248,7 @@ public class TabulatorWrapper{
                             }
                     });
                 }
-                if(addDatalinkLink2ArchiveColumn){
+                if(settings.addDatalinkLink2ArchiveColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_products"),
                         titleDownload:$wnd.esasky.getInternationalizationText("tabulator_products"),
@@ -1286,7 +1266,7 @@ public class TabulatorWrapper{
                             }
                     });
                 }
-                if(addLink2AdsColumn){
+                if(settings.addLink2AdsColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_link2AdsHeader"),
                         field:"link2archive",
@@ -1303,7 +1283,7 @@ public class TabulatorWrapper{
                             }
                     });
                 }
-                if(addSourcesInPublicationColumn){
+                if(settings.addSourcesInPublicationColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeader"),
                         field:"sourcesInPublication",
@@ -1715,7 +1695,7 @@ public class TabulatorWrapper{
                     });
 			    }
 		    },
-		 	selectable:selectable,
+		 	selectable:settings.selectable,
             ajaxError:function(error){
             	error.text().then(function(e){
             		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(e);
@@ -1756,11 +1736,11 @@ public class TabulatorWrapper{
 //		 	layout: "fitDataStretch"
 		});
 		
-		if(blockRedraw){
+		if(settings.blockRedraw){
 		    table.blockRedraw();
 		}
 		
-		table.isEsaskyData = isEsaskyData;
+		table.isEsaskyData = settings.isEsaskyData;
 		//Remove the clearSelection function to make sure that it is possible to select and copy text from the table
 		table._clearSelection = function (){};
 		
