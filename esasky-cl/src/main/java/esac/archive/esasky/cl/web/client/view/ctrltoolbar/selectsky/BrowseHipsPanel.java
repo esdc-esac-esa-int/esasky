@@ -24,7 +24,7 @@ import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 

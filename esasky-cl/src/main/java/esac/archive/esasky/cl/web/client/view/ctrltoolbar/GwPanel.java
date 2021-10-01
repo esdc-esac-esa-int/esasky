@@ -42,6 +42,7 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButto
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper;
+import esac.archive.esasky.cl.web.client.view.resultspanel.DefaultTabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
@@ -50,7 +51,7 @@ import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 
-public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCallback{
+public class GwPanel extends PopupPanel {
 
 	public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {}
 	private BaseDescriptor gwDescriptor;
@@ -150,7 +151,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		TabulatorSettings settings = new TabulatorSettings();
 		settings.disableGoToColumn = true;
 		settings.selectable = 1;
-		gwTable = new TabulatorWrapper("gwPanel__tabulatorContainer", GwPanel.this, settings);
+		gwTable = new TabulatorWrapper("gwPanel__tabulatorContainer", new TabulatorCallback(), settings);
         
         gwTable.setDefaultQueryMode();
 
@@ -352,198 +353,122 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	public boolean isShowing() {
 		return isShowing;
 	}
-
-	@Override
-	public void onDataLoaded(GeneralJavaScriptObject rowData) {
-		setMaxSize();
-	}
-
-	@Override
-	public void onTableHeightChanged() {
-		//No reason to do anything
-	}
-
-	@Override
-	public void onRowSelection(GeneralJavaScriptObject row) {
-		GeneralJavaScriptObject rowData = row.invokeFunction("getData");
-		String id = rowData.getStringProperty("grace_id");
-		
-		if(!blockOpenHipsTrigger) {
-			//TODO do not use skiesdev
-			testParsingHipsList("http://skiesdev.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
-			String ra = rowData.getStringProperty(gwDescriptor.getTapRaColumn());
-			String dec = rowData.getStringProperty(gwDescriptor.getTapDecColumn());
-			AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
-		}
-
-		String stcs90EntityId = gwDescriptor.getDescriptorId() + "_90";
-        GeneralEntityInterface stcs90entity = EntityRepository.getInstance().getEntity(stcs90EntityId);
-        if(stcs90entity == null) {
-        	stcs90entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs90EntityId, "dashed");
-        }
-        stcs90entity.addShapes(row.invokeFunction("getData").wrapInArray());
-        
-        
-        gwDescriptor.setTapSTCSColumn("stcs50");
-        String stcs50EntityId = gwDescriptor.getDescriptorId() + "_50";
-        GeneralEntityInterface stcs50entity = EntityRepository.getInstance().getEntity(stcs50EntityId);
-        if(stcs50entity == null) {
-        	stcs50entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs50EntityId, "solid");
-        }
-        stcs50entity.addShapes(row.invokeFunction("getData").wrapInArray());
-        gwDescriptor.setTapSTCSColumn("stcs90");
-	}
-
-	private void testParsingHipsList(String url, Integer rowId) {
-		loadingSpinner.setVisible(true);
-		HipsParser parser = new HipsParser(new HipsParserObserver() {
-			
-			@Override
-			public void onSuccess(HiPS hips) {
-				rowIdHipsMap.put(hips.getSurveyName(), rowId);
-				loadingSpinner.setVisible(false);
-				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true, false));
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS, url);
-			}
-			
-			@Override
-			public void onError(String errorMsg) {
-				loadingSpinner.setVisible(false);
-				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
-				fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
-			
-				DisplayUtils.showMessageDialogBox(fullErrorText, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
-						TextMgr.getInstance().getText("error"));
-				
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS_FAIL, url);
-				Log.error(errorMsg);
-			}
-		});
-		parser.loadProperties(url);
-	}
-
-	@Override
-	public void onRowDeselection(GeneralJavaScriptObject row) {
-		EntityRepository.getInstance().getEntity(gwDescriptor.getDescriptorId() + "_90").removeAllShapes();
-		EntityRepository.getInstance().getEntity(gwDescriptor.getDescriptorId() + "_50").removeAllShapes();
-	}
-
-	@Override
-	public void onRowMouseEnter(int rowId) {
-		//No reason to do anything
-	}
-
-	@Override
-	public void onRowMouseLeave(int rowId) {
-		//No reason to do anything
-	}
-
-	@Override
-	public void onFilterChanged(String label, String filter) {
-		//No reason to do anything
-	}
-
-	@Override
-	public void onDataFiltered(List<Integer> filteredRows) {
-		//No reason to do anything
-	}
-
-	@Override
-	public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject) {
-		//Column not visible
-	}
-
-	@Override
-	public void onAccessUrlClicked(String url) {
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, "GravitationalWaves", url);
-		UrlUtils.openUrl(url);
-	}
-
-	@Override
-	public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName) {
-		//Column not visible
-	}
-
-	@Override
-	public void onCenterClicked(GeneralJavaScriptObject rowData) {
-		//Column not visible
-	}
-
-	@Override
-	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
-		//Column not visible
-	}
-
-	@Override
-	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
-		String url = row.invokeFunction("getData").getStringProperty("event_page");
-		GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
-        UrlUtils.openUrl(url);
-	}
-
-	@Override
-	public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
-		//Column not visible
-	}
-
-	@Override
-	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
-		//Column not visible
-	}
-
-	@Override
-	public void onAjaxResponse() {
-		dataHasLoaded = true;
-	}
-
-	@Override
-	public void onAjaxResponseError(String error) {
-		Log.error(error);
-	}
-
-	@Override
-	public String getLabelFromTapName(String tapName) {
-		return tapName;
-	}
-
-	@Override
-	public GeneralJavaScriptObject getDescriptorMetaData() {
-		return gwDescriptor.getMetaDataJSONObject();
-	}
 	
-	@Override
-	public String getRaColumnName() {
-		return gwDescriptor.getTapRaColumn();
+	private class TabulatorCallback extends DefaultTabulatorCallback{
+		
+		@Override
+		public void onDataLoaded(GeneralJavaScriptObject rowData) {
+			setMaxSize();
+		}
+		
+		@Override
+		public void onTableHeightChanged() {
+			//No reason to do anything
+		}
+		
+		@Override
+		public void onRowSelection(GeneralJavaScriptObject row) {
+			GeneralJavaScriptObject rowData = row.invokeFunction("getData");
+			String id = rowData.getStringProperty("grace_id");
+			
+			if(!blockOpenHipsTrigger) {
+				//TODO do not use skiesdev
+				testParsingHipsList("http://skiesdev.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
+				String ra = rowData.getStringProperty(gwDescriptor.getTapRaColumn());
+				String dec = rowData.getStringProperty(gwDescriptor.getTapDecColumn());
+				AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
+			}
+			
+			String stcs90EntityId = gwDescriptor.getDescriptorId() + "_90";
+			GeneralEntityInterface stcs90entity = EntityRepository.getInstance().getEntity(stcs90EntityId);
+			if(stcs90entity == null) {
+				stcs90entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs90EntityId, "dashed");
+			}
+			stcs90entity.addShapes(row.invokeFunction("getData").wrapInArray());
+			
+			
+			gwDescriptor.setTapSTCSColumn("stcs50");
+			String stcs50EntityId = gwDescriptor.getDescriptorId() + "_50";
+			GeneralEntityInterface stcs50entity = EntityRepository.getInstance().getEntity(stcs50EntityId);
+			if(stcs50entity == null) {
+				stcs50entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs50EntityId, "solid");
+			}
+			stcs50entity.addShapes(row.invokeFunction("getData").wrapInArray());
+			gwDescriptor.setTapSTCSColumn("stcs90");
+		}
+		
+		private void testParsingHipsList(String url, Integer rowId) {
+			loadingSpinner.setVisible(true);
+			HipsParser parser = new HipsParser(new HipsParserObserver() {
+				
+				@Override
+				public void onSuccess(HiPS hips) {
+					rowIdHipsMap.put(hips.getSurveyName(), rowId);
+					loadingSpinner.setVisible(false);
+					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true, false));
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS, url);
+				}
+				
+				@Override
+				public void onError(String errorMsg) {
+					loadingSpinner.setVisible(false);
+					String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
+					fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
+					
+					DisplayUtils.showMessageDialogBox(fullErrorText, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+							TextMgr.getInstance().getText("error"));
+					
+					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS_FAIL, url);
+					Log.error(errorMsg);
+				}
+			});
+			parser.loadProperties(url);
+		}
+		
+		@Override
+		public void onRowDeselection(GeneralJavaScriptObject row) {
+			EntityRepository.getInstance().getEntity(gwDescriptor.getDescriptorId() + "_90").removeAllShapes();
+			EntityRepository.getInstance().getEntity(gwDescriptor.getDescriptorId() + "_50").removeAllShapes();
+		}
+		
+		@Override
+		public void onAccessUrlClicked(String url) {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, "GravitationalWaves", url);
+			UrlUtils.openUrl(url);
+		}
+		
+		@Override
+		public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
+			String url = row.invokeFunction("getData").getStringProperty("event_page");
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
+			UrlUtils.openUrl(url);
+		}
+		
+		@Override
+		public void onAjaxResponse() {
+			dataHasLoaded = true;
+		}
+		
+		@Override
+		public GeneralJavaScriptObject getDescriptorMetaData() {
+			return gwDescriptor.getMetaDataJSONObject();
+		}
+		
+		@Override
+		public String getRaColumnName() {
+			return gwDescriptor.getTapRaColumn();
+		}
+		
+		@Override
+		public String getDecColumnName() {
+			return gwDescriptor.getTapDecColumn();
+		}
+		
+		@Override
+		public String getEsaSkyUniqId() {
+			return gwDescriptor.getDescriptorId();
+		}
 	}
 
-	@Override
-	public String getDecColumnName() {
-		return gwDescriptor.getTapDecColumn();
-	}
-
-	@Override
-	public boolean isMOCMode() {
-		return false;
-	}
-
-	@Override
-	public String getEsaSkyUniqId() {
-		return gwDescriptor.getDescriptorId();
-	}
-
-	@Override
-	public void multiSelectionInProgress() {
-		//No reason to do anything
-	}
-
-	@Override
-	public void multiSelectionFinished() {
-		//No reason to do anything
-	}
-
-	@Override
-	public boolean hasBeenClosed() {
-		return false;
-	}
 }

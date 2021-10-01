@@ -1,7 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,12 +13,11 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TabulatorWrapper.TabulatorCallback;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
-public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements TabulatorCallback{
+public class ToggleColumnsDialogBox extends AutoHidingMovablePanel{
 	private final Resources resources = GWT.create(Resources.class);
 	private CssResource style;
 
@@ -162,7 +159,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
 			settings.selectionHeaderTitle = TextMgr.getInstance().getText("toggleColumns_rowSelectionTitle");
 			settings.blockRedraw = true;
 			settings.addSelectionColumn = true;
-            tabulatorTable = new TabulatorWrapper("toggleColumns__tabulatorContainer", ToggleColumnsDialogBox.this, settings);
+            tabulatorTable = new TabulatorWrapper("toggleColumns__tabulatorContainer", new TabulatorCallback(), settings);
             GeneralJavaScriptObject data[] = extractData(columns);
             tabulatorTable.insertData(data[0], data[1]);
             tabulatorTable.selectRows(data[2]);
@@ -183,150 +180,62 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel implements Ta
 		contentContainer.getElement().getStyle().setPropertyPx("height", height - contentContainer.getAbsoluteTop());
 	}
 
-    @Override
-    public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
-        MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
-        setSuggestedPositionCenter();
-    }
+	private class TabulatorCallback extends DefaultTabulatorCallback{
+		
+		@Override
+		public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+			MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+			setSuggestedPositionCenter();
+		}
+		
+		@Override
+		public void onRowSelection(GeneralJavaScriptObject row) {
+			if(isInitialized) {
+				String tapName = row.invokeFunction("getData").getStringProperty("tap_name");
+				if(tapName.equals("rowSelection")) {
+					return;
+				}
+				toggleColumnAction.onShow(tapName);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSSHOW,"Column Name: " + tapName + "Dataset: " + datasetId);
+			}
+		}
+		
+		@Override
+		public void onRowDeselection(GeneralJavaScriptObject row) {
+			if(isInitialized) {
+				String tapName = row.invokeFunction("getData").getStringProperty("tap_name");
+				if("rowSelection".equals(tapName)) {
+					return;
+				}
+				toggleColumnAction.onHide(tapName);
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSHIDE,"Column Name: " + tapName + "Dataset: " + datasetId);
+			}
+		}
+		
+		@Override
+		public void multiSelectionInProgress() {
+			MainLayoutPanel.addElementToMainArea(loadingSpinner);
+			toggleColumnAction.multiSelectionInProgress();
+		}
+		
+		@Override
+		public void multiSelectionFinished() {
+			toggleColumnAction.multiSelectionInFinished();
+			MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+		}
+		
+		@Override
+		public boolean hasBeenClosed() {
+			return hasBeenClosed;
+		}
+		
+	}
 
-    @Override
-    public void onRowSelection(GeneralJavaScriptObject row) {
-        if(isInitialized) {
-            String tapName = row.invokeFunction("getData").getStringProperty("tap_name");
-            if(tapName.equals("rowSelection")) {
-                return;
-            }
-            toggleColumnAction.onShow(tapName);
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSSHOW,"Column Name: " + tapName + "Dataset: " + datasetId);
-        }
-    }
-
-    @Override
-    public void onRowDeselection(GeneralJavaScriptObject row) {
-        if(isInitialized) {
-            String tapName = row.invokeFunction("getData").getStringProperty("tap_name");
-            if("rowSelection".equals(tapName)) {
-                return;
-            }
-            toggleColumnAction.onHide(tapName);
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TOGGLECOLUMNS, GoogleAnalytics.ACT_TOGGLECOLUMNSHIDE,"Column Name: " + tapName + "Dataset: " + datasetId);
-        }
-    }
-    
-    @Override
-    public void onTableHeightChanged() {
-        //No need to do anything
-    }
-
-    @Override
-    public void onRowMouseEnter(int rowId) {
-    }
-
-    @Override
-    public void onRowMouseLeave(int rowId) {
-    }
-
-    @Override
-    public void onFilterChanged(String label, String filter) {
-    }
-
-    @Override
-    public void onDataFiltered(List<Integer> filteredRows) {
-    }
-
-    @Override
-    public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject) {
-    }
-
-    @Override
-    public void onAccessUrlClicked(String url) {
-    }
-
-    @Override
-    public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName) {
-    }
-
-    @Override
-    public void onCenterClicked(GeneralJavaScriptObject rowData) {
-    }
-
-    @Override
-    public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
-    }
-
-    @Override
-    public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData) {
-    }
-
-    @Override
-    public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
-    }
-
-    @Override
-    public void onAjaxResponse() {
-    }
-
-    @Override
-    public void onAjaxResponseError(String error) {
-    }
-
-    @Override
-    public String getLabelFromTapName(String tapName) {
-        return null;
-    }
-
-    @Override
-    public GeneralJavaScriptObject getDescriptorMetaData() {
-        return null;
-    }
-
-    @Override
-    public boolean isMOCMode() {
-        return false;
-    }
-
-    @Override
-    public String getRaColumnName() {
-        return null;
-    }
-
-    @Override
-    public String getDecColumnName() {
-        return null;
-    }
-
-    @Override
-    public String getEsaSkyUniqId() {
-        return null;
-    }
-
-    @Override
-    public void multiSelectionInProgress() {
-        MainLayoutPanel.addElementToMainArea(loadingSpinner);
-        toggleColumnAction.multiSelectionInProgress();
-    }
-
-    @Override
-    public void multiSelectionFinished() {
-        toggleColumnAction.multiSelectionInFinished();
-        MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
-    }
-	
-    
-    @Override
-    public void hide() {
-        MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
-        this.hasBeenClosed = true;
-        super.hide();
-    }
-
-    @Override
-    public boolean hasBeenClosed() {
-        return this.hasBeenClosed;
-    }
 
 	@Override
-	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
-		// Not needed
+	public void hide() {
+		MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+		this.hasBeenClosed = true;
+		super.hide();
 	}
 }
