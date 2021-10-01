@@ -10,7 +10,6 @@ import java.util.UUID;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.resources.client.ClientBundle;
@@ -237,7 +236,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 			isExpanded = !isExpanded;
 			
 			//gwt button bug - Button moved, so hover style is not always removed
-			Scheduler.get().scheduleFinally(() -> expandOrCollapseColumnsButton.removeGwtHoverCssClass());
+			expandOrCollapseColumnsButton.removeGwtHoverCssClass();
 		});
 		expandOrCollapseColumnsButton.addStyleName("gwPanel_showMoreButton");
 		buttonContainer.addStyleName("gwPanel_buttonContainer");
