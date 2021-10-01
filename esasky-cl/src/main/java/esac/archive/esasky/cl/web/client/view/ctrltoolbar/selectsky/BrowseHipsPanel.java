@@ -23,12 +23,12 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
-public class BrowseHipsPanel extends AutoHidingMovablePanel implements TabulatorCallback{
+public class BrowseHipsPanel extends AutoHidingMovablePanel {
 
 	private final Resources resources = GWT.create(Resources.class);
 	private CssResource style;
@@ -171,7 +171,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 	public void onJsonLoaded(String jsonText) {
 		this.show();
 		TabulatorSettings settings = new TabulatorSettings();
-		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", this, settings);
+		tabulatorTable = new TabulatorWrapper("browseHips__tabulatorContainer", new TabulatorCallback(), settings);
 		GeneralJavaScriptObject metadata = createMetadata();
 		tabulatorTable.setAddHipsColumn(true);
 		tabulatorTable.insertData(jsonText, metadata);
@@ -180,145 +180,6 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
         tabulatorTable.redrawAndReinitializeHozVDom();
 	}
 
-
-    @Override
-    public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
-        MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
-        setSuggestedPositionCenter();
-    }
-
-
-	@Override
-	public void onTableHeightChanged() {
-		// Not needed
-	}
-
-	@Override
-	public void onRowSelection(GeneralJavaScriptObject row) {
-		// Not needed
-	}
-
-	@Override
-	public void onRowDeselection(GeneralJavaScriptObject row) {
-		// Not needed
-	}
-
-	@Override
-	public void onRowMouseEnter(int rowId) {
-		// Not needed
-	}
-
-	@Override
-	public void onRowMouseLeave(int rowId) {
-		// Not needed
-	}
-
-	@Override
-	public void onFilterChanged(String label, String filter) {
-		// Not needed
-	}
-
-	@Override
-	public void onDataFiltered(List<Integer> filteredRows) {
-		// Not needed
-	}
-
-	@Override
-	public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject) {
-		// Not needed
-	}
-
-	@Override
-	public void onAccessUrlClicked(String url) {
-		// Not needed
-	}
-
-	@Override
-	public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName) {
-		// Not needed
-	}
-
-	@Override
-	public void onCenterClicked(GeneralJavaScriptObject rowData) {
-		// Not needed
-	}
-
-	@Override
-	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
-		// Not needed
-	}
-
-	@Override
-	public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData) {
-		// Not needed
-	}
-
-	@Override
-	public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
-		// Not needed
-	}
-
-	@Override
-	public void onAjaxResponse() {
-		// Not needed
-	}
-
-	@Override
-	public void onAjaxResponseError(String error) {
-		// Not needed
-	}
-
-	@Override
-	public String getLabelFromTapName(String tapName) {
-		// Not needed
-		return null;
-	}
-
-	@Override
-	public GeneralJavaScriptObject getDescriptorMetaData() {
-		// Not needed
-		return null;
-	}
-
-	@Override
-	public String getRaColumnName() {
-		// Not needed
-		return null;
-	}
-
-	@Override
-	public String getDecColumnName() {
-		// Not needed
-		return null;
-	}
-
-	@Override
-	public boolean isMOCMode() {
-		// Not needed
-		return false;
-	}
-
-	@Override
-	public String getEsaSkyUniqId() {
-		// Not needed
-		return null;
-	}
-
-	@Override
-	public void multiSelectionInProgress() {
-		// Not needed
-	}
-
-	@Override
-	public void multiSelectionFinished() {
-		// Not needed
-	}
-
-	@Override
-	public boolean hasBeenClosed() {
-		// Not needed
-		return false;
-	}
 
 	@Override
 	public void setMaxSize() {
@@ -338,18 +199,28 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel implements Tabulator
 		observers.add(observer);
 	}
 	
-	@Override
-	public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
-		List<String> urls = new LinkedList<>();
-		urls.add(rowData.getStringProperty("hips_service_url"));
-		int i = 1;
-		while(rowData.hasProperty("hips_service_url_" + i)) {
-			urls.add(rowData.getStringProperty("hips_service_url_" + i));
-			i++;
+	
+	private class TabulatorCallback extends DefaultTabulatorCallback {
+		
+		@Override
+		public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+			MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
+			setSuggestedPositionCenter();
 		}
 		
-		for(BrowseHipsPanelObserver observer : observers) {
-			observer.onHipsAdded(urls);
+		@Override
+		public void onAddHipsClicked(GeneralJavaScriptObject rowData) {
+			List<String> urls = new LinkedList<>();
+			urls.add(rowData.getStringProperty("hips_service_url"));
+			int i = 1;
+			while(rowData.hasProperty("hips_service_url_" + i)) {
+				urls.add(rowData.getStringProperty("hips_service_url_" + i));
+				i++;
+			}
+			
+			for(BrowseHipsPanelObserver observer : observers) {
+				observer.onHipsAdded(urls);
+			}
 		}
 	}
 }
