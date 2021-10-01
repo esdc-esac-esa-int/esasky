@@ -5,7 +5,7 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 
 public class HipsAddedEvent extends GwtEvent<HipsAddedEventHandler> {
 
-    public final static Type<HipsAddedEventHandler> TYPE = new Type<>();
+    public static final Type<HipsAddedEventHandler> TYPE = new Type<>();
 
     private HiPS hips;
     private boolean isUserHips;

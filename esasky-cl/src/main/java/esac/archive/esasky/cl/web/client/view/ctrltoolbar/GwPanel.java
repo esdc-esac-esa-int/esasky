@@ -13,8 +13,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -59,18 +57,14 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	
 	private List<String> defaultVisibleColumns = new LinkedList<>();
 	
-	private PopupHeader header;
 	private final Resources resources;
 	private CssResource style;
 
 	private boolean isShowing;
-	private boolean isShowingMore = false;
+	private boolean isExpanded = false;
 
 	private FlowPanel gwPanel = new FlowPanel();
-	private Tab gwTab;
 	private Tab neutrinoTab;
-	//TODO create show more icons
-	private ChangeableIconButton expandOrCollapseColumnsButton;
 	private EsaSkyToggleButton gridButton;
 	private TabulatorWrapper gwTable;
 	private final FlowPanel tabulatorContainer = new FlowPanel();
@@ -109,13 +103,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		initGwDescriptor();
 		
 		initView();
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-
-			@Override
-			public void onResize(ResizeEvent event) {
-				setMaxSize();
-			}
-		});
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setMaxSize());
 		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
 			Integer rowId = rowIdHipsMap.get(changeEvent.getHiPSName());
 			if(rowId != null) {
@@ -200,7 +188,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		FlowPanel tabs = new FlowPanel();
 		tabs.addStyleName("gwPanel__tabs");
 		//TODO texts
-		gwTab = new Tab("Gravitational Waves");
+		Tab gwTab = new Tab("Gravitational Waves");
 		gwTab.addClickHandler(event ->{
 			gwTab.setSelectedStyle();
 			neutrinoTab.setDeselectedStyle();
@@ -232,27 +220,25 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		});
 
 		
-		expandOrCollapseColumnsButton = new ChangeableIconButton(Icons.getExpandIcon(), Icons.getContractIcon());
+		ChangeableIconButton expandOrCollapseColumnsButton = new ChangeableIconButton(Icons.getExpandIcon(), Icons.getContractIcon());
 		expandOrCollapseColumnsButton.setMediumStyle();
 		buttonContainer.add(expandOrCollapseColumnsButton);
 		//TODO add tooltip
-		expandOrCollapseColumnsButton.addClickHandler(event->{
+		expandOrCollapseColumnsButton.addClickHandler(event -> {
 			if(!dataHasLoaded) {
 				return;
 			}
-			if(isShowingMore) {
+			if(isExpanded) {
 				showOnlyBaseColumns();
 				expandOrCollapseColumnsButton.setPrimaryIcon();
 			} else {
 				showAllColumns();
 				expandOrCollapseColumnsButton.setSecondaryIcon();
 			}
-			isShowingMore = !isShowingMore;
+			isExpanded = !isExpanded;
 			
 			//gwt button bug - Button moved, so hover style is not always removed
-			Scheduler.get().scheduleFinally(() -> {
-				expandOrCollapseColumnsButton.removeGwtHoverCssClass();
-			});
+			Scheduler.get().scheduleFinally(() -> expandOrCollapseColumnsButton.removeGwtHoverCssClass());
 		});
 		expandOrCollapseColumnsButton.addStyleName("gwPanel_showMoreButton");
 		buttonContainer.addStyleName("gwPanel_buttonContainer");
@@ -263,7 +249,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		this.getElement().addClassName("gwPanel");
 
 		//TODO texts
-		header = new PopupHeader(this, "Astronomical Events", 
+		PopupHeader header = new PopupHeader(this, "Astronomical Events", 
 				TextMgr.getInstance().getText("publicationPanel_helpText"), 
 				TextMgr.getInstance().getText("publicationPanel_title"));
 
@@ -318,9 +304,9 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	
 	
 	private void setMaxSize() {
-		Style style = getElement().getStyle();
-		style.setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15);
-		style.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+		Style elementStyle = getElement().getStyle();
+		elementStyle.setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15);
+		elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
 	    int height = MainLayoutPanel.getMainAreaHeight();
 	    if(height > 600) {
 	    	height = 600;
@@ -328,7 +314,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
 		}
-		if(tabulatorContainer != null && tabulatorContainer.getElement() != null) {
+		if(tabulatorContainer.getElement() != null) {
 			tabulatorContainer.getElement().getStyle().setPropertyPx("height", height - tabulatorContainer.getAbsoluteTop());
 		}
 	}
