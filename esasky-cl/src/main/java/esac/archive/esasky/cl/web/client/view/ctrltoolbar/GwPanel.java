@@ -165,7 +165,6 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		private Label label;
 		public Tab(String name) {
 			FlowPanel tabContainer = new FlowPanel();
-			//TODO internationalization
 			label = new Label(name);
 			label.addStyleName("gwPanel__tabLabel");
 			tabContainer.add(label);
@@ -187,17 +186,15 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	private Widget createTabBar() {
 		FlowPanel tabs = new FlowPanel();
 		tabs.addStyleName("gwPanel__tabs");
-		//TODO texts
-		Tab gwTab = new Tab("Gravitational Waves");
-		gwTab.addClickHandler(event ->{
+		Tab gwTab = new Tab(TextMgr.getInstance().getText("gwPanel_gwTab"));
+		gwTab.addClickHandler(event -> {
 			gwTab.setSelectedStyle();
 			neutrinoTab.setDeselectedStyle();
 		});
 		gwTab.setSelectedStyle();
 		tabs.add(gwTab);
 		
-		//TODO texts
-		neutrinoTab = new Tab("Neutrinos");
+		neutrinoTab = new Tab(TextMgr.getInstance().getText("gwPanel_neutrinoTab"));
 		neutrinoTab.addClickHandler(event ->{
 			neutrinoTab.setSelectedStyle();
 			gwTab.setDeselectedStyle();
@@ -212,7 +209,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		FlowPanel buttonContainer = new FlowPanel();
 		gridButton = new EsaSkyToggleButton(Icons.getGridIcon());
 		gridButton.setMediumStyle();
-		//TODO add tooltip
+		gridButton.setTitle(TextMgr.getInstance().getText("header_gridFull"));
 		buttonContainer.add(gridButton);
 		gridButton.addClickHandler(event->{
 			AladinLiteWrapper.getInstance().toggleGrid();
@@ -222,8 +219,8 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		
 		ChangeableIconButton expandOrCollapseColumnsButton = new ChangeableIconButton(Icons.getExpandIcon(), Icons.getContractIcon());
 		expandOrCollapseColumnsButton.setMediumStyle();
+		expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showMoreColumns"));
 		buttonContainer.add(expandOrCollapseColumnsButton);
-		//TODO add tooltip
 		expandOrCollapseColumnsButton.addClickHandler(event -> {
 			if(!dataHasLoaded) {
 				return;
@@ -231,9 +228,11 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 			if(isExpanded) {
 				showOnlyBaseColumns();
 				expandOrCollapseColumnsButton.setPrimaryIcon();
+				expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showMoreColumns"));
 			} else {
 				showAllColumns();
 				expandOrCollapseColumnsButton.setSecondaryIcon();
+				expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showFewerColumns"));
 			}
 			isExpanded = !isExpanded;
 			
@@ -248,10 +247,9 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	private void initView() {
 		this.getElement().addClassName("gwPanel");
 
-		//TODO texts
-		PopupHeader header = new PopupHeader(this, "Astronomical Events", 
-				TextMgr.getInstance().getText("publicationPanel_helpText"), 
-				TextMgr.getInstance().getText("publicationPanel_title"));
+		PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("gwPanel_header"), 
+				TextMgr.getInstance().getText("gwPanel_helpText"), 
+				TextMgr.getInstance().getText("gwPanel_helpTitle"));
 
 		gwPanel.add(header);
 		

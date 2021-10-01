@@ -3459,4 +3459,31 @@
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
+	<text key="gwPanel_gwTab">
+		Gravitational Waves
+	</text>
+	<text key="gwPanel_neutrinoTab">
+		Neutrinos
+	</text>
+	<text key="gwPanel_showMoreColumns">
+		Show more columns
+	</text>
+	<text key="gwPanel_showFewerColumns">
+		Show fewer columns
+	</text>
+	<text key="gwPanel_header">
+		Astronomical Events
+	</text>
+	<text key="gwPanel_helpText">
+		TODO
+	</text>
+	<text key="gwPanel_helpTitle">
+		Gravitational Waves and Neutrinos
+	</text>
+	<text key="webConstants_exploreHstImages">
+		Explore high resolution images from the Hubble Space Telescope
+	</text>
+	<text key="ctrlToolBar_gwTooltip">
+		Explore Astronomical Events
+	</text>
 </Internationalization>

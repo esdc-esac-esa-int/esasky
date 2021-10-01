@@ -297,8 +297,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private EsaSkyToggleButton createGwBtn() {
 		
 		gwButton = new EsaSkyToggleButton(Icons.getGwIcon());
-		//TODO tooltip
-		addCommonButtonStyle(gwButton, "TODO tooltip");
+		addCommonButtonStyle(gwButton, TextMgr.getInstance().getText("ctrlToolBar_gwTooltip"));
 		gwButton.addClickHandler(event -> {
 			CtrlToolBar.this.gwPanel.toggle();
 			CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(gwButton));
