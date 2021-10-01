@@ -11,8 +11,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -126,6 +124,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 				addTargetBox(event.getTargetName(), event.getTargetDescription());
 			}
 		});
+		
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setTargetDialogSuggestedPosition());
 	}
 
 	private void initView() {
@@ -186,8 +186,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			}
 		});
 		
-		gwPanel = new GwPanel();
-		gwPanel.hide();
 		ctrlToolBarPanel.add(createGwBtn());
 		ctrlToolBarPanel.add(gwPanel);
 		if(!Modules.getModule(EsaSkyWebConstants.MODULE_GW)) {
@@ -208,14 +206,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 		EsaSkyButton imageButton = createImageButton();
 		ctrlToolBarPanel.add(imageButton);
-		
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				setTargetDialogSuggestedPosition();
-			}
-		});
 		
 		initWidget(ctrlToolBarPanel);
 		
@@ -295,7 +285,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 
 	private EsaSkyToggleButton createGwBtn() {
-		
+		gwPanel = new GwPanel();
+		gwPanel.hide();
 		gwButton = new EsaSkyToggleButton(Icons.getGwIcon());
 		addCommonButtonStyle(gwButton, TextMgr.getInstance().getText("ctrlToolBar_gwTooltip"));
 		gwButton.addClickHandler(event -> {
