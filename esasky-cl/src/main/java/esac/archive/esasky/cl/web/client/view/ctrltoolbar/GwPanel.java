@@ -314,7 +314,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
 		}
-		if(tabulatorContainer.getElement() != null) {
+		if(tabulatorContainer != null && tabulatorContainer.getElement() != null) {
 			tabulatorContainer.getElement().getStyle().setPropertyPx("height", height - tabulatorContainer.getAbsoluteTop());
 		}
 	}
