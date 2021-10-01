@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class GridToggledEvent extends GwtEvent<GridToggledEventHandler> {
 
-    public final static Type<GridToggledEventHandler> TYPE = new Type<GridToggledEventHandler>();
+    public final static Type<GridToggledEventHandler> TYPE = new Type<>();
 
 	private boolean isGridActice;
     

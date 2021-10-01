@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,6 +79,19 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	private boolean blockOpenHipsTrigger = false;
 	private boolean gridHasBeenDeactivatedByUserThroughGwPanel = false;
 	private boolean dataHasLoaded = false;
+	private List<String> columnsToAlwaysHide = Arrays.asList(
+			"stcs50",
+			"stcs90",
+			"gravitational_waves_oid",
+			"group_id",
+			"hardware_inj",
+			"internal",
+			"open_alert",
+			"pkt_ser_num",
+			"search",
+			"packet_type",
+			"ra",
+			"dec");
 	
 	public static interface Resources extends ClientBundle {
 		@Source("gw.css")
@@ -266,7 +280,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		
 		CommonEventBus.getEventBus().addHandler(GridToggledEvent.TYPE, event -> {
 				gridButton.setToggleStatus(event.isGridActive());
-				if(isShowing()) {
+				if(isShowing() && !event.isGridActive()) {
 					gridHasBeenDeactivatedByUserThroughGwPanel = true;
 				}
 			}
@@ -281,7 +295,7 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 	private void showAllColumns() {
 		gwTable.blockRedraw();
 		for(MetadataDescriptor md : gwDescriptor.getMetadata()) {
-			if(!md.getVisible() && !isAlwaysHiddenColumn(md.getTapName())) {
+			if(!md.getVisible() && !columnsToAlwaysHide.contains(md.getTapName())) {
 				gwTable.showColumn(md.getTapName());
 			}
 		}
@@ -289,26 +303,6 @@ public class GwPanel extends PopupPanel implements TabulatorWrapper.TabulatorCal
 		gwTable.redrawAndReinitializeHozVDom();
 	}
 	
-	private boolean isAlwaysHiddenColumn(String tapName) {
-		switch (tapName) {
-			case "stcs50":
-			case "stcs90":
-			case "gravitational_waves_oid":
-			case "group_id":
-			case "hardware_inj":
-			case "internal":
-			case "open_alert":
-			case "pkt_ser_num":
-			case "search":
-			case "packet_type":
-			case "ra":
-			case "dec":
-				return true;
-			default:
-				return false;
-		}
-	}
-
 	private void showOnlyBaseColumns() {
 		gwTable.blockRedraw();
 		for(MetadataDescriptor md : gwDescriptor.getMetadata()) {
