@@ -293,7 +293,7 @@ public class GwPanel extends BasePopupPanel {
 		gwTable.redrawAndReinitializeHozVDom();
 	}
 	
-	
+	@Override
 	protected void setMaxSize() {
 		super.setMaxSize();
 	    int height = MainLayoutPanel.getMainAreaHeight();
