@@ -1,10 +1,8 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -13,7 +11,6 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -26,15 +23,14 @@ import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.Toggler;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
-public class PublicationPanel extends DialogBox implements PublicationPanelPresenter.View {
+public class PublicationPanel extends BasePopupPanel implements PublicationPanelPresenter.View {
 
 	private PopupHeader header;
 	private final Resources resources;
 	private CssResource style;
-
-	private boolean isShowing;
 
 	private FlowPanel publicationPanel = new FlowPanel();
 	
@@ -68,8 +64,6 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	}
 
 	public PublicationPanel() {
-		super(false, false);
-
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -87,7 +81,6 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		setMaxSize();
 		addSliderListener(this, sliderId);
 	}
 	
@@ -216,45 +209,6 @@ public class PublicationPanel extends DialogBox implements PublicationPanelPrese
 		this.add(publicationPanel);
 	}
 	
-	private void setMaxSize() {
-		Style style = getElement().getStyle();
-		style.setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15);
-		style.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-	}
-
-	@Override
-	public void setPopupPosition(int left, int top) {
-		setMaxSize();
-	}
-
-	@Override
-	public void show() {
-		isShowing = true;
-		this.removeStyleName("displayNone");
-		setMaxSize();
-	}
-
-	@Override
-	public void hide(boolean autohide) {
-		this.addStyleName("displayNone");
-		isShowing = false;
-		CloseEvent.fire(this, null);
-	}
-
-	@Override
-	public void toggle() {
-		if(isShowing()) {
-			hide();
-		} else {
-			show();
-		}
-	}
-	
-	@Override
-	public boolean isShowing() {
-		return isShowing;
-	}
-
 	@Override
 	public EsaSkyButton getUpdateButton() {
 		return updatePublicationsButton;

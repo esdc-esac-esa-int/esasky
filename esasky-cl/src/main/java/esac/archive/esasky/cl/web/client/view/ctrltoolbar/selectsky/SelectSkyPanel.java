@@ -5,13 +5,10 @@ import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 import esac.archive.esasky.ifcs.model.client.HiPS;
@@ -31,9 +28,10 @@ import esac.archive.esasky.cl.web.client.view.common.EsaSkyPlayerObserver;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
-public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyPanelPresenter.View {
+public class SelectSkyPanel extends BasePopupPanel implements SkyObserver, SelectSkyPanelPresenter.View {
 
 	private static SelectSkyPanel instance;
 
@@ -42,8 +40,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	private final Resources resources;
 	private CssResource style;
 	private ESASkySlider slider;
-
-	private boolean isShowing;
 
 	private ESASkyPlayerPanel player;
 	private AddSkyButton addSkyButton;
@@ -69,7 +65,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	}
 
 	private SelectSkyPanel(String defaultHiPS) {
-		super(false, false);
 		this.hipsFromUrl = defaultHiPS;
 
 		this.resources = GWT.create(Resources.class);
@@ -91,12 +86,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 			throw new AssertionError("You have to call init first");
 		}
 		return instance;
-	}
-
-	@Override
-	protected void onLoad() {
-		super.onLoad();
-		setMaxSize();
 	}
 
 	private void initView() {
@@ -413,12 +402,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 		}
 	}
 
-	private void setMaxSize() {
-		Style style = getElement().getStyle();
-		style.setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15);
-		style.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-	}
-	
 	public void setSliderValue(double value) {
 		slider.setValue(value);
 	}
@@ -429,39 +412,6 @@ public class SelectSkyPanel extends DialogBox implements SkyObserver, SelectSkyP
 	
 	public int getNumberOfSkyRows() {
 		return skies.size();
-	}
-
-	@Override
-	public void setPopupPosition(int left, int top) {
-		setMaxSize();
-	}
-
-	@Override
-	public void show() {
-		isShowing = true;
-		this.removeStyleName("displayNone");
-		setMaxSize();
-	}
-
-	@Override
-	public void hide(boolean autohide) {
-		this.addStyleName("displayNone");
-		isShowing = false;
-		CloseEvent.fire(this, null);
-	}
-
-	@Override
-	public void toggle() {
-		if(isShowing()) {
-			hide();
-		} else {
-			show();
-		}
-	}
-
-	@Override
-	public boolean isShowing() {
-		return isShowing;
 	}
 
 	@Override

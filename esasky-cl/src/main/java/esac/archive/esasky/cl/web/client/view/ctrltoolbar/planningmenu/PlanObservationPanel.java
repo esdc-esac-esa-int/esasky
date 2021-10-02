@@ -3,10 +3,8 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -15,7 +13,6 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -32,9 +29,10 @@ import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
-public class PlanObservationPanel extends DialogBox {
+public class PlanObservationPanel extends BasePopupPanel {
 
     private Resources resources;
     private CssResource style;
@@ -43,14 +41,11 @@ public class PlanObservationPanel extends DialogBox {
     private final String CONTAINER_ID = "planningMenuContainer";
     private final String MISSION_CONTAINER_CLASS = "missionMenuContainer";
 
-    private final int PADDINGS_AND_MARGINS = 23;
     private static VerticalPanel jwstPanel; 
     private final String SIAF_VERSION = "SIAF: PRDOPSSOC-M-026";
     
     private static PlanObservationPanel instance = null;
 
-	private boolean isShowing;
-	
     public interface Resources extends ClientBundle {
 
         @Source("planObservationPanel.css")
@@ -59,7 +54,6 @@ public class PlanObservationPanel extends DialogBox {
     }
 
     private PlanObservationPanel() {
-        super(false, false);
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -225,44 +219,4 @@ public class PlanObservationPanel extends DialogBox {
     	}
     }
     
-    
-	@Override
-	protected void onLoad() {
-		setMaxSize();
-	}
-
-	@Override
-	public void setPopupPosition(int left, int top) {
-		setMaxSize();
-	}
-
-	@Override
-	public void show() {
-		isShowing = true;
-		this.removeStyleName("displayNone");
-		setMaxSize();
-	}
-
-	@Override
-	public void hide(boolean autohide) {
-		this.addStyleName("displayNone");
-		isShowing = false;
-		CloseEvent.fire(this, null);
-	}
-    
-	private void setMaxSize() {
-		Style style = getElement().getStyle();
-		int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - PADDINGS_AND_MARGINS;;
-		int maxHeight = MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - PADDINGS_AND_MARGINS;
-		style.setPropertyPx("maxWidth", maxWidth);
-		style.setPropertyPx("maxHeight", maxHeight);
-	}
-	
-	public void toggle() {
-		if(isShowing) {
-			hide();
-		} else {
-			show();
-		}
-	}
 }

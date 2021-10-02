@@ -10,14 +10,11 @@ import java.util.UUID;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -51,7 +48,7 @@ import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 
-public class GwPanel extends PopupPanel {
+public class GwPanel extends BasePopupPanel {
 
 	public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {}
 	private BaseDescriptor gwDescriptor;
@@ -61,7 +58,6 @@ public class GwPanel extends PopupPanel {
 	private final Resources resources;
 	private CssResource style;
 
-	private boolean isShowing;
 	private boolean isExpanded = false;
 
 	private FlowPanel gwPanel = new FlowPanel();
@@ -95,8 +91,6 @@ public class GwPanel extends PopupPanel {
 	}
 	
 	public GwPanel() {
-		super(false, false);
-
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -139,12 +133,6 @@ public class GwPanel extends PopupPanel {
 			}
 
 		});
-	}
-	
-	@Override
-	protected void onLoad() {
-		super.onLoad();
-		setMaxSize();
 	}
 	
 	private void loadData() {
@@ -306,10 +294,8 @@ public class GwPanel extends PopupPanel {
 	}
 	
 	
-	private void setMaxSize() {
-		Style elementStyle = getElement().getStyle();
-		elementStyle.setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15);
-		elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+	protected void setMaxSize() {
+		super.setMaxSize();
 	    int height = MainLayoutPanel.getMainAreaHeight();
 	    if(height > 600) {
 	    	height = 600;
@@ -320,38 +306,6 @@ public class GwPanel extends PopupPanel {
 		if(tabulatorContainer != null && tabulatorContainer.getElement() != null) {
 			tabulatorContainer.getElement().getStyle().setPropertyPx("height", height - tabulatorContainer.getAbsoluteTop());
 		}
-	}
-	
-	@Override
-	public void setPopupPosition(int left, int top) {
-		setMaxSize();
-	}
-
-	@Override
-	public void show() {
-		isShowing = true;
-		this.removeStyleName("displayNone");
-		setMaxSize();
-	}
-
-	@Override
-	public void hide(boolean autohide) {
-		this.addStyleName("displayNone");
-		isShowing = false;
-		CloseEvent.fire(this, null);
-	}
-
-	public void toggle() {
-		if(isShowing()) {
-			hide();
-		} else {
-			show();
-		}
-	}
-	
-	@Override
-	public boolean isShowing() {
-		return isShowing;
 	}
 	
 	private class TabulatorCallback extends DefaultTabulatorCallback{
