@@ -1969,8 +1969,6 @@
 		
 	<text key="EP_STACK_ONTIME">
 		EP Ontime &lt;i&gt;(s)&lt;/i&gt; </text>
-	<text key="durationKs">
-		Duration &lt;i&gt;(ks)&lt;/i&gt; </text>
 	<text key="Chandra_ProposalID">
 		Proposal ID
 	</text>
