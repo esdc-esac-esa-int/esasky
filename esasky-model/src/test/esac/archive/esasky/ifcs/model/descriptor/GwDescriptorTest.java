@@ -23,11 +23,20 @@ public class GwDescriptorTest {
 	}
 	
 	@Test
-	public void testParsingHeic1810d() {
+	public void testGwDescriptor() {
 		GwDescriptor descriptor = descriptorList.getDescriptors().get(0);
 		assertEquals("galaxy", descriptor.getIcon());
 		assertEquals("ASTRO_GW_gw", descriptor.getDescriptorId());
 		assertEquals("alerts.mv_v_gravitational_waves_fdw", descriptor.getTapTable());
+		
+		descriptor.setDescriptorId(null);
+		assertEquals("ASTRO_GW_gw", descriptor.getDescriptorId());
+
+		descriptor.setDescriptorId("");
+		assertEquals("ASTRO_GW_gw", descriptor.getDescriptorId());
+
+		descriptor.setDescriptorId("descriptorId");
+		assertEquals("descriptorId", descriptor.getDescriptorId());
 	}
 	
 }
