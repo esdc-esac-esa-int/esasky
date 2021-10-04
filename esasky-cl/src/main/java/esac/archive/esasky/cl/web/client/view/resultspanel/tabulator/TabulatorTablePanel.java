@@ -420,6 +420,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
             if (url == null || url.trim().isEmpty()) {
                 url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("access_url"));
             }
+            if (url == null || url.trim().isEmpty()) {
+            	url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("product_link"));
+            }
             if (url == null || "ASTRO_SPECTRA_CHEOPS".equals(entity.getDescriptor().getDescriptorId())) {
             	url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("sci_cor_lc_opt_link"));
             }
@@ -693,6 +696,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         } 
         if (sampUrl == null) {
             sampUrl = rowData.getStringProperty("access_url");
+        } 
+        if (sampUrl == null) {
+        	sampUrl = rowData.getStringProperty("product_link");
         } 
         if (sampUrl == null) {
             Log.error("[sendSelectedProductToSampApp()] No DD Base URL "
