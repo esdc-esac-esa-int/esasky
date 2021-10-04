@@ -106,6 +106,6 @@ public final class UrlUtils {
         if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
             url = url.replaceFirst("http:", "https:");
         }
-        Window.open(url, "_blank", "");
+        Window.open(url, "", "");
     }
 }
