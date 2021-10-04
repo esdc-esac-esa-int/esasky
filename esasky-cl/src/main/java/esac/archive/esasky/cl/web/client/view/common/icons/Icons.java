@@ -127,6 +127,9 @@ public class Icons {
 
 		@Source("contract.png")
 		ImageResource contractIcon();
+		
+		@Source("hubble-hires.png")
+		ImageResource hubbleIcon();
 	}
 	
 	private static void initMap() {
@@ -164,6 +167,7 @@ public class Icons {
 		iconMap.put("exclamation", getExclamationIcon());
 		iconMap.put("expand", getExpandIcon());
 		iconMap.put("contract", getContractIcon());
+		iconMap.put("hubble", getHubbleIcon());
 		
 	}
 	
@@ -309,5 +313,9 @@ public class Icons {
 	
 	public static ImageResource getContractIcon() {
 		return resources.contractIcon();
+	}
+	
+	public static ImageResource getHubbleIcon() {
+		return resources.hubbleIcon();
 	}
 }

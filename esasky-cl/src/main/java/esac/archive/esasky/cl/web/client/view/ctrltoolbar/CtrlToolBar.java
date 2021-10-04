@@ -549,7 +549,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	}
 	
 	public EsaSkyButton createImageButton() {
-		final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon());
+		final EsaSkyButton button = new EsaSkyButton(Icons.getHubbleIcon());
 		button.getElement().setId("imageButton");
 		addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
 		button.addClickHandler(event -> {
