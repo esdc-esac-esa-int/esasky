@@ -338,8 +338,7 @@ public class CloseableTabLayoutPanel extends Composite {
     	if(descriptor instanceof ExtTapDescriptor) {
     		return true;
     	}
-    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null
-    			|| descriptor.getMetadataDescriptorByTapName("product_link") != null){
+    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null){
     		return true;
     		
     	}
