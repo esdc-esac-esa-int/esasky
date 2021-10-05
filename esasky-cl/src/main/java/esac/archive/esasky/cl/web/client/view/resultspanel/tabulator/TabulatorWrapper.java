@@ -540,7 +540,9 @@ public class TabulatorWrapper{
 			var sortedMetadata = [];
 			var indexesMoved = [];
 			for(var j = 0; j < metadata.length; j++){
-				
+				if(metadata[j].name == "id"){
+					metadata[j].name = 'image_id';
+				}
 				metadata[j]["visible"] = (metadata[j].name !== "s_region");
 				metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
 				
