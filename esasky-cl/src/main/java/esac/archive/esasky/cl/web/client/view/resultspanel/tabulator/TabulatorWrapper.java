@@ -1668,10 +1668,7 @@ public class TabulatorWrapper{
 		    },
 		 	selectable:settings.selectable,
             ajaxError:function(error){
-            	error.text().then(function(e){
-            		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(e);
-        		});
-		 	    
+        		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(error.message);
             },
 		 	ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
 		 	ajaxLoaderError:$wnd.esasky.getInternationalizationText("tabulator_loadFailed"),
