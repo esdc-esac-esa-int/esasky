@@ -32,13 +32,17 @@ public class OpenSeaDragonWrapper {
 	}
 	
 	public  JavaScriptObject createOpenSeaDragonObject() {
-		AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
+		removeOpenSeaDragonFromAladin();
 		return createOpenSeaDragonObject(id, url, type.getType(), ra, dec, fov, rotation, width, height);
 	}
 	
 	public void addOpenSeaDragonToAladin(JavaScriptObject openSeaDragonObject) {
-		AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
+		removeOpenSeaDragonFromAladin();
 		AladinLiteWrapper.getAladinLite().addOpenSeaDragon(openSeaDragonObject);
+	}
+	
+	public void removeOpenSeaDragonFromAladin() {
+		AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
 	}
 	
 	private native JavaScriptObject createOpenSeaDragonObject(String name, String url, String type, double ra, double dec,

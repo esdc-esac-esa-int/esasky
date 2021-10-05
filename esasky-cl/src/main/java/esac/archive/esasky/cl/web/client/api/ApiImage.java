@@ -16,7 +16,7 @@ public class ApiImage extends ApiBase{
 	private static String errorMsg = "Error parsing image properties. Property: @@@prop@@@ missing";
 	
 	public void parseHstImageData(final String name) {
-		HstOutreachImage image = new HstOutreachImage(name);
+		HstOutreachImage image = new HstOutreachImage(name, 1.0);
 		image.loadImage();
 	}
 	

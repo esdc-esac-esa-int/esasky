@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
@@ -68,6 +69,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver);
 	public void onMultipleShapesSelection(LinkedList<AladinShape> shapes);
 	public void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList);
+	public TabulatorSettings getTabulatorSettings();
 
 	
 }

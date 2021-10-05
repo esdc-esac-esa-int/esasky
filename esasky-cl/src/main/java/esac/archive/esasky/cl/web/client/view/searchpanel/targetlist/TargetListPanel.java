@@ -104,8 +104,8 @@ public class TargetListPanel extends DialogBox {
     private FlexTable targetListTable;
     private int WIDTH = 275;
     private ESASkyPlayerPanel playerPanel;
-	private  ESASkySlider opacitySlider;
-	private  Label opacityLabel;
+	private ESASkySlider opacitySlider;
+	private Label opacityLabel;
     private Image simbadLogo;
     private boolean isShowing = false;
     private boolean tryingBackupLanguage = false;
@@ -550,7 +550,7 @@ public class TargetListPanel extends DialogBox {
         if (selectedWidget.getTargetDescription() != null
                 && !selectedWidget.getTargetDescription().isEmpty()) {
             CommonEventBus.getEventBus().fireEvent(
-            		new TargetDescriptionEvent(selectedWidget.getNameofSelected(), selectedWidget.getTargetDescription()));
+            		new TargetDescriptionEvent(selectedWidget.getNameofSelected(), selectedWidget.getTargetDescription(), false));
         }
     }
 
@@ -790,7 +790,7 @@ public class TargetListPanel extends DialogBox {
 
   
         ESASkySearchResult imageId = outreachImageList.get(index);
-		HstOutreachImage image = new HstOutreachImage(imageId.getSimbadMainId());
+		HstOutreachImage image = new HstOutreachImage(imageId.getSimbadMainId(), 1.0);
 		image.setOpacity(opacitySlider.getCurrentValue());
 		image.loadImage();
     }

@@ -11,6 +11,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
@@ -43,6 +44,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.StylePanelCallback;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
 
 public class EsaSkyEntity implements GeneralEntityInterface {
@@ -68,7 +70,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private boolean isRefreshable = true;
     private StylePanel stylePanel;
     private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
-    private LinkedList<Integer> shapeRecentlySelected = new LinkedList<Integer>();
+    protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<Integer>();
 
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -323,10 +325,14 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString()), EsaSkyConstants.JSON);
+        String url = getTapUrl();
 
         clearAll();
         tablePanel.insertData(url);
+    }
+    
+    public String getTapUrl() {
+    	return descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString()), EsaSkyConstants.JSON);
     }
 
     public void fetchDataWithoutMOC(String whereQuery) {
@@ -906,6 +912,32 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	
 	public void setMocEntity(MOCEntity mocEntity) {
 		this.mocEntity = mocEntity;
+	}
+	
+	@Override
+	public TabulatorSettings getTabulatorSettings() {
+		TabulatorSettings settings = new TabulatorSettings();
+	    boolean disableLink2ArchiveColumn = false;
+	    if (getDescriptor() instanceof ExtTapDescriptor) {
+	        
+	        if(getDescriptor().getArchiveProductURI() != null
+	                && getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
+	            disableLink2ArchiveColumn = true;
+	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
+	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
+	                settings.addDatalinkLink2ArchiveColumn = true;
+	            }
+	        }
+	    }
+		settings.addSendToVOApplicationColumn = getDescriptor().getSampEnabled();
+		settings.addLink2ArchiveColumn = getDescriptor().getArchiveProductURI() != null 
+                && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
+                && !disableLink2ArchiveColumn;
+		settings.addLink2AdsColumn = getDescriptor().getDescriptorId().contains("PUBLICATIONS"); 
+		settings.addSourcesInPublicationColumn = getDescriptor().getDescriptorId().contains("PUBLICATIONS");
+		settings.addSelectionColumn = true;
+		
+		return settings;
 	}
 	
 	

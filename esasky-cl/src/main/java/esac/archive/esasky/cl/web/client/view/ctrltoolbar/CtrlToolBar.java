@@ -58,6 +58,7 @@ import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
@@ -74,6 +75,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private PublicationPanel publicationPanel;
 	private PlanObservationPanel planObservationPanel;
 	private GwPanel gwPanel;
+	private OutreachImagePanel outreachImagePanel;
 	private String HiPSFromURL = null;
 	private String unwantedRandomTargets ="";
 	private final TreeMapContainer observationTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_IMAGING);
@@ -93,6 +95,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private BadgeButton ssoButton;
 	private EsaSkyToggleButton extTapButton;
 	private EsaSkyToggleButton gwButton;
+	private EsaSkyToggleButton outreachImageButton;
 	private EsaSkyToggleButton publicationsButton;
 
 	
@@ -121,11 +124,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			
 			@Override
 			public void onEvent(TargetDescriptionEvent event) {
-				addTargetBox(event.getTargetName(), event.getTargetDescription());
+				addTargetBox(event.getTargetName(), event.getTargetDescription(), event.isRightSide());
 			}
 		});
 		
-		MainLayoutPanel.addMainAreaResizeHandler(event -> setTargetDialogSuggestedPosition());
+		CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> {
+        	CtrlToolBar.this.outreachImagePanel.toggle();
+        });
+		
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setTargetDialogSuggestedPosition(false));
 	}
 
 	private void initView() {
@@ -204,8 +211,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		exploreBtn = createExploreButton();
 		ctrlToolBarPanel.add(exploreBtn);
 
-		EsaSkyButton imageButton = createImageButton();
-		ctrlToolBarPanel.add(imageButton);
+		outreachImageButton = createImageButton();
+		ctrlToolBarPanel.add(outreachImageButton);
+		ctrlToolBarPanel.add(outreachImagePanel);
 		
 		initWidget(ctrlToolBarPanel);
 		
@@ -455,6 +463,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		if(!button.equals(gwButton)) {
 			gwPanel.hide();
 		}
+		if(!button.equals(outreachImageButton)) {
+			outreachImagePanel.hide();
+		}
 		
 		for(CustomTreeMap customTreeMap : customTreeMaps.values()) {
 			if(!button.equals(customTreeMap.button)) {
@@ -498,6 +509,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	    } else {
 	        hideWidget(exploreBtn);
 	    }
+        showOrHideWidget(outreachImageButton, !isInScienceMode);
 	}
 
     private void showScienceModeWidgets() {
@@ -548,16 +560,23 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		return button;
 	}
 	
-	public EsaSkyButton createImageButton() {
-		final EsaSkyButton button = new EsaSkyButton(Icons.getHubbleIcon());
-		button.getElement().setId("imageButton");
-		addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
-		button.addClickHandler(event -> {
+	public EsaSkyToggleButton createImageButton() {
+		outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon());
+		outreachImageButton.getElement().setId("imageButton");
+		addCommonButtonStyle(outreachImageButton, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
+		outreachImageButton.addClickHandler(event -> {
                 CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
+                CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+                //TODO fix event
+                sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_GW);
 			}
 		);
+		outreachImagePanel = new OutreachImagePanel();
+		outreachImagePanel.hide();
+		outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
 		
-		return button;
+		return outreachImageButton;
+		
 	}
 	
 	//Workaround for enabling and disabling buttons, which causes incorrect style and click behaviour 
@@ -592,7 +611,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                         
                         String surveyName = (!esaSkyTarget.getHipsName().isEmpty()) ? esaSkyTarget.getHipsName() : EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
                         SelectSkyPanel.setSelectedHipsName(surveyName);
-                    	addTargetBox(esaSkyTarget.getTitle(), esaSkyTarget.getDescription());
+                    	addTargetBox(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false);
                     	
                     	String targetName = esaSkyTarget.getName();
                     	targetName = targetName.replaceAll("[\\[\\]]", "");
@@ -616,10 +635,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 	}
 	
-    private void addTargetBox(String targetName, String targetDescription) {
+    private void addTargetBox(String targetName, String targetDescription, boolean rightSide) {
     	targetDialogBox.updateContent(targetDescription, targetName);
     	targetDialogBox.show();
-    	setTargetDialogSuggestedPosition();
+    	setTargetDialogSuggestedPosition(rightSide);
         if (latestHandler != null) {
             latestHandler.removeHandler();
         }
@@ -683,6 +702,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		List<Integer> extTapCounts = new LinkedList<Integer>();
 		
 		for(int i = 0; i < descriptors.size(); i++) {
+			if(descriptors.get(i) instanceof ImageDescriptor) {
+				continue;
+			}
 			if(descriptors.get(i) instanceof ObservationDescriptor) {
 				observationDescriptors.add(descriptors.get(i));
 				observationCounts.add(counts.get(i));
@@ -783,12 +805,18 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		
 	}
 	
-	private void setTargetDialogSuggestedPosition() {
+	private void setTargetDialogSuggestedPosition(boolean rightSide) {
 	    int newLeft = 0;
 	    int newTop = 30;
 	    if(MainLayoutPanel.getMainAreaWidth() > 800) {
-	        newLeft = 10;
-	        newTop = 77;
+	        if(rightSide) {
+	        	newLeft = 10;
+	        	newTop = 77;
+	        } else {
+	        	newLeft = MainLayoutPanel.getMainAreaWidth() - targetDialogBox.getOffsetWidth() - 10;
+	        	newTop = 77;
+	        }
+	        
 	    } else {
 	        newLeft = (MainLayoutPanel.getMainAreaWidth())/2 - targetDialogBox.getOffsetWidth()/2;
 	        if (newLeft < 0) {

@@ -32,6 +32,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
+import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
 import esac.archive.esasky.cl.web.client.event.ToggleSkyPanelEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ServerProblemFoundEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ServerProblemFoundEventHandler;
@@ -93,6 +94,7 @@ public class HeaderPresenter {
 		void addScreenshotClickHandler(ClickHandler handler);
 		void addLanguageSelectionChangeHandler(StringValueSelectionChangedHandler handler);
 		void addWarningButtonClickHandler(ClickHandler handler);
+		void addHiResClickHandler(ClickHandler handler);
 		void addGridButtonClickHandler(ClickHandler handler);
 		void setGridButtonToggled(boolean toggled);
 
@@ -334,6 +336,10 @@ public class HeaderPresenter {
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_VIEWINWWT, "");
 				view.closeDropdownMenu();
 			}
+		});
+		
+		view.addHiResClickHandler(event -> {
+			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
 		});
 
 		view.addScienceModeSwitchClickHandler(new ClickHandler() {

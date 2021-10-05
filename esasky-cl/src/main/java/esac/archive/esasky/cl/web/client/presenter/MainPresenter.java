@@ -324,11 +324,6 @@ public class MainPresenter {
             }
         });
         
-        CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> {
-				IDescriptor desc = descriptorRepo.getImageDescriptors().getDescriptors().get(0);
-				getImagesMetadata(desc);
-        });
-
         /*
          * When the url changed because the state has changed
          */

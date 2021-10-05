@@ -3,21 +3,29 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class ImageListEntity extends EsaSkyEntity {
 
-	Timer updateTimer = new Timer() {
+	private double lastOpacity = 1.0;
+	private boolean isHidingShapes = false;
+	private HstOutreachImage lastImage = null;
+	
+	private Timer updateTimer = new Timer() {
 		
 		@Override
 		public void run() {
-			tablePanel.filterOnFoV("ra_deg", "dec_deg");
+			if(!isHidingShapes) {
+				performFoVFilter();
+			}
 		}
 		
 		@Override
@@ -31,6 +39,10 @@ public class ImageListEntity extends EsaSkyEntity {
 			String esaSkyUniqId, AbstractTAPService metadataService) {
 		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
 		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
+	}
+	
+	private void performFoVFilter() {
+		tablePanel.filterOnFoV("ra_deg", "dec_deg");
 	}
 
 	
@@ -49,12 +61,61 @@ public class ImageListEntity extends EsaSkyEntity {
     	drawer.selectShapes(shapeId);
     	GeneralJavaScriptObject[] rows = tablePanel.getSelectedRows();
     	for(GeneralJavaScriptObject row : rows) {
-    		if(row.getStringProperty("id").equals(Integer.toString(shapeId))) {
-    			HstOutreachImage image = new HstOutreachImage(row.getStringProperty("image_id"));
-    			image.loadImage(true);
+    		if(GeneralJavaScriptObject.convertToInteger(row.getProperty("id")) == shapeId) {
+    			lastImage = new HstOutreachImage(row.getStringProperty("image_id"), lastOpacity);
+    			lastImage.loadImage(true);
     		}
     	}
     }
+	
+	@Override
+	public void deselectShapes(int shapeId) {
+		super.deselectShapes(shapeId);
+		if(lastImage != null) {
+			lastImage.removeOpenSeaDragon();
+		}
+	}
+	
+	@Override
+	public TabulatorSettings getTabulatorSettings() {
+		TabulatorSettings settings = new TabulatorSettings();
+		settings.disableGoToColumn = true;
+		settings.selectable = 1;
+		return settings;
+	}
 
+    @Override
+    public void onShapeSelection(AladinShape shape) {
+    	int shapeId =  Integer.parseInt(shape.getId());
+    	if(shapeRecentlySelected.contains(shapeId)) {
+    		shapeRecentlySelected.remove(new Integer(shapeId));
+    		return;
+    	}
+    	
+    	if(tablePanel != null) {
+    		select();
+    		tablePanel.deselectAllRows();
+    		tablePanel.selectRow(shapeId);
+    	}
+    	
+    	selectShapes(shapeId);
+    }
     
+    public void setOpacity(double opacity) {
+    	if(lastImage != null) {
+    		lastImage.setOpacity(opacity);
+    	}
+    	lastOpacity = opacity;
+    }
+
+    public void setIsHidingShapes(boolean isHidingShapes) {
+    	if(this.isHidingShapes != isHidingShapes) {
+    		this.isHidingShapes = isHidingShapes;
+    		if(isHidingShapes) {
+    			hideAllShapes();
+    		} else {
+    			performFoVFilter();
+    		}
+    	}
+    }
 }

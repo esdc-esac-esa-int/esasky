@@ -179,7 +179,7 @@
 }
 
 #header__dropdown__wwt{
-	display: block;
+	display: flex;
 }
 
 #header__dropdown__language {

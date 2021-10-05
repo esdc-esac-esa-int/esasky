@@ -69,6 +69,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownGridEntry = new FocusPanel();
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
+	private FocusPanel hiResDropdown = new FocusPanel(); 
 	private EsaSkySwitch dropdownScienceModeSwitch; 
 	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
 	private final ListBox dropdownLanguageBox = new ListBox();
@@ -223,6 +224,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
 		}
+		//TODO outreach Module
+		dropdownContent.add(createHiResDropdownEntry());
 
 		dropdownFeedbackEntry.getElement().setId("header__dropdown__feedback");
 		dropdownVideoTutorialsEntry.getElement().setId("header__dropdown__tutorials");
@@ -317,9 +320,17 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		viewInContainer.add(wwtLabel);
 
 		dropdownViewInWwtEntry.add(viewInContainer);
-		dropdownViewInWwtEntry.getElement().setId("header__dropdown__wwt");
+		viewInContainer.getElement().setId("header__dropdown__wwt");
 		dropdownViewInWwtEntry.setTitle(TextMgr.getInstance().getText("header_viewInWWTFull"));
 		return dropdownViewInWwtEntry;
+	}
+
+	private Widget createHiResDropdownEntry() {
+		Label wwtLabel = new Label("Hi-res images");
+		wwtLabel.addStyleName("header__dropdown__wwt__text");
+		hiResDropdown.add(wwtLabel);
+		hiResDropdown.getElement().setId("header__dropdown__wwt");
+		return hiResDropdown;
 	}
 
 	public void setFov(String fov) {
@@ -486,6 +497,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 
 	@Override
+	public void addHiResClickHandler(ClickHandler handler) {
+		hiResDropdown.addClickHandler(handler);
+	}
+
+	@Override
 	public StatusPresenter.View getStatusView() {
 		return statusPanel;
 	}
@@ -500,6 +516,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void setIsInScienceMode(boolean isInScienceMode) {
 		dropdownScienceModeSwitch.setChecked(isInScienceMode);
 		headerScienceModeSwitch.setChecked(isInScienceMode);
+		hiResDropdown.setVisible(isInScienceMode);
 	}
 
 	@Override

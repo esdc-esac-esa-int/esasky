@@ -7,6 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -30,8 +31,9 @@ public class HstOutreachImage {
 	
 	private double opacity = 1.0;
 	
-	public HstOutreachImage(String id) {
+	public HstOutreachImage(String id, double opacity) {
 		this.id = id;
+		this.opacity = opacity;
 		this.baseUrl = "https://esahubble.org/images/" + id;
 	}
 	
@@ -84,14 +86,29 @@ public class HstOutreachImage {
 		});
 	}
 	
+	public void removeOpenSeaDragon(){
+		removed = true;
+		CommonEventBus.getEventBus().fireEvent(new OpenSeaDragonActiveEvent(false));
+		if(lastOpenseadragon != null) {
+			lastOpenseadragon.removeOpenSeaDragonFromAladin();
+		}
+	}
+	
+	private boolean removed = false;
+	private OpenSeaDragonWrapper lastOpenseadragon = null;
+	
 	public void onResponseParsed(Coordinate coor, double fov, double rotation, ImageSize imageSize,
 			String title, String description, String credits, OpenSeaDragonType type, String url, boolean moveToCenter) {
+		if (removed) {
+			return;
+		}
 		this.title = title;
 		this.description = description;
 		this.credits = credits;
 		
 		OpenSeaDragonWrapper openseadragon = new OpenSeaDragonWrapper(this.id, url, type,
 				coor.getRa(), coor.getDec(), fov, rotation, imageSize.getWidth(), imageSize.getHeight());
+		lastOpenseadragon = openseadragon;
 		JavaScriptObject openSeaDragonObject = openseadragon.createOpenSeaDragonObject();
 		openseadragon.addOpenSeaDragonToAladin(openSeaDragonObject);
 		
@@ -109,6 +126,7 @@ public class HstOutreachImage {
 			
 		};
 		timer.schedule(200);
+		AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
 
 		StringBuilder popupText = new StringBuilder(this.description);
 		popupText.append("<br>  Credit: ");
@@ -117,7 +135,9 @@ public class HstOutreachImage {
 		popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + "\">ESA Hubble News</a>");
 		
 		CommonEventBus.getEventBus().fireEvent(
-        		new TargetDescriptionEvent(this.title, popupText.toString()));
+        		new TargetDescriptionEvent(this.title, popupText.toString(), false));
+		CommonEventBus.getEventBus().fireEvent(new OpenSeaDragonActiveEvent(true));
+
 	}
 	
 	public double getOpacity() {
@@ -125,7 +145,11 @@ public class HstOutreachImage {
 	}
 
 	public void setOpacity(double opacity) {
+		if(removed) {
+			return;
+		}
 		this.opacity = opacity;
+		AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
 	}
 
 	public class ImageSize{

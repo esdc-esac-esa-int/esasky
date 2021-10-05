@@ -41,6 +41,7 @@ import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -944,6 +945,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	@Override
 	public void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList) {
 		
+	}
+	
+	@Override
+	public TabulatorSettings getTabulatorSettings() {
+		return new TabulatorSettings();
 	}
     
 }

@@ -172,7 +172,7 @@ public class Controller implements ValueChangeHandler<String> {
         					@Override
         					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
         						if(isInitialEvent) {
-        							CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription()));
+        							CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
         						}
         						isInitialEvent = false;
         					}

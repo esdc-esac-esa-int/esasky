@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+
+.outreachImagePanel{
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 1px solid;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 12px;
+    height: auto;
+    padding: 5px;
+    z-index: 40;
+    overflow: auto!important;
+    position: absolute;
+}
+
+.outreachImagePanel__opacityControl {
+	position: absolute;
+	bottom: 50px;
+	z-index: 10000;
+    width: 100%;
+    padding: 0px 10px;
+    box-sizing: border-box;
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.outreachImagePanel__checkBox{
+	position: absolute;
+    top: 5px;
+    right: 35px;
+    line-height: 17px;
+    height: 20px;
+    font-size: 0.95rem;
+}
+
+.outreachImagePanel__checkBox > *{
+	vertical-align: middle;
+}

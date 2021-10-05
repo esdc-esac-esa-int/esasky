@@ -91,7 +91,9 @@ public class EntityRepository {
         int multiSelectionEntities = allEntities.size();
         for(GeneralEntityInterface entity : allEntities) {
             if(isPublicationEntityType(entity) 
-            		|| entity.getDescriptor() instanceof GwDescriptor) {
+            		|| entity.getDescriptor() instanceof GwDescriptor
+            		|| entity instanceof ImageListEntity
+            		) {
                 multiSelectionEntities--;
             }
         }
@@ -127,7 +129,7 @@ public class EntityRepository {
     	return allEntities;
     }
 
-    public GeneralEntityInterface createImageListEntity(IDescriptor descriptor) {
+    public ImageListEntity createImageListEntity(IDescriptor descriptor) {
     	ImageListEntity newEntity =  new ImageListEntity(descriptor, descriptorRepo.getImageDescriptors().getCountStatus(),
                 CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPImageListService.getInstance());
     	addEntity(newEntity);
