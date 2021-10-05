@@ -339,6 +339,7 @@ public class HeaderPresenter {
 		});
 		
 		view.addHiResClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
 			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
 		});
 

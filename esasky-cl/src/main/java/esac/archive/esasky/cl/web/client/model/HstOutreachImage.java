@@ -26,10 +26,10 @@ public class HstOutreachImage {
 	private String title;
 	private String description;
 	private String credits;
-
 	private String baseUrl;
-	
 	private double opacity = 1.0;
+	private boolean removed = false;
+	private OpenSeaDragonWrapper lastOpenseadragon = null;
 	
 	public HstOutreachImage(String id, double opacity) {
 		this.id = id;
@@ -93,9 +93,6 @@ public class HstOutreachImage {
 			lastOpenseadragon.removeOpenSeaDragonFromAladin();
 		}
 	}
-	
-	private boolean removed = false;
-	private OpenSeaDragonWrapper lastOpenseadragon = null;
 	
 	public void onResponseParsed(Coordinate coor, double fov, double rotation, ImageSize imageSize,
 			String title, String description, String credits, OpenSeaDragonType type, String url, boolean moveToCenter) {

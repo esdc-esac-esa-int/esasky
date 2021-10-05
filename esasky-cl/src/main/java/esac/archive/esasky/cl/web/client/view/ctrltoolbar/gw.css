@@ -75,3 +75,7 @@
     justify-content: space-between;
     padding-top: 5px;
 }
+
+.tabulator .tabulator-tableHolder {
+	scrollbar-width: thin;
+}

@@ -128,9 +128,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			}
 		});
 		
-		CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> {
-        	CtrlToolBar.this.outreachImagePanel.toggle();
-        });
+		CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> CtrlToolBar.this.outreachImagePanel.toggle());
 		
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setTargetDialogSuggestedPosition(false));
 	}
@@ -567,8 +565,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		outreachImageButton.addClickHandler(event -> {
                 CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
                 CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
-                //TODO fix event
-                sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_GW);
+                sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
 			}
 		);
 		outreachImagePanel = new OutreachImagePanel();

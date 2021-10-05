@@ -95,6 +95,7 @@ public final class GoogleAnalytics {
     public static final String ACT_CTRLTOOLBAR_PLANNINGTOOL = "PlanningTool";
     public static final String ACT_CTRLTOOLBAR_PUBLICATIONS = "Publications";
     public static final String ACT_CTRLTOOLBAR_GW = "GravitationalWave";
+    public static final String ACT_CTRLTOOLBAR_OUTREACH_IMAGE = "OutreachImage";
     public static final String ACT_CTRLTOOLBAR_DICE = "Dice";
     public static final String ACT_CTRLTOOLBAR_CUSTOMBUTTON = "CustomButton";
     

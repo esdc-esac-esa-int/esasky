@@ -86,9 +86,9 @@ public class ImageListEntity extends EsaSkyEntity {
 
     @Override
     public void onShapeSelection(AladinShape shape) {
-    	int shapeId =  Integer.parseInt(shape.getId());
+    	Integer shapeId =  Integer.parseInt(shape.getId());
     	if(shapeRecentlySelected.contains(shapeId)) {
-    		shapeRecentlySelected.remove(new Integer(shapeId));
+    		shapeRecentlySelected.remove(shapeId);
     		return;
     	}
     	

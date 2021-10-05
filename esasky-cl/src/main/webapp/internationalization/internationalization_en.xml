@@ -3470,18 +3470,30 @@
 		Show fewer columns
 	</text>
 	<text key="gwPanel_header">
-		Astronomical Events
+		Multi-messenger Events
 	</text>
 	<text key="gwPanel_helpText">
 		TODO
 	</text>
 	<text key="gwPanel_helpTitle">
-		Gravitational Waves and Neutrinos
+		Gravitational Waves
 	</text>
 	<text key="webConstants_exploreHstImages">
 		Explore high resolution images from the Hubble Space Telescope
 	</text>
 	<text key="ctrlToolBar_gwTooltip">
-		Explore Astronomical Events
+		Explore Multi-messenger Events
+	</text>
+	<text key="outreachImage_hideFootprints">
+		Hide Footprints
+	</text>
+	<text key="outreachImagePanel_header">
+		High Resolution Hubble images
+	</text>
+	<text key="outreachImagePanel_helpText">
+		TODO
+	</text>
+	<text key="outreachImagePanel_helpTitle">
+		High Resolution Hubble images
 	</text>
 </Internationalization>

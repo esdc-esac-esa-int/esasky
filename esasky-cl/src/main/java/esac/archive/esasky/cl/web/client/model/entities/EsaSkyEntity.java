@@ -70,7 +70,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private boolean isRefreshable = true;
     private StylePanel stylePanel;
     private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
-    protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<Integer>();
+    protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<>();
 
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -918,16 +918,14 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();
 	    boolean disableLink2ArchiveColumn = false;
-	    if (getDescriptor() instanceof ExtTapDescriptor) {
-	        
-	        if(getDescriptor().getArchiveProductURI() != null
-	                && getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
+	    if (getDescriptor() instanceof ExtTapDescriptor
+	    		&& getDescriptor().getArchiveProductURI() != null
+	    		&& getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
 	            disableLink2ArchiveColumn = true;
 	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
 	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
 	                settings.addDatalinkLink2ArchiveColumn = true;
 	            }
-	        }
 	    }
 		settings.addSendToVOApplicationColumn = getDescriptor().getSampEnabled();
 		settings.addLink2ArchiveColumn = getDescriptor().getArchiveProductURI() != null 
