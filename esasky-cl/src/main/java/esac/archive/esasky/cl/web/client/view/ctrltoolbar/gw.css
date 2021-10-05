@@ -37,8 +37,8 @@
 }
 
 .gwPanel__tabSelected:hover {
-	background: #C3C3C3;
-	color: #343434;
+/* 	background: #C3C3C3; */
+/* 	color: #343434; */
 }
 
 .gwPanel__tabLabel{

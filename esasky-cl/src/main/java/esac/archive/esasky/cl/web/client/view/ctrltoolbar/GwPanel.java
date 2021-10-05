@@ -192,6 +192,8 @@ public class GwPanel extends BasePopupPanel {
 			gwTab.setDeselectedStyle();
 		});
 		neutrinoTab.setDeselectedStyle();
+		
+		neutrinoTab.setVisible(false);
 		tabs.add(neutrinoTab);
 		
 		return tabs;
