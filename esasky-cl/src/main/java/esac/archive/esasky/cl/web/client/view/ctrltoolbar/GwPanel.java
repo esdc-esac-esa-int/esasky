@@ -98,7 +98,6 @@ public class GwPanel extends BasePopupPanel {
 		initGwDescriptor();
 		
 		initView();
-		MainLayoutPanel.addMainAreaResizeHandler(event -> setMaxSize());
 		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
 			Integer rowId = rowIdHipsMap.get(changeEvent.getHiPSName());
 			if(rowId != null) {
@@ -326,8 +325,7 @@ public class GwPanel extends BasePopupPanel {
 			String id = rowData.getStringProperty("grace_id");
 			
 			if(!blockOpenHipsTrigger) {
-				//TODO do not use skiesdev
-				testParsingHipsList("http://skiesdev.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
+				testParsingHipsList("https://skies.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
 				String ra = rowData.getStringProperty(gwDescriptor.getTapRaColumn());
 				String dec = rowData.getStringProperty(gwDescriptor.getTapDecColumn());
 				AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
