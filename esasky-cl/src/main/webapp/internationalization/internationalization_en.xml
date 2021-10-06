@@ -3455,7 +3455,6 @@
 	<text key="tabulator_browseProducts">
 		Browse products for this row
 	</text>
-	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="gwPanel_gwTab">
 		Gravitational Waves
@@ -3509,4 +3508,5 @@
 	<text key="outreachImagePanel_helpTitle">
 		ESA/Hubble Outreach Images
 	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

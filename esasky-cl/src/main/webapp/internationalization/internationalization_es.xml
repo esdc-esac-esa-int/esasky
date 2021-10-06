@@ -3163,6 +3163,56 @@
 	<text key="tabulator_browseProducts">
 		Explorar productos para esta fila
 	</text>
-		
+	<text key="gwPanel_gwTab">
+		Ondas Gravitacionales
+	</text>
+	<text key="gwPanel_neutrinoTab">
+		Neutrinos
+	</text>
+	<text key="gwPanel_showMoreColumns">
+		Mostrar más columnas
+	</text>
+	<text key="gwPanel_showFewerColumns">
+		Mostrar menos columnas
+	</text>
+	<text key="gwPanel_header">
+		Eventos Multi-mensajero
+	</text>
+	<text key="gwPanel_helpText">
+		Esta herramienta permite buscar eventos públicos multi-mensajeros de ondas gravitacionales, mostrar sus contornos en el cielo y descargar los datos asociados.
+		&lt;br&gt;&lt;br&gt;
+		Haciendo click en la barra Ondas Gravitacionales se muestran los eventos asociados a los datos O3 de Advanced LIGO y Advanced Virgo. Selecciona un evento de onda gravitacional para ir al centro 		de su contorno. Se muestra el HiPS creado a partir del archivo asociado a la onda gravitacional y automáticamente se despliega una matriz de coordenadas celestes. La línea sólida muestra 			los contornos al 50% del nivel de confianza y la línea discontinua al 90%. Haz click en Mostrar más columnas para expandir la tabla.		
+	</text>
+	<text key="gwPanel_helpTitle">
+		Ondas Gravitacionales
+	</text>
+	<text key="webConstants_exploreHstImages">
+		Explorar imágenes de alta resolución del telescopio espacial Hubble 
+	</text>
+	<text key="ctrlToolBar_gwTooltip">
+		Explorar Eventos Multi-mensajero
+	</text>
+	<text key="outreachImage_hideFootprints">
+		Ocultar Contornos
+	</text>
+	<text key="outreachImagePanel_header">
+		Imágenes Divulgativas ESA/Hubble 
+	</text>
+	<text key="outreachImagePanel_helpText">
+		Visualizar imágenes astronómicas divulgativas de la web &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		ESA/Hubble.
+		&lt;/a&gt;  
+		&lt;br&gt;&lt;br&gt;
+		Haciendo click en el icono aparece una lista con las imágenes divulgativas de ESA/Hubble disponibles en la región del cielo actual. En el campo de visión se muestran los contornos de dichas imágenes mediante rectángulos verdes, es posible ocultarlos seleccionando Ocultar Contornos.
+		&lt;br&gt;&lt;br&gt;
+		Hacer click en un contorno o en un elemento de la lista para mostrar la imagen divulgativa superpuesta en el cielo. Se abre un cuadro de texto con la descripción de la imagen y el link a su página web ESA/Hubble. Es posible cambiar la opacidad moviendo la barra Opacidad a izquierda y derecha.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANTE:&lt;/b&gt; Estas imágenes han sido creadas con finalidad divulgativa y no para uso científico.
+	</text>
+	<text key="outreachImagePanel_helpTitle">
+		Imágenes Divulgativas ESA/Hubble 
+	</text>
 </Internationalization>
 
