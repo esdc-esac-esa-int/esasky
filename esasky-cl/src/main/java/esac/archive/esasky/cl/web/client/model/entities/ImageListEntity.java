@@ -59,13 +59,7 @@ public class ImageListEntity extends EsaSkyEntity {
 		fetchDataWithoutMOC();
 		updateTimer.schedule(5000);
 	}
-//	
-	@Override
-	public String getTapUrl() {
-		//TODO remove
-//		return descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString()), EsaSkyConstants.JSON);
-		return "/esasky/hst-outreach2.json";
-	}
+
 	
 	@Override
     public void selectShapes(int shapeId) {
