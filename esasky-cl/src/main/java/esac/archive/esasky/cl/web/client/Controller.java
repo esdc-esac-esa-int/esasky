@@ -6,7 +6,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -27,6 +26,7 @@ import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachImagePanel;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -73,6 +73,8 @@ public class Controller implements ValueChangeHandler<String> {
 		
 		setBasicLayoutFromParameters();
 		setSciMode();
+		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HST_IMAGE));
+
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
 		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");
 		
@@ -87,7 +89,6 @@ public class Controller implements ValueChangeHandler<String> {
 			initESASkyWithURLParameters("", "", "", "", hideWelcome);
 		}
 		
-		startupWithHstOutReachImage();
 	}
 
     private void startupWithChosenTargetOrHips(final boolean hideWelcome) {
@@ -108,21 +109,6 @@ public class Controller implements ValueChangeHandler<String> {
         initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
     }
     
-    public void startupWithHstOutReachImage() {
-    	String id = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HST_IMAGE);
-    	if(id != null) {
-    		Timer timer = new Timer() {
-    			
-    			@Override
-    			public void run() {
-    				//getRootPresenter().getTargetPresenter().openOutreachImage(id);
-    			}
-    			
-    		};
-    		timer.schedule(500);
-    	}
-    }
-
     private String extractTargetFromUrlParameter(String targetFromUrl, String target) {
         if(targetFromUrl.contains("-") || targetFromUrl.contains("+")){
         	target = targetFromUrl;

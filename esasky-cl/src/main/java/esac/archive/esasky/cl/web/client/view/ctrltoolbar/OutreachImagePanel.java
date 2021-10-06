@@ -22,6 +22,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 	private BaseDescriptor outreachImageDescriptor;
 	private ImageListEntity imageEntity;
 	private boolean isHidingFootprints = false;
+	private static String outreachImageIdToBeOpened; 
 	
 	private FlowPanel opacityPanel;
 	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
@@ -48,6 +49,14 @@ public class OutreachImagePanel extends BasePopupPanel {
 	}
 	
 	@Override
+	protected void onLoad() {
+		super.onLoad();
+		if(outreachImageIdToBeOpened != null) {
+			show();
+		}
+	}
+	
+	@Override
 	public void show() {
 		super.show();
 		if(outreachImageDescriptor == null) {
@@ -62,6 +71,9 @@ public class OutreachImagePanel extends BasePopupPanel {
 	private void fetchData() {
 		outreachImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
 		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
+		if(outreachImageIdToBeOpened != null) {
+			imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
+		}
 		mainContainer.add(imageEntity.createTablePanel().getWidget());
 		imageEntity.fetchData();
 		setMaxSize();
@@ -104,8 +116,8 @@ public class OutreachImagePanel extends BasePopupPanel {
 	protected void setMaxSize() {
 		super.setMaxSize();
 	    int height = MainLayoutPanel.getMainAreaHeight();
-	    if(height > 600) {
-	    	height = 600;
+	    if(height > 400) {
+	    	height = 400;
 	    }
 		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
@@ -114,5 +126,9 @@ public class OutreachImagePanel extends BasePopupPanel {
 			imageEntity.getTablePanel().setMaxHeight(height);
 		}
 	}
+    
+    public static void setStartupId(String id) {
+    	outreachImageIdToBeOpened = id;
+    }
 
 }

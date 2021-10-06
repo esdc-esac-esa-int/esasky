@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.Timer;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
@@ -21,6 +21,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	private boolean isHidingShapes = false;
 	private HstOutreachImage lastImage = null;
 	private List<Integer> visibleRows;
+	private String outreachImageIdToBeOpened;
 	
 	private Timer updateTimer = new Timer() {
 		
@@ -41,7 +42,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	public ImageListEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
 			String esaSkyUniqId, AbstractTAPService metadataService) {
 		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
-		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
+		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
 	}
 	
 	private void performFoVFilter() {
@@ -58,6 +59,13 @@ public class ImageListEntity extends EsaSkyEntity {
 		fetchDataWithoutMOC();
 		updateTimer.schedule(5000);
 	}
+//	
+	@Override
+	public String getTapUrl() {
+		//TODO remove
+//		return descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString()), EsaSkyConstants.JSON);
+		return "/esasky/hst-outreach2.json";
+	}
 	
 	@Override
     public void selectShapes(int shapeId) {
@@ -70,6 +78,25 @@ public class ImageListEntity extends EsaSkyEntity {
     		}
     	}
     }
+	
+	@Override
+	public void addShapes(GeneralJavaScriptObject rows) {
+		super.addShapes(rows);
+		if(outreachImageIdToBeOpened != null) {
+			GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
+			for(int i = 0; i < rowDataArray.length; i++) {
+				if(rowDataArray[i].getStringProperty(getDescriptor().getUniqueIdentifierField()).equals(outreachImageIdToBeOpened)) {
+					selectShapes(i);
+					tablePanel.selectRow(i);
+					return;
+				}
+			}
+		}
+	}
+	
+	public void setIdToBeOpened(String id) {
+		this.outreachImageIdToBeOpened = id;
+	}
 	
 	@Override
 	public void deselectShapes(int shapeId) {
