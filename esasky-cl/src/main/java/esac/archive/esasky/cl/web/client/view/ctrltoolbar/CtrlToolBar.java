@@ -215,6 +215,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 		outreachImageButton = createImageButton();
 		ctrlToolBarPanel.add(outreachImageButton);
 		ctrlToolBarPanel.add(outreachImagePanel);
+		if(!Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)) {
+			hideWidget(outreachImageButton);
+		}
 		
 		initWidget(ctrlToolBarPanel);
 		
@@ -510,7 +513,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	    } else {
 	        hideWidget(exploreBtn);
 	    }
-        showOrHideWidget(outreachImageButton, !isInScienceMode);
+        showOrHideWidget(outreachImageButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE) && !isInScienceMode);
 	}
 
     private void showScienceModeWidgets() {

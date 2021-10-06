@@ -224,7 +224,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
 		}
-		//TODO outreach Module
+
 		dropdownContent.add(createHiResDropdownEntry());
 
 		dropdownFeedbackEntry.getElement().setId("header__dropdown__feedback");
@@ -330,7 +330,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		wwtLabel.addStyleName("header__dropdown__wwt__text");
 		hiResDropdown.add(wwtLabel);
 		hiResDropdown.getElement().setId("header__dropdown__wwt");
-		hiResDropdown.setVisible(GUISessionStatus.getIsInScienceMode());
+		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
+				&& GUISessionStatus.getIsInScienceMode());
 		return hiResDropdown;
 	}
 
@@ -517,7 +518,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void setIsInScienceMode(boolean isInScienceMode) {
 		dropdownScienceModeSwitch.setChecked(isInScienceMode);
 		headerScienceModeSwitch.setChecked(isInScienceMode);
-		hiResDropdown.setVisible(isInScienceMode);
+		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
+				&& isInScienceMode);
 	}
 
 	@Override
