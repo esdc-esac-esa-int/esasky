@@ -3473,7 +3473,10 @@
 		Multi-messenger Events
 	</text>
 	<text key="gwPanel_helpText">
-		TODO
+		This tool allows to search for public multi-messenger events from gravitational waves, display their footprints in the sky and download data.
+		&lt;br&gt;&lt;br&gt;
+		Clicking on the Gravitational Waves bar brings a list of the gravitational wave events detected by Advanced LIGO and Advanced Virgo in the O3 data. Click on a gravitational wave event to go to the centre of the associated footprint. A HiPS created from the gravitational wave event file is shown. A coordinate grid displays automatically on top of the sky.  
+		A solid line shows the 50% confidence contours and a dashed line the 90% confidence contours. Click on Show more columns to expand the table.
 	</text>
 	<text key="gwPanel_helpTitle">
 		Gravitational Waves
@@ -3488,12 +3491,22 @@
 		Hide Footprints
 	</text>
 	<text key="outreachImagePanel_header">
-		High Resolution Hubble images
+		ESA/Hubble Outreach Images
 	</text>
 	<text key="outreachImagePanel_helpText">
-		TODO
+		Visualise outreach astronomical images from the &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		ESA/Hubble website.
+		&lt;/a&gt;  
+		&lt;br&gt;&lt;br&gt;
+		Clicking on the icon displays a list with the ESA/Hubble outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by green rectangles, you can hide them by clicking in Hide Footprints.
+		&lt;br&gt;&lt;br&gt;
+		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Hubble website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; This images are created for outreach purposes and they are not intended for scientific use.
 	</text>
 	<text key="outreachImagePanel_helpTitle">
-		High Resolution Hubble images
+		ESA/Hubble Outreach Images
 	</text>
 </Internationalization>
