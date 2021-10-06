@@ -1,5 +1,7 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
+import java.util.List;
+
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
@@ -18,6 +20,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	private double lastOpacity = 1.0;
 	private boolean isHidingShapes = false;
 	private HstOutreachImage lastImage = null;
+	private List<Integer> visibleRows;
 	
 	private Timer updateTimer = new Timer() {
 		
@@ -62,7 +65,7 @@ public class ImageListEntity extends EsaSkyEntity {
     	GeneralJavaScriptObject[] rows = tablePanel.getSelectedRows();
     	for(GeneralJavaScriptObject row : rows) {
     		if(GeneralJavaScriptObject.convertToInteger(row.getProperty("id")) == shapeId) {
-    			lastImage = new HstOutreachImage(row.getStringProperty("image_id"), lastOpacity);
+    			lastImage = new HstOutreachImage(row.getStringProperty("identifier"), lastOpacity);
     			lastImage.loadImage(true);
     		}
     	}
@@ -115,7 +118,16 @@ public class ImageListEntity extends EsaSkyEntity {
     			hideAllShapes();
     		} else {
     			performFoVFilter();
+    			if(visibleRows != null) {
+    				showShapes(visibleRows);
+    			}
     		}
     	}
+    }
+
+    @Override
+    public void showShapes(List<Integer> shapeIds) {
+    	super.showShapes(shapeIds);
+    	visibleRows = shapeIds;
     }
 }
