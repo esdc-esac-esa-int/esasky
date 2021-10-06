@@ -121,6 +121,8 @@ public class DescriptorRepository {
 	/** Descriptor and CountStatus hashMaps for improve counts */
 	private HashMap<String, List<IDescriptor>> descriptorsMap; 
 	private HashMap<String, List<CountStatus>> countStatusMap;
+	
+	private CountObserver imageCountObserver = (count)->{};
 
 	private boolean catDescriptorsIsReady = false;
 	private boolean obsDescriptorsIsReady = false;
@@ -364,8 +366,12 @@ public class DescriptorRepository {
 
 		});
 	}
+	
+	public void setOutreachImageCountObserver(final CountObserver imageCountObserver) {
+		this.imageCountObserver = imageCountObserver;
+	}
 
-	public void initImageDescriptors(final CountObserver imageCountObserver) {
+	public void initImageDescriptors() {
 		
 		Log.debug("[DescriptorRepository] Into DescriptorRepository.initObsDescriptors");
 		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.IMAGES_URL, new IJSONRequestCallback() {
@@ -394,9 +400,8 @@ public class DescriptorRepository {
 				
 				Log.debug("[DescriptorRepository] [init image ]Total image entries: " + imageDescriptors.getTotal());
 				WavelengthUtils.setWavelengthRangeMaxMin(imageDescriptors.getDescriptors());
-				if (!GUISessionStatus.getIsInScienceMode()) {
-					GUISessionStatus.setDoCountOnEnteringScienceMode();
-				}
+				
+				imageCountObserver.onCountUpdate(imageDescriptors.getTotal());
 			}
 			
 			@Override

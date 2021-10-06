@@ -25,12 +25,10 @@ public class OutreachImagePanel extends BasePopupPanel {
 	
 	private FlowPanel opacityPanel;
 	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
+	private FlowPanel mainContainer = new FlowPanel();
 	
 	private final Resources resources;
 	private CssResource style;
-
-
-	private FlowPanel outreachImagePanel = new FlowPanel();
 
 	public static interface Resources extends ClientBundle {
 		@Source("outreachImagePanel.css")
@@ -45,21 +43,28 @@ public class OutreachImagePanel extends BasePopupPanel {
 		
 		initView();
 		setMaxSize();
+		
 		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive()));
 	}
 	
 	@Override
 	public void show() {
 		super.show();
-		//TODO what if descriptor is not ready?
 		if(outreachImageDescriptor == null) {
-			outreachImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
-			imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
-			outreachImagePanel.add(imageEntity.createTablePanel().getWidget());
-			imageEntity.fetchData();
+			if(DescriptorRepository.getInstance().getImageDescriptors() != null) {
+				fetchData();
+			} else {
+				DescriptorRepository.getInstance().setOutreachImageCountObserver(newCount -> fetchData());
+			}
 		}
+	}
+	
+	private void fetchData() {
+		outreachImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
+		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
+		mainContainer.add(imageEntity.createTablePanel().getWidget());
+		imageEntity.fetchData();
 		setMaxSize();
-		
 	}
 	
 	private void initView() {
@@ -69,7 +74,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 				TextMgr.getInstance().getText("outreachImagePanel_helpText"), 
 				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
 
-		outreachImagePanel.add(header);
+		mainContainer.add(header);
 		
 		ESASkySlider opacitySlider = new ESASkySlider(0, 1.0, 250);
 		opacitySlider.registerValueChangeObserver(value -> imageEntity.setOpacity(value));
@@ -91,8 +96,8 @@ public class OutreachImagePanel extends BasePopupPanel {
         	hideFootprintsSwitch.setChecked(isHidingFootprints);
     		imageEntity.setIsHidingShapes(isHidingFootprints);
 		});
-        outreachImagePanel.add(hideFootprintsSwitch);
-		this.add(outreachImagePanel);
+        mainContainer.add(hideFootprintsSwitch);
+		this.add(mainContainer);
 	}
 	
 	@Override

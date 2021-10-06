@@ -460,7 +460,7 @@ public class MainPresenter {
 
     private void getImageList() {
     	Log.debug("[MainPresenter] Into MainPresenter.getImageList");
-    	descriptorRepo.initImageDescriptors(newCount -> newCount++);
+    	descriptorRepo.initImageDescriptors();
     }
 
     public final AllSkyPresenter getAllSkyPresenter() {
