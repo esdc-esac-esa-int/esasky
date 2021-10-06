@@ -128,7 +128,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			}
 		});
 		
-		CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> CtrlToolBar.this.outreachImagePanel.toggle());
+		CommonEventBus.getEventBus().addHandler(ShowImageListEvent.TYPE, event -> {
+			CtrlToolBar.this.outreachImagePanel.toggle();
+			closeAllOtherPanels(outreachImageButton);
+		});
 		
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setTargetDialogSuggestedPosition(false));
 	}
