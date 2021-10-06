@@ -124,8 +124,6 @@ public class SearchPresenter {
 		
 		void closeAllOtherPanels(Widget button);
 		
-        void openOutreachImage(String id);
-        
         void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title);
         
         void updateModuleVisibility();
@@ -442,11 +440,6 @@ public class SearchPresenter {
         }
     }
     
-	public void openOutreachImage(String id) {
-		view.openOutreachImage(id);
-	}
-	
-	
     public void showPublicationInfo (final GeneralJavaScriptObject rowData) {
         String bibcode = rowData.getStringProperty("bibcode");
         String authors = rowData.getStringProperty("author");

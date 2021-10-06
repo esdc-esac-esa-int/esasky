@@ -1,11 +1,8 @@
 package esac.archive.esasky.cl.web.client.view.searchpanel.targetlist;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
 import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteHandler;
 import org.moxieapps.gwt.uploader.client.events.FileQueueErrorEvent;
@@ -20,7 +17,6 @@ import org.moxieapps.gwt.uploader.client.events.UploadSuccessEvent;
 import org.moxieapps.gwt.uploader.client.events.UploadSuccessHandler;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -50,7 +46,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
-import esac.archive.esasky.ifcs.model.descriptor.HstImageIdDescriptor;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -59,20 +54,14 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.ScrollPanelAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
-import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -93,7 +82,6 @@ public class TargetListPanel extends DialogBox {
     private FlowPanel uploadContainer;
     private EsaSkyUploader uploader;
     private DropDownMenu<String> preparedListDropDown;
-    private DropDownMenu<String> outreachImageDropDown;
     private Resources resources;
     private CssResource style;
     private VerticalPanel targetsContainer;
@@ -104,15 +92,10 @@ public class TargetListPanel extends DialogBox {
     private FlexTable targetListTable;
     private int WIDTH = 275;
     private ESASkyPlayerPanel playerPanel;
-	private ESASkySlider opacitySlider;
-	private Label opacityLabel;
     private Image simbadLogo;
     private boolean isShowing = false;
     private boolean tryingBackupLanguage = false;
     
-    private List<ESASkySearchResult> outreachImageList;
-    private String outReachImageIdToBeOpened;
-
     private static final String TARGETLIST_FILES_URL = Dictionary.getDictionary("serverProperties")
             .get("targetListFilesLocation");
 
@@ -182,24 +165,6 @@ public class TargetListPanel extends DialogBox {
         targetsContainer.add(playerPanel);
 
         
-		opacitySlider = new ESASkySlider(0, 1.0, 250);
-		opacitySlider.addStyleName("hipsSlider");
-		opacitySlider.registerValueChangeObserver(new EsaSkySliderObserver() {
-
-			@Override
-			public void onValueChange(double value) {
-				AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(value);
-
-			}
-		});
-		
-		opacityLabel = new Label();
-		opacityLabel.setText(TextMgr.getInstance().getText("targetlist_opacity"));
-		opacityLabel.setStyleName("opacityLabel");
-        
-		targetsContainer.add(opacityLabel);
-		targetsContainer.add(opacitySlider);
-		
         container = new FlowPanel();
 
         container.add(new PopupHeader(this, 
@@ -218,12 +183,6 @@ public class TargetListPanel extends DialogBox {
 
         initUploader();
         uploadContainer.add(uploader);
-
-        Label orUploadLabel2 = new Label();
-        orUploadLabel2.setText(TextMgr.getInstance().getText("uploadTargetList_orUpload"));
-        orUploadLabel2.setStyleName("orUploadLabel");
-        uploadContainer.add(orUploadLabel2);
-        uploadContainer.add(createOutreachImageDropDown());
 
         container.add(uploadContainer);
         container.add(targetsContainer);
@@ -421,103 +380,6 @@ public class TargetListPanel extends DialogBox {
         return preparedListDropDown;
     }
     
-    public void addNewOutreachImage(String id, String title, boolean shouldGoToTarget) {
-    	addNewOutreachImage(id, title, shouldGoToTarget, false);
-    }
-    
-    public void openOutreachImage(String id) {
-    	if(outreachImageList == null || outreachImageList.isEmpty()) {
-    		outReachImageIdToBeOpened = id;
-    	}else {
-    		int index = 0;
-    		boolean found = false;
-	    	for(ESASkySearchResult image : outreachImageList) {
-	    		if(image.getSimbadMainId().equalsIgnoreCase(id)) {
-	    			setOutreachImageTableData(outreachImageList, id);
-	    			show();
-	    			setSelectedOutreachImage(index);
-	    			found = true;
-	    			break;
-	    		}
-	    		index++;
-	    	}
-	    	if(!found) {
-	    		String errorMsg = TextMgr.getInstance().getText("targetList_imageNotFound") + id;
-				DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
-						TextMgr.getInstance().getText("error"));
-	    	}
-    	}
-    }
-    
-    public void addNewOutreachImage(String id, String title, boolean shouldGoToTarget, boolean addToEnd) {
-    	ESASkySearchResult searchResult = new ESASkySearchResult();
-    	searchResult.setSimbadMainId(id);
-    	searchResult.setUserInput(title);
-    	searchResult.setUserInputType(SearchInputType.TARGET);
-    	searchResult.setValidInput(true);
-    	int index = 0;
-    	if(addToEnd) {
-    		index = outreachImageList.size(); 
-    	}
-    	outreachImageList.add(index, searchResult);
-    	if(shouldGoToTarget) {
-    		setOutreachImageTableData(outreachImageList, id);
-    		setSelectedOutreachImage(0);
-    	}
-    }
-    
-	public interface HstImageIdDescriptorMapper extends ObjectMapper<List<HstImageIdDescriptor>> {};
-    
-    private void fillOutreachList() {
-        outreachImageList = new ArrayList<ESASkySearchResult>();
-    	
-    	JSONUtils.getJSONFromUrl(EsaSkyWebConstants.HST_IMAGE_URL, new IJSONRequestCallback() {
-
-			@Override
-			public void onSuccess(String responseText) {
-				
-				HstImageIdDescriptorMapper mapper = GWT.create(HstImageIdDescriptorMapper.class);
-
-				List<HstImageIdDescriptor> descriptors = mapper.read(responseText);
-		        for(HstImageIdDescriptor desc : descriptors) {
-		        	addNewOutreachImage(desc.getId(), desc.getTitle(), false, true);
-		        }
-		        
-		        if(outReachImageIdToBeOpened != null) {
-		        	openOutreachImage(outReachImageIdToBeOpened);
-		        }
-			}
-
-			@Override
-			public void onError(String errorCause) {
-				Log.error(errorCause);
-			}
-		});
-    }
-    private DropDownMenu<String> createOutreachImageDropDown() {
-    	
-    	outreachImageDropDown = new DropDownMenu<String>(
-    			TextMgr.getInstance().getText("targetlist_images"), 
-    			TextMgr.getInstance().getText("targetlist_images"), 207, "outreachImageDropDown");
-    	
-    	outreachImageDropDown.registerObserver(new MenuObserver() {
-    		
-    		@Override
-    		public void onSelectedChange() {
-    			String id = outreachImageDropDown.getSelectedObject();
-    			setOutreachImageTableData(outreachImageList, id);
-    		}
-    	});
-    	
-    	
-		String title = TextMgr.getInstance().getText("targetlist_hstTitle");
-		fillOutreachList();
-		MenuItem<String> dropdownItem = new MenuItem<String>(title, title, title, true);
-		outreachImageDropDown.addMenuItem(dropdownItem);
-
-    	return outreachImageDropDown;
-    }
-
     private final void setSelectedTarget(final int index) {
         int TARGET_OVERLAP_SIZE = 2;
         double widgetPosition = 0;
@@ -597,8 +459,6 @@ public class TargetListPanel extends DialogBox {
         targetListScrollPanel.add(targetListTable);
 
         targetListTitle.setHTML(title);
-    	opacityLabel.setVisible(false);
-    	opacitySlider.setVisible(false);
         uploadContainer.setVisible(false);
 
         if (inputData.size() > 0 && firstValidTarget != null) {
@@ -606,50 +466,6 @@ public class TargetListPanel extends DialogBox {
         }
     }
     
-    public void setOutreachImageTableData(List<ESASkySearchResult> inputData, String title) {
-    	Log.debug("Setting table data...");
-    	
-    	targetsContainer.setVisible(true);
-    	playerPanel.resetPlayerEntries();
-    	// remove previous component
-    	targetListScrollPanel.clear();
-    	AladinLiteWrapper.getInstance().removeMultitargetPointer();
-    	
-    	targetListTable = new FlexTable();
-    	targetListTable.getElement().setId("targetListTable");
-    	
-    	Log.debug(inputData.size() + " target(s) found");
-    	
-    	int i = 0;
-    	ESASkySearchResult firstValidTarget = null;
-    	for (ESASkySearchResult currTarget : inputData) {
-    		final int index = i++;
-    		TargetWidget currTargetWidget = new TargetWidget(currTarget, WIDTH);
-    		currTargetWidget.registerObserver(new TargetObserver() {
-    			
-    			@Override
-    			public void onTargetSelectionEvent(TargetWidget newlySelectedTarget) {
-    				setSelectedOutreachImage(index);
-    			}
-    		});
-    		targetListTable.setWidget(index, 0, currTargetWidget);
-    		if (currTarget.getValidInput()) {
-    			playerPanel.addEntryToPlayer(currTargetWidget);
-    			if(firstValidTarget == null) {
-    				firstValidTarget = currTarget;
-    			}
-    		}
-    	}
-    	
-    	targetListScrollPanel.getElement().setId("targetListScrollPanel");
-    	targetListScrollPanel.add(targetListTable);
-    	
-    	targetListTitle.setHTML(title);
-    	opacityLabel.setVisible(true);
-    	opacitySlider.setVisible(true);
-    	uploadContainer.setVisible(false);
-    	
-    }
 
     private void addPolygons(ESASkySearchResult currEntity, Integer id) {
 
@@ -696,7 +512,6 @@ public class TargetListPanel extends DialogBox {
         targetsContainer.setVisible(false);
         uploadContainer.setVisible(true);
         preparedListDropDown.clearSelection();
-        outreachImageDropDown.clearSelection();
     }
 
     public void toggle() {
@@ -772,28 +587,4 @@ public class TargetListPanel extends DialogBox {
                 preparedListDropDown.getSelectedObject());
     }
     
-
-    private final void setSelectedOutreachImage(final int index) {
-        TargetWidget widget;
-
-        for (int i = 0; i < targetListTable.getRowCount(); i++) {
-            widget = (TargetWidget) targetListTable.getWidget(i, 0);
-            widget.removeSelectedStyle();
-        }
-
-        final TargetWidget selectedWidget = (TargetWidget) targetListTable.getWidget(index, 0);
-        selectedWidget.setSelectedStyle();
-        int currLoc = selectedWidget.getAbsoluteTop();
-        int currPos = targetListScrollPanel.getVerticalScrollPosition();
-        int newPos = currLoc + currPos - targetListScrollPanel.getAbsoluteTop();
-        scrollTo(newPos);
-
-  
-        ESASkySearchResult imageId = outreachImageList.get(index);
-		HstOutreachImage image = new HstOutreachImage(imageId.getSimbadMainId(), 1.0);
-		image.setOpacity(opacitySlider.getCurrentValue());
-		image.loadImage();
-    }
-
-
 }

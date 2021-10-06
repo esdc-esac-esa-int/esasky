@@ -757,9 +757,4 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
         targetListPanel.setTargetsTableData(searchResults, title);
     }
-    
-    @Override
-    public void openOutreachImage(String id) {
-    	targetListPanel.openOutreachImage(id);
-    }
 }

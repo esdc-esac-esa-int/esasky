@@ -3353,8 +3353,6 @@
 	<text key="browseHips_errorLoadingGlobal">
 		ESASky could not load the global hips list from: $URL$ </text>
 
-	<text key="targetlist_images">Images </text>
-	<text key="targetlist_hstTitle">ESA/Hubble Pictures </text>
 	<text key="targetlist_opacity">Image Opacity</text>
 
 	<!-- Hips browse panel -->

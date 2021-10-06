@@ -2036,8 +2036,6 @@
 		ESASky无法从 $URL$ 加载全球HiPS注册列表
   </text>
 
-	<text key="targetlist_images">图像</text>
-	<text key="targetlist_hstTitle">ESA/Hubble图片</text>
 	<text key="targetlist_opacity">图像透明度</text>
 
 	<!-- Hips browse panel -->
