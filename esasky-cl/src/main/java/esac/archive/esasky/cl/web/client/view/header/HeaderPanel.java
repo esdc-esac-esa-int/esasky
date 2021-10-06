@@ -330,6 +330,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		wwtLabel.addStyleName("header__dropdown__wwt__text");
 		hiResDropdown.add(wwtLabel);
 		hiResDropdown.getElement().setId("header__dropdown__wwt");
+		hiResDropdown.setVisible(GUISessionStatus.getIsInScienceMode());
 		return hiResDropdown;
 	}
 
