@@ -59,7 +59,6 @@ public class ImageListEntity extends EsaSkyEntity {
 		fetchDataWithoutMOC();
 		updateTimer.schedule(5000);
 	}
-
 	
 	@Override
     public void selectShapes(int shapeId) {
@@ -67,11 +66,18 @@ public class ImageListEntity extends EsaSkyEntity {
     	GeneralJavaScriptObject[] rows = tablePanel.getSelectedRows();
     	for(GeneralJavaScriptObject row : rows) {
     		if(GeneralJavaScriptObject.convertToInteger(row.getProperty("id")) == shapeId) {
-    			lastImage = new HstOutreachImage(row.getStringProperty("identifier"), lastOpacity);
-    			lastImage.loadImage(true);
+    			if(!isIdAlreadyOpen(row.getStringProperty("identifier"))) {
+    				lastImage = new HstOutreachImage(row.getStringProperty("identifier"), lastOpacity);
+    				lastImage.loadImage(true);
+    			}
+    			return;
     		}
     	}
     }
+	
+	private boolean isIdAlreadyOpen(String newId) {
+		return lastImage != null && !lastImage.isRemoved() && lastImage.getId().equals(newId);
+	}
 	
 	@Override
 	public void addShapes(GeneralJavaScriptObject rows) {

@@ -94,6 +94,14 @@ public class HstOutreachImage {
 		}
 	}
 	
+	public boolean isRemoved() {
+		return removed;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
 	public void onResponseParsed(Coordinate coor, double fov, double rotation, ImageSize imageSize,
 			String title, String description, String credits, OpenSeaDragonType type, String url, boolean moveToCenter) {
 		if (removed) {
