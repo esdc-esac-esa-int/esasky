@@ -2983,7 +2983,7 @@
 		 MagG
 	</text>
 	<text key="ligthcurveLinkCheops">
-		 Optimal Light Curve
+		 Optimal Light-Curve
 	</text>
 	<text key="reportLinkCheops">
 		  Data Reduction Pipeline Report 
@@ -3427,19 +3427,19 @@
 		Remove entry
 	</text>
 	<text key="treeMap_notInRange_ASTRO_SPECTRA">
-		No Spectral or Light Curve data found in this wavelength range.
+		No Spectral or Light-Curve data found in this wavelength range.
 	</text>
 	<text key="treeMap_noData_ASTRO_SPECTRA">
-		No Spectral or Light Curve Data Found
+		No Spectral or Light-Curve Data Found
 	</text>
 		<text key="treeMap_ASTRO_SPECTRA">
-		Spectra and Light Curves
+		Spectra and Light-Curves
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
-		Loading Spectra and Light Curves
+		Loading Spectra and Light-Curves
 	</text>
 	<text key="webConstants_exploreSpectral">
-		Explore spectral or light curve data for this region
+		Explore spectral or light-curve data for this region
 	</text>
 	<text key="datalink_linkedProducts">
 		Linked products
@@ -3507,4 +3507,7 @@
 		ESA/Hubble Outreach Images
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
+	<text key="imageListEntity_imageNotFound">
+		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
+	</text>
 </Internationalization>
