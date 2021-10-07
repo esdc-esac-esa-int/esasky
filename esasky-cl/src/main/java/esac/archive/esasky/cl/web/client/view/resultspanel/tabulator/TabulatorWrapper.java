@@ -1569,7 +1569,7 @@ public class TabulatorWrapper{
 				    			headerTooltip:this.metadata[i].description,
 				    			download: true,
 				    			formatter:"plaintext",
-				    			sorter:  "string",
+				    			sorter: "string",
 				    			sorterParams: {thousandSeperator: ""},
 				    			headerFilter:stringFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
