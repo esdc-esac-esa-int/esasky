@@ -1,15 +1,18 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
+import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -91,6 +94,9 @@ public class ImageListEntity extends EsaSkyEntity {
 					return;
 				}
 			}
+    		String errorMsg = TextMgr.getInstance().getText("imageListEntity_imageNotFound").replace("$ID$", outreachImageIdToBeOpened);
+			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+					TextMgr.getInstance().getText("error"));
 		}
 	}
 	
