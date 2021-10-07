@@ -25,6 +25,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	private HstOutreachImage lastImage = null;
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
+	private long timeAtLastFoVFilter = 0L;
 	
 	private Timer updateTimer = new Timer() {
 		
@@ -49,12 +50,17 @@ public class ImageListEntity extends EsaSkyEntity {
 	}
 	
 	private void performFoVFilter() {
+		timeAtLastFoVFilter = System.currentTimeMillis();
 		tablePanel.filterOnFoV("ra_deg", "dec_deg");
 	}
 
 	
 	private void onFoVChanged() {
-		updateTimer.schedule(300);
+		if(System.currentTimeMillis() - timeAtLastFoVFilter > 1000) {
+			performFoVFilter();
+		} else {
+			updateTimer.schedule(300);
+		}
 	}
 	
 	@Override
