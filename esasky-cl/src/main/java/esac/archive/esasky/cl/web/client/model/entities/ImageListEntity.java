@@ -3,9 +3,11 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import java.util.List;
 import java.util.UUID;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Timer;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -46,7 +48,12 @@ public class ImageListEntity extends EsaSkyEntity {
 	public ImageListEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
 			String esaSkyUniqId, AbstractTAPService metadataService) {
 		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
-		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
+		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, coordinateEvent -> {
+			if(coordinateEvent.getIsViewCenterPosition()) {
+				onFoVChanged();	
+			}
+		});
+		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
 	}
 	
 	private void performFoVFilter() {
@@ -56,6 +63,8 @@ public class ImageListEntity extends EsaSkyEntity {
 
 	
 	private void onFoVChanged() {
+		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter > 1000) + " last: " + timeAtLastFoVFilter);
+		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter) + " cur-last ");
 		if(System.currentTimeMillis() - timeAtLastFoVFilter > 1000) {
 			performFoVFilter();
 		} else {
