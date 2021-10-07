@@ -122,7 +122,7 @@ public class DescriptorRepository {
 	private HashMap<String, List<IDescriptor>> descriptorsMap; 
 	private HashMap<String, List<CountStatus>> countStatusMap;
 	
-	private CountObserver imageCountObserver = (count)->{};
+	private CountObserver imageCountObserver = count->{};
 
 	private boolean catDescriptorsIsReady = false;
 	private boolean obsDescriptorsIsReady = false;
