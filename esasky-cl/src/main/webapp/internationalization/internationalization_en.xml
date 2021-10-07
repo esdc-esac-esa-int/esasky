@@ -3501,13 +3501,13 @@
 		&lt;br&gt;&lt;br&gt;
 		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Hubble website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
 		&lt;br&gt;&lt;br&gt;
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; This images are created for outreach purposes and they are not intended for scientific use.
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
 	</text>
 	<text key="outreachImagePanel_helpTitle">
 		ESA/Hubble Outreach Images
 	</text>
-	<!-- internationalization_es.xml is up to date for everything above -->
 	<text key="imageListEntity_imageNotFound">
 		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
 	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

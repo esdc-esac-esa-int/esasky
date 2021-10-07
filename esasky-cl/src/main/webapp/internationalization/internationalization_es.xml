@@ -3212,5 +3212,8 @@
 	<text key="outreachImagePanel_helpTitle">
 		Imágenes Divulgativas ESA/Hubble 
 	</text>
+	<text key="imageListEntity_imageNotFound">
+		No se puede encontrar la imagen con ID: $ID$ Por favor asegúrese de que el ID introducido es correcto.
+	</text>
 </Internationalization>
 
