@@ -60,7 +60,7 @@ public class HstOutreachImage {
 				
 				String url = desc.getTilesUrl();
 				OpenSeaDragonType type = OpenSeaDragonType.TILED;
-				if(imageSize.height < 1000 || imageSize.width < 1000) {
+				if(url == null || imageSize.height < 1000 || imageSize.width < 1000) {
 					url = desc.getLargeUrl();
 					type = OpenSeaDragonType.SINGLE;
 				}
