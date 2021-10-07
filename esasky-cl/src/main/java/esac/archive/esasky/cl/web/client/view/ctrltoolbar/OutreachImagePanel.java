@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -69,6 +70,9 @@ public class OutreachImagePanel extends BasePopupPanel {
 	}
 	
 	private void fetchData() {
+		if(outreachImageDescriptor != null) {
+			return;
+		}
 		outreachImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
 		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
 		if(outreachImageIdToBeOpened != null) {
@@ -114,8 +118,17 @@ public class OutreachImagePanel extends BasePopupPanel {
 	
 	@Override
 	protected void setMaxSize() {
-		super.setMaxSize();
+		Style elementStyle = getElement().getStyle();
+		int minWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+		if(minWidth > 455 && MainLayoutPanel.getMainAreaWidth() < 1500) {
+			minWidth = 455;
+		}
+		elementStyle.setPropertyPx("maxWidth", minWidth);
+		elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
 	    int height = MainLayoutPanel.getMainAreaHeight();
+	    if(minWidth == 455) {
+	    	height = 300;
+	    }
 	    if(height > 400) {
 	    	height = 400;
 	    }
@@ -123,6 +136,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
 		}
 		if(imageEntity != null && imageEntity.getTablePanel() != null) {
+			imageEntity.getTablePanel().setMaxHeight(height);
 			imageEntity.getTablePanel().setMaxHeight(height);
 		}
 	}
