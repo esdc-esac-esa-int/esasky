@@ -327,10 +327,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private Widget createHiResDropdownEntry() {
 		Label wwtLabel = new Label(TextMgr.getInstance().getText("header_highResolutionImages"));
-		wwtLabel.setTitle(TextMgr.getInstance().getText("header_highResolutionImagesTooltip"));
 		wwtLabel.addStyleName("header__dropdown__wwt__text");
 		hiResDropdown.add(wwtLabel);
 		hiResDropdown.getElement().setId("header__dropdown__wwt");
+		hiResDropdown.setTitle(TextMgr.getInstance().getText("header_highResolutionImagesTooltip"));
 		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
 				&& GUISessionStatus.getIsInScienceMode());
 		return hiResDropdown;
