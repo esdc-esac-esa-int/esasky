@@ -2136,5 +2136,60 @@
   <text key="tabulator_browseProducts">
   	从本行浏览产品
   </text>
+  <text key="gwPanel_gwTab">
+		引力波
+	</text>
+	<text key="gwPanel_neutrinoTab">
+		中微子
+	</text>
+	<text key="gwPanel_showMoreColumns">
+		显示更多列
+	</text>
+	<text key="gwPanel_showFewerColumns">
+		显示更少列
+	</text>
+	<text key="gwPanel_header">
+		多信使事件
+	</text>
+	<text key="gwPanel_helpText">
+		这个工具可以用来搜索公开的引力波多信使事件，在星空上显示覆盖图和下载数据。
+		&lt;br&gt;&lt;br&gt;
+		点击引力波按钮将显示A-LIGO和A-Virgo在O3期间探测到的引力波事件列表。点击特定引力波事件会将视野指向事件的覆盖图中心。从引力波事件数据文件生成的HiPS数据集会被显示出来，同时自动显示出坐标网格。
+		实线表示50%置信的轮廓线，虚线表示90%置信的轮廓线。单击“显示更多列”可展开数据表。
+	</text>
+	<text key="gwPanel_helpTitle">
+		引力波
+	</text>
+	<text key="webConstants_exploreHstImages">
+		浏览哈勃空间望远镜的高清图片
+	</text>
+	<text key="ctrlToolBar_gwTooltip">
+		浏览多信使事件
+	</text>
+	<text key="outreachImage_hideFootprints">
+		隐藏覆盖图
+	</text>
+	<text key="outreachImagePanel_header">
+		欧空局哈勃望远镜公众图片
+	</text>
+	<text key="outreachImagePanel_helpText">
+		展示 &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		欧空局哈勃望远镜网站
+		&lt;/a&gt;提供的公众图片。  
+		&lt;br&gt;&lt;br&gt;
+		点击这个图标，就会显示出该区域的欧空局哈勃公众图片列表。在视野中，这些图片的覆盖图由绿色矩形框显示，您可以通过单击“隐藏覆盖图”来隐藏它们。
+		&lt;br&gt;&lt;br&gt;
+		点击一个覆盖图或列表上的一个条目，公众图片将叠加显示到当前的视图上。一个文本框会打开，里面有图片的描述，以及它在欧空局哈勃网站上的链接。你可以通过左右移动图像不透明度条来调整图片的不透明度。
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;重要提醒:&lt;/b&gt; 这些图片是为公众传播目的准备的，不适用于科学研究。
+	</text>
+	<text key="outreachImagePanel_helpTitle">
+		欧空局哈勃望远镜公众图片
+	</text>
+	<text key="imageListEntity_imageNotFound">
+		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
+	</text>
 	
 </Internationalization>

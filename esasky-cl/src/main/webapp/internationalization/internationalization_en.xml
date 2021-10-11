@@ -3453,7 +3453,6 @@
 	<text key="tabulator_browseProducts">
 		Browse products for this row
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="gwPanel_gwTab">
 		Gravitational Waves
 	</text>
@@ -3506,6 +3505,7 @@
 	<text key="outreachImagePanel_helpTitle">
 		ESA/Hubble Outreach Images
 	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="imageListEntity_imageNotFound">
 		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
 	</text>
