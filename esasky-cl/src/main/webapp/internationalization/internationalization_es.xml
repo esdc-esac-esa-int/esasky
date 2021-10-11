@@ -3215,5 +3215,11 @@
 	<text key="imageListEntity_imageNotFound">
 		No se puede encontrar la imagen con ID: $ID$ Por favor asegúrese de que el ID introducido es correcto.
 	</text>
+	<text key="header_highResolutionImages">
+		Imagen Alta-res 
+	</text>
+	<text key="header_highResolutionImagesTooltip">
+		Visualizar imágenes de divulgación de ESA/Hubble	
+	</text>
 </Internationalization>
 
