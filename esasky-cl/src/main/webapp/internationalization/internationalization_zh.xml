@@ -2189,7 +2189,13 @@
 		欧空局哈勃望远镜公众图片
 	</text>
 	<text key="imageListEntity_imageNotFound">
-		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
+		无法找到ID为$ID$的图像。请再次确认输入的ID是否正确。
+	</text>
+	<text key="header_highResolutionImages">
+		高清图像
+	</text>
+	<text key="header_highResolutionImagesTooltip">
+		显示欧空局哈勃空间望远镜网站图片
 	</text>
 	
 </Internationalization>
