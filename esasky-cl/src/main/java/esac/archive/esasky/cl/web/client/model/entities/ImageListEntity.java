@@ -66,7 +66,9 @@ public class ImageListEntity extends EsaSkyEntity {
 		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter > 1000) + " last: " + timeAtLastFoVFilter);
 		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter) + " cur-last ");
 		if(System.currentTimeMillis() - timeAtLastFoVFilter > 1000) {
-			performFoVFilter();
+			if(!isHidingShapes) {
+				performFoVFilter();
+			}
 		} else {
 			updateTimer.schedule(300);
 		}
