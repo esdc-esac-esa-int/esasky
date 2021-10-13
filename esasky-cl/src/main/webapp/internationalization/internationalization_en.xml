@@ -3516,4 +3516,46 @@
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi 4FGL">
+		The Fermi Large Area Telescope (LAT) has been surveying the high-energy gamma-ray sky since 2008 and the LAT Collaboration has published a succession of source catalogs based on comprehensive analyses of LAT data. The fourth source catalog second data release was derived from analysis of the first 10 years of LAT science data.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi 3FHL">
+		Third Catalog of Hard Fermi-LAT Sources (3FHL), a catalog of sources detected above 10 GeV by the Fermi Large Area Telescope (LAT) in the first 7 years of data using the Pass 8 event-level analysis, containing 1556 objects characterised in the 10 GeV-2 TeV energy range.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi 4LAC">
+		Fourth Catalog of Active Galactic Nuclei detected by the Fermi Large Area Telescope (LAT) (4LAC-DR2) based on 10 years of data. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_OU_Blazars">
+		Open Universe for Blazars relies on a master list of blazars. The second version of this list was assembled by combining the 5BZCAT, the 3HSP and the 4LAC catalogs.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#oublazars"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="Gamma-rays">
+		Gamma-rays
+	</text>
+	<text key="Gamma">
+		Gamma
+	</text>
 </Internationalization>
