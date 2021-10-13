@@ -150,7 +150,7 @@ public class GwPanel extends BasePopupPanel {
 
 		gwTable.setData(EsaSkyWebConstants.TAP_CONTEXT 
 				+ "/tap/sync?request=doQuery&lang=ADQL&format=json&query=select+*+from+" 
-				+ gwDescriptor.getTapTable());
+				+ gwDescriptor.getTapTable() + "+order+by+iso_time+desc");
 	}
 
 	private class Tab extends FocusPanel{
