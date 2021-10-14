@@ -1,4 +1,8 @@
 @CHARSET "UTF-8";
+#outreachImagePanelContainer{
+	resize: both;
+	overflow: auto;
+}
 
 .outreachImagePanel{
     background-color: rgba(0, 0, 0, 0.65);
@@ -27,7 +31,7 @@
 
 .outreachImagePanel__footprintSwitch{
 	position: absolute;
-    top: 5px;
+    top: 1px;
     right: 35px;
     line-height: 17px;
     height: 20px;

@@ -24,6 +24,7 @@ public class ImageListEntity extends EsaSkyEntity {
 
 	private double lastOpacity = 1.0;
 	private boolean isHidingShapes = false;
+	private boolean isClosed = false;
 	private HstOutreachImage lastImage = null;
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
@@ -33,9 +34,7 @@ public class ImageListEntity extends EsaSkyEntity {
 		
 		@Override
 		public void run() {
-			if(!isHidingShapes) {
-				performFoVFilter();
-			}
+			performFoVFilter();
 		}
 		
 		@Override
@@ -61,14 +60,11 @@ public class ImageListEntity extends EsaSkyEntity {
 		tablePanel.filterOnFoV("ra_deg", "dec_deg");
 	}
 
-	
 	private void onFoVChanged() {
 		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter > 1000) + " last: " + timeAtLastFoVFilter);
 		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter) + " cur-last ");
 		if(System.currentTimeMillis() - timeAtLastFoVFilter > 1000) {
-			if(!isHidingShapes) {
-				performFoVFilter();
-			}
+			performFoVFilter();
 		} else {
 			updateTimer.schedule(300);
 		}
@@ -164,20 +160,45 @@ public class ImageListEntity extends EsaSkyEntity {
     public void setIsHidingShapes(boolean isHidingShapes) {
     	if(this.isHidingShapes != isHidingShapes) {
     		this.isHidingShapes = isHidingShapes;
-    		if(isHidingShapes) {
-    			hideAllShapes();
-    		} else {
-    			performFoVFilter();
-    			if(visibleRows != null) {
-    				showShapes(visibleRows);
-    			}
-    		}
+    		toggleFootprints();
     	}
     }
 
+	private void toggleFootprints() {
+		if(this.isHidingShapes || this.isClosed) {
+			hideAllShapes();
+		} else {
+			performFoVFilter();
+			if(visibleRows != null) {
+				showShapes(visibleRows);
+			}
+		}
+	}
+
     @Override
     public void showShapes(List<Integer> shapeIds) {
-    	super.showShapes(shapeIds);
+    	if(!isHidingShapes && !this.isClosed) {
+    		super.showShapes(shapeIds);
+    	}
     	visibleRows = shapeIds;
     }
+    
+    public void setIsPanelClosed(boolean isClosed) {
+    	this.isClosed = isClosed;
+    	toggleFootprints();
+    	if(lastImage != null){
+    		if(isClosed) {
+    			lastImage.removeOpenSeaDragon();
+    		} else {
+    			lastImage.reattachOpenSeaDragon();
+    		}
+    	}
+    }
+    
+//TODO remove :D    
+	@Override
+    public String getTapUrl() {
+    	return "hst-outreach2.json";
+    }
+
 }

@@ -925,7 +925,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void setMaxHeight(int height) {
 		if(tableAndGroupHeader != null && tableAndGroupHeader.getElement() != null) {
-			tableAndGroupHeader.getElement().getStyle().setPropertyPx("height", height - tableAndGroupHeader.getAbsoluteTop());
+			tableAndGroupHeader.getElement().getStyle().setPropertyPx("height", height);
 		}
 		
 	}

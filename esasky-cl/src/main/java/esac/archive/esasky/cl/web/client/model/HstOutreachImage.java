@@ -93,6 +93,12 @@ public class HstOutreachImage {
 			lastOpenseadragon.removeOpenSeaDragonFromAladin();
 		}
 	}
+
+	public void reattachOpenSeaDragon(){
+		removed = false;
+		CommonEventBus.getEventBus().fireEvent(new OpenSeaDragonActiveEvent(true));
+		loadImage();
+	}
 	
 	public boolean isRemoved() {
 		return removed;
@@ -104,18 +110,16 @@ public class HstOutreachImage {
 	
 	public void onResponseParsed(Coordinate coor, double fov, double rotation, ImageSize imageSize,
 			String title, String description, String credits, OpenSeaDragonType type, String url, boolean moveToCenter) {
-		if (removed) {
-			return;
-		}
+
 		this.title = title;
 		this.description = description;
 		this.credits = credits;
 		
-		OpenSeaDragonWrapper openseadragon = new OpenSeaDragonWrapper(this.id, url, type,
+		OpenSeaDragonWrapper openseadragonWrapper = new OpenSeaDragonWrapper(this.id, url, type,
 				coor.getRa(), coor.getDec(), fov, rotation, imageSize.getWidth(), imageSize.getHeight());
-		lastOpenseadragon = openseadragon;
-		JavaScriptObject openSeaDragonObject = openseadragon.createOpenSeaDragonObject();
-		openseadragon.addOpenSeaDragonToAladin(openSeaDragonObject);
+		lastOpenseadragon = openseadragonWrapper;
+		JavaScriptObject openSeaDragonObject = openseadragonWrapper.createOpenSeaDragonObject();
+		openseadragonWrapper.addOpenSeaDragonToAladin(openSeaDragonObject);
 		
 		if(moveToCenter) {
 			AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
@@ -142,6 +146,9 @@ public class HstOutreachImage {
 		CommonEventBus.getEventBus().fireEvent(
         		new TargetDescriptionEvent(this.title, popupText.toString(), false));
 		CommonEventBus.getEventBus().fireEvent(new OpenSeaDragonActiveEvent(true));
+		if (removed) {
+			removeOpenSeaDragon();
+		}
 
 	}
 	

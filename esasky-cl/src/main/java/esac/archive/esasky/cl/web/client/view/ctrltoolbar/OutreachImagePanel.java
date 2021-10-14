@@ -13,9 +13,11 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 
 public class OutreachImagePanel extends BasePopupPanel {
@@ -28,6 +30,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 	private FlowPanel opacityPanel;
 	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
 	private FlowPanel mainContainer = new FlowPanel();
+	private PopupHeader header;
 	
 	private final Resources resources;
 	private CssResource style;
@@ -47,6 +50,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 		setMaxSize();
 		
 		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive()));
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
 	
 	@Override
@@ -55,6 +59,36 @@ public class OutreachImagePanel extends BasePopupPanel {
 		if(outreachImageIdToBeOpened != null) {
 			show();
 		}
+		addResizeHandler("outreachImagePanelContainer");
+	}
+	
+	private void setDefaultSize() {
+		int width = 610;
+		int height = MainLayoutPanel.getMainAreaHeight();
+		
+		if(MainLayoutPanel.getMainAreaWidth() < 1500) {
+			width = 500;
+		}
+		if(MainLayoutPanel.getMainAreaWidth() < 1100) {
+			width = 350;
+		}
+	    if(MainLayoutPanel.getMainAreaWidth() < 450) {
+	    	height = 300;
+	    }
+	    if(height > 400) {
+	    	height = 400;
+	    }
+	    if(!DeviceUtils.isMobileOrTablet() && height > MainLayoutPanel.getMainAreaHeight() / 2) {
+	    	height = MainLayoutPanel.getMainAreaHeight() / 2;
+	    }
+		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
+			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
+		}
+		if(width > MainLayoutPanel.getMainAreaWidth()) {
+			width = MainLayoutPanel.getMainAreaWidth() - 2;
+		}
+		mainContainer.setWidth(width + "px");
+		mainContainer.setHeight(height + "px");
 	}
 	
 	@Override
@@ -66,6 +100,17 @@ public class OutreachImagePanel extends BasePopupPanel {
 			} else {
 				DescriptorRepository.getInstance().setOutreachImageCountObserver(newCount -> fetchData());
 			}
+		}
+		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+			imageEntity.setIsPanelClosed(false);
+		}
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+			imageEntity.setIsPanelClosed(true);
 		}
 	}
 	
@@ -86,7 +131,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 	private void initView() {
 		this.getElement().addClassName("outreachImagePanel");
 		
-		PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("outreachImagePanel_header"), 
+		header = new PopupHeader(this, TextMgr.getInstance().getText("outreachImagePanel_header"), 
 				TextMgr.getInstance().getText("outreachImagePanel_helpText"), 
 				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
 
@@ -113,36 +158,45 @@ public class OutreachImagePanel extends BasePopupPanel {
     		imageEntity.setIsHidingShapes(isHidingFootprints);
 		});
         mainContainer.add(hideFootprintsSwitch);
+        mainContainer.getElement().setId("outreachImagePanelContainer");
 		this.add(mainContainer);
 	}
 	
 	@Override
 	protected void setMaxSize() {
-		Style elementStyle = getElement().getStyle();
-		int minWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
-		if(minWidth > 455 && MainLayoutPanel.getMainAreaWidth() < 1500) {
-			minWidth = 455;
+		if(mainContainer == null) {
+			return;
 		}
-		elementStyle.setPropertyPx("maxWidth", minWidth);
+		Style elementStyle = mainContainer.getElement().getStyle();
+		int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+		elementStyle.setPropertyPx("maxWidth", maxWidth);
 		elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-	    int height = MainLayoutPanel.getMainAreaHeight();
-	    if(minWidth == 455) {
-	    	height = 300;
-	    }
-	    if(height > 400) {
-	    	height = 400;
-	    }
-		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
-			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
-		}
-		if(imageEntity != null && imageEntity.getTablePanel() != null) {
-			imageEntity.getTablePanel().setMaxHeight(height);
-			imageEntity.getTablePanel().setMaxHeight(height);
+		setMaxHeight();
+	}
+	
+	private void setMaxHeight() {
+		if(mainContainer != null) {
+			int headerSize = header.getOffsetHeight() + 5;
+			int height = mainContainer.getOffsetHeight() - headerSize;
+		    if(height > MainLayoutPanel.getMainAreaHeight() - headerSize) {
+		    	height = MainLayoutPanel.getMainAreaHeight() - headerSize;
+		    }
+			if(imageEntity != null && imageEntity.getTablePanel() != null) {
+				imageEntity.getTablePanel().setMaxHeight(height);
+			}
 		}
 	}
     
     public static void setStartupId(String id) {
     	outreachImageIdToBeOpened = id;
     }
+    
+	private native void addResizeHandler(String id) /*-{
+		var outreachImagePanel = this;
+		new $wnd.ResizeSensor($doc.getElementById(id), function() {
+			outreachImagePanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachImagePanel::setMaxHeight()();
+		});
+	}-*/; 
+
 
 }
