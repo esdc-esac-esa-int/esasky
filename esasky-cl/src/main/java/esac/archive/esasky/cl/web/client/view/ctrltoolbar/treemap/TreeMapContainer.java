@@ -197,10 +197,6 @@ public class TreeMapContainer extends DialogBox {
 		}
 	}
 	
-	public void onLayoutChange() {
-		updateMaxSize();
-	}
-	
 	private void updateMaxSize() {
 		int MIN_MARGIN_RIGHT = 30;
 		int MIN_MARGIN_BOTTOM = 30;
