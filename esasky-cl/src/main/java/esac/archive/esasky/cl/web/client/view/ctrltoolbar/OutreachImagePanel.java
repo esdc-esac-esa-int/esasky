@@ -17,7 +17,6 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 
 public class OutreachImagePanel extends BasePopupPanel {

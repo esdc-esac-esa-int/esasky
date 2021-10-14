@@ -195,10 +195,4 @@ public class ImageListEntity extends EsaSkyEntity {
     	}
     }
     
-//TODO remove :D    
-	@Override
-    public String getTapUrl() {
-    	return "hst-outreach2.json";
-    }
-
 }
