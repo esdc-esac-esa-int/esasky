@@ -286,6 +286,7 @@ public class TabulatorWrapper{
     		//Clear filters
     		setHeaderFilterValue(tableJsObject, raCol, "");
     		setHeaderFilterValue(tableJsObject, decCol, "");
+    		tableJsObject.setProperty("filteredOnFov", false);
     		return;
     	}
     	
@@ -312,6 +313,7 @@ public class TabulatorWrapper{
     	minVal = ra - fov;
     	maxVal = ra + fov % 360;
     	
+    	tableJsObject.setProperty("filteredOnFov", true);
     	setHeaderFilterValue(tableJsObject, raCol, minVal + "," + maxVal);
     }
     
@@ -1100,6 +1102,9 @@ public class TabulatorWrapper{
 				   	if(rows.length == 0 && this.getHeaderFilters().length > 0){
 				   	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_filtered_empty"));
 				   	}
+				   	if(this.filteredOnFov){
+				   	    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_no_images"));
+				   	}				   		
 			   	}
 		    },
 		    dataLoaded:function(data){
