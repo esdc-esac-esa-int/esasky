@@ -15,6 +15,7 @@ import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
@@ -290,38 +291,14 @@ public class GwPanel extends BasePopupPanel {
 	}
 
 	private void setDefaultSize() {
-		int width = 610;
-		int height = MainLayoutPanel.getMainAreaHeight();
+		Size size = this.getDefaultSize();
 
-		if (MainLayoutPanel.getMainAreaWidth() < 1500) {
-			width = 500;
-		}
-		if (MainLayoutPanel.getMainAreaWidth() < 1100) {
-			width = 350;
-		}
-		if (MainLayoutPanel.getMainAreaWidth() < 450) {
-			height = 300;
-		}
-		if (height > 400) {
-			height = 400;
-		}
-		if (!DeviceUtils.isMobileOrTablet() && height > MainLayoutPanel.getMainAreaHeight() / 2) {
-			height = MainLayoutPanel.getMainAreaHeight() / 2;
-		}
-		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
-			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
-		}
-		if (width > MainLayoutPanel.getMainAreaWidth()) {
-			width = MainLayoutPanel.getMainAreaWidth() - 2;
-		}
+		gwPanelContainer.setWidth(size.width + "px");
+		gwPanelContainer.setHeight(size.height + "px");
 
-		gwPanelContainer.setWidth(width + "px");
-		gwPanelContainer.setHeight(height + "px");
-
-		Style style = gwPanelContainer.getElement().getStyle();
-		style.setPropertyPx("minWidth", 150);
-		style.setPropertyPx("minHeight", 100);
-
+		Style containerStyle = gwPanelContainer.getElement().getStyle();
+		containerStyle.setPropertyPx("minWidth", 150);
+		containerStyle.setPropertyPx("minHeight", 100);
 	}
 
 	@Override
@@ -343,15 +320,14 @@ public class GwPanel extends BasePopupPanel {
 	}
 
 	private void setMaxHeight() {
-		if (tabulatorContainer != null) {
-			int headerSize = header.getOffsetHeight() + tableHeaderTabRow.getOffsetHeight();
-			int height = gwPanelContainer.getOffsetHeight() - headerSize - 10;
+		int headerSize = header.getOffsetHeight() + tableHeaderTabRow.getOffsetHeight();
+		int height = gwPanelContainer.getOffsetHeight() - headerSize - 5;
 
-			if (height > MainLayoutPanel.getMainAreaHeight() - headerSize - 10) {
-				height = MainLayoutPanel.getMainAreaHeight() - headerSize - 10;
-			}
-			tabulatorContainer.getElement().getStyle().setPropertyPx("maxHeight", height);
+		if (height > MainLayoutPanel.getMainAreaHeight()) {
+			height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
 		}
+
+		tabulatorContainer.getElement().getStyle().setPropertyPx("maxHeight", height);
 	}
 
 	private native void addResizeHandler(String id) /*-{

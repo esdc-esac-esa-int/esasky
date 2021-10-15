@@ -6,10 +6,10 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -62,32 +62,13 @@ public class OutreachImagePanel extends BasePopupPanel {
 	}
 	
 	private void setDefaultSize() {
-		int width = 610;
-		int height = MainLayoutPanel.getMainAreaHeight();
-		
-		if(MainLayoutPanel.getMainAreaWidth() < 1500) {
-			width = 500;
-		}
-		if(MainLayoutPanel.getMainAreaWidth() < 1100) {
-			width = 350;
-		}
-	    if(MainLayoutPanel.getMainAreaWidth() < 450) {
-	    	height = 300;
-	    }
-	    if(height > 400) {
-	    	height = 400;
-	    }
-	    if(!DeviceUtils.isMobileOrTablet() && height > MainLayoutPanel.getMainAreaHeight() / 2) {
-	    	height = MainLayoutPanel.getMainAreaHeight() / 2;
-	    }
-		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
-			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
-		}
-		if(width > MainLayoutPanel.getMainAreaWidth()) {
-			width = MainLayoutPanel.getMainAreaWidth() - 2;
-		}
-		mainContainer.setWidth(width + "px");
-		mainContainer.setHeight(height + "px");
+		Size size = getDefaultSize();
+		mainContainer.setWidth(size.width + "px");
+		mainContainer.setHeight(size.height + "px");
+
+		Style containerStyle = mainContainer.getElement().getStyle();
+		containerStyle.setPropertyPx("minWidth", 150);
+		containerStyle.setPropertyPx("minHeight", 100);
 	}
 	
 	@Override
