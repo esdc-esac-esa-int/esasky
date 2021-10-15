@@ -1,22 +1,15 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
@@ -24,15 +17,8 @@ import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.HipsParser;
-import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButton;
@@ -48,19 +34,25 @@ import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 
+import java.util.*;
+
 public class GwPanel extends BasePopupPanel {
 
-	public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {}
+	public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {
+	}
+
 	private BaseDescriptor gwDescriptor;
-	
+
 	private List<String> defaultVisibleColumns = new LinkedList<>();
-	
+
 	private final Resources resources;
 	private CssResource style;
 
 	private boolean isExpanded = false;
 
-	private FlowPanel gwPanel = new FlowPanel();
+	private FlowPanel gwPanelContainer = new FlowPanel();
+	private PopupHeader header;
+	private FlowPanel tableHeaderTabRow;
 	private Tab neutrinoTab;
 	private EsaSkyToggleButton gridButton;
 	private TabulatorWrapper gwTable;
@@ -101,17 +93,19 @@ public class GwPanel extends BasePopupPanel {
 		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
 			Integer rowId = rowIdHipsMap.get(changeEvent.getHiPSName());
 			if(rowId != null) {
-				if(!gwTable.isSelected(rowId)) {
+				if (!gwTable.isSelected(rowId)) {
 					gwTable.deselectAllRows();
 					blockOpenHipsTrigger = true;
 					gwTable.selectRow(rowId, false);
 					blockOpenHipsTrigger = false;
 				}
-				if(!gridHasBeenDeactivatedByUserThroughGwPanel) {
+				if (!gridHasBeenDeactivatedByUserThroughGwPanel) {
 					AladinLiteWrapper.getInstance().toggleGrid(true);
 				}
 			}
 		});
+
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
 	
 	public void initGwDescriptor() {
@@ -241,33 +235,34 @@ public class GwPanel extends BasePopupPanel {
 	private void initView() {
 		this.getElement().addClassName("gwPanel");
 
-		PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("gwPanel_header"), 
-				TextMgr.getInstance().getText("gwPanel_helpText"), 
+		header = new PopupHeader(this, TextMgr.getInstance().getText("gwPanel_header"),
+				TextMgr.getInstance().getText("gwPanel_helpText"),
 				TextMgr.getInstance().getText("gwPanel_helpTitle"));
 
-		gwPanel.add(header);
-		
-		FlowPanel rowAboveTable = new FlowPanel();
-		rowAboveTable.add(createTabBar());
-		rowAboveTable.add(createButtons());
-		rowAboveTable.addStyleName("gwPanel_headerRow");
-		gwPanel.add(rowAboveTable);
-		
+		gwPanelContainer.add(header);
+
+		tableHeaderTabRow = new FlowPanel();
+		tableHeaderTabRow.add(createTabBar());
+		tableHeaderTabRow.add(createButtons());
+		tableHeaderTabRow.addStyleName("gwPanel_headerRow");
+		gwPanelContainer.add(tableHeaderTabRow)
+		;
+
 		tabulatorContainer.getElement().setId("gwPanel__tabulatorContainer");
-		gwPanel.add(tabulatorContainer);
-		
+		gwPanelContainer.add(tabulatorContainer);
+		gwPanelContainer.getElement().setId("gwPanelContainer");
 		CommonEventBus.getEventBus().addHandler(GridToggledEvent.TYPE, event -> {
-				gridButton.setToggleStatus(event.isGridActive());
-				if(isShowing() && !event.isGridActive()) {
-					gridHasBeenDeactivatedByUserThroughGwPanel = true;
+					gridButton.setToggleStatus(event.isGridActive());
+					if (isShowing() && !event.isGridActive()) {
+						gridHasBeenDeactivatedByUserThroughGwPanel = true;
+					}
 				}
-			}
 		);
 		loadingSpinner.setVisible(false);
 		loadingSpinner.addStyleName("gwPanel_loadingHipsProperties");
-		gwPanel.add(loadingSpinner);
-		
-		this.add(gwPanel);
+		gwPanelContainer.add(loadingSpinner);
+
+		this.add(gwPanelContainer);
 	}
 	
 	private void showAllColumns() {
@@ -283,8 +278,8 @@ public class GwPanel extends BasePopupPanel {
 	
 	private void showOnlyBaseColumns() {
 		gwTable.blockRedraw();
-		for(MetadataDescriptor md : gwDescriptor.getMetadata()) {
-			if(!defaultVisibleColumns.contains(md.getTapName())) {
+		for (MetadataDescriptor md : gwDescriptor.getMetadata()) {
+			if (!defaultVisibleColumns.contains(md.getTapName())) {
 				gwTable.hideColumn(md.getTapName());
 			} else {
 				gwTable.showColumn(md.getTapName());
@@ -293,29 +288,86 @@ public class GwPanel extends BasePopupPanel {
 		gwTable.restoreRedraw();
 		gwTable.redrawAndReinitializeHozVDom();
 	}
-	
-	@Override
-	protected void setMaxSize() {
-		super.setMaxSize();
-	    int height = MainLayoutPanel.getMainAreaHeight();
-	    if(height > 600) {
-	    	height = 600;
-	    }
+
+	private void setDefaultSize() {
+		int width = 610;
+		int height = MainLayoutPanel.getMainAreaHeight();
+
+		if (MainLayoutPanel.getMainAreaWidth() < 1500) {
+			width = 500;
+		}
+		if (MainLayoutPanel.getMainAreaWidth() < 1100) {
+			width = 350;
+		}
+		if (MainLayoutPanel.getMainAreaWidth() < 450) {
+			height = 300;
+		}
+		if (height > 400) {
+			height = 400;
+		}
+		if (!DeviceUtils.isMobileOrTablet() && height > MainLayoutPanel.getMainAreaHeight() / 2) {
+			height = MainLayoutPanel.getMainAreaHeight() / 2;
+		}
 		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
 		}
-		if(tabulatorContainer != null && tabulatorContainer.getElement() != null) {
-			tabulatorContainer.getElement().getStyle().setPropertyPx("height", height - tabulatorContainer.getAbsoluteTop());
+		if (width > MainLayoutPanel.getMainAreaWidth()) {
+			width = MainLayoutPanel.getMainAreaWidth() - 2;
+		}
+
+		gwPanelContainer.setWidth(width + "px");
+		gwPanelContainer.setHeight(height + "px");
+
+		Style style = gwPanelContainer.getElement().getStyle();
+		style.setPropertyPx("minWidth", 150);
+		style.setPropertyPx("minHeight", 100);
+
+	}
+
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		addResizeHandler("gwPanelContainer");
+	}
+
+	@Override
+	protected void setMaxSize() {
+
+		if (gwPanelContainer != null) {
+			Style elementStyle = gwPanelContainer.getElement().getStyle();
+			int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+			elementStyle.setPropertyPx("maxWidth", maxWidth);
+			elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+			setMaxHeight();
 		}
 	}
-	
-	private class TabulatorCallback extends DefaultTabulatorCallback{
-		
+
+	private void setMaxHeight() {
+		if (tabulatorContainer != null) {
+			int headerSize = header.getOffsetHeight() + tableHeaderTabRow.getOffsetHeight();
+			int height = gwPanelContainer.getOffsetHeight() - headerSize - 10;
+
+			if (height > MainLayoutPanel.getMainAreaHeight() - headerSize - 10) {
+				height = MainLayoutPanel.getMainAreaHeight() - headerSize - 10;
+			}
+			tabulatorContainer.getElement().getStyle().setPropertyPx("maxHeight", height);
+		}
+	}
+
+	private native void addResizeHandler(String id) /*-{
+		var gwPanel = this;
+		new $wnd.ResizeSensor($doc.getElementById(id), function () {
+			gwPanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel::setMaxHeight()();
+		});
+	}-*/;
+
+	private class TabulatorCallback extends DefaultTabulatorCallback {
+
 		@Override
 		public void onDataLoaded(GeneralJavaScriptObject rowData) {
 			setMaxSize();
 		}
-		
+
 		@Override
 		public void onTableHeightChanged() {
 			//No reason to do anything
