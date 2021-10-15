@@ -36,7 +36,7 @@ public class RangeTree {
 					break;
 				case OVERLAP_HIGHER:
 					tree.remove(b);
-					a.setStart(b.end);
+					a.setStart(b.start);
 					break;
 				default:
 					break;
