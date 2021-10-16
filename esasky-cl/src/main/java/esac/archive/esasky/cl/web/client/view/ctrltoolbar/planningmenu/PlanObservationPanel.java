@@ -42,7 +42,7 @@ public class PlanObservationPanel extends BasePopupPanel {
     private final String MISSION_CONTAINER_CLASS = "missionMenuContainer";
 
     private static VerticalPanel jwstPanel; 
-    private final String SIAF_VERSION = "SIAF: PRDOPSSOC-M-026";
+    private final String SIAF_VERSION = "SIAF: PRDOPSSOC-036";
     
     private static PlanObservationPanel instance = null;
 
