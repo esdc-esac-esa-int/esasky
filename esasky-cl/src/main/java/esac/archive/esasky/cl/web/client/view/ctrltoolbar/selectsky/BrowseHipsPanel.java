@@ -183,6 +183,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel {
 
 	@Override
 	public void setMaxSize() {
+		super.setMaxSize();
 	    int height = MainLayoutPanel.getMainAreaHeight();
 		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
 			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
