@@ -108,10 +108,10 @@ public class ExternalServices {
 
         return VIZIER_PHOTOMETRY_URL + VIZIER_PHOTOMETRY_SERVICE_PARAMETER + "=" + URL.encodeQueryString(VIZIER_PLOTTER) + "&"
                 + VIZIER_SERVICE_SED_PLOT_RADIUS + "=" + URL.encodeQueryString(VIZIER_DEFAULT_SED_PLOT_RADIUS_ARCSEC) + "&"
-                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(Double.toString(decDeg).toString());
+                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(Double.toString(decDeg));
     }        
     public static String buildVizierURLJ2000(double raDeg, double decDeg) {
-    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(Double.toString(raDeg).toString()) + " " + URL.encodeQueryString(Double.toString(decDeg).toString())
+    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(Double.toString(raDeg)) + " " + URL.encodeQueryString(Double.toString(decDeg))
     			+ "&" + VIZIER_RADIUS_PARAMETER + VIZIER_DEFAULT_RADIUS_ARCMIN;
     }
 
@@ -193,7 +193,7 @@ public class ExternalServices {
                 + NED_SERVICE_LIST_LIMIT + "=" + NED_DEFAULT_LIST_LIMIT + "&"
                 + NED_SERVICE_IMG_STAMP + "=" + NED_DEFAULT_IMG_STAMP + "&"
                 + NED_SERVICE_SEARCH_TYPE + "=" + NED_DEFAULT_SEARCH_TYPE + "&" + NED_SERVICE_LON
-                + "=" + URL.encodeQueryString(formattedRa) + "&" + NED_SERVICE_LAT + "=" + URL.encodeQueryString(Double.toString(decDeg).toString());
+                + "=" + URL.encodeQueryString(formattedRa) + "&" + NED_SERVICE_LAT + "=" + URL.encodeQueryString(Double.toString(decDeg));
     }
     
     public static String buildWwtURLJ2000(double raDegJ2000, double decDegJ2000) {
