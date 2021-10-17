@@ -108,17 +108,17 @@ public class ExternalServices {
 
         return VIZIER_PHOTOMETRY_URL + VIZIER_PHOTOMETRY_SERVICE_PARAMETER + "=" + URL.encodeQueryString(VIZIER_PLOTTER) + "&"
                 + VIZIER_SERVICE_SED_PLOT_RADIUS + "=" + URL.encodeQueryString(VIZIER_DEFAULT_SED_PLOT_RADIUS_ARCSEC) + "&"
-                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(new Double(decDeg).toString());
+                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(Double.toString(decDeg).toString());
     }        
     public static String buildVizierURLJ2000(double raDeg, double decDeg) {
-    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(new Double(raDeg).toString()) + " " + URL.encodeQueryString(new Double(decDeg).toString())
+    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(Double.toString(raDeg).toString()) + " " + URL.encodeQueryString(Double.toString(decDeg).toString())
     			+ "&" + VIZIER_RADIUS_PARAMETER + VIZIER_DEFAULT_RADIUS_ARCMIN;
     }
 
     public static String buildSimbadURLWithRaDec(double raDeg, double decDeg, String cooFrame) {
     	if(AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(AladinLiteWrapper.getAladinLite().getCooFrame())
     			&& !AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(cooFrame)) {
-    		double raDec[] = CoordinatesConversion.convertPointEquatorialToGalactic(raDeg, decDeg);
+    		double[] raDec = CoordinatesConversion.convertPointEquatorialToGalactic(raDeg, decDeg);
     		raDeg = raDec[0];
     		decDeg = raDec[1];
     	}
@@ -145,7 +145,7 @@ public class ExternalServices {
         	url += NED_SERVICE_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_CSYS) + "&";
         	url += NED_SERVICE_OUT_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_OUT_CSYS) + "&";
         	if(!AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(cooFrame)) {
-        		double raDec[] = CoordinatesConversion.convertPointEquatorialToGalactic(raDeg, decDeg);
+        		double[] raDec = CoordinatesConversion.convertPointEquatorialToGalactic(raDeg, decDeg);
         		raDeg = raDec[0];
         		decDeg = raDec[1];
         	}
@@ -193,7 +193,7 @@ public class ExternalServices {
                 + NED_SERVICE_LIST_LIMIT + "=" + NED_DEFAULT_LIST_LIMIT + "&"
                 + NED_SERVICE_IMG_STAMP + "=" + NED_DEFAULT_IMG_STAMP + "&"
                 + NED_SERVICE_SEARCH_TYPE + "=" + NED_DEFAULT_SEARCH_TYPE + "&" + NED_SERVICE_LON
-                + "=" + URL.encodeQueryString(formattedRa) + "&" + NED_SERVICE_LAT + "=" + URL.encodeQueryString(new Double(decDeg).toString());
+                + "=" + URL.encodeQueryString(formattedRa) + "&" + NED_SERVICE_LAT + "=" + URL.encodeQueryString(Double.toString(decDeg).toString());
     }
     
     public static String buildWwtURLJ2000(double raDegJ2000, double decDegJ2000) {
