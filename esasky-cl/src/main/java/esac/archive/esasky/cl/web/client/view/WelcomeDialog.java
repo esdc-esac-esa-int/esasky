@@ -54,6 +54,12 @@ public class WelcomeDialog extends Composite {
         
         @Source("esa-logo.png")
         ImageResource esaLogo();
+
+        @Source("ESASky_AVATAR.png")
+        ImageResource esaSkyAvatar();
+        
+        @Source("ESASky_AVATAR-no-text.png")
+        ImageResource esaSkyAvatarNoText();
     }
 
     public WelcomeDialog() {
@@ -64,8 +70,11 @@ public class WelcomeDialog extends Composite {
 		Label title = new Label(TextMgr.getInstance().getText("WelcomeDialog_title"));
 		title.addStyleName("welcomeTitle");
 
-		Image esaSkyLogo = new Image(this.resources.esaLogo());
+		Image esaSkyLogo = new Image(this.resources.esaSkyAvatarNoText());
 		esaSkyLogo.addStyleName("welcomeEsaSkyLogo");
+
+		Image esaLogo = new Image(this.resources.esaLogo());
+		esaLogo.addStyleName("welcomeEsaLogo");
 		
 		Label descriptionText = new Label(TextMgr.getInstance().getText("WelcomeDialog_description"));
 		descriptionText.addStyleName("welcomeDescription");
@@ -79,6 +88,7 @@ public class WelcomeDialog extends Composite {
             }
         });
 		welcomeDialogConainer.add(esaSkyLogo);
+		welcomeDialogConainer.add(esaLogo);
 		welcomeDialogConainer.add(title);
 		welcomeDialogConainer.add(descriptionText);
 		
