@@ -25,6 +25,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	private double lastOpacity = 1.0;
 	private boolean isHidingShapes = false;
 	private boolean isClosed = false;
+	private boolean firstLoad = true;
 	private HstOutreachImage lastImage = null;
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
@@ -110,6 +111,10 @@ public class ImageListEntity extends EsaSkyEntity {
     		String errorMsg = TextMgr.getInstance().getText("imageListEntity_imageNotFound").replace("$ID$", outreachImageIdToBeOpened);
 			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText("error"));
+		}
+		if(firstLoad) {
+			firstLoad = false;
+			performFoVFilter();
 		}
 	}
 	
