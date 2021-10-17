@@ -16,12 +16,15 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ExternalServices;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 
 public abstract class Tooltip extends AutoHidePanel{
 
@@ -103,15 +106,15 @@ public abstract class Tooltip extends AutoHidePanel{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				Coordinate j2000Coordinate = getJ2000Coordinate();
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINSIMBAD, 
-						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
-						+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
+						"RA: " + j2000Coordinate.getRa() 
+						+ " Dec: " + j2000Coordinate.getDec());
 				Window.open(
-						ExternalServices.buildSimbadURLWithRaDec(AladinLiteWrapper
-								.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg(),
-								AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top)
-								.getDecDeg(), AladinLiteWrapper.getAladinLite().getCooFrame()),
+						ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
+								j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
 						"_blank", "");
+				
 			}
 		});
         links.add(simbadButton);
@@ -121,14 +124,13 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
+        		Coordinate j2000Coordinate = getJ2000Coordinate();
         		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINNED, 
-        				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
-        				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
 				Window.open(
-						ExternalServices.buildNedURL(AladinLiteWrapper.getAladinLite()
-								.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
-								.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-								AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+						ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
+								CoordinatesFrame.J2000.getValue()), "_blank", "");
         	}
         });
         links.add(nedButton);
@@ -138,14 +140,12 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
+        		Coordinate j2000Coordinate = getJ2000Coordinate();
         		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIERPHOTOMETRY, 
-        				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
-        				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
-        		Window.open(
-        				ExternalServices.buildVizierPhotometryURL(AladinLiteWrapper.getAladinLite()
-        						.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
-        						.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-        						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
+        		Window.open(ExternalServices.buildVizierPhotometryURLJ2000(j2000Coordinate.getRa(),
+        				j2000Coordinate.getDec()), "_blank", "");
         	}
         });
         links.add(vizierPhotometryButton);
@@ -155,14 +155,12 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
+        		Coordinate j2000Coordinate = getJ2000Coordinate();
         		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIER, 
-        				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
-        				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
         		Window.open(
-        				ExternalServices.buildVizierURL(AladinLiteWrapper.getAladinLite()
-        						.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
-        						.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-        						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+        				ExternalServices.buildVizierURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
         	}
         });
         links.add(vizierButton);
@@ -172,13 +170,11 @@ public abstract class Tooltip extends AutoHidePanel{
         	
         	@Override
         	public void onClick(ClickEvent event) {
+        		Coordinate j2000Coordinate = getJ2000Coordinate();
         		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINWWT, 
-        				"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getRaDeg() 
-        				+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg());
-        		Window.open(ExternalServices.buildWwtURL(AladinLiteWrapper.getAladinLite()
-        						.convertMouseXYToRaDecDeg(left, top).getRaDeg(), AladinLiteWrapper
-        						.getAladinLite().convertMouseXYToRaDecDeg(left, top).getDecDeg(),
-        						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
+        		Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
         	}
         });
         if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
@@ -220,4 +216,11 @@ public abstract class Tooltip extends AutoHidePanel{
 			super.onBrowserEvent(event);
 		}
 	}
+	
+	protected Coordinate getJ2000Coordinate() {
+		CoordinatesObject coordinateOfPress = AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(left, top);
+		return CoordinateUtils.getCoordinateInJ2000(coordinateOfPress.getRaDeg(),
+				coordinateOfPress.getDecDeg());
+	}
+
 }

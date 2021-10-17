@@ -80,25 +80,14 @@ public class ExternalServices {
     /** Default HiPS cooframe. */
     public static final String SIMBAD_GALACTIC_COO_FRAME = "Gal";
 
-    public static String buildVizierPhotometryURL(double raDeg, double decDeg, String cooFrame) {
-        double finalRa = raDeg;
-        double finalDec = decDeg;
-
-        // Convert Galactic to Equatorial
-        if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-            double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
-                    decDeg);
-            finalRa = ccInJ2000[0];
-            finalDec = ccInJ2000[1];
-        }
-
+    public static String buildVizierPhotometryURLJ2000(double raDeg, double decDeg) {
         String formattedRa = "";
-        if (finalRa < 0) {
-            finalRa = Math.abs(finalRa);
+        if (raDeg < 0) {
+        	raDeg = Math.abs(raDeg);
             formattedRa += "-";
         }
         // conversion to hours (with decimal)
-        Double conversion2Hours = finalRa / 15.0;
+        Double conversion2Hours = raDeg / 15.0;
         String conversion2HoursString = Double.toString(conversion2Hours);
         String[] conversion2HoursStringToken = conversion2HoursString.split("\\.");
         // hours (whole number)
@@ -115,34 +104,31 @@ public class ExternalServices {
 
         formattedRa += NumberFormat.getFormat("00").format(hours) + " ";
         formattedRa += NumberFormat.getFormat("00").format(minutes) + " ";
-        formattedRa += NumberFormat.getFormat("00.00").format(seconds) + " ";
+        formattedRa += NumberFormat.getFormat("00.000000000").format(seconds) + " ";
 
         return VIZIER_PHOTOMETRY_URL + VIZIER_PHOTOMETRY_SERVICE_PARAMETER + "=" + URL.encodeQueryString(VIZIER_PLOTTER) + "&"
                 + VIZIER_SERVICE_SED_PLOT_RADIUS + "=" + URL.encodeQueryString(VIZIER_DEFAULT_SED_PLOT_RADIUS_ARCSEC) + "&"
-                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(new Double(finalDec).toString());
+                + VIZIER_SERVICE_SED_PLOT_OBJECT + "=" + URL.encodeQueryString(formattedRa) + " " + URL.encodeQueryString(new Double(decDeg).toString());
     }        
-    public static String buildVizierURL(double raDeg, double decDeg, String cooFrame) {
-    	double finalRa = raDeg;
-    	double finalDec = decDeg;
-    	
-    	if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-    		double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg,
-    				decDeg);
-    		finalRa = ccInJ2000[0];
-    		finalDec = ccInJ2000[1];
-    	}
-    	
-    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(new Double(finalRa).toString()) + " " + URL.encodeQueryString(new Double(finalDec).toString())
+    public static String buildVizierURLJ2000(double raDeg, double decDeg) {
+    	return VIZIER_URL + VIZIER_CENTER_PARAMETER + URL.encodeQueryString(new Double(raDeg).toString()) + " " + URL.encodeQueryString(new Double(decDeg).toString())
     			+ "&" + VIZIER_RADIUS_PARAMETER + VIZIER_DEFAULT_RADIUS_ARCMIN;
     }
 
     public static String buildSimbadURLWithRaDec(double raDeg, double decDeg, String cooFrame) {
-        String formattedCoords = NumberFormat.getFormat("###.###").format(raDeg) + "d"
-                + NumberFormat.getFormat("###.###").format(decDeg) + "d";
+    	if(AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(AladinLiteWrapper.getAladinLite().getCooFrame())
+    			&& !AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(cooFrame)) {
+    		double raDec[] = CoordinatesConversion.convertPointEquatorialToGalactic(raDeg, decDeg);
+    		raDeg = raDec[0];
+    		decDeg = raDec[1];
+    	}
+        String formattedCoords = NumberFormat.getFormat("###.############").format(raDeg) + "d"
+                + NumberFormat.getFormat("###.############").format(decDeg) + "d";
         String url = SIMBAD_COO_URL + "&";
         url += SIMBAD_SERVICE_PARAM_COORD + "=" + URL.encodeQueryString(formattedCoords) + "&";
-        if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-            url += SIMBAD_SERVICE_PARAM_COORD_FRAME + "=Gal&";
+        if(AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(AladinLiteWrapper.getAladinLite().getCooFrame())){
+        	url += SIMBAD_SERVICE_PARAM_COORD_FRAME + "=Gal&";
+        	
         } else if (AladinLiteConstants.FRAME_J2000.equals(cooFrame)) {
             url += SIMBAD_SERVICE_PARAM_COORD_FRAME + "=FK5&";
         }
@@ -155,9 +141,14 @@ public class ExternalServices {
     public static String buildNedURL(double raDeg, double decDeg, String cooFrame) {
 
         String url = NED_URL;
-        if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-            url += NED_SERVICE_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_CSYS) + "&";
-            url += NED_SERVICE_OUT_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_OUT_CSYS) + "&";
+        if(AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(AladinLiteWrapper.getAladinLite().getCooFrame())){
+        	url += NED_SERVICE_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_CSYS) + "&";
+        	url += NED_SERVICE_OUT_CSYS + "=" + URL.encodeQueryString(NED_GALACTIC_OUT_CSYS) + "&";
+        	if(!AladinLiteConstants.FRAME_GALACTIC.equalsIgnoreCase(cooFrame)) {
+        		double raDec[] = CoordinatesConversion.convertPointEquatorialToGalactic(raDeg, decDeg);
+        		raDeg = raDec[0];
+        		decDeg = raDec[1];
+        	}
         } else if (AladinLiteConstants.FRAME_J2000.equals(cooFrame)) {
             url += NED_SERVICE_OUT_CSYS + "=" + URL.encodeQueryString(NED_EQUATORIAL_OUT_CSYS) + "&";
         }
@@ -185,7 +176,7 @@ public class ExternalServices {
 
         formattedRa += NumberFormat.getFormat("00").format(hours) + "h ";
         formattedRa += NumberFormat.getFormat("00").format(minutes) + "m";
-        formattedRa += NumberFormat.getFormat("00.00").format(seconds) + "s";
+        formattedRa += NumberFormat.getFormat("00.000000000").format(seconds) + "s";
 
         return url + NED_SERVICE_EQUINOX + "=" + NED_DEFAULT_EQUINOX + "&" + NED_SERVICE_RADIUS
                 + "=" + NED_DEFAULT_RADIUS_ARCMIN + "&" + NED_SERVICE_HCONST + "=" + NED_DEFAULT_HCONST
@@ -205,16 +196,6 @@ public class ExternalServices {
                 + "=" + URL.encodeQueryString(formattedRa) + "&" + NED_SERVICE_LAT + "=" + URL.encodeQueryString(new Double(decDeg).toString());
     }
     
-    public static String buildWwtURL(double raDeg, double decDeg, String cooFrame) {
-    	if (AladinLiteConstants.FRAME_GALACTIC.toLowerCase().equalsIgnoreCase(cooFrame)) {
-    		double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(raDeg, decDeg);
-    		raDeg = ccInJ2000[0];
-    		decDeg = ccInJ2000[1];
-    	}
-    	
-        
-    	return buildWwtURLJ2000(raDeg, decDeg);
-    }
     public static String buildWwtURLJ2000(double raDegJ2000, double decDegJ2000) {
 		String baseWwtUrl = "http://www.worldwidetelescope.org/webclient/default.aspx?wtml=";
 

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -139,16 +140,14 @@ public class AllSkyFocusPanel extends FocusPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				contextMenu.hide();
-
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU,
-						GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD,
-						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
-								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
-										.getDecDeg());
-				Window.open(ExternalServices.buildSimbadURLWithRaDec(
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+				Coordinate j2000Coordinate = getJ2000Coordinate();
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD, 
+						"RA: " + j2000Coordinate.getRa() 
+						+ " Dec: " + j2000Coordinate.getDec());
+				Window.open(
+						ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
+								j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
+						"_blank", "");
 			}
 		});
 
@@ -161,15 +160,13 @@ public class AllSkyFocusPanel extends FocusPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				contextMenu.hide();
-
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINNED,
-						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
-								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
-										.getDecDeg());
-				Window.open(ExternalServices.buildNedURL(
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+        		Coordinate j2000Coordinate = getJ2000Coordinate();
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINNED, 
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
+				Window.open(
+						ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
+								CoordinatesFrame.J2000.getValue()), "_blank", "");
 			}
 		});
 
@@ -183,15 +180,12 @@ public class AllSkyFocusPanel extends FocusPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				contextMenu.hide();
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU,
-						GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIERPHOTOMETRY,
-						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
-								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
-										.getDecDeg());
-				Window.open(ExternalServices.buildVizierPhotometryURL(
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
+        		Coordinate j2000Coordinate = getJ2000Coordinate();
+        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIERPHOTOMETRY, 
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
+        		Window.open(ExternalServices.buildVizierPhotometryURLJ2000(j2000Coordinate.getRa(),
+        				j2000Coordinate.getDec()), "_blank", "");
 
 			}
 		});
@@ -205,16 +199,13 @@ public class AllSkyFocusPanel extends FocusPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				contextMenu.hide();
+	    		Coordinate j2000Coordinate = getJ2000Coordinate();
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU,
 						GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIER,
-						"RA: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg()
-								+ " Dec: " + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY)
-										.getDecDeg());
-				Window.open(ExternalServices.buildVizierURL(
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg(),
-						AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg(),
-						AladinLiteWrapper.getAladinLite().getCooFrame()), "_blank", "");
-
+        				"RA: " + j2000Coordinate.getRa() 
+        				+ " Dec: " + j2000Coordinate.getDec());
+        		Window.open(
+        				ExternalServices.buildVizierURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
 			}
 		});
 
@@ -227,10 +218,7 @@ public class AllSkyFocusPanel extends FocusPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				CoordinatesObject coordinateOfPress = AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX,
-						mouseY);
-				Coordinate j2000Coordinate = CoordinateUtils.getCoordinateInJ2000(coordinateOfPress.getRaDeg(),
-						coordinateOfPress.getDecDeg());
+				Coordinate j2000Coordinate = getJ2000Coordinate();
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_VIEWINWWT,
 						"RA: " + j2000Coordinate.getRa() + " Dec: " + j2000Coordinate.getDec());
 				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
@@ -259,6 +247,13 @@ public class AllSkyFocusPanel extends FocusPanel {
 		contextMenu.add(container);
 		contextMenu.addStyleName("AllSkyRightClickPopup");
 
+	}
+	
+	protected Coordinate getJ2000Coordinate() {
+		CoordinatesObject coordinateOfPress = AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX,
+				mouseY);
+		return CoordinateUtils.getCoordinateInJ2000(coordinateOfPress.getRaDeg(),
+				coordinateOfPress.getDecDeg());
 	}
 
 	public void registerObserver(AllSkyFocusPanelObserver observer) {

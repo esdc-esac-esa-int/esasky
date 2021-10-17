@@ -5,6 +5,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.model.DecPosition;
 import esac.archive.esasky.cl.web.client.model.RaPosition;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 
 public class CatalogueTooltip extends Tooltip {
 
@@ -45,4 +46,10 @@ public class CatalogueTooltip extends Tooltip {
 
         typeSpecificContent.setHTML(sb.toString());
     }
+    
+    @Override
+	protected Coordinate getJ2000Coordinate() {
+		return new Coordinate(Double.parseDouble(source.getRa()), Double.parseDouble(source.getDec()));
+	}
+
 }
