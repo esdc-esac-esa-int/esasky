@@ -3509,7 +3509,7 @@
 		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
 	</text>
 	<text key="header_highResolutionImages">
-		Hi-res images
+		Outreach images
 	</text>
 	<text key="header_highResolutionImagesTooltip">
 		Visualise outreach astronomical images from ESA/Hubble
