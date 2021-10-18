@@ -3562,4 +3562,10 @@
 		No images available in the current field of view.
 		Zoom out or reset filters to show more.
 	</text>
+	<text key="wavelength_GW">
+		GW_eventid
+	</text>
+	<text key="wavelength_GW_tooltip">
+		Gravitational Wave probability maps
+	</text>
 </Internationalization>

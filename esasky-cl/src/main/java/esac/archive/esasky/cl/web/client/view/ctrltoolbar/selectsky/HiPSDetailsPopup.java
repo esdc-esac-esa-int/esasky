@@ -82,15 +82,19 @@ public class HiPSDetailsPopup extends PopupPanel {
             hipsDetailsPanel.add(new HTML(hips.getWavelengthRange() + "<br/><br/>"));
         }
 
-        if (hips.getCreatorURL() != null && !"".equals(hips.getCreatorURL())) {
+        if (hips.getCreator() != null && !"".equals(hips.getCreator())) {
             hipsDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_mapCreatedBy") + "</b>"));
-            if (hips.getCreationDate() != null && !"".equals(hips.getCreationDate())) {
-                hipsDetailsPanel.add(new HTML("<b><a target='_blank' href='" + hips.getCreatorURL() + "'>"
-                        + hips.getCreator() + "</a></b> on " + hips.getCreationDate()));
-            } else {
-                hipsDetailsPanel.add(new HTML("<b><a target='_blank' href='" + hips.getCreatorURL() + "'>"
-                        + hips.getCreator() + "</a></b>"));
+            String htmlString = "";
+            if(hips.getCreatorURL() != null && !"".equals(hips.getCreatorURL())){
+            	htmlString += "<b><a target='_blank' href='" + hips.getCreatorURL() + "'>"
+                        + hips.getCreator() + "</a></b>";
+            }else {
+            	htmlString += "<b>" + hips.getCreator() + "</b>";
             }
+            if (hips.getCreationDate() != null && !"".equals(hips.getCreationDate())) {
+                htmlString += " on " + hips.getCreationDate();
+            }
+            hipsDetailsPanel.add(new HTML(htmlString));
             hipsDetailsPanel.add(new HTML("<br/>"));
         }
 

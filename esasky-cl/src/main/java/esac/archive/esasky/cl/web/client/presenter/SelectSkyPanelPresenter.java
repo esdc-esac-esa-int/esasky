@@ -46,7 +46,7 @@ public class SelectSkyPanelPresenter {
         getHiPSMapsList();
         CommonEventBus.getEventBus().addHandler(HipsAddedEvent.TYPE, changeEvent -> {
         	if(changeEvent.getAddIfAlreadyExist()) {
-        		if(changeEvent.isUserHips()) {
+        		if(changeEvent.getHipsWavelength() == HipsWavelength.USER || changeEvent.getHipsWavelength() == HipsWavelength.GW) {
         			addUrlHips(changeEvent.getHiPS());
         		} else {
         			view.createSky(true);
@@ -65,13 +65,13 @@ public class SelectSkyPanelPresenter {
     
     private void addUrlHips(HiPS hips) {
 		
-		SkiesMenuEntry entry = skiesMenu.getHiPSListByWavelength(HipsWavelength.USER);
+		SkiesMenuEntry entry = skiesMenu.getHiPSListByWavelength(hips.getHipsWavelength());
 		
 		if(entry == null) {
 			entry = new SkiesMenuEntry();
 			entry.getHips().add(hips);
 			entry.setTotal(1);
-			entry.setWavelength(HipsWavelength.USER);
+			entry.setWavelength(hips.getHipsWavelength());
 			getSkiesMenu().getMenuEntries().add(entry);
 		} else {
 		    entry.getHips().add(hips);

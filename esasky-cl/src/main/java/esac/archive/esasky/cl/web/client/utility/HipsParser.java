@@ -79,6 +79,22 @@ public class HipsParser {
 				? HiPSImageFormat.png : HiPSImageFormat.jpg;
 		hips.setImgFormat(hipsImageFormatEnum);
 		
+		if(props.hasProperty("obs_regime")) {
+			hips.setWavelengthRange(props.getStringProperty("obs_regime"));
+		}
+		if(props.hasProperty("hips_creator")) {
+			hips.setCreator(props.getStringProperty("hips_creator"));
+		}
+		if(props.hasProperty("obs_collection")) {
+			hips.setMission(props.getStringProperty("obs_collection"));
+		}
+		if(props.hasProperty("obs_copyright_url")) {
+			hips.setMissionURL(props.getStringProperty("obs_copyright_url"));
+		}
+		if(props.hasProperty("hips_release_date")) {
+			hips.setCreationDate(props.getStringProperty("hips_release_date"));
+		}
+		
 		return hips;
 	}
 	

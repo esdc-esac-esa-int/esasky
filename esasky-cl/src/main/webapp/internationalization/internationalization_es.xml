@@ -3268,5 +3268,11 @@
 		No hay imágenes disponibles en el campo de visión actual.
 		Aleje la imagen o resetee los filtros para mostrar más.
 	</text>
+		<text key="wavelength_GW">
+		OG_eventid
+	</text>
+	<text key="wavelength_GW_tooltip">
+		Mapas de probabilidad de Ondas Gravitacionales
+	</text>
 </Internationalization>
 

@@ -24,6 +24,7 @@ import esac.archive.esasky.cl.web.client.view.common.EsaSkyTextBox;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 
 
 public class HipsUrlPanel extends PopupPanel{
@@ -122,7 +123,7 @@ public class HipsUrlPanel extends PopupPanel{
 			@Override
 			public void onSuccess(HiPS hips) {
 				loadingSpinner.setVisible(false);
-				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true));
+				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, HipsWavelength.USER));
 				errorLabel.setVisible(false);
 				hide();
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL, url);

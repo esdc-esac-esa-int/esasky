@@ -45,6 +45,8 @@ public class HiPS {
     boolean isDefault;
     /** icon */
     String icon;
+    /** Wavelength */
+    HipsWavelength hipsWavelength;
     /*
      * hips color default map
      */
@@ -204,5 +206,13 @@ public class HiPS {
 	public void setFiles(JavaScriptObject files) {
 		this.files = files;
 	}
-    
+
+	public HipsWavelength getHipsWavelength() {
+		return hipsWavelength;
+	}
+
+	public void setHipsWavelength(HipsWavelength hipsWavelength) {
+		this.hipsWavelength = hipsWavelength;
+	}
+	
 }

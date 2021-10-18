@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
@@ -30,6 +32,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptorList;
@@ -388,7 +391,12 @@ public class GwPanel extends BasePopupPanel {
 				public void onSuccess(HiPS hips) {
 					rowIdHipsMap.put(hips.getSurveyName(), rowId);
 					loadingSpinner.setVisible(false);
-					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true, false));
+					hips.setCreator("LIGO Scientifig Collaboration");
+					hips.setCreatorURL("https://www.ligo.org/");
+					hips.setMission("GraceDB");
+					hips.setMissionURL("https://gracedb.ligo.org/superevents/" + hips.getSurveyName() + "/view/");
+					hips.setColorPalette(ColorPalette.PLANCK);
+					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, HipsWavelength.GW, false));
 					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS, url);
 				}
 				

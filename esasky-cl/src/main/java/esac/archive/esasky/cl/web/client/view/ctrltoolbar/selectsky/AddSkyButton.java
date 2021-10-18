@@ -25,6 +25,7 @@ import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 
 public class AddSkyButton extends DisablablePushButton{
 
@@ -67,7 +68,7 @@ public class AddSkyButton extends DisablablePushButton{
 			@Override
 			public void onSelectedChange() {
 				if(menu.getSelectedObject() == AddSkyMenuItems.ESASKY) {
-					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(null, false));
+					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(null, HipsWavelength.OTHERS));
 				}
 				if(menu.getSelectedObject() == AddSkyMenuItems.URL) {
 					openUrlPanel(x, y);
@@ -126,7 +127,7 @@ public class AddSkyButton extends DisablablePushButton{
 			
 			@Override
 			public void onSuccess(HiPS hips) {
-				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true));
+				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, HipsWavelength.USER));
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL, hips.getSurveyRootUrl());
 			}
 			
@@ -160,7 +161,7 @@ public class AddSkyButton extends DisablablePushButton{
 			HiPS hips = parser.parseHipsProperties(propertiesText, "");
 			hips.setFiles(files);
 			hips.setLocal(true);
-			CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, true));
+			CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, HipsWavelength.USER));
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDLOCAL, hips.getSurveyName());
 		} catch (IOException e) {
 			DisplayUtils.showMessageDialogBox(e.getMessage(),"Error", UUID.randomUUID().toString(), "");
