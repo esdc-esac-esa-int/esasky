@@ -25,7 +25,7 @@ public class TAPImageListService extends AbstractTAPService {
     
     @Override
     public String getMetadataAdql(IDescriptor descriptor, String filter) {
-    	return "SELECT * from " + descriptor.getTapTable();
+    	return "SELECT * from " + descriptor.getTapTable() + " order by priority desc";
     }
 
 	@Override
