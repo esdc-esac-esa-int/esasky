@@ -3266,7 +3266,6 @@
 	</text>
 	<text key="tabulator_no_images">
 		No hay imágenes disponibles en el campo de visión actual.
-		&lt;br&gt;
 		Aleje la imagen o resetee los filtros para mostrar más.
 	</text>
 </Internationalization>

@@ -3560,7 +3560,6 @@
 	</text>
 	<text key="tabulator_no_images">
 		No images available in the current field of view.
-		&lt;br&gt;
 		Zoom out or reset filters to show more.
 	</text>
 </Internationalization>
