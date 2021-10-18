@@ -3221,5 +3221,53 @@
 	<text key="header_highResolutionImagesTooltip">
 		Visualizar imágenes de divulgación de ESA/Hubble	
 	</text>
+	
+	
+		<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
+		El telescopio Fermi Large Area (LAT) escanea el cielo en rayos gamma de altas energías desde 2008 y la colaboración LAT desde entonces ha publicado una serie de catálogos de fuentes en rayos basados en análisis exhaustivos de los datos de LAT. El segundo lanzamiento de datos del cuarto catálogo de fuentes 4FGL-DR2 procede del análisis científico de los datos de los 10 primeros años de esta misión.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_3FHL">
+		El tercer catálogo de fuentes duras Fermi-LAT (3FHL) es un catálogo de fuentes detectadas con energías superiores a 10 GeV por el telescopio Fermi Large Area (LAT) en sus primeros 7 años, usando análisis Pass 8 para los eventos. Contiene 1556 objetos en el rango de energía 10 GeV -2 TeV.		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		Más información 
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4LAC-DR2">
+		Cuarto catálogo de Núcleos Galácticos Activos detectados por el telescopio Fermi Large Area (LAT) en los 10 primeros años de esta misión.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_OU_Blazars">
+		Open Universe for Blazars utiliza una lista de blazars. La segunda versión de dicha lista se realizó combinando los catálogos 5BZCAT, 3HSP y 4LAC. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#oublazars"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="Gamma-rays">
+		rayos gamma
+	</text>
+	<text key="Gamma">
+		Gamma
+	</text>
+	<text key="tabulator_no_images">
+		No hay imágenes disponibles en el campo de visión actual.
+		&lt;br&gt;
+		Aleje la imagen o resetee los filtros para mostrar más.
+	</text>
 </Internationalization>
 
