@@ -80,7 +80,7 @@ public class HstImageDescriptorTest {
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		
 		HstImageIdDescriptor idDesc = new HstImageIdDescriptor(image.getId(), image.getTitle(), image.getCoordinateMetadata().getStcs(),
-				image.getObjectName(), image.getCoordinateMetadata().getCoordinate().getRa(), image.getCoordinateMetadata().getCoordinate().getDec());
+				image.getObjectName(), image.getCoordinateMetadata().getCoordinate().getRa(), image.getCoordinateMetadata().getCoordinate().getDec(), image.getPriority());
 
 		
 		String newJson = mapper.writer().writeValueAsString(idDesc);
