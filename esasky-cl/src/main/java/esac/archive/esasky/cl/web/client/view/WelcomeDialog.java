@@ -70,7 +70,7 @@ public class WelcomeDialog extends Composite {
 		Label title = new Label(TextMgr.getInstance().getText("WelcomeDialog_title"));
 		title.addStyleName("welcomeTitle");
 
-		Image esaSkyLogo = new Image(this.resources.esaSkyAvatarNoText());
+		Image esaSkyLogo = new Image(this.resources.esaSkyAvatar());
 		esaSkyLogo.addStyleName("welcomeEsaSkyLogo");
 
 		Image esaLogo = new Image(this.resources.esaLogo());
