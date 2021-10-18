@@ -3516,7 +3516,7 @@
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi 4FGL">
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
 		The Fermi Large Area Telescope (LAT) has been surveying the high-energy gamma-ray sky since 2008 and the LAT Collaboration has published a succession of source catalogs based on comprehensive analyses of LAT data. The fourth source catalog second data release was derived from analysis of the first 10 years of LAT science data.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3525,7 +3525,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi 3FHL">
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_3FHL">
 		Third Catalog of Hard Fermi-LAT Sources (3FHL), a catalog of sources detected above 10 GeV by the Fermi Large Area Telescope (LAT) in the first 7 years of data using the Pass 8 event-level analysis, containing 1556 objects characterised in the 10 GeV-2 TeV energy range.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3534,7 +3534,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi 4LAC">
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4LAC-DR2">
 		Fourth Catalog of Active Galactic Nuclei detected by the Fermi Large Area Telescope (LAT) (4LAC-DR2) based on 10 years of data. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3559,6 +3559,8 @@
 		Gamma
 	</text>
 	<text key="tabulator_no_images">
-		No images available in the current field of view. Zoom out or reset filters to show more.
+		No images available in the current field of view.
+		&lt;br&gt;
+		Zoom out or reset filters to show more.
 	</text>
 </Internationalization>
