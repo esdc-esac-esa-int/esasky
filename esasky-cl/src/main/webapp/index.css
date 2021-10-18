@@ -39,11 +39,19 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    max-height: 500px;
+    max-width: 500px;
 }
 
 #esa-logo-image{
 	display: block;
 	margin: auto;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 80%;
 }
 
 .esasky__spinner{width:32px;height:30px;display: inline-block;vertical-align:middle;}.esasky__spinner div{animation:esasky__spinner 1.5s cubic-bezier(.5,0,.5,1) infinite;transform-origin:15px 15px}.esasky__spinner div:after{content:" ";display:block;position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;margin:-3px 0 0 -3px;top:4px;left:17px}@keyframes esasky__spinner{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
