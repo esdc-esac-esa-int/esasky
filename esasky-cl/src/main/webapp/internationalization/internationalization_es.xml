@@ -3079,12 +3079,10 @@
 	<text key="tabulator_addHips_tooltip">Añadir HiPS como nueva fila en el panel cielo</text>
 	
 	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
-        El satélite CHEOPS, lanzado en Diciembre de 2019, es la primera misión dedicada a la búsqueda de exoplanetas en
-        tránsito a partir de fotometría de alta precisión de estrellas brillantes ya conocidas por albergar exoplanetas.
-        Posee un único instrumento: un telescopio reflector de apertura efectiva de 30 cm con un campo de visión
-        de diámetro 0.32˚. La longitud de onda cubre desde el infrarojo cercano hasta en visible en el rango 330-1100 nm.
+		CHEOPS es una misión de la ESA desarrollada en colaboración con Suiza, con un consorcio liderado por la Universidad de Berna, y con una importante contribución de Austria, Bélgica, Francia, Alemania, Hungría, Italia, España Suecia y Reino Unido. El satélite consiste en un único instrumento, un fotómetro de ultra-alta precisión que cubre el rango de longitud de onda 330 - 1100 nm en una sola banda. Las observaciones se realizan como parte del Guaranteed Time Observing Programme diseñado por el Equipo Científico de CHEOPS y del Guest Observers Programme a través del cual la comunidad astronómica puede solicitar tiempo de observación.
 		&lt;br&gt;&lt;br&gt;
-		Los datos proporcionados por &lt;em&gt;ESASky&lt;/em&gt; consisten en las curvas de luz reducidas y sus metadatos asociados, que son datos de alto nivel extraídos por la pipeline de reducción de datos de CHEOPS.
+
+		Los datos de CHEOPS disponibles en ESASky consisten en una curva de luz (datos de alto nivel producidos por la pipeline automática de redución de datos) y un  data reduction pipeline report para cada observación pública.
         Para más información visite  &lt;a href="https://cheops-archive.astro.unige.ch/archive_browser/" target="_blank"&gt;CHEOPS Archive Browser&lt;/a&gt;.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#CHEOPS"

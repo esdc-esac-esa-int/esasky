@@ -3367,11 +3367,9 @@
 	<text key="tabulator_addHips_tooltip">Adds this HiPS as a new row to the Sky panel</text>
 	
 	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
-		The CHaracterising EXOPlanets Satellite (CHEOPS), launched on December 2019, is the first mission dedicated to the search for exoplanetary transits through high precision photometry of bright stars already known to host planets.
-		It has a single instrument: a 30 effective aperture reflecting telescope with a field of view diameter of 0.32˚.
-		The CHEOPS bandpass covers the visible-near-infrared 330-1100 nm range.
+		CHEOPS is an ESA mission developed in partnership with Switzerland, with a dedicated consortium led by the University of Bern, and with important contributions from Austria, Belgium, France, Germany, Hungary, Italy, Portugal, Spain, Sweden and the UK. The satellite has a single payload comprising an ultra-high precision photometer covering the 330 - 1100 nm wavelength range in a single photometric band. Observations are made as part of the Guaranteed Time Observing Programme that is formulated by the CHEOPS Science Team and the Guest Observers Programme through which the Community at large can apply for CHEOPS time. 
 		&lt;br&gt;&lt;br&gt;
-		Data products provided by &lt;em&gt;ESASky&lt;/em&gt; consist on the reduced light-curves and associated meta-data, a high level data product retrieved as performed by the data reduction pipeline.
+		The subset of CHEOPS data available through ESASky includes an example of a light curve (the highest level data product produced by the automated data reduction pipeline) and the data reduction pipeline report for each public science observation. 
 		For more information visit the &lt;a href="https://cheops-archive.astro.unige.ch/archive_browser/" target="_blank"&gt;CHEOPS Archive Browser&lt;/a&gt;.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#CHEOPS"
@@ -3478,7 +3476,7 @@
 		Gravitational Waves
 	</text>
 	<text key="webConstants_exploreHstImages">
-		Explore high resolution images from the Hubble Space Telescope
+		Explore outreach images from the Hubble Space Telescope
 	</text>
 	<text key="ctrlToolBar_gwTooltip">
 		Explore Multi-messenger Events
@@ -3512,7 +3510,7 @@
 		Outreach images
 	</text>
 	<text key="header_highResolutionImagesTooltip">
-		Visualise outreach astronomical images from ESA/Hubble
+		Visualise outreach images from the Hubble Space Telescope
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
