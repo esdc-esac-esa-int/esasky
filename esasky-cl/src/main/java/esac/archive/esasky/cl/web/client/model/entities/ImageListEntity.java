@@ -115,6 +115,7 @@ public class ImageListEntity extends EsaSkyEntity {
 		if(firstLoad) {
 			firstLoad = false;
 			performFoVFilter();
+			setSizeRatio(0.3);
 		}
 	}
 	
