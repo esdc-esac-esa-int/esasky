@@ -3214,7 +3214,7 @@
 		No se puede encontrar la imagen con ID: $ID$ Por favor asegúrese de que el ID introducido es correcto.
 	</text>
 	<text key="header_highResolutionImages">
-		Imagen Alta-res 
+		Im. Divulgación
 	</text>
 	<text key="header_highResolutionImagesTooltip">
 		Visualizar imágenes de divulgación de ESA/Hubble	
@@ -3267,9 +3267,9 @@
 		Aleje la imagen o resetee los filtros para mostrar más.
 	</text>
 		<text key="wavelength_GW">
-		OG_eventid
+		Ondas Gravitacionales
 	</text>
-	<text key="wavelength_GW_tooltip">
+	<text key="wavelength_GW_Tooltip">
 		Mapas de probabilidad de Ondas Gravitacionales
 	</text>
 </Internationalization>

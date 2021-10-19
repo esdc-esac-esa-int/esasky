@@ -3561,9 +3561,9 @@
 		Zoom out or reset filters to show more.
 	</text>
 	<text key="wavelength_GW">
-		GW_eventid
+		Gravitational Waves
 	</text>
-	<text key="wavelength_GW_tooltip">
+	<text key="wavelength_GW_Tooltip">
 		Gravitational Wave probability maps
 	</text>
 </Internationalization>
