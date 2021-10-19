@@ -293,28 +293,43 @@ public class TabulatorWrapper{
     	double ra = pos.getCoordinate().getRa();
     	double dec = pos.getCoordinate().getDec();
     	double fov = pos.getFov()/2.0;
+    	double minVal = dec - fov;
+    	double maxVal = dec + fov;
     	
     	if(dec + fov > 90.0) {
     		//Around north pole
     		setHeaderFilterValue(tableJsObject, decCol, Double.toString(pos.getCoordinate().getDec() - fov) + ",");
+    		
     	}else if(dec - pos.getFov() < -90.0) {
     		//Around south pole
     		setHeaderFilterValue(tableJsObject, decCol, "," + Double.toString(pos.getCoordinate().getDec() + fov));
+    	} else {
+    		setHeaderFilterValue(tableJsObject, decCol,  minVal + "," + maxVal);
     	}
     	
-    	double minVal = dec - fov;
-    	double maxVal = dec + fov;
-		setHeaderFilterValue(tableJsObject, decCol,  minVal + "," + maxVal);
 
     	
     	// To handle ra fov closer to the poles
     	fov = Math.abs(fov / Math.cos(dec * Math.PI / 180.0));
     	
+    	String filterString = "";
     	minVal = ra - fov;
-    	maxVal = ra + fov % 360;
+    	maxVal = ra + fov;
+    	if(minVal < 0) {
+    		minVal += 360;
+    		filterString += minVal + "," + 360;
+    		filterString += "," + 0 + "," + (maxVal % 360);
+    	} else if (maxVal > 360) {
+    		maxVal = maxVal % 360;
+    		filterString += 0 + "," + maxVal;
+    		filterString += "," + minVal + "," + 360;
+    	} else {
+    		filterString += minVal + "," + maxVal;
+    	}
+    	setHeaderFilterValue(tableJsObject, raCol, filterString);
+    	
     	
     	tableJsObject.setProperty("filteredOnFov", true);
-    	setHeaderFilterValue(tableJsObject, raCol, minVal + "," + maxVal);
     }
     
     public native void setHeaderFilterValue(GeneralJavaScriptObject tableJsObject, String column, String value)/*-{
@@ -810,14 +825,20 @@ public class TabulatorWrapper{
 			function onFilterChanged(input){
 				values = input.split(",");
 				var filter = "";
-				if(values[0].length > 0 ){
-					filter += cell.getField() + " >=  " + values[0]
-				}
-				if(values.length > 1 && values[1].length > 0 ){
-					if(filter.length > 0){
-						filter += " AND ";
+				var addFilterMaxMin = function (values, index){
+					if(values[index].length > 0 ){
+						filter += cell.getField() + " >=  " + values[index]
 					}
-					filter += cell.getField() + " <=  " + values[1]
+					if(values.length > index + 1 && values[index + 1].length > 0 ){
+						if(filter.length > 0){
+							filter += " AND ";
+						}
+						filter += cell.getField() + " <=  " + values[index + 1]
+					}
+				
+				}
+				for(var i = 0; i < values.length; i = i + 2){
+					addFilterMaxMin(values, i);
 				}
 				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
 			}
@@ -1018,23 +1039,30 @@ public class TabulatorWrapper{
 			
 			var split = headerValue.split(",");
 
-			if(split.length == 2){
-				
+			if(split.length % 2 == 0){
 				if(rowValue == null){
 					// If any filter is added Null should be removed
 					return false;
 				}
-				
-				var startTrue = true;
-				var endTrue = true;
-				if(split[0].length > 0 && rowValue < parseFloat(split[0]) ){
-					startTrue = false;
+				var isWithin = function (index){
+					var startTrue = true;
+					var endTrue = true;
+					if(split[index].length > 0 && rowValue < parseFloat(split[index]) ){
+						startTrue = false;
+					}
+					if(split[index + 1].length > 0 && rowValue > parseFloat(split[index + 1]) ){
+						endTrue = false;
+					}
+					if(startTrue && endTrue){
+						return true;
+					}
+					
+					if(split.length > index + 2){
+						return isWithin(index + 2);
+					}
+			    	return false; 
 				}
-				if(split[1].length > 0 && rowValue > parseFloat(split[1]) ){
-
-					endTrue = false;
-				}
-		    	return startTrue && endTrue; 
+		    	return isWithin(0);
 			}
 			return true;
 		}
