@@ -703,7 +703,7 @@
   border-top: 1px solid #999;
   padding: 5px;
   padding-left: 10px;
-  background: #ccc;
+  background: transparent;
   font-weight: bold;
   color: #333;
   min-width: 100%;
@@ -711,14 +711,18 @@
 
 .tabulator-row.tabulator-group:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.tabulator-row.tabulator-group:active{
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow {
   margin-right: 10px;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid #666;
+  border-top: 6px solid #DDD;
   border-bottom: 0;
 }
 

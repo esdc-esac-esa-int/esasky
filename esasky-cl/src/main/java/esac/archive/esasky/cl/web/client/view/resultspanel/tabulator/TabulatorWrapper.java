@@ -281,59 +281,80 @@ public class TabulatorWrapper{
     
     public void filterOnFov(String raCol, String decCol) {
     	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-    	
-    	if(pos.getFov() > 100.0) {
-    		//Clear filters
-    		setHeaderFilterValue(tableJsObject, raCol, "");
-    		setHeaderFilterValue(tableJsObject, decCol, "");
-    		tableJsObject.setProperty("filteredOnFov", false);
-    		return;
-    	}
+    	double minRa = 0.0;
+    	double maxRa = 360.0;
     	
     	double ra = pos.getCoordinate().getRa();
     	double dec = pos.getCoordinate().getDec();
     	double fov = pos.getFov()/2.0;
-    	double minVal = dec - fov;
-    	double maxVal = dec + fov;
+    	double minDec = dec - fov;
+    	double maxDec = dec + fov;
     	
     	if(dec + fov > 90.0) {
     		//Around north pole
-    		setHeaderFilterValue(tableJsObject, decCol, Double.toString(pos.getCoordinate().getDec() - fov) + ",");
-    		
-    	}else if(dec - pos.getFov() < -90.0) {
+    		minDec = pos.getCoordinate().getDec() - fov;
+    	} else if(dec - pos.getFov() < -90.0) {
     		//Around south pole
-    		setHeaderFilterValue(tableJsObject, decCol, "," + Double.toString(pos.getCoordinate().getDec() + fov));
-    	} else {
-    		setHeaderFilterValue(tableJsObject, decCol,  minVal + "," + maxVal);
-    	}
-    	
-
+    		maxDec = pos.getCoordinate().getDec() + fov;
+    	} 
     	
     	// To handle ra fov closer to the poles
     	fov = Math.abs(fov / Math.cos(dec * Math.PI / 180.0));
     	
     	String filterString = "";
-    	minVal = ra - fov;
-    	maxVal = ra + fov;
-    	if(minVal < 0) {
-    		minVal += 360;
-    		filterString += minVal + "," + 360;
-    		filterString += "," + 0 + "," + (maxVal % 360);
-    	} else if (maxVal > 360) {
-    		maxVal = maxVal % 360;
-    		filterString += 0 + "," + maxVal;
-    		filterString += "," + minVal + "," + 360;
+    	minRa = ra - fov;
+    	maxRa = ra + fov;
+    	if(minRa < 0) {
+    		minRa += 360;
+    		filterString += minRa + "," + 360;
+    		filterString += "," + 0 + "," + (maxRa % 360);
+    	} else if (maxRa > 360) {
+    		maxRa = maxRa % 360;
+    		filterString += 0 + "," + maxRa;
+    		filterString += "," + minRa + "," + 360;
     	} else {
-    		filterString += minVal + "," + maxVal;
+    		filterString += minRa + "," + maxRa;
     	}
-    	setHeaderFilterValue(tableJsObject, raCol, filterString);
-    	
     	
     	tableJsObject.setProperty("filteredOnFov", true);
+    	groupByFov(tableJsObject, raCol, filterString, decCol, minDec, maxDec);
     }
     
-    public native void setHeaderFilterValue(GeneralJavaScriptObject tableJsObject, String column, String value)/*-{
-        tableJsObject.setHeaderFilterValue(column, value);
+    public native void groupByFov(GeneralJavaScriptObject tableJsObject, String raColumn, String filterString,
+    		String decColumn, double minDec, double maxDec)/*-{
+
+		var split = filterString.split(",");
+
+		var isWithin = function (data, column, index){
+			var startTrue = true;
+			var endTrue = true;
+			if(split[index].length > 0 && data[column] < parseFloat(split[index]) ){
+				startTrue = false;
+			}
+			if(split[index + 1].length > 0 && data[column] > parseFloat(split[index + 1]) ){
+				endTrue = false;
+			}
+			if(startTrue && endTrue){
+				return true;
+			}
+			
+			if(split.length > index + 2){
+				return isWithin(data, column, index + 2);
+			}
+			return false;
+		}
+		var isInFov = function(data) {
+			if(isWithin(data, raColumn, 0)
+				&& data[decColumn] >= minDec && data[decColumn] <= maxDec){
+				return "In Field of View";
+			} else {
+				return "Outside Field of View"
+			}
+		}
+		
+		
+
+        tableJsObject.setGroupBy(isInFov);
     }-*/;
     
     public void filter(String column, String comparison, String value) {
@@ -825,20 +846,14 @@ public class TabulatorWrapper{
 			function onFilterChanged(input){
 				values = input.split(",");
 				var filter = "";
-				var addFilterMaxMin = function (values, index){
-					if(values[index].length > 0 ){
-						filter += cell.getField() + " >=  " + values[index]
-					}
-					if(values.length > index + 1 && values[index + 1].length > 0 ){
-						if(filter.length > 0){
-							filter += " AND ";
-						}
-						filter += cell.getField() + " <=  " + values[index + 1]
-					}
-				
+				if(values[0].length > 0 ){
+					filter += cell.getField() + " >=  " + values[0]
 				}
-				for(var i = 0; i < values.length; i = i + 2){
-					addFilterMaxMin(values, i);
+				if(values.length > 1 && values[1].length > 0 ){
+					if(filter.length > 0){
+						filter += " AND ";
+					}
+					filter += cell.getField() + " <=  " + values[1]
 				}
 				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filter);
 			}
@@ -1039,30 +1054,23 @@ public class TabulatorWrapper{
 			
 			var split = headerValue.split(",");
 
-			if(split.length % 2 == 0){
+			if(split.length == 2){
+				
 				if(rowValue == null){
 					// If any filter is added Null should be removed
 					return false;
 				}
-				var isWithin = function (index){
-					var startTrue = true;
-					var endTrue = true;
-					if(split[index].length > 0 && rowValue < parseFloat(split[index]) ){
-						startTrue = false;
-					}
-					if(split[index + 1].length > 0 && rowValue > parseFloat(split[index + 1]) ){
-						endTrue = false;
-					}
-					if(startTrue && endTrue){
-						return true;
-					}
-					
-					if(split.length > index + 2){
-						return isWithin(index + 2);
-					}
-			    	return false; 
+				
+				var startTrue = true;
+				var endTrue = true;
+				if(split[0].length > 0 && rowValue < parseFloat(split[0]) ){
+					startTrue = false;
 				}
-		    	return isWithin(0);
+				if(split[1].length > 0 && rowValue > parseFloat(split[1]) ){
+
+					endTrue = false;
+				}
+		    	return startTrue && endTrue; 
 			}
 			return true;
 		}
@@ -1112,6 +1120,20 @@ public class TabulatorWrapper{
 		 	placeholder:"",
     		footerElement:footerCounter,
     		virtualDomHoz:true,
+    		groupHeader : function(value, count, data, group){
+    			if(value == "Outside Field of View"){
+		        	return "<span style='color:#777777;'>" + value + "</span><span style='color:#777777; margin-left:10px;'>(" + count + " images)</span>";
+    			}
+    			else {
+		        	return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " images)</span>";
+    			}
+		    },
+		    groupStartOpen: function(value, count, data, group){
+		    	console.log(value);
+		    	console.log(data);
+		    	return value != "Outside Field of View";
+		    },
+		    groupToggleElement: "header",
 		    dataFiltered:function(filters, rows){
 		    	var returnString = "";
 		    	for(var i = 0; i < rows.length; i++){
