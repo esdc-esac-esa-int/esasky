@@ -41,10 +41,11 @@ public class Api extends ApiBase{
 		ApiPlot apiPlot = new ApiPlot(controller);
 		ApiView apiView = new ApiView(controller);
 		ApiImage apiImage = new ApiImage();
+		ApiAlerts apiAlerts = new ApiAlerts(controller);
 		
 		
 		ApiMessageParser.init(this, apiCounts, apiEvents, apiExtTap, apiHips, apiMoc, apiModules,
-				apiOverlay, apiPanel, apiPlanning, apiPlot, apiView, apiImage);
+				apiOverlay, apiPanel, apiPlanning, apiPlot, apiView, apiImage, apiAlerts);
 
 		Log.debug("[Api] Ready!!");
 		

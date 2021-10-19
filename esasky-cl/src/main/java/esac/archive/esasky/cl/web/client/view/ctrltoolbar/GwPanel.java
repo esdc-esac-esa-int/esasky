@@ -4,6 +4,8 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -339,6 +341,68 @@ public class GwPanel extends BasePopupPanel {
 			gwPanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel::setMaxHeight()();
 		});
 	}-*/;
+	
+	private void showEventFromRow(GeneralJavaScriptObject rowData) {
+		String id = rowData.getStringProperty("grace_id");
+		
+		if(!blockOpenHipsTrigger) {
+			testParsingHipsList("https://skies.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
+			String ra = rowData.getStringProperty(gwDescriptor.getTapRaColumn());
+			String dec = rowData.getStringProperty(gwDescriptor.getTapDecColumn());
+			AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
+		}
+		
+		String stcs90EntityId = gwDescriptor.getDescriptorId() + "_90";
+		GeneralEntityInterface stcs90entity = EntityRepository.getInstance().getEntity(stcs90EntityId);
+		if(stcs90entity == null) {
+			stcs90entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs90EntityId, "dashed");
+		}
+		stcs90entity.addShapes(rowData.wrapInArray());
+		
+		
+		gwDescriptor.setTapSTCSColumn("stcs50");
+		String stcs50EntityId = gwDescriptor.getDescriptorId() + "_50";
+		GeneralEntityInterface stcs50entity = EntityRepository.getInstance().getEntity(stcs50EntityId);
+		if(stcs50entity == null) {
+			stcs50entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs50EntityId, "solid");
+		}
+		stcs50entity.addShapes(rowData.wrapInArray());
+		gwDescriptor.setTapSTCSColumn("stcs90");
+	}
+	
+	private void testParsingHipsList(String url, Integer rowId) {
+		loadingSpinner.setVisible(true);
+		HipsParser parser = new HipsParser(new HipsParserObserver() {
+			
+			@Override
+			public void onSuccess(HiPS hips) {
+				rowIdHipsMap.put(hips.getSurveyName(), rowId);
+				loadingSpinner.setVisible(false);
+				hips.setCreator("LIGO Scientifig Collaboration");
+				hips.setCreatorURL("https://www.ligo.org/");
+				hips.setMission("GraceDB");
+				hips.setMissionURL("https://gracedb.ligo.org/superevents/" + hips.getSurveyName() + "/view/");
+				hips.setColorPalette(ColorPalette.PLANCK);
+				CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, HipsWavelength.GW, false));
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS, url);
+			}
+			
+			@Override
+			public void onError(String errorMsg) {
+				loadingSpinner.setVisible(false);
+				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
+				fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
+				
+				DisplayUtils.showMessageDialogBox(fullErrorText, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+						TextMgr.getInstance().getText("error"));
+				
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS_FAIL, url);
+				Log.error(errorMsg);
+			}
+		});
+		parser.loadProperties(url);
+	}
 
 	private class TabulatorCallback extends DefaultTabulatorCallback {
 
@@ -355,65 +419,8 @@ public class GwPanel extends BasePopupPanel {
 		@Override
 		public void onRowSelection(GeneralJavaScriptObject row) {
 			GeneralJavaScriptObject rowData = row.invokeFunction("getData");
-			String id = rowData.getStringProperty("grace_id");
-			
-			if(!blockOpenHipsTrigger) {
-				testParsingHipsList("https://skies.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
-				String ra = rowData.getStringProperty(gwDescriptor.getTapRaColumn());
-				String dec = rowData.getStringProperty(gwDescriptor.getTapDecColumn());
-				AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
-			}
-			
-			String stcs90EntityId = gwDescriptor.getDescriptorId() + "_90";
-			GeneralEntityInterface stcs90entity = EntityRepository.getInstance().getEntity(stcs90EntityId);
-			if(stcs90entity == null) {
-				stcs90entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs90EntityId, "dashed");
-			}
-			stcs90entity.addShapes(row.invokeFunction("getData").wrapInArray());
-			
-			
-			gwDescriptor.setTapSTCSColumn("stcs50");
-			String stcs50EntityId = gwDescriptor.getDescriptorId() + "_50";
-			GeneralEntityInterface stcs50entity = EntityRepository.getInstance().getEntity(stcs50EntityId);
-			if(stcs50entity == null) {
-				stcs50entity = EntityRepository.getInstance().createGwEntity(gwDescriptor, stcs50EntityId, "solid");
-			}
-			stcs50entity.addShapes(row.invokeFunction("getData").wrapInArray());
-			gwDescriptor.setTapSTCSColumn("stcs90");
-		}
-		
-		private void testParsingHipsList(String url, Integer rowId) {
-			loadingSpinner.setVisible(true);
-			HipsParser parser = new HipsParser(new HipsParserObserver() {
-				
-				@Override
-				public void onSuccess(HiPS hips) {
-					rowIdHipsMap.put(hips.getSurveyName(), rowId);
-					loadingSpinner.setVisible(false);
-					hips.setCreator("LIGO Scientifig Collaboration");
-					hips.setCreatorURL("https://www.ligo.org/");
-					hips.setMission("GraceDB");
-					hips.setMissionURL("https://gracedb.ligo.org/superevents/" + hips.getSurveyName() + "/view/");
-					hips.setColorPalette(ColorPalette.PLANCK);
-					CommonEventBus.getEventBus().fireEvent(new HipsAddedEvent(hips, HipsWavelength.GW, false));
-					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS, url);
-				}
-				
-				@Override
-				public void onError(String errorMsg) {
-					loadingSpinner.setVisible(false);
-					String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
-					fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
-					
-					DisplayUtils.showMessageDialogBox(fullErrorText, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
-							TextMgr.getInstance().getText("error"));
-					
-					GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_SHOW_HIPS_FAIL, url);
-					Log.error(errorMsg);
-				}
-			});
-			parser.loadProperties(url);
+			showEventFromRow(rowData);
+
 		}
 		
 		@Override
@@ -459,6 +466,47 @@ public class GwPanel extends BasePopupPanel {
 		public String getEsaSkyUniqId() {
 			return gwDescriptor.getDescriptorId();
 		}
+	
+	}
+
+	public JSONArray getIds() {
+		GeneralJavaScriptObject data = getAllData();
+		GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(data);
+		JSONArray ids = new JSONArray();
+		for(GeneralJavaScriptObject obj : dataArray) {
+			if(obj.getStringProperty("grace_id") != null) {
+				ids.set(ids.size(), new JSONString(obj.getStringProperty("grace_id")));
+			}
+		}
+		return ids;
+	}
+	
+	public GeneralJavaScriptObject getAllData() {
+		return  GeneralJavaScriptObject.createJsonObject(gwTable.exportTableAsJson());
+	}
+
+	public GeneralJavaScriptObject getData4Id(String id) throws IllegalArgumentException {
+		GeneralJavaScriptObject data = getAllData();
+		GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(data);
+		for(GeneralJavaScriptObject obj : dataArray) {
+			if(id.equals(obj.getStringProperty("grace_id"))) {
+				return obj;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	public void showEvent(String id) throws IllegalArgumentException {
+		GeneralJavaScriptObject data = getAllData();
+		GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(data);
+		for(GeneralJavaScriptObject obj : dataArray) {
+			if(id.equals(obj.getStringProperty("grace_id"))) {
+				showEventFromRow(obj);
+			}
+		}
+		
+		throw new IllegalArgumentException();
+		
 	}
 
 }

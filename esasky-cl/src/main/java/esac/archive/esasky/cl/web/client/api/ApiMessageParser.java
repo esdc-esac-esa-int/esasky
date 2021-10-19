@@ -4,7 +4,8 @@ public class ApiMessageParser {
 	
 	public static native void init(Api api,  ApiCounts apiCounts, ApiEvents apiEvents, 
 			ApiExtTap apiExtTap, ApiHips apiHips, ApiMoc apiMoc, ApiModules apiModules, ApiOverlay apiOverlay,
-			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage) /*-{
+			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage,
+			ApiAlerts apiAlerts) /*-{
 	
 		function handleMessage(e){
 			var msg = e.data
@@ -621,6 +622,43 @@ public class ApiMessageParser {
 					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::parseHstImageData(Ljava/lang/String;)
 						(msg.content.name);
 					break;	
+					
+							
+				// API ALERTS
+				case 'openGWPanel':
+					console.log('openGWPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openAlertPanel()();
+					break;	
+					
+				case 'closeGWPanel':
+					console.log('openGWPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::closeAlertPanel()();
+					break;	
+
+				case 'getGWIds':
+					console.log('getGWIds event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getAvailableGWEvents(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
+				case 'getGWEventData':
+					console.log('getGWEventData event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getGWEventData(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)
+						(e, msg.content.id);
+					break;	
+					
+				case 'getAllGWData':
+					console.log('getAllGWData event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getAllGWData(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;	
+					
+					
+				case 'showGWEvent':
+					console.log('showGWEvent event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::showGWEvent(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)
+						(e, msg.content.id);
+					break;	
+					
 					
 				default:
 					console.log('No event associated');

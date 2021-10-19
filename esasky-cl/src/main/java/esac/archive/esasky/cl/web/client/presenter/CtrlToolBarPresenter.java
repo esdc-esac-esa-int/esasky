@@ -8,10 +8,12 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -79,6 +81,13 @@ public class CtrlToolBarPresenter {
         
         EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description);
         void removeCustomButton(EsaSkyButton button);
+        
+        void openGWPanel();
+        void closeGWPanel();
+        JSONArray getGWIds();
+        GeneralJavaScriptObject getGWData(String id) throws IllegalArgumentException ;
+        GeneralJavaScriptObject getAllGWData();
+        void showGWEvent(String id) throws IllegalArgumentException ;
         
     }
 
@@ -303,6 +312,30 @@ public class CtrlToolBarPresenter {
     
     public PublicationPanelPresenter getPublicationPresenter() {
     	return publicationPresenter;
+    }
+    
+    public void openGWPanel() {
+    	view.openGWPanel();
+    }
+    
+    public void closeGWPanel() {
+    	view.closeGWPanel();
+    }
+    
+    public JSONArray getGWIds() {
+    	return view.getGWIds();
+    }
+    
+    public GeneralJavaScriptObject getGWData(String id) throws IllegalArgumentException  {
+    	return view.getGWData(id);
+    }
+    
+    public GeneralJavaScriptObject getAllGWData() {
+    	return view.getAllGWData();
+    }
+    
+    public void showGWEvent(String id) throws IllegalArgumentException  {
+    	view.showGWEvent(id);
     }
     
 }

@@ -1,5 +1,6 @@
 package esac.archive.esasky.ifcs.model.client;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONObject;
 
 public class GeneralJavaScriptObject extends JavaScriptObject {
 	
@@ -75,6 +76,9 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 		return [this];
 	}-*/;
     
+    public final native String toJSONString()/*-{
+		return JSON.stringify(this);
+	}-*/;
     
     
     public static native boolean convertToBoolean(GeneralJavaScriptObject javaScriptObject)/*-{

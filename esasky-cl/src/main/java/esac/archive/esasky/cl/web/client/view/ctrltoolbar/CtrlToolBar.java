@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -54,6 +55,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.Publicatio
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -194,7 +196,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 			}
 		});
 		
-		ctrlToolBarPanel.add(createGwBtn());
+		gwButton = createGwBtn();
+		
+		ctrlToolBarPanel.add(gwButton);
 		ctrlToolBarPanel.add(gwPanel);
 		if(!Modules.getModule(EsaSkyWebConstants.MODULE_GW)) {
 			hideWidget(gwButton);
@@ -830,5 +834,42 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     	if(targetDialogBox.getAbsoluteLeft() < (exploreBtn.getAbsoluteLeft() + exploreBtn.getOffsetWidth() + 5)) {
     		targetDialogBox.setSuggestedPosition(targetDialogBox.getAbsoluteLeft() - MainLayoutPanel.getMainAreaAbsoluteLeft(), exploreBtn.getAbsoluteTop() - MainLayoutPanel.getMainAreaAbsoluteTop() + exploreBtn.getOffsetHeight() + 5);
     	}
+	}
+	
+	@Override
+	public void openGWPanel() {
+		if(!gwButton.getToggleStatus()) {
+			gwButton.toggle();
+			gwPanel.toggle();
+			CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(gwButton));
+		}
+	}
+	
+	@Override
+	public void closeGWPanel() {
+		if(gwButton.getToggleStatus()) {
+			gwButton.toggle();
+			gwPanel.toggle();
+		}
+	}
+
+	@Override
+	public JSONArray getGWIds() {
+		return gwPanel.getIds();
+	}
+	
+	@Override
+	public GeneralJavaScriptObject getGWData(String id) throws IllegalArgumentException  {
+		return gwPanel.getData4Id(id);
+	}
+	
+	@Override
+	public GeneralJavaScriptObject getAllGWData() {
+		return gwPanel.getAllData();
+	}
+	
+	@Override
+	public void showGWEvent(String id) throws IllegalArgumentException {
+		gwPanel.showEvent(id);
 	}
 }
