@@ -1,9 +1,5 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,29 +7,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
-
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.client.SkiesMenu;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
-import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
-import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
-import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
-import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEventHandler;
-import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
-import esac.archive.esasky.cl.web.client.event.MultiTargetClickEventHandler;
-import esac.archive.esasky.cl.web.client.event.ToggleSkyPanelEvent;
-import esac.archive.esasky.cl.web.client.event.ToggleSkyPanelEventHandler;
-import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
-import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEventHandler;
-import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
-import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -41,6 +17,17 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.SkiesMenu;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -75,20 +62,27 @@ public class CtrlToolBarPresenter {
         PublicationPanelPresenter.View getPublicationPanelView();
 
         void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts);
-        
+
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
+
         void updateCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
-        
+
         EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description);
+
         void removeCustomButton(EsaSkyButton button);
-        
+
         void openGWPanel();
+
         void closeGWPanel();
+
         JSONArray getGWIds();
-        GeneralJavaScriptObject getGWData(String id) throws IllegalArgumentException ;
+
+        GeneralJavaScriptObject getGWData(String id);
+
         GeneralJavaScriptObject getAllGWData();
-        void showGWEvent(String id) throws IllegalArgumentException ;
-        
+
+        void showGWEvent(String id);
+
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
@@ -315,27 +309,27 @@ public class CtrlToolBarPresenter {
     }
     
     public void openGWPanel() {
-    	view.openGWPanel();
+        view.openGWPanel();
     }
-    
+
     public void closeGWPanel() {
-    	view.closeGWPanel();
+        view.closeGWPanel();
     }
-    
+
     public JSONArray getGWIds() {
-    	return view.getGWIds();
+        return view.getGWIds();
     }
-    
-    public GeneralJavaScriptObject getGWData(String id) throws IllegalArgumentException  {
-    	return view.getGWData(id);
+
+    public GeneralJavaScriptObject getGWData(String id) {
+        return view.getGWData(id);
     }
-    
+
     public GeneralJavaScriptObject getAllGWData() {
-    	return view.getAllGWData();
+        return view.getAllGWData();
     }
-    
-    public void showGWEvent(String id) throws IllegalArgumentException  {
-    	view.showGWEvent(id);
+
+    public void showGWEvent(String id) {
+        view.showGWEvent(id);
     }
-    
+
 }

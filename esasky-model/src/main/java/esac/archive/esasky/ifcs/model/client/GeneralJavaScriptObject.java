@@ -1,6 +1,6 @@
 package esac.archive.esasky.ifcs.model.client;
+
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.JSONObject;
 
 public class GeneralJavaScriptObject extends JavaScriptObject {
 	

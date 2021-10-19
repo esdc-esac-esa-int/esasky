@@ -1,12 +1,12 @@
 package esac.archive.esasky.cl.web.client.api;
 
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
-
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
@@ -39,6 +39,7 @@ public class ApiAlerts extends ApiBase{
 			JSONObject obj = (JSONObject) JSONParser.parseStrict(data.toJSONString());
 			sendBackToWidget(obj, null, widget);
 		} catch (IllegalArgumentException e) {
+			Log.error(e.toString(), e);
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString("Id not available: " + id));
 			JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getGWIds();
@@ -59,6 +60,7 @@ public class ApiAlerts extends ApiBase{
 		try {
 			controller.getRootPresenter().getCtrlTBPresenter().showGWEvent(id);
 		} catch (IllegalArgumentException e) {
+			Log.error(e.toString(), e);
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString("Id not available: " + id));
 			JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getGWIds();
