@@ -156,7 +156,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 	
 	private void setMaxHeight() {
 		if(mainContainer != null) {
-			int headerSize = header.getOffsetHeight() + 5;
+			int headerSize = header.getOffsetHeight();
 			int height = mainContainer.getOffsetHeight() - headerSize;
 		    if(height > MainLayoutPanel.getMainAreaHeight() - headerSize) {
 		    	height = MainLayoutPanel.getMainAreaHeight() - headerSize;
