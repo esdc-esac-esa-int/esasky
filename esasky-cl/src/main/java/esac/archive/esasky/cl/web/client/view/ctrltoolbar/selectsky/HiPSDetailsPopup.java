@@ -11,17 +11,16 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
-import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+import esac.archive.esasky.ifcs.model.client.HiPS;
 
 public class HiPSDetailsPopup extends PopupPanel {
-	
+
     private HiPS hips;
     private final String CSS_ID = "hipsDbox";
-    
+    private final VerticalPanel hipsDetailsPanel;
     private Resources resources = GWT.create(Resources.class);
     private CssResource style;
 
@@ -30,13 +29,13 @@ public class HiPSDetailsPopup extends PopupPanel {
         @CssResource.NotStrict
         CssResource style();
     }
-    
+
     public HiPSDetailsPopup(HiPS hips) {
         this.style = this.resources.style();
         this.style.ensureInjected();
-        
-        this.hips = hips;
 
+        this.hips = hips;
+        this.hipsDetailsPanel = new VerticalPanel();
         initView();
     }
 
@@ -55,7 +54,6 @@ public class HiPSDetailsPopup extends PopupPanel {
             }
         });
 
-        VerticalPanel hipsDetailsPanel = new VerticalPanel();
         hipsDetailsPanel.setWidth("100%");
 
         hipsDetailsPanel.add(closeBtn);
@@ -64,74 +62,90 @@ public class HiPSDetailsPopup extends PopupPanel {
         hipsDetailsPanel.add(new HTML(hips.getSurveyName()));
         hipsDetailsPanel.add(new HTML("<br/>"));
 
-        if (hips.getMissionURL() != null && !"".equals(hips.getMissionURL())) {
+        addHipsMissionDetails(hips.getMissionURL(), hips.getMission());
+        addHipsInstrumentDetails(hips.getInstrument());
+        addHipsWaveLengthDetails(hips.getWavelengthRange());
+        addHipsCreatorDetails(hips.getCreator(), hips.getCreatorURL(), hips.getCreationDate());
+        addHipsMoreInfoDetails(hips.getMoreInfoURL());
+
+        this.add(hipsDetailsPanel);
+
+        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
+
+            @Override
+            public void onResize(ResizeEvent event) {
+                setMaxHeight();
+            }
+        });
+        getContainerElement().getStyle().setOverflow(Overflow.AUTO);
+
+        setWidth(170 + "px");
+    }
+
+    private void setMaxHeight() {
+        getContainerElement().getStyle().setProperty("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getContainerElement().getAbsoluteTop() - 10 + "px");
+    }
+
+    private void addHipsMissionDetails(String missionUrl, String mission) {
+        if (missionUrl != null && !"".equals(missionUrl)) {
             hipsDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_mission") + "</b>"));
-            hipsDetailsPanel.add(new HTML("<b><a target='_blank' href='" + hips.getMissionURL() + "'>"
-                    + hips.getMission() + "</a></b>"));
+            hipsDetailsPanel.add(new HTML("<b><a target='_blank' href='" + missionUrl + "'>"
+                    + mission + "</a></b>"));
             hipsDetailsPanel.add(new HTML("<br/>"));
         }
+    }
 
-        if (hips.getInstrument() != null && !"".equals(hips.getInstrument())) {
+    private void addHipsInstrumentDetails(String instrument) {
+        if (instrument != null && !"".equals(instrument)) {
             hipsDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_instrument") + "</b>"));
-            hipsDetailsPanel.add(new HTML(hips.getInstrument()));
+            hipsDetailsPanel.add(new HTML(instrument));
             hipsDetailsPanel.add(new HTML("<br/>"));
         }
+    }
 
-        if (hips.getWavelengthRange() != null && !"".equals(hips.getWavelengthRange())) {
+    private void addHipsWaveLengthDetails(String waveLengthRange) {
+        if (waveLengthRange != null && !"".equals(waveLengthRange)) {
             hipsDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_wavFreq") + "</b>"));
-            hipsDetailsPanel.add(new HTML(hips.getWavelengthRange() + "<br/><br/>"));
+            hipsDetailsPanel.add(new HTML(waveLengthRange + "<br/><br/>"));
         }
+    }
 
-        if (hips.getCreator() != null && !"".equals(hips.getCreator())) {
+    private void addHipsCreatorDetails(String creator, String creatorUrl, String creationDate) {
+        if (creator != null && !"".equals(creator)) {
             hipsDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_mapCreatedBy") + "</b>"));
             String htmlString = "";
-            if(hips.getCreatorURL() != null && !"".equals(hips.getCreatorURL())){
-            	htmlString += "<b><a target='_blank' href='" + hips.getCreatorURL() + "'>"
-                        + hips.getCreator() + "</a></b>";
-            }else {
-            	htmlString += "<b>" + hips.getCreator() + "</b>";
+            if (creatorUrl != null && !"".equals(creatorUrl)) {
+                htmlString += "<b><a target='_blank' href='" + creatorUrl + "'>"
+                        + creator + "</a></b>";
+            } else {
+                htmlString += "<b>" + creator + "</b>";
             }
-            if (hips.getCreationDate() != null && !"".equals(hips.getCreationDate())) {
-                htmlString += " on " + hips.getCreationDate();
+            if (creationDate != null && !"".equals(creationDate)) {
+                htmlString += " on " + creationDate;
             }
             hipsDetailsPanel.add(new HTML(htmlString));
             hipsDetailsPanel.add(new HTML("<br/>"));
         }
+    }
 
-        if (hips.getMoreInfoURL() != null && !"".equals(hips.getMoreInfoURL())) {
+    private void addHipsMoreInfoDetails(String moreInfoUrl) {
+        if (moreInfoUrl != null && !"".equals(moreInfoUrl)) {
             hipsDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_forMoreInformation") + "</b><a target='_blank' href='"
-                    + hips.getMoreInfoURL() + "'><b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_here") + "</b></a>"));
+                    + moreInfoUrl + "'><b>" + TextMgr.getInstance().getText("hiPSDetailsPopup_here") + "</b></a>"));
             hipsDetailsPanel.add(new HTML("<br/>"));
         }
+    }
 
-        this.add(hipsDetailsPanel);
-        
-        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				setMaxHeight();
-			}
-		});
-        getContainerElement().getStyle().setOverflow(Overflow.AUTO);
-        
-        setWidth(170 + "px");
-    }
-    
-    private void setMaxHeight() {
-    	getContainerElement().getStyle().setProperty("maxHeight", MainLayoutPanel.getMainAreaHeight() +MainLayoutPanel.getMainAreaAbsoluteTop() - getContainerElement().getAbsoluteTop() - 10 + "px");
-    }
-    
     @Override
-    public void show(){
-    	super.show();
-    	setMaxHeight();
+    public void show() {
+        super.show();
+        setMaxHeight();
     }
-    
+
     @Override
     public void setPopupPosition(int left, int top) {
-    	super.setPopupPosition(left, top);
-    	setMaxHeight();
+        super.setPopupPosition(left, top);
+        setMaxHeight();
     }
 
 }

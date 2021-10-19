@@ -1,16 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Timer;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
@@ -23,15 +17,20 @@ import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
-import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-public class TabulatorWrapper{
-    
+
+public class TabulatorWrapper {
+
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
@@ -280,44 +279,44 @@ public class TabulatorWrapper{
     }-*/;
     
     public void filterOnFov(String raCol, String decCol) {
-    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-    	double minRa = 0.0;
-    	double maxRa = 360.0;
-    	
-    	double ra = pos.getCoordinate().getRa();
-    	double dec = pos.getCoordinate().getDec();
-    	double fov = pos.getFov()/2.0;
-    	double minDec = dec - fov;
-    	double maxDec = dec + fov;
-    	
-    	if(dec + fov > 90.0) {
-    		//Around north pole
-    		minDec = pos.getCoordinate().getDec() - fov;
-    	} else if(dec - pos.getFov() < -90.0) {
-    		//Around south pole
-    		maxDec = pos.getCoordinate().getDec() + fov;
-    	} 
-    	
-    	// To handle ra fov closer to the poles
-    	fov = Math.abs(fov / Math.cos(dec * Math.PI / 180.0));
-    	
-    	String filterString = "";
-    	minRa = ra - fov;
-    	maxRa = ra + fov;
-    	if(minRa < 0) {
-    		minRa += 360;
-    		filterString += minRa + "," + 360;
-    		filterString += "," + 0 + "," + (maxRa % 360);
-    	} else if (maxRa > 360) {
-    		maxRa = maxRa % 360;
-    		filterString += 0 + "," + maxRa;
-    		filterString += "," + minRa + "," + 360;
-    	} else {
-    		filterString += minRa + "," + maxRa;
-    	}
-    	
-    	tableJsObject.setProperty("filteredOnFov", true);
-    	groupByFov(tableJsObject, raCol, filterString, decCol, minDec, maxDec);
+        SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+        double minRa;
+        double maxRa;
+
+        double ra = pos.getCoordinate().getRa();
+        double dec = pos.getCoordinate().getDec();
+        double fov = pos.getFov() / 2.0;
+        double minDec = dec - fov;
+        double maxDec = dec + fov;
+
+        if (dec + fov > 90.0) {
+            //Around north pole
+            minDec = pos.getCoordinate().getDec() - fov;
+        } else if (dec - pos.getFov() < -90.0) {
+            //Around south pole
+            maxDec = pos.getCoordinate().getDec() + fov;
+        }
+
+        // To handle ra fov closer to the poles
+        fov = Math.abs(fov / Math.cos(dec * Math.PI / 180.0));
+
+        String filterString = "";
+        minRa = ra - fov;
+        maxRa = ra + fov;
+        if (minRa < 0) {
+            minRa += 360;
+            filterString += minRa + "," + 360;
+            filterString += "," + 0 + "," + (maxRa % 360);
+        } else if (maxRa > 360) {
+            maxRa = maxRa % 360;
+            filterString += 0 + "," + maxRa;
+            filterString += "," + minRa + "," + 360;
+        } else {
+            filterString += minRa + "," + maxRa;
+        }
+
+        tableJsObject.setProperty("filteredOnFov", true);
+        groupByFov(tableJsObject, raCol, filterString, decCol, minDec, maxDec);
     }
     
     public native void groupByFov(GeneralJavaScriptObject tableJsObject, String raColumn, String filterString,
