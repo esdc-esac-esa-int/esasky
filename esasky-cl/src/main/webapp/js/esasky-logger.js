@@ -1,4 +1,5 @@
 var startupTime = Date.now();
+var lastMatomoErrorSent = Date.now();
 console.defaultLog = console.log.bind(console);
 console.logs = [];
 console.log = function(){
@@ -14,6 +15,9 @@ console.error = function(){
 	    console.defaultError.apply(console, arguments);
 	}	
     console.errors.push(Array.from(arguments));
+    if(console.errors.length > 20){
+    	console.errors.splice(0,console.errors.length - 20);
+    }
     try{
 	    var lastDebugs = [];
 	    if(console.debugs.length < 20){
@@ -23,12 +27,15 @@ console.error = function(){
 	    		lastDebugs.push(console.debugs[console.debugs.length - i]);
 	    	}
 	    }
-	    //window.ga('send', 'event', "Error", "console.error", "Time since startup: " 
-	    window._paq.push(['trackEvent',  "Error", "console.error", "Time since startup: " 
-	    	+ (Date.now() - startupTime) + " (millis)"
-	    	+ " |||| Logged Errors: " + console.errors + " |||| Logged Warnings: " + console.warns 
-	    	+ " |||| Last Logged debugs: " + lastDebugs]);
-	    	
+	    if(Date.now() - lastMatomoErrorSent > 60000){
+		    
+			lastMatomoErrorSent = Date.now();
+		    window._paq.push(['trackEvent',  "Error", "console.error", "Time since startup: " 
+		    	+ (Date.now() - startupTime) + " (millis)"
+		    	+ " |||| Logged Errors: " + console.errors + " |||| Logged Warnings: " + console.warns 
+		    	+ " |||| Last Logged debugs: " + lastDebugs]);
+		}	
+		
     } catch(e){
     }
 }
