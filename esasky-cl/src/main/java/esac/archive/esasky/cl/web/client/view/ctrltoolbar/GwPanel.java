@@ -55,7 +55,7 @@ public class GwPanel extends BasePopupPanel {
 
     private boolean isExpanded = false;
 
-    private final String idPropertyAccessor = "grace_id";
+    private final static String idPropertyAccessor = "grace_id";
 
     private FlowPanel gwPanelContainer = new FlowPanel();
     private PopupHeader header;

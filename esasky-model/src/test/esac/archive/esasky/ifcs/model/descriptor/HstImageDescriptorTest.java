@@ -1,16 +1,15 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.IOException;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HstImageDescriptorTest {
 
@@ -91,6 +90,7 @@ public class HstImageDescriptorTest {
 		assertEquals("A massive laboratory", clDesc.getTitle());
 		assertEquals("POLYGON ICRS 83.36504935252832 -68.74668935662764 83.48858843870349 -68.7471422963198 83.48761302302405 -68.78588864788452 83.36385876110857 -68.7854349191984", clDesc.getStcs());
 		assertEquals("Large Magellanic Cloud", clDesc.getObjectName());
+		assertEquals(0, clDesc.getPrio());
 	}
 	
 	
