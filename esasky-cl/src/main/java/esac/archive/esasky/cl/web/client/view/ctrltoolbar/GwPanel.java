@@ -55,8 +55,6 @@ public class GwPanel extends BasePopupPanel {
 
     private boolean isExpanded = false;
 
-    private final static String idPropertyAccessor = "grace_id";
-
     private FlowPanel gwPanelContainer = new FlowPanel();
     private PopupHeader header;
     private FlowPanel tableHeaderTabRow;
@@ -82,6 +80,8 @@ public class GwPanel extends BasePopupPanel {
             "packet_type",
             "ra",
             "dec");
+
+    private final static String GRACE_ID = "grace_id";
 
     public static interface Resources extends ClientBundle {
         @Source("gw.css")
@@ -345,7 +345,7 @@ public class GwPanel extends BasePopupPanel {
     }-*/;
 
     private void showEventFromRow(GeneralJavaScriptObject rowData) {
-        String id = rowData.getStringProperty(idPropertyAccessor);
+        String id = rowData.getStringProperty(GRACE_ID);
 
         if (!blockOpenHipsTrigger) {
             testParsingHipsList("https://skies.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
@@ -486,8 +486,8 @@ public class GwPanel extends BasePopupPanel {
         GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(data);
         JSONArray ids = new JSONArray();
         for (GeneralJavaScriptObject obj : dataArray) {
-            if (obj.getStringProperty(idPropertyAccessor) != null) {
-                ids.set(ids.size(), new JSONString(obj.getStringProperty(idPropertyAccessor)));
+            if (obj.getStringProperty(GRACE_ID) != null) {
+                ids.set(ids.size(), new JSONString(obj.getStringProperty(GRACE_ID)));
             }
         }
         return ids;
@@ -501,7 +501,7 @@ public class GwPanel extends BasePopupPanel {
         GeneralJavaScriptObject data = getAllData();
         GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(data);
         for (GeneralJavaScriptObject obj : dataArray) {
-            if (id.equals(obj.getStringProperty(idPropertyAccessor))) {
+            if (id.equals(obj.getStringProperty(GRACE_ID))) {
                 return obj;
             }
         }
@@ -512,7 +512,7 @@ public class GwPanel extends BasePopupPanel {
         GeneralJavaScriptObject data = getAllData();
         GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(data);
         for (GeneralJavaScriptObject obj : dataArray) {
-            if (id.equals(obj.getStringProperty(idPropertyAccessor))) {
+            if (id.equals(obj.getStringProperty(GRACE_ID))) {
                 showEventFromRow(obj);
             }
         }
