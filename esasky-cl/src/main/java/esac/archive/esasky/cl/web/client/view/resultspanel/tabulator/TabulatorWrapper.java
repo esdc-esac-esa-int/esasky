@@ -1658,8 +1658,16 @@ public class TabulatorWrapper {
                                 visible:this.metadata[i].visible,
                                 headerTooltip:this.metadata[i].description,
                                 download: true,
-                                formatter:"html",
+                                formatter: function(cell, formatterParams, onRendered){
+                                    if (formatterParams.makeHref) {
+                                        return "<a href=\"" + cell.getValue() + "\" target=\"blank\">" + cell.getValue() + "</a>"
+                                    }
+                                    else {
+                                        return cell.getValue();
+                                    }
+                                },
                                 sorter:  "string",
+                                formatterParams: {makeHref: this.metadata[i].makeHref},
                                 sorterParams: {thousandSeperator: ""},
                                 headerFilter:stringFilterEditor,
                                 headerFilterParams:{tapName:this.metadata[i].name,

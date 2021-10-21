@@ -1,9 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,7 +8,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -27,6 +22,10 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabu
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 public class BrowseHipsPanel extends AutoHidingMovablePanel {
 
@@ -163,7 +162,8 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel {
                 name: "hips_service_url",
                 displayName: "URL", 
                 datatype:"HTML", 
-                visible: true
+                visible: true,
+				makeHref: true
             });
            return metadata;
 	}-*/;
