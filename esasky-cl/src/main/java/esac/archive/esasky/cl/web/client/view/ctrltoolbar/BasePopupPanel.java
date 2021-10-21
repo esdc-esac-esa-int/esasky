@@ -45,6 +45,7 @@ public class BasePopupPanel extends PopupPanel implements Hidable<PopupPanel> {
 		CloseEvent.fire(this, null);
 	}
 
+	@Override
 	public void toggle() {
 		if (isShowing()) {
 			hide();

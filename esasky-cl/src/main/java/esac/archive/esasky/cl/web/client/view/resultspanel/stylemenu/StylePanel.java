@@ -247,7 +247,8 @@ public class StylePanel extends DialogBox implements Hidable<PopupPanel> {
         
         HTMLPanel.wrap(Document.get().getElementById(colorPickerId)).add(closePrimaryColorPickerButton);
     }
-    
+
+    @Override
 	public void toggle() {
 		if(isShowing()) {
 			hide();

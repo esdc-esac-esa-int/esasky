@@ -489,6 +489,7 @@ public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
         preparedListDropDown.clearSelection();
     }
 
+    @Override
     public void toggle() {
         if (isShowing) {
             hide();

@@ -50,6 +50,8 @@ public class MovablePanel extends FocusPanel {
 	private boolean isWindowResize = false;
 	private boolean isSnappingEnabled = true;
 	private FlowPanel container = new FlowPanel();
+	private Element moveInitiatorElement;
+	private HandlerRegistration nativePreviewHandlerRegistration;
 	
 	private OnKeyPress onKeyPress = new OnKeyPress() {
 	    
@@ -396,13 +398,7 @@ public class MovablePanel extends FocusPanel {
 		}
 
 		// Switch on the event type
-		int type = nativeEvent.getTypeInt();
-		switch (type) {
-		case Event.ONMOUSEDOWN:
-		case Event.ONTOUCHSTART:
-		case Event.ONMOUSEOVER:
-		case Event.ONMOUSEOUT:
-		case Event.ONMOUSEMOVE:
+		if (previewNativeEvent(nativeEvent)) {
 			// Don't eat events if event capture is enabled, as this can
 			// interfere with dialog dragging, for example.
 			if (DOM.getCaptureElement() != null) {
@@ -413,12 +409,23 @@ public class MovablePanel extends FocusPanel {
 			if (!eventTargetsPopupOrPartner) {
 				return;
 			}
-			if(eventTargetsPopup(nativeEvent) && !eventTargetsPartner(nativeEvent)) {
-				elementCanStartDragOperation = true;
-			} else {
-				elementCanStartDragOperation = false;
-			}
-			break;
+
+			elementCanStartDragOperation = eventTargetsPopup(nativeEvent) && !eventTargetsPartner(nativeEvent);
+		}
+	}
+
+	// Event types to preview
+	private Boolean previewNativeEvent(Event event) {
+		int type = event.getTypeInt();
+		switch (type) {
+			case Event.ONMOUSEDOWN:
+			case Event.ONTOUCHSTART:
+			case Event.ONMOUSEOVER:
+			case Event.ONMOUSEOUT:
+			case Event.ONMOUSEMOVE:
+				return true;
+			default:
+				return false;
 		}
 	}
 	
@@ -451,7 +458,6 @@ public class MovablePanel extends FocusPanel {
 		}
 		return false;
 	}
-	protected HandlerRegistration nativePreviewHandlerRegistration;
 
 	protected void updateHandlers() {
 		removeHandlers();
@@ -487,14 +493,15 @@ public class MovablePanel extends FocusPanel {
 		addElementNotAbleToInitiateMoveOperation(Document.get().getElementById(id));
 	}
 
-	private Element moveInitiatorElement;
-	
 	/**
 	 * Mouse events that occur within the partner element will be the ONLY
 	 * element that can initiate a move operation
 	 */
 	public void addSingleElementAbleToInitiateMoveOperation(Element partner) {
-		assert partner != null : "partner cannot be null";
+		if (partner == null) {
+			throw new IllegalArgumentException("partner cannot be null");
+		}
+
 		this.moveInitiatorElement = partner;
 	}
 }
