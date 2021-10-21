@@ -76,7 +76,8 @@
 	<iframe id="__printingFrame"
 		style="position: absolute; width: 0; height: 0; border: 0"
 		title="Printing frame"></iframe>
-	<div id="esa-logo">
+	<!-- Inline style to prevent huge logo while loading css -->
+	<div id="esa-logo" style="max-width: 500px; max-height: 500px; top: 50%; left: 50%; position: absolute; transform: translate(-50%, -50%)">
 		<img src="images/ESASky_key_visual.png" id="esa-logo-image" alt="ESASky logo"/> <br /> <br />
 		<div id="loading"
 			style="color: white; font-family: Arial Unicode MS, Arial, sans-serif;">
