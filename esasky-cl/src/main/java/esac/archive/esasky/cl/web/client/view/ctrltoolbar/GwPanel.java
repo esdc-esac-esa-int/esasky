@@ -4,6 +4,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.resources.client.ClientBundle;
@@ -24,7 +25,9 @@ import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
@@ -41,7 +44,7 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 
 import java.util.*;
 
-public class GwPanel extends BasePopupPanel {
+public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
 
     public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {
     }
@@ -53,70 +56,90 @@ public class GwPanel extends BasePopupPanel {
     private final Resources resources;
     private CssResource style;
 
-    private boolean isExpanded = false;
+	private boolean isExpanded = false;
+	private boolean isShowing = false;
+	private static final String GRACE_ID = "grace_id";
 
-    private FlowPanel gwPanelContainer = new FlowPanel();
-    private PopupHeader header;
-    private FlowPanel tableHeaderTabRow;
-    private Tab neutrinoTab;
-    private EsaSkyToggleButton gridButton;
-    private TabulatorWrapper gwTable;
-    private final FlowPanel tabulatorContainer = new FlowPanel();
-    private LoadingSpinner loadingSpinner = new LoadingSpinner(true);
-    private Map<String, Integer> rowIdHipsMap = new HashMap<>();
-    private boolean blockOpenHipsTrigger = false;
-    private boolean gridHasBeenDeactivatedByUserThroughGwPanel = false;
-    private boolean dataHasLoaded = false;
-    private List<String> columnsToAlwaysHide = Arrays.asList(
-            "stcs50",
-            "stcs90",
-            "gravitational_waves_oid",
-            "group_id",
-            "hardware_inj",
-            "internal",
-            "open_alert",
-            "pkt_ser_num",
-            "search",
-            "packet_type",
-            "ra",
-            "dec");
+	private FlowPanel gwPanelContainer = new FlowPanel();
+	private PopupHeader<GwPanel> header;
+	private FlowPanel tableHeaderTabRow;
+	private Tab neutrinoTab;
+	private EsaSkyToggleButton gridButton;
+	private TabulatorWrapper gwTable;
+	private final FlowPanel tabulatorContainer = new FlowPanel();
+	private LoadingSpinner loadingSpinner = new LoadingSpinner(true);
+	private Map<String, Integer> rowIdHipsMap = new HashMap<>();
+	private boolean blockOpenHipsTrigger = false;
+	private boolean gridHasBeenDeactivatedByUserThroughGwPanel = false;
+	private boolean dataHasLoaded = false;
+	private List<String> columnsToAlwaysHide = Arrays.asList(
+			"stcs50",
+			"stcs90",
+			"gravitational_waves_oid",
+			"group_id",
+			"hardware_inj",
+			"internal",
+			"open_alert",
+			"pkt_ser_num",
+			"search",
+			"packet_type",
+			"ra",
+			"dec");
+	
+	public static interface Resources extends ClientBundle {
+		@Source("gw.css")
+		@CssResource.NotStrict
+		CssResource style();
+	}
+	
+	public GwPanel() {
+		super(GoogleAnalytics.CAT_GW, false);
+		this.resources = GWT.create(Resources.class);
+		this.style = this.resources.style();
+		this.style.ensureInjected();
+		
+		initGwDescriptor();
+		
+		initView();
+		CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
+			Integer rowId = rowIdHipsMap.get(changeEvent.getHiPSName());
+			if(rowId != null) {
+				if (!gwTable.isSelected(rowId)) {
+					gwTable.deselectAllRows();
+					blockOpenHipsTrigger = true;
+					gwTable.selectRow(rowId, false);
+					blockOpenHipsTrigger = false;
+				}
+				if (!gridHasBeenDeactivatedByUserThroughGwPanel) {
+					AladinLiteWrapper.getInstance().toggleGrid(true);
+				}
+			}
+		});
 
-    private final static String GRACE_ID = "grace_id";
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
+	}
 
-    public static interface Resources extends ClientBundle {
-        @Source("gw.css")
-        @CssResource.NotStrict
-        CssResource style();
-    }
+	public void show() {
+		isShowing = true;
+        this.removeStyleName("displayNone");
+        this.updateHandlers();
+		setMaxSize();
+	}
 
-    public GwPanel() {
-        this.resources = GWT.create(Resources.class);
-        this.style = this.resources.style();
-        this.style.ensureInjected();
+	public void hide() {
+        isShowing = false;
+        this.addStyleName("displayNone");
+        this.removeHandlers();
+		CloseEvent.fire(this, null);
+	}
 
-        initGwDescriptor();
 
-        initView();
-        CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
-            Integer rowId = rowIdHipsMap.get(changeEvent.getHiPSName());
-            if (rowId != null) {
-                if (!gwTable.isSelected(rowId)) {
-                    gwTable.deselectAllRows();
-                    blockOpenHipsTrigger = true;
-                    gwTable.selectRow(rowId, false);
-                    blockOpenHipsTrigger = false;
-                }
-                if (!gridHasBeenDeactivatedByUserThroughGwPanel) {
-                    AladinLiteWrapper.getInstance().toggleGrid(true);
-                }
-            }
-        });
+	public boolean isShowing() {
+		return isShowing;
+	}
 
-        MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
-    }
-
-    public void initGwDescriptor() {
-        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.GW_URL, new IJSONRequestCallback() {
+	public void initGwDescriptor() {
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.GW_URL, new IJSONRequestCallback() {
 
             @Override
             public void onSuccess(String responseText) {
@@ -243,7 +266,7 @@ public class GwPanel extends BasePopupPanel {
     private void initView() {
         this.getElement().addClassName("gwPanel");
 
-        header = new PopupHeader(this, TextMgr.getInstance().getText("gwPanel_header"),
+        header = new PopupHeader<>(this, TextMgr.getInstance().getText("gwPanel_header"),
                 TextMgr.getInstance().getText("gwPanel_helpText"),
                 TextMgr.getInstance().getText("gwPanel_helpTitle"));
 
@@ -297,34 +320,35 @@ public class GwPanel extends BasePopupPanel {
         gwTable.redrawAndReinitializeHozVDom();
     }
 
-    private void setDefaultSize() {
+	private void setDefaultSize() {
         Size size = this.getDefaultSize();
 
-        gwPanelContainer.setWidth(size.width + "px");
-        gwPanelContainer.setHeight(size.height + "px");
+		gwPanelContainer.setWidth(size.width + "px");
+		gwPanelContainer.setHeight(size.height + "px");
 
         Style containerStyle = gwPanelContainer.getElement().getStyle();
         containerStyle.setPropertyPx("minWidth", 150);
         containerStyle.setPropertyPx("minHeight", 100);
     }
 
-    @Override
-    protected void onLoad() {
-        super.onLoad();
-        addResizeHandler("gwPanelContainer");
-    }
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		addResizeHandler("gwPanelContainer");
+		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
+		this.setSnapping(false);
+	}
 
-    @Override
-    protected void setMaxSize() {
-
-        if (gwPanelContainer != null) {
-            Style elementStyle = gwPanelContainer.getElement().getStyle();
-            int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
-            elementStyle.setPropertyPx("maxWidth", maxWidth);
-            elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-            setMaxHeight();
-        }
-    }
+	@Override
+	public void setMaxSize() {
+		if (gwPanelContainer != null) {
+			Style elementStyle = gwPanelContainer.getElement().getStyle();
+			int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+			elementStyle.setPropertyPx("maxWidth", maxWidth);
+			elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+			setMaxHeight();
+		}
+	}
 
     private void setMaxHeight() {
         int headerSize = header.getOffsetHeight() + tableHeaderTabRow.getOffsetHeight();

@@ -1,8 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
@@ -13,13 +10,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.DataResource;
 import com.google.gwt.resources.client.DataResource.MimeType;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import com.google.gwt.user.client.ui.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -28,9 +19,15 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMultiRangeSliderObserver;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
-public class TreeMapContainer extends DialogBox {
+import java.util.LinkedList;
+import java.util.List;
+
+public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 
 	private final CssResource style;
 	private final Resources resources;
@@ -47,7 +44,7 @@ public class TreeMapContainer extends DialogBox {
 
 	private TreeMap treeMap;
 	private FlowPanel allContent = new FlowPanel();
-	private final PopupHeader header;
+	private final PopupHeader<PopupPanel> header;
 	private ESASkyMultiRangeSlider slider;
 	private Element sliderUiHeader = null;
 	private FlowPanel sliderContainer;
@@ -97,7 +94,7 @@ public class TreeMapContainer extends DialogBox {
 		}
 		getElement().setId("treeMapContainer_" + context);
 
-		header = new PopupHeader(this, "", "");
+		header = new PopupHeader<>(this, "", "");
 		Image ssoDnetLogo = new Image(resources.ssoDNetLogo().getSafeUri());
 		ssoDnetLogo.addStyleName("treeMap__ssoLogo");
 		header.add(ssoDnetLogo);

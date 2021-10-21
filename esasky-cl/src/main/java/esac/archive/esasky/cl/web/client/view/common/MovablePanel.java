@@ -1,8 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
@@ -22,9 +19,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-
+import esac.archive.esasky.cl.web.client.model.Size;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovablePanel extends FocusPanel {
 
@@ -133,7 +134,7 @@ public class MovablePanel extends FocusPanel {
 						: event.getTargetTouches().get(0).getClientY() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop();
 				positionOnPanelLeft = eventType == Event.ONMOUSEDOWN ? event.getClientX() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft()
 						: event.getTargetTouches().get(0).getClientX() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft();
-				
+
 				updateZIndex();
 			}
 		} else if (Event.ONMOUSEMOVE == eventType || Event.ONTOUCHMOVE == eventType) {
@@ -339,6 +340,35 @@ public class MovablePanel extends FocusPanel {
 			setPosition(suggestedPositionLeft, suggestedPositionTop, true);
 		}
 	}
+
+	protected Size getDefaultSize() {
+		int width = 610;
+		int height = MainLayoutPanel.getMainAreaHeight();
+
+		if (MainLayoutPanel.getMainAreaWidth() < 1500) {
+			width = 500;
+		}
+		if (MainLayoutPanel.getMainAreaWidth() < 1100) {
+			width = 350;
+		}
+		if (MainLayoutPanel.getMainAreaWidth() < 450) {
+			height = 300;
+		}
+		if (height > 400) {
+			height = 400;
+		}
+		if (!DeviceUtils.isMobileOrTablet() && height > MainLayoutPanel.getMainAreaHeight() / 2) {
+			height = MainLayoutPanel.getMainAreaHeight() / 2;
+		}
+		if (height > MainLayoutPanel.getMainAreaHeight() - 30 - 2) {
+			height = MainLayoutPanel.getMainAreaHeight() - 30 - 2;
+		}
+		if (width > MainLayoutPanel.getMainAreaWidth()) {
+			width = MainLayoutPanel.getMainAreaWidth() - 2;
+		}
+
+		return new Size(width, height);
+	}
 	
 	public void setSnapping(boolean isSnappingEnabled) {
 		this.isSnappingEnabled = isSnappingEnabled;
@@ -349,7 +379,7 @@ public class MovablePanel extends FocusPanel {
  * elements inside the MovablePanel as unable to initiate move operation
  * Original code adapted from source code of gwt PopupPanel
  * */	
-	private void previewNativeEvent(NativePreviewEvent event) {
+	protected void previewNativeEvent(NativePreviewEvent event) {
 		// If the event has been canceled or consumed, ignore it
 		if (event.isCanceled() || (event.isConsumed())) {
 			// We need to ensure that we cancel the event even if its been consumed so
@@ -402,11 +432,16 @@ public class MovablePanel extends FocusPanel {
 		return false;
 	}
 	private boolean eventTargetsPartner(NativeEvent event) {
-		if (elementsNotInitiatingMoveOperations == null) {
+		if (elementsNotInitiatingMoveOperations == null && moveInitiatorElement == null) {
 			return false;
 		}
 
 		EventTarget target = event.getEventTarget();
+		
+		if (moveInitiatorElement != null) {
+			return !moveInitiatorElement.equals(Element.as(target));
+		}
+		
 		if (Element.is(target)) {
 			for (Element elem : elementsNotInitiatingMoveOperations) {
 				if (elem.isOrHasChild(Element.as(target))) {
@@ -416,20 +451,23 @@ public class MovablePanel extends FocusPanel {
 		}
 		return false;
 	}
-	private HandlerRegistration nativePreviewHandlerRegistration;
+	protected HandlerRegistration nativePreviewHandlerRegistration;
 
-	private void updateHandlers() {
-		// Remove any existing handlers.
-		if (nativePreviewHandlerRegistration != null) {
-			nativePreviewHandlerRegistration.removeHandler();
-			nativePreviewHandlerRegistration = null;
-		}
-
+	protected void updateHandlers() {
+		removeHandlers();
 		nativePreviewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				previewNativeEvent(event);
 			}
 		});
+	}
+
+	protected void removeHandlers() {
+		// Remove any existing handlers.
+		if (nativePreviewHandlerRegistration != null) {
+			nativePreviewHandlerRegistration.removeHandler();
+			nativePreviewHandlerRegistration = null;
+		}
 	}
 
 	private List<Element> elementsNotInitiatingMoveOperations;
@@ -447,5 +485,16 @@ public class MovablePanel extends FocusPanel {
 	}
 	public void addElementNotAbleToInitiateMoveOperation(String id) {
 		addElementNotAbleToInitiateMoveOperation(Document.get().getElementById(id));
+	}
+
+	private Element moveInitiatorElement;
+	
+	/**
+	 * Mouse events that occur within the partner element will be the ONLY
+	 * element that can initiate a move operation
+	 */
+	public void addSingleElementAbleToInitiateMoveOperation(Element partner) {
+		assert partner != null : "partner cannot be null";
+		this.moveInitiatorElement = partner;
 	}
 }

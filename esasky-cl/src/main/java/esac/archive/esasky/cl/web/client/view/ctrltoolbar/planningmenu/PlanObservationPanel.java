@@ -1,7 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,11 +13,11 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
-import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.PlanningMission;
+import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -31,6 +29,8 @@ import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
+
+import java.util.List;
 
 public class PlanObservationPanel extends BasePopupPanel {
 
@@ -71,7 +71,7 @@ public class PlanObservationPanel extends BasePopupPanel {
 
     private void initView() {
     	final PlanningMission pm = PlanningMission.JWST;
-    	PopupHeader header = new PopupHeader(this,
+    	PopupHeader<PopupPanel> header = new PopupHeader<>(this,
     			TextMgr.getInstance().getText("planObservationPanel_projectFutureObservations").replace("$MISSION$", pm.getMissionName()),
     			TextMgr.getInstance().getText("planObservationPanel_helpMessageText"));
     			

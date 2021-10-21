@@ -1,21 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.searchpanel.targetlist;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteEvent;
-import org.moxieapps.gwt.uploader.client.events.FileDialogCompleteHandler;
-import org.moxieapps.gwt.uploader.client.events.FileQueueErrorEvent;
-import org.moxieapps.gwt.uploader.client.events.FileQueueErrorHandler;
-import org.moxieapps.gwt.uploader.client.events.UploadErrorEvent;
-import org.moxieapps.gwt.uploader.client.events.UploadErrorHandler;
-import org.moxieapps.gwt.uploader.client.events.UploadProgressEvent;
-import org.moxieapps.gwt.uploader.client.events.UploadProgressHandler;
-import org.moxieapps.gwt.uploader.client.events.UploadStartEvent;
-import org.moxieapps.gwt.uploader.client.events.UploadStartHandler;
-import org.moxieapps.gwt.uploader.client.events.UploadSuccessEvent;
-import org.moxieapps.gwt.uploader.client.events.UploadSuccessHandler;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -24,30 +8,15 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.*;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
@@ -60,17 +29,23 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.ScrollPanelAnimation;
-import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
-import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
+import org.moxieapps.gwt.uploader.client.events.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ESDC team (c) 2016 - European Space Agency
  */
-public class TargetListPanel extends DialogBox {
+public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
 
     private String preparedFilenamesBaseUrl = GWT.getHostPageBaseURL() + "targetlist/";
 
@@ -167,7 +142,7 @@ public class TargetListPanel extends DialogBox {
         
         container = new FlowPanel();
 
-        container.add(new PopupHeader(this, 
+        container.add(new PopupHeader<>(this,
                 TextMgr.getInstance().getText("uploadTargetList_title"), 
                 TextMgr.getInstance().getText("uploadTargetList_targetListDescriptionText")));
 

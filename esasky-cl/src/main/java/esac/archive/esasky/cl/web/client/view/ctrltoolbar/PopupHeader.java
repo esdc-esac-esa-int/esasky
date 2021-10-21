@@ -6,14 +6,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton.SignType;
-public class PopupHeader extends FlowPanel{
+public class PopupHeader<T> extends FlowPanel{
 
 	private final CssResource style;
 	private Resources resources = GWT.create(Resources.class);
@@ -26,14 +25,14 @@ public class PopupHeader extends FlowPanel{
 		CssResource style();
 	}
 	
-	public PopupHeader(final PopupPanel panel, String headerText, String helpText) {
+	public PopupHeader(final Hidable<T> panel, String headerText, String helpText) {
 		this(panel, headerText, helpText, headerText);
 	}
-	public PopupHeader(final PopupPanel panel, String headerText, String helpText, String helpHeader) {
+	public PopupHeader(final Hidable<T> panel, String headerText, String helpText, String helpHeader) {
 		this(panel, headerText, helpText, helpHeader, null, "");
 	}
 	
-	public PopupHeader(final PopupPanel panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
+	public PopupHeader(final Hidable<T> panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
 		this.style = resources.style();
 		this.style.ensureInjected();
 

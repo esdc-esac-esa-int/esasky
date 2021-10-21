@@ -12,7 +12,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -21,13 +20,14 @@ import esac.archive.esasky.cl.web.client.utility.HipsParser;
 import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyTextBox;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 
 
-public class HipsUrlPanel extends PopupPanel{
+public class HipsUrlPanel extends PopupPanel implements Hidable<PopupPanel> {
 
 	private EsaSkyTextBox textBox;
 	private LoadingSpinner loadingSpinner = new LoadingSpinner(false);
@@ -76,7 +76,7 @@ public class HipsUrlPanel extends PopupPanel{
         FlowPanel textAndSpinnerPanel = new FlowPanel();
         textAndSpinnerPanel.addStyleName("addUrl_textAndSpinner");
         
-        PopupHeader header = new PopupHeader(this, TextMgr.getInstance().getText("addUrl_Header"),
+        PopupHeader<PopupPanel> header = new PopupHeader<>(this, TextMgr.getInstance().getText("addUrl_Header"),
         		TextMgr.getInstance().getText("addUrl_Description"));
         
         textBox = createTextBox();

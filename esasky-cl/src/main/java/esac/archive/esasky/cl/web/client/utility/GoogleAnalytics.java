@@ -54,6 +54,7 @@ public final class GoogleAnalytics {
     public static final String CAT_TOGGLECOLUMNS = "ToggleColumns";
     public static final String CAT_BROWSEHIPS = "BrowseHips";
     public static final String CAT_IMAGES = "Images";
+    public static final String CAT_OUTREACHIMAGES = "OutreachImages";
     
     //Actions
     public static final String ACT_MISSINGTRANSLATION = "MissingTranslation";

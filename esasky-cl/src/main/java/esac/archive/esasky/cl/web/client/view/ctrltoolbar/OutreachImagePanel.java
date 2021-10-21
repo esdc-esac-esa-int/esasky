@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -14,23 +15,27 @@ import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 
-public class OutreachImagePanel extends BasePopupPanel {
+public class OutreachImagePanel extends MovablePanel implements Hidable<OutreachImagePanel> {
 
 	private BaseDescriptor outreachImageDescriptor;
 	private ImageListEntity imageEntity;
 	private boolean isHidingFootprints = false;
+	private boolean isShowing = false;
 	private static String outreachImageIdToBeOpened; 
 	
 	private FlowPanel opacityPanel;
 	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
 	private FlowPanel mainContainer = new FlowPanel();
-	private PopupHeader header;
-	
+	private PopupHeader<OutreachImagePanel> header;
+
 	private final Resources resources;
 	private CssResource style;
 
@@ -41,13 +46,14 @@ public class OutreachImagePanel extends BasePopupPanel {
 	}
 	
 	public OutreachImagePanel() {
+		super(GoogleAnalytics.CAT_OUTREACHIMAGES, false);
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		
 		initView();
 		setMaxSize();
-		
+
 		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive()));
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
@@ -59,6 +65,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 			show();
 		}
 		addResizeHandler("outreachImagePanelContainer");
+		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
 	}
 	
 	private void setDefaultSize() {
@@ -70,10 +77,8 @@ public class OutreachImagePanel extends BasePopupPanel {
 		containerStyle.setPropertyPx("minWidth", 150);
 		containerStyle.setPropertyPx("minHeight", 100);
 	}
-	
-	@Override
+
 	public void show() {
-		super.show();
 		if(outreachImageDescriptor == null) {
 			if(DescriptorRepository.getInstance().getImageDescriptors() != null) {
 				fetchData();
@@ -84,16 +89,28 @@ public class OutreachImagePanel extends BasePopupPanel {
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
+
+		isShowing = true;
+		this.removeStyleName("displayNone");
+		this.updateHandlers();
+		setMaxSize();
 	}
-	
-	@Override
+
 	public void hide() {
-		super.hide();
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
+
+		isShowing = false;
+		this.addStyleName("displayNone");
+		this.removeHandlers();
+		CloseEvent.fire(this, null);
 	}
-	
+
+	public boolean isShowing() {
+		return isShowing;
+	}
+
 	private void fetchData() {
 		if(outreachImageDescriptor != null) {
 			return;
@@ -111,8 +128,8 @@ public class OutreachImagePanel extends BasePopupPanel {
 	private void initView() {
 		this.getElement().addClassName("outreachImagePanel");
 		
-		header = new PopupHeader(this, TextMgr.getInstance().getText("outreachImagePanel_header"), 
-				TextMgr.getInstance().getText("outreachImagePanel_helpText"), 
+		header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachImagePanel_header"),
+				TextMgr.getInstance().getText("outreachImagePanel_helpText"),
 				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
 
 		mainContainer.add(header);
@@ -143,7 +160,7 @@ public class OutreachImagePanel extends BasePopupPanel {
 	}
 	
 	@Override
-	protected void setMaxSize() {
+	public void setMaxSize() {
 		if(mainContainer == null) {
 			return;
 		}

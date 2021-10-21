@@ -10,27 +10,20 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.UIObject;
-import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.google.gwt.user.client.ui.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.utility.DownloadUtils;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton.SignType;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
-public class StylePanel extends DialogBox {
+public class StylePanel extends DialogBox implements Hidable<PopupPanel> {
 
 	private final StylePanelCallback stylePanelCallback;
 	
@@ -181,7 +174,7 @@ public class StylePanel extends DialogBox {
         VerticalPanel container = new VerticalPanel();
         
         //Adds the panel header 
-        PopupHeader header = new PopupHeader(this,
+        PopupHeader<PopupPanel> header = new PopupHeader<>(this,
                 TextMgr.getInstance().getText("stylePanel_Title").replace("$MISSION$", mission),
                 TextMgr.getInstance().getText("stylePanel_helpMessageText"));
         

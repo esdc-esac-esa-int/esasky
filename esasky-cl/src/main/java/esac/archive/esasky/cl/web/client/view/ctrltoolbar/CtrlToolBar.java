@@ -50,33 +50,33 @@ import java.util.List;
  */
 public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View {
 
-    private FlowPanel ctrlToolBarPanel;
-    private SelectSkyPanel selectSkyPanel;
-    private PublicationPanel publicationPanel;
-    private PlanObservationPanel planObservationPanel;
-    private GwPanel gwPanel;
-    private OutreachImagePanel outreachImagePanel;
-    private String HiPSFromURL = null;
-    private String unwantedRandomTargets = "";
-    private final TreeMapContainer observationTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_IMAGING);
-    private final TreeMapContainer catalogTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_CATALOGUE);
-    private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
-    private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
-    private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
-
-    private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
-
-    private EsaSkyButton exploreBtn;
-    private EsaSkyToggleButton selectSkyButton;
-    private EsaSkyToggleButton planObservationButton;
-    private BadgeButton observationButton;
-    private BadgeButton catalogButton;
-    private BadgeButton spectraButton;
-    private BadgeButton ssoButton;
-    private EsaSkyToggleButton extTapButton;
-    private EsaSkyToggleButton gwButton;
-    private EsaSkyToggleButton outreachImageButton;
-    private EsaSkyToggleButton publicationsButton;
+	private FlowPanel ctrlToolBarPanel;
+	private SelectSkyPanel selectSkyPanel;
+	private PublicationPanel publicationPanel;
+	private PlanObservationPanel planObservationPanel;
+	private GwPanel gwPanel;
+	private OutreachImagePanel outreachImagePanel;
+	private String HiPSFromURL = null;
+	private String unwantedRandomTargets = "";
+	private final TreeMapContainer observationTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_IMAGING);
+	private final TreeMapContainer catalogTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_CATALOGUE);
+	private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
+	private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
+	private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
+	
+	private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
+	
+	private EsaSkyButton exploreBtn;
+	private EsaSkyToggleButton selectSkyButton;
+	private EsaSkyToggleButton planObservationButton;
+	private BadgeButton observationButton;
+	private BadgeButton catalogButton;
+	private BadgeButton spectraButton;
+	private BadgeButton ssoButton;
+	private EsaSkyToggleButton extTapButton;
+	private EsaSkyToggleButton gwButton;
+	private EsaSkyToggleButton outreachImageButton;
+	private EsaSkyToggleButton publicationsButton;
 
 
     private final CssResource style;
@@ -177,7 +177,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         gwButton = createGwBtn();
 
         ctrlToolBarPanel.add(gwButton);
-        ctrlToolBarPanel.add(gwPanel);
+		MainLayoutPanel.addElementToMainArea(gwPanel);
         if (!Modules.getModule(EsaSkyWebConstants.MODULE_GW)) {
             hideWidget(gwButton);
         }
@@ -196,7 +196,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         outreachImageButton = createImageButton();
         ctrlToolBarPanel.add(outreachImageButton);
-        ctrlToolBarPanel.add(outreachImagePanel);
+        MainLayoutPanel.addElementToMainArea(outreachImagePanel);
         if (!Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)) {
             hideWidget(outreachImageButton);
         }
@@ -279,8 +279,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private EsaSkyToggleButton createGwBtn() {
-        gwPanel = new GwPanel();
-        gwPanel.hide();
         gwButton = new EsaSkyToggleButton(Icons.getGwIcon());
         addCommonButtonStyle(gwButton, TextMgr.getInstance().getText("ctrlToolBar_gwTooltip"));
         gwButton.addClickHandler(event -> {
@@ -289,6 +287,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_GW);
         });
 
+        gwPanel = new GwPanel();
+        gwPanel.setSuggestedPosition(5, 77);
+        gwPanel.definePositionFromTopAndLeft();
+        gwPanel.hide();
         gwPanel.addCloseHandler(event -> gwButton.setToggleStatus(false));
         return gwButton;
     }
@@ -558,6 +560,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                 }
         );
         outreachImagePanel = new OutreachImagePanel();
+        outreachImagePanel.setSuggestedPosition(5, 77);
+        outreachImagePanel.definePositionFromTopAndLeft();
         outreachImagePanel.hide();
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
 
