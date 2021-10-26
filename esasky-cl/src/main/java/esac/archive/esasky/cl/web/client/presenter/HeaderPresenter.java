@@ -356,8 +356,8 @@ public class HeaderPresenter {
 			
 			@Override
 			public void onClick(ClickEvent arg0) {
-				String viewUrl = AladinLiteWrapper.getAladinLite().getViewURL();
-				JavaScriptObject imageCanvas = AladinLiteWrapper.getAladinLite().getViewCanvas();
+				String viewUrl = AladinLiteWrapper.getAladinLite().getViewURL(true);
+				JavaScriptObject imageCanvas = AladinLiteWrapper.getAladinLite().getViewCanvas(true);
 				ScreenshotDialogBox screenshotDialogBox = new ScreenshotDialogBox(viewUrl, imageCanvas);
 				screenshotDialogBox.show();
 				view.closeDropdownMenu();

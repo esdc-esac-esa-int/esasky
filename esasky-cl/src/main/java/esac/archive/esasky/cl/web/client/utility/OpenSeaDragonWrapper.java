@@ -57,6 +57,7 @@ public class OpenSeaDragonWrapper {
 		    showFullPageControl: false,
 		    showHomeControl: false,
 		    showZoomControl: false,
+			crossOriginPolicy: "Anonymous"
 		});
 		if (type == 'image'){
 			options = {
