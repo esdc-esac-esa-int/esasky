@@ -1,0 +1,69 @@
+@CHARSET "UTF-8";
+.downloadDialogBox{ 
+	display: block; 
+	z-index: 8000; 
+	border-radius: 6px; 
+	background-color: rgba(0, 0, 0, 0.7); 
+	border: 1px solid; 
+	padding: 5px 13px 5px 13px;
+	position: absolute;
+	box-sizing: border-box;
+}
+
+.downloadTitle{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;	
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-right: 90px;
+	margin-left: 90px;
+}
+
+.downloadDescription{
+	margin-bottom: 15px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.downloadCheckBox {
+	font-size: 0.8em;
+	display: inline-block;
+}
+
+.downloadCheckBox>*{
+	vertical-align: middle;
+}
+
+
+.downloadButtonContainer {
+	width: 100%;
+}
+
+.downloadButton{
+	margin: 10px auto;
+}
+
+.downloadButton div{
+	width: 130px;
+	margin: auto;
+}
+
+.downloadCloseButton{
+	position: absolute;
+	right: 15px;
+	bottom: 11px;
+	display: inline-block;
+}
+
+.downloadScienceModeButton{
+	display: inline-block;
+}
+
+#downloadDialog__sciModeInfo{
+	display: flex;
+	justify-content: center;
+	justify-items: center;
+}
+

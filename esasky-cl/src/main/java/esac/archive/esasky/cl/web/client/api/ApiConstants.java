@@ -114,6 +114,8 @@ public class ApiConstants {
 	public static final String DATA = "data";
 	public static final String RESULT = "result";
 	public static final String ACTION = "action";
+
+	public static final String JUPYTER_ACTION_DOWNLOAD = "esasky_jupyter_download";
 	
 
 }

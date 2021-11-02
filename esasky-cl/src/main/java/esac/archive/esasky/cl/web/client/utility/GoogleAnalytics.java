@@ -39,6 +39,7 @@ public final class GoogleAnalytics {
     public static final String CAT_PREVIEW = "Preview";
     public static final String CAT_DATALINK = "Datalink";
     public static final String CAT_DOWNLOADROW = "DownloadRow";
+    public static final String CAT_DOWNLOADDIALOG = "DownloadDialog";
     public static final String CAT_SEARCH = "Search";
     public static final String CAT_SAMP = "Samp";
     public static final String CAT_COUNT = "Count";
@@ -172,6 +173,9 @@ public final class GoogleAnalytics {
     public static final String ACT_WELCOME_EXPLORER = "Explorer";
     public static final String ACT_WELCOME_CLOSE = "CloseWithoutSelection";
     public static final String ACT_WELCOME_DONOTSHOWAGAIN = "DoNotShowAgain";
+
+    public static final String ACT_DOWNLOAD_JUPYTER = "DownloadJupyter";
+    public static final String ACT_DOWNLOAD_COMPUTER= "DownloadComputer";
     
     public static final String ACT_SLIDER_MOVED = "Moved";
     

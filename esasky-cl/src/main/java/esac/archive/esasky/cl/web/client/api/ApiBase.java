@@ -10,10 +10,13 @@ import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
+import java.util.UUID;
+
 public abstract class ApiBase {
 	protected Controller controller;
+	protected static JavaScriptObject initializerWidget;
 	protected static String googleAnalyticsCat = GoogleAnalytics.CAT_PYESASKY;
-	
+
 	public static void setGoogleAnalyticsCatToPython() {
 		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_PYESASKY;
 	}
@@ -21,19 +24,18 @@ public abstract class ApiBase {
 	public static void setGoogleAnalyticsCatToAPI() {
 		ApiBase.googleAnalyticsCat = GoogleAnalytics.CAT_JAVASCRIPTAPI;
 	}
-	
-	
-	
-	protected void sendInitMessage( JavaScriptObject widget) {
-		
-		
+
+	public static void setInitializerWidget(JavaScriptObject widget) {
+		initializerWidget = widget;
+	}
+
+	protected void sendInitMessage(JavaScriptObject widget) {
 		JSONObject init = new JSONObject();
 		// New intialised response
 		init.put(ApiConstants.INITIALISED, JSONBoolean.getInstance(true));
 		//Kept for backward compatibility
 		init.put("Text", new JSONString("Initialised"));
 		sendBackToWidget(init, widget);
-		
 	}
 	
 	protected void sendBackValuesToWidget(JSONObject values, JavaScriptObject widget) {
@@ -100,6 +102,13 @@ public abstract class ApiBase {
 		
 		sendBackToWidget(msg, widget);
 	}
+
+	public void expediteMessageToWidget(JSONObject msg) {
+		if (initializerWidget != null) {
+			msg.put(ApiConstants.MSGID, new JSONString(UUID.randomUUID().toString()));
+			sendBackToWidgetJS(msg, initializerWidget);
+		}
+	}
 	
 	protected void sendBackToWidget(JSONObject msg, JavaScriptObject widget) {
 		String msgId = ((GeneralJavaScriptObject) widget).getProperty(ApiConstants.DATA).getStringProperty(ApiConstants.MSGID);
@@ -116,5 +125,12 @@ public abstract class ApiBase {
 		msg = Object.values(msg)[0];
 		widget.source.postMessage(msg, widget.origin);
 	}-*/;
-	
+
+	public boolean isPyesaskyClient() {
+		return isPyesaskyClient(initializerWidget);
+	}
+
+	protected native boolean isPyesaskyClient(JavaScriptObject widget) /*-{
+		return widget && widget.data.origin === "pyesasky";
+	}-*/;
 }
