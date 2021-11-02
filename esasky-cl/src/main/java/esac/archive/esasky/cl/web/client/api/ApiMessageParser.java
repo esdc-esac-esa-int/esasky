@@ -51,8 +51,8 @@ public class ApiMessageParser {
 				
 				case 'goToRaDec':
 					console.log('goToRADec event captured!');
-//					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::goTo(Ljava/lang/String;Ljava/lang/String;)
-//						(msg.content.ra, msg.content.dec);
+					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::goTo(Ljava/lang/String;Ljava/lang/String;)
+						(msg.content.ra, msg.content.dec);
 					break;
 	
 				case 'getCenter':
