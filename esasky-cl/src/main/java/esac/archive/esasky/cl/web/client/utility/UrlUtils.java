@@ -14,6 +14,8 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPan
 
 public final class UrlUtils {
 
+	private static String selectedHstImageId = null;
+
 	public static String getUrlForCurrentState() {
 	    
 		String encodedRaDeg = URL.encodeQueryString(new Double(AladinLiteWrapper.getCenterRaDeg()).toString());
@@ -52,6 +54,11 @@ public final class UrlUtils {
 		if(Modules.getMode() != null && !"".equals(Modules.getMode())) {
 			layout = "&" + EsaSkyWebConstants.URL_PARAM_LAYOUT + "=" + Modules.getMode();
 		}
+
+		String hstImage = "";
+		if (selectedHstImageId != null) {
+			hstImage = "&" + EsaSkyWebConstants.URL_PARAM_HST_IMAGE + "=" + selectedHstImageId;
+		}
 		
 		String bookmarkUrl = baseUrl 
 				+ "?" + EsaSkyWebConstants.URL_PARAM_TARGET + "=" + encodedRaDeg + "%20" + encodedDecDeg 
@@ -64,7 +71,8 @@ public final class UrlUtils {
 				+ codeServer 
 				+ toggleColumns
 				+ logLevel
-				+ layout;
+				+ layout
+				+ hstImage;
 		return bookmarkUrl;
 	}
 	
@@ -108,4 +116,9 @@ public final class UrlUtils {
         }
         Window.open(url, "", "");
     }
+
+	public static void setSelectedHstImageId(String id) {
+		selectedHstImageId = id;
+		UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
+	}
 }

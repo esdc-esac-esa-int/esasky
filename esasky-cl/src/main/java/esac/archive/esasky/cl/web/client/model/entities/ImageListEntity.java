@@ -15,6 +15,7 @@ import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
+import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -86,6 +87,7 @@ public class ImageListEntity extends EsaSkyEntity {
     			if(!isIdAlreadyOpen(row.getStringProperty("identifier"))) {
     				lastImage = new HstOutreachImage(row.getStringProperty("identifier"), lastOpacity);
     				lastImage.loadImage(true);
+					UrlUtils.setSelectedHstImageId(lastImage.getId());
     			}
     			return;
     		}
@@ -128,6 +130,7 @@ public class ImageListEntity extends EsaSkyEntity {
 		super.deselectShapes(shapeId);
 		if(lastImage != null) {
 			lastImage.removeOpenSeaDragon();
+			UrlUtils.setSelectedHstImageId(null);
 		}
 	}
 	
@@ -195,8 +198,10 @@ public class ImageListEntity extends EsaSkyEntity {
     	if(lastImage != null){
     		if(isClosed) {
     			lastImage.removeOpenSeaDragon();
+				UrlUtils.setSelectedHstImageId(null);
     		} else {
     			lastImage.reattachOpenSeaDragon();
+				UrlUtils.setSelectedHstImageId(lastImage.getId());
     		}
     	}
     }
