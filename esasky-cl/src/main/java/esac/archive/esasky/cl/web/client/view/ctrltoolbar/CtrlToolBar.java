@@ -850,4 +850,27 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void showGWEvent(String id) {
         gwPanel.showEvent(id);
     }
+
+    @Override
+    public void clickExploreButton() {
+        exploreBtn.click();
+    }
+
+    @Override
+    public void openExtTapPanel() {
+        if (!extTapButton.getToggleStatus()){
+            extTapButton.toggle();
+            extTapTreeMapContainer.toggleTreeMap();
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
+        }
+    }
+
+    @Override
+    public void closeExtTapPanel() {
+        if (extTapButton.getToggleStatus()){
+            extTapButton.toggle();
+            extTapTreeMapContainer.toggleTreeMap();
+        }
+    }
+
 }

@@ -83,6 +83,11 @@ public class CtrlToolBarPresenter {
 
         void showGWEvent(String id);
 
+        void clickExploreButton();
+
+        void openExtTapPanel();
+
+        void closeExtTapPanel();
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
@@ -330,6 +335,16 @@ public class CtrlToolBarPresenter {
 
     public void showGWEvent(String id) {
         view.showGWEvent(id);
+    }
+
+    public void clickExploreButton() { view.clickExploreButton(); }
+
+    public void openExtTapPanel() {
+        view.openExtTapPanel();
+    }
+
+    public void closeExtTapPanel() {
+        view.closeExtTapPanel();
     }
 
 }

@@ -285,7 +285,7 @@ public class ESASkyPlayerPanel extends Composite {
 		}
 	}
 
-    private void pause() {
+    public void pause() {
         stopTimer();
         hidePauseButton();
         showPlayButton();
@@ -296,7 +296,7 @@ public class ESASkyPlayerPanel extends Composite {
         }
     }
 
-    private void play() {
+    public void play() {
     	showPauseButton();
     	hidePlayButton();
         startTimer();

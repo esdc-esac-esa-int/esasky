@@ -9,6 +9,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 
+import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
@@ -39,6 +40,7 @@ public class SelectSkyPanelPresenter {
     	void refreshUserDropdowns();
     	
     	AddSkyButton getAddSkyRowButton();
+        ESASkyPlayerPanel getPlayerPanel();
     }
     
     public SelectSkyPanelPresenter(final View inputView) {
@@ -61,6 +63,10 @@ public class SelectSkyPanelPresenter {
 
     public SkiesMenu getSkiesMenu(){
     	return skiesMenu;
+    }
+
+    public  ESASkyPlayerPanel getPlayerPanel() {
+        return view.getPlayerPanel();
     }
     
     private void addUrlHips(HiPS hips) {

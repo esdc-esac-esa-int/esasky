@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator;
@@ -127,6 +128,8 @@ public class SearchPresenter {
         void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title);
         
         void updateModuleVisibility();
+
+        TargetListPanel getTargetListPanel();
     }
 
     /**
@@ -671,6 +674,10 @@ public class SearchPresenter {
                 + value + "</a>");
      
         return sb.toSafeHtml();
+    }
+
+    public TargetListPanel getTargetListPanel() {
+        return view.getTargetListPanel();
     }
 
 

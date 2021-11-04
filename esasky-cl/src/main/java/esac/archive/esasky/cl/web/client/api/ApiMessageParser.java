@@ -5,7 +5,7 @@ public class ApiMessageParser {
 	public static native void init(Api api,  ApiCounts apiCounts, ApiEvents apiEvents, 
 			ApiExtTap apiExtTap, ApiHips apiHips, ApiMoc apiMoc, ApiModules apiModules, ApiOverlay apiOverlay,
 			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage,
-			ApiAlerts apiAlerts) /*-{
+			ApiAlerts apiAlerts, ApiSearch apiSearch) /*-{
 	
 		function handleMessage(e){
 			var msg = e.data
@@ -62,8 +62,20 @@ public class ApiMessageParser {
 					}
 					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::getCenter(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.cooFrame,e);
-					break;	
-					
+					break;
+
+				case 'setCooFrame':
+					if(!msg.content.hasOwnProperty('cooFrame')){
+						msg.content['cooFrame'] = "";
+					}
+
+					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::setCoordinateFrame(Ljava/lang/String;)(msg.content.cooFrame);
+					break;
+
+				case 'clickExploreButton':
+					console.log('clickExploreButton event captured');
+					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::clickExploreButton()()
+					break;
 					
 					
 				// HIPS	
@@ -160,11 +172,25 @@ public class ApiMessageParser {
 					console.log(msg);
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSSliderValue(D)(msg.content.value);
 					break;
+
+				case 'playHips':
+                    console.log('playHips event captured')
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerStart()()
+					break;
+				case 'pauseHips':
+					console.log('pauseHips event captured')
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerPause()()
+					break;
+				case 'nextHips':
+					console.log('nextHips event captured')
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerNext()()
+					break;
+				case 'previousHips':
+					console.log('previousHips event captured')
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerPrevious()()
+					break;
 					
-					
-				// OVERLAY	
-					
-					
+				// OVERLAY
 				case 'overlayFootprints':
 					console.log('overlayFootprints event captured!');
 					console.log(msg);
@@ -479,10 +505,19 @@ public class ApiMessageParser {
 						apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::plotExtTapADQL(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
 							(msg.content, e);
 					}
-					break;	
-					
-					
-				// MOC	
+					break;
+
+				case 'openExtTapPanel':
+					console.log('openExtTapPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanel()();
+					break;
+
+				case 'closeExtTapPanel':
+					console.log('closeExtTapPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanel()();
+					break;
+
+					// MOC
 	
 				case 'getVisibleNpix':
 					console.log('getVisibleNpix event captured');
@@ -660,8 +695,39 @@ public class ApiMessageParser {
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::showGWEvent(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)
 						(e, msg.content.id);
 					break;	
-					
-					
+
+				// API TARGET LIST
+				case 'openTargetList':
+					console.log('openTargetList event captured');
+                    if (msg.content.filename)
+                    	apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList(Ljava/lang/String;)(msg.content.filename)
+					else
+						apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList()()
+					break;
+
+				case 'closeTargetList':
+					console.log('closeTargetList event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::closeTargetList()()
+					break;
+
+				case 'playTargetList':
+                    console.log('play event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerStart()()
+					break;
+				case 'pauseTargetList':
+					console.log('play event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerPause()()
+					break;
+				case 'nextTargetList':
+					console.log('play event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerNext()()
+					break;
+				case 'previousTargetList':
+					console.log('play event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerPrevious()()()
+					break;
+
+
 				default:
 					console.log('No event associated');
 					if(!msg.hasOwnProperty('event')){

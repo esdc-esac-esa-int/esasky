@@ -5,6 +5,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -62,5 +63,23 @@ public class ApiView extends ApiBase{
 	public void setFoV(double fov) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_SETFOV, Double.toString(fov));
 		AladinLiteWrapper.getAladinLite().setZoom(fov);
+	}
+
+	public void setCoordinateFrame(String cooFrame) {
+		if(cooFrame == null || "".equals(cooFrame)) {
+			cooFrame = AladinLiteWrapper.getInstance().getCooFrame();
+		}
+
+		if(cooFrame.equalsIgnoreCase(EsaSkyWebConstants.ALADIN_J2000_COOFRAME)) {
+			AladinLiteWrapper.getInstance().setCooFrame(AladinLiteConstants.CoordinateFrame.J2000);
+			controller.getRootPresenter().getHeaderPresenter().getView().selectCoordinateFrame(0);
+		}else if (cooFrame.equalsIgnoreCase(EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME)){
+			AladinLiteWrapper.getInstance().setCooFrame(AladinLiteConstants.CoordinateFrame.GALACTIC);
+			controller.getRootPresenter().getHeaderPresenter().getView().selectCoordinateFrame(1);
+		}
+	}
+
+	public void clickExploreButton() {
+		controller.getRootPresenter().getCtrlTBPresenter().clickExploreButton();
 	}
 }

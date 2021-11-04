@@ -393,6 +393,11 @@ public class SelectSkyPanel extends BasePopupPanel implements SkyObserver, Selec
 		instance.addSkyButton.enableButton();
 	}
 
+	@Override
+	public ESASkyPlayerPanel getPlayerPanel() {
+		return player;
+	}
+
 	public static void setSelectedHipsName (String hipsName) {
 		final SkyRow sky = getSelectedSky();
 		if (sky != null) {

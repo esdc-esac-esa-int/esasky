@@ -749,7 +749,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 			targetListButton.getElement().getStyle().setDisplay(Display.NONE);
 		}
 	}
-	
+
+    @Override
+    public TargetListPanel getTargetListPanel() {
+        return this.targetListPanel;
+    }
+
     @Override
     public void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title) {
         targetListPanel.show();
