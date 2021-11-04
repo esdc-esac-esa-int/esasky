@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import java.util.List;
 import java.util.UUID;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
@@ -63,8 +62,6 @@ public class ImageListEntity extends EsaSkyEntity {
 	}
 
 	private void onFoVChanged() {
-		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter > 1000) + " last: " + timeAtLastFoVFilter);
-		Log.debug((System.currentTimeMillis() - timeAtLastFoVFilter) + " cur-last ");
 		if(System.currentTimeMillis() - timeAtLastFoVFilter > 1000) {
 			performFoVFilter();
 		} else {
@@ -198,12 +195,10 @@ public class ImageListEntity extends EsaSkyEntity {
     	if(lastImage != null){
     		if(isClosed) {
     			lastImage.removeOpenSeaDragon();
-				UrlUtils.setSelectedHstImageId(null);
     		} else {
     			lastImage.reattachOpenSeaDragon();
-				UrlUtils.setSelectedHstImageId(lastImage.getId());
     		}
     	}
     }
-    
+
 }
