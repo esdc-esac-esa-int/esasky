@@ -1128,8 +1128,6 @@ public class TabulatorWrapper {
     			}
 		    },
 		    groupStartOpen: function(value, count, data, group){
-		    	console.log(value);
-		    	console.log(data);
 		    	return value != "Outside Field of View";
 		    },
 		    groupToggleElement: "header",
