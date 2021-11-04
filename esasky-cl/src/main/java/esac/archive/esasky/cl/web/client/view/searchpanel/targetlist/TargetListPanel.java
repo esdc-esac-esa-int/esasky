@@ -18,7 +18,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
+import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -38,7 +41,6 @@ import org.moxieapps.gwt.uploader.client.events.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author ESDC team (c) 2016 - European Space Agency

@@ -25,7 +25,7 @@ public class JupyterDownloadDialog extends Composite {
     public final JupyterDownloadDialog.Resources resources = GWT.create(JupyterDownloadDialog.Resources.class);
     private final CssResource style;
 
-    private final int DIALOG_WIDTH = 475;
+    private static final int DIALOG_WIDTH = 475;
 
     private final FlowPanel downloadButtonContainer;
     private final EsaSkyStringButton jupyterButton;

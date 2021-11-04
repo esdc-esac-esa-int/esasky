@@ -221,7 +221,7 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 
 	@Override
 	public HandlerRegistration addClickHandler(ClickHandler handler) {
-        //stopPropagationOfMouseDownAndTouchStartToParentElements();
+        stopPropagationOfMouseDownAndTouchStartToParentElements();
 		return button.addClickHandler(handler);
 	}
 

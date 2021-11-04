@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.api;
 import esac.archive.esasky.cl.web.client.Controller;
 
 public class ApiSearch extends ApiBase {
-    private final Controller controller;
 
     public ApiSearch(Controller controller) {
         this.controller = controller;
