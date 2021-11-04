@@ -345,7 +345,7 @@ public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
 			Style elementStyle = gwPanelContainer.getElement().getStyle();
 			int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
 			elementStyle.setPropertyPx("maxWidth", maxWidth);
-			elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+			elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop());
 			setMaxHeight();
 		}
 	}
@@ -540,9 +540,6 @@ public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
                 showEventFromRow(obj);
             }
         }
-
-        throw new IllegalArgumentException();
-
     }
 
 }
