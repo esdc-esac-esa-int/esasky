@@ -518,7 +518,7 @@ public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
     }
 
     public GeneralJavaScriptObject getAllData() {
-        return GeneralJavaScriptObject.createJsonObject(gwTable.exportTableAsJson());
+        return GeneralJavaScriptObject.createJsonObject(gwTable.exportTableAsJson(false));
     }
 
     public GeneralJavaScriptObject getData4Id(String id) {

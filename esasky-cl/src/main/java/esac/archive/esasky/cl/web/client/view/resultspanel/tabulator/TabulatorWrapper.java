@@ -215,17 +215,28 @@ public class TabulatorWrapper {
     }-*/;
     
     public String exportTableAsJson(){
-        return exportTableAsJson(tableJsObject);
+        return exportTableAsJson(true);
+    }
+
+    public String exportTableAsJson(boolean applyFilters){
+        return exportTableAsJson(tableJsObject, applyFilters);
     }
     
-    private native String exportTableAsJson(GeneralJavaScriptObject tableJsObject)/*-{
+    private native String exportTableAsJson(GeneralJavaScriptObject tableJsObject, boolean applyFilters)/*-{
         var json = "";
-        tableJsObject.modules.download.download("json", "json.json", {}, tableJsObject.getSelectedRows().length > 0 
-            ? "selected" : "active", function(data){
+        if (applyFilters) {
+            tableJsObject.modules.download.download("json", "json.json", {}, tableJsObject.getSelectedRows().length > 0
+                ? "selected" : "active", function(data){
                 json = data;
                 return false;
             });
-            return json;
+        } else {
+            tableJsObject.modules.download.download("json", "json.json", {}, "all", function(data){
+                json = data;
+                return false;
+            });
+        }
+        return json;
     }-*/;
 
     public GeneralJavaScriptObject[] getSelectedRows(){
