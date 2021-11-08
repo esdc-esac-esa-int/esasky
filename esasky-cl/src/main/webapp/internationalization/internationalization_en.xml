@@ -3512,7 +3512,6 @@
 	<text key="header_highResolutionImagesTooltip">
 		Visualise outreach images from the Hubble Space Telescope
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
 		The Fermi Large Area Telescope (LAT) has been surveying the high-energy gamma-ray sky since 2008 and the LAT Collaboration has published a succession of source catalogs based on comprehensive analyses of LAT data. The fourth source catalog second data release was derived from analysis of the first 10 years of LAT science data.
 		&lt;br&gt;&lt;br&gt;
@@ -3565,5 +3564,6 @@
 	<text key="wavelength_GW_Tooltip">
 		Gravitational Wave probability maps
 	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

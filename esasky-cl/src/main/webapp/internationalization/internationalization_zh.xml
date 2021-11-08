@@ -2197,5 +2197,56 @@
 	<text key="header_highResolutionImagesTooltip">
 		显示欧空局哈勃空间望远镜网站图片
 	</text>
-	
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
+		费米大视场望远镜（LAT）自2008年以来一直在进行高能伽马射线巡天观测。LAT协作体通过对LAT数据的全面分析发布了一系列源表。第四版第二次发布（4FGL-DR2）来源于对LAT前10年科学数据的分析。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_3FHL">
+		费米大视场望远镜高能源表第三版（3FHL），是费米大视场望远镜（LAT）最初7年数据使用第8版（Pass 8）数据处理系统事例分析得到的源表，包含1556颗能量在10GeV 到2TeV的源。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4LAC-DR2">
+		费米大视场望远镜活动星系核源表第四版第二次发布（4LAC-DR2）基于费米大视场望远镜（LAT）10年的观测数据。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Fermi"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_OU_Blazars">
+		耀变体的开放宇宙基于一个耀变体主星表。这个表的第二版通过合并5BZCAT、3HSP和4LAC表而成。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#oublazars"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; 
+	</text>
+	<text key="Gamma-rays">
+		伽马射线
+	</text>
+	<text key="Gamma">
+		伽马
+	</text>
+	<text key="tabulator_no_images">
+		当前视场中没有可用图像。
+		放大视场或者重置滤光片来查看更多。
+	</text>
+	<text key="wavelength_GW">
+		引力波
+	</text>
+	<text key="wavelength_GW_Tooltip">
+		引力波概率图
+	</text>
 </Internationalization>
