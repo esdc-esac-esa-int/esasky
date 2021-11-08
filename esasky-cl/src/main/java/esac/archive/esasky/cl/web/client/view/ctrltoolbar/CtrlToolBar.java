@@ -873,4 +873,30 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
     }
 
+    @Override
+    public void openOutreachPanel() {
+        if (!outreachImageButton.getToggleStatus()) {
+            outreachImageButton.toggle();
+            outreachImagePanel.toggle();
+        }
+    }
+
+    @Override
+    public void closeOutreachPanel() {
+        if (outreachImageButton.getToggleStatus()) {
+            outreachImageButton.toggle();
+            outreachImagePanel.toggle();
+        }
+    }
+
+    @Override
+    public JSONArray getOutreachImageIds() {
+        return outreachImagePanel.getAllImageIds();
+    }
+
+    @Override
+    public void showOutreachImage(String id) {
+        outreachImagePanel.selectShape(id);
+    }
+
 }

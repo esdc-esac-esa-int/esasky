@@ -40,7 +40,7 @@ public class Api extends ApiBase{
 		ApiPlanning apiPlanning = new ApiPlanning(controller);
 		ApiPlot apiPlot = new ApiPlot(controller);
 		ApiView apiView = new ApiView(controller);
-		ApiImage apiImage = new ApiImage();
+		ApiImage apiImage = new ApiImage(controller);
 		ApiAlerts apiAlerts = new ApiAlerts(controller);
 		ApiSearch apiSearch = new ApiSearch(controller);
 		

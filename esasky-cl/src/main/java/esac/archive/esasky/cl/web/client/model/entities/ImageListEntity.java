@@ -3,6 +3,8 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
@@ -201,4 +203,40 @@ public class ImageListEntity extends EsaSkyEntity {
     	}
     }
 
+	public JSONArray getIds() {
+		JSONObject data = getAllData();
+		JSONArray result = new JSONArray();
+
+		int i = 0;
+		for (String key : data.keySet()) {
+			JSONObject value = data.get(key).isObject();
+			if (value != null && value.containsKey("identifier")) {
+				result.set(i, value.get("identifier"));
+			}
+			i++;
+		}
+
+		return result;
+	}
+
+	public JSONObject getAllData() {
+		return tablePanel.exportAsJSON(false);
+	}
+
+	public void selectShape(String identifier) {
+		if (this.isClosed) {
+			return;
+		}
+
+		GeneralJavaScriptObject[] rowDataArray = tablePanel.getAllRows();
+		for(int i = 0; i < rowDataArray.length; i++) {
+			if(rowDataArray[i].getStringProperty(getDescriptor().getUniqueIdentifierField()).equals(identifier)) {
+				select();
+				tablePanel.deselectAllRows();
+				selectShapes(i);
+				tablePanel.selectRow(i);
+				return;
+			}
+		}
+	}
 }

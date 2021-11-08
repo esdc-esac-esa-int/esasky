@@ -88,6 +88,14 @@ public class CtrlToolBarPresenter {
         void openExtTapPanel();
 
         void closeExtTapPanel();
+
+        void openOutreachPanel();
+
+        void closeOutreachPanel();
+
+        JSONArray getOutreachImageIds();
+
+        void showOutreachImage(String id);
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
@@ -345,6 +353,22 @@ public class CtrlToolBarPresenter {
 
     public void closeExtTapPanel() {
         view.closeExtTapPanel();
+    }
+
+    public void openOutreachPanel() {
+        view.openOutreachPanel();
+    }
+
+    public void closeOutreachPanel() {
+        view.closeOutreachPanel();
+    }
+
+    public JSONArray getOutreachImageIds() {
+        return view.getOutreachImageIds();
+    }
+
+    public void showOutreachImage(String id) {
+        view.showOutreachImage(id);
     }
 
 }

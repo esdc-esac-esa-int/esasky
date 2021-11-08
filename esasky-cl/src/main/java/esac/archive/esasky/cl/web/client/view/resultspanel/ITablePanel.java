@@ -20,6 +20,8 @@ public interface ITablePanel {
 
 	public GeneralJavaScriptObject[] getSelectedRows();
 
+	public GeneralJavaScriptObject[] getAllRows();
+
 	public void clearTable();
 	
 	public String getEsaSkyUniqID();
@@ -54,6 +56,7 @@ public interface ITablePanel {
 	public void unregisterObserver(TableObserver observer);
 	
 	public JSONObject exportAsJSON();
+	public JSONObject exportAsJSON(boolean applyFilters);
 	public void exportAsCsv();
 	public void exportAsVot();
 	public String getFullId();	

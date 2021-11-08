@@ -658,7 +658,27 @@ public class ApiMessageParser {
 					console.log('addTiledImage event captured');
 					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::parseHstImageData(Ljava/lang/String;)
 						(msg.content.name);
-					break;	
+					break;
+
+				case 'openOutreachPanel':
+					console.log('openOutreachPanel event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::openOutreachPanel()()
+					break;
+
+				case 'closeOutreachPanel':
+					console.log('closeOutreachPanel event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::closeOutreachPanel()()
+					break;
+
+				case 'getOutreachImageIds':
+					console.log('getOutreachImageIds event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::getAllOutreachImageIds(Lcom/google/gwt/core/client/JavaScriptObject;)(e)
+                    break;
+
+				case 'openOutreachImage':
+					console.log('openOutreachImage event captured');
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;)(msg.content.id)
+					break;
 					
 							
 				// API ALERTS

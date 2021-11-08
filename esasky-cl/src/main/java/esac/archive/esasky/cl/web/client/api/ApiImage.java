@@ -6,6 +6,9 @@ import java.io.IOException;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
+import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
@@ -14,7 +17,11 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 public class ApiImage extends ApiBase{
 	
 	private static String errorMsg = "Error parsing image properties. Property: @@@prop@@@ missing";
-	
+
+	public ApiImage(Controller controller) {
+		this.controller = controller;
+	}
+
 	public void parseHstImageData(final String name) {
 		HstOutreachImage image = new HstOutreachImage(name, 1.0);
 		image.loadImage();
@@ -82,7 +89,26 @@ public class ApiImage extends ApiBase{
 		}
 		
 	}
-	
+
+	public void openOutreachPanel() {
+		controller.getRootPresenter().getCtrlTBPresenter().openOutreachPanel();
+	}
+
+	public void closeOutreachPanel() {
+		controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+	}
+
+	public void getAllOutreachImageIds(JavaScriptObject widget) {
+		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds();
+		JSONObject obj = new JSONObject();
+		obj.put("Available_ids", ids);
+		sendBackToWidget(obj, null, widget);
+	}
+
+	public void showOutreachImage(String id) {
+		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id);
+	}
+
 	private void addTiledImage(String name, String url, double ra, double dec, double fov,
 			double rotation, int width, int height, OpenSeaDragonType type) {
 		

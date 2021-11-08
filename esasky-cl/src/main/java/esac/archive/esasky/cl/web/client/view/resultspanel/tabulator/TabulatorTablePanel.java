@@ -354,6 +354,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	    return new JSONObject(JsonUtils.safeEval(table.exportTableAsJson()));
 	}
 
+	public JSONObject exportAsJSON(boolean applyFilters) {
+		return new JSONObject(JsonUtils.safeEval(table.exportTableAsJson(applyFilters)));
+	}
+
 	public void exportAsCsv() {
 		table.downloadCsv(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv");
 	}
@@ -465,6 +469,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public GeneralJavaScriptObject[] getSelectedRows() {
 		return table.getSelectedRows();
+	}
+
+	@Override
+	public GeneralJavaScriptObject[] getAllRows() {
+		return table.getAllRows();
 	}
 
 	private LinkedList<ClosingObserver> closingObservers = new LinkedList<ClosingObserver>();

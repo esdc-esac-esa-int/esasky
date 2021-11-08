@@ -247,6 +247,14 @@ public class TabulatorWrapper {
         return tableJsObject.getSelectedData();
     }-*/;
 
+    public GeneralJavaScriptObject[] getAllRows(){
+        return getAllRows(tableJsObject);
+    }
+
+    private native GeneralJavaScriptObject[] getAllRows(GeneralJavaScriptObject tableJsObject)/*-{
+        return tableJsObject.getData();
+    }-*/;
+
     public int getVisibleRowCount(){
         return getVisibleRowCount(tableJsObject);
     }

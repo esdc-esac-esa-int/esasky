@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -50,7 +51,7 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
-		
+
 		initView();
 		setMaxSize();
 
@@ -193,7 +194,18 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		new $wnd.ResizeSensor($doc.getElementById(id), function() {
 			outreachImagePanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachImagePanel::setMaxHeight()();
 		});
-	}-*/; 
+	}-*/;
+
+	public JSONArray getAllImageIds() {
+		if (imageEntity != null)
+			return imageEntity.getIds();
+		else
+			return new JSONArray();
+	}
+
+	public void selectShape(String id) {
+		imageEntity.selectShape(id);
+	}
 
 
 }
