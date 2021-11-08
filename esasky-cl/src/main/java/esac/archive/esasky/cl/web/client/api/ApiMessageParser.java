@@ -716,11 +716,16 @@ public class ApiMessageParser {
 						(e, msg.content.id);
 					break;	
 
-				// API TARGET LIST
+				// API SEARCH
+				case 'getTargetLists':
+					console.log('getTargetLists event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::getTargetLists(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+                    break;
+
 				case 'openTargetList':
 					console.log('openTargetList event captured');
-                    if (msg.content.filename)
-                    	apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList(Ljava/lang/String;)(msg.content.filename)
+                    if (msg.content.targetlist)
+                    	apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList(Ljava/lang/String;)(msg.content.targetlist)
 					else
 						apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList()()
 					break;

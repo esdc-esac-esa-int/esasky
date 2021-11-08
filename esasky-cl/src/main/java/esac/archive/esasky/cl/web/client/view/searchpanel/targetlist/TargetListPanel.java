@@ -11,6 +11,8 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.http.client.*;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -563,8 +565,12 @@ public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
                 preparedListDropDown.getSelectedObject());
     }
 
-    public String[] getFileNames() {
-        return fileNames;
+    public JSONArray getTargetLists() {
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < fileNames.length; i++) {
+            result.set(i, new JSONString(fileNames[i]));
+        }
+        return result;
     }
 
     public void setSelectedFile(String fileName) {
