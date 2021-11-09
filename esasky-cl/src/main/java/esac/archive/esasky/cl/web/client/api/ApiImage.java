@@ -101,11 +101,9 @@ public class ApiImage extends ApiBase{
 
 	public void getAllOutreachImageIds(JavaScriptObject widget) {
 		JSONObject result = new JSONObject();
-
-		// Fetch ids if loaded, or start loading from external source
 		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds();
 
-		// Not IDs loaded, delay and try again in a few seconds
+		// No IDs loaded yet, try again in a few seconds
 		if (ids.size() < 1) {
 			Timer timer = new Timer() {
 				@Override
