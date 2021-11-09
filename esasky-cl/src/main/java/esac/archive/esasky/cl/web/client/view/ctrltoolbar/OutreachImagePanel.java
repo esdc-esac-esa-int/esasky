@@ -197,10 +197,11 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 	}-*/;
 
 	public JSONArray getAllImageIds() {
-		if (imageEntity != null)
-			return imageEntity.getIds();
-		else
-			return new JSONArray();
+		if (imageEntity == null) {
+			fetchData();
+		}
+
+		return imageEntity.getIds();
 	}
 
 	public void selectShape(String id) {
