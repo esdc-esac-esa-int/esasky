@@ -1,19 +1,17 @@
 package esac.archive.esasky.cl.web.client.api;
 
 
-import java.io.IOException;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
-
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Timer;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+
+import java.io.IOException;
 
 public class ApiImage extends ApiBase{
 	
@@ -100,31 +98,17 @@ public class ApiImage extends ApiBase{
 	}
 
 	public void getAllOutreachImageIds(JavaScriptObject widget) {
-		JSONObject result = new JSONObject();
-		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds();
+		JSONObject obj = new JSONObject();
+		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds(result -> {
+			obj.put("Available_ids", result);
+			sendBackToWidget(obj, null, widget);
+		});
 
-		// No IDs loaded yet, try again in a few seconds
-		if (ids.size() < 1) {
-			Timer timer = new Timer() {
-				@Override
-				public void run() {
-					JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds();
-					result.put("Available_ids", ids);
-					sendBackToWidget(result, null, widget);
-				}
-
-				@Override
-				public void schedule(int delayMillis) {
-					super.cancel();
-					super.schedule(delayMillis);
-				}
-			};
-
-			timer.schedule(5000);
-		} else {
-			result.put("Available_ids", ids);
-			sendBackToWidget(result, null, widget);
+		if (ids.size() > 0) {
+			obj.put("Available_ids", ids);
+			sendBackToWidget(obj, null, widget);
 		}
+
 	}
 
 	public void showOutreachImage(String id) {

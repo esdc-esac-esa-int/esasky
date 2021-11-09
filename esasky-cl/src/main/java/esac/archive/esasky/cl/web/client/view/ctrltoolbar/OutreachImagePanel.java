@@ -9,6 +9,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.Size;
@@ -22,6 +23,8 @@ import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 
 public class OutreachImagePanel extends MovablePanel implements Hidable<OutreachImagePanel> {
@@ -79,7 +82,7 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		containerStyle.setPropertyPx("minHeight", 100);
 	}
 
-	public void show() {
+	private void getData() {
 		if(outreachImageDescriptor == null) {
 			if(DescriptorRepository.getInstance().getImageDescriptors() != null) {
 				fetchData();
@@ -87,6 +90,9 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 				DescriptorRepository.getInstance().setOutreachImageCountObserver(newCount -> fetchData());
 			}
 		}
+	}
+	public void show() {
+		getData();
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
@@ -96,6 +102,7 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		this.updateHandlers();
 		setMaxSize();
 	}
+
 
 	public void hide() {
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
@@ -196,16 +203,46 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		});
 	}-*/;
 
-	public JSONArray getAllImageIds() {
+	public JSONArray getAllImageIds(ICommand command) {
 		if (imageEntity == null) {
-			fetchData();
+			getData();
+			imageEntity.getTablePanel().registerObserver(new TableObserver() {
+				@Override
+				public void numberOfShownRowsChanged(int numberOfShownRows) {
+				}
+
+				@Override
+				public void onSelection(ITablePanel selectedTablePanel) {
+				}
+
+				@Override
+				public void onUpdateStyle(ITablePanel panel) {
+				}
+
+				@Override
+				public void onDataLoaded(int numberOfRows) {
+					if (numberOfRows > 0) {
+						command.onResult(imageEntity.getIds());
+						imageEntity.setIsPanelClosed(true);
+						imageEntity.getTablePanel().unregisterObserver(this);
+					}
+				}
+			});
+
+		} else {
+			return imageEntity.getIds();
 		}
 
-		return imageEntity.getIds();
+		return null;
 	}
 
 	public void selectShape(String id) {
-		imageEntity.selectShape(id);
+		outreachImageIdToBeOpened = id;
+		if(imageEntity != null) {
+			imageEntity.selectShape(id);
+		} else {
+			show();
+		}
 	}
 
 

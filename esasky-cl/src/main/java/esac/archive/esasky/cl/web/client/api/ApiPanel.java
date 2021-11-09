@@ -53,6 +53,11 @@ public class ApiPanel extends ApiBase{
                 public void onUpdateStyle(ITablePanel panel) {
                 	//Don't need this here
                 }
+
+				@Override
+				public void onDataLoaded(int numberOfRows) {
+					//Don't need this here
+				}
 			});
 		}else {
 			sendBackValuesToWidget(callback, widget);

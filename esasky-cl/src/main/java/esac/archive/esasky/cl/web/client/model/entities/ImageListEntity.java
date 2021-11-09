@@ -205,6 +205,10 @@ public class ImageListEntity extends EsaSkyEntity {
     	}
     }
 
+	public boolean getIsPanelClosed() {
+		return isClosed;
+	}
+
 	public JSONArray getIds() {
 		JSONObject data = getAllData();
 		JSONArray result = new JSONArray();
@@ -227,7 +231,7 @@ public class ImageListEntity extends EsaSkyEntity {
 
 	public void selectShape(String identifier) {
 		if (this.isClosed) {
-			return;
+			setIsPanelClosed(false);
 		}
 
 		GeneralJavaScriptObject[] rowDataArray = tablePanel.getAllRows();

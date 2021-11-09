@@ -554,6 +554,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
             entity.addShapes(javaScriptObject);
         }
         notifyNumberOfRowsShowingChanged(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
+		notifyOnDataLoaded(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
     }
 
     protected void notifyNumberOfRowsShowingChanged(int count) {
@@ -561,6 +562,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
             obs.numberOfShownRowsChanged(count);
         }
     }
+
+	protected void notifyOnDataLoaded(int count) {
+		for (TableObserver obs : observers) {
+			obs.onDataLoaded(count);
+		}
+	}
 
     @Override
     public void onRowSelection(final GeneralJavaScriptObject row) {

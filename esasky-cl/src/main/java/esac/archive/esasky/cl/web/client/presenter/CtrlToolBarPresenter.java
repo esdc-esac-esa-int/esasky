@@ -9,6 +9,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -17,6 +18,7 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
@@ -93,7 +95,7 @@ public class CtrlToolBarPresenter {
 
         void closeOutreachPanel();
 
-        JSONArray getOutreachImageIds();
+        JSONArray getOutreachImageIds(ICommand command);
 
         void showOutreachImage(String id);
     }
@@ -363,8 +365,8 @@ public class CtrlToolBarPresenter {
         view.closeOutreachPanel();
     }
 
-    public JSONArray getOutreachImageIds() {
-        return view.getOutreachImageIds();
+    public JSONArray getOutreachImageIds(ICommand command) {
+        return view.getOutreachImageIds(command);
     }
 
     public void showOutreachImage(String id) {
