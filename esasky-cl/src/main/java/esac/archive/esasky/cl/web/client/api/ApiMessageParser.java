@@ -724,8 +724,8 @@ public class ApiMessageParser {
 
 				case 'openTargetList':
 					console.log('openTargetList event captured');
-                    if (msg.content.targetlist)
-                    	apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList(Ljava/lang/String;)(msg.content.targetlist)
+                    if (msg.content.targetList)
+                    	apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList(Ljava/lang/String;)(msg.content.targetList)
 					else
 						apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::openTargetList()()
 					break;
