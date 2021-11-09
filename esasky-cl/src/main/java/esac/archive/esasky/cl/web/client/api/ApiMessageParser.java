@@ -509,12 +509,12 @@ public class ApiMessageParser {
 
 				case 'openExtTapPanel':
 					console.log('openExtTapPanel event captured');
-					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanel()();
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanel()();
 					break;
 
 				case 'closeExtTapPanel':
 					console.log('closeExtTapPanel event captured');
-					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanel()();
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanel()();
 					break;
 
 					// MOC

@@ -861,7 +861,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         if (!extTapButton.getToggleStatus()){
             extTapButton.toggle();
             extTapTreeMapContainer.toggleTreeMap();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isOpen()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
+            sendGAEvent(EntityContext.EXT_TAP.toString());
         }
     }
 
@@ -870,6 +872,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         if (extTapButton.getToggleStatus()){
             extTapButton.toggle();
             extTapTreeMapContainer.toggleTreeMap();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isOpen()));
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
+            sendGAEvent(EntityContext.EXT_TAP.toString());
         }
     }
 
