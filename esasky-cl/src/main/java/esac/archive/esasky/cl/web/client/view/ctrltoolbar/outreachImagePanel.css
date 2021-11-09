@@ -19,7 +19,7 @@
 .outreachImagePanel__opacityControl {
 	position: absolute;
 	bottom: 50px;
-	z-index: 10000;
+	z-index: 30;
     width: 100%;
     padding: 0px 10px;
     box-sizing: border-box;
