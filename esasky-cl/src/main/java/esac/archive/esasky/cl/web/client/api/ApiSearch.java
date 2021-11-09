@@ -30,22 +30,4 @@ public class ApiSearch extends ApiBase {
     public void closeTargetList() {
         controller.getRootPresenter().getTargetPresenter().getTargetListPanel().hide();
     }
-
-    public void playerStart() {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().getPlayerPanel().play();
-    }
-
-    public void playerPause() {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().getPlayerPanel().pause();
-    }
-
-    public void playerNext() {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().getPlayerPanel().goToNextSurvey();
-    }
-
-    public void playerPrevious() {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().getPlayerPanel().goToPreviousSurvey();
-    }
-
-
 }

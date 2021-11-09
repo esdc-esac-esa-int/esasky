@@ -5,7 +5,7 @@ public class ApiMessageParser {
 	public static native void init(Api api,  ApiCounts apiCounts, ApiEvents apiEvents, 
 			ApiExtTap apiExtTap, ApiHips apiHips, ApiMoc apiMoc, ApiModules apiModules, ApiOverlay apiOverlay,
 			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage,
-			ApiAlerts apiAlerts, ApiSearch apiSearch) /*-{
+			ApiAlerts apiAlerts, ApiSearch apiSearch, ApiPlayer apiPlayer) /*-{
 	
 		function handleMessage(e){
 			var msg = e.data
@@ -171,23 +171,6 @@ public class ApiMessageParser {
 					console.log('setHipsSliderValue event captured!');
 					console.log(msg);
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSSliderValue(D)(msg.content.value);
-					break;
-
-				case 'playHips':
-                    console.log('playHips event captured')
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerStart()()
-					break;
-				case 'pauseHips':
-					console.log('pauseHips event captured')
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerPause()()
-					break;
-				case 'nextHips':
-					console.log('nextHips event captured')
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerNext()()
-					break;
-				case 'previousHips':
-					console.log('previousHips event captured')
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::playerPrevious()()
 					break;
 					
 				// OVERLAY
@@ -735,21 +718,23 @@ public class ApiMessageParser {
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::closeTargetList()()
 					break;
 
-				case 'playTargetList':
-                    console.log('playTargetList event captured');
-					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerStart()()
+
+				// API PLAYER
+				case 'playerPlay':
+					console.log('playerPlay event captured');
+					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiPlayer::play()()
 					break;
-				case 'pauseTargetList':
-					console.log('pauseTargetList event captured');
-					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerPause()()
+				case 'playerPause':
+					console.log('playerPause event captured');
+					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiPlayer::pause()()
 					break;
-				case 'nextTargetList':
-					console.log('nextTargetList event captured');
-					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerNext()()
+				case 'playerNext':
+					console.log('playerNext event captured');
+					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiPlayer::next()()
 					break;
-				case 'previousTargetList':
-					console.log('previousTargetList event captured');
-					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerPrevious()()()
+				case 'playerPrevious':
+					console.log('playerPrevious event captured');
+					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiPlayer::previous()()
 					break;
 
 

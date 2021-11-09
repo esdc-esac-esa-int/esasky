@@ -513,6 +513,11 @@ public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
 		isShowing = false;
 		CloseEvent.fire(this, null);
 	}
+
+    @Override
+    public boolean isShowing() {
+        return isShowing;
+    }
 	
 	@Override
 	public void setPopupPosition(int left, int top) {

@@ -308,20 +308,4 @@ public class ApiHips extends ApiBase{
 		}
 		return hipsMap;
 	}
-
-	public void playerStart() {
-		controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getPlayerPanel().play();
-	}
-
-	public void playerPause() {
-		controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getPlayerPanel().pause();
-	}
-
-	public void playerNext() {
-		controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getPlayerPanel().goToNextSurvey();
-	}
-
-	public void playerPrevious() {
-		controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter().getPlayerPanel().goToPreviousSurvey();
-	}
 }
