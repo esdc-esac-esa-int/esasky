@@ -736,19 +736,19 @@ public class ApiMessageParser {
 					break;
 
 				case 'playTargetList':
-                    console.log('play event captured');
+                    console.log('playTargetList event captured');
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerStart()()
 					break;
 				case 'pauseTargetList':
-					console.log('play event captured');
+					console.log('pauseTargetList event captured');
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerPause()()
 					break;
 				case 'nextTargetList':
-					console.log('play event captured');
+					console.log('nextTargetList event captured');
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerNext()()
 					break;
 				case 'previousTargetList':
-					console.log('play event captured');
+					console.log('previousTargetList event captured');
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::playerPrevious()()()
 					break;
 
