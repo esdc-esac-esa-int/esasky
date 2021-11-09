@@ -688,7 +688,7 @@ public class ApiMessageParser {
 					break;	
 					
 				case 'closeGWPanel':
-					console.log('openGWPanel event captured');
+					console.log('closeGWPanel event captured');
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::closeAlertPanel()();
 					break;	
 
