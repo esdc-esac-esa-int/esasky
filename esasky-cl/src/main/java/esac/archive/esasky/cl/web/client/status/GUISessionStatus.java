@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
@@ -20,6 +21,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
+import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 
 /**
@@ -31,7 +33,6 @@ public class GUISessionStatus {
 
 	private static boolean isTrackingSSO = false;
 	private static TrackedSso trackedSso;
-	private static boolean isInScienceMode = false;
 	private static boolean doCountOnEnteringScienceMode = false;
 	private static boolean hideSwitch = false;
 	private static boolean showCoordinatesInDegrees = false;
@@ -206,29 +207,39 @@ public class GUISessionStatus {
 	}
 	
 	public static boolean getIsInScienceMode(){
-		return GUISessionStatus.isInScienceMode;
+		return Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE);
 	}
 	
 	public static void setInitialIsInScienceMode() {
-		isInScienceMode = true;
+		try {
+			Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
+		} catch (MapKeyException e) {
+			Log.error(e.getMessage());
+		}
 	}
 
-	public static void setIsInScienceMode(boolean isInScienceMode){
-		if(GUISessionStatus.isInScienceMode != isInScienceMode){
-			GUISessionStatus.isInScienceMode = isInScienceMode;
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SCIMODE, Boolean.toString(isInScienceMode));
-			CommonEventBus.getEventBus().fireEvent(new IsInScienceModeChangeEvent());
-			if(isInScienceMode && doCountOnEnteringScienceMode) {
-				CommonEventBus.getEventBus().fireEvent(new AladinLiteCoordinatesOrFoVChangedEvent());
-				doCountOnEnteringScienceMode = false;
-			}
-			UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
-			Date expires = new Date();
-			long milliseconds = ((long) 120)  * 24 * 60 * 60 * 1000;
-			expires.setTime(expires.getTime() + milliseconds);
-			Cookies.setCookie(EsaSkyWebConstants.SCI_MODE_COOKIE, Boolean.toString(isInScienceMode), expires);
+	public static void onScienceModeChanged(boolean isInScienceMode){
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SCIMODE, Boolean.toString(isInScienceMode));
+		CommonEventBus.getEventBus().fireEvent(new IsInScienceModeChangeEvent());
+		if(isInScienceMode && doCountOnEnteringScienceMode) {
+			CommonEventBus.getEventBus().fireEvent(new AladinLiteCoordinatesOrFoVChangedEvent());
+			doCountOnEnteringScienceMode = false;
 		}
-		
+		UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
+		Date expires = new Date();
+		long milliseconds = ((long) 120)  * 24 * 60 * 60 * 1000;
+		expires.setTime(expires.getTime() + milliseconds);
+		Cookies.setCookie(EsaSkyWebConstants.SCI_MODE_COOKIE, Boolean.toString(isInScienceMode), expires);
+	}
+	
+	public static void setIsInScienceMode(boolean isInScienceMode){
+		if(getIsInScienceMode() != isInScienceMode){
+			try {
+				Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, isInScienceMode);
+			} catch (MapKeyException e) {
+				Log.error(e.getMessage());
+			}
+		}
 	}
 
 	public static void setDoCountOnEnteringScienceMode() {

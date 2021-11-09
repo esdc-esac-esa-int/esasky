@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.google.gwt.i18n.client.Dictionary;
 
+import esac.archive.esasky.cl.web.client.event.ModuleUpdatedEvent;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 
@@ -39,6 +40,8 @@ public class Modules {
     public static void setModule(String key, boolean value) throws MapKeyException {
     	if(currentModuleMap.containsKey(key)) {
     		currentModuleMap.put(key, value);
+    		ModuleUpdatedEvent event = new ModuleUpdatedEvent(key, value);
+    		CommonEventBus.getEventBus().fireEvent(event);
     		return;
     	}
     	throw new MapKeyException(key);

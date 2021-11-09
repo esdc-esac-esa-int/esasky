@@ -32,12 +32,15 @@ import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.AddTableEvent;
+import esac.archive.esasky.cl.web.client.event.AddTableEventHandler;
 import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
 import esac.archive.esasky.cl.web.client.event.AuthorSearchEventHandler;
 import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
 import esac.archive.esasky.cl.web.client.event.BibcodeSearchEventHandler;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
 import esac.archive.esasky.cl.web.client.event.ESASkySampEventHandlerImpl;
+import esac.archive.esasky.cl.web.client.event.ModuleUpdatedEvent;
+import esac.archive.esasky.cl.web.client.event.ModuleUpdatedEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
@@ -349,6 +352,16 @@ public class MainPresenter {
             public void onBibcodeSelected(BibcodeSearchEvent event) {
                 loadOrQueueBibcodeTargetListFromSimbad(event.getBibcode());
             }
+        });
+        
+        CommonEventBus.getEventBus().addHandler(ModuleUpdatedEvent.TYPE, new ModuleUpdatedEventHandler() {
+      
+          @Override
+          public void onEvent(ModuleUpdatedEvent event) {
+        	 if(EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
+        		 GUISessionStatus.onScienceModeChanged(event.getValue());
+        	 }
+          }
         });
     }
 
