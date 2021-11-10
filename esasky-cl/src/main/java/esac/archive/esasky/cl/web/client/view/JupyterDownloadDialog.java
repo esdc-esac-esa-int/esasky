@@ -131,12 +131,12 @@ public class JupyterDownloadDialog extends Composite {
 
     private void setSmallScreenButtonLayout() {
         downloadButtonContainer.getElement().getStyle().setDisplay(Display.BLOCK);
-        jupyterButton.getElement().getStyle().setProperty("display", "flex");
-        computerButton.getElement().getStyle().setProperty("display", "flex");
+        jupyterButton.getElement().getStyle().setDisplay(Display.FLEX);
+        computerButton.getElement().getStyle().setDisplay(Display.FLEX);
     }
 
     private void setDefaultButtonLayout() {
-        downloadButtonContainer.getElement().getStyle().setProperty("display", "inline-flex");
+        downloadButtonContainer.getElement().getStyle().setDisplay(Display.INLINE_FLEX);
         jupyterButton.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
         computerButton.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
     }

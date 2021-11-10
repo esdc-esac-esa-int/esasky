@@ -12,7 +12,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class ModuleUpdatedEvent extends GwtEvent<ModuleUpdatedEventHandler> {
 
     /** Defining event type. */
-    public final static Type<ModuleUpdatedEventHandler> TYPE = new Type<ModuleUpdatedEventHandler>();
+    public static final Type<ModuleUpdatedEventHandler> TYPE = new Type<>();
 
     private String key;
     private boolean value;

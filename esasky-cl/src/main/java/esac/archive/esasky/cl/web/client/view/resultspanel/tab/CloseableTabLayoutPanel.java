@@ -533,7 +533,7 @@ public class CloseableTabLayoutPanel extends Composite {
 
             @Override
             public void onDataLoaded(int numberOfRows) {
-
+                // Not needed for this implementation
             }
         });
 	    updateStyleOnTab(getWidgetIndex(tabPanel.getWidget()));

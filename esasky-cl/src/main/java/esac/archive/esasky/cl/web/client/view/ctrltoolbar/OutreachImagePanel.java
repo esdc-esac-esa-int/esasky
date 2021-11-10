@@ -209,14 +209,17 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 			imageEntity.getTablePanel().registerObserver(new TableObserver() {
 				@Override
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
+					// Not needed here
 				}
 
 				@Override
 				public void onSelection(ITablePanel selectedTablePanel) {
+					// Not needed here
 				}
 
 				@Override
 				public void onUpdateStyle(ITablePanel panel) {
+					// Not needed here
 				}
 
 				@Override

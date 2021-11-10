@@ -1,50 +1,16 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
-
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteDeselectAreaEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteDeselectAreaEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeDeselectedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStartEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeHoverStopEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.event.AddTableEvent;
-import esac.archive.esasky.cl.web.client.event.AddTableEventHandler;
-import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
-import esac.archive.esasky.cl.web.client.event.AuthorSearchEventHandler;
-import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
-import esac.archive.esasky.cl.web.client.event.BibcodeSearchEventHandler;
-import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
-import esac.archive.esasky.cl.web.client.event.ESASkySampEventHandlerImpl;
-import esac.archive.esasky.cl.web.client.event.ModuleUpdatedEvent;
-import esac.archive.esasky.cl.web.client.event.ModuleUpdatedEventHandler;
-import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
-import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEventHandler;
-import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
-import esac.archive.esasky.cl.web.client.event.UrlChangedEventHandler;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
@@ -62,6 +28,15 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -346,22 +321,12 @@ public class MainPresenter {
             }
         });
 
-        CommonEventBus.getEventBus().addHandler(BibcodeSearchEvent.TYPE, new BibcodeSearchEventHandler() {
-
-            @Override
-            public void onBibcodeSelected(BibcodeSearchEvent event) {
-                loadOrQueueBibcodeTargetListFromSimbad(event.getBibcode());
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(BibcodeSearchEvent.TYPE, event -> loadOrQueueBibcodeTargetListFromSimbad(event.getBibcode()));
         
-        CommonEventBus.getEventBus().addHandler(ModuleUpdatedEvent.TYPE, new ModuleUpdatedEventHandler() {
-      
-          @Override
-          public void onEvent(ModuleUpdatedEvent event) {
-        	 if(EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
-        		 GUISessionStatus.onScienceModeChanged(event.getValue());
-        	 }
-          }
+        CommonEventBus.getEventBus().addHandler(ModuleUpdatedEvent.TYPE, event -> {
+           if(EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
+               GUISessionStatus.onScienceModeChanged(event.getValue());
+           }
         });
     }
 

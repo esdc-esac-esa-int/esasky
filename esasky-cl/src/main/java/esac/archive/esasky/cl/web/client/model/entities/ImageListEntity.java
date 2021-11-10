@@ -32,6 +32,8 @@ public class ImageListEntity extends EsaSkyEntity {
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
 	private long timeAtLastFoVFilter = 0L;
+
+	private static final String IDENTIFIER_KEY = "identifier";
 	
 	private Timer updateTimer = new Timer() {
 		
@@ -83,8 +85,8 @@ public class ImageListEntity extends EsaSkyEntity {
     	GeneralJavaScriptObject[] rows = tablePanel.getSelectedRows();
     	for(GeneralJavaScriptObject row : rows) {
     		if(GeneralJavaScriptObject.convertToInteger(row.getProperty("id")) == shapeId) {
-    			if(!isIdAlreadyOpen(row.getStringProperty("identifier"))) {
-    				lastImage = new HstOutreachImage(row.getStringProperty("identifier"), lastOpacity);
+    			if(!isIdAlreadyOpen(row.getStringProperty(IDENTIFIER_KEY))) {
+    				lastImage = new HstOutreachImage(row.getStringProperty(IDENTIFIER_KEY), lastOpacity);
     				lastImage.loadImage(true);
 					UrlUtils.setSelectedHstImageId(lastImage.getId());
     			}
@@ -216,8 +218,8 @@ public class ImageListEntity extends EsaSkyEntity {
 		int i = 0;
 		for (String key : data.keySet()) {
 			JSONObject value = data.get(key).isObject();
-			if (value != null && value.containsKey("identifier")) {
-				result.set(i, value.get("identifier"));
+			if (value != null && value.containsKey(IDENTIFIER_KEY)) {
+				result.set(i, value.get(IDENTIFIER_KEY));
 			}
 			i++;
 		}

@@ -20,7 +20,7 @@ select {
   color: #000;
 }
 pre {
-  font-family: "courier new", courier;
+  font-family: "courier new", courier, sans-serif;
   font-size: 1em;
 }
 body {
