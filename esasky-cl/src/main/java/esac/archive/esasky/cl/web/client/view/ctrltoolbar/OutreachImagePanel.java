@@ -240,7 +240,9 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		outreachImageIdToBeOpened = id;
 		if(imageEntity != null) {
 			imageEntity.selectShape(id);
-		} else {
+		}
+
+		if (!isShowing) {
 			show();
 		}
 	}
