@@ -75,6 +75,7 @@ public final class GoogleAnalytics {
     public static final String ACT_HEADER_SCIMODE = "SciMode";
     public static final String ACT_HEADER_LANGUAGE = "Language";
     public static final String ACT_HEADER_STATUS_ERROR = "Error";
+    public static final String ACT_HEADER_COOFRAMECHANGED= "CoordinateFrameChanged";
     
     public static final String ACT_TOGGLECOLUMNSOPEN = "ToggleColumnsOpen";
     public static final String ACT_TOGGLECOLUMNSSHOW = "ShowingColumn";
@@ -142,6 +143,7 @@ public final class GoogleAnalytics {
     public static final String ACT_SEARCH_SEARCHRESULTAUTO = "SearchResultAuto";
     public static final String ACT_SEARCH_SEARCHTARGETNOTFOUND = "SearchTargetNotFound";
     public static final String ACT_SEARCH_SEARCHWRONGCOORDS = "SearchWrongCoords";
+    public static final String ACT_SEARCH_SEARCHCOORDSSUCCESS = "SearchCoordsSuccess";
     
     public static final String ACT_PREVIEW_POSTCARDLOADFAILED = "PostcardLoadFailed";
     

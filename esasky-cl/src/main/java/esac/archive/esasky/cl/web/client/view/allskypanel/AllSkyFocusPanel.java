@@ -143,7 +143,8 @@ public class AllSkyFocusPanel extends FocusPanel {
 				Coordinate j2000Coordinate = getJ2000Coordinate();
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD, 
 						"RA: " + j2000Coordinate.getRa() 
-						+ " Dec: " + j2000Coordinate.getDec());
+						+ " Dec: " + j2000Coordinate.getDec()
+						+ " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
 				Window.open(
 						ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
 								j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
@@ -163,7 +164,8 @@ public class AllSkyFocusPanel extends FocusPanel {
         		Coordinate j2000Coordinate = getJ2000Coordinate();
         		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINNED, 
         				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
+        				+ " Dec: " + j2000Coordinate.getDec()
+						+ " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
 				Window.open(
 						ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
 								CoordinatesFrame.J2000.getValue()), "_blank", "");

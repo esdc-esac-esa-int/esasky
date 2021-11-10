@@ -169,7 +169,7 @@ public class SearchPresenter {
                     CoordinateValidator.SearchInputType inputType = CoordinateValidator
                             .checkInputType(new ClientRegexClass(), userInput, AladinLiteWrapper.getCoordinatesFrame());
 
-                	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHQUERY, userInput);
+                	GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHQUERY, "UserInput: " + userInput + " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
                 	if (inputType == CoordinateValidator.SearchInputType.TARGET
                 	        || inputType == CoordinateValidator.SearchInputType.NOT_VALID
                 	        ) {
@@ -371,7 +371,9 @@ public class SearchPresenter {
         Log.debug("DEC " + raDecDeg[1]);
 
         AladinLiteWrapper.getInstance().goToObject(
-                Double.toString(raDecDeg[0]) + " " + Double.toString(raDecDeg[1]), false);
+                raDecDeg[0] + " " + raDecDeg[1], false);
+        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SEARCH, GoogleAnalytics.ACT_SEARCH_SEARCHCOORDSSUCCESS,
+                "RA: " + raString + " DEC: " + decString + " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
 
     }
 

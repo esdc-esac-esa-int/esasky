@@ -23,6 +23,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -373,20 +375,14 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 
 	private void bindBothCoordinateFramesToEachOther(final ChangeHandler changeHandler) {
-		coordinateFrameFull.addChangeHandler(new ChangeHandler() {
-
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				coordinateFrameFirstLetter.setSelectedIndex(coordinateFrameFull.getSelectedIndex());
-			}
+		coordinateFrameFull.addChangeHandler(arg0 -> {
+			coordinateFrameFirstLetter.setSelectedIndex(coordinateFrameFull.getSelectedIndex());
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COOFRAMECHANGED,
+					AladinLiteWrapper.getCoordinatesFrame().getValue());
 		});
-		coordinateFrameFirstLetter.addChangeHandler(new ChangeHandler() {
-
-			@Override
-			public void onChange(ChangeEvent arg0) {
-				coordinateFrameFull.setSelectedIndex(coordinateFrameFirstLetter.getSelectedIndex());
-				changeHandler.onChange(arg0);
-			}
+		coordinateFrameFirstLetter.addChangeHandler(arg0 -> {
+			coordinateFrameFull.setSelectedIndex(coordinateFrameFirstLetter.getSelectedIndex());
+			changeHandler.onChange(arg0);
 		});
 	}
 
@@ -399,6 +395,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void selectCoordinateFrame(int index) {
 		coordinateFrameFull.setSelectedIndex(index);
 		coordinateFrameFirstLetter.setSelectedIndex(index);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COOFRAMECHANGED,
+				AladinLiteWrapper.getCoordinatesFrame().getValue());
 	}
 
 	@Override
