@@ -19,15 +19,14 @@ public class ApiSearch extends ApiBase {
     }
 
     public void openTargetList(String targetList) {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().setSelectedFile(targetList);
-        openTargetList();
+        controller.getRootPresenter().getTargetPresenter().showTargetList(targetList);
     }
 
     public void openTargetList() {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().show();
+        controller.getRootPresenter().getTargetPresenter().showTargetList();
     }
 
     public void closeTargetList() {
-        controller.getRootPresenter().getTargetPresenter().getTargetListPanel().hide();
+        controller.getRootPresenter().getTargetPresenter().closeTargetList();
     }
 }

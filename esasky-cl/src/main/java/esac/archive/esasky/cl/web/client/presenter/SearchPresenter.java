@@ -130,6 +130,12 @@ public class SearchPresenter {
         void updateModuleVisibility();
 
         TargetListPanel getTargetListPanel();
+
+        void showTargetList();
+
+        void showTargetList(String targetList);
+
+        void closeTargetList();
     }
 
     /**
@@ -680,5 +686,16 @@ public class SearchPresenter {
         return view.getTargetListPanel();
     }
 
+    public void showTargetList() {
+        view.showTargetList();
+    }
+
+    public void showTargetList(String targetList) {
+        view.showTargetList(targetList);
+    }
+
+    public void closeTargetList() {
+        view.closeTargetList();
+    }
 
 }

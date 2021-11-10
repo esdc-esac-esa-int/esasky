@@ -884,6 +884,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         if (!outreachImageButton.getToggleStatus()) {
             outreachImageButton.toggle();
             outreachImagePanel.toggle();
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
         }
     }
 
@@ -903,6 +904,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     @Override
     public void showOutreachImage(String id) {
         outreachImagePanel.selectShape(id);
+        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
     }
 
 }

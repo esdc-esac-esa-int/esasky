@@ -756,6 +756,25 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     }
 
     @Override
+    public void showTargetList() {
+        targetListPanel.show();
+        targetListButton.setToggleStatus(true);
+        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
+    }
+
+    @Override
+    public void showTargetList(String targetList) {
+        targetListPanel.setSelectedFile(targetList);
+        showTargetList();
+    }
+
+    @Override
+    public void closeTargetList() {
+        targetListPanel.hide();
+        targetListButton.setToggleStatus(false);
+    }
+
+    @Override
     public void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title) {
         targetListPanel.show();
         targetListButton.setToggleStatus(true);
