@@ -6,18 +6,15 @@ import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
 
 public class ApiPlayer extends ApiBase{
-    private final TargetListPanel targetListPanel;
-    private final SelectSkyPanelPresenter hipsPanel;
 
     public ApiPlayer(Controller controller) {
         this.controller = controller;
-        targetListPanel = controller.getRootPresenter().getTargetPresenter().getTargetListPanel();
-        hipsPanel = controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter();
-
     }
 
 
     public ESASkyPlayerPanel getActivePlayer() {
+        TargetListPanel targetListPanel = getTargetListPanel();
+        SelectSkyPanelPresenter hipsPanel = getHipsPanel();
         if (targetListPanel.isShowing()) {
             return targetListPanel.getPlayerPanel();
         } else if (hipsPanel.isShowing()){
@@ -54,6 +51,14 @@ public class ApiPlayer extends ApiBase{
         if (player != null) {
             player.goToPreviousSurvey();
         }
+    }
+
+    private TargetListPanel getTargetListPanel() {
+        return  controller.getRootPresenter().getTargetPresenter().getTargetListPanel();
+    }
+
+    private SelectSkyPanelPresenter getHipsPanel() {
+        return controller.getRootPresenter().getCtrlTBPresenter().getSelectSkyPresenter();
     }
 
 }
