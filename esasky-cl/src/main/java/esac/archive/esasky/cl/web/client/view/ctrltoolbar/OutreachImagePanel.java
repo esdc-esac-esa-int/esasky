@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.json.client.JSONArray;
@@ -19,15 +20,12 @@ import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
-import esac.archive.esasky.cl.web.client.view.common.Hidable;
-import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 
-public class OutreachImagePanel extends MovablePanel implements Hidable<OutreachImagePanel> {
+public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
 
 	private BaseDescriptor outreachImageDescriptor;
 	private ImageListEntity imageEntity;
@@ -68,10 +66,19 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 		if(outreachImageIdToBeOpened != null) {
 			show();
 		}
-		addResizeHandler("outreachImagePanelContainer");
 		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
 	}
-	
+
+	@Override
+	protected void onResize() {
+		setMaxHeight();
+	}
+
+	@Override
+	protected Element getResizeElement() {
+		return mainContainer.getElement();
+	}
+
 	private void setDefaultSize() {
 		Size size = getDefaultSize();
 		mainContainer.setWidth(size.width + "px");
@@ -135,7 +142,7 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
 	
 	private void initView() {
 		this.getElement().addClassName("outreachImagePanel");
-		
+
 		header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachImagePanel_header"),
 				TextMgr.getInstance().getText("outreachImagePanel_helpText"),
 				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
@@ -195,13 +202,7 @@ public class OutreachImagePanel extends MovablePanel implements Hidable<Outreach
     public static void setStartupId(String id) {
     	outreachImageIdToBeOpened = id;
     }
-    
-	private native void addResizeHandler(String id) /*-{
-		var outreachImagePanel = this;
-		new $wnd.ResizeSensor($doc.getElementById(id), function() {
-			outreachImagePanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachImagePanel::setMaxHeight()();
-		});
-	}-*/;
+
 
 	public JSONArray getAllImageIds(ICommand command) {
 		if (imageEntity == null) {

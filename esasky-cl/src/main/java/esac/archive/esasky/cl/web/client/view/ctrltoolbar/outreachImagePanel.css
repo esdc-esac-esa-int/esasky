@@ -1,8 +1,4 @@
 @CHARSET "UTF-8";
-#outreachImagePanelContainer{
-	resize: both;
-	overflow: auto;
-}
 
 .outreachImagePanel{
     background-color: rgba(0, 0, 0, 0.65);

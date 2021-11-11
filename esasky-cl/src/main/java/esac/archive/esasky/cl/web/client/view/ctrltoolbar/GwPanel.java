@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.json.client.JSONArray;
@@ -28,6 +29,7 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
@@ -44,7 +46,7 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
 
 import java.util.*;
 
-public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
+public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {
     }
@@ -334,12 +336,21 @@ public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		addResizeHandler("gwPanelContainer");
 		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
 		this.setSnapping(false);
 	}
 
-	@Override
+    @Override
+    protected void onResize() {
+        setMaxHeight();
+    }
+
+    @Override
+    protected Element getResizeElement() {
+        return gwPanelContainer.getElement();
+    }
+
+    @Override
 	public void setMaxSize() {
 		if (gwPanelContainer != null) {
 			Style elementStyle = gwPanelContainer.getElement().getStyle();
@@ -360,13 +371,6 @@ public class GwPanel extends MovablePanel implements Hidable<GwPanel> {
 
         tabulatorContainer.getElement().getStyle().setPropertyPx("maxHeight", height);
     }
-
-    private native void addResizeHandler(String id) /*-{
-        var gwPanel = this;
-        new $wnd.ResizeSensor($doc.getElementById(id), function () {
-            gwPanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel::setMaxHeight()();
-        });
-    }-*/;
 
     private void showEventFromRow(GeneralJavaScriptObject rowData) {
         String id = rowData.getStringProperty(GRACE_ID);

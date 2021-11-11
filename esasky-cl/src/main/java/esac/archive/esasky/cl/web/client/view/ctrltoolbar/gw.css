@@ -1,9 +1,9 @@
 @CHARSET "UTF-8";
 
-#gwPanelContainer {
-	resize: both;
-	overflow: auto !important;
-}
+/*#gwPanelContainer {*/
+/*	resize: both;*/
+/*	overflow: auto !important;*/
+/*}*/
 
 .gwPanel {
 	background-color: rgba(0, 0, 0, 0.65);
