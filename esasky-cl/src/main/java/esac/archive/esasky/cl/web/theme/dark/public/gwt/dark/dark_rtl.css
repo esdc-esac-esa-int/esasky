@@ -897,8 +897,6 @@ a, a:visited, a:hover {
   background: #a8eeff;
   color: red;
 }
-.dateBoxPopup {
-}
 
 .gwt-DatePicker {
   border: 1px solid #00CCFF;
@@ -1003,10 +1001,6 @@ td.datePickerMonth {
   padding: 2px 5px 10px 2px;
 }
 
-.gwt-TabLayoutPanel {
-}
-.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
-}
 .gwt-TabLayoutPanelContentContainer {
   border-color: #00CCFF;
   border-style: solid;
