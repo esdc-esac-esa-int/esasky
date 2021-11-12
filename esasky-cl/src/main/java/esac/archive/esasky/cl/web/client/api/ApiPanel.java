@@ -35,12 +35,10 @@ public class ApiPanel extends ApiBase{
 
 				@Override
 				public void numberOfShownRowsChanged(int numberOfShownRows) {
-					if(numberOfShownRows > 0) {
-						JSONObject callback = tablePanel.exportAsJSON();
-						if(callback.size() > 0) {
-							sendBackValuesToWidget(callback, widget);
-							tablePanel.unregisterObserver(this);
-						}
+					JSONObject callback = tablePanel.exportAsJSON();
+					if(numberOfShownRows > 0 && callback.size() > 0) {
+						sendBackValuesToWidget(callback, widget);
+						tablePanel.unregisterObserver(this);
 					}
 				}
 

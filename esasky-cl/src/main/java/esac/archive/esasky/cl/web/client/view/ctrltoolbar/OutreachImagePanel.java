@@ -241,9 +241,10 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	}
 
 	public void selectShape(String id) {
-		outreachImageIdToBeOpened = id;
 		if(imageEntity != null) {
 			imageEntity.selectShape(id);
+		} else {
+			OutreachImagePanel.setStartupId(id);
 		}
 
 		if (!isShowing) {
