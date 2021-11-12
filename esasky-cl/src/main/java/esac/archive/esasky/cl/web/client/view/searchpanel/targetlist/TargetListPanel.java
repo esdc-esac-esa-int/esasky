@@ -389,7 +389,7 @@ public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
         if (selectedWidget.getTargetDescription() != null
                 && !selectedWidget.getTargetDescription().isEmpty()) {
             CommonEventBus.getEventBus().fireEvent(
-            		new TargetDescriptionEvent(selectedWidget.getNameofSelected(), selectedWidget.getTargetDescription(), false));
+            		new TargetDescriptionEvent(selectedWidget.getNameofSelected(), selectedWidget.getTargetDescription(), true));
         }
     }
 
