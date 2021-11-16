@@ -57,6 +57,7 @@ public final class GoogleAnalytics {
     public static final String CAT_BROWSEHIPS = "BrowseHips";
     public static final String CAT_IMAGES = "Images";
     public static final String CAT_OUTREACHIMAGES = "OutreachImages";
+    public static final String CAT_SELECTSKY = "SelectSky";
     
     //Actions
     public static final String ACT_MISSINGTRANSLATION = "MissingTranslation";

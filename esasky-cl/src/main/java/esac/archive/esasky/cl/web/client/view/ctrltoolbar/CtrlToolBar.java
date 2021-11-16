@@ -79,6 +79,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 	private EsaSkyToggleButton outreachImageButton;
 	private EsaSkyToggleButton publicationsButton;
 
+    private final int suggestedPositionLeft = 5;
+    private final int suggestedPositionTop = 77;
+
 
     private final CssResource style;
     private Resources resources = GWT.create(Resources.class);
@@ -122,13 +125,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         ctrlToolBarPanel = new FlowPanel();
 
         selectSkyPanel = SelectSkyPanel.init(this.HiPSFromURL);
+        selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        selectSkyPanel.definePositionFromTopAndLeft();
         selectSkyPanel.hide();
         ctrlToolBarPanel.add(createSkiesMenuBtn());
-        ctrlToolBarPanel.add(selectSkyPanel);
+        MainLayoutPanel.addElementToMainArea(selectSkyPanel);
 
         ctrlToolBarPanel.add(createObservationBtn());
         MainLayoutPanel.addElementToMainArea(observationTreeMapContainer);
-        observationTreeMapContainer.setSuggestedPosition(5, 77);
+        observationTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         observationTreeMapContainer.definePositionFromTopAndLeft();
         observationTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
@@ -139,7 +144,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         ctrlToolBarPanel.add(createCatalogBtn());
         MainLayoutPanel.addElementToMainArea(catalogTreeMapContainer);
-        catalogTreeMapContainer.setSuggestedPosition(5, 77);
+        catalogTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         catalogTreeMapContainer.definePositionFromTopAndLeft();
         catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
@@ -150,7 +155,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         ctrlToolBarPanel.add(createSpectraBtn());
         MainLayoutPanel.addElementToMainArea(spectraTreeMapContainer);
-        spectraTreeMapContainer.setSuggestedPosition(5, 77);
+        spectraTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         spectraTreeMapContainer.definePositionFromTopAndLeft();
         spectraTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
@@ -161,7 +166,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         ctrlToolBarPanel.add(createExtTapBtn());
         MainLayoutPanel.addElementToMainArea(extTapTreeMapContainer);
-        extTapTreeMapContainer.setSuggestedPosition(5, 77);
+        extTapTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         extTapTreeMapContainer.definePositionFromTopAndLeft();
         extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
@@ -176,7 +181,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         ctrlToolBarPanel.add(createSsoBtn());
         MainLayoutPanel.addElementToMainArea(ssoTreeMapContainer);
-        ssoTreeMapContainer.setSuggestedPosition(5, 77);
+        ssoTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         ssoTreeMapContainer.definePositionFromTopAndLeft();
         ssoTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
@@ -230,13 +235,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             }
         });
 
-        selectSkyPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
-
-            @Override
-            public void onClose(CloseEvent<PopupPanel> event) {
-                selectSkyButton.setToggleStatus(false);
-            }
-        });
+        selectSkyPanel.addCloseHandler(event -> selectSkyButton.setToggleStatus(false));
         return selectSkyButton;
     }
 
@@ -299,7 +298,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         gwPanel = new GwPanel();
-        gwPanel.setSuggestedPosition(5, 77);
+        gwPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         gwPanel.definePositionFromTopAndLeft();
         gwPanel.hide();
         gwPanel.addCloseHandler(event -> gwButton.setToggleStatus(false));
@@ -571,7 +570,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                 }
         );
         outreachImagePanel = new OutreachImagePanel();
-        outreachImagePanel.setSuggestedPosition(5, 77);
+        outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachImagePanel.definePositionFromTopAndLeft();
         outreachImagePanel.hide();
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));

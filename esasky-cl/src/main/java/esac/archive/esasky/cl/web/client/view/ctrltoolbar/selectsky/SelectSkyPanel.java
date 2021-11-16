@@ -5,12 +5,15 @@ import java.util.List;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
@@ -22,16 +25,11 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
-import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkyPlayerObserver;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySliderObserver;
-import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
-public class SelectSkyPanel extends BasePopupPanel implements SkyObserver, SelectSkyPanelPresenter.View {
+public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectSkyPanelPresenter.View, Hidable<SelectSkyPanel> {
 
 	private static SelectSkyPanel instance;
 
@@ -46,6 +44,8 @@ public class SelectSkyPanel extends BasePopupPanel implements SkyObserver, Selec
 
 	private String hipsFromUrl = null;
 	private SkiesMenu skiesMenu;
+
+	private boolean isShowing = false;
 
 	private FlowPanel selectSkyPanel = new FlowPanel();
 	private FlowPanel sliderContainer = new FlowPanel();
@@ -65,6 +65,7 @@ public class SelectSkyPanel extends BasePopupPanel implements SkyObserver, Selec
 	}
 
 	private SelectSkyPanel(String defaultHiPS) {
+		super(GoogleAnalytics.CAT_SELECTSKY, false);
 		this.hipsFromUrl = defaultHiPS;
 
 		this.resources = GWT.create(Resources.class);
@@ -237,6 +238,35 @@ public class SelectSkyPanel extends BasePopupPanel implements SkyObserver, Selec
 		header.setText(TextMgr.getInstance().getText("sky_selectSky"));
 		createSky(true);
 		addSkyButton.enableButton();
+	}
+
+
+	@Override
+	public void show() {
+		isShowing = true;
+		this.removeStyleName("displayNone");
+		setMaxSize();
+	}
+
+	@Override
+	public void hide() {
+		this.addStyleName("displayNone");
+		isShowing = false;
+		CloseEvent.fire(this, null);
+	}
+
+	@Override
+	public void toggle() {
+		if (isShowing()) {
+			hide();
+		} else {
+			show();
+		}
+	}
+
+	@Override
+	public boolean isShowing() {
+		return isShowing;
 	}
 
 	@Override
