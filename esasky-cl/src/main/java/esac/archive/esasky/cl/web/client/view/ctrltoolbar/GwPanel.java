@@ -119,24 +119,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
 
-	public void show() {
-		isShowing = true;
-        this.removeStyleName("displayNone");
-        this.updateHandlers();
-		setMaxSize();
-	}
 
-	public void hide() {
-        isShowing = false;
-        this.addStyleName("displayNone");
-        this.removeHandlers();
-		CloseEvent.fire(this, null);
-	}
-
-
-	public boolean isShowing() {
-		return isShowing;
-	}
 
 	public void initGwDescriptor() {
 		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.GW_URL, new IJSONRequestCallback() {
@@ -337,6 +320,11 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
 		this.setSnapping(false);
 	}
+
+    @Override
+    protected Element getMovableElement() {
+        return header.getElement();
+    }
 
     @Override
     protected void onResize() {

@@ -89,6 +89,11 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		containerStyle.setPropertyPx("minHeight", 100);
 	}
 
+	@Override
+	protected Element getMovableElement() {
+		return header.getElement();
+	}
+
 	private void getData() {
 		if(outreachImageDescriptor == null) {
 			if(DescriptorRepository.getInstance().getImageDescriptors() != null) {

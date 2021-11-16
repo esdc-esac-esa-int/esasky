@@ -127,7 +127,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         ctrlToolBarPanel.add(selectSkyPanel);
 
         ctrlToolBarPanel.add(createObservationBtn());
-        ctrlToolBarPanel.add(observationTreeMapContainer);
+        MainLayoutPanel.addElementToMainArea(observationTreeMapContainer);
+        observationTreeMapContainer.setSuggestedPosition(5, 77);
+        observationTreeMapContainer.definePositionFromTopAndLeft();
         observationTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
             public void onClose() {
@@ -136,7 +138,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         ctrlToolBarPanel.add(createCatalogBtn());
-        ctrlToolBarPanel.add(catalogTreeMapContainer);
+        MainLayoutPanel.addElementToMainArea(catalogTreeMapContainer);
+        catalogTreeMapContainer.setSuggestedPosition(5, 77);
+        catalogTreeMapContainer.definePositionFromTopAndLeft();
         catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
             public void onClose() {
@@ -145,7 +149,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         ctrlToolBarPanel.add(createSpectraBtn());
-        ctrlToolBarPanel.add(spectraTreeMapContainer);
+        MainLayoutPanel.addElementToMainArea(spectraTreeMapContainer);
+        spectraTreeMapContainer.setSuggestedPosition(5, 77);
+        spectraTreeMapContainer.definePositionFromTopAndLeft();
         spectraTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
             public void onClose() {
@@ -154,7 +160,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         ctrlToolBarPanel.add(createExtTapBtn());
-        ctrlToolBarPanel.add(extTapTreeMapContainer);
+        MainLayoutPanel.addElementToMainArea(extTapTreeMapContainer);
+        extTapTreeMapContainer.setSuggestedPosition(5, 77);
+        extTapTreeMapContainer.definePositionFromTopAndLeft();
         extTapTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
             public void onClose() {
@@ -167,7 +175,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
 
         ctrlToolBarPanel.add(createSsoBtn());
-        ctrlToolBarPanel.add(ssoTreeMapContainer);
+        MainLayoutPanel.addElementToMainArea(ssoTreeMapContainer);
+        ssoTreeMapContainer.setSuggestedPosition(5, 77);
+        ssoTreeMapContainer.definePositionFromTopAndLeft();
         ssoTreeMapContainer.registerObserver(new TreeMapChanged() {
             @Override
             public void onClose() {
@@ -270,8 +280,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
                     @Override
                     public void onClick(ClickEvent event) {
-                        extTapTreeMapContainer.toggleTreeMap();
-                        CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isOpen()));
+                        extTapTreeMapContainer.toggle();
+                        CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
                         CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
                         sendGAEvent(EntityContext.EXT_TAP.toString());
                     }
@@ -342,7 +352,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
                     @Override
                     public void onClick(ClickEvent event) {
-                        treeMapContainer.toggleTreeMap();
+                        treeMapContainer.toggle();
                         CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(badgeButton));
                         sendGAEvent(context.toString());
                     }
@@ -405,37 +415,37 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             ssoButton.setTargetName(GUISessionStatus.getTrackedSso().name);
             ssoButton.setToggleStatus(true);
 
-            ssoTreeMapContainer.open();
+            ssoTreeMapContainer.show();
             sendGAEvent(EntityContext.SSO.toString());
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(ssoButton));
         } else {
             hideWidget(ssoButton);
-            ssoTreeMapContainer.close();
+            ssoTreeMapContainer.hide();
             sendGAEvent(EntityContext.SSO.toString());
         }
     }
 
     @Override
     public void closeTreeMap() {
-        observationTreeMapContainer.close();
-        catalogTreeMapContainer.close();
-        spectraTreeMapContainer.close();
-        ssoTreeMapContainer.close();
+        observationTreeMapContainer.hide();
+        catalogTreeMapContainer.hide();
+        spectraTreeMapContainer.hide();
+        ssoTreeMapContainer.hide();
     }
 
     @Override
     public void closeAllOtherPanels(Widget button) {
         if (!button.equals(observationButton)) {
-            observationTreeMapContainer.close();
+            observationTreeMapContainer.hide();
         }
         if (!button.equals(catalogButton)) {
-            catalogTreeMapContainer.close();
+            catalogTreeMapContainer.hide();
         }
         if (!button.equals(spectraButton)) {
-            spectraTreeMapContainer.close();
+            spectraTreeMapContainer.hide();
         }
         if (!button.equals(ssoButton)) {
-            ssoTreeMapContainer.close();
+            ssoTreeMapContainer.hide();
         }
         if (!button.equals(selectSkyButton)) {
             selectSkyPanel.hide();
@@ -769,7 +779,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
                     @Override
                     public void onClick(ClickEvent event) {
-                        treeMapContainer.toggleTreeMap();
+                        treeMapContainer.toggle();
                         CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
                         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
                     }
@@ -861,8 +871,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void openExtTapPanel() {
         if (!extTapButton.getToggleStatus()){
             extTapButton.toggle();
-            extTapTreeMapContainer.toggleTreeMap();
-            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isOpen()));
+            extTapTreeMapContainer.toggle();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
             sendGAEvent(EntityContext.EXT_TAP.toString());
         }
@@ -872,8 +882,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void closeExtTapPanel() {
         if (extTapButton.getToggleStatus()){
             extTapButton.toggle();
-            extTapTreeMapContainer.toggleTreeMap();
-            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isOpen()));
+            extTapTreeMapContainer.toggle();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
             sendGAEvent(EntityContext.EXT_TAP.toString());
         }

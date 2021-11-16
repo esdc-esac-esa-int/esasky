@@ -70,14 +70,10 @@ public class MovablePanel extends FocusPanel {
 				| Event.ONMOUSEUP | Event.ONMOUSEOVER | Event.ONTOUCHSTART | Event.ONTOUCHMOVE | Event.KEYEVENTS);
 		DOM.sinkEvents(RootPanel.get().getElement(), Event.ONMOUSEUP | Event.ONTOUCHEND | Event.ONTOUCHCANCEL);
 
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-
-			@Override
-			public void onResize(ResizeEvent event) {
-				ensureDialogFitsInsideWindow();
-				if(MovablePanel.this.isSuggestedPositionCenter) {
-					setSuggestedPositionCenter();
-				}
+		MainLayoutPanel.addMainAreaResizeHandler(event -> {
+			ensureDialogFitsInsideWindow();
+			if(MovablePanel.this.isSuggestedPositionCenter) {
+				setSuggestedPositionCenter();
 			}
 		});
 		super.add(container);
@@ -444,18 +440,18 @@ public class MovablePanel extends FocusPanel {
 		}
 
 		EventTarget target = event.getEventTarget();
-		
-		if (moveInitiatorElement != null) {
-			return !moveInitiatorElement.equals(Element.as(target));
-		}
-		
 		if (Element.is(target)) {
+			if (moveInitiatorElement != null) {
+				return !moveInitiatorElement.equals(Element.as(target));
+			}
+
 			for (Element elem : elementsNotInitiatingMoveOperations) {
 				if (elem.isOrHasChild(Element.as(target))) {
 					return true;
 				}
 			}
 		}
+
 		return false;
 	}
 

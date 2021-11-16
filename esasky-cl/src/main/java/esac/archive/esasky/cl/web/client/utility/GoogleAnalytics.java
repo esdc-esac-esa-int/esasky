@@ -9,6 +9,7 @@ public final class GoogleAnalytics {
 	public static final String CAT_SOURCE_TOOLTIP = "SourceTooltip";
 	public static final String CAT_CONTEXT_MENU = "ContextMenu";
 	public static final String CAT_TREEMAP_RESIZE = "TreeMap_Resize";
+    public static final String CAT_TREEMAP = "TreeMap";
 	public static final String CAT_TAB_RESIZE = "Tab_Resize";
     public static final String CAT_TAB_OPENED = "TabOpened";
     public static final String CAT_DOWNLOAD_CSV = "Download_CSV";

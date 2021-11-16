@@ -3,14 +3,14 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.DataResource;
 import com.google.gwt.resources.client.DataResource.MimeType;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -18,8 +18,7 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkyMultiRangeSliderObserver;
-import esac.archive.esasky.cl.web.client.view.common.Hidable;
+import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
@@ -27,12 +26,12 @@ import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
+
+public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 	private final CssResource style;
 	private final Resources resources;
 	private boolean firstOpeing = true;
-	private boolean isOpen = false;
 	private final EntityContext context;
 	
 	private final int DEFAULT_TREEMAP_HEIGHT_DESKTOP = 400;
@@ -43,14 +42,14 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 	private final int DEFAULT_TREEMAP_WIDTH_MOBILE = 1000;
 
 	private TreeMap treeMap;
-	private FlowPanel allContent = new FlowPanel();
-	private final PopupHeader<PopupPanel> header;
+	private FlowPanel treeMapContainer = new FlowPanel();
+	private final PopupHeader<TreeMapContainer> header;
 	private ESASkyMultiRangeSlider slider;
 	private Element sliderUiHeader = null;
 	private FlowPanel sliderContainer;
-	boolean haveSlider = true;
+	boolean haveSlider;
 	
-	private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
+	private final List<TreeMapChanged> observers = new LinkedList<>();
 	
 	
 	public interface Resources extends ClientBundle {
@@ -67,7 +66,7 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 	}
 	
 	public TreeMapContainer(EntityContext context, boolean shouldHaveSlider){
-		super(false, false);
+		super(GoogleAnalytics.CAT_TREEMAP + "_" + context, false);
 		this.haveSlider = shouldHaveSlider;
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
@@ -86,13 +85,13 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 		}else {
 			treeMap = new TreeMap(context);
 		}
-        
-		this.removeStyleName("gwt-DialogBox");
+
+
 		this.addStyleName("treeMapContainer");
 		if(!DeviceUtils.isMobileOrTablet()) {
 			this.addStyleName("treeMapContainerDesktop");
 		}
-		getElement().setId("treeMapContainer_" + context);
+		treeMapContainer.getElement().setId("treeMapContainer_" + context);
 
 		header = new PopupHeader<>(this, "", "");
 		Image ssoDnetLogo = new Image(resources.ssoDNetLogo().getSafeUri());
@@ -100,31 +99,29 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 		header.add(ssoDnetLogo);
 		ssoDnetLogo.setVisible(context == EntityContext.SSO);
 
-		allContent.add(header);
-		allContent.add(treeMap);
+		treeMapContainer.add(header);
+		treeMapContainer.add(treeMap);
 		
 		if(shouldHaveSlider) {
 			sliderContainer = initSliderContainer();
-			allContent.add(sliderContainer);
+			treeMapContainer.add(sliderContainer);
 		}
 
 		treeMap.setHasSlider(shouldHaveSlider);
-		add(allContent);
+		this.add(treeMapContainer);
 		
 		header.setText(TextMgr.getInstance().getText("treeMap_" + context));
 		header.setHelpText(TextMgr.getInstance().getText("treeMapContainer_help_" + context));
 		
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				updateMaxSize();
-			}
-		});
-		
-		//Due to rendering problems in highcharts, this element is always in the DOM. Open() and Close() is used to show/hide
+		MainLayoutPanel.addMainAreaResizeHandler(event -> updateMaxSize());
+
+	}
+
+	@Override
+	protected void onLoad() {
+		super.onLoad();
 		show();
-		close();
+		hide();
 	}
 	
 	private FlowPanel initSliderContainer() {
@@ -156,13 +153,7 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 		
 		sliderContainer.add(slider);
 		treeMap.addSliderObserver(slider);
-		slider.registerValueChangeObserver(new EsaSkyMultiRangeSliderObserver() {
-
-			@Override
-			public void onValueChange(double low, double high) {
-				updateSliderColor(low, high);
-			}
-		});
+		slider.registerValueChangeObserver(this::updateSliderColor);
 		
 		return sliderContainer;
 	}
@@ -179,9 +170,9 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 			for(int i = (int) Math.floor(low); i <=  Math.ceil(high); i++) {
 				styleString += ESASkyColors.getColor(i);
 				if(nShown == 1) {
-					styleString += " " + Double.toString(botPosition*100) + "%";
+					styleString += " " + botPosition * 100 + "%";
 				}else if(nShown == (int) Math.ceil(high) - (int) Math.floor(low) - 1) {
-					styleString += " " + Double.toString(100 - topPosition * 100) + "%";
+					styleString += " " + (100 - topPosition * 100) + "%";
 				}
 				nShown++;
 				styleString += ",";
@@ -202,27 +193,10 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 		if(DeviceUtils.isTablet()) {
 			maxHeight = MainLayoutPanel.getMainAreaAbsoluteTop() + MainLayoutPanel.getMainAreaHeight() - MIN_MARGIN_BOTTOM - getAbsoluteTop() - 350;
 		}
-		
-		getElement().getStyle().setProperty("maxWidth", maxWidth + "px");
-		getElement().getStyle().setProperty("maxHeight", maxHeight + "px");
+
+		treeMapContainer.getElement().getStyle().setProperty("maxWidth", maxWidth + "px");
+		treeMapContainer.getElement().getStyle().setProperty("maxHeight", maxHeight + "px");
 	}
-	
-	private native void addResizeHandler(String context) /*-{
-		var treeMapContainer = this;
-		new $wnd.ResizeSensor($doc.getElementById('treeMapContainer_' + context), function() {
-			treeMapContainer.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer::updateTreeMapSizeOnTimer()();
-		});
-	}-*/; 
-	
-	private native void addResizeCursorToBottomRightCorner(String context) /*-{
-    	$wnd.$('#treeMapContainer_' + context).on('mousemove', function(e) {
-			var y = $wnd.$('#treeMapContainer_' + context).offset().top + $wnd.$('#treeMapContainer_' + context).outerHeight() - 15,	//	top border of bottom-right-corner-box area
-			x = $wnd.$('#treeMapContainer_' + context).offset().left + $wnd.$('#treeMapContainer_' + context).outerWidth() - 15;	//	left border of bottom-right-corner-box area
-			$wnd.$('#treeMapContainer_' + context).css({
-				cursor: e.pageY > y && e.pageY < y + 13 && e.pageX > x && e.pageX < x + 13 ? 'nw-resize' : ''
-			});
-    	})
-	}-*/; 
 	
 	public void updateTreeMapSizeOnTimer() {
 		if(!resizeTimer.isRunning()) {
@@ -230,7 +204,7 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 		}
 	}
 	
-	private Timer resizeTimer = new Timer() {
+	private final Timer resizeTimer = new Timer() {
 		
 		@Override
 		public void run() {
@@ -241,57 +215,26 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 	
 	private void updateTreeMapSize() {
 		if(haveSlider) {
-			treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 22, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
-			slider.updateSize(TreeMapContainer.this.getOffsetWidth() - 30);
+			treeMap.setSize(treeMapContainer.getOffsetWidth() - 22, treeMapContainer.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
+			slider.updateSize(treeMapContainer.getOffsetWidth() - 30);
 		}else {
-			treeMap.setSize(TreeMapContainer.this.getOffsetWidth() - 22, TreeMapContainer.this.getOffsetHeight() - header.getOffsetHeight() - 34);
+			treeMap.setSize(treeMapContainer.getOffsetWidth() - 22, treeMapContainer.getOffsetHeight() - header.getOffsetHeight() - 34);
 		}
 	}
 
-	
-    public void toggleTreeMap(){
-		if(!isOpen){
-			open();
-    	} else {
-    		close();
-    	}
-    }
-	
-	public void close(){
-		addStyleName("displayNone");
-		isOpen = false;
-		notifyClosed();
-	}
-	
-	public void open(){
-		removeStyleName("displayNone");
-		if(firstOpeing){
-			firstOpeing = false;
-			treeMap.firstTimeOpen();
-			if(DeviceUtils.isMobile()) {
-				getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_MOBILE, Unit.PX);
-				getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_MOBILE, Unit.PX);
-			} else if(DeviceUtils.isTablet()){
-				getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_TABLET, Unit.PX);
-				getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_TABLET, Unit.PX);
-			} else {
-				getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_DESKTOP , Unit.PX);
-				getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_DESKTOP, Unit.PX);
-			}
-			addResizeHandler(context.toString());
-			addResizeCursorToBottomRightCorner(context.toString());
-
-			if(haveSlider) {
-				slider.firstOpening();
-				getSliderUiHeader();
-				updateSliderColor(0, ESASkyColors.maxIndex());
-			}
-			updateTreeMapSize();
+	private void setDefaultSize() {
+		if(DeviceUtils.isMobile()) {
+			treeMapContainer.getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_MOBILE, Unit.PX);
+			treeMapContainer.getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_MOBILE, Unit.PX);
+		} else if(DeviceUtils.isTablet()){
+			treeMapContainer.getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_TABLET, Unit.PX);
+			treeMapContainer.getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_TABLET, Unit.PX);
+		} else {
+			treeMapContainer.getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_DESKTOP , Unit.PX);
+			treeMapContainer.getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_DESKTOP, Unit.PX);
 		}
-		isOpen = true;
-		updateMaxSize();
 	}
-	
+
 	public void getSliderUiHeader() {
 		Element el = slider.getElement().getFirstChildElement();
 		int i = 0;
@@ -320,10 +263,6 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 		}
 	}
 	
-	public boolean isOpen() {
-		return isOpen;
-	}
-	
 	public void registerObserver(TreeMapChanged observer){
 		observers.add(observer);
 	}
@@ -333,12 +272,46 @@ public class TreeMapContainer extends DialogBox implements Hidable<PopupPanel> {
 			observer.onClose();		
 		}
 	}
-	
+
+	@Override
+	public void show() {
+		super.show();
+		if(firstOpeing){
+			firstOpeing = false;
+			treeMap.firstTimeOpen();
+			setDefaultSize();
+			if(haveSlider) {
+				slider.firstOpening();
+				getSliderUiHeader();
+				updateSliderColor(0, ESASkyColors.maxIndex());
+			}
+		}
+
+		updateMaxSize();
+		updateTreeMapSize();
+	}
+
 	@Override 
 	public void hide() {
-		close();
+		super.hide();
+		notifyClosed();
 	}
-	
+
+	@Override
+	protected Element getMovableElement() {
+		return header.getElement();
+	}
+
+	@Override
+	protected void onResize() {
+		updateTreeMapSizeOnTimer();
+	}
+
+	@Override
+	protected Element getResizeElement() {
+		return treeMapContainer.getElement();
+	}
+
 	public void setHeaderText(String text) {
 		header.setText(text);
 	}
