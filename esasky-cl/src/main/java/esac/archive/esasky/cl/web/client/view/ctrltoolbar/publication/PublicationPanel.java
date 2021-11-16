@@ -3,10 +3,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -14,19 +11,15 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.PublicationPanelPresenter;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkyNumberBox;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
-import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
-import esac.archive.esasky.cl.web.client.view.common.Toggler;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
-public class PublicationPanel extends BasePopupPanel implements PublicationPanelPresenter.View {
+public class PublicationPanel extends MovablePanel implements PublicationPanelPresenter.View, Hidable<PublicationPanel> {
 
 	private PopupHeader header;
 	private final Resources resources;
@@ -49,6 +42,7 @@ public class PublicationPanel extends BasePopupPanel implements PublicationPanel
 	private String updateOnMoveSwitchId = "publications__updateOnMove";
 	private final String sliderId = "publications__sourceLimitSlider";
 	private EsaSkyButton resetButton;
+	private boolean isShowing = false;
 
 	public static interface Resources extends ClientBundle {
 
@@ -64,6 +58,7 @@ public class PublicationPanel extends BasePopupPanel implements PublicationPanel
 	}
 
 	public PublicationPanel() {
+		super(GoogleAnalytics.CAT_PUBLICATION, false);
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -208,7 +203,35 @@ public class PublicationPanel extends BasePopupPanel implements PublicationPanel
 
 		this.add(publicationPanel);
 	}
-	
+
+	@Override
+	public void show() {
+		isShowing = true;
+		this.removeStyleName("displayNone");
+		setMaxSize();
+	}
+
+	@Override
+	public void hide() {
+		this.addStyleName("displayNone");
+		isShowing = false;
+		CloseEvent.fire(this, null);
+	}
+
+	@Override
+	public void toggle() {
+		if (isShowing()) {
+			hide();
+		} else {
+			show();
+		}
+	}
+
+	@Override
+	public boolean isShowing() {
+		return isShowing;
+	}
+
 	@Override
 	public EsaSkyButton getUpdateButton() {
 		return updatePublicationsButton;

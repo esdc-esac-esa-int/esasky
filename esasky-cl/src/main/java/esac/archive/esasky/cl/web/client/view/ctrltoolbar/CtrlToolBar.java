@@ -199,9 +199,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
 
         publicationPanel = new PublicationPanel();
-        ctrlToolBarPanel.add(createPublicationsBtn());
-        ctrlToolBarPanel.add(publicationPanel);
         publicationPanel.hide();
+        publicationPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        publicationPanel.definePositionFromTopAndLeft();
+        MainLayoutPanel.addElementToMainArea(publicationPanel);
+
+        ctrlToolBarPanel.add(createPublicationsBtn());
 
         planObservationPanel = PlanObservationPanel.getInstance();
         ctrlToolBarPanel.add(createPlanObservationBtn());
@@ -329,13 +332,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         publicationsButton = new EsaSkyToggleButton(Icons.getPublicationsIcon());
         addCommonButtonStyle(publicationsButton, TextMgr.getInstance().getText("webConstants_explorePublications"));
 
-        publicationPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
-
-            @Override
-            public void onClose(CloseEvent<PopupPanel> event) {
-                publicationsButton.setToggleStatus(false);
-            }
-        });
+        publicationPanel.addCloseHandler(event -> publicationsButton.setToggleStatus(false));
         return publicationsButton;
     }
 
