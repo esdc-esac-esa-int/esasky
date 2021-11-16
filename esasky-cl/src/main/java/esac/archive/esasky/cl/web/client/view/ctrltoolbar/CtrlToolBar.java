@@ -207,8 +207,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         ctrlToolBarPanel.add(createPublicationsBtn());
 
         planObservationPanel = PlanObservationPanel.getInstance();
+        planObservationPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        planObservationPanel.definePositionFromTopAndLeft();
+        MainLayoutPanel.addElementToMainArea(planObservationPanel);
+
         ctrlToolBarPanel.add(createPlanObservationBtn());
-        ctrlToolBarPanel.add(planObservationPanel);
 
         exploreBtn = createExploreButton();
         ctrlToolBarPanel.add(exploreBtn);
@@ -256,13 +259,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     }
                 });
 
-        planObservationPanel.addCloseHandler(new CloseHandler<PopupPanel>() {
-
-            @Override
-            public void onClose(CloseEvent<PopupPanel> event) {
-                planObservationButton.setToggleStatus(false);
-            }
-        });
+        planObservationPanel.addCloseHandler(event -> planObservationButton.setToggleStatus(false));
 
         return planObservationButton;
     }

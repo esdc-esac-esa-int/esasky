@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.json.client.JSONArray;
@@ -13,7 +14,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.PlanningMission;
@@ -23,16 +23,13 @@ import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEven
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
-import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
 import java.util.List;
 
-public class PlanObservationPanel extends BasePopupPanel {
+public class PlanObservationPanel extends MovablePanel implements Hidable<PlanObservationPanel> {
 
     private Resources resources;
     private CssResource style;
@@ -40,6 +37,8 @@ public class PlanObservationPanel extends BasePopupPanel {
     private final String COMPONENT_ID = "planningMenu";
     private final String CONTAINER_ID = "planningMenuContainer";
     private final String MISSION_CONTAINER_CLASS = "missionMenuContainer";
+
+    private boolean isShowing = false;
 
     private static VerticalPanel jwstPanel; 
     private final String SIAF_VERSION = "SIAF: PRDOPSSOC-036";
@@ -54,6 +53,7 @@ public class PlanObservationPanel extends BasePopupPanel {
     }
 
     private PlanObservationPanel() {
+        super(GoogleAnalytics.CAT_PLANNINGTOOL, false);
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -71,7 +71,7 @@ public class PlanObservationPanel extends BasePopupPanel {
 
     private void initView() {
     	final PlanningMission pm = PlanningMission.JWST;
-    	PopupHeader<PopupPanel> header = new PopupHeader<>(this,
+    	PopupHeader<PlanObservationPanel> header = new PopupHeader<>(this,
     			TextMgr.getInstance().getText("planObservationPanel_projectFutureObservations").replace("$MISSION$", pm.getMissionName()),
     			TextMgr.getInstance().getText("planObservationPanel_helpMessageText"));
     			
@@ -217,6 +217,25 @@ public class PlanObservationPanel extends BasePopupPanel {
     			i++;
     		}
     	}
+    }
+
+    @Override
+    public void show() {
+        isShowing = true;
+        this.removeStyleName("displayNone");
+        setMaxSize();
+    }
+
+    @Override
+    public void hide() {
+        this.addStyleName("displayNone");
+        isShowing = false;
+        CloseEvent.fire(this, null);
+    }
+
+    @Override
+    public boolean isShowing() {
+        return isShowing;
     }
     
 }
