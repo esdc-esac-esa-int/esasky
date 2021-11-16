@@ -18,12 +18,13 @@ public abstract class MovableResizablePanel<T> extends MovablePanel implements H
         getResizeElement().getStyle().setProperty("overflow", "auto");
         addResizeHandler(getResizeElement().getId());
 
-        this.setSnapping(false);
+        addSingleElementAbleToInitiateMoveOperation(getMovableElement());
+        setSnapping(false);
     }
 
     @Override
     public void show() {
-        this.addSingleElementAbleToInitiateMoveOperation(getMovableElement());
+        isShowing = true;
         this.removeStyleName("displayNone");
         updateHandlers();
     }
@@ -47,7 +48,7 @@ public abstract class MovableResizablePanel<T> extends MovablePanel implements H
 
     @Override
     public boolean isShowing() {
-        return false;
+        return isShowing;
     }
 
     protected abstract Element getMovableElement();
