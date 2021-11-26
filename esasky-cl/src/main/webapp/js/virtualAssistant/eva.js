@@ -4,7 +4,7 @@ var msg_func_input = function (cmd) {
     try {
     	webElement = document.querySelectorAll('[id^=esasky_cl]')[0]
     	cmd = JSON.parse(command);
-    	cmd['msgid'] = 'eva'; 
+    	cmd['msgId'] = 'eva'; 
         window.postMessage(cmd)
     } catch (error) {
         console.log(error);
