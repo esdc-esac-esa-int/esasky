@@ -23,6 +23,20 @@
     max-width: literal("calc(100% - 36px)");
 }
 
+.evaPanel {
+    pointer-events:all;
+    height:inherit;
+}
+.evaPanel>* {
+    pointer-events:all;
+    height:inherit;
+}
+
+.evaBanner{
+    pointer-events:all;
+    height:inherit;
+}
+
 .ctrlToolBar>*{
     pointer-events: auto;
 }

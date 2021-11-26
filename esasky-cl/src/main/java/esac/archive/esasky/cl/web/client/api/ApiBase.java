@@ -100,6 +100,8 @@ public abstract class ApiBase {
 			msg.put(ApiConstants.SUCCESS, success);
 		}
 		
+		msg.put(ApiConstants.ORIGIN, new JSONString("esasky"));
+		
 		sendBackToWidget(msg, widget);
 	}
 

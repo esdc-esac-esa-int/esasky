@@ -67,6 +67,8 @@ public class MainPresenter {
         ResultsPanel getResultsPanel();
 
         SearchPanel getSearchPanel();
+
+        void toggleEvaPanel();
         
         HeaderPresenter.View getHeaderPanel();
         
@@ -328,6 +330,10 @@ public class MainPresenter {
                GUISessionStatus.onScienceModeChanged(event.getValue());
            }
         });
+
+        CommonEventBus.getEventBus().addHandler(ShowEvaEvent.TYPE, event -> {
+        	showEva();
+        });
     }
 
     private void areaSelectionFinished() {
@@ -574,5 +580,9 @@ public class MainPresenter {
     public static native boolean isShiftPressed() /*-{
         return $wnd.esasky.isShiftPressed;
     }-*/;
+    
+    private void showEva() {
+    	view.toggleEvaPanel();
+    }
 
 }

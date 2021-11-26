@@ -58,6 +58,7 @@ public final class GoogleAnalytics {
     public static final String CAT_IMAGES = "Images";
     public static final String CAT_OUTREACHIMAGES = "OutreachImages";
     public static final String CAT_SELECTSKY = "SelectSky";
+    public static final String CAT_EVA = "Eva";
     
     //Actions
     public static final String ACT_MISSINGTRANSLATION = "MissingTranslation";
@@ -66,6 +67,7 @@ public final class GoogleAnalytics {
     public static final String ACT_HEADER_HIPSNAME = "HipsName";
     public static final String ACT_HEADER_SHARE = "Share";
     public static final String ACT_HEADER_HELP = "Help";
+    public static final String ACT_HEADER_EVA = "Eva";
     public static final String ACT_HEADER_MENU = "Menu";
     public static final String ACT_HEADER_FEEDBACK = "Feedback";
     public static final String ACT_HEADER_VIDEOTUTORIALS = "VideoTutorials";

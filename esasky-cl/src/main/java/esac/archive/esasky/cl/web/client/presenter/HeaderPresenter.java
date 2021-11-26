@@ -32,6 +32,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsInScienceModeEventHandler;
+import esac.archive.esasky.cl.web.client.event.ShowEvaEvent;
 import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
 import esac.archive.esasky.cl.web.client.event.ToggleSkyPanelEvent;
 import esac.archive.esasky.cl.web.client.event.banner.ServerProblemFoundEvent;
@@ -84,6 +85,7 @@ public class HeaderPresenter {
 		void addHipsNameClickHandler(ClickHandler handler);
 		void addShareClickHandler(ClickHandler handler);
 		void addHelpClickHandler(ClickHandler handler);
+		void addEvaClickHandler(ClickHandler handler);
 		void addFeedbackClickHandler(ClickHandler handler);
 		void addVideoTutorialsClickHandler(ClickHandler handler);
 		void addReleaseNotesClickHandler(ClickHandler handler);
@@ -235,6 +237,16 @@ public class HeaderPresenter {
 			public void onClick(final ClickEvent event) {
 				Window.open(TextMgr.getInstance().getText("headerPresenter_helpLink"), "_blank", "");
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_HELP, "");
+				view.closeDropdownMenu();
+			}
+		});
+
+		view.addEvaClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(final ClickEvent event) {
+				CommonEventBus.getEventBus().fireEvent(new ShowEvaEvent());
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_EVA, "");
 				view.closeDropdownMenu();
 			}
 		});

@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
@@ -21,7 +23,9 @@ import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.banner.Banner;
 import esac.archive.esasky.cl.web.client.view.banner.Banner.Side;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
+import esac.archive.esasky.cl.web.client.view.evapanel.EvaPanel;
 import esac.archive.esasky.cl.web.client.view.header.HeaderPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
@@ -34,6 +38,8 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
     private AllSkyPanel allSkyPanel;
 
     private SearchPanel searchPanel;
+
+    private EvaPanel evaPanel;
 
     /** This panel handles the entire page layout. */
     private FlowPanel skeletonPanel;
@@ -118,6 +124,11 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
         searchPanel = new SearchPanel();
         
+        evaPanel = new EvaPanel();
+        evaPanel.getElement().setClassName("evaPanel");
+        evaPanel.getElement().setId("evaPanel");
+        evaPanel.setStyleName("evaPanel");
+        
         resultsPanel = new ResultsPanel();
         
         mainArea.add(ctrlToolBar);
@@ -174,6 +185,31 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
     @Override
     public final SearchPanel getSearchPanel() {
         return this.searchPanel;
+    }
+    
+    @Override
+    public final void toggleEvaPanel() {
+    	if(!evaPanel.isShowing()) {
+    		if(!evaPanel.hasBeenInitialised()) {
+	    		rightSideBanner.setWidget(evaPanel);
+	    		rightSideBanner.setSize(350);
+	    		rightSideBanner.getElement().addClassName("evaBanner");
+	    		rightSideBanner.addCloseButtonClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						toggleEvaPanel();
+					}
+				});
+	    		evaPanel.init();
+    		}
+    		rightSideBanner.show();
+    		evaPanel.setShowing(true);
+    	}
+    	else {
+    		rightSideBanner.hide();
+    		evaPanel.setShowing(false);
+    	}
     }
 
     @Override

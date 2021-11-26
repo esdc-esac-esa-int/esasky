@@ -70,6 +70,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownScreenshotEntry = new FocusPanel();
 	private FocusPanel dropdownGridEntry = new FocusPanel();
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
+	private FocusPanel dropdownEvaEntry = new FocusPanel(); 
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
 	private FocusPanel hiResDropdown = new FocusPanel(); 
 	private EsaSkySwitch dropdownScienceModeSwitch; 
@@ -185,7 +186,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		});
 		updateModuleVisibility();
 	}
-
+	
 	private FocusPanel createHamburgerMenu() {
 		dropdownContainer.addStyleName("header__dropdown__container");
 		FlowPanel dropdown = new FlowPanel();
@@ -223,6 +224,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(createGridDropdownEntry());
 		dropdownContent.add(createShareDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
+		dropdownContent.add(createEvaDropDownEntry());
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
 		}
@@ -308,6 +310,23 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownHelpEntry.getElement().setId("header__dropdown__help");
 		dropdownHelpEntry.setTitle(TextMgr.getInstance().getText("header_learnMore"));
 		return dropdownHelpEntry;
+	}
+	
+	private Widget createEvaDropDownEntry() {
+		FlowPanel evaContainer = new FlowPanel();
+		
+		Image helpImage = new Image(Icons.getQuestionMarkIcon());
+		helpImage.addStyleName("header__dropdown__item__icon");
+		evaContainer.add(helpImage);
+		
+		Label helpLabel = new Label(TextMgr.getInstance().getText("eva"));
+		helpLabel.addStyleName("header__dropdown__help__text");
+		evaContainer.add(helpLabel);
+		
+		dropdownEvaEntry.add(evaContainer);
+		dropdownEvaEntry.getElement().setId("header__dropdown__eva");
+		dropdownEvaEntry.setTitle(TextMgr.getInstance().getText("header_eva"));
+		return dropdownEvaEntry;
 	}
 
 	private Widget createViewInWWTDropdownEntry() {
@@ -419,6 +438,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void addHelpClickHandler(ClickHandler clickHandler) {
 		helpButton.addClickHandler(clickHandler);
 		dropdownHelpEntry.addClickHandler(clickHandler);
+	}
+
+	@Override
+	public void addEvaClickHandler(ClickHandler clickHandler) {
+		dropdownEvaEntry.addClickHandler(clickHandler);
 	}
 
 	@Override

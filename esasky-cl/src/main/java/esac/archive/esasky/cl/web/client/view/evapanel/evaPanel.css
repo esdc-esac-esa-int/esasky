@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+
+
+.evaContainer{
+	height: inherit;
+}
+
+.eva-clear-button{
+	position: absolute;
+	top: 10px;
+	right: 150px;
+}
+
+#webchat {
+    height: 100%;
+    min-width: 350px;
+    background: url(https://skies.esac.esa.int/DSSColor/Norder7/Dir120000/Npix122289.jpg);
+    border: 1px solid #CCC;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+.webchat-close {
+    position: absolute;
+    top: 6px;
+    right: 25px;
+    padding: 5px;
+    border: 2px solid rgb(204, 204, 204);
+    border-radius: 10px;
+    color: rgb(245, 247, 250);
+    font-size: 13px;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.65);
+    font-family: arial, sans-serif;
+    cursor: pointer;
+}

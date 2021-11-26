@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Widget;
 
 import esac.archive.esasky.cl.web.client.presenter.BannerPresenter.View;
 import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
@@ -125,6 +126,25 @@ public class Banner extends Composite implements View{
 	@Override
 	public String getText() {
 		return bannerText.getHTML();
+	}
+
+	public void setWidget(Widget widget) {
+		for(int i = 0; i < banner.getWidgetCount(); i++) {
+			banner.remove(0);
+		}
+		banner.add(widget);
+	}
+	
+	public void addWidget(Widget widget) {
+		banner.add(widget);
+	}
+	
+	public void setSize(int sizeInPixels) {
+		if(side == Side.TOP || side == Side.BOTTOM) {
+			this.setHeight(Integer.toString(sizeInPixels) + "px");
+		}else {
+			this.setWidth(Integer.toString(sizeInPixels) + "px");
+		}
 	}
 
 	@Override

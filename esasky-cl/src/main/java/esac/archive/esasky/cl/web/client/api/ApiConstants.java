@@ -106,6 +106,7 @@ public class ApiConstants {
 	public static final String ERROR = "error";
 	public static final String EVENT = "event";
 	public static final String SUCCESS = "success";
+	public static final String ORIGIN = "origin";
 	public static final String VALUES = "values";
 	public static final String VALUE = "value";
 	public static final String MESSAGE = "message";
