@@ -1,42 +1,10 @@
 package esac.archive.esasky.cl.web.client.repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.DescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.UserCatalogueDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.UserObservationDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
@@ -50,7 +18,6 @@ import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
-import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.query.TAPSSOService;
@@ -59,12 +26,20 @@ import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.*;
+import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DescriptorRepository {
 
@@ -107,6 +82,12 @@ public class DescriptorRepository {
 	public interface ImageDescriptorListMapper extends ObjectMapper<ImageDescriptorList> {
 	}
 
+	public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {
+	}
+
+	public interface IceCubeDescriptorListMapper extends ObjectMapper<IceCubeDescriptorList> {
+	}
+
 	public interface SingleCountListMapper extends ObjectMapper<List<SingleCount>> {
 	}
 
@@ -117,6 +98,8 @@ public class DescriptorRepository {
 	private DescriptorListAdapter<PublicationsDescriptor> publicationsDescriptors;
 	private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
 	private DescriptorListAdapter<ImageDescriptor> imageDescriptors;
+	private DescriptorListAdapter<GwDescriptor> gwDescriptors;
+	private DescriptorListAdapter<IceCubeDescriptor> iceCubeDescriptors;
 
 	/** Descriptor and CountStatus hashMaps for improve counts */
 	private HashMap<String, List<IDescriptor>> descriptorsMap; 
@@ -189,6 +172,14 @@ public class DescriptorRepository {
 	
 	public DescriptorListAdapter<ImageDescriptor> getImageDescriptors() {
 		return imageDescriptors;
+	}
+
+	public DescriptorListAdapter<GwDescriptor> getGwDescriptors() {
+		return gwDescriptors;
+	}
+
+	public DescriptorListAdapter<IceCubeDescriptor> getIceCubeDescriptors() {
+		return iceCubeDescriptors;
 	}
 	
 	public void initExtDescriptors(final CountObserver countObserver) {
@@ -373,7 +364,7 @@ public class DescriptorRepository {
 
 	public void initImageDescriptors() {
 		
-		Log.debug("[DescriptorRepository] Into DescriptorRepository.initObsDescriptors");
+		Log.debug("[DescriptorRepository] Into DescriptorRepository.initImageDescriptors");
 		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.IMAGES_URL, new IJSONRequestCallback() {
 			
 			@Override
@@ -411,6 +402,88 @@ public class DescriptorRepository {
 				imageDescriptors = new DescriptorListAdapter<>(list, imageCountObserver);
 			}
 			
+		});
+	}
+
+	public void initGwDescriptors(final CountObserver gwCountObserver) {
+		Log.debug("[DescriptorRepository] Into DescriptorRepository.initGwDescriptors");
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.GW_URL, new IJSONRequestCallback() {
+
+			@Override
+			public void onSuccess(String responseText) {
+				GwDescriptorListMapper mapper = GWT.create(GwDescriptorListMapper.class);
+				DescriptorList<GwDescriptor> mappedDescriptorList = mapper.read(responseText);
+
+				gwDescriptors = new DescriptorListAdapter<>(mappedDescriptorList, gwCountObserver);
+
+				for(GwDescriptor desc : gwDescriptors.getDescriptors()) {
+					for(MetadataDescriptor md : desc.getMetadata()) {
+						if(md.getType() == ColumnType.RA) {
+							desc.setTapRaColumn(md.getTapName());
+						}
+						else if(md.getType() == ColumnType.DEC) {
+							desc.setTapDecColumn(md.getTapName());
+						}
+						else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
+							desc.setTapSTCSColumn(md.getTapName());
+						}
+					}
+				}
+
+				Log.debug("[DescriptorRepository] [init gw] Total gw entries: " + gwDescriptors.getTotal());
+				//WavelengthUtils.setWavelengthRangeMaxMin(gwDescriptors.getDescriptors());
+
+				gwCountObserver.onCountUpdate(gwDescriptors.getTotal());
+			}
+
+			@Override
+			public void onError(String errorCause) {
+				Log.error("[DescriptorRepository] initGwDescriptors ERROR: " + errorCause);
+				DescriptorList<GwDescriptor> list = new DescriptorList<GwDescriptor>() {};
+				gwDescriptors = new DescriptorListAdapter<>(list, gwCountObserver);
+			}
+
+		});
+	}
+
+	public void initIceCubeDescriptors(final CountObserver iceCubeCountObserver) {
+		Log.debug("[DescriptorRepository] Into DescriptorRepository.initIceCubeDescriptors");
+		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.ICECUBE_URL, new IJSONRequestCallback() {
+
+			@Override
+			public void onSuccess(String responseText) {
+				IceCubeDescriptorListMapper mapper = GWT.create(IceCubeDescriptorListMapper.class);
+				DescriptorList<IceCubeDescriptor> mappedDescriptorList = mapper.read(responseText);
+
+				iceCubeDescriptors = new DescriptorListAdapter<>(mappedDescriptorList, iceCubeCountObserver);
+
+				for(IceCubeDescriptor desc : iceCubeDescriptors.getDescriptors()) {
+					for(MetadataDescriptor md : desc.getMetadata()) {
+						if(md.getType() == ColumnType.RA) {
+							desc.setTapRaColumn(md.getTapName());
+						}
+						else if(md.getType() == ColumnType.DEC) {
+							desc.setTapDecColumn(md.getTapName());
+						}
+						else if(EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())){
+							desc.setTapSTCSColumn(md.getTapName());
+						}
+					}
+				}
+
+				Log.debug("[DescriptorRepository] [init iceCube] Total iceCube entries: " + iceCubeDescriptors.getTotal());
+				//WavelengthUtils.setWavelengthRangeMaxMin(gwDescriptors.getDescriptors());
+
+				iceCubeCountObserver.onCountUpdate(iceCubeDescriptors.getTotal());
+			}
+
+			@Override
+			public void onError(String errorCause) {
+				Log.error("[DescriptorRepository] initIceCubeDescriptor ERROR: " + errorCause);
+				DescriptorList<IceCubeDescriptor> list = new DescriptorList<IceCubeDescriptor>() {};
+				iceCubeDescriptors = new DescriptorListAdapter<>(list, iceCubeCountObserver);
+			}
+
 		});
 	}
 	

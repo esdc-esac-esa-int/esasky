@@ -23,6 +23,7 @@ import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 
 public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
@@ -235,6 +236,16 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 						imageEntity.setIsPanelClosed(true);
 						imageEntity.getTablePanel().unregisterObserver(this);
 					}
+				}
+
+				@Override
+				public void onRowSelected(GeneralJavaScriptObject row) {
+					// Not needed here
+				}
+
+				@Override
+				public void onRowDeselected(GeneralJavaScriptObject row) {
+					// Not needed here
 				}
 			});
 

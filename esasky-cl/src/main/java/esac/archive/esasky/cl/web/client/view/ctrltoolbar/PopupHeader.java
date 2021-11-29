@@ -1,11 +1,11 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -17,9 +17,11 @@ public class PopupHeader<T> extends FlowPanel{
 	private final CssResource style;
 	private Resources resources = GWT.create(Resources.class);
 
-	private LabelWithHelpButton labelWithHelpButton;
+	private final LabelWithHelpButton labelWithHelpButton;
 
-	public static interface Resources extends ClientBundle {
+	private final FlowPanel actionPanel = new FlowPanel();
+
+	public interface Resources extends ClientBundle {
 		@Source("ctrlToolBarPopupHeader.css")
 		@CssResource.NotStrict
 		CssResource style();
@@ -39,29 +41,30 @@ public class PopupHeader<T> extends FlowPanel{
 		labelWithHelpButton = new LabelWithHelpButton(headerText, helpText, helpHeader);
 		labelWithHelpButton.addStyleName("popupHeaderLabelWithHelpButton");
 
-		add(labelWithHelpButton);
+		FlowPanel titlePanel = new FlowPanel();
+		titlePanel.add(labelWithHelpButton);
+		add(titlePanel);
+
+
+		actionPanel.addStyleName("popupHeaderActionPanel");
+		add(actionPanel);
 
 		if(onCloseClick != null) {
 			CloseButton closeButton = new CloseButton();
 			closeButton.setTitle(closeTooltip);
 			closeButton.addStyleName("popupHeaderCloseButton");
 			closeButton.addClickHandler(onCloseClick);
-			add(closeButton);
+			actionPanel.add(closeButton);
 			labelWithHelpButton.addStyleName("popupHeaderLabelWithHelpButtonExtraMargin");
 		}
 		
 		SignButton minimizeButton = new SignButton(SignType.MINUS);
 		minimizeButton.addStyleName("popupHeaderMinimizeButton");
 		minimizeButton.setTitle(TextMgr.getInstance().getText("popupHeader_minimize"));
-		minimizeButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				panel.hide();
-			}
-		});
-		add(minimizeButton);
+		minimizeButton.addClickHandler(event -> panel.hide());
+		actionPanel.add(minimizeButton);
 		addStyleName("popupHeaderContainer");
+
 	}
 
 	public void setText(String text) {
@@ -70,5 +73,9 @@ public class PopupHeader<T> extends FlowPanel{
 	
 	public void setHelpText(String text) {
 		labelWithHelpButton.setDialogMessage(text);
+	}
+
+	public void addActionWidget(Widget widget) {
+		actionPanel.insert(widget, 0);
 	}
 }

@@ -5,6 +5,7 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
@@ -18,7 +19,6 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -78,9 +78,9 @@ public class CtrlToolBarPresenter {
 
         JSONArray getGWIds();
 
-        GeneralJavaScriptObject getGWData(String id);
+        JSONObject getGWData(String id);
 
-        GeneralJavaScriptObject getAllGWData();
+        JSONObject getAllGWData();
 
         void showGWEvent(String id);
 
@@ -334,11 +334,11 @@ public class CtrlToolBarPresenter {
         return view.getGWIds();
     }
 
-    public GeneralJavaScriptObject getGWData(String id) {
+    public JSONObject getGWData(String id) {
         return view.getGWData(id);
     }
 
-    public GeneralJavaScriptObject getAllGWData() {
+    public JSONObject getAllGWData() {
         return view.getAllGWData();
     }
 

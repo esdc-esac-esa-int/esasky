@@ -41,6 +41,7 @@ public class MovablePanel extends FocusPanel {
 	private int userSetPositionLeft;
 
 	private boolean isSuggestedPositionCenter;
+	private boolean updateZIndex = true;
 	private int suggestedPositionTop;
 	private int suggestedPositionLeft;
 	private boolean isBottom = false;
@@ -59,6 +60,11 @@ public class MovablePanel extends FocusPanel {
 	};
 	
 	private static int highestZIndex = 1000;
+
+	public MovablePanel(String googleEventCategory, boolean isSuggestedPositionCenter, boolean updateZIndex) {
+		this(googleEventCategory, isSuggestedPositionCenter);
+		this.updateZIndex = updateZIndex;
+	}
 
 	public MovablePanel(String googleEventCategory, boolean isSuggestedPositionCenter) {
 		super();
@@ -159,17 +165,19 @@ public class MovablePanel extends FocusPanel {
 	}
 
 	private void updateZIndex() {
-		int currentZIndexNumber = 0;
-		String currentZIndex = getElement().getStyle().getZIndex();
-		if(currentZIndex != null && !currentZIndex.isEmpty()) {
-			currentZIndexNumber = Integer.valueOf(currentZIndex);
-		}
-		if(currentZIndexNumber < highestZIndex) {
-			highestZIndex++;
-			currentZIndexNumber = highestZIndex;
-			getElement().getStyle().setZIndex(currentZIndexNumber);
-		} else {
-			highestZIndex = currentZIndexNumber;
+		if (updateZIndex) {
+			int currentZIndexNumber = 0;
+			String currentZIndex = getElement().getStyle().getZIndex();
+			if(currentZIndex != null && !currentZIndex.isEmpty()) {
+				currentZIndexNumber = Integer.valueOf(currentZIndex);
+			}
+			if(currentZIndexNumber < highestZIndex) {
+				highestZIndex++;
+				currentZIndexNumber = highestZIndex;
+				getElement().getStyle().setZIndex(currentZIndexNumber);
+			} else {
+				highestZIndex = currentZIndexNumber;
+			}
 		}
 	}
 

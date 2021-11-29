@@ -1,20 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -22,16 +12,26 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-
+import com.google.gwt.user.client.ui.*;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.api.Api;
+import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
+import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
+import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.JupyterDownloadDialog;
+import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
+import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.resultspanel.*;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
+import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -40,33 +40,11 @@ import esac.archive.esasky.ifcs.model.descriptor.MetadataVisibilityObserver;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
-import esac.archive.esasky.cl.web.client.event.ShowPublicationSourcesEvent;
-import esac.archive.esasky.cl.web.client.event.TableRowSelectedEvent;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.MultiRetrievalBeanListMapper;
-import esac.archive.esasky.cl.web.client.repository.EntityRepository;
-import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
-import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
-import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
-import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
-import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.DDRequestForm;
-import esac.archive.esasky.cl.web.client.view.resultspanel.DatalinkDownloadDialogBox;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.PreviewDialogBox;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
-import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class TabulatorTablePanel extends Composite implements ITablePanel, TabulatorCallback {
 
@@ -569,8 +547,21 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
+	protected void notifyOnRowSelection(final GeneralJavaScriptObject row) {
+		for (TableObserver obs : observers) {
+			obs.onRowSelected(row);
+		}
+	}
+
+	protected void notifyOnRowDeselection(final GeneralJavaScriptObject row) {
+		for (TableObserver obs : observers) {
+			obs.onRowDeselected(row);
+		}
+	}
+
     @Override
     public void onRowSelection(final GeneralJavaScriptObject row) {
+		notifyOnRowSelection(row);
         entity.selectShapes(GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex")));
         CommonEventBus.getEventBus().fireEvent(new TableRowSelectedEvent(row.invokeFunction("getData")));
     }
@@ -578,6 +569,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     @Override
     public void onRowDeselection(final GeneralJavaScriptObject row) {
         entity.deselectShapes(GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex")));
+		notifyOnRowDeselection(row);
     }
 
     @Override

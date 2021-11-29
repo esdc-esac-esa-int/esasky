@@ -1,42 +1,25 @@
 package esac.archive.esasky.cl.web.client.repository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.GwDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
-import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
-import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity.SecondaryShapeAdder;
-import esac.archive.esasky.cl.web.client.model.entities.ExtTapEntity;
-import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
-import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
-import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
-import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.query.TAPImageListService;
-import esac.archive.esasky.cl.web.client.query.TAPCatalogueService;
-import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
+import esac.archive.esasky.cl.web.client.model.entities.*;
+import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity.SecondaryShapeAdder;
+import esac.archive.esasky.cl.web.client.query.*;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
+import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.*;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class EntityRepository {
 
@@ -164,10 +147,30 @@ public class EntityRepository {
         return newEntity;
     }
     
-    public GeneralEntityInterface createGwEntity(IDescriptor descriptor, String id, String lineStyle) {
-    	GeneralEntityInterface newEntity = new EsaSkyEntity(descriptor, CoordinateUtils.getCenterCoordinateInJ2000(), id, lineStyle);
-    	addEntity(newEntity);
-    	return newEntity;
+    public EsaSkyEntity createGwEntity(IDescriptor descriptor, String id, String lineStyle) {
+
+        EsaSkyEntity gwEntity =  new EsaSkyEntity(descriptor, CoordinateUtils.getCenterCoordinateInJ2000(), id, lineStyle, TAPGwService.getInstance())
+        {
+            @Override
+            public TabulatorSettings getTabulatorSettings() {
+                TabulatorSettings settings = new TabulatorSettings();
+                settings.selectable = 1;
+                settings.disableGoToColumn = true;
+                settings.addLink2ArchiveColumn = false;
+                settings.addSendToVOApplicationColumn = false;
+                return settings;
+            }
+
+        };
+
+        addEntity(gwEntity);
+        return gwEntity;
+    }
+
+    public EsaSkyEntity createIceCubeEntity(IDescriptor descriptor) {
+        EsaSkyEntity iceCubeEntity = new EsaSkyEntity(descriptor, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), "solid",  TAPIceCubeService.getInstance());
+        addEntity(iceCubeEntity);
+        return iceCubeEntity;
     }
 
     private GeneralEntityInterface createEntity(IDescriptor descriptor, CountStatus countStatus,

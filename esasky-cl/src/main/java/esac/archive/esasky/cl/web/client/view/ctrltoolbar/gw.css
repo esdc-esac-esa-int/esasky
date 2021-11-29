@@ -1,10 +1,5 @@
 @CHARSET "UTF-8";
 
-/*#gwPanelContainer {*/
-/*	resize: both;*/
-/*	overflow: auto !important;*/
-/*}*/
-
 .gwPanel {
 	background-color: rgba(0, 0, 0, 0.65);
 	border: 1px solid;
@@ -17,6 +12,9 @@
 	position: absolute;
 }
 
+.dataPanelContainer {
+	height: 100%;
+}
 
 .gwPanel_loadingHipsProperties {
 	position: absolute;
@@ -25,41 +23,38 @@
     transform: translate(-50%, -50%);
 }
 
-
-.gwPanel__tabDeselected {
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab{
+	padding: 5px;
+	border-radius: 10px 10px 0px 0px;
+	cursor: pointer;
+	/*display: flex;*/
+	align-items: center;
+	margin-right: 2px;
 	background: #555555;
 	color: #FFFFFF;
+	font-weight: normal;
 }
 
-.gwPanel__tabDeselected:hover {
-	background: #666666;
-}
-
-.gwPanel__tabSelected {
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
 	background: #e3e3e3;
 	color: #343434;
 	font-weight: bold;
 }
 
-.gwPanel__tabSelected:hover {
-/* 	background: #C3C3C3; */
-/* 	color: #343434; */
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
+	border: none !important;
+	padding: 0;
+}
+
+.gwt-TabLayoutPanelContentContainer {
+	border: none !important;
 }
 
 .gwPanel__tabLabel{
-	pointer-events: none;	
+	pointer-events: none;
 }
 
-.gwPanel__tab {
-	padding: 5px;
-	border-radius: 10px 10px 0px 0px;
-	cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin-right: 2px;
-}
-
-.gwPanel__tabs {
+.gwt-TabLayoutPanel {
 	display: flex;
 	flex-direction: row;
 }

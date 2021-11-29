@@ -5,10 +5,8 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import esac.archive.esasky.cl.web.client.Controller;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class ApiAlerts extends ApiBase{
 	
@@ -33,11 +31,10 @@ public class ApiAlerts extends ApiBase{
 	}
 
 	public void getGWEventData(JavaScriptObject widget, String id) {
-		GeneralJavaScriptObject data;
+		JSONObject data;
 		try {
 			data = controller.getRootPresenter().getCtrlTBPresenter().getGWData(id);
-			JSONObject obj = (JSONObject) JSONParser.parseStrict(data.toJSONString());
-			sendBackToWidget(obj, null, widget);
+			sendBackToWidget(data, null, widget);
 		} catch (IllegalArgumentException e) {
 			Log.error(e.toString(), e);
 			JSONObject error = new JSONObject();
@@ -49,10 +46,9 @@ public class ApiAlerts extends ApiBase{
 	}
 	
 	public void getAllGWData(JavaScriptObject widget) {
-		GeneralJavaScriptObject data = controller.getRootPresenter().getCtrlTBPresenter().getAllGWData();
-		JSONArray arr =  (JSONArray) JSONParser.parseStrict(data.toJSONString());
+		JSONObject data = controller.getRootPresenter().getCtrlTBPresenter().getAllGWData();
 		JSONObject obj = new JSONObject();
-		obj.put("data",arr);
+		obj.put("data",data);
 		sendBackToWidget(obj, null, widget);
 	}
 	

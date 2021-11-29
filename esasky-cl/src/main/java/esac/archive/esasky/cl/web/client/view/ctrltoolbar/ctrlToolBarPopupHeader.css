@@ -1,22 +1,18 @@
 @CHARSET "UTF-8";
 
-.popupHeaderMinimizeButton{
-	position: absolute;
-	top: 0px;
-	right: 0px;
-}
-
-.popupHeaderCloseButton {
-	position: absolute;
-    top: 0px;
-    right: 28px;
-}
-
 .popupHeaderLabelWithHelpButton {
 	font-size: 1.1 em;
 	font-weight: bold;
 	padding: 3px;
-	margin-right: 25px;
+}
+
+.popupHeaderActionPanel {
+	display: flex;
+	flex-direction: row;
+}
+
+.popupHeaderActionPanel > div {
+	margin-left: 5px;
 }
 
 .popupHeaderLabelWithHelpButtonExtraMargin{
@@ -24,5 +20,8 @@
 }
 
 .popupHeaderContainer{
-	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-top: 5px;
 }

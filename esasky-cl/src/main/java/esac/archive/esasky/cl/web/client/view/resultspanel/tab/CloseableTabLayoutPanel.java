@@ -1,9 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tab;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -19,26 +15,11 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import com.google.gwt.user.client.ui.*;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
-import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEventHandler;
-import esac.archive.esasky.cl.web.client.event.DataPanelResizeEvent;
-import esac.archive.esasky.cl.web.client.event.DataPanelResizeEventHandler;
-import esac.archive.esasky.cl.web.client.event.ExportCSVEvent;
-import esac.archive.esasky.cl.web.client.event.ExportVOTableEvent;
-import esac.archive.esasky.cl.web.client.event.SendTableToEvent;
-import esac.archive.esasky.cl.web.client.event.UpdateNumRowsSelectedEvent;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -50,9 +31,16 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -533,6 +521,16 @@ public class CloseableTabLayoutPanel extends Composite {
 
             @Override
             public void onDataLoaded(int numberOfRows) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onRowSelected(GeneralJavaScriptObject row) {
+                // Not needed for this implementation
+            }
+
+            @Override
+            public void onRowDeselected(GeneralJavaScriptObject row) {
                 // Not needed for this implementation
             }
         });

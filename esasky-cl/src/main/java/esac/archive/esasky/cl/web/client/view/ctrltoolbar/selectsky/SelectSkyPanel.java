@@ -1,8 +1,5 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -11,23 +8,25 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
-
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.view.common.*;
-import esac.archive.esasky.ifcs.model.client.HiPS;
-import esac.archive.esasky.ifcs.model.client.HipsWavelength;
-import esac.archive.esasky.ifcs.model.client.SkiesMenu;
-import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.buttons.DisablablePushButton;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.BasePopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
+import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
+import esac.archive.esasky.ifcs.model.client.SkiesMenu;
+import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectSkyPanelPresenter.View, Hidable<SelectSkyPanel> {
 
@@ -65,7 +64,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	}
 
 	private SelectSkyPanel(String defaultHiPS) {
-		super(GoogleAnalytics.CAT_SELECTSKY, false);
+		super(GoogleAnalytics.CAT_SELECTSKY, false, false);
 		this.hipsFromUrl = defaultHiPS;
 
 		this.resources = GWT.create(Resources.class);
@@ -81,7 +80,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			}
 		});
 	}
-	
+
 	public static SelectSkyPanel getInstance() {
 		if (instance == null) {
 			throw new AssertionError("You have to call init first");
@@ -100,23 +99,23 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 		skyTable = new DragFlexTable();
 		selectSkyPanel.add(skyTable);
-		
+
 		FlowPanel hipsControllerContainer = new FlowPanel();
 		hipsControllerContainer.addStyleName("hipsControllerContainer");
 		selectSkyPanel.add(hipsControllerContainer);
-		
+
 		hipsControllerContainer.add(createAddSkyBtn());
 		slider = createSlider();
 		sliderContainer.addStyleName("sliderContainer");
 		sliderContainer.add(slider);
-		
+
 		hipsControllerContainer.add(sliderContainer);
 		hipsControllerContainer.add(createPlayer());
 
 		this.add(selectSkyPanel);
-		
+
 	}
-	
+
 	private PopupHeader createHeader() {
 		return new PopupHeader(this, TextMgr.getInstance().getText("sky_loadingSkies"),
 				TextMgr.getInstance().getText("sky_selectSky_help"));
@@ -139,13 +138,13 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		addSkyButton = new AddSkyButton();
 		return addSkyButton;
 	}
-	
+
 	public void onValueChange(double value) {
 		player.setValue(value);
 		int nRows = skyTable.getRowCount();
-		int rowNumber = Math.min((int) Math.floor(value + 0.001), nRows - 1); // 0.001 extra because of float number precision errors. 
+		int rowNumber = Math.min((int) Math.floor(value + 0.001), nRows - 1); // 0.001 extra because of float number precision errors.
 		double opacity = value - rowNumber;
-		
+
 		if(opacity < 0 ) { opacity = 0.0;} // Could happen with the added precision from rowNumbers
 
 		SkyRow secondSky;
@@ -155,7 +154,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		}else {
 			secondSky = null;
 		}
-		
+
 		if(Math.abs(slider.getOldValue() - value) >= 1) {
 			skyRow.setSelected();
 		}
@@ -171,12 +170,12 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 				skyRow.setSelected();
 			}
 		}
-		
+
 		if(!skyRow.isMain() && !skyRow.isOverlay()) {
 			if(secondSky != null  && secondSky.isMain()) {
 				clearAllOverlayStatus();
 				skyRow.setOverlayStatus(true);
-				
+
 			}else {
 				clearAllMainStatus();
 				skyRow.setMain(true);
@@ -188,17 +187,17 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		skyRow.setOpacity(1-opacity);
 
 		if(secondSky != null && opacity > 0) {
-			
+
 			if(skyRow.isMain() && secondSky.isMain()) {
 				clearAllMainStatus();
 				skyRow.isMain();
 			}
-			
+
 			if(!secondSky.isMain() && !secondSky.isOverlay()) {
 				if(skyRow.isMain()) {
 					clearAllOverlayStatus();
 					secondSky.setOverlayStatus(true);
-					
+
 				}else {
 					clearAllMainStatus();
 					secondSky.setMain(true);
@@ -218,14 +217,14 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			}
 		}
 	}
-	
+
 	public void clearAllOverlayStatus() {
 		for (int i = 0; i < skyTable.getRowCount(); i++) {
 			SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
 			skyRow.setOverlayStatus(false);
 		}
 	}
-	
+
 	public void clearAllMainStatus() {
 		for (int i = 0; i < skyTable.getRowCount(); i++) {
 			SkyRow skyRow = (SkyRow) skyTable.getWidget(i, 0);
@@ -289,7 +288,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 				slider.addStyleName("collapse");
 			}
 			sliderContainer.setVisible(false);
-		} else { 
+		} else {
 			for(SkyRow sky: skies){
 				sky.removeOnlyOneSkyActiveStyle();
 				slider.removeStyleName("collapse");
@@ -302,7 +301,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		player = new ESASkyPlayerPanel(50, 0.01, "HiPSPlayer");
 		player.addStyleName("skyPlayer");
 		player.registerValueChangeObserver(new EsaSkyPlayerObserver() {
-			
+
 			@Override
 			public void onValueChange(double value) {
 				SelectSkyPanel.this.slider.setValue(value);
@@ -310,7 +309,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		});
 		return player;
 	}
-	
+
 	public boolean removeSky(int index) {
 		try {
 			SkyRow skyRow = skies.get(index);
@@ -319,6 +318,14 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		}catch(IndexOutOfBoundsException e) {
 			return false;
 		}
+	}
+
+	public void removeSky(String ...names) {
+        for(SkyRow skyRow : skies) {
+            if (Arrays.asList(names).contains(skyRow.getNameofSelected())) {
+                removeSky(skyRow);
+            }
+        }
 	}
 
 	private void removeSky(SkyRow skyToRemove){
@@ -340,7 +347,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 	@Override
 	public void onUpdateSkyEvent(SkyRow sky) {
-		
+
 		double value = SelectSkyPanel.getInstance().getSliderValue();
 		double opacity = value - Math.floor(value);
 		if(sky.isMain()) { opacity = 1 - opacity;}
@@ -373,7 +380,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	        removeSky(sky);
 	    }
 	}
-	
+
 	private void removeClosedSkies() {
 	    for (SkyRow sky : skiesToRemove) {
 	        removeSky(sky);
@@ -381,7 +388,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	    skiesToRemove.clear();
 	}
 	private List<SkyRow> skiesToRemove = new LinkedList<SkyRow>();
-	
+
 	private boolean ongoingClean = false;
 
 	public static String getNameOfSelectedHips(){
@@ -440,11 +447,11 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	public void setSliderValue(double value) {
 		slider.setValue(value);
 	}
-	
+
 	public double getSliderValue() {
 		return slider.getCurrentValue();
 	}
-	
+
 	public int getNumberOfSkyRows() {
 		return skies.size();
 	}
@@ -461,7 +468,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	public void setSkiesMenu(SkiesMenu skiesMenu) {
 		this.skiesMenu = skiesMenu;
 	}
-	
+
 	@Override
 	public void onMenuItemRemovalEvent(MenuItem<HiPS> menuItem) {
 	    ongoingClean = true;
@@ -472,7 +479,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	    ongoingClean = false;
 	    removeClosedSkies();
 	}
-	
+
 	@Override
 	public void refreshUserDropdowns() {
        for (int i = 0; i < skyTable.getRowCount(); i++) {

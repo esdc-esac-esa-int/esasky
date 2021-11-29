@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.MissionTabButtons;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class ApiPanel extends ApiBase{
 	
@@ -55,6 +56,16 @@ public class ApiPanel extends ApiBase{
 				@Override
 				public void onDataLoaded(int numberOfRows) {
 					//Don't need this here
+				}
+
+				@Override
+				public void onRowSelected(GeneralJavaScriptObject row) {
+					// Not needed here
+				}
+
+				@Override
+				public void onRowDeselected(GeneralJavaScriptObject row) {
+					// Not needed here
 				}
 			});
 		}else {

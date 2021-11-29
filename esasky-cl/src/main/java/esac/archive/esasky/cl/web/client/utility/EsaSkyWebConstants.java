@@ -49,6 +49,7 @@ public class EsaSkyWebConstants {
     public static final String PUBLICATIONS_SOURCES_BY_AUTHOR_URL = BACKEND_CONTEXT + "/sources-from-author";
     public static final String PUBLICATIONS_DETAILS_URL = BACKEND_CONTEXT + "/publication-details";
     public static final String GW_URL = BACKEND_CONTEXT + "/gw";
+    public static final String ICECUBE_URL = BACKEND_CONTEXT + "/icecube";
     public static final String HIPS_SOURCES_URL = BACKEND_CONTEXT + "/hips-sources";
     public static final String RANDOM_SOURCE_URL = BACKEND_CONTEXT + "/random-source";
     public static final String SIMBAD_TAP_URL = BACKEND_CONTEXT + "/simbad-tap";

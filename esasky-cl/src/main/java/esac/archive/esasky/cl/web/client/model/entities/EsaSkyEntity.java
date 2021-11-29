@@ -1,34 +1,15 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
-
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.LineStyle;
-import esac.archive.esasky.cl.web.client.model.MOCInfo;
-import esac.archive.esasky.cl.web.client.model.PolygonShape;
-import esac.archive.esasky.cl.web.client.model.Shape;
-import esac.archive.esasky.cl.web.client.model.SourceShape;
-import esac.archive.esasky.cl.web.client.model.SourceShapeType;
-import esac.archive.esasky.cl.web.client.model.TapMetadata;
-import esac.archive.esasky.cl.web.client.model.TapRowList;
+import esac.archive.esasky.cl.web.client.model.*;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -40,12 +21,23 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel.StylePanelCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class EsaSkyEntity implements GeneralEntityInterface {
 
@@ -86,8 +78,13 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle) {
-    	this(descriptor, null, skyViewPosition, esaSkyUniqId, null, 
+    	this(descriptor, null, skyViewPosition, esaSkyUniqId, null,
     			CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
+    }
+
+    public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService) {
+        this(descriptor, null, skyViewPosition, esaSkyUniqId, metadataService,
+                CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
     }
 
     public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
@@ -120,7 +117,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
         drawer = combinedDrawer;
-        
+
         drawer.setPrimaryColor(descriptor.getPrimaryColor());
         drawer.setSecondaryColor(descriptor.getSecondaryColor());
         
@@ -149,7 +146,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             polygon.setStcs(stcs);
             polygon.setJsObject(((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(
                     polygon.getStcs(), rowId)));
-            
+
             polygon.setShapeId(rowId);
             String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
             polygon.setShapeName(shapeName);
@@ -157,7 +154,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
             polygon.setRa(ra);
             polygon.setDec(dec);
-            
+
             return polygon;
         }
     };

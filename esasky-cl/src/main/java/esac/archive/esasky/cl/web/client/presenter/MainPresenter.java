@@ -107,6 +107,10 @@ public class MainPresenter {
         
         getImageList();
 
+        getGwList();
+
+        getIceCubeList();
+
         descriptorRepo.initPubDescriptors();
 
         bindSampRequests();
@@ -445,6 +449,16 @@ public class MainPresenter {
     private void getImageList() {
     	Log.debug("[MainPresenter] Into MainPresenter.getImageList");
     	descriptorRepo.initImageDescriptors();
+    }
+
+    private void getGwList() {
+        Log.debug("[MainPresenter] Into MainPresenter.getGwList");
+        descriptorRepo.initGwDescriptors(newCount -> newCount++);
+    }
+
+    private void getIceCubeList() {
+        Log.debug("[MainPresenter] Into MainPresenter.getIceCubeList");
+        descriptorRepo.initIceCubeDescriptors(newCount -> newCount++);
     }
 
     public final AllSkyPresenter getAllSkyPresenter() {
