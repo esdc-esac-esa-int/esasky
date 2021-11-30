@@ -109,7 +109,7 @@ function initChat2() {
     //listens messages from iframe and sends to bot (2)
     window.addEventListener("message", function (e) {
         var data = JSON.stringify(e.data);
-        if (data.origin == "esasky" && data.id == "eva" && data != postback) {
+        if (e.data.origin == "esasky" && e.data.msgId == "eva" && data != postback) {
             try {
                 postback = data;
                 this.store.dispatch({

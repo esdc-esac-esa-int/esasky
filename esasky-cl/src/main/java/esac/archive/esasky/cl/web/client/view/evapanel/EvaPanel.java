@@ -7,15 +7,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
  */
-public class EvaPanel extends MovablePanel {
+public class EvaPanel extends FocusPanel {
 
     
     private Resources resources = GWT.create(Resources.class);
@@ -33,7 +32,7 @@ public class EvaPanel extends MovablePanel {
     }
 
     public EvaPanel() {
-    	super(GoogleAnalytics.CAT_EVA, false);
+    	super();
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
