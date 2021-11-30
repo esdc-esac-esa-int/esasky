@@ -85,7 +85,8 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
         header = new PopupHeader<>(this, TextMgr.getInstance().getText("gwPanel_header"),
                 TextMgr.getInstance().getText("gwPanel_helpText"),
-                TextMgr.getInstance().getText("gwPanel_helpTitle"));
+                TextMgr.getInstance().getText("gwPanel_helpTitle"),
+                event -> close(), "");
 
         mainContainer.add(header);
         mainContainer.getElement().setId("gwPanelContainer");
@@ -270,6 +271,25 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     public void show() {
         super.show();
         loadGwData();
+    }
+
+    private void close() {
+        if (iceCubeDescriptor != null) {
+            iceCubeEntity.hideAllShapes();
+            iceCubeEntity.getTablePanel().deselectAllRows();
+        }
+
+        if (gwDescriptor != null) {
+            gwEntity90.hideAllShapes();
+            gwEntity50.hideAllShapes();
+            gwEntity90.getTablePanel().deselectAllRows();
+        }
+
+        tabLayoutPanel.selectTab(TabIndex.GW.ordinal());
+        gridButton.setToggleStatus(false);
+        AladinLiteWrapper.getInstance().toggleGrid(false);
+        SelectSkyPanel.getInstance().removeSky(rowIdHipsMap.keySet().toArray(new String[0]));
+        hide();
     }
 
     @Override
