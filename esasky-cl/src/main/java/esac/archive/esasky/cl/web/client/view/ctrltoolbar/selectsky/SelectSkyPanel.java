@@ -116,6 +116,11 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 	}
 
+	@Override
+	protected void onLoad() {
+		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
+	}
+
 	private PopupHeader createHeader() {
 		return new PopupHeader(this, TextMgr.getInstance().getText("sky_loadingSkies"),
 				TextMgr.getInstance().getText("sky_selectSky_help"));
