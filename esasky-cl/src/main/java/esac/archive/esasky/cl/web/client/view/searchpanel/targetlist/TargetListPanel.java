@@ -47,7 +47,7 @@ import java.util.Map;
 /**
  * @author ESDC team (c) 2016 - European Space Agency
  */
-public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
+public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel> {
 
     private String preparedFilenamesBaseUrl = GWT.getHostPageBaseURL() + "targetlist/";
 
@@ -87,7 +87,7 @@ public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
     }
 
     public TargetListPanel() {
-        super(false, false);
+        super(GoogleAnalytics.CAT_TARGETLIST, false, false);
         resources = GWT.create(Resources.class);
         style = resources.style();
         style.ensureInjected();
@@ -505,23 +505,23 @@ public class TargetListPanel extends DialogBox implements Hidable<PopupPanel> {
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		updateMaxSize();
+        updateHandlers();
 	}
 
-	@Override
-	public void hide(boolean autohide) {
-		this.addStyleName("displayNone");
-		isShowing = false;
-		CloseEvent.fire(this, null);
-	}
+    @Override
+    public void hide() {
+        this.addStyleName("displayNone");
+        isShowing = false;
+        this.removeHandlers();
+        CloseEvent.fire(this, null);
+    }
 
     @Override
     public boolean isShowing() {
         return isShowing;
     }
 	
-	@Override
-	public void setPopupPosition(int left, int top) {
-	}
+
 
     public void readPreparedTargetList(String url, final String title) {
 

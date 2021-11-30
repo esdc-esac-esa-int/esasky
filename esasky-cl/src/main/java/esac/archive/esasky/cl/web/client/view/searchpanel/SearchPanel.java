@@ -1,20 +1,11 @@
 package esac.archive.esasky.cl.web.client.view.searchpanel;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ClientBundle;
@@ -24,21 +15,8 @@ import com.google.gwt.resources.client.DataResource.MimeType;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
-
+import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.esasky.ifcs.model.shared.ESASkyGeneralResultList;
-import esac.archive.esasky.ifcs.model.shared.ESASkyPublicationSearchResult;
-import esac.archive.esasky.ifcs.model.shared.ESASkyPublicationSearchResultList;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
-import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
@@ -59,6 +37,11 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
+import esac.archive.esasky.ifcs.model.shared.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -282,10 +265,17 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     	ssoDNetLogo = new Image(resources.ssoDNetLogo().getSafeUri());
     	ssoDNetLogo.addStyleName("searchPanel__logo");
     }
+
+    @Override
+    protected void onLoad() {
+        int left = MainLayoutPanel.getMainAreaWidth() - targetListPanel.getOffsetWidth() - 25;
+        targetListPanel.setSuggestedPosition(left, 75);
+        targetListPanel.definePositionFromTopAndLeft();
+    }
     
 	private EsaSkyButton createTargetListBtn() {
 		targetListPanel = new TargetListPanel();
-		
+
 		targetListButton = new EsaSkyToggleButton(Icons.getTargetListIcon());
 		targetListButton.getElement().setId("targetListImg");
 		targetListButton.setMediumStyle();
