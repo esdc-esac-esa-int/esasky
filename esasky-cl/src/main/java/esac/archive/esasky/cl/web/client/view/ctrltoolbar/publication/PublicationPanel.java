@@ -58,7 +58,7 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 	}
 
 	public PublicationPanel() {
-		super(GoogleAnalytics.CAT_PUBLICATION, false);
+		super(GoogleAnalytics.CAT_PUBLICATION, false, false);
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
@@ -77,6 +77,7 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 	protected void onLoad() {
 		super.onLoad();
 		addSliderListener(this, sliderId);
+		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
 	}
 	
 	private native void addSliderListener(PublicationPanel instance, String sliderId) /*-{
@@ -209,12 +210,14 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		setMaxSize();
+		updateHandlers();
 	}
 
 	@Override
 	public void hide() {
 		this.addStyleName("displayNone");
 		isShowing = false;
+		this.removeHandlers();
 		CloseEvent.fire(this, null);
 	}
 

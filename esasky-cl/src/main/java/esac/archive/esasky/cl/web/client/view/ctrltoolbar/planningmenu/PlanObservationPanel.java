@@ -4,8 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -45,6 +43,8 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     
     private static PlanObservationPanel instance = null;
 
+    private PopupHeader<PlanObservationPanel> header;
+
     public interface Resources extends ClientBundle {
 
         @Source("planObservationPanel.css")
@@ -53,7 +53,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     }
 
     private PlanObservationPanel() {
-        super(GoogleAnalytics.CAT_PLANNINGTOOL, false);
+        super(GoogleAnalytics.CAT_PLANNINGTOOL, false, false);
         this.resources = GWT.create(Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -71,7 +71,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
 
     private void initView() {
     	final PlanningMission pm = PlanningMission.JWST;
-    	PopupHeader<PlanObservationPanel> header = new PopupHeader<>(this,
+    	header = new PopupHeader<>(this,
     			TextMgr.getInstance().getText("planObservationPanel_projectFutureObservations").replace("$MISSION$", pm.getMissionName()),
     			TextMgr.getInstance().getText("planObservationPanel_helpMessageText"));
     			
@@ -100,14 +100,13 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         this.hide();
         PlanObservationPanel.jwstPanel = jwstPanel;
         
-        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				setMaxSize();
-			}
-		});
+        MainLayoutPanel.addMainAreaResizeHandler(event -> setMaxSize());
         setMaxSize();
+    }
+
+    @Override
+    protected void onLoad() {
+        this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
     }
 
 	private EsaSkyMenuPopupPanel<Instrument> createInstrumentPopupMenu(final PlanningMission pm,
@@ -224,12 +223,14 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         isShowing = true;
         this.removeStyleName("displayNone");
         setMaxSize();
+        updateHandlers();
     }
 
     @Override
     public void hide() {
         this.addStyleName("displayNone");
         isShowing = false;
+        this.removeHandlers();
         CloseEvent.fire(this, null);
     }
 

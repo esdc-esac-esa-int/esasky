@@ -32,7 +32,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 	private static SelectSkyPanel instance;
 
-	private PopupHeader header;
+	private PopupHeader<SelectSkyPanel> header;
 	private DragFlexTable skyTable;
 	private final Resources resources;
 	private CssResource style;
@@ -121,8 +121,8 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
 	}
 
-	private PopupHeader createHeader() {
-		return new PopupHeader(this, TextMgr.getInstance().getText("sky_loadingSkies"),
+	private PopupHeader<SelectSkyPanel> createHeader() {
+		return new PopupHeader<>(this, TextMgr.getInstance().getText("sky_loadingSkies"),
 				TextMgr.getInstance().getText("sky_selectSky_help"));
 	}
 
@@ -250,12 +250,14 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		setMaxSize();
+		updateHandlers();
 	}
 
 	@Override
 	public void hide() {
 		this.addStyleName("displayNone");
 		isShowing = false;
+		this.removeHandlers();
 		CloseEvent.fire(this, null);
 	}
 
