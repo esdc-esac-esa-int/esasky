@@ -103,7 +103,10 @@ public abstract class AbstractTAPService {
         }
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (AladinLiteWrapper.isCornersInsideHips()) {
+
+        if (descriptor.hasSearchArea()) {
+            shape = descriptor.getSearchAreaShape();
+        } else if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug(debugPrefix + " FoV < 1d");
                 shape = "POLYGON('ICRS', "

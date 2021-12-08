@@ -164,146 +164,131 @@ public class MainPresenter {
     public final void bind() {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
-                new AladinLiteShapeSelectedEventHandler() {
-
-                    @Override
-                    public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
-                    	GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
-                    	if(entity != null) {
-                    		entity.onShapeSelection(selectEvent.getShape());
-                    	}
+                selectEvent -> {
+                    GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
+                    if(entity != null) {
+                        entity.onShapeSelection(selectEvent.getShape());
                     }
                 });
         
         CommonEventBus.getEventBus().addHandler(AladinLiteSelectAreaEvent.TYPE,
-        		new AladinLiteSelectAreaEventHandler() {
-        	
-        	@Override
-        	public void onSelectionAreaEvent(AladinLiteSelectAreaEvent selectEvent) {
-        		GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
-        		HashMap<String, LinkedList<AladinShape>> shapesToadd = new HashMap<String, LinkedList<AladinShape>>();
-        		for(GeneralJavaScriptObject shape : shapes) {
-        			String overlayName = null;
-        			if(shape.hasProperty("overlay")) {
-        				overlayName = shape.getProperty("overlay").getStringProperty("name");
-        			}else if(shape.hasProperty("catalog")) {
-        				overlayName = shape.getProperty("catalog").getStringProperty("name");
-        			}
-        			
-        			if(!shapesToadd.containsKey(overlayName)) {
-        				shapesToadd.put(overlayName, new LinkedList<AladinShape>());
-        			}
-        			
-        			shapesToadd.get(overlayName).add((AladinShape)(JavaScriptObject) shape);
-        		}
-        		
-        		for(String overlayName : shapesToadd.keySet()) {
-        			
-        			GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
-        			
-        			if(entity != null) {
-        				entity.onMultipleShapesSelection(shapesToadd.get(overlayName));
-        			}
-        		}
-        		areaSelectionFinished();
-        	}
-        });
+                selectEvent -> {
+                    GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
+                    HashMap<String, LinkedList<AladinShape>> shapesToadd = new HashMap<String, LinkedList<AladinShape>>();
+                    for (GeneralJavaScriptObject shape : shapes) {
+                        String overlayName = null;
+                        if (shape.hasProperty("overlay")) {
+                            overlayName = shape.getProperty("overlay").getStringProperty("name");
+                        } else if (shape.hasProperty("catalog")) {
+                            overlayName = shape.getProperty("catalog").getStringProperty("name");
+                        }
+
+                        if (!shapesToadd.containsKey(overlayName)) {
+                            shapesToadd.put(overlayName, new LinkedList<AladinShape>());
+                        }
+
+                        shapesToadd.get(overlayName).add((AladinShape) (JavaScriptObject) shape);
+                    }
+
+                    for (String overlayName : shapesToadd.keySet()) {
+
+                        GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
+
+                        if (entity != null) {
+                            entity.onMultipleShapesSelection(shapesToadd.get(overlayName));
+                        }
+                    }
+
+
+                    areaSelectionFinished();
+                });
 
         CommonEventBus.getEventBus().addHandler(AladinLiteDeselectAreaEvent.TYPE,
-        		new AladinLiteDeselectAreaEventHandler() {
-        	
-        	@Override
-        	public void onDeselectionAreaEvent(AladinLiteDeselectAreaEvent deselectEvent) {
-        		GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) deselectEvent.getObjects());
-        		HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<String, LinkedList<AladinShape>>();
-        		for(GeneralJavaScriptObject shape : shapes) {
-        			String overlayName = null;
-        			if(shape.hasProperty("overlay")) {
-        				overlayName = shape.getProperty("overlay").getStringProperty("name");
-        			}else if(shape.hasProperty("catalog")) {
-        				overlayName = shape.getProperty("catalog").getStringProperty("name");
-        			}
-        			
-        			if(!shapesToRemove.containsKey(overlayName)) {
-        				shapesToRemove.put(overlayName, new LinkedList<AladinShape>());
-        			}
-        			
-        			shapesToRemove.get(overlayName).add((AladinShape)(JavaScriptObject) shape);
-        		}
-        		
-        		for(String overlayName : shapesToRemove.keySet()) {
-        			
-        			GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
-        			
-        			if(entity != null) {
-        				entity.onMultipleShapesDeselection(shapesToRemove.get(overlayName));
-        			}
-        		}
-        		areaSelectionFinished();
-        	}
+                deselectEvent -> {
+                    GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) deselectEvent.getObjects());
+                    HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<String, LinkedList<AladinShape>>();
+                    for(GeneralJavaScriptObject shape : shapes) {
+                        String overlayName = null;
+                        if(shape.hasProperty("overlay")) {
+                            overlayName = shape.getProperty("overlay").getStringProperty("name");
+                        }else if(shape.hasProperty("catalog")) {
+                            overlayName = shape.getProperty("catalog").getStringProperty("name");
+                        }
+
+                        if(!shapesToRemove.containsKey(overlayName)) {
+                            shapesToRemove.put(overlayName, new LinkedList<AladinShape>());
+                        }
+
+                        shapesToRemove.get(overlayName).add((AladinShape)(JavaScriptObject) shape);
+                    }
+
+                    for(String overlayName : shapesToRemove.keySet()) {
+
+                        GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
+
+                        if(entity != null) {
+                            entity.onMultipleShapesDeselection(shapesToRemove.get(overlayName));
+                        }
+                    }
+                    areaSelectionFinished();
+                });
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteSelectSearchAreaEvent.TYPE, (searchAreaEvent) -> {
+            if (searchAreaEvent != null && searchAreaEvent.getSearchArea() != null) {
+                DescriptorRepository.getInstance().updateSearchArea(searchAreaEvent.getSearchArea());
+            }
+
+        });
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteClearSearchAreaEvent.TYPE, () -> {
+            DescriptorRepository.getInstance().updateSearchArea(null);
         });
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeDeselectedEvent.TYPE,
-                new AladinLiteShapeDeselectedEventHandler() {
-
-                    @Override
-                    public void onShapeDeselectionEvent(AladinLiteShapeDeselectedEvent selectEvent) {
-                    	GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
-                    	if(entity != null) {
-                    		entity.onShapeDeselection(selectEvent.getShape());
-                    	}
+                selectEvent -> {
+                    GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
+                    if(entity != null) {
+                        entity.onShapeDeselection(selectEvent.getShape());
                     }
                 });
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStartEvent.TYPE,
-                new AladinLiteShapeHoverStartEventHandler() {
-
-                    @Override
-                    public void onShapeHoverStartEvent(AladinLiteShapeHoverStartEvent hoverEvent) {
-                        GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
-                    	if(entity!= null) {
-                    		entity.onShapeHover(hoverEvent.getShape());
-                    	}
+                hoverEvent -> {
+                    GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
+                    if(entity!= null) {
+                        entity.onShapeHover(hoverEvent.getShape());
                     }
                 });
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE,
-                new AladinLiteShapeHoverStopEventHandler() {
-
-                    @Override
-                    public void onShapeHoverStopEvent(AladinLiteShapeHoverStopEvent hoverEvent) {
-                    	GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
-                    	if(entity!= null) {
-                    		entity.onShapeUnhover(hoverEvent.getShape());
-                    	}
+                hoverEvent -> {
+                    GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
+                    if(entity!= null) {
+                        entity.onShapeUnhover(hoverEvent.getShape());
                     }
                 });
 
-        CommonEventBus.getEventBus().addHandler(TreeMapSelectionEvent.TYPE, new TreeMapSelectionEventHandler() {
+        CommonEventBus.getEventBus().addHandler(TreeMapSelectionEvent.TYPE, event -> {
+            if (event.getContext() == EntityContext.EXT_TAP) {
+                PointInformation pointInformation = event.getPointInformation();
 
-            @Override
-            public void onSelection(TreeMapSelectionEvent event) {
-                if (event.getContext() == EntityContext.EXT_TAP) {
-                    PointInformation pointInformation = event.getPointInformation();
+                if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
 
-                    if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
-
-                        getRelatedMetadata(event.getDescriptor());
-                        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
-                                GoogleAnalytics.ACT_EXTTAP_GETTINGDATA, pointInformation.longName);
-
-                    } else {
-
-                        GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
-                                GoogleAnalytics.ACT_EXTTAP_BROWSING, pointInformation.longName);
-                    }
-
-                }else if(event.getContext() == EntityContext.USER_TREEMAP) {
-                		ctrlTBPresenter.customTreeMapClicked(event);
-                }
-                else {
                     getRelatedMetadata(event.getDescriptor());
+                    GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
+                            GoogleAnalytics.ACT_EXTTAP_GETTINGDATA, pointInformation.longName);
+
+                } else {
+
+                    GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
+                            GoogleAnalytics.ACT_EXTTAP_BROWSING, pointInformation.longName);
                 }
+
+            }else if(event.getContext() == EntityContext.USER_TREEMAP) {
+                    ctrlTBPresenter.customTreeMapClicked(event);
+            }
+            else {
+                getRelatedMetadata(event.getDescriptor());
             }
         });
         

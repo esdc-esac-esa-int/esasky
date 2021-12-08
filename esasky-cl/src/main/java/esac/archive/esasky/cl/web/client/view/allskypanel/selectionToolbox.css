@@ -39,8 +39,15 @@
     align-items: center;
 }
 
+
 .selectionToolbox__shapeButtonContainer{
 	display: flex;
 	flex-direction: column;
+}
+
+.selectionToolbox__shapeButtonContainerHorizontal{
+    display: flex;
+    flex-direction: row;
+
 }
 

@@ -1,13 +1,12 @@
 package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
-
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 
 public class TAPPublicationsService extends AbstractTAPService {
 
@@ -108,6 +107,21 @@ public class TAPPublicationsService extends AbstractTAPService {
     	Log.debug("[TAPPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
     	
     	return adql;
+    }
+
+    public static String getSearchAreaMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
+        String adql = "select top " + limit
+                + " main_id as name, ra, dec, nbref as bibcount from basic"
+                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
+                + descriptor.getTapDecColumn() + "), ";
+
+        adql += descriptor.getSearchAreaShape() + ") and nbref > 0";
+
+        adql += " ORDER BY " + orderBy;
+
+        Log.debug("[TAPPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
+
+        return adql;
     }
     
     @Override

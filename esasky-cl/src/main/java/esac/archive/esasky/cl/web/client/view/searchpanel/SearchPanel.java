@@ -30,6 +30,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.allskypanel.SelectionToolBoxPanel;
 import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.CssPxAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -63,6 +64,9 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private Image searchIcon;
     private Image ssoDNetLogo;
     private Image simbadLogo;
+
+    private SelectionToolBoxPanel selectionToolBoxPanel;
+    private EsaSkyToggleButton selectionToolBoxButton;
     
     private boolean foundInSimbad = false;
     private boolean foundAuthorInSimbad = false;
@@ -93,7 +97,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		
 		@Source("simbad.png")
 		ImageResource simbadLogo();
-		
+
 		@Source("logo_IMCCE_web_ssodnet.svg")
 		@MimeType("image/svg+xml")
 		DataResource ssoDNetLogo();
@@ -234,6 +238,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         textBoxHolder.add(this.searchTextBox);
         textBoxHolder.add(createTargetListBtn());
+        textBoxHolder.add(createSelectionToolboxBtn());
         MainLayoutPanel.addElementToMainArea(targetListPanel);
 		targetListPanel.hide();
         textBoxHolder.add(clearTextButton);
@@ -272,7 +277,33 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         targetListPanel.setSuggestedPosition(left, 75);
         targetListPanel.definePositionFromTopAndLeft();
     }
-    
+
+    private Widget createSelectionToolboxBtn() {
+
+        FlowPanel selectionContainer = new FlowPanel();
+
+        selectionToolBoxButton = new EsaSkyToggleButton(Icons.getDashedPolyDarkIcon());
+        selectionToolBoxButton.getElement().setId("searchPanelImg");
+        selectionToolBoxButton.setMediumStyle();
+        selectionToolBoxButton.setDarkStyle();
+        selectionToolBoxButton.addStyleName("searchPanel__selectionToolButton");
+
+        selectionToolBoxButton.addClickHandler(event -> {
+            SearchPanel.this.selectionToolBoxPanel.toggleToolbox();
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(selectionToolBoxButton));
+        });
+
+        selectionContainer.add(selectionToolBoxButton);
+
+        selectionToolBoxPanel = new SelectionToolBoxPanel(true);
+        selectionToolBoxPanel.getElement().getStyle().setTop(25, Unit.PX);
+        selectionToolBoxPanel.getElement().getStyle().setLeft(60, Unit.PX);
+        selectionToolBoxPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
+        selectionContainer.add(selectionToolBoxPanel);
+
+        return selectionContainer;
+    }
+
 	private EsaSkyButton createTargetListBtn() {
 		targetListPanel = new TargetListPanel();
 
@@ -586,6 +617,11 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		if(!widgetNotToClose.equals(targetListButton)) {
 			targetListPanel.hide();
 		}
+
+        if (!widgetNotToClose.equals(selectionToolBoxButton) && selectionToolBoxPanel.toolboxVisible()) {
+            selectionToolBoxPanel.toggleToolbox();
+            selectionToolBoxButton.toggle();
+        }
 	}
 	
 	private void addAuthorEntries(final ESASkyPublicationSearchResultList simbadAuthorResult) {

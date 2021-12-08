@@ -1,10 +1,10 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+
+import java.util.List;
 
 public interface IDescriptor {
 
@@ -100,4 +100,9 @@ public interface IDescriptor {
     
 	String getOrderBy();
     void setOrderBy(String orderBy);
+
+    void setSearchArea(SearchArea searchArea);
+    SearchArea getSearchArea();
+    boolean hasSearchArea();
+    String getSearchAreaShape();
 }

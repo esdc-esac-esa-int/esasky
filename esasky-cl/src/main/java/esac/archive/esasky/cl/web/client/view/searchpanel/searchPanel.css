@@ -183,6 +183,16 @@
 	left:160px;
 }
 
+.searchPanel__selectionToolButton{
+    position: absolute;
+    left: 125px;
+    top: 1px;
+}
+
 #targetListImg>div {
 	border: 0px;
+}
+
+#searchPanelImg>div {
+    border: 0px;
 }

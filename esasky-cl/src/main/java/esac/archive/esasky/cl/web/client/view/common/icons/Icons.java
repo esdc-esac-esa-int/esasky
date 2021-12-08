@@ -1,11 +1,11 @@
 package esac.archive.esasky.cl.web.client.view.common.icons;
 
-import java.util.HashMap;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
+
+import java.util.HashMap;
 
 
 public class Icons {
@@ -130,6 +130,20 @@ public class Icons {
 		
 		@Source("hubble-hires.png")
 		ImageResource hubbleIcon();
+
+		// selection
+		@Source("selection-rectangle-dashed.png")
+		ImageResource dashedRectIcon();
+
+		@Source("selection-circle-dashed.png")
+		ImageResource dashedCircleIcon();
+
+		@Source("selection-poly-dashed.png")
+		ImageResource dashedPolyIcon();
+
+		@Source("selection-poly-dashed-dark.png")
+		ImageResource dashedPolyDarkIcon();
+
 	}
 	
 	private static void initMap() {
@@ -317,5 +331,21 @@ public class Icons {
 	
 	public static ImageResource getHubbleIcon() {
 		return resources.hubbleIcon();
+	}
+
+	public static ImageResource getDashedCircleIcon() {
+		return resources.dashedCircleIcon();
+	}
+
+	public static ImageResource getDashedPolyIcon() {
+		return resources.dashedPolyIcon();
+	}
+
+	public static ImageResource getDashedPolyDarkIcon() {
+		return resources.dashedPolyDarkIcon();
+	}
+
+	public static ImageResource getDashedRectangleIcon() {
+		return resources.dashedRectIcon();
 	}
 }

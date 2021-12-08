@@ -1,19 +1,22 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.gwt.http.client.URL;
-
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class BaseDescriptor implements IDescriptor {
 
@@ -473,5 +476,48 @@ public abstract class BaseDescriptor implements IDescriptor {
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
 	}
+
+
+    @JsonIgnore
+    private SearchArea searchArea;
+
+    @JsonIgnore
+    @Override
+    public void setSearchArea(SearchArea searchArea) {
+        this.searchArea = searchArea;
+    }
+
+    @JsonIgnore
+    @Override
+    public SearchArea getSearchArea() {
+        return this.searchArea;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean hasSearchArea() {
+        return getSearchArea() != null;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getSearchAreaShape() {
+        String shape = "";
+
+        if (hasSearchArea()) {
+            if (searchArea.isCircle()) {
+                CoordinatesObject coordinate = searchArea.getCoordinates()[0];
+                shape =  "CIRCLE('ICRS'," + coordinate.getRaDeg()+ "," + coordinate.getDecDeg() + "," + searchArea.getRadius() + ")";
+            } else {
+                CoordinatesObject[] coordinates = searchArea.getCoordinates();
+                String coordinateStr = Arrays.stream(coordinates)
+                    .map(point -> point.getRaDeg() + "," + point.getDecDeg())
+                    .collect(Collectors.joining(","));
+
+                shape = "POLYGON('ICRS'," + coordinateStr + ")";
+            }
+        }
+        return shape;
+    }
     
 }

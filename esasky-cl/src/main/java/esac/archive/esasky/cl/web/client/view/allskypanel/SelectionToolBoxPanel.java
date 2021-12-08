@@ -2,24 +2,21 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.ui.FlowPanel;
-
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
-import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class SelectionToolBoxPanel extends FlowPanel{
 
@@ -32,48 +29,11 @@ public class SelectionToolBoxPanel extends FlowPanel{
     
     private boolean toolboxIsManuallyHidden = false;
     private boolean toolboxIsVisible = false;
+    private final boolean searchSelection;
     
     private EsaSkyButton togglePanelButton = new EsaSkyButton(SelectionToolBoxPanel.resources.arrowIcon());
-    private EsaSkyAnimation togglePanelButtonMoveAnimation = new EsaSkyAnimation() {
-        
-        @Override
-        protected void setCurrentPosition(double newPosition) {
-            getElement().getStyle().setMarginRight(newPosition, Unit.PX);
-            shapeButtonContainer.getElement().getStyle().setMarginLeft(- newPosition * 0.75, Unit.PX);
-        }
-        
-        @Override
-        protected Double getCurrentPosition() {
-            String marginRightString = getElement().getStyle().getMarginRight();
-            if (marginRightString.equals("")){
-                marginRightString = "0px";
-            }
-            //remove suffix "px"
-            marginRightString = marginRightString.substring(0, marginRightString.length() - 2);
-            Double currentPosition = new Double(marginRightString);
-            return currentPosition;
-        }
-    };
-    
-    private EsaSkyAnimation toggleShapeButtonsMoveAnimation = new EsaSkyAnimation() {
-        
-        @Override
-        protected void setCurrentPosition(double newPosition) {
-            shapeButtonContainer.getElement().getStyle().setHeight(newPosition, Unit.PX);
-        }
-        
-        @Override
-        protected Double getCurrentPosition() {
-            String heightString = shapeButtonContainer.getElement().getStyle().getHeight();
-            if (heightString.equals("")){
-                heightString = "0px";
-            }
-            //remove suffix "px"
-            heightString = heightString.substring(0, heightString.length() - 2);
-            Double currentPosition = new Double(heightString);
-            return currentPosition;
-        }
-    };
+    private EsaSkyAnimation togglePanelButtonMoveAnimation;
+    private EsaSkyAnimation toggleShapeButtonsMoveAnimation;
     
     private static Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -82,29 +42,25 @@ public class SelectionToolBoxPanel extends FlowPanel{
         @Source("selectionToolbox.css")
         @CssResource.NotStrict
         CssResource style();
-		
-		@Source("selection-rectangle-dashed.png")
-		ImageResource rect();
-		
-		@Source("selection-circle-dashed.png")
-		ImageResource circle();
-		
-		@Source("selection-poly-dashed.png")
-		ImageResource poly();
-		
+
         @Source("up_arrow_outline.png")
         @ImageOptions(flipRtl = true)
         ImageResource arrowIcon();
     }
     
     public SelectionToolBoxPanel() {
-    	style = resources.style();
-    	style.ensureInjected();
-    	initView();
-    	setVisible(false);
-    	hideToolbox();
+        this(false);
     }
-    
+
+    public SelectionToolBoxPanel(boolean searchSelection){
+        style = resources.style();
+        style.ensureInjected();
+        this.searchSelection = searchSelection;
+        initView();
+        setVisible(!searchSelection);
+        hideToolbox();
+    }
+
     private void toggleOtherButtons(EsaSkyToggleButton buttonPressed) {
     	if(buttonPressed != boxButton) {
     		boxButton.setToggleStatus(false);
@@ -139,32 +95,55 @@ public class SelectionToolBoxPanel extends FlowPanel{
         }
     }
 
-    private void showToolbox() {
+    protected void showToolbox() {
         toolboxIsVisible = true;
-        togglePanelButton.setTitle(TextMgr.getInstance().getText("selectionToolbox_hideSelectionToolbox"));
-        togglePanelButton.rotate(90, 500);
-        togglePanelButtonMoveAnimation.animateTo(0, 500);
-        toggleShapeButtonsMoveAnimation.animateTo(123, 200);
+
+        if (this.searchSelection) {
+            setVisible(true);
+            toggleShapeButtonsMoveAnimation.animateTo(60, 900);
+        } else {
+            togglePanelButtonMoveAnimation.animateTo(0, 500);
+            togglePanelButton.setTitle(TextMgr.getInstance().getText("selectionToolbox_hideSelectionToolbox"));
+            togglePanelButton.rotate(90, 500);
+            toggleShapeButtonsMoveAnimation.animateTo(123, 200);
+        }
     }
     
-    private void hideToolbox() {
+    protected void hideToolbox() {
         toolboxIsVisible = false;
-        togglePanelButton.setTitle(TextMgr.getInstance().getText("selectionToolbox_showSelectionToolbox"));
-        togglePanelButton.rotate(-90, 500);
-        togglePanelButtonMoveAnimation.animateTo(-120, 400);
-        toggleShapeButtonsMoveAnimation.animateTo(0, 700);
+
+        if (this.searchSelection) {
+            toggleShapeButtonsMoveAnimation.animateTo(250, 700);
+        } else {
+            togglePanelButton.setTitle(TextMgr.getInstance().getText("selectionToolbox_showSelectionToolbox"));
+            togglePanelButton.rotate(-90, 500);
+            togglePanelButtonMoveAnimation.animateTo(-120, 400);
+            togglePanelButton.setTitle(TextMgr.getInstance().getText("selectionToolbox_showSelectionToolbox"));
+            togglePanelButton.rotate(-90, 500);
+            togglePanelButtonMoveAnimation.animateTo(-120, 400);
+            toggleShapeButtonsMoveAnimation.animateTo(0, 700);
+        }
+
+
         if(AladinLiteWrapper.getAladinLite().isAttached()) {
             AladinLiteWrapper.getAladinLite().endSelectionMode();            
         }
         deToggleAllButtons();
     }
 
-    private void toggleToolbox() {
+    public void toggleToolbox() {
         if(toolboxIsVisible) {
             hideToolbox();
+            if(this.searchSelection) {
+                AladinLiteWrapper.getAladinLite().clearSearchArea();
+            }
         } else {
             showToolbox();
         }
+    }
+
+    public boolean toolboxVisible() {
+        return toolboxIsVisible;
     }
     
     private void setToolboxVisible() {
@@ -176,24 +155,32 @@ public class SelectionToolBoxPanel extends FlowPanel{
     }
     
     private void initView() {
-        FlowPanel toggleAndHelpContainer = new FlowPanel();
-        toggleAndHelpContainer.addStyleName("selectionToolBox__toggleAndHelpContainer");
-        togglePanelButton.getElement().setId("toggleSelectionToolboxPanelButton");
-        togglePanelButton.setNonTransparentBackground();
-        togglePanelButton.addClickHandler(new ClickHandler() {
-            
-            @Override
-            public void onClick(ClickEvent arg0) {
+
+        if (this.searchSelection) {
+            toggleShapeButtonsMoveAnimation = getShapeButtonsAnimationHorizontal();
+            shapeButtonContainer.addStyleName("selectionToolbox__shapeButtonContainerHorizontal");
+        } else {
+            toggleShapeButtonsMoveAnimation = getShapeButtonsAnimation();
+            FlowPanel toggleAndHelpContainer = new FlowPanel();
+            togglePanelButtonMoveAnimation = getToggleButtonAnimation();
+            toggleAndHelpContainer.addStyleName("selectionToolBox__toggleAndHelpContainer");
+            togglePanelButton.getElement().setId("toggleSelectionToolboxPanelButton");
+            togglePanelButton.setNonTransparentBackground();
+            togglePanelButton.addClickHandler(arg0 -> {
                 if(toolboxIsVisible) {
                     toolboxIsManuallyHidden = true;
                 }
                 toggleToolbox();
-            }
-        });
-        
-        CommonEventBus.getEventBus().addHandler(MultiSelectableDataInSkyChangedEvent.TYPE, new MultiSelectableDataInSkyChangedEventHandler() {
-            @Override
-            public void onChange(MultiSelectableDataInSkyChangedEvent event) {
+            });
+
+            toggleAndHelpContainer.add(togglePanelButton);
+
+            HelpButton helpButton = new HelpButton(TextMgr.getInstance().getText("selectionToolbox_helpText"), TextMgr.getInstance().getText("selectionToolbox_helpHeader"));
+            helpButton.addStyleName("selectionToolboxHelpButton");
+            toggleAndHelpContainer.add(helpButton);
+            add(toggleAndHelpContainer);
+
+            CommonEventBus.getEventBus().addHandler(MultiSelectableDataInSkyChangedEvent.TYPE, event -> {
                 if(event.isAtLeastOneMultiSelectableDatasetInSky()) {
                     setToolboxVisible();
                     if(!toolboxIsManuallyHidden) {
@@ -203,23 +190,20 @@ public class SelectionToolBoxPanel extends FlowPanel{
                     hideToolbox();
                     setToolboxHidden();
                 }
-            }
-        });
-        toggleAndHelpContainer.add(togglePanelButton);
+            });
+
+            shapeButtonContainer.addStyleName("selectionToolbox__shapeButtonContainer");
+        }
+
         
-        HelpButton helpButton = new HelpButton(TextMgr.getInstance().getText("selectionToolbox_helpText"), TextMgr.getInstance().getText("selectionToolbox_helpHeader"));
-        helpButton.addStyleName("selectionToolboxHelpButton");
-        toggleAndHelpContainer.add(helpButton);
-        add(toggleAndHelpContainer);
-        
-        boxButton = new EsaSkyToggleButton(resources.rect());
+        boxButton = new EsaSkyToggleButton(Icons.getDashedRectangleIcon());
 		addButtonBehaviorAndStyle(boxButton, "box");
-		circleButton = new EsaSkyToggleButton(resources.circle());
+		circleButton = new EsaSkyToggleButton(Icons.getDashedCircleIcon());
 		addButtonBehaviorAndStyle(circleButton, "circle");
-		polyButton = new EsaSkyToggleButton(resources.poly());
+		polyButton = new EsaSkyToggleButton(Icons.getDashedPolyIcon());
 		addButtonBehaviorAndStyle(polyButton, "polygon");
 
-        shapeButtonContainer.addStyleName("selectionToolbox__shapeButtonContainer");
+
         
         shapeButtonContainer.add(boxButton);
         shapeButtonContainer.add(circleButton);
@@ -231,20 +215,24 @@ public class SelectionToolBoxPanel extends FlowPanel{
 
     private void addButtonBehaviorAndStyle(EsaSkyToggleButton button, String mode) {
         addCommonButtonStyle(button, TextMgr.getInstance().getText("selectionToolbox_" + mode + "ButtonTooltip"));
-		button.addClickHandler( 
-				new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-			    if(button.getToggleStatus()) {
-			        AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
-			        AladinLiteWrapper.getAladinLite().startSelectionMode();
-			        toggleOtherButtons(button);
-			    } else {
-			        AladinLiteWrapper.getAladinLite().endSelectionMode();
-			    }
-			}
-		});
+		button.addClickHandler(
+                event -> {
+                    if(button.getToggleStatus()) {
+                        AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
+                        if (this.searchSelection) {
+                            AladinLiteWrapper.getAladinLite().setSelectionType("SEARCH");
+                        } else {
+                            AladinLiteWrapper.getAladinLite().setSelectionType("SHAPE");
+                        }
+                        AladinLiteWrapper.getAladinLite().startSelectionMode();
+                        toggleOtherButtons(button);
+                    } else {
+                        if (this.searchSelection) {
+                            AladinLiteWrapper.getAladinLite().clearSearchArea();
+                        }
+                        AladinLiteWrapper.getAladinLite().endSelectionMode();
+                    }
+                });
     }
 
 
@@ -254,4 +242,80 @@ public class SelectionToolBoxPanel extends FlowPanel{
 		button.addStyleName("selectionToolboxButton");
 		button.setTitle(tooltip);
 	}
+
+    protected EsaSkyAnimation getToggleButtonAnimation() {
+        return new EsaSkyAnimation() {
+
+            @Override
+            protected void setCurrentPosition(double newPosition) {
+                getElement().getStyle().setMarginRight(newPosition, Unit.PX);
+                shapeButtonContainer.getElement().getStyle().setMarginLeft(- newPosition * 0.75, Unit.PX);
+            }
+
+            @Override
+            protected Double getCurrentPosition() {
+                String marginRightString = getElement().getStyle().getMarginRight();
+                if (marginRightString.equals("")){
+                    marginRightString = "0px";
+                }
+                //remove suffix "px"
+                marginRightString = marginRightString.substring(0, marginRightString.length() - 2);
+                Double currentPosition = new Double(marginRightString);
+                return currentPosition;
+            }
+        };
+    }
+
+    protected EsaSkyAnimation getShapeButtonsAnimation() {
+        return new EsaSkyAnimation() {
+
+            @Override
+            protected void setCurrentPosition(double newPosition) {
+                shapeButtonContainer.getElement().getStyle().setHeight(newPosition, Unit.PX);
+            }
+
+            @Override
+            protected Double getCurrentPosition() {
+                String heightString = shapeButtonContainer.getElement().getStyle().getHeight();
+                if (heightString.equals("")){
+                    heightString = "0px";
+                }
+                //remove suffix "px"
+                heightString = heightString.substring(0, heightString.length() - 2);
+                Double currentPosition = new Double(heightString);
+                return currentPosition;
+            }
+        };
+    }
+
+    protected EsaSkyAnimation getShapeButtonsAnimationHorizontal() {
+        return new EsaSkyAnimation() {
+
+            @Override
+            protected void setCurrentPosition(double newPosition) {
+                getElement().getStyle().setLeft(newPosition, Unit.PX);
+                shapeButtonContainer.getElement().getStyle().setLeft(newPosition, Unit.PX);
+            }
+
+            @Override
+            protected Double getCurrentPosition() {
+                String heightString = shapeButtonContainer.getElement().getStyle().getLeft();
+                if (heightString.equals("")){
+                    heightString = "0px";
+                }
+                //remove suffix "px"
+                heightString = heightString.substring(0, heightString.length() - 2);
+                Double currentPosition = new Double(heightString);
+                return currentPosition;
+            }
+            @Override
+            protected void onComplete() {
+                super.onComplete();
+
+                if(!toolboxIsVisible) {
+                    setVisible(false);
+                }
+            }
+        };
+    }
 }

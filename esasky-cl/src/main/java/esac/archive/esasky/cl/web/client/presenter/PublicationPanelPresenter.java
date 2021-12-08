@@ -222,7 +222,7 @@ public class PublicationPanelPresenter {
 		
 		final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
 		isShowingDataOrCallInProgress = true;
-		
+
 		String mostOrLeastAdql = isMostChecked ? "bibcount DESC" : "bibcount ASC";
         if (entity == null) {            
             entity = entityRepo.createPublicationsEntity(descriptor);
@@ -238,7 +238,10 @@ public class PublicationPanelPresenter {
         	if(conePos != null) {
         		final String adql = TAPPublicationsService.getConeSearchMetadataAdqlforSIMBAD(descriptor, conePos, view.getLimit(), mostOrLeastAdql);
         		url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
-        	}else {
+        	} else if (descriptor.hasSearchArea()){
+				final String adql = TAPPublicationsService.getSearchAreaMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
+				url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
+			} else {
         		final String adql = TAPPublicationsService.getMetadataAdqlforSIMBAD(descriptor, view.getLimit(), mostOrLeastAdql);
         		url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
         	}
