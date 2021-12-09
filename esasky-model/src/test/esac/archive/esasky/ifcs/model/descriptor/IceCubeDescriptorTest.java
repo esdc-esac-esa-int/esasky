@@ -22,7 +22,7 @@ public class IceCubeDescriptorTest {
     }
 
     @Test
-    public void testGwDescriptor() {
+    public void testIceCubeDescriptor() {
         IceCubeDescriptor descriptor = descriptorList.getDescriptors().get(0);
         assertEquals("galaxy", descriptor.getIcon());
         assertEquals("ASTRO_ICECUBE_Icecube_events", descriptor.getDescriptorId());

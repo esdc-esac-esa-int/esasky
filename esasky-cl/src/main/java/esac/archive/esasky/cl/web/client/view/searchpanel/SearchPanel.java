@@ -617,11 +617,6 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		if(!widgetNotToClose.equals(targetListButton)) {
 			targetListPanel.hide();
 		}
-
-        if (!widgetNotToClose.equals(selectionToolBoxButton) && selectionToolBoxPanel.toolboxVisible()) {
-            selectionToolBoxPanel.toggleToolbox();
-            selectionToolBoxButton.toggle();
-        }
 	}
 	
 	private void addAuthorEntries(final ESASkyPublicationSearchResultList simbadAuthorResult) {
