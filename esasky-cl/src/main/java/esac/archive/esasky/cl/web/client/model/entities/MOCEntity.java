@@ -1,11 +1,5 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.http.client.RequestBuilder;
@@ -13,13 +7,6 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
-
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -33,18 +20,26 @@ import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository.MocLoadedObserver;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.NumberFormatter;
-import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
+import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class MOCEntity implements GeneralEntityInterface {
 
@@ -105,6 +100,10 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 		@Override
 		public void run() {
+			if (descriptor.hasSearchArea()) {
+				return;
+			}
+
 			if (getCountStatus().hasMoved(descriptor)) {
 	    		filterRequested = true;
 	    	} else if( getCountStatus().getCount(descriptor) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
@@ -243,7 +242,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void checkLoadMOC() {
-    	if (getCountStatus().hasMoved(descriptor)) {
+    	if (getCountStatus().hasMoved(descriptor) && !descriptor.hasSearchArea()) {
     		loadMOCRequested = true;
     	} else {
     		loadMOC();
@@ -284,7 +283,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	
-    	if(targetOrder == 8 && tablePanel.getTapFilters().size() == 0) {
+    	if((targetOrder == 8 && tablePanel.getTapFilters().size() == 0) || descriptor.hasSearchArea()) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
     	}
@@ -312,14 +311,16 @@ public class MOCEntity implements GeneralEntityInterface {
     private void getPrecomputedMOC() {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
-        String adql = metadataService.getPrecomputedMOCAdql(descriptor);
-        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON).replaceAll("#", "%23");
+        String constraint = metadataService.getPrecomputedMocConstraint(descriptor);
+		Coordinate coord = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
+		String center = "POINT(" + coord.getRa() + "," + coord.getDec() + ")";
+        String url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint), descriptor.getTapTable()).replaceAll("#", "%23");
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
             builder.sendRequest(null,
-                new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MOCAsRecordCallback.OnComplete() {
+                new MOCAsRecordCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MOCAsRecordCallback.OnComplete() {
                	 
                 	@Override
                 	public void onComplete() {
@@ -387,19 +388,15 @@ public class MOCEntity implements GeneralEntityInterface {
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     	try {
     		builder.sendRequest(null,
-    				new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MOCAsRecordCallback.OnComplete() {
-	                	 
-	                 	@Override
-	                 	public void onComplete() {
-	                 		getVisibleCount();
-	                 		setTableCountText();
-	                		onFoVChanged();
+    				new MOCAsRecordCallback(tablePanel, adql, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), () -> {
+						getVisibleCount();
+						setTableCountText();
+					   	onFoVChanged();
 
-	                 		if(currentVisibleCount < DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
-	                			sendLoadQuery();
-	                		}
-	                 	}
-    				 }));
+						if(currentVisibleCount < DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
+						   sendLoadQuery();
+					   }
+					}));
     	} catch (RequestException e) {
     		Log.error(e.getMessage());
     		Log.error("[getMocMetadata] Error fetching JSON data from server");
@@ -439,27 +436,23 @@ public class MOCEntity implements GeneralEntityInterface {
 		MocRepository.getInstance().notifyMocLoaded(parentEntity.getEsaSkyUniqId() + "_moc");
 		
 		if(waitingForHeaders) {
-			MocRepository.getInstance().registerMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header", new MocLoadedObserver() {
-				
-				@Override
-				public void onLoaded() {
-				    if(tablePanel.hasBeenClosed()) {
-				        waitingForHeaders = false;
-				        MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
-				        return;
-				    }
-					if(overlay == null) {
-						String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
-						overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
-						AladinLiteWrapper.getAladinLite().addMOC(overlay);
-					}
-					overlay.invokeFunction("dataFromESAJSON", data);
+			MocRepository.getInstance().registerMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header", () -> {
+				if(tablePanel.hasBeenClosed()) {
 					waitingForHeaders = false;
-					getVisibleCount();
-             		setTableCountText();
-             		onFoVChanged();
 					MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
+					return;
 				}
+				if(overlay == null) {
+					String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+					overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+					AladinLiteWrapper.getAladinLite().addMOC(overlay);
+				}
+				overlay.invokeFunction("dataFromESAJSON", data);
+				waitingForHeaders = false;
+				getVisibleCount();
+				 setTableCountText();
+				 onFoVChanged();
+				MocRepository.getInstance().unRegisterMocLoadedObserver(parentEntity.getEsaSkyUniqId() + "_header");
 			});
 		
 		}else {
@@ -518,10 +511,10 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		AladinLiteWrapper.getAladinLite().clearMOC(overlay);
-		
-    	int minOrder = MocRepository.getMinOrderFromFoV();
-    	int maxOrder = MocRepository.getMaxOrderFromFoV();
-		
+
+		int minOrder = MocRepository.getMinOrderFromFoV();
+		int maxOrder = MocRepository.getMaxOrderFromFoV();
+
     	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
     	overlay.invokeFunction("reportChange");
 
@@ -532,6 +525,11 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		@Override
 		public void run() {
+
+				if (descriptor.hasSearchArea()) {
+					return;
+				}
+
 				getVisibleCount();
 				
 				setTableCountText();	
@@ -560,14 +558,13 @@ public class MOCEntity implements GeneralEntityInterface {
 	};
 	
 	public void onFoVChanged() {
+		 if(shouldBeShown && overlay != null) {
 
-		if(shouldBeShown && overlay != null) {
-			
 			int minOrder = MocRepository.getMinOrderFromFoV();
 			int maxOrder = MocRepository.getMaxOrderFromFoV();
-			
+
 			if(maxOrder != currentDisplayOrder || minOrder != currentMinOrder) {
-		    	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
+				overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
 				currentDisplayOrder = maxOrder;
 				currentMinOrder = minOrder;
 			}

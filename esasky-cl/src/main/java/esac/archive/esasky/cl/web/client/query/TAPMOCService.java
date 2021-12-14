@@ -2,7 +2,6 @@ package esac.archive.esasky.cl.web.client.query;
 
 
 import com.allen_sauer.gwt.log.client.Log;
-
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -26,13 +25,17 @@ public class TAPMOCService {
         return instance;
     }
 
-    public String getPrecomputedMOCAdql(IDescriptor descriptor) {
-    	
-    	Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-    	String adql = "SELECT esasky_q3c_moc_query(\'" + descriptor.getTapTable().replace("public", "moc_schema") 
-    			+ "\', " + getGeometricConstraint() + ", \'" + Double.toString(pos.getRa()) + "\', \'" + Double.toString(pos.getDec())
-    			+ "\')  as moc from dual";
-    	return adql;
+    public String getPrecomputedMocConstraint(IDescriptor descriptor) {
+		if (descriptor.hasSearchArea()) {
+			return descriptor.getSearchAreaShape();
+		} else {
+			String constraint = getGeometricConstraint().replace("\'", "");
+			if (!constraint.equals("")) {
+				constraint = "POLYGON" + constraint;
+			}
+
+			return constraint;
+		}
     }
     
     public String getFilteredCatalogueMOCAdql(IDescriptor descriptor, String filter) {
@@ -81,7 +84,7 @@ public class TAPMOCService {
     
     private String getGeometricConstraint() {
     	final String debugPrefix = "[TAPMOCService.getGeometricConstraint]";
-        String shape = null;
+        String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {

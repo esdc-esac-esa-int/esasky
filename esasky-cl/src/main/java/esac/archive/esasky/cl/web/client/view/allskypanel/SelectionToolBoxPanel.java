@@ -57,7 +57,7 @@ public class SelectionToolBoxPanel extends FlowPanel{
         style.ensureInjected();
         this.searchSelection = searchSelection;
         initView();
-        setVisible(!searchSelection);
+        setVisible(false);
         hideToolbox();
     }
 
@@ -78,7 +78,7 @@ public class SelectionToolBoxPanel extends FlowPanel{
         circleButton.setToggleStatus(false);
         polyButton.setToggleStatus(false);
     }
-    
+
     public void areaSelectionKeyboardShortcutStart() {
         String mode = AladinLiteWrapper.getAladinLite().getSelectionMode();
         if (mode.equals("BOX")) {

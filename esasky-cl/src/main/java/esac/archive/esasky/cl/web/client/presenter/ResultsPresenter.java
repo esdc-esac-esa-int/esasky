@@ -1,35 +1,14 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
-import java.util.HashMap;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.user.client.ui.Widget;
-
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.ReturnType;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
-import esac.archive.esasky.cl.web.client.event.AddTableEvent;
-import esac.archive.esasky.cl.web.client.event.AddTableEventHandler;
-import esac.archive.esasky.cl.web.client.event.ESASkySampEvent;
-import esac.archive.esasky.cl.web.client.event.ExportCSVEvent;
-import esac.archive.esasky.cl.web.client.event.ExportCSVEventHandler;
-import esac.archive.esasky.cl.web.client.event.ExportVOTableEvent;
-import esac.archive.esasky.cl.web.client.event.ExportVOTableEventHandler;
-import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
-import esac.archive.esasky.cl.web.client.event.SendTableToEvent;
-import esac.archive.esasky.cl.web.client.event.SendTableToEventHandler;
-import esac.archive.esasky.cl.web.client.event.UpdateNumRowsSelectedEvent;
-import esac.archive.esasky.cl.web.client.event.UpdateNumRowsSelectedEventHandler;
-import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEvent;
-import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -39,6 +18,13 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.ReturnType;
+
+import java.util.HashMap;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -85,78 +71,43 @@ public class ResultsPresenter implements ICountRequestHandler {
     private void bind() {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE,
-                new AladinLiteCoordinatesOrFoVChangedEventHandler() {
-
-                    @Override
-                    public void onChangeEvent(
-                            final AladinLiteCoordinatesOrFoVChangedEvent clickEvent) {
-                    	if(GUISessionStatus.getIsInScienceMode()) {
-                    		descriptorRepo.doCountAll();
-                    	} else {
-                    		GUISessionStatus.setDoCountOnEnteringScienceMode();
-                    	}
-                    	CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
-                    	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_COUNT, GoogleAnalytics.CAT_COUNT);
+                clickEvent -> {
+                    if(GUISessionStatus.getIsInScienceMode()) {
+                        if (!descriptorRepo.hasSearchArea()) {
+                            descriptorRepo.doCountAll();
+                        }
+                    } else {
+                        GUISessionStatus.setDoCountOnEnteringScienceMode();
                     }
-        });
+                    CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
+                    GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_COUNT, GoogleAnalytics.CAT_COUNT);
+                });
         
         // Send Table to Event
         CommonEventBus.getEventBus().addHandler(SendTableToEvent.TYPE,
-                new SendTableToEventHandler() {
+                clickEvent -> sendToSamp());
 
-            @Override
-            public void onSendTableClick(final SendTableToEvent clickEvent) {
-                sendToSamp();
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(ExportVOTableEvent.TYPE,
+                clickEvent -> {
+                    doSaveTableAs(ReturnType.VOTABLE);
+                    clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
+                });
 
-        CommonEventBus.getEventBus().addHandler(ExportVOTableEvent.TYPE, 
-                new ExportVOTableEventHandler() {
-            
-            @Override
-            public void onExportClick(final ExportVOTableEvent clickEvent) {
-                doSaveTableAs(EsaSkyConstants.ReturnType.VOTABLE);
-                clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
-            }
-        });
-
-        CommonEventBus.getEventBus().addHandler(ExportCSVEvent.TYPE, 
-                new ExportCSVEventHandler() {
-            
-            @Override
-            public void onExportClick(final ExportCSVEvent clickEvent) {
-                doSaveTableAs(EsaSkyConstants.ReturnType.CSV);
-                clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(ExportCSVEvent.TYPE,
+                clickEvent -> {
+                    doSaveTableAs(ReturnType.CSV);
+                    clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
+                });
 
         // Update number of rows selected event.
         CommonEventBus.getEventBus().addHandler(UpdateNumRowsSelectedEvent.TYPE,
-                new UpdateNumRowsSelectedEventHandler() {
-
-            @Override
-            public void onUpdateClick(final UpdateNumRowsSelectedEvent clickEvent) {
-                updateNumberOfObservationsSelected(clickEvent.getSaveAllView());
-            }
-        });
+                clickEvent -> updateNumberOfObservationsSelected(clickEvent.getSaveAllView()));
 
         CommonEventBus.getEventBus().addHandler(SSOCrossMatchEvent.TYPE,
-                new SSOCrossMatchEventHandler() {
-
-            @Override
-            public void newSsoSelected(final SSOCrossMatchEvent event) {
-                descriptorRepo.doCountSSO(event.getSsoName(), event.getSsoType());
-            }
-        });
+                event -> descriptorRepo.doCountSSO(event.getSsoName(), event.getSsoType()));
         
       CommonEventBus.getEventBus().addHandler(AddTableEvent.TYPE,
-          new AddTableEventHandler() {
-    
-            @Override
-            public void onEvent(AddTableEvent event) {
-                getMetadata(event.getEntity());
-            }
-          });
+              event -> getMetadata(event.getEntity()));
     }
     
     public final CloseableTabLayoutPanel getTabPanel() {

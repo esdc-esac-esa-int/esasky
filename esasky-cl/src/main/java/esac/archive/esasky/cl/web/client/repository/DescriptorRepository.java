@@ -658,6 +658,14 @@ public class DescriptorRepository {
         doCountAll();
     }
 
+    public SearchArea getSearchArea() {
+        return this.searchArea;
+    }
+
+    public boolean hasSearchArea() {
+        return this.searchArea != null;
+    }
+
     private static long lastestSingleCountTimecall;
 
     private final void requestSingleCount() {

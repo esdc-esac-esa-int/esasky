@@ -50,4 +50,14 @@ public class TAPUtils {
         return EsaSkyWebConstants.TAP_CONTEXT + "/tap/counts?stcs="
         + stcs + "&timecall=" + timecall + "&client=esasky-web-client";
     }
+
+    public static String getTAPMocQuery(final String center, final String stcs, final String tableName) {
+
+        // Get System time call
+        Long timecall = System.currentTimeMillis();
+
+        Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
+        return EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?center=" + center +
+                "&stcs="+ stcs + "&tablename="+ tableName + "&timecall=" + timecall + "&client=esasky-web-client";
+    }
 }
