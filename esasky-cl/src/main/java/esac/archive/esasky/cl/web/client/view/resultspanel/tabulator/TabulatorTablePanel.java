@@ -943,4 +943,29 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 
 	}
+
+	@Override
+	public void showColumn(String field) {
+		table.showColumn(field);
+	}
+
+	@Override
+	public void hideColumn(String field) {
+		table.hideColumn(field);
+	}
+
+	@Override
+	public void blockRedraw() {
+		table.blockRedraw();
+	}
+
+	@Override
+	public void restoreRedraw() {
+		table.restoreRedraw();
+	}
+
+	@Override
+	public void redrawAndReinitializeHozVDom() {
+		table.redrawAndReinitializeHozVDom();
+	}
 }

@@ -1,13 +1,12 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel;
 
-import java.util.Map;
-
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Widget;
-
+import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+
+import java.util.Map;
 
 public interface ITablePanel {
 
@@ -96,4 +95,11 @@ public interface ITablePanel {
 	void filterOnFoV(String raCol, String decCol);
 	
 	void setMaxHeight(int height);
+
+	void showColumn(String field);
+	void hideColumn(String field);
+
+	void blockRedraw();
+	void restoreRedraw();
+	void redrawAndReinitializeHozVDom();
 }
