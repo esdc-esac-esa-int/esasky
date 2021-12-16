@@ -92,7 +92,8 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             "gal_coords_lat",
             "gal_coords_lon",
             "discovery_date",
-            "discovery_time");
+            "discovery_time",
+            "stream");
 
     public interface Resources extends ClientBundle {
         @Source("gw.css")
