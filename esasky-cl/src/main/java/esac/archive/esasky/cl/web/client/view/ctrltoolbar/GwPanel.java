@@ -194,8 +194,10 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         } else if (tabIndex == TabIndex.NEUTRINO.ordinal()) {
             loadNeutrinoData();
             TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
-            int len = neutrinoTab.getTablePanel().getAllRows().length;
-            neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
+            if (neutrinoTab != null) {
+                int len = neutrinoTab.getTablePanel().getAllRows().length;
+                neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
+            }
 
             TabItem gwTab = getTabItem(TabIndex.GW);
             if (gwTab != null && gwTab.hasExtraEntity()) {
