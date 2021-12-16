@@ -140,7 +140,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
         expandOrCollapseColumnsButton.addClickHandler(event -> {
             TabItem tabItem = getActiveTabItem();
-            if (tabItem == null) {
+            if (tabItem == null || !tabItem.dataLoaded()) {
                 return;
             }
             if (tabItem.isExpanded()) {
@@ -162,6 +162,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         tabLayoutPanel = new TabLayoutPanel(50, Style.Unit.PX);
 
         tabLayoutPanel.addBeforeSelectionHandler(event -> {
+            changeTab(event.getItem());
 
             TabItem newTabItem = getTabItem(TabIndex.values()[event.getItem()]);
 
@@ -174,8 +175,6 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                     expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showFewerColumns"));
                 }
             }
-
-            changeTab(event.getItem());
         });
 
         tabLayoutPanel.add(new FlowPanel(), TextMgr.getInstance().getText("gwPanel_gwTab"));
@@ -245,9 +244,44 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             if (tabContentContainer instanceof FlowPanel) {
                 ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
             }
+
+            TabItem tabItem = new TabItem(descriptor, entity, defaultVisibleColumns, iceCubeColumnsToAlwaysHide);
+
+            entity.getTablePanel().registerObserver(new TableObserver() {
+                @Override
+                public void numberOfShownRowsChanged(int numberOfShownRows) {
+                    // Not needed here
+                }
+
+                @Override
+                public void onSelection(ITablePanel selectedTablePanel) {
+                    // Not needed here
+                }
+
+                @Override
+                public void onUpdateStyle(ITablePanel panel) {
+                    // Not needed here
+                }
+
+                @Override
+                public void onDataLoaded(int numberOfRows) {
+                    tabItem.setDataLoaded(true);
+                }
+
+                @Override
+                public void onRowSelected(GeneralJavaScriptObject row) {
+                    // Not needed here
+                }
+
+                @Override
+                public void onRowDeselected(GeneralJavaScriptObject row) {
+                    // Not needed here
+                }
+            });
+
             entity.fetchDataWithoutMOC();
 
-            setTabItem(TabIndex.NEUTRINO, new TabItem(descriptor, entity, defaultVisibleColumns, iceCubeColumnsToAlwaysHide));
+            setTabItem(TabIndex.NEUTRINO, tabItem);
             setMaxSize();
         }
 
@@ -278,6 +312,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
             }
 
+            TabItem tabItem = new TabItem(descriptor, entity, defaultVisibleColumns, gwColumnsToAlwaysHide, extraEntity);
             entity.getTablePanel().registerObserver(new TableObserver() {
                 @Override
                 public void numberOfShownRowsChanged(int numberOfShownRows) {
@@ -296,6 +331,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
                 @Override
                 public void onDataLoaded(int numberOfRows) {
+                    tabItem.setDataLoaded(true);
                     entity.hideAllShapes();
                 }
 
@@ -331,7 +367,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             });
 
             entity.fetchDataWithoutMOC();
-            setTabItem(TabIndex.GW, new TabItem(descriptor, entity, defaultVisibleColumns, gwColumnsToAlwaysHide, extraEntity));
+            setTabItem(TabIndex.GW, tabItem);
             setMaxSize();
         }
     }
@@ -492,6 +528,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         private final EsaSkyEntity entity;
         private final EsaSkyEntity extraEntity;
         private boolean isExpanded = false;
+        private boolean dataLoaded = false;
 
         private final List<String> baseColumns;
         private final List<String> alwaysHiddenColumns;
@@ -568,6 +605,14 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             }
             tablePanel.restoreRedraw();
             tablePanel.redrawAndReinitializeHozVDom();
+        }
+
+        public boolean dataLoaded() {
+            return dataLoaded;
+        }
+
+        public void setDataLoaded(boolean loaded) {
+            dataLoaded = loaded;
         }
     }
 }
