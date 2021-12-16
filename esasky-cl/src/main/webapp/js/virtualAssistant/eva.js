@@ -32,7 +32,7 @@ function initChat2() {
 	        paddingRegular: '10px!important',
 	        paddingWide: '10px!important',
 	        sendBoxHeight: 50,
-	        typingAnimationBackgroundImage: 'url(\'https://pre-eva.esac.esa.int/mgmt/assets/images/typing.gif\')',
+	        typingAnimationBackgroundImage: 'url(\'https://eva.esa.int/mgmt/assets/images/typing.gif\')',
 	        typingAnimationWidth: 180,
 	        bubbleMinHeight: 30,
 	        suggestedActionBackground: 'transparent',
@@ -83,25 +83,34 @@ function initChat2() {
     this.directline = window.WebChat.createDirectLine({
         secret: '',
         token: '',
-        domain: "https://pre-eva.esac.esa.int/dl/directline/aHR0cDovL2V2YWVzYXNreWJvdDA=",
+        domain: "https://eva.esa.int/dl/directline/aHR0cDovL2V2YWVzYXNreWJvdDA=",
         webSocket: false
     });
 
     // renders webchat
     window.WebChat.renderWebChat(
-        {
-            directLine: this.directline,
-            locale: 'en',
-            styleOptions,
-            store: this.store,
-            selectVoice: () => ({ voiceURI: 'en-GB-George-Apollo' }),
-            webSpeechPonyfillFactory: window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
-                credentials: {
-                    region: 'westeurope',
-                    subscriptionKey: 'd9b8e0acb94241a389ffc117b637e54c'
-                }
-            })
-        },
+		{
+			directLine: this.directline,
+			locale: 'en',
+			styleOptions,
+			store: this.store,
+			selectVoice: () => ({ voiceURI: 'en-GB-George-Apollo' }),
+			webSpeechPonyfillFactory:  window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
+				credentials: async (credentials = {}) => {
+					const response = await fetch("https://eva.esa.int/dl/directline/aHR0cDovL2V2YWVzYXNreWJvdDA=/tokens/speech" , {
+						method: 'POST',
+					});
+					if (response.status === 200) {
+						const { subscriptionKey, region } = await response.json();
+						credentials['subscriptionKey'] = subscriptionKey;
+						credentials['region'] = region;
+						return credentials;
+					} else {
+						console.log('error')
+					}
+				}
+			})
+		},
         document.getElementById('webchat')
     );
     document.querySelector('#webchat > *').focus();
