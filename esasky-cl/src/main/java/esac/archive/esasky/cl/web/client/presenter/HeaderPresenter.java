@@ -69,6 +69,7 @@ public class HeaderPresenter {
 		void setIsNotCenterCoordinateStyle();
 		void setAvailableCoordinateFrames(List<SelectionEntry> coordinateFrames);
 		void selectCoordinateFrame(int index);
+		void selectCoordinateFrameNoEvent(int index);
 		void setHipsName(String hipsName);
 		void setIsInScienceMode(boolean isInScienceMode);
 		void setAvailableLanguages(List<SimpleEntry<String, String>> languages);
@@ -408,7 +409,7 @@ public class HeaderPresenter {
 				)
 				);
 		if(coordinateFrameFromUrl != null && coordinateFrameFromUrl.toLowerCase().contains("gal")){
-			view.selectCoordinateFrame(1);
+			view.selectCoordinateFrameNoEvent(1);
 		}
 
 		view.setHipsName(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);

@@ -412,10 +412,15 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	@Override
 	public void selectCoordinateFrame(int index) {
+		selectCoordinateFrameNoEvent(index);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COOFRAMECHANGED,
+				coordinateFrameFull.getSelectedValue());
+	}
+	
+	@Override
+	public void selectCoordinateFrameNoEvent(int index) {
 		coordinateFrameFull.setSelectedIndex(index);
 		coordinateFrameFirstLetter.setSelectedIndex(index);
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COOFRAMECHANGED,
-				AladinLiteWrapper.getCoordinatesFrame().getValue());
 	}
 
 	@Override
