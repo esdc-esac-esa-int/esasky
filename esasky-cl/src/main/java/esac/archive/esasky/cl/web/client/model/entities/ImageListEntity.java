@@ -198,10 +198,8 @@ public class ImageListEntity extends EsaSkyEntity {
     	toggleFootprints();
     	if(lastImage != null){
     		if(isClosed) {
-    			lastImage.removeOpenSeaDragon();
 				UrlUtils.setSelectedHstImageId(null);
     		} else {
-    			lastImage.reattachOpenSeaDragon();
 				UrlUtils.setSelectedHstImageId(lastImage.getId());
     		}
     	}
