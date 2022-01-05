@@ -559,6 +559,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
+	protected void notifyDataFilterChanged(final List<Integer> indexArray){
+		for (TableObserver obs : observers) {
+			obs.onDataFilterChanged(indexArray);
+		}
+	}
+
     @Override
     public void onRowSelection(final GeneralJavaScriptObject row) {
 		notifyOnRowSelection(row);
@@ -576,6 +582,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     public void onDataFiltered(List<Integer> indexArray) {
         entity.hideAllShapes();
         entity.showShapes(indexArray);
+		notifyDataFilterChanged(indexArray);
         this.numberOfShownRows = indexArray.size();
         notifyNumberOfRowsShowingChanged(numberOfShownRows);
     }

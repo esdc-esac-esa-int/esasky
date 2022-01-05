@@ -44,12 +44,14 @@ import java.util.stream.IntStream;
 public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private TabItem[] tabItems = new TabItem[TabIndex.TAB_END.ordinal()];
+    private List<Integer> filteredNeutrinoData;
 
     private final FlowPanel mainContainer = new FlowPanel();
     private FlowPanel tableHeaderTabRow;
     private PopupHeader<GwPanel> header;
     private TabLayoutPanel tabLayoutPanel;
-    EsaSkyToggleButton gridButton;
+    private EsaSkyToggleButton gridButton;
+
 
     private final Map<String, Integer> rowIdHipsMap = new HashMap<>();
     private static final String GRACE_ID = "grace_id";
@@ -195,8 +197,13 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             loadNeutrinoData();
             TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
             if (neutrinoTab != null) {
-                int len = neutrinoTab.getTablePanel().getAllRows().length;
-                neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
+                if (filteredNeutrinoData == null) {
+                    int len = neutrinoTab.getTablePanel().getAllRows().length;
+                    neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
+                } else {
+                    neutrinoTab.getEntity().showShapes(filteredNeutrinoData);
+                }
+
             }
 
             TabItem gwTab = getTabItem(TabIndex.GW);
@@ -278,6 +285,11 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 public void onRowDeselected(GeneralJavaScriptObject row) {
                     // Not needed here
                 }
+
+                @Override
+                public void onDataFilterChanged(List<Integer> filteredIndexList)  {
+                    filteredNeutrinoData = filteredIndexList;
+                }
             });
 
             entity.fetchDataWithoutMOC();
@@ -317,7 +329,13 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             entity.getTablePanel().registerObserver(new TableObserver() {
                 @Override
                 public void numberOfShownRowsChanged(int numberOfShownRows) {
-                    // Not needed here
+                    entity.hideAllShapes();
+                    GeneralJavaScriptObject[] selectedRows = entity.getTablePanel().getSelectedRows();
+                    if (selectedRows.length > 0) {
+//                        GeneralJavaScriptObject rowData = .invokeFunction("getData");
+                        String id = selectedRows[0].getStringProperty("id");
+                        entity.showShape(Integer.parseInt(id));
+                    }
                 }
 
                 @Override
@@ -364,6 +382,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 public void onRowDeselected(GeneralJavaScriptObject row) {
                     entity.hideAllShapes();
                     extraEntity.removeAllShapes();
+                    SelectSkyPanel.getInstance().removeSky(rowIdHipsMap.keySet().toArray(new String[0]));
                 }
             });
 
