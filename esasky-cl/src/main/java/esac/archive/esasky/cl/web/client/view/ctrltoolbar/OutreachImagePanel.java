@@ -36,7 +36,8 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	
 	private FlowPanel opacityPanel;
 	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
-	private FlowPanel mainContainer = new FlowPanel();
+	private final FlowPanel mainContainer = new FlowPanel();
+	private final FlowPanel tableContainer = new FlowPanel();
 	private PopupHeader<OutreachImagePanel> header;
 
 	private final Resources resources;
@@ -141,7 +142,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		if(outreachImageIdToBeOpened != null) {
 			imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
 		}
-		mainContainer.add(imageEntity.createTablePanel().getWidget());
+		tableContainer.add(imageEntity.createTablePanel().getWidget());
 		imageEntity.fetchData();
 		setMaxSize();
 	}
@@ -153,7 +154,8 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 				TextMgr.getInstance().getText("outreachImagePanel_helpText"),
 				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
 
-		mainContainer.add(header);
+
+
 		
 		ESASkySlider opacitySlider = new ESASkySlider(0, 1.0, 250);
 		opacitySlider.registerValueChangeObserver(value -> imageEntity.setOpacity(value));
@@ -175,16 +177,15 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
         	hideFootprintsSwitch.setChecked(isHidingFootprints);
     		imageEntity.setIsHidingShapes(isHidingFootprints);
 		});
-        mainContainer.add(hideFootprintsSwitch);
+		header.addActionWidget(hideFootprintsSwitch);
+		mainContainer.add(header);
+		mainContainer.add(tableContainer);
         mainContainer.getElement().setId("outreachImagePanelContainer");
 		this.add(mainContainer);
 	}
 	
 	@Override
 	public void setMaxSize() {
-		if(mainContainer == null) {
-			return;
-		}
 		Style elementStyle = mainContainer.getElement().getStyle();
 		int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
 		elementStyle.setPropertyPx("maxWidth", maxWidth);
@@ -193,16 +194,14 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	}
 	
 	private void setMaxHeight() {
-		if(mainContainer != null) {
-			int headerSize = header.getOffsetHeight();
-			int height = mainContainer.getOffsetHeight() - headerSize;
-		    if(height > MainLayoutPanel.getMainAreaHeight() - headerSize) {
-		    	height = MainLayoutPanel.getMainAreaHeight() - headerSize;
-		    }
-			if(imageEntity != null && imageEntity.getTablePanel() != null) {
-				imageEntity.getTablePanel().setMaxHeight(height);
-			}
+		int headerSize = header.getOffsetHeight();
+		int height = mainContainer.getOffsetHeight() - headerSize - 5;
+
+		if (height > MainLayoutPanel.getMainAreaHeight()) {
+			height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
 		}
+
+		tableContainer.getElement().getStyle().setPropertyPx("height", height);
 	}
     
     public static void setStartupId(String id) {

@@ -26,7 +26,6 @@
 
 
 .outreachImagePanel__footprintSwitch{
-	position: absolute;
     top: 1px;
     right: 35px;
     line-height: 17px;
@@ -41,8 +40,4 @@
 .outreachImagePanel__opacityLabel {
     margin: 10px auto 5px auto;
     text-align: center;
-}
-
-.outreachImagePanel .popupHeaderLabelWithHelpButton{
-	margin-right: 182px;
 }
