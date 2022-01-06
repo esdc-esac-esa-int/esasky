@@ -431,7 +431,9 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private void close() {
         for(TabItem tabItem : tabItems) {
-            tabItem.close();
+            if (tabItem != null) {
+                tabItem.close();
+            }
         }
 
         tabLayoutPanel.selectTab(TabIndex.GW.ordinal());
