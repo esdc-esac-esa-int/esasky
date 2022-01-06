@@ -210,6 +210,7 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		setMaxSize();
+		ensureDialogFitsInsideWindow();
 		updateHandlers();
 	}
 

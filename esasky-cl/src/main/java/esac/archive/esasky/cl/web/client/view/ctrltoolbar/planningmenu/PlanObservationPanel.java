@@ -223,6 +223,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         isShowing = true;
         this.removeStyleName("displayNone");
         setMaxSize();
+        ensureDialogFitsInsideWindow();
         updateHandlers();
     }
 

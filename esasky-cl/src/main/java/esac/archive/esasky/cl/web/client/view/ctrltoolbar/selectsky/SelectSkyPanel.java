@@ -250,6 +250,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		setMaxSize();
+		ensureDialogFitsInsideWindow();
 		updateHandlers();
 	}
 

@@ -27,6 +27,8 @@ public abstract class MovableResizablePanel<T> extends MovablePanel implements H
         isShowing = true;
         this.removeStyleName("displayNone");
         updateHandlers();
+        setMaxSize();
+        ensureDialogFitsInsideWindow();
     }
 
     @Override

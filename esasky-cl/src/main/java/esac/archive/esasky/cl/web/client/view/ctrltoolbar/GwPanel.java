@@ -398,16 +398,17 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         mainContainer.setHeight(size.height + "px");
 
         Style containerStyle = mainContainer.getElement().getStyle();
-        containerStyle.setPropertyPx("minWidth", 150);
-        containerStyle.setPropertyPx("minHeight", 100);
+        containerStyle.setPropertyPx("minWidth", 350);
+        containerStyle.setPropertyPx("minHeight", 300);
     }
 
     @Override
     public void setMaxSize() {
         Style elementStyle = mainContainer.getElement().getStyle();
         int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+        int maxHeight = MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15;
         elementStyle.setPropertyPx("maxWidth", maxWidth);
-        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+        elementStyle.setPropertyPx("maxHeight", maxHeight);
         setMaxHeight();
 
     }
