@@ -252,9 +252,9 @@ function SkyImageManager (containerId, hipsSources) {
 
 
 
-	let CooConversion = (function() {
+	const CooConversion = (function() {
 
-	    let cooConversion = {};
+	    const cooConversion = {};
 
 	    cooConversion.GALACTIC_TO_J2000 = [
 	        -0.0548755604024359, 0.4941094279435681, -0.8676661489811610,
