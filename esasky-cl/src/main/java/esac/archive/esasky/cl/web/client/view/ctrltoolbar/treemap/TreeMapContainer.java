@@ -215,10 +215,10 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	
 	private void updateTreeMapSize() {
 		if(haveSlider) {
-			treeMap.setSize(treeMapContainer.getOffsetWidth() - 22, treeMapContainer.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
+			treeMap.setSize(treeMapContainer.getOffsetWidth(), treeMapContainer.getOffsetHeight() - header.getOffsetHeight() - sliderContainer.getOffsetHeight() - 34);
 			slider.updateSize(treeMapContainer.getOffsetWidth() - 30);
 		}else {
-			treeMap.setSize(treeMapContainer.getOffsetWidth() - 22, treeMapContainer.getOffsetHeight() - header.getOffsetHeight() - 34);
+			treeMap.setSize(treeMapContainer.getOffsetWidth(), treeMapContainer.getOffsetHeight() - header.getOffsetHeight() - 34);
 		}
 	}
 
