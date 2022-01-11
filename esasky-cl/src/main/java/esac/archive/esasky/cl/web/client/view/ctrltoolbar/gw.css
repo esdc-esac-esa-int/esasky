@@ -29,7 +29,8 @@
 	cursor: pointer;
 	/*display: flex;*/
 	align-items: center;
-	margin-right: 2px;
+	margin-right: 8px;
+	margin-left: 0px;
 	background: #555555;
 	color: #FFFFFF;
 	font-weight: normal;
