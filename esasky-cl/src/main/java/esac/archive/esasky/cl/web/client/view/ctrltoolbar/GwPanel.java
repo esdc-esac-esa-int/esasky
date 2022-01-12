@@ -191,28 +191,32 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         if (tabIndex == TabIndex.GW.ordinal()) {
             TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
             if (neutrinoTab != null) {
-                neutrinoTab.getEntity().hideAllShapes();
+                neutrinoTab.close();
+            }
+
+            TabItem gwTab = getTabItem(TabIndex.GW);
+            if (gwTab != null) {
+                gwTab.open();
             }
         } else if (tabIndex == TabIndex.NEUTRINO.ordinal()) {
+            TabItem gwTab = getTabItem(TabIndex.GW);
+            if (gwTab != null) {
+                gwTab.close();
+                if (gwTab.hasExtraEntity()) {
+                    SelectSkyPanel.getInstance().removeSky(rowIdHipsMap.keySet().toArray(new String[0]));
+                }
+            }
+
             loadNeutrinoData();
             TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
             if (neutrinoTab != null) {
+                neutrinoTab.open();
                 if (filteredNeutrinoData == null) {
                     int len = neutrinoTab.getTablePanel().getAllRows().length;
                     neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
                 } else {
                     neutrinoTab.getEntity().showShapes(filteredNeutrinoData);
                 }
-
-            }
-
-            TabItem gwTab = getTabItem(TabIndex.GW);
-            if (gwTab != null && gwTab.hasExtraEntity()) {
-                gwTab.getExtraEntity().removeAllShapes();
-                gwTab.getEntity().hideAllShapes();
-                gwTab.getTablePanel().deselectAllRows();
-
-                SelectSkyPanel.getInstance().removeSky(rowIdHipsMap.keySet().toArray(new String[0]));
             }
         }
     }
@@ -588,9 +592,15 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         public void close() {
             entity.hideAllShapes();
             entity.getTablePanel().deselectAllRows();
-
+            EntityRepository.getInstance().removeEntity(entity);
             if(hasExtraEntity()) {
                 extraEntity.hideAllShapes();
+            }
+        }
+
+        public void open() {
+            if (!EntityRepository.getInstance().getAllEntities().contains(entity)) {
+                EntityRepository.getInstance().addEntity(entity);
             }
         }
 
