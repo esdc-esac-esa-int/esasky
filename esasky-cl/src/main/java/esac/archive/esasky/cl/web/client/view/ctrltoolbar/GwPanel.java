@@ -189,35 +189,43 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private void changeTab(int tabIndex) {
         if (tabIndex == TabIndex.GW.ordinal()) {
-            TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
-            if (neutrinoTab != null) {
-                neutrinoTab.close();
-            }
-
-            TabItem gwTab = getTabItem(TabIndex.GW);
-            if (gwTab != null) {
-                gwTab.open();
-            }
+            onChangeToGwTab();
         } else if (tabIndex == TabIndex.NEUTRINO.ordinal()) {
-            TabItem gwTab = getTabItem(TabIndex.GW);
-            if (gwTab != null) {
-                gwTab.close();
-                if (gwTab.hasExtraEntity()) {
-                    SelectSkyPanel.getInstance().removeSky(rowIdHipsMap.keySet().toArray(new String[0]));
-                }
-            }
+            onChangeToNeutrinoTab();
+        }
+    }
 
-            loadNeutrinoData();
-            TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
-            if (neutrinoTab != null) {
-                neutrinoTab.open();
-                if (filteredNeutrinoData == null) {
-                    int len = neutrinoTab.getTablePanel().getAllRows().length;
-                    neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
-                } else {
-                    neutrinoTab.getEntity().showShapes(filteredNeutrinoData);
-                }
+    private void onChangeToNeutrinoTab() {
+        TabItem gwTab = getTabItem(TabIndex.GW);
+        if (gwTab != null) {
+            gwTab.close();
+            if (gwTab.hasExtraEntity()) {
+                SelectSkyPanel.getInstance().removeSky(rowIdHipsMap.keySet().toArray(new String[0]));
             }
+        }
+
+        loadNeutrinoData();
+        TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
+        if (neutrinoTab != null) {
+            neutrinoTab.open();
+            if (filteredNeutrinoData == null) {
+                int len = neutrinoTab.getTablePanel().getAllRows().length;
+                neutrinoTab.getEntity().showShapes(IntStream.rangeClosed(0, len - 1).boxed().collect(Collectors.toList()));
+            } else {
+                neutrinoTab.getEntity().showShapes(filteredNeutrinoData);
+            }
+        }
+    }
+
+    private void onChangeToGwTab(){
+        TabItem neutrinoTab = getTabItem(TabIndex.NEUTRINO);
+        if (neutrinoTab != null) {
+            neutrinoTab.close();
+        }
+
+        TabItem gwTab = getTabItem(TabIndex.GW);
+        if (gwTab != null) {
+            gwTab.open();
         }
     }
 
