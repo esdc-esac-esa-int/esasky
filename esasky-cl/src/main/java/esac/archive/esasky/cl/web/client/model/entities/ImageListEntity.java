@@ -138,8 +138,8 @@ public class ImageListEntity extends EsaSkyEntity {
 	@Override
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();
-		settings.disableGoToColumn = true;
-		settings.selectable = 1;
+		settings.setDisableGoToColumn(true);
+		settings.setSelectable(1);
 		return settings;
 	}
 

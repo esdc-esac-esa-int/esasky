@@ -921,16 +921,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	            disableLink2ArchiveColumn = true;
 	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
 	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
-	                settings.addDatalinkLink2ArchiveColumn = true;
+	                settings.setAddDatalinkLink2ArchiveColumn(true);
 	            }
 	    }
-		settings.addSendToVOApplicationColumn = getDescriptor().getSampEnabled();
-		settings.addLink2ArchiveColumn = getDescriptor().getArchiveProductURI() != null 
+		settings.setAddSendToVOApplicationColumn(getDescriptor().getSampEnabled());
+		settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null
                 && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
-                && !disableLink2ArchiveColumn;
-		settings.addLink2AdsColumn = getDescriptor().getDescriptorId().contains("PUBLICATIONS"); 
-		settings.addSourcesInPublicationColumn = getDescriptor().getDescriptorId().contains("PUBLICATIONS");
-		settings.addSelectionColumn = true;
+                && !disableLink2ArchiveColumn);
+		settings.setAddLink2AdsColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
+		settings.setAddSourcesInPublicationColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
+        settings.setAddSelectionColumn(true);
 		
 		return settings;
 	}

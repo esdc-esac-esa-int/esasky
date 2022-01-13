@@ -159,9 +159,9 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel{
 		super.onLoad();   
 		Scheduler.get().scheduleDeferred(() -> {
 			TabulatorSettings settings = new TabulatorSettings();
-			settings.selectionHeaderTitle = TextMgr.getInstance().getText("toggleColumns_rowSelectionTitle");
-			settings.blockRedraw = true;
-			settings.addSelectionColumn = true;
+			settings.setSelectionHeaderTitle(TextMgr.getInstance().getText("toggleColumns_rowSelectionTitle"));
+			settings.setBlockRedraw(true);
+			settings.setAddSelectionColumn(true);
             tabulatorTable = new TabulatorWrapper("toggleColumns__tabulatorContainer", new TabulatorCallback(), settings);
             GeneralJavaScriptObject data[] = extractData(columns);
             tabulatorTable.insertData(data[0], data[1]);

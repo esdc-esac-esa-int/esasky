@@ -7,17 +7,17 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 
 public class TabulatorSettings{
-	public Boolean addSendToVOApplicationColumn = false;
-	public Boolean addLink2ArchiveColumn = false;
-	public Boolean addLink2AdsColumn = false;
-	public Boolean addSourcesInPublicationColumn = false;
-	public String selectionHeaderTitle = null; // Selection Title if selection column is enabled. null = no text
-	public Boolean blockRedraw = false; // block initial draw operation - restoreRedraw has to be called manually afterwards
-    public Boolean isEsaskyData = true; // Data from user or not
-    public Boolean addSelectionColumn = false;
-    public Boolean addDatalinkLink2ArchiveColumn = false;
-    public Integer selectable = null; // number of rows that can be selected simultaneously. null = no limit 
-	public Boolean disableGoToColumn = false; // true to force remove goto column, even if there is a ra an dec column
+	private Boolean addSendToVOApplicationColumn = false;
+	private Boolean addLink2ArchiveColumn = false;
+	private Boolean addLink2AdsColumn = false;
+	private Boolean addSourcesInPublicationColumn = false;
+	private String selectionHeaderTitle = null; // Selection Title if selection column is enabled. null = no text
+	private Boolean blockRedraw = false; // block initial draw operation - restoreRedraw has to be called manually afterwards
+    private Boolean isEsaskyData = true; // Data from user or not
+    private Boolean addSelectionColumn = false;
+    private Boolean addDatalinkLink2ArchiveColumn = false;
+    private Integer selectable = null; // number of rows that can be selected simultaneously. null = no limit
+	private Boolean disableGoToColumn = false; // true to force remove goto column, even if there is a ra an dec column
 	
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
@@ -41,5 +41,93 @@ public class TabulatorSettings{
 		}
 		json.put("disableGoToColumn", JSONBoolean.getInstance(disableGoToColumn));
 		return json.toString();
+	}
+
+	public Boolean getAddSendToVOApplicationColumn() {
+		return addSendToVOApplicationColumn;
+	}
+
+	public void setAddSendToVOApplicationColumn(Boolean addSendToVOApplicationColumn) {
+		this.addSendToVOApplicationColumn = addSendToVOApplicationColumn;
+	}
+
+	public Boolean getAddLink2ArchiveColumn() {
+		return addLink2ArchiveColumn;
+	}
+
+	public void setAddLink2ArchiveColumn(Boolean addLink2ArchiveColumn) {
+		this.addLink2ArchiveColumn = addLink2ArchiveColumn;
+	}
+
+	public Boolean getAddLink2AdsColumn() {
+		return addLink2AdsColumn;
+	}
+
+	public void setAddLink2AdsColumn(Boolean addLink2AdsColumn) {
+		this.addLink2AdsColumn = addLink2AdsColumn;
+	}
+
+	public Boolean getAddSourcesInPublicationColumn() {
+		return addSourcesInPublicationColumn;
+	}
+
+	public void setAddSourcesInPublicationColumn(Boolean addSourcesInPublicationColumn) {
+		this.addSourcesInPublicationColumn = addSourcesInPublicationColumn;
+	}
+
+	public String getSelectionHeaderTitle() {
+		return selectionHeaderTitle;
+	}
+
+	public void setSelectionHeaderTitle(String selectionHeaderTitle) {
+		this.selectionHeaderTitle = selectionHeaderTitle;
+	}
+
+	public Boolean getBlockRedraw() {
+		return blockRedraw;
+	}
+
+	public void setBlockRedraw(Boolean blockRedraw) {
+		this.blockRedraw = blockRedraw;
+	}
+
+	public Boolean getEsaskyData() {
+		return isEsaskyData;
+	}
+
+	public void setEsaskyData(Boolean esaskyData) {
+		isEsaskyData = esaskyData;
+	}
+
+	public Boolean getAddSelectionColumn() {
+		return addSelectionColumn;
+	}
+
+	public void setAddSelectionColumn(Boolean addSelectionColumn) {
+		this.addSelectionColumn = addSelectionColumn;
+	}
+
+	public Boolean getAddDatalinkLink2ArchiveColumn() {
+		return addDatalinkLink2ArchiveColumn;
+	}
+
+	public void setAddDatalinkLink2ArchiveColumn(Boolean addDatalinkLink2ArchiveColumn) {
+		this.addDatalinkLink2ArchiveColumn = addDatalinkLink2ArchiveColumn;
+	}
+
+	public Integer getSelectable() {
+		return selectable;
+	}
+
+	public void setSelectable(Integer selectable) {
+		this.selectable = selectable;
+	}
+
+	public Boolean getDisableGoToColumn() {
+		return disableGoToColumn;
+	}
+
+	public void setDisableGoToColumn(Boolean disableGoToColumn) {
+		this.disableGoToColumn = disableGoToColumn;
 	}
 }
