@@ -5,8 +5,9 @@ import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.RangeTree;
-import esac.archive.esasky.cl.web.client.utility.RangeTree.Interval;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyMocUtility;
+import esac.archive.esasky.ifcs.model.shared.RangeTree;
+import esac.archive.esasky.ifcs.model.shared.RangeTree.Interval;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -149,6 +150,11 @@ public class TAPMOCService {
     	 
     	 adql += ", '" +  global + "') from public.function_dummy";
     	return adql;
+    }
+    
+    public static String mocObjectToString(GeneralJavaScriptObject mocObject) {
+    	EsaSkyMocUtility moc = new EsaSkyMocUtility(mocObject);
+    	return moc.objectToAsciiString(mocObject);
     }
     
 }

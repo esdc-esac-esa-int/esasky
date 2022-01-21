@@ -522,12 +522,21 @@ public class TabulatorWrapper {
         setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
     }
     
+    public void insertUserHeader(GeneralJavaScriptObject data){
+    	setIsUserDataBool(tableJsObject);
+    	setData(tableJsObject, convertDataToHeaderFormat(tableJsObject, data));
+    }
+    
     private native void setIsUserDataBool(GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.isEsaskyData = false;
     }-*/;
 
     private native String convertDataToTabulatorFormat(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject data, String aladinFrame)/*-{
         return tableJsObject.convertDataToTabulatorFormat(data, aladinFrame);
+    }-*/;
+    
+    private native String convertDataToHeaderFormat(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject data)/*-{
+        return tableJsObject.convertDataToHeaderFormat(data);
     }-*/;
     
     public void setData(String dataOrUrl){
@@ -671,7 +680,7 @@ public class TabulatorWrapper {
     }-*/;
     
     public void setHeaderQueryMode(String mode){
-        setHeaderQueryMode(this, tableJsObject, mode);
+        //setHeaderQueryMode(this, tableJsObject, mode);
     }
     
     private native void setHeaderQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject, String mode)/*-{
@@ -685,16 +694,18 @@ public class TabulatorWrapper {
 			var filterData = {};
 			
 			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
-			var data = response.data[0][0].split(",");
-			
+			var data = response.metadata
+			if(!data){
+				return;
+			}
 			newMeta = new Array(data.length);
-			for(var i = 0;i< data.length; i++){
-				var row = data[i].split(";")
-				var colName = row[0];
-				var val = row[1];
+			for(var i = 0;i < data.length; i++){
+				var col = data[i]
+				var colName = col.name
+				var val = col.value
 				var metaName = colName.substring(0,colName.length - 4)
-				var datatype;
-
+				var datatype = col.datatype;
+			
 				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
 				var metaDataIndex = data.length + newMeta.length;
 				var visible = false;
@@ -751,19 +762,6 @@ public class TabulatorWrapper {
 			tableJsObject.showCount = false;
 			tableJsObject.dataLoaded = true;
 			
-			
-			return new Promise(function (resolve, reject) {
-				if(tableJsObject.mocLoaded){
-			      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::notifyMocLoadedObserver()();
-					resolve([]);
-				}else{
-					tableJsObject.onMocLoaded = function () {
-						this.onMocLoaded = null;
-				      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::notifyMocLoadedObserver()();
-						resolve([]);
-					}
-				}
-			});
         }
     }-*/;
     
@@ -1982,6 +1980,76 @@ public class TabulatorWrapper {
             setFileContents(fileContents, "text/csv");
         }
 		    
+		table.convertDataToHeaderFormat = function(userData) {
+			var newMeta = [];
+			var filterData = {};
+			
+			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
+			var data = userData.metadata
+			newMeta = new Array(data.length);
+			for(var i = 0;i< data.length; i++){
+				var col = data[i]
+				var colName = col.name
+				var val = col.value
+				var metaName = colName.substring(0,colName.length - 4)
+				var datatype = col.datatype;
+
+				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
+				var metaDataIndex = data.length + newMeta.length;
+				var visible = false;
+				
+				
+				if(descMetaData.hasOwnProperty(metaName)){
+					metaDataIndex = parseInt(descMetaData[metaName].index);
+					datatype = descMetaData[metaName].type.toUpperCase();
+					if(descMetaData[metaName].hasOwnProperty("visible")){
+                        visible = descMetaData[metaName]["visible"];
+                    }
+				}
+				
+				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+				var displayName = $wnd.esasky.getDefaultLanguageText(label);
+				
+				if(!filterData.hasOwnProperty(metaName)){	
+					filterData[metaName] = {};
+				}
+				
+				if(colName.endsWith("_min")){
+					if(datatype == "TIMESTAMP" || datatype == "DATETIME"){
+						filterData[metaName]["min"] = val;
+	    			}else{
+						filterData[metaName]["min"] = parseFloat(val);
+    				}	    			
+					meta = {name:metaName, displayName:displayName, datatype:col.datatype, visible: visible,
+						description:col.description, ucd: col.ucd, unit:col.unit}
+					newMeta.splice(metaDataIndex,1,meta)
+				
+				}else if(colName.endsWith("_max")){
+					
+					if(datatype == "TIMESTAMP"|| datatype == "DATETIME"){
+						filterData[metaName]["max"] = val;
+	    			
+					}else{
+						filterData[metaName]["max"] = parseFloat(val);
+    				}	    			
+				
+				}else{
+					meta = {name:metaName, displayName:displayName, datatype:col.datatype, visible: visible,
+						 description:col.description, ucd: col.ucd, unit:col.unit}
+					newMeta.splice(metaDataIndex,1,meta)
+				}
+			}
+			
+			newMeta = newMeta.filter(function(e){return e})
+			this.metadata = newMeta;
+			this.filterData = filterData;
+			this.showCount = false;
+			this.dataLoaded = true;
+			
+			return [];
+			
+		}
+		
 		table.convertDataToTabulatorFormat = function(userData, aladinCoordinateFrame) {
             var metadata = [];
             var skyObjectList = userData.overlaySet.skyObjectList;

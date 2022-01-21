@@ -81,7 +81,7 @@ public interface ITablePanel {
 	
 	public void setPlaceholderText(String text);
 
-	public void insertHeader(String tapQuery, String mode);
+	public void insertHeader(GeneralJavaScriptObject data, String mode);
 	public void goToCoordinateOfFirstRow();
 	
 	public boolean isMOCMode();
