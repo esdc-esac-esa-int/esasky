@@ -679,92 +679,6 @@ public class TabulatorWrapper {
 	    }
     }-*/;
     
-    public void setHeaderQueryMode(String mode){
-        //setHeaderQueryMode(this, tableJsObject, mode);
-    }
-    
-    private native void setHeaderQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject, String mode)/*-{
-        tableJsObject.clearData();
-        tableJsObject.mocLoaded = false;
-        
-      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::registerMocLoadedObserver()();
-        
-    	tableJsObject.options.ajaxResponse = function(url, params, response){
-			var newMeta = [];
-			var filterData = {};
-			
-			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
-			var data = response.metadata
-			if(!data){
-				return;
-			}
-			newMeta = new Array(data.length);
-			for(var i = 0;i < data.length; i++){
-				var col = data[i]
-				var colName = col.name
-				var val = col.value
-				var metaName = colName.substring(0,colName.length - 4)
-				var datatype = col.datatype;
-			
-				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
-				var metaDataIndex = data.length + newMeta.length;
-				var visible = false;
-				
-				
-				if(descMetaData.hasOwnProperty(metaName)){
-					metaDataIndex = parseInt(descMetaData[metaName].index);
-					datatype = descMetaData[metaName].type.toUpperCase();
-					if(descMetaData[metaName].hasOwnProperty("visible")){
-                        visible = descMetaData[metaName]["visible"];
-                    }
-				}else{
-					if(colName.endsWith('_min') || colName.endsWith('_max')){
-						datatype = "DOUBLE";
-					}else{
-						datatype = "STRING";
-					}
-				}
-				
-				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
-				var displayName = $wnd.esasky.getDefaultLanguageText(label);
-				
-				if(!filterData.hasOwnProperty(metaName)){	
-					filterData[metaName] = {};
-				}
-				
-				if(colName.endsWith("_min")){
-					if(datatype == "TIMESTAMP" || datatype == "DATETIME"){
-						filterData[metaName]["min"] = val;
-	    			}else{
-						filterData[metaName]["min"] = parseFloat(val);
-    				}	    			
-					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.splice(metaDataIndex,1,meta)
-				
-				}else if(colName.endsWith("_max")){
-					
-					if(datatype == "TIMESTAMP"|| datatype == "DATETIME"){
-						filterData[metaName]["max"] = val;
-	    			
-					}else{
-						filterData[metaName]["max"] = parseFloat(val);
-    				}	    			
-				
-				}else{
-					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.splice(metaDataIndex,1,meta)
-				}
-			}
-			
-			newMeta = newMeta.filter(function(e){return e})
-			tableJsObject.metadata = newMeta;
-			tableJsObject.filterData = filterData;
-			tableJsObject.showCount = false;
-			tableJsObject.dataLoaded = true;
-			
-        }
-    }-*/;
-    
     public void show() {
         if(isMOCMode()) { //In defaultQueryMode MutationObserver redraws, if necessary
             Scheduler.get().scheduleFinally(new ScheduledCommand() {
@@ -776,8 +690,6 @@ public class TabulatorWrapper {
             });
         }
     }
-    
-    
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
 		var settings = JSON.parse(settingsString); 

@@ -439,7 +439,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void insertHeader(GeneralJavaScriptObject data, String mode) {
-	    table.setHeaderQueryMode(mode);
 		table.insertUserHeader(data);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}

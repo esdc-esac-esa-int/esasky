@@ -7,6 +7,10 @@ import esac.archive.esasky.ifcs.model.shared.RangeTree.Interval;
 
 public class EsaSkyMocUtility {
 	
+	private EsaSkyMocUtility() {
+		
+	}
+	
 	
 	public static String asciiStringToJsonString(String pixelString) {
 		// On the IVOA format order/p1-p2 p3 p4 order2/p1-p2
