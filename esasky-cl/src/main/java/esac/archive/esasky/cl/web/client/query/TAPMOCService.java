@@ -153,8 +153,7 @@ public class TAPMOCService {
     }
     
     public static String mocObjectToString(GeneralJavaScriptObject mocObject) {
-    	EsaSkyMocUtility moc = new EsaSkyMocUtility(mocObject);
-    	return moc.objectToAsciiString(mocObject);
+    	return EsaSkyMocUtility.objectToAsciiString(mocObject);
     }
     
 }
