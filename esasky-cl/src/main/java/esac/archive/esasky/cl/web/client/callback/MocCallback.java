@@ -10,9 +10,8 @@ import com.google.gwt.http.client.Response;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-public class MOCAsRecordCallback extends JsonRequestCallback {
+public class MocCallback extends JsonRequestCallback {
 
 	private MOCEntity mocEntity;
 	private ITablePanel tablePanel;
@@ -25,13 +24,13 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 		public void onComplete();
 	}
 
-	public MOCAsRecordCallback(ITablePanel tablePanel, String adql, MOCEntity mocEntity,
+	public MocCallback(ITablePanel tablePanel, String adql, MOCEntity mocEntity,
 			String progressIndicatorMessage, OnComplete onComplete) {
 		this(tablePanel, adql, mocEntity, progressIndicatorMessage);
 		this.onComplete = onComplete;
 	}
 	
-	public MOCAsRecordCallback(ITablePanel tablePanel, String adql,  MOCEntity mocEntity,
+	public MocCallback(ITablePanel tablePanel, String adql,  MOCEntity mocEntity,
 			String progressIndicatorMessage) {
 		super(progressIndicatorMessage, adql);
 		this.mocEntity = mocEntity;
@@ -56,17 +55,7 @@ public class MOCAsRecordCallback extends JsonRequestCallback {
 					return;
 				}
 				
-				String text = response.getText();
-				text = text.replace("{\"name\":\"moc\",\"datatype\":\"record\"}",""
-						+ "{\"name\":\"" + EsaSkyConstants.Q3C_ORDER + "\",\"datatype\":\"INTEGER\"},"
-						+ "{\"name\":\"" + EsaSkyConstants.Q3C_IPIX + "\",\"datatype\":\"INTEGER\"},"
-						+ "{\"name\":\"" + EsaSkyConstants.Q3C_COUNT + "\",\"datatype\":\"INTEGER\"}");
-				text = text.replace("\"(", "");
-				text = text.replace(")\"", "");
-				
-
-				GeneralJavaScriptObject jsonData = GeneralJavaScriptObject.createJsonObject(text);
-				
+				GeneralJavaScriptObject jsonData = GeneralJavaScriptObject.createJsonObject(response.getText());
 
 				mocEntity.addJSON(tablePanel, jsonData);
 				

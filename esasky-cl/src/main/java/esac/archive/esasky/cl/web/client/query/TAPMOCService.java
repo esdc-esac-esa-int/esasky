@@ -53,23 +53,6 @@ public class TAPMOCService {
 		return adql;
     }
     
-
-    public String getFilteredCatalogueMOCAdql(IDescriptor descriptor, GeneralJavaScriptObject visibleIpixels, String filter) {
-    	
-    	int targetOrder = MocRepository.getTargetOrderFromFoV();
-    	
-    	String whereADQL = getWhereQueryFromPixels(descriptor, visibleIpixels, filter);
-    	
-    	String adql = "SELECT " + Integer.toString(targetOrder) + " as moc_order,"
-			+"esasky_q3c_bitshift_right(q3c_ang2ipix(" + descriptor.getTapRaColumn() + "," + descriptor.getTapDecColumn() +"), "
-			+ Integer.toString(60 - 2 * targetOrder) + ") as moc_ipix,"
-    		+ " count(*) as moc_count FROM " + descriptor.getTapTable()
-    		+ whereADQL;
-    	
-    	adql += " GROUP BY moc_ipix";
-    	
-    	return adql;
-    }
 				
 	public String getFilteredObservationMOCAdql(IDescriptor descriptor, String filter) {
 		

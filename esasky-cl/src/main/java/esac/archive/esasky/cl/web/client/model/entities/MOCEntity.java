@@ -8,7 +8,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
-import esac.archive.esasky.cl.web.client.callback.MOCAsRecordCallback;
+import esac.archive.esasky.cl.web.client.callback.MocCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
@@ -82,7 +82,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			setTableCountText();
 			
 			if(filterRequested && perMissionNewCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
-				loadFilteredMOC();
+				loadMOC();
 				filterRequested = false;
 			}
 
@@ -215,29 +215,6 @@ public class MOCEntity implements GeneralEntityInterface {
     	}
     }
 
-    public void loadFilteredMOC() {
-    	if(shouldBeShown) {
-    		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
-    		
-    		String adql = "";
-    		if(tablePanel.getFilterString().length() > 0) {
-		    	if(visibleIpixels.jsonStringify().length() > 2) {
-	
-			    	if(descriptor instanceof CatalogDescriptor) {
-		        		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor,visibleIpixels, tablePanel.getFilterString());
-			    	}else {
-			    		adql = metadataService.getFilteredCatalogueMOCAdql(descriptor, tablePanel.getFilterString());
-			    	}
-			    	clearAll();
-			    	loadMOC(adql);
-		    	}
-    		}else {
-    			clearAll();
-    			loadMOC();
-    		}
-    	}
-    }
-    
     public void checkLoadMOC() {
     	if (getCountStatus().hasMoved(descriptor) && !descriptor.hasSearchArea()) {
     		loadMOCRequested = true;
@@ -298,7 +275,7 @@ public class MOCEntity implements GeneralEntityInterface {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
             builder.sendRequest(null,
-                new MOCAsRecordCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MOCAsRecordCallback.OnComplete() {
+                new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MocCallback.OnComplete() {
                	 
                 	@Override
                 	public void onComplete() {
@@ -367,7 +344,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     	try {
     		builder.sendRequest(null,
-    				new MOCAsRecordCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), () -> {
+    				new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), () -> {
 						getVisibleCount();
 						setTableCountText();
 					   	onFoVChanged();
