@@ -81,7 +81,7 @@ public class TAPUtils {
     			"&timecall=" + timecall + "&client=esasky-web-client";
     	
     	if(filters != null && !"".equals(filters)) {
-        	url += "&filter" + filters;
+        	url += "&filter=" + URL.encodeQueryString(filters);
         }
     	
     	return url;

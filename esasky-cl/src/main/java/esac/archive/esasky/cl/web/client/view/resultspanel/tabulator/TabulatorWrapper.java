@@ -1932,7 +1932,7 @@ public class TabulatorWrapper {
 	    			}else{
 						filterData[metaName]["min"] = parseFloat(val);
     				}	    			
-					meta = {name:metaName, displayName:displayName, datatype:col.datatype, visible: visible,
+					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible,
 						description:col.description, ucd: col.ucd, unit:col.unit}
 					newMeta.splice(metaDataIndex,1,meta)
 				
@@ -1946,7 +1946,7 @@ public class TabulatorWrapper {
     				}	    			
 				
 				}else{
-					meta = {name:metaName, displayName:displayName, datatype:col.datatype, visible: visible,
+					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible,
 						 description:col.description, ucd: col.ucd, unit:col.unit}
 					newMeta.splice(metaDataIndex,1,meta)
 				}
