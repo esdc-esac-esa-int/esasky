@@ -5,8 +5,9 @@ import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.RangeTree;
-import esac.archive.esasky.cl.web.client.utility.RangeTree.Interval;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyMocUtility;
+import esac.archive.esasky.ifcs.model.shared.RangeTree;
+import esac.archive.esasky.ifcs.model.shared.RangeTree.Interval;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -52,23 +53,6 @@ public class TAPMOCService {
 		return adql;
     }
     
-
-    public String getFilteredCatalogueMOCAdql(IDescriptor descriptor, GeneralJavaScriptObject visibleIpixels, String filter) {
-    	
-    	int targetOrder = MocRepository.getTargetOrderFromFoV();
-    	
-    	String whereADQL = getWhereQueryFromPixels(descriptor, visibleIpixels, filter);
-    	
-    	String adql = "SELECT " + Integer.toString(targetOrder) + " as moc_order,"
-			+"esasky_q3c_bitshift_right(q3c_ang2ipix(" + descriptor.getTapRaColumn() + "," + descriptor.getTapDecColumn() +"), "
-			+ Integer.toString(60 - 2 * targetOrder) + ") as moc_ipix,"
-    		+ " count(*) as moc_count FROM " + descriptor.getTapTable()
-    		+ whereADQL;
-    	
-    	adql += " GROUP BY moc_ipix";
-    	
-    	return adql;
-    }
 				
 	public String getFilteredObservationMOCAdql(IDescriptor descriptor, String filter) {
 		
@@ -149,6 +133,10 @@ public class TAPMOCService {
     	 
     	 adql += ", '" +  global + "') from public.function_dummy";
     	return adql;
+    }
+    
+    public static String mocObjectToString(GeneralJavaScriptObject mocObject) {
+    	return EsaSkyMocUtility.objectToAsciiString(mocObject);
     }
     
 }

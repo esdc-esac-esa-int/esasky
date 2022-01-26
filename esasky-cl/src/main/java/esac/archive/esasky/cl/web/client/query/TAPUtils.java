@@ -1,8 +1,10 @@
 package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.http.client.URL;
 
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class TAPUtils {
 
@@ -51,13 +53,37 @@ public class TAPUtils {
         + stcs + "&timecall=" + timecall + "&client=esasky-web-client";
     }
 
-    public static String getTAPMocQuery(final String center, final String stcs, final String tableName) {
+    public static String getTAPMocQuery(final String center, final String stcs, final String tableName, int order,  String filters) {
 
         // Get System time call
         Long timecall = System.currentTimeMillis();
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
-        return EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?center=" + center +
+        String url =  EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?center=" + center + "&order=" + Integer.toString(order) +
                 "&stcs="+ stcs + "&tablename="+ tableName + "&timecall=" + timecall + "&client=esasky-web-client";
+       
+        if(filters != null && !"".equals(filters)) {
+        	url += "&filter" + filters;
+        }
+        
+        return url;
+    }
+    
+    public static String getTAPMocFilteredQuery(final String tableName, int order, GeneralJavaScriptObject visiblePixels, String filters, boolean includeMaxMin) {
+    	
+    	// Get System time call
+    	Long timecall = System.currentTimeMillis();
+    	
+    	Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
+		String pixelString = TAPMOCService.mocObjectToString(visiblePixels);
+    	String url =  EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?tablename="+ tableName + "&pixels=" +  URL.encodeQueryString(pixelString) +
+    			"&order=" + Integer.toString(order) + "&includeMaxmin=" + Boolean.toString(includeMaxMin) + 
+    			"&timecall=" + timecall + "&client=esasky-web-client";
+    	
+    	if(filters != null && !"".equals(filters)) {
+        	url += "&filter=" + URL.encodeQueryString(filters);
+        }
+    	
+    	return url;
     }
 }

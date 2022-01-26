@@ -1,6 +1,7 @@
-package esac.archive.esasky.cl.web.client.utility;
+package esac.archive.esasky.ifcs.model.shared;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RangeTree {
@@ -20,23 +21,24 @@ public class RangeTree {
 	}
 	
 	private void insertInTree(Interval a) {
-		for(Interval b : tree) {
+		for(Iterator<Interval> it = tree.iterator(); it.hasNext();) {
+			Interval b = it.next();
 			switch(a.compareTo(b)) {
 				case DISJOINT_LOWER:
 					int index = tree.indexOf(b);
 					tree.add(index, a);
 					return;
 				case OVERLAP_LOWER:
-					b.setStart(a.start);
+					b.setStart(a.getStart());
 					return;
 				case CONTAINED_SMALLER:
 					return;
 				case CONTAINED_LARGER:
-					tree.remove(b);
+					it.remove();
 					break;
 				case OVERLAP_HIGHER:
-					tree.remove(b);
-					a.setStart(b.start);
+					a.setStart(b.getStart());
+					it.remove();
 					break;
 				default:
 					break;
@@ -47,6 +49,21 @@ public class RangeTree {
 	
 	public List<Interval> getTree(){
 		return tree;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(Interval i : this.tree) {
+			sb.append(Long.toString(i.start));
+			if(i.start != i.end) {
+				sb.append("-");
+				sb.append(Long.toString(i.end));
+			}
+			sb.append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
 	}
 	
 	
@@ -95,7 +112,6 @@ public class RangeTree {
 			return OVERLAP_HIGHER;
 			
 		}
-		
 		
 	}
 }
