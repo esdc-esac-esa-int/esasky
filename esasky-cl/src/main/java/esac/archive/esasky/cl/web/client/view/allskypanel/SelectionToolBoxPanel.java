@@ -21,6 +21,7 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import com.allen_sauer.gwt.log.client.Log;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -225,6 +226,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
                 AladinLiteWrapper.getAladinLite().endSelectionMode();
             }catch (Exception ex) {
                 detailContainer.addStyleName(inputErrorClassName);
+                Log.debug(ex.getMessage(), ex);
             }
 
         });
@@ -275,6 +277,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
             } catch (Exception ex) {
                 stcsText.setText(TextMgr.getInstance().getText("selectionToolbox_searchArea_submitError"));
                 stcsText.addStyleName(inputErrorClassName);
+                Log.debug(ex.getMessage(), ex);
             }
 
         });
