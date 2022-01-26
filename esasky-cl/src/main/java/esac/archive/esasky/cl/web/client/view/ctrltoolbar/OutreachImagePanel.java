@@ -106,27 +106,19 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		}
 	}
 	public void show() {
+		super.show();
 		getData();
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
-
-		isShowing = true;
-		this.removeStyleName("displayNone");
-		this.updateHandlers();
-		setMaxSize();
 	}
 
 
 	public void hide() {
+		super.hide();
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
-
-		isShowing = false;
-		this.addStyleName("displayNone");
-		this.removeHandlers();
-		CloseEvent.fire(this, null);
 	}
 
 	public boolean isShowing() {
