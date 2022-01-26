@@ -144,6 +144,9 @@ public class Icons {
 		@Source("selection-poly-dashed-dark.png")
 		ImageResource dashedPolyDarkIcon();
 
+		@Source("cone.png")
+		ImageResource coneIcon();
+
 	}
 	
 	private static void initMap() {
@@ -348,4 +351,6 @@ public class Icons {
 	public static ImageResource getDashedRectangleIcon() {
 		return resources.dashedRectIcon();
 	}
+
+	public static ImageResource getConeIcon() { return resources.coneIcon(); }
 }

@@ -1,8 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -27,11 +25,12 @@ public class Toggler extends FocusPanel {
 	}
 	
 	private FlowPanel container; 
-	private Label text;
+	private Label label;
 	private boolean isOpen;
 	private EsaSkyAnimation arrowAnimation;
 	private Widget widgetToToggleVisibility;
-	
+	FlowPanel textAndArrowContainer;
+
 	public Toggler(Widget widgetToToggleVisibility){
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
@@ -49,14 +48,10 @@ public class Toggler extends FocusPanel {
 		FlowPanel rightLine = new FlowPanel();
 		rightLine.addStyleName("toggler__line");
 		
-		FlowPanel textAndArrowContainer = new FlowPanel();
+		textAndArrowContainer = new FlowPanel();
 		textAndArrowContainer.addStyleName("toggler__advancedContainer");
 		container.add(textAndArrowContainer);
-		
-		text = new Label();
-		textAndArrowContainer.add(text);
-		text.addStyleName("toggler__text");
-		
+
 		Image downArrow = new Image(Icons.getDownArrowIcon());
 		downArrow.addStyleName("toggler__arrow");
 		textAndArrowContainer.add(downArrow);
@@ -66,19 +61,20 @@ public class Toggler extends FocusPanel {
 
 		add(container);
 		addStyleName("toggler");
-		addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				toggle();
-				//TODO check max height
-			}
+
+		addClickHandler(event -> {
+			this.toggle();
 		});
 		close();
 	}
 
 	public void setText(String text){
-		this.text.setText(text);
+		if (this.label == null) {
+			this.label = new Label();
+			this.textAndArrowContainer.add(this.label);
+			this.label.addStyleName("toggler__text");
+		}
+		this.label.setText(text);
 	}
 
 	public void close(){
@@ -99,5 +95,17 @@ public class Toggler extends FocusPanel {
 		} else {
 			open();
 		}
+	}
+
+	public void setToggleStatus(boolean toggleStatus) {
+		if (toggleStatus && !isOpen) {
+			open();
+		} else if (!toggleStatus && isOpen) {
+			close();
+		}
+	}
+
+	public boolean isOpen() {
+		return isOpen;
 	}
 }

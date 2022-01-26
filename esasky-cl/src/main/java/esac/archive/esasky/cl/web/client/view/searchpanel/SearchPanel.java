@@ -282,11 +282,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         FlowPanel selectionContainer = new FlowPanel();
 
-        selectionToolBoxButton = new EsaSkyToggleButton(Icons.getDashedPolyDarkIcon());
+        selectionToolBoxButton = new EsaSkyToggleButton(Icons.getConeIcon());
         selectionToolBoxButton.getElement().setId("searchPanelImg");
         selectionToolBoxButton.setMediumStyle();
         selectionToolBoxButton.setDarkStyle();
         selectionToolBoxButton.addStyleName("searchPanel__selectionToolButton");
+        selectionToolBoxButton.setTitle(TextMgr.getDefaultInstance().getText("selectionToolbox_searchArea_title"));
 
         selectionToolBoxButton.addClickHandler(event -> {
             SearchPanel.this.selectionToolBoxPanel.toggleToolbox();

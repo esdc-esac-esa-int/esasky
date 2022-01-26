@@ -34,3 +34,11 @@
     vertical-align: middle;
     flex: 1 1 100%;
 }
+
+.toggler__disabled * > img{
+	filter: brightness(0.6);
+}
+
+.toggler__disabled * > .toggler__line {
+	border-top: 1px solid grey;
+}
