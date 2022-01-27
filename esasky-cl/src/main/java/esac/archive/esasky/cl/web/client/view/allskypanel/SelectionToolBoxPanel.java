@@ -22,6 +22,9 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import com.allen_sauer.gwt.log.client.Log;
+import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -221,10 +224,22 @@ public class SelectionToolBoxPanel extends FlowPanel {
         String inputErrorClassName = "input__error";
         btn.addClickHandler(event -> {
             try {
+                String raStr = raText.getText();
+                String decStr = decText.getText().trim();
+
+                if (!decStr.matches("^([+\\-]).*")) {
+                    decStr = "+" + decStr;
+                }
+
+                double[] coords = CoordinatesParser.parseCoords(new ClientRegexClass(),
+                        raStr + " " + decStr,
+                        CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame()));
+
                 detailContainer.removeStyleName(inputErrorClassName);
-                AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + raText.getText() + " " + decText.getText() + " " + radiusText.getText());
+                AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
+                        + " " + coords[1] + " " + radiusText.getText());
                 AladinLiteWrapper.getAladinLite().endSelectionMode();
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 detailContainer.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
             }
@@ -275,7 +290,6 @@ public class SelectionToolBoxPanel extends FlowPanel {
                 AladinLiteWrapper.getAladinLite().createSearchArea(stcsText.getText());
                 AladinLiteWrapper.getAladinLite().endSelectionMode();
             } catch (Exception ex) {
-                stcsText.setText(TextMgr.getInstance().getText("selectionToolbox_searchArea_submitError"));
                 stcsText.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
             }
@@ -497,6 +511,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
                 Double currentPosition = new Double(heightString);
                 return currentPosition;
             }
+
             @Override
             protected void onComplete() {
                 super.onComplete();
