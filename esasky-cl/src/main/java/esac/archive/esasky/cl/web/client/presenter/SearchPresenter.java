@@ -174,7 +174,9 @@ public class SearchPresenter {
                 	        || inputType == CoordinateValidator.SearchInputType.NOT_VALID
                 	        ) {
                 		doSearch4Target(inputType);
-                	} else {
+                	} else if (inputType == SearchInputType.SEARCH_SHAPE) {
+                        AladinLiteWrapper.getAladinLite().createSearchArea(userInput);
+                    } else {
                 		doSearchByCoords(inputType);
                 	}
                 }

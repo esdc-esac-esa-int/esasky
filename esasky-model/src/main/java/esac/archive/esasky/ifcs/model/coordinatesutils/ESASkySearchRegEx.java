@@ -151,6 +151,19 @@ public class ESASkySearchRegEx {
         }
     };
 
+    protected static final Map<String, SearchInputType> explainSearchArea = new HashMap<String, SearchInputType>() {
+
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+
+        {
+            put("^(BOX|POLYGON|CIRCLE){1}.*", SearchInputType.SEARCH_SHAPE);
+
+        }
+    };
+
     private static String RA_1 = BEGIN + SIGN + RA_DEGREES_decimal_base360 + END;
     private static String RA_2 = BEGIN + SIGN + RA_DEGREES_integer_base360 + END;
     private static String RA_3 = BEGIN + SIGN + RA_hhmmss_space_pattern + END;

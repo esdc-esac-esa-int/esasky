@@ -13,7 +13,7 @@ public class CoordinateValidator {
                 "byCoords5"), COLUMN_RAdegDECddmmss("byCoords6"), RAdegDECdeg("byCoords7"), COLUMN_RAdddmmssDECddmmss(
                                 "byCoords8"), SPACE_RAdddmmssDECddmmss("byCoords9"), COLUMN_RAdddmmssDECdeg(
                 "byCoords10"), SPACE_RAdddmmssDECdeg("byCoords11"),LETTERS_RAhhmmssDECddmmss("byCoords12"),
-        		LETTERS_RAdddmmssDECddmmss("byCoords13"), BIBCODE("byBibcode"), AUTHOR("byAuthor");
+        		LETTERS_RAdddmmssDECddmmss("byCoords13"), BIBCODE("byBibcode"), AUTHOR("byAuthor"), SEARCH_SHAPE("searchShape");
 
         String type;
 
@@ -29,6 +29,13 @@ public class CoordinateValidator {
     public static SearchInputType checkInputType(RegexClass regex, String input, CoordinatesFrame cooFrame) {
 
         input = input.trim();
+
+        for (Entry<String, SearchInputType> currPattern : ESASkySearchRegEx.explainSearchArea.entrySet()) {
+            if (regex.test(currPattern.getKey(), input)) {
+                return currPattern.getValue();
+            }
+        }
+
         if (CoordinatesFrame.J2000 == cooFrame) {
             for (Entry<String, SearchInputType> currCoordPattern : ESASkySearchRegEx.explainEquatorial
                     .entrySet()) {
@@ -45,9 +52,11 @@ public class CoordinateValidator {
             }
         }
 
+
         if (regex.test(ESASkySearchRegEx.TARGET, input)) {
             return SearchInputType.TARGET;
         }
+
         return SearchInputType.NOT_VALID;
     }
     

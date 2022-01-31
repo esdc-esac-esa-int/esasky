@@ -138,6 +138,9 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                 searchResultsFocusPanel.setVisible(false);
                 ensureClearTextButtonVisibilty();
                 searchTextBox.setFocus(true);
+                if (!selectionToolBoxButton.getToggleStatus()) {
+                    AladinLiteWrapper.getAladinLite().clearSearchArea();
+                }
             }
         });
         FlowPanel textBoxHolder = new FlowPanel();
@@ -223,6 +226,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         
         this.tooltip.setVisible(false);
 
+        selectionToolBoxPanel = new SelectionToolBoxPanel(true);
+        selectionToolBoxPanel.getElement().getStyle().setTop(30, Unit.PX);
+        selectionToolBoxPanel.getElement().getStyle().setLeft(30, Unit.PX);
+        selectionToolBoxPanel.getElement().getStyle().setZIndex(201);
+        selectionToolBoxPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
+
         this.searchTextBoxError = new FocusPanel();
         this.searchTextBoxError.getElement().setId("searchTextBoxError");
         searchBoxErrorLabel.addStyleName("searchBoxLabel");
@@ -246,6 +255,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchPanel.add(this.tooltip);
         searchPanel.add(this.searchTextBoxError);
         searchPanel.add(this.searchResultsFocusPanel);
+        searchPanel.add(this.selectionToolBoxPanel);
 
         this.container = new FlowPanel();
 
@@ -296,12 +306,6 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         selectionContainer.add(selectionToolBoxButton);
 
-        selectionToolBoxPanel = new SelectionToolBoxPanel(true);
-        selectionToolBoxPanel.getElement().getStyle().setTop(25, Unit.PX);
-        selectionToolBoxPanel.getElement().getStyle().setLeft(60, Unit.PX);
-        selectionToolBoxPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
-        selectionContainer.add(selectionToolBoxPanel);
-
         return selectionContainer;
     }
 
@@ -333,9 +337,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         if (searchTextBox.getValue().isEmpty() ) {
             clearTextButton.addStyleName("collapse");
             targetListButton.removeStyleName("collapse");
+            selectionToolBoxButton.removeStyleName("collapse");
+
         } else {
         	targetListButton.addStyleName("collapse");
             clearTextButton.removeStyleName("collapse");
+            selectionToolBoxButton.addStyleName("collapse");
         }
     }
     
@@ -617,7 +624,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	public void closeAllOtherPanels(Widget widgetNotToClose){
 		if(!widgetNotToClose.equals(targetListButton)) {
 			targetListPanel.hide();
-		}
+		} else if (!widgetNotToClose.equals(selectionToolBoxButton)) {
+            selectionToolBoxPanel.hideToolbox();
+            selectionToolBoxButton.setToggleStatus(false);
+        }
 	}
 	
 	private void addAuthorEntries(final ESASkyPublicationSearchResultList simbadAuthorResult) {

@@ -147,6 +147,9 @@ public class Icons {
 		@Source("cone.png")
 		ImageResource coneIcon();
 
+		@Source("cone-dashed.png")
+		ImageResource coneDashedIcon();
+
 	}
 	
 	private static void initMap() {
@@ -353,4 +356,6 @@ public class Icons {
 	}
 
 	public static ImageResource getConeIcon() { return resources.coneIcon(); }
+
+	public static ImageResource getConeDashedIcon() { return resources.coneDashedIcon(); }
 }

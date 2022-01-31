@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    width: 159px;
 }
 
 .selectionToolboxButton{
@@ -48,6 +49,7 @@
 .selectionToolbox__shapeButtonContainerHorizontal{
     display: flex;
     flex-direction: row;
+    margin: auto;
 
 }
 

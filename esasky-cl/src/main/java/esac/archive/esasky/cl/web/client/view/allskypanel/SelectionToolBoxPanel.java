@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -127,7 +128,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
 
         if (this.searchSelection) {
             setVisible(true);
-            toggleShapeButtonsMoveAnimation.animateTo(60, 900);
+            toggleShapeButtonsMoveAnimation.animateTo(400, 500);
             hideSearchAreaDetails();
         } else {
             togglePanelButtonMoveAnimation.animateTo(0, 500);
@@ -137,11 +138,11 @@ public class SelectionToolBoxPanel extends FlowPanel {
         }
     }
 
-    protected void hideToolbox() {
+    public void hideToolbox() {
         toolboxIsVisible = false;
 
         if (this.searchSelection) {
-            toggleShapeButtonsMoveAnimation.animateTo(250, 700);
+            toggleShapeButtonsMoveAnimation.animateTo(0, 400);
         } else {
             togglePanelButton.setTitle(TextMgr.getInstance().getText("selectionToolbox_showSelectionToolbox"));
             togglePanelButton.rotate(-90, 500);
@@ -208,7 +209,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
 
         FlowPanel decContainer = new FlowPanel();
         Label decLabel = new Label();
-        decLabel.setText("DEC");
+        decLabel.setText("Dec");
         TextBox decText = new TextBox();
         decContainer.add(decLabel);
         decContainer.add(decText);
@@ -222,6 +223,12 @@ public class SelectionToolBoxPanel extends FlowPanel {
         detailContainer.add(btn);
 
         String inputErrorClassName = "input__error";
+        detailContainer.addDomHandler(event -> {
+            if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                btn.click();
+            }
+        }, KeyUpEvent.getType());
+
         btn.addClickHandler(event -> {
             try {
                 String raStr = raText.getText();
@@ -282,13 +289,21 @@ public class SelectionToolBoxPanel extends FlowPanel {
         btn.addStyleName("selectionToolbox__detailsPanelSubmitButton");
         detailContainer.add(btn);
 
+        detailContainer.addDomHandler(event -> {
+            if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                btn.click();
+            }
+        }, KeyUpEvent.getType());
 
         String inputErrorClassName = "input__error";
         btn.addClickHandler(event -> {
             try {
                 stcsText.removeStyleName(inputErrorClassName);
-                AladinLiteWrapper.getAladinLite().createSearchArea(stcsText.getText());
+                // Discard drawn shape if any
+                AladinLiteWrapper.getAladinLite().setSelectionMode("discard");
                 AladinLiteWrapper.getAladinLite().endSelectionMode();
+                // Create new search area
+                AladinLiteWrapper.getAladinLite().createSearchArea(stcsText.getText());
             } catch (Exception ex) {
                 stcsText.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
@@ -320,7 +335,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
 
         boxButton = new EsaSkyToggleButton(Icons.getDashedRectangleIcon());
         addButtonBehaviorAndStyle(boxButton, "box");
-        circleButton = new EsaSkyToggleButton(Icons.getDashedCircleIcon());
+        circleButton = new EsaSkyToggleButton(Icons.getConeDashedIcon());
         addButtonBehaviorAndStyle(circleButton, "circle");
         polyButton = new EsaSkyToggleButton(Icons.getDashedPolyIcon());
         addButtonBehaviorAndStyle(polyButton, "polygon");
@@ -337,6 +352,7 @@ public class SelectionToolBoxPanel extends FlowPanel {
         }
 
         this.getElement().setId("selectionToolbox");
+
     }
 
     private void initSearchView() {
@@ -496,20 +512,19 @@ public class SelectionToolBoxPanel extends FlowPanel {
 
             @Override
             protected void setCurrentPosition(double newPosition) {
-                getElement().getStyle().setLeft(newPosition, Unit.PX);
-                shapeButtonContainer.getElement().getStyle().setLeft(newPosition, Unit.PX);
+                getElement().getStyle().setProperty("maxHeight", newPosition, Unit.PX);
+                shapeButtonContainer.getElement().getStyle().setProperty("maxHeight", newPosition, Unit.PX);
             }
 
             @Override
             protected Double getCurrentPosition() {
-                String heightString = shapeButtonContainer.getElement().getStyle().getLeft();
+                String heightString = shapeButtonContainer.getElement().getStyle().getProperty("maxHeight");
                 if (heightString.equals("")) {
                     heightString = "0px";
                 }
                 //remove suffix "px"
                 heightString = heightString.substring(0, heightString.length() - 2);
-                Double currentPosition = new Double(heightString);
-                return currentPosition;
+                return new Double(heightString);
             }
 
             @Override

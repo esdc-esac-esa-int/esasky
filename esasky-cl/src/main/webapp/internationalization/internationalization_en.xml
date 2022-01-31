@@ -3340,7 +3340,7 @@
 	</text>
 	<text key="selectionToolbox_searchArea_helpText">
 		&lt;b&gt;Graphical Search Tool&lt;/b&gt;&lt;br&gt;
-		To search sources press and drag from &lt;b&gt;left to right&lt;/b&gt;, with either the box or circle tool selected.
+		To search sources press and drag with either the box or circle tool selected.
 		A green box or circle will appear to indicate the search area. Once you are satisfied with an area, release the pointer.
 		&lt;br&gt;&lt;br&gt;
 		The polygon search tool allows you to search with an arbitrary shape. Each touch or click adds another point to the polygon.
@@ -3348,9 +3348,7 @@
 		&lt;br&gt;&lt;br&gt;&lt;b&gt;Text Search Tool&lt;/b&gt;&lt;br&gt;
 		In the drop down menu there are controls that make it possible to search a STCS region by text input.
 		Selecting different shapes will provide different input controls.
-		&lt;br&gt;&lt;br&gt;STCS strings are expected to follow the format of "[BOX|POLYGON]{1} RA1 DEC1 ... RAn DECn".
-		&lt;br&gt;&lt;br&gt;For the right ascension and declination values, supported formats are radians (2.56879rad), hms (12h34m24.5s),
-		dms (-12d45m20.5s) and decimal degrees.
+		&lt;br&gt;&lt;br&gt;STCS strings are expected to follow the format of "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
 	</text>
 	<text key="selectionToolbox_searchArea_boxButtonTooltip">
 		Box Search Tool
