@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
-import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;

@@ -1,8 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.allskypanel;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -15,18 +17,19 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.common.Toggler;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
-import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
 
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SearchToolPanel extends FlowPanel {
@@ -44,6 +47,9 @@ public class SearchToolPanel extends FlowPanel {
 
     private Toggler searchAreaDetailsToggler;
     private FlowPanel searchAreaDetailPanel;
+    private FlowPanel circleDetails;
+    private FlowPanel polyDetails;
+    private FlowPanel boxDetails;
 
     private static Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -71,6 +77,23 @@ public class SearchToolPanel extends FlowPanel {
         if (searchAreaDetailsToggler != null) {
             searchAreaDetailsToggler.setToggleStatus(false);
         }
+    }
+
+    private void showSearchAreaDetails() {
+        if (searchAreaDetailsToggler != null) {
+            searchAreaDetailPanel.clear();
+            if (boxButton.getToggleStatus()) {
+                searchAreaDetailPanel.add(boxDetails);
+            } else if (polyButton.getToggleStatus()) {
+                searchAreaDetailPanel.add(polyDetails);
+            } else {
+                searchAreaDetailPanel.add(circleDetails);
+            }
+
+            searchAreaDetailsToggler.setToggleStatus(true);
+        }
+
+
     }
 
     private void toggleOtherButtons(EsaSkyToggleButton buttonPressed) {
@@ -138,7 +161,7 @@ public class SearchToolPanel extends FlowPanel {
         setVisible(false);
     }
 
-    private FlowPanel initSelectionDetailCircle() {
+    private FlowPanel initConeDetails() {
 
         FlowPanel detailContainer = new FlowPanel();
         detailContainer.setStyleName("searchToolbox__detailsPanelCircle");
@@ -193,9 +216,9 @@ public class SearchToolPanel extends FlowPanel {
                     decStr = "+" + decStr;
                 }
 
-                double[] coords = CoordinatesParser.parseCoords(new ClientRegexClass(),
-                        raStr + " " + decStr,
-                        CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame()));
+                CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
+                double[] coords = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(),
+                        raStr + " " + decStr, cooFrame, cooFrame);
 
                 detailContainer.removeStyleName(inputErrorClassName);
                 AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
@@ -204,6 +227,8 @@ public class SearchToolPanel extends FlowPanel {
             } catch (Exception ex) {
                 detailContainer.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
+                DisplayUtils.showMessageDialogBox(ex.getMessage(), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                        TextMgr.getInstance().getText("error"));
             }
 
         });
@@ -223,7 +248,7 @@ public class SearchToolPanel extends FlowPanel {
     }
 
 
-    private FlowPanel initSlectionDetailStcs(String header) {
+    private FlowPanel initPolygonDetails(String header) {
         FlowPanel detailContainer = new FlowPanel();
         detailContainer.setStyleName("searchToolbox__detailsPanelPoly");
 
@@ -262,6 +287,8 @@ public class SearchToolPanel extends FlowPanel {
             } catch (Exception ex) {
                 stcsText.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
+                DisplayUtils.showMessageDialogBox(ex.getMessage(), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                        TextMgr.getInstance().getText("error"));
             }
 
         });
@@ -285,9 +312,9 @@ public class SearchToolPanel extends FlowPanel {
         shapeButtonContainer.addStyleName("searchToolbox__shapeButtonContainerHorizontal");
         searchAreaDetailPanel = new FlowPanel();
 
-        FlowPanel circleDetails = initSelectionDetailCircle();
-        FlowPanel polyDetails = initSlectionDetailStcs("Polygon");
-        FlowPanel boxDetails = initSlectionDetailStcs("Box");
+        circleDetails = initConeDetails();
+        polyDetails = initPolygonDetails("Polygon");
+        boxDetails = initPolygonDetails("Box");
 
         FlowPanel headerContainer = new FlowPanel();
         headerContainer.addStyleName("searchToolbox__searchHeaderContainer");
@@ -340,8 +367,6 @@ public class SearchToolPanel extends FlowPanel {
 
     }
 
-
-
     private void addButtonBehaviorAndStyle(EsaSkyToggleButton button, String mode) {
         addCommonButtonStyle(button, TextMgr.getInstance().getText("searchToolbox_" + mode + "ButtonTooltip"));
         button.addClickHandler(
@@ -351,11 +376,12 @@ public class SearchToolPanel extends FlowPanel {
                         AladinLiteWrapper.getAladinLite().setSelectionType("SEARCH");
                         AladinLiteWrapper.getAladinLite().startSelectionMode();
                         toggleOtherButtons(button);
+                        showSearchAreaDetails();
                     } else {
-                        AladinLiteWrapper.getAladinLite().clearSearchArea();
                         searchAreaDetailsToggler.close();
                         hideSearchAreaDetails();
                         AladinLiteWrapper.getAladinLite().endSelectionMode();
+                        AladinLiteWrapper.getAladinLite().clearSearchArea();
                     }
                 });
     }

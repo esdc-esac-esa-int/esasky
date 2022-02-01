@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
@@ -32,6 +33,7 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
@@ -56,12 +58,6 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel;
@@ -175,7 +171,14 @@ public class SearchPresenter {
                 	        ) {
                 		doSearch4Target(inputType);
                 	} else if (inputType == SearchInputType.SEARCH_SHAPE) {
-                        AladinLiteWrapper.getAladinLite().createSearchArea(userInput);
+                        try {
+                            AladinLiteWrapper.getAladinLite().createSearchArea(userInput);
+                        }catch (Exception ex) {
+                            Log.debug(ex.getMessage(), ex);
+                            DisplayUtils.showMessageDialogBox(ex.getMessage(), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                                    TextMgr.getInstance().getText("error"));
+                        }
+
                     } else {
                 		doSearchByCoords(inputType);
                 	}
