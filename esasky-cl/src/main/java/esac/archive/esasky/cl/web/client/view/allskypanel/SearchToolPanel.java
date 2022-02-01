@@ -1,0 +1,402 @@
+package esac.archive.esasky.cl.web.client.view.allskypanel;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectSearchAreaEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
+import esac.archive.esasky.cl.web.client.view.common.Toggler;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import com.allen_sauer.gwt.log.client.Log;
+import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class SearchToolPanel extends FlowPanel {
+
+    protected AladinShape source;
+
+    private FlowPanel shapeButtonContainer = new FlowPanel();
+    private EsaSkyToggleButton boxButton;
+    private EsaSkyToggleButton circleButton;
+    private EsaSkyToggleButton polyButton;
+
+    private boolean toolboxIsVisible = false;
+
+    private EsaSkyAnimation toggleShapeButtonsMoveAnimation;
+
+    private Toggler searchAreaDetailsToggler;
+    private FlowPanel searchAreaDetailPanel;
+
+    private static Resources resources = GWT.create(Resources.class);
+    private CssResource style;
+
+    public static interface Resources extends ClientBundle {
+        @Source("searchToolPanel.css")
+        @CssResource.NotStrict
+        CssResource style();
+
+        @Source("up_arrow_outline.png")
+        @ImageOptions(flipRtl = true)
+        ImageResource arrowIcon();
+    }
+
+
+    public SearchToolPanel() {
+        style = resources.style();
+        style.ensureInjected();
+        initView();
+        setVisible(false);
+        hideToolbox();
+    }
+
+    private void hideSearchAreaDetails() {
+        if (searchAreaDetailsToggler != null) {
+            searchAreaDetailsToggler.setToggleStatus(false);
+        }
+    }
+
+    private void toggleOtherButtons(EsaSkyToggleButton buttonPressed) {
+        if (buttonPressed != boxButton) {
+            boxButton.setToggleStatus(false);
+        }
+        if (buttonPressed != circleButton) {
+            circleButton.setToggleStatus(false);
+        }
+        if (buttonPressed != polyButton) {
+            polyButton.setToggleStatus(false);
+        }
+
+        if (searchAreaDetailsToggler != null) {
+            searchAreaDetailsToggler.setToggleStatus(false);
+        }
+
+        hideSearchAreaDetails();
+    }
+
+    public void deToggleAllButtons() {
+        boxButton.setToggleStatus(false);
+        circleButton.setToggleStatus(false);
+        polyButton.setToggleStatus(false);
+        hideSearchAreaDetails();
+    }
+
+    protected void showToolbox() {
+        toolboxIsVisible = true;
+        setVisible(true);
+        toggleShapeButtonsMoveAnimation.animateTo(400, 500);
+        hideSearchAreaDetails();
+    }
+
+    public void hideToolbox() {
+        toolboxIsVisible = false;
+
+        toggleShapeButtonsMoveAnimation.animateTo(0, 400);
+
+        if (AladinLiteWrapper.getAladinLite().isAttached()) {
+            AladinLiteWrapper.getAladinLite().endSelectionMode();
+        }
+
+        deToggleAllButtons();
+    }
+
+    public void toggleToolbox() {
+        if (toolboxIsVisible) {
+            hideToolbox();
+            AladinLiteWrapper.getAladinLite().clearSearchArea();
+        } else {
+            showToolbox();
+        }
+    }
+
+    public boolean toolboxVisible() {
+        return toolboxIsVisible;
+    }
+
+    private void setToolboxVisible() {
+        setVisible(true);
+    }
+
+    private void setToolboxHidden() {
+        setVisible(false);
+    }
+
+    private FlowPanel initSelectionDetailCircle() {
+
+        FlowPanel detailContainer = new FlowPanel();
+        detailContainer.setStyleName("searchToolbox__detailsPanelCircle");
+        Label headerLabel = new Label();
+        headerLabel.setText("Cone");
+        headerLabel.setStyleName("searchToolbox__detailsPanelHeaderLabel");
+        detailContainer.add(headerLabel);
+
+        FlowPanel radiusContainer = new FlowPanel();
+        Label radiusLabel = new Label();
+        radiusLabel.setText("Radius");
+        TextBox radiusText = new TextBox();
+        radiusContainer.add(radiusLabel);
+        radiusContainer.add(radiusText);
+
+        FlowPanel raContainer = new FlowPanel();
+        Label raLabel = new Label();
+        raLabel.setText("RA");
+        TextBox raText = new TextBox();
+        raContainer.add(raLabel);
+        raContainer.add(raText);
+
+
+        FlowPanel decContainer = new FlowPanel();
+        Label decLabel = new Label();
+        decLabel.setText("Dec");
+        TextBox decText = new TextBox();
+        decContainer.add(decLabel);
+        decContainer.add(decText);
+
+        EsaSkyButton btn = new EsaSkyButton(TextMgr.getInstance().getText("searchToolbox_submitButton"));
+        btn.addStyleName("searchToolbox__detailsPanelSubmitButton");
+
+        detailContainer.add(radiusContainer);
+        detailContainer.add(raContainer);
+        detailContainer.add(decContainer);
+        detailContainer.add(btn);
+
+        String inputErrorClassName = "input__error";
+        detailContainer.addDomHandler(event -> {
+            if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                btn.click();
+            }
+        }, KeyUpEvent.getType());
+
+        btn.addClickHandler(event -> {
+            try {
+                String raStr = raText.getText();
+                String decStr = decText.getText().trim();
+
+                if (!decStr.matches("^([+\\-]).*")) {
+                    decStr = "+" + decStr;
+                }
+
+                double[] coords = CoordinatesParser.parseCoords(new ClientRegexClass(),
+                        raStr + " " + decStr,
+                        CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame()));
+
+                detailContainer.removeStyleName(inputErrorClassName);
+                AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
+                        + " " + coords[1] + " " + radiusText.getText());
+                AladinLiteWrapper.getAladinLite().endSelectionMode();
+            } catch (Exception ex) {
+                detailContainer.addStyleName(inputErrorClassName);
+                Log.debug(ex.getMessage(), ex);
+            }
+
+        });
+
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteSelectSearchAreaEvent.TYPE, searchAreaEvent -> {
+            if (searchAreaEvent != null && searchAreaEvent.getSearchArea() != null && searchAreaEvent.getSearchArea().isCircle()) {
+                detailContainer.removeStyleName(inputErrorClassName);
+                radiusText.setText(searchAreaEvent.getSearchArea().getRadius());
+                raText.setText(Double.toString(searchAreaEvent.getSearchArea().getCoordinates()[0].getRaDeg()));
+                decText.setText(Double.toString(searchAreaEvent.getSearchArea().getCoordinates()[0].getDecDeg()));
+            }
+
+        });
+
+        return detailContainer;
+    }
+
+
+    private FlowPanel initSlectionDetailStcs(String header) {
+        FlowPanel detailContainer = new FlowPanel();
+        detailContainer.setStyleName("searchToolbox__detailsPanelPoly");
+
+        FlowPanel headerContainer = new FlowPanel();
+        headerContainer.addStyleName("searchToolbox__detailsPanelHeaderContainer");
+        Label headerLabel = new Label();
+        headerLabel.setText(header);
+        headerLabel.setStyleName("searchToolbox__detailsPanelHeaderLabel");
+        headerContainer.add(headerLabel);
+
+        TextBox stcsText = new TextBox();
+        stcsText.setTitle(TextMgr.getInstance().getText("searchToolbox_title"));
+
+        detailContainer.add(headerContainer);
+        detailContainer.add(stcsText);
+
+        EsaSkyButton btn = new EsaSkyButton(TextMgr.getInstance().getText("searchToolbox_submitButton"));
+        btn.addStyleName("searchToolbox__detailsPanelSubmitButton");
+        detailContainer.add(btn);
+
+        detailContainer.addDomHandler(event -> {
+            if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                btn.click();
+            }
+        }, KeyUpEvent.getType());
+
+        String inputErrorClassName = "input__error";
+        btn.addClickHandler(event -> {
+            try {
+                stcsText.removeStyleName(inputErrorClassName);
+                // Discard drawn shape if any
+                AladinLiteWrapper.getAladinLite().setSelectionMode("discard");
+                AladinLiteWrapper.getAladinLite().endSelectionMode();
+                // Create new search area
+                AladinLiteWrapper.getAladinLite().createSearchArea(stcsText.getText());
+            } catch (Exception ex) {
+                stcsText.addStyleName(inputErrorClassName);
+                Log.debug(ex.getMessage(), ex);
+            }
+
+        });
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteSelectSearchAreaEvent.TYPE, searchAreaEvent -> {
+            if (searchAreaEvent != null && searchAreaEvent.getSearchArea() != null && !searchAreaEvent.getSearchArea().isCircle()) {
+                stcsText.removeStyleName(inputErrorClassName);
+                stcsText.setText(searchAreaEvent.getSearchArea().getAreaType() + " ICRS " +
+                        Arrays.stream(searchAreaEvent.getSearchArea().getCoordinates())
+                                .map(x -> x.getRaDeg() + " " + x.getDecDeg()).collect(Collectors.joining(" ")));
+            }
+
+        });
+
+        return detailContainer;
+    }
+
+    private void initView() {
+
+        toggleShapeButtonsMoveAnimation = getShapeButtonsAnimationHorizontal();
+        shapeButtonContainer.addStyleName("searchToolbox__shapeButtonContainerHorizontal");
+        searchAreaDetailPanel = new FlowPanel();
+
+        FlowPanel circleDetails = initSelectionDetailCircle();
+        FlowPanel polyDetails = initSlectionDetailStcs("Polygon");
+        FlowPanel boxDetails = initSlectionDetailStcs("Box");
+
+        FlowPanel headerContainer = new FlowPanel();
+        headerContainer.addStyleName("searchToolbox__searchHeaderContainer");
+        Label headerLabel = new Label(TextMgr.getInstance().getText("searchToolbox_title"));
+        headerLabel.addStyleName("searchToolbox__searchHeaderLabel");
+        HelpButton helpButton = new HelpButton(TextMgr.getInstance().getText("searchToolbox_helpText"),
+                TextMgr.getInstance().getText("searchToolbox_helpHeader"));
+        helpButton.setStyleName("searchToolboxHelpButton");
+
+        headerContainer.add(headerLabel);
+        headerContainer.add(helpButton);
+
+        add(headerContainer);
+
+        searchAreaDetailsToggler = new Toggler(searchAreaDetailPanel);
+        searchAreaDetailsToggler.addClickHandler(event -> {
+
+            if (boxButton.getToggleStatus()) {
+                searchAreaDetailPanel.clear();
+                searchAreaDetailPanel.add(boxDetails);
+            } else if (polyButton.getToggleStatus()) {
+                searchAreaDetailPanel.clear();
+                searchAreaDetailPanel.add(polyDetails);
+            } else {
+                searchAreaDetailPanel.clear();
+                searchAreaDetailPanel.add(circleDetails);
+            }
+        });
+
+
+        boxButton = new EsaSkyToggleButton(Icons.getDashedRectangleIcon());
+        addButtonBehaviorAndStyle(boxButton, "box");
+        circleButton = new EsaSkyToggleButton(Icons.getConeDashedIcon());
+        addButtonBehaviorAndStyle(circleButton, "circle");
+        polyButton = new EsaSkyToggleButton(Icons.getDashedPolyIcon());
+        addButtonBehaviorAndStyle(polyButton, "polygon");
+
+
+        shapeButtonContainer.add(boxButton);
+        shapeButtonContainer.add(circleButton);
+        shapeButtonContainer.add(polyButton);
+        add(shapeButtonContainer);
+
+        if (searchAreaDetailsToggler != null && searchAreaDetailPanel != null) {
+            add(searchAreaDetailsToggler);
+            add(searchAreaDetailPanel);
+        }
+
+        this.getElement().setId("searchToolbox");
+
+    }
+
+
+
+    private void addButtonBehaviorAndStyle(EsaSkyToggleButton button, String mode) {
+        addCommonButtonStyle(button, TextMgr.getInstance().getText("searchToolbox_" + mode + "ButtonTooltip"));
+        button.addClickHandler(
+                event -> {
+                    if (button.getToggleStatus()) {
+                        AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
+                        AladinLiteWrapper.getAladinLite().setSelectionType("SEARCH");
+                        AladinLiteWrapper.getAladinLite().startSelectionMode();
+                        toggleOtherButtons(button);
+                    } else {
+                        AladinLiteWrapper.getAladinLite().clearSearchArea();
+                        searchAreaDetailsToggler.close();
+                        hideSearchAreaDetails();
+                        AladinLiteWrapper.getAladinLite().endSelectionMode();
+                    }
+                });
+    }
+
+
+    private void addCommonButtonStyle(EsaSkyButton button, String tooltip) {
+        button.setNonTransparentBackground();
+        button.setBigStyle();
+        button.addStyleName("searchToolboxButton");
+        button.setTitle(tooltip);
+    }
+
+
+    protected EsaSkyAnimation getShapeButtonsAnimationHorizontal() {
+        return new EsaSkyAnimation() {
+
+            @Override
+            protected void setCurrentPosition(double newPosition) {
+                getElement().getStyle().setProperty("maxHeight", newPosition, Unit.PX);
+                shapeButtonContainer.getElement().getStyle().setProperty("maxHeight", newPosition, Unit.PX);
+            }
+
+            @Override
+            protected Double getCurrentPosition() {
+                String heightString = shapeButtonContainer.getElement().getStyle().getProperty("maxHeight");
+                if (heightString.equals("")) {
+                    heightString = "0px";
+                }
+                //remove suffix "px"
+                heightString = heightString.substring(0, heightString.length() - 2);
+                return new Double(heightString);
+            }
+
+            @Override
+            protected void onComplete() {
+                super.onComplete();
+
+                if (!toolboxIsVisible) {
+                    setVisible(false);
+                }
+            }
+        };
+    }
+}

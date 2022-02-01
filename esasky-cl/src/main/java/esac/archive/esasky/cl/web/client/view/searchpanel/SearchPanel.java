@@ -30,7 +30,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.allskypanel.SelectionToolBoxPanel;
+import esac.archive.esasky.cl.web.client.view.allskypanel.SearchToolPanel;
 import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.CssPxAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -65,7 +65,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private Image ssoDNetLogo;
     private Image simbadLogo;
 
-    private SelectionToolBoxPanel selectionToolBoxPanel;
+    private SearchToolPanel searchToolPanel;
     private EsaSkyToggleButton selectionToolBoxButton;
     
     private boolean foundInSimbad = false;
@@ -226,11 +226,11 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         
         this.tooltip.setVisible(false);
 
-        selectionToolBoxPanel = new SelectionToolBoxPanel(true);
-        selectionToolBoxPanel.getElement().getStyle().setTop(30, Unit.PX);
-        selectionToolBoxPanel.getElement().getStyle().setLeft(30, Unit.PX);
-        selectionToolBoxPanel.getElement().getStyle().setZIndex(201);
-        selectionToolBoxPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
+        searchToolPanel = new SearchToolPanel();
+        searchToolPanel.getElement().getStyle().setTop(30, Unit.PX);
+        searchToolPanel.getElement().getStyle().setLeft(30, Unit.PX);
+        searchToolPanel.getElement().getStyle().setZIndex(201);
+        searchToolPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
 
         this.searchTextBoxError = new FocusPanel();
         this.searchTextBoxError.getElement().setId("searchTextBoxError");
@@ -255,7 +255,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchPanel.add(this.tooltip);
         searchPanel.add(this.searchTextBoxError);
         searchPanel.add(this.searchResultsFocusPanel);
-        searchPanel.add(this.selectionToolBoxPanel);
+        searchPanel.add(this.searchToolPanel);
 
         this.container = new FlowPanel();
 
@@ -300,7 +300,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         selectionToolBoxButton.setTitle(TextMgr.getDefaultInstance().getText("selectionToolbox_searchArea_title"));
 
         selectionToolBoxButton.addClickHandler(event -> {
-            SearchPanel.this.selectionToolBoxPanel.toggleToolbox();
+            SearchPanel.this.searchToolPanel.toggleToolbox();
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(selectionToolBoxButton));
         });
 
@@ -625,7 +625,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 		if(!widgetNotToClose.equals(targetListButton)) {
 			targetListPanel.hide();
 		} else if (!widgetNotToClose.equals(selectionToolBoxButton)) {
-            selectionToolBoxPanel.hideToolbox();
+            searchToolPanel.hideToolbox();
             selectionToolBoxButton.setToggleStatus(false);
         }
 	}

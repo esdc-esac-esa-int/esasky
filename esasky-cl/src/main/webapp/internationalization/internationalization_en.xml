@@ -3332,13 +3332,13 @@
 	<text key="selectionToolbox_polygonButtonTooltip">
 		Polygon Selection Tool
 	</text>
-	<text key="selectionToolbox_searchArea_title">
+	<text key="searchToolbox_title">
 		Search Tools
 	</text>
-	<text key="selectionToolbox_searchArea_helpHeader">
+	<text key="searchToolbox_helpHeader">
 		Search Tools
 	</text>
-	<text key="selectionToolbox_searchArea_helpText">
+	<text key="searchToolbox_helpText">
 		&lt;b&gt;Graphical Search Tool&lt;/b&gt;&lt;br&gt;
 		To search sources press and drag with either the box or circle tool selected.
 		A green box or circle will appear to indicate the search area. Once you are satisfied with an area, release the pointer.
@@ -3350,22 +3350,22 @@
 		Selecting different shapes will provide different input controls.
 		&lt;br&gt;&lt;br&gt;STCS strings are expected to follow the format of "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
 	</text>
-	<text key="selectionToolbox_searchArea_boxButtonTooltip">
+	<text key="searchToolbox_boxButtonTooltip">
 		Box Search Tool
 	</text>
-	<text key="selectionToolbox_searchArea_circleButtonTooltip">
+	<text key="searchToolbox_circleButtonTooltip">
 		Cone Search Tool
 	</text>
-	<text key="selectionToolbox_searchArea_polygonButtonTooltip">
+	<text key="searchToolbox_polygonButtonTooltip">
 		Polygon Search Tool
 	</text>
-	<text key="selectionToolbox_searchArea_textSearchtooltip">
+	<text key="searchToolbox_textSearchtooltip">
 		Define a STCS region
 	</text>
-	<text key="selectionToolbox_searchArea_submitButton">
+	<text key="searchToolbox_submitButton">
 		Search
 	</text>
-	<text key="selectionToolbox_searchArea_submitError">
+	<text key="searchToolbox_submitError">
 		Invalid format.
 	</text>
 	<text key="addSkyMenuItem_ESASKY">Add new row</text>
