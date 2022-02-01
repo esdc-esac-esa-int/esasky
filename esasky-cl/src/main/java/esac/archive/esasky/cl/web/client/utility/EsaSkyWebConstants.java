@@ -194,4 +194,24 @@ public class EsaSkyWebConstants {
         hips.setColorPalette(ColorPalette.NATIVE);
         return hips;
     }
+    
+    
+    /*************************************************************************/
+    /** SESSION SAVE CONSTANTS **/
+    /*************************************************************************/
+
+    public static final String SESSION_LOCATION = "location";
+    public static final String SESSION_RA = "ra";
+    public static final String SESSION_DEC = "dec";
+    public static final String SESSION_FOV = "fov";
+    public static final String SESSION_FRAME = "coo_frame";
+    
+    public static final String SESSION_HIPS = "hips";
+    public static final String SESSION_HIPS_ARRAY = "stack";
+    public static final String SESSION_HIPS_SLIDER = "current";
+    public static final String SESSION_HIPS_NAME = "name";
+    public static final String SESSION_HIPS_URL = "url";
+    public static final String SESSION_HIPS_WAVELENGTH = "wavelength";
+    public static final String SESSION_HIPS_COLORPALETTE = "colorpalette";
+
 }
