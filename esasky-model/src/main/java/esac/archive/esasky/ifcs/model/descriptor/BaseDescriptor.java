@@ -503,13 +503,12 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public String getSearchAreaShape() {
         String shape = "";
-
         if (hasSearchArea()) {
             if (searchArea.isCircle()) {
-                CoordinatesObject coordinate = searchArea.getCoordinates()[0];
+                CoordinatesObject coordinate = searchArea.getJ2000Coordinates()[0];
                 shape =  "CIRCLE('ICRS'," + coordinate.getRaDeg()+ "," + coordinate.getDecDeg() + "," + searchArea.getRadius() + ")";
             } else {
-                CoordinatesObject[] coordinates = searchArea.getCoordinates();
+                CoordinatesObject[] coordinates = searchArea.getJ2000Coordinates();
                 String coordinateStr = Arrays.stream(coordinates)
                     .map(point -> point.getRaDeg() + "," + point.getDecDeg())
                     .collect(Collectors.joining(","));
