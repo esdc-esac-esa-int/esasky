@@ -43,6 +43,7 @@ public class SearchToolPanel extends FlowPanel {
 
     private boolean toolboxIsVisible = false;
 
+    private EsaSkyAnimation toggleShapeButtonsHeightAnimation;
     private EsaSkyAnimation toggleShapeButtonsMoveAnimation;
 
     private Toggler searchAreaDetailsToggler;
@@ -124,20 +125,26 @@ public class SearchToolPanel extends FlowPanel {
     protected void showToolbox() {
         toolboxIsVisible = true;
         setVisible(true);
-        toggleShapeButtonsMoveAnimation.animateTo(400, 500);
-        hideSearchAreaDetails();
+        toggleShapeButtonsHeightAnimation.animateTo(400, 500);
+        toggleShapeButtonsMoveAnimation.animateTo(30, 250);
+
+        if (boxButton.getToggleStatus()) {
+            startSearchMode(boxButton, "box");
+        } else if (polyButton.getToggleStatus()) {
+            startSearchMode(polyButton, "polygon");
+        } else if (circleButton.getToggleStatus()) {
+            startSearchMode(circleButton, "circle");
+        }
     }
 
     public void hideToolbox() {
         toolboxIsVisible = false;
-
+        toggleShapeButtonsHeightAnimation.animateTo(0, 400);
         toggleShapeButtonsMoveAnimation.animateTo(0, 400);
 
         if (AladinLiteWrapper.getAladinLite().isAttached()) {
             AladinLiteWrapper.getAladinLite().endSelectionMode();
         }
-
-        deToggleAllButtons();
     }
 
     public void toggleToolbox() {
@@ -308,7 +315,8 @@ public class SearchToolPanel extends FlowPanel {
 
     private void initView() {
 
-        toggleShapeButtonsMoveAnimation = getShapeButtonsAnimationHorizontal();
+        toggleShapeButtonsHeightAnimation = getShapeButtonsAnimationHeight();
+        toggleShapeButtonsMoveAnimation = getShapeButtonsAnimationTop();
         shapeButtonContainer.addStyleName("searchToolbox__shapeButtonContainerHorizontal");
         searchAreaDetailPanel = new FlowPanel();
 
@@ -372,18 +380,26 @@ public class SearchToolPanel extends FlowPanel {
         button.addClickHandler(
                 event -> {
                     if (button.getToggleStatus()) {
-                        AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
-                        AladinLiteWrapper.getAladinLite().setSelectionType("SEARCH");
-                        AladinLiteWrapper.getAladinLite().startSelectionMode();
-                        toggleOtherButtons(button);
-                        showSearchAreaDetails();
+                        startSearchMode(button, mode);
                     } else {
-                        searchAreaDetailsToggler.close();
-                        hideSearchAreaDetails();
-                        AladinLiteWrapper.getAladinLite().endSelectionMode();
-                        AladinLiteWrapper.getAladinLite().clearSearchArea();
+                        endSearchMode();
                     }
                 });
+    }
+
+    private void startSearchMode(EsaSkyToggleButton button, String mode) {
+        AladinLiteWrapper.getAladinLite().setSelectionMode(mode);
+        AladinLiteWrapper.getAladinLite().setSelectionType("SEARCH");
+        AladinLiteWrapper.getAladinLite().startSelectionMode();
+        toggleOtherButtons(button);
+        showSearchAreaDetails();
+    }
+
+    private void endSearchMode() {
+        searchAreaDetailsToggler.close();
+        hideSearchAreaDetails();
+        AladinLiteWrapper.getAladinLite().endSelectionMode();
+        AladinLiteWrapper.getAladinLite().clearSearchArea();
     }
 
 
@@ -395,7 +411,7 @@ public class SearchToolPanel extends FlowPanel {
     }
 
 
-    protected EsaSkyAnimation getShapeButtonsAnimationHorizontal() {
+    protected EsaSkyAnimation getShapeButtonsAnimationHeight() {
         return new EsaSkyAnimation() {
 
             @Override
@@ -422,6 +438,28 @@ public class SearchToolPanel extends FlowPanel {
                 if (!toolboxIsVisible) {
                     setVisible(false);
                 }
+            }
+        };
+    }
+
+    protected EsaSkyAnimation getShapeButtonsAnimationTop() {
+        return new EsaSkyAnimation() {
+
+            @Override
+            protected void setCurrentPosition(double newPosition) {
+                getElement().getStyle().setProperty("top", newPosition, Unit.PX);
+                shapeButtonContainer.getElement().getStyle().setProperty("top", newPosition, Unit.PX);
+            }
+
+            @Override
+            protected Double getCurrentPosition() {
+                String topString = shapeButtonContainer.getElement().getStyle().getProperty("top");
+                if (topString.equals("")) {
+                    topString = "0px";
+                }
+                //remove suffix "px"
+                topString = topString.substring(0, topString.length() - 2);
+                return new Double(topString);
             }
         };
     }
