@@ -150,6 +150,8 @@ public class Icons {
 		@Source("cone-dashed.png")
 		ImageResource coneDashedIcon();
 
+		@Source("gear_icon_outline.png")
+		ImageResource settingsIcon();
 	}
 	
 	private static void initMap() {
@@ -358,4 +360,6 @@ public class Icons {
 	public static ImageResource getConeIcon() { return resources.coneIcon(); }
 
 	public static ImageResource getConeDashedIcon() { return resources.coneDashedIcon(); }
+
+	public static ImageResource getSettingsIcon() { return resources.settingsIcon(); }
 }

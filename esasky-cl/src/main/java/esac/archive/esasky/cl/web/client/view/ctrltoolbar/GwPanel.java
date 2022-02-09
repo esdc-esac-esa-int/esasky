@@ -22,7 +22,7 @@ import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
-import esac.archive.esasky.cl.web.client.view.common.buttons.ChangeableIconButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
@@ -52,7 +52,6 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     private TabLayoutPanel tabLayoutPanel;
     private EsaSkyToggleButton gridButton;
 
-
     private final Map<String, Integer> rowIdHipsMap = new HashMap<>();
     private static final String GRACE_ID = "grace_id";
     private boolean isGridDisabled = false;
@@ -61,41 +60,6 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private final Resources resources;
     private CssResource style;
-
-    private final List<String> gwColumnsToAlwaysHide = Arrays.asList(
-            "stcs50",
-            "stcs90",
-            "gravitational_waves_oid",
-            "group_id",
-            "hardware_inj",
-            "internal",
-            "open_alert",
-            "pkt_ser_num",
-            "search",
-            "packet_type",
-            "ra",
-            "dec");
-
-    private final List<String> iceCubeColumnsToAlwaysHide = Arrays.asList(
-            "stc_s",
-            "title",
-            "sun_postn_ra",
-            "sun_postn_dec",
-            "sun_dist_deg",
-            "stc_error",
-            "stc_error50",
-            "ra_current",
-            "ra_1950",
-            "moon_postn_ra",
-            "moon_postn_dec",
-            "moon_dist",
-            "ecl_coords_lat",
-            "ecl_coords_lon",
-            "gal_coords_lat",
-            "gal_coords_lon",
-            "discovery_date",
-            "discovery_time",
-            "stream");
 
     public interface Resources extends ClientBundle {
         @Source("gw.css")
@@ -137,48 +101,27 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             isGridDisabled = !gridButton.getToggleStatus();
         });
 
-        ChangeableIconButton expandOrCollapseColumnsButton = new ChangeableIconButton(Icons.getExpandIcon(), Icons.getContractIcon());
-        expandOrCollapseColumnsButton.setSmallStyle();
-        expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showMoreColumns"));
+        EsaSkyButton columnSettings = new EsaSkyButton(Icons.getSettingsIcon());
+        columnSettings.setSmallStyle();
+        columnSettings.setTitle(TextMgr.getInstance().getText("gwPanel_showMoreColumns"));
 
-        expandOrCollapseColumnsButton.addClickHandler(event -> {
+        columnSettings.addClickHandler(event -> {
             TabItem tabItem = getActiveTabItem();
             if (tabItem == null || !tabItem.dataLoaded()) {
                 return;
             }
-            if (tabItem.isExpanded()) {
-                tabItem.showBaseColumns();
-                expandOrCollapseColumnsButton.setPrimaryIcon();
-                expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showMoreColumns"));
-            } else {
-                tabItem.showAllColumns();
-                expandOrCollapseColumnsButton.setSecondaryIcon();
-                expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showFewerColumns"));
-            }
+
+            tabItem.getEntity().getTablePanel().openConfigurationPanel();
         });
 
-        header.addActionWidget(expandOrCollapseColumnsButton);
+        header.addActionWidget(columnSettings);
         header.addActionWidget(gridButton);
 
         tableHeaderTabRow.addStyleName("gwPanel_headerRow");
 
         tabLayoutPanel = new TabLayoutPanel(50, Style.Unit.PX);
 
-        tabLayoutPanel.addBeforeSelectionHandler(event -> {
-            changeTab(event.getItem());
-
-            TabItem newTabItem = getTabItem(TabIndex.values()[event.getItem()]);
-
-            if (newTabItem != null) {
-                if (!newTabItem.isExpanded()) {
-                    expandOrCollapseColumnsButton.setPrimaryIcon();
-                    expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showMoreColumns"));
-                } else {
-                    expandOrCollapseColumnsButton.setSecondaryIcon();
-                    expandOrCollapseColumnsButton.setTitle(TextMgr.getInstance().getText("gwPanel_showFewerColumns"));
-                }
-            }
-        });
+        tabLayoutPanel.addBeforeSelectionHandler(event -> changeTab(event.getItem()));
 
         tabLayoutPanel.add(new FlowPanel(), TextMgr.getInstance().getText("gwPanel_gwTab"));
         tabLayoutPanel.add(new FlowPanel(), TextMgr.getInstance().getText("gwPanel_neutrinoTab"));
@@ -265,7 +208,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
             }
 
-            TabItem tabItem = new TabItem(descriptor, entity, defaultVisibleColumns, iceCubeColumnsToAlwaysHide);
+            TabItem tabItem = new TabItem(descriptor, entity);
 
             entity.getTablePanel().registerObserver(new TableObserver() {
                 @Override
@@ -316,13 +259,6 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         if (getTabItem(TabIndex.GW) == null) {
             GwDescriptor descriptor = DescriptorRepository.getInstance().getGwDescriptors().getDescriptors().get(0);
 
-            List<String> defaultVisibleColumns = new LinkedList<>();
-            for (MetadataDescriptor md : descriptor.getMetadata()) {
-                if (md.getVisible()) {
-                    defaultVisibleColumns.add(md.getTapName());
-                }
-            }
-
             descriptor.setTapSTCSColumn("stcs90");
             String entityId = descriptor.getDescriptorId() + "_90";
             EsaSkyEntity entity = EntityRepository.getInstance().createGwEntity(descriptor, entityId, "dashed");
@@ -337,14 +273,13 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
             }
 
-            TabItem tabItem = new TabItem(descriptor, entity, defaultVisibleColumns, gwColumnsToAlwaysHide, extraEntity);
+            TabItem tabItem = new TabItem(descriptor, entity, extraEntity);
             entity.getTablePanel().registerObserver(new TableObserver() {
                 @Override
                 public void numberOfShownRowsChanged(int numberOfShownRows) {
                     entity.hideAllShapes();
                     GeneralJavaScriptObject[] selectedRows = entity.getTablePanel().getSelectedRows();
                     if (selectedRows.length > 0) {
-//                        GeneralJavaScriptObject rowData = .invokeFunction("getData");
                         String id = selectedRows[0].getStringProperty("id");
                         entity.showShape(Integer.parseInt(id));
                     }
@@ -562,23 +497,16 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         private final BaseDescriptor descriptor;
         private final EsaSkyEntity entity;
         private final EsaSkyEntity extraEntity;
-        private boolean isExpanded = false;
         private boolean dataLoaded = false;
 
-        private final List<String> baseColumns;
-        private final List<String> alwaysHiddenColumns;
-
-
-        public TabItem(BaseDescriptor descriptor, EsaSkyEntity mainEntity, List<String> baseColumns, List<String> alwaysHiddenColumns) {
-            this(descriptor, mainEntity, baseColumns, alwaysHiddenColumns, null);
+        public TabItem(BaseDescriptor descriptor, EsaSkyEntity mainEntity) {
+            this(descriptor, mainEntity, null);
         }
 
-        public TabItem(BaseDescriptor descriptor, EsaSkyEntity entity, List<String> baseColumns, List<String> alwaysHiddenColumns, EsaSkyEntity extraEntity) {
+        public TabItem(BaseDescriptor descriptor, EsaSkyEntity entity, EsaSkyEntity extraEntity) {
             this.descriptor = descriptor;
             this.entity = entity;
             this.extraEntity = extraEntity;
-            this.baseColumns = baseColumns;
-            this.alwaysHiddenColumns = alwaysHiddenColumns;
         }
 
         public BaseDescriptor getDescriptor() {
@@ -614,38 +542,6 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
         public boolean hasExtraEntity() {
             return extraEntity != null;
-        }
-
-        public boolean isExpanded() {
-            return isExpanded;
-        }
-
-        public void showAllColumns() {
-            this.isExpanded = true;
-            ITablePanel tablePanel = getTablePanel();
-            tablePanel.blockRedraw();
-            for (MetadataDescriptor md : descriptor.getMetadata()) {
-                if (!md.getVisible() && !alwaysHiddenColumns.contains(md.getTapName())) {
-                    tablePanel.showColumn(md.getTapName());
-                }
-            }
-            tablePanel.restoreRedraw();
-            tablePanel.redrawAndReinitializeHozVDom();
-        }
-
-        public void showBaseColumns() {
-            this.isExpanded = false;
-            ITablePanel tablePanel = getTablePanel();
-            tablePanel.blockRedraw();
-            for (MetadataDescriptor md : descriptor.getMetadata()) {
-                if (baseColumns.contains(md.getTapName())) {
-                    tablePanel.showColumn(md.getTapName());
-                } else {
-                    tablePanel.hideColumn(md.getTapName());
-                }
-            }
-            tablePanel.restoreRedraw();
-            tablePanel.redrawAndReinitializeHozVDom();
         }
 
         public boolean dataLoaded() {
