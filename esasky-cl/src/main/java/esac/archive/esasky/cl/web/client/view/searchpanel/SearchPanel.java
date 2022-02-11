@@ -182,7 +182,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 			
 			@Override
 			public void onComplete(double currentPosition) {
-				setSeachIconVisibilty();
+				setSearchIconVisibility();
+                if(!isFullSize) {
+                    searchToolPanel.setVisible(false);
+                }
 			}
 		});
 
@@ -229,7 +232,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchToolPanel = new SearchToolPanel();
         searchToolPanel.getElement().getStyle().setTop(30, Unit.PX);
         searchToolPanel.getElement().getStyle().setLeft(30, Unit.PX);
-        searchToolPanel.getElement().getStyle().setZIndex(201);
+        searchToolPanel.getElement().getStyle().setZIndex(203);
         searchToolPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
 
         this.searchTextBoxError = new FocusPanel();
@@ -346,7 +349,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         }
     }
     
-    private void setSeachIconVisibilty() {
+    private void setSearchIconVisibility() {
     	if (isFullSize) {
     		searchIcon.setVisible(false);
     	} else {
@@ -588,6 +591,16 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     }
 
     @Override
+    public EsaSkyToggleButton getSearchToolButton() {
+        return searchToolBoxButton;
+    }
+
+    @Override
+    public SearchToolPanel getSearchToolPanel() {
+        return searchToolPanel;
+    }
+
+    @Override
     public void showBackendMessage(String message) {
         this.searchBoxErrorLabel.setText(message);
         this.searchTextBoxError.setVisible(true);
@@ -598,6 +611,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	public void setFullSize(boolean fullSize) {
 		isFullSize = fullSize;
 		if(isFullSize) {
+            this.searchToolPanel.setVisible(true);
 			searchWidthAnimation.animateTo(150, 500);
 			searchPaddingAnimation.animateTo(35, 500);
 			if(resultPanelWasOpen && resultsList.getWidgetCount() > 0) {

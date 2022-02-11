@@ -122,7 +122,7 @@ public class SearchToolPanel extends FlowPanel {
         hideSearchAreaDetails();
     }
 
-    protected void showToolbox() {
+    public void showToolbox() {
         toolboxIsVisible = true;
         setVisible(true);
         toggleShapeButtonsHeightAnimation.animateTo(400, 500);
