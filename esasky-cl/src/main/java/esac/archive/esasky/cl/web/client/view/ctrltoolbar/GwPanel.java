@@ -53,7 +53,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     private EsaSkyToggleButton gridButton;
 
     private final Map<String, Integer> rowIdHipsMap = new HashMap<>();
-    private static final String GRACE_ID = "grace_id";
+    public static final String GRACE_ID = "grace_id";
     private boolean isGridDisabled = false;
 
     private enum TabIndex {GW, NEUTRINO, TAB_END}
@@ -255,7 +255,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     }
 
-    private void loadGwData() {
+    private void loadGwData(String idToShow) {
         if (getTabItem(TabIndex.GW) == null) {
             GwDescriptor descriptor = DescriptorRepository.getInstance().getGwDescriptors().getDescriptors().get(0);
 
@@ -299,6 +299,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 public void onDataLoaded(int numberOfRows) {
                     tabItem.setDataLoaded(true);
                     entity.hideAllShapes();
+                    showEvent(idToShow);
                 }
 
                 @Override
@@ -370,11 +371,11 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
         tabLayoutPanel.getElement().getStyle().setPropertyPx("height", height);
     }
-
+    
     @Override
     public void show() {
         super.show();
-        loadGwData();
+        loadGwData(null);
     }
 
     private void close() {
@@ -488,8 +489,11 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 JSONObject value = data.get(key).isObject();
                 if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
                     tabItem.getTablePanel().selectRow(Integer.parseInt(key));
+                    break;
                 }
             }
+        }else {
+        	loadGwData(id);
         }
     }
 
