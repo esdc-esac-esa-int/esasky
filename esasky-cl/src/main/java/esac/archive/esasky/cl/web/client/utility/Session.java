@@ -160,7 +160,7 @@ public class Session {
 			JSONObject rowObj = new JSONObject();
 			rowObj.put(EsaSkyWebConstants.SESSION_RA, new JSONString(new Double(row.getCenterRaDeg()).toString()));
 			rowObj.put(EsaSkyWebConstants.SESSION_DEC, new JSONString(new Double(row.getCenterDecDeg()).toString()));
-			rowObj.put(EsaSkyWebConstants.SESSION_ROT, new JSONString(new Double(row.getRotationDeg()).toString()));
+			rowObj.put(EsaSkyWebConstants.SESSION_ROT, new JSONString(row.getRotationDeg().toString()));
 			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_APERTURE, new JSONString(row.getAperture()));
 			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_INSTRUMENT, new JSONString(row.getInstrument().getInstrumentName()));
 			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_ALL, new JSONString(new Boolean(row.getIsAllInstrumentsSelected()).toString()));

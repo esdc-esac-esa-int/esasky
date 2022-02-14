@@ -177,7 +177,7 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 			return (currentSliderFromFraction > 0 || currentSliderToFraction < SLIDER_MAX)
 					&& 	!(Double.isInfinite(minValue) || Double.isInfinite(maxValue));
 		}
-		 return currentLow != Double.NEGATIVE_INFINITY || currentHigh != Double.POSITIVE_INFINITY;
+		 return currentLow > Double.NEGATIVE_INFINITY || currentHigh < Double.POSITIVE_INFINITY;
 	}
 	
     private native JavaScriptObject createSliderFilter(RangeFilterDialogBox instance, String containerId, String sliderSelectorId, int minValue, int maxValue, double fixedStep) /*-{
@@ -230,10 +230,10 @@ public class RangeFilterDialogBox extends FilterDialogBox {
     	boolean filterWasActive = isFilterActive();
     	
     	if(!filterWasActive) {
-    		if(currentLow == Double.NEGATIVE_INFINITY) {
+    		if(currentLow <= Double.NEGATIVE_INFINITY) {
     			this.currentLow = minValue;
     		}
-    		if(currentHigh == Double.POSITIVE_INFINITY) {
+    		if(currentHigh >= Double.POSITIVE_INFINITY) {
     			this.currentHigh = maxValue;
     		}
     	}
