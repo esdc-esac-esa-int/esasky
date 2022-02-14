@@ -502,6 +502,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		gridButton.setToggleStatus(toggled);
 	}
 	
+	public boolean getGridButtonToggled() {
+		return gridButton.isEnabled();
+	}
+	
 	@Override
 	public void closeDropdownMenu() {
 		dropdownContent.getElement().getStyle().setDisplay(Display.NONE);
