@@ -406,10 +406,6 @@ public class TabulatorWrapper {
         tabulatorCallback.onDataFiltered(indexArray);
     }
     
-    public void setFilter(String tapName, String filterString) {
-    	
-    }
-    
     public void createNumericFilterDialog(String tapName, String title, String filterButtonId, final GeneralJavaScriptObject onChangeFunc,
     		final GeneralJavaScriptObject formatter, GeneralJavaScriptObject formatterParamsIfExisting) {
     	 
