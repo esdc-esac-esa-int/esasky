@@ -485,7 +485,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(ESASkySampEvent.TYPE, new ESASkySampEventHandlerImpl());
     }
 
-    private void loadOrQueueAuthorInformationFromSimbad(final String author) {
+    public void loadOrQueueAuthorInformationFromSimbad(final String author) {
         if (descriptorRepo.getPublicationsDescriptors() != null
                 && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
             loadAuthorInformationFromSimbad(author);
@@ -504,7 +504,7 @@ public class MainPresenter {
         }
     }
 
-    private void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
+    public void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
         if (descriptorRepo.getPublicationsDescriptors() != null
                 && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
             loadBibcodeInformaitonFromSimbad(bibcode);
