@@ -211,7 +211,7 @@ public class PublicationPanelPresenter {
     }
     
     public void getPublications() {
-    	getPublications(null);
+    	getPublications((SkyViewPosition) null);
     }
     
     public void getPublications(SkyViewPosition conePos) {
@@ -229,8 +229,6 @@ public class PublicationPanelPresenter {
         } else {
         	entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
         }
-        
-        final String debugPrefix = "[getPublicationsSources][" + descriptor.getGuiShortName() + "]";
         
         // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
         String url = "";	
@@ -250,8 +248,18 @@ public class PublicationPanelPresenter {
             url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
         }
         
-        Log.debug(debugPrefix + "Query [" + url + "]");
+        getPublications(url);
 
+    }
+    
+    public void getPublications(String url) {
+    	final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
+    	 if (entity == null) {            
+             entity = entityRepo.createPublicationsEntity(descriptor);
+         }
+    	entity.setAdql(url);
+        final String debugPrefix = "[getPublicationsSources][" + descriptor.getGuiShortName() + "]";
+    	Log.debug(debugPrefix + "Query [" + url + "]");
         isCallInProgress = true;
         final long timecall = System.currentTimeMillis();
         lastTimecall = timecall;
