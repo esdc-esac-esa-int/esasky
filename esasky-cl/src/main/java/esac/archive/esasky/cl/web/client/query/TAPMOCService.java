@@ -2,14 +2,11 @@ package esac.archive.esasky.cl.web.client.query;
 
 
 import com.allen_sauer.gwt.log.client.Log;
-import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyMocUtility;
 import esac.archive.esasky.ifcs.model.shared.RangeTree;
 import esac.archive.esasky.ifcs.model.shared.RangeTree.Interval;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class TAPMOCService {
@@ -37,33 +34,6 @@ public class TAPMOCService {
 
 			return constraint;
 		}
-    }
-    
-    public String getFilteredCatalogueMOCAdql(IDescriptor descriptor, String filter) {
-    	
-    	int order = MocRepository.getTargetOrderFromFoV();
-    	Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-    	
-    	filter = filter.replaceAll("'","''");
-    	
-    	String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
-		    	+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.getRa()) + "\', \'" + Double.toString(pos.getDec())
-		    	+ "\',\'" + Integer.toString(order) + "\') as moc from dual";
-    	
-		return adql;
-    }
-    
-				
-	public String getFilteredObservationMOCAdql(IDescriptor descriptor, String filter) {
-		
-		Coordinate pos = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-		filter = filter.replaceAll("'","''");
-		
-		String adql = "SELECT esasky_q3c_filtered_catalogue_moc_query(\'" + descriptor.getTapTable()
-		+ "\', " + getGeometricConstraint() + ", \'" + filter + "\',\'" + Double.toString(pos.getRa()) + "\', \'" + Double.toString(pos.getDec())
-		+ "\',\'8\') as moc from dual";
-		
-		return adql;
     }
     
     private String getGeometricConstraint() {
@@ -122,19 +92,6 @@ public class TAPMOCService {
     	return whereADQL;
     }
 
-    public String fetchMinMaxHeaders(IDescriptor descriptor, boolean global) {
-    	String adql = "SELECT esasky_q3c_maxmin_query('" + descriptor.getTapTable() + "',";
-    	 if (AladinLiteWrapper.isCornersInsideHips()) {
-    		 adql += "'{" + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString()+ "}','',''";
-    	 }else {
-    		 Coordinate coor =  CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-    		 adql += "'','" + Double.toString(coor.getRa()) + "','" + Double.toString(coor.getDec()) + "'";
-    	 }
-    	 
-    	 adql += ", '" +  global + "') from public.function_dummy";
-    	return adql;
-    }
-    
     public static String mocObjectToString(GeneralJavaScriptObject mocObject) {
     	return EsaSkyMocUtility.objectToAsciiString(mocObject);
     }
