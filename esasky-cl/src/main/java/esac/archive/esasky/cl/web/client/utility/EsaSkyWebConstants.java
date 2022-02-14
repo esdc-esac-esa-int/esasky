@@ -203,6 +203,7 @@ public class EsaSkyWebConstants {
     public static final String SESSION_LOCATION = "location";
     public static final String SESSION_RA = "ra";
     public static final String SESSION_DEC = "dec";
+    public static final String SESSION_ROT = "rot";
     public static final String SESSION_FOV = "fov";
     public static final String SESSION_FRAME = "coo_frame";
     
@@ -213,5 +214,40 @@ public class EsaSkyWebConstants {
     public static final String SESSION_HIPS_URL = "url";
     public static final String SESSION_HIPS_WAVELENGTH = "wavelength";
     public static final String SESSION_HIPS_COLORPALETTE = "colorpalette";
+
+    public static final String SESSION_DATA = "data";
+    public static final String SESSION_DATA_MISSION = "mission";
+    public static final String SESSION_DATA_TABLE = "table";
+    public static final String SESSION_DATA_ISMOC = "is_moc";
+    public static final String SESSION_DATA_HAS_PANEL = "has_panel";
+    public static final String SESSION_DATA_ADQL = "adql";
+    public static final String SESSION_DATA_FILTERS = "filters";
+    public static final String SESSION_DATA_COLOR_MAIN = "color";
+    public static final String SESSION_DATA_COLOR_SECOND = "color_secondary";
+    public static final String SESSION_DATA_SIZE = "size";
+    public static final String SESSION_DATA_LINESTYLE = "line_style";
+    public static final String SESSION_DATA_SOURCE_STYLE = "source_style";
+
+    public static final String SESSION_GW = "gw";
+    public static final String SESSION_GW_ID = "gw_id";
+
+    public static final String SESSION_PLANNING = "planning";
+    public static final String SESSION_PLANNING_APERTURE = "aperture";
+    public static final String SESSION_PLANNING_INSTRUMENT = "instrument";
+    public static final String SESSION_PLANNING_ALL = "all";
+
+    public static final String SESSION_PUB = "publications";
+    public static final String SESSION_PUB_TYPE = "type";
+    public static final String SESSION_PUB_TYPE_AREA = "area";
+    public static final String SESSION_PUB_TYPE_AUTHOR = "author";
+    public static final String SESSION_PUB_TYPE_SOURCE = "source";
+    public static final String SESSION_PUB_URL = "url";
+    public static final String SESSION_PUB_AUTHOR = "author";
+    public static final String SESSION_PUB_SOURCE = "author";
+    public static final String SESSION_PUB_MAX_ROWS = "n_rows";
+    public static final String SESSION_PUB_BIBCOUNT = "bibcount";
+
+    public static final String SESSION_SETTINGS = "settings";
+    public static final String SESSION_SETTINGS_GRID = "coo_grid";
 
 }
