@@ -102,4 +102,5 @@ public interface ITablePanel {
 	void blockRedraw();
 	void restoreRedraw();
 	void redrawAndReinitializeHozVDom();
+	void addTapFilter(String label, String tapFilter);
 }
