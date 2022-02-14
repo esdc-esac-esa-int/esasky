@@ -70,6 +70,8 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 	public void onMultipleShapesSelection(LinkedList<AladinShape> shapes);
 	public void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList);
 	public TabulatorSettings getTabulatorSettings();
+	
+	public String getAdql();
 
 	
 }
