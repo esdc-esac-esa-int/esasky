@@ -406,29 +406,32 @@ public class TabulatorWrapper {
         tabulatorCallback.onDataFiltered(indexArray);
     }
     
-    public void toggleNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, 
-            double maxVal, final GeneralJavaScriptObject onChangeFunc, final GeneralJavaScriptObject formatter, 
-            GeneralJavaScriptObject formatterParamsIfExisting) {
-        final GeneralJavaScriptObject formatterParams = verifyFormatterParams(formatterParamsIfExisting);
+    public void setFilter(String tapName, String filterString) {
+    	
+    }
+    
+    public void createNumericFilterDialog(String tapName, String title, String filterButtonId, final GeneralJavaScriptObject onChangeFunc,
+    		final GeneralJavaScriptObject formatter, GeneralJavaScriptObject formatterParamsIfExisting) {
+    	 
+    	final GeneralJavaScriptObject formatterParams = verifyFormatterParams(formatterParamsIfExisting);
         final ValueFormatter valueFormatter = new ValueFormatter() {
-            
-            @Override
-            public double getValueFromFormat(String formattedValue) {
-                formatterParams.setProperty("convertBack", true);
-                double value = GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
-                formatterParams.setProperty("convertBack", false);                
-                return value;
-            }
-            
-            @Override
-            public String formatValue(double value) {
-                formatterParams.setProperty("convertBack", false);
-                return GeneralJavaScriptObject.convertToString(formatter.invokeSelf(createPretendCell(value), formatterParams));
-            }
-        };
-
-    	if(!filterDialogs.containsKey(tapName)) {
-    		FilterObserver filterObserver = new FilterObserver() {
+             
+             @Override
+             public double getValueFromFormat(String formattedValue) {
+                 formatterParams.setProperty("convertBack", true);
+                 double value = GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
+                 formatterParams.setProperty("convertBack", false);                
+                 return value;
+             }
+             
+             @Override
+             public String formatValue(double value) {
+                 formatterParams.setProperty("convertBack", false);
+                 return GeneralJavaScriptObject.convertToString(formatter.invokeSelf(createPretendCell(value), formatterParams));
+             }
+         };
+         
+         FilterObserver filterObserver = new FilterObserver() {
 				
 				@Override
 				public void onNewFilter(String filter) {
@@ -436,10 +439,13 @@ public class TabulatorWrapper {
 					
 				}
 			};
-    		
-    		RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
-    		filterDialogs.put(tapName, filterDialog);
-    	}
+ 		
+ 		RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
+ 		filterDialogs.put(tapName, filterDialog);
+    }
+    
+    public void toggleNumericFilterDialog(String tapName, double minVal, double maxVal) {
+
     	RangeFilterDialogBox filterDialogBox = (RangeFilterDialogBox) filterDialogs.get(tapName);
 		
 		filterDialogBox.setRange(minVal, maxVal, 2);
@@ -454,25 +460,25 @@ public class TabulatorWrapper {
         return {getValue: function() {return value}};
     }-*/;
     
-    public void toggleDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    public void createDateFilterDialog(String tapName, String title, String filterButtonId, final GeneralJavaScriptObject onChangeFunc) {
+    	FilterObserver filterObserver = new FilterObserver() {
+			
+			@Override
+			public void onNewFilter(String filter) {
+				onChangeFunc.invokeFunction("onChange", filter);
+				
+			}
+		};
+		
+		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, title, filterButtonId, filterObserver);
+		
+		filterDialogs.put(tapName, filterDialog);
+    }
+    
+    public void toggleDateFilterDialog(String tapName, String minVal, String maxVal){
     	
-    	if(!filterDialogs.containsKey(tapName)) {
-    		FilterObserver filterObserver = new FilterObserver() {
-    			
-    			@Override
-    			public void onNewFilter(String filter) {
-    				onChangeFunc.invokeFunction("onChange", filter);
-    				
-    			}
-    		};
-    		
-    		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, title, filterButtonId, filterObserver);
-    		
-    		filterDialog.setStartRange(minVal, maxVal);
-    		filterDialogs.put(tapName, filterDialog);
-    	}
-    	
-    	FilterDialogBox filterDialogBox = filterDialogs.get(tapName);
+    	DateFilterDialogBox filterDialogBox = (DateFilterDialogBox) filterDialogs.get(tapName);
+    	filterDialogBox.setStartRange(minVal, maxVal);
     	filterDialogBox.toggle();
     	
     }
@@ -763,9 +769,14 @@ public class TabulatorWrapper {
 					maxVal = 100;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-					(editorParams["tapName"], editorParams["title"], filterButtonId, minVal, maxVal, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;DD)
+					(editorParams["tapName"], minVal, maxVal);
 			});	
+				
+			wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+				(editorParams["tapName"], editorParams["title"], filterButtonId, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
+	
+			
 			var container = $wnd.$("<span></span>")
 			 
 			container.append(filterButton);
@@ -829,9 +840,12 @@ public class TabulatorWrapper {
 					maxVal = tmp;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-					(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+					(editorParams["tapName"], minVal, maxVal);
 			});	
+				
+			wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+				(editorParams["tapName"],editorParams["title"], filterButtonId, functionObject);
 			var container = $wnd.$("<span></span>")
 			 
 			container.append(filterButton);
@@ -2242,5 +2256,11 @@ public class TabulatorWrapper {
         if(!firstRow) {return false;}
         return firstRow.getData().access_format && firstRow.getData().access_format.toLowerCase().includes("datalink");
     }-*/;
+    
+    public void addFilter(String key, String filterString) {
+    	if(filterDialogs.containsKey(key)) {
+    		filterDialogs.get(key).setValuesFromString(filterString);
+    	}
+    }
     
 }

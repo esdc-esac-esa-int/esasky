@@ -1,4 +1,4 @@
-	package esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter;
+package esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter;
 
 
 import com.google.gwt.core.client.GWT;
@@ -36,8 +36,8 @@ public class RangeFilterDialogBox extends FilterDialogBox {
     private boolean hasSliderBeenAddedToDialogBox = false;
     private boolean reRenderingWouldTakeSignificantTime;
     
-    private double minValue;
-    private double maxValue;
+    private double minValue = Double.NEGATIVE_INFINITY;
+    private double maxValue = Double.POSITIVE_INFINITY;
     private double currentLow = minValue;
     private double currentHigh = maxValue;
     private double range;
@@ -166,15 +166,18 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 			stepSize = 1;
 			slider = createSliderFilter(this, rangeFilterContainerId, sliderSelectorContainerId, 0, SLIDER_MAX, stepSize);
 			setTextBoxValues(minValue, maxValue);
+    		setSliderValues(currentLow, currentHigh);
 			addElementNotAbleToInitiateMoveOperation("slider-" + sliderSelectorContainerId);
 		}
 	}
 
 	@Override
 	public boolean isFilterActive() {
-		return hasSliderBeenAddedToDialogBox 
-				&& (currentSliderFromFraction > 0 || currentSliderToFraction < SLIDER_MAX)
-				&& 	!(Double.isInfinite(minValue) || Double.isInfinite(maxValue));
+		if(hasSliderBeenAddedToDialogBox) {
+			return (currentSliderFromFraction > 0 || currentSliderToFraction < SLIDER_MAX)
+					&& 	!(Double.isInfinite(minValue) || Double.isInfinite(maxValue));
+		}
+		 return currentLow != Double.NEGATIVE_INFINITY || currentHigh != Double.POSITIVE_INFINITY;
 	}
 	
     private native JavaScriptObject createSliderFilter(RangeFilterDialogBox instance, String containerId, String sliderSelectorId, int minValue, int maxValue, double fixedStep) /*-{
@@ -227,8 +230,12 @@ public class RangeFilterDialogBox extends FilterDialogBox {
     	boolean filterWasActive = isFilterActive();
     	
     	if(!filterWasActive) {
-    		this.currentLow = minValue;
-    		this.currentHigh = maxValue;
+    		if(currentLow == Double.NEGATIVE_INFINITY) {
+    			this.currentLow = minValue;
+    		}
+    		if(currentHigh == Double.POSITIVE_INFINITY) {
+    			this.currentHigh = maxValue;
+    		}
     	}
     	this.minValue = minValue;
     	this.maxValue = maxValue;
@@ -243,9 +250,56 @@ public class RangeFilterDialogBox extends FilterDialogBox {
     			setSliderValues(currentLow, currentHigh);
     		}
     		setTextBoxValues(currentLow, currentHigh);
+    	}else {
+    		filterTimer.setNewRange(currentLow, currentHigh);
     	}
     	ensureCorrectFilterButtonStyle();
     };
+    
+    @Override
+    public void setValuesFromString(String filterString) {
+		String[] andSplit = filterString.split(" AND ");
+		String lowerString = null;
+		String upperString = null;
+		if(andSplit.length > 1) {
+			lowerString = andSplit[0];
+			upperString = andSplit[1];
+		}else if(andSplit[0].contains(">")) {
+			lowerString = andSplit[0];
+		}else {
+			upperString = andSplit[0];
+		}
+		
+		Double minValue = new Double(this.currentLow);
+		Double maxValue = new Double(this.currentHigh);
+		if(lowerString != null) {
+			minValue = Double.parseDouble(lowerString.split(">=")[1]);
+		}
+		if(upperString != null) {
+			maxValue = Double.parseDouble(upperString.split("<=")[1]);
+		}
+		
+		setValues(minValue, maxValue);
+    }
+    
+    public void setValues(Double minValue, Double maxValue) {
+    	if(minValue != null) {
+    		if(minValue > this.minValue) {
+    			this.currentLow = minValue;
+    		}
+    	}
+    	if(maxValue != null) {
+    		if(maxValue > this.maxValue) {
+    			this.currentHigh = maxValue;
+    		}
+    	}
+    	if(hasSliderBeenAddedToDialogBox) {
+    		setSliderValues(currentLow, currentHigh);
+    		setTextBoxValues(currentLow, currentHigh);
+    	}
+    	filterTimer.setNewRange(currentLow, currentHigh);
+    	
+    }
     
     private void onChangeFromTextBox() {
     	try {
@@ -313,11 +367,11 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 				lastHigh = currentHigh;
 				if(isFilterActive()) {
                    String filter = "";
-                    if(currentSliderFromFraction > 0) {
+                    if(currentLow > minValue) {
                         filter += Double.toString(currentLow);
                     }
                     filter += ",";
-					if((SLIDER_MAX - currentSliderToFraction) > stepSize) {
+					if(currentHigh < maxValue) {
 						filter += Double.toString(currentHigh);
 					}
 					
@@ -336,6 +390,9 @@ public class RangeFilterDialogBox extends FilterDialogBox {
 		}
 		
 		private boolean isUserStillDragging() {
+			if(!hasSliderBeenAddedToDialogBox) {
+				return false;
+			}
 			Element sliderSelector = Document.get().getElementById("slider-" + sliderSelectorContainerId);
 			
 			Element sliderSelectorChild = sliderSelector.getFirstChildElement();
