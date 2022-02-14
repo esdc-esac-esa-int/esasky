@@ -707,6 +707,15 @@ public class DescriptorRepository {
         });
     }
 
+    
+    public IDescriptor getDescriptorFromTable(String tableName, String mission) {
+    	for(IDescriptor desc : descriptorsMap.get(tableName)) {
+    		if(desc.getMission().equals(mission)) {
+    			return desc;
+    		}
+    	}
+    	return null;
+    }
 
     private void prepareDescriptorsMap() {
         descriptorsMap = new HashMap<String, List<IDescriptor>>();
@@ -717,6 +726,7 @@ public class DescriptorRepository {
         addDescriptorsToHashMaps(spectraDescriptors);
         addDescriptorsToHashMaps(publicationsDescriptors);
         addDescriptorsToHashMaps(imageDescriptors);
+        addDescriptorsToHashMaps(extTapDescriptors);
     }
 
     private void addDescriptorsToHashMaps(DescriptorListAdapter<?> descriptorListAdapter) {
@@ -808,6 +818,9 @@ public class DescriptorRepository {
             List<CountStatus> countStatusList = countStatusMap.get(mission);
             int i = 0;
             for (IDescriptor descriptor : descriptorList) {
+            	if(descriptor instanceof ExtTapDescriptor) {
+            		continue;
+            	}
                 CountStatus cs = countStatusList.get(i);
                 i++;
                 final int count = 0;
