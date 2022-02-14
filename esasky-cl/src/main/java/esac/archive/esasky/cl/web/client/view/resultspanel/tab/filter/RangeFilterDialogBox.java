@@ -289,7 +289,7 @@ public class RangeFilterDialogBox extends FilterDialogBox {
     		}
     	}
     	if(maxValue != null) {
-    		if(maxValue > this.maxValue) {
+    		if(maxValue < this.maxValue) {
     			this.currentHigh = maxValue;
     		}
     	}

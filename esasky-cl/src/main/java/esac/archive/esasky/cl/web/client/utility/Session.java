@@ -77,6 +77,7 @@ public class Session {
 			restoreGW(saveStateObj);
 			restorePublications(saveStateObj);
 			restorePlanning(saveStateObj);
+			restoreSettings(saveStateObj);
 		} catch (SaveStateException e) {
 			Log.error(e.getMessage(), e);
 		}
