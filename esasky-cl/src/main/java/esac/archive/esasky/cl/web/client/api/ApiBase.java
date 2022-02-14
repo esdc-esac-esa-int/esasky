@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONValue;
 
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.Session;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 import java.util.UUID;
@@ -135,4 +136,13 @@ public abstract class ApiBase {
 	protected native boolean isPyesaskyClient(JavaScriptObject widget) /*-{
 		return widget && widget.data.origin === "pyesasky";
 	}-*/;
+	
+	public void saveState() {
+		Session session = new Session();
+		session.saveState();
+	}
+	public void restoreState() {
+		Session session = new Session();
+		session.restoreState();
+	}
 }
