@@ -225,7 +225,7 @@ public class SearchToolPanel extends FlowPanel {
 
                 CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
                 double[] coords = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(),
-                        raStr + " " + decStr, cooFrame, cooFrame);
+                        raStr + " " + decStr, cooFrame, CoordinatesFrame.J2000);
 
                 detailContainer.removeStyleName(inputErrorClassName);
                 AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
