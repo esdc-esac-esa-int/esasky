@@ -249,5 +249,6 @@ public class EsaSkyWebConstants {
 
     public static final String SESSION_SETTINGS = "settings";
     public static final String SESSION_SETTINGS_GRID = "coo_grid";
+    public static final String SESSION_SETTINGS_SEARCH = "search_area";
 
 }

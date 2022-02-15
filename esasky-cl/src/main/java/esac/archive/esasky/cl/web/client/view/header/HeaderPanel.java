@@ -503,7 +503,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 	
 	public boolean getGridButtonToggled() {
-		return gridButton.isEnabled();
+		return gridButton.getToggleStatus();
 	}
 	
 	@Override

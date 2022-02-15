@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.FileUpload;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddTableEvent;
 import esac.archive.esasky.cl.web.client.model.Shape;
@@ -85,10 +87,32 @@ public class Session {
 	
 	private JSONObject getSettingsJson() {
 		JSONObject settingsObj = new JSONObject();
-		if(MainPresenter.getInstance().getHeaderPresenter().getView().getGridButtonToggled()) {
-			settingsObj.put(EsaSkyWebConstants.SESSION_SETTINGS_GRID, new JSONString("True"));
+		boolean gridOn = MainPresenter.getInstance().getHeaderPresenter().getView().getGridButtonToggled();
+		settingsObj.put(EsaSkyWebConstants.SESSION_SETTINGS_GRID, new JSONString(Boolean.toString(gridOn)));
+		
+		if(DescriptorRepository.getInstance().hasSearchArea()) {
+			settingsObj.put(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH, new JSONString(getSearchAreaStcs()));
 		}
 		return settingsObj;
+	}
+	
+	private String getSearchAreaStcs() {
+		SearchArea area = DescriptorRepository.getInstance().getSearchArea();
+		String stcs = "";
+		if(area.isCircle()){
+			CoordinatesObject[] coors = area.getCoordinates();
+			stcs = "CIRCLE ICRS " + coors[0].getRaDeg() + " " + coors[0].getDecDeg() + " " + area.getRadius();
+		}else {
+			StringBuilder sb = new StringBuilder("POLYGON ICRS ");
+			for(CoordinatesObject cooObj : area.getCoordinates()) {
+				sb.append(cooObj.getRaDeg());
+				sb.append(" ");
+				sb.append(cooObj.getDecDeg());
+				sb.append(" ");
+			}
+			stcs = sb.toString().trim();
+		}
+		return stcs;
 	}
 	
 	private void restoreSettings(GeneralJavaScriptObject saveStateObj) {
@@ -96,6 +120,10 @@ public class Session {
 		if(settingsObj.hasProperty(EsaSkyWebConstants.SESSION_SETTINGS_GRID)) {
 			boolean grid = Boolean.parseBoolean(settingsObj.getStringProperty(EsaSkyWebConstants.SESSION_SETTINGS_GRID));
 			AladinLiteWrapper.getInstance().toggleGrid(grid);
+		}
+		if(settingsObj.hasProperty(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH)) {
+			String searchStcs =settingsObj.getStringProperty(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH);
+			AladinLiteWrapper.getAladinLite().createSearchArea(searchStcs);
 		}
 	}
 	
