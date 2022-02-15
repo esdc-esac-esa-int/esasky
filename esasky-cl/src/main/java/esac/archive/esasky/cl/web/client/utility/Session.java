@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -60,7 +63,13 @@ public class Session {
 		stateObj.put(EsaSkyWebConstants.SESSION_PUB, getPublicationJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
 
-		writeToFile(stateObj.toString(), "test.json");
+		StringBuilder fileNameBuilder = new StringBuilder("esasky_session_");
+		Date date = new Date();
+		DateTimeFormat dtf = DateTimeFormat.getFormat("yyyyMMdd_HHmmss");
+		fileNameBuilder.append(dtf.format(date, TimeZone.createTimeZone(0)));
+
+		fileNameBuilder.append(".json");
+		writeToFile(stateObj.toString(), fileNameBuilder.toString());
 		
 	}
 	
