@@ -62,4 +62,5 @@ public abstract class FilterDialogBox extends AutoHidingMovablePanel {
 	}
 	
 	public abstract boolean isFilterActive();
+	public abstract void setValuesFromString(String filterString);
 }

@@ -72,6 +72,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
 	private FocusPanel dropdownEvaEntry = new FocusPanel(); 
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
+	private FocusPanel dropdownSessionSaveEntry = new FocusPanel(); 
+	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel(); 
 	private FocusPanel hiResDropdown = new FocusPanel(); 
 	private EsaSkySwitch dropdownScienceModeSwitch; 
 	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
@@ -242,6 +244,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(dropdownReleaseNotesEntry);
 		dropdownContent.add(dropdownNewsletterEntry);
 		dropdownContent.add(dropdownAboutUsEntry);
+		dropdownContent.add(createSessionSaveDropdownEntries());
+		dropdownContent.add(createSessionRestoreDropdownEntries());
+
 
 		return dropdownContent;
 	}
@@ -347,14 +352,34 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 
 	private Widget createHiResDropdownEntry() {
-		Label wwtLabel = new Label(TextMgr.getInstance().getText("header_highResolutionImages"));
-		wwtLabel.addStyleName("header__dropdown__wwt__text");
-		hiResDropdown.add(wwtLabel);
-		hiResDropdown.getElement().setId("header__dropdown__wwt");
+		Label hiresLabel = new Label(TextMgr.getInstance().getText("header_highResolutionImages"));
+		hiresLabel.addStyleName("header__dropdown__outreach__text");
+		hiResDropdown.add(hiresLabel);
+		hiResDropdown.getElement().setId("header__dropdown__outreach");
 		hiResDropdown.setTitle(TextMgr.getInstance().getText("header_highResolutionImagesTooltip"));
 		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
 				&& GUISessionStatus.getIsInScienceMode());
 		return hiResDropdown;
+	}
+
+	private Widget createSessionSaveDropdownEntries() {
+		Label sessionSaveLabel = new Label(TextMgr.getInstance().getText("header_session_save"));
+		sessionSaveLabel.addStyleName("header__dropdown__session__save__text");
+		dropdownSessionSaveEntry.add(sessionSaveLabel);
+		dropdownSessionSaveEntry.getElement().setId("header__dropdown__session__save");
+		dropdownSessionSaveEntry.setTitle(TextMgr.getInstance().getText("header_sessionSaveEntryTooltip"));
+		dropdownSessionSaveEntry.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_SESSION));
+		return dropdownSessionSaveEntry;
+	}
+	
+	private Widget createSessionRestoreDropdownEntries() {
+		Label sessionRestoreLabel = new Label(TextMgr.getInstance().getText("header_session_restore"));
+		sessionRestoreLabel.addStyleName("header__dropdown__session__restore__text");
+		dropdownSessionRestoreEntry.add(sessionRestoreLabel);
+		dropdownSessionRestoreEntry.getElement().setId("header__dropdown__session__save");
+		dropdownSessionRestoreEntry.setTitle(TextMgr.getInstance().getText("header_sessionRestoreEntryTooltip"));
+		dropdownSessionRestoreEntry.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_SESSION));
+		return dropdownSessionRestoreEntry;
 	}
 
 	public void setFov(String fov) {
@@ -502,6 +527,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		gridButton.setToggleStatus(toggled);
 	}
 	
+	public boolean getGridButtonToggled() {
+		return gridButton.getToggleStatus();
+	}
+	
 	@Override
 	public void closeDropdownMenu() {
 		dropdownContent.getElement().getStyle().setDisplay(Display.NONE);
@@ -529,6 +558,16 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addHiResClickHandler(ClickHandler handler) {
 		hiResDropdown.addClickHandler(handler);
+	}
+	
+	@Override
+	public void addSessionSaveClickHandler(ClickHandler handler) {
+		dropdownSessionSaveEntry.addClickHandler(handler);
+	}
+	
+	@Override
+	public void addSessionRestoreClickHandler(ClickHandler handler) {
+		dropdownSessionRestoreEntry.addClickHandler(handler);
 	}
 
 	@Override

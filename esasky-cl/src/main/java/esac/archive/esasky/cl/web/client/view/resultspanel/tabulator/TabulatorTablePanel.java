@@ -471,7 +471,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     	return tapFilters;
     };
 
-	private void addTapFilter(String label, String tapFilter) {
+    @Override
+	public void addTapFilter(String label, String tapFilter) {
 		boolean shouldNotify = true;
 		if(tapFilter.length() > 0) {
 			if(tapFilters.containsKey(label) && tapFilter.equals(tapFilters.get(label))){
@@ -532,6 +533,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         }
         notifyNumberOfRowsShowingChanged(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
 		notifyOnDataLoaded(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
+		for(String key : getTapFilters().keySet()) {
+			String filter = getTapFilters().get(key);
+			table.addFilter(key, filter);
+		}
+			
     }
 
     protected void notifyNumberOfRowsShowingChanged(int count) {

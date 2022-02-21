@@ -62,6 +62,8 @@ public class MOCEntity implements GeneralEntityInterface {
     private TableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
     
+    private String adql; 
+    
     private String lineStyle;
     
     private CountObserver countObserver = new MOCCountObserver();
@@ -273,6 +275,8 @@ public class MOCEntity implements GeneralEntityInterface {
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        this.adql = url;
+        ((EsaSkyEntity) this.parentEntity).setAdql(url);
         try {
             builder.sendRequest(null,
                 new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MocCallback.OnComplete() {
@@ -337,7 +341,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	}
     }
     
-    private void loadMOC(String url) {
+    public void loadMOC(String url) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
     	Log.debug(debugPrefix + "Query [" + url + "]");
@@ -875,6 +879,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	@Override
 	public TabulatorSettings getTabulatorSettings() {
 		return new TabulatorSettings();
+	}
+	
+	@Override
+	public String getAdql() {
+		return this.adql;
 	}
     
 }

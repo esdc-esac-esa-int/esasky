@@ -506,5 +506,9 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		}
 		return false;
 	}
+	
+	public List<SkyRow> getHipsList(){
+		return skies;
+	}
 
 }
