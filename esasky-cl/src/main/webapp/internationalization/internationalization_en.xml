@@ -3604,6 +3604,44 @@
 	<text key="wavelength_GW_Tooltip">
 		Gravitational Wave probability maps
 	</text>
+	<text key="WHSP_lognupeak">
+		Synchrotron peak &lt;br&gt; &lt;i&gt;(log(Hz))&lt;/i&gt;
+	</text>
+	<text key="WHSP_lognufnu">
+		Synchrotron peak flux &lt;br&gt; &lt;i&gt;(log(erg/s/cm2))&lt;/i&gt;
+	</text>
+	<text key="error_radius_deg">
+		Error Radius &lt;br&gt; &lt;i&gt;(deg)&lt;/i&gt;
+	</text>
+	<text key="event_energy_gev">
+		Event Energy &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;
+	</text>
+	<text key="RXS_count_rate">
+		Count Rate &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
+	</text>
+	<text key="RXS_count_rate_error">
+		'Count Rate Error &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
+	</text>
+	<text key="RXS_exposure_time">
+		Exposure Time &lt;br&gt; &lt;i&gt;(s)&lt;/i&gt;
+	</text>
+	<text key="RXS_source_extent">
+		Source Extent &lt;br&gt; &lt;i&gt;(pixel)&lt;/i&gt;
+	</text>
+	<text key="RXS_source_extent_probability">
+		Source Extent Probability
+	</text>
+	<text key="RXS_hardness_ratio1">
+		Hardness Ratio 1
+	</text>
+	<text key="RXS_hardness_ratio2">
+		Hardness Ratio 2
+	</text>
+	<text key="RXS_source_quality_flag">
+		Source Quality Flag
+	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
+	
+	
 </Internationalization>
