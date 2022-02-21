@@ -96,6 +96,7 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, false);
         map.put(EsaSkyWebConstants.MODULE_DICE, false);
         map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
+        map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 
         
         return map;
@@ -125,7 +126,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
 		map.put(EsaSkyWebConstants.MODULE_DICE, false);
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
-
+        map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		
 		return map;
 	}
@@ -154,6 +155,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
 		map.put(EsaSkyWebConstants.MODULE_DICE, true);
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
+        map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		
 		return map;
 	}
