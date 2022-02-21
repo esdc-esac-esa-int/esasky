@@ -3620,7 +3620,7 @@
 		Count Rate &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
 	</text>
 	<text key="RXS_count_rate_error">
-		'Count Rate Error &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
+		Count Rate Error &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
 	</text>
 	<text key="RXS_exposure_time">
 		Exposure Time &lt;br&gt; &lt;i&gt;(s)&lt;/i&gt;
@@ -3639,6 +3639,12 @@
 	</text>
 	<text key="RXS_source_quality_flag">
 		Source Quality Flag
+	</text>
+	<text key="header_session_save">
+		Save ESASky Session
+	</text>
+	<text key="header_session_restore">
+		Restore ESASky Session
 	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->

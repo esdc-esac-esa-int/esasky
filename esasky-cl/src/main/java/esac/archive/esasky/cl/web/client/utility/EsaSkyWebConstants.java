@@ -149,6 +149,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE_MODE = "science_mode";
+    public static final String MODULE_SESSION = "session";
     
     
     // DEFAULT ONES
