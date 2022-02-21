@@ -804,13 +804,21 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
     @Override
     public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
-        String url = buildArchiveURL(row.invokeFunction("getData"));
-        if(url.toLowerCase().contains("datalink")) {
-        	onDatalinkClicked(row);
-        }else {
-        	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
-        	Window.open(url, "_blank", "");
-        }
+		GeneralJavaScriptObject data = row.invokeFunction("getData");
+		String archiveColumn = getDescriptor().getArchiveColumn();
+		if (!archiveColumn.isEmpty()) {
+			String url = data.getStringProperty(archiveColumn);
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
+			UrlUtils.openUrl(url);
+		} else {
+			String url = buildArchiveURL(row.invokeFunction("getData"));
+			if(url.toLowerCase().contains("datalink")) {
+				onDatalinkClicked(row);
+			}else {
+				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
+				Window.open(url, "_blank", "");
+			}
+		}
     }
 
     private String buildArchiveURL(GeneralJavaScriptObject rowData) {

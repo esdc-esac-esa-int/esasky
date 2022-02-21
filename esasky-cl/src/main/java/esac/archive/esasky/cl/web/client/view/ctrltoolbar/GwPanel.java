@@ -201,6 +201,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             }
 
             descriptor.setTapSTCSColumn("stc_s");
+            descriptor.setArchiveColumn("event_page");
             EsaSkyEntity entity = EntityRepository.getInstance().createIceCubeEntity(descriptor);
 
             Widget tabContentContainer = tabLayoutPanel.getWidget(TabIndex.NEUTRINO.ordinal());
@@ -258,7 +259,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     private void loadGwData(String idToShow) {
         if (getTabItem(TabIndex.GW) == null) {
             GwDescriptor descriptor = DescriptorRepository.getInstance().getGwDescriptors().getDescriptors().get(0);
-
+            descriptor.setArchiveColumn("event_page");
             descriptor.setTapSTCSColumn("stcs90");
             String entityId = descriptor.getDescriptorId() + "_90";
             EsaSkyEntity entity = EntityRepository.getInstance().createGwEntity(descriptor, entityId, "dashed");
