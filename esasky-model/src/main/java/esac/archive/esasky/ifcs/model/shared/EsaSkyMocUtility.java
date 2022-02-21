@@ -50,7 +50,7 @@ public class EsaSkyMocUtility {
 		String[] orderSplit = pixelString.split("/");
 		int nOrders = orderSplit.length - 1;
 		
-		if(nOrders < 2) {
+		if(nOrders < 1) {
 			return null;
 		}
 		
