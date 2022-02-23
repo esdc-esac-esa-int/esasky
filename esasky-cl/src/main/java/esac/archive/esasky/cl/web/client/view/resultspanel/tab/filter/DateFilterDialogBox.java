@@ -140,6 +140,8 @@ public class DateFilterDialogBox extends FilterDialogBox {
 			hasCalendarsBeenAddedToDialogBox = true;
 			fromCalendar = createCalendar(this, fromInputId, currentFromDate);
 			toCalendar = createCalendar(this, toInputId, currentToDate);
+			setCalendarDate(fromCalendar, currentFromDate);
+			setCalendarDate(toCalendar, currentToDate);
 		}
 		toInput.setFocus(true);
 		fromInput.setFocus(true);
@@ -147,7 +149,8 @@ public class DateFilterDialogBox extends FilterDialogBox {
 
 	@Override
 	public boolean isFilterActive() {
-			return (!currentFromDate.equals(startDate)|| !currentToDate.equals(endDate));
+			return (currentFromDate != null && !currentFromDate.equals(startDate))
+					|| (currentToDate != null && !currentToDate.equals(endDate));
 		}
 
 	private native JavaScriptObject createCalendar(DateFilterDialogBox instance, final String containerId, String startDate) /*-{
@@ -313,4 +316,5 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		}
 		filterTimer.setNewRange(startDate, endDate);
     }
+    
 }
