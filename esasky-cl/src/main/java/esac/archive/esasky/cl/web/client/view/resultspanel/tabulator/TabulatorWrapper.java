@@ -1412,7 +1412,8 @@ public class TabulatorWrapper {
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg"
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_1"
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_2"
-			    		    || this.metadata[i].name.toLowerCase() === "s_ra"){
+			    		    || this.metadata[i].name.toLowerCase() === "s_ra"
+			    		    || this.metadata[i].ucd === "pos.eq.ra;meta.main"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
@@ -1434,7 +1435,8 @@ public class TabulatorWrapper {
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg"
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg_1"
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg_2"
-			    		    || this.metadata[i].name.toLowerCase() === "s_dec"){
+			    		    || this.metadata[i].name.toLowerCase() === "s_dec"
+			    		    || this.metadata[i].ucd === "pos.eq.dec;meta.main"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
