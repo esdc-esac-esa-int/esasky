@@ -885,5 +885,10 @@ public class MOCEntity implements GeneralEntityInterface {
 	public String getAdql() {
 		return this.adql;
 	}
+
+	@Override
+	public int getNumberOfShapes() {
+		return 0;
+	}
     
 }

@@ -959,5 +959,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		this.adql = adql;
 	}
 	
+    @Override
+    public int getNumberOfShapes() {
+    	return drawer.getNumberOfShapes();
+    }
+	
 
 }

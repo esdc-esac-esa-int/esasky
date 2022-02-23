@@ -139,7 +139,7 @@ public class Session {
 	private JSONArray getPublicationJson() {
 		JSONArray array = new JSONArray();
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
-			if(ent.getShape(0) == null) {
+			if(ent.getNumberOfShapes() < 1 || ent.getShape(0) == null) {
 				continue;
 			}
 			if(ent instanceof PublicationsEntity) {

@@ -375,6 +375,12 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
         return this.useMedianOnAvgPM;
     }
     
+    @Override
+    public int getNumberOfShapes() {
+    	return sourceShapes.size() + footPrintshapes.size();
+    }
+
+    
     public void addPolylineOverlay(String esaskyUniqId, double[] polylinePoints, String color) {
         if(this.polylineOverlay == null) {
             this.polylineOverlay = AladinLiteWrapper.getAladinLite().createOverlay(esaskyUniqId, color);
