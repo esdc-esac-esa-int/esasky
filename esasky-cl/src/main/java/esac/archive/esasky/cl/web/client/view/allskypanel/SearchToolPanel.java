@@ -304,7 +304,7 @@ public class SearchToolPanel extends FlowPanel {
             if (searchAreaEvent != null && searchAreaEvent.getSearchArea() != null && !searchAreaEvent.getSearchArea().isCircle()) {
                 stcsText.removeStyleName(inputErrorClassName);
                 stcsText.setText(searchAreaEvent.getSearchArea().getAreaType() + " ICRS " +
-                        Arrays.stream(searchAreaEvent.getSearchArea().getCoordinates())
+                        Arrays.stream(searchAreaEvent.getSearchArea().getJ2000Coordinates())
                                 .map(x -> x.getRaDeg() + " " + x.getDecDeg()).collect(Collectors.joining(" ")));
             }
 
