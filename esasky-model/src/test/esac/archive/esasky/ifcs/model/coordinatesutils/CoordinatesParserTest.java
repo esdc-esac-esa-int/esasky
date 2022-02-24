@@ -66,6 +66,9 @@ public class CoordinatesParserTest {
 		assertParseCoords("12h 12' +89d 01' 01s", new Double[]{183.0, 89.0169444}, CoordinatesFrame.J2000);
 		assertParseCoords("12h 12'' +89d 01' 01s", new Double[]{180.05, 89.0169444}, CoordinatesFrame.J2000);
 		assertParseCoords("12h +89d", new Double[]{180.0, 89.0}, CoordinatesFrame.J2000);
+		assertParseCoords("00453533-7319035", new Double[]{11.39722, -73.31765}, CoordinatesFrame.J2000);
+		assertParseCoords("004535-731903", new Double[]{11.395833, -73.3175}, CoordinatesFrame.J2000);
+		assertParseCoords("05312805+1209102", new Double[]{82.8668547, 12.1528194}, CoordinatesFrame.J2000);
 	}
 	
 	@Test

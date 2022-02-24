@@ -26,6 +26,7 @@ public class CoordinatesParser {
 
         if (inputType == SearchInputType.SPACE_RAhhmmssDECddmmss
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
+                || inputType == SearchInputType.NO_SPACE_RAhhmmssDECddmmss
                 || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
                 || inputType == SearchInputType.SPACE_RAhhmmssDECdeg
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECdeg)
@@ -42,6 +43,7 @@ public class CoordinatesParser {
         if (inputType == SearchInputType.SPACE_RAhhmmssDECddmmss
                 || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
                 || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
+                || inputType == SearchInputType.NO_SPACE_RAhhmmssDECddmmss
                 || inputType == SearchInputType.SPACE_RAdegDECddmmss
                 || inputType == SearchInputType.COLUMN_RAdegDECddmmss
                 || inputType == SearchInputType.SPACE_RAdddmmssDECddmmss

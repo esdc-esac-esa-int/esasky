@@ -20,13 +20,17 @@ public class ESASkySearchRegEx {
             + "|2[0-3](\\.\\d+)?)";
     final static String RA_hh_space = "(\\d(\\.\\d+)?" + "|[01]\\d(\\.\\d+)?"
             + "|2[0-3](\\.\\d+)?)";
+    final static String RA_hh_no_space = "(\\d" + "|[01]\\d"+ "|2[0-3])";
 
     final static String base60 = "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?)";
+    final static String base60_all = "([0-5]\\d|[0-9])";
     final static String base60_space = "(" + SPACE + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
     final static String base60_column = "(" + COLUMN + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
+    final static String base60_nospace_end = "([0-5]\\d(\\d+)|[0-9](\\d+)?)";
 
     final static String RA_hhmmss_space_pattern = RA_hh_space + "(" + base60_space + base60_space
             + "?)+";
+    final static String RA_hhmmss_no_space_pattern = RA_hh_no_space + "(" + base60_all + base60_nospace_end + ")";
     final static String RA_hhmmss_column_pattern = RA_hh_column + "(" + base60_column
             + base60_column + "?)+";
     final static String RA_hhmmss_letters_pattern = RA_hh_column + "h?(\\s?(" + base60
@@ -54,6 +58,7 @@ public class ESASkySearchRegEx {
 
     final static String DEC_ddmmss_space_pattern = DEC_DEGREES_integer_base90 + "(" + base60_space
             + base60_space + "?)";
+    final static String DEC_ddmmss_no_space_pattern = DEC_DEGREES_integer_base90 + "(" + base60_all	+ base60_nospace_end + ")";
     final static String DEC_ddmmss_column_pattern = DEC_DEGREES_integer_base90 + "("
             + base60_column + base60_column + "?)";
     final static String DEC_ddmmss_letters_pattern = DEC_DEGREES_integer_base90 + "d(\\s?(" + base60
@@ -65,7 +70,7 @@ public class ESASkySearchRegEx {
 
     final static String PATTERN_RAdddmmss_DECddmmss_column = BEGIN + RA_dddmmss_column_pattern
             + RADEC_SEPARATOR + DEC_ddmmss_column_pattern + END;
-
+    
     final static String PATTERN_RAdddmmss_DECddmmss_space = BEGIN + RA_dddmmss_space_pattern
             + RADEC_SEPARATOR + DEC_ddmmss_space_pattern + END;
     
@@ -80,6 +85,9 @@ public class ESASkySearchRegEx {
 
     final static String PATTERN_RAhhmmss_DECddmmss_space = BEGIN + RA_hhmmss_space_pattern
             + RADEC_SEPARATOR + DEC_ddmmss_space_pattern + END;
+    
+    final static String PATTERN_RAhhmmss_DECddmmss_no_space = BEGIN + RA_hhmmss_no_space_pattern
+    		+ RADEC_SEPARATOR + DEC_ddmmss_no_space_pattern + END;
 
     final static String PATTERN_RAhhmmss_DECddmmss_column = BEGIN + RA_hhmmss_column_pattern
             + RADEC_SEPARATOR + DEC_ddmmss_column_pattern + END;
@@ -115,6 +123,9 @@ public class ESASkySearchRegEx {
         {
             // RA_sex_hours_space_pattern + RADEC_SEPARATOR + DEC_sex_degrees_space_pattern + END
             put(PATTERN_RAhhmmss_DECddmmss_space, SearchInputType.SPACE_RAhhmmssDECddmmss);
+            
+            // RA_sex_hours_no_space_pattern + RADEC_SEPARATOR + DEC_sex_degrees_no_space_pattern + END
+            put(PATTERN_RAhhmmss_DECddmmss_no_space, SearchInputType.NO_SPACE_RAhhmmssDECddmmss);
 
             // RA_sex_hours_column_pattern + RADEC_SEPARATOR + DEC_sex_degrees_column_pattern + END
             put(PATTERN_RAhhmmss_DECddmmss_column, SearchInputType.COLUMN_RAhhmmssDECddmmss);

@@ -10,10 +10,11 @@ public class CoordinateValidator {
     public enum SearchInputType {
         TARGET("byTarget"), NOT_VALID("inputNotValid"), SPACE_RAhhmmssDECddmmss("byCoords1"), COLUMN_RAhhmmssDECddmmss(
                 "byCoords2"), SPACE_RAhhmmssDECdeg("byCoords3"), COLUMN_RAhhmmssDECdeg("byCoords4"), SPACE_RAdegDECddmmss(
-                "byCoords5"), COLUMN_RAdegDECddmmss("byCoords6"), RAdegDECdeg("byCoords7"), COLUMN_RAdddmmssDECddmmss(
-                                "byCoords8"), SPACE_RAdddmmssDECddmmss("byCoords9"), COLUMN_RAdddmmssDECdeg(
-                "byCoords10"), SPACE_RAdddmmssDECdeg("byCoords11"),LETTERS_RAhhmmssDECddmmss("byCoords12"),
-        		LETTERS_RAdddmmssDECddmmss("byCoords13"), BIBCODE("byBibcode"), AUTHOR("byAuthor"), SEARCH_SHAPE("searchShape");
+                "byCoords5"), COLUMN_RAdegDECddmmss("byCoords6"), RAdegDECdeg("byCoords7"),
+        	COLUMN_RAdddmmssDECddmmss("byCoords8"), SPACE_RAdddmmssDECddmmss("byCoords9"), COLUMN_RAdddmmssDECdeg("byCoords10"),
+        	SPACE_RAdddmmssDECdeg("byCoords11"),LETTERS_RAhhmmssDECddmmss("byCoords12"),
+        	LETTERS_RAdddmmssDECddmmss("byCoords13"), NO_SPACE_RAhhmmssDECddmmss("byCoords14"),
+        	BIBCODE("byBibcode"), AUTHOR("byAuthor"), SEARCH_SHAPE("searchShape");
 
         String type;
 

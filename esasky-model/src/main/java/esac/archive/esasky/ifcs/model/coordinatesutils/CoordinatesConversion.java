@@ -154,6 +154,11 @@ public class CoordinatesConversion {
         		tokens = new String[] {tokens[0], "00", tokens[1]};
         	}
         }else {
+        	//Handle the no space variant
+        	if(raHMSInput.length() > 2 && !raHMSInput.contains(" ") && !raHMSInput.contains(":")) {
+        		raHMSInput = raHMSInput.substring(0, 2) + " " + raHMSInput.substring(2, 4) + " "
+        				+ raHMSInput.substring(4, 6) + "." + raHMSInput.substring(6, raHMSInput.length());
+        	}
         	tokens = (raHMSInput.trim()).split(":|\\s");
         }
         if (tokens.length > 0) {
@@ -192,6 +197,11 @@ public class CoordinatesConversion {
         		tokens = new String[] {tokens[0], "00", tokens[1]};
         	}
         }else {
+        	//Handle the no space variant
+        	if(decDMSInput.length() > 4 && !decDMSInput.contains(" ") && !decDMSInput.contains(":")) {
+        		decDMSInput = decDMSInput.substring(0, 3) + " " + decDMSInput.substring(3, 5) + " "
+        				+ decDMSInput.substring(5, 7) + "." + decDMSInput.substring(7, decDMSInput.length());
+        	}
         	tokens = (decDMSInput.trim()).split(":|\\s");
         }
         if (tokens.length > 0) {
