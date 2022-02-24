@@ -3640,14 +3640,80 @@
 	<text key="RXS_source_quality_flag">
 		Source Quality Flag
 	</text>
+
+	<text key="OU_radio_flux">
+		Radio Flux &lt;br&gt; &lt;i&gt;(mJy)&lt;/i&gt;
+	</text>
+	<text key="OU_fermi_flux">
+		Fermi Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+
+	<text key="photon_flux">
+		Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FGL_unc_flux_1000">
+		Photon Flux Error &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="energy_flux">
+		Energy Flux &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="unc_energy_flux">
+		Energy Flux Error &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+
+	<text key="LAC_nufnu">
+		SED at Synchrotron peak frequency &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="LAC_emax">
+		Energy max &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;
+	</text>
+
+	<text key="FHL_epvt">
+		Pivot Energy &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;
+	</text>
+	<text key="FHL_s">
+		Flux Density &lt;br&gt; &lt;i&gt;(ph/cm2/GeV/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f1">
+		Photon flux 10-20GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f2">
+		Photon flux 20-50GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f3">
+		Photon flux 50-150GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f4">
+		Photon flux 150-500GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f5">
+		Photon flux 500-2000GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu1">
+		SED at 10-20GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu2">
+		SED at 20-50GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu3">
+		SED at 50-150GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu4">
+		SED at 150-500GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu5">
+		SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
+	<!-- internationalization_es.xml is up to date for everything above -->
+	
 	<text key="header_session_save">
 		Save ESASky Session
 	</text>
 	<text key="header_session_restore">
 		Restore ESASky Session
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
-	<!-- internationalization_es.xml is up to date for everything above -->
+	
 	
 	
 </Internationalization>
