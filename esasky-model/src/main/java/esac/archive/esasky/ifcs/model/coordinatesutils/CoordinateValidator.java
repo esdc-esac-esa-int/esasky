@@ -8,13 +8,13 @@ public class CoordinateValidator {
     // private static final Logger LOGGER = Logger.getLogger(CoordinateValidator.class);
 
     public enum SearchInputType {
-        TARGET("byTarget"), NOT_VALID("inputNotValid"), SPACE_RAhhmmssDECddmmss("byCoords1"), COLUMN_RAhhmmssDECddmmss(
-                "byCoords2"), SPACE_RAhhmmssDECdeg("byCoords3"), COLUMN_RAhhmmssDECdeg("byCoords4"), SPACE_RAdegDECddmmss(
-                "byCoords5"), COLUMN_RAdegDECddmmss("byCoords6"), RAdegDECdeg("byCoords7"),
-        	COLUMN_RAdddmmssDECddmmss("byCoords8"), SPACE_RAdddmmssDECddmmss("byCoords9"), COLUMN_RAdddmmssDECdeg("byCoords10"),
-        	SPACE_RAdddmmssDECdeg("byCoords11"),LETTERS_RAhhmmssDECddmmss("byCoords12"),
-        	LETTERS_RAdddmmssDECddmmss("byCoords13"), NO_SPACE_RAhhmmssDECddmmss("byCoords14"),
-        	BIBCODE("byBibcode"), AUTHOR("byAuthor"), SEARCH_SHAPE("searchShape");
+        TARGET("byTarget"), NOT_VALID("inputNotValid"), SPACE_RA_HHMMSS_DEC_DDMMSS("byCoords1"), 
+        	COLUMN_RA_HHMMSS_DEC_DDMMSS("byCoords2"), SPACE_RA_HHMMSS_DEC_DEG("byCoords3"), COLUMN_RA_HHMMSS_DEC_DEG("byCoords4"),
+    		SPACE_RA_DEG_DEC_DDMMSS("byCoords5"), COLUMN_RA_DEG_DEC_DDMMSS("byCoords6"), RA_DEG_DEC_DEG("byCoords7"),
+        	COLUMN_RA_DDDMMSS_DEC_DDMMSS("byCoords8"), SPACE_RA_DDDMMSS_DEC_DDMMSS("byCoords9"),
+        	COLUMN_RA_DDDMMSS_DEC_DEG("byCoords10"), SPACE_RA_DDMMSS_DEC_DEG("byCoords11"),
+        	LETTERS_RA_HHMMSS_DEC_DDMMSS("byCoords12"), LETTERS_RA_DDDMMSS_DEC_DDMMSS("byCoords13"),
+        	NO_SPACE_RA_HHMMSS_DEC_DDMMSS("byCoords14"), BIBCODE("byBibcode"), AUTHOR("byAuthor"), SEARCH_SHAPE("searchShape");
 
         String type;
 

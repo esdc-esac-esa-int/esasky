@@ -16,99 +16,99 @@ public class ESASkySearchRegEx {
     final static String END = "$";
     final static String BEGIN = "^";
 
-    final static String RA_hh_column = "(\\d(\\.\\d+)?" + "|[01]\\d(\\.\\d+)?"
+    final static String RA_HH_COLUMN = "(\\d(\\.\\d+)?" + "|[01]\\d(\\.\\d+)?"
             + "|2[0-3](\\.\\d+)?)";
-    final static String RA_hh_space = "(\\d(\\.\\d+)?" + "|[01]\\d(\\.\\d+)?"
+    final static String RA_HH_SPACE = "(\\d(\\.\\d+)?" + "|[01]\\d(\\.\\d+)?"
             + "|2[0-3](\\.\\d+)?)";
-    final static String RA_hh_no_space = "(\\d" + "|[01]\\d"+ "|2[0-3])";
+    final static String RA_HH_NO_SPACE = "(\\d" + "|[01]\\d"+ "|2[0-3])";
 
-    final static String base60 = "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?)";
-    final static String base60_all = "([0-5]\\d|[0-9])";
-    final static String base60_space = "(" + SPACE + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
-    final static String base60_column = "(" + COLUMN + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
-    final static String base60_nospace_end = "([0-5]\\d(\\d+)|[0-9](\\d+)?)";
+    final static String BASE60 = "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?)";
+    final static String BASE60_ALL = "([0-5]\\d|[0-9])";
+    final static String BASE60_SPACE = "(" + SPACE + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
+    final static String BASE60_COLUMN = "(" + COLUMN + "([0-5]\\d?(\\.\\d+)?|[0-9](\\.\\d+)?))";
+    final static String BASE60_NO_SPACE_END = "([0-5]\\d(\\d+)|[0-9](\\d+)?)";
 
-    final static String RA_hhmmss_space_pattern = RA_hh_space + "(" + base60_space + base60_space
+    final static String RA_HHMMSS_SPACE_PATTERN = RA_HH_SPACE + "(" + BASE60_SPACE + BASE60_SPACE
             + "?)+";
-    final static String RA_hhmmss_no_space_pattern = RA_hh_no_space + "(" + base60_all + base60_nospace_end + ")";
-    final static String RA_hhmmss_column_pattern = RA_hh_column + "(" + base60_column
-            + base60_column + "?)+";
-    final static String RA_hhmmss_letters_pattern = RA_hh_column + "h?(\\s?(" + base60
-    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\\\"))?\\s?)";
+    final static String RA_HHMMSS_NO_SPACE_PATTERN = RA_HH_NO_SPACE + "(" + BASE60_ALL + BASE60_NO_SPACE_END + ")";
+    final static String RA_HHMMSS_COLUMN_PATTERN = RA_HH_COLUMN + "(" + BASE60_COLUMN
+            + BASE60_COLUMN + "?)+";
+    final static String RA_HHMMSS_LETTERS_PATTERN = RA_HH_COLUMN + "h?(\\s?(" + BASE60
+    		+ "(m|\\'))?\\s?(" + BASE60 + "(s|\\'\\'|\\\"))?\\s?)";
 
     /**
      * RA and DEC in decimal DEGREES 214.123 +89.123 214.123 -89.123
      */
-    final static String RA_DEGREES_decimal_base360 = "(\\d?\\d(\\.\\d+)?"
+    final static String RA_DEGREES_DECIMAL_BASE360 = "(\\d?\\d(\\.\\d+)?"
             + "|[0-2]\\d\\d(\\.\\d+)?" + "|3[0-5]\\d(\\.\\d+)?)";
-    final static String RA_DEGREES_integer_base360 = "(\\d" + "|0\\d?" + "|\\d\\d"
+    final static String RA_DEGREES_INTEGER_BASE360 = "(\\d" + "|0\\d?" + "|\\d\\d"
             + "|[0-2][0-9]\\d" + "|3[0-5]\\d" + "|360)";
 
-    final static String RA_dddmmss_space_pattern = RA_DEGREES_integer_base360 + "(" + base60_space
-            + base60_space + "?)?";
-    final static String RA_dddmmss_column_pattern = RA_DEGREES_integer_base360 + "("
-            + base60_column + base60_column + "?)?";
-    final static String RA_dddmmss_letters_pattern = RA_DEGREES_integer_base360 + "d(\\s?(" + base60
-    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\"))?\\s?)?";
+    final static String RA_DDDMMSS_SPACE_PATTERN = RA_DEGREES_INTEGER_BASE360 + "(" + BASE60_SPACE
+            + BASE60_SPACE + "?)?";
+    final static String RA_DDDMMSS_COLUMN_PATTERN = RA_DEGREES_INTEGER_BASE360 + "("
+            + BASE60_COLUMN + BASE60_COLUMN + "?)?";
+    final static String RA_DDDMMSS_LETTERS_PATTERNS = RA_DEGREES_INTEGER_BASE360 + "d(\\s?(" + BASE60
+    		+ "(m|\\'))?\\s?(" + BASE60 + "(s|\\'\\'|\"))?\\s?)?";
     
-    final static String DEC_DEGREES_decimal_base90 = "(\\d(\\.\\d+)?" + "|0\\d?(\\.\\d+)?"
+    final static String DEC_DEGREES_DECIMAL_BASE90 = "(\\d(\\.\\d+)?" + "|0\\d?(\\.\\d+)?"
             + "|[0-8]\\d(\\.\\d+)?" + "|90)";
 
-    final static String DEC_DEGREES_integer_base90 = "(\\d" + "|0\\d?" + "|[0-8]\\d" + "|90)";
+    final static String DEC_DEGREES_INTEGER_BASE90 = "(\\d" + "|0\\d?" + "|[0-8]\\d" + "|90)";
 
-    final static String DEC_ddmmss_space_pattern = DEC_DEGREES_integer_base90 + "(" + base60_space
-            + base60_space + "?)";
-    final static String DEC_ddmmss_no_space_pattern = DEC_DEGREES_integer_base90 + "(" + base60_all	+ base60_nospace_end + ")";
-    final static String DEC_ddmmss_column_pattern = DEC_DEGREES_integer_base90 + "("
-            + base60_column + base60_column + "?)";
-    final static String DEC_ddmmss_letters_pattern = DEC_DEGREES_integer_base90 + "d(\\s?(" + base60
-    		+ "(m|\\'))?\\s?(" + base60 + "(s|\\'\\'|\"))?\\s?)";
+    final static String DEC_DDMMSS_SPACE_PATTERN = DEC_DEGREES_INTEGER_BASE90 + "(" + BASE60_SPACE
+            + BASE60_SPACE + "?)";
+    final static String DEC_DDMMSS_NO_SPACE_PATTERN = DEC_DEGREES_INTEGER_BASE90 + "(" + BASE60_ALL	+ BASE60_NO_SPACE_END + ")";
+    final static String DEC_DDMMSS_COLUMN_PATTERN = DEC_DEGREES_INTEGER_BASE90 + "("
+            + BASE60_COLUMN + BASE60_COLUMN + "?)";
+    final static String DEC_DDMMSS_LETTERS_PATTERN = DEC_DEGREES_INTEGER_BASE90 + "d(\\s?(" + BASE60
+    		+ "(m|\\'))?\\s?(" + BASE60 + "(s|\\'\\'|\"))?\\s?)";
 
     /**
      * PATTERNS!!!
      */
 
-    final static String PATTERN_RAdddmmss_DECddmmss_column = BEGIN + RA_dddmmss_column_pattern
-            + RADEC_SEPARATOR + DEC_ddmmss_column_pattern + END;
+    final static String PATTERN_RA_DDDMMSS_DEC_DDMMSS_COLUMN = BEGIN + RA_DDDMMSS_COLUMN_PATTERN
+            + RADEC_SEPARATOR + DEC_DDMMSS_COLUMN_PATTERN + END;
     
-    final static String PATTERN_RAdddmmss_DECddmmss_space = BEGIN + RA_dddmmss_space_pattern
-            + RADEC_SEPARATOR + DEC_ddmmss_space_pattern + END;
+    final static String PATTERN_RA_DDDMMSS_DEC_DDMMSS_SPACE = BEGIN + RA_DDDMMSS_SPACE_PATTERN
+            + RADEC_SEPARATOR + DEC_DDMMSS_SPACE_PATTERN + END;
     
-    final static String PATTERN_RAdddmmss_DECddmmss_letters = BEGIN + RA_dddmmss_letters_pattern
-    		+ RADEC_SEPARATOR + DEC_ddmmss_letters_pattern + END;
+    final static String PATTERN_RA_DDDMMSS_DEC_DDMMSS_LETTERS = BEGIN + RA_DDDMMSS_LETTERS_PATTERNS
+    		+ RADEC_SEPARATOR + DEC_DDMMSS_LETTERS_PATTERN + END;
 
-    final static String PATTERN_RAdddmmss_DECdeg_column = BEGIN + RA_dddmmss_column_pattern
-            + RADEC_SEPARATOR + DEC_DEGREES_decimal_base90 + END;
+    final static String PATTERN_RA_DDDMMSS_DEC_DEG_COLUMN = BEGIN + RA_DDDMMSS_COLUMN_PATTERN
+            + RADEC_SEPARATOR + DEC_DEGREES_DECIMAL_BASE90 + END;
 
-    final static String PATTERN_RAdddmmss_DECdeg_space = BEGIN + RA_dddmmss_space_pattern
-            + RADEC_SEPARATOR + DEC_DEGREES_decimal_base90 + END;
+    final static String PATTERN_RA_DDDMMSS_DEC_DEG_SPACE = BEGIN + RA_DDDMMSS_SPACE_PATTERN
+            + RADEC_SEPARATOR + DEC_DEGREES_DECIMAL_BASE90 + END;
 
-    final static String PATTERN_RAhhmmss_DECddmmss_space = BEGIN + RA_hhmmss_space_pattern
-            + RADEC_SEPARATOR + DEC_ddmmss_space_pattern + END;
+    final static String PATTERN_RA_HHMMSS_DEC_DDMMSS_SPACE = BEGIN + RA_HHMMSS_SPACE_PATTERN
+            + RADEC_SEPARATOR + DEC_DDMMSS_SPACE_PATTERN + END;
     
-    final static String PATTERN_RAhhmmss_DECddmmss_no_space = BEGIN + RA_hhmmss_no_space_pattern
-    		+ RADEC_SEPARATOR + DEC_ddmmss_no_space_pattern + END;
+    final static String PATTERN_RA_HHMMSS_DEC_DDMMSS_NO_SPACE = BEGIN + RA_HHMMSS_NO_SPACE_PATTERN
+    		+ RADEC_SEPARATOR + DEC_DDMMSS_NO_SPACE_PATTERN + END;
 
-    final static String PATTERN_RAhhmmss_DECddmmss_column = BEGIN + RA_hhmmss_column_pattern
-            + RADEC_SEPARATOR + DEC_ddmmss_column_pattern + END;
+    final static String PATTERN_RA_HHMMSS_DEC_DDMMSS_COLUMN = BEGIN + RA_HHMMSS_COLUMN_PATTERN
+            + RADEC_SEPARATOR + DEC_DDMMSS_COLUMN_PATTERN + END;
 
-    final static String PATTERN_RAhhmmss_DECddmmss_letters = BEGIN + RA_hhmmss_letters_pattern
-    		+ RADEC_SEPARATOR + DEC_ddmmss_letters_pattern + END;
+    final static String PATTERN_RA_HHMMSS_DEC_DDMMSS_LETTERS = BEGIN + RA_HHMMSS_LETTERS_PATTERN
+    		+ RADEC_SEPARATOR + DEC_DDMMSS_LETTERS_PATTERN + END;
 
-    final static String PATTERN_RAdeg_DECdeg = BEGIN + RA_DEGREES_decimal_base360 + RADEC_SEPARATOR
-            + DEC_DEGREES_decimal_base90 + END;
+    final static String PATTERN_RA_DEG_DEC_DEG = BEGIN + RA_DEGREES_DECIMAL_BASE360 + RADEC_SEPARATOR
+            + DEC_DEGREES_DECIMAL_BASE90 + END;
 
-    final static String PATTERN_RAhhmmss_DECdeg_space = BEGIN + RA_hhmmss_space_pattern
-            + RADEC_SEPARATOR + DEC_DEGREES_decimal_base90 + END;
+    final static String PATTERN_RA_HHMMSS_DEC_DEG_SPACE = BEGIN + RA_HHMMSS_SPACE_PATTERN
+            + RADEC_SEPARATOR + DEC_DEGREES_DECIMAL_BASE90 + END;
 
-    final static String PATTERN_RAhhmmss_DECdeg_column = BEGIN + RA_hhmmss_column_pattern
-            + RADEC_SEPARATOR + DEC_DEGREES_decimal_base90 + END;
+    final static String PATTERN_RA_HHMMSS_DEC_DEG_COLUMN = BEGIN + RA_HHMMSS_COLUMN_PATTERN
+            + RADEC_SEPARATOR + DEC_DEGREES_DECIMAL_BASE90 + END;
 
-    final static String PATTERN_RAdeg_DECddmmss_space = BEGIN + RA_DEGREES_decimal_base360
-            + RADEC_SEPARATOR + DEC_ddmmss_space_pattern + END;
+    final static String PATTERN_RA_DEG_DEC_DDMMSS_SPACE = BEGIN + RA_DEGREES_DECIMAL_BASE360
+            + RADEC_SEPARATOR + DEC_DDMMSS_SPACE_PATTERN + END;
 
-    final static String PATTERN_RAdeg_DECddmmss_column = BEGIN + RA_DEGREES_decimal_base360
-            + RADEC_SEPARATOR + DEC_ddmmss_column_pattern + END;
+    final static String PATTERN_RA_DEG_DEC_DDMMSS_COLUMN = BEGIN + RA_DEGREES_DECIMAL_BASE360
+            + RADEC_SEPARATOR + DEC_DDMMSS_COLUMN_PATTERN + END;
 
     final static String TARGET = "^[0-9]*$|^\\[.+\\].*$|^[0-9].*[\\p{L}]+.*$|^[\\p{L}]+.*$|^[\\p{L}]+\\s[\\p{L}]+$|^[\\p{L}]+\\s[\\p{L}_0-9]+\\*$|^[\\p{L}]+\\s?\\d+$|^[\\p{L}]+\\s?\\+?\\s?[\\p{L}_0-9]+$|^[\\p{L}]+\\s?[\\p{L}]*-?[\\p{L}_0-9]+$";
 
@@ -122,22 +122,22 @@ public class ESASkySearchRegEx {
 
         {
             // RA_sex_hours_space_pattern + RADEC_SEPARATOR + DEC_sex_degrees_space_pattern + END
-            put(PATTERN_RAhhmmss_DECddmmss_space, SearchInputType.SPACE_RAhhmmssDECddmmss);
+            put(PATTERN_RA_HHMMSS_DEC_DDMMSS_SPACE, SearchInputType.SPACE_RA_HHMMSS_DEC_DDMMSS);
             
             // RA_sex_hours_no_space_pattern + RADEC_SEPARATOR + DEC_sex_degrees_no_space_pattern + END
-            put(PATTERN_RAhhmmss_DECddmmss_no_space, SearchInputType.NO_SPACE_RAhhmmssDECddmmss);
+            put(PATTERN_RA_HHMMSS_DEC_DDMMSS_NO_SPACE, SearchInputType.NO_SPACE_RA_HHMMSS_DEC_DDMMSS);
 
             // RA_sex_hours_column_pattern + RADEC_SEPARATOR + DEC_sex_degrees_column_pattern + END
-            put(PATTERN_RAhhmmss_DECddmmss_column, SearchInputType.COLUMN_RAhhmmssDECddmmss);
+            put(PATTERN_RA_HHMMSS_DEC_DDMMSS_COLUMN, SearchInputType.COLUMN_RA_HHMMSS_DEC_DDMMSS);
 
             // RA_sex_hours_space_pattern + RADEC_SEPARATOR + DEGREES_decimal
-            put(PATTERN_RAhhmmss_DECdeg_space, SearchInputType.SPACE_RAhhmmssDECdeg);
+            put(PATTERN_RA_HHMMSS_DEC_DEG_SPACE, SearchInputType.SPACE_RA_HHMMSS_DEC_DEG);
 
             // RA_sex_hours_letters_pattern + RADEC_SEPARATOR + DEGREES_decimal
-            put(PATTERN_RAhhmmss_DECddmmss_letters, SearchInputType.LETTERS_RAhhmmssDECddmmss);
+            put(PATTERN_RA_HHMMSS_DEC_DDMMSS_LETTERS, SearchInputType.LETTERS_RA_HHMMSS_DEC_DDMMSS);
 
             // RA_sex_hours_space_pattern + RADEC_SEPARATOR + DEGREES_decimal
-            put(PATTERN_RAhhmmss_DECdeg_column, SearchInputType.COLUMN_RAhhmmssDECdeg);
+            put(PATTERN_RA_HHMMSS_DEC_DEG_COLUMN, SearchInputType.COLUMN_RA_HHMMSS_DEC_DEG);
 
         }
     };
@@ -152,10 +152,10 @@ public class ESASkySearchRegEx {
         {
 
             // DEGREES_decimal + RADEC_SEPARATOR + DEGREES_decimal
-            put(PATTERN_RAdeg_DECdeg, SearchInputType.RAdegDECdeg);
-            put(PATTERN_RAdddmmss_DECddmmss_space, SearchInputType.SPACE_RAdddmmssDECddmmss);
-            put(PATTERN_RAdddmmss_DECddmmss_letters, SearchInputType.LETTERS_RAdddmmssDECddmmss);
-            put(PATTERN_RAdddmmss_DECddmmss_column, SearchInputType.COLUMN_RAdddmmssDECddmmss);
+            put(PATTERN_RA_DEG_DEC_DEG, SearchInputType.RA_DEG_DEC_DEG);
+            put(PATTERN_RA_DDDMMSS_DEC_DDMMSS_SPACE, SearchInputType.SPACE_RA_DDDMMSS_DEC_DDMMSS);
+            put(PATTERN_RA_DDDMMSS_DEC_DDMMSS_LETTERS, SearchInputType.LETTERS_RA_DDDMMSS_DEC_DDMMSS);
+            put(PATTERN_RA_DDDMMSS_DEC_DDMMSS_COLUMN, SearchInputType.COLUMN_RA_DDDMMSS_DEC_DDMMSS);
 
             put(TARGET, SearchInputType.TARGET);
 
@@ -175,19 +175,19 @@ public class ESASkySearchRegEx {
         }
     };
 
-    private static String RA_1 = BEGIN + SIGN + RA_DEGREES_decimal_base360 + END;
-    private static String RA_2 = BEGIN + SIGN + RA_DEGREES_integer_base360 + END;
-    private static String RA_3 = BEGIN + SIGN + RA_hhmmss_space_pattern + END;
-    private static String RA_4 = BEGIN + SIGN + RA_hhmmss_column_pattern + END;
-    private static String RA_7 = BEGIN + SIGN + RA_hhmmss_letters_pattern + END;
+    private static String RA_1 = BEGIN + SIGN + RA_DEGREES_DECIMAL_BASE360 + END;
+    private static String RA_2 = BEGIN + SIGN + RA_DEGREES_INTEGER_BASE360 + END;
+    private static String RA_3 = BEGIN + SIGN + RA_HHMMSS_SPACE_PATTERN + END;
+    private static String RA_4 = BEGIN + SIGN + RA_HHMMSS_COLUMN_PATTERN + END;
+    private static String RA_7 = BEGIN + SIGN + RA_HHMMSS_LETTERS_PATTERN + END;
 
     protected static final String[] RAValid = { RA_1, RA_2, RA_3, RA_4,RA_7};
 
-    public static final String DEC_1 = BEGIN + SIGN + DEC_DEGREES_decimal_base90 + END;
-    public static final String DEC_2 = BEGIN + SIGN + DEC_DEGREES_integer_base90 + END;
-    public static final String DEC_3 = BEGIN + SIGN + DEC_ddmmss_space_pattern + END;
-    public static final String DEC_4 = BEGIN + SIGN + DEC_ddmmss_column_pattern + END;
-    public static final String DEC_5 = BEGIN + SIGN + DEC_ddmmss_letters_pattern + END;
+    public static final String DEC_1 = BEGIN + SIGN + DEC_DEGREES_DECIMAL_BASE90 + END;
+    public static final String DEC_2 = BEGIN + SIGN + DEC_DEGREES_INTEGER_BASE90 + END;
+    public static final String DEC_3 = BEGIN + SIGN + DEC_DDMMSS_SPACE_PATTERN + END;
+    public static final String DEC_4 = BEGIN + SIGN + DEC_DDMMSS_COLUMN_PATTERN + END;
+    public static final String DEC_5 = BEGIN + SIGN + DEC_DDMMSS_LETTERS_PATTERN + END;
     protected static final String[] DECValid = { DEC_1, DEC_2, DEC_3, DEC_4, DEC_5 };
 
 }
