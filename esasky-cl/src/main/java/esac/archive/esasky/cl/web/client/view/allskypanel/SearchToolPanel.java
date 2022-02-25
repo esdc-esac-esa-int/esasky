@@ -12,10 +12,17 @@ import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinateFrameChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectSearchAreaEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.DecPosition;
+import esac.archive.esasky.cl.web.client.model.RaPosition;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
@@ -93,8 +100,6 @@ public class SearchToolPanel extends FlowPanel {
 
             searchAreaDetailsToggler.setToggleStatus(true);
         }
-
-
     }
 
     private void toggleOtherButtons(EsaSkyToggleButton buttonPressed) {
@@ -134,6 +139,10 @@ public class SearchToolPanel extends FlowPanel {
             startSearchMode(polyButton, "polygon");
         } else if (circleButton.getToggleStatus()) {
             startSearchMode(circleButton, "circle");
+        } else {
+            circleButton.toggle();
+            startSearchMode(circleButton, "circle");
+
         }
     }
 
@@ -156,17 +165,6 @@ public class SearchToolPanel extends FlowPanel {
         }
     }
 
-    public boolean toolboxVisible() {
-        return toolboxIsVisible;
-    }
-
-    private void setToolboxVisible() {
-        setVisible(true);
-    }
-
-    private void setToolboxHidden() {
-        setVisible(false);
-    }
 
     private FlowPanel initConeDetails() {
 
@@ -179,7 +177,7 @@ public class SearchToolPanel extends FlowPanel {
 
         FlowPanel radiusContainer = new FlowPanel();
         Label radiusLabel = new Label();
-        radiusLabel.setText("Radius");
+        radiusLabel.setText("Radius (deg)");
         TextBox radiusText = new TextBox();
         radiusContainer.add(radiusLabel);
         radiusContainer.add(radiusText);
@@ -219,13 +217,8 @@ public class SearchToolPanel extends FlowPanel {
                 String raStr = raText.getText();
                 String decStr = decText.getText().trim();
 
-                if (!decStr.matches("^([+\\-]).*")) {
-                    decStr = "+" + decStr;
-                }
-
                 CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
-                double[] coords = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(),
-                        raStr + " " + decStr, cooFrame, CoordinatesFrame.J2000);
+                double[] coords = ConvertCoordinatesToFrame(raStr, decStr, cooFrame, CoordinatesFrame.J2000);
 
                 detailContainer.removeStyleName(inputErrorClassName);
                 AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
@@ -240,13 +233,53 @@ public class SearchToolPanel extends FlowPanel {
 
         });
 
+        CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, () -> {
+            String[] coordStr = UpdateCoordinateFormat(new RaPosition(raText.getText()), new DecPosition(decText.getText(), true));
+            raText.setText(coordStr[0]);
+            decText.setText(coordStr[1]);
+        });
+
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteCoordinateFrameChangedEvent.TYPE, (cooFrameEvent) -> {
+            String raStr = raText.getText();
+            String decStr = decText.getText();
+
+            if (cooFrameEvent != null && !raStr.isEmpty() && !decStr.isEmpty()) {
+                CoordinatesFrame oldCooFrame;
+                CoordinatesFrame newCooFrame;
+                if (cooFrameEvent.getCoordinateFrame() == AladinLiteConstants.CoordinateFrame.GALACTIC) {
+                    raLabel.setText("Lon");
+                    decLabel.setText("Lat");
+                    oldCooFrame = CoordinatesFrame.J2000;
+                    newCooFrame = CoordinatesFrame.GALACTIC;
+                } else {
+                    raLabel.setText("RA");
+                    decLabel.setText("Dec");
+                    oldCooFrame = CoordinatesFrame.GALACTIC;
+                    newCooFrame = CoordinatesFrame.J2000;
+                }
+
+                double[] coords = ConvertCoordinatesToFrame(raStr, decStr, oldCooFrame, newCooFrame);
+                String[] coordStr = UpdateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
+                raText.setText(coordStr[0]);
+                decText.setText(coordStr[1]);
+
+            }
+        });
+
 
         CommonEventBus.getEventBus().addHandler(AladinLiteSelectSearchAreaEvent.TYPE, searchAreaEvent -> {
             if (searchAreaEvent != null && searchAreaEvent.getSearchArea() != null && searchAreaEvent.getSearchArea().isCircle()) {
                 detailContainer.removeStyleName(inputErrorClassName);
                 radiusText.setText(searchAreaEvent.getSearchArea().getRadius());
-                raText.setText(Double.toString(searchAreaEvent.getSearchArea().getCoordinates()[0].getRaDeg()));
-                decText.setText(Double.toString(searchAreaEvent.getSearchArea().getCoordinates()[0].getDecDeg()));
+
+                CoordinatesObject coordObj = searchAreaEvent.getSearchArea().getJ2000Coordinates()[0];
+                double[] coords = ConvertCoordinatesToFrame(Double.toString(coordObj.getRaDeg()), Double.toString(coordObj.getDecDeg()), CoordinatesFrame.J2000);
+
+                String[] coordStr = UpdateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
+                raText.setText(coordStr[0]);
+                decText.setText(coordStr[1]);
+                showSearchAreaDetails();
             }
 
         });
@@ -254,6 +287,27 @@ public class SearchToolPanel extends FlowPanel {
         return detailContainer;
     }
 
+    private String[] UpdateCoordinateFormat(RaPosition raPos, DecPosition decPos) {
+
+        if (GUISessionStatus.isShowingCoordinatesInDegrees()) {
+            return new String[] {Double.toString(raPos.getRaDeg()), Double.toString(decPos.getDecDegFix())};
+        } else {
+            return new String[] {raPos.getSpacedHmsString(), decPos.getSpacedDmsStringFix()};
+        }
+    }
+
+    private double[] ConvertCoordinatesToFrame(String raStr, String decStr, CoordinatesFrame oldCooFrame) {
+        CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
+        return ConvertCoordinatesToFrame(raStr, decStr, oldCooFrame, cooFrame);
+    }
+
+    private double[] ConvertCoordinatesToFrame(String raStr, String decStr, CoordinatesFrame oldCooFrame, CoordinatesFrame newCooFrame) {
+        if (!decStr.matches("^([+\\-]).*")) {
+            decStr = "+" + decStr;
+        }
+        return CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(),
+                raStr + " " + decStr, oldCooFrame, newCooFrame);
+    }
 
     private FlowPanel initPolygonDetails(String header) {
         FlowPanel detailContainer = new FlowPanel();
@@ -306,6 +360,7 @@ public class SearchToolPanel extends FlowPanel {
                 stcsText.setText(searchAreaEvent.getSearchArea().getAreaType() + " ICRS " +
                         Arrays.stream(searchAreaEvent.getSearchArea().getJ2000Coordinates())
                                 .map(x -> x.getRaDeg() + " " + x.getDecDeg()).collect(Collectors.joining(" ")));
+                showSearchAreaDetails();
             }
 
         });
@@ -392,7 +447,6 @@ public class SearchToolPanel extends FlowPanel {
         AladinLiteWrapper.getAladinLite().setSelectionType("SEARCH");
         AladinLiteWrapper.getAladinLite().startSelectionMode();
         toggleOtherButtons(button);
-        showSearchAreaDetails();
     }
 
     private void endSearchMode() {
