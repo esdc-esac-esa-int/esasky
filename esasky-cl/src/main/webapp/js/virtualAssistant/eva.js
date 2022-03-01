@@ -135,6 +135,7 @@ function initChat2() {
 
 function initChat() {
 	(async function () {
+		$("head").append($("<script></script>").attr("src", "js/virtualAssistant/webchat.js"));
 	    initChat2(); //inits webchat
 	})().catch(err => console.error(err));
 }
