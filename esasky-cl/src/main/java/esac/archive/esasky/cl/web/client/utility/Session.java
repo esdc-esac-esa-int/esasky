@@ -62,6 +62,7 @@ public class Session {
 		stateObj.put(EsaSkyWebConstants.SESSION_PLANNING, getPlanningJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_PUB, getPublicationJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
 
 		StringBuilder fileNameBuilder = new StringBuilder("esasky_session_");
 		Date date = new Date();
@@ -89,8 +90,38 @@ public class Session {
 			restorePublications(saveStateObj);
 			restorePlanning(saveStateObj);
 			restoreSettings(saveStateObj);
+			restoreTreemap(saveStateObj);
 		} catch (SaveStateException e) {
 			Log.error(e.getMessage(), e);
+		}
+	}
+	
+	private JSONObject getTreemapJson() {
+		JSONObject treemapObj = new JSONObject();
+		Map<String, Double[]> sliderMap = MainPresenter.getInstance().getCtrlTBPresenter().getSliderValues();
+		for(String key : sliderMap.keySet()) {
+			JSONObject obj = new JSONObject();
+			Double[] values = sliderMap.get(key);
+			obj.put(EsaSkyWebConstants.SESSION_TREEMAP_LOW, new JSONString(values[0].toString()));
+			obj.put(EsaSkyWebConstants.SESSION_TREEMAP_HIGH, new JSONString(values[1].toString()));
+			treemapObj.put(key, obj);
+		}
+		
+		return treemapObj;
+
+	}
+	
+	
+	private void restoreTreemap(GeneralJavaScriptObject saveStateObj) {
+		if(saveStateObj.hasProperty(EsaSkyWebConstants.SESSION_TREEMAP)) {
+			GeneralJavaScriptObject treemapObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_TREEMAP);
+			Map<String, Double[]> map = new HashMap<>();
+			for(String key : treemapObj.getPropertiesArray()) {
+				double low = Double.parseDouble(treemapObj.getProperty(key).getStringProperty(EsaSkyWebConstants.SESSION_TREEMAP_LOW));
+				double high = Double.parseDouble(treemapObj.getProperty(key).getStringProperty(EsaSkyWebConstants.SESSION_TREEMAP_HIGH));
+				map.put(key, new Double[] {low, high});
+			}
+			MainPresenter.getInstance().getCtrlTBPresenter().setSliderValues(map);
 		}
 	}
 	

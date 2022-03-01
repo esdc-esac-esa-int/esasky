@@ -29,6 +29,7 @@ import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -97,6 +98,9 @@ public class CtrlToolBarPresenter {
         JSONArray getOutreachImageIds(ICommand command);
 
         void showOutreachImage(String id);
+        
+        Map<String, Double[]> getSliderValues();
+        void setSliderValues(Map<String, Double[]> sliderMap);
     }
 
     public CtrlToolBarPresenter(final View inputView, DescriptorRepository descriptorRepo, EntityRepository entityRepo) {
@@ -370,6 +374,14 @@ public class CtrlToolBarPresenter {
 
     public void showOutreachImage(String id) {
         view.showOutreachImage(id);
+    }
+    
+    public Map<String, Double[]> getSliderValues(){
+    	return view.getSliderValues();
+    }
+    
+    public void setSliderValues(Map<String, Double[]> sliderMap){
+    	view.setSliderValues(sliderMap);
     }
 
 }

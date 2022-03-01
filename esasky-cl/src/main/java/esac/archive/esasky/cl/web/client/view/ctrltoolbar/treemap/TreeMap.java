@@ -65,7 +65,7 @@ public class TreeMap extends Chart {
     protected boolean addPointsOnNextRender = false;
     protected List<Point> pointsToAdd = new LinkedList<Point>();
     protected double sliderValueLow = 0;
-    protected double sliderValueHigh = Double.MAX_VALUE;
+    protected double sliderValueHigh = ESASkyColors.maxIndex();
     private boolean hasSlider = true;
 
     private List<TreeMapChanged> observers = new LinkedList<TreeMapChanged>();
@@ -593,7 +593,6 @@ public class TreeMap extends Chart {
     	}
     }
 
-
     private boolean shouldBeShown(double highWavelength, double lowWavelength,
             PointInformation pointInformation) {
         if(pointInformation.descriptor.getWavelengths() == null) {
@@ -613,14 +612,16 @@ public class TreeMap extends Chart {
         return false;
     }
 
-
 	public boolean isHasSlider() {
 		return hasSlider;
 	}
 
-
 	public void setHasSlider(boolean hasSlider) {
 		this.hasSlider = hasSlider;
+	}
+	
+	public Double[] getSliderValues() {
+		return new Double[] {this.sliderValueLow, this.sliderValueHigh};
 	}
     
 }

@@ -252,4 +252,9 @@ public class EsaSkyWebConstants {
     public static final String SESSION_SETTINGS_GRID = "coo_grid";
     public static final String SESSION_SETTINGS_SEARCH = "search_area";
 
+    public static final String SESSION_TREEMAP = "treemap";
+    public static final String SESSION_TREEMAP_LOW = "low";
+    public static final String SESSION_TREEMAP_HIGH = "high";
+    
+
 }
