@@ -226,7 +226,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(createGridDropdownEntry());
 		dropdownContent.add(createShareDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
-		dropdownContent.add(createEvaDropDownEntry());
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA)) {
+			dropdownContent.add(createEvaDropDownEntry());
+		}
+		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
 		}

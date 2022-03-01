@@ -4,6 +4,7 @@ var serverProperties = {
  localeFilesLocation: "${locale.url}",
  targetListFilesLocation: "${targetlist.url}",
  showExtTap: "${show.ext.tap}",
+ showEva: "${show.eva}",
  showMissingTranslationBox: "${show.missing.translation.box}"
 };
 
