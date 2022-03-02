@@ -234,17 +234,18 @@ public class SearchToolPanel extends FlowPanel {
         });
 
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, () -> {
-            String[] coordStr = UpdateCoordinateFormat(new RaPosition(raText.getText()), new DecPosition(decText.getText(), true));
-            raText.setText(coordStr[0]);
-            decText.setText(coordStr[1]);
+            try {
+                String[] coordStr = UpdateCoordinateFormat(new RaPosition(raText.getText()), new DecPosition(decText.getText(), true));
+                raText.setText(coordStr[0]);
+                decText.setText(coordStr[1]);
+            } catch (Exception ex) {
+                Log.debug(ex.getMessage(), ex);
+            }
         });
 
 
         CommonEventBus.getEventBus().addHandler(AladinLiteCoordinateFrameChangedEvent.TYPE, (cooFrameEvent) -> {
-            String raStr = raText.getText();
-            String decStr = decText.getText();
-
-            if (cooFrameEvent != null && !raStr.isEmpty() && !decStr.isEmpty()) {
+            try {
                 CoordinatesFrame oldCooFrame;
                 CoordinatesFrame newCooFrame;
                 if (cooFrameEvent.getCoordinateFrame() == AladinLiteConstants.CoordinateFrame.GALACTIC) {
@@ -259,11 +260,14 @@ public class SearchToolPanel extends FlowPanel {
                     newCooFrame = CoordinatesFrame.J2000;
                 }
 
+                String raStr = raText.getText();
+                String decStr = decText.getText();
                 double[] coords = ConvertCoordinatesToFrame(raStr, decStr, oldCooFrame, newCooFrame);
                 String[] coordStr = UpdateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
                 raText.setText(coordStr[0]);
                 decText.setText(coordStr[1]);
-
+            } catch (Exception ex) {
+                Log.debug(ex.getMessage(), ex);
             }
         });
 
