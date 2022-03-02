@@ -75,6 +75,7 @@ public class EsaSkyWebConstants {
     public static final String URL_PARAM_HIDE_SCI = "hide_sci_switch";
     public static final String URL_PARAM_LAYOUT = "layout";
     public static final String URL_PARAM_HIDE_BANNER_INFO = "hide_banner_info";
+    public static final String URL_PARAM_SHOW_EVA = "show_eva";
     
     
     public static final String SCI_MODE_COOKIE = "IsInSciMode";
@@ -150,6 +151,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE_MODE = "science_mode";
     public static final String MODULE_SESSION = "session";
+    public static final String MODULE_EVA_MENU = "eva_menu";
     public static final String MODULE_EVA = "eva";
     
     

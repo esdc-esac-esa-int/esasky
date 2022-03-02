@@ -193,6 +193,17 @@ public class Controller implements ValueChangeHandler<String> {
         
 		String hideSwitchString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_SCI);
 		GUISessionStatus.sethideSwitch(hideSwitchString != null && hideSwitchString.toLowerCase().contains("true"));
+		
+		String showEvaString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SHOW_EVA);
+		if(showEvaString != null && showEvaString.toLowerCase().contains("true")) {
+			try {
+				Modules.setModule(EsaSkyWebConstants.MODULE_EVA, true);
+				Modules.setModule(EsaSkyWebConstants.MODULE_EVA_MENU, true);
+			} catch (MapKeyException e) {
+				Log.error(e.getMessage(), e);
+			}
+		}
+		
     }
 
     private void setSciMode() {

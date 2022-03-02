@@ -26,7 +26,9 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.event.ShowEvaEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter.SelectionEntry;
@@ -227,7 +229,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(createShareDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA)) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU)) {
 			dropdownContent.add(createEvaDropDownEntry());
 		}
 		

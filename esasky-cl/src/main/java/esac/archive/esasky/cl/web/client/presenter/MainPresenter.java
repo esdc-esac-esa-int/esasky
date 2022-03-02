@@ -159,6 +159,10 @@ public class MainPresenter {
                         .get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0));
             }
         }
+        
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA)) {
+			CommonEventBus.getEventBus().fireEvent(new ShowEvaEvent());
+		}
     }
 
     public final void bind() {
