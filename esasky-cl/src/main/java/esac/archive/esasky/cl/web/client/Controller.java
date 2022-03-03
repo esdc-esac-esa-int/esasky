@@ -148,23 +148,23 @@ public class Controller implements ValueChangeHandler<String> {
         			hiPSName = esaSkyTarget.getHipsName();
         			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
         			if (esaSkyTarget != null
-        					&& !GUISessionStatus.getIsInScienceMode()
-        					&& !Modules.getMode().equalsIgnoreCase("clean")) {
+    					&& !GUISessionStatus.getIsInScienceMode()
+    					&& !Modules.getMode().equalsIgnoreCase("clean")) {
         				//Wait until target coordinate and position is found and set
-        				CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
-        					
-        					boolean isInitialEvent = true;
-        					@Override
-        					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
-        						if(isInitialEvent) {
-        							if(!esaSkyTarget.getTitle().isEmpty() 
-        									&& !esaSkyTarget.getDescription().isEmpty()) {
-        								CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
-        							}
-        						}
-        						isInitialEvent = false;
-        					}
-        				});
+        				if(!esaSkyTarget.getTitle().isEmpty() 
+        						&& !esaSkyTarget.getDescription().isEmpty()) {
+	        				CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
+	        					
+	        					boolean isInitialEvent = true;
+	        					@Override
+	        					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
+	        						if(isInitialEvent) {
+	    								CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
+	    								isInitialEvent = false;
+	        						}
+	        					}
+	        				});
+        				}
         			}
 
         		} catch (Exception ex) {
