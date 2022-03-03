@@ -150,7 +150,8 @@ public class Controller implements ValueChangeHandler<String> {
         			if (esaSkyTarget != null
         					&& !esaSkyTarget.getTitle().isEmpty()
         					&& !esaSkyTarget.getDescription().isEmpty()
-        					&& !GUISessionStatus.getIsInScienceMode()) {
+        					&& !GUISessionStatus.getIsInScienceMode()
+        					&& !Modules.getMode().equalsIgnoreCase("clean")) {
         				//Wait until target coordinate and position is found and set
         				CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
         					
