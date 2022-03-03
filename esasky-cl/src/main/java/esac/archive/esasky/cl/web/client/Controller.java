@@ -148,8 +148,6 @@ public class Controller implements ValueChangeHandler<String> {
         			hiPSName = esaSkyTarget.getHipsName();
         			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
         			if (esaSkyTarget != null
-        					&& !esaSkyTarget.getTitle().isEmpty()
-        					&& !esaSkyTarget.getDescription().isEmpty()
         					&& !GUISessionStatus.getIsInScienceMode()
         					&& !Modules.getMode().equalsIgnoreCase("clean")) {
         				//Wait until target coordinate and position is found and set
@@ -159,7 +157,10 @@ public class Controller implements ValueChangeHandler<String> {
         					@Override
         					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
         						if(isInitialEvent) {
-        							CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
+        							if(!esaSkyTarget.getTitle().isEmpty() 
+        									&& !esaSkyTarget.getDescription().isEmpty()) {
+        								CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
+        							}
         						}
         						isInitialEvent = false;
         					}
