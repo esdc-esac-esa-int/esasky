@@ -149,21 +149,10 @@ public class Controller implements ValueChangeHandler<String> {
         			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
         			if (esaSkyTarget != null
     					&& !GUISessionStatus.getIsInScienceMode()
-    					&& !Modules.getMode().equalsIgnoreCase("clean")) {
-        				//Wait until target coordinate and position is found and set
+    					&& !"clean".equalsIgnoreCase(Modules.getMode())) {
         				if(!esaSkyTarget.getTitle().isEmpty() 
         						&& !esaSkyTarget.getDescription().isEmpty()) {
-	        				CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
-	        					
-	        					boolean isInitialEvent = true;
-	        					@Override
-	        					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
-	        						if(isInitialEvent) {
-	    								CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
-	    								isInitialEvent = false;
-	        						}
-	        					}
-	        				});
+        					CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
         				}
         			}
 
@@ -215,6 +204,12 @@ public class Controller implements ValueChangeHandler<String> {
 				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)
 		) {
 			GUISessionStatus.setInitialIsInScienceMode();
+		}else {
+			try {
+				Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
+			} catch (MapKeyException e) {
+				Log.error(e.getMessage());
+			}
 		}
     }
 
