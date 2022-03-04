@@ -199,16 +199,14 @@ public class Controller implements ValueChangeHandler<String> {
 
     private void setSciMode() {
         String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
-		if(
-				shouldEnterSciMode(sciMode)
-				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)
-		) {
+		if(	shouldEnterSciMode(sciMode)
+				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)) {
 			GUISessionStatus.setInitialIsInScienceMode();
 		}else {
 			try {
 				Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
 			} catch (MapKeyException e) {
-				Log.error(e.getMessage());
+				Log.error(e.getMessage(), e);
 			}
 		}
     }
