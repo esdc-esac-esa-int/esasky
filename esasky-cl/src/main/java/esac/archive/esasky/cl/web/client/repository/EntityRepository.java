@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.repository;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
@@ -160,6 +161,9 @@ public class EntityRepository {
                 settings.setAddSendToVOApplicationColumn(false);
                 return settings;
             }
+
+            @Override
+            public void onShapeDeselection(AladinShape shape) {}
 
         };
 
