@@ -163,7 +163,9 @@ public class EntityRepository {
             }
 
             @Override
-            public void onShapeDeselection(AladinShape shape) {}
+            public void onShapeDeselection(AladinShape shape) {
+                // Default usage of this function is not wanted here
+            }
 
         };
 
