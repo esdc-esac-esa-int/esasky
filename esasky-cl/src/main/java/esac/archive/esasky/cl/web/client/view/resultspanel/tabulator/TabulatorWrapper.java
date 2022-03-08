@@ -270,6 +270,14 @@ public class TabulatorWrapper {
     private native GeneralJavaScriptObject[] getColumns(GeneralJavaScriptObject tableJsObject)/*-{
         return tableJsObject.getColumns();
     }-*/;
+
+    public GeneralJavaScriptObject[] getColumnDefinitions() {
+        return getColumnDefinitions(tableJsObject);
+    }
+
+    private native GeneralJavaScriptObject[] getColumnDefinitions(GeneralJavaScriptObject tableJsObject)/*-{
+        return tableJsObject.getColumnDefinitions();
+    }-*/;
     
     public void blockRedraw(){
         blockRedraw(tableJsObject);

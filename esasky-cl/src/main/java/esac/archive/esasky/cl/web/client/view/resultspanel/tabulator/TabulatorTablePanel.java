@@ -965,6 +965,20 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
+	public void setVisibleColumns(List<String> columns) {
+		for (GeneralJavaScriptObject column : table.getColumnDefinitions()) {
+			if (column.hasProperty("field")) {
+				String field = column.getStringProperty("field");
+				if (columns.contains(field)) {
+					table.showColumn(field);
+				} else {
+					table.hideColumn(field);
+				}
+			}
+		}
+	}
+
+	@Override
 	public void showColumn(String field) {
 		table.showColumn(field);
 	}
