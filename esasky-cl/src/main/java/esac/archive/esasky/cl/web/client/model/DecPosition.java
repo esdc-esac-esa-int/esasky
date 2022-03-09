@@ -189,7 +189,7 @@ public class DecPosition {
 
     // Corrected calculation, leaving original for now due to compability
     public double getDecDegFix() {
-        if (sign == "-" && decDeg > 0)  {
+        if (sign.equals("-") && decDeg > 0)  {
             return -decDeg;
         } else {
             return decDeg;
