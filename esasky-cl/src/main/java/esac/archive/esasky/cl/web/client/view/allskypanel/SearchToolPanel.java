@@ -249,8 +249,8 @@ public class SearchToolPanel extends FlowPanel {
                 CoordinatesFrame oldCooFrame;
                 CoordinatesFrame newCooFrame;
                 if (cooFrameEvent.getCoordinateFrame() == AladinLiteConstants.CoordinateFrame.GALACTIC) {
-                    raLabel.setText("Lon");
-                    decLabel.setText("Lat");
+                    raLabel.setText("GLon");
+                    decLabel.setText("GLat");
                     oldCooFrame = CoordinatesFrame.J2000;
                     newCooFrame = CoordinatesFrame.GALACTIC;
                 } else {
