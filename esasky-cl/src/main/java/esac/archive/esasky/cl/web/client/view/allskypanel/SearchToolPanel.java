@@ -245,10 +245,6 @@ public class SearchToolPanel extends FlowPanel {
 
 
         CommonEventBus.getEventBus().addHandler(AladinLiteCoordinateFrameChangedEvent.TYPE, (cooFrameEvent) -> {
-            if (!this.isAttached()) {
-                return;
-            }
-
             try {
                 CoordinatesFrame oldCooFrame;
                 CoordinatesFrame newCooFrame;
