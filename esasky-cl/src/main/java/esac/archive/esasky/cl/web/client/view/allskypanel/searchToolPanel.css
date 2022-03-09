@@ -25,8 +25,8 @@
 
 .searchToolboxHelpButton {
     display: inline-block;
-    vertical-align: middle;
-    margin-left: 5px;
+    left: 88%;
+    position: absolute;
     pointer-events: auto;
 }
 

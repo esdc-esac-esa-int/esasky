@@ -171,7 +171,7 @@ public class SearchToolPanel extends FlowPanel {
         FlowPanel detailContainer = new FlowPanel();
         detailContainer.setStyleName("searchToolbox__detailsPanelCircle");
         Label headerLabel = new Label();
-        headerLabel.setText("Cone");
+        headerLabel.setText(TextMgr.getInstance().getText("searchToolbox_circle"));
         headerLabel.setStyleName("searchToolbox__detailsPanelHeaderLabel");
         detailContainer.add(headerLabel);
 
@@ -227,7 +227,7 @@ public class SearchToolPanel extends FlowPanel {
             } catch (Exception ex) {
                 detailContainer.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
-                DisplayUtils.showMessageDialogBox(ex.getMessage(), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
                         TextMgr.getInstance().getText("error"));
             }
 
@@ -245,6 +245,10 @@ public class SearchToolPanel extends FlowPanel {
 
 
         CommonEventBus.getEventBus().addHandler(AladinLiteCoordinateFrameChangedEvent.TYPE, (cooFrameEvent) -> {
+            if (!this.isAttached()) {
+                return;
+            }
+
             try {
                 CoordinatesFrame oldCooFrame;
                 CoordinatesFrame newCooFrame;
@@ -352,7 +356,7 @@ public class SearchToolPanel extends FlowPanel {
             } catch (Exception ex) {
                 stcsText.addStyleName(inputErrorClassName);
                 Log.debug(ex.getMessage(), ex);
-                DisplayUtils.showMessageDialogBox(ex.getMessage(), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
                         TextMgr.getInstance().getText("error"));
             }
 
@@ -380,8 +384,8 @@ public class SearchToolPanel extends FlowPanel {
         searchAreaDetailPanel = new FlowPanel();
 
         circleDetails = initConeDetails();
-        polyDetails = initPolygonDetails("Polygon");
-        boxDetails = initPolygonDetails("Box");
+        polyDetails = initPolygonDetails(TextMgr.getInstance().getText("searchToolbox_polygon"));
+        boxDetails = initPolygonDetails(TextMgr.getInstance().getText("searchToolbox_box"));
 
         FlowPanel headerContainer = new FlowPanel();
         headerContainer.addStyleName("searchToolbox__searchHeaderContainer");

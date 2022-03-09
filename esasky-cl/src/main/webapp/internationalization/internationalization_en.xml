@@ -3354,6 +3354,15 @@
 		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
 		"CIRCLE ICRS 10.76 41.28 0.8"
 	</text>
+	<text key="searchToolbox_box">
+		Box
+	</text>
+	<text key="searchToolbox_polygon">
+		Polygon
+	</text>
+	<text key="searchToolbox_circle">
+		Cone
+	</text>
 	<text key="searchToolbox_boxButtonTooltip">
 		Box Search Tool
 	</text>
@@ -3363,14 +3372,8 @@
 	<text key="searchToolbox_polygonButtonTooltip">
 		Polygon Search Tool
 	</text>
-	<text key="searchToolbox_textSearchtooltip">
-		Define a STCS region
-	</text>
 	<text key="searchToolbox_submitButton">
 		Search
-	</text>
-	<text key="searchToolbox_submitError">
-		Invalid format.
 	</text>
 	<text key="addSkyMenuItem_ESASKY">Add new row</text>
 	<text key="addSkyMenuItem_URL">HiPS from URL</text>
@@ -3507,13 +3510,16 @@
 		Multi-messenger Events
 	</text>
 	<text key="gwPanel_helpText">
-		This tool allows to search for public multi-messenger events from gravitational waves, display their footprints in the sky and download data.
+		This tool shows public multi-messenger events from gravitational waves and neutrinos, displays their probability footprints on the sky and provides access to the data.
 		&lt;br&gt;&lt;br&gt;
-		Clicking on the Gravitational Waves bar brings a list of the gravitational wave events detected by Advanced LIGO and Advanced Virgo in the O3 data. Click on a gravitational wave event to go to the centre of the associated footprint. A HiPS created from the gravitational wave event file is shown. A coordinate grid displays automatically on top of the sky.  
-		A solid line shows the 50% confidence contours and a dashed line the 90% confidence contours. Click on Show more columns to expand the table.
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-multimessenger"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
 	</text>
 	<text key="gwPanel_helpTitle">
-		Gravitational Waves
+		Multi-Messenger Events
 	</text>
 	<text key="webConstants_exploreHstImages">
 		Explore outreach images from the Hubble Space Telescope
