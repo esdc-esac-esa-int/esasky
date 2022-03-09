@@ -3704,6 +3704,35 @@
 	<text key="FHL_nuFnu5">
 		SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
 	</text>
+
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+		The IceCube All-Sky Point-Source Events Catalog (2008 - 2018; Icecubepsc). IceCube has performed several searches for point-like sources of neutrinos. The events contained in this catalogue make up the sample used in IceCube's 10-year time-integrated neutrino point source search. Events in the sample are track-like neutrino candidates detected by IceCube between April 2008 and July 2018.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#icecubepsc"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+		The second ROSAT all-sky survey source catalogue (2RXS) is the second publicly released ROSAT catalogue of point-like sources obtained from the ROSAT all-sky survey (RASS) observations performed with the position-sensitive proportional counter (PSPC) between June 1990 and August 1991, and is an extended and revised version of the bright and faint source catalogues. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#2RXS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+		A multi-frequency selected catalogue of high energy and very high energy gamma-ray blazars and blazar candidates (2WHSP). This catalogue contains the largest and most complete list of High Synchrotron Peaked blazars (HSPs) available to date (in 2017), which is an expansion of the 1WHSP catalog of gamma-ray source candidates off the Galactic plane. A number of multi-wavelength surveys (in the radio, infrared and X-ray bands) have been cross-matched and applied selection criteria based on the radio to IR and IR to X-ray spectral slopes. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#WHSP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
 	
