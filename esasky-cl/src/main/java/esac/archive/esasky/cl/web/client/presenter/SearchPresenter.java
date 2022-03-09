@@ -150,6 +150,8 @@ public class SearchPresenter {
         void showTargetList(String targetList);
 
         void closeTargetList();
+
+        void toggleTargetList();
     }
 
     /**
@@ -743,4 +745,7 @@ public class SearchPresenter {
         view.closeTargetList();
     }
 
+    public void toggleTargetList() {
+        view.toggleTargetList();
+    }
 }
