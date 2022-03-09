@@ -324,17 +324,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 	
 	private Widget createEvaDropDownEntry() {
-		FlowPanel evaContainer = new FlowPanel();
-		
-		Image helpImage = new Image(Icons.getQuestionMarkIcon());
-		helpImage.addStyleName("header__dropdown__item__icon");
-		evaContainer.add(helpImage);
-		
-		Label helpLabel = new Label(TextMgr.getInstance().getText("eva"));
+		Label helpLabel = new Label(TextMgr.getInstance().getText("header_eva"));
 		helpLabel.addStyleName("header__dropdown__help__text");
-		evaContainer.add(helpLabel);
 		
-		dropdownEvaEntry.add(evaContainer);
+		dropdownEvaEntry.add(helpLabel);
 		dropdownEvaEntry.getElement().setId("header__dropdown__eva");
 		dropdownEvaEntry.setTitle(TextMgr.getInstance().getText("header_eva"));
 		return dropdownEvaEntry;

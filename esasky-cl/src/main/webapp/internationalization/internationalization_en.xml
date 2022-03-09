@@ -3714,6 +3714,22 @@
 		Restore ESASky Session
 	</text>
 	
+	<text key="header_eva">
+		ESA Virtual Assistant
+	</text>
+	
+	<text key="header_sessionSaveEntryTooltip">
+		Save all current settings, open data panels etc to a json file
+	</text>
+	
+	<text key="header_sessionRestoreEntryTooltip">
+		Restore all settings from a json file
+	</text>
+	
+	<text key="Neutrino">
+		Neutrino
+	</text>
+	
 	
 	
 </Internationalization>

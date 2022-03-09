@@ -3272,5 +3272,29 @@
 	<text key="wavelength_GW_Tooltip">
 		Mapas de probabilidad de Ondas Gravitacionales
 	</text>
+	
+	<text key="header_session_save">
+		Guardar Sesión de ESASky
+	</text>
+	<text key="header_session_restore">
+		Reestablecer Sesión de ESASky
+	</text>
+	
+	<text key="header_eva">
+		ESA Asistente Virtual 
+	</text>
+	
+	<text key="header_sessionSaveEntryTooltip">
+		Guardar la configuración en un archivo JSON
+	</text>
+	
+	<text key="header_sessionRestoreEntryTooltip">
+		Reestablecer la configuración desde un archivo JSON
+	</text>
+	
+	<text key="Neutrino">
+		Neutrino
+	</text>
+
 </Internationalization>
 
