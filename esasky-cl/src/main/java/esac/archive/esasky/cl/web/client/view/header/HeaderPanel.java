@@ -229,9 +229,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(createShareDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU)) {
-			dropdownContent.add(createEvaDropDownEntry());
-		}
 		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
@@ -250,6 +247,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(dropdownReleaseNotesEntry);
 		dropdownContent.add(dropdownNewsletterEntry);
 		dropdownContent.add(dropdownAboutUsEntry);
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU)) {
+			dropdownContent.add(createEvaDropDownEntry());
+		}
 		dropdownContent.add(createSessionSaveDropdownEntries());
 		dropdownContent.add(createSessionRestoreDropdownEntries());
 
