@@ -73,7 +73,7 @@ public class CtrlToolBarPresenter {
 
         void removeCustomButton(EsaSkyButton button);
 
-        void openGWPanel();
+        void openGWPanel(int tabId);
 
         void closeGWPanel();
 
@@ -326,8 +326,8 @@ public class CtrlToolBarPresenter {
     	return publicationPresenter;
     }
     
-    public void openGWPanel() {
-        view.openGWPanel();
+    public void openGWPanel(int tabId) {
+        view.openGWPanel(tabId);
     }
 
     public void closeGWPanel() {

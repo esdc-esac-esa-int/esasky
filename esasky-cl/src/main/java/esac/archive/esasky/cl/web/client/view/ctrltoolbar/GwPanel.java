@@ -55,7 +55,9 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     private final Map<String, Integer> rowIdHipsMap = new HashMap<>();
     public static final String GRACE_ID = "grace_id";
 
-    private enum TabIndex {GW, NEUTRINO, TAB_END}
+    public static enum TabIndex {GW, NEUTRINO, TAB_END}
+    
+    private int currentActiveTabIndex;
 
     private final Resources resources;
     private CssResource style;
@@ -131,12 +133,18 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         this.add(mainContainer);
     }
 
-    private void changeTab(int tabIndex) {
+    public void changeTab(int tabIndex) {
+    	if(tabIndex == currentActiveTabIndex) {
+    		return;
+    	}
+    	currentActiveTabIndex = tabIndex;
+    	
         if (tabIndex == TabIndex.GW.ordinal()) {
             onChangeToGwTab();
         } else if (tabIndex == TabIndex.NEUTRINO.ordinal()) {
             onChangeToNeutrinoTab();
         }
+        
     }
 
     private void onChangeToNeutrinoTab() {
@@ -151,6 +159,9 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                 neutrinoTab.getEntity().showShapes(filteredNeutrinoData);
             }
             updateExpandedButton(neutrinoTab);
+        
+        	tabLayoutPanel.selectTab(TabIndex.NEUTRINO.ordinal());
+        	neutrinoTab.getTablePanel().selectTablePanel();
         }
     }
 
@@ -159,7 +170,11 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         if (gwTab != null) {
             gwTab.open();
             updateExpandedButton(gwTab);
+            
+        	tabLayoutPanel.selectTab(TabIndex.GW.ordinal());
+        	gwTab.getTablePanel().selectTablePanel();
         }
+
     }
 
     private TabItem getTabItem(TabIndex index) {
@@ -580,5 +595,6 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         public List<String> getColumnsToHide() {
             return this.columnsToHide;
         }
+
     }
 }

@@ -845,12 +845,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void openGWPanel() {
+    public void openGWPanel(int tabId) {
         if (!gwButton.getToggleStatus()) {
             gwButton.toggle();
             gwPanel.toggle();
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(gwButton));
         }
+        gwPanel.changeTab(tabId);
     }
 
     @Override
