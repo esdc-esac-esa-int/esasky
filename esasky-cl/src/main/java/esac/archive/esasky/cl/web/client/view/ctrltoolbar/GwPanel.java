@@ -102,13 +102,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             if (tabItem != null) {
                 tabItem.toggleExpand();
                 updateExpandedButton(tabItem);
-
-                int columnWidth = tabItem.getTablePanel().getVisibleColumnsWidth();
-                if (tabItem.isExpanded && columnWidth > 0) {
-                    this.mainContainer.setWidth(columnWidth + "px");
-                } else {
-                    setDefaultSize();
-                }
+                updatePanelWidth(tabItem);
             }
         });
 
@@ -169,6 +163,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         
         	tabLayoutPanel.selectTab(TabIndex.NEUTRINO.ordinal());
         	neutrinoTab.getTablePanel().selectTablePanel();
+            updatePanelWidth(neutrinoTab);
         }
     }
 
@@ -180,6 +175,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             
         	tabLayoutPanel.selectTab(TabIndex.GW.ordinal());
         	gwTab.getTablePanel().selectTablePanel();
+            updatePanelWidth(gwTab);
         }
 
     }
@@ -202,6 +198,15 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             expandButton.setSecondaryIcon();
         } else {
             expandButton.setPrimaryIcon();
+        }
+    }
+
+    private void updatePanelWidth(TabItem tabItem) {
+        int columnWidth = tabItem.getTablePanel().getVisibleColumnsWidth() + 15;
+        if (tabItem.isExpanded && columnWidth > 0) {
+            this.mainContainer.setWidth(columnWidth + "px");
+        } else {
+            setDefaultSize();
         }
     }
 
