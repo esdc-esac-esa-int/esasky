@@ -98,6 +98,8 @@ public interface ITablePanel {
 	void setMaxHeight(int height);
 	void setVisibleColumns(List<String> columns);
 
+	int getVisibleColumnsWidth();
+
 	void showColumn(String field);
 	void hideColumn(String field);
 
