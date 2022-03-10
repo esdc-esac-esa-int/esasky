@@ -138,8 +138,9 @@ function initChat() {
 		if(!this.jsLoaded){
 			$.getScript("js/virtualAssistant/webchat.js", initChat2)
 			this.jsLoaded = true;
+		}else{
+		    initChat2(); //inits webchat
 		}
-	    initChat2(); //inits webchat
 	})().catch(err => console.error(err));
 }
 
