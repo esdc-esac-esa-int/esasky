@@ -159,6 +159,10 @@ public class MainPresenter {
                         .get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0));
             }
         }
+        
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA)) {
+			CommonEventBus.getEventBus().fireEvent(new ShowEvaEvent());
+		}
     }
 
     public final void bind() {
@@ -485,7 +489,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(ESASkySampEvent.TYPE, new ESASkySampEventHandlerImpl());
     }
 
-    private void loadOrQueueAuthorInformationFromSimbad(final String author) {
+    public void loadOrQueueAuthorInformationFromSimbad(final String author) {
         if (descriptorRepo.getPublicationsDescriptors() != null
                 && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
             loadAuthorInformationFromSimbad(author);
@@ -504,7 +508,7 @@ public class MainPresenter {
         }
     }
 
-    private void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
+    public void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
         if (descriptorRepo.getPublicationsDescriptors() != null
                 && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
             loadBibcodeInformaitonFromSimbad(bibcode);

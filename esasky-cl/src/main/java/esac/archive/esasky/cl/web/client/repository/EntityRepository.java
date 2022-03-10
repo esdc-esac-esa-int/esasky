@@ -2,16 +2,21 @@ package esac.archive.esasky.cl.web.client.repository;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.*;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity.SecondaryShapeAdder;
+import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.query.*;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -161,6 +166,18 @@ public class EntityRepository {
                 return settings;
             }
 
+            @Override
+            public void onShapeSelection(AladinShape shape) {
+            	 MainPresenter.getInstance().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.GW.ordinal());
+            	 super.onShapeSelection(shape);
+            }
+            
+            @Override
+            public void onShapeDeselection(AladinShape shape) {
+            	MainPresenter.getInstance().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.GW.ordinal());
+            	super.onShapeSelection(shape);
+            }
+
         };
 
         addEntity(gwEntity);
@@ -168,7 +185,13 @@ public class EntityRepository {
     }
 
     public EsaSkyEntity createIceCubeEntity(IDescriptor descriptor) {
-        EsaSkyEntity iceCubeEntity = new EsaSkyEntity(descriptor, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), "solid",  TAPIceCubeService.getInstance());
+        EsaSkyEntity iceCubeEntity = new EsaSkyEntity(descriptor, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), "solid",  TAPIceCubeService.getInstance()) {
+            @Override
+            public void onShapeSelection(AladinShape shape) {
+            	 MainPresenter.getInstance().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.NEUTRINO.ordinal());
+            	 super.onShapeSelection(shape);
+            }
+        };
         addEntity(iceCubeEntity);
         return iceCubeEntity;
     }

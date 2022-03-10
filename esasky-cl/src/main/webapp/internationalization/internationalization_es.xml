@@ -1130,9 +1130,9 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
-		El cat&#225;logo 4XMM-DR10 contiene fuentes detectadas
+		El cat&#225;logo 4XMM-DR11 contiene fuentes detectadas
 		a partir de
-		11647 observaciones con las c&#225;maras EPIC de
+		12 210 observaciones con las c&#225;maras EPIC de
 		XMM-Newton,
 		las cuales
 		cubren el intervalo de energ&#237;a entre 0.2 y 12 keV.
@@ -1151,9 +1151,9 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
-		El cat&#xE1;logo 4XMM-DR10s se ha compilado a partir de 1329 grupos, que comprenden 7803 observaciones superpuestas de buena calidad de XMM-Newton. 
-		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 3 de febrero de 2000 y el 14 de diciembre de 2019 que se superponen en al menos un radio de un 
-		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 335812 fuentes &#xFA;nicas, 218283 de ellas observadas en m&#xFA;ltiples ocasiones,  
+		El cat&#xE1;logo 4XMM-DR11s se ha compilado a partir de 1 475 grupos, que comprenden 8 292 observaciones superpuestas de buena calidad de XMM-Newton. 
+		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 3 de febrero de 2000 y el 17 de diciembre de 2020 que se superponen en al menos un radio de un 
+		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 358 809 fuentes &#xFA;nicas, 275 440 de ellas observadas en m&#xFA;ltiples ocasiones,  
 		con posiciones y par&#xE1;metros de las fuentes como flujos en las bandas de energ&#xED;a est&#xE1;ndar de XMM-Newton, estimaci&#xF3;n de calidad e informaci&#xF3;n sobre la variabilidad entre observaciones.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3044,6 +3044,49 @@
 	<text key="selectionToolbox_polygonButtonTooltip">
         Herramienta de Selección Polígono
 	</text>
+	<text key="searchToolbox_title">
+		Herramientas de Búsqueda
+	</text>
+	<text key="searchToolbox_helpHeader">
+		Herramientas de Búsqueda
+	</text>
+	<text key="searchToolbox_helpText">
+		&lt;b&gt;Herramienta de Búsqueda Gráfica&lt;/b&gt;&lt;br&gt;
+		Para buscar fuentes haz click y mantener pulsado el ratón y arrastra la herramienta de selección circular o cuadrada.
+		En ese momento un círculo o un cuadrado verde aparecerán indicando el área de búsqueda. Una vez satisfechos con el area seleccionada soltar el botón del ratón.
+		&lt;br&gt;&lt;br&gt;
+		Además del circulo y del cuadrado está disponible una herramienta donde el usuario puede construir un polígono arbitrario.
+		En esta herramienta con cada click del ratón se añade un nuevo vértice al polígono. Para terminar de definir el polígono hay que hacer doble click con el ratón o pulsar en el primer punto de la serie.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Herramienta de Búsqueda con Texto&lt;/b&gt;&lt;br&gt;
+		En el menú desplegable hay controles que hacen posible buscar una región STCS proporcionando la cadena de texto adecuada.
+		La selección de distintas formas permite proporcionar la cadena de texto con su propio formato.
+		&lt;br&gt;&lt;br&gt;Las cadenas de texto en formato STCS siguen el siguiente formato "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Ejemplos: &lt;/b&gt;&lt;br&gt;
+		"BOX ICRS 11.421 41.764 10.071 41.765 10.079 40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
+		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
+		"CIRCLE ICRS 10.76 41.28 0.8"
+	</text>
+	<text key="searchToolbox_box">
+		Cuadrado
+	</text>
+	<text key="searchToolbox_polygon">
+		Polígono
+	</text>
+	<text key="searchToolbox_circle">
+		Cono
+	</text>
+	<text key="searchToolbox_boxButtonTooltip">
+		Herramienta de Búsqueda Cuadrada
+	</text>
+	<text key="searchToolbox_circleButtonTooltip">
+		Herramienta de Búsqueda Cónica
+	</text>
+	<text key="searchToolbox_polygonButtonTooltip">
+		Herramienta de Búsqueda Poligonal
+	</text>
+	<text key="searchToolbox_submitButton">
+		Buscar
+	</text>
 	<text key="addSkyMenuItem_ESASKY">Añadir una nueva fila</text>
 	<text key="addSkyMenuItem_URL">HiPS desde una URL</text>
 	<text key="addSkyMenuItem_LOCAL">HiPS desde su ordenador</text>
@@ -3175,12 +3218,16 @@
 		Eventos Multi-mensajero
 	</text>
 	<text key="gwPanel_helpText">
-		Esta herramienta permite buscar eventos públicos multi-mensajeros de ondas gravitacionales, mostrar sus contornos en el cielo y descargar los datos asociados.
+		Esta herramienta muestra eventos públicos multimensajero para ondas gravitatorias y neutrinos, proyecta sus huellas de probabilidad en el cielo y proporciona acceso a los datos.
 		&lt;br&gt;&lt;br&gt;
-		Haciendo click en la barra Ondas Gravitacionales se muestran los eventos asociados a los datos O3 de Advanced LIGO y Advanced Virgo. Selecciona un evento de onda gravitacional para ir al centro 		de su contorno. Se muestra el HiPS creado a partir del archivo asociado a la onda gravitacional y automáticamente se despliega una matriz de coordenadas celestes. La línea sólida muestra 			los contornos al 50% del nivel de confianza y la línea discontinua al 90%. Haz click en Mostrar más columnas para expandir la tabla.		
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-multimessenger"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
 	</text>
 	<text key="gwPanel_helpTitle">
-		Ondas Gravitacionales
+		Eventos Multi-mensajero
 	</text>
 	<text key="webConstants_exploreHstImages">
 		Explorar imágenes de alta resolución del telescopio espacial Hubble 
@@ -3272,5 +3319,29 @@
 	<text key="wavelength_GW_Tooltip">
 		Mapas de probabilidad de Ondas Gravitacionales
 	</text>
+	
+	<text key="header_session_save">
+		Guardar Sesión de ESASky
+	</text>
+	<text key="header_session_restore">
+		Reestablecer Sesión de ESASky
+	</text>
+	
+	<text key="header_eva">
+		ESA Asistente Virtual 
+	</text>
+	
+	<text key="header_sessionSaveEntryTooltip">
+		Guardar la configuración en un archivo JSON
+	</text>
+	
+	<text key="header_sessionRestoreEntryTooltip">
+		Reestablecer la configuración desde un archivo JSON
+	</text>
+	
+	<text key="Neutrino">
+		Neutrino
+	</text>
+
 </Internationalization>
 

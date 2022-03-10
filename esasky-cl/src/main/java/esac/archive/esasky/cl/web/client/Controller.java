@@ -148,21 +148,12 @@ public class Controller implements ValueChangeHandler<String> {
         			hiPSName = esaSkyTarget.getHipsName();
         			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
         			if (esaSkyTarget != null
-        					&& !esaSkyTarget.getTitle().isEmpty()
-        					&& !esaSkyTarget.getDescription().isEmpty()
-        					&& !GUISessionStatus.getIsInScienceMode()) {
-        				//Wait until target coordinate and position is found and set
-        				CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, new AladinLiteCoordinatesChangedEventHandler() {
-        					
-        					boolean isInitialEvent = true;
-        					@Override
-        					public void onCoordsChanged(AladinLiteCoordinatesChangedEvent coordinateEvent) {
-        						if(isInitialEvent) {
-        							CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
-        						}
-        						isInitialEvent = false;
-        					}
-        				});
+    					&& !GUISessionStatus.getIsInScienceMode()
+    					&& !"clean".equalsIgnoreCase(Modules.getMode())) {
+        				if(!esaSkyTarget.getTitle().isEmpty() 
+        						&& !esaSkyTarget.getDescription().isEmpty()) {
+        					CommonEventBus.getEventBus().fireEvent(new TargetDescriptionEvent(esaSkyTarget.getTitle(), esaSkyTarget.getDescription(), false));
+        				}
         			}
 
         		} catch (Exception ex) {
@@ -193,15 +184,30 @@ public class Controller implements ValueChangeHandler<String> {
         
 		String hideSwitchString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_SCI);
 		GUISessionStatus.sethideSwitch(hideSwitchString != null && hideSwitchString.toLowerCase().contains("true"));
+		
+		String showEvaString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SHOW_EVA);
+		if(showEvaString != null && showEvaString.toLowerCase().contains("true")) {
+			try {
+				Modules.setModule(EsaSkyWebConstants.MODULE_EVA, true);
+				Modules.setModule(EsaSkyWebConstants.MODULE_EVA_MENU, true);
+			} catch (MapKeyException e) {
+				Log.error(e.getMessage(), e);
+			}
+		}
+		
     }
 
     private void setSciMode() {
         String sciMode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_SCI_MODE);
-		if(
-				shouldEnterSciMode(sciMode)
-				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)
-		) {
+		if(	shouldEnterSciMode(sciMode)
+				&& Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)) {
 			GUISessionStatus.setInitialIsInScienceMode();
+		}else {
+			try {
+				Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
+			} catch (MapKeyException e) {
+				Log.error(e.getMessage(), e);
+			}
 		}
     }
 

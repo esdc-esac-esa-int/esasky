@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
@@ -28,18 +29,19 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.esasky.cl.web.client.view.allskypanel.SearchToolPanel;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator;
+import esac.archive.esasky.ifcs.model.coordinatesutils.*;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
 import esac.archive.esasky.ifcs.model.shared.ESASkyGeneralResultList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
@@ -56,12 +58,6 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.utility.ParseUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel;
@@ -79,7 +75,21 @@ public class SearchPresenter {
     private View view;
     
     private boolean isTextBoxFocused;
+    private boolean isMouseOverSearchTool;
     private static long latestBibCodeTimeCall;
+
+    Timer updateBoxSizeTimer = new Timer() {
+        @Override
+        public void run() {
+            setCorrectBoxSize();
+        }
+
+        @Override
+        public void schedule(int delayMillis) {
+            super.cancel();
+            super.schedule(delayMillis);
+        }
+    };
 
     /** Interface ESASkySearchResult mapper. */
     public interface ESASkySearchResultMapper extends ObjectMapper<ESASkySearchResult> {
@@ -122,6 +132,10 @@ public class SearchPresenter {
 		CloseButton getClearTextButton();
 		
 		EsaSkyButton getTargetListButton();
+
+        EsaSkyToggleButton getSearchToolButton();
+
+        SearchToolPanel getSearchToolPanel();
 		
 		void closeAllOtherPanels(Widget button);
 		
@@ -136,6 +150,8 @@ public class SearchPresenter {
         void showTargetList(String targetList);
 
         void closeTargetList();
+
+        void toggleTargetList();
     }
 
     /**
@@ -174,7 +190,16 @@ public class SearchPresenter {
                 	        || inputType == CoordinateValidator.SearchInputType.NOT_VALID
                 	        ) {
                 		doSearch4Target(inputType);
-                	} else {
+                	} else if (inputType == SearchInputType.SEARCH_SHAPE) {
+                        try {
+                            AladinLiteWrapper.getAladinLite().createSearchArea(userInput);
+                        }catch (Exception ex) {
+                            Log.debug(ex.getMessage(), ex);
+                            DisplayUtils.showMessageDialogBox(ex.getMessage(), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                                    TextMgr.getInstance().getText("error"));
+                        }
+
+                    } else {
                 		doSearchByCoords(inputType);
                 	}
                 }
@@ -193,6 +218,7 @@ public class SearchPresenter {
         	
             	@Override
             	public void onMouseOut(final MouseOutEvent arg0) {
+                    updateBoxSizeTimer.schedule(500);
             		closeSearchExtras();
             	}
         });
@@ -211,6 +237,7 @@ public class SearchPresenter {
 
             @Override
             public void onMouseOut(final MouseOutEvent arg0) {
+                updateBoxSizeTimer.schedule(500);
                 closeSearchExtras();
                 Log.debug("[TargetPresenter/getTooltip()]:onMouseOut");
             }
@@ -233,11 +260,28 @@ public class SearchPresenter {
 		});
         
         this.view.getTargetListButton().addMouseOverHandler(event -> {
+            updateBoxSizeTimer.cancel();
     		SearchPresenter.this.view.setFullSize(true);
     		SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
     		SearchPresenter.this.view.getTooltip().setVisible(false);
         });
-        
+
+
+        this.view.getSearchToolPanel().addDomHandler(event -> {
+            this.isMouseOverSearchTool = true;
+        }, MouseOverEvent.getType());
+
+        this.view.getSearchToolPanel().addDomHandler(event -> {
+            this.isMouseOverSearchTool = false;
+        }, MouseOutEvent.getType());
+
+
+        this.view.getSearchToolButton().addMouseOverHandler(event -> {
+            updateBoxSizeTimer.cancel();
+            SearchPresenter.this.view.setFullSize(true);
+            SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
+            SearchPresenter.this.view.getTooltip().setVisible(false);
+        });
         
         this.view.getSearchResultsListPanel().addMouseOverHandler(new MouseOverHandler() {
 			
@@ -284,6 +328,7 @@ public class SearchPresenter {
 			
 			@Override
 			public void onAladinInteraction() {
+                updateBoxSizeTimer.schedule(500);
 				closeSearchExtras();
 			}
 		});
@@ -314,7 +359,7 @@ public class SearchPresenter {
     
     private void setCorrectBoxSize() {
 	    ScreenWidth screenWidth = ScreenSizeService.getInstance().getScreenSize().getWidth();
-		if(screenWidth.getPxSize() <= ScreenWidth.SMALL.getPxSize() && !isTextBoxFocused) {
+		if(screenWidth.getPxSize() <= ScreenWidth.SMALL.getPxSize() && !isTextBoxFocused && !isMouseOverSearchTool) {
 			SearchPresenter.this.view.setFullSize(false);
 		} else {
 			SearchPresenter.this.view.setFullSize(true);
@@ -322,7 +367,6 @@ public class SearchPresenter {
     }
     
     private void closeSearchExtras() {
-        setCorrectBoxSize();
 		SearchPresenter.this.view.getTooltip().setVisible(false);
 		SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
     }
@@ -331,7 +375,8 @@ public class SearchPresenter {
         AladinLiteWrapper.getInstance().removeSearchtargetPointer();
         SearchPresenter.this.view.setFullSize(true);
         SearchPresenter.this.view.getSearchTextBoxError().setVisible(false);
-        if(!SearchPresenter.this.view.getSearchResultsListPanel().isVisible()) {
+        if(!SearchPresenter.this.view.getSearchResultsListPanel().isVisible()
+            && !SearchPresenter.this.view.getSearchToolButton().getToggleStatus()) {
         	    SearchPresenter.this.view.getTooltip().setVisible(true);
         }
         setMaxHeight();
@@ -700,4 +745,7 @@ public class SearchPresenter {
         view.closeTargetList();
     }
 
+    public void toggleTargetList() {
+        view.toggleTargetList();
+    }
 }

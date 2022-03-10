@@ -214,7 +214,7 @@ public class GUISessionStatus {
 		try {
 			Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
 		} catch (MapKeyException e) {
-			Log.error(e.getMessage());
+			Log.error(e.getMessage(), e);
 		}
 	}
 
@@ -237,7 +237,7 @@ public class GUISessionStatus {
 			try {
 				Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, isInScienceMode);
 			} catch (MapKeyException e) {
-				Log.error(e.getMessage());
+				Log.error(e.getMessage(), e);
 			}
 		}
 	}

@@ -52,6 +52,7 @@ import esac.archive.esasky.cl.web.client.utility.CopyToClipboardHelper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ExternalServices;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.Session;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel.AllSkyFocusPanelObserver;
@@ -98,6 +99,8 @@ public class HeaderPresenter {
 		void addLanguageSelectionChangeHandler(StringValueSelectionChangedHandler handler);
 		void addWarningButtonClickHandler(ClickHandler handler);
 		void addHiResClickHandler(ClickHandler handler);
+		void addSessionSaveClickHandler(ClickHandler handler);
+		void addSessionRestoreClickHandler(ClickHandler handler);
 		void addGridButtonClickHandler(ClickHandler handler);
 		void setGridButtonToggled(boolean toggled);
 
@@ -355,6 +358,23 @@ public class HeaderPresenter {
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
 			view.closeDropdownMenu();
 			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
+			Session session = new Session();
+			session.saveState();
+		});
+		
+		view.addSessionSaveClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_SESSION_SAVE, "");
+			view.closeDropdownMenu();
+			Session session = new Session();
+			session.saveState();
+			
+		});
+		
+		view.addSessionRestoreClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_SESSION_RESTORE, "");
+			view.closeDropdownMenu();
+			Session session = new Session();
+			session.restoreState();
 		});
 
 		view.addScienceModeSwitchClickHandler(new ClickHandler() {

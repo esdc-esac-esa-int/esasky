@@ -270,6 +270,22 @@ public class TabulatorWrapper {
     private native GeneralJavaScriptObject[] getColumns(GeneralJavaScriptObject tableJsObject)/*-{
         return tableJsObject.getColumns();
     }-*/;
+
+    public GeneralJavaScriptObject[] getColumnDefinitions() {
+        return getColumnDefinitions(tableJsObject);
+    }
+
+    private native GeneralJavaScriptObject[] getColumnDefinitions(GeneralJavaScriptObject tableJsObject)/*-{
+        return tableJsObject.getColumnDefinitions();
+    }-*/;
+
+    public GeneralJavaScriptObject[] getColumnLayout() {
+        return getColumnLayout(tableJsObject);
+    }
+
+    private native GeneralJavaScriptObject[] getColumnLayout(GeneralJavaScriptObject tableJsObject)/*-{
+        return tableJsObject.getColumnLayout();
+    }-*/;
     
     public void blockRedraw(){
         blockRedraw(tableJsObject);
@@ -406,29 +422,28 @@ public class TabulatorWrapper {
         tabulatorCallback.onDataFiltered(indexArray);
     }
     
-    public void toggleNumericFilterDialog(String tapName, String title, String filterButtonId, double minVal, 
-            double maxVal, final GeneralJavaScriptObject onChangeFunc, final GeneralJavaScriptObject formatter, 
-            GeneralJavaScriptObject formatterParamsIfExisting) {
-        final GeneralJavaScriptObject formatterParams = verifyFormatterParams(formatterParamsIfExisting);
+    public void createNumericFilterDialog(String tapName, String title, String filterButtonId, final GeneralJavaScriptObject onChangeFunc,
+    		final GeneralJavaScriptObject formatter, GeneralJavaScriptObject formatterParamsIfExisting) {
+    	 
+    	final GeneralJavaScriptObject formatterParams = verifyFormatterParams(formatterParamsIfExisting);
         final ValueFormatter valueFormatter = new ValueFormatter() {
-            
-            @Override
-            public double getValueFromFormat(String formattedValue) {
-                formatterParams.setProperty("convertBack", true);
-                double value = GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
-                formatterParams.setProperty("convertBack", false);                
-                return value;
-            }
-            
-            @Override
-            public String formatValue(double value) {
-                formatterParams.setProperty("convertBack", false);
-                return GeneralJavaScriptObject.convertToString(formatter.invokeSelf(createPretendCell(value), formatterParams));
-            }
-        };
-
-    	if(!filterDialogs.containsKey(tapName)) {
-    		FilterObserver filterObserver = new FilterObserver() {
+             
+             @Override
+             public double getValueFromFormat(String formattedValue) {
+                 formatterParams.setProperty("convertBack", true);
+                 double value = GeneralJavaScriptObject.convertToDouble(formatter.invokeSelf(createPretendCell(formattedValue), formatterParams));
+                 formatterParams.setProperty("convertBack", false);                
+                 return value;
+             }
+             
+             @Override
+             public String formatValue(double value) {
+                 formatterParams.setProperty("convertBack", false);
+                 return GeneralJavaScriptObject.convertToString(formatter.invokeSelf(createPretendCell(value), formatterParams));
+             }
+         };
+         
+         FilterObserver filterObserver = new FilterObserver() {
 				
 				@Override
 				public void onNewFilter(String filter) {
@@ -436,10 +451,13 @@ public class TabulatorWrapper {
 					
 				}
 			};
-    		
-    		RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
-    		filterDialogs.put(tapName, filterDialog);
-    	}
+ 		
+ 		RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
+ 		filterDialogs.put(tapName, filterDialog);
+    }
+    
+    public void toggleNumericFilterDialog(String tapName, double minVal, double maxVal) {
+
     	RangeFilterDialogBox filterDialogBox = (RangeFilterDialogBox) filterDialogs.get(tapName);
 		
 		filterDialogBox.setRange(minVal, maxVal, 2);
@@ -454,25 +472,25 @@ public class TabulatorWrapper {
         return {getValue: function() {return value}};
     }-*/;
     
-    public void toggleDateFilterDialog(String tapName, String title, String filterButtonId, String minVal, String maxVal, final GeneralJavaScriptObject onChangeFunc) {
+    public void createDateFilterDialog(String tapName, String title, String filterButtonId, final GeneralJavaScriptObject onChangeFunc) {
+    	FilterObserver filterObserver = new FilterObserver() {
+			
+			@Override
+			public void onNewFilter(String filter) {
+				onChangeFunc.invokeFunction("onChange", filter);
+				
+			}
+		};
+		
+		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, title, filterButtonId, filterObserver);
+		
+		filterDialogs.put(tapName, filterDialog);
+    }
+    
+    public void toggleDateFilterDialog(String tapName, String minVal, String maxVal){
     	
-    	if(!filterDialogs.containsKey(tapName)) {
-    		FilterObserver filterObserver = new FilterObserver() {
-    			
-    			@Override
-    			public void onNewFilter(String filter) {
-    				onChangeFunc.invokeFunction("onChange", filter);
-    				
-    			}
-    		};
-    		
-    		DateFilterDialogBox filterDialog = new DateFilterDialogBox(tapName, title, filterButtonId, filterObserver);
-    		
-    		filterDialog.setStartRange(minVal, maxVal);
-    		filterDialogs.put(tapName, filterDialog);
-    	}
-    	
-    	FilterDialogBox filterDialogBox = filterDialogs.get(tapName);
+    	DateFilterDialogBox filterDialogBox = (DateFilterDialogBox) filterDialogs.get(tapName);
+    	filterDialogBox.setStartRange(minVal, maxVal);
     	filterDialogBox.toggle();
     	
     }
@@ -522,12 +540,21 @@ public class TabulatorWrapper {
         setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
     }
     
+    public void insertUserHeader(GeneralJavaScriptObject data){
+    	setIsUserDataBool(tableJsObject);
+    	setData(tableJsObject, convertDataToHeaderFormat(tableJsObject, data));
+    }
+    
     private native void setIsUserDataBool(GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.isEsaskyData = false;
     }-*/;
 
     private native String convertDataToTabulatorFormat(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject data, String aladinFrame)/*-{
         return tableJsObject.convertDataToTabulatorFormat(data, aladinFrame);
+    }-*/;
+    
+    private native String convertDataToHeaderFormat(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject data)/*-{
+        return tableJsObject.convertDataToHeaderFormat(data);
     }-*/;
     
     public void setData(String dataOrUrl){
@@ -670,103 +697,6 @@ public class TabulatorWrapper {
 	    }
     }-*/;
     
-    public void setHeaderQueryMode(String mode){
-        setHeaderQueryMode(this, tableJsObject, mode);
-    }
-    
-    private native void setHeaderQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject, String mode)/*-{
-        tableJsObject.clearData();
-        tableJsObject.mocLoaded = false;
-        
-      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::registerMocLoadedObserver()();
-        
-    	tableJsObject.options.ajaxResponse = function(url, params, response){
-			var newMeta = [];
-			var filterData = {};
-			
-			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
-			var data = response.data[0][0].split(",");
-			
-			newMeta = new Array(data.length);
-			for(var i = 0;i< data.length; i++){
-				var row = data[i].split(";")
-				var colName = row[0];
-				var val = row[1];
-				var metaName = colName.substring(0,colName.length - 4)
-				var datatype;
-
-				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
-				var metaDataIndex = data.length + newMeta.length;
-				var visible = false;
-				
-				
-				if(descMetaData.hasOwnProperty(metaName)){
-					metaDataIndex = parseInt(descMetaData[metaName].index);
-					datatype = descMetaData[metaName].type.toUpperCase();
-					if(descMetaData[metaName].hasOwnProperty("visible")){
-                        visible = descMetaData[metaName]["visible"];
-                    }
-				}else{
-					if(colName.endsWith('_min') || colName.endsWith('_max')){
-						datatype = "DOUBLE";
-					}else{
-						datatype = "STRING";
-					}
-				}
-				
-				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
-				var displayName = $wnd.esasky.getDefaultLanguageText(label);
-				
-				if(!filterData.hasOwnProperty(metaName)){	
-					filterData[metaName] = {};
-				}
-				
-				if(colName.endsWith("_min")){
-					if(datatype == "TIMESTAMP" || datatype == "DATETIME"){
-						filterData[metaName]["min"] = val;
-	    			}else{
-						filterData[metaName]["min"] = parseFloat(val);
-    				}	    			
-					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.splice(metaDataIndex,1,meta)
-				
-				}else if(colName.endsWith("_max")){
-					
-					if(datatype == "TIMESTAMP"|| datatype == "DATETIME"){
-						filterData[metaName]["max"] = val;
-	    			
-					}else{
-						filterData[metaName]["max"] = parseFloat(val);
-    				}	    			
-				
-				}else{
-					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible}
-					newMeta.splice(metaDataIndex,1,meta)
-				}
-			}
-			
-			newMeta = newMeta.filter(function(e){return e})
-			tableJsObject.metadata = newMeta;
-			tableJsObject.filterData = filterData;
-			tableJsObject.showCount = false;
-			tableJsObject.dataLoaded = true;
-			
-			
-			return new Promise(function (resolve, reject) {
-				if(tableJsObject.mocLoaded){
-			      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::notifyMocLoadedObserver()();
-					resolve([]);
-				}else{
-					tableJsObject.onMocLoaded = function () {
-						this.onMocLoaded = null;
-				      	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::notifyMocLoadedObserver()();
-						resolve([]);
-					}
-				}
-			});
-        }
-    }-*/;
-    
     public void show() {
         if(isMOCMode()) { //In defaultQueryMode MutationObserver redraws, if necessary
             Scheduler.get().scheduleFinally(new ScheduledCommand() {
@@ -778,8 +708,6 @@ public class TabulatorWrapper {
             });
         }
     }
-    
-    
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
 		var settings = JSON.parse(settingsString); 
@@ -853,9 +781,14 @@ public class TabulatorWrapper {
 					maxVal = 100;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;DDLesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-					(editorParams["tapName"], editorParams["title"], filterButtonId, minVal, maxVal, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;DD)
+					(editorParams["tapName"], minVal, maxVal);
 			});	
+				
+			wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+				(editorParams["tapName"], editorParams["title"], filterButtonId, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
+	
+			
 			var container = $wnd.$("<span></span>")
 			 
 			container.append(filterButton);
@@ -919,9 +852,12 @@ public class TabulatorWrapper {
 					maxVal = tmp;
 				}
 				
-				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-					(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+					(editorParams["tapName"], minVal, maxVal);
 			});	
+				
+			wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+				(editorParams["tapName"],editorParams["title"], filterButtonId, functionObject);
 			var container = $wnd.$("<span></span>")
 			 
 			container.append(filterButton);
@@ -1492,7 +1428,8 @@ public class TabulatorWrapper {
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg"
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_1"
 			    		    || this.metadata[i].name.toLowerCase() === "ra_deg_2"
-			    		    || this.metadata[i].name.toLowerCase() === "s_ra"){
+			    		    || this.metadata[i].name.toLowerCase() === "s_ra"
+			    		    || this.metadata[i].ucd === "pos.eq.ra;meta.main"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
@@ -1514,7 +1451,8 @@ public class TabulatorWrapper {
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg"
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg_1"
 			    		    || this.metadata[i].name.toLowerCase() === "dec_deg_2"
-			    		    || this.metadata[i].name.toLowerCase() === "s_dec"){
+			    		    || this.metadata[i].name.toLowerCase() === "s_dec"
+			    		    || this.metadata[i].ucd === "pos.eq.dec;meta.main"){
 			    			activeColumnGroup.push({
 				    			title:this.metadata[i].displayName,
 				    			titleDownload:this.metadata[i].name, 
@@ -1982,6 +1920,76 @@ public class TabulatorWrapper {
             setFileContents(fileContents, "text/csv");
         }
 		    
+		table.convertDataToHeaderFormat = function(userData) {
+			var newMeta = [];
+			var filterData = {};
+			
+			var descMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
+			var data = userData.metadata
+			newMeta = new Array(data.length);
+			for(var i = 0;i< data.length; i++){
+				var col = data[i]
+				var colName = col.name
+				var val = col.value
+				var metaName = colName.substring(0,colName.length - 4)
+				var datatype = col.datatype;
+
+				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
+				var metaDataIndex = data.length + newMeta.length;
+				var visible = false;
+				
+				
+				if(descMetaData.hasOwnProperty(metaName)){
+					metaDataIndex = parseInt(descMetaData[metaName].index);
+					datatype = descMetaData[metaName].type.toUpperCase();
+					if(descMetaData[metaName].hasOwnProperty("visible")){
+                        visible = descMetaData[metaName]["visible"];
+                    }
+				}
+				
+				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+				var displayName = $wnd.esasky.getDefaultLanguageText(label);
+				
+				if(!filterData.hasOwnProperty(metaName)){	
+					filterData[metaName] = {};
+				}
+				
+				if(colName.endsWith("_min")){
+					if(datatype == "TIMESTAMP" || datatype == "DATETIME"){
+						filterData[metaName]["min"] = val;
+	    			}else{
+						filterData[metaName]["min"] = parseFloat(val);
+    				}	    			
+					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible,
+						description:col.description, ucd: col.ucd, unit:col.unit}
+					newMeta.splice(metaDataIndex,1,meta)
+				
+				}else if(colName.endsWith("_max")){
+					
+					if(datatype == "TIMESTAMP"|| datatype == "DATETIME"){
+						filterData[metaName]["max"] = val;
+	    			
+					}else{
+						filterData[metaName]["max"] = parseFloat(val);
+    				}	    			
+				
+				}else{
+					meta = {name:metaName, displayName:displayName, datatype:datatype, visible: visible,
+						 description:col.description, ucd: col.ucd, unit:col.unit}
+					newMeta.splice(metaDataIndex,1,meta)
+				}
+			}
+			
+			newMeta = newMeta.filter(function(e){return e})
+			this.metadata = newMeta;
+			this.filterData = filterData;
+			this.showCount = false;
+			this.dataLoaded = true;
+			
+			return [];
+			
+		}
+		
 		table.convertDataToTabulatorFormat = function(userData, aladinCoordinateFrame) {
             var metadata = [];
             var skyObjectList = userData.overlaySet.skyObjectList;
@@ -2262,5 +2270,11 @@ public class TabulatorWrapper {
         if(!firstRow) {return false;}
         return firstRow.getData().access_format && firstRow.getData().access_format.toLowerCase().includes("datalink");
     }-*/;
+    
+    public void addFilter(String key, String filterString) {
+    	if(filterDialogs.containsKey(key)) {
+    		filterDialogs.get(key).setValuesFromString(filterString);
+    	}
+    }
     
 }

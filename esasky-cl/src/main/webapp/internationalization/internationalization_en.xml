@@ -824,7 +824,7 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
-    The 4XMM-DR10 catalogue contains source detections drawn from 11647
+    The 4XMM-DR11 catalogue contains source detections drawn from 12,210
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
 		(sources "good" or "with suspect parameters") are displayed in ESASky.
@@ -837,12 +837,12 @@
 		&lt;/a&gt; </text>
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
-    	The stacked catalogue 4XMM-DR10s has been compiled from 1329 groups,
+    	The stacked catalogue 4XMM-DR11s has been compiled from 1,475 groups,
 		comprising 7803 overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
-		3 and 2019 December 14 which overlap by at least one arcminute in radius
-		and are not affected by very high background emission. It contains 335812
-		unique sources, 218283 of them multiply observed, with positions and
+		3 and 2020 December 17 which overlap by at least one arcminute in radius
+		and are not affected by very high background emission. It contains 358,809
+		unique sources, 275,440 of them multiply observed, with positions and
 		source parameters like fluxes in the XMM-Newton standard energy bands,
 		hardness ratios, quality estimate, and information on inter-observation
 		variability. 
@@ -3332,6 +3332,49 @@
 	<text key="selectionToolbox_polygonButtonTooltip">
 		Polygon Selection Tool
 	</text>
+	<text key="searchToolbox_title">
+		Search Tools
+	</text>
+	<text key="searchToolbox_helpHeader">
+		Search Tools
+	</text>
+	<text key="searchToolbox_helpText">
+		&lt;b&gt;Graphical Search Tool&lt;/b&gt;&lt;br&gt;
+		To search sources press and drag with either the box or circle tool selected.
+		A green box or circle will appear to indicate the search area. Once you are satisfied with an area, release the pointer.
+		&lt;br&gt;&lt;br&gt;
+		The polygon search tool allows you to search with an arbitrary shape. Each touch or click adds another point to the polygon.
+		Finish the polygon by either double clicking or pressing the first point.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Text Search Tool&lt;/b&gt;&lt;br&gt;
+		In the drop down menu there are controls that make it possible to search a STCS region by text input.
+		Selecting different shapes will provide different input controls.
+		&lt;br&gt;&lt;br&gt;STCS strings are expected to follow the format of "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Examples: &lt;/b&gt;&lt;br&gt;
+		"BOX ICRS 11.421 41.764 10.071 41.765 10.079 40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
+		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
+		"CIRCLE ICRS 10.76 41.28 0.8"
+	</text>
+	<text key="searchToolbox_box">
+		Box
+	</text>
+	<text key="searchToolbox_polygon">
+		Polygon
+	</text>
+	<text key="searchToolbox_circle">
+		Cone
+	</text>
+	<text key="searchToolbox_boxButtonTooltip">
+		Box Search Tool
+	</text>
+	<text key="searchToolbox_circleButtonTooltip">
+		Cone Search Tool
+	</text>
+	<text key="searchToolbox_polygonButtonTooltip">
+		Polygon Search Tool
+	</text>
+	<text key="searchToolbox_submitButton">
+		Search
+	</text>
 	<text key="addSkyMenuItem_ESASKY">Add new row</text>
 	<text key="addSkyMenuItem_URL">HiPS from URL</text>
 	<text key="addSkyMenuItem_LOCAL">HiPS from your computer</text>
@@ -3467,13 +3510,16 @@
 		Multi-messenger Events
 	</text>
 	<text key="gwPanel_helpText">
-		This tool allows to search for public multi-messenger events from gravitational waves, display their footprints in the sky and download data.
+		This tool shows public multi-messenger events from gravitational waves and neutrinos, displays their probability footprints on the sky and provides access to the data.
 		&lt;br&gt;&lt;br&gt;
-		Clicking on the Gravitational Waves bar brings a list of the gravitational wave events detected by Advanced LIGO and Advanced Virgo in the O3 data. Click on a gravitational wave event to go to the centre of the associated footprint. A HiPS created from the gravitational wave event file is shown. A coordinate grid displays automatically on top of the sky.  
-		A solid line shows the 50% confidence contours and a dashed line the 90% confidence contours. Click on Show more columns to expand the table.
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-multimessenger"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
 	</text>
 	<text key="gwPanel_helpTitle">
-		Gravitational Waves
+		Multi-Messenger Events
 	</text>
 	<text key="webConstants_exploreHstImages">
 		Explore outreach images from the Hubble Space Telescope
@@ -3564,6 +3610,161 @@
 	<text key="wavelength_GW_Tooltip">
 		Gravitational Wave probability maps
 	</text>
+	<text key="WHSP_lognupeak">
+		Synchrotron peak &lt;br&gt; &lt;i&gt;(log(Hz))&lt;/i&gt;
+	</text>
+	<text key="WHSP_lognufnu">
+		Synchrotron peak flux &lt;br&gt; &lt;i&gt;(log(erg/s/cm2))&lt;/i&gt;
+	</text>
+	<text key="error_radius_deg">
+		Error Radius &lt;br&gt; &lt;i&gt;(deg)&lt;/i&gt;
+	</text>
+	<text key="event_energy_gev">
+		Event Energy &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;
+	</text>
+	<text key="RXS_count_rate">
+		Count Rate &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
+	</text>
+	<text key="RXS_count_rate_error">
+		Count Rate Error &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;
+	</text>
+	<text key="RXS_exposure_time">
+		Exposure Time &lt;br&gt; &lt;i&gt;(s)&lt;/i&gt;
+	</text>
+	<text key="RXS_source_extent">
+		Source Extent &lt;br&gt; &lt;i&gt;(pixel)&lt;/i&gt;
+	</text>
+	<text key="RXS_source_extent_probability">
+		Source Extent Probability
+	</text>
+	<text key="RXS_hardness_ratio1">
+		Hardness Ratio 1
+	</text>
+	<text key="RXS_hardness_ratio2">
+		Hardness Ratio 2
+	</text>
+	<text key="RXS_source_quality_flag">
+		Source Quality Flag
+	</text>
+
+	<text key="OU_radio_flux">
+		Radio Flux &lt;br&gt; &lt;i&gt;(mJy)&lt;/i&gt;
+	</text>
+	<text key="OU_fermi_flux">
+		Fermi Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+
+	<text key="photon_flux">
+		Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FGL_unc_flux_1000">
+		Photon Flux Error &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="energy_flux">
+		Energy Flux &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="unc_energy_flux">
+		Energy Flux Error &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+
+	<text key="LAC_nufnu">
+		SED at Synchrotron peak frequency &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="LAC_emax">
+		Energy max &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;
+	</text>
+
+	<text key="FHL_epvt">
+		Pivot Energy &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;
+	</text>
+	<text key="FHL_s">
+		Flux Density &lt;br&gt; &lt;i&gt;(ph/cm2/GeV/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f1">
+		Photon flux 10-20GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f2">
+		Photon flux 20-50GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f3">
+		Photon flux 50-150GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f4">
+		Photon flux 150-500GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_f5">
+		Photon flux 500-2000GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu1">
+		SED at 10-20GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu2">
+		SED at 20-50GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu3">
+		SED at 50-150GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu4">
+		SED at 150-500GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+	<text key="FHL_nuFnu5">
+		SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
+	</text>
+
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+		The IceCube All-Sky Point-Source Events Catalog (2008 - 2018; Icecubepsc). IceCube has performed several searches for point-like sources of neutrinos. The events contained in this catalogue make up the sample used in IceCube's 10-year time-integrated neutrino point source search. Events in the sample are track-like neutrino candidates detected by IceCube between April 2008 and July 2018.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#icecubepsc"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+		The second ROSAT all-sky survey source catalogue (2RXS) is the second publicly released ROSAT catalogue of point-like sources obtained from the ROSAT all-sky survey (RASS) observations performed with the position-sensitive proportional counter (PSPC) between June 1990 and August 1991, and is an extended and revised version of the bright and faint source catalogues. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#2RXS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+		A multi-frequency selected catalogue of high energy and very high energy gamma-ray blazars and blazar candidates (2WHSP). This catalogue contains the largest and most complete list of High Synchrotron Peaked blazars (HSPs) available to date (in 2017), which is an expansion of the 1WHSP catalog of gamma-ray source candidates off the Galactic plane. A number of multi-wavelength surveys (in the radio, infrared and X-ray bands) have been cross-matched and applied selection criteria based on the radio to IR and IR to X-ray spectral slopes. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#WHSP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; 
+	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
 	<!-- internationalization_es.xml is up to date for everything above -->
+	
+	<text key="header_session_save">
+		Save ESASky Session
+	</text>
+	<text key="header_session_restore">
+		Restore ESASky Session
+	</text>
+	
+	<text key="header_eva">
+		ESA Virtual Assistant
+	</text>
+	
+	<text key="header_sessionSaveEntryTooltip">
+		Save all current settings, open data panels etc to a json file
+	</text>
+	
+	<text key="header_sessionRestoreEntryTooltip">
+		Restore all settings from a json file
+	</text>
+	
+	<text key="Neutrino">
+		Neutrino
+	</text>
+	
+	
+	
 </Internationalization>

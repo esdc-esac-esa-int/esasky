@@ -6,6 +6,7 @@ import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ITablePanel {
@@ -81,7 +82,7 @@ public interface ITablePanel {
 	
 	public void setPlaceholderText(String text);
 
-	public void insertHeader(String tapQuery, String mode);
+	public void insertHeader(GeneralJavaScriptObject data, String mode);
 	public void goToCoordinateOfFirstRow();
 	
 	public boolean isMOCMode();
@@ -95,6 +96,9 @@ public interface ITablePanel {
 	void filterOnFoV(String raCol, String decCol);
 	
 	void setMaxHeight(int height);
+	void setVisibleColumns(List<String> columns);
+
+	int getVisibleColumnsWidth();
 
 	void showColumn(String field);
 	void hideColumn(String field);
@@ -102,4 +106,5 @@ public interface ITablePanel {
 	void blockRedraw();
 	void restoreRedraw();
 	void redrawAndReinitializeHozVDom();
+	void addTapFilter(String label, String tapFilter);
 }

@@ -7,6 +7,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import esac.archive.esasky.cl.web.client.Controller;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 
 public class ApiAlerts extends ApiBase{
 	
@@ -16,7 +17,7 @@ public class ApiAlerts extends ApiBase{
 	}
 	
 	public void openAlertPanel() {
-		controller.getRootPresenter().getCtrlTBPresenter().openGWPanel();
+		controller.getRootPresenter().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.GW.ordinal());
 	}
 	
 	public void closeAlertPanel() {

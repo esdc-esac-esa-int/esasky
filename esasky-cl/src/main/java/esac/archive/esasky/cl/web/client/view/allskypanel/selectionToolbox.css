@@ -15,39 +15,32 @@
 }
 
 .selectionToolboxButton{
-	display: inline-block;	
+    display: inline-block;
 }
 
 .selectionToolboxButton div{
-	margin: 2px;	
+    margin: 2px;
 }
 
 .selectionToolboxHelpButton {
-	display: inline-block;
-	vertical-align: middle;
-	margin-left: 5px;
-	pointer-events: auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    pointer-events: auto;
 }
 
 #toggleSelectionToolboxPanelButton{
-	display: inline-block;	
+    display: inline-block;
 }
 
 .selectionToolBox__toggleAndHelpContainer{
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
-
 .selectionToolbox__shapeButtonContainer{
-	display: flex;
-	flex-direction: column;
-}
-
-.selectionToolbox__shapeButtonContainerHorizontal{
     display: flex;
-    flex-direction: row;
-
+    flex-direction: column;
 }
 

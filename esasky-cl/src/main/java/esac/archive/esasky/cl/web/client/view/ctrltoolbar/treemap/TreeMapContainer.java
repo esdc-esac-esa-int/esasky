@@ -31,7 +31,7 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 	private final CssResource style;
 	private final Resources resources;
-	private boolean firstOpeing = true;
+	private boolean firstOpening = true;
 	private final EntityContext context;
 	
 	private final int DEFAULT_TREEMAP_HEIGHT_DESKTOP = 400;
@@ -45,7 +45,6 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	private FlowPanel treeMapContainer = new FlowPanel();
 	private final PopupHeader<TreeMapContainer> header;
 	private ESASkyMultiRangeSlider slider;
-	private Element sliderUiHeader = null;
 	private FlowPanel sliderContainer;
 	boolean haveSlider;
 	
@@ -159,12 +158,11 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	}
 	
 	public void updateSliderColor(double low, double high) {
-		if(sliderUiHeader != null) {
 			
 			double botPosition = (1 -( low - Math.floor(low)) ) / (high - low);
 			double topPosition = (1 - (Math.ceil(high) - high)) / ( high - low );
 			
-			String styleString =  "background:linear-gradient(to right,";
+			String styleString =  "linear-gradient(to right,";
 			int nShown = 0;
 			
 			for(int i = (int) Math.floor(low); i <=  Math.ceil(high); i++) {
@@ -179,10 +177,8 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 			}
 			styleString = styleString.substring(0,styleString.length() - 1);
 			
-			styleString += "); width:100%";
-			
-			sliderUiHeader.setAttribute("style", styleString);
-		}
+			styleString += ")";
+			slider.setSliderColor(styleString);
 	}
 	
 	private void updateMaxSize() {
@@ -235,22 +231,6 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		}
 	}
 
-	public void getSliderUiHeader() {
-		Element el = slider.getElement().getFirstChildElement();
-		int i = 0;
-		while(!el.hasClassName("ui-widget-header")) {
-			el = el.getFirstChildElement();
-			i++;
-			if(i > 5) {
-				break;
-			}
-		}
-		
-		if(i < 6) {
-			sliderUiHeader = el;
-		}
-	}
-	
 	public void updateData(List<IDescriptor> descriptors, List<Integer> counts) {
 		treeMap.updateData(descriptors, counts);
 	}
@@ -276,13 +256,12 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	@Override
 	public void show() {
 		super.show();
-		if(firstOpeing){
-			firstOpeing = false;
+		if(firstOpening){
+			firstOpening = false;
 			treeMap.firstTimeOpen();
 			setDefaultSize();
 			if(haveSlider) {
 				slider.firstOpening();
-				getSliderUiHeader();
 				updateSliderColor(0, ESASkyColors.maxIndex());
 			}
 		}
@@ -314,5 +293,15 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 	public void setHeaderText(String text) {
 		header.setText(text);
+	}
+	
+	public Double[] getSliderValues() {
+		return treeMap.getSliderValues();
+	}
+	
+	public void setSliderValues(double low, double high) {
+		if(haveSlider) {
+			slider.setSliderValue(low, high);
+		}
 	}
 }

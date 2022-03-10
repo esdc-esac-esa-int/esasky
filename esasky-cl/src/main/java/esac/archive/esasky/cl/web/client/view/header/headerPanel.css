@@ -205,6 +205,9 @@
 .header__dropdown__wwt__text,
 .header__dropdown__share__text,
 .header__dropdown__screenshot__text,
+.header__dropdown__session__save__text,
+.header__dropdown__session__restore__text,
+.header__dropdown__outreach__text,
 .header__dropdown__grid__text  {
 	display: inline-block;
 }

@@ -30,7 +30,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.allskypanel.SelectionToolBoxPanel;
+import esac.archive.esasky.cl.web.client.view.allskypanel.SearchToolPanel;
 import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.CssPxAnimation;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -65,8 +65,8 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private Image ssoDNetLogo;
     private Image simbadLogo;
 
-    private SelectionToolBoxPanel selectionToolBoxPanel;
-    private EsaSkyToggleButton selectionToolBoxButton;
+    private SearchToolPanel searchToolPanel;
+    private EsaSkyToggleButton searchToolBoxButton;
     
     private boolean foundInSimbad = false;
     private boolean foundAuthorInSimbad = false;
@@ -138,6 +138,9 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                 searchResultsFocusPanel.setVisible(false);
                 ensureClearTextButtonVisibilty();
                 searchTextBox.setFocus(true);
+                if (!searchToolBoxButton.getToggleStatus()) {
+                    AladinLiteWrapper.getAladinLite().clearSearchArea();
+                }
             }
         });
         FlowPanel textBoxHolder = new FlowPanel();
@@ -179,7 +182,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 			
 			@Override
 			public void onComplete(double currentPosition) {
-				setSeachIconVisibilty();
+				setSearchIconVisibility();
+                if(!isFullSize) {
+                    searchToolPanel.setVisible(false);
+                }
 			}
 		});
 
@@ -223,6 +229,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         
         this.tooltip.setVisible(false);
 
+        searchToolPanel = new SearchToolPanel();
+        searchToolPanel.getElement().getStyle().setTop(30, Unit.PX);
+        searchToolPanel.getElement().getStyle().setLeft(30, Unit.PX);
+        searchToolPanel.getElement().getStyle().setZIndex(203);
+        searchToolPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
+
         this.searchTextBoxError = new FocusPanel();
         this.searchTextBoxError.getElement().setId("searchTextBoxError");
         searchBoxErrorLabel.addStyleName("searchBoxLabel");
@@ -246,6 +258,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchPanel.add(this.tooltip);
         searchPanel.add(this.searchTextBoxError);
         searchPanel.add(this.searchResultsFocusPanel);
+        searchPanel.add(this.searchToolPanel);
 
         this.container = new FlowPanel();
 
@@ -282,24 +295,19 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         FlowPanel selectionContainer = new FlowPanel();
 
-        selectionToolBoxButton = new EsaSkyToggleButton(Icons.getDashedPolyDarkIcon());
-        selectionToolBoxButton.getElement().setId("searchPanelImg");
-        selectionToolBoxButton.setMediumStyle();
-        selectionToolBoxButton.setDarkStyle();
-        selectionToolBoxButton.addStyleName("searchPanel__selectionToolButton");
+        searchToolBoxButton = new EsaSkyToggleButton(Icons.getConeIcon());
+        searchToolBoxButton.getElement().setId("searchPanelImg");
+        searchToolBoxButton.setMediumStyle();
+        searchToolBoxButton.setDarkStyle();
+        searchToolBoxButton.addStyleName("searchPanel__selectionToolButton");
+        searchToolBoxButton.setTitle(TextMgr.getDefaultInstance().getText("searchToolbox_title"));
 
-        selectionToolBoxButton.addClickHandler(event -> {
-            SearchPanel.this.selectionToolBoxPanel.toggleToolbox();
-            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(selectionToolBoxButton));
+        searchToolBoxButton.addClickHandler(event -> {
+            SearchPanel.this.searchToolPanel.toggleToolbox();
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(searchToolBoxButton));
         });
 
-        selectionContainer.add(selectionToolBoxButton);
-
-        selectionToolBoxPanel = new SelectionToolBoxPanel(true);
-        selectionToolBoxPanel.getElement().getStyle().setTop(25, Unit.PX);
-        selectionToolBoxPanel.getElement().getStyle().setLeft(60, Unit.PX);
-        selectionToolBoxPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
-        selectionContainer.add(selectionToolBoxPanel);
+        selectionContainer.add(searchToolBoxButton);
 
         return selectionContainer;
     }
@@ -332,13 +340,16 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         if (searchTextBox.getValue().isEmpty() ) {
             clearTextButton.addStyleName("collapse");
             targetListButton.removeStyleName("collapse");
+            searchToolBoxButton.removeStyleName("collapse");
+
         } else {
         	targetListButton.addStyleName("collapse");
             clearTextButton.removeStyleName("collapse");
+            searchToolBoxButton.addStyleName("collapse");
         }
     }
     
-    private void setSeachIconVisibilty() {
+    private void setSearchIconVisibility() {
     	if (isFullSize) {
     		searchIcon.setVisible(false);
     	} else {
@@ -580,6 +591,16 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     }
 
     @Override
+    public EsaSkyToggleButton getSearchToolButton() {
+        return searchToolBoxButton;
+    }
+
+    @Override
+    public SearchToolPanel getSearchToolPanel() {
+        return searchToolPanel;
+    }
+
+    @Override
     public void showBackendMessage(String message) {
         this.searchBoxErrorLabel.setText(message);
         this.searchTextBoxError.setVisible(true);
@@ -590,6 +611,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	public void setFullSize(boolean fullSize) {
 		isFullSize = fullSize;
 		if(isFullSize) {
+            this.searchToolPanel.setVisible(true);
 			searchWidthAnimation.animateTo(150, 500);
 			searchPaddingAnimation.animateTo(35, 500);
 			if(resultPanelWasOpen && resultsList.getWidgetCount() > 0) {
@@ -616,7 +638,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 	public void closeAllOtherPanels(Widget widgetNotToClose){
 		if(!widgetNotToClose.equals(targetListButton)) {
 			targetListPanel.hide();
-		}
+		} else if (!widgetNotToClose.equals(searchToolBoxButton)) {
+            searchToolPanel.hideToolbox();
+            searchToolBoxButton.setToggleStatus(false);
+        }
 	}
 	
 	private void addAuthorEntries(final ESASkyPublicationSearchResultList simbadAuthorResult) {
@@ -793,6 +818,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     public void closeTargetList() {
         targetListPanel.hide();
         targetListButton.setToggleStatus(false);
+    }
+
+    @Override
+    public void toggleTargetList() {
+        targetListPanel.toggle();
+        targetListButton.setToggleStatus(targetListPanel.isShowing());
     }
 
     @Override

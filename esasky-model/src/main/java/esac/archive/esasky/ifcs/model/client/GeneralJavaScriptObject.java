@@ -44,6 +44,10 @@ public class GeneralJavaScriptObject extends JavaScriptObject {
 		return Object.getOwnPropertyNames(this).toString()
 	}-*/;
     
+    public final native String[] getPropertiesArray() /*-{
+		return Object.getOwnPropertyNames(this)
+	}-*/;
+    
     
     public final native GeneralJavaScriptObject invokeSelf(Object... parameters)/*-{
     	return this.apply(this, parameters);

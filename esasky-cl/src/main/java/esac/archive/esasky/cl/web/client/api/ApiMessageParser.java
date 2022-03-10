@@ -738,6 +738,18 @@ public class ApiMessageParser {
 					break;
 
 
+
+
+				case 'saveState':
+					console.log('saveState event captured');
+					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiBase::saveState()()
+					break;
+				case 'restoreState':
+					console.log('saveState event captured');
+					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiBase::restoreState()()
+					break;
+
+
 				default:
 					console.log('No event associated');
 					if(!msg.hasOwnProperty('event')){

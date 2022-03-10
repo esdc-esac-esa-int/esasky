@@ -21,6 +21,7 @@ public interface IShapeDrawer {
     public void deselectAllShapes();
     public LinkedList<Integer>  selectShapes(String shapeName);
     public LinkedList<Integer> deselectShapes(String shapeName);
+    public int getNumberOfShapes();
     public Shape getShape(int shapeId);
     public void showShape(int shapeId);
     public void showShapes(List<Integer> shapeIds);

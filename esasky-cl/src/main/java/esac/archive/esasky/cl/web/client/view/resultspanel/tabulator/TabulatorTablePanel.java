@@ -438,9 +438,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void insertHeader(String url, String mode) {
-	    table.setHeaderQueryMode(mode);
-		table.setData(url);
+	public void insertHeader(GeneralJavaScriptObject data, String mode) {
+		table.insertUserHeader(data);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}
 
@@ -472,7 +471,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
     	return tapFilters;
     };
 
-	private void addTapFilter(String label, String tapFilter) {
+    @Override
+	public void addTapFilter(String label, String tapFilter) {
 		boolean shouldNotify = true;
 		if(tapFilter.length() > 0) {
 			if(tapFilters.containsKey(label) && tapFilter.equals(tapFilters.get(label))){
@@ -533,6 +533,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
         }
         notifyNumberOfRowsShowingChanged(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
 		notifyOnDataLoaded(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
+		for(String key : getTapFilters().keySet()) {
+			String filter = getTapFilters().get(key);
+			table.addFilter(key, filter);
+		}
+			
     }
 
     protected void notifyNumberOfRowsShowingChanged(int count) {
@@ -799,13 +804,21 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
     @Override
     public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
-        String url = buildArchiveURL(row.invokeFunction("getData"));
-        if(url.toLowerCase().contains("datalink")) {
-        	onDatalinkClicked(row);
-        }else {
-        	GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
-        	Window.open(url, "_blank", "");
-        }
+		GeneralJavaScriptObject data = row.invokeFunction("getData");
+		String archiveColumn = getDescriptor().getArchiveColumn();
+		if (!archiveColumn.isEmpty()) {
+			String url = data.getStringProperty(archiveColumn);
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
+			UrlUtils.openUrl(url);
+		} else {
+			String url = buildArchiveURL(row.invokeFunction("getData"));
+			if(url.toLowerCase().contains("datalink")) {
+				onDatalinkClicked(row);
+			}else {
+				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
+				Window.open(url, "_blank", "");
+			}
+		}
     }
 
     private String buildArchiveURL(GeneralJavaScriptObject rowData) {
@@ -949,6 +962,35 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			tableAndGroupHeader.getElement().getStyle().setPropertyPx("height", height);
 		}
 
+	}
+
+	@Override
+	public void setVisibleColumns(List<String> columns) {
+		for (GeneralJavaScriptObject column : table.getColumnDefinitions()) {
+			if (column.hasProperty("field")) {
+				String field = column.getStringProperty("field");
+				if (columns.contains(field)) {
+					table.showColumn(field);
+				} else {
+					table.hideColumn(field);
+				}
+			}
+		}
+	}
+
+	@Override
+	public int getVisibleColumnsWidth() {
+		int width = 0;
+		for (GeneralJavaScriptObject column : table.getColumnLayout()) {
+			if (column.hasProperty("visible")) {
+				boolean isVisible = Boolean.parseBoolean(column.getProperty("visible").toString());
+				if (isVisible) {
+					width += column.getDoubleProperty("width");
+				}
+			}
+		}
+
+		return width;
 	}
 
 	@Override

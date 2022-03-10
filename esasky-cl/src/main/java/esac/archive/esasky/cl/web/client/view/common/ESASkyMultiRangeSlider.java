@@ -11,6 +11,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
     
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 
 public class ESASkyMultiRangeSlider extends FlowPanel {
@@ -29,6 +30,7 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
     private double currentValue1;
     private double currentValue2;
     private long lastSentGoogleAnalyticsTime = 0;
+    private GeneralJavaScriptObject sliderSelector;
 
     public static interface Resources extends ClientBundle {
 
@@ -77,14 +79,14 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
     }-*/;
     
 	public void firstOpening() {
-		createSliderFilter(this, sliderContainerID, sliderID, minValue, maxValue);
+		sliderSelector = createSliderFilter(this, sliderContainerID, sliderID, minValue, maxValue);
 	}
 	
 	public void updateSize(int width) {
 		this.setPixelSize(width, this.getOffsetHeight());
 	}
     
-    private native JavaScriptObject createSliderFilter(ESASkyMultiRangeSlider instance, String containerId, String sliderSelectorId, double min, double max) /*-{
+    private native GeneralJavaScriptObject createSliderFilter(ESASkyMultiRangeSlider instance, String containerId, String sliderSelectorId, double min, double max) /*-{
     var sliderSelector = $wnd.createSliderSelectorWithoutBoxes(sliderSelectorId,
                                       "",
                                       min,
@@ -104,13 +106,17 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 		}
 	}-*/;
 	
-	private void setSliderValue(double value1, double value2) {
-		setSliderValueJs(value1, value2);
+	public void setSliderValue(double value1, double value2) {
+		currentValue1 = value1;
+		currentValue2 = value2;
+		setSliderValueJs(value1, value2, sliderSelector);
+		notifyObservers();
 	}
 	
-	private native void setSliderValueJs(double value1, double value2) /*-{
-		slider.values[0] = value1;
-		slider.values[1] = value2;
+	
+	
+	private native void setSliderValueJs(double value1, double value2, JavaScriptObject sliderSelector) /*-{
+		sliderSelector.setValues(value1,value2);
 	}-*/;
 	
 	private void fireSliderChangedEvent(double value1, double value2) {
@@ -160,5 +166,33 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 	public void setMaxValue(double maxValue) {
 		this.maxValue = maxValue;
 	}
+	
+	public Element getSliderUiHeader() {
+		Element el = getElement().getFirstChildElement();
+		int i = 0;
+		while(!el.hasClassName("ui-widget-header")) {
+			el = el.getFirstChildElement();
+			i++;
+			if(i > 5) {
+				break;
+			}
+		}
+		
+		if(i < 6) {
+			return el;
+		}
+		return null;
+	}
+	
+	public void setSliderColor(String color) {
+		Element header = getSliderUiHeader();
+		if(header != null) {
+			setSliderColorJs(color, header);
+		}
+	};
+	
+	public native void setSliderColorJs(String color, JavaScriptObject sliderUiHeader) /*-{
+		sliderUiHeader.style.background = color;
+	}-*/;
 
 }

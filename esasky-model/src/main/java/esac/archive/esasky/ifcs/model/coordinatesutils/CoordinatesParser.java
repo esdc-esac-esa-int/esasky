@@ -24,11 +24,12 @@ public class CoordinatesParser {
         Double raDeg = null;
         Double decDeg = null;
 
-        if (inputType == SearchInputType.SPACE_RAhhmmssDECddmmss
-                || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
-                || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
-                || inputType == SearchInputType.SPACE_RAhhmmssDECdeg
-                || inputType == SearchInputType.COLUMN_RAhhmmssDECdeg)
+        if (inputType == SearchInputType.SPACE_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.COLUMN_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.NO_SPACE_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.LETTERS_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.SPACE_RA_HHMMSS_DEC_DEG
+                || inputType == SearchInputType.COLUMN_RA_HHMMSS_DEC_DEG)
         {
             if (CoordinatesFrame.GALACTIC == inputCooFrame) {
                 raDeg = CoordinatesConversion.convertGalacticRAdddmmssToDecimal(raString);
@@ -39,14 +40,15 @@ public class CoordinatesParser {
             raDeg = Double.parseDouble(raString);
         }
 
-        if (inputType == SearchInputType.SPACE_RAhhmmssDECddmmss
-                || inputType == SearchInputType.COLUMN_RAhhmmssDECddmmss
-                || inputType == SearchInputType.LETTERS_RAhhmmssDECddmmss
-                || inputType == SearchInputType.SPACE_RAdegDECddmmss
-                || inputType == SearchInputType.COLUMN_RAdegDECddmmss
-                || inputType == SearchInputType.SPACE_RAdddmmssDECddmmss
-                || inputType == SearchInputType.COLUMN_RAdddmmssDECddmmss
-                || inputType == SearchInputType.LETTERS_RAdddmmssDECddmmss
+        if (inputType == SearchInputType.SPACE_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.COLUMN_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.LETTERS_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.NO_SPACE_RA_HHMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.SPACE_RA_DEG_DEC_DDMMSS
+                || inputType == SearchInputType.COLUMN_RA_DEG_DEC_DDMMSS
+                || inputType == SearchInputType.SPACE_RA_DDDMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.COLUMN_RA_DDDMMSS_DEC_DDMMSS
+                || inputType == SearchInputType.LETTERS_RA_DDDMMSS_DEC_DDMMSS
                 )
         {
             decDeg = CoordinatesConversion.convertDECddmmssToDecimal(decString);

@@ -49,13 +49,13 @@ public class SelectSkyPanelPresenter {
         CommonEventBus.getEventBus().addHandler(HipsAddedEvent.TYPE, changeEvent -> {
         	if(changeEvent.getAddIfAlreadyExist()) {
         		if(changeEvent.getHipsWavelength() == HipsWavelength.USER || changeEvent.getHipsWavelength() == HipsWavelength.GW) {
-        			addUrlHips(changeEvent.getHiPS());
+        			addUrlHips(changeEvent.getHiPS(), null);
         		} else {
         			view.createSky(true);
         		}
         	} else {
         		if(!view.select(changeEvent.getHiPS())) {
-        			addUrlHips(changeEvent.getHiPS());
+        			addUrlHips(changeEvent.getHiPS(), null);
         		}
         	}
 		});
@@ -69,7 +69,7 @@ public class SelectSkyPanelPresenter {
         return view.getPlayerPanel();
     }
     
-    private void addUrlHips(HiPS hips) {
+    public void addUrlHips(HiPS hips, SkyRow skyRow) {
 		
 		SkiesMenuEntry entry = skiesMenu.getHiPSListByWavelength(hips.getHipsWavelength());
 		
@@ -77,15 +77,19 @@ public class SelectSkyPanelPresenter {
 			entry = new SkiesMenuEntry();
 			entry.getHips().add(hips);
 			entry.setTotal(1);
+			if(hips.getHipsWavelength() == null) {
+				hips.setHipsWavelength(HipsWavelength.USER);
+			}
 			entry.setWavelength(hips.getHipsWavelength());
 			getSkiesMenu().getMenuEntries().add(entry);
 		} else {
 		    entry.getHips().add(hips);
 		}
-		SkyRow skyRow = view.createSky(false);
+		if(skyRow == null) {
+			skyRow = view.createSky(false);
+		}
 		skyRow.setSelectHips(hips.getSurveyName(), false, false);
 		view.refreshUserDropdowns();
-
     }
 
     private void getHiPSMapsList() {

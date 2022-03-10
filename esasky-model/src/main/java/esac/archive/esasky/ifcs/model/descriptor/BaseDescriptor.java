@@ -60,7 +60,11 @@ public abstract class BaseDescriptor implements IDescriptor {
     @JsonInclude(Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String archiveProductURI;
-    
+
+    @JsonInclude(Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private String archiveColumn;
+
     private String uniqueIdentifierField;
     
     @JsonInclude(Include.NON_NULL)
@@ -223,6 +227,16 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public void setArchiveProductURI(String archiveProductURI) {
         this.archiveProductURI = archiveProductURI;
+    }
+
+    @Override
+    public String getArchiveColumn() {
+        return this.archiveColumn == null ? "" : this.archiveColumn;
+    }
+
+    @Override
+    public void setArchiveColumn(String archiveColumn) {
+        this.archiveColumn = archiveColumn;
     }
 
     @Override
@@ -503,13 +517,12 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public String getSearchAreaShape() {
         String shape = "";
-
         if (hasSearchArea()) {
             if (searchArea.isCircle()) {
-                CoordinatesObject coordinate = searchArea.getCoordinates()[0];
+                CoordinatesObject coordinate = searchArea.getJ2000Coordinates()[0];
                 shape =  "CIRCLE('ICRS'," + coordinate.getRaDeg()+ "," + coordinate.getDecDeg() + "," + searchArea.getRadius() + ")";
             } else {
-                CoordinatesObject[] coordinates = searchArea.getCoordinates();
+                CoordinatesObject[] coordinates = searchArea.getJ2000Coordinates();
                 String coordinateStr = Arrays.stream(coordinates)
                     .map(point -> point.getRaDeg() + "," + point.getDecDeg())
                     .collect(Collectors.joining(","));

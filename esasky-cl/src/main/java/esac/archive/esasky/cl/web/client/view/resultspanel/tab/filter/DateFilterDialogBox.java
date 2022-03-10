@@ -35,10 +35,10 @@ public class DateFilterDialogBox extends FilterDialogBox {
 	private JavaScriptObject fromCalendar;
 	private JavaScriptObject toCalendar;
 	private boolean hasCalendarsBeenAddedToDialogBox = false;
-	private String startDate;
-	private String endDate;
-	private String currentFromDate;
-	private String currentToDate;
+	private String startDate = "1800-01-01";
+	private String endDate = "3000-01-01";
+	private String currentFromDate = startDate;
+	private String currentToDate = endDate;
 	private FlowPanel dateFilterContainer = new FlowPanel();
 	private FlowPanel toContainer = new FlowPanel();
 	private EsaSkyButton resetButton = new EsaSkyButton(this.resources.resetIcon());
@@ -138,8 +138,10 @@ public class DateFilterDialogBox extends FilterDialogBox {
 		super.show();
 		if(!hasCalendarsBeenAddedToDialogBox) {
 			hasCalendarsBeenAddedToDialogBox = true;
-			fromCalendar = createCalendar(this, fromInputId, startDate);
-			toCalendar = createCalendar(this, toInputId, endDate);
+			fromCalendar = createCalendar(this, fromInputId, currentFromDate);
+			toCalendar = createCalendar(this, toInputId, currentToDate);
+			setCalendarDate(fromCalendar, currentFromDate);
+			setCalendarDate(toCalendar, currentToDate);
 		}
 		toInput.setFocus(true);
 		fromInput.setFocus(true);
@@ -147,10 +149,9 @@ public class DateFilterDialogBox extends FilterDialogBox {
 
 	@Override
 	public boolean isFilterActive() {
-		return hasCalendarsBeenAddedToDialogBox 
-				&& (!currentFromDate.equals(startDate)
-						|| !currentToDate.equals(endDate));
-	}
+			return (currentFromDate != null && !currentFromDate.equals(startDate))
+					|| (currentToDate != null && !currentToDate.equals(endDate));
+		}
 
 	private native JavaScriptObject createCalendar(DateFilterDialogBox instance, final String containerId, String startDate) /*-{
     	return $wnd.datepicker("#" + containerId, {startDay: 1, 
@@ -276,4 +277,44 @@ public class DateFilterDialogBox extends FilterDialogBox {
 			schedule(100);
 		}
 	}
+	
+    @Override
+    public void setValuesFromString(String filterString) {
+		String[] andSplit = filterString.split(" AND ");
+		String lowerString = null;
+		String upperString = null;
+		if(andSplit.length > 1) {
+			lowerString = andSplit[0];
+			upperString = andSplit[1];
+		}else if(andSplit[0].contains(">")) {
+			lowerString = andSplit[0];
+		}else {
+			upperString = andSplit[0];
+		}
+		
+		String minValue = currentFromDate;
+		String maxValue = currentToDate;
+		if(lowerString != null) {
+			minValue = lowerString.split(">=")[1];
+			minValue = minValue.trim().replace("'","");
+		}
+		if(upperString != null) {
+			maxValue = upperString.split("<=")[1];
+			maxValue = maxValue.trim().replace("'","");
+		}
+		
+		setValues(minValue, maxValue);
+    }
+    
+    public void setValues(String startDate, String endDate) {
+		this.currentFromDate = startDate;
+		this.currentToDate = endDate;
+
+		if(hasCalendarsBeenAddedToDialogBox) {
+			setCalendarDate(fromCalendar, startDate);
+			setCalendarDate(toCalendar, endDate);
+		}
+		filterTimer.setNewRange(startDate, endDate);
+    }
+    
 }

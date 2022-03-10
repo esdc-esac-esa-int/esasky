@@ -25,6 +25,7 @@ import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.buttons.SignButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class PlanObservationPanel extends MovablePanel implements Hidable<PlanObservationPanel> {
@@ -216,6 +217,19 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     			i++;
     		}
     	}
+    }
+    
+    public List<FutureFootprintRow> getAllRows(){
+    	int i=0;
+    	List<FutureFootprintRow> list = new LinkedList<>();
+    	while(i<PlanObservationPanel.jwstPanel.getWidgetCount()) {
+    		if(PlanObservationPanel.jwstPanel.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
+        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.jwstPanel.getWidget(i);
+        		list.add(fr);
+    		}
+    		i++;
+    	}
+    	return list;
     }
 
     @Override

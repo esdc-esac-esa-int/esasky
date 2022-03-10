@@ -32,6 +32,9 @@ public interface IDescriptor {
     String getArchiveProductURI();
     void setArchiveProductURI(String archiveProductURI);
 
+    String getArchiveColumn();
+    void setArchiveColumn(String archiveColumn);
+
     List<MetadataDescriptor> getMetadata();
     void setMetadata(List<MetadataDescriptor> inputMetadata);
 

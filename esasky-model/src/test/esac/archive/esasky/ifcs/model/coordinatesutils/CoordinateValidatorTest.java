@@ -10,14 +10,15 @@ public class CoordinateValidatorTest {
 
     @Test
     public void checkInputType_J2000() {
-    	assertInputType("20 54 05.689 +37", SearchInputType.SPACE_RAhhmmssDECdeg, CoordinatesFrame.J2000);
-    	assertInputType("13:10:12.1 -88:12:1.123", SearchInputType.COLUMN_RAhhmmssDECddmmss, CoordinatesFrame.J2000);
-    	assertInputType("13:10:12.1 -88.123", SearchInputType.COLUMN_RAhhmmssDECdeg, CoordinatesFrame.J2000);
+    	assertInputType("20 54 05.689 +37", SearchInputType.SPACE_RA_HHMMSS_DEC_DEG, CoordinatesFrame.J2000);
+    	assertInputType("13:10:12.1 -88:12:1.123", SearchInputType.COLUMN_RA_HHMMSS_DEC_DDMMSS, CoordinatesFrame.J2000);
+    	assertInputType("13:10:12.1 -88.123", SearchInputType.COLUMN_RA_HHMMSS_DEC_DEG, CoordinatesFrame.J2000);
     	assertInputType("223:10:12.1 -88 12 1.123", SearchInputType.NOT_VALID, CoordinatesFrame.J2000);
     	assertInputType("44 12 12 +120 12 12", SearchInputType.NOT_VALID, CoordinatesFrame.J2000);
-    	assertInputType("223.10 -88.123", SearchInputType.RAdegDECdeg, CoordinatesFrame.J2000);
-    	assertInputType("12 10 12.1 -88.123", SearchInputType.SPACE_RAhhmmssDECdeg, CoordinatesFrame.J2000);
-    	assertInputType("12 10 12.1 -88 12 1.123", SearchInputType.SPACE_RAhhmmssDECddmmss, CoordinatesFrame.J2000);
+    	assertInputType("223.10 -88.123", SearchInputType.RA_DEG_DEC_DEG, CoordinatesFrame.J2000);
+    	assertInputType("12 10 12.1 -88.123", SearchInputType.SPACE_RA_HHMMSS_DEC_DEG, CoordinatesFrame.J2000);
+    	assertInputType("12 10 12.1 -88 12 1.123", SearchInputType.SPACE_RA_HHMMSS_DEC_DDMMSS, CoordinatesFrame.J2000);
+    	assertInputType("004535-731903", SearchInputType.NO_SPACE_RA_HHMMSS_DEC_DDMMSS, CoordinatesFrame.J2000);
     }
     
 //    @Test
