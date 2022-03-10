@@ -46,14 +46,15 @@ public class MissionTabButtons extends Composite {
         } 
         if(entity.getDescriptor().getWavelengths() != null) {
             canvasId = esaSkyUniqId + "_wavelengthCanvas";
+            descriptor = entity.getDescriptor();
             FlowPanel wavelengthCanvas = new FlowPanel("canvas");
             wavelengthCanvas.getElement().setAttribute("height", "25");
             wavelengthCanvas.getElement().setAttribute("width", "30");
             wavelengthCanvas.getElement().setId(canvasId);
             wavelengthCanvas.addStyleName("missionTab__wavelengthCanvas");
+            wavelengthCanvas.setTitle(WavelengthUtils.getLongName(descriptor));
             compositePanel.add(wavelengthCanvas);
-            descriptor = entity.getDescriptor();
-            compositePanel.setTitle(WavelengthUtils.getLongName(descriptor));
+            compositePanel.setTitle(descriptor.getGuiLongName());
         }
         if(entity.getTypeLogo() != null) {
         	Image logo = entity.getTypeLogo();
