@@ -709,6 +709,10 @@ public class TabulatorWrapper {
         }
     }
 
+    public native String[] getNonDatabaseColumns() /*-{
+        return $wnd.esasky.nonDatabaseColumns;
+    }-*/;
+
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
 		var settings = JSON.parse(settingsString); 
     	if(settings.selectable == null){
