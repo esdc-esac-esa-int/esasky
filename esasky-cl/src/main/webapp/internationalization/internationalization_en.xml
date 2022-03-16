@@ -3344,7 +3344,9 @@
 	</text>
 	
 	<text key="addSky_errorParsingProperties">
-		Error parsing properties due to: $DUE_TO$ 
+		Error parsing properties due to:
+		&lt;br&gt;
+		$DUE_TO$ 
 		&lt;br&gt;&lt;br&gt;
 		The problem might by that the HiPS service provider doesn't allow Cross origin requests (CORS)
 		or doesn't have a secure https protocol which unfortunately makes it impossible to load the HiPS into ESASky

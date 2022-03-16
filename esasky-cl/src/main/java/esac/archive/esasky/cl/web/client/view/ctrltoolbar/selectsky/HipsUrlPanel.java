@@ -10,7 +10,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
@@ -31,7 +31,7 @@ public class HipsUrlPanel extends PopupPanel implements Hidable<PopupPanel> {
 
 	private EsaSkyTextBox textBox;
 	private LoadingSpinner loadingSpinner = new LoadingSpinner(false);
-	private Label errorLabel;
+	private HTML errorLabel;
 	
 	private final Resources resources;
 	private CssResource style;
@@ -84,8 +84,7 @@ public class HipsUrlPanel extends PopupPanel implements Hidable<PopupPanel> {
         loadingSpinner.setVisible(false);
         textAndSpinnerPanel.add(textBox);
         textAndSpinnerPanel.add(loadingSpinner);
-		
-        errorLabel = new Label();
+        errorLabel = new HTML();
         errorLabel.setVisible(false);
         errorLabel.addStyleName("hipsErrorText");
         
@@ -135,7 +134,7 @@ public class HipsUrlPanel extends PopupPanel implements Hidable<PopupPanel> {
 				errorLabel.setVisible(true);
 				String fullErrorText = TextMgr.getInstance().getText("addSky_errorParsingProperties");
 				fullErrorText = fullErrorText.replace("$DUE_TO$", errorMsg);
-				errorLabel.setText(fullErrorText);
+				errorLabel.setHTML(fullErrorText);
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SKIESMENU, GoogleAnalytics.ACT_SKIESMENU_ADDURL_FAIL, url);
 
 				Log.error(errorMsg);

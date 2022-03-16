@@ -3098,7 +3098,7 @@
 	</text>
 	
 	<text key="addSky_errorParsingProperties">
-		Error en el análisis de las propiedades debido a: $DUE_TO$
+		Error en el análisis de las propiedades debido a: &lt;br&gt; $DUE_TO$
 		&lt;br&gt;&lt;br&gt;
 		Puede ser que el proveedor del servicio HiPS no permita Cross origin requests (CORS) o que no tenga un protocolo
         de seguridad https lo que hace imposible cargar el HiPS en ESASky
