@@ -139,7 +139,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     		return;
     	}
     	currentActiveTabIndex = tabIndex;
-    	
+
         if (tabIndex == TabIndex.GW.ordinal()) {
             onChangeToGwTab();
         } else if (tabIndex == TabIndex.NEUTRINO.ordinal()) {
@@ -164,6 +164,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         	tabLayoutPanel.selectTab(TabIndex.NEUTRINO.ordinal());
         	neutrinoTab.getTablePanel().selectTablePanel();
             updatePanelWidth(neutrinoTab);
+            AladinLiteWrapper.getInstance().toggleGrid(true);
         }
     }
 
@@ -344,6 +345,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
                     descriptor.setTapSTCSColumn("stcs50");
                     extraEntity.addShapes(rowData.wrapInArray());
+                    AladinLiteWrapper.getInstance().toggleGrid(true);
                 }
 
                 @Override
