@@ -119,6 +119,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	@Override
 	protected void onLoad() {
 		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
+		this.addResizeHandler(selectSkyPanel.getElement().getId());
 	}
 
 	private PopupHeader<SelectSkyPanel> createHeader() {
@@ -269,6 +270,12 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		} else {
 			show();
 		}
+	}
+
+	@Override
+	public void setMaxSize(){
+		getElement().getStyle().setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() - this.getAbsoluteTop() - 25);
+		getElement().getStyle().setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() - this.getAbsoluteLeft() - 25);
 	}
 
 	@Override
@@ -510,5 +517,12 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	public List<SkyRow> getHipsList(){
 		return skies;
 	}
+
+	private native void addResizeHandler(String id) /*-{
+		var movableResizablePanel = this;
+		new $wnd.ResizeSensor($doc.getElementById(id), function() {
+			movableResizablePanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel::setMaxSize()();
+		});
+	}-*/;
 
 }
