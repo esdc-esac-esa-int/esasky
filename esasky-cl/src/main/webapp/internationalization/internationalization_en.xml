@@ -3332,49 +3332,7 @@
 	<text key="selectionToolbox_polygonButtonTooltip">
 		Polygon Selection Tool
 	</text>
-	<text key="searchToolbox_title">
-		Search Tools
-	</text>
-	<text key="searchToolbox_helpHeader">
-		Search Tools
-	</text>
-	<text key="searchToolbox_helpText">
-		&lt;b&gt;Graphical Search Tool&lt;/b&gt;&lt;br&gt;
-		To search sources press and drag with either the box or circle tool selected.
-		A green box or circle will appear to indicate the search area. Once you are satisfied with an area, release the pointer.
-		&lt;br&gt;&lt;br&gt;
-		The polygon search tool allows you to search with an arbitrary shape. Each touch or click adds another point to the polygon.
-		Finish the polygon by either double clicking or pressing the first point.
-		&lt;br&gt;&lt;br&gt;&lt;b&gt;Text Search Tool&lt;/b&gt;&lt;br&gt;
-		In the drop down menu there are controls that make it possible to search a STCS region by text input.
-		Selecting different shapes will provide different input controls.
-		&lt;br&gt;&lt;br&gt;STCS strings are expected to follow the format of "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
-		&lt;br&gt;&lt;br&gt;&lt;b&gt;Examples: &lt;/b&gt;&lt;br&gt;
-		"BOX ICRS 11.421 41.764 10.071 41.765 10.079 40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
-		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
-		"CIRCLE ICRS 10.76 41.28 0.8"
-	</text>
-	<text key="searchToolbox_box">
-		Box
-	</text>
-	<text key="searchToolbox_polygon">
-		Polygon
-	</text>
-	<text key="searchToolbox_circle">
-		Cone
-	</text>
-	<text key="searchToolbox_boxButtonTooltip">
-		Box Search Tool
-	</text>
-	<text key="searchToolbox_circleButtonTooltip">
-		Cone Search Tool
-	</text>
-	<text key="searchToolbox_polygonButtonTooltip">
-		Polygon Search Tool
-	</text>
-	<text key="searchToolbox_submitButton">
-		Search
-	</text>
+
 	<text key="addSkyMenuItem_ESASKY">Add new row</text>
 	<text key="addSkyMenuItem_URL">HiPS from URL</text>
 	<text key="addSkyMenuItem_LOCAL">HiPS from your computer</text>
@@ -3712,6 +3670,54 @@
 	</text>
 
 
+	<!-- internationalization_zh.xml is up to date for everything above -->
+	<!-- internationalization_es.xml is up to date for everything above -->
+	
+	<text key="searchToolbox_title">
+		Search Tools
+	</text>
+	<text key="searchToolbox_helpHeader">
+		Search Tools
+	</text>
+	<text key="searchToolbox_helpText">
+		&lt;b&gt;Graphical Search Tool&lt;/b&gt;&lt;br&gt;
+		To search sources press and drag with either the box or circle tool selected.
+		A green box or circle will appear to indicate the search area. Once you are satisfied with an area, release the pointer.
+		&lt;br&gt;&lt;br&gt;
+		The polygon search tool allows you to search with an arbitrary shape. Each touch or click adds another point to the polygon.
+		Finish the polygon by either double clicking or pressing the first point.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Text Search Tool&lt;/b&gt;&lt;br&gt;
+		In the drop down menu there are controls that make it possible to search a STCS region by text input.
+		Selecting different shapes will provide different input controls.
+		&lt;br&gt;&lt;br&gt;STCS strings are expected to follow the format of "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Examples: &lt;/b&gt;&lt;br&gt;
+		"BOX ICRS 11.421 41.764 10.071 41.765 10.079 40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
+		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
+		"CIRCLE ICRS 10.76 41.28 0.8"
+	</text>
+	<text key="searchToolbox_box">
+		Box
+	</text>
+	<text key="searchToolbox_polygon">
+		Polygon
+	</text>
+	<text key="searchToolbox_circle">
+		Cone
+	</text>
+	<text key="searchToolbox_boxButtonTooltip">
+		Box Search Tool
+	</text>
+	<text key="searchToolbox_circleButtonTooltip">
+		Cone Search Tool
+	</text>
+	<text key="searchToolbox_polygonButtonTooltip">
+		Polygon Search Tool
+	</text>
+	<text key="searchToolbox_submitButton">
+		Search
+	</text>
+	
+	
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
 		The IceCube All-Sky Point-Source Events Catalog (2008 - 2018; Icecubepsc). IceCube has performed several searches for point-like sources of neutrinos. The events contained in this catalogue make up the sample used in IceCube's 10-year time-integrated neutrino point source search. Events in the sample are track-like neutrino candidates detected by IceCube between April 2008 and July 2018.
 		&lt;br&gt;&lt;br&gt;
@@ -3739,8 +3745,6 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
-	<!-- internationalization_es.xml is up to date for everything above -->
 	
 	<text key="header_session_save">
 		Save ESASky Session
