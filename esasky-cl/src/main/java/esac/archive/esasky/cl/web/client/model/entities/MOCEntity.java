@@ -99,9 +99,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 		@Override
 		public void run() {
-			if (descriptor.hasSearchArea()) {
-				return;
-			}
 
 			if (getCountStatus().hasMoved(descriptor)) {
 	    		filterRequested = true;
@@ -240,7 +237,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	
-    	if((targetOrder == 8 && tablePanel.getTapFilters().size() == 0) || descriptor.hasSearchArea()) {
+    	if((targetOrder == 8 && tablePanel.getTapFilters().size() == 0)) {
     		getPrecomputedMOC();
     		currentDataOrder = 8;
     	}
