@@ -1,0 +1,33 @@
+Init "Text" to "result" 
+Init "Initialised" to "initialised"
+Added a main wrapper "error"
+
+Events
+view_changed to viewChanged
+shape_selected to shapeSelected
+
+
+
+TreeMap:
+treemap: to treeMap
+mission: to mission
+info to values
+removed location put it under values
+
+
+
+Exttap:
+TapServives to tapServices
+IntersectColumn to intersectColumn
+
+
+Count:
+Total to total
+
+
+
+HiPS:
+on getAvailable:
+HiPS label to label
+HiPS URL to url
+hips_frame to frame

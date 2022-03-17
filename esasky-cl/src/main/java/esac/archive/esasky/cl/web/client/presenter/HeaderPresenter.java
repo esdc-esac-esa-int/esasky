@@ -358,8 +358,6 @@ public class HeaderPresenter {
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
 			view.closeDropdownMenu();
 			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
-			Session session = new Session();
-			session.saveState();
 		});
 		
 		view.addSessionSaveClickHandler(event -> {
