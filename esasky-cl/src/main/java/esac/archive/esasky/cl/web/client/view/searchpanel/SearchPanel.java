@@ -382,6 +382,11 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     @Override
     public void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList, String input, boolean unrecognizedInput) {
         this.resultsList.clear();
+        if(searchToolBoxButton.getToggleStatus()) {
+        	searchToolBoxButton.toggle();
+        	searchToolPanel.toggleToolbox();
+        }
+        
         final ESASkySearchResult simbadResult = resultList.getSimbadResult();
 
         foundInSimbad = false;
