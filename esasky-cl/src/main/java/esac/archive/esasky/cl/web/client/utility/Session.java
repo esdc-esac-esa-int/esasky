@@ -485,7 +485,7 @@ public class Session {
 		return ent.getDescriptor() instanceof GwDescriptor 
 				|| ent.getDescriptor() instanceof PublicationsDescriptor
 				|| ent instanceof ImageListEntity
-				|| ent.getDescriptor() instanceof IceCubeDescriptor
+				|| ent.getDescriptor() instanceof IceCubeDescriptor;
 	}
 	
 	private JSONArray getDataJson() {
