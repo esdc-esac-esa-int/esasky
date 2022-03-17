@@ -1952,7 +1952,9 @@ public class TabulatorWrapper {
 				}
 				
 				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+				
 				var displayName = $wnd.esasky.getDefaultLanguageText(label);
+				displayName  = $wnd.esasky.getColumnDisplayText(displayName);
 				
 				if(!filterData.hasOwnProperty(metaName)){	
 					filterData[metaName] = {};
