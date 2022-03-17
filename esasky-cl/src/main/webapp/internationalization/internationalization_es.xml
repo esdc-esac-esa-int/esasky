@@ -3370,6 +3370,9 @@ El segundo catálogo de fuentes de ROSAT a todo el cielo (second ROSAT all-sky s
 	<text key="Neutrino">
 		Neutrino
 	</text>
+	<text key="searchToolbox_radius">
+		Radio (deg)
+	</text>
 
 </Internationalization>
 
