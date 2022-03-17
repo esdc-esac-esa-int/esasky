@@ -232,13 +232,22 @@ public class EsaSkyWebConstants {
     public static final String SESSION_DATA_LINESTYLE = "line_style";
     public static final String SESSION_DATA_SOURCE_STYLE = "source_style";
 
-    public static final String SESSION_GW = "gw";
+    public static final String SESSION_SHOWING = "showing";
+    
+    public static final String SESSION_ICECUBE = "icecube";
+    public static final String SESSION_MME = "multi_messenger_events";
     public static final String SESSION_GW_ID = "gw_id";
 
     public static final String SESSION_PLANNING = "planning";
     public static final String SESSION_PLANNING_APERTURE = "aperture";
     public static final String SESSION_PLANNING_INSTRUMENT = "instrument";
     public static final String SESSION_PLANNING_ALL = "all";
+
+    public static final String SESSION_OUTREACH = "outreach_image";
+    public static final String SESSION_OUTREACH_IMAGE_ID = "id";
+    public static final String SESSION_OUTREACH_IMAGE_OPACITY = "opcatiry";
+    public static final String SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING = "footprints_showing";
+    public static final String SESSION_OUTREACH_IMAGE_PANEL_OPEN = "panel_open";
 
     public static final String SESSION_PUB = "publications";
     public static final String SESSION_PUB_TYPE = "type";

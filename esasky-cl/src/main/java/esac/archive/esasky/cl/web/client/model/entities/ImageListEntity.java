@@ -33,7 +33,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	private String outreachImageIdToBeOpened;
 	private long timeAtLastFoVFilter = 0L;
 
-	private static final String IDENTIFIER_KEY = "identifier";
+	public static final String IDENTIFIER_KEY = "identifier";
 	
 	private Timer updateTimer = new Timer() {
 		
@@ -102,6 +102,14 @@ public class ImageListEntity extends EsaSkyEntity {
 	@Override
 	public void addShapes(GeneralJavaScriptObject rows) {
 		super.addShapes(rows);
+		if(firstLoad) {
+			firstLoad = false;
+			performFoVFilter();
+			setSizeRatio(0.3);
+			if(isHidingShapes) {
+				toggleFootprints();
+			}
+		}
 		if(outreachImageIdToBeOpened != null) {
 			GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
 			for(int i = 0; i < rowDataArray.length; i++) {
@@ -115,11 +123,7 @@ public class ImageListEntity extends EsaSkyEntity {
 			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText("error"));
 		}
-		if(firstLoad) {
-			firstLoad = false;
-			performFoVFilter();
-			setSizeRatio(0.3);
-		}
+		
 	}
 	
 	public void setIdToBeOpened(String id) {
@@ -166,12 +170,20 @@ public class ImageListEntity extends EsaSkyEntity {
     	}
     	lastOpacity = opacity;
     }
+    
+    public double getOpacity() {
+    	return lastOpacity;
+    }
 
     public void setIsHidingShapes(boolean isHidingShapes) {
     	if(this.isHidingShapes != isHidingShapes) {
     		this.isHidingShapes = isHidingShapes;
     		toggleFootprints();
     	}
+    }
+    
+    public boolean isHidingShapes() {
+    	return isHidingShapes;
     }
 
 	private void toggleFootprints() {

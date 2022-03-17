@@ -108,6 +108,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	public void show() {
 		super.show();
 		getData();
+		isShowing = true;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
@@ -116,6 +117,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 	public void hide() {
 		super.hide();
+		isShowing = true;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
