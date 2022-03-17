@@ -13,6 +13,7 @@ var msg_func_input = function (cmd) {
 }
 
 function initChat2() {
+	var _this = this;
 	const styleOptions = {
 	        hideUploadButton: true,
 	        backgroundColor: 'rgba(0, 0, 0, 0.85)',
@@ -90,10 +91,10 @@ function initChat2() {
     // renders webchat
     window.WebChat.renderWebChat(
 		{
-			directLine: this.directline,
+			directLine: _this.directline,
 			locale: 'en',
 			styleOptions,
-			store: this.store,
+			store: _this.store,
 			selectVoice: () => ({ voiceURI: 'en-GB-George-Apollo' }),
 			webSpeechPonyfillFactory:  window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
 				credentials: async (credentials = {}) => {
@@ -121,7 +122,7 @@ function initChat2() {
         if (e.data.origin == "esasky" && e.data.msgId == "eva" && data != postback) {
             try {
                 postback = data;
-                this.store.dispatch({
+                _this.store.dispatch({
                     type: 'WEB_CHAT/SEND_POST_BACK',
                     payload: { value: 'postBack:' + data }
                 });
