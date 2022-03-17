@@ -481,14 +481,18 @@ public class Session {
 	}-*/;
 	
 	
+	private boolean checkIfSpecialEntity(GeneralEntityInterface ent) {
+		return ent.getDescriptor() instanceof GwDescriptor 
+				|| ent.getDescriptor() instanceof PublicationsDescriptor
+				|| ent instanceof ImageListEntity
+				|| ent.getDescriptor() instanceof IceCubeDescriptor
+	}
+	
 	private JSONArray getDataJson() {
 		JSONArray entArray = new JSONArray();
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 			
-			if(ent.getDescriptor() instanceof GwDescriptor 
-					|| ent.getDescriptor() instanceof PublicationsDescriptor
-					|| ent instanceof ImageListEntity
-					|| ent.getDescriptor() instanceof IceCubeDescriptor) {
+			if(checkIfSpecialEntity(ent)) {
 				continue;
 			}
 			
