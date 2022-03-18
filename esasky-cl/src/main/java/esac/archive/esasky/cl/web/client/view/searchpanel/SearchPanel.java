@@ -300,7 +300,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchToolBoxButton.setMediumStyle();
         searchToolBoxButton.setDarkStyle();
         searchToolBoxButton.addStyleName("searchPanel__selectionToolButton");
-        searchToolBoxButton.setTitle(TextMgr.getDefaultInstance().getText("searchToolbox_title"));
+        searchToolBoxButton.setTitle(TextMgr.getInstance().getText("searchToolbox_title"));
 
         searchToolBoxButton.addClickHandler(event -> {
             SearchPanel.this.searchToolPanel.toggleToolbox();

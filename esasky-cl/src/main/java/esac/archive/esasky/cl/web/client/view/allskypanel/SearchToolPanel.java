@@ -177,7 +177,7 @@ public class SearchToolPanel extends FlowPanel {
 
         FlowPanel radiusContainer = new FlowPanel();
         Label radiusLabel = new Label();
-        radiusLabel.setText("Radius (deg)");
+        radiusLabel.setText(TextMgr.getInstance().getText("searchToolbox_radius"));
         TextBox radiusText = new TextBox();
         radiusContainer.add(radiusLabel);
         radiusContainer.add(radiusText);
