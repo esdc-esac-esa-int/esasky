@@ -245,7 +245,7 @@ public class EsaSkyWebConstants {
 
     public static final String SESSION_OUTREACH = "outreach_image";
     public static final String SESSION_OUTREACH_IMAGE_ID = "id";
-    public static final String SESSION_OUTREACH_IMAGE_OPACITY = "opcatiry";
+    public static final String SESSION_OUTREACH_IMAGE_OPACITY = "opacity";
     public static final String SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING = "footprints_showing";
     public static final String SESSION_OUTREACH_IMAGE_PANEL_OPEN = "panel_open";
 
