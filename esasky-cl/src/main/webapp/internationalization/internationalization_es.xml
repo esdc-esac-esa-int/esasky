@@ -3313,7 +3313,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
-El segundo catálogo de fuentes de ROSAT a todo el cielo (second ROSAT all-sky survey source catalogue; 2RXS) es la segunda versión pública del catálogo de fuentes puntuales detectadas en todo el cielo de ROSAT (RASS) en las observaciones realizadas con el "position-sensitive proportional counter - PSPC entre junio de 1990 y agosto de 1991, y es una version extendida y revisada de los catálogos de fuentes débiles y brillantes.		&lt;br&gt;&lt;br&gt;
+		El segundo catálogo de fuentes de ROSAT a todo el cielo (second ROSAT all-sky survey source catalogue; 2RXS) es la segunda versión pública del catálogo de fuentes puntuales detectadas en todo el cielo de ROSAT (RASS) en las observaciones realizadas con el "position-sensitive proportional counter - PSPC entre junio de 1990 y agosto de 1991, y es una version extendida y revisada de los catálogos de fuentes débiles y brillantes.		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#2RXS"
 		target="_blank"&gt;
@@ -3321,8 +3321,7 @@ El segundo catálogo de fuentes de ROSAT a todo el cielo (second ROSAT all-sky s
 		&lt;/a&gt; 
 	</text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
-		A multi-frequency selected catalogue of high energy and very high energy gamma-ray blazars and blazar candidates (2WHSP). This catalogue contains the largest and most complete list of High Synchrotron Peaked blazars (HSPs) available to date (in 2017), which is an expansion of the 1WHSP catalog of gamma-ray source candidates off the Galactic plane. A number of multi-wavelength surveys (in the radio, infrared and X-ray bands) have been cross-matched and applied selection criteria based on the radio to IR and IR to X-ray spectral slopes. 
-		&lt;br&gt;&lt;br&gt;
+Catálogo de blazars y candidates a blazars de alta  energía y muy alta energía en rayos gamma seleccionados en multi-frecuencia (2WHSP). Este catálogo contiene la mayor y más completa lista de HSPs (High Synchrotron Peaked blazars) disponible hasta la fecha (en 2017), que es una extensión del catálogo de candidatos a fuentes de rayos gamma fuera del plano galáctico (1WHSP).		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#WHSP"
 		target="_blank"&gt;
