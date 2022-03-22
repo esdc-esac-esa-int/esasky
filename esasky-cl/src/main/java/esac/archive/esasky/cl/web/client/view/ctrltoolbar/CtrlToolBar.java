@@ -874,7 +874,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     @Override
     public JSONObject getAllGWData() {
-        return gwPanel.getAllData();
+        return gwPanel.getAllGWData();
+    }
+    @Override
+    public JSONObject getNeutrinoEventData() {
+    	return gwPanel.getNeutrinoData();
     }
 
     @Override

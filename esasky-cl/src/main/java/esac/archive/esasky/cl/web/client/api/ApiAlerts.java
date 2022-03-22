@@ -16,15 +16,28 @@ public class ApiAlerts extends ApiBase{
 		this.controller = controller;
 	}
 	
-	public void openAlertPanel() {
+	public void openGWPanel() {
 		controller.getRootPresenter().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.GW.ordinal());
+	}
+	
+	public void openNeutrinoPanel() {
+		controller.getRootPresenter().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.NEUTRINO.ordinal());
 	}
 	
 	public void closeAlertPanel() {
 		controller.getRootPresenter().getCtrlTBPresenter().closeGWPanel();
 	}
 
+	public void getNeutrinoEventData(JavaScriptObject widget) {
+		openNeutrinoPanel();
+		JSONObject data = controller.getRootPresenter().getCtrlTBPresenter().getNeutrinoEventData();
+		JSONObject obj = new JSONObject();
+		obj.put("data",data);
+		sendBackToWidget(obj, null, widget);
+	}
+	
 	public void getAvailableGWEvents(JavaScriptObject widget) {
+		openGWPanel();
 		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getGWIds();
 		JSONObject obj = new JSONObject();
 		obj.put("Available_ids", ids);
@@ -32,6 +45,7 @@ public class ApiAlerts extends ApiBase{
 	}
 
 	public void getGWEventData(JavaScriptObject widget, String id) {
+		openGWPanel();
 		JSONObject data;
 		try {
 			data = controller.getRootPresenter().getCtrlTBPresenter().getGWData(id);
@@ -47,6 +61,7 @@ public class ApiAlerts extends ApiBase{
 	}
 	
 	public void getAllGWData(JavaScriptObject widget) {
+		openGWPanel();
 		JSONObject data = controller.getRootPresenter().getCtrlTBPresenter().getAllGWData();
 		JSONObject obj = new JSONObject();
 		obj.put("data",data);

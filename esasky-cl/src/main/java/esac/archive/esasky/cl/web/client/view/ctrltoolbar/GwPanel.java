@@ -472,7 +472,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     public JSONArray getIds() {
         JSONArray result = new JSONArray();
 
-        JSONObject data = getAllData();
+        JSONObject data = getAllGWData();
         for (String key : data.keySet()) {
             JSONObject value = data.get(key).isObject();
             if (value != null && value.containsKey(GRACE_ID)) {
@@ -482,17 +482,28 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         return result;
     }
 
-    public JSONObject getAllData() {
+    public JSONObject getAllGWData() {
         TabItem tabItem = getTabItem(TabIndex.GW);
-        if (tabItem != null) {
+        if (tabItem != null && tabItem.dataLoaded) {
             return tabItem.getTablePanel().exportAsJSON(false);
         } else {
+        	loadGwData(null);
             return null;
         }
     }
+    
+    public JSONObject getNeutrinoData() {
+    	TabItem tabItem = getTabItem(TabIndex.NEUTRINO);
+    	if (tabItem != null && tabItem.dataLoaded) {
+    		return tabItem.getTablePanel().exportAsJSON(false);
+    	} else {
+    		loadNeutrinoData();
+    		return null;
+    	}
+    }
 
     public JSONObject getData4Id(String id) {
-        JSONObject data = getAllData();
+        JSONObject data = getAllGWData();
         for (String key : data.keySet()) {
             JSONObject value = data.get(key).isObject();
             if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
@@ -506,7 +517,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     public void showEvent(String id) {
         TabItem tabItem = getTabItem(TabIndex.GW);
         if (tabItem != null) {
-            JSONObject data = getAllData();
+            JSONObject data = getAllGWData();
             for (String key : data.keySet()) {
                 JSONObject value = data.get(key).isObject();
                 if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {

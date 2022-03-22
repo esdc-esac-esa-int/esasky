@@ -82,6 +82,8 @@ public class CtrlToolBarPresenter {
         JSONObject getGWData(String id);
 
         JSONObject getAllGWData();
+        
+        JSONObject getNeutrinoEventData();
 
         void showGWEvent(String id);
 
@@ -344,6 +346,10 @@ public class CtrlToolBarPresenter {
 
     public JSONObject getAllGWData() {
         return view.getAllGWData();
+    }
+    
+    public JSONObject getNeutrinoEventData() {
+    	return view.getNeutrinoEventData();
     }
 
     public void showGWEvent(String id) {

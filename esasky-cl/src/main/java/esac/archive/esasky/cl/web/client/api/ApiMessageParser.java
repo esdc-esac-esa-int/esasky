@@ -667,10 +667,17 @@ public class ApiMessageParser {
 				// API ALERTS
 				case 'openGWPanel':
 					console.log('openGWPanel event captured');
-					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openAlertPanel()();
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openGWPanel()();
 					break;	
 					
+				case 'openNeutrinoPanel':
+					console.log('openGWPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openNeutrinoPanel()();
+					break;	
+					
+				//Keep for backward compatibility
 				case 'closeGWPanel':
+				case 'closeAlertPanel':
 					console.log('closeGWPanel event captured');
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::closeAlertPanel()();
 					break;	
@@ -689,6 +696,12 @@ public class ApiMessageParser {
 				case 'getAllGWData':
 					console.log('getAllGWData event captured');
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getAllGWData(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;	
+					
+				case 'getNeutrinoEventData':
+					console.log('getNeutrinoEventData event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getNeutrinoEventData(Lcom/google/gwt/core/client/JavaScriptObject;)
 						(e);
 					break;	
 					
