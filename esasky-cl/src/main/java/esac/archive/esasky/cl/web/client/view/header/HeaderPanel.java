@@ -729,6 +729,14 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			feedbackButton.setVisible(false);
 			dropdownFeedbackEntry.setVisible(true);
 		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)) {
+			dropdownSessionSaveEntry.setVisible(true);
+			dropdownSessionRestoreEntry.setVisible(true);
+		}else {
+			dropdownSessionSaveEntry.setVisible(false);
+			dropdownSessionRestoreEntry.setVisible(false);
+		}
 	}
 
 }

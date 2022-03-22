@@ -321,6 +321,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(ModuleUpdatedEvent.TYPE, event -> {
            if(EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
                GUISessionStatus.onScienceModeChanged(event.getValue());
+               updateModuleVisibility();
            }
         });
 
