@@ -90,7 +90,12 @@ public class Session {
 	
 	public void restoreState(String jsonString) {
 		GeneralJavaScriptObject saveStateObj = GeneralJavaScriptObject.createJsonObject(jsonString);
+		restoreState(saveStateObj);
+	}
+	
+	public void restoreState(GeneralJavaScriptObject saveStateObj) {
 		try {
+			restoreSettings(saveStateObj);
 			restoreLocation(saveStateObj);
 			restoreData(saveStateObj);
 			restoreHipsStack(saveStateObj);

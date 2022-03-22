@@ -5,7 +5,7 @@ public class ApiMessageParser {
 	public static native void init(Api api,  ApiCounts apiCounts, ApiEvents apiEvents, 
 			ApiExtTap apiExtTap, ApiHips apiHips, ApiMoc apiMoc, ApiModules apiModules, ApiOverlay apiOverlay,
 			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage,
-			ApiAlerts apiAlerts, ApiSearch apiSearch, ApiPlayer apiPlayer) /*-{
+			ApiAlerts apiAlerts, ApiSearch apiSearch, ApiSession apiSession, ApiPlayer apiPlayer) /*-{
 	
 		function handleMessage(e){
 			var msg = e.data
@@ -742,11 +742,15 @@ public class ApiMessageParser {
 
 				case 'saveState':
 					console.log('saveState event captured');
-					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiBase::saveState()()
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::saveState()()
 					break;
 				case 'restoreState':
-					console.log('saveState event captured');
-					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiBase::restoreState()()
+					console.log('restoreState event captured');
+					var state = null
+					if(msg.content.hasOwnProperty('state')){
+						state = msg.content['state'];
+					}
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::restoreState(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(state)
 					break;
 
 

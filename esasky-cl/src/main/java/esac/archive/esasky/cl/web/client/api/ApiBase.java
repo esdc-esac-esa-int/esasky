@@ -137,12 +137,4 @@ public abstract class ApiBase {
 		return widget && widget.data.origin === "pyesasky";
 	}-*/;
 	
-	public void saveState() {
-		Session session = new Session();
-		session.saveState();
-	}
-	public void restoreState() {
-		Session session = new Session();
-		session.restoreState();
-	}
 }

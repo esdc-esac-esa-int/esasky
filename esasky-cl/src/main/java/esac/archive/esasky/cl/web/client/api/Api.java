@@ -7,6 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import esac.archive.esasky.cl.web.client.EsaSkyWeb;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.Session;
 
 public class Api extends ApiBase{
 	
@@ -43,11 +44,13 @@ public class Api extends ApiBase{
 		ApiImage apiImage = new ApiImage(controller);
 		ApiAlerts apiAlerts = new ApiAlerts(controller);
 		ApiSearch apiSearch = new ApiSearch(controller);
+		ApiSession apiSession = new ApiSession(controller);
 		ApiPlayer apiPlayer = new ApiPlayer(controller);
 		
 		
 		ApiMessageParser.init(this, apiCounts, apiEvents, apiExtTap, apiHips, apiMoc, apiModules,
-				apiOverlay, apiPanel, apiPlanning, apiPlot, apiView, apiImage, apiAlerts, apiSearch, apiPlayer);
+				apiOverlay, apiPanel, apiPlanning, apiPlot, apiView, apiImage, apiAlerts, apiSearch,
+				apiSession, apiPlayer);
 
 		Log.debug("[Api] Ready!!");
 		
