@@ -40,12 +40,12 @@ public class ApiSearch extends ApiBase {
     }
 
 
-    public void coneSearch(String ra, String dec, String radius) {
-        controller.getRootPresenter().getTargetPresenter().coneSearch(ra, dec, radius);
+    public void setConeSearchArea(String ra, String dec, String radius) {
+        controller.getRootPresenter().getTargetPresenter().setConeSearchArea(ra, dec, radius);
     }
 
-    public void polygonSearch(String stcs) {
-        controller.getRootPresenter().getTargetPresenter().polygonSearch(stcs);
+    public void setPolygonSearchArea(String stcs) {
+        controller.getRootPresenter().getTargetPresenter().setPolygonSearchArea(stcs);
     }
 
     public void clearSearchArea() {

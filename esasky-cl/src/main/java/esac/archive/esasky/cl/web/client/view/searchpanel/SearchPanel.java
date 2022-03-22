@@ -844,14 +844,14 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     }
 
     @Override
-    public boolean coneSearch(String ra, String dec, String radius) {
+    public boolean setConeSearchArea(String ra, String dec, String radius) {
         searchToolBoxButton.setToggleStatus(true);
         searchToolPanel.showWithConeDetails();
         return searchToolPanel.createConicalSearchArea(ra, dec, radius);
     }
 
     @Override
-    public boolean polygonSearch(String stcs) {
+    public boolean setPolygonSearchArea(String stcs) {
         searchToolBoxButton.setToggleStatus(true);
         searchToolPanel.showWithPolyDetails();
         return searchToolPanel.createPolygonSearchArea(stcs);
