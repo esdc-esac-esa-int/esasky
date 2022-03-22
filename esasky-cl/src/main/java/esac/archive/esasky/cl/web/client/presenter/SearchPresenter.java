@@ -157,9 +157,9 @@ public class SearchPresenter {
 
         void closeSearchTool();
 
-        boolean coneSearch(String ra, String dec, String radius);
+        boolean setConeSearchArea(String ra, String dec, String radius);
 
-        boolean polygonSearch(String stcs);
+        boolean setPolygonSearchArea(String stcs);
 
         void clearSearchArea();
     }
@@ -767,12 +767,12 @@ public class SearchPresenter {
         view.closeSearchTool();
     }
 
-    public boolean coneSearch(String ra, String dec, String radius) {
-        return view.coneSearch(ra, dec, radius);
+    public boolean setConeSearchArea(String ra, String dec, String radius) {
+        return view.setConeSearchArea(ra, dec, radius);
     }
 
-    public boolean polygonSearch(String stcs) {
-        return view.polygonSearch(stcs);
+    public boolean setPolygonSearchArea(String stcs) {
+        return view.setPolygonSearchArea(stcs);
     }
 
     public void clearSearchArea() {
