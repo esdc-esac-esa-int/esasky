@@ -832,6 +832,37 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     }
 
     @Override
+    public void showSearchTool() {
+        searchToolBoxButton.setToggleStatus(true);
+        searchToolPanel.showToolbox();
+    }
+
+    @Override
+    public void closeSearchTool() {
+        searchToolBoxButton.setToggleStatus(false);
+        searchToolPanel.hideToolbox();
+    }
+
+    @Override
+    public boolean coneSearch(String ra, String dec, String radius) {
+        searchToolBoxButton.setToggleStatus(true);
+        searchToolPanel.showWithConeDetails();
+        return searchToolPanel.createConicalSearchArea(ra, dec, radius);
+    }
+
+    @Override
+    public boolean polygonSearch(String stcs) {
+        searchToolBoxButton.setToggleStatus(true);
+        searchToolPanel.showWithPolyDetails();
+        return searchToolPanel.createPolygonSearchArea(stcs);
+    }
+
+    @Override
+    public void clearSearchArea() {
+        AladinLiteWrapper.getAladinLite().clearSearchArea();
+    }
+
+    @Override
     public void showSearchResultsOnTargetList(List<ESASkySearchResult> searchResults, String title) {
         targetListPanel.show();
         targetListButton.setToggleStatus(true);

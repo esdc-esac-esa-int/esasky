@@ -29,4 +29,26 @@ public class ApiSearch extends ApiBase {
     public void closeTargetList() {
         controller.getRootPresenter().getTargetPresenter().closeTargetList();
     }
+
+
+    public void showSearchTool() {
+        controller.getRootPresenter().getTargetPresenter().showSearchTool();
+    }
+
+    public void closeSearchTool() {
+        controller.getRootPresenter().getTargetPresenter().closeSearchTool();
+    }
+
+
+    public void coneSearch(String ra, String dec, String radius) {
+        controller.getRootPresenter().getTargetPresenter().coneSearch(ra, dec, radius);
+    }
+
+    public void polygonSearch(String stcs) {
+        controller.getRootPresenter().getTargetPresenter().polygonSearch(stcs);
+    }
+
+    public void clearSearchArea() {
+        controller.getRootPresenter().getTargetPresenter().clearSearchArea();
+    }
 }

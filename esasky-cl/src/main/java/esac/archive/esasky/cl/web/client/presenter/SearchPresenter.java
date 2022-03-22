@@ -152,6 +152,16 @@ public class SearchPresenter {
         void closeTargetList();
 
         void toggleTargetList();
+
+        void showSearchTool();
+
+        void closeSearchTool();
+
+        boolean coneSearch(String ra, String dec, String radius);
+
+        boolean polygonSearch(String stcs);
+
+        void clearSearchArea();
     }
 
     /**
@@ -747,5 +757,25 @@ public class SearchPresenter {
 
     public void toggleTargetList() {
         view.toggleTargetList();
+    }
+
+    public void showSearchTool() {
+        view.showSearchTool();
+    }
+
+    public void closeSearchTool() {
+        view.closeSearchTool();
+    }
+
+    public boolean coneSearch(String ra, String dec, String radius) {
+        return view.coneSearch(ra, dec, radius);
+    }
+
+    public boolean polygonSearch(String stcs) {
+        return view.polygonSearch(stcs);
+    }
+
+    public void clearSearchArea() {
+        view.clearSearchArea();
     }
 }
