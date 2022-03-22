@@ -730,6 +730,27 @@ public class ApiMessageParser {
 					console.log('closeTargetList event captured');
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::closeTargetList()()
 					break;
+				case 'showSearchTool':
+					console.log('showSearchTool event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::showSearchTool()()
+					break;
+				case 'closeSearchTool':
+					console.log('closeSearchTool event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::closeSearchTool()()
+					break;
+				case 'coneSearch':
+					console.log('coneSearch event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::coneSearch(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+						(msg.content.ra, msg.content.dec, msg.content.radius)
+					break;
+				case 'polygonSearch':
+					console.log('polygonSearch event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::polygonSearch(Ljava/lang/String;)(msg.content.stcs)
+					break;
+				case 'clearSearchArea':
+					console.log('clearSearchArea event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::clearSearchArea()();
+					break;
 
 
 				// API PLAYER

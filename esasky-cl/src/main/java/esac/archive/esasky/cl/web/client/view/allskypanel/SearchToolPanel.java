@@ -127,6 +127,18 @@ public class SearchToolPanel extends FlowPanel {
         hideSearchAreaDetails();
     }
 
+    public void showWithPolyDetails() {
+        deToggleAllButtons();
+        polyButton.setToggleStatus(true);
+        showToolbox();
+    }
+
+    public void showWithConeDetails() {
+        deToggleAllButtons();
+        circleButton.setToggleStatus(true);
+        showToolbox();
+    }
+
     public void showToolbox() {
         toolboxIsVisible = true;
         setVisible(true);
@@ -213,29 +225,21 @@ public class SearchToolPanel extends FlowPanel {
         }, KeyUpEvent.getType());
 
         btn.addClickHandler(event -> {
-            try {
-                String raStr = raText.getText();
-                String decStr = decText.getText().trim();
+            String raStr = raText.getText();
+            String decStr = decText.getText().trim();
+            String radiusStr = radiusText.getText();
 
-                CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
-                double[] coords = ConvertCoordinatesToFrame(raStr, decStr, cooFrame, CoordinatesFrame.J2000);
+            detailContainer.removeStyleName(inputErrorClassName);
+            boolean success = createConicalSearchArea(raStr, decStr, radiusStr);
 
-                detailContainer.removeStyleName(inputErrorClassName);
-                AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
-                        + " " + coords[1] + " " + radiusText.getText());
-                AladinLiteWrapper.getAladinLite().endSelectionMode();
-            } catch (Exception ex) {
+            if (!success) {
                 detailContainer.addStyleName(inputErrorClassName);
-                Log.debug(ex.getMessage(), ex);
-                DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
-                        TextMgr.getInstance().getText("error"));
             }
-
         });
 
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, () -> {
             try {
-                String[] coordStr = UpdateCoordinateFormat(new RaPosition(raText.getText()), new DecPosition(decText.getText(), true));
+                String[] coordStr = updateCoordinateFormat(new RaPosition(raText.getText()), new DecPosition(decText.getText(), true));
                 raText.setText(coordStr[0]);
                 decText.setText(coordStr[1]);
             } catch (Exception ex) {
@@ -244,7 +248,7 @@ public class SearchToolPanel extends FlowPanel {
         });
 
 
-        CommonEventBus.getEventBus().addHandler(AladinLiteCoordinateFrameChangedEvent.TYPE, (cooFrameEvent) -> {
+        CommonEventBus.getEventBus().addHandler(AladinLiteCoordinateFrameChangedEvent.TYPE, cooFrameEvent -> {
             try {
                 CoordinatesFrame oldCooFrame;
                 CoordinatesFrame newCooFrame;
@@ -262,8 +266,8 @@ public class SearchToolPanel extends FlowPanel {
 
                 String raStr = raText.getText();
                 String decStr = decText.getText();
-                double[] coords = ConvertCoordinatesToFrame(raStr, decStr, oldCooFrame, newCooFrame);
-                String[] coordStr = UpdateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
+                double[] coords = convertCoordinatesToFrame(raStr, decStr, oldCooFrame, newCooFrame);
+                String[] coordStr = updateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
                 raText.setText(coordStr[0]);
                 decText.setText(coordStr[1]);
             } catch (Exception ex) {
@@ -278,9 +282,9 @@ public class SearchToolPanel extends FlowPanel {
                 radiusText.setText(searchAreaEvent.getSearchArea().getRadius());
 
                 CoordinatesObject coordObj = searchAreaEvent.getSearchArea().getJ2000Coordinates()[0];
-                double[] coords = ConvertCoordinatesToFrame(Double.toString(coordObj.getRaDeg()), Double.toString(coordObj.getDecDeg()), CoordinatesFrame.J2000);
+                double[] coords = convertCoordinatesToFrame(Double.toString(coordObj.getRaDeg()), Double.toString(coordObj.getDecDeg()), CoordinatesFrame.J2000);
 
-                String[] coordStr = UpdateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
+                String[] coordStr = updateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
                 raText.setText(coordStr[0]);
                 decText.setText(coordStr[1]);
                 showSearchAreaDetails();
@@ -291,7 +295,29 @@ public class SearchToolPanel extends FlowPanel {
         return detailContainer;
     }
 
-    private String[] UpdateCoordinateFormat(RaPosition raPos, DecPosition decPos) {
+    public boolean createConicalSearchArea(String ra, String dec, String radius) {
+        boolean success = true;
+
+        try {
+            CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
+            double[] coords = convertCoordinatesToFrame(ra, dec, cooFrame, CoordinatesFrame.J2000);
+
+            AladinLiteWrapper.getAladinLite().createSearchArea("CIRCLE ICRS " + coords[0]
+                    + " " + coords[1] + " " + radius);
+            AladinLiteWrapper.getAladinLite().endSelectionMode();
+        } catch (Exception ex) {
+            Log.debug(ex.getMessage(), ex);
+            DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"),
+                    TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                    TextMgr.getInstance().getText("error"));
+
+            success =  false;
+        }
+
+        return success;
+    }
+
+    private String[] updateCoordinateFormat(RaPosition raPos, DecPosition decPos) {
 
         if (GUISessionStatus.isShowingCoordinatesInDegrees()) {
             return new String[] {Double.toString(raPos.getRaDeg()), Double.toString(decPos.getDecDegFix())};
@@ -300,12 +326,12 @@ public class SearchToolPanel extends FlowPanel {
         }
     }
 
-    private double[] ConvertCoordinatesToFrame(String raStr, String decStr, CoordinatesFrame oldCooFrame) {
+    private double[] convertCoordinatesToFrame(String raStr, String decStr, CoordinatesFrame oldCooFrame) {
         CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
-        return ConvertCoordinatesToFrame(raStr, decStr, oldCooFrame, cooFrame);
+        return convertCoordinatesToFrame(raStr, decStr, oldCooFrame, cooFrame);
     }
 
-    private double[] ConvertCoordinatesToFrame(String raStr, String decStr, CoordinatesFrame oldCooFrame, CoordinatesFrame newCooFrame) {
+    private double[] convertCoordinatesToFrame(String raStr, String decStr, CoordinatesFrame oldCooFrame, CoordinatesFrame newCooFrame) {
         if (!decStr.matches("^([+\\-]).*")) {
             decStr = "+" + decStr;
         }
@@ -342,20 +368,12 @@ public class SearchToolPanel extends FlowPanel {
 
         String inputErrorClassName = "input__error";
         btn.addClickHandler(event -> {
-            try {
-                stcsText.removeStyleName(inputErrorClassName);
-                // Discard drawn shape if any
-                AladinLiteWrapper.getAladinLite().setSelectionMode("discard");
-                AladinLiteWrapper.getAladinLite().endSelectionMode();
-                // Create new search area
-                AladinLiteWrapper.getAladinLite().createSearchArea(stcsText.getText());
-            } catch (Exception ex) {
-                stcsText.addStyleName(inputErrorClassName);
-                Log.debug(ex.getMessage(), ex);
-                DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
-                        TextMgr.getInstance().getText("error"));
-            }
+            stcsText.removeStyleName(inputErrorClassName);
+            boolean success = createPolygonSearchArea(stcsText.getText());
 
+            if (!success) {
+                stcsText.addStyleName(inputErrorClassName);
+            }
         });
 
         CommonEventBus.getEventBus().addHandler(AladinLiteSelectSearchAreaEvent.TYPE, searchAreaEvent -> {
@@ -371,6 +389,26 @@ public class SearchToolPanel extends FlowPanel {
 
         return detailContainer;
     }
+
+    public boolean createPolygonSearchArea(String stcs) {
+        boolean success = true;
+
+        try {
+            // Discard drawn shape if any
+            AladinLiteWrapper.getAladinLite().setSelectionMode("discard");
+            AladinLiteWrapper.getAladinLite().endSelectionMode();
+            // Create new search area
+            AladinLiteWrapper.getAladinLite().createSearchArea(stcs);
+        } catch (Exception ex) {
+            Log.debug(ex.getMessage(), ex);
+            DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"), TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+                    TextMgr.getInstance().getText("error"));
+            success = false;
+        }
+
+        return success;
+    }
+
 
     private void initView() {
 
