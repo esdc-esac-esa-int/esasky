@@ -838,7 +838,7 @@
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
     	The stacked catalogue 4XMM-DR11s has been compiled from 1,475 groups,
-		comprising 7803 overlapping good-quality XMM-Newton observations. They
+		comprising 8,292  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
 		3 and 2020 December 17 which overlap by at least one arcminute in radius
 		and are not affected by very high background emission. It contains 358,809
