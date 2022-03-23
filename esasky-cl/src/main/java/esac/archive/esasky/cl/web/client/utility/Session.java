@@ -53,6 +53,19 @@ public class Session {
 	
 	public void saveState() {
 		
+		JSONObject stateObj = saveStateAsObj();
+
+		StringBuilder fileNameBuilder = new StringBuilder("esasky_session_");
+		Date date = new Date();
+		DateTimeFormat dtf = DateTimeFormat.getFormat("yyyyMMdd_HHmmss");
+		fileNameBuilder.append(dtf.format(date, TimeZone.createTimeZone(0)));
+
+		fileNameBuilder.append(".json");
+		writeToFile(stateObj.toString(), fileNameBuilder.toString());
+		
+	}
+	
+	public JSONObject saveStateAsObj() {
 		JSONObject stateObj = new JSONObject();
 
 		stateObj.put(EsaSkyWebConstants.SESSION_LOCATION, getLocationJson());
@@ -71,15 +84,8 @@ public class Session {
 		stateObj.put(EsaSkyWebConstants.SESSION_PUB, getPublicationJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
-
-		StringBuilder fileNameBuilder = new StringBuilder("esasky_session_");
-		Date date = new Date();
-		DateTimeFormat dtf = DateTimeFormat.getFormat("yyyyMMdd_HHmmss");
-		fileNameBuilder.append(dtf.format(date, TimeZone.createTimeZone(0)));
-
-		fileNameBuilder.append(".json");
-		writeToFile(stateObj.toString(), fileNameBuilder.toString());
 		
+		return stateObj;
 	}
 	
 	public void restoreState() {

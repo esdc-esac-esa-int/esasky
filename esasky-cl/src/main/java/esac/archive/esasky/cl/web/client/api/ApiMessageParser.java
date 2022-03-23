@@ -772,12 +772,11 @@ public class ApiMessageParser {
 					break;
 
 
-
-
 				case 'saveState':
 					console.log('saveState event captured');
-					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::saveState()()
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::saveState(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;
+					
 				case 'restoreState':
 					console.log('restoreState event captured');
 					var state = null
