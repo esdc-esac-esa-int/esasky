@@ -13,13 +13,18 @@ import com.google.gwt.user.client.Timer;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectSearchAreaEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Controller;
+import esac.archive.esasky.cl.web.client.model.DecPosition;
+import esac.archive.esasky.cl.web.client.model.RaPosition;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.TabObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 public class ApiEvents extends ApiBase{
@@ -126,6 +131,45 @@ public class ApiEvents extends ApiBase{
 				});
 	}
 	
+	public void registerSearchAreaCallback(final JavaScriptObject widget) {
+		
+		CommonEventBus.getEventBus().addHandler(AladinLiteSelectSearchAreaEvent.TYPE, searchAreaEvent -> {
+			JSONObject area = new JSONObject();
+			if (searchAreaEvent == null || searchAreaEvent.getSearchArea() == null) {
+				return;
+			}
+	        if (searchAreaEvent.getSearchArea().isCircle()) {
+	            String rad = searchAreaEvent.getSearchArea().getRadius();
+	
+	            CoordinatesObject coordObj = searchAreaEvent.getSearchArea().getJ2000Coordinates()[0];
+	            double ra  = coordObj.getRaDeg();
+	            double dec  = coordObj.getDecDeg();
+	            
+	            area.put(ApiConstants.SEARCH_AREA_TYPE, new JSONString(ApiConstants.SEARCH_AREA_CIRCLE));
+	            area.put(ApiConstants.RA, new JSONNumber(ra));
+	            area.put(ApiConstants.DEC, new JSONNumber(dec));
+	            area.put(ApiConstants.RADIUS, new JSONNumber(Double.parseDouble(rad)));
+	            
+	            
+	        }else {
+	        	JSONArray array = new JSONArray();
+	        	for(CoordinatesObject coor : searchAreaEvent.getSearchArea().getJ2000Coordinates()){
+
+	        		array.set(array.size(), new JSONNumber(coor.getRaDeg()));
+	        		array.set(array.size(), new JSONNumber(coor.getDecDeg()));
+	        	}
+	        	area.put(ApiConstants.SEARCH_AREA_TYPE, new JSONString(ApiConstants.SEARCH_AREA_POLY));
+	        	area.put(ApiConstants.SEARCH_AREA_COORDINATES, array);
+	        }
+	        	
+	        JSONObject result = new JSONObject();
+	        result.put(ApiConstants.VALUES, area);
+	        result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_SEARC_AREA));
+	        sendBackEventToWidget(result, widget);
+        });
+					
+	}
+	
 	public void registerFoVChangedListener(JavaScriptObject widget) {
 		ApiEvents _this = this;
 		
@@ -214,6 +258,7 @@ public class ApiEvents extends ApiBase{
 		registerTreeMapListener(widget);
 		registerButtonListener(widget);
 		registerShapeAreaSelectionCallback(widget);
+		registerSearchAreaCallback(widget);
 		
 	}
 
