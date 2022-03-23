@@ -250,7 +250,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         textBoxHolder.add(this.searchTextBox);
         textBoxHolder.add(createTargetListBtn());
-        textBoxHolder.add(createSelectionToolboxBtn());
+        textBoxHolder.add(createSearchToolboxBtn());
         MainLayoutPanel.addElementToMainArea(targetListPanel);
 		targetListPanel.hide();
         textBoxHolder.add(clearTextButton);
@@ -291,7 +291,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         targetListPanel.definePositionFromTopAndLeft();
     }
 
-    private Widget createSelectionToolboxBtn() {
+    private Widget createSearchToolboxBtn() {
 
         FlowPanel selectionContainer = new FlowPanel();
 
@@ -308,6 +308,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         });
 
         selectionContainer.add(searchToolBoxButton);
+
+        if (!Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_TOOL)) {
+            searchToolBoxButton.getElement().getStyle().setDisplay(Display.NONE);
+        }
 
         return selectionContainer;
     }
