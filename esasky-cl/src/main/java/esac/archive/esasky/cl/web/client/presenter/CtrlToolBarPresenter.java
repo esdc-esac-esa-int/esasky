@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
+import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
@@ -77,15 +78,17 @@ public class CtrlToolBarPresenter {
 
         void closeGWPanel();
 
-        JSONArray getGWIds();
+        void getGWIds(Promise<JSONArray> gwDataPromise);
 
-        JSONObject getGWData(String id);
+        void getGWData(String id, Promise<JSONObject> gwDataPromise);
 
-        JSONObject getAllGWData();
+        void getAllGWData(Promise<JSONObject> neutrinoData);
         
-        JSONObject getNeutrinoEventData();
+        void getNeutrinoEventData(Promise<JSONObject> neutrinoData);
 
         void showGWEvent(String id);
+
+        void showGWEvent(String id, Promise<Boolean> showPromise);
 
         void clickExploreButton();
 
@@ -336,24 +339,28 @@ public class CtrlToolBarPresenter {
         view.closeGWPanel();
     }
 
-    public JSONArray getGWIds() {
-        return view.getGWIds();
+    public void getGWIds(Promise<JSONArray> gwDataPromise) {
+        view.getGWIds(gwDataPromise);
     }
 
-    public JSONObject getGWData(String id) {
-        return view.getGWData(id);
+    public void getGWData(String id, Promise<JSONObject> gwDataPromise) {
+        view.getGWData(id, gwDataPromise);
     }
 
-    public JSONObject getAllGWData() {
-        return view.getAllGWData();
+    public void getAllGWData(Promise<JSONObject> gwDataPromise) {
+        view.getAllGWData(gwDataPromise);
     }
     
-    public JSONObject getNeutrinoEventData() {
-    	return view.getNeutrinoEventData();
+    public void getNeutrinoEventData(Promise<JSONObject> neutrinoDataPromise) {
+    	view.getNeutrinoEventData(neutrinoDataPromise);
     }
 
     public void showGWEvent(String id) {
         view.showGWEvent(id);
+    }
+
+    public void showGWEvent(String id, Promise<Boolean> showPromise) {
+        view.showGWEvent(id, showPromise);
     }
 
     public void clickExploreButton() { view.clickExploreButton(); }

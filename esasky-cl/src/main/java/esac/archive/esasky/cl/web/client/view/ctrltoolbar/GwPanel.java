@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.Size;
@@ -216,6 +217,10 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     }
 
     private void loadNeutrinoData() {
+        loadNeutrinoData(null);
+    }
+
+    private void loadNeutrinoData(Promise<JSONObject> neutrinoDataPromise) {
         if (getTabItem(TabIndex.NEUTRINO) == null) {
             IceCubeDescriptor descriptor = DescriptorRepository.getInstance().getIceCubeDescriptors().getDescriptors().get(0);
 
@@ -236,33 +241,12 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
             entity.getTablePanel().registerObserver(new TableObserver() {
                 @Override
-                public void numberOfShownRowsChanged(int numberOfShownRows) {
-                    // Not needed here
-                }
-
-                @Override
-                public void onSelection(ITablePanel selectedTablePanel) {
-                    // Not needed here
-                }
-
-                @Override
-                public void onUpdateStyle(ITablePanel panel) {
-                    // Not needed here
-                }
-
-                @Override
                 public void onDataLoaded(int numberOfRows) {
                     tabItem.setDataLoaded(true);
-                }
 
-                @Override
-                public void onRowSelected(GeneralJavaScriptObject row) {
-                    // Not needed here
-                }
-
-                @Override
-                public void onRowDeselected(GeneralJavaScriptObject row) {
-                    // Not needed here
+                    if (neutrinoDataPromise != null) {
+                        neutrinoDataPromise.fulfill(entity.getTablePanel().exportAsJSON(false));
+                    }
                 }
 
                 @Override
@@ -280,6 +264,10 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     }
 
     private void loadGwData(String idToShow) {
+        loadGwData(idToShow, null);
+    }
+
+    private void loadGwData(String idToShow, Promise<JSONObject> gwDataPromise) {
         if (getTabItem(TabIndex.GW) == null) {
             GwDescriptor descriptor = DescriptorRepository.getInstance().getGwDescriptors().getDescriptors().get(0);
             descriptor.setArchiveColumn("event_page");
@@ -327,6 +315,10 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                     tabItem.setDataLoaded(true);
                     entity.hideAllShapes();
                     showEvent(idToShow);
+
+                    if (gwDataPromise != null) {
+                        gwDataPromise.fulfill(entity.getTablePanel().exportAsJSON(false));
+                    }
                 }
 
                 @Override
@@ -469,65 +461,118 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         parser.loadProperties(url);
     }
 
-    public JSONArray getIds() {
+    public void getIds(Promise<JSONArray> gwDataPromise) {
         JSONArray result = new JSONArray();
 
-        JSONObject data = getAllGWData();
-        for (String key : data.keySet()) {
-            JSONObject value = data.get(key).isObject();
-            if (value != null && value.containsKey(GRACE_ID)) {
-                result.set(result.size(), value.get(GRACE_ID));
-            }
-        }
-        return result;
+         getAllGWData(new Promise<JSONObject>() {
+             @Override
+             protected void success(JSONObject data) {
+                 for (String key : data.keySet()) {
+                     JSONObject value = data.get(key).isObject();
+                     if (value != null && value.containsKey(GRACE_ID)) {
+                         result.set(result.size(), value.get(GRACE_ID));
+                     }
+                 }
+                 gwDataPromise.fulfill(result);
+             }
+
+             @Override
+             protected void failure() {
+                 gwDataPromise.error();
+             }
+         });
     }
 
-    public JSONObject getAllGWData() {
+    public void getAllGWData(Promise<JSONObject> gwDataPromise) {
         TabItem tabItem = getTabItem(TabIndex.GW);
         if (tabItem != null && tabItem.dataLoaded) {
-            return tabItem.getTablePanel().exportAsJSON(false);
+            gwDataPromise.fulfill(tabItem.getTablePanel().exportAsJSON(false));
         } else {
-        	loadGwData(null);
-            return null;
+        	loadGwData(null, gwDataPromise);
         }
     }
     
-    public JSONObject getNeutrinoData() {
+    public void getNeutrinoData(Promise<JSONObject> neutrinoDataPromise) {
     	TabItem tabItem = getTabItem(TabIndex.NEUTRINO);
     	if (tabItem != null && tabItem.dataLoaded) {
-    		return tabItem.getTablePanel().exportAsJSON(false);
+            neutrinoDataPromise.fulfill(tabItem.getTablePanel().exportAsJSON(false));
     	} else {
-    		loadNeutrinoData();
-    		return null;
+    		loadNeutrinoData(neutrinoDataPromise);
     	}
     }
 
-    public JSONObject getData4Id(String id) {
-        JSONObject data = getAllGWData();
-        for (String key : data.keySet()) {
-            JSONObject value = data.get(key).isObject();
-            if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
-                return value;
-            }
-        }
+    public void getData4Id(String id, Promise<JSONObject> gwDataPromise) {
+        getAllGWData(new Promise<JSONObject>() {
+            @Override
+            protected void success(JSONObject data) {
+                boolean idFound = false;
+                for (String key : data.keySet()) {
+                    JSONObject value = data.get(key).isObject();
+                    if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
+                        idFound = true;
+                        gwDataPromise.fulfill(value);
+                        break;
+                    }
+                }
 
-        throw new IllegalArgumentException();
+                if (!idFound) {
+                    gwDataPromise.error();
+                }
+            }
+
+            @Override
+            protected void failure() {
+                gwDataPromise.error();
+            }
+        });
     }
 
     public void showEvent(String id) {
-        TabItem tabItem = getTabItem(TabIndex.GW);
-        if (tabItem != null) {
-            JSONObject data = getAllGWData();
-            for (String key : data.keySet()) {
-                JSONObject value = data.get(key).isObject();
-                if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
-                    tabItem.getTablePanel().selectRow(Integer.parseInt(key));
-                    break;
+        getAllGWData(new Promise<JSONObject>() {
+            @Override
+            public void success(JSONObject data) {
+                TabItem tabItem = getTabItem(TabIndex.GW);
+                if (tabItem != null) {
+                    for (String key : data.keySet()) {
+                        JSONObject value = data.get(key).isObject();
+                        if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
+                            tabItem.getTablePanel().selectRow(Integer.parseInt(key));
+                            break;
+                        }
+                    }
                 }
             }
-        } else {
-            loadGwData(id);
-        }
+        });
+    }
+
+    public void showEvent(String id, Promise<Boolean> showPromise) {
+        getAllGWData(new Promise<JSONObject>() {
+            @Override
+            public void success(JSONObject data) {
+                TabItem tabItem = getTabItem(TabIndex.GW);
+                if (tabItem != null) {
+                    boolean idFound = false;
+                    for (String key : data.keySet()) {
+                        JSONObject value = data.get(key).isObject();
+                        if (value.get(GRACE_ID).toString().equals("\"" + id + "\"")) {
+                            tabItem.getTablePanel().selectRow(Integer.parseInt(key));
+                            showPromise.fulfill(true);
+                            idFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!idFound) {
+                        showPromise.error();
+                    }
+                }
+            }
+
+            @Override
+            public void failure() {
+                showPromise.error();
+            }
+        });
     }
 
     private class TabItem {

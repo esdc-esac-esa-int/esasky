@@ -21,6 +21,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoo
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
+import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
@@ -863,22 +864,28 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public JSONArray getGWIds() {
-        return gwPanel.getIds();
+    public void getGWIds(Promise<JSONArray> gwDataPromise) {
+        gwPanel.getIds(gwDataPromise);
     }
 
     @Override
-    public JSONObject getGWData(String id) {
-        return gwPanel.getData4Id(id);
+    public void getGWData(String id, Promise<JSONObject> gwDataPromise) {
+        gwPanel.getData4Id(id, gwDataPromise);
     }
 
     @Override
-    public JSONObject getAllGWData() {
-        return gwPanel.getAllGWData();
+    public void getAllGWData(Promise<JSONObject> gwDataPromise) {
+        gwPanel.getAllGWData(gwDataPromise);
     }
+
     @Override
-    public JSONObject getNeutrinoEventData() {
-    	return gwPanel.getNeutrinoData();
+    public void getNeutrinoEventData(Promise<JSONObject> neutrinoDataPromise) {
+    	gwPanel.getNeutrinoData(neutrinoDataPromise);
+    }
+
+    @Override
+    public void showGWEvent(String id, Promise<Boolean> showPromise) {
+        gwPanel.showEvent(id, showPromise);
     }
 
     @Override
