@@ -40,6 +40,7 @@ public interface IDescriptor {
 
     List<WavelengthDescriptor> getWavelengths();
     void setWavelengths(List<WavelengthDescriptor> wavelengths);
+    double getCenterWavelengthValue();
     
     String getCreditedInstitutions();
     void setCreditedInstitutions(final String creditedInstitutions);

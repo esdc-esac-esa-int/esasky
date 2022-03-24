@@ -346,6 +346,21 @@ public class ApiMessageParser {
 					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getSpectraCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
 					
+				case 'getAvailableObservationMissions':
+					console.log('getAvailableObservationMissions event captured');
+					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getAvailableObservationMissions(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
+				case 'getAvailableSpectraMissions':
+					console.log('getAvailableSpectraMissions event captured');
+					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getAvailableSpectraMissions(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
+				case 'getAvailableCatalogueMissions':
+					console.log('getAvailableCatalogueMissions event captured');
+					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getAvailableCatalogueMissions(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
 					
 				// PLOT	
 					

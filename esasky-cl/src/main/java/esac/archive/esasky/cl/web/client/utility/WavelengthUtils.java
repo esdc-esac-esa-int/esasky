@@ -39,22 +39,21 @@ public class WavelengthUtils {
         return wavelengthLongName;
     }
 
-    public static double getMeanWavelength(IDescriptor descriptor) {
-        double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
-        for(WavelengthDescriptor wavelengthDescriptor : descriptor.getWavelengths()) {
-            min = Math.min(min, wavelengthDescriptor.getRange().get(0));
-            max = Math.max(max, wavelengthDescriptor.getRange().get(1));
-        }
-        return (min + max) / 2;
-    }
-    
     public static void setWavelengthRangeMaxMin(List<? extends IDescriptor> descriptors) {
         for(IDescriptor descriptor : descriptors) {
-            double meanWavelength = getMeanWavelength(descriptor);
+            double meanWavelength = descriptor.getCenterWavelengthValue();
             minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
             maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
         }
+    }
+    
+    public static WavelengthName getWavelengthNameFromValue(double value) {
+    	for(WavelengthName wavelengthName : wavelengthNames) {
+    		if(value < wavelengthName.maxWavelength) {
+    			return wavelengthName;
+    		}
+    	}
+    	return null;
     }
 
     public static List<WavelengthDescriptor> createWavelengthDescriptor(double minWavelength, double maxWavelength) {
@@ -83,8 +82,8 @@ public class WavelengthUtils {
             new WavelengthName("IR", "Infrared", 6),
             new WavelengthName("Optical", "Optical", 6.5),
             new WavelengthName("UV", "Ultraviolet", 8),
-            new WavelengthName("SoftX-ray", "SoftX-ray", 10.),
-            new WavelengthName("HardX-ray", "HardX-ray", 11),
+            new WavelengthName("Sof tX-ray", "Soft X-ray", 10.),
+            new WavelengthName("Hard X-ray", "Hard X-ray", 11),
             new WavelengthName("Gamma-ray", "Gamma-ray", Double.MAX_VALUE)
     };
     
