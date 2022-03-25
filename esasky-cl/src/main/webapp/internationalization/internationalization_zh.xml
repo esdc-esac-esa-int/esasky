@@ -2152,10 +2152,13 @@
 		多信使事件
 	</text>
 	<text key="gwPanel_helpText">
-		这个工具可以用来搜索公开的引力波多信使事件，在星空上显示覆盖图和下载数据。
+		这个工具可展示公开的引力波和中微子多信使事件，显示它们的概率天区覆盖图并提供对数据的访问。
 		&lt;br&gt;&lt;br&gt;
-		点击引力波按钮将显示A-LIGO和A-Virgo在O3期间探测到的引力波事件列表。点击特定引力波事件会将视野指向事件的覆盖图中心。从引力波事件数据文件生成的HiPS数据集会被显示出来，同时自动显示出坐标网格。
-		实线表示50%置信的轮廓线，虚线表示90%置信的轮廓线。单击“显示更多列”可展开数据表。
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-multimessenger"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
 	</text>
 	<text key="gwPanel_helpTitle">
 		多信使事件
@@ -2249,4 +2252,100 @@
 	<text key="wavelength_GW_Tooltip">
 		引力波概率图
 	</text>
+	<text key="searchToolbox_title">
+		检索工具
+	</text>
+	<text key="searchToolbox_helpHeader">
+		检索工具
+	</text>
+	<text key="searchToolbox_helpText">
+		&lt;b&gt;图形检索工具&lt;/b&gt;&lt;br&gt;
+		要检索源请按下并拖动选定的方框或者圆形工具。
+		一个绿色的方框或者圆形将显示出要检索的区域。设定好区域后释放指示器。
+		&lt;br&gt;&lt;br&gt;
+		多边形检索工具可让你检索任意形状的区域。每次触摸或者点击就会为多边形增加一个端点。
+		通过双击或者点击第一个点来完成多边形的设定。
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;文本检索工具&lt;/b&gt;&lt;br&gt;
+		通过下拉菜单里面的相应控件可以实现根据输入的文本来检索一个STCS区域。
+		选取不同的形状会提供不同的输入控件。
+		&lt;br&gt;&lt;br&gt;STCS 字符串需要遵循的格式为 "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)"。
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;例如: &lt;/b&gt;&lt;br&gt;
+		"BOX ICRS 11.421 41.764 10.071 41.765 10.079 40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
+		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
+		"CIRCLE ICRS 10.76 41.28 0.8"
+	</text>
+	<text key="searchToolbox_box">
+		方框
+	</text>
+	<text key="searchToolbox_polygon">
+		多边形
+	</text>
+	<text key="searchToolbox_circle">
+		锥形
+	</text>
+	<text key="searchToolbox_boxButtonTooltip">
+		方框检索工具
+	</text>
+	<text key="searchToolbox_circleButtonTooltip">
+		锥形检索工具
+	</text>
+	<text key="searchToolbox_polygonButtonTooltip">
+		多边形检索工具
+	</text>
+	<text key="searchToolbox_submitButton">
+		检索
+	</text>
+
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+		冰立方（IceCube）全天点源事件星表(2008 - 2018; Icecubepsc)。IceCube已经执行了多次类点源中微子搜寻任务。这个星表中收录的事件构成了IceCube 10年时间集成中微子点源搜索的样本。样本中的事件是IceCube在2008年4月至2018年7月间探测到的中微子候选体。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#icecubepsc"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+		第二版ROSAT全天巡天源表（2RXS）是ROSAT点源星表的第二个公开发布版本，来自1990年6月至1991年8月ROSAT全天巡天（RASS）位置灵敏正比计数管（PSPC）的观测，是对原亮源和暗源星表的扩展和修订。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#2RXS"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+		2WHSP是一个多频段高能甚高能耀变体和耀变体候选体合成星表。这个星表收录了截止至2017年最大最全的高同步峰频耀变体(HSPs)样本。2WHSP是对银道面外伽马射线源候选体表1WHSP的扩展。依据射电-红外和红外-X射线光谱斜率制定的选择标准对大量多波段巡天数据（射电、红外、X射线波段）进行了交叉证认。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#WHSP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="header_session_save">
+		保存 ESASky 会话
+	</text>
+	<text key="header_session_restore">
+		恢复 ESASky 会话
+	</text>
+
+	<text key="header_eva">
+		ESA虚拟助手
+	</text>
+
+	<text key="header_sessionSaveEntryTooltip">
+		将当前全部设置、打开的数据面板等保存到一个JSON文件
+	</text>
+
+	<text key="header_sessionRestoreEntryTooltip">
+		从一个JSON文件恢复全部设置
+	</text>
+
+	<text key="Neutrino">
+		中微子
+	</text>
+
 </Internationalization>

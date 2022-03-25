@@ -3718,10 +3718,7 @@
 	<text key="searchToolbox_submitButton">
 		Search
 	</text>
-	<text key="searchToolbox_radius">
-		Radius (deg)
-	</text>
-	
+
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
 		The IceCube All-Sky Point-Source Events Catalog (2008 - 2018; Icecubepsc). IceCube has performed several searches for point-like sources of neutrinos. The events contained in this catalogue make up the sample used in IceCube's 10-year time-integrated neutrino point source search. Events in the sample are track-like neutrino candidates detected by IceCube between April 2008 and July 2018.
 		&lt;br&gt;&lt;br&gt;
@@ -3772,7 +3769,13 @@
 	<text key="Neutrino">
 		Neutrino
 	</text>
-	
-	
+
+	<!-- internationalization_zh.xml is up to date for everything above -->
+
+	<text key="searchToolbox_radius">
+		Radius (deg)
+	</text>
+
+	<!-- internationalization_es.xml is up to date for everything above -->
 	
 </Internationalization>
