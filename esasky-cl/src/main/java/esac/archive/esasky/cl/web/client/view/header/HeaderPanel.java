@@ -83,6 +83,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Anchor dropdownReleaseNotesEntry = new Anchor(TextMgr.getInstance().getText("header_releaseNotes"));
 	private Anchor dropdownNewsletterEntry = new Anchor(TextMgr.getInstance().getText("header_newsletter"));
 	private Anchor dropdownAboutUsEntry = new Anchor(TextMgr.getInstance().getText("header_aboutUs"));
+	private Anchor dropdownAcknowledgeEntry = new Anchor(TextMgr.getInstance().getText("header_acknowledge"));
 
 	private ListBox coordinateFrameFull = new ListBox();
 	private ListBox coordinateFrameFirstLetter = new ListBox();
@@ -239,12 +240,14 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownReleaseNotesEntry.getElement().setId("header__dropdown__releasenotes");
 		dropdownNewsletterEntry.getElement().setId("header__dropdown__newsletter");
 		dropdownAboutUsEntry.getElement().setId("header__dropdown__aboutus");
+		dropdownAcknowledgeEntry.getElement().setId("header__dropdown_acknowledge");
 		
 		dropdownContent.add(dropdownFeedbackEntry);
 		dropdownContent.add(dropdownVideoTutorialsEntry);
 		dropdownContent.add(dropdownReleaseNotesEntry);
 		dropdownContent.add(dropdownNewsletterEntry);
 		dropdownContent.add(dropdownAboutUsEntry);
+		dropdownContent.add(dropdownAcknowledgeEntry);
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU)) {
 			dropdownContent.add(createEvaDropDownEntry());
 		}
@@ -497,6 +500,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addAboutUsClickHandler(ClickHandler clickHandler) {
 		dropdownAboutUsEntry.addClickHandler(clickHandler);
+	}
+
+	@Override
+	public void addAcknowledgeClickHandler(ClickHandler clickHandler) {
+		dropdownAcknowledgeEntry.addClickHandler(clickHandler);
 	}
 
 	@Override

@@ -75,6 +75,7 @@ public final class GoogleAnalytics {
     public static final String ACT_HEADER_COORDINATEGRID = "CoordinateGrid";
     public static final String ACT_HEADER_NEWSLETTER = "Newsletter";
     public static final String ACT_HEADER_ABOUTUS = "AboutUs";
+    public static final String ACT_HEADER_ACKNOWLEDGE = "Acknowledge";
     public static final String ACT_HEADER_SCREENSHOT = "ScreenShot";
     public static final String ACT_HEADER_SCIMODE = "SciMode";
     public static final String ACT_HEADER_LANGUAGE = "Language";
