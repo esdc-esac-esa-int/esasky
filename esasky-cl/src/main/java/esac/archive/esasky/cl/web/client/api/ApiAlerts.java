@@ -38,7 +38,6 @@ public class ApiAlerts extends ApiBase{
 			}
 		});
 
-		openNeutrinoPanel();
 	}
 	
 	public void getAvailableGWEvents(JavaScriptObject widget) {
@@ -51,7 +50,6 @@ public class ApiAlerts extends ApiBase{
 			}
 		});
 
-		openGWPanel();
 	}
 
 	public void getGWEventData(JavaScriptObject widget, String id) {
@@ -76,7 +74,6 @@ public class ApiAlerts extends ApiBase{
 					}
 				});
 
-		openGWPanel();
 	}
 	
 	public void getAllGWData(JavaScriptObject widget) {
@@ -89,7 +86,6 @@ public class ApiAlerts extends ApiBase{
 			}
 		});
 
-		openGWPanel();
 	}
 
 	public void showGWEvent(JavaScriptObject widget, String id) {
