@@ -106,6 +106,7 @@ public class EsaSkyWebConstants {
     public static final String ESA_SKY_ABOUTUS_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits";
     public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/esasky-help#cookies";
     public static final String ESASKY_INFO_EMAIL = "esaskyinfo@sciops.esa.int";
+    public static final String ESA_SKY_ACKNOWLEDGE_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits#CITE";
     
     
     /**
