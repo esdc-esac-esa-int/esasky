@@ -227,7 +227,7 @@ public class MOCEntity implements GeneralEntityInterface {
     	int count = getCountStatus().getCount(descriptor);
 
     	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
-    		getPrecomputedMOC();
+    		getPrecomputedMOC(true);
     		currentDataOrder = 8;
     		tablePanel.disableFilters();
     		freshLoad = false;
@@ -237,12 +237,14 @@ public class MOCEntity implements GeneralEntityInterface {
     	
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
     	
+    	boolean precomputedMaxmin = count >  EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT;
+    	
     	if((targetOrder == 8 && tablePanel.getTapFilters().size() == 0)) {
-    		getPrecomputedMOC();
+    		getPrecomputedMOC(precomputedMaxmin);
     		currentDataOrder = 8;
     	}
     	else {
-			getSplitMOC(targetOrder);
+			getSplitMOC(targetOrder, precomputedMaxmin);
     		currentDataOrder = targetOrder;
     	}
     	
@@ -262,13 +264,14 @@ public class MOCEntity implements GeneralEntityInterface {
     	return 0;
     }
     
-    private void getPrecomputedMOC() {
+    private void getPrecomputedMOC(boolean precomputedMaxmin) {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
 
         String constraint = metadataService.getPrecomputedMocConstraint(descriptor);
 		Coordinate coord = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
 		String center = "POINT(" + coord.getRa() + "," + coord.getDec() + ")";
-        String url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint), descriptor.getTapTable(), 8,  null).replaceAll("#", "%23");
+        String url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint),
+        		descriptor.getTapTable(), 8,  null, precomputedMaxmin).replaceAll("#", "%23");
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -318,7 +321,7 @@ public class MOCEntity implements GeneralEntityInterface {
  		tablePanel.setPlaceholderText(text);
     }
 
-    private void getSplitMOC(int order) {
+    private void getSplitMOC(int order, boolean precomputedMaxmin) {
     	
     	GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay);
     	String url = "";
@@ -328,7 +331,8 @@ public class MOCEntity implements GeneralEntityInterface {
                 String constraint = metadataService.getPrecomputedMocConstraint(descriptor);
         		Coordinate coord = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
         		String center = "POINT(" + coord.getRa() + "," + coord.getDec() + ")";
-        		url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint), descriptor.getTapTable(), order, tablePanel.getFilterString()).replaceAll("#", "%23");
+        		url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint), descriptor.getTapTable(),
+        				order, tablePanel.getFilterString(), precomputedMaxmin).replaceAll("#", "%23");
         	}else {
         		url = TAPUtils.getTAPMocFilteredQuery(descriptor.getTapTable(), order, visibleIpixels, tablePanel.getFilterString(), freshLoad).replaceAll("#", "%23");
         	}

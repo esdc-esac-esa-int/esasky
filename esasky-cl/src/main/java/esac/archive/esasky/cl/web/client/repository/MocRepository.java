@@ -183,7 +183,7 @@ public class MocRepository {
 	public static int getTargetOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
 
-		if(fov > 4) {
+		if(fov > 2) {
 			return 8;
 		}else {
 			return 14;

@@ -118,7 +118,7 @@ public class EsaSkyWebConstants {
     public static final String INTERNET_EXPLORER_APPNAME = "Microsoft Internet Explorer";
     
     public static final int MOC_FILTER_LIMIT = 10000000;
-    public static final int MOC_GLOBAL_MINMAX_LIMIT = 5000000;
+    public static final int MOC_GLOBAL_MINMAX_LIMIT = 3000000;
     
 
     /*************************************************************************/
