@@ -101,7 +101,6 @@ public abstract class ApiBase {
 			msg.put(ApiConstants.SUCCESS, success);
 		}
 		
-		msg.put(ApiConstants.ORIGIN, new JSONString("esasky"));
 		
 		sendBackToWidget(msg, widget);
 	}
@@ -114,6 +113,7 @@ public abstract class ApiBase {
 	}
 	
 	protected void sendBackToWidget(JSONObject msg, JavaScriptObject widget) {
+		msg.put(ApiConstants.ORIGIN, new JSONString("esasky"));
 		String msgId = ((GeneralJavaScriptObject) widget).getProperty(ApiConstants.DATA).getStringProperty(ApiConstants.MSGID);
 		if(msgId != null && !"".equals(msgId)) {
 			msg.put(ApiConstants.MSGID, new JSONString(msgId));
