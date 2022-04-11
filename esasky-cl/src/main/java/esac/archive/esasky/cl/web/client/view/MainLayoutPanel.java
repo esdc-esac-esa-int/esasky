@@ -194,15 +194,9 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
     	if(!evaPanel.isShowing()) {
     		if(!evaPanel.hasBeenInitialised()) {
 	    		rightSideBanner.setWidget(evaPanel);
-	    		rightSideBanner.setSize(350);
+	    		rightSideBanner.setSize(400);
 	    		rightSideBanner.getElement().addClassName("evaBanner");
-	    		rightSideBanner.addCloseButtonClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						toggleEvaPanel();
-					}
-				});
+	    		rightSideBanner.addCloseButtonClickHandler(event -> toggleEvaPanel());
 	    		evaPanel.init();
     		}
     		rightSideBanner.show();

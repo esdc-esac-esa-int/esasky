@@ -50,18 +50,16 @@ public class EvaPanel extends FocusPanel {
     private void initView() {
 
     	container.getElement().setClassName("evaContainer");
+		FlowPanel controlsPanel = new FlowPanel();
+		controlsPanel.addStyleName("evaControlsContainer");
     	EsaSkyButton clearButton = new EsaSkyButton("Clear");
-    	clearButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				clearChat();
-			}
-		});
+    	clearButton.addClickHandler(event -> clearChat());
     	clearButton.getElement().addClassName("eva-clear-button");
+		controlsPanel.add(clearButton);
+
     	FlowPanel bot = new FlowPanel();
     	bot.getElement().setId("webchat");
-    	container.add(clearButton);
+    	container.add(controlsPanel);
     	container.add(bot);
     	this.add(container);
     	
