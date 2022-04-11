@@ -28,6 +28,10 @@ public class ApiAlerts extends ApiBase{
 		controller.getRootPresenter().getCtrlTBPresenter().closeGWPanel();
 	}
 
+	public void minimiseAlertPanel() {
+		controller.getRootPresenter().getCtrlTBPresenter().minimiseGWPanel();
+	}
+
 	public void getNeutrinoEventData(JavaScriptObject widget) {
 		controller.getRootPresenter().getCtrlTBPresenter().getNeutrinoEventData(new Promise<JSONObject>() {
 			@Override

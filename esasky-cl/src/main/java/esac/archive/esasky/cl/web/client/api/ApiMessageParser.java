@@ -695,7 +695,12 @@ public class ApiMessageParser {
 				case 'closeAlertPanel':
 					console.log('closeGWPanel event captured');
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::closeAlertPanel()();
-					break;	
+					break;
+
+				case 'minimiseAlertPanel':
+					console.log('minimiseAlertPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::minimiseAlertPanel()();
+					break;
 
 				case 'getGWIds':
 					console.log('getGWIds event captured');

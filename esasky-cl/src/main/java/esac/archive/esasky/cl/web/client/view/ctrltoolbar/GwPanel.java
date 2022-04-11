@@ -393,7 +393,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         updateExpandedButton(getActiveTabItem());
     }
 
-    private void close() {
+    public void close() {
         for (TabItem tabItem : tabItems) {
             if (tabItem != null) {
                 tabItem.close();

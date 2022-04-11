@@ -859,7 +859,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void closeGWPanel() {
         if (gwButton.getToggleStatus()) {
             gwButton.toggle();
-            gwPanel.toggle();
+            gwPanel.close();
+        }
+    }
+
+    @Override
+    public void minimiseGWPanel() {
+        if (gwButton.getToggleStatus()) {
+            gwButton.toggle();
+            gwPanel.hide();
         }
     }
 

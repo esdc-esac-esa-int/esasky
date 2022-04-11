@@ -77,6 +77,7 @@ public class CtrlToolBarPresenter {
         void openGWPanel(int tabId);
 
         void closeGWPanel();
+        void minimiseGWPanel();
 
         void getGWIds(Promise<JSONArray> gwDataPromise);
 
@@ -337,6 +338,10 @@ public class CtrlToolBarPresenter {
 
     public void closeGWPanel() {
         view.closeGWPanel();
+    }
+
+    public void minimiseGWPanel() {
+        view.minimiseGWPanel();
     }
 
     public void getGWIds(Promise<JSONArray> gwDataPromise) {
