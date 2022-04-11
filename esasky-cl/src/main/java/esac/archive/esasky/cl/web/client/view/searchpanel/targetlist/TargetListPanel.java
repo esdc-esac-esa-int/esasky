@@ -106,14 +106,10 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         closeBtn = new CloseButton();
         closeBtn.getElement().setId("closeTargetsListIcon");
         closeBtn.setTitle(TextMgr.getInstance().getText("uploadTargetList_removeTargetList"));
-        closeBtn.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                hideTargetsAndPlayerPanel();
-                AladinLiteWrapper.getInstance().removeMultitargetPointer();
-                AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
-            }
+        closeBtn.addClickHandler(event -> {
+            hideTargetsAndPlayerPanel();
+            AladinLiteWrapper.getInstance().removeMultitargetPointer();
+            AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
         });
 
         targetsContainer = new VerticalPanel();
@@ -505,6 +501,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 		isShowing = true;
 		this.removeStyleName("displayNone");
 		updateMaxSize();
+        ensureDialogFitsInsideWindow();
         updateHandlers();
 	}
 

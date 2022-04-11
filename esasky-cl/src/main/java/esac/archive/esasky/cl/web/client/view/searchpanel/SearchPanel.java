@@ -286,7 +286,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
     @Override
     protected void onLoad() {
-        int left = MainLayoutPanel.getMainAreaWidth() - targetListPanel.getOffsetWidth() - 25;
+        int left = MainLayoutPanel.getMainAreaWidth() - targetListPanel.getOffsetWidth() - 30;
         targetListPanel.setSuggestedPosition(left, 75);
         targetListPanel.definePositionFromTopAndLeft();
     }
