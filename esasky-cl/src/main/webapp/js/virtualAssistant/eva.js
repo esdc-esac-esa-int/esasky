@@ -13,7 +13,6 @@ var msg_func_input = function (cmd) {
 }
 
 function initChat2() {
-	var _this = this;
 	const styleOptions = {
 	        hideUploadButton: true,
 	        backgroundColor: 'rgba(0, 0, 0, 0.85)',
@@ -49,7 +48,7 @@ function initChat2() {
 	        bubbleMaxWidth: 280
 	    };
 
-    this.store = window.WebChat.createStore(
+    window.store = window.WebChat.createStore(
         {},
         ({ dispatch }) => next => action => {
             // connection with a bot is created, host is sent for conversation history, to know from where is comming conversation, language - to init dialog in English
@@ -81,7 +80,7 @@ function initChat2() {
             return next(action);
         });
     // creates communication channel to ESA Sky bot
-    this.directline = window.WebChat.createDirectLine({
+    window.directline = window.WebChat.createDirectLine({
         secret: '',
         token: '',
         domain: "https://eva.esa.int/dl/directline/aHR0cDovL2V2YWVzYXNreWJvdDA=",
@@ -91,10 +90,10 @@ function initChat2() {
     // renders webchat
     window.WebChat.renderWebChat(
 		{
-			directLine: _this.directline,
+			directLine: window.directline,
 			locale: 'en',
 			styleOptions,
-			store: _this.store,
+			store: window.store,
 			selectVoice: () => ({ voiceURI: 'en-GB-George-Apollo' }),
 			webSpeechPonyfillFactory:  window.WebChat.createCognitiveServicesSpeechServicesPonyfillFactory({
 				credentials: async (credentials = {}) => {
@@ -122,7 +121,7 @@ function initChat2() {
         if (e.data.origin == "esasky" && e.data.msgId == "eva" && data != postback) {
             try {
                 postback = data;
-                _this.store.dispatch({
+                window.store.dispatch({
                     type: 'WEB_CHAT/SEND_POST_BACK',
                     payload: { value: 'postBack:' + data }
                 });
@@ -146,7 +145,7 @@ function initChat() {
 }
 
 function clearChat() {
-    this.store = null;
-    this.directline = null;
+    window.store = null;
+    window.directline = null;
     initChat();
 }
