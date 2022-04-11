@@ -45,7 +45,7 @@ function initChat2() {
 	        suggestedActionTextColor: '#ffffff',
 	        suggestedActionDisabledBackground: undefined, // defaults to suggestedActionBackground
 	        suggestedActionHeight: 40,
-	        bubbleMaxWidth: 280
+	        bubbleMaxWidth: 320
 	    };
 
     window.store = window.WebChat.createStore(
