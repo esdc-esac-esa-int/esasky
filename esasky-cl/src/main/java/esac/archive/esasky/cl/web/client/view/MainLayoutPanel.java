@@ -23,7 +23,6 @@ import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.banner.Banner;
 import esac.archive.esasky.cl.web.client.view.banner.Banner.Side;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.evapanel.EvaPanel;
 import esac.archive.esasky.cl.web.client.view.header.HeaderPanel;
@@ -131,6 +130,9 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
         
         resultsPanel = new ResultsPanel();
         
+        FlowPanel openSeadragonCanvas = new FlowPanel();
+        openSeadragonCanvas.getElement().setId("openseadragonCanvas");
+        mainArea.add(openSeadragonCanvas);
         mainArea.add(ctrlToolBar);
         mainArea.add(allSkyPanel);
         mainArea.add(searchPanel);
