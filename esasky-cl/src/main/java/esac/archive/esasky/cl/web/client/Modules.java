@@ -116,19 +116,19 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
-		map.put(EsaSkyWebConstants.MODULE_CAT, false);
-		map.put(EsaSkyWebConstants.MODULE_SPE, false);
+		map.put(EsaSkyWebConstants.MODULE_CAT, true);
+		map.put(EsaSkyWebConstants.MODULE_SPE, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, false);
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
 		map.put(EsaSkyWebConstants.MODULE_GW, false);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
-		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, false);
+		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
 		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
 		map.put(EsaSkyWebConstants.MODULE_DICE, false);
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
-		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
 		
 		return map;
 	}
