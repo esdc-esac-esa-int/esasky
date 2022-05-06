@@ -68,7 +68,7 @@ public class MainPresenter {
 
         SearchPanel getSearchPanel();
 
-        void toggleEvaPanel();
+        void initEvaPanel();
         
         HeaderPresenter.View getHeaderPanel();
         
@@ -586,7 +586,7 @@ public class MainPresenter {
     }-*/;
     
     private void showEva() {
-    	view.toggleEvaPanel();
+    	view.initEvaPanel();
     }
 
 }

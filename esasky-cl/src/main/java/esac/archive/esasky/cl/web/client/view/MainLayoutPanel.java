@@ -4,15 +4,38 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.DataTransfer.DropEffect;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DragEndEvent;
+import com.google.gwt.event.dom.client.DragEndHandler;
+import com.google.gwt.event.dom.client.DragEnterEvent;
+import com.google.gwt.event.dom.client.DragEnterHandler;
+import com.google.gwt.event.dom.client.DragEvent;
+import com.google.gwt.event.dom.client.DragHandler;
+import com.google.gwt.event.dom.client.DragLeaveEvent;
+import com.google.gwt.event.dom.client.DragLeaveHandler;
+import com.google.gwt.event.dom.client.DragOverEvent;
+import com.google.gwt.event.dom.client.DragOverHandler;
+import com.google.gwt.event.dom.client.DragStartEvent;
+import com.google.gwt.event.dom.client.DragStartHandler;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -20,9 +43,12 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.presenter.BannerPresenter;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter.View;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
+import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.banner.Banner;
 import esac.archive.esasky.cl.web.client.view.banner.Banner.Side;
+import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.evapanel.EvaPanel;
 import esac.archive.esasky.cl.web.client.view.header.HeaderPanel;
@@ -71,11 +97,25 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
     
     private boolean hideWelcome;
     
+    private boolean isEvaRight = true;
+    
+    private int size = 400;
+    
+    private boolean isDragging = false;
+    
+    
+    private Image dragEvaImage; 
+    
+    
     public interface Resources extends ClientBundle {
 
         @Source("mainlayoutpanel.css")
         @CssResource.NotStrict
         CssResource style();
+        
+        @Source("eva_resize.png")
+        @ImageOptions(flipRtl = true)
+        ImageResource resize_icon();
     }
 
     /**
@@ -145,10 +185,34 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
         	}
         });
         
+        Window.addResizeHandler(new ResizeHandler() {
+
+        	  Timer resizeTimer = new Timer() {  
+        	    @Override
+        	    public void run() {
+        			System.out.println("He hecho un resize!!");
+        			logMessage("resize!");
+        			if(dragEvaImage != null) {
+        				setPositionForEva();
+        			}
+        			
+        	    }
+        	  };
+
+        	  @Override
+        	  public void onResize(ResizeEvent event) {
+        	    resizeTimer.cancel();
+        	    resizeTimer.schedule(250);
+        	  }
+        	});
+        
         mainAreaResizeDetector.add(mainArea);
         skeletonPanel.add(mainAreaResizeDetector);
         skeletonPanel.add(bottomBanner);
-
+        
+        
+        
+        
         // Ending tasks
         // ----------------------------------------------------------------------------------------
 
@@ -161,14 +225,20 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 //        leftBanner.setHeight("100%");
         leftBanner.setWidth("50px");
         RootPanel.get().add(leftBanner);
+        
     }
     
     @Override 
     protected void onLoad() {
     	super.onLoad();
 //        rightSideBanner.setHeight("100%");
-        rightSideBanner.setWidth("50px");
+    	if(Window.getClientWidth()<800) {
+    		bottomBanner.setWidth("50px");
+    	}
+    	rightSideBanner.setWidth("50px");
+        
         RootPanel.get().add(rightSideBanner);
+
         if(!hideWelcome) {
         	welcomeDialogBox = new WelcomeDialog();
         	welcomeDialogBox.show();
@@ -190,22 +260,246 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
     }
     
     @Override
-    public final void toggleEvaPanel() {
+    public final void initEvaPanel() {
+    	
+    	bottomBanner.hideCloseButton();
+    	rightSideBanner.hideCloseButton();
+    	
+    	dragEvaImage = new Image(resources.resize_icon());
+        dragEvaImage.getElement().setId("dragEvaImage");
+        dragEvaImage.getElement().setClassName("dragImageLandscape");
+        dragEvaImage.getElement().getStyle().setPosition(Position.FIXED);
+        dragEvaImage.getElement().getStyle().setRight(400, Unit.PX);
+        dragEvaImage.getElement().getStyle().setTop(50, Unit.PCT);
+        dragEvaImage.getElement().getStyle().setZIndex(1000);
+//        dragEvaImage.getElement().setDraggable(Element.DRAGGABLE_FALSE);
+       
+//       
+        
+        this.dragEvaImage.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				toggleEvaPanel();
+				if(evaPanel.isShowing()) {
+					setDragImageOnClick(size);
+//					dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
+				}else {
+//					setDragImageOnClick(0);
+					if(isLandscape()) {
+						dragEvaImage.getElement().getStyle().setRight(0, Unit.PX);
+					}else {
+			            dragEvaImage.getElement().getStyle().setBottom(0, Unit.PX);
+					}
+					
+				}
+				
+				
+			}
+		});
+        
+        this.dragEvaImage.addDragStartHandler(new DragStartHandler() {
+			
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				isDragging=true;
+				event.getDataTransfer().setDropEffect(DropEffect.NONE);
+				
+				
+			}
+		});
+        
+        this.dragEvaImage.addDragHandler(new DragHandler() {
+			
+			@Override
+			public void onDrag(DragEvent event) {
+				if(isLandscape()) {
+					if(event.getNativeEvent().getClientX() > 200) {
+						size=Window.getClientWidth() - event.getNativeEvent().getClientX()-15;
+						if(!rightSideBanner.isShowing()) {
+							rightSideBanner.show();
+							evaPanel.setShowing(true);
+						}
+						rightSideBanner.setSize(size);
+						
+						dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
+					}
+				}else {
+					if(event.getNativeEvent().getClientY() > 200) {
+						size=Window.getClientHeight() - event.getNativeEvent().getClientY()-15;
+						if(!bottomBanner.isShowing()) {
+							bottomBanner.show();
+							evaPanel.setShowing(true);
+						}
+						bottomBanner.setSize(size);
+
+						dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
+					}
+				}
+				
+				
+				
+			}
+		});
+        
+        this.dragEvaImage.addDragOverHandler(new DragOverHandler() {
+			
+			@Override
+			public void onDragOver(DragOverEvent event) {
+				event.preventDefault();
+				
+			}
+		});
+        
+        this.dragEvaImage.addDropHandler(new DropHandler() {
+			
+			@Override
+			public void onDrop(DropEvent event) {
+				isDragging=false;
+				
+			}
+		});
+        
+        this.dragEvaImage.addDragEndHandler(new DragEndHandler() {
+			
+			@Override
+			public void onDragEnd(DragEndEvent event) {
+				isDragging=false;
+				
+			}
+		});
+        skeletonPanel.add(dragEvaImage);
+
+    	this.toggleEvaPanel();
+    }
+    
+    public void toggleEvaPanel() {
     	if(!evaPanel.isShowing()) {
     		if(!evaPanel.hasBeenInitialised()) {
-	    		rightSideBanner.setWidget(evaPanel);
-	    		rightSideBanner.setSize(400);
-	    		rightSideBanner.getElement().addClassName("evaBanner");
-	    		rightSideBanner.addCloseButtonClickHandler(event -> toggleEvaPanel());
+    			if(!isLandscape()) {
+    				bottomBanner.setWidget(evaPanel);
+    				bottomBanner.setSize(size);
+    				bottomBanner.setWidth("100%");
+    				bottomBanner.getElement().addClassName("evaBanner");
+    				
+    				this.isEvaRight = false;
+    			}else {
+    				rightSideBanner.setWidget(evaPanel);
+    	    		rightSideBanner.setSize(size);
+    	    		rightSideBanner.getElement().addClassName("evaBanner");
+    			}
+//    			bottomBanner.addCloseButtonClickHandler(event -> {
+//	    			clickEvaHide=true;
+//	    			toggleEvaPanel();
+//	    		});
+//    			rightSideBanner.addCloseButtonClickHandler(event -> {
+//	    			clickEvaHide=true;
+//	    			toggleEvaPanel();
+//	    		});
+	    		
 	    		evaPanel.init();
     		}
-    		rightSideBanner.show();
+    		if(!isLandscape()) {
+    			dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
+    			dragEvaImage.getElement().getStyle().setLeft(0, Unit.PX);
+    			dragEvaImage.getElement().getStyle().clearRight();
+    			dragEvaImage.getElement().getStyle().clearTop();
+    			dragEvaImage.getElement().getStyle().setProperty("transform", "rotate(90deg)");
+    			dragEvaImage.getElement().setClassName("dragImageVertical");
+    			bottomBanner.show();
+    			
+    		}else {
+    			
+
+    			dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
+    			dragEvaImage.getElement().getStyle().setTop(50, Unit.PCT);
+    			dragEvaImage.getElement().getStyle().clearLeft();
+    			dragEvaImage.getElement().getStyle().clearBottom();
+    			dragEvaImage.getElement().getStyle().setProperty("transform", "rotate(0deg)");
+    			dragEvaImage.getElement().setClassName("dragImageLandscape");
+    			rightSideBanner.show();
+    		}
+    		
     		evaPanel.setShowing(true);
     	}
     	else {
-    		rightSideBanner.hide();
+    		if(!isLandscape()) {
+    			bottomBanner.hide();
+    		}else {
+    			rightSideBanner.hide();
+    		}
+//    		rightSideBanner.hide();
     		evaPanel.setShowing(false);
     	}
+    }
+    
+    private void setPositionForEva() {
+    	if(!this.isDragging) {
+    		size=400;
+	    	if(!isLandscape()) {
+	    		if(this.isEvaRight) {
+	    			this.evaPanel.removeFromParent();
+	    			this.isEvaRight = false;
+	    			bottomBanner.setWidget(evaPanel);
+					bottomBanner.setSize(size);
+					bottomBanner.setWidth("100%");
+		    		dragEvaImage.getElement().getStyle().setLeft(0, Unit.PCT);
+		    		dragEvaImage.getElement().getStyle().clearRight();
+		            dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
+		            dragEvaImage.getElement().getStyle().clearTop();
+		            dragEvaImage.getElement().setClassName("dragImageVertical");
+//					bottomBanner.addCloseButtonClickHandler(event -> {
+//		    			clickEvaHide=true;
+//		    			toggleEvaPanel();
+//		    		});
+					if(this.evaPanel.isShowing()) {
+						dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
+						
+						bottomBanner.show();
+						rightSideBanner.hide();
+					}else {
+						dragEvaImage.getElement().getStyle().setBottom(0, Unit.PX);
+					}
+					dragEvaImage.getElement().getStyle().setProperty("transform", "rotate(90deg)");
+					
+	    			
+	    			
+	    		}
+	    	}else {
+	    		if(!this.isEvaRight) {
+	    			this.evaPanel.removeFromParent();
+	    			this.isEvaRight=true;
+	    			rightSideBanner.setWidget(evaPanel);
+		    		rightSideBanner.setSize(size);
+
+		            
+		            dragEvaImage.getElement().getStyle().clearLeft();
+			        dragEvaImage.getElement().getStyle().setTop(50, Unit.PCT);
+			        dragEvaImage.getElement().getStyle().clearBottom();
+			        dragEvaImage.getElement().setClassName("dragImageLandscape");
+			        if(this.evaPanel.isShowing()) {
+			        	dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
+			        	rightSideBanner.show();
+			        	bottomBanner.hide();
+			        }else {
+			        	dragEvaImage.getElement().getStyle().setRight(0, Unit.PX);
+			        }
+			        dragEvaImage.getElement().getStyle().setProperty("transform", "rotate(0deg)");
+		    		
+//		    		rightSideBanner.addCloseButtonClickHandler(event -> {
+//		    			clickEvaHide=true;
+//		    			toggleEvaPanel();
+//		    		});
+		    		
+		    		
+		    		
+	    		}
+	    	}
+    	}
+    }
+    
+    private boolean isLandscape() {
+    	return Window.getClientWidth()>Window.getClientHeight();
     }
 
     @Override
@@ -258,10 +552,15 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 	}
 	
 	public void notifyMainAreaResized(ResizeEvent event) {
+
 		for (ResizeHandler resizeHandler : mainAreaResizeHandlers) {
 			resizeHandler.onResize(event);
 		}
 	}
+	
+	public static native void logMessage(String message) /*-{
+		console.log(message);
+	}-*/;
 
 	@Override
 	public esac.archive.esasky.cl.web.client.presenter.BannerPresenter.View getBannerPanelLeftSide() {
@@ -281,5 +580,22 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 	@Override
 	public ResultsPanel getResultsPanel() {
 		return resultsPanel;
+	}
+	
+	private void setDragImageOnClick(int inputSize) {
+		Timer timer = new Timer()
+        {
+            @Override
+            public void run()
+            {
+            	if(isLandscape()) {
+					dragEvaImage.getElement().getStyle().setRight(inputSize, Unit.PX);
+				}else {
+		            dragEvaImage.getElement().getStyle().setBottom(inputSize, Unit.PX);
+				}
+            }
+        };
+
+        timer.schedule(1000);
 	}
 }
