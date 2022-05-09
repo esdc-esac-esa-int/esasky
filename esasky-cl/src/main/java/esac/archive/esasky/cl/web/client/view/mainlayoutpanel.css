@@ -136,3 +136,23 @@ body {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 }
+
+.dragImageLandscape { 
+  filter: brightness(0.8); 
+}
+
+.dragImageLandscape:hover { 
+  filter: brightness(1); 
+  cursor: col-resize;
+}
+
+
+.dragImageVertical { 
+  filter: brightness(0.8); 
+}
+
+.dragImageVertical:hover { 
+  filter: brightness(1); 
+  cursor: row-resize;
+}
+
