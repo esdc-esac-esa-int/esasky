@@ -325,27 +325,9 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			@Override
 			public void onDrag(DragEvent event) {
 				if (isLandscape()) {
-					if (event.getNativeEvent().getClientX() > 200) {
-						size = Window.getClientWidth() - event.getNativeEvent().getClientX() - 15;
-						if (!rightSideBanner.isShowing()) {
-							rightSideBanner.show();
-							evaPanel.setShowing(true);
-						}
-						rightSideBanner.setSize(size);
-
-						dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
-					}
+					dragOnLandscape(event);
 				} else {
-					if (event.getNativeEvent().getClientY() > 200) {
-						size = Window.getClientHeight() - event.getNativeEvent().getClientY() - 15;
-						if (!bottomBanner.isShowing()) {
-							bottomBanner.show();
-							evaPanel.setShowing(true);
-						}
-						bottomBanner.setSize(size);
-
-						dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
-					}
+					dragOnVertical(event);
 				}
 
 			}
@@ -377,6 +359,32 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 			}
 		});
+	}
+	
+	private void dragOnLandscape(DragEvent event) {
+		if (event.getNativeEvent().getClientX() > 200) {
+			size = Window.getClientWidth() - event.getNativeEvent().getClientX() - 15;
+			if (!rightSideBanner.isShowing()) {
+				rightSideBanner.show();
+				evaPanel.setShowing(true);
+			}
+			rightSideBanner.setSize(size);
+
+			dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
+		}
+	}
+	
+	private void dragOnVertical(DragEvent event) {
+		if (event.getNativeEvent().getClientY() > 200) {
+			size = Window.getClientHeight() - event.getNativeEvent().getClientY() - 15;
+			if (!bottomBanner.isShowing()) {
+				bottomBanner.show();
+				evaPanel.setShowing(true);
+			}
+			bottomBanner.setSize(size);
+
+			dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
+		}
 	}
 
 	public void toggleEvaPanel() {
@@ -472,7 +480,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			} else {
 				dragEvaImage.getElement().getStyle().setBottom(0, Unit.PX);
 			}
-			dragEvaImage.getElement().getStyle().setProperty("transform", "rotate(90deg)");
+			dragEvaImage.getElement().getStyle().setProperty(TRANSFORM_STRING, "rotate(90deg)");
 
 		}
 	}
@@ -495,7 +503,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			} else {
 				dragEvaImage.getElement().getStyle().setRight(0, Unit.PX);
 			}
-			dragEvaImage.getElement().getStyle().setProperty("transform", "rotate(0deg)");
+			dragEvaImage.getElement().getStyle().setProperty(TRANSFORM_STRING, "rotate(0deg)");
 
 //    		rightSideBanner.addCloseButtonClickHandler(event -> {
 //    			clickEvaHide=true;

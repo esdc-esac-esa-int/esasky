@@ -408,7 +408,7 @@ public class SearchToolPanel extends FlowPanel {
 		} catch (Exception ex) {
 			Log.debug(ex.getMessage(), ex);
 			DisplayUtils.showMessageDialogBox(TextMgr.getInstance().getText("searchPanel_wrongCoordsInput"),
-					TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+					TextMgr.getInstance().getText(ERROR_STRING).toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText(ERROR_STRING));
 			success = false;
 		}
