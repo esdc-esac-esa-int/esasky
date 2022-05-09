@@ -55,6 +55,9 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private final Map<String, Integer> rowIdHipsMap = new HashMap<>();
     public static final String GRACE_ID = "grace_id";
+    
+    private static final String STCS50_STRING = "stcs50";
+    private static final String STCS90_STRING = "stcs90";
 
     public static enum TabIndex {GW, NEUTRINO, TAB_END}
     
@@ -271,21 +274,21 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         if (getTabItem(TabIndex.GW) == null) {
             GwDescriptor descriptor = DescriptorRepository.getInstance().getGwDescriptors().getDescriptors().get(0);
             descriptor.setArchiveColumn("event_page");
-            descriptor.setTapSTCSColumn("stcs90");
+            descriptor.setTapSTCSColumn(STCS90_STRING);
             String entityId = descriptor.getDescriptorId() + "_90";
             EsaSkyEntity entity = EntityRepository.getInstance().createGwEntity(descriptor, entityId, "dashed");
 
-            descriptor.setTapSTCSColumn("stcs50");
+            descriptor.setTapSTCSColumn(STCS50_STRING);
             entityId = descriptor.getDescriptorId() + "_50";
             EsaSkyEntity extraEntity = EntityRepository.getInstance().createGwEntity(descriptor, entityId, "solid");
 
-            descriptor.setTapSTCSColumn("stcs90");
+            descriptor.setTapSTCSColumn(STCS90_STRING);
             Widget tabContentContainer = tabLayoutPanel.getWidget(TabIndex.GW.ordinal());
             if (tabContentContainer instanceof FlowPanel) {
                 ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
             }
 
-            List<String> columnsToHide = Arrays.asList("stcs50", "stcs90", "gravitational_waves_oid", "group_id",
+            List<String> columnsToHide = Arrays.asList(STCS50_STRING, STCS90_STRING, "gravitational_waves_oid", "group_id",
                     "hardware_inj", "internal", "open_alert", "pkt_ser_num", "search", "packet_type", "ra", "dec");
 
             TabItem tabItem = new TabItem(descriptor, columnsToHide, entity, extraEntity);
@@ -332,10 +335,10 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                     AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
                     GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
 
-                    descriptor.setTapSTCSColumn("stcs90");
+                    descriptor.setTapSTCSColumn(STCS90_STRING);
                     entity.showShape(Integer.parseInt(rowData.getProperty("id").toString()));
 
-                    descriptor.setTapSTCSColumn("stcs50");
+                    descriptor.setTapSTCSColumn(STCS50_STRING);
                     extraEntity.addShapes(rowData.wrapInArray());
                     AladinLiteWrapper.getInstance().toggleGrid(true);
                 }
