@@ -24,8 +24,14 @@ import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.event.dom.client.DropHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.TouchEvent;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -269,6 +275,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 		dragEvaImage = new Image(resources.resize_icon());
 		dragEvaImage.getElement().setId("dragEvaImage");
+		dragEvaImage.getElement().setDraggable(Element.DRAGGABLE_TRUE);
 		dragEvaImage.getElement().setClassName(DRAG_IMAGE_LANDSCAPE_CLASS);
 		dragEvaImage.getElement().getStyle().setPosition(Position.FIXED);
 		dragEvaImage.getElement().getStyle().setRight(400, Unit.PX);
@@ -279,7 +286,8 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 //       
 
 		this.addClickHandlerForEva();
-		this.addDragHandlersForEva();
+		
+		
 
 		skeletonPanel.add(dragEvaImage);
 
@@ -309,83 +317,6 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 		});
 	}
 
-	private void addDragHandlersForEva() {
-		this.dragEvaImage.addDragStartHandler(new DragStartHandler() {
-
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				isDragging = true;
-				event.getDataTransfer().setDropEffect(DropEffect.NONE);
-
-			}
-		});
-
-		this.dragEvaImage.addDragHandler(new DragHandler() {
-
-			@Override
-			public void onDrag(DragEvent event) {
-				if (isLandscape()) {
-					dragOnLandscape(event);
-				} else {
-					dragOnVertical(event);
-				}
-
-			}
-		});
-
-		this.dragEvaImage.addDragOverHandler(new DragOverHandler() {
-
-			@Override
-			public void onDragOver(DragOverEvent event) {
-				event.preventDefault();
-
-			}
-		});
-
-		this.dragEvaImage.addDropHandler(new DropHandler() {
-
-			@Override
-			public void onDrop(DropEvent event) {
-				isDragging = false;
-
-			}
-		});
-
-		this.dragEvaImage.addDragEndHandler(new DragEndHandler() {
-
-			@Override
-			public void onDragEnd(DragEndEvent event) {
-				isDragging = false;
-
-			}
-		});
-	}
-	
-	private void dragOnLandscape(DragEvent event) {
-		if (event.getNativeEvent().getClientX() > 200) {
-			size = Window.getClientWidth() - event.getNativeEvent().getClientX() - 15;
-			if (!rightSideBanner.isShowing()) {
-				rightSideBanner.show();
-				evaPanel.setShowing(true);
-			}
-			rightSideBanner.setSize(size);
-
-			dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
-		}
-	}
-	
-	private void dragOnVertical(DragEvent event) {
-		if (event.getNativeEvent().getClientY() > 200) {
-			size = Window.getClientHeight() - event.getNativeEvent().getClientY() - 15;
-			if (!bottomBanner.isShowing()) {
-				bottomBanner.show();
-				evaPanel.setShowing(true);
-			}
-			bottomBanner.setSize(size);
-
-			dragEvaImage.getElement().getStyle().setBottom(size, Unit.PX);
-		}
-	}
 
 	public void toggleEvaPanel() {
 		if (!evaPanel.isShowing()) {
@@ -491,6 +422,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			this.isEvaRight = true;
 			rightSideBanner.setWidget(evaPanel);
 			rightSideBanner.setSize(size);
+			rightSideBanner.setHeight("100%");
 
 			dragEvaImage.getElement().getStyle().clearLeft();
 			dragEvaImage.getElement().getStyle().setTop(50, Unit.PCT);
