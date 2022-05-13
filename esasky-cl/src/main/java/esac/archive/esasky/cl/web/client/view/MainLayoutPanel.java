@@ -299,24 +299,28 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				toggleEvaPanel();
-				if (evaPanel.isShowing()) {
-					setDragImageOnClick(size);
-					// dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
-				} else {
-					// setDragImageOnClick(0);
-					if (isLandscape()) {
-						dragEvaImage.getElement().getStyle().setRight(0, Unit.PX);
-					} else {
-						dragEvaImage.getElement().getStyle().setBottom(0, Unit.PX);
-					}
-
-				}
-
+				
+				toggleEvaPanelWithDrag();
 			}
 		});
 	}
+	
+	@Override
+	public void toggleEvaPanelWithDrag() {
+		toggleEvaPanel();
+		if (evaPanel.isShowing()) {
+			setDragImageOnClick(size);
+			// dragEvaImage.getElement().getStyle().setRight(size, Unit.PX);
+		} else {
+			// setDragImageOnClick(0);
+			if (isLandscape()) {
+				dragEvaImage.getElement().getStyle().setRight(0, Unit.PX);
+			} else {
+				dragEvaImage.getElement().getStyle().setBottom(0, Unit.PX);
+			}
 
+		}
+	}
 
 	public void toggleEvaPanel() {
 		if (!evaPanel.isShowing()) {
@@ -528,6 +532,11 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 	public ResultsPanel getResultsPanel() {
 		return resultsPanel;
 	}
+	
+	@Override
+	public boolean isEvaShowing() {
+		return evaPanel.isShowing();
+	}
 
 	private void setDragImageOnClick(int inputSize) {
 		Timer timer = new Timer() {
@@ -543,4 +552,6 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 		timer.schedule(1000);
 	}
+	
+
 }
