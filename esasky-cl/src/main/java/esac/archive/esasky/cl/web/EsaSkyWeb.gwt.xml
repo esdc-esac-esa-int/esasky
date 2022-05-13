@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 
-<module rename-to='esasky_cl_4_1_3_beta1_2022_05_12T16_17_52Z'>
+<module rename-to='esasky_cl_4_1_3_beta2_2022_05_13T12_48_44Z'>
 
 	<!-- Google/GWT -->
 	<inherits name='com.google.gwt.user.User' />
