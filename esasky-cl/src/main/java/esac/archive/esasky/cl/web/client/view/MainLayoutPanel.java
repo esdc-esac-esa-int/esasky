@@ -105,7 +105,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 	private boolean isEvaRight = true;
 
-	private int size = 400;
+	private int size = 390;
 
 	private boolean isDragging = false;
 
@@ -278,7 +278,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 		dragEvaImage.getElement().setDraggable(Element.DRAGGABLE_TRUE);
 		dragEvaImage.getElement().setClassName(DRAG_IMAGE_LANDSCAPE_CLASS);
 		dragEvaImage.getElement().getStyle().setPosition(Position.FIXED);
-		dragEvaImage.getElement().getStyle().setRight(400, Unit.PX);
+		dragEvaImage.getElement().getStyle().setRight(390, Unit.PX);
 		dragEvaImage.getElement().getStyle().setTop(50, Unit.PCT);
 		dragEvaImage.getElement().getStyle().setZIndex(1000);
 //        dragEvaImage.getElement().setDraggable(Element.DRAGGABLE_FALSE);
@@ -378,7 +378,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 	private void setPositionForEva() {
 		if (!this.isDragging) {
-			size = 400;
+			size = 390;
 			if (!isLandscape()) {
 				setEvaForVerticalScreens();
 			} else {
@@ -446,7 +446,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 	}
 
 	private boolean isLandscape() {
-		return Window.getClientWidth() > Window.getClientHeight();
+		return Window.getClientWidth() > 0.9*Window.getClientHeight();
 	}
 
 	@Override
