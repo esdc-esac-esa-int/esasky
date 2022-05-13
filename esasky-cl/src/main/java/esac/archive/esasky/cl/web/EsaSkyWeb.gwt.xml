@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 
-<!-- WARNING! THIS FILE IS DERIVED. DO NOT MAKE ANY CHANGES HERE AS THEY WILL BE OVERWRITTEN DURING THE NEXT BUILD. MAKE CHANGES IN EsaSkyWebTemplate.gwt.xml INSIDE THE CONF DIR INSTEAD. -->
-<!-- <module rename-to='esaskyweb_V3.1.4_B${buildNumber}'> -->
-<module rename-to='esaskyweb'>
-<!-- <module rename-to='${sofware.buildname}'> -->
+<module rename-to='esasky_cl_4_1_3_beta1_2022_05_12T16_17_52Z'>
 
 	<!-- Google/GWT -->
 	<inherits name='com.google.gwt.user.User' />
@@ -53,7 +50,8 @@
 
 	<!-- Source code path -->
 	<source path='client' />
-<!-- 	<set-property name="log_level" value="DEBUG" /> -->
+	<set-property name="log_level" value="DEBUG" />
 <!-- 	<set-property name="user.agent" value="safari"/> -->
-	<set-property name="user.agent" value="ie9,gecko1_8,safari"/>
+	<set-property name="user.agent" value="ie10,gecko1_8,safari"/>
+	<set-property name="log_DivLogger" value="DISABLED" />
 </module>
