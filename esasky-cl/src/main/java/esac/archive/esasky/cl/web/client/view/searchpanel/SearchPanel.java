@@ -250,7 +250,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         textBoxHolder.add(this.searchTextBox);
         textBoxHolder.add(createTargetListBtn());
-        textBoxHolder.add(createSelectionToolboxBtn());
+        textBoxHolder.add(createSearchToolboxBtn());
         MainLayoutPanel.addElementToMainArea(targetListPanel);
 		targetListPanel.hide();
         textBoxHolder.add(clearTextButton);
@@ -286,12 +286,12 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
     @Override
     protected void onLoad() {
-        int left = MainLayoutPanel.getMainAreaWidth() - targetListPanel.getOffsetWidth() - 25;
+        int left = MainLayoutPanel.getMainAreaWidth() - targetListPanel.getOffsetWidth() - 30;
         targetListPanel.setSuggestedPosition(left, 75);
         targetListPanel.definePositionFromTopAndLeft();
     }
 
-    private Widget createSelectionToolboxBtn() {
+    private Widget createSearchToolboxBtn() {
 
         FlowPanel selectionContainer = new FlowPanel();
 
@@ -300,7 +300,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchToolBoxButton.setMediumStyle();
         searchToolBoxButton.setDarkStyle();
         searchToolBoxButton.addStyleName("searchPanel__selectionToolButton");
-        searchToolBoxButton.setTitle(TextMgr.getDefaultInstance().getText("searchToolbox_title"));
+        searchToolBoxButton.setTitle(TextMgr.getInstance().getText("searchToolbox_title"));
 
         searchToolBoxButton.addClickHandler(event -> {
             SearchPanel.this.searchToolPanel.toggleToolbox();
@@ -308,6 +308,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         });
 
         selectionContainer.add(searchToolBoxButton);
+
+        if (!Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_TOOL)) {
+            searchToolBoxButton.getElement().getStyle().setDisplay(Display.NONE);
+        }
 
         return selectionContainer;
     }
@@ -382,6 +386,11 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     @Override
     public void showGeneralTargetResultsPanel(ESASkyGeneralResultList resultList, String input, boolean unrecognizedInput) {
         this.resultsList.clear();
+        if(searchToolBoxButton.getToggleStatus()) {
+        	searchToolBoxButton.toggle();
+        	searchToolPanel.toggleToolbox();
+        }
+        
         final ESASkySearchResult simbadResult = resultList.getSimbadResult();
 
         foundInSimbad = false;
@@ -824,6 +833,37 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     public void toggleTargetList() {
         targetListPanel.toggle();
         targetListButton.setToggleStatus(targetListPanel.isShowing());
+    }
+
+    @Override
+    public void showSearchTool() {
+        searchToolBoxButton.setToggleStatus(true);
+        searchToolPanel.showToolbox();
+    }
+
+    @Override
+    public void closeSearchTool() {
+        searchToolBoxButton.setToggleStatus(false);
+        searchToolPanel.hideToolbox();
+    }
+
+    @Override
+    public boolean setConeSearchArea(String ra, String dec, String radius) {
+        searchToolBoxButton.setToggleStatus(true);
+        searchToolPanel.showWithConeDetails();
+        return searchToolPanel.createConicalSearchArea(ra, dec, radius);
+    }
+
+    @Override
+    public boolean setPolygonSearchArea(String stcs) {
+        searchToolBoxButton.setToggleStatus(true);
+        searchToolPanel.showWithPolyDetails();
+        return searchToolPanel.createPolygonSearchArea(stcs);
+    }
+
+    @Override
+    public void clearSearchArea() {
+        AladinLiteWrapper.getAladinLite().clearSearchArea();
     }
 
     @Override

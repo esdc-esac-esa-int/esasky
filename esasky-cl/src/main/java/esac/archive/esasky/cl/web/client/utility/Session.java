@@ -26,6 +26,7 @@ import esac.archive.esasky.cl.web.client.event.AddTableEvent;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
+import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
@@ -41,8 +42,10 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IceCubeDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel.TabIndex;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 
@@ -50,19 +53,7 @@ public class Session {
 	
 	public void saveState() {
 		
-		JSONObject stateObj = new JSONObject();
-
-		stateObj.put(EsaSkyWebConstants.SESSION_LOCATION, getLocationJson());
-		stateObj.put(EsaSkyWebConstants.SESSION_HIPS, getHipsJson());
-		stateObj.put(EsaSkyWebConstants.SESSION_DATA, getDataJson());
-		JSONObject gw = getGwJson();
-		if(gw != null) {
-			stateObj.put(EsaSkyWebConstants.SESSION_GW, gw);
-		}
-		stateObj.put(EsaSkyWebConstants.SESSION_PLANNING, getPlanningJson());
-		stateObj.put(EsaSkyWebConstants.SESSION_PUB, getPublicationJson());
-		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
-		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
+		JSONObject stateObj = saveStateAsObj();
 
 		StringBuilder fileNameBuilder = new StringBuilder("esasky_session_");
 		Date date = new Date();
@@ -74,6 +65,29 @@ public class Session {
 		
 	}
 	
+	public JSONObject saveStateAsObj() {
+		JSONObject stateObj = new JSONObject();
+
+		stateObj.put(EsaSkyWebConstants.SESSION_LOCATION, getLocationJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_HIPS, getHipsJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_DATA, getDataJson());
+		JSONObject mme = getMmeJson();
+		if(mme != null) {
+			stateObj.put(EsaSkyWebConstants.SESSION_MME, mme);
+		}
+		JSONObject outreachObj = getOutreachImageJson();
+		if(outreachObj != null) {
+			stateObj.put(EsaSkyWebConstants.SESSION_OUTREACH, outreachObj);
+		}
+		
+		stateObj.put(EsaSkyWebConstants.SESSION_PLANNING, getPlanningJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_PUB, getPublicationJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
+		
+		return stateObj;
+	}
+	
 	public void restoreState() {
 		FileUpload upload = new FileUpload();
 		addFileUploadHandler(this, (JavaScriptObject) upload.getElement());
@@ -82,11 +96,17 @@ public class Session {
 	
 	public void restoreState(String jsonString) {
 		GeneralJavaScriptObject saveStateObj = GeneralJavaScriptObject.createJsonObject(jsonString);
+		restoreState(saveStateObj);
+	}
+	
+	public void restoreState(GeneralJavaScriptObject saveStateObj) {
 		try {
+			restoreSettings(saveStateObj);
 			restoreLocation(saveStateObj);
 			restoreData(saveStateObj);
 			restoreHipsStack(saveStateObj);
-			restoreGW(saveStateObj);
+			restoreMme(saveStateObj);
+			restorOutreach(saveStateObj);
 			restorePublications(saveStateObj);
 			restorePlanning(saveStateObj);
 			restoreSettings(saveStateObj);
@@ -253,8 +273,63 @@ public class Session {
 		}
 	}
 	
-	private JSONObject getGwJson() {
-		JSONObject obj = null;
+	private JSONObject getOutreachImageJson() {
+		JSONObject outreachObj = null;
+		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
+			if(ent instanceof ImageListEntity) {
+				ImageListEntity imageEnt = (ImageListEntity) ent;
+				if(ent.getTablePanel() != null) {
+					GeneralJavaScriptObject[] rows = imageEnt.getTablePanel().getSelectedRows();
+					if(rows.length > 0 ) {
+	                    String id = rows[0].getStringProperty(ImageListEntity.IDENTIFIER_KEY);
+	                    String opacity = new Double(imageEnt.getOpacity()).toString();
+	                    String footprintsShowing = new Boolean(!imageEnt.isHidingShapes()).toString();
+	                    String panelOpen = new Boolean(!imageEnt.getIsPanelClosed()).toString();
+	                    
+	                    outreachObj = new JSONObject();
+	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_ID, new JSONString(id));
+	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_OPACITY, new JSONString(opacity));
+	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING, new JSONString(footprintsShowing));
+	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_PANEL_OPEN, new JSONString(panelOpen));
+					}
+				}
+				break;
+			}
+		}
+		
+		return outreachObj;
+	}
+	
+
+	private void restorOutreach(GeneralJavaScriptObject saveStateObj) {
+		GeneralJavaScriptObject outreachObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_OUTREACH);
+		if(outreachObj == null) {
+			return;
+		}
+		
+		if(outreachObj.hasProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_ID)) {
+			String id = outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_ID);
+			double opacity = Double.parseDouble(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_OPACITY));
+			boolean showFootPrints = Boolean.parseBoolean(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING));
+			boolean showPanel = Boolean.parseBoolean(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_PANEL_OPEN));
+			MainPresenter.getInstance().getCtrlTBPresenter().showOutreachImage(id);
+			for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
+				if(ent instanceof ImageListEntity) {
+					ImageListEntity imageEnt = (ImageListEntity) ent;
+					imageEnt.setIsHidingShapes(!showFootPrints);
+					imageEnt.setOpacity(opacity);
+					if(!showPanel) {
+						MainPresenter.getInstance().getCtrlTBPresenter().closeOutreachPanel();
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	
+	private JSONObject getMmeJson() {
+		JSONObject mmeObj = new JSONObject();
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 			
 			if(ent.getDescriptor() instanceof GwDescriptor) {
@@ -262,21 +337,41 @@ public class Session {
 					GeneralJavaScriptObject[] rows = ent.getTablePanel().getSelectedRows();
 					if(rows.length > 0 ) {
 	                    String id = rows[0].getStringProperty(GwPanel.GRACE_ID);
-	                    obj = new JSONObject();
-	                    obj.put(EsaSkyWebConstants.SESSION_GW_ID, new JSONString(id));
+	                    mmeObj.put(EsaSkyWebConstants.SESSION_GW_ID, new JSONString(id));
 					}
-					break;
 				}
 			}
+			else if(ent.getDescriptor() instanceof IceCubeDescriptor) {
+				 int size = ent.getNumberOfShapes();
+				 if(size > 0) {
+					JSONObject icecubeObj = new JSONObject();
+					icecubeObj.put(EsaSkyWebConstants.SESSION_SHOWING, new JSONString("true"));
+					icecubeObj.put(EsaSkyWebConstants.SESSION_DATA_FILTERS, new JSONString(ent.getTablePanel().getFilterString()));
+					mmeObj.put(EsaSkyWebConstants.SESSION_ICECUBE, icecubeObj);
+				 }
+			}
 		}
-		return obj;
+		if(mmeObj.keySet().size() > 0) {
+			return mmeObj;
+		}
+		return null;
 	}
 	
-	private void restoreGW(GeneralJavaScriptObject saveStateObj) {
-		GeneralJavaScriptObject gwObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_GW);
-		if(gwObj != null) {
-			String id = gwObj.getStringProperty(EsaSkyWebConstants.SESSION_GW_ID);
+	private void restoreMme(GeneralJavaScriptObject saveStateObj) {
+		GeneralJavaScriptObject mmeObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_MME);
+		if(mmeObj == null) {
+			return;
+		}
+		
+		if(mmeObj.hasProperty(EsaSkyWebConstants.SESSION_GW_ID)) {
+			String id = mmeObj.getStringProperty(EsaSkyWebConstants.SESSION_GW_ID);
 			MainPresenter.getInstance().getCtrlTBPresenter().showGWEvent(id);
+		}
+		if(mmeObj.hasProperty(EsaSkyWebConstants.SESSION_ICECUBE)) {
+			GeneralJavaScriptObject icecubeObj = mmeObj.getProperty(EsaSkyWebConstants.SESSION_ICECUBE);
+			if(Boolean.parseBoolean(icecubeObj.getStringProperty(EsaSkyWebConstants.SESSION_SHOWING))) {
+				MainPresenter.getInstance().getCtrlTBPresenter().openGWPanel(TabIndex.NEUTRINO.ordinal());
+			}
 		}
 	}
 	
@@ -397,11 +492,18 @@ public class Session {
 	}-*/;
 	
 	
+	private boolean checkIfSpecialEntity(GeneralEntityInterface ent) {
+		return ent.getDescriptor() instanceof GwDescriptor 
+				|| ent.getDescriptor() instanceof PublicationsDescriptor
+				|| ent instanceof ImageListEntity
+				|| ent.getDescriptor() instanceof IceCubeDescriptor;
+	}
+	
 	private JSONArray getDataJson() {
 		JSONArray entArray = new JSONArray();
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 			
-			if(ent.getDescriptor() instanceof GwDescriptor || ent.getDescriptor() instanceof PublicationsDescriptor) {
+			if(checkIfSpecialEntity(ent)) {
 				continue;
 			}
 			

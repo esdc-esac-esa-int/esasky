@@ -5,12 +5,12 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import java.util.List;
 
 public interface TableObserver {
-	void numberOfShownRowsChanged(int numberOfShownRows);
-	void onSelection(ITablePanel selectedTablePanel);
-	void onUpdateStyle(ITablePanel panel);
-	void onDataLoaded(int numberOfRows);
-	void onRowSelected(GeneralJavaScriptObject row);
-	void onRowDeselected(GeneralJavaScriptObject row);
+	default void numberOfShownRowsChanged(int numberOfShownRows) {}
+	default void onSelection(ITablePanel selectedTablePanel) {}
+	default void onUpdateStyle(ITablePanel panel) {}
+	default void onDataLoaded(int numberOfRows) {}
+	default void onRowSelected(GeneralJavaScriptObject row) {}
+	default void onRowDeselected(GeneralJavaScriptObject row) {}
 	default void onDataFilterChanged(List<Integer> filteredIndexList) {}
 
 }

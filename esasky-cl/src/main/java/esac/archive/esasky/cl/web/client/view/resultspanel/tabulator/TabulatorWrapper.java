@@ -709,6 +709,10 @@ public class TabulatorWrapper {
         }
     }
 
+    public native String[] getNonDatabaseColumns() /*-{
+        return $wnd.esasky.nonDatabaseColumns;
+    }-*/;
+
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
 		var settings = JSON.parse(settingsString); 
     	if(settings.selectable == null){
@@ -1948,7 +1952,9 @@ public class TabulatorWrapper {
 				}
 				
 				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+				
 				var displayName = $wnd.esasky.getDefaultLanguageText(label);
+				displayName  = $wnd.esasky.getColumnDisplayText(displayName);
 				
 				if(!filterData.hasOwnProperty(metaName)){	
 					filterData[metaName] = {};

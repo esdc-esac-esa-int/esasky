@@ -1110,7 +1110,7 @@
 		Más información
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_CHANDRA">
+		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_CHANDRA-SC2">
 		El cat&#225;logo CSC (Chandra Source Catalog) contiene posiciones
 		y
 		flujos
@@ -2761,7 +2761,7 @@
 		Spitzer Enhanced Imaging Products (SEIP), Cryogenic Release version 3.0. Estas imágenes combinadas de la misión criogénica Spitzer (denominadas "Super Mosaicos") incluyen las 4 bandas (3.6, 4.5, 5.8, 8 micrón) de la Cámara Infrared Array (IRAC), además de la banda 24 micrón del Multiband Imaging Photometer for Spitzer ("MIPS").
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-observations#Spitzer"
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#SPITZER-OBS"
 		target="_blank"&gt;
 		Más información
 		&lt;/a&gt;
@@ -3098,7 +3098,7 @@
 	</text>
 	
 	<text key="addSky_errorParsingProperties">
-		Error en el análisis de las propiedades debido a: $DUE_TO$
+		Error en el análisis de las propiedades debido a: &lt;br&gt; $DUE_TO$
 		&lt;br&gt;&lt;br&gt;
 		Puede ser que el proveedor del servicio HiPS no permita Cross origin requests (CORS) o que no tenga un protocolo
         de seguridad https lo que hace imposible cargar el HiPS en ESASky
@@ -3303,6 +3303,33 @@
 		Más información
 		&lt;/a&gt; 
 	</text>
+	
+		<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+		Catálogo de eventos puntuales a todo el cielo de IceCube (IceCube All-Sky Point-Source Events Catalog; 2008 - 2018; Icecubepsc). IceCube ha realizado múltiples búsquedas de fuentes puntuales de neutrinos. Los eventos contenidos en este catálogo forman la muestra de datos integrados a lo largo de 10 años utilizada en la búsqueda de este tipo de eventos. Los eventos en la muestra son candidatos detectados por IceCube entre abril de 2008 y julio de 2018.		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#icecubepsc"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+		El segundo catálogo de fuentes de ROSAT a todo el cielo (second ROSAT all-sky survey source catalogue; 2RXS) es la segunda versión pública del catálogo de fuentes puntuales detectadas en todo el cielo de ROSAT (RASS) en las observaciones realizadas con el "position-sensitive proportional counter - PSPC entre junio de 1990 y agosto de 1991, y es una version extendida y revisada de los catálogos de fuentes débiles y brillantes.		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#2RXS"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+Catálogo de blazars y candidates a blazars de alta  energía y muy alta energía en rayos gamma seleccionados en multi-frecuencia (2WHSP). Este catálogo contiene la mayor y más completa lista de HSPs (High Synchrotron Peaked blazars) disponible hasta la fecha (en 2017), que es una extensión del catálogo de candidatos a fuentes de rayos gamma fuera del plano galáctico (1WHSP).		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#WHSP"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; 
+	</text>
+	
+	
 	<text key="Gamma-rays">
 		rayos gamma
 	</text>
@@ -3341,6 +3368,9 @@
 	
 	<text key="Neutrino">
 		Neutrino
+	</text>
+	<text key="searchToolbox_radius">
+		Radio (deg)
 	</text>
 
 </Internationalization>

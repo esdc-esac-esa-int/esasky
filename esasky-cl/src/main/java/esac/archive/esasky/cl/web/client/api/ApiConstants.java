@@ -75,6 +75,7 @@ public class ApiConstants {
 	
 	public static final String EVENT_SHAPE_SELECTION = "shape_selected";
 	public static final String EVENT_SHAPE_AREA_SELECTION = "area_shape_selection";
+	public static final String EVENT_SEARC_AREA = "search_area_used";
 	public static final String EVENT_VIEW_CHANGED = "view_changed";
 	public static final String EVENT_PANEL_OPENED = "result_panel_opened";
 	public static final String EVENT_PANEL_CLOSED = "result_panel_closed";
@@ -89,6 +90,7 @@ public class ApiConstants {
 	
 	public static final String RA = "ra";
 	public static final String DEC = "dec";
+	public static final String RADIUS = "radius";
 	public static final String FOV = "fov";
 	public static final String FOVRA = "fovRa";
 	public static final String FOVDEC = "fovDec";
@@ -97,6 +99,10 @@ public class ApiConstants {
 	public static final String SELECT_MODE_CIRCLE = "CIRCLE";
 	public static final String SELECT_MODE_POLY = "POLYGON";
 
+	public static final String SEARCH_AREA_TYPE = "type";
+	public static final String SEARCH_AREA_CIRCLE = "circle";
+	public static final String SEARCH_AREA_POLY = "polygon";
+	public static final String SEARCH_AREA_COORDINATES = "coordinates";
 
 	
 	public static final String ERROR_AVAILABLE = "available";
@@ -115,6 +121,7 @@ public class ApiConstants {
 	public static final String DATA = "data";
 	public static final String RESULT = "result";
 	public static final String ACTION = "action";
+	public static final String WAVELENGTH = "wavelength";
 
 	public static final String JUPYTER_ACTION_DOWNLOAD = "esasky_jupyter_download";
 	

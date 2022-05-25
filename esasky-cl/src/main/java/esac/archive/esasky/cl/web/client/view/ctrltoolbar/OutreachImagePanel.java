@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -31,7 +30,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	private BaseDescriptor outreachImageDescriptor;
 	private ImageListEntity imageEntity;
 	private boolean isHidingFootprints = false;
-	private boolean isShowing = false;
+	private boolean isPanelOpen = false;
 	private static String outreachImageIdToBeOpened; 
 	
 	private FlowPanel opacityPanel;
@@ -108,6 +107,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	public void show() {
 		super.show();
 		getData();
+		isPanelOpen = true;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
@@ -116,13 +116,14 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 	public void hide() {
 		super.hide();
+		isPanelOpen = false;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
 	}
 
 	public boolean isShowing() {
-		return isShowing;
+		return isPanelOpen;
 	}
 
 	private void fetchData() {
@@ -254,7 +255,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 			OutreachImagePanel.setStartupId(id);
 		}
 
-		if (!isShowing) {
+		if (!isPanelOpen) {
 			show();
 		}
 	}

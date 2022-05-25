@@ -113,21 +113,19 @@ public class HipsParser {
 		}
 	}
 	
-	public String parseImgFormat(GeneralJavaScriptObject props) {
+	public String parseImgFormat(GeneralJavaScriptObject props) throws IOException {
 		String[] imgFormats = props.getStringProperty(ApiConstants.HIPS_PROP_FORMAT).split(" ");
 
-		String imgFormat = "jpg";
-		if(imgFormats.length > 1) {
-			for(String format : imgFormats) {
-				if(format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
-					imgFormat = format;
-					break;
-				}
+		String imgFormat = "";
+		for(String format : imgFormats) {
+			if(format.equalsIgnoreCase("png") || format.equalsIgnoreCase("jpg") || format.equalsIgnoreCase("jpeg")) {
+				imgFormat = format;
+				break;
 			}
-		}else {
-			imgFormat = imgFormats[0];
 		}
-		
+		if("".equals(imgFormat)) {
+			throw new IOException("Image format must be png or jpg");
+		}
 		return imgFormat;
 	}
 

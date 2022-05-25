@@ -93,6 +93,7 @@ public class HeaderPresenter {
 		void addReleaseNotesClickHandler(ClickHandler handler);
 		void addNewsletterClickHandler(ClickHandler handler);
 		void addAboutUsClickHandler(ClickHandler handler);
+		void addAcknowledgeClickHandler(ClickHandler handler);
 		void addViewInWwtClickHandler(ClickHandler handler);
 		void addScienceModeSwitchClickHandler(ClickHandler handler);
 		void addScreenshotClickHandler(ClickHandler handler);
@@ -313,53 +314,41 @@ public class HeaderPresenter {
 
 		view.addGridButtonClickHandler(event -> AladinLiteWrapper.getInstance().toggleGrid());
 
-		view.addReleaseNotesClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_RELEASENOTES, "");
-				Window.open(EsaSkyWebConstants.ESA_SKY_RELEASE_NOTES_URL, "_blank", "");
-				view.closeDropdownMenu();
-			}
+		view.addReleaseNotesClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_RELEASENOTES, "");
+			Window.open(EsaSkyWebConstants.ESA_SKY_RELEASE_NOTES_URL, "_blank", "");
+			view.closeDropdownMenu();
 		});
 
-		view.addNewsletterClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_NEWSLETTER, "");
-				Window.open(EsaSkyWebConstants.ESA_SKY_NEWSLETTER_URL, "_blank", "");
-				view.closeDropdownMenu();
-			}
+		view.addNewsletterClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_NEWSLETTER, "");
+			Window.open(EsaSkyWebConstants.ESA_SKY_NEWSLETTER_URL, "_blank", "");
+			view.closeDropdownMenu();
 		});
 
-		view.addAboutUsClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(final ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_ABOUTUS, "");
-				Window.open(EsaSkyWebConstants.ESA_SKY_ABOUTUS_URL, "_blank", "");
-				view.closeDropdownMenu();
-			}
+		view.addAboutUsClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_ABOUTUS, "");
+			Window.open(EsaSkyWebConstants.ESA_SKY_ABOUTUS_URL, "_blank", "");
+			view.closeDropdownMenu();
 		});
 
-		view.addViewInWwtClickHandler(new ClickHandler() {
+		view.addAcknowledgeClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_ACKNOWLEDGE, "");
+			Window.open(EsaSkyWebConstants.ESA_SKY_ACKNOWLEDGE_URL, "_blank", "");
+			view.closeDropdownMenu();
+		});
 
-			@Override
-			public void onClick(final ClickEvent event) {
-				Coordinate j2000Coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
-				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_VIEWINWWT, "");
-				view.closeDropdownMenu();
-			}
+		view.addViewInWwtClickHandler(event -> {
+			Coordinate j2000Coordinate = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
+			Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_VIEWINWWT, "");
+			view.closeDropdownMenu();
 		});
 		
 		view.addHiResClickHandler(event -> {
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
 			view.closeDropdownMenu();
 			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
-			Session session = new Session();
-			session.saveState();
 		});
 		
 		view.addSessionSaveClickHandler(event -> {
@@ -377,51 +366,31 @@ public class HeaderPresenter {
 			session.restoreState();
 		});
 
-		view.addScienceModeSwitchClickHandler(new ClickHandler() {
+		view.addScienceModeSwitchClickHandler(arg0 -> toggleSciMode());
+		
+		view.addScreenshotClickHandler(arg0 -> {
+			String viewUrl = AladinLiteWrapper.getAladinLite().getViewURL(true);
+			JavaScriptObject imageCanvas = AladinLiteWrapper.getAladinLite().getViewCanvas(true);
+			ScreenshotDialogBox screenshotDialogBox = new ScreenshotDialogBox(viewUrl, imageCanvas);
+			screenshotDialogBox.show();
+			view.closeDropdownMenu();
 
-			@Override
-			public void onClick(ClickEvent arg0) {
-				toggleSciMode();
-			}
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SCREENSHOT, "");
 		});
 		
-		view.addScreenshotClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent arg0) {
-				String viewUrl = AladinLiteWrapper.getAladinLite().getViewURL(true);
-				JavaScriptObject imageCanvas = AladinLiteWrapper.getAladinLite().getViewCanvas(true);
-				ScreenshotDialogBox screenshotDialogBox = new ScreenshotDialogBox(viewUrl, imageCanvas);
-				screenshotDialogBox.show();
-				view.closeDropdownMenu();
-				
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_SCREENSHOT, "");
-			}
+		view.addLanguageSelectionChangeHandler((newValue, index) -> {
+			view.setSelectedLanguage(index);
+			GUISessionStatus.setCurrentLanguage(newValue);
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_LANGUAGE, newValue);
+			Window.open(UrlUtils.getUrlForCurrentState(), "_self", "");
 		});
 		
-		view.addLanguageSelectionChangeHandler(new StringValueSelectionChangedHandler() {
-			
-			@Override
-			public void onSelectionChanged(String newValue, int index) {
-				view.setSelectedLanguage(index);
-				GUISessionStatus.setCurrentLanguage(newValue);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_LANGUAGE, newValue);
-				Window.open(UrlUtils.getUrlForCurrentState(), "_self", "");
-			}
-		});
-		
-		view.addWarningButtonClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				CommonEventBus.getEventBus().fireEvent(new ToggleServerProblemBannerEvent());
-			}
-		});
+		view.addWarningButtonClickHandler(event -> CommonEventBus.getEventBus().fireEvent(new ToggleServerProblemBannerEvent()));
 
 	}
 
 	private void setInitialValues() {
-		view.setAvailableCoordinateFrames(new LinkedList<SelectionEntry>(
+		view.setAvailableCoordinateFrames(new LinkedList<>(
 				Arrays.asList(
 						new SelectionEntry("J2000", AladinLiteConstants.CoordinateFrame.J2000.toString()),
 						new SelectionEntry("GAL", AladinLiteConstants.CoordinateFrame.GALACTIC.toString())

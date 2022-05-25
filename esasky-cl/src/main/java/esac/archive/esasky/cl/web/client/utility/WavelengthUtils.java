@@ -39,22 +39,21 @@ public class WavelengthUtils {
         return wavelengthLongName;
     }
 
-    public static double getMeanWavelength(IDescriptor descriptor) {
-        double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
-        for(WavelengthDescriptor wavelengthDescriptor : descriptor.getWavelengths()) {
-            min = Math.min(min, wavelengthDescriptor.getRange().get(0));
-            max = Math.max(max, wavelengthDescriptor.getRange().get(1));
-        }
-        return (min + max) / 2;
-    }
-    
     public static void setWavelengthRangeMaxMin(List<? extends IDescriptor> descriptors) {
         for(IDescriptor descriptor : descriptors) {
-            double meanWavelength = getMeanWavelength(descriptor);
+            double meanWavelength = descriptor.getCenterWavelengthValue();
             minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
             maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
         }
+    }
+    
+    public static WavelengthName getWavelengthNameFromValue(double value) {
+    	for(WavelengthName wavelengthName : wavelengthNames) {
+    		if(value < wavelengthName.maxWavelength) {
+    			return wavelengthName;
+    		}
+    	}
+    	return null;
     }
 
     public static List<WavelengthDescriptor> createWavelengthDescriptor(double minWavelength, double maxWavelength) {

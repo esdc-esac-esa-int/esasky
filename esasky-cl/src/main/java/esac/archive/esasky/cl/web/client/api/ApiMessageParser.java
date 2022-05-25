@@ -5,7 +5,7 @@ public class ApiMessageParser {
 	public static native void init(Api api,  ApiCounts apiCounts, ApiEvents apiEvents, 
 			ApiExtTap apiExtTap, ApiHips apiHips, ApiMoc apiMoc, ApiModules apiModules, ApiOverlay apiOverlay,
 			ApiPanel apiPanel, ApiPlanning apiPlanning, ApiPlot apiPlot, ApiView apiView, ApiImage apiImage,
-			ApiAlerts apiAlerts, ApiSearch apiSearch, ApiPlayer apiPlayer) /*-{
+			ApiAlerts apiAlerts, ApiSearch apiSearch, ApiSession apiSession, ApiPlayer apiPlayer) /*-{
 	
 		function handleMessage(e){
 			var msg = e.data
@@ -346,6 +346,21 @@ public class ApiMessageParser {
 					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getSpectraCount(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;	
 					
+				case 'getAvailableObservationMissions':
+					console.log('getAvailableObservationMissions event captured');
+					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getAvailableObservationMissions(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
+				case 'getAvailableSpectraMissions':
+					console.log('getAvailableSpectraMissions event captured');
+					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getAvailableSpectraMissions(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
+				case 'getAvailableCatalogueMissions':
+					console.log('getAvailableCatalogueMissions event captured');
+					apiCounts.@esac.archive.esasky.cl.web.client.api.ApiCounts::getAvailableCatalogueMissions(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
+					break;	
+					
 					
 				// PLOT	
 					
@@ -667,13 +682,25 @@ public class ApiMessageParser {
 				// API ALERTS
 				case 'openGWPanel':
 					console.log('openGWPanel event captured');
-					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openAlertPanel()();
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openGWPanel()();
 					break;	
 					
+				case 'openNeutrinoPanel':
+					console.log('openGWPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::openNeutrinoPanel()();
+					break;	
+					
+				//Keep for backward compatibility
 				case 'closeGWPanel':
+				case 'closeAlertPanel':
 					console.log('closeGWPanel event captured');
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::closeAlertPanel()();
-					break;	
+					break;
+
+				case 'minimiseAlertPanel':
+					console.log('minimiseAlertPanel event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::minimiseAlertPanel()();
+					break;
 
 				case 'getGWIds':
 					console.log('getGWIds event captured');
@@ -689,6 +716,12 @@ public class ApiMessageParser {
 				case 'getAllGWData':
 					console.log('getAllGWData event captured');
 					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getAllGWData(Lcom/google/gwt/core/client/JavaScriptObject;)
+						(e);
+					break;	
+					
+				case 'getNeutrinoEventData':
+					console.log('getNeutrinoEventData event captured');
+					apiAlerts.@esac.archive.esasky.cl.web.client.api.ApiAlerts::getNeutrinoEventData(Lcom/google/gwt/core/client/JavaScriptObject;)
 						(e);
 					break;	
 					
@@ -717,6 +750,27 @@ public class ApiMessageParser {
 					console.log('closeTargetList event captured');
 					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::closeTargetList()()
 					break;
+				case 'showSearchTool':
+					console.log('showSearchTool event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::showSearchTool()()
+					break;
+				case 'closeSearchTool':
+					console.log('closeSearchTool event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::closeSearchTool()()
+					break;
+				case 'setConeSearchArea':
+					console.log('setConeSearchArea event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::setConeSearchArea(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+						(msg.content.ra, msg.content.dec, msg.content.radius)
+					break;
+				case 'setPolygonSearchArea':
+					console.log('setPolygonSearchArea event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::setPolygonSearchArea(Ljava/lang/String;)(msg.content.stcs)
+					break;
+				case 'clearSearchArea':
+					console.log('clearSearchArea event captured');
+					apiSearch.@esac.archive.esasky.cl.web.client.api.ApiSearch::clearSearchArea()();
+					break;
 
 
 				// API PLAYER
@@ -738,15 +792,18 @@ public class ApiMessageParser {
 					break;
 
 
-
-
 				case 'saveState':
 					console.log('saveState event captured');
-					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiBase::saveState()()
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::saveState(Lcom/google/gwt/core/client/JavaScriptObject;)(e);
 					break;
+					
 				case 'restoreState':
-					console.log('saveState event captured');
-					apiPlayer.@esac.archive.esasky.cl.web.client.api.ApiBase::restoreState()()
+					console.log('restoreState event captured');
+					var state = null
+					if(msg.content.hasOwnProperty('state')){
+						state = msg.content['state'];
+					}
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::restoreState(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(state)
 					break;
 
 

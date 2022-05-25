@@ -56,7 +56,11 @@ public class TAPSSOService extends AbstractTAPService {
 
         adql += " FROM " + descriptor.getTapTable() + " AS a JOIN "
                 + descriptor.getSsoXMatchTapTable()
-                + " AS b on a.observation_oid = b.observation_oid WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
+                + " AS b on a.observation_oid = b.observation_oid";
+        if(descriptor.getTapTable().contains("xmm_om")) {
+        	adql += " AND a.filter = b.filter";
+        }
+        adql += " WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
 
         Log.debug(debugPrefix + " ADQL " + adql);
 

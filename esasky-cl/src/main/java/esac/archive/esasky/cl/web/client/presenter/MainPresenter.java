@@ -68,7 +68,9 @@ public class MainPresenter {
 
         SearchPanel getSearchPanel();
 
-        void toggleEvaPanel();
+        void initEvaPanel();
+        boolean isEvaShowing();
+        void toggleEvaPanelWithDrag();
         
         HeaderPresenter.View getHeaderPanel();
         
@@ -321,6 +323,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(ModuleUpdatedEvent.TYPE, event -> {
            if(EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
                GUISessionStatus.onScienceModeChanged(event.getValue());
+               updateModuleVisibility();
            }
         });
 
@@ -585,7 +588,12 @@ public class MainPresenter {
     }-*/;
     
     private void showEva() {
-    	view.toggleEvaPanel();
+    	if(view.isEvaShowing()) {
+    		view.toggleEvaPanelWithDrag();
+    	}else {
+    		view.initEvaPanel();
+    	}
+    	
     }
 
 }

@@ -53,14 +53,16 @@ public class TAPUtils {
         + stcs + "&timecall=" + timecall + "&client=esasky-web-client";
     }
 
-    public static String getTAPMocQuery(final String center, final String stcs, final String tableName, int order,  String filters) {
+    public static String getTAPMocQuery(final String center, final String stcs, final String tableName,
+    		int order,  String filters, boolean precomputedMaxmin) {
 
         // Get System time call
         Long timecall = System.currentTimeMillis();
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
         String url =  EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?center=" + center + "&order=" + Integer.toString(order) +
-                "&stcs="+ stcs + "&tablename="+ tableName + "&timecall=" + timecall + "&client=esasky-web-client";
+                "&stcs="+ stcs + "&tablename="+ tableName + "&precomputedMaxmin=" + Boolean.toString(precomputedMaxmin)
+                + "&timecall=" + timecall + "&client=esasky-web-client";
        
         if(filters != null && !"".equals(filters)) {
         	url += "&filter" + filters;

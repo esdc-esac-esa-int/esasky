@@ -15,6 +15,8 @@ public class Modules {
     private static HashMap<String, Boolean> currentModuleMap = new HashMap<>();
     private static HashMap<String, HashMap<String, Boolean>> allModuleMaps = new HashMap<>();
     
+    private static final String SERVER_PROPERTIES = "serverProperties";
+    
     private Modules() {
     	
     }
@@ -97,6 +99,7 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_DICE, false);
         map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
 
         
         return map;
@@ -115,18 +118,19 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
-		map.put(EsaSkyWebConstants.MODULE_CAT, false);
-		map.put(EsaSkyWebConstants.MODULE_SPE, false);
+		map.put(EsaSkyWebConstants.MODULE_CAT, true);
+		map.put(EsaSkyWebConstants.MODULE_SPE, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, false);
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
 		map.put(EsaSkyWebConstants.MODULE_GW, false);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
-		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, false);
+		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
 		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
 		map.put(EsaSkyWebConstants.MODULE_DICE, false);
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
 		
 		return map;
 	}
@@ -146,7 +150,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
 		map.put(EsaSkyWebConstants.MODULE_SPE, true);
-		map.put(EsaSkyWebConstants.MODULE_EXTTAP, Boolean.parseBoolean(Dictionary.getDictionary("serverProperties").get("showExtTap")));
+		map.put(EsaSkyWebConstants.MODULE_EXTTAP, Boolean.parseBoolean(Dictionary.getDictionary(SERVER_PROPERTIES).get("showExtTap")));
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, true);
 		map.put(EsaSkyWebConstants.MODULE_GW, true);
 		map.put(EsaSkyWebConstants.MODULE_SSO, true);
@@ -156,6 +160,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_DICE, true);
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
 		
 		return map;
 	}
@@ -167,8 +172,8 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_INTERNATIONALIZATION, true);
 		map.put(EsaSkyWebConstants.MODULE_BANNERS_ALL_SIDE, false);
 		map.put(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS, true);
-		map.put(EsaSkyWebConstants.MODULE_SHOW_MISSING_TRANSLATIONS, Boolean.parseBoolean(Dictionary.getDictionary("serverProperties").get("showMissingTranslationBox")));
-		map.put(EsaSkyWebConstants.MODULE_EVA_MENU, Boolean.parseBoolean(Dictionary.getDictionary("serverProperties").get("showEva")));
+		map.put(EsaSkyWebConstants.MODULE_SHOW_MISSING_TRANSLATIONS, Boolean.parseBoolean(Dictionary.getDictionary(SERVER_PROPERTIES).get("showMissingTranslationBox")));
+		map.put(EsaSkyWebConstants.MODULE_EVA_MENU, Boolean.parseBoolean(Dictionary.getDictionary(SERVER_PROPERTIES).get("showEva")));
 		map.put(EsaSkyWebConstants.MODULE_EVA, false);
 		
 		return map;

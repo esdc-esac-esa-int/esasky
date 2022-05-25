@@ -310,15 +310,22 @@ public abstract class BaseDescriptor implements IDescriptor {
     public final void setWavelengths(List<WavelengthDescriptor> wavelengths) {
         this.wavelengths = wavelengths;
         if(getPrimaryColor() == null) {
-            double minWavelength = 100;
-            double maxWavelength = 0;
-            for(WavelengthDescriptor w : wavelengths) {
-                ArrayList<Double> range = w.getRange();
-                minWavelength = Math.min(range.get(0), minWavelength);
-                maxWavelength = Math.max(range.get(1), maxWavelength);
-            }
-            setPrimaryColor(ESASkyColors.getColorFromWavelength((maxWavelength + minWavelength) / 2));
+            setPrimaryColor(ESASkyColors.getColorFromWavelength(getCenterWavelengthValue()));
         }
+    }
+    
+    @JsonIgnore
+    @Override
+    public double getCenterWavelengthValue() {
+        double minWavelength = 100;
+        double maxWavelength = 0;
+	    for(WavelengthDescriptor w : getWavelengths()) {
+	        ArrayList<Double> range = w.getRange();
+	        minWavelength = Math.min(range.get(0), minWavelength);
+	        maxWavelength = Math.max(range.get(1), maxWavelength);
+	    }
+        
+        return (maxWavelength + minWavelength) / 2;
     }
     
 	@Override

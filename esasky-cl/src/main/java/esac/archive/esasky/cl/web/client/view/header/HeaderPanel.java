@@ -26,9 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.event.ShowEvaEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter.SelectionEntry;
@@ -85,6 +83,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Anchor dropdownReleaseNotesEntry = new Anchor(TextMgr.getInstance().getText("header_releaseNotes"));
 	private Anchor dropdownNewsletterEntry = new Anchor(TextMgr.getInstance().getText("header_newsletter"));
 	private Anchor dropdownAboutUsEntry = new Anchor(TextMgr.getInstance().getText("header_aboutUs"));
+	private Anchor dropdownAcknowledgeEntry = new Anchor(TextMgr.getInstance().getText("header_acknowledge"));
 
 	private ListBox coordinateFrameFull = new ListBox();
 	private ListBox coordinateFrameFirstLetter = new ListBox();
@@ -241,12 +240,14 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownReleaseNotesEntry.getElement().setId("header__dropdown__releasenotes");
 		dropdownNewsletterEntry.getElement().setId("header__dropdown__newsletter");
 		dropdownAboutUsEntry.getElement().setId("header__dropdown__aboutus");
+		dropdownAcknowledgeEntry.getElement().setId("header__dropdown_acknowledge");
 		
 		dropdownContent.add(dropdownFeedbackEntry);
 		dropdownContent.add(dropdownVideoTutorialsEntry);
 		dropdownContent.add(dropdownReleaseNotesEntry);
 		dropdownContent.add(dropdownNewsletterEntry);
 		dropdownContent.add(dropdownAboutUsEntry);
+		dropdownContent.add(dropdownAcknowledgeEntry);
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU)) {
 			dropdownContent.add(createEvaDropDownEntry());
 		}
@@ -502,6 +503,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	}
 
 	@Override
+	public void addAcknowledgeClickHandler(ClickHandler clickHandler) {
+		dropdownAcknowledgeEntry.addClickHandler(clickHandler);
+	}
+
+	@Override
 	public void addMenuClickHandler(ClickHandler clickHandler) {
 		dropdownIcon.addClickHandler(clickHandler);
 	}
@@ -730,6 +736,14 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		}else {
 			feedbackButton.setVisible(false);
 			dropdownFeedbackEntry.setVisible(true);
+		}
+		
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)) {
+			dropdownSessionSaveEntry.setVisible(true);
+			dropdownSessionRestoreEntry.setVisible(true);
+		}else {
+			dropdownSessionSaveEntry.setVisible(false);
+			dropdownSessionRestoreEntry.setVisible(false);
 		}
 	}
 

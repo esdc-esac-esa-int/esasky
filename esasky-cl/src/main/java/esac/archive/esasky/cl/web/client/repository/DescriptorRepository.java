@@ -709,12 +709,19 @@ public class DescriptorRepository {
 
     
     public IDescriptor getDescriptorFromTable(String tableName, String mission) {
-    	for(IDescriptor desc : descriptorsMap.get(tableName)) {
+    	for(IDescriptor desc : getDescriptorsMap().get(tableName)) {
     		if(desc.getMission().equals(mission)) {
     			return desc;
     		}
     	}
     	return null;
+    }
+    
+    private HashMap<String, List<IDescriptor>> getDescriptorsMap() {
+        if (descriptorsMap == null) {
+            prepareDescriptorsMap();
+        }
+        return descriptorsMap;
     }
 
     private void prepareDescriptorsMap() {
@@ -748,11 +755,8 @@ public class DescriptorRepository {
     }
 
     private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
-        if (descriptorsMap == null) {
-            prepareDescriptorsMap();
-        }
 
-        ArrayList<String> remainingDescriptors = new ArrayList<>(descriptorsMap.keySet());
+        ArrayList<String> remainingDescriptors = new ArrayList<>(getDescriptorsMap().keySet());
 
         List<IDescriptor> descriptors = new ArrayList<>();
         List<Integer> counts = new ArrayList<>();

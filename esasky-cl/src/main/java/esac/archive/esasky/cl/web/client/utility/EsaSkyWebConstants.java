@@ -106,6 +106,7 @@ public class EsaSkyWebConstants {
     public static final String ESA_SKY_ABOUTUS_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits";
     public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/esasky-help#cookies";
     public static final String ESASKY_INFO_EMAIL = "esaskyinfo@sciops.esa.int";
+    public static final String ESA_SKY_ACKNOWLEDGE_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits#CITE";
     
     
     /**
@@ -118,7 +119,7 @@ public class EsaSkyWebConstants {
     public static final String INTERNET_EXPLORER_APPNAME = "Microsoft Internet Explorer";
     
     public static final int MOC_FILTER_LIMIT = 10000000;
-    public static final int MOC_GLOBAL_MINMAX_LIMIT = 5000000;
+    public static final int MOC_GLOBAL_MINMAX_LIMIT = 3000000;
     
 
     /*************************************************************************/
@@ -153,6 +154,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SESSION = "session";
     public static final String MODULE_EVA_MENU = "eva_menu";
     public static final String MODULE_EVA = "eva";
+    public static final String MODULE_SEARCH_TOOL = "search_tool";
     
     
     // DEFAULT ONES
@@ -232,13 +234,22 @@ public class EsaSkyWebConstants {
     public static final String SESSION_DATA_LINESTYLE = "line_style";
     public static final String SESSION_DATA_SOURCE_STYLE = "source_style";
 
-    public static final String SESSION_GW = "gw";
+    public static final String SESSION_SHOWING = "showing";
+    
+    public static final String SESSION_ICECUBE = "icecube";
+    public static final String SESSION_MME = "multi_messenger_events";
     public static final String SESSION_GW_ID = "gw_id";
 
     public static final String SESSION_PLANNING = "planning";
     public static final String SESSION_PLANNING_APERTURE = "aperture";
     public static final String SESSION_PLANNING_INSTRUMENT = "instrument";
     public static final String SESSION_PLANNING_ALL = "all";
+
+    public static final String SESSION_OUTREACH = "outreach_image";
+    public static final String SESSION_OUTREACH_IMAGE_ID = "id";
+    public static final String SESSION_OUTREACH_IMAGE_OPACITY = "opacity";
+    public static final String SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING = "footprints_showing";
+    public static final String SESSION_OUTREACH_IMAGE_PANEL_OPEN = "panel_open";
 
     public static final String SESSION_PUB = "publications";
     public static final String SESSION_PUB_TYPE = "type";

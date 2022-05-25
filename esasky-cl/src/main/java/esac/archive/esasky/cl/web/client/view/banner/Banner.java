@@ -162,4 +162,8 @@ public class Banner extends Composite implements View{
 		warningIcon.setVisible(isWarning);
 		informationIcon.setVisible(!isWarning);
 	}
+	
+	public void hideCloseButton() {
+		closeButton.setVisible(false);
+	}
 }

@@ -105,6 +105,7 @@ public class SsoCountRequestCallback implements RequestCallback {
                 if (currMtd.getName().equals("sso_oid")) {
                     ssoId = Integer.parseInt(rowList.getDataValue("sso_oid", 0));
                 } else {
+                	currMtd.setName(currMtd.getName().replace("_", "-"));
                     SSODescriptor descriptor = descriptorList
                             .getDescriptorByMissionNameCaseInsensitive(currMtd.getName());
                     if (descriptor != null) {
