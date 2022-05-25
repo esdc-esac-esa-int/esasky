@@ -4,7 +4,7 @@
 # Copyright (C) 2014-  ESA - ESAC - Madrid, Spain
 
 ### target flags & options
-server.host=ammiapp01.n1data.lan
+server.host=ammiapp03.n1data.lan
 server.user=mmiops
 server.user.home=/home/${server.user}
 server.instdir=${server.user.home}/esaskyComponents
