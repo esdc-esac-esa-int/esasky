@@ -1840,13 +1840,13 @@
 	<text key="v_i">
 		V - I colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	
-		<text key="Gaia_eDR3_TGAS_parallax_error">
+		<text key="Gaia_DR3_TGAS_parallax_error">
 		Parallax error&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_TGAS_pmra_error">
+	<text key="Gaia_DR3_TGAS_pmra_error">
 		PM in RA error&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_TGAS_pmdec_error">
+	<text key="Gaia_DR3_TGAS_pmdec_error">
 		PM in Dec error&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_TGAS_phot_g_mean_mag">
+	<text key="Gaia_DR3_TGAS_phot_g_mean_mag">
 		G mean Mag&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="mag">
 		Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
@@ -1931,10 +1931,10 @@
 	<text key="PCCS2E_highest_reliability_cat">
 		Cat. Reliability
 	</text>
-	<text key="Gaia_eDR3_ra_error">
+	<text key="Gaia_DR3_ra_error">
 		RA error &lt;i&gt;(mas)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_dec_error">
+	<text key="Gaia_DR3_dec_error">
 		Dec error &lt;i&gt;(mas)&lt;/i&gt;
 	</text>
 	<text key="PSZ_redshift">
@@ -2412,52 +2412,94 @@
 		Sky Map
 	</text>
 
-	<text key="Gaia_eDR3_parallax">
+	<text key="Gaia_DR3_parallax">
 		Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_parallax_error">
+	<text key="Gaia_DR3_parallax_error">
 		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_pmra">
+	<text key="Gaia_DR3_pmra">
 		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_pmra_error">
+	<text key="Gaia_DR3_pmra_error">
 		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_pmdec">
+	<text key="Gaia_DR3_pmdec">
 		Proper Motion in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_pmdec_error">
+	<text key="Gaia_DR3_pmdec_error">
 		&amp;Delta;PM in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_phot_g_mean_mag">
+	<text key="Gaia_DR3_phot_g_mean_mag">
 		G &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_br_rp">
+	<text key="Gaia_DR3_br_rp">
 		G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt; colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_bp_g">
+	<text key="Gaia_DR3_bp_g">
 		G&lt;sub&gt;BP&lt;/sub&gt; - G colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_g_rp">
+	<text key="Gaia_DR3_g_rp">
 		G - G&lt;sub&gt;RP&lt;/sub&gt; colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_phot_bp_mean_mag">
+	<text key="Gaia_DR3_phot_bp_mean_mag">
 		Integrated G&lt;sub&gt;BP&lt;/sub&gt; mean mag &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_phot_rp_mean_mag">
+	<text key="Gaia_DR3_phot_rp_mean_mag">
 		Integrated G&lt;sub&gt;RP&lt;/sub&gt; mean mag &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
-	<text key="Gaia_eDR3_Ruwe">
+	<text key="Gaia_DR3_Ruwe">
 		Renormalised unit weight error (ruwe)
 	</text>
-	<text key="Gaia_eDR3_radial_velocity">
+	<text key="Gaia_DR3_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_radial_velocity_error">
+	<text key="Gaia_DR3_radial_velocity_error">
 		&amp;Delta;Radial Velocity
 	</text>
-	<text key="Gaia_eDR3_phot_variable_flag">
-		Variable flag
+	<text key="Gaia_DR3_phot_variable_flag">
+		Photometric Variability Flag
 	</text>
-	<text key="Gaia_eDR3_teff_val">
+	<text key="Gaia_DR3_Non_Single_Star">
+		Non-Single Star Flag
+	</text>
+	<text key="Gaia_DR3_Has_XP_Continuous">
+		Has Continuous BP/RP Spectrum
+	</text>
+	<text key="Gaia_DR3_Has_XP_Sampled">
+		Has Sampled BP/RP Spectrum
+	</text>
+	<text key="Gaia_DR3_Has_Rvs">
+		Has RVS Spectrum
+	</text>
+	<text key="Gaia_DR3_Has_Epoch_Photometry">
+		Has Epoch Photometry
+	</text>
+	<text key="Gaia_DR3_Has_Mcmc_Gspphot">
+		Has GSP-Phot MCMC samples
+	</text>
+	<text key="Gaia_DR3_Has_Mcmc_Msc">
+		Has MSC MCMC samples
+	</text>
+	<text key="Gaia_DR3_Teff_Gspphot">
+		Effective temperature (K)
+	</text>
+	<text key="Gaia_DR3_Logg_Gspphot">
+		Surface gravity&lt;br&gt;(log(cm s&lt;sup&gt;-2&lt;/sup&gt;))
+	</text>
+	<text key="Gaia_DR3_Mh_Gspphot">
+		Iron Abundance (dex)
+	</text>
+	<text key="Gaia_DR3_Distance_Gspphot">
+		Distance (pc)
+	</text>
+	<text key="Gaia_DR3_Azero_Gspphot">
+		Extinction, A&lt;sub&gt;0&lt;/sub&gt; at 547.7nm (mag)
+	</text>
+	<text key="Gaia_DR3_Ag_Gspphot">
+		Extinction in G band (mag)
+	</text>
+	<text key="Gaia_DR3_Ebpminrp_Gspphot">
+		Reddening E(G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt;) (mag)
+	</text>
+	<text key="Gaia_DR3_teff_val">
 		T_{eff}&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt; </text>
-	<text key="Gaia_eDR3_a_g_val">
+	<text key="Gaia_DR3_a_g_val">
 		A_{G} &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="treeMapContainer_help_ASTRO_IMAGING">
@@ -3288,8 +3330,8 @@
 	</text>
 	
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-eDR3">
-		The Gaia eDR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
+		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
 		The astrometric solution is accompanied with some new quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources, and G&lt;sub&gt;BP&lt;/sub&gt;
 		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.542 billion and 1.555 billion sources, respectively are also provided. 
 		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag. 

@@ -2988,11 +2988,11 @@
 	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
 		Descargar datos de archivo
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-eDR3">
-		Avance de la Tercera Publicación de Datos de Gaia (eDR3)
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+		Tercera Publicación de Datos de Gaia (DR3)
 		&lt;br&gt;&lt;br&gt;
 
-		El cat&#225;logo de Gaia eDR3 incluye posiciones, paralajes y movimientos propios 
+		El cat&#225;logo de Gaia DR3 incluye posiciones, paralajes y movimientos propios 
 		para m&#225;s de 1468 millones de fuentes en el rango de magnitudes 3 - 21 en la banda G. 
 		La solución astrométrica se acompaña de nuevos indicadores de calidad como RUWE. 
 		Además se incluyen magnitudes en la banda G para aproximadamente 1860 millones de fuentes, 
