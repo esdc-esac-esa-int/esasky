@@ -2450,7 +2450,7 @@
 	<text key="Gaia_DR3_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_radial_velocity_error">
-		&amp;Delta;Radial Velocity
+		&amp;Delta;Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_phot_variable_flag">
 		Photometric Variability Flag
