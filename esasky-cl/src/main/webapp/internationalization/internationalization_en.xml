@@ -3332,8 +3332,13 @@
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
 		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
-		The astrometric solution is accompanied with some new quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources, and G&lt;sub&gt;BP&lt;/sub&gt;
-		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.542 billion and 1.555 billion sources, respectively are also provided. 
+		The astrometric solution is accompanied with some new quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
+		the &lt;a
+		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
+		target="_blank"&gt;
+		known issue
+		&lt;/a&gt; present in EDR3 corrected in Gaia DR3), and G&lt;sub&gt;BP&lt;/sub&gt;
+		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.54 billion and 1.55 billion sources, respectively are also provided. 
 		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
