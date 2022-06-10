@@ -1635,6 +1635,26 @@ public class TabulatorWrapper {
                                 headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
+			    		else if(this.metadata[i].name.toLowerCase() === "has_xp_continuous" 
+			    		    || this.metadata[i].name.toLowerCase() === "has_xp_sampled"
+			    		    || this.metadata[i].name.toLowerCase() === "has_rvs"
+			    		    || this.metadata[i].name.toLowerCase() === "has_epoch_photometry"
+			    		    || this.metadata[i].name.toLowerCase() === "has_mcmc_gspphot"
+			    		    || this.metadata[i].name.toLowerCase() === "has_mcmc_msc"){
+			    			activeColumnGroup.push({
+				    			title:this.metadata[i].displayName,
+				    			titleDownload:this.metadata[i].name, 
+				    			field:this.metadata[i].name, 
+				    			visible:this.metadata[i].visible,
+				    			headerTooltip:this.metadata[i].description,
+				    			download: true,
+				    			formatter:"plaintext",
+				    			sorter:  "string",
+				    			sorterParams: {thousandSeperator: ""},
+				    			headerFilter:"tickCross",
+				    			headerFilterParams:{"tristate":true}
+		    				});
+			    		}
 			    		else if(this.metadata[i].datatype.toUpperCase() === "STRING_HIDE_NON_DATABASE_VALUES"){
 			    			activeColumnGroup.push({
                                 title:this.metadata[i].displayName,

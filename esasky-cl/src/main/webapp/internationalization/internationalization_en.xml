@@ -2056,6 +2056,10 @@
 		RA &lt;i&gt;(J2016.0)&lt;/i&gt; </text>
 	<text key="DEC_J2016.0">
 		Dec &lt;i&gt;(J2016.0)&lt;/i&gt; </text>
+	<text key="RA_LABEL">
+		RA</text>
+	<text key="DEC_LABEL">
+		Dec</text>
 	<text key="SoftX-ray">
 		Soft X-ray
 	</text>
@@ -2415,16 +2419,16 @@
 	<text key="Gaia_DR3_parallax">
 		Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_parallax_error">
-		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+		&amp;sigma;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmra">
 		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmra_error">
-		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+		&amp;sigma;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmdec">
 		Proper Motion in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmdec_error">
-		&amp;Delta;PM in
+		&amp;sigma;PM in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_phot_g_mean_mag">
 		G &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
@@ -2450,7 +2454,7 @@
 	<text key="Gaia_DR3_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_radial_velocity_error">
-		&amp;Delta;Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;
+		&amp;sigma;Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_phot_variable_flag">
 		Photometric Variability Flag
@@ -2480,7 +2484,7 @@
 		Effective temperature (K)
 	</text>
 	<text key="Gaia_DR3_Logg_Gspphot">
-		Surface gravity&lt;br&gt;(log(cm s&lt;sup&gt;-2&lt;/sup&gt;))
+		Surface gravity&lt;br&gt;&lt;i&gt;(log(cm/s&lt;sup&gt;2&lt;/sup&gt;))&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Mh_Gspphot">
 		Iron Abundance (dex)
