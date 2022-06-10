@@ -1651,8 +1651,11 @@ public class TabulatorWrapper {
 				    			formatter:"plaintext",
 				    			sorter:  "string",
 				    			sorterParams: {thousandSeperator: ""},
-				    			headerFilter:"tickCross",
-				    			headerFilterParams:{"tristate":true}
+				    			headerFilter:stringFilterEditor,
+				    			headerFilterParams:{tapName:this.metadata[i].name,
+				    								title:this.metadata[i].displayName},
+				    			headerFilterFunc:"=",
+				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
 			    		else if(this.metadata[i].datatype.toUpperCase() === "STRING_HIDE_NON_DATABASE_VALUES"){
