@@ -1071,6 +1071,24 @@ public class TabulatorWrapper {
 			return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
 		}
 		
+		var booleanFilterEditor =  function(cell, onRendered, success, cancel, editorParams){
+		
+			var editor = this.table.modules.edit.editors["input"];
+			
+			var successFunc = function(filter){
+				success(filter);
+				var filterString = cell.getField() + " = '" + filter + "'";
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), filterString);
+			}
+
+			var cancelFunc = function(){
+				wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(Ljava/lang/String;Ljava/lang/String;)(cell.getField(), "");
+				cancel();
+			}
+			
+			return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
+		}
+		
 		var footerCounter = "<div></div><div id=\"" + divId + "_rowCount\" class=\"footerCounter\">0</div>"
 		
 		var table = new $wnd.Tabulator("#" + divId, {
@@ -1651,7 +1669,7 @@ public class TabulatorWrapper {
 				    			formatter:"plaintext",
 				    			sorter:  "string",
 				    			sorterParams: {thousandSeperator: ""},
-				    			headerFilter:"input",
+				    			headerFilter:booleanFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
 				    			headerFilterFunc:"=",
