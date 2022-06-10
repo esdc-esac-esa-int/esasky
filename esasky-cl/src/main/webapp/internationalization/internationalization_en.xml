@@ -3332,7 +3332,7 @@
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
 		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
-		The astrometric solution is accompanied with some new quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
+		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
 		the &lt;a
 		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
 		target="_blank"
