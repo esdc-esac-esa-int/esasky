@@ -1651,7 +1651,7 @@ public class TabulatorWrapper {
 				    			formatter:"plaintext",
 				    			sorter:  "string",
 				    			sorterParams: {thousandSeperator: ""},
-				    			headerFilter:stringFilterEditor,
+				    			headerFilter:"input",
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
 				    			headerFilterFunc:"=",
