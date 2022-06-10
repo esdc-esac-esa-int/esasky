@@ -1672,7 +1672,7 @@ public class TabulatorWrapper {
 				    			headerFilter:booleanFilterEditor,
 				    			headerFilterParams:{tapName:this.metadata[i].name,
 				    								title:this.metadata[i].displayName},
-				    			headerFilterFunc:"=",
+				    			headerFilterFunc:"like",
 				    			headerFilterFuncParams:{tapName:this.metadata[i].name}
 		    				});
 			    		}
