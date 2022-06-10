@@ -2481,25 +2481,25 @@
 		Has MSC MCMC samples
 	</text>
 	<text key="Gaia_DR3_Teff_Gspphot">
-		Effective temperature (K)
+		Effective temperature&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Logg_Gspphot">
 		Surface gravity&lt;br&gt;&lt;i&gt;(log(cm/s&lt;sup&gt;2&lt;/sup&gt;))&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Mh_Gspphot">
-		Iron Abundance (dex)
+		Iron Abundance&lt;br&gt;&lt;i&gt;(dex)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Distance_Gspphot">
-		Distance (pc)
+		Distance&lt;br&gt;&lt;i&gt;(pc)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Azero_Gspphot">
-		Extinction, A&lt;sub&gt;0&lt;/sub&gt; at 547.7nm (mag)
+		Extinction, A&lt;sub&gt;0&lt;/sub&gt; at 547.7nm&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Ag_Gspphot">
-		Extinction in G band (mag)
+		Extinction in G band&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Ebpminrp_Gspphot">
-		Reddening E(G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt;) (mag)
+		Reddening E(G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt;)&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_teff_val">
 		T_{eff}&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt; </text>
