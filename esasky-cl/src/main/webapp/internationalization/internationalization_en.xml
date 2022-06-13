@@ -2056,6 +2056,10 @@
 		RA &lt;i&gt;(J2016.0)&lt;/i&gt; </text>
 	<text key="DEC_J2016.0">
 		Dec &lt;i&gt;(J2016.0)&lt;/i&gt; </text>
+	<text key="RA_LABEL">
+		RA</text>
+	<text key="DEC_LABEL">
+		Dec</text>
 	<text key="SoftX-ray">
 		Soft X-ray
 	</text>
@@ -2415,16 +2419,16 @@
 	<text key="Gaia_DR3_parallax">
 		Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_parallax_error">
-		&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
+		&amp;sigma;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmra">
 		Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmra_error">
-		&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
+		&amp;sigma;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmdec">
 		Proper Motion in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_pmdec_error">
-		&amp;Delta;PM in
+		&amp;sigma;PM in
 		Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_phot_g_mean_mag">
 		G &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
@@ -2450,7 +2454,7 @@
 	<text key="Gaia_DR3_radial_velocity">
 		Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_radial_velocity_error">
-		&amp;Delta;Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;
+		&amp;sigma;Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_phot_variable_flag">
 		Photometric Variability Flag
@@ -2477,25 +2481,25 @@
 		Has MSC MCMC samples
 	</text>
 	<text key="Gaia_DR3_Teff_Gspphot">
-		Effective temperature (K)
+		Effective temperature&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Logg_Gspphot">
-		Surface gravity&lt;br&gt;(log(cm s&lt;sup&gt;-2&lt;/sup&gt;))
+		Surface gravity&lt;br&gt;&lt;i&gt;(log(cm/s&lt;sup&gt;2&lt;/sup&gt;))&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Mh_Gspphot">
-		Iron Abundance (dex)
+		Iron Abundance&lt;br&gt;&lt;i&gt;(dex)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Distance_Gspphot">
-		Distance (pc)
+		Distance&lt;br&gt;&lt;i&gt;(pc)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Azero_Gspphot">
-		Extinction, A&lt;sub&gt;0&lt;/sub&gt; at 547.7nm (mag)
+		Extinction, A&lt;sub&gt;0&lt;/sub&gt; at 547.7nm&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Ag_Gspphot">
-		Extinction in G band (mag)
+		Extinction in G band&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_Ebpminrp_Gspphot">
-		Reddening E(G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt;) (mag)
+		Reddening E(G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt;)&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;
 	</text>
 	<text key="Gaia_DR3_teff_val">
 		T_{eff}&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt; </text>
@@ -3332,8 +3336,13 @@
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
 		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
-		The astrometric solution is accompanied with some new quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources, and G&lt;sub&gt;BP&lt;/sub&gt;
-		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.542 billion and 1.555 billion sources, respectively are also provided. 
+		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
+		the &lt;a
+		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
+		target="_blank"
+		&gt;known issue&lt;/a&gt; present in EDR3 corrected in Gaia DR3), 
+		and G&lt;sub&gt;BP&lt;/sub&gt;
+		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.54 billion and 1.55 billion sources, respectively are also provided. 
 		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
