@@ -1967,8 +1967,8 @@
 		下载数据库数据
 	</text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-eDR3">
-		Gaia eDR3星表提供了超过14.6亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+		Gaia DR3星表提供了超过14.6亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据
 		。天体测量解算结果还包含了RUWE（重归一化单位权重误差）以及源图像描述符。同时
 		，本版星表还提供了18.06亿颗源的G星等，15.42亿颗源的G&lt;sub&gt;BP&lt;/sub&gt; 星等，15.55亿颗源的G&lt;sub&gt;RP&lt;/sub&gt; 星等。源
 		位置误差在0.01毫角秒（G&lt;15 星等）至 1毫角秒（G=21 星等）之间，视差误差在0.02毫角秒
