@@ -1,7 +1,10 @@
 package esac.archive.esasky.cl.wcstransform.module.utility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.JWSTInstrument;
 
 /**
@@ -98,6 +101,15 @@ public class Constants {
             return this.mission.toString() + " - " + this.instrument;
         }
     }
+    
+    public static Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
+        put(Instrument.NIRSPEC, -138.5);
+        put(Instrument.NIRCAM, 0.0);
+        put(Instrument.NIRISS, -0.57);
+        put(Instrument.MIRI, -4.45);
+        put(Instrument.FGS, 0.0);
+        
+    }};
     
 //    public enum Detectors {
 //

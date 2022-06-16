@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -16,10 +17,12 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants;
 import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -58,6 +61,7 @@ public class FutureFootprintRow extends Composite {
 	private Instrument instrument;
 	private String aperture;
 	private final NumberFormat raAndDecFormat = NumberFormat.getFormat("#0.000000");
+	private final NumberFormat angleFormat = NumberFormat.getFormat("#0.00");
 
 	private final String RA_TEXT = "RA \u00B0";
 	private final String DEC_TEXT = "Dec \u00B0";
@@ -70,13 +74,14 @@ public class FutureFootprintRow extends Composite {
 
 	private CheckBox allInstrumentsCheckBox;
 	private EsaSkyButton copyButton;
+	private Image infoImage;
 
 	private EsaSkyNumberControl raControl = new EsaSkyNumberControl(RA_TEXT,
 			resources.arrowIcon(), resources.arrowIcon(), RA_DEG_STEP, raAndDecFormat);
 	private EsaSkyNumberControl decControl = new EsaSkyNumberControl(DEC_TEXT, 
 			resources.arrowIcon(), resources.arrowIcon(), DEC_DEG_STEP, raAndDecFormat);
 	private EsaSkyNumberControl rotationControl = new EsaSkyNumberControl(ROTATION_TEXT, 
-			resources.rotateLeftArrow(), resources.rotateRightArrow(), ROTATION_DEG_STEP, NumberFormat.getFormat("#0"));
+			resources.rotateLeftArrow(), resources.rotateRightArrow(), ROTATION_DEG_STEP, angleFormat);
 
 
 	public interface Resources extends ClientBundle {
@@ -96,6 +101,9 @@ public class FutureFootprintRow extends Composite {
 
 		@Source("rotate_clockwise.png")
 		ImageResource rotateRightArrow();
+		
+		@Source("info.png")
+		ImageResource info();
 	}
 
 	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments, String SIAF_VERSION) {
@@ -155,14 +163,21 @@ public class FutureFootprintRow extends Composite {
 		initializeNumberBox(raControl.getNumberBox(), this.ra);
 		initializeNumberBox(decControl.getNumberBox(), this.dec);
 		initializeNumberBox(rotationControl.getNumberBox(), this.rotation);
+		
+		infoImage = new Image(resources.info());
+		infoImage.setWidth("20px");
+		infoImage.setHeight("20px");
+		infoImage.getElement().getStyle().setVerticalAlign(VerticalAlign.MIDDLE);
+		
 
-		Grid variables = new Grid(3,2);
+		Grid variables = new Grid(3,3);
 		variables.setWidget(0, 0, raLabel);
 		variables.setWidget(0, 1, raControl.getNumberBox());
 		variables.setWidget(1, 0, decLabel);
 		variables.setWidget(1, 1, decControl.getNumberBox());
 		variables.setWidget(2, 0, rotationLabel);
 		variables.setWidget(2, 1, rotationControl.getNumberBox());
+		variables.setWidget(2, 2, infoImage);
 
 		HorizontalPanel copyOnClipboardCoordinatesPanel = createCopyOnClipboardCoordinatesPanel();
 		HorizontalPanel controlsPanel = createControlPanel();
@@ -360,7 +375,7 @@ public class FutureFootprintRow extends Composite {
 				}
 				String texToCopy = TextMgr.getInstance().getText("futureFootprintRow_centre") + ": " + RA_TEXT + " " + getCenterRaDeg() 
 						+ "  " + DEC_TEXT + " " + getCenterDecDeg()
-						+ "  ; APA (" + ROTATION_TEXT + "): " + getRotationDeg()
+						+ "  ; APA (" + ROTATION_TEXT + "): " + rotationControl.getValue()
 						+ " ; " + TextMgr.getInstance().getText("futureFootprintRow_coordinateSystem") + " " + coordinatesFormat 
 						+ " ; " + SIAF_VERSION;
 				CopyToClipboardHelper.getInstance().copyToClipBoard(texToCopy, TextMgr.getInstance().getText("futureFootprintRow_dataCopiedToClipboard"));
@@ -384,7 +399,19 @@ public class FutureFootprintRow extends Composite {
 	}
 
 	public Double getRotationDeg() {
-		return rotationControl.getValue();
+		updateTooltip();
+		return rotationControl.getValue() + Constants.INSTRUMENT_ANGLES.get(this.instrument);
+	}
+	
+	private void updateTooltip() {
+		StringBuilder tooltip = new StringBuilder();
+		tooltip.append("Instr. Angle: " + angleFormat.format(Constants.INSTRUMENT_ANGLES.get(this.instrument)) + "\u00B0\n");
+		tooltip.append("Offset Angle: " + angleFormat.format(rotationControl.getValue()) + "\u00B0\n");
+		tooltip.append("Rotation: " + 
+				angleFormat.format(Constants.INSTRUMENT_ANGLES.get(this.instrument) +
+						rotationControl.getValue()) + "\u00B0");
+		this.infoImage.setTitle(tooltip.toString());
+		
 	}
 
 	public boolean getIsAllInstrumentsSelected() {
