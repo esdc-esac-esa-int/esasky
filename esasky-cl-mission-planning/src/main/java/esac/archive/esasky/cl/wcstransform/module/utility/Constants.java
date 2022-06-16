@@ -1,7 +1,10 @@
 package esac.archive.esasky.cl.wcstransform.module.utility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.JWSTInstrument;
 
 /**
