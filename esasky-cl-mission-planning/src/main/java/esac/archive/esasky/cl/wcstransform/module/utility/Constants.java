@@ -102,15 +102,6 @@ public class Constants {
         }
     }
     
-    public static final Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
-        put(Instrument.NIRSPEC, -138.5);
-        put(Instrument.NIRCAM, 0.0);
-        put(Instrument.NIRISS, -0.57);
-        put(Instrument.MIRI, -4.45);
-        put(Instrument.FGS, 0.0);
-        
-    }};
-    
 //    public enum Detectors {
 //
 //        FGS1("FGS","FGS1", 207.19,-697.50), 

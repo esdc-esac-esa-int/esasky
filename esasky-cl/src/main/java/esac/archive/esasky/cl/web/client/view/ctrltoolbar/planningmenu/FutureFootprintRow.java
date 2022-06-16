@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.VerticalAlign;
@@ -83,6 +85,15 @@ public class FutureFootprintRow extends Composite {
 	private EsaSkyNumberControl rotationControl = new EsaSkyNumberControl(ROTATION_TEXT, 
 			resources.rotateLeftArrow(), resources.rotateRightArrow(), ROTATION_DEG_STEP, angleFormat);
 
+    public static final Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
+        put(Instrument.NIRSPEC, -138.5);
+        put(Instrument.NIRCAM, 0.0);
+        put(Instrument.NIRISS, -0.57);
+        put(Instrument.MIRI, -4.45);
+        put(Instrument.FGS, 0.0);
+        
+    }};
+	
 
 	public interface Resources extends ClientBundle {
 		@Source("futureFootprintRow.css")
@@ -400,15 +411,15 @@ public class FutureFootprintRow extends Composite {
 
 	public Double getRotationDeg() {
 		updateTooltip();
-		return rotationControl.getValue() + Constants.INSTRUMENT_ANGLES.get(this.instrument);
+		return rotationControl.getValue() + INSTRUMENT_ANGLES.get(this.instrument);
 	}
 	
 	private void updateTooltip() {
 		StringBuilder tooltip = new StringBuilder();
-		tooltip.append("Instr. Angle: " + angleFormat.format(Constants.INSTRUMENT_ANGLES.get(this.instrument)) + "\u00B0\n");
+		tooltip.append("Instr. Angle: " + angleFormat.format(INSTRUMENT_ANGLES.get(this.instrument)) + "\u00B0\n");
 		tooltip.append("Offset Angle: " + angleFormat.format(rotationControl.getValue()) + "\u00B0\n");
 		tooltip.append("Rotation: " + 
-				angleFormat.format(Constants.INSTRUMENT_ANGLES.get(this.instrument) +
+				angleFormat.format(INSTRUMENT_ANGLES.get(this.instrument) +
 						rotationControl.getValue()) + "\u00B0");
 		this.infoImage.setTitle(tooltip.toString());
 		
