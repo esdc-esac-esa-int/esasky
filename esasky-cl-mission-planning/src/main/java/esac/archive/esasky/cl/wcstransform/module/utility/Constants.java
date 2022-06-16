@@ -102,7 +102,7 @@ public class Constants {
         }
     }
     
-    public static Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
+    public static final Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
         put(Instrument.NIRSPEC, -138.5);
         put(Instrument.NIRCAM, 0.0);
         put(Instrument.NIRISS, -0.57);
