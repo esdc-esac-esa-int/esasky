@@ -68,7 +68,7 @@ public class InstrumentDetailsPopup extends PopupPanel {
 
         instrumentDetailsPanel.add(closeBtn);
 
-        instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_tooltip") + "BOLD_CLOSED"));
+        instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_tooltip") + BOLD_CLOSED));
         instrumentDetailsPanel.add(new HTML(LINE_BREAK));
         
         addInstrumentAngle(instrumentAngle);
