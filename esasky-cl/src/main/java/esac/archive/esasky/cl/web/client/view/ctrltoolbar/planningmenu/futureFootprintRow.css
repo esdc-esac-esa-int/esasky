@@ -96,6 +96,11 @@
 	width: 120px !important;
 }
 
+.instrumentInfoBtn{
+	display: block;
+	margin: auto;
+}
+
 #aperturesDropDownMenu, .aperturesDropDownMenu .dropdownLabel{
 	font-size: 0.75rem !important;
 }
