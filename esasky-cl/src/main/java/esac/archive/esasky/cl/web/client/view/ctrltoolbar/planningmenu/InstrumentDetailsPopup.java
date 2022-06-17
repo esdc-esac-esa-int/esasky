@@ -25,7 +25,7 @@ public class InstrumentDetailsPopup extends PopupPanel {
     private double offsetAngle;
     private double instrumentAngle;
     private double totalAngle;
-    private final NumberFormat angleFormat = NumberFormat.getFormat("#0.00");
+    private final NumberFormat angleFormat = NumberFormat.getFormat("#0.000");
     private final String DEGREE = "\u00B0\n";
     private final String BOLD_OPEN = "<b>";
     private final String BOLD_CLOSED = "</b>";
