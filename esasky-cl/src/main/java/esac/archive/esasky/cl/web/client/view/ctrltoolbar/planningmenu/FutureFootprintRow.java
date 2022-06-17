@@ -34,6 +34,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CopyToClipboardHelper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyNumberBox;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyNumberControl;
@@ -41,6 +42,8 @@ import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.HiPSDetailsPopup;
 
 public class FutureFootprintRow extends Composite {
 
@@ -76,7 +79,7 @@ public class FutureFootprintRow extends Composite {
 
 	private CheckBox allInstrumentsCheckBox;
 	private EsaSkyButton copyButton;
-	private Image infoImage;
+//	private Image infoImage;
 
 	private EsaSkyNumberControl raControl = new EsaSkyNumberControl(RA_TEXT,
 			resources.arrowIcon(), resources.arrowIcon(), RA_DEG_STEP, raAndDecFormat);
@@ -85,7 +88,7 @@ public class FutureFootprintRow extends Composite {
 	private EsaSkyNumberControl rotationControl = new EsaSkyNumberControl(ROTATION_TEXT, 
 			resources.rotateLeftArrow(), resources.rotateRightArrow(), ROTATION_DEG_STEP, angleFormat);
 
-    public static final Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
+    private static final Map<Instrument, Double> INSTRUMENT_ANGLES = new HashMap<Instrument, Double>() {{
         put(Instrument.NIRSPEC, -138.5);
         put(Instrument.NIRCAM, 0.0);
         put(Instrument.NIRISS, -0.57);
@@ -93,6 +96,8 @@ public class FutureFootprintRow extends Composite {
         put(Instrument.FGS, 0.0);
         
     }};
+    
+    
 	
 
 	public interface Resources extends ClientBundle {
@@ -175,10 +180,10 @@ public class FutureFootprintRow extends Composite {
 		initializeNumberBox(decControl.getNumberBox(), this.dec);
 		initializeNumberBox(rotationControl.getNumberBox(), this.rotation);
 		
-		infoImage = new Image(resources.info());
-		infoImage.setWidth("20px");
-		infoImage.setHeight("20px");
-		infoImage.getElement().getStyle().setVerticalAlign(VerticalAlign.MIDDLE);
+//		infoImage = new Image(resources.info());
+//		infoImage.setWidth("20px");
+//		infoImage.setHeight("20px");
+//		infoImage.getElement().getStyle().setVerticalAlign(VerticalAlign.MIDDLE);
 		
 
 		Grid variables = new Grid(3,3);
@@ -188,7 +193,7 @@ public class FutureFootprintRow extends Composite {
 		variables.setWidget(1, 1, decControl.getNumberBox());
 		variables.setWidget(2, 0, rotationLabel);
 		variables.setWidget(2, 1, rotationControl.getNumberBox());
-		variables.setWidget(2, 2, infoImage);
+		variables.setWidget(2, 2, createInstrumentDetailsBtn());
 
 		HorizontalPanel copyOnClipboardCoordinatesPanel = createCopyOnClipboardCoordinatesPanel();
 		HorizontalPanel controlsPanel = createControlPanel();
@@ -400,6 +405,31 @@ public class FutureFootprintRow extends Composite {
 
 		return copyOnClipboardCoordinates;
 	}
+	
+	private EsaSkyButton createInstrumentDetailsBtn() {
+		final EsaSkyButton instrumentDetailsBtn = new EsaSkyButton(Icons.getInfoIcon());
+		instrumentDetailsBtn.addStyleName("instrumentInfoBtn");
+		instrumentDetailsBtn.setTitle(TextMgr.getInstance().getText("futureFootprintRow_tooltip"));
+		instrumentDetailsBtn.setRoundStyle();
+		instrumentDetailsBtn.setSmallStyle();
+		instrumentDetailsBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				InstrumentDetailsPopup skyDetailsInfo = new InstrumentDetailsPopup(rotationControl.getValue(), INSTRUMENT_ANGLES.get(instrument), getRotationDeg());
+				skyDetailsInfo.show();
+				int defaultLeft = instrumentDetailsBtn.getAbsoluteLeft() + instrumentDetailsBtn.getOffsetWidth() / 2;
+				if (defaultLeft + skyDetailsInfo.getOffsetWidth() > MainLayoutPanel.getMainAreaAbsoluteLeft() + MainLayoutPanel.getMainAreaWidth()) {
+					defaultLeft -= skyDetailsInfo.getOffsetWidth(); 
+				}
+				skyDetailsInfo.setPopupPosition(defaultLeft, 
+						instrumentDetailsBtn.getAbsoluteTop() + instrumentDetailsBtn.getOffsetHeight() / 2);
+				
+			}
+		});
+
+		return instrumentDetailsBtn;
+	}
 
 	public Instrument getInstrument() {
 		return instrument;
@@ -410,20 +440,10 @@ public class FutureFootprintRow extends Composite {
 	}
 
 	public Double getRotationDeg() {
-		updateTooltip();
+//		updateTooltip();
 		return rotationControl.getValue() + INSTRUMENT_ANGLES.get(this.instrument);
 	}
 	
-	private void updateTooltip() {
-		StringBuilder tooltip = new StringBuilder();
-		tooltip.append("Instr. Angle: " + angleFormat.format(INSTRUMENT_ANGLES.get(this.instrument)) + "\u00B0\n");
-		tooltip.append("Offset Angle: " + angleFormat.format(rotationControl.getValue()) + "\u00B0\n");
-		tooltip.append("Rotation: " + 
-				angleFormat.format(INSTRUMENT_ANGLES.get(this.instrument) +
-						rotationControl.getValue()) + "\u00B0");
-		this.infoImage.setTitle(tooltip.toString());
-		
-	}
 
 	public boolean getIsAllInstrumentsSelected() {
 		return allInstrumentsCheckBox.getValue();
