@@ -26,6 +26,10 @@ public class InstrumentDetailsPopup extends PopupPanel {
     private double instrumentAngle;
     private double totalAngle;
     private final NumberFormat angleFormat = NumberFormat.getFormat("#0.00");
+    private final String DEGREE = "\u00B0\n";
+    private final String BOLD_OPEN = "<b>";
+    private final String BOLD_CLOSED = "</b>";
+    private final String LINE_BREAK = "<br/>";
 
     public static interface Resources extends ClientBundle {
         @Source("instrumentDetailsPopup.css")
@@ -64,13 +68,13 @@ public class InstrumentDetailsPopup extends PopupPanel {
 
         instrumentDetailsPanel.add(closeBtn);
 
-        instrumentDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("futureFootprintRow_tooltip") + "</b>"));
-        instrumentDetailsPanel.add(new HTML("<br/>"));
+        instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_tooltip") + "BOLD_CLOSED"));
+        instrumentDetailsPanel.add(new HTML(LINE_BREAK));
         
         addInstrumentAngle(instrumentAngle);
         addOffsetAngle(offsetAngle);
         addTotalRotation(totalAngle);
-        instrumentDetailsPanel.add(new HTML("<br/>"));
+        instrumentDetailsPanel.add(new HTML(LINE_BREAK));
         addInfoLink();
 
         this.add(instrumentDetailsPanel);
@@ -92,15 +96,15 @@ public class InstrumentDetailsPopup extends PopupPanel {
     }
     
     private void addInstrumentAngle(double instrumentAngle) {
-    	instrumentDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("futureFootprintRow_instrAngle") + "</b> " + angleFormat.format(instrumentAngle) + "\u00B0\n"));
+    	instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_instrAngle") + BOLD_CLOSED + angleFormat.format(instrumentAngle) + DEGREE));
     }
     
     private void addOffsetAngle(double offsetAngle) {
-    	instrumentDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("futureFootprintRow_offsetAngle") + "</b> " + angleFormat.format(offsetAngle) + "\u00B0\n"));
+    	instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_offsetAngle") + BOLD_CLOSED + angleFormat.format(offsetAngle) + DEGREE));
     }
     
     private void addTotalRotation(double totalAngle) {
-    	instrumentDetailsPanel.add(new HTML("<b>" + TextMgr.getInstance().getText("futureFootprintRow_totalRotation") + "</b> " + angleFormat.format(totalAngle) + "\u00B0\n"));
+    	instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_totalRotation") + BOLD_CLOSED + angleFormat.format(totalAngle) + DEGREE));
     }
 
     private void addInfoLink() {
