@@ -66,7 +66,7 @@ public class FutureFootprintRow extends Composite {
 	private Instrument instrument;
 	private String aperture;
 	private final NumberFormat raAndDecFormat = NumberFormat.getFormat("#0.000000");
-	private final NumberFormat angleFormat = NumberFormat.getFormat("#0.00");
+	private final NumberFormat angleFormat = NumberFormat.getFormat("#0.000");
 
 	private final String RA_TEXT = "RA \u00B0";
 	private final String DEC_TEXT = "Dec \u00B0";
