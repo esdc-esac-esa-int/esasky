@@ -393,13 +393,13 @@
 		For more information click &lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;here&lt;/a&gt;
 	</text>
 	<text key="futureFootprintRow_instrAngle">
-		Instrument Angle:
+		Angle of the instrument on the focal plane:
 	</text>
 	<text key="futureFootprintRow_offsetAngle">
 		Offset Angle:
 	</text>
 	<text key="futureFootprintRow_totalRotation">
-		Rotation:
+		Rotation of the focal plane on the sky:
 	</text>
 	<text key="futureFootprintRow_tooltip">
 		JWST Angle Details
