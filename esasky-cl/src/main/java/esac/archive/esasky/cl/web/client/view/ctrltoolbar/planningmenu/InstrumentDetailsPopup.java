@@ -72,7 +72,6 @@ public class InstrumentDetailsPopup extends PopupPanel {
         instrumentDetailsPanel.add(new HTML(LINE_BREAK));
         
         addInstrumentAngle(instrumentAngle);
-        addOffsetAngle(offsetAngle);
         addTotalRotation(totalAngle);
         instrumentDetailsPanel.add(new HTML(LINE_BREAK));
         addInfoLink();
@@ -97,10 +96,6 @@ public class InstrumentDetailsPopup extends PopupPanel {
     
     private void addInstrumentAngle(double instrumentAngle) {
     	instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_instrAngle") + BOLD_CLOSED + angleFormat.format(instrumentAngle) + DEGREE));
-    }
-    
-    private void addOffsetAngle(double offsetAngle) {
-    	instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_offsetAngle") + BOLD_CLOSED + angleFormat.format(offsetAngle) + DEGREE));
     }
     
     private void addTotalRotation(double totalAngle) {

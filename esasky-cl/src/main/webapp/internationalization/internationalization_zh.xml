@@ -339,13 +339,13 @@
 		更多信息请点击 &lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;此处&lt;/a&gt;
 	</text>
 	<text key="futureFootprintRow_instrAngle">
-		仪器角度:
+		仪器在焦平面上的角度:
 	</text>
 	<text key="futureFootprintRow_offsetAngle">
 		偏移角度:
 	</text>
 	<text key="futureFootprintRow_totalRotation">
-		旋转:
+		天空中焦平面的旋转:
 	</text>
 	<text key="futureFootprintRow_tooltip">
 		JWST 角度细节
