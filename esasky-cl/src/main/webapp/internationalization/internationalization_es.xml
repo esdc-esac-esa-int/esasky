@@ -217,13 +217,13 @@
 		Para m&#225;s informaci&#243;n haga clic &lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;aqu&#237;&lt;/a&gt;
 	</text>
 	<text key="futureFootprintRow_instrAngle">
-		&#193;ngulo Instrumento:
+		&#193;ngulo del Instrumento en el plano focal:
 	</text>
 	<text key="futureFootprintRow_offsetAngle">
 		&#193;ngulo Adicional:
 	</text>
 	<text key="futureFootprintRow_totalRotation">
-		Rotaci&#243;n:
+		Rotaci&#243;n del plano focal en el cielo:
 	</text>
 	<text key="futureFootprintRow_tooltip">
 		Detalle de los &#193;ngulos de JWST
