@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+#instrumentDbox a,#instrumentDbox a:visited{
+    color: #20a4d8;
+}
+
+#instrumentDbox a:hover{
+    color: #30B4e8;
+}
+
+#instrumentDbox{
+	background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #F0FFFF;
+    border-radius: 9px;
+    height: auto;
+    padding: 4px;
+    z-index: 51;
+}
+
+#instrumentDbox td{
+    font-size: small;
+}
+
+.closeinstrumentDetails{
+	position: absolute;
+	right: 5px;
+}
+    

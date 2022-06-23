@@ -36,6 +36,9 @@ public class ResultsPresenter implements ICountRequestHandler {
     
     /** local instance reference to descriptor repository */
     private final DescriptorRepository descriptorRepo;
+    
+    private static final String ENTITY_TYPE = " ENTITY TYPE: ";
+    private static final String GET_METADATA = "[getMetadata][";
 
     /** Row list mapper. */
     public interface TapRowListMapper extends ObjectMapper<TapRowList> {
@@ -134,7 +137,7 @@ public class ResultsPresenter implements ICountRequestHandler {
 
     protected final void coneSearch(final GeneralEntityInterface entity, final SkyViewPosition conePos) {
         final String debugPrefix = "[coneSearch][" + entity.getDescriptor().getGuiShortName() + "]";
-        Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+        Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
         
     	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
 
@@ -142,8 +145,8 @@ public class ResultsPresenter implements ICountRequestHandler {
     }
 
     protected final void getMetadata(final GeneralEntityInterface entity) {
-        final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
-        Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+        final String debugPrefix = GET_METADATA + entity.getDescriptor().getGuiShortName() + "]";
+        Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
 
     	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
 
@@ -151,8 +154,8 @@ public class ResultsPresenter implements ICountRequestHandler {
     }
    
     protected final void getMetadataWithoutMOC(final GeneralEntityInterface entity) {
-    	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
-    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getGuiShortName() + "]";
+    	Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
     	
     	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
 
@@ -160,16 +163,16 @@ public class ResultsPresenter implements ICountRequestHandler {
     }
     
     protected final void getMetadata(final GeneralEntityInterface entity, String adql) {
-    	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
-    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getGuiShortName() + "]";
+    	Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
     	
     	this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
     	entity.fetchData(adql);
     }
 
     public final ITablePanel addResultsTab(final GeneralEntityInterface entity) {
-    	final String debugPrefix = "[getMetadata][" + entity.getDescriptor().getGuiShortName() + "]";
-    	Log.debug(debugPrefix + " ENTITY TYPE: " + entity.getClass().getSimpleName());
+    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getGuiShortName() + "]";
+    	Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
     	
     	return this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
     }

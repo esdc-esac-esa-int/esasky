@@ -201,8 +201,6 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			Timer resizeTimer = new Timer() {
 				@Override
 				public void run() {
-					System.out.println("He hecho un resize!!");
-					logMessage("resize!");
 					if (dragEvaImage != null) {
 						setPositionForEva();
 					}
@@ -508,10 +506,6 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			resizeHandler.onResize(event);
 		}
 	}
-
-	public static native void logMessage(String message) /*-{
-		console.log(message);
-	}-*/;
 
 	@Override
 	public esac.archive.esasky.cl.web.client.presenter.BannerPresenter.View getBannerPanelLeftSide() {
