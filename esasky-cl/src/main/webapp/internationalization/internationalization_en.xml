@@ -3838,6 +3838,13 @@
 	<text key="Neutrino">
 		Neutrino
 	</text>
+	
+	<text key="observing_mode">
+		Observing Mode
+	</text>
+	<text key="detector">
+		Detector
+	</text>
 
 	<!-- internationalization_zh.xml is up to date for everything above -->
 
