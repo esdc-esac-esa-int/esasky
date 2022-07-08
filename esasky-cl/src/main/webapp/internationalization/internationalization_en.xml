@@ -3882,6 +3882,10 @@
 
 	<!-- internationalization_es.xml is up to date for everything above -->
 
+	<text key="calibration_level">
+		Calibration Level
+	</text>
+
 	<text key="header_acknowledge">
 		Acknowledge ESASky
 	</text>
