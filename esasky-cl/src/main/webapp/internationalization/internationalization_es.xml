@@ -1042,7 +1042,21 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 		
-		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST">
+		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Near-IR">
+		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
+		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
+		&lt;br&gt;&lt;br&gt;
+		Tras su lanzamiento y una puesta en marcha de 6 meses, el observatorio ha entrado en su fase nominal de operaciones cient&#237;ficas, durante la cual
+		se ejecutar&#225;n los programas de observaci&#243;n aprobados. Los datos cient&#237;ficos son recopilados desde una serie de programas establecidos en un cronograma
+		de actividades enviado al observatorio dos veces al d&#237;a durante las operaciones.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		Más informaci&#243;n
+		&lt;/a&gt; </text>
+		
+		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Mid-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
 		&lt;br&gt;&lt;br&gt;
@@ -1056,7 +1070,21 @@
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST">
+		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Near-IR">
+		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
+		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
+		&lt;br&gt;&lt;br&gt;
+		Tras su lanzamiento y una puesta en marcha de 6 meses, el observatorio ha entrado en su fase nominal de operaciones cient&#237;ficas, durante la cual
+		se ejecutar&#225;n los programas de observaci&#243;n aprobados. Los datos cient&#237;ficos son recopilados desde una serie de programas establecidos en un cronograma
+		de actividades enviado al observatorio dos veces al d&#237;a durante las operaciones.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		Más informaci&#243;n
+		&lt;/a&gt; </text>
+
+		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Mid-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
 		&lt;br&gt;&lt;br&gt;

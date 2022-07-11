@@ -757,7 +757,21 @@
 		More information
 		&lt;/a&gt; </text>
 		
-		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST">
+		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Near-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+		
+		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Mid-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -771,7 +785,21 @@
 		More information
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST">
+		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Near-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+		
+		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Mid-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
