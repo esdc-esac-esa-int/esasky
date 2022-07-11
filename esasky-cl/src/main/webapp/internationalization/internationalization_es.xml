@@ -1051,7 +1051,7 @@
 		de actividades enviado al observatorio dos veces al d&#237;a durante las operaciones.
 
 		&lt;br&gt;&lt;br&gt;
-		&lt;a href="//www.cosmos.esa.int/web/jwst"
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
 		target="_blank"&gt;
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
@@ -1065,7 +1065,7 @@
 		de actividades enviado al observatorio dos veces al d&#237;a durante las operaciones.
 
 		&lt;br&gt;&lt;br&gt;
-		&lt;a href="//www.cosmos.esa.int/web/jwst"
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
 		target="_blank"&gt;
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
@@ -2005,6 +2005,29 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
+		<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
+			Las observaciones de XMM-Newton son productos de alto
+		nivel del
+		Processing Pipeline System (PPS) presentes en el archivo
+		cient&#237;fico de la misi&#243;n
+		Puede encontrar informaci&#243;n
+		detallada acerca de los productos de
+		XMM-Newton
+		en la
+		&lt;a
+		href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products"
+		target="_blank"&gt;
+		&quot;Gu&#237;a de los productos del archivo
+		cient&#237;fico de XMM-Newton&quot;
+		(en ingl&#233;s)
+		&lt;/a&gt;.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt; </text>
 	<text key="closeableTabLayoutPanel_styleBtn">
 		Personalizar estilo
 	</text>
@@ -2038,6 +2061,9 @@
 	</text>
 	<text key="GlobularClusters">
 		C&#250;mulos globulares
+	</text>
+	<text key="JWST_EROs">
+		Objetivos iniciales de Webb
 	</text>
 	<text key="SpiralGalaxies">
 		Galaxias espirales

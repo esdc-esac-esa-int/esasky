@@ -766,7 +766,7 @@
 		timeline of activities sent up to the spacecraft up to twice a day during operations.
 
 		&lt;br&gt;&lt;br&gt;
-		&lt;a href="//www.cosmos.esa.int/web/jwst"
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
@@ -780,7 +780,7 @@
 		timeline of activities sent up to the spacecraft up to twice a day during operations.
 
 		&lt;br&gt;&lt;br&gt;
-		&lt;a href="//www.cosmos.esa.int/web/jwst"
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
@@ -1455,6 +1455,25 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_SSO_XMM">
+		The observations include public high-level Processing
+		Pipeline System (PPS) products present in the XMM-Newton Science
+		Archive
+		(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home"
+		target="_blank"&gt;XSA&lt;/a&gt;).
+		Detailed information on XMM-Newton products can be found in the
+		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products"
+		target="_blank"&gt;
+		XMM-Newton Science Archive Data Products
+		Guide&lt;/a&gt;.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+	
+		<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
 		The observations include public high-level Processing
 		Pipeline System (PPS) products present in the XMM-Newton Science
 		Archive
@@ -2341,6 +2360,9 @@
 	</text>
 	<text key="GlobularClusters">
 		Globular clusters
+	</text>
+	<text key="JWST_EROs">
+		Webb Early Release Targets
 	</text>
 	<text key="SpiralGalaxies">
 		Spiral galaxies
