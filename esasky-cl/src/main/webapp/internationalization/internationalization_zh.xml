@@ -1091,6 +1091,9 @@
 	<text key="SpiralGalaxies">
 		漩涡星系
 	</text>
+	<text key="JWST_EROs">
+		Webb Early Release Targets
+	</text>
 	<text key="StarFormationRegions">
 		恒星形成区
 	</text>
