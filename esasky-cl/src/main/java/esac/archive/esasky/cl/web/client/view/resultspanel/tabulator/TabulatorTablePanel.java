@@ -829,7 +829,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
 		}
 		String url = getDescriptor().getArchiveURL() + productURI;
-		if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+		if(!url.contains("nxsa.esac.esa.int") && "https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
 			url = url.replaceFirst("http:", "https:");
 		}
 		return url;
