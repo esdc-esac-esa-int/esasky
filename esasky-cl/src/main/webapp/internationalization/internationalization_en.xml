@@ -757,6 +757,62 @@
 		More information
 		&lt;/a&gt; </text>
 		
+		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Near-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+		
+		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Mid-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Near-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+		
+		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Mid-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+		
 	<text
 		key="resultsPresenter_helpDescription_ASTRO_IMAGING_Herschel">
 		The available Herschel data include all public observations from
@@ -1427,6 +1483,25 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_SSO_XMM">
+		The observations include public high-level Processing
+		Pipeline System (PPS) products present in the XMM-Newton Science
+		Archive
+		(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home"
+		target="_blank"&gt;XSA&lt;/a&gt;).
+		Detailed information on XMM-Newton products can be found in the
+		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products"
+		target="_blank"&gt;
+		XMM-Newton Science Archive Data Products
+		Guide&lt;/a&gt;.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+	
+		<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
 		The observations include public high-level Processing
 		Pipeline System (PPS) products present in the XMM-Newton Science
 		Archive
@@ -2313,6 +2388,9 @@
 	</text>
 	<text key="GlobularClusters">
 		Globular clusters
+	</text>
+	<text key="JWST_EROs">
+		Webb Early Release Targets
 	</text>
 	<text key="SpiralGalaxies">
 		Spiral galaxies
@@ -3838,6 +3916,13 @@
 	<text key="Neutrino">
 		Neutrino
 	</text>
+	
+	<text key="observing_mode">
+		Observing Mode
+	</text>
+	<text key="detector">
+		Detector
+	</text>
 
 	<!-- internationalization_zh.xml is up to date for everything above -->
 
@@ -3846,6 +3931,10 @@
 	</text>
 
 	<!-- internationalization_es.xml is up to date for everything above -->
+
+	<text key="calibration_level">
+		Calibration Level
+	</text>
 
 	<text key="header_acknowledge">
 		Acknowledge ESASky

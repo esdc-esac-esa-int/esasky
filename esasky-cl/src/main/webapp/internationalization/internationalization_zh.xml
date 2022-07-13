@@ -304,7 +304,7 @@
 
 	<!-- planObservationPanel -->
 	<text key="planObservationPanel_projectFutureObservations">
-		用于 $MISSION$ 的观测规划工具
+		$MISSION$观测规划工具
 	</text>
 	<text key="planObservationPanel_helpMessageText">
 		此工具将天文仪器的覆盖区域显示到天空中，并且可以任意选择位置和方向，以协助天文学家制定观测计划。
@@ -336,19 +336,19 @@
 		添加JWST的一个终端设备
 	</text>
 		<text key="futureFootprintRow_instrAngleInfo">
-		更多信息请点击 &lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;此处&lt;/a&gt;
+		&lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;更多信息请点击“这里处&lt;/a&gt;
 	</text>
 	<text key="futureFootprintRow_instrAngle">
-		仪器在焦平面上的角度:
+		仪器在焦面上的转角：
 	</text>
 	<text key="futureFootprintRow_offsetAngle">
 		偏移角度:
 	</text>
 	<text key="futureFootprintRow_totalRotation">
-		天空中焦平面的旋转:
+		焦面在天空上的转角
 	</text>
 	<text key="futureFootprintRow_tooltip">
-		JWST 角度细节
+		JWST角度详情
 	</text>
 	<text key="futureFootprintRow_rotation">
 		旋转
@@ -1090,6 +1090,9 @@
 	</text>
 	<text key="SpiralGalaxies">
 		漩涡星系
+	</text>
+	<text key="JWST_EROs">
+		Webb Early Release Targets
 	</text>
 	<text key="StarFormationRegions">
 		恒星形成区
