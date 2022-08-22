@@ -35,7 +35,7 @@ public class EsaSkyWebConstants {
     public static final String SSO_RESOLVER_URL = BACKEND_CONTEXT + "/ssoresolver";
     public static final String DATA_REQUEST_URL = BACKEND_CONTEXT + "/data-request";
     public static final String OBSERVATIONS_URL = BACKEND_CONTEXT + "/observations";
-    public static final String IMAGES_URL = BACKEND_CONTEXT + "/hst-image?action=desc";
+    public static final String IMAGES_URL = BACKEND_CONTEXT + "/outreach-image";
     public static final String SSO_URL = BACKEND_CONTEXT + "/sso";
     public static final String SPECTRA_URL = BACKEND_CONTEXT + "/spectra";
     public static final String CATALOGS_URL = BACKEND_CONTEXT + "/catalogs";
@@ -57,7 +57,6 @@ public class EsaSkyWebConstants {
     public static final String HIPS_STORAGE_URL = BACKEND_CONTEXT + "/location";
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
-    public static final String HST_IMAGE_URL = BACKEND_CONTEXT + "/hst-image";
     public static final String HIPSLIST_URL = BACKEND_CONTEXT + "/global-hipslist";
 
     public static final String URL_PARAM_TARGET = "target";

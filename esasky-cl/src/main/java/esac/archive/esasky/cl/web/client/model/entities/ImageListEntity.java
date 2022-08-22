@@ -13,7 +13,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
-import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
+import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
@@ -50,8 +50,9 @@ public class ImageListEntity extends EsaSkyEntity {
 	};
 	
 	public ImageListEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
-			String esaSkyUniqId, AbstractTAPService metadataService) {
+			String esaSkyUniqId, TAPImageListService metadataService) {
 		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
+		this.metadataService = metadataService;
 		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, coordinateEvent -> {
 			if(coordinateEvent.getIsViewCenterPosition()) {
 				onFoVChanged();	
@@ -86,8 +87,7 @@ public class ImageListEntity extends EsaSkyEntity {
     	for(GeneralJavaScriptObject row : rows) {
     		if(GeneralJavaScriptObject.convertToInteger(row.getProperty("id")) == shapeId) {
     			if(!isIdAlreadyOpen(row.getStringProperty(IDENTIFIER_KEY))) {
-    				lastImage = new HstOutreachImage(row.getStringProperty(IDENTIFIER_KEY), lastOpacity);
-    				lastImage.loadImage(true);
+    				lastImage = new HstOutreachImage(row, lastOpacity);
 					UrlUtils.setSelectedHstImageId(lastImage.getId());
     			}
     			return;

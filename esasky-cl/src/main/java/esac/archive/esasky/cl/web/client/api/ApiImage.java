@@ -7,9 +7,12 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
+import esac.archive.esasky.cl.web.client.query.TAPImageListService;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 
 import java.io.IOException;
 
@@ -23,7 +26,9 @@ public class ApiImage extends ApiBase{
 
 	public void parseHstImageData(final String name) {
 		HstOutreachImage image = new HstOutreachImage(name, 1.0);
-		image.loadImage();
+		ImageDescriptor imageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
+		TAPImageListService metadataService = TAPImageListService.getInstance();
+		image.loadImage(imageDescriptor, metadataService, true);
 	}
 	
 	public void addTiledImage(JavaScriptObject input, JavaScriptObject widget) {

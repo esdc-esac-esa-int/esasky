@@ -9,15 +9,17 @@ import com.google.gwt.user.client.Timer;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
+import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
-import esac.archive.esasky.ifcs.model.descriptor.HstImageDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.OutreachImageDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class HstOutreachImage {
@@ -36,44 +38,45 @@ public class HstOutreachImage {
 		this.opacity = opacity;
 		this.baseUrl = "https://esahubble.org/images/" + id;
 	}
-	
-	public interface HstImageDescriptorMapper extends ObjectMapper<HstImageDescriptor> {
-	}
 
-	
-	public void loadImage() {
-		loadImage(true);
+	public HstOutreachImage(GeneralJavaScriptObject imageObject, double opacity) {
+		this.opacity = opacity;
+		this.baseUrl = "https://esahubble.org/images/" + id;
+		OutreachImageDescriptorMapper mapper = GWT.create(OutreachImageDescriptorMapper.class);
+		String newJson = imageObject.jsonStringify().replace("\"[", "[").replace("]\"", "]");
+		OutreachImageDescriptor desc = mapper.read(newJson);
+		onResponseParsed(desc, true);
 	}
-	public void loadImage(boolean moveToCenter) {
-		String query = EsaSkyWebConstants.HST_IMAGE_URL + "?" + EsaSkyConstants.HST_IMAGE_ID_PARAM + "=" + this.id;
+	
+	public interface OutreachImageDescriptorMapper extends ObjectMapper<OutreachImageDescriptor> {}
+
+	public void loadImage(IDescriptor descriptor, TAPImageListService metadataService) {
+		loadImage(descriptor, metadataService, true);
+	}
+	
+	public void loadImage(IDescriptor descriptor, TAPImageListService metadataService, boolean moveToCenter) {
+		
+		String query = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
 		JSONUtils.getJSONFromUrl(query , new IJSONRequestCallback() {
 
 			@Override
 			public void onSuccess(String responseText) {
 				
-				HstImageDescriptorMapper mapper = GWT.create(HstImageDescriptorMapper.class);
-
-				HstImageDescriptor desc = mapper.read(responseText);
+				GeneralJavaScriptObject rawObject = GeneralJavaScriptObject.createJsonObject(responseText);
+				GeneralJavaScriptObject[] metadata = GeneralJavaScriptObject.convertToArray(rawObject.getProperty("metadata"));
+				GeneralJavaScriptObject[] data =  GeneralJavaScriptObject.convertToArray(GeneralJavaScriptObject.convertToArray(rawObject.getProperty("data"))[0]);
 				
-				ImageSize imageSize = new ImageSize(desc.getPixelSize().get(0),
-						desc.getPixelSize().get(1));
-				
-				String url = desc.getTilesUrl();
-				OpenSeaDragonType type = OpenSeaDragonType.TILED;
-				if(url == null || imageSize.height < 1000 || imageSize.width < 1000) {
-					url = desc.getLargeUrl();
-					type = OpenSeaDragonType.SINGLE;
+				GeneralJavaScriptObject newObj = GeneralJavaScriptObject.createJsonObject("{}");
+				for(int i = 0; i < metadata.length; i++) {
+					String metaName = metadata[i].getStringProperty("name");
+					newObj.setProperty(metaName, data[i].toString());
 				}
 				
-				onResponseParsed(desc.getCoordinateMetadata().getCoordinate(),
-						desc.getCoordinateMetadata().getFov(),
-						desc.getCoordinateMetadata().getRotation(),
-						imageSize,
-						desc.getTitle(),
-						desc.getDescription(),
-						desc.getCredit(),
-						type,
-						url, moveToCenter);
+				OutreachImageDescriptorMapper mapper = GWT.create(OutreachImageDescriptorMapper.class);
+				String newJson = newObj.jsonStringify().replace("\"[", "[").replace("]\"", "]");
+				OutreachImageDescriptor desc = mapper.read(newJson);
+			
+				onResponseParsed(desc, moveToCenter);
 
 		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS, desc.getId());
 			}
@@ -97,7 +100,7 @@ public class HstOutreachImage {
 	public void reattachOpenSeaDragon(){
 		removed = false;
 		CommonEventBus.getEventBus().fireEvent(new OpenSeaDragonActiveEvent(true));
-		loadImage();
+//		loadImage();
 	}
 	
 	public boolean isRemoved() {
@@ -108,22 +111,33 @@ public class HstOutreachImage {
 		return id;
 	}
 	
-	public void onResponseParsed(Coordinate coor, double fov, double rotation, ImageSize imageSize,
-			String title, String description, String credits, OpenSeaDragonType type, String url, boolean moveToCenter) {
+	public void onResponseParsed(OutreachImageDescriptor desc, boolean moveToCenter) {
 
-		this.title = title;
-		this.description = description;
-		this.credits = credits;
+		
+		ImageSize imageSize = new ImageSize(desc.getPixelSize()[0], desc.getPixelSize()[1]);
+		Coordinate coor = new Coordinate(desc.getRa(), desc.getDec());
+		
+		String url = desc.getTilesUrl();
+		OpenSeaDragonType type = OpenSeaDragonType.TILED;
+		if(url == null || imageSize.height < 1000 || imageSize.width < 1000) {
+			url = desc.getLargeUrl();
+			type = OpenSeaDragonType.SINGLE;
+		}
+		
+		this.id = desc.getId();
+		this.title = desc.getTitle();
+		this.description = desc.getDescription();
+		this.credits = desc.getCredit();
 		
 		OpenSeaDragonWrapper openseadragonWrapper = new OpenSeaDragonWrapper(this.id, url, type,
-				coor.getRa(), coor.getDec(), fov, rotation, imageSize.getWidth(), imageSize.getHeight());
+				coor.getRa(), coor.getDec(), desc.getFovSize(), desc.getRotation(), imageSize.getWidth(), imageSize.getHeight());
 		lastOpenseadragon = openseadragonWrapper;
 		JavaScriptObject openSeaDragonObject = openseadragonWrapper.createOpenSeaDragonObject();
 		openseadragonWrapper.addOpenSeaDragonToAladin(openSeaDragonObject);
 		
 		if(moveToCenter) {
 			AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
-			AladinLiteWrapper.getAladinLite().setZoom(fov * 3);
+			AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
 		}
 		
 		Timer timer = new Timer() {
