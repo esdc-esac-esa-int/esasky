@@ -1,8 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
@@ -54,6 +53,23 @@ public class WavelengthUtils {
     		}
     	}
     	return null;
+    }
+
+    public static List<WavelengthName> getWavelengthsNameFromRange(double min, double max) {
+        List<WavelengthName> result = new ArrayList<>();
+
+        // Since order is important, sort asc on wavelength
+        List<WavelengthName> sortedWavelengthNames = Arrays.stream(wavelengthNames)
+                .sorted(Comparator.comparing(wln -> wln.maxWavelength)).collect(Collectors.toList());
+
+        double lastWavelengthMax = 0;
+        for(WavelengthName wavelengthName : sortedWavelengthNames) {
+            if(min < wavelengthName.maxWavelength && lastWavelengthMax < max) {
+                result.add(wavelengthName);
+            }
+            lastWavelengthMax = wavelengthName.maxWavelength;
+        }
+        return result;
     }
 
     public static List<WavelengthDescriptor> createWavelengthDescriptor(double minWavelength, double maxWavelength) {
