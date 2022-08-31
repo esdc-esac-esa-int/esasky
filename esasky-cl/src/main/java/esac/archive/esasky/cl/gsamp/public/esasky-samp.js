@@ -79,7 +79,7 @@ var sampEsaSkySubscriptions = function() {
 var sampEsaSkyMetadata = function() {
 	this["samp.name"] = "ESASky";
 	this["samp.description"] = "ESASky";
-	this["samp.icon.url"] = baseUrl + "images/favicon.png";
+	this["samp.icon.url"] = baseUrl + "images/ESA_logo_2020_White.png";
 	this["author.name"] = "Science Archives Team";
 	this["author.affiliation"] = "European Space Agency";
 };

@@ -52,7 +52,7 @@ public class WelcomeDialog extends Composite {
         @CssResource.NotStrict
         CssResource style();
         
-        @Source("esa-logo.png")
+        @Source("ESA_logo_2020_White.png")
         ImageResource esaLogo();
 
         @Source("ESASky_AVATAR.png")
