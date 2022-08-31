@@ -3939,5 +3939,28 @@
 	<text key="header_acknowledge">
 		Acknowledge ESASky
 	</text>
+
+	<text key="webConstants_exploreJwstImages">
+		Explore outreach images from the James Webb Space Telescope
+	</text>
+	<text key="outreachJwstPanel_header">
+		ESA/JWST Outreach Images
+	</text>
+	<text key="outreachJwstPanel_helpText">
+		Visualise outreach astronomical images from the &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		ESA/Hubble website.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		This panel displays a list with the ESA/Hubble outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by green rectangles, you can hide them by clicking in Hide Footprints.
+		&lt;br&gt;&lt;br&gt;
+		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Hubble website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
+	</text>
+	<text key="outreachJwstPanel_helpTitle">
+		ESA/James Webb Space Telescope  Outreach Images
+	</text>
 	
 </Internationalization>

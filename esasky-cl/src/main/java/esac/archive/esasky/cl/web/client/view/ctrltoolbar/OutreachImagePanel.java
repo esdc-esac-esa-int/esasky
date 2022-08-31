@@ -9,6 +9,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -24,6 +25,9 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
+
+import java.util.Optional;
 
 public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
 
@@ -38,6 +42,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	private final FlowPanel mainContainer = new FlowPanel();
 	private final FlowPanel tableContainer = new FlowPanel();
 	private PopupHeader<OutreachImagePanel> header;
+	private final ICallback selectCallback;
 
 	private final Resources resources;
 	private CssResource style;
@@ -48,16 +53,17 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		CssResource style();
 	}
 	
-	public OutreachImagePanel() {
+	public OutreachImagePanel(ICallback selectCallback) {
 		super(GoogleAnalytics.CAT_OUTREACHIMAGES, false);
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
+		this.selectCallback = selectCallback;
 
 		initView();
 		setMaxSize();
 
-		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive()));
+		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
 	
@@ -114,12 +120,13 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	}
 
 
-	public void hide() {
-		super.hide();
+	public void close() {
 		isPanelOpen = false;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
+
+		super.hide();
 	}
 
 	public boolean isShowing() {
@@ -130,8 +137,17 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		if(outreachImageDescriptor != null) {
 			return;
 		}
-		outreachImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
-		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
+
+		Optional<ImageDescriptor> optionalImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors()
+				.getDescriptors().stream().filter(ImageDescriptor::isHst).findFirst();
+
+		if (optionalImageDescriptor.isPresent()) {
+			outreachImageDescriptor = optionalImageDescriptor.get();
+		} else {
+			return;
+		}
+
+		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor, selectCallback);
 		if(outreachImageIdToBeOpened != null) {
 			imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
 		}
@@ -145,7 +161,8 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 		header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachImagePanel_header"),
 				TextMgr.getInstance().getText("outreachImagePanel_helpText"),
-				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
+				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"),
+				event -> close(), "Close panel");
 
 
 

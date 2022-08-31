@@ -19,10 +19,11 @@ import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDra
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.OutreachImageDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-public class HstOutreachImage {
+public class OutreachImage {
 	
 	private String id;
 	private String title;
@@ -33,13 +34,13 @@ public class HstOutreachImage {
 	private boolean removed = false;
 	private OpenSeaDragonWrapper lastOpenseadragon = null;
 	
-	public HstOutreachImage(String id, double opacity) {
+	public OutreachImage(String id, double opacity, ImageDescriptor descriptor) {
 		this.id = id;
 		this.opacity = opacity;
-		this.baseUrl = "https://esahubble.org/images/" + id;
+		this.baseUrl = descriptor.getBaseUrl() + id;
 	}
 
-	public HstOutreachImage(GeneralJavaScriptObject imageObject, double opacity) {
+	public OutreachImage(GeneralJavaScriptObject imageObject, double opacity) {
 		this.opacity = opacity;
 		this.baseUrl = "https://esahubble.org/images/" + id;
 		OutreachImageDescriptorMapper mapper = GWT.create(OutreachImageDescriptorMapper.class);
@@ -119,7 +120,7 @@ public class HstOutreachImage {
 		
 		String url = desc.getTilesUrl();
 		OpenSeaDragonType type = OpenSeaDragonType.TILED;
-		if(url == null || imageSize.height < 1000 || imageSize.width < 1000) {
+		if(url == null || imageSize.getHeight() < 1000 || imageSize.getWidth() < 1000) {
 			url = desc.getLargeUrl();
 			type = OpenSeaDragonType.SINGLE;
 		}
@@ -176,31 +177,5 @@ public class HstOutreachImage {
 		}
 		this.opacity = opacity;
 		AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
-	}
-
-	public class ImageSize{
-		private int width;
-		private int height;
-		
-		public ImageSize(int width, int height) {
-			this.width = width;
-			this.height = height;
-		}
-
-		public int getWidth() {
-			return width;
-		}
-
-		public int getHeight() {
-			return height;
-		}
-
-		public void setWidth(int width) {
-			this.width = width;
-		}
-
-		public void setHeight(int height) {
-			this.height = height;
-		}
 	}
 }

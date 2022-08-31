@@ -101,6 +101,10 @@ public class CtrlToolBarPresenter {
 
         void closeOutreachPanel();
 
+        void openJwstOutreachPanel();
+
+        void closeJwstOutreachPanel();
+
         JSONArray getOutreachImageIds(ICommand command);
 
         void showOutreachImage(String id);
@@ -384,6 +388,14 @@ public class CtrlToolBarPresenter {
 
     public void closeOutreachPanel() {
         view.closeOutreachPanel();
+    }
+
+    public void openJwstOutreachPanel() {
+        view.openJwstOutreachPanel();
+    }
+
+    public void closeJwstOutreachPanel() {
+        view.closeJwstOutreachPanel();
     }
 
     public JSONArray getOutreachImageIds(ICommand command) {

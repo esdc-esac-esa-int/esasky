@@ -13,6 +13,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants.CoordinateFrame;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachJwstPanel;
 import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
@@ -74,6 +75,7 @@ public class Controller implements ValueChangeHandler<String> {
 		setBasicLayoutFromParameters();
 		setSciMode();
 		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HST_IMAGE));
+		OutreachJwstPanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_JWST_IMAGE));
 
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
 		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");

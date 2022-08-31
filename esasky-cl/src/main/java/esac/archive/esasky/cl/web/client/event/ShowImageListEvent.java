@@ -7,8 +7,11 @@ public class ShowImageListEvent extends GwtEvent<ShowImageListEventHandler> {
     /** Event type. */
     public static final Type<ShowImageListEventHandler> TYPE = new Type<>();
 
-    public ShowImageListEvent() {
+    public final Sender sender;
+
+    public ShowImageListEvent(Sender sender) {
         super();
+        this.sender = sender;
     }
 
     @Override
@@ -19,6 +22,11 @@ public class ShowImageListEvent extends GwtEvent<ShowImageListEventHandler> {
     @Override
     protected final void dispatch(final ShowImageListEventHandler handler) {
         handler.onImageListSelected(this);
+    }
+
+    public enum Sender {
+        HST,
+        JWST
     }
 
 }

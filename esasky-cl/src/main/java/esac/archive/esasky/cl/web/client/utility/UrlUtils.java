@@ -1,12 +1,14 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Objects;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Navigator;
 
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -15,6 +17,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPan
 public final class UrlUtils {
 
 	private static String selectedHstImageId = null;
+	private static String selectedJwstImageId = null;
 
 	public static String getUrlForCurrentState() {
 	    
@@ -59,6 +62,11 @@ public final class UrlUtils {
 		if (selectedHstImageId != null) {
 			hstImage = "&" + EsaSkyWebConstants.URL_PARAM_HST_IMAGE + "=" + selectedHstImageId;
 		}
+
+		String jwstImage = "";
+		if (selectedJwstImageId != null) {
+			jwstImage = "&" + EsaSkyWebConstants.URL_PARAM_JWST_IMAGE + "=" + selectedJwstImageId;
+		}
 		
 		String bookmarkUrl = baseUrl 
 				+ "?" + EsaSkyWebConstants.URL_PARAM_TARGET + "=" + encodedRaDeg + "%20" + encodedDecDeg 
@@ -72,7 +80,8 @@ public final class UrlUtils {
 				+ toggleColumns
 				+ logLevel
 				+ layout
-				+ hstImage;
+				+ hstImage
+				+ jwstImage;
 		return bookmarkUrl;
 	}
 	
@@ -117,8 +126,13 @@ public final class UrlUtils {
         Window.open(url, "", "");
     }
 
-	public static void setSelectedHstImageId(String id) {
-		selectedHstImageId = id;
+	public static void setSelectedOutreachImageId(String id, IDescriptor descriptor) {
+		if (Objects.equals(descriptor.getMission(), EsaSkyConstants.HST_MISSION)) {
+			selectedHstImageId = id;
+		} else {
+			selectedJwstImageId = id;
+		}
+
 		UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
 	}
 }

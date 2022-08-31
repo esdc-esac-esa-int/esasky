@@ -4,6 +4,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.*;
@@ -115,13 +116,25 @@ public class EntityRepository {
     	return allEntities;
     }
 
-    public ImageListEntity createImageListEntity(IDescriptor descriptor) {
+    public ImageListEntity createImageListEntity(IDescriptor descriptor, ICallback footprintSelected) {
     	ImageListEntity newEntity =  new ImageListEntity(descriptor, descriptorRepo.getImageDescriptors().getCountStatus(),
-                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPImageListService.getInstance());
+                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPImageListService.getInstance(), selectedEntity -> {
+                    deselectOtherImageEntityShapes(selectedEntity);
+                    footprintSelected.onCallback();
+                });
     	addEntity(newEntity);
     	return newEntity;
     }
-    
+
+    public void deselectOtherImageEntityShapes(ImageListEntity myEntity) {
+        for (GeneralEntityInterface entity : allEntities) {
+            if (entity != myEntity)  {
+                entity.deselectAllShapes();
+                entity.getTablePanel().deselectAllRows();
+            }
+        }
+    }
+
     public GeneralEntityInterface createEntity(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = null;
         if (descriptor instanceof SSODescriptor) {

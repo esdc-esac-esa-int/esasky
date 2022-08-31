@@ -64,6 +64,7 @@ public class EsaSkyWebConstants {
     public static final String URL_PARAM_FOV = "fov";
 
     public static final String URL_PARAM_HST_IMAGE = "hst_image";
+    public static final String URL_PARAM_JWST_IMAGE = "jwst_image";
     
     public static final String URL_PARAM_FRAME_COORD = "cooframe";
     
@@ -144,6 +145,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_EXTTAP = "exttap_button";
     public static final String MODULE_GW = "gw_button";
     public static final String MODULE_OUTREACH_IMAGE = "outreach_button";
+    public static final String MODULE_OUTREACH_JWST = "outreach_jwst_button";
     public static final String MODULE_SSO = "sso_button";
     public static final String MODULE_PUBLICATIONS = "publications_button";
     public static final String MODULE_TARGETLIST = "target_list_button";
@@ -172,7 +174,9 @@ public class EsaSkyWebConstants {
     public static final String S_RA = "s_ra";
     public static final String S_DEC = "s_dec";
     public static final String S_REGION = "s_region";
-    
+
+    public static final String HST_MISSION = "HST";
+    public static final String JWST_MISSION = "JWST";
     
     /** Prevents Utility class calls. */
     protected EsaSkyWebConstants() {

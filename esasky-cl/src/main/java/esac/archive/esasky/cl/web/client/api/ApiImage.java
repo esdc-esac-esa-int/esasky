@@ -6,7 +6,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import esac.archive.esasky.cl.web.client.Controller;
-import esac.archive.esasky.cl.web.client.model.HstOutreachImage;
+import esac.archive.esasky.cl.web.client.model.OutreachImage;
 import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
@@ -15,9 +15,10 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ApiImage extends ApiBase{
-	
+
 	private static String errorMsg = "Error parsing image properties. Property: @@@prop@@@ missing";
 
 	public ApiImage(Controller controller) {
@@ -25,26 +26,31 @@ public class ApiImage extends ApiBase{
 	}
 
 	public void parseHstImageData(final String name) {
-		HstOutreachImage image = new HstOutreachImage(name, 1.0);
-		ImageDescriptor imageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
-		TAPImageListService metadataService = TAPImageListService.getInstance();
-		image.loadImage(imageDescriptor, metadataService, true);
+		Optional<ImageDescriptor> optionalImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors()
+				.getDescriptors().stream().filter(ImageDescriptor::isHst).findFirst();
+
+		if (optionalImageDescriptor.isPresent()) {
+			ImageDescriptor imageDescriptor = optionalImageDescriptor.get();
+			OutreachImage image = new OutreachImage(name, 1.0, imageDescriptor);
+			TAPImageListService metadataService = TAPImageListService.getInstance();
+			image.loadImage(imageDescriptor, metadataService, true);
+		}
 	}
-	
+
 	public void addTiledImage(JavaScriptObject input, JavaScriptObject widget) {
 		GeneralJavaScriptObject parameters = (GeneralJavaScriptObject) input;
 		parameters.setProperty("type", OpenSeaDragonType.TILED.getType());
 		addImage(parameters, widget);
 	}
-	
+
 	public void addSingleImage(JavaScriptObject input, JavaScriptObject widget) {
 		GeneralJavaScriptObject parameters = (GeneralJavaScriptObject) input;
 		parameters.setProperty("type", OpenSeaDragonType.SINGLE.getType());
 		addImage(parameters, widget);
 	}
-	
+
 	public String parseParameter(GeneralJavaScriptObject parameters, String parameter) throws IOException {
-		
+
 		if(parameters.hasProperty(parameter)) {
 			return parameters.getStringProperty(parameter);
 		}else {
@@ -53,20 +59,20 @@ public class ApiImage extends ApiBase{
 	}
 
 	public double parseDoubleParameter(GeneralJavaScriptObject parameters, String parameter) throws IOException {
-		
+
 		if(parameters.hasProperty(parameter)) {
 			return parameters.getDoubleProperty(parameter);
 		}else {
 			throw new IOException(errorMsg.replace("@@@prop@@@", parameter));
 		}
 	}
-	
+
 	public void addImage(JavaScriptObject input, JavaScriptObject widget) {
 		GeneralJavaScriptObject parameters = (GeneralJavaScriptObject) input;
-	
+
 		OpenSeaDragonType type = null;
-		
-		
+
+
 		try {
 			String name = parseParameter(parameters, "name");
 			String url = parseParameter(parameters, "url");
@@ -79,19 +85,19 @@ public class ApiImage extends ApiBase{
 			type = OpenSeaDragonType.getImageType(typeName);
 			int width = 1;
 			int height = 1;
-			
+
 			if(type == OpenSeaDragonType.TILED) {
 				height = Integer.parseInt(parseParameter(parameters, "height"));
 				width = Integer.parseInt(parseParameter(parameters, "width"));
 			}
-			
+
 			addTiledImage(name, url, ra, dec, fov, rot, width, height, type);
 
 		}catch(IOException e) {
 			sendBackErrorMsgToWidget(e.getMessage(), widget);
 			Log.error(e.getMessage(), e);
 		}
-		
+
 	}
 
 	public void openOutreachPanel() {
@@ -122,11 +128,11 @@ public class ApiImage extends ApiBase{
 
 	private void addTiledImage(String name, String url, double ra, double dec, double fov,
 			double rotation, int width, int height, OpenSeaDragonType type) {
-		
+
 		OpenSeaDragonWrapper openSeaDragonWrapper = new OpenSeaDragonWrapper(name, url, type, ra, dec, fov,
 				rotation, width, height);
 		openSeaDragonWrapper.addOpenSeaDragonToAladin(openSeaDragonWrapper.createOpenSeaDragonObject());
-		
+
 	}
-	
+
 }

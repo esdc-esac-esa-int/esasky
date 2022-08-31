@@ -381,6 +381,12 @@ public class DescriptorRepository {
                         imageCountObserver);
 
                 for (ImageDescriptor desc : imageDescriptors.getDescriptors()) {
+                    if (desc.isHst()) {
+                        desc.setBaseUrl("https://esahubble.org/images/");
+                    } else {
+                        desc.setBaseUrl("https://esawebb.org/images/");
+                    }
+
                     for (MetadataDescriptor md : desc.getMetadata()) {
                         if (md.getType() == ColumnType.RA) {
                             desc.setTapRaColumn(md.getTapName());
