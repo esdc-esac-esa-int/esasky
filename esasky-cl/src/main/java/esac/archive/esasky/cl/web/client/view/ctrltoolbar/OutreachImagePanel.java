@@ -34,7 +34,6 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	private BaseDescriptor outreachImageDescriptor;
 	private ImageListEntity imageEntity;
 	private boolean isHidingFootprints = false;
-	private boolean isPanelOpen = false;
 	private static String outreachImageIdToBeOpened; 
 	
 	private FlowPanel opacityPanel;
@@ -113,7 +112,6 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	public void show() {
 		super.show();
 		getData();
-		isPanelOpen = true;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
@@ -121,7 +119,6 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 
 	public void close() {
-		isPanelOpen = false;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
@@ -129,9 +126,6 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		super.hide();
 	}
 
-	public boolean isShowing() {
-		return isPanelOpen;
-	}
 
 	private void fetchData() {
 		if(outreachImageDescriptor != null) {
@@ -272,7 +266,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 			OutreachImagePanel.setStartupId(id);
 		}
 
-		if (!isPanelOpen) {
+		if (!isShowing()) {
 			show();
 		}
 	}

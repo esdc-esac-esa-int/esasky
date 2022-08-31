@@ -23,6 +23,8 @@ import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.OutreachImageDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
+import java.util.Objects;
+
 public class OutreachImage {
 	
 	private String id;
@@ -33,20 +35,23 @@ public class OutreachImage {
 	private double opacity = 1.0;
 	private boolean removed = false;
 	private OpenSeaDragonWrapper lastOpenseadragon = null;
+	private final String mission;
 	
 	public OutreachImage(String id, double opacity, ImageDescriptor descriptor) {
 		this.id = id;
 		this.opacity = opacity;
 		this.baseUrl = descriptor.getBaseUrl() + id;
+		this.mission = descriptor.getMission();
 	}
 
-	public OutreachImage(GeneralJavaScriptObject imageObject, double opacity) {
+	public OutreachImage(GeneralJavaScriptObject imageObject, double opacity, String mission) {
 		this.opacity = opacity;
-		this.baseUrl = "https://esahubble.org/images/" + id;
+
 		OutreachImageDescriptorMapper mapper = GWT.create(OutreachImageDescriptorMapper.class);
 		String newJson = imageObject.jsonStringify().replace("\"[", "[").replace("]\"", "]");
 		OutreachImageDescriptor desc = mapper.read(newJson);
-		onResponseParsed(desc, true);
+		onResponseParsed(desc, mission, true);
+		this.mission = mission;
 	}
 	
 	public interface OutreachImageDescriptorMapper extends ObjectMapper<OutreachImageDescriptor> {}
@@ -56,7 +61,7 @@ public class OutreachImage {
 	}
 	
 	public void loadImage(IDescriptor descriptor, TAPImageListService metadataService, boolean moveToCenter) {
-		
+		String mission = this.mission;
 		String query = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
 		JSONUtils.getJSONFromUrl(query , new IJSONRequestCallback() {
 
@@ -77,7 +82,7 @@ public class OutreachImage {
 				String newJson = newObj.jsonStringify().replace("\"[", "[").replace("]\"", "]");
 				OutreachImageDescriptor desc = mapper.read(newJson);
 			
-				onResponseParsed(desc, moveToCenter);
+				onResponseParsed(desc, mission, moveToCenter);
 
 		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS, desc.getId());
 			}
@@ -112,7 +117,7 @@ public class OutreachImage {
 		return id;
 	}
 	
-	public void onResponseParsed(OutreachImageDescriptor desc, boolean moveToCenter) {
+	public void onResponseParsed(OutreachImageDescriptor desc, String mission, boolean moveToCenter) {
 
 		
 		ImageSize imageSize = new ImageSize(desc.getPixelSize()[0], desc.getPixelSize()[1]);
@@ -126,6 +131,13 @@ public class OutreachImage {
 		}
 		
 		this.id = desc.getId();
+
+		boolean isHst = Objects.equals(mission, EsaSkyConstants.HST_MISSION);
+		if (isHst) {
+			this.baseUrl = "https://esahubble.org/images/" + id;
+		} else {
+			this.baseUrl = "https://esawebb.org/images/" + id;
+		}
 		this.title = desc.getTitle();
 		this.description = desc.getDescription();
 		this.credits = desc.getCredit();
@@ -154,9 +166,9 @@ public class OutreachImage {
 
 		StringBuilder popupText = new StringBuilder(this.description);
 		popupText.append("<br>  Credit: ");
-		popupText.append(this.credits);			
+		popupText.append(this.credits);
 
-		popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + "\">ESA Hubble News</a>");
+		popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
 		
 		CommonEventBus.getEventBus().fireEvent(
         		new TargetDescriptionEvent(this.title, popupText.toString(), false));

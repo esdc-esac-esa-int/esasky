@@ -93,11 +93,9 @@ public class ImageListEntity extends EsaSkyEntity {
     	GeneralJavaScriptObject[] rows = tablePanel.getSelectedRows();
     	for(GeneralJavaScriptObject row : rows) {
     		if(GeneralJavaScriptObject.convertToInteger(row.getProperty("id")) == shapeId) {
-    			if(!isIdAlreadyOpen(row.getStringProperty(IDENTIFIER_KEY))) {
-    				lastImage = new OutreachImage(row, lastOpacity);
-					UrlUtils.setSelectedOutreachImageId(lastImage.getId(), getDescriptor());
-    			}
-    			return;
+				lastImage = new OutreachImage(row, lastOpacity, descriptor.getMission());
+				UrlUtils.setSelectedOutreachImageId(lastImage.getId(), getDescriptor());
+				return;
     		}
     	}
     }
@@ -145,7 +143,17 @@ public class ImageListEntity extends EsaSkyEntity {
 			UrlUtils.setSelectedOutreachImageId(null, getDescriptor());
 		}
 	}
-	
+
+	@Override
+	public void deselectAllShapes() {
+		super.deselectAllShapes();
+		if(lastImage != null) {
+			lastImage.removeOpenSeaDragon();
+			UrlUtils.setSelectedOutreachImageId(null, getDescriptor());
+			lastImage = null;
+		}
+	}
+
 	@Override
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();

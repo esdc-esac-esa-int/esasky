@@ -566,7 +566,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
                 }
         );
-        outreachImagePanel = new OutreachImagePanel(outreachImageButton::click);
+        outreachImagePanel = new OutreachImagePanel(() -> {
+            if (!outreachImagePanel.isShowing()) {
+                outreachImageButton.click();
+            }
+        });
         outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachImagePanel.definePositionFromTopAndLeft();
         outreachImagePanel.hide();
@@ -586,7 +590,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
                 }
         );
-        outreachJwstPanel = new OutreachJwstPanel(outreachJwstButton::click);
+        outreachJwstPanel = new OutreachJwstPanel(() -> {
+            if (!outreachJwstPanel.isShowing()) {
+                outreachJwstButton.click();
+            }
+        });
         outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachJwstPanel.definePositionFromTopAndLeft();
         outreachJwstPanel.hide();
