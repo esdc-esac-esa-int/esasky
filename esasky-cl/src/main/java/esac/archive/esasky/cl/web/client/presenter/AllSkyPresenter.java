@@ -385,7 +385,7 @@ public class AllSkyPresenter {
         }else {
 			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 			
-			if(currentOverlay != null && hips == currentOverlay && isSameDouble(currentOpacity,opacity)) {
+			if(currentOverlay != null && hips == currentOverlay && isSameDoubleValue(currentOpacity,opacity)) {
 				AladinLiteWrapper.getInstance().createOverlayMap(hips, opacity, colorPalette);
 			}else {
 				AladinLiteWrapper.getInstance().createOverlayMap(hips, Math.pow(opacity,0.25), colorPalette);
@@ -398,7 +398,7 @@ public class AllSkyPresenter {
         
     }
     
-    private boolean isSameDouble(double v1, double v2) {
+    private boolean isSameDoubleValue(double v1, double v2) {
     	BigDecimal a = new BigDecimal(v1);
     	BigDecimal b = new BigDecimal(v2);
     	return a.equals(b);
