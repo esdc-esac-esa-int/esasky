@@ -17,10 +17,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -57,6 +57,9 @@ public class AllSkyPresenter {
 
     private List<SSOOverlayAndPolyline> ssoPolyline = null;
     private HiPS currentHiPS = EsaSkyWebConstants.getInitialHiPS();
+    
+    private HiPS currentOverlay;
+    private double currentOpacity = 0;
     
     /**
      * View interface.
@@ -362,21 +365,55 @@ public class AllSkyPresenter {
      * @param colorPalette Input ColorPalette object
      */
     protected final void changeHiPS(final HiPS hips, final ColorPalette colorPalette, boolean isBaseImage, double opacity) {
-        if(isBaseImage) {
+    	currentOpacity = opacity;
+    	if(isBaseImage) {
 	    	if (currentHiPS != hips) {
+	    		currentHiPS.setReversedColorMap(false);
 	            currentHiPS = hips;
 	            AladinLiteWrapper.getInstance().openHiPS(hips);
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
 	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
+	            
+				if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+					currentHiPS.setReversedColorMap(true);
+				}
+//				else if(hips.isReversedColorMap() && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+//					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+//					currentHiPS.setReversedColorMap(false);
+//				}
 	        } else {
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
 	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
+				if(!hips.isReversedColorMap() && colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+					hips.setReversedColorMap(true);
+				}else if(hips.isReversedColorMap()  && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+					hips.setReversedColorMap(false);
+				}
+	            
 	        }
         }else {
 			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
-			AladinLiteWrapper.getInstance().createOverlayMap(hips, Math.pow(opacity,2), colorPalette);
-
+			
+			if(currentOverlay != null && hips == currentOverlay && currentOpacity == opacity) {
+				AladinLiteWrapper.getInstance().createOverlayMap(hips, opacity, colorPalette);
+			}else {
+				AladinLiteWrapper.getInstance().createOverlayMap(hips, Math.pow(opacity,0.25), colorPalette);
+			}
+			
+			currentOverlay = hips;
+			
+			if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
+				hips.setReversedColorMap(true);
+			}else if(hips.isReversedColorMap()  && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+				AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+				hips.setReversedColorMap(false);
+			}
         }
+        
     }
     
     public void areaSelectionFinished(){

@@ -1264,6 +1264,9 @@
 	<text key="colorPalette_GREYSCALE">
 		灰度
 	</text>
+	<text key="colorPalette_GREYSCALE_INV">
+		灰度 (逆)
+	</text>
 	<text key="colorPalette_CUBEHELIX">
 		立方螺旋
 	</text>

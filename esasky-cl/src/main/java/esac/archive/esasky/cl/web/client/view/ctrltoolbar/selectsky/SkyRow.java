@@ -11,11 +11,11 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
@@ -45,7 +45,7 @@ public class SkyRow extends Composite implements Selectable{
 	private int HIPS_PX_SIZE = 129;
 
 	private ChangePaletteBtn changePaletteBtn;
-
+ 
 	private EsaSkyRadioButton isSelectedBtn;
 	private CloseButton removeSkyBtn;
 	private DropDownMenu<HipsWavelength> wavelengthDropDown;
@@ -64,6 +64,7 @@ public class SkyRow extends Composite implements Selectable{
 	
 	private boolean isOverlay = false;
 	private boolean isMain = false;
+	private boolean isReversedActivated = false;
 
 	public static interface Resources extends ClientBundle {
 
