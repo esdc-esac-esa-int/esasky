@@ -2,10 +2,10 @@ package esac.archive.esasky.cl.web.client.utility;
 
 import com.google.gwt.i18n.client.Dictionary;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 /**

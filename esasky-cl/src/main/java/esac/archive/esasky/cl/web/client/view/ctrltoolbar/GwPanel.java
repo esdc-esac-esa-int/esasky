@@ -11,7 +11,6 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
@@ -37,6 +36,7 @@ import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.GwDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IceCubeDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 
 import java.util.*;
 import java.util.stream.Collectors;

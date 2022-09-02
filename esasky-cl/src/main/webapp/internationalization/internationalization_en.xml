@@ -2800,6 +2800,9 @@
 	<text key="colorPalette_GREYSCALE">
 		Greyscale
 	</text>
+	<text key="colorPalette_GREYSCALE_INV">
+		Greyscale (Reverse)
+	</text>
 	<text key="colorPalette_CUBEHELIX">
 		Cubehelix
 	</text>

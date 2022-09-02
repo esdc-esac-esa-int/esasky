@@ -2566,6 +2566,9 @@
 	<text key="colorPalette_GREYSCALE">
 		Escala de grises
 	</text>
+	<text key="colorPalette_GREYSCALE_INV">
+		Escala de grises (Inversa)
+	</text>
 	<text key="colorPalette_CUBEHELIX">
 		Cubehelix
 	</text>
