@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -373,31 +374,18 @@ public class AllSkyPresenter {
 	            AladinLiteWrapper.getInstance().openHiPS(hips);
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
 	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
-	            
-				if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-					currentHiPS.setReversedColorMap(true);
-				}
-//				else if(hips.isReversedColorMap() && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-//					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-//					currentHiPS.setReversedColorMap(false);
-//				}
+	            checkInverseForNewBaseHips(colorPalette);
+				
 	        } else {
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
 	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
-				if(!hips.isReversedColorMap() && colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-					hips.setReversedColorMap(true);
-				}else if(hips.isReversedColorMap()  && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-					hips.setReversedColorMap(false);
-				}
+	            checkInverseForBaseHips(hips, colorPalette);
 	            
 	        }
         }else {
 			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
 			
-			if(currentOverlay != null && hips == currentOverlay && currentOpacity == opacity) {
+			if(currentOverlay != null && hips == currentOverlay && isSameDouble(currentOpacity,opacity)) {
 				AladinLiteWrapper.getInstance().createOverlayMap(hips, opacity, colorPalette);
 			}else {
 				AladinLiteWrapper.getInstance().createOverlayMap(hips, Math.pow(opacity,0.25), colorPalette);
@@ -405,15 +393,42 @@ public class AllSkyPresenter {
 			
 			currentOverlay = hips;
 			
-			if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
-				hips.setReversedColorMap(true);
-			}else if(hips.isReversedColorMap()  && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-				AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-				hips.setReversedColorMap(false);
-			}
+			checkInverseForOverlays(hips, colorPalette);
         }
         
+    }
+    
+    private boolean isSameDouble(double v1, double v2) {
+    	BigDecimal a = new BigDecimal(v1);
+    	BigDecimal b = new BigDecimal(v2);
+    	return a.equals(b);
+    }
+    
+    private void checkInverseForNewBaseHips(final ColorPalette colorPalette) {
+    	if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+			currentHiPS.setReversedColorMap(true);
+		}
+    }
+    
+    private void checkInverseForBaseHips(final HiPS hips, final ColorPalette colorPalette) {
+    	if(!hips.isReversedColorMap() && colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+			hips.setReversedColorMap(true);
+		}else if(hips.isReversedColorMap()  && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+			hips.setReversedColorMap(false);
+		}
+    }
+    
+    private void checkInverseForOverlays(final HiPS hips, final ColorPalette colorPalette) {
+    	if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+			AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
+			hips.setReversedColorMap(true);
+		}else if(hips.isReversedColorMap()  && !colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+			hips.setReversedColorMap(false);
+		}
     }
     
     public void areaSelectionFinished(){
