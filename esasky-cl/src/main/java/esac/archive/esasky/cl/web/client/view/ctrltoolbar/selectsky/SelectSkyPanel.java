@@ -43,7 +43,6 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 	private ESASkyPlayerPanel player;
 	private AddSkyButton addSkyButton;
-	private Button reverseButton;
 
 	private String hipsFromUrl = null;
 	private SkiesMenu skiesMenu;
@@ -95,21 +94,10 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	private void initView() {
 		this.removeStyleName("gwt-DialogBox");
 		this.getElement().setId("allSkiesMenu");
-		
-		this.reverseButton = new Button("REVERSE");
-		this.reverseButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-				
-			}
-		});
 
 		selectSkyPanel.getElement().setId("allSkiesMenuContainer");
 
 		header = createHeader();
-		header.add(this.reverseButton);
 		selectSkyPanel.add(header);
 
 		skyTable = new DragFlexTable();
