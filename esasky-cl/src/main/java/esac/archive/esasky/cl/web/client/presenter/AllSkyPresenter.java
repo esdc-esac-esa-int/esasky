@@ -399,8 +399,8 @@ public class AllSkyPresenter {
     }
     
     private boolean isSameDoubleValue(double v1, double v2) {
-    	BigDecimal a = new BigDecimal(v1);
-    	BigDecimal b = new BigDecimal(v2);
+    	BigDecimal a = BigDecimal.valueOf(v1);
+    	BigDecimal b = BigDecimal.valueOf(v2);
     	return a.equals(b);
     }
     
