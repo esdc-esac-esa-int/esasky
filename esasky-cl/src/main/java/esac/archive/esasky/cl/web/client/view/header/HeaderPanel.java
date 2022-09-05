@@ -74,7 +74,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
 	private FocusPanel dropdownSessionSaveEntry = new FocusPanel(); 
 	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel(); 
-	private FocusPanel hiResDropdown = new FocusPanel(); 
+	private FocusPanel hiResDropdown = new FocusPanel();
+	private FocusPanel jwstDropdown = new FocusPanel();
 	private EsaSkySwitch dropdownScienceModeSwitch; 
 	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
 	private final ListBox dropdownLanguageBox = new ListBox();
@@ -234,6 +235,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		}
 
 		dropdownContent.add(createHiResDropdownEntry());
+		dropdownContent.add(createJwstDropdownEntry());
 
 		dropdownFeedbackEntry.getElement().setId("header__dropdown__feedback");
 		dropdownVideoTutorialsEntry.getElement().setId("header__dropdown__tutorials");
@@ -360,6 +362,16 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
 				&& GUISessionStatus.getIsInScienceMode());
 		return hiResDropdown;
+	}
+
+	private Widget createJwstDropdownEntry() {
+		Label jwstLabel = new Label(TextMgr.getInstance().getText("header_jwstOutreachImages"));
+		jwstLabel.addStyleName("header__dropdown__outreach__text");
+		jwstDropdown.add(jwstLabel);
+		jwstDropdown.setTitle(TextMgr.getInstance().getText("header_jwstImagesTooltip"));
+		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
+				&& GUISessionStatus.getIsInScienceMode());
+		return jwstDropdown;
 	}
 
 	private Widget createSessionSaveDropdownEntries() {
@@ -563,6 +575,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addHiResClickHandler(ClickHandler handler) {
 		hiResDropdown.addClickHandler(handler);
+	}
+
+	@Override
+	public void addJwstClickHandler(ClickHandler handler) {
+		jwstDropdown.addClickHandler(handler);
 	}
 	
 	@Override

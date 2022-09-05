@@ -56,7 +56,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     }
 
     public OutreachJwstPanel(ICallback footprintSelected) {
-        super(GoogleAnalytics.CAT_OUTREACHIMAGES, false);
+        super(GoogleAnalytics.CAT_JWSTOUTREACHIMAGES, false);
         this.resources = GWT.create(OutreachJwstPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
