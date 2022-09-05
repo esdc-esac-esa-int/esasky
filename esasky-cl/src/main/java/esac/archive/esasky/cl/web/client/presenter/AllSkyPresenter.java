@@ -34,6 +34,7 @@ import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEven
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEventHandler;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEventHandler;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
@@ -400,13 +401,12 @@ public class AllSkyPresenter {
 				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
 				hips.setReversedColorMap(true);
 			}else if(checkReverseAndNotGreyscale(hips, colorPalette)) {
-				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
+//				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
 				hips.setReversedColorMap(false);
 			}
         }
         
     }
-    
     private void reverseCurrentHiPS(ColorPalette colorPalette) {
 		if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
 			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
