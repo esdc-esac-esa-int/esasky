@@ -3477,6 +3477,9 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 	<text key="searchToolbox_radius">
 		Radio (deg)
 	</text>
+	<text key="header_acknowledge">
+		Agradecimiento a ESASky
+	</text>
 
 </Internationalization>
 
