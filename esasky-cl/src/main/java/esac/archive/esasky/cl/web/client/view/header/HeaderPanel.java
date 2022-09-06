@@ -609,6 +609,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		headerScienceModeSwitch.setChecked(isInScienceMode);
 		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
 				&& isInScienceMode);
+		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
+				&& GUISessionStatus.getIsInScienceMode());
 	}
 
 	@Override
