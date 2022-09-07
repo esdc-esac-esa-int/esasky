@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import com.google.gwt.json.client.JSONArray;
@@ -12,8 +11,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoo
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.callback.ICallbackParam;
-import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
+import esac.archive.esasky.cl.web.client.event.ImageListSelectedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.OutreachImage;
 import esac.archive.esasky.cl.web.client.query.TAPImageListService;
@@ -24,7 +22,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ImageListEntity extends EsaSkyEntity {
 
@@ -36,8 +33,6 @@ public class ImageListEntity extends EsaSkyEntity {
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
 	private long timeAtLastFoVFilter = 0L;
-
-	private final ICallbackParam<ImageListEntity> selectCallback;
 
 	public static final String IDENTIFIER_KEY = "identifier";
 	
@@ -56,7 +51,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	};
 	
 	public ImageListEntity(IDescriptor descriptor, CountStatus countStatus, SkyViewPosition skyViewPosition,
-						   String esaSkyUniqId, TAPImageListService metadataService, ICallbackParam<ImageListEntity> selectCallback) {
+						   String esaSkyUniqId, TAPImageListService metadataService) {
 		super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService);
 		this.metadataService = metadataService;
 		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesChangedEvent.TYPE, coordinateEvent -> {
@@ -65,9 +60,8 @@ public class ImageListEntity extends EsaSkyEntity {
 			}
 		});
 		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, coordinateEvent -> onFoVChanged());
-		this.selectCallback = selectCallback;
 	}
-	
+
 	private void performFoVFilter() {
 		timeAtLastFoVFilter = System.currentTimeMillis();
 		tablePanel.filterOnFoV("ra_deg", "dec_deg");
@@ -80,7 +74,7 @@ public class ImageListEntity extends EsaSkyEntity {
 			updateTimer.schedule(300);
 		}
 	}
-	
+
 	@Override
 	public void fetchData() {
 		fetchDataWithoutMOC();
@@ -89,6 +83,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	
 	@Override
     public void selectShapes(int shapeId) {
+		CommonEventBus.getEventBus().fireEvent(new ImageListSelectedEvent(this));
     	drawer.selectShapes(shapeId);
     	GeneralJavaScriptObject[] rows = tablePanel.getSelectedRows();
     	for(GeneralJavaScriptObject row : rows) {
@@ -152,6 +147,7 @@ public class ImageListEntity extends EsaSkyEntity {
 			UrlUtils.setSelectedOutreachImageId(null, getDescriptor());
 			lastImage = null;
 		}
+		tablePanel.deselectAllRows();
 	}
 
 	@Override
@@ -175,8 +171,7 @@ public class ImageListEntity extends EsaSkyEntity {
     		tablePanel.deselectAllRows();
     		tablePanel.selectRow(shapeId);
     	}
-    	
-		selectCallback.onCallback(this);
+
     	selectShapes(shapeId);
     }
     
@@ -227,6 +222,8 @@ public class ImageListEntity extends EsaSkyEntity {
     	if(lastImage != null){
     		if(isClosed) {
 				UrlUtils.setSelectedOutreachImageId(null, getDescriptor());
+				lastImage.removeOpenSeaDragon();
+				tablePanel.deselectAllRows();
     		} else {
 				UrlUtils.setSelectedOutreachImageId(lastImage.getId(), getDescriptor());
     		}
@@ -261,7 +258,7 @@ public class ImageListEntity extends EsaSkyEntity {
 		if (this.isClosed) {
 			setIsPanelClosed(false);
 		}
-
+		CommonEventBus.getEventBus().fireEvent(new ImageListSelectedEvent(this));
 		GeneralJavaScriptObject[] rowDataArray = tablePanel.getAllRows();
 		for(int i = 0; i < rowDataArray.length; i++) {
 			if(rowDataArray[i].getStringProperty(getDescriptor().getUniqueIdentifierField()).equals(identifier)) {

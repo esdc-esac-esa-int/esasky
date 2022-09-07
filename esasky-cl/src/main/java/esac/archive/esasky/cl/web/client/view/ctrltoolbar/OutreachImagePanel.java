@@ -9,8 +9,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
+import esac.archive.esasky.cl.web.client.event.ImageListSelectedEvent;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.Size;
@@ -41,7 +41,6 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	private final FlowPanel mainContainer = new FlowPanel();
 	private final FlowPanel tableContainer = new FlowPanel();
 	private PopupHeader<OutreachImagePanel> header;
-	private final ICallback selectCallback;
 
 	private final Resources resources;
 	private CssResource style;
@@ -52,17 +51,26 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		CssResource style();
 	}
 	
-	public OutreachImagePanel(ICallback selectCallback) {
+	public OutreachImagePanel() {
 		super(GoogleAnalytics.CAT_OUTREACHIMAGES, false);
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
-		this.selectCallback = selectCallback;
 
 		initView();
 		setMaxSize();
 
 		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
+		CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
+			if (entity.getSelectedEntity() == imageEntity) {
+				if (!isShowing()) {
+					show();
+				}
+				EntityRepository.getInstance().deselectOtherImageEntityShapes(entity.getSelectedEntity());
+			} else if (isShowing()) {
+				hide();
+			}
+		}) );
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
 	
@@ -141,7 +149,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 			return;
 		}
 
-		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor, selectCallback);
+		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
 		if(outreachImageIdToBeOpened != null) {
 			imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
 		}

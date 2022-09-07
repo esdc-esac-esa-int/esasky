@@ -353,7 +353,7 @@ public class MainPresenter {
     }
 
     public void getImagesMetadata(IDescriptor descriptor) {
-    	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor, () -> {}));
+    	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor));
     }
 
     public void getRelatedMetadata(IDescriptor descriptor) {

@@ -9,8 +9,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
+import esac.archive.esasky.cl.web.client.event.ImageListSelectedEvent;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.Size;
@@ -45,8 +45,6 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     private PopupHeader<OutreachJwstPanel> header;
 
     private final OutreachJwstPanel.Resources resources;
-
-    private final ICallback footprintSelected;
     private CssResource style;
 
     public static interface Resources extends ClientBundle {
@@ -55,16 +53,26 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         CssResource style();
     }
 
-    public OutreachJwstPanel(ICallback footprintSelected) {
+    public OutreachJwstPanel() {
         super(GoogleAnalytics.CAT_JWSTOUTREACHIMAGES, false);
         this.resources = GWT.create(OutreachJwstPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
-        this.footprintSelected = footprintSelected;
 
         initView();
         setMaxSize();
         CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
+        CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
+            if (entity.getSelectedEntity() == imageEntity) {
+                if (!isShowing()) {
+                    show();
+                }
+                EntityRepository.getInstance().deselectOtherImageEntityShapes(imageEntity);
+            } else if (isShowing()) {
+                hide();
+            }
+        }));
+
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
     }
 
@@ -126,7 +134,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
             return;
         }
 
-        imageEntity = EntityRepository.getInstance().createImageListEntity(outreachJwstDescriptor, footprintSelected);
+        imageEntity = EntityRepository.getInstance().createImageListEntity(outreachJwstDescriptor);
         if(outreachImageIdToBeOpened != null) {
             imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
         }

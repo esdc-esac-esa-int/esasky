@@ -59,12 +59,10 @@ public final class UrlUtils {
 		}
 
 		String hstImage = "";
+		String jwstImage = "";
 		if (selectedHstImageId != null) {
 			hstImage = "&" + EsaSkyWebConstants.URL_PARAM_HST_IMAGE + "=" + selectedHstImageId;
-		}
-
-		String jwstImage = "";
-		if (selectedJwstImageId != null) {
+		} else if (selectedJwstImageId != null) {
 			jwstImage = "&" + EsaSkyWebConstants.URL_PARAM_JWST_IMAGE + "=" + selectedJwstImageId;
 		}
 		
