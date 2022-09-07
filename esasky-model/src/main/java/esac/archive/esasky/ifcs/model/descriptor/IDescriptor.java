@@ -109,4 +109,6 @@ public interface IDescriptor {
     SearchArea getSearchArea();
     boolean hasSearchArea();
     String getSearchAreaShape();
+
+    Boolean useUcd();
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public interface TabulatorCallback {
-    public void onDataLoaded(GeneralJavaScriptObject rowData);
+    public void onDataLoaded(GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata);
     public void onTableHeightChanged();
     public void onRowSelection(GeneralJavaScriptObject row);
     public void onRowDeselection(GeneralJavaScriptObject row);
@@ -17,6 +17,7 @@ public interface TabulatorCallback {
     public void onAccessUrlClicked(String url);
     public void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName);
     public void onCenterClicked(GeneralJavaScriptObject rowData);
+    public void onCenterClicked(String ra, String dec);
     public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
     public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
     public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
@@ -32,4 +33,5 @@ public interface TabulatorCallback {
     public void multiSelectionInProgress();
     public void multiSelectionFinished();
     public boolean hasBeenClosed();
+
 }

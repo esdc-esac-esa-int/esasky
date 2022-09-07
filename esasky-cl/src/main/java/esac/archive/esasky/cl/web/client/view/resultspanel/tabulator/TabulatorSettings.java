@@ -18,6 +18,7 @@ public class TabulatorSettings{
     private Boolean addDatalinkLink2ArchiveColumn = false;
     private Integer selectable = null; // number of rows that can be selected simultaneously. null = no limit
 	private Boolean disableGoToColumn = false; // true to force remove goto column, even if there is a ra an dec column
+	private Boolean useUcd = false;
 	
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
@@ -40,6 +41,7 @@ public class TabulatorSettings{
 			json.put("selectable", new JSONNumber(selectable));
 		}
 		json.put("disableGoToColumn", JSONBoolean.getInstance(disableGoToColumn));
+		json.put("useUcd", JSONBoolean.getInstance(useUcd));
 		return json.toString();
 	}
 
@@ -129,5 +131,13 @@ public class TabulatorSettings{
 
 	public void setDisableGoToColumn(Boolean disableGoToColumn) {
 		this.disableGoToColumn = disableGoToColumn;
+	}
+
+	public Boolean getUseUcd() {
+		return useUcd;
+	}
+
+	public void setUseUcd(Boolean useUcd) {
+		this.useUcd = useUcd;
 	}
 }

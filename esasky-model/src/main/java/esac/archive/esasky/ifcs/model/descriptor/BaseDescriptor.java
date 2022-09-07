@@ -539,5 +539,10 @@ public abstract class BaseDescriptor implements IDescriptor {
         }
         return shape;
     }
-    
+
+    @JsonIgnore
+    @Override
+    public Boolean useUcd() {
+        return false;
+    }
 }

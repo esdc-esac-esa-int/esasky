@@ -91,6 +91,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private boolean inMOCMode = false;
 	private boolean toggleColumnsEnabled = true;
 
+	private GeneralJavaScriptObject tableMetadata = null;
+
 	private MetadataVisibilityObserver metadataVisibilityObserver = new MetadataVisibilityObserver() {
 
 		@Override
@@ -524,9 +526,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+	public void onDataLoaded(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
 		if(!hasBeenClosed) {
-			entity.addShapes(javaScriptObject);
+			entity.addShapes(javaScriptObject, metadata);
 		}
 		notifyNumberOfRowsShowingChanged(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
 		notifyOnDataLoaded(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
@@ -661,6 +663,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_RECENTER, getFullId(),
 				rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
+	}
+
+	@Override
+	public void onCenterClicked(String ra, String dec) {
+
+		double fov = AladinLiteWrapper.getInstance().getFovDeg();
+
+		AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
+//		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_RECENTER, getFullId(),
+//				rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
 	}
 
 	@Override
@@ -854,6 +866,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public GeneralJavaScriptObject getDescriptorMetaData() {
 		return entity.getDescriptor().getMetaDataJSONObject();
+	}
+
+	@Override
+	public GeneralJavaScriptObject getTableMetadata() {
+		return this.tableMetadata;
 	}
 
 	@Override

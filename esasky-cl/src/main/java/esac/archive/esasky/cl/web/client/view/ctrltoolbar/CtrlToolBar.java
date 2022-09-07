@@ -61,6 +61,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private PlanObservationPanel planObservationPanel;
     private GwPanel gwPanel;
     private OutreachImagePanel outreachImagePanel;
+    private GlobalTapPanel globalTapPanel;
 
     private OutreachJwstPanel outreachJwstPanel;
     private String HiPSFromURL = null;
@@ -86,6 +87,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     private EsaSkyToggleButton outreachJwstButton;
     private EsaSkyToggleButton publicationsButton;
+    private EsaSkyToggleButton globalTapButton;
     private EsaSkyToggleButton targetListButton;
 
     private final int suggestedPositionLeft = 5;
@@ -218,6 +220,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         if (!Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)) {
             hideWidget(outreachJwstButton);
         }
+
+
+        /// TODO: Remove these, just for testing purposes
+        globalTapButton = createglobalTapButton();
+        ctrlToolBarPanel.add(globalTapButton);
+        MainLayoutPanel.addElementToMainArea(globalTapPanel);
+
 
         initWidget(ctrlToolBarPanel);
 
@@ -602,6 +611,23 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         return outreachJwstButton;
 
+    }
+
+    // TODO: Remove, just for testing purposes
+    public EsaSkyToggleButton createglobalTapButton() {
+        globalTapButton = new EsaSkyToggleButton(Icons.getJwstIcon());
+        globalTapButton.getElement().setId("globalTapButton");
+        addCommonButtonStyle(globalTapButton, TextMgr.getInstance().getText("globalTabText"));
+        globalTapButton.addClickHandler(event -> {
+                globalTapPanel.show();
+                }
+        );
+         globalTapPanel = new GlobalTapPanel("test", true);
+        globalTapPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        globalTapPanel.definePositionFromTopAndLeft();
+        globalTapPanel.hide();
+        globalTapPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
+        return globalTapButton;
     }
 
     //Workaround for enabling and disabling buttons, which causes incorrect style and click behaviour

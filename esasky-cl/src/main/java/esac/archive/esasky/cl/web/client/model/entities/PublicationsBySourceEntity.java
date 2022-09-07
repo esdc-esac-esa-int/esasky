@@ -26,7 +26,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
             CountStatus countStatus, SkyViewPosition skyViewPosition,
             String esaSkyUniqId, double ra, double dec, String bibcount) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
-        super.addShapes(getTableShapeInfo(ra, dec, bibcount, getEsaSkyUniqId()));
+        super.addShapes(getTableShapeInfo(ra, dec, bibcount, getEsaSkyUniqId()), null);
         this.publicationsDescriptor = descriptor;
     }
 
@@ -69,7 +69,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
     }
     
     @Override
-    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+    public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
     }
     
     private native GeneralJavaScriptObject getTableShapeInfo(double ra, double dec, String bibcount, String name)/*-{

@@ -204,7 +204,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel {
 	private class TabulatorCallback extends DefaultTabulatorCallback {
 		
 		@Override
-		public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+		public void onDataLoaded(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
 			MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
 			setSuggestedPositionCenter();
 		}

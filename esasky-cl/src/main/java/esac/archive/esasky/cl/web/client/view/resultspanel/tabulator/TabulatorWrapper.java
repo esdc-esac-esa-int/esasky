@@ -22,6 +22,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilte
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,13 +46,7 @@ public class TabulatorWrapper {
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, TabulatorSettings settings) {
         this.tabulatorCallback = tabulatorCallback;
         tableJsObject = createColumnTabulator(this, divId, settings.convertToJsonString());
-        CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, new IsShowingCoordintesInDegreesChangeEventHandler() {
-            
-            @Override
-            public void onEvent() {
-            	reformat(tableJsObject);
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, () -> reformat(tableJsObject));
         
         rowCountFooterId = divId + "_rowCount";
         final Element rowCountFooter = Document.get().getElementById(rowCountFooterId);
@@ -455,6 +450,8 @@ public class TabulatorWrapper {
  		RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
  		filterDialogs.put(tapName, filterDialog);
     }
+
+
     
     public void toggleNumericFilterDialog(String tapName, double minVal, double maxVal) {
 
@@ -530,6 +527,55 @@ public class TabulatorWrapper {
     	setMetadata(tableJsObject, metadata);
     	setData(tableJsObject, data);
     }
+
+    public void insertObscoreData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
+        GeneralJavaScriptObject baba = formatMEta(metadata);
+        GeneralJavaScriptObject data2 = formatIvoaData(data, baba);
+        setMetadata(tableJsObject, baba);
+        setData(tableJsObject, data2);
+    }
+
+    private native GeneralJavaScriptObject formatMEta( GeneralJavaScriptObject metadata)/*-{
+
+        var dataResult = []
+            for  (var j = 0; j < metadata.length; j++) {
+                var dataItemResult = metadata[j];
+                dataItemResult["datatype"] = "STRING";
+                dataItemResult["xtype"] = "STRING";
+                dataItemResult["displayName"] = metadata[j]["name"];
+                dataItemResult["visible"] = true;
+
+                if (dataItemResult["name"] == "access_url") {
+                    dataItemResult["name"] = "axxess_url";
+                    dataItemResult["id"] = "axxess_url";
+                }
+                dataResult.push(dataItemResult);
+            }
+
+
+
+        return dataResult;
+    }-*/;
+
+    private native GeneralJavaScriptObject formatIvoaData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
+        var dataResult = []
+        for (var i = 0; i < data.length; i++){
+            var dataItem = data[i];
+            var dataItemResult = {}
+
+            var counter = 0;
+//            var keys = Object.keys(metadata[i]);
+            for  (var j = 0; j < metadata.length; j++) {
+
+                dataItemResult[metadata[j].name] = dataItem[j]
+                counter++;
+            }
+
+            dataResult.push(dataItemResult)
+        }
+
+        return dataResult;
+    }-*/;
     
     private native String setMetadata(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject metadata)/*-{
         return tableJsObject.metadata = metadata;
@@ -569,7 +615,7 @@ public class TabulatorWrapper {
     	filterDialogs.clear();
     	lastHoveredRow = -1;
     }
-    
+
     private native void clearTable(GeneralJavaScriptObject tableJsObject)/*-{
     	tableJsObject.dataLoaded = false;
     	tableJsObject.showCount = false;
@@ -611,7 +657,7 @@ public class TabulatorWrapper {
     }-*/;
     
     public void setDefaultQueryMode(){
-        setDefaultQueryMode(this, tableJsObject);
+        setNotDefaultQueryMode(this, tableJsObject);
     }
     
     private native void setDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
@@ -620,6 +666,7 @@ public class TabulatorWrapper {
 			descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
 			
 			var metadata = response.metadata;
+
 			var sortedMetadata = [];
 			var indexesMoved = [];
 			for(var j = 0; j < metadata.length; j++){
@@ -679,7 +726,7 @@ public class TabulatorWrapper {
 	    			}
 				}
 				data[i] = row;
-			}		
+			}
 			
 	        var index = indexesMoved.pop();
             while(index !== undefined){
@@ -693,8 +740,100 @@ public class TabulatorWrapper {
 			tableJsObject.columnDef = [];
 			tableJsObject.showCount = true;
 			tableJsObject.dataLoaded = true;
+            console.log(data);
 	        return data;
 	    }
+    }-*/;
+
+    private native void setNotDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.options.ajaxResponse = function(url, params, response){
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponse()();
+            descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
+            // here obs
+            var metadata = response.metadata;
+
+            var sortedMetadata = [];
+            var indexesMoved = [];
+            for(var j = 0; j < metadata.length; j++){
+                if(metadata[j].name == "id"){
+                    metadata[j].name = 'identifier';
+                }
+                metadata[j]["visible"] = (metadata[j].name !== "s_region");
+                metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+
+                if (metadata[j]["ucd"].includes("pos.eq.ra")) {
+                    metadata[j].datatype = "RA"
+                } else if (metadata[j]["ucd"].includes("pos.eq.dec")) {
+                    metadata[j].datatype = "DEC"
+                }
+
+                if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
+
+                    if(descriptorMetaData[metadata[j].name].hasOwnProperty("visible")){
+                        metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
+                    }
+                    if(descriptorMetaData[metadata[j].name].hasOwnProperty("label")
+                        && descriptorMetaData[metadata[j].name].label != ""
+                        && descriptorMetaData[metadata[j].name].label != "undefined"
+                        && descriptorMetaData[metadata[j].name].label != "null"){
+                        if(url.includes("publications-by")){
+                            metadata[j].displayName = $wnd.esasky.getInternationalizationText(descriptorMetaData[metadata[j].name]["label"]);
+                        } else {
+                            metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
+                        }
+                    }
+                    if(descriptorMetaData[metadata[j].name].hasOwnProperty("maxDecimalDigits") && descriptorMetaData[metadata[j].name].maxDecimalDigits != null){
+                        metadata[j].maxDecimalDigits = descriptorMetaData[metadata[j].name].maxDecimalDigits;
+                    }
+                    sortedMetadata[descriptorMetaData[metadata[j].name].index] = metadata[j];
+                    indexesMoved.push(j);
+                } else if (!$wnd.$.isEmptyObject(descriptorMetaData)){
+                    metadata[j].visible = false;
+                }
+            }
+
+            sortedMetadata = sortedMetadata.filter(function( element ) {
+                return element !== undefined;
+            });
+
+            var data = response.data;
+//            for(var i = 0; i < response.data.length; i++){
+//                var row = {id:i};
+//                for(var j = 0; j < metadata.length; j++){
+//                    if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "FLOAT" || metadata[j].datatype.toUpperCase() === "REAL"){
+//                        row[metadata[j].name] = parseFloat(response.data[i][metadata[j].name]);
+//                        if(isNaN(row[metadata[j].name])){
+//                            row[metadata[j].name] = undefined;
+//                        }
+//                    } else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT" || metadata[j].datatype.toUpperCase() === "SHORT"){
+//                        row[metadata[j].name] = parseInt(response.data[i][metadata[j].name]);
+//                        if(isNaN(row[metadata[j].name])){
+//                            row[metadata[j].name] = undefined;
+//                        }
+//                    } else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
+//                        row[metadata[j].name] = response.data[i][metadata[j].name];
+//                    } else {
+//                        row[metadata[j].name] = response.data[i][metadata[j].name];
+//                    }
+//                }
+//                data[i] = row;
+//            }
+
+            var index = indexesMoved.pop();
+            while(index !== undefined){
+                metadata.splice(index, 1);
+                index = indexesMoved.pop();
+            }
+            metadata = sortedMetadata.concat(metadata);
+
+            tableJsObject.metadata = metadata;
+            tableJsObject.filterData = []
+            tableJsObject.columnDef = [];
+            tableJsObject.showCount = true;
+            tableJsObject.dataLoaded = true;
+            console.log(data);
+            return data;
+        }
     }-*/;
     
     public void show() {
@@ -1184,20 +1323,38 @@ public class TabulatorWrapper {
                     return $wnd.esasky.linkListFormatter(cell.getValue(), 100);
                 };
                 
-			    var raFound = false;
-			    var decFound = false;
+
+                var raName = "";
+                var decName = "";
 				if(!isInitializing && this.metadata){
 				    var raColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaColumnName()();
 				    var decColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecColumnName()();
+                    var raUcdName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaUcdName()();
+                    var decUcdName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecUcdName()();
+                    var ucdMain = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getMetaMainName()();
+
 			    	for(var i = 0; i < this.metadata.length; i++){
-			    	    if (this.metadata[i].name === raColumnName) {
-			    	        raFound = true; 
-			    	    } else if (this.metadata[i].name === decColumnName) {
-			    	        decFound = true;
-			    	    }
+                        if(settings.useUcd) {
+                            if (this.metadata[i].ucd.includes(raUcdName)) {
+                                if (raName === "" || this.metadata[i].ucd.includes(ucdMain)) {
+                                    raName = this.metadata[i].name;
+                                }
+                            } else if (this.metadata[i].ucd.includes(decUcdName)) {
+                                if (decName === "" || this.metadata[i].ucd.includes(ucdMain)) {
+                                    decName = this.metadata[i].name;
+                                }
+                            }
+                        } else {
+                            if (this.metadata[i].name === raColumnName) {
+                                raName = this.metadata[i].name;
+                            } else if (this.metadata[i].name === decColumnName) {
+                                decName = this.metadata[i].name;
+                            }
+                        }
+
 			    	}
 		    	}
-                if(raFound && decFound && !settings.disableGoToColumn){
+                if(raName !== "" && decName !== "" && !settings.disableGoToColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
                         field:"centre",
@@ -1206,11 +1363,16 @@ public class TabulatorWrapper {
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
                         minWidth: 50,
                         download: false,
-                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"recenter.png", 
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"recenter.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_centreOnCoordinates")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();
-                		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                                var data = cell.getData();
+                                if (!settings.useUcd) {
+                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(data);
+                                } else {
+                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Ljava/lang/String;Ljava/lang/String;)(data[raName], data[decName]);
+                                }
                             }
                     });
                 }
@@ -2154,7 +2316,7 @@ public class TabulatorWrapper {
     public void onDataLoaded() {
         if(tableJsObject != null) {
         	setCorrectFilterBehaviour();
-        	tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"));
+        	tabulatorCallback.onDataLoaded(tableJsObject.invokeFunction("getData"), tableJsObject.getProperty("metadata"));
         }
     }
 
@@ -2178,6 +2340,10 @@ public class TabulatorWrapper {
     
     public void onCenterClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onCenterClicked(rowData);
+    }
+
+    public void onCenterClicked(final String ra, final String dec) {
+        tabulatorCallback.onCenterClicked(ra, dec);
     }
     
     public void onSendToVoApplicaitionClicked(final GeneralJavaScriptObject rowData) {
@@ -2223,7 +2389,18 @@ public class TabulatorWrapper {
     public String getDecColumnName() {
         return tabulatorCallback.getDecColumnName();
     }
-    
+
+    public String getRaUcdName() {
+        return EsaSkyConstants.UCD_POS_EQ_RA;
+    }
+
+    public String getDecUcdName() {
+        return EsaSkyConstants.UCD_POS_EQ_DEC;
+    }
+
+    public String getMetaMainName() {
+        return EsaSkyConstants.UCD_META_MAIN;
+    }
     public void onAjaxResponse() {
         tabulatorCallback.onAjaxResponse();
     }

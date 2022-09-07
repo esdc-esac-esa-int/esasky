@@ -104,6 +104,8 @@ public class DescriptorRepository {
     private DescriptorListAdapter<GwDescriptor> gwDescriptors;
     private DescriptorListAdapter<IceCubeDescriptor> iceCubeDescriptors;
 
+    private DescriptorListAdapter<TapRegistryDescriptor> tapRegistryDescriptor;
+
     /**
      * Descriptor and CountStatus hashMaps for improve counts
      */
@@ -161,6 +163,10 @@ public class DescriptorRepository {
         return extTapDescriptors;
     }
 
+    public DescriptorListAdapter<TapRegistryDescriptor> getTapRegistryDescriptor() {
+        return tapRegistryDescriptor;
+    }
+
     public DescriptorListAdapter<ObservationDescriptor> getObsDescriptors() {
         return obsDescriptors;
     }
@@ -192,6 +198,67 @@ public class DescriptorRepository {
     public void initExtDescriptors(final CountObserver countObserver) {
 
         Log.debug("[DescriptorRepository] Into DescriptorRepository.initExtDescriptors");
+        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL, new IJSONRequestCallback() {
+
+            @Override
+            public void onSuccess(String responseText) {
+                ExternalTapDescriptorListMapper mapper = GWT.create(ExternalTapDescriptorListMapper.class);
+                extTapDescriptors = new DescriptorListAdapter<ExtTapDescriptor>(mapper.read(responseText), countObserver);
+                registerExtTapObserver();
+
+                List<IDescriptor> descriptorsList = new LinkedList<IDescriptor>();
+                List<Integer> counts = new LinkedList<Integer>();
+
+                for (ExtTapDescriptor tapService : extTapDescriptors.getDescriptors()) {
+                    tapService.setInBackend(true);
+                    descriptorsList.add(tapService);
+                    counts.add(0);
+
+                    for (String level1Name : tapService.getSubLevels().keySet()) {
+
+                        ExtTapDescriptor level1Desc = ExtTapUtils.createLevelDescriptor(tapService, EsaSkyConstants.TREEMAP_LEVEL_1,
+                                level1Name, tapService.getLevelColumnNames().get(0), tapService.getSubLevels().get(level1Name));
+
+                        descriptorsList.add(level1Desc);
+                        counts.add(0);
+
+                        for (String level2Name : level1Desc.getSubLevels().keySet()) {
+                            ExtTapDescriptor level2Desc = ExtTapUtils.createLevelDescriptor(level1Desc, EsaSkyConstants.TREEMAP_LEVEL_2,
+                                    level2Name, tapService.getLevelColumnNames().get(1), level1Desc.getSubLevels().get(level2Name));
+
+                            level2Desc.setInBackend(true);
+                            descriptorsList.add(level2Desc);
+                            counts.add(0);
+                        }
+
+
+                    }
+                }
+
+                CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorsList, counts));
+
+                for (IDescriptor descriptor : descriptorsList) {
+                    if (extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(descriptor.getMission()) == null) {
+                        extTapDescriptors.getDescriptors().add((ExtTapDescriptor) descriptor);
+                    }
+                }
+
+                Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
+            }
+
+
+            @Override
+            public void onError(String errorCause) {
+                Log.error("[DescriptorRepository] initExtDescriptors ERROR: " + errorCause);
+            }
+
+        });
+    }
+
+
+    public void initTapRegistryDescriptors(final CountObserver countObserver) {
+
+        Log.debug("[DescriptorRepository] Into DescriptorRepository.initTapRegistryDescriptors");
         JSONUtils.getJSONFromUrl(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL, new IJSONRequestCallback() {
 
             @Override

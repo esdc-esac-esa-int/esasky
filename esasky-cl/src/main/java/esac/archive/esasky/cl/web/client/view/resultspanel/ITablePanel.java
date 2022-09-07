@@ -107,4 +107,5 @@ public interface ITablePanel {
 	void restoreRedraw();
 	void redrawAndReinitializeHozVDom();
 	void addTapFilter(String label, String tapFilter);
+	GeneralJavaScriptObject getTableMetadata();
 }

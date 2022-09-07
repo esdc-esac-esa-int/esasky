@@ -9,7 +9,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
-	public void onDataLoaded(GeneralJavaScriptObject rowData) {
+	public void onDataLoaded(GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
 		//Do nothing by default - To be overridden if needed.
 	}
 
@@ -65,6 +65,11 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
 	public void onCenterClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onCenterClicked(String ra, String dec) {
 		//Do nothing by default - To be overridden if needed.
 	}
 

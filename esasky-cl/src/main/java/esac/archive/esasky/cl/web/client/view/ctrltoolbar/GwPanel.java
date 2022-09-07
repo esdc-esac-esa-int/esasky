@@ -339,7 +339,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                     entity.showShape(Integer.parseInt(rowData.getProperty("id").toString()));
 
                     descriptor.setTapSTCSColumn(STCS50_STRING);
-                    extraEntity.addShapes(rowData.wrapInArray());
+                    extraEntity.addShapes(rowData.wrapInArray(), null);
                     AladinLiteWrapper.getInstance().toggleGrid(true);
                 }
 

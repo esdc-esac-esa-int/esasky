@@ -91,7 +91,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	}
 
 	@Override
-	public void addShapes(GeneralJavaScriptObject rows) {
+	public void addShapes(GeneralJavaScriptObject rows, GeneralJavaScriptObject metadata) {
 	    removeAllSourcesAndFootprints();
 		
 		GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
@@ -100,7 +100,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 			if(rowDataArray[i].getProperty("id") != null) {
 				id = Integer.parseInt(rowDataArray[i].getProperty("id").toString());
 			}
-			storeShape(shapeBuilder.buildShape(id, null, rowDataArray[i]));
+			storeShape(shapeBuilder.buildShape(id, null, rowDataArray[i], metadata));
 		}
 		Log.debug("Added " + rowDataArray.length + " rows and shapes");
 		

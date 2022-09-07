@@ -731,7 +731,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
 
 	@Override
-	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+	public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
 	  //This entity has only MOC data
 	}
 

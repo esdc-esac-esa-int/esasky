@@ -278,7 +278,7 @@ public class PublicationPanelPresenter {
 					if(entity != null && timecall > lastSuccessfulTimecall) {
 						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
 						TapRowList rowList = mapper.read(response.getText());
-						entity.addShapes(convertResult(response.getText()));
+						entity.addShapes(convertResult(response.getText()), null);
 						numberOfShownSources = rowList.getData().size();
 						lastSuccessfulTimecall = timecall;
 			    		if(timecall == lastTimecall) {

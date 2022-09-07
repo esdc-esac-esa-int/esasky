@@ -131,7 +131,7 @@ public class ResultsPresenter implements ICountRequestHandler {
 	        entity.setTablePanel(panel);
     	}else {
     		GeneralJavaScriptObject footprintList = userData.getProperty("overlaySet").getProperty("skyObjectList");
-    		entity.addShapes(footprintList);
+    		entity.addShapes(footprintList, null);
     	}
     }
 

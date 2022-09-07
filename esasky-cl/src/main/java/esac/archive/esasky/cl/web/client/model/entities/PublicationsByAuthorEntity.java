@@ -65,7 +65,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     }
     
     @Override
-    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+    public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
     }
     
     @Override

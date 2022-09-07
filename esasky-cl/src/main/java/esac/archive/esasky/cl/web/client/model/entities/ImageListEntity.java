@@ -105,8 +105,8 @@ public class ImageListEntity extends EsaSkyEntity {
 	}
 	
 	@Override
-	public void addShapes(GeneralJavaScriptObject rows) {
-		super.addShapes(rows);
+	public void addShapes(GeneralJavaScriptObject rows, GeneralJavaScriptObject metadata) {
+		super.addShapes(rows, metadata);
 		if(firstLoad) {
 			firstLoad = false;
 			performFoVFilter();

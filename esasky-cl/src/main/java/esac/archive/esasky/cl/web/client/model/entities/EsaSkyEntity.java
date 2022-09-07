@@ -49,7 +49,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     protected IShapeDrawer drawer;
     protected CombinedSourceFootprintDrawer combinedDrawer;
     protected IDescriptor descriptor;
-    private MOCEntity mocEntity;
+    protected MOCEntity mocEntity;
     protected AbstractTAPService metadataService;
     private SecondaryShapeAdder secondaryShapeAdder;
     protected ITablePanel tablePanel;
@@ -104,7 +104,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
                 descriptor.getPrimaryColor(), lineStyle);
 
-        Map<String, Object> details = new HashMap<String, Object>();
+        Map<String, Object> details = new HashMap<>();
 
         if (secondaryShapeAdder != null) {
             secondaryShapeAdder.createSpecializedOverlayShape(details);
@@ -120,7 +120,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         drawer.setPrimaryColor(descriptor.getPrimaryColor());
         drawer.setSecondaryColor(descriptor.getSecondaryColor());
-        
+
         this.skyViewPosition = skyViewPosition;
         this.esaSkyUniqId = esaSkyUniqId;
         this.metadataService = metadataService;
@@ -129,13 +129,49 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     }
 
+
+    // TODO: Move these to a general place?
+    private native String getUcdDec(String decUcdName, String ucdMain, GeneralJavaScriptObject metadata, GeneralJavaScriptObject rowData) /*-{
+        var decName = "";
+        for(var i = 0; i < metadata.length; i++) {
+            if (metadata[i].ucd.includes(decUcdName)) {
+                if (decName === "" || metadata[i].ucd.includes(ucdMain)) {
+                    decName = metadata[i].name;
+                }
+            }
+        }
+        return  rowData[decName];
+    }-*/;
+
+    private native String getUcdRa(String raUcdName, String ucdMain, GeneralJavaScriptObject metadata, GeneralJavaScriptObject rowData) /*-{
+        var raName = "";
+        for(var i = 0; i < metadata.length; i++) {
+            if (metadata[i].ucd.includes(raUcdName)) {
+                if (raName === "" || metadata[i].ucd.includes(ucdMain)) {
+                    raName = metadata[i].name;
+                }
+            }
+        }
+        return  rowData[raName];
+    }-*/;
+
+
+
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
         @Override
-        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData) {
+        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
         	String stcs = null;
-        	if(!"".equals(getDescriptor().getTapSTCSColumn())) {
+            String ucdRa = null;
+            String ucdDec = null;
+            if (descriptor.useUcd()) {
+                ucdRa = getUcdRa(EsaSkyConstants.UCD_POS_EQ_RA, EsaSkyConstants.UCD_META_MAIN, metadata, rowData);
+                ucdDec = getUcdDec(EsaSkyConstants.UCD_POS_EQ_DEC, EsaSkyConstants.UCD_META_MAIN, metadata, rowData);
+                stcs = "CIRCLE " + ucdRa + " " + ucdDec + " 0.5";
+            } else if(!"".equals(getDescriptor().getTapSTCSColumn())) {
         		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
         	}
+
+
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
                 return catalogBuilder(rowId, rowData);
             }
@@ -150,10 +186,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             polygon.setShapeId(rowId);
             String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
             polygon.setShapeName(shapeName);
-            String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-            String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
-            polygon.setRa(ra);
-            polygon.setDec(dec);
+
+            if (descriptor.useUcd()) {
+                polygon.setRa(ucdRa);
+                polygon.setDec(ucdDec);
+            } else {
+                String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
+                String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+                polygon.setRa(ra);
+                polygon.setDec(dec);
+            }
+
 
             return polygon;
         }
@@ -248,7 +291,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     public class MocBuilder implements ShapeBuilder{
 
         @Override
-        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
+        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row, GeneralJavaScriptObject metadata) {
             PolygonShape shape = new PolygonShape();
             String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
             shape.setStcs(stcs);
@@ -414,8 +457,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
-        drawer.addShapes(javaScriptObject);
+    public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
+        drawer.addShapes(javaScriptObject, metadata);
     }
 
     @Override
@@ -946,6 +989,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		settings.setAddLink2AdsColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
 		settings.setAddSourcesInPublicationColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
         settings.setAddSelectionColumn(true);
+        settings.setUseUcd(descriptor.useUcd());
 		
 		return settings;
 	}
