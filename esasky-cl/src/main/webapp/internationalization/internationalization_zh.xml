@@ -1030,26 +1030,44 @@
 	<text key="Optical">
 		光学
 	</text>
+	<text key="Near-IR">
+		近红外
+	</text>
 	<text key="NearIR">
 		近红外
 	</text>
 	<text key="MidToFarIR">
 		中远红外
 	</text>
+	<text key="Mid-IR">
+		中红外
+	</text>
 	<text key="MidIR">
+		中红外
+	</text>
+	<text key="Mid-Infrared">
 		中红外
 	</text>
 	<text key="MidInfrared">
 		中红外
 	</text>
+	<text key="Far-IR">
+		远红外
+	</text>
 	<text key="FarIR">
 		远红外
+	</text>
+	<text key="Near-Infrared">
+		近红外
 	</text>
 	<text key="NearInfrared">
 		近红外
 	</text>
 	<text key="MidToFarInfrared">
 		中远红外
+	</text>
+	<text key="Far-Infrared">
+		远红外
 	</text>
 	<text key="FarInfrared">
 		远红外
