@@ -29,6 +29,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> {
@@ -63,11 +64,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         setMaxSize();
         CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
         CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
-            if (entity.getSelectedEntity() == imageEntity) {
-                if (!isShowing()) {
-                    show();
-                }
-                EntityRepository.getInstance().deselectOtherImageEntityShapes(imageEntity);
+            if (Objects.equals(entity.getSelectedEntity(), imageEntity) && !isShowing()) {
             } else if (isShowing()) {
                 hide();
             }

@@ -27,6 +27,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
@@ -62,11 +63,8 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
 		CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
-			if (entity.getSelectedEntity() == imageEntity) {
-				if (!isShowing()) {
-					show();
-				}
-				EntityRepository.getInstance().deselectOtherImageEntityShapes(entity.getSelectedEntity());
+			if (Objects.equals(entity.getSelectedEntity(), imageEntity) && !isShowing()) {
+				show();
 			} else if (isShowing()) {
 				hide();
 			}
