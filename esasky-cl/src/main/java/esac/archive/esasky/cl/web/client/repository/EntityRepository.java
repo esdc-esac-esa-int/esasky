@@ -118,6 +118,7 @@ public class EntityRepository {
     public ImageListEntity createImageListEntity(IDescriptor descriptor) {
     	ImageListEntity newEntity =  new ImageListEntity(descriptor, descriptorRepo.getImageDescriptors().getCountStatus(),
                 CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPImageListService.getInstance());
+        newEntity.setShapeSelectedCallback(() -> deselectOtherImageEntityShapes(newEntity));
     	addEntity(newEntity);
     	return newEntity;
     }
