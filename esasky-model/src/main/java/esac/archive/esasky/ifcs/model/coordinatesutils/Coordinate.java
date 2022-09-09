@@ -26,6 +26,12 @@ public class Coordinate{
 		return false;
 	}
 	
+	public double distance(Coordinate comparison) {
+		double raDist = Math.min(Math.abs(this.ra - comparison.ra), Math.abs(360 - this.ra - comparison.ra));
+		double decDist = Math.abs(this.dec - comparison.dec);
+		return Math.pow(Math.pow(raDist, 2) + Math.pow(decDist, 2), 0.5);
+	}
+	
 	public double getRa() {
 	    return ra;
 	}
