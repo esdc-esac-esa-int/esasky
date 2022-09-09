@@ -503,20 +503,32 @@
 	<text key="Optical">
 		&#211;ptico
 	</text>
+	<text key="Near-IR">
+		IR cercano
+	</text>
 	<text key="NearIR">
 		IR cercano
 	</text>
 	<text key="MidToFarIR">
 		IR medio a lejano
 	</text>
+	<text key="Far-IR">
+		IR lejano
+	</text>
 	<text key="FarIR">
 		IR lejano
+	</text>
+	<text key="Near-Infrared">
+		Infrarrojo cercano
 	</text>
 	<text key="NearInfrared">
 		Infrarrojo cercano
 	</text>
 	<text key="MidToFarInfrared">
 		Infrarrojo medio a lejano
+	</text>
+	<text key="Far-Infrared">
+		Infrarrojo lejano
 	</text>
 	<text key="FarInfrared">
 		Infrarrojo lejano
@@ -2077,13 +2089,18 @@
 		observaciones
 		(N&#250;mero de im&#225;genes)
 	</text>
+	<text key="Mid-IR">
+		IR medio
+	</text>
 	<text key="MidIR">
 		IR medio
+	</text>
+	<text key="Mid-Infrared">
+		Infrarrojo medio
 	</text>
 	<text key="MidInfrared">
 		Infrarrojo medio
 	</text>
-
 	<text key="GalaxyClusters">
 		C&#250;mulos de galaxias
 	</text>

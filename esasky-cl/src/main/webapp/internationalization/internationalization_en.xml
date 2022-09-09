@@ -2168,26 +2168,44 @@
 	<text key="Optical">
 		Optical
 	</text>
+	<text key="Near-IR">
+		Near-IR
+	</text>
 	<text key="NearIR">
 		Near-IR
 	</text>
 	<text key="MidToFarIR">
 		Mid to Far-IR
 	</text>
+	<text key="Mid-IR">
+		Mid-IR
+	</text>
 	<text key="MidIR">
 		Mid-IR
+	</text>
+	<text key="Mid-Infrared">
+		Mid-Infrared
 	</text>
 	<text key="MidInfrared">
 		Mid-Infrared
 	</text>
+	<text key="Far-IR">
+		Far-IR
+	</text>
 	<text key="FarIR">
 		Far-IR
+	</text>
+	<text key="Near-Infrared">
+		Near-Infrared
 	</text>
 	<text key="NearInfrared">
 		Near-Infrared
 	</text>
 	<text key="MidToFarInfrared">
 		Mid to Far-Infrared
+	</text>
+	<text key="Far-Infrared">
+		Far-Infrared
 	</text>
 	<text key="FarInfrared">
 		Far-Infrared
