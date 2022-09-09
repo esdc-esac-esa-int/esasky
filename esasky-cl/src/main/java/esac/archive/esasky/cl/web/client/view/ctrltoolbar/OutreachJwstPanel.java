@@ -64,7 +64,10 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         setMaxSize();
         CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
         CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
-            if (Objects.equals(entity.getSelectedEntity(), imageEntity) && !isShowing()) {
+            if (Objects.equals(entity.getSelectedEntity(), imageEntity)) {
+                if (!isShowing()) {
+                    show();
+                }
             } else if (isShowing()) {
                 hide();
             }
