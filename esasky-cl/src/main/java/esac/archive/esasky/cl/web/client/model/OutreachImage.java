@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
@@ -18,6 +19,7 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.OutreachImageDescriptor;
@@ -149,8 +151,15 @@ public class OutreachImage {
 		openseadragonWrapper.addOpenSeaDragonToAladin(openSeaDragonObject);
 		
 		if(moveToCenter) {
-			AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
-			AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
+			
+			SkyViewPosition curPos = CoordinateUtils.getCenterCoordinateInJ2000();
+			
+			double dist = curPos.getCoordinate().distance(coor);
+			
+			if(curPos.getFov() / desc.getFovSize() > 5 || desc.getFovSize() / curPos.getFov() < .2 || dist > curPos.getFov() / 2) {
+				AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
+				AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
+			}
 		}
 		
 		Timer timer = new Timer() {
@@ -158,10 +167,11 @@ public class OutreachImage {
 			@Override
 			public void run() {
 				AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
+				AladinLiteWrapper.getAladinLite().requestRedraw();
 			}
 			
 		};
-		timer.schedule(200);
+		timer.schedule(100);
 		AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
 
 		StringBuilder popupText = new StringBuilder(this.description);
