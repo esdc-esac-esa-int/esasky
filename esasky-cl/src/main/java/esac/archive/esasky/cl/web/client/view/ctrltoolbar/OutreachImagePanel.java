@@ -63,8 +63,10 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
 		CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
-			if (Objects.equals(entity.getSelectedEntity(), imageEntity) && !isShowing()) {
-				show();
+			if (Objects.equals(entity.getSelectedEntity(), imageEntity)) {
+				if (!isShowing()) {
+					show();
+				}
 			} else if (isShowing()) {
 				hide();
 			}
