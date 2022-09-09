@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>4.4.0-beta3</version>
+		<version>4.4.0-beta4</version>
 	</parent>
 
 	<artifactId>esasky-cl</artifactId>
