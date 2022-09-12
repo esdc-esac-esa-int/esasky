@@ -3807,9 +3807,6 @@
 	<text key="Neutrino">
 		Neutrino
 	</text>
-
-	<!-- internationalization_zh.xml is up to date for everything above -->
-
 	<text key="instrumentDetailsPopup_close">
 		Close
 	</text>
@@ -3954,5 +3951,6 @@
 	<text key="header_highResolutionImages">
 		Hubble outreach images
 	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
 
 </Internationalization>
