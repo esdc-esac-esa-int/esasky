@@ -124,11 +124,11 @@ public class TAPExtTapService extends AbstractTAPService {
     	double fov = pos.getFov();
     	double ra = pos.getCoordinate().getRa();
     	double dec = pos.getCoordinate().getDec();
-    	String constraint = " POWER(SIN((radians("+ descriptor.getTapDecColumn() + ") - radians(" + Double.toString(dec) + "))/2),2)"
+    	String constraint = " POWER(SIN((radians("+ descriptor.getTapDecColumn() + ") - radians(" + Double.toString(dec) + "))),2)"
     			+ "+ cos(radians("+ descriptor.getTapDecColumn() + ")) * cos(radians(" + Double.toString(dec) + "))"
-    			+ "* POWER(SIN((radians(" + descriptor.getTapRaColumn() + ") - radians(" + Double.toString(ra) + "))/2),2)"
+    			+ "* POWER(SIN((radians(" + descriptor.getTapRaColumn() + ") - radians(" + Double.toString(ra) + "))),2)"
     			+ "< POWER((radians(" + Double.toString(fov) +")/2),2) AND "+ descriptor.getTapDecColumn()
-    			+ " BETWEEN " + Double.toString(dec - fov) + " AND " + Double.toString(dec + fov);
+    			+ " BETWEEN " + Double.toString(dec - fov/2) + " AND " + Double.toString(dec + fov/2);
     	return constraint;
     }
     
