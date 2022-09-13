@@ -37,6 +37,7 @@ public final class GoogleAnalytics {
     public static final String CAT_API = "API";
     public static final String CAT_PUBLICATION = "Publication";
     public static final String CAT_WELCOME = "Welcome";
+    public static final String CAT_INITIALISATION = "Initialisation";
     public static final String CAT_PREVIEW = "Preview";
     public static final String CAT_DATALINK = "Datalink";
     public static final String CAT_DOWNLOADROW = "DownloadRow";
@@ -62,6 +63,9 @@ public final class GoogleAnalytics {
     public static final String CAT_EVA = "Eva";
     
     //Actions
+    public static final String ACT_INITIALISATION_TIME = "InitialisationTime";
+    public static final String ACT_DESC_INITIALISATION_TIME = "InitialisationEndOfDescTime";
+    
     public static final String ACT_MISSINGTRANSLATION = "MissingTranslation";
     public static final String ACT_LOADINGOFXMLFAILED = "LoadingOfXMLFailed";
     public static final String ACT_HEADER_VIEWINWWT = "ViewInWWT";
