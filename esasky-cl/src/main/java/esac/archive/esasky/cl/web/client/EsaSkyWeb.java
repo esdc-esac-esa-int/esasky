@@ -80,7 +80,7 @@ public class EsaSkyWeb implements EntryPoint {
     }
     
     public static native int getTimeSinceStart()/*-{
-    	return new Date().valueOf() - $wnd.starttime;
+    	return new Date().valueOf() - $wnd.esasky_starttime;
     }-*/;
 
     public Controller getController(){
