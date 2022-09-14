@@ -1994,21 +1994,6 @@
 	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
 		下载数据库数据
 	</text>
-
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
-		Gaia DR3星表提供了超过14.6亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据
-		。天体测量解算结果还包含了RUWE（重归一化单位权重误差）以及源图像描述符。同时
-		，本版星表还提供了18.06亿颗源的G星等，15.42亿颗源的G&lt;sub&gt;BP&lt;/sub&gt; 星等，15.55亿颗源的G&lt;sub&gt;RP&lt;/sub&gt; 星等。源
-		位置误差在0.01毫角秒（G&lt;15 星等）至 1毫角秒（G=21 星等）之间，视差误差在0.02毫角秒
-		（G&lt;15星等）至1.3毫角秒（G=21星等）之间，自行误差在0.02毫角秒/年（G&lt;15星等）至
-		1.4毫角秒/年（G=21星等）。
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-		target="_blank"&gt;
-		更多信息
-		&lt;/a&gt; 
-	</text>
 	﻿
 	<text key="selectionToolbox_showSelectionToolbox">
 		显示选择工具
@@ -2223,9 +2208,6 @@
 	<text key="imageListEntity_imageNotFound">
 		无法找到ID为$ID$的图像。请再次确认输入的ID是否正确。
 	</text>
-	<text key="header_highResolutionImages">
-		高清图像
-	</text>
 	<text key="header_highResolutionImagesTooltip">
 		显示欧空局哈勃空间望远镜网站图片
 	</text>
@@ -2376,5 +2358,123 @@
 	<text key="Neutrino">
 		中微子
 	</text>
+	<text key="instrumentDetailsPopup_close">
+		关闭	</text>
+	<text key="searchToolbox_radius">
+	    半径（度）
+	</text>
+	<text key="header_acknowledge">
+	    致谢ESASky
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Mid-IR">
+	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	    &lt;br&gt;&lt;br&gt;
+	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	    target="_blank"&gt;
+	    更多信息
+	    &lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Near-IR">
+	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	    &lt;br&gt;&lt;br&gt;
+	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	    target="_blank"&gt;
+	    更多信息
+	    &lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Mid-IR">
+	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	    &lt;br&gt;&lt;br&gt;
+	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	    target="_blank"&gt;
+	    更多信息
+	    &lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Near-IR">
+	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	    &lt;br&gt;&lt;br&gt;
+	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	    target="_blank"&gt;
+	    更多信息
+	    &lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
+	    这些观测结果包括XMM-牛顿望远镜科学数据库中处理管道系统（PPS）的高阶公开数据产品
+	    (&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home" target="_blank"&gt;XSA&lt;/a&gt;)。
+	    关于XMM-牛顿望远镜数据产品的详细信息可以访问
+	    &lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products" target="_blank"&gt;
+	    XMM-牛顿望远镜科学数据产品指南
+	    &lt;/a&gt;.
+	
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;a
+	    href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+	    target="_blank"&gt;
+	    更多信息
+	    &lt;/a&gt; </text>
+	<text key="observing_mode">
+	    观测模式
+	</text>
+	<text key="detector">
+	    探测器
+	</text>
+	<text key="calibration_level">
+	    定标级别
+	</text>
+	<text key="webConstants_exploreJwstImages">
+	    浏览韦布空间望远镜的科普图片
+	</text>
+	<text key="outreachJwstPanel_header">
+	    欧空局韦布科普图片库
+	</text>
+	<text key="outreachJwstPanel_helpText">
+	    本天文科普图片可视化服务源自
+	    &lt;a href="https://esawebb.org/images/" target="_blank"&gt;
+	    欧空局韦布空间望远镜网站。
+	    &lt;/a&gt;
+	    &lt;br&gt;&lt;br&gt;
+	    这个面板显示出当前天空区域欧空局韦布科普图片库中对应图片的列表。在视野中，这些图片的覆盖图用橙色矩形框显示。点击“隐藏覆盖图”可以关闭显示。
+	    &lt;br&gt;&lt;br&gt;
+	    点击一个覆盖图或者列表中的一个条目，对应的图片将覆盖在当前显示的天空背景上。同时弹出一个文本框给出这个图片的描述以及指向欧空局韦布空间望远镜网站的链接。你可以通过左右拖动“图像透明度”滑杆来调节图片的透明度。
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;b&gt;请注意：&lt;/b&gt; 这些图片是为科普教育目的而制作，可能不适用于科学研究。
+	    
+	</text>
+	<text key="outreachJwstPanel_helpTitle">
+	    欧空局韦布科普图片库
+	</text>
+	<text key="header_jwstOutreachImages">
+	    韦布科普图片库
+	</text>
+	<text key="header_jwstImagesTooltip">
+	     可视化韦布空间望远镜科普图片
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+	    Gaia DR3星表提供了G星等在3至21等之间14.6亿(1.468 10&lt;sup&gt;9&lt;/sup&gt;) 颗源的位置、视差、自行信息。
+	   
+	    这里的天体测量方案附带了质量指标，例如RUWE，以及对原始图像的描述内容。此外，大约18.06亿颗源的G星等
+	    (包括Gaia DR3中修正了的EDR3中那些 &lt;a href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections" target="_blank"
+	    &gt;已知问题&lt;/a&gt; ),
+	    同时分别为15.4亿和15.5亿颗源提供了 G&lt;sub&gt;BP&lt;/sub&gt; 和 G&lt;sub&gt;RP&lt;/sub&gt; 星等信息。
+	
+	    视差误差在0.02 mas（G&lt;15 mag） 到1.3 mas （G=21 mag）之间。自行误差在 0.02 mas/yr（G&lt;15 mag）到1.4 mas/yr （G=21 mag）。
+	    &lt;br&gt;&lt;br&gt;
+	    &lt;a
+	    href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+	    target="_blank"&gt;
+	    更多信息
+	    &lt;/a&gt; </text>
+	<text key="header_highResolutionImages">
+	    哈勃科普图片库
+	</text>
+
 
 </Internationalization>
