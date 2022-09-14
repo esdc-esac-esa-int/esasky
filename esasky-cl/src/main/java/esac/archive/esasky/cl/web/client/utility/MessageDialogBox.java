@@ -140,6 +140,7 @@ public class MessageDialogBox extends Composite{
         	showMoreButton = createShowMoreButton();
         	contentPanel.add(showMoreButton);
         }
+        movablePanel.addElementNotAbleToInitiateMoveOperation(inputWidget.getElement());
     }
     
     private EsaSkyButton createShowMoreButton() {

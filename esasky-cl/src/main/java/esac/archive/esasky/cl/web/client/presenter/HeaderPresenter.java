@@ -100,6 +100,7 @@ public class HeaderPresenter {
 		void addLanguageSelectionChangeHandler(StringValueSelectionChangedHandler handler);
 		void addWarningButtonClickHandler(ClickHandler handler);
 		void addHiResClickHandler(ClickHandler handler);
+		void addJwstClickHandler(ClickHandler handler);
 		void addSessionSaveClickHandler(ClickHandler handler);
 		void addSessionRestoreClickHandler(ClickHandler handler);
 		void addGridButtonClickHandler(ClickHandler handler);
@@ -348,9 +349,15 @@ public class HeaderPresenter {
 		view.addHiResClickHandler(event -> {
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
 			view.closeDropdownMenu();
-			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent());
+			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.HST));
 		});
-		
+
+		view.addJwstClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_JWST_IMAGE, "");
+			view.closeDropdownMenu();
+			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.JWST));
+		});
+
 		view.addSessionSaveClickHandler(event -> {
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_SESSION_SAVE, "");
 			view.closeDropdownMenu();

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
+import esac.archive.esasky.cl.web.client.event.ImageListSelectedEvent;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.Size;
@@ -24,13 +25,16 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
 
 	private BaseDescriptor outreachImageDescriptor;
 	private ImageListEntity imageEntity;
 	private boolean isHidingFootprints = false;
-	private boolean isPanelOpen = false;
 	private static String outreachImageIdToBeOpened; 
 	
 	private FlowPanel opacityPanel;
@@ -57,7 +61,16 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		initView();
 		setMaxSize();
 
-		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive()));
+		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
+		CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
+			if (Objects.equals(entity.getSelectedEntity(), imageEntity)) {
+				if (!isShowing()) {
+					show();
+				}
+			} else if (isShowing()) {
+				hide();
+			}
+		}) );
 		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 	}
 	
@@ -107,30 +120,35 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	public void show() {
 		super.show();
 		getData();
-		isPanelOpen = true;
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(false);
 		}
 	}
 
 
-	public void hide() {
-		super.hide();
-		isPanelOpen = false;
+	public void close() {
 		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
 			imageEntity.setIsPanelClosed(true);
 		}
+
+		super.hide();
 	}
 
-	public boolean isShowing() {
-		return isPanelOpen;
-	}
 
 	private void fetchData() {
 		if(outreachImageDescriptor != null) {
 			return;
 		}
-		outreachImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors().getDescriptors().get(0);
+
+		Optional<ImageDescriptor> optionalImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors()
+				.getDescriptors().stream().filter(ImageDescriptor::isHst).findFirst();
+
+		if (optionalImageDescriptor.isPresent()) {
+			outreachImageDescriptor = optionalImageDescriptor.get();
+		} else {
+			return;
+		}
+
 		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
 		if(outreachImageIdToBeOpened != null) {
 			imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
@@ -145,7 +163,8 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 		header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachImagePanel_header"),
 				TextMgr.getInstance().getText("outreachImagePanel_helpText"),
-				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"));
+				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"),
+				event -> close(), "Close panel");
 
 
 
@@ -255,7 +274,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 			OutreachImagePanel.setStartupId(id);
 		}
 
-		if (!isPanelOpen) {
+		if (!isShowing()) {
 			show();
 		}
 	}

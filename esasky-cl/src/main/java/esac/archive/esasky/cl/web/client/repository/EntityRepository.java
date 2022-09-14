@@ -4,7 +4,6 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
 import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.*;
@@ -15,7 +14,6 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.ProperMotionUtils;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -120,10 +118,19 @@ public class EntityRepository {
     public ImageListEntity createImageListEntity(IDescriptor descriptor) {
     	ImageListEntity newEntity =  new ImageListEntity(descriptor, descriptorRepo.getImageDescriptors().getCountStatus(),
                 CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPImageListService.getInstance());
+        newEntity.setShapeSelectedCallback(() -> deselectOtherImageEntityShapes(newEntity));
     	addEntity(newEntity);
     	return newEntity;
     }
-    
+
+    public void deselectOtherImageEntityShapes(ImageListEntity myEntity) {
+        for (GeneralEntityInterface entity : allEntities) {
+            if (!entity.equals(myEntity))  {
+                entity.deselectAllShapes();
+            }
+        }
+    }
+
     public GeneralEntityInterface createEntity(IDescriptor descriptor) {
         GeneralEntityInterface newEntity = null;
         if (descriptor instanceof SSODescriptor) {

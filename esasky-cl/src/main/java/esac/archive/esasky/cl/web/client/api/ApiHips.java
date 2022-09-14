@@ -11,7 +11,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Window;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -24,6 +23,7 @@ import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.client.SkiesMenuEntry;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 
 public class ApiHips extends ApiBase{

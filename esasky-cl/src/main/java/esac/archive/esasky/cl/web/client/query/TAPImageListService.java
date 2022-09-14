@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.query;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class TAPImageListService extends AbstractTAPService {
 
@@ -33,5 +34,9 @@ public class TAPImageListService extends AbstractTAPService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+    public String getImageMetadata(IDescriptor descriptor, String id) {
+    	return "SELECT * from " + descriptor.getTapTable() + " WHERE " + EsaSkyConstants.HST_IMAGE_ID_PARAM + " = '" + id + "'";
+    }
     
 }

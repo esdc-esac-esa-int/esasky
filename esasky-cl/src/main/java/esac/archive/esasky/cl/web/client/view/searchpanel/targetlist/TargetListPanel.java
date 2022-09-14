@@ -3,8 +3,6 @@ package esac.archive.esasky.cl.web.client.view.searchpanel.targetlist;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -130,6 +128,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         targetsContainer.add(simbadLogo);
         
         targetListScrollPanel = new ScrollPanel();
+        addElementNotAbleToInitiateMoveOperation(targetListScrollPanel.getElement());
         targetsContainer.add(targetListScrollPanel);
         scrollPanelAnimation = new ScrollPanelAnimation(targetListScrollPanel);
 
@@ -191,7 +190,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 
         uploader = new EsaSkyUploader();
         uploader.getElement().setId("uploader");
-
+        addElementNotAbleToInitiateMoveOperation(uploader.getElement());
         uploader.setUploadURL(EsaSkyWebConstants.FILE_RESOLVER_URL);
 
         uploader.setFileSizeLimit("50 MB");
@@ -329,11 +328,11 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
     }
 
     private DropDownMenu<String> createPreparedListDropDown() {
-
         preparedListDropDown = new DropDownMenu<String>(
                 TextMgr.getInstance().getText("uploadTargetList_selectList"), 
                 TextMgr.getInstance().getText("uploadTargetList_selectList"), 207, "preparedListDropDown");
-
+        addElementNotAbleToInitiateMoveOperation(preparedListDropDown.getElement());
+        
         preparedListDropDown.registerObserver(new MenuObserver() {
 
             @Override

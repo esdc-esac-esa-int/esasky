@@ -16,10 +16,10 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants.CoordinateFrame;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.GridToggledEvent;
@@ -458,7 +458,7 @@ public class AladinLiteWrapper {
                 overlayHiPS.getSurveyName(), overlayHiPS.getSurveyRootUrl(), overlayHiPS
                         .getSurveyFrame().name(), overlayHiPS.getMaximumNorder(), overlayHiPS
                         .getImgFormat().name(), opacity);
-        aladinLite.setOverlayColorPalette(colorPalette);
+        aladinLite.setOverlayColorPalette(getColorPaletteForAladin(colorPalette));
     }
 
     /**
@@ -509,7 +509,7 @@ public class AladinLiteWrapper {
      */
     public final void setColorPalette(final ColorPalette colorPalette) {
 
-        aladinLite.setColorPalette(colorPalette);
+        aladinLite.setColorPalette(getColorPaletteForAladin(colorPalette));
     }
 
     /**
@@ -598,5 +598,13 @@ public class AladinLiteWrapper {
 		aladinLite.showGrid(isGridActive);
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_COORDINATEGRID, Boolean.toString(isGridActive));
 		CommonEventBus.getEventBus().fireEvent(new GridToggledEvent(isGridActive));
+    }
+    
+    public static esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette getColorPaletteForAladin(ColorPalette colorPalette) {
+    	if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
+    		return esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette.valueOf(ColorPalette.GREYSCALE.toString());
+    	}
+    	
+    	return esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette.valueOf(colorPalette.toString());
     }
 }

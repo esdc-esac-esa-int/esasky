@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.api;
 
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -13,10 +14,10 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils.WavelengthName;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ObservationDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SpectraDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ApiCounts extends ApiBase{
 	
@@ -45,9 +46,23 @@ public class ApiCounts extends ApiBase{
 
 		for (BaseDescriptor currDesc : descriptors.getDescriptors()) {
 			double meanWavelength = currDesc.getCenterWavelengthValue();
-			WavelengthName name = WavelengthUtils.getWavelengthNameFromValue(meanWavelength);
+			List<WavelengthDescriptor> wavelengthDescriptors = currDesc.getWavelengths();
+
 			JSONObject descObj = new JSONObject();
+			WavelengthName name = WavelengthUtils.getWavelengthNameFromValue(meanWavelength);
 			descObj.put(ApiConstants.WAVELENGTH, new JSONString(name.longName));
+
+			for (WavelengthDescriptor wavelengthDesc : wavelengthDescriptors) {
+				double min = wavelengthDesc.getRange().get(0);
+				double max = wavelengthDesc.getRange().get(1);
+				List<JSONString> names = WavelengthUtils.getWavelengthsNameFromRange(min, max).stream()
+						.map(x -> new JSONString(x.longName)).collect(Collectors.toList());
+
+				JSONArray namesArr = new JSONArray();
+				names.forEach(x -> namesArr.set(namesArr.size(), x));
+				descObj.put(ApiConstants.WAVELENGTHS, namesArr);
+			}
+
 			obsObj.put(currDesc.getMission(),descObj);
 		}
 		sendBackValuesToWidget(obsObj, widget);

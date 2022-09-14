@@ -12,13 +12,13 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 
 public class ChangePaletteBtn extends Composite{
 

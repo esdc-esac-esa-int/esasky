@@ -131,6 +131,9 @@ public class Icons {
 		@Source("hubble-hires.png")
 		ImageResource hubbleIcon();
 
+		@Source("jwst-icon.png")
+		ImageResource jwstIcon();
+
 		// selection
 		@Source("selection-rectangle-dashed.png")
 		ImageResource dashedRectIcon();
@@ -190,6 +193,7 @@ public class Icons {
 		iconMap.put("expand", getExpandIcon());
 		iconMap.put("contract", getContractIcon());
 		iconMap.put("hubble", getHubbleIcon());
+		iconMap.put("jwst", getJwstIcon());
 		
 	}
 	
@@ -339,6 +343,10 @@ public class Icons {
 	
 	public static ImageResource getHubbleIcon() {
 		return resources.hubbleIcon();
+	}
+
+	public static ImageResource getJwstIcon() {
+		return resources.jwstIcon();
 	}
 
 	public static ImageResource getDashedCircleIcon() {

@@ -7,6 +7,7 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.EsaSkyWeb;
 import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
@@ -188,6 +189,21 @@ public class DescriptorRepository {
     public DescriptorListAdapter<IceCubeDescriptor> getIceCubeDescriptors() {
         return iceCubeDescriptors;
     }
+    
+    // For sending loading time when all is loaded
+    public void checkAllInitialised() {
+    	
+       for( Object obj: new Object[] {catDescriptors, obsDescriptors, extTapDescriptors,
+    		   ssoDescriptors, spectraDescriptors, publicationsDescriptors, imageDescriptors, iceCubeDescriptors}){
+    	  if(obj == null) {
+    		  return;
+    	  }
+       }
+       int timeSinceStart = EsaSkyWeb.getTimeSinceStart();
+       GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_INITIALISATION, GoogleAnalytics.ACT_DESC_INITIALISATION_TIME, Integer.toString(timeSinceStart));
+       Log.debug("All dedscriptors ready after: " + Integer.toString(timeSinceStart));
+    	
+    }
 
     public void initExtDescriptors(final CountObserver countObserver) {
 
@@ -238,12 +254,14 @@ public class DescriptorRepository {
                 }
 
                 Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
+                checkAllInitialised();
             }
 
 
             @Override
             public void onError(String errorCause) {
                 Log.error("[DescriptorRepository] initExtDescriptors ERROR: " + errorCause);
+                checkAllInitialised();
             }
 
         });
@@ -306,6 +324,7 @@ public class DescriptorRepository {
                 if (!GUISessionStatus.getIsInScienceMode()) {
                     GUISessionStatus.setDoCountOnEnteringScienceMode();
                 }
+                checkAllInitialised();
             }
 
             @Override
@@ -314,7 +333,7 @@ public class DescriptorRepository {
                 DescriptorList<CatalogDescriptor> list = new DescriptorList<CatalogDescriptor>() {};
                 catDescriptors = new DescriptorListAdapter<CatalogDescriptor>(list, countObserver);
                 catDescriptorsIsReady = true;
-            }
+                checkAllInitialised();            }
 
         });
     }
@@ -350,6 +369,7 @@ public class DescriptorRepository {
                 if (!GUISessionStatus.getIsInScienceMode()) {
                     GUISessionStatus.setDoCountOnEnteringScienceMode();
                 }
+                checkAllInitialised();
             }
 
             @Override
@@ -358,6 +378,7 @@ public class DescriptorRepository {
                 DescriptorList<ObservationDescriptor> list = new DescriptorList<ObservationDescriptor>() {};
                 obsDescriptors = new DescriptorListAdapter<ObservationDescriptor>(list, obsCountObserver);
                 obsDescriptorsIsReady = true;
+                checkAllInitialised();
             }
 
         });
@@ -381,6 +402,12 @@ public class DescriptorRepository {
                         imageCountObserver);
 
                 for (ImageDescriptor desc : imageDescriptors.getDescriptors()) {
+                    if (desc.isHst()) {
+                        desc.setBaseUrl("https://esahubble.org/images/");
+                    } else {
+                        desc.setBaseUrl("https://esawebb.org/images/");
+                    }
+
                     for (MetadataDescriptor md : desc.getMetadata()) {
                         if (md.getType() == ColumnType.RA) {
                             desc.setTapRaColumn(md.getTapName());
@@ -396,6 +423,7 @@ public class DescriptorRepository {
                 WavelengthUtils.setWavelengthRangeMaxMin(imageDescriptors.getDescriptors());
 
                 imageCountObserver.onCountUpdate(imageDescriptors.getTotal());
+                checkAllInitialised();
             }
 
             @Override
@@ -403,6 +431,7 @@ public class DescriptorRepository {
                 Log.error("[DescriptorRepository] initImageDescriptors ERROR: " + errorCause);
                 DescriptorList<ImageDescriptor> list = new DescriptorList<ImageDescriptor>() {};
                 imageDescriptors = new DescriptorListAdapter<>(list, imageCountObserver);
+                checkAllInitialised();
             }
 
         });
@@ -435,6 +464,7 @@ public class DescriptorRepository {
                 //WavelengthUtils.setWavelengthRangeMaxMin(gwDescriptors.getDescriptors());
 
                 gwCountObserver.onCountUpdate(gwDescriptors.getTotal());
+                checkAllInitialised();
             }
 
             @Override
@@ -442,6 +472,7 @@ public class DescriptorRepository {
                 Log.error("[DescriptorRepository] initGwDescriptors ERROR: " + errorCause);
                 DescriptorList<GwDescriptor> list = new DescriptorList<GwDescriptor>() {};
                 gwDescriptors = new DescriptorListAdapter<>(list, gwCountObserver);
+                checkAllInitialised();
             }
 
         });
@@ -473,6 +504,7 @@ public class DescriptorRepository {
                 Log.debug("[DescriptorRepository] [init iceCube] Total iceCube entries: " + iceCubeDescriptors.getTotal());
                 //WavelengthUtils.setWavelengthRangeMaxMin(gwDescriptors.getDescriptors());
 
+                checkAllInitialised();
                 iceCubeCountObserver.onCountUpdate(iceCubeDescriptors.getTotal());
             }
 
@@ -481,6 +513,7 @@ public class DescriptorRepository {
                 Log.error("[DescriptorRepository] initIceCubeDescriptor ERROR: " + errorCause);
                 DescriptorList<IceCubeDescriptor> list = new DescriptorList<IceCubeDescriptor>() {};
                 iceCubeDescriptors = new DescriptorListAdapter<>(list, iceCubeCountObserver);
+                checkAllInitialised();
             }
 
         });
@@ -504,12 +537,15 @@ public class DescriptorRepository {
                 if (!GUISessionStatus.getIsInScienceMode()) {
                     GUISessionStatus.setDoCountOnEnteringScienceMode();
                 }
+                checkAllInitialised();
             }
+            
 
             @Override
             public void onError(String errorCause) {
                 Log.error("[DescriptorRepository] initSSODescriptors ERROR: " + errorCause);
                 checkDoCountAll();
+                checkAllInitialised();
             }
 
         });
@@ -534,12 +570,14 @@ public class DescriptorRepository {
                         if (!GUISessionStatus.getIsInScienceMode()) {
                             GUISessionStatus.setDoCountOnEnteringScienceMode();
                         }
+                        checkAllInitialised();
                     }
 
                     @Override
                     public void onError(String errorCause) {
                         Log.error("[DescriptorRepository] initSpectraDescriptors ERROR: " + errorCause);
                         spectraDescriptorsIsReady = true;
+                        checkAllInitialised();
                     }
 
                 });
@@ -577,13 +615,15 @@ public class DescriptorRepository {
                 for (PublicationDescriptorLoadObserver observer : publicationDescriptorLoadObservers) {
                     observer.onLoad();
                 }
-
+                
+                checkAllInitialised();
                 Log.debug("[DescriptorRepository] Total publications entries: " + publicationsDescriptors.getTotal());
             }
 
             @Override
             public void onError(String errorCause) {
                 Log.error("[DescriptorRepository] initPubDescriptors ERROR: " + errorCause);
+                checkAllInitialised();
             }
 
         });

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import esac.archive.esasky.cl.web.client.api.Api;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 
@@ -69,11 +70,18 @@ public class EsaSkyWeb implements EntryPoint {
 						loadControllers();
 						Log.debug("Loading ESASkyAPI");
 						Api.init(EsaSkyWeb.this);
+						int loadingTime = getTimeSinceStart();
+						Log.debug("Load time: " + Integer.toString(loadingTime));
+						GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_INITIALISATION, GoogleAnalytics.ACT_INITIALISATION_TIME, Integer.toString(loadingTime));
 					}
 				});
             }
         });
     }
+    
+    public static native int getTimeSinceStart()/*-{
+    	return new Date().valueOf() - $wnd.esasky_starttime;
+    }-*/;
 
     public Controller getController(){
     	return this.controller;

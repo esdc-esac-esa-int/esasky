@@ -50,7 +50,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
      */
     public interface Resources extends ClientBundle {
 
-        @Source("esa-logo.png")
+        @Source("ESA_logo_2020_White.png")
         @ImageOptions(flipRtl = true)
         ImageResource logo();
         
@@ -159,11 +159,11 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     
     private void updateEsaLogoToFollowAladinLogo() {
     	if(MainLayoutPanel.getMainAreaWidth() <= 800) {
-    		esaLogo.getElement().getStyle().setBottom(5, Unit.PX);
-    		esaLogo.getElement().getStyle().setRight(45, Unit.PX);
+    		esaLogo.getElement().getStyle().setWidth(57, Unit.PX);
+    		esaLogo.getElement().getStyle().setRight(37, Unit.PX);
     	} else {
-    		esaLogo.getElement().getStyle().setBottom(10, Unit.PX);
-    		esaLogo.getElement().getStyle().setRight(96, Unit.PX);
+    		esaLogo.getElement().getStyle().setWidth(94, Unit.PX);
+    		esaLogo.getElement().getStyle().setRight(86, Unit.PX);
     	}
     }
     
