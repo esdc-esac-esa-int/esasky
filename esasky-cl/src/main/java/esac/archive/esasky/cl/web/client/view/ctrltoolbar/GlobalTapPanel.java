@@ -2,15 +2,17 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.registry.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
@@ -22,14 +24,12 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
-    private final FlowPanel container;
-    private final PopupHeader<GlobalTapPanel> header;
-    private final LoadingSpinner loadingSpinner;
-
+    private FlowPanel container;
+    private PopupHeader<GlobalTapPanel> header;
     private final GlobalTapPanel.Resources resources;
     private CssResource style;
     TabulatorWrapper tabulatorTable;
-    private final FlowPanel tabulatorContainer;
+    private FlowPanel tabulatorContainer;
 
 
     public interface Resources extends ClientBundle {
@@ -44,6 +44,18 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         this.style = this.resources.style();
         this.style.ensureInjected();
 
+        initView();
+        setMaxSize();
+        MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
+    }
+
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
+    }
+
+    private void initView() {
         container = new FlowPanel();
         tabulatorContainer = new FlowPanel();
         tabulatorContainer.getElement().setId("browseTap__tabulatorContainer");
@@ -52,42 +64,31 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         header = new PopupHeader<>(this, "header",
                 "helptext",
                 "help title",
-                event -> {}, "Close panel");
-
-        loadingSpinner = new LoadingSpinner(true);
-        loadingSpinner.addStyleName("globalTapPanel__loadingSpinner");
+                event -> hide(), "Close panel");
 
 
         container.add(header);
         container.add(tabulatorContainer);
+        container.getElement().setId("globalTapPanelContainer");
         this.add(container);
-//        loadData();
     }
 
     public void onJsonLoaded(String jsonString) {
-        this.show();
-//        JSONObject jsonObj = new JSONObject(JsonUtils.safeEval(jsonString));
         GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(jsonString);
-
         TabulatorSettings settings = new TabulatorSettings();
         tabulatorTable = new TabulatorWrapper("browseTap__tabulatorContainer", new TabulatorCallback(), settings);
-//        tabulatorTable.setAddHipsColumn(true);
         tabulatorTable.insertObscoreData(obj.getProperty("data"), obj.getProperty("columns"));
-
-//        tabulatorTable.restoreRedraw();
-//        tabulatorTable.redrawAndReinitializeHozVDom();
+        tabulatorTable.restoreRedraw();
+        tabulatorTable.redrawAndReinitializeHozVDom();
     }
 
     private void loadData() {
-//        MainLayoutPanel.addElementToMainArea(loadingSpinner);
-
         JSONUtils.getJSONFromUrl(EsaSkyWebConstants.TAPREGISTRY_URL, new JSONUtils.IJSONRequestCallback() {
-
             @Override
             public void onSuccess(String responseText) {
                 onJsonLoaded(responseText);
+                setDefaultSize();
             }
-
             @Override
             public void onError(String errorCause) {
                 int a = 1+2;
@@ -112,19 +113,21 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 public void onSuccess(String responseText) {
                     GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(responseText);
                     GeneralJavaScriptObject meta = obj.getProperty("metadata");
-                    ExtTapDescriptor extd = DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors().get(0);
-                    extd.setTapUrl(accessUrl + "/sync");
-                    extd.setTapTable(tableName);
-                    extd.setTapTableMetadata(meta);
-                    extd.setSelectADQL("SELECT *");
-                    extd.setPrimaryColor(ESASkyColors.getNext());
-                    extd.setFovLimit(360.0);
-                    extd.setShapeLimit(10);
-                    extd.setInBackend(false);
-                    extd.setUseUcd(true);
-                    extd.setDateADQL(null);
-                    extd.setSearchFunction("cointainsPoint");
-                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(extd));
+                    ExtTapDescriptor descriptor = DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors().get(0);
+                    descriptor.setGuiShortName(tableName);
+                    descriptor.setGuiLongName(tableName);
+                    descriptor.setTapUrl(accessUrl + "/sync");
+                    descriptor.setTapTable(tableName);
+                    descriptor.setTapTableMetadata(meta);
+                    descriptor.setSelectADQL("SELECT *");
+                    descriptor.setPrimaryColor(ESASkyColors.getNext());
+                    descriptor.setFovLimit(180.0);
+                    descriptor.setShapeLimit(10);
+                    descriptor.setInBackend(false);
+                    descriptor.setUseUcd(true);
+                    descriptor.setDateADQL(null);
+                    descriptor.setSearchFunction("cointainsPoint");
+                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
                 }
 
                 @Override
@@ -143,7 +146,39 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     @Override
     protected void onResize() {
+        setMaxSize();
+    }
 
+    @Override
+    public void setMaxSize() {
+        Style elementStyle = container.getElement().getStyle();
+        int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+        elementStyle.setPropertyPx("maxWidth", maxWidth);
+        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+        setMaxHeight();
+    }
+
+    private void setMaxHeight() {
+        int headerSize = header.getOffsetHeight();
+        int height = container.getOffsetHeight() - headerSize - 5;
+
+        if (height > MainLayoutPanel.getMainAreaHeight()) {
+            height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
+        }
+
+        tabulatorContainer.getElement().getStyle().setPropertyPx("height", height);
+    }
+
+
+
+    private void setDefaultSize() {
+        Size size = getDefaultSize();
+        container.setWidth(size.width + "px");
+        container.setHeight(size.height + "px");
+
+        Style containerStyle = container.getElement().getStyle();
+        containerStyle.setPropertyPx("minWidth", 350);
+        containerStyle.setPropertyPx("minHeight", 300);
     }
 
     @Override
@@ -153,10 +188,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     @Override
     public void show() {
-       if (!isShowing())
-            loadData();
-       super.show();
+        super.show();
+        loadData();
     }
+
 }
 
 

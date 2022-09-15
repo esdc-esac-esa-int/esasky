@@ -1329,27 +1329,12 @@ public class TabulatorWrapper {
 				if(!isInitializing && this.metadata){
 				    var raColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaColumnName()();
 				    var decColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecColumnName()();
-                    var raUcdName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaUcdName()();
-                    var decUcdName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecUcdName()();
-                    var ucdMain = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getMetaMainName()();
 
 			    	for(var i = 0; i < this.metadata.length; i++){
-                        if(settings.useUcd) {
-                            if (this.metadata[i].ucd.includes(raUcdName)) {
-                                if (raName === "" || this.metadata[i].ucd.includes(ucdMain)) {
-                                    raName = this.metadata[i].name;
-                                }
-                            } else if (this.metadata[i].ucd.includes(decUcdName)) {
-                                if (decName === "" || this.metadata[i].ucd.includes(ucdMain)) {
-                                    decName = this.metadata[i].name;
-                                }
-                            }
-                        } else {
-                            if (this.metadata[i].name === raColumnName) {
-                                raName = this.metadata[i].name;
-                            } else if (this.metadata[i].name === decColumnName) {
-                                decName = this.metadata[i].name;
-                            }
+                        if (this.metadata[i].name === raColumnName) {
+                            raName = this.metadata[i].name;
+                        } else if (this.metadata[i].name === decColumnName) {
+                            decName = this.metadata[i].name;
                         }
 
 			    	}
@@ -1368,11 +1353,7 @@ public class TabulatorWrapper {
                             cellClick:function(e, cell){
                                 e.stopPropagation();
                                 var data = cell.getData();
-                                if (!settings.useUcd) {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(data);
-                                } else {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Ljava/lang/String;Ljava/lang/String;)(data[raName], data[decName]);
-                                }
+                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(data);
                             }
                     });
                 }
