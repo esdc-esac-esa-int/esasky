@@ -161,16 +161,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
         	String stcs = null;
-            String ucdRa = null;
-            String ucdDec = null;
-            if (descriptor.useUcd()) {
-                ucdRa = getUcdRa(EsaSkyConstants.UCD_POS_EQ_RA, EsaSkyConstants.UCD_META_MAIN, metadata, rowData);
-                ucdDec = getUcdDec(EsaSkyConstants.UCD_POS_EQ_DEC, EsaSkyConstants.UCD_META_MAIN, metadata, rowData);
-                stcs = "CIRCLE " + ucdRa + " " + ucdDec + " 0.5";
-            } else if(!"".equals(getDescriptor().getTapSTCSColumn())) {
+            if(!"".equals(getDescriptor().getTapSTCSColumn())) {
         		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
         	}
-
 
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
                 return catalogBuilder(rowId, rowData);
@@ -187,16 +180,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
             polygon.setShapeName(shapeName);
 
-            if (descriptor.useUcd()) {
-                polygon.setRa(ucdRa);
-                polygon.setDec(ucdDec);
-            } else {
-                String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-                String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
-                polygon.setRa(ra);
-                polygon.setDec(dec);
-            }
-
+            String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
+            String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+            polygon.setRa(ra);
+            polygon.setDec(dec);
 
             return polygon;
         }

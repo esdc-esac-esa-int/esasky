@@ -14,6 +14,10 @@ public interface IDescriptor {
     String getTapTable();
     void setTapTable(String inputTapTable);
 
+    GeneralJavaScriptObject getTapTableMetadata();
+
+    void setTapTableMetadata(GeneralJavaScriptObject metadata);
+
     String getGuiShortName();
     void setGuiShortName(String inputGuiShortName);
     
@@ -111,4 +115,6 @@ public interface IDescriptor {
     String getSearchAreaShape();
 
     Boolean useUcd();
+
+    String getUcdColumnName(String ucdName);
 }

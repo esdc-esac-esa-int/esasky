@@ -247,6 +247,27 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public void setBaseMission(String baseMission) {
 		this.baseMission = baseMission;
 	}
-	
-	
+
+	@Override
+	public String getTapRaColumn() {
+		if (!useUcd()) {
+			return tapRaColumn;
+		} else {
+			return getUcdColumnName(EsaSkyConstants.UCD_POS_EQ_RA);
+		}
+	}
+
+	@Override
+	public void setTapRaColumn(String tapRaColumn) {
+		this.tapRaColumn = tapRaColumn;
+	}
+
+	@Override
+	public String getTapDecColumn() {
+		if (!useUcd()) {
+			return tapDecColumn;
+		} else {
+			return getUcdColumnName(EsaSkyConstants.UCD_POS_EQ_DEC);
+		}
+	}
 }

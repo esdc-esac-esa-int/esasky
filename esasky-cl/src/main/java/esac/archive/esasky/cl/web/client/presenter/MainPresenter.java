@@ -300,8 +300,9 @@ public class MainPresenter {
         });
 
         CommonEventBus.getEventBus().addHandler(TapRegistrySelectEvent.TYPE, event -> {
-            if (event.getDescriptor() != null)
+            if (event.getDescriptor() != null) {
                 getRelatedMetadata(event.getDescriptor());
+            }
         });
         
         /*

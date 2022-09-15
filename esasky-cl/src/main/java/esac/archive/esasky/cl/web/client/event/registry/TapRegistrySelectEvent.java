@@ -1,20 +1,20 @@
 package esac.archive.esasky.cl.web.client.event.registry;
 
 import com.google.gwt.event.shared.GwtEvent;
-import esac.archive.esasky.ifcs.model.descriptor.TapRegistryDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class TapRegistrySelectEvent extends GwtEvent<TapRegistrySelectEventHandler> {
     public static final Type<TapRegistrySelectEventHandler> TYPE = new Type<>();
-    private final TapRegistryDescriptor descriptor;
+    private final IDescriptor descriptor;
 
     public TapRegistrySelectEvent() {
         this.descriptor = null;
     }
-    public TapRegistrySelectEvent(TapRegistryDescriptor descriptor) {
+    public TapRegistrySelectEvent(IDescriptor descriptor) {
         this.descriptor = descriptor;
     }
 
-    public TapRegistryDescriptor getDescriptor() {
+    public IDescriptor getDescriptor() {
         return this.descriptor;
     }
 

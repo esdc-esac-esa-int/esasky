@@ -7,6 +7,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.registry.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -15,7 +16,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabu
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.TapRegistryDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
@@ -78,8 +80,8 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     private void loadData() {
 //        MainLayoutPanel.addElementToMainArea(loadingSpinner);
-        String url = EsaSkyWebConstants.TAPREGISTRY_URL  + "?" +  EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.TAP_REGISTRY_ACTION_QUERY;
-        JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+
+        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.TAPREGISTRY_URL, new JSONUtils.IJSONRequestCallback() {
 
             @Override
             public void onSuccess(String responseText) {
@@ -100,33 +102,37 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             GeneralJavaScriptObject rowData =  row.invokeFunction("getData");
             String tableName = rowData.getStringProperty("table_name");
             String accessUrl = rowData.getStringProperty("axxess_url");
-            CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(new TapRegistryDescriptor(tableName, accessUrl)));
-//            String url = EsaSkyWebConstants.TAPREGISTRY_URL  + "?" +  EsaSkyConstants.TAP_REGISTRY_ACTION_FLAG + "=" + EsaSkyConstants.TAP_REGISTRY_ACTION_INSPECT
-//                    + "&" + EsaSkyConstants.TAP_REGISTRY_URL_FLAG + "=" + row.invokeFunction("getData").getStringProperty("axxess_url")
-//                    + "&" + EsaSkyConstants.TAP_REGISTRY_ADQL_FLAG + "=" + "SELECT TOP 10 * from " + row.invokeFunction("getData").getStringProperty("table_name");
+            String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
+                    + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + "SELECT top 0 * from " + tableName + "&"
+                    + EsaSkyConstants.EXT_TAP_URL + "=" + accessUrl;
+            JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
 
-//            JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
-//
-//                @Override
-//                public void onSuccess(String responseText) {
-//
-//                    int b = 1+3;
-//                }
-//
-//                @Override
-//                public void onError(String errorCause) {
-//                    int a = 1+2;
-//                }
-//            });
-            // Clickevent -> MainPresenter -> resultspresenter.getMetadata (creates tab)
-            // Create entity from descriptor sent in event
-            // Entity is added as a new tab to resultspresenter
+                @Override
+                public void onSuccess(String responseText) {
+                    GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(responseText);
+                    GeneralJavaScriptObject meta = obj.getProperty("metadata");
+                    ExtTapDescriptor extd = DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors().get(0);
+                    extd.setTapUrl(accessUrl + "/sync");
+                    extd.setTapTable(tableName);
+                    extd.setTapTableMetadata(meta);
+                    extd.setSelectADQL("SELECT *");
+                    extd.setPrimaryColor(ESASkyColors.getNext());
+                    extd.setFovLimit(360.0);
+                    extd.setShapeLimit(10);
+                    extd.setInBackend(false);
+                    extd.setUseUcd(true);
+                    extd.setDateADQL(null);
+                    extd.setSearchFunction("cointainsPoint");
+                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(extd));
+                }
+
+                @Override
+                public void onError(String errorCause) {
+                    // TODO: Handle
+                }
+            });
         }
-//        @Override
-//        public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
-////            MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
-////            setSuggestedPositionCenter();
-//        }
     }
 
 

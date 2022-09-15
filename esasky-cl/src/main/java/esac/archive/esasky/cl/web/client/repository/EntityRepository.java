@@ -160,10 +160,6 @@ public class EntityRepository {
                     CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.generateId(), TAPExtTapService.getInstance());
             addEntity(newEntity);
 	    }
-        else if (descriptor instanceof TapRegistryDescriptor) {
-            newEntity = new TapRegistryEntity(descriptor, descriptorRepo.getExtTapDescriptors().getCountStatus(), CoordinateUtils.getCenterCoordinateInJ2000(),descriptor.generateId(), TAPRegistryService.getInstance());
-            addEntity(newEntity);
-        }
         return newEntity;
     }
     

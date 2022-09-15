@@ -209,11 +209,7 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
     public static final String EXT_TAP_URL = "TAP_URL";
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
-    public static final String TAP_REGISTRY_ACTION_FLAG = "ACTION";
-    public static final String TAP_REGISTRY_ACTION_QUERY = "QUERY";
-    public static final String TAP_REGISTRY_ACTION_INSPECT = "INSPECT";
-    public static final String TAP_REGISTRY_URL_FLAG = "TAP_URL";
-    public static final String TAP_REGISTRY_ADQL_FLAG = "TAP_ADQL";
+
     
     /*************************************************************************/
     /** IVOA OBSCORE **/
