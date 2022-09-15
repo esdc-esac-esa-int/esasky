@@ -153,12 +153,19 @@ public class OutreachImage {
 		if(moveToCenter) {
 			
 			SkyViewPosition curPos = CoordinateUtils.getCenterCoordinateInJ2000();
-			
-			double dist = curPos.getCoordinate().distance(coor);
-			
-			if(curPos.getFov() / desc.getFovSize() > 5 || desc.getFovSize() / curPos.getFov() < .2 || dist > curPos.getFov() / 2) {
+			try {
+				double dist = curPos.getCoordinate().distance(coor);
+				
+				if(curPos.getFov() / desc.getFovSize() > 5 || desc.getFovSize() / curPos.getFov() < .2 || dist > curPos.getFov() / 2) {
+					AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
+					AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
+				}
+			}catch(NullPointerException e) {
+				// Might happen if it is loaded before AladinLite is ready. THen make sure to go to position
+				Log.error(e.getMessage(), e);
 				AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
 				AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
+				
 			}
 		}
 		
