@@ -3953,5 +3953,9 @@
 	<!-- internationalization_zh.xml is up to date for everything above -->
 
 	<!-- internationalization_es.xml is up to date for everything above -->
+	<text key="outreachJwstPanel_closePanel">
+		Close panel
+	</text>
+	
 
 </Internationalization>

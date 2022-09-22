@@ -152,7 +152,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
 
 
     public void close() {
-        if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+        if(imageEntity != null) {
             imageEntity.setIsPanelClosed(true);
         }
         super.hide();
@@ -164,7 +164,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachJwstPanel_header"),
                 TextMgr.getInstance().getText("outreachJwstPanel_helpText"),
                 TextMgr.getInstance().getText("outreachJwstPanel_helpTitle"),
-                event -> close(), "Close panel");
+                event -> close(), TextMgr.getInstance().getText("outreachJwstPanel_closePanel"));
 
 
 

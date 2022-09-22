@@ -120,14 +120,14 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	public void show() {
 		super.show();
 		getData();
-		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+		if(imageEntity != null) {
 			imageEntity.setIsPanelClosed(false);
 		}
 	}
 
 
 	public void close() {
-		if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+		if(imageEntity != null) {
 			imageEntity.setIsPanelClosed(true);
 		}
 
