@@ -3084,6 +3084,12 @@
 	<text key="LAMOST_radial_velocity">
 		Radial Velocity &lt;i&gt;(km/s)&lt;/i&gt;
 	</text>
+	<text key="LAMOST_radial_velocity_b">
+		Radial Velocity B band &lt;i&gt;(km/s)&lt;/i&gt;
+	</text>
+	<text key="LAMOST_radial_velocity_r">
+		Radial Velocity R band  &lt;i&gt;(km/s)&lt;/i&gt;
+	</text>
 	<text key="LAMOST_mag">
 		magnitude
 	</text>
