@@ -12,10 +12,12 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.AdqlPopupPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox;
@@ -1271,6 +1273,10 @@ public class TabulatorWrapper {
 			   	}
 		    },
 		    dataLoaded:function(data){
+                var imageButtonFormatter = function(cell, formatterParams, onRendered){
+                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
+                };
+
                 if((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
                     || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()){
                     return;
@@ -1294,6 +1300,25 @@ public class TabulatorWrapper {
 		    	if(previewColumn){
 		    	    previewColumn.move("centre", true);
 		    	}
+
+                if (settings.addAdqlColumn) {
+                    this.addColumn({
+                        title: "ADQL temp title",
+                        field:"adqlBtn",
+                        visible: true,
+                        headerSort:false,
+                        headerTooltip:"ADQL temp tooltip",
+                        minWidth: 64,
+                        download: false,
+                        width:64, hozAlign:"center",
+                        formatter:imageButtonFormatter, width:20, hozAlign:"center", formatterParams:{image:"adql_icon.png",
+                            tooltip:" ADQL tooltip temprary"},
+                        cellClick:function(e, cell){
+                            e.stopPropagation();
+                            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                        }
+                    }, true);
+                }
 		    },
 		    dataLoading:function(data){
                 if((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
@@ -1443,7 +1468,7 @@ public class TabulatorWrapper {
                 		    	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                             }
                     });
-                }		
+                }
                 if(this.addHipsColumn){
                     activeColumnGroup.push({
                         title:$wnd.esasky.getInternationalizationText("tabulator_addHipsColumn"),
@@ -2337,6 +2362,10 @@ public class TabulatorWrapper {
     
     public void onSourcesInPublicationClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onSourcesInPublicationClicked(rowData);
+    }
+
+    public void onAdqlClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onAdqlButtonPressed(rowData);
     }
 
     public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {

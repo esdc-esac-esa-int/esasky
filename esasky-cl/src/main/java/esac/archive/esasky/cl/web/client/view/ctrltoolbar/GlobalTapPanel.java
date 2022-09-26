@@ -31,6 +31,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     TabulatorWrapper tabulatorTable;
     private FlowPanel tabulatorContainer;
 
+    private AdqlPopupPanel adqlPopupPanel;
 
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
@@ -70,12 +71,17 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         container.add(header);
         container.add(tabulatorContainer);
         container.getElement().setId("globalTapPanelContainer");
+
+        adqlPopupPanel = new AdqlPopupPanel("test", true);
+        MainLayoutPanel.addElementToMainArea(adqlPopupPanel);
+        adqlPopupPanel.setSuggestedPositionCenter();
         this.add(container);
     }
 
     public void onJsonLoaded(String jsonString) {
         GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(jsonString);
         TabulatorSettings settings = new TabulatorSettings();
+        settings.setAddAdqlColumn(true);
         tabulatorTable = new TabulatorWrapper("browseTap__tabulatorContainer", new TabulatorCallback(), settings);
         tabulatorTable.insertObscoreData(obj.getProperty("data"), obj.getProperty("columns"));
         tabulatorTable.restoreRedraw();
@@ -136,6 +142,13 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 }
             });
         }
+
+        @Override
+        public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
+            adqlPopupPanel.setTapServiceUrl(rowData.getStringProperty("axxess_url"));
+            adqlPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
+            showAdqlPanel();
+        }
     }
 
 
@@ -190,6 +203,14 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     public void show() {
         super.show();
         loadData();
+    }
+
+    public void showAdqlPanel() {
+        adqlPopupPanel.show();
+    }
+
+    public void hideAdqlPanel() {
+        adqlPopupPanel.hide();
     }
 
 }

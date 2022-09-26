@@ -147,4 +147,9 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	public boolean hasBeenClosed() {
 		return false;
 	}
+
+	@Override
+	public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
 }
