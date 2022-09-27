@@ -829,7 +829,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
-    The 4XMM-DR11 catalogue contains source detections drawn from 12,210
+    The 4XMM-DR12 catalogue contains source detections drawn from 12,712
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
 		(sources "good" or "with suspect parameters") are displayed in ESASky.
@@ -841,12 +841,12 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
-    	The stacked catalogue 4XMM-DR11s has been compiled from 1,475 groups,
-		comprising 8,292  overlapping good-quality XMM-Newton observations. They
+    	The stacked catalogue 4XMM-DR12s has been compiled from 1,620 groups,
+		comprising 9,355  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
-		3 and 2020 December 17 which overlap by at least one arcminute in radius
-		and are not affected by very high background emission. It contains 358,809
-		unique sources, 275,440 of them multiply observed, with positions and
+		1 and 2021 December 4 which overlap by at least one arcminute in radius
+		and are not affected by very high background emission. It contains 386,043
+		unique sources, 298,626 of them multiply observed, with positions and
 		source parameters like fluxes in the XMM-Newton standard energy bands,
 		hardness ratios, quality estimate, and information on inter-observation
 		variability. 
@@ -2963,10 +2963,11 @@
 		</text>
 
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_LRS">
+	The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program, which contains both low- and medium-resolution spectroscopic surveys. 
+	
 		&lt;br&gt;&lt;br&gt;
-		The fifth LAMOST data release (LAMOST DR5) includes observations until July 2017. The General Catalog contains 9,026,365 targets, of which 8,183,160 are stars, 152,863 galaxies, 52,453 QSO, and 637,889 unknown objects. There are 5,808,985 objects with g-band SNR larger than 10, 7,701,235 objects with i-band SNR larger than 10, and 5,734,239 objects with both g-band SNR larger than 10 and i-band SNR larger than 10.
+		The eighth LAMOST data release (LAMOST DR8) includes observations until May 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,927,505 spectra, of which 10,351,254 targets are stars, 225,475 are galaxies, 72,010 are QSOs and 278,766 are unknown objects. There are 9,385,159 objects with g-band SNR or i-band SNR larger than 10. 
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2975,10 +2976,11 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_LRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program, which contains both low- and medium-resolution spectroscopic surveys. 
+	
 		&lt;br&gt;&lt;br&gt;
-		The fifth LAMOST data release (LAMOST DR5) includes observations until July 2017. The General Catalog contains 9,026,365 targets, of which 8,183,160 are stars, 152,863 galaxies, 52,453 QSO, and 637,889 unknown objects. There are 5,808,985 objects with g-band SNR larger than 10, 7,701,235 objects with i-band SNR larger than 10, and 5,734,239 objects with both g-band SNR larger than 10 and i-band SNR larger than 10.
+		The eighth LAMOST data release (LAMOST DR8) includes observations until May 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,927,505 spectra, of which 10,351,254 targets are stars, 225,475 are galaxies, 72,010 are QSOs and 278,766 are unknown objects. There are 9,385,159 objects with g-band SNR or i-band SNR larger than 10. 
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2987,6 +2989,31 @@
 		More information
 		&lt;/a&gt;
 	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_MRS">
+	The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program, which contains both low- and medium-resolution spectroscopic surveys. 
+	
+		&lt;br&gt;&lt;br&gt;
+		The eighth LAMOST data release (LAMOST DR8) includes observations until May 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, of which 4,510,193 spectra have medium resolution time domain data. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_MRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program, which contains both low- and medium-resolution spectroscopic surveys. 
+	
+		&lt;br&gt;&lt;br&gt;
+		The eighth LAMOST data release (LAMOST DR8) includes observations until May 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, of which 4,510,193 spectra have medium resolution time domain data. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+	
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
 		ESASky serves all pointed observations taken with the InfraRed Camera (IRC) of this mission, which are directly downloaded from DARTS. The IRC consisted of three independent camera systems, NIR, MIR-S and MIR-L, which observed the wavelength bands of 1.7-5.5 μm, 5.8-14.1 μm, and 12.4-26.5 μm, respectively. Each camera system had three filters available. NIR and MIR-S covered the same field of view (FoV), while MIR-L had a different one, which did not overlap with the NIR/MIR-S FoV. A brief description of the instrument and data products is given in
 		&lt;a

@@ -1210,9 +1210,9 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
-		El cat&#225;logo 4XMM-DR11 contiene fuentes detectadas
+		El cat&#225;logo 4XMM-DR12 contiene fuentes detectadas
 		a partir de
-		12 210 observaciones con las c&#225;maras EPIC de
+		12 712 observaciones con las c&#225;maras EPIC de
 		XMM-Newton,
 		las cuales
 		cubren el intervalo de energ&#237;a entre 0.2 y 12 keV.
@@ -1225,14 +1225,14 @@
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#3XMM"
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#4XMM"
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
-		El cat&#xE1;logo 4XMM-DR11s se ha compilado a partir de 1 475 grupos, que comprenden 8 292 observaciones superpuestas de buena calidad de XMM-Newton. 
-		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 3 de febrero de 2000 y el 17 de diciembre de 2020 que se superponen en al menos un radio de un 
-		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 358 809 fuentes &#xFA;nicas, 275 440 de ellas observadas en m&#xFA;ltiples ocasiones,  
+		El cat&#xE1;logo 4XMM-DR12s se ha compilado a partir de 1 620 grupos, que comprenden 9 355 observaciones superpuestas de buena calidad de XMM-Newton. 
+		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 1 de febrero de 2000 y el 4 de diciembre de 2021 que se superponen en al menos un radio de un 
+		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 386 043 fuentes &#xFA;nicas, 298 626 de ellas observadas en m&#xFA;ltiples ocasiones,  
 		con posiciones y par&#xE1;metros de las fuentes como flujos en las bandas de energ&#xED;a est&#xE1;ndar de XMM-Newton, estimaci&#xF3;n de calidad e informaci&#xF3;n sobre la variabilidad entre observaciones.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2791,7 +2791,7 @@
 		Descargar
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST">
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_LRS">
 		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalaci&#243;n cient&#237;fica china operada por los Observatorios Astron&#243;micos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras en un campo de visi&#243;n de 20 grados. El estudio LAMOST, iniciado en 2012, proporciona espectros calibrados en longitud de onda y flujo, sustra&#237;dos de cielo, en el rango  3690-9100 &#197;, con una resoluci&#243;n de 1800 a 5500 &#197;, para muchos tipos diferentes de objetos astron&#243;micos.
 		&lt;br&gt;&lt;br&gt;
 		La quinta edici&#243;n del estudio (LAMOST DR5) incluye observaciones hasta julio de 2017. El Cat&#225;logo General contiene 9.026.365 objetos, de los cuales 8.183.160 son estrellas, 152.863 galaxias, 52.453 qu&#225;sares, y 637.889 son de tipo desconocido. Se incluyen 5.808.985 objetos con una ratio se&#241;al-ruido (S/N) mayor que 10 en la banda g, 7.701.235 objetos con ratio se&#241;al-ruido mayor que 10 en la banda i, y 5.734.239 objetos con ratio se&#241;al-ruido mayor que 10 en ambas bandas.
@@ -2802,7 +2802,30 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST">
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_LRS">
+		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalaci&#243;n cient&#237;fica china operada por los Observatorios Astron&#243;micos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras en un campo de visi&#243;n de 20 grados. El estudio LAMOST, iniciado en 2012, proporciona espectros calibrados en longitud de onda y flujo, sustra&#237;dos de cielo, en el rango  3690-9100 &#197;, con una resoluci&#243;n de 1800 a 5500 &#197;, para muchos tipos diferentes de objetos astron&#243;micos.
+		&lt;br&gt;&lt;br&gt;
+		La quinta edici&#243;n del estudio (LAMOST DR5) incluye observaciones hasta julio de 2017. El Cat&#225;logo General contiene 9.026.365 objetos, de los cuales 8.183.160 son estrellas, 152.863 galaxias, 52.453 qu&#225;sares, y 637.889 son de tipo desconocido. Se incluyen 5.808.985 objetos con una ratio se&#241;al-ruido (S/N) mayor que 10 en la banda g, 7.701.235 objetos con ratio se&#241;al-ruido mayor que 10 en la banda i, y 5.734.239 objetos con ratio se&#241;al-ruido mayor que 10 en ambas bandas.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt; 
+	</text>
+	
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_MRS">
+		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalaci&#243;n cient&#237;fica china operada por los Observatorios Astron&#243;micos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras en un campo de visi&#243;n de 20 grados. El estudio LAMOST, iniciado en 2012, proporciona espectros calibrados en longitud de onda y flujo, sustra&#237;dos de cielo, en el rango  3690-9100 &#197;, con una resoluci&#243;n de 1800 a 5500 &#197;, para muchos tipos diferentes de objetos astron&#243;micos.
+		&lt;br&gt;&lt;br&gt;
+		La quinta edici&#243;n del estudio (LAMOST DR5) incluye observaciones hasta julio de 2017. El Cat&#225;logo General contiene 9.026.365 objetos, de los cuales 8.183.160 son estrellas, 152.863 galaxias, 52.453 qu&#225;sares, y 637.889 son de tipo desconocido. Se incluyen 5.808.985 objetos con una ratio se&#241;al-ruido (S/N) mayor que 10 en la banda g, 7.701.235 objetos con ratio se&#241;al-ruido mayor que 10 en la banda i, y 5.734.239 objetos con ratio se&#241;al-ruido mayor que 10 en ambas bandas.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt; 
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_MRS">
 		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalaci&#243;n cient&#237;fica china operada por los Observatorios Astron&#243;micos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras en un campo de visi&#243;n de 20 grados. El estudio LAMOST, iniciado en 2012, proporciona espectros calibrados en longitud de onda y flujo, sustra&#237;dos de cielo, en el rango  3690-9100 &#197;, con una resoluci&#243;n de 1800 a 5500 &#197;, para muchos tipos diferentes de objetos astron&#243;micos.
 		&lt;br&gt;&lt;br&gt;
 		La quinta edici&#243;n del estudio (LAMOST DR5) incluye observaciones hasta julio de 2017. El Cat&#225;logo General contiene 9.026.365 objetos, de los cuales 8.183.160 son estrellas, 152.863 galaxias, 52.453 qu&#225;sares, y 637.889 son de tipo desconocido. Se incluyen 5.808.985 objetos con una ratio se&#241;al-ruido (S/N) mayor que 10 en la banda g, 7.701.235 objetos con ratio se&#241;al-ruido mayor que 10 en la banda i, y 5.734.239 objetos con ratio se&#241;al-ruido mayor que 10 en ambas bandas.
