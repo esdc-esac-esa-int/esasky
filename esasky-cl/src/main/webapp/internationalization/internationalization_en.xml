@@ -1646,11 +1646,11 @@
 		Exposure &lt;i&gt;(ksec)&lt;/i&gt;
 	</text>
 	<text key="XMM_EPIC_ep_8_flux">
-		Flux&lt;br&gt;&lt;i&gt;(erg
+		Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_EPIC_ep_8_flux_err">
-		Flux error&lt;br&gt;&lt;i&gt;(erg
+		Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_EPIC_ep_2_flux">
@@ -2015,6 +2015,9 @@
 	</text>
 	<text key="XMM_EPIC_ep_8_iau_name">
 		IAU Name
+	</text>
+	<text key="XMM_EPIC_ep_8_name">
+		Stack Catalogue Name
 	</text>
 	<text key="RA_J1991">
 		RA &lt;i&gt;(&#126;J1991)&lt;/i&gt; </text>
