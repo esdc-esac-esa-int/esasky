@@ -565,7 +565,7 @@ public abstract class BaseDescriptor implements IDescriptor {
         final String metaMain = EsaSkyConstants.UCD_META_MAIN;
         String columnName = "";
         for(int i = 0; i < metadataColumns.length; i++) {
-            if (metadataColumns[i].getStringProperty("ucd").contains(ucdName)) {
+            if (metadataColumns[i].hasProperty("ucd") && metadataColumns[i].getStringProperty("ucd").contains(ucdName)) {
                 if (columnName.equals("") || metadataColumns[i].getStringProperty("ucd").contains(metaMain)) {
                     columnName = metadataColumns[i].getStringProperty("name");
                 }

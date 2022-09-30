@@ -7,17 +7,14 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Timer;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
-import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEventHandler;
 import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.AdqlPopupPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox;
@@ -350,7 +347,17 @@ public class TabulatorWrapper {
         tableJsObject.setProperty("filteredOnFov", true);
         groupByFov(tableJsObject, raCol, filterString, decCol, minDec, maxDec);
     }
-    
+
+    public void groupByColumn(String columnName) {
+        groupByColumn(tableJsObject, columnName);
+    }
+
+
+
+    public native void groupByColumn(GeneralJavaScriptObject tableJsObject, String columnName) /*-{
+        tableJsObject.setGroupBy(columnName);
+    }-*/;
+
     public native void groupByFov(GeneralJavaScriptObject tableJsObject, String raColumn, String filterString,
     		String decColumn, double minDec, double maxDec)/*-{
 
@@ -530,52 +537,38 @@ public class TabulatorWrapper {
     	setData(tableJsObject, data);
     }
 
-    public void insertObscoreData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
-        GeneralJavaScriptObject baba = formatMEta(metadata);
-        GeneralJavaScriptObject data2 = formatIvoaData(data, baba);
-        setMetadata(tableJsObject, baba);
-        setData(tableJsObject, data2);
+    public void insertTapRegistryData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
+        GeneralJavaScriptObject formattedMetadata = formatTapRegistryMetadata(metadata);
+        GeneralJavaScriptObject formattedData = formatTapRegistryData(data, formattedMetadata);
+        setMetadata(tableJsObject, formattedMetadata);
+        setData(tableJsObject, formattedData);
     }
 
-    private native GeneralJavaScriptObject formatMEta( GeneralJavaScriptObject metadata)/*-{
-
+    private native GeneralJavaScriptObject formatTapRegistryMetadata(GeneralJavaScriptObject metadata)/*-{
         var dataResult = []
-            for  (var j = 0; j < metadata.length; j++) {
-                var dataItemResult = metadata[j];
-                dataItemResult["datatype"] = "STRING";
-                dataItemResult["xtype"] = "STRING";
-                dataItemResult["displayName"] = metadata[j]["name"];
-                dataItemResult["visible"] = true;
-
-                if (dataItemResult["name"] == "access_url") {
-                    dataItemResult["name"] = "axxess_url";
-                    dataItemResult["id"] = "axxess_url";
-                }
-                dataResult.push(dataItemResult);
-            }
-
-
+        for  (var j = 0; j < metadata.length; j++) {
+            var dataItemResult = metadata[j];
+            dataItemResult["datatype"] = "STRING";
+            dataItemResult["xtype"] = "STRING";
+            dataItemResult["displayName"] = metadata[j]["name"];
+            dataItemResult["visible"] = true;
+            dataResult.push(dataItemResult);
+        }
 
         return dataResult;
     }-*/;
-
-    private native GeneralJavaScriptObject formatIvoaData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
+    private native GeneralJavaScriptObject formatTapRegistryData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
         var dataResult = []
         for (var i = 0; i < data.length; i++){
             var dataItem = data[i];
             var dataItemResult = {}
-
             var counter = 0;
-//            var keys = Object.keys(metadata[i]);
             for  (var j = 0; j < metadata.length; j++) {
-
                 dataItemResult[metadata[j].name] = dataItem[j]
                 counter++;
             }
-
             dataResult.push(dataItemResult)
         }
-
         return dataResult;
     }-*/;
     
@@ -752,7 +745,7 @@ public class TabulatorWrapper {
             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponse()();
             descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
             // here obs
-            var metadata = response.metadata;
+            var metadata = response.metadata == null ? response.columns : response.metadata;
 
             var sortedMetadata = [];
             var indexesMoved = [];
@@ -763,11 +756,14 @@ public class TabulatorWrapper {
                 metadata[j]["visible"] = (metadata[j].name !== "s_region");
                 metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
 
-                if (metadata[j]["ucd"].includes("pos.eq.ra")) {
-                    metadata[j].datatype = "RA"
-                } else if (metadata[j]["ucd"].includes("pos.eq.dec")) {
-                    metadata[j].datatype = "DEC"
+                if (metadata[j]["ucd"] != null) {
+                    if (metadata[j]["ucd"].includes("pos.eq.ra")) {
+                        metadata[j].datatype = "RA"
+                    } else if (metadata[j]["ucd"].includes("pos.eq.dec")) {
+                        metadata[j].datatype = "DEC"
+                    }
                 }
+
 
                 if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
 
@@ -798,7 +794,10 @@ public class TabulatorWrapper {
                 return element !== undefined;
             });
 
-            var data = response.data;
+            var needsFormatting = function(data) {
+                return Array.isArray(data[0])
+            }
+            var data = needsFormatting(response.data) ? wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::formatTapRegistryData(*)(response.data, metadata) : response.data;
 //            for(var i = 0; i < response.data.length; i++){
 //                var row = {id:i};
 //                for(var j = 0; j < metadata.length; j++){
@@ -1231,22 +1230,23 @@ public class TabulatorWrapper {
 		}
 		
 		var footerCounter = "<div></div><div id=\"" + divId + "_rowCount\" class=\"footerCounter\">0</div>"
-		
 		var table = new $wnd.Tabulator("#" + divId, {
 		 	height:"100%", // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
 		 	placeholder:"",
     		footerElement:footerCounter,
     		virtualDomHoz:true,
     		groupHeader : function(value, count, data, group){
-    			if(value == "Outside Field of View"){
-		        	return "<span style='color:#777777;'>" + value + "</span><span style='color:#777777; margin-left:10px;'>(" + count + " images)</span>";
-    			}
-    			else {
-		        	return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " images)</span>";
-    			}
-		    },
+                if(value == "Outside Field of View"){
+                    return "<span style='color:#777777;'>" + value + "</span><span style='color:#777777; margin-left:10px;'>(" + count + " images)</span>";
+                }
+                else if (value == "In Field of View"){
+                    return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " images)</span>";
+                } else {
+                    return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " tables)</span>";
+                }
+            },
 		    groupStartOpen: function(value, count, data, group){
-		    	return value != "Outside Field of View";
+		    	return value == "In Field of View";
 		    },
 		    groupToggleElement: "header",
 		    dataFiltered:function(filters, rows){
@@ -1293,7 +1293,7 @@ public class TabulatorWrapper {
 		    	// until we get some better handling of external tap metadata
 		    	// preview column is from ASTRON
 		    	var accessUrlColumn = this.getColumn("access_url");
-		    	if(accessUrlColumn){
+		    	if(accessUrlColumn && settings.isDownloadable){
 		    	    accessUrlColumn.move("centre", true);
 		    	}
 		    	var previewColumn = this.getColumn("preview");
@@ -1532,9 +1532,9 @@ public class TabulatorWrapper {
 		                            }
 		                    });
 			    	    }
-			    		else if(this.metadata[i].name.toLowerCase() === "access_url"
+			    		else if((this.metadata[i].name.toLowerCase() === "access_url"
 			    		    || this.metadata[i].name.toLowerCase() === "product_url"
-			    		    ){
+			    		    ) && settings.isDownloadable){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),
 	                            titleDownload:this.metadata[i].name,

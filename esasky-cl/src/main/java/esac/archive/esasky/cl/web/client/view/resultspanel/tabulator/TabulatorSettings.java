@@ -19,6 +19,7 @@ public class TabulatorSettings{
     private Integer selectable = null; // number of rows that can be selected simultaneously. null = no limit
 	private Boolean disableGoToColumn = false; // true to force remove goto column, even if there is a ra an dec column
 	private Boolean useUcd = false;
+	private Boolean isDownloadable = true;
 
 	private  Boolean addAdqlColumn = false;
 	
@@ -44,6 +45,7 @@ public class TabulatorSettings{
 		}
 		json.put("disableGoToColumn", JSONBoolean.getInstance(disableGoToColumn));
 		json.put("useUcd", JSONBoolean.getInstance(useUcd));
+		json.put("isDownloadable", JSONBoolean.getInstance(isDownloadable));
 		json.put("addAdqlColumn", JSONBoolean.getInstance(addAdqlColumn));
 		return json.toString();
 	}
@@ -142,6 +144,13 @@ public class TabulatorSettings{
 
 	public void setUseUcd(Boolean useUcd) {
 		this.useUcd = useUcd;
+	}
+
+	public Boolean getIsDownloadable() {
+		return isDownloadable;
+	}
+	public void setIsDownloadable(Boolean isDownloadable) {
+		this.isDownloadable = isDownloadable;
 	}
 
 	public void setAddAdqlColumn(boolean addAdqlColumn) {

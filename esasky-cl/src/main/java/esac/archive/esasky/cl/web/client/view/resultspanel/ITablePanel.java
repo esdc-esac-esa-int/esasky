@@ -94,6 +94,8 @@ public interface ITablePanel {
 	public boolean isDataProductDatalink();
     public int getNumberOfShownRows();
 	void filterOnFoV(String raCol, String decCol);
+
+	void groupOnColumn(String columnName);
 	
 	void setMaxHeight(int height);
 	void setVisibleColumns(List<String> columns);

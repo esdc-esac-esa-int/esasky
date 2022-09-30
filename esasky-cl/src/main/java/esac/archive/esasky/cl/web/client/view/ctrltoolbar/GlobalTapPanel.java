@@ -82,8 +82,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(jsonString);
         TabulatorSettings settings = new TabulatorSettings();
         settings.setAddAdqlColumn(true);
+        settings.setIsDownloadable(false);
         tabulatorTable = new TabulatorWrapper("browseTap__tabulatorContainer", new TabulatorCallback(), settings);
-        tabulatorTable.insertObscoreData(obj.getProperty("data"), obj.getProperty("columns"));
+        tabulatorTable.groupByColumn("res_title");
+        tabulatorTable.insertTapRegistryData(obj.getProperty("data"), obj.getProperty("columns"));
         tabulatorTable.restoreRedraw();
         tabulatorTable.redrawAndReinitializeHozVDom();
     }
@@ -108,21 +110,22 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         public void onRowSelection(GeneralJavaScriptObject row) {
             GeneralJavaScriptObject rowData =  row.invokeFunction("getData");
             String tableName = rowData.getStringProperty("table_name");
-            String accessUrl = rowData.getStringProperty("axxess_url");
+            String accessUrl = rowData.getStringProperty("access_url");
             String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
                     + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + "SELECT top 0 * from " + tableName + "&"
+                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + "SELECT top 1 * from " + tableName + "&"
                     + EsaSkyConstants.EXT_TAP_URL + "=" + accessUrl;
             JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
 
                 @Override
                 public void onSuccess(String responseText) {
                     GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(responseText);
-                    GeneralJavaScriptObject meta = obj.getProperty("metadata");
+                    GeneralJavaScriptObject meta = obj.hasProperty("metadata") ? obj.getProperty("metadata") : obj.getProperty("columns");
                     ExtTapDescriptor descriptor = DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors().get(0);
                     descriptor.setGuiShortName(tableName);
                     descriptor.setGuiLongName(tableName);
                     descriptor.setTapUrl(accessUrl + "/sync");
+                    descriptor.setResponseFormat("VOTable");
                     descriptor.setTapTable(tableName);
                     descriptor.setTapTableMetadata(meta);
                     descriptor.setSelectADQL("SELECT *");
@@ -132,7 +135,13 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     descriptor.setInBackend(false);
                     descriptor.setUseUcd(true);
                     descriptor.setDateADQL(null);
-                    descriptor.setSearchFunction("cointainsPoint");
+                    if (descriptor.getTapRaColumn().isEmpty() || descriptor.getTapDecColumn().isEmpty()) {
+                        descriptor.setSearchFunction("");
+                        descriptor.setSelectADQL("SELECT TOP 50 *");
+                    } else {
+                        descriptor.setSearchFunction("polygonIntersect");
+                    }
+
                     CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
                 }
 
@@ -145,7 +154,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
-            adqlPopupPanel.setTapServiceUrl(rowData.getStringProperty("axxess_url"));
+            adqlPopupPanel.setTapServiceUrl(rowData.getStringProperty("access_url"));
             adqlPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
             showAdqlPanel();
         }

@@ -93,9 +93,11 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
 //                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adqlTextInput + "&"
 //                + EsaSkyConstants.EXT_TAP_URL + "=" + tapServiceUrl;
 
+        String qry = adqlTextInput.replace("SELECT", "SELECT TOP 1");
+        qry += "FROM " + tapTableName;
         String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
                 + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adqlTextInput + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + qry + "&"
                 + EsaSkyConstants.EXT_TAP_URL + "=" + tapServiceUrl;
 
         JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
@@ -110,6 +112,7 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
                 descriptor.setTapTable(tapTableName);
                 descriptor.setTapTableMetadata(meta);
                 descriptor.setSelectADQL(adqlTextInput);
+//                descriptor.setResponseFormat("votable");
                 descriptor.setPrimaryColor(ESASkyColors.getNext());
                 descriptor.setFovLimit(180.0);
                 descriptor.setShapeLimit(10);
