@@ -13,6 +13,7 @@ public interface ITablePanel {
 
 	public void insertData(String url);
 	public void insertData(GeneralJavaScriptObject data);
+	public void insertExternalTapData(GeneralJavaScriptObject data);
 
 	public IDescriptor getDescriptor();
 

@@ -442,6 +442,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
+	public void insertExternalTapData(GeneralJavaScriptObject data) {
+		GeneralJavaScriptObject metadata = data.hasProperty("metadata") ? data.getProperty("metadata") : data.getProperty("columns");
+		table.insertExternalTapData(data.getProperty("data"), metadata);
+		tableNotShowingContainer.addStyleName("displayNone");
+	}
+
+	@Override
 	public void insertHeader(GeneralJavaScriptObject data, String mode) {
 		table.insertUserHeader(data);
 		tableNotShowingContainer.addStyleName("displayNone");

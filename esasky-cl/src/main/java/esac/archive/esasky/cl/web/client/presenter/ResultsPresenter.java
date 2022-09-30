@@ -152,6 +152,15 @@ public class ResultsPresenter implements ICountRequestHandler {
 
         entity.fetchData();
     }
+
+    protected final void getMetadata(final GeneralEntityInterface entity, final GeneralJavaScriptObject data) {
+        final String debugPrefix = GET_METADATA + entity.getDescriptor().getGuiShortName() + "]";
+        Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
+
+        this.view.addResultsTab(entity, entity.getDescriptor().getGuiLongName(), entity.getHelpText());
+
+        entity.insertExternalData(data);
+    }
    
     protected final void getMetadataWithoutMOC(final GeneralEntityInterface entity) {
     	final String debugPrefix = GET_METADATA + entity.getDescriptor().getGuiShortName() + "]";

@@ -93,11 +93,11 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
 //                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adqlTextInput + "&"
 //                + EsaSkyConstants.EXT_TAP_URL + "=" + tapServiceUrl;
 
-        String qry = adqlTextInput.replace("SELECT", "SELECT TOP 1");
-        qry += "FROM " + tapTableName;
+//        String qry = adqlTextInput.replace("SELECT", "SELECT TOP 1");
+//        qry += "FROM " + tapTableName;
         String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
                 + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + qry + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adqlTextInput + "&"
                 + EsaSkyConstants.EXT_TAP_URL + "=" + tapServiceUrl;
 
         JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
@@ -119,8 +119,8 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
                 descriptor.setInBackend(false);
                 descriptor.setUseUcd(true);
                 descriptor.setDateADQL(null);
-                descriptor.setSearchFunction("cointainsPoint");
-                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+                descriptor.setSearchFunction("");
+                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor, obj));
             }
 
             @Override

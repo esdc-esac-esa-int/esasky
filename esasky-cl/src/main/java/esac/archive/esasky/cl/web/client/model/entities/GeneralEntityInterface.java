@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.ui.Image;
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
@@ -42,6 +43,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     public void setPrimaryColor(String color);
     
     public void fetchData();
+    public void insertExternalData(GeneralJavaScriptObject data);
     public void fetchData(String adql);
     public void fetchDataWithoutMOC();
     public void coneSearch(SkyViewPosition conePos);

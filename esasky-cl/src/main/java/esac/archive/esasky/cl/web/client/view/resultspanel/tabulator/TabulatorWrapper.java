@@ -537,14 +537,14 @@ public class TabulatorWrapper {
     	setData(tableJsObject, data);
     }
 
-    public void insertTapRegistryData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
-        GeneralJavaScriptObject formattedMetadata = formatTapRegistryMetadata(metadata);
-        GeneralJavaScriptObject formattedData = formatTapRegistryData(data, formattedMetadata);
+    public void insertExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
+        GeneralJavaScriptObject formattedMetadata = formatExternalTapMetadata(metadata);
+        GeneralJavaScriptObject formattedData = formatExternalTapData(data, formattedMetadata);
         setMetadata(tableJsObject, formattedMetadata);
         setData(tableJsObject, formattedData);
     }
 
-    private native GeneralJavaScriptObject formatTapRegistryMetadata(GeneralJavaScriptObject metadata)/*-{
+    private native GeneralJavaScriptObject formatExternalTapMetadata(GeneralJavaScriptObject metadata)/*-{
         var dataResult = []
         for  (var j = 0; j < metadata.length; j++) {
             var dataItemResult = metadata[j];
@@ -557,7 +557,7 @@ public class TabulatorWrapper {
 
         return dataResult;
     }-*/;
-    private native GeneralJavaScriptObject formatTapRegistryData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
+    private native GeneralJavaScriptObject formatExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
         var dataResult = []
         for (var i = 0; i < data.length; i++){
             var dataItem = data[i];
@@ -579,8 +579,9 @@ public class TabulatorWrapper {
     public void insertUserData(GeneralJavaScriptObject data){
         setIsUserDataBool(tableJsObject);
         setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
+
     }
-    
+
     public void insertUserHeader(GeneralJavaScriptObject data){
     	setIsUserDataBool(tableJsObject);
     	setData(tableJsObject, convertDataToHeaderFormat(tableJsObject, data));
@@ -797,7 +798,7 @@ public class TabulatorWrapper {
             var needsFormatting = function(data) {
                 return Array.isArray(data[0])
             }
-            var data = needsFormatting(response.data) ? wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::formatTapRegistryData(*)(response.data, metadata) : response.data;
+            var data = needsFormatting(response.data) ? wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::formatExternalTapData(*)(response.data, metadata) : response.data;
 //            for(var i = 0; i < response.data.length; i++){
 //                var row = {id:i};
 //                for(var j = 0; j < metadata.length; j++){

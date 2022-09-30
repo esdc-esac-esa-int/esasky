@@ -85,7 +85,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         settings.setIsDownloadable(false);
         tabulatorTable = new TabulatorWrapper("browseTap__tabulatorContainer", new TabulatorCallback(), settings);
         tabulatorTable.groupByColumn("res_title");
-        tabulatorTable.insertTapRegistryData(obj.getProperty("data"), obj.getProperty("columns"));
+        tabulatorTable.insertExternalTapData(obj.getProperty("data"), obj.getProperty("columns"));
         tabulatorTable.restoreRedraw();
         tabulatorTable.redrawAndReinitializeHozVDom();
     }
@@ -139,7 +139,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                         descriptor.setSearchFunction("");
                         descriptor.setSelectADQL("SELECT TOP 50 *");
                     } else {
-                        descriptor.setSearchFunction("polygonIntersect");
+                        descriptor.setSearchFunction("cointainsPoint");
                     }
 
                     CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));

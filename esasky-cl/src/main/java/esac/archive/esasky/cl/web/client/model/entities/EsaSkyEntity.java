@@ -302,7 +302,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             fetchShapesAndMetadata();
         }
     }
-    
+
     @Override
     public void fetchData(String adql) {
     	 Log.debug("Showing real data");
@@ -320,7 +320,23 @@ public class EsaSkyEntity implements GeneralEntityInterface {
          clearAll();
          tablePanel.insertData(url);
     }
-    
+
+    @Override
+    public void insertExternalData(GeneralJavaScriptObject data) {
+        drawer = combinedDrawer;
+        tablePanel.setMOCMode(false);
+        tablePanel.notifyObservers();
+
+        if(mocEntity != null){
+            mocEntity.clearAll();
+            mocEntity.setShouldBeShown(false);
+        }
+
+        clearAll();
+        tablePanel.insertExternalTapData(data);
+    }
+
+
     protected void fetchShapesAndMetadata() {
         clearAll();
         int shapeLimit = DeviceUtils.getDeviceShapeLimit(descriptor);

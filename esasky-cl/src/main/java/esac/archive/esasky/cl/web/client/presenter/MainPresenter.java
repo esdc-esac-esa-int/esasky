@@ -301,7 +301,11 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(TapRegistrySelectEvent.TYPE, event -> {
             if (event.getDescriptor() != null) {
-                getRelatedMetadata(event.getDescriptor());
+                if (event.hasData()){
+                    insertRelatedMetadata(event.getDescriptor(), event.getData());
+                } else {
+                    getRelatedMetadata(event.getDescriptor());
+                }
             }
         });
         
@@ -363,6 +367,9 @@ public class MainPresenter {
     	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor, () -> {}));
     }
 
+    public void insertRelatedMetadata(IDescriptor descriptor, GeneralJavaScriptObject data) {
+        resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), data);
+    }
     public void getRelatedMetadata(IDescriptor descriptor) {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor));
     }

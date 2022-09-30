@@ -739,7 +739,12 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void fetchData() {
 	  //This entity has only MOC data
 	}
-	
+
+	@Override
+	public void insertExternalData(GeneralJavaScriptObject data) {
+		//This entity has only MOC data
+	}
+
 	@Override
 	public void fetchData(String adql) {
 	  //This entity has only MOC data
