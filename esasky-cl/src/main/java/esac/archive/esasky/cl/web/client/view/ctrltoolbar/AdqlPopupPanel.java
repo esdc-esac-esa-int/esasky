@@ -1,44 +1,35 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.registry.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
-import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.Hidable;
-import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> {
+public class AdqlPopupPanel extends MovableResizablePanel<AdqlPopupPanel> {
 
     private FlowPanel container;
 
     private EsaSkyStringButton searchButton;
-    private TextBox adqlTextBox;
-    private PopupHeader<PopupPanel> header;
+    private TextArea adqlTextBox;
+    private PopupHeader<AdqlPopupPanel> header;
     private final AdqlPopupPanel.Resources resources;
     private final CssResource style;
-    private boolean isShowing;
     private String adqlTextInput;
 
     private String tapServiceUrl;
@@ -51,23 +42,24 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
         CssResource style();
     }
     public AdqlPopupPanel(String googleEventCategory, boolean isSuggestedPositionCenter) {
-        super(googleEventCategory, true);
+        super(googleEventCategory, isSuggestedPositionCenter);
         this.resources = GWT.create(AdqlPopupPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
         initView();
+        this.hide();
     }
 
     public void initView() {
+        this.addStyleName("adqlPopupPanel__container");
         container = new FlowPanel();
-        container.addStyleName("adqlPopupPanel__container");
         header = new PopupHeader<>(this, "header",
                 "helptext",
                 "help title",
                 event -> hide(), "Close panel");
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 
-        adqlTextBox = new TextBox();
+        adqlTextBox = new TextArea();
         adqlTextBox.addValueChangeHandler(event -> {
             adqlTextInput = event.getValue();
         });
@@ -88,13 +80,6 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
 
 
     private void loadExttapData() {
-//        String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
-//                + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-//                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adqlTextInput + "&"
-//                + EsaSkyConstants.EXT_TAP_URL + "=" + tapServiceUrl;
-
-//        String qry = adqlTextInput.replace("SELECT", "SELECT TOP 1");
-//        qry += "FROM " + tapTableName;
         String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
                 + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
                 + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adqlTextInput + "&"
@@ -112,7 +97,7 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
                 descriptor.setTapTable(tapTableName);
                 descriptor.setTapTableMetadata(meta);
                 descriptor.setSelectADQL(adqlTextInput);
-//                descriptor.setResponseFormat("votable");
+                descriptor.setResponseFormat("VOTable");
                 descriptor.setPrimaryColor(ESASkyColors.getNext());
                 descriptor.setFovLimit(180.0);
                 descriptor.setShapeLimit(10);
@@ -141,6 +126,12 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
 
     public void setTapTable(String tableName) {
         this.tapTableName = tableName;
+        setAdqlQuery("SELECT TOP 50 * FROM " + tableName);
+    }
+
+    public void setAdqlQuery(String query) {
+        this.adqlTextBox.setText(query);
+        adqlTextInput = query;
     }
 
     public  String getTapTable() {
@@ -179,26 +170,18 @@ public class AdqlPopupPanel extends MovablePanel implements Hidable<PopupPanel> 
         containerStyle.setPropertyPx("minHeight", 300);
     }
 
-
     @Override
-    public void show() {
-        isShowing = true;
-        this.removeStyleName("displayNone");
-        setDefaultSize();
-        ensureDialogFitsInsideWindow();
-        updateHandlers();
+    protected Element getMovableElement() {
+        return header.getElement();
     }
 
     @Override
-    public void hide() {
-        this.addStyleName("displayNone");
-        isShowing = false;
-        this.removeHandlers();
-        CloseEvent.fire(this, null);
+    protected void onResize() {
+
     }
 
     @Override
-    public boolean isShowing() {
-        return this.isShowing;
+    protected Element getResizeElement() {
+        return container.getElement();
     }
 }

@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.common;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.OpenEvent;
 
 public abstract class MovableResizablePanel<T> extends MovablePanel implements Hidable<T> {
 
@@ -29,6 +30,7 @@ public abstract class MovableResizablePanel<T> extends MovablePanel implements H
         updateHandlers();
         setMaxSize();
         ensureDialogFitsInsideWindow();
+        OpenEvent.fire(this, null);
     }
 
     @Override

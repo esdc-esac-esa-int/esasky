@@ -1,13 +1,11 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.event.logical.shared.HasCloseHandlers;
+import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
-public interface Hidable<T> extends HasCloseHandlers<T> {
+public interface Hidable<T> extends HasCloseHandlers<T>, HasOpenHandlers<T> {
 
     void show();
 
@@ -27,5 +25,9 @@ public interface Hidable<T> extends HasCloseHandlers<T> {
 
     default HandlerRegistration addCloseHandler(CloseHandler<T> handler) {
         return addHandler(handler, CloseEvent.getType());
+    }
+
+    default HandlerRegistration addOpenHandler(OpenHandler<T> handler) {
+        return addHandler(handler, OpenEvent.getType());
     }
 }

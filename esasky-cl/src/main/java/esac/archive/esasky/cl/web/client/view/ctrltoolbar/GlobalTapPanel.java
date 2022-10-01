@@ -30,8 +30,8 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private CssResource style;
     TabulatorWrapper tabulatorTable;
     private FlowPanel tabulatorContainer;
-
     private AdqlPopupPanel adqlPopupPanel;
+
 
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
@@ -73,6 +73,8 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         container.getElement().setId("globalTapPanelContainer");
 
         adqlPopupPanel = new AdqlPopupPanel("test", true);
+        adqlPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
+        adqlPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
         MainLayoutPanel.addElementToMainArea(adqlPopupPanel);
         adqlPopupPanel.setSuggestedPositionCenter();
         this.add(container);
@@ -160,7 +162,6 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         }
     }
 
-
     @Override
     protected Element getMovableElement() {
         return header.getElement();
@@ -215,7 +216,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     }
 
     public void showAdqlPanel() {
+        adqlPopupPanel.setSuggestedPositionCenter();
         adqlPopupPanel.show();
+        adqlPopupPanel.setFocus(true);
+        adqlPopupPanel.updateZIndex();
     }
 
     public void hideAdqlPanel() {
