@@ -60,11 +60,13 @@ public class AdqlPopupPanel extends MovableResizablePanel<AdqlPopupPanel> {
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 
         adqlTextBox = new TextArea();
+        adqlTextBox.setWidth("99%");
+        adqlTextBox.setHeight("50px");
         adqlTextBox.addValueChangeHandler(event -> {
             adqlTextInput = event.getValue();
         });
 
-        searchButton = new EsaSkyStringButton("OK");
+        searchButton = new EsaSkyStringButton("Run query");
         searchButton.setMediumStyle();
 
         searchButton.addClickHandler(event -> {

@@ -25,3 +25,11 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+
+.globalTapPanel__loadingSpinner {
+    display: inline;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}

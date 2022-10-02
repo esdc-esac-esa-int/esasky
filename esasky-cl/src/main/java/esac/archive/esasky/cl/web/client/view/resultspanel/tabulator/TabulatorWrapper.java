@@ -1309,11 +1309,11 @@ public class TabulatorWrapper {
                         visible: true,
                         headerSort:false,
                         headerTooltip:"ADQL temp tooltip",
-                        minWidth: 64,
+                        minWidth: 50,
                         download: false,
-                        width:64, hozAlign:"center",
-                        formatter:imageButtonFormatter, width:20, hozAlign:"center", formatterParams:{image:"adql_icon.png",
-                            tooltip:" ADQL tooltip temprary"},
+                        hozAlign:"center",
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center",
+                        formatterParams:{image:"adql_icon.png", width: "20px", height: "20px", tooltip:" ADQL tooltip temprary"},
                         cellClick:function(e, cell){
                             e.stopPropagation();
                             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
@@ -1392,7 +1392,7 @@ public class TabulatorWrapper {
                         headerTooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
                         minWidth: 50,
                         download: false,
-                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"send_small.png", 
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center", formatterParams:{image:"send_small.png",
                             tooltip:$wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")},
                             cellClick:function(e, cell){
                                 e.stopPropagation();

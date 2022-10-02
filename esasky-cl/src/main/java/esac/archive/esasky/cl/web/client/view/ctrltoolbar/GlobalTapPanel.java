@@ -13,6 +13,7 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabulatorCallback;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
@@ -31,7 +32,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     TabulatorWrapper tabulatorTable;
     private FlowPanel tabulatorContainer;
     private AdqlPopupPanel adqlPopupPanel;
-
+    private LoadingSpinner loadingSpinner;
 
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
@@ -68,8 +69,13 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 event -> hide(), "Close panel");
 
 
+        loadingSpinner= new LoadingSpinner(true);
+        loadingSpinner.setStyleName("globalTapPanel__loadingSpinner");
+        loadingSpinner.setVisible(false);
+
         container.add(header);
         container.add(tabulatorContainer);
+        container.add(loadingSpinner);
         container.getElement().setId("globalTapPanelContainer");
 
         adqlPopupPanel = new AdqlPopupPanel("test", true);
@@ -93,15 +99,17 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     }
 
     private void loadData() {
+        setDefaultSize();
+        setIsLoading(true);
         JSONUtils.getJSONFromUrl(EsaSkyWebConstants.TAPREGISTRY_URL, new JSONUtils.IJSONRequestCallback() {
             @Override
             public void onSuccess(String responseText) {
                 onJsonLoaded(responseText);
-                setDefaultSize();
+                setIsLoading(false);
             }
             @Override
             public void onError(String errorCause) {
-                int a = 1+2;
+                setIsLoading(false);
             }
         });
     }
@@ -110,6 +118,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
         @Override
         public void onRowSelection(GeneralJavaScriptObject row) {
+            setIsLoading(true);
             GeneralJavaScriptObject rowData =  row.invokeFunction("getData");
             String tableName = rowData.getStringProperty("table_name");
             String accessUrl = rowData.getStringProperty("access_url");
@@ -145,11 +154,12 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     }
 
                     CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+                    setIsLoading(false);
                 }
 
                 @Override
                 public void onError(String errorCause) {
-                    // TODO: Handle
+                    setIsLoading(false);
                 }
             });
         }
@@ -224,6 +234,11 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     public void hideAdqlPanel() {
         adqlPopupPanel.hide();
+    }
+
+    private void setIsLoading(boolean isLoading) {
+        loadingSpinner.setVisible(isLoading);
+        setGlassEnabled(isLoading);
     }
 
 }
