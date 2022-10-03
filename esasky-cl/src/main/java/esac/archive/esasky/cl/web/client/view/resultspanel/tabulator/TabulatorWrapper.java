@@ -1275,7 +1275,7 @@ public class TabulatorWrapper {
 		    },
 		    dataLoaded:function(data){
                 var imageButtonFormatter = function(cell, formatterParams, onRendered){
-                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
+                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
                 };
 
                 if((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
@@ -1302,18 +1302,37 @@ public class TabulatorWrapper {
 		    	    previewColumn.move("centre", true);
 		    	}
 
-                if (settings.addAdqlColumn) {
+                if (settings.addMetadataColumn) {
                     this.addColumn({
-                        title: "ADQL temp title",
-                        field:"adqlBtn",
+                        title: "Columns",
+                        field:"metadataBtn",
                         visible: true,
                         headerSort:false,
-                        headerTooltip:"ADQL temp tooltip",
-                        minWidth: 50,
+                        headerTooltip:"Column metadata",
+                        minWidth: 75,
                         download: false,
                         hozAlign:"center",
                         formatter:imageButtonFormatter, width:40, hozAlign:"center",
-                        formatterParams:{image:"adql_icon.png", width: "20px", height: "20px", tooltip:" ADQL tooltip temprary"},
+                        formatterParams:{image:"column_icon.png", tooltip:"Load column metadata"},
+                        cellClick:function(e, cell){
+                            e.stopPropagation();
+                            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
+                        }
+                    }, true);
+                }
+
+                if (settings.addAdqlColumn) {
+                    this.addColumn({
+                        title: "ADQL",
+                        field:"adqlBtn",
+                        visible: true,
+                        headerSort:false,
+                        headerTooltip:"ADQL query",
+                        minWidth: 55,
+                        download: false,
+                        hozAlign:"center",
+                        formatter:imageButtonFormatter, width:40, hozAlign:"center",
+                        formatterParams:{image:"adql_icon.png", tooltip:"Create a custom ADQL query"},
                         cellClick:function(e, cell){
                             e.stopPropagation();
                             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
@@ -2367,6 +2386,10 @@ public class TabulatorWrapper {
 
     public void onAdqlClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onAdqlButtonPressed(rowData);
+    }
+
+    public void onMetadataClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onMetadataButtonPressed(rowData);
     }
 
     public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {

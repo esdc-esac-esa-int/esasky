@@ -92,6 +92,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         GeneralJavaScriptObject obj = GeneralJavaScriptObject.createJsonObject(jsonString);
         TabulatorSettings settings = new TabulatorSettings();
         settings.setAddAdqlColumn(true);
+        settings.setAddMetadataColumn(true);
         settings.setIsDownloadable(false);
         tabulatorTable = new TabulatorWrapper("browseTap__tabulatorContainer", new TabulatorCallback(), settings);
         tabulatorTable.groupByColumn("res_title");
@@ -162,6 +163,15 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             queryPopupPanel.setTapServiceUrl(rowData.getStringProperty("access_url"));
             queryPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
             showQueryPanel();
+        }
+
+        @Override
+        public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
+            String tableName = rowData.getStringProperty("table_name");
+            String accessUrl = rowData.getStringProperty("access_url");
+            String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
+
+            GlobalTapPanel.this.queryExternalTapTable(accessUrl, tableName, query);
         }
     }
 

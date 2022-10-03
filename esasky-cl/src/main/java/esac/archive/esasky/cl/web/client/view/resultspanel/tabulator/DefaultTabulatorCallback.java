@@ -152,4 +152,9 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
 		//Do nothing by default - To be overridden if needed.
 	}
+
+	@Override
+	public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
 }

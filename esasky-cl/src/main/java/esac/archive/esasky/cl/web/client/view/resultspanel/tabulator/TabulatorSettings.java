@@ -22,7 +22,8 @@ public class TabulatorSettings{
 	private Boolean isDownloadable = true;
 
 	private  Boolean addAdqlColumn = false;
-	
+	private Boolean addMetadataColumn = false;
+
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
 		json.put("addSendToVOApplicationColumn", JSONBoolean.getInstance(addSendToVOApplicationColumn));
@@ -47,6 +48,7 @@ public class TabulatorSettings{
 		json.put("useUcd", JSONBoolean.getInstance(useUcd));
 		json.put("isDownloadable", JSONBoolean.getInstance(isDownloadable));
 		json.put("addAdqlColumn", JSONBoolean.getInstance(addAdqlColumn));
+		json.put("addMetadataColumn", JSONBoolean.getInstance(addMetadataColumn));
 		return json.toString();
 	}
 
@@ -156,8 +158,8 @@ public class TabulatorSettings{
 	public void setAddAdqlColumn(boolean addAdqlColumn) {
 		this.addAdqlColumn = addAdqlColumn;
 	}
-
-	public Boolean getAddAdqlColumn() {
-		return this.addAdqlColumn;
+	
+	public void setAddMetadataColumn(boolean addMetadataColumn) {
+		this.addMetadataColumn = addMetadataColumn;
 	}
 }

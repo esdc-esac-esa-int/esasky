@@ -34,5 +34,6 @@ public interface TabulatorCallback {
     public void multiSelectionFinished();
     public boolean hasBeenClosed();
     public void onAdqlButtonPressed(GeneralJavaScriptObject rowData);
+    public void onMetadataButtonPressed(GeneralJavaScriptObject rowData);
 
 }
