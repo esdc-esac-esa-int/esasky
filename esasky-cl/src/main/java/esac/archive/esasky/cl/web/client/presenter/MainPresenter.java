@@ -11,7 +11,7 @@ import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.*;
-import esac.archive.esasky.cl.web.client.event.registry.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;

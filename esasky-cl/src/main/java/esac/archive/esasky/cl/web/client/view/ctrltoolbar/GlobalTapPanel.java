@@ -7,7 +7,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.event.registry.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -20,7 +20,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
@@ -31,7 +30,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private CssResource style;
     TabulatorWrapper tabulatorTable;
     private FlowPanel tabulatorContainer;
-    private AdqlPopupPanel adqlPopupPanel;
+    private QueryPopupPanel queryPopupPanel;
     private LoadingSpinner loadingSpinner;
 
     public interface Resources extends ClientBundle {
@@ -69,7 +68,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 event -> hide(), "Close panel");
 
 
-        loadingSpinner= new LoadingSpinner(true);
+        loadingSpinner = new LoadingSpinner(true);
         loadingSpinner.setStyleName("globalTapPanel__loadingSpinner");
         loadingSpinner.setVisible(false);
 
@@ -78,16 +77,19 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         container.add(loadingSpinner);
         container.getElement().setId("globalTapPanelContainer");
 
-        adqlPopupPanel = new AdqlPopupPanel("test", true);
-        adqlPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
-        adqlPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
-        MainLayoutPanel.addElementToMainArea(adqlPopupPanel);
-        adqlPopupPanel.setSuggestedPositionCenter();
+        queryPopupPanel = new QueryPopupPanel("test", true);
+        queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
+        queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
+        queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getQuery()));
+        queryPopupPanel.setSuggestedPositionCenter();
+        queryPopupPanel.hide();
+        MainLayoutPanel.addElementToMainArea(queryPopupPanel);
+
         this.add(container);
     }
 
     public void onJsonLoaded(String jsonString) {
-        GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(jsonString);
+        GeneralJavaScriptObject obj = GeneralJavaScriptObject.createJsonObject(jsonString);
         TabulatorSettings settings = new TabulatorSettings();
         settings.setAddAdqlColumn(true);
         settings.setIsDownloadable(false);
@@ -107,6 +109,35 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 onJsonLoaded(responseText);
                 setIsLoading(false);
             }
+
+            @Override
+            public void onError(String errorCause) {
+                setIsLoading(false);
+            }
+        });
+    }
+
+    private void queryExternalTapTable(String tapUrl, String tableName, String query) {
+        setIsLoading(true);
+
+        String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                + EsaSkyConstants.EXT_TAP_URL + "=" + tapUrl;
+
+        JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+            @Override
+            public void onSuccess(String responseText) {
+                setIsLoading(false);
+                GeneralJavaScriptObject responseObject = GeneralJavaScriptObject.createJsonObject(responseText);
+                GeneralJavaScriptObject meta = responseObject.hasProperty("metadata")
+                        ? responseObject.getProperty("metadata")
+                        : responseObject.getProperty("columns");
+
+                ExtTapDescriptor descriptor = DescriptorRepository.getInstance().addExtTapDescriptor(tapUrl, tableName, query, meta);
+                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor, responseObject));
+            }
+
             @Override
             public void onError(String errorCause) {
                 setIsLoading(false);
@@ -118,57 +149,19 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
         @Override
         public void onRowSelection(GeneralJavaScriptObject row) {
-            setIsLoading(true);
-            GeneralJavaScriptObject rowData =  row.invokeFunction("getData");
+            GeneralJavaScriptObject rowData = row.invokeFunction("getData");
             String tableName = rowData.getStringProperty("table_name");
             String accessUrl = rowData.getStringProperty("access_url");
-            String url = EsaSkyWebConstants.EXT_TAP_URL  + "?"
-                    + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + "SELECT top 1 * from " + tableName + "&"
-                    + EsaSkyConstants.EXT_TAP_URL + "=" + accessUrl;
-            JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+            String query = "SELECT * FROM " + tableName;
 
-                @Override
-                public void onSuccess(String responseText) {
-                    GeneralJavaScriptObject obj =  GeneralJavaScriptObject.createJsonObject(responseText);
-                    GeneralJavaScriptObject meta = obj.hasProperty("metadata") ? obj.getProperty("metadata") : obj.getProperty("columns");
-                    ExtTapDescriptor descriptor = DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors().get(0);
-                    descriptor.setGuiShortName(tableName);
-                    descriptor.setGuiLongName(tableName);
-                    descriptor.setTapUrl(accessUrl + "/sync");
-                    descriptor.setResponseFormat("VOTable");
-                    descriptor.setTapTable(tableName);
-                    descriptor.setTapTableMetadata(meta);
-                    descriptor.setSelectADQL("SELECT *");
-                    descriptor.setPrimaryColor(ESASkyColors.getNext());
-                    descriptor.setFovLimit(180.0);
-                    descriptor.setShapeLimit(10);
-                    descriptor.setInBackend(false);
-                    descriptor.setUseUcd(true);
-                    descriptor.setDateADQL(null);
-                    if (descriptor.getTapRaColumn().isEmpty() || descriptor.getTapDecColumn().isEmpty()) {
-                        descriptor.setSearchFunction("");
-                        descriptor.setSelectADQL("SELECT TOP 50 *");
-                    } else {
-                        descriptor.setSearchFunction("cointainsPoint");
-                    }
-
-                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
-                    setIsLoading(false);
-                }
-
-                @Override
-                public void onError(String errorCause) {
-                    setIsLoading(false);
-                }
-            });
+            GlobalTapPanel.this.queryExternalTapTable(accessUrl, tableName, query);
         }
 
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
-            adqlPopupPanel.setTapServiceUrl(rowData.getStringProperty("access_url"));
-            adqlPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
-            showAdqlPanel();
+            queryPopupPanel.setTapServiceUrl(rowData.getStringProperty("access_url"));
+            queryPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
+            showQueryPanel();
         }
     }
 
@@ -203,7 +196,6 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     }
 
 
-
     private void setDefaultSize() {
         Size size = getDefaultSize();
         container.setWidth(size.width + "px");
@@ -225,15 +217,15 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         loadData();
     }
 
-    public void showAdqlPanel() {
-        adqlPopupPanel.setSuggestedPositionCenter();
-        adqlPopupPanel.show();
-        adqlPopupPanel.setFocus(true);
-        adqlPopupPanel.updateZIndex();
+    public void showQueryPanel() {
+        queryPopupPanel.setSuggestedPositionCenter();
+        queryPopupPanel.show();
+        queryPopupPanel.setFocus(true);
+        queryPopupPanel.updateZIndex();
     }
 
-    public void hideAdqlPanel() {
-        adqlPopupPanel.hide();
+    public void hideQueryPanel() {
+        queryPopupPanel.hide();
     }
 
     private void setIsLoading(boolean isLoading) {

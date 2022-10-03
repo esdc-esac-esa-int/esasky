@@ -248,6 +248,52 @@ public class DescriptorRepository {
         });
     }
 
+    public ExtTapDescriptor addExtTapDescriptor(String tapUrl, String tableName, String adql, GeneralJavaScriptObject metadata) {
+        String name = tapUrl+"/"+tableName;
+
+        ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(name);
+        if (descriptor == null) {
+            descriptor = new ExtTapDescriptor();
+        }
+
+        descriptor.setTapTableMetadata(metadata);
+        descriptor.setUseUcd(true);
+        descriptor.setGuiShortName(name);
+        descriptor.setGuiLongName(name);
+        descriptor.setMission(name);
+        descriptor.setCreditedInstitutions(name);
+        descriptor.setFovLimit(180.0);
+        descriptor.setShapeLimit(3000);
+
+        if (!tapUrl.contains("/sync")) {
+            tapUrl += "/sync";
+        }
+        descriptor.setTapUrl(tapUrl);
+        descriptor.setResponseFormat("VOTable");
+        descriptor.setInBackend(false);
+        descriptor.setPrimaryColor(ESASkyColors.getNext());
+        descriptor.setTapTable(tableName);
+
+        if(descriptor.tapMetadataContainsPos()) {
+            descriptor.setSearchFunction("cointainsPoint");
+        } else {
+            descriptor.setSearchFunction("");
+        }
+
+        adql = adql.replace("from", "FROM");
+        adql = adql.replace("where", "WHERE");
+        String[] whereSplit = adql.split("WHERE");
+        if (whereSplit.length > 1) {
+            descriptor.setWhereADQL(whereSplit[1]);
+        }
+        String[] fromSplit = adql.split("FROM");
+        descriptor.setSelectADQL(fromSplit[0]);
+
+
+        extTapDescriptors.getDescriptors().add(descriptor);
+        return descriptor;
+    }
+
     public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {
         ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(name);
         if (descriptor == null) {

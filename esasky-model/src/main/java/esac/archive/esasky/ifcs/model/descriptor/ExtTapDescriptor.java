@@ -270,4 +270,8 @@ public class ExtTapDescriptor extends BaseDescriptor {
 			return getUcdColumnName(EsaSkyConstants.UCD_POS_EQ_DEC);
 		}
 	}
+
+	public boolean tapMetadataContainsPos() {
+		return !this.getTapRaColumn().isEmpty() && !this.getTapDecColumn().isEmpty();
+	}
 }

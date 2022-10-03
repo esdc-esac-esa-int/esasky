@@ -1,8 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.OpenEvent;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 
 public abstract class MovableResizablePanel<T> extends MovablePanel implements Hidable<T> {
 
@@ -57,7 +59,13 @@ public abstract class MovableResizablePanel<T> extends MovablePanel implements H
 
     protected abstract Element getMovableElement();
 
-    protected abstract void onResize();
+    protected void onResize() {
+        Style elementStyle = this.getElement().getStyle();
+        int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - this.getAbsoluteLeft() - 15;
+        int maxHeight = MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - this.getAbsoluteTop() - 15;
+        elementStyle.setPropertyPx("maxWidth", maxWidth);
+        elementStyle.setPropertyPx("maxHeight", maxHeight);
+    }
 
     protected abstract Element getResizeElement();
 
