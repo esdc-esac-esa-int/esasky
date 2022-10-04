@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapTreeMapLevel;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
@@ -62,5 +63,33 @@ public class ExtTapUtils {
 		
 		return descriptor;
 	}
+
+	public static native GeneralJavaScriptObject formatExternalTapMetadata(GeneralJavaScriptObject metadata)/*-{
+		var dataResult = []
+		for  (var j = 0; j < metadata.length; j++) {
+			var dataItemResult = metadata[j];
+			dataItemResult["datatype"] = "STRING";
+			dataItemResult["xtype"] = "STRING";
+			dataItemResult["displayName"] = metadata[j]["name"];
+			dataItemResult["visible"] = true;
+			dataResult.push(dataItemResult);
+		}
+
+		return dataResult;
+	}-*/;
+	public static native GeneralJavaScriptObject formatExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
+		var dataResult = []
+		for (var i = 0; i < data.length; i++){
+			var dataItem = data[i];
+			var dataItemResult = {}
+			var counter = 0;
+			for  (var j = 0; j < metadata.length; j++) {
+				dataItemResult[metadata[j].name] = dataItem[j]
+				counter++;
+			}
+			dataResult.push(dataItemResult)
+		}
+		return dataResult;
+	}-*/;
 
 }

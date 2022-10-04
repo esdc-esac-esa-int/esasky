@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -121,9 +122,22 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private void queryExternalTapTable(String tapUrl, String tableName, String query) {
         setIsLoading(true);
 
+        StringBuilder schemaQuery = new StringBuilder("SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'");
+
+        // Find additional joined tables
+        if (query.toUpperCase().contains("JOIN")) {
+            String[] split = query.split("[\\n\\s]");
+            for (int i = 0; i < split.length; i++) {
+                int tableIndex = i + 1;
+                if (split[i].equalsIgnoreCase("JOIN") && tableIndex < split.length) {
+                    schemaQuery.append(" OR table_name='").append(split[tableIndex]).append("'");
+                }
+            }
+        }
+
         String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                 + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + schemaQuery + "&"
                 + EsaSkyConstants.EXT_TAP_URL + "=" + tapUrl;
 
         JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
@@ -135,8 +149,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                         ? responseObject.getProperty("metadata")
                         : responseObject.getProperty("columns");
 
-                ExtTapDescriptor descriptor = DescriptorRepository.getInstance().addExtTapDescriptor(tapUrl, tableName, query, meta);
-                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor, responseObject));
+                GeneralJavaScriptObject data = ExtTapUtils.formatExternalTapData(responseObject.getProperty("data"), meta);
+
+                ExtTapDescriptor descriptor = DescriptorRepository.getInstance().addExtTapDescriptor(tapUrl, tableName, query, data);
+                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
             }
 
             @Override

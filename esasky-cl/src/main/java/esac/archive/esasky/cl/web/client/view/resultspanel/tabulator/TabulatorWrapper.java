@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
@@ -538,39 +539,11 @@ public class TabulatorWrapper {
     }
 
     public void insertExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata){
-        GeneralJavaScriptObject formattedMetadata = formatExternalTapMetadata(metadata);
-        GeneralJavaScriptObject formattedData = formatExternalTapData(data, formattedMetadata);
+        GeneralJavaScriptObject formattedMetadata = ExtTapUtils.formatExternalTapMetadata(metadata);
+        GeneralJavaScriptObject formattedData = ExtTapUtils.formatExternalTapData(data, formattedMetadata);
         setMetadata(tableJsObject, formattedMetadata);
         setData(tableJsObject, formattedData);
     }
-
-    private native GeneralJavaScriptObject formatExternalTapMetadata(GeneralJavaScriptObject metadata)/*-{
-        var dataResult = []
-        for  (var j = 0; j < metadata.length; j++) {
-            var dataItemResult = metadata[j];
-            dataItemResult["datatype"] = "STRING";
-            dataItemResult["xtype"] = "STRING";
-            dataItemResult["displayName"] = metadata[j]["name"];
-            dataItemResult["visible"] = true;
-            dataResult.push(dataItemResult);
-        }
-
-        return dataResult;
-    }-*/;
-    private native GeneralJavaScriptObject formatExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata)/*-{
-        var dataResult = []
-        for (var i = 0; i < data.length; i++){
-            var dataItem = data[i];
-            var dataItemResult = {}
-            var counter = 0;
-            for  (var j = 0; j < metadata.length; j++) {
-                dataItemResult[metadata[j].name] = dataItem[j]
-                counter++;
-            }
-            dataResult.push(dataItemResult)
-        }
-        return dataResult;
-    }-*/;
     
     private native String setMetadata(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject metadata)/*-{
         return tableJsObject.metadata = metadata;
@@ -798,7 +771,7 @@ public class TabulatorWrapper {
             var needsFormatting = function(data) {
                 return Array.isArray(data[0])
             }
-            var data = needsFormatting(response.data) ? wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::formatExternalTapData(*)(response.data, metadata) : response.data;
+            var data = needsFormatting(response.data) ? @esac.archive.esasky.cl.web.client.utility.ExtTapUtils::formatExternalTapData(*)(response.data, metadata) : response.data;
 //            for(var i = 0; i < response.data.length; i++){
 //                var row = {id:i};
 //                for(var j = 0; j < metadata.length; j++){
