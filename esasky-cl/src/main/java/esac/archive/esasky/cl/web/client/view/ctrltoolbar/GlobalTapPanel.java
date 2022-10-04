@@ -81,7 +81,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         queryPopupPanel = new QueryPopupPanel("test", true);
         queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
         queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
-        queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getQuery()));
+        queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getQuery(), true));
         queryPopupPanel.setSuggestedPositionCenter();
         queryPopupPanel.hide();
         MainLayoutPanel.addElementToMainArea(queryPopupPanel);
@@ -119,7 +119,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         });
     }
 
-    private void queryExternalTapTable(String tapUrl, String tableName, String query) {
+    private void queryExternalTapTable(String tapUrl, String tableName, String query, boolean fovLimit) {
         setIsLoading(true);
 
         StringBuilder schemaQuery = new StringBuilder("SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'");
@@ -151,7 +151,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
                 GeneralJavaScriptObject data = ExtTapUtils.formatExternalTapData(responseObject.getProperty("data"), meta);
 
-                ExtTapDescriptor descriptor = DescriptorRepository.getInstance().addExtTapDescriptor(tapUrl, tableName, query, data);
+                ExtTapDescriptor descriptor = DescriptorRepository.getInstance().addExtTapDescriptor(tapUrl, tableName, query, data, fovLimit);
                 CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
             }
 
@@ -171,7 +171,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String accessUrl = rowData.getStringProperty("access_url");
             String query = "SELECT * FROM " + tableName;
 
-            GlobalTapPanel.this.queryExternalTapTable(accessUrl, tableName, query);
+            GlobalTapPanel.this.queryExternalTapTable(accessUrl, tableName, query, true);
         }
 
         @Override
@@ -187,7 +187,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String accessUrl = rowData.getStringProperty("access_url");
             String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
 
-            GlobalTapPanel.this.queryExternalTapTable(accessUrl, tableName, query);
+            GlobalTapPanel.this.queryExternalTapTable(accessUrl, "tap_schema.columns", query, false);
         }
     }
 

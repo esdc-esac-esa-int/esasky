@@ -248,20 +248,20 @@ public class DescriptorRepository {
         });
     }
 
-    public ExtTapDescriptor addExtTapDescriptor(String tapUrl, String tableName, String adql, GeneralJavaScriptObject metadata) {
-        String name = tapUrl+"/"+tableName;
+    public ExtTapDescriptor addExtTapDescriptor(String tapUrl, String tableName, String adql, GeneralJavaScriptObject metadata, boolean fovLimit) {
+        String longName = tapUrl+"/"+tableName ;
+        String umission = longName + "?" + adql;
 
-        ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(name);
+        ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(umission);
         if (descriptor == null) {
             descriptor = new ExtTapDescriptor();
         }
-
         descriptor.setTapTableMetadata(metadata);
         descriptor.setUseUcd(true);
-        descriptor.setGuiShortName(name);
-        descriptor.setGuiLongName(name);
-        descriptor.setMission(name);
-        descriptor.setCreditedInstitutions(name);
+        descriptor.setGuiShortName(tableName);
+        descriptor.setGuiLongName(longName);
+        descriptor.setMission(umission);
+        descriptor.setCreditedInstitutions(tapUrl);
         descriptor.setFovLimit(180.0);
         descriptor.setShapeLimit(3000);
 
@@ -274,7 +274,7 @@ public class DescriptorRepository {
         descriptor.setPrimaryColor(ESASkyColors.getNext());
         descriptor.setTapTable(tableName);
 
-        if(descriptor.tapMetadataContainsPos()) {
+        if(fovLimit && descriptor.tapMetadataContainsPos()) {
             descriptor.setSearchFunction("cointainsPoint");
         } else {
             descriptor.setSearchFunction("");
