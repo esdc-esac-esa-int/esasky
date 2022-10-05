@@ -68,9 +68,8 @@ public class ExtTapUtils {
 		var dataResult = []
 		for  (var j = 0; j < metadata.length; j++) {
 			var dataItemResult = metadata[j];
-			dataItemResult["datatype"] = "STRING";
-			dataItemResult["xtype"] = "STRING";
-			dataItemResult["displayName"] = metadata[j]["name"];
+            if (!dataItemResult.hasOwnProperty("displayName"))
+				dataItemResult["displayName"] = metadata[j]["name"];
 			dataItemResult["visible"] = true;
 			dataResult.push(dataItemResult);
 		}
