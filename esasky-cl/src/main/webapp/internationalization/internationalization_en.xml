@@ -2050,7 +2050,13 @@
 	<text key="SoftX-ray">
 		Soft X-ray
 	</text>
+	<text key="Soft&#032;X-ray">
+		Soft X-ray
+	</text>
 	<text key="HardX-ray">
+		Hard X-ray
+	</text>
+	<text key="Hard&#032;X-ray">
 		Hard X-ray
 	</text>
 	<text key="UV">
