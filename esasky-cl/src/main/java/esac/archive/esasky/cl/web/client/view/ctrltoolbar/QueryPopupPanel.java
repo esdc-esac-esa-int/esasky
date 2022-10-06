@@ -1,8 +1,9 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -11,10 +12,11 @@ import com.google.gwt.user.client.ui.TextArea;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEvent;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEventHandler;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
+import esac.archive.esasky.cl.web.client.view.common.Hidable;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 
-public class QueryPopupPanel extends MovableResizablePanel<QueryPopupPanel> {
+public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupPanel> {
 
     private FlowPanel container;
 
@@ -27,6 +29,7 @@ public class QueryPopupPanel extends MovableResizablePanel<QueryPopupPanel> {
 
     private String tapServiceUrl;
     private String tapTableName;
+    private boolean isShowing = false;
 
 
     public interface Resources extends ClientBundle {
@@ -45,7 +48,7 @@ public class QueryPopupPanel extends MovableResizablePanel<QueryPopupPanel> {
     public void initView() {
         this.addStyleName("queryPopupPanel__container");
         container = new FlowPanel();
-        header = new PopupHeader<>(this, "header", "helptext", "help title");
+        header = new PopupHeader<>(this, "Custom ADQL Query", "helptext", "help title");
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 
         FlowPanel textBoxContainer = new FlowPanel();
@@ -93,23 +96,39 @@ public class QueryPopupPanel extends MovableResizablePanel<QueryPopupPanel> {
         containerStyle.setPropertyPx("minHeight", 150);
     }
 
-    @Override
-    protected Element getMovableElement() {
-        return header.getElement();
-    }
-
-    @Override
-    protected Element getResizeElement() {
-        return container.getElement();
-    }
-
     public HandlerRegistration addQueryHandler(QueryTapEventHandler handler) {
         return addHandler(handler, QueryTapEvent.TYPE);
     }
 
     @Override
     public void show(){
+        isShowing = true;
+        this.removeStyleName("displayNone");
+        updateHandlers();
+        setMaxSize();
+        ensureDialogFitsInsideWindow();
+        OpenEvent.fire(this, null);
+
         setDefaultSize();
-        super.show();
+        this.setFocus(true);
+        this.updateZIndex();
+
+        MainLayoutPanel.addElementToMainArea(this);
     }
+
+    @Override
+    public void hide() {
+        isShowing = false;
+        this.addStyleName("displayNone");
+        this.removeHandlers();
+        CloseEvent.fire(this, null);
+
+        MainLayoutPanel.removeElementFromMainArea(this);
+    }
+
+    @Override
+    public boolean isShowing() {
+        return isShowing;
+    }
+
 }

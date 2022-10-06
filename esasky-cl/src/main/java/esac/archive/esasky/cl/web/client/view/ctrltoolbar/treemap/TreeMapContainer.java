@@ -19,6 +19,9 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GlobalTapPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
@@ -47,6 +50,8 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	private ESASkyMultiRangeSlider slider;
 	private FlowPanel sliderContainer;
 	boolean haveSlider;
+
+	private GlobalTapPanel globalTapPanel;
 	
 	private final List<TreeMapChanged> observers = new LinkedList<>();
 	
@@ -93,6 +98,21 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		treeMapContainer.getElement().setId("treeMapContainer_" + context);
 
 		header = new PopupHeader<>(this, "", "");
+		if (context.equals(EntityContext.EXT_TAP)) {
+			EsaSkyButton globalTapBtn = new EsaSkyButton(Icons.getExternalIcon());
+			globalTapBtn.addClickHandler(event -> {
+				if (globalTapPanel == null) {
+					globalTapPanel = new GlobalTapPanel("test", true);
+					globalTapPanel.setSuggestedPositionCenter();
+					globalTapPanel.definePositionFromTopAndLeft();
+					MainLayoutPanel.addElementToMainArea(globalTapPanel);
+				}
+
+				globalTapPanel.show();
+			});
+
+			header.addActionWidget(globalTapBtn);
+		}
 		Image ssoDnetLogo = new Image(resources.ssoDNetLogo().getSafeUri());
 		ssoDnetLogo.addStyleName("treeMap__ssoLogo");
 		header.add(ssoDnetLogo);

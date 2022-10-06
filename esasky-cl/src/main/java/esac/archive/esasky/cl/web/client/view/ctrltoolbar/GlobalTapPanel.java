@@ -63,10 +63,9 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         tabulatorContainer.getElement().setId("browseTap__tabulatorContainer");
         this.addStyleName("globalTapPanel__container");
 
-        header = new PopupHeader<>(this, "header",
-                "helptext",
-                "help title",
-                event -> hide(), "Close panel");
+        header = new PopupHeader<>(this, "External Tap Registry",
+                "help text",
+                "help title");
 
 
         loadingSpinner = new LoadingSpinner(true);
@@ -77,14 +76,6 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         container.add(tabulatorContainer);
         container.add(loadingSpinner);
         container.getElement().setId("globalTapPanelContainer");
-
-        queryPopupPanel = new QueryPopupPanel("test", true);
-        queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
-        queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
-        queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getQuery(), true));
-        queryPopupPanel.setSuggestedPositionCenter();
-        queryPopupPanel.hide();
-        MainLayoutPanel.addElementToMainArea(queryPopupPanel);
 
         this.add(container);
     }
@@ -122,7 +113,6 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     private void queryExternalTapTable(String tapUrl, String tableName, String query, boolean fovLimit) {
         setIsLoading(true);
-
         StringBuilder schemaQuery = new StringBuilder("SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'");
 
         // Find additional joined tables
@@ -171,12 +161,18 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String tableName = rowData.getStringProperty("table_name");
             String accessUrl = rowData.getStringProperty("access_url");
             String query = "SELECT * FROM " + tableName;
-
             GlobalTapPanel.this.queryExternalTapTable(accessUrl, tableName, query, true);
         }
 
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
+            if (queryPopupPanel == null) {
+                queryPopupPanel = new QueryPopupPanel("test", true);
+                queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
+                queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
+                queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getQuery(), true));
+                queryPopupPanel.setSuggestedPositionCenter();
+            }
             queryPopupPanel.setTapServiceUrl(rowData.getStringProperty("access_url"));
             queryPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
             showQueryPanel();
@@ -245,10 +241,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     }
 
     public void showQueryPanel() {
-        queryPopupPanel.setSuggestedPositionCenter();
         queryPopupPanel.show();
-        queryPopupPanel.setFocus(true);
-        queryPopupPanel.updateZIndex();
     }
 
     public void hideQueryPanel() {
