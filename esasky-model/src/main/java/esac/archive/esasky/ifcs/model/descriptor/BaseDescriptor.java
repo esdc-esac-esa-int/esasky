@@ -578,7 +578,7 @@ public abstract class BaseDescriptor implements IDescriptor {
 
     @JsonIgnore
     @Override
-    public Boolean useUcd() {
+    public boolean useUcd() {
         return useUcd;
     }
 

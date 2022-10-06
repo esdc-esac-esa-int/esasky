@@ -435,7 +435,12 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("FetchingRealData" + esaSkyUniqID,
 				TextMgr.getInstance().getText("tabulator_retrievingMissionData").replace("$NAME$", tabTitle),  url));
 
-		table.setDefaultQueryMode();
+		if (getDescriptor().useUcd()) {
+			table.setExtTapQueryMode();
+		} else {
+			table.setDefaultQueryMode();
+		}
+		
 		table.setData(url);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}

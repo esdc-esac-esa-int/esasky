@@ -626,7 +626,11 @@ public class TabulatorWrapper {
     }-*/;
     
     public void setDefaultQueryMode(){
-        setNotDefaultQueryMode(this, tableJsObject);
+        setDefaultQueryMode(this, tableJsObject);
+    }
+
+    public void setExtTapQueryMode() {
+        setExtTapQueryMode(this, tableJsObject);
     }
     
     private native void setDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
@@ -714,7 +718,7 @@ public class TabulatorWrapper {
 	    }
     }-*/;
 
-    private native void setNotDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
+    private native void setExtTapQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.options.ajaxResponse = function(url, params, response){
             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponse()();
             descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
@@ -772,27 +776,6 @@ public class TabulatorWrapper {
                 return Array.isArray(data[0])
             }
             var data = needsFormatting(response.data) ? @esac.archive.esasky.cl.web.client.utility.ExtTapUtils::formatExternalTapData(*)(response.data, metadata) : response.data;
-//            for(var i = 0; i < response.data.length; i++){
-//                var row = {id:i};
-//                for(var j = 0; j < metadata.length; j++){
-//                    if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "FLOAT" || metadata[j].datatype.toUpperCase() === "REAL"){
-//                        row[metadata[j].name] = parseFloat(response.data[i][metadata[j].name]);
-//                        if(isNaN(row[metadata[j].name])){
-//                            row[metadata[j].name] = undefined;
-//                        }
-//                    } else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT" || metadata[j].datatype.toUpperCase() === "SHORT"){
-//                        row[metadata[j].name] = parseInt(response.data[i][metadata[j].name]);
-//                        if(isNaN(row[metadata[j].name])){
-//                            row[metadata[j].name] = undefined;
-//                        }
-//                    } else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
-//                        row[metadata[j].name] = response.data[i][metadata[j].name];
-//                    } else {
-//                        row[metadata[j].name] = response.data[i][metadata[j].name];
-//                    }
-//                }
-//                data[i] = row;
-//            }
 
             var index = indexesMoved.pop();
             while(index !== undefined){
@@ -806,7 +789,6 @@ public class TabulatorWrapper {
             tableJsObject.columnDef = [];
             tableJsObject.showCount = true;
             tableJsObject.dataLoaded = true;
-            console.log(data);
             return data;
         }
     }-*/;

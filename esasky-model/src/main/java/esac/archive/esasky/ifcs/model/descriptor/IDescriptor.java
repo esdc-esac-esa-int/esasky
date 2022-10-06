@@ -114,7 +114,7 @@ public interface IDescriptor {
     boolean hasSearchArea();
     String getSearchAreaShape();
 
-    Boolean useUcd();
+    boolean useUcd();
 
     String getUcdColumnName(String ucdName);
 }
