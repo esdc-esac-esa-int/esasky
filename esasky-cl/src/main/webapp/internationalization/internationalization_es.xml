@@ -491,7 +491,13 @@
 	<text key="SoftX-ray">
 		Rayos X Blandos
 	</text>
+	<text key="Soft&#032;X-ray">
+		Rayos X Blandos
+	</text>
 	<text key="HardX-ray">
+		Rayos X Duros
+	</text>
+	<text key="Hard&#032;X-ray">
 		Rayos X Duros
 	</text>
 	<text key="UV">
