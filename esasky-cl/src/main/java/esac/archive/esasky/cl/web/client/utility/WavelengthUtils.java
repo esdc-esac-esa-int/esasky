@@ -95,8 +95,8 @@ public class WavelengthUtils {
     protected static WavelengthName [] wavelengthNames = new WavelengthName[] {
             new WavelengthName("Radio", "Radio", 3.0),
             new WavelengthName("Submm", "Submillimeter", 3.45),
-            new WavelengthName("Far-IR", "Far-Infrared", 4.8),
-            new WavelengthName("Mid-IR", "Mid-Infrared", 5.85),
+            new WavelengthName("Far-IR", "Far-Infrared", 4.5),
+            new WavelengthName("Mid-IR", "Mid-Infrared", 5.3),
             new WavelengthName("Near-IR", "Near-Infrared", 6.1),
             new WavelengthName("Optical", "Optical", 6.5),
             new WavelengthName("UV", "Ultraviolet", 8),
