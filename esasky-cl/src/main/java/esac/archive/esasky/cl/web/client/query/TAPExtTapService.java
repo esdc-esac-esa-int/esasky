@@ -34,8 +34,15 @@ public class TAPExtTapService extends AbstractTAPService {
 
     public String getAdql(ExtTapDescriptor descriptor, String selectADQL) {
     	String adql = selectADQL;
-    	
-    	adql += " from " + descriptor.getTapTable();
+
+		String tapTable = descriptor.getTapTable();
+
+		// Handle tables with non-alphanumeric characters (excluding ".")
+		if (tapTable.matches("^[a-zA-Z0-9]*$") || tapTable.contains(".")) {
+			adql += " FROM " + descriptor.getTapTable();
+		} else {
+			adql += " FROM \"" + tapTable + "\"";
+		}
     	
     	if(descriptor.getSearchFunction().equals("polygonIntersect")) {
     		adql +=  " WHERE " + polygonIntersectSearch(descriptor);
