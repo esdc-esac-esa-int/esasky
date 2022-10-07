@@ -5,16 +5,11 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Timer;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.query.TAPImageListService;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
-import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -85,14 +80,11 @@ public class OutreachImage {
 				OutreachImageDescriptor desc = mapper.read(newJson);
 			
 				onResponseParsed(desc, mission, moveToCenter);
-
-		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS, desc.getId());
 			}
 
 			@Override
 			public void onError(String errorCause) {
 				Log.error(errorCause);
-		        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, GoogleAnalytics.ACT_IMAGES_HSTIMAGE_FAIL, id);
 			}
 		});
 	}
@@ -146,10 +138,25 @@ public class OutreachImage {
 		
 		OpenSeaDragonWrapper openseadragonWrapper = new OpenSeaDragonWrapper(this.id, url, type,
 				coor.getRa(), coor.getDec(), desc.getFovSize(), desc.getRotation(), imageSize.getWidth(), imageSize.getHeight());
+
+		openseadragonWrapper.addTileLoadedEventHandler(event -> {
+			String action;
+			if (isHst) {
+				action = event.isSuccess()
+						? GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS
+						: GoogleAnalytics.ACT_IMAGES_HSTIMAGE_FAIL;
+			} else {
+				action = event.isSuccess()
+						? GoogleAnalytics.ACT_IMAGES_JWSTIMAGE_SUCCESS
+						:GoogleAnalytics.ACT_IMAGES_JWSTIMAGE_FAIL;
+			}
+
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, action, desc.getId());
+		});
 		lastOpenseadragon = openseadragonWrapper;
 		JavaScriptObject openSeaDragonObject = openseadragonWrapper.createOpenSeaDragonObject();
 		openseadragonWrapper.addOpenSeaDragonToAladin(openSeaDragonObject);
-		
+
 		if(moveToCenter) {
 			
 			SkyViewPosition curPos = CoordinateUtils.getCenterCoordinateInJ2000();

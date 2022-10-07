@@ -244,6 +244,8 @@ public final class GoogleAnalytics {
     
     public static final String ACT_IMAGES_HSTIMAGE_SUCCESS = "hstImageSuccess";
     public static final String ACT_IMAGES_HSTIMAGE_FAIL = "hstImageFail";
+    public static final String ACT_IMAGES_JWSTIMAGE_SUCCESS = "jwstImageSuccess";
+    public static final String ACT_IMAGES_JWSTIMAGE_FAIL = "jwstImageFail";
 
     
     //Send events methods
