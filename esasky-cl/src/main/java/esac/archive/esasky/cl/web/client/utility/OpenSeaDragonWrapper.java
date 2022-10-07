@@ -1,8 +1,14 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.HasHandlers;
+import esac.archive.esasky.cl.web.client.event.TileLoadedEvent;
+import esac.archive.esasky.cl.web.client.event.TileLoadedEventHandler;
 
-public class OpenSeaDragonWrapper {
+public class OpenSeaDragonWrapper implements HasHandlers {
 
 	private double ra;
 	private double dec;
@@ -15,6 +21,9 @@ public class OpenSeaDragonWrapper {
 	private String id;
 	private String url;
 	private OpenSeaDragonType type;
+
+	private HandlerManager handlerManager;
+
 	
 	public OpenSeaDragonWrapper(String id, String url, OpenSeaDragonType type, double ra, double dec,
 			double fov, double rotation, int width, int height) {
@@ -29,11 +38,13 @@ public class OpenSeaDragonWrapper {
 		this.id = id;
 		this.url = url;
 		this.type = type;
+
+		handlerManager = new HandlerManager(this);
 	}
 	
 	public  JavaScriptObject createOpenSeaDragonObject() {
 		removeOpenSeaDragonFromAladin();
-		return createOpenSeaDragonObject(id, url, type.getType(), ra, dec, fov, rotation, width, height);
+		return createOpenSeaDragonObject(this, id, url, type.getType(), ra, dec, fov, rotation, width, height);
 	}
 	
 	public void addOpenSeaDragonToAladin(JavaScriptObject openSeaDragonObject) {
@@ -44,12 +55,25 @@ public class OpenSeaDragonWrapper {
 	public void removeOpenSeaDragonFromAladin() {
 		AladinLiteWrapper.getAladinLite().removeOpenSeaDragon("");
 	}
-	
-	private native JavaScriptObject createOpenSeaDragonObject(String name, String url, String type, double ra, double dec,
+
+	private void onTileLoaded(boolean success, String message) {
+		TileLoadedEvent event = new TileLoadedEvent(success,message);
+		fireEvent(event);
+	}
+
+	@Override
+	public void fireEvent(GwtEvent<?> event) {
+		handlerManager.fireEvent(event);
+	}
+
+	public HandlerRegistration addTileLoadedEventHandler(TileLoadedEventHandler handler) {
+		return handlerManager.addHandler(TileLoadedEvent.TYPE, handler);
+	}
+
+	private native JavaScriptObject createOpenSeaDragonObject(OpenSeaDragonWrapper wrapper, String name, String url, String type, double ra, double dec,
 			double fov, double rot, int width, int height)/*-{
-		
 		var tileSources;
-		
+
 		var openseadragon = $wnd.OpenSeadragon({
 		    id: "openseadragonCanvas",
 			maxZoomPixelRatio: 3,
@@ -82,7 +106,23 @@ public class OpenSeaDragonWrapper {
 			};
 			openseadragon.addTiledImage(options)
 		};
-	    openseadragon.name = name;
+
+
+
+        // Fail event emitted by Image sources
+        openseadragon.addOnceHandler('add-item-failed', function(event) {
+			wrapper.@esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper::onTileLoaded(*)(false, event.message);
+		});
+
+		openseadragon.addOnceHandler('tile-load-failed', function(event) {
+			wrapper.@esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper::onTileLoaded(*)(false, event.message);
+		});
+
+		openseadragon.addOnceHandler('tile-loaded', function(event) {
+			wrapper.@esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper::onTileLoaded(*)(true, "");
+		});
+
+		openseadragon.name = name;
 	    openseadragon.fov = fov;
 	    openseadragon.ra = ra;
 	    openseadragon.dec = dec;
@@ -91,8 +131,9 @@ public class OpenSeaDragonWrapper {
 	    openseadragon.viewport.setRotation(rot); 
 	    return openseadragon;
 	}-*/;
-	
-	
+
+
+
 	public enum OpenSeaDragonType {
 	    
 		TILED("zoomifytileservice"), SINGLE("image");
