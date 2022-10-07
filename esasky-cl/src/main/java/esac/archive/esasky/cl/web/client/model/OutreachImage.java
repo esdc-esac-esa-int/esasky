@@ -127,11 +127,10 @@ public class OutreachImage {
 		this.id = desc.getId();
 
 		boolean isHst = Objects.equals(mission, EsaSkyConstants.HST_MISSION);
-		if (isHst) {
-			this.baseUrl = "https://esahubble.org/images/" + id;
-		} else {
-			this.baseUrl = "https://esawebb.org/images/" + id;
-		}
+		this.baseUrl = isHst
+				? "https://esahubble.org/images/" + id
+				: "https://esawebb.org/images/" + id;
+
 		this.title = desc.getTitle();
 		this.description = desc.getDescription();
 		this.credits = desc.getCredit();
@@ -158,22 +157,7 @@ public class OutreachImage {
 		openseadragonWrapper.addOpenSeaDragonToAladin(openSeaDragonObject);
 
 		if(moveToCenter) {
-			
-			SkyViewPosition curPos = CoordinateUtils.getCenterCoordinateInJ2000();
-			try {
-				double dist = curPos.getCoordinate().distance(coor);
-				
-				if(curPos.getFov() / desc.getFovSize() > 5 || desc.getFovSize() / curPos.getFov() < .2 || dist > curPos.getFov() / 2) {
-					AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
-					AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
-				}
-			}catch(NullPointerException e) {
-				// Might happen if it is loaded before AladinLite is ready. THen make sure to go to position
-				Log.error(e.getMessage(), e);
-				AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
-				AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
-				
-			}
+			moveToCenter(coor, desc);
 		}
 		
 		Timer timer = new Timer() {
@@ -201,6 +185,24 @@ public class OutreachImage {
 			removeOpenSeaDragon();
 		}
 
+	}
+
+	private void moveToCenter(Coordinate coor, OutreachImageDescriptor desc) {
+		SkyViewPosition curPos = CoordinateUtils.getCenterCoordinateInJ2000();
+		try {
+			double dist = curPos.getCoordinate().distance(coor);
+
+			if(curPos.getFov() / desc.getFovSize() > 5 || desc.getFovSize() / curPos.getFov() < .2 || dist > curPos.getFov() / 2) {
+				AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
+				AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
+			}
+		}catch(NullPointerException e) {
+			// Might happen if it is loaded before AladinLite is ready. THen make sure to go to position
+			Log.error(e.getMessage(), e);
+			AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(coor.getRa()), Double.toString(coor.getDec()));
+			AladinLiteWrapper.getAladinLite().setZoom(desc.getFovSize() * 3);
+
+		}
 	}
 	
 	public double getOpacity() {
