@@ -123,6 +123,10 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 		return null;
 	}
 
+	public String getUniqueIdentifierField() {
+		return null;
+	}
+
 	@Override
 	public boolean isMOCMode() {
 		return false;

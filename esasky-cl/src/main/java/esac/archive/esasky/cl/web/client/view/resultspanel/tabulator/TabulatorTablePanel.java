@@ -960,6 +960,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
+	public String getUniqueIdentifierField() {
+		return getDescriptor().getUniqueIdentifierField();
+	}
+
+	@Override
 	public void openConfigurationPanel() {
 		tableFocusPanel.openToggleColumnDialog();
 	}

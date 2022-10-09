@@ -271,6 +271,15 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		}
 	}
 
+	@Override
+	public String getUniqueIdentifierField() {
+		if (!useUcd()) {
+			return super.getUniqueIdentifierField();
+		} else {
+			return getUcdColumnName(EsaSkyConstants.UCD_META_ID);
+		}
+	}
+
 	public boolean tapMetadataContainsPos() {
 		return !this.getTapRaColumn().isEmpty() && !this.getTapDecColumn().isEmpty();
 	}

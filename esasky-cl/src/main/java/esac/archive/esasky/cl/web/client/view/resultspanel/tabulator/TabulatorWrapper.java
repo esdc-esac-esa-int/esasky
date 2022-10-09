@@ -22,7 +22,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilte
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -776,6 +775,16 @@ public class TabulatorWrapper {
                 return Array.isArray(data[0])
             }
             var data = needsFormatting(response.data) ? @esac.archive.esasky.cl.web.client.utility.ExtTapUtils::formatExternalTapData(*)(response.data, metadata) : response.data;
+
+
+            // Tabulator has reserved the ID column
+            var uidField = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getUniqueIdentifierField()();
+            for(var i = 0; i < data.length; i++){
+                if (uidField == "id") {
+                    data[i]["identifier"] = data[i]["id"];
+                }
+                data[i]["id"]  = i;
+            }
 
             var index = indexesMoved.pop();
             while(index !== undefined){
@@ -2379,17 +2388,10 @@ public class TabulatorWrapper {
         return tabulatorCallback.getDecColumnName();
     }
 
-    public String getRaUcdName() {
-        return EsaSkyConstants.UCD_POS_EQ_RA;
+    public String getUniqueIdentifierField() {
+        return tabulatorCallback.getUniqueIdentifierField();
     }
 
-    public String getDecUcdName() {
-        return EsaSkyConstants.UCD_POS_EQ_DEC;
-    }
-
-    public String getMetaMainName() {
-        return EsaSkyConstants.UCD_META_MAIN;
-    }
     public void onAjaxResponse() {
         tabulatorCallback.onAjaxResponse();
     }

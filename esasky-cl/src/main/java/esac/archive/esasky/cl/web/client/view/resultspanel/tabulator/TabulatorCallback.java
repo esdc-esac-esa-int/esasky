@@ -28,6 +28,7 @@ public interface TabulatorCallback {
     public GeneralJavaScriptObject getDescriptorMetaData();
     public String getRaColumnName();
     public String getDecColumnName();
+    public String getUniqueIdentifierField();
     public boolean isMOCMode();
     public String getEsaSkyUniqId();
     public void multiSelectionInProgress();
