@@ -3986,6 +3986,42 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="outreachJwstPanel_closePanel">
 		Close panel
 	</text>
+
+
+	<text key="eROSITA_flux_b1">
+		Flux&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b2">
+		Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b3">
+		Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b4">
+		Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+
+	<text key="eROSITA_flux_b1_err">
+		Flux error&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b2_err">
+		Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b3_err">
+		Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b4_err">
+		Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+
 	
 
 </Internationalization>
