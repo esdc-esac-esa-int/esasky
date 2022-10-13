@@ -1366,6 +1366,7 @@ public class TabulatorWrapper {
 			    	    }
 			    		else if(this.metadata[i].name.toLowerCase() === "access_url"
 			    		    || this.metadata[i].name.toLowerCase() === "product_url"
+                            || this.metadata[i].name.toLowerCase() === "prod_url"
 			    		    ){
 	                        activeColumnGroup.push({
 	                            title:$wnd.esasky.getInternationalizationText("tabulator_download"),

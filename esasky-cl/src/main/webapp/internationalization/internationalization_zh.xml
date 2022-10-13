@@ -1011,7 +1011,13 @@
 	<text key="SoftX-ray">
 		软X射线
 	</text>
+	<text key="Soft&#032;X-ray">
+		软X射线
+	</text>
 	<text key="HardX-ray">
+		硬X射线
+	</text>
+	<text key="Hard&#032;X-ray">
 		硬X射线
 	</text>
 	<text key="UV">

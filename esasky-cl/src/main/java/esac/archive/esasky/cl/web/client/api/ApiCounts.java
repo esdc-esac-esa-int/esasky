@@ -51,17 +51,19 @@ public class ApiCounts extends ApiBase{
 			JSONObject descObj = new JSONObject();
 			WavelengthName name = WavelengthUtils.getWavelengthNameFromValue(meanWavelength);
 			descObj.put(ApiConstants.WAVELENGTH, new JSONString(name.longName));
-
+			
+			double min = 10;
+			double max = 0;
 			for (WavelengthDescriptor wavelengthDesc : wavelengthDescriptors) {
-				double min = wavelengthDesc.getRange().get(0);
-				double max = wavelengthDesc.getRange().get(1);
-				List<JSONString> names = WavelengthUtils.getWavelengthsNameFromRange(min, max).stream()
-						.map(x -> new JSONString(x.longName)).collect(Collectors.toList());
-
-				JSONArray namesArr = new JSONArray();
-				names.forEach(x -> namesArr.set(namesArr.size(), x));
-				descObj.put(ApiConstants.WAVELENGTHS, namesArr);
+				min = Math.min(min, wavelengthDesc.getRange().get(0));
+				max = Math.max(max, wavelengthDesc.getRange().get(1));
 			}
+			List<JSONString> names = WavelengthUtils.getWavelengthsNameFromRange(min, max).stream()
+					.map(x -> new JSONString(x.longName)).collect(Collectors.toList());
+			
+			JSONArray namesArr = new JSONArray();
+			names.forEach(x -> namesArr.set(namesArr.size(), x));
+			descObj.put(ApiConstants.WAVELENGTHS, namesArr);
 
 			obsObj.put(currDesc.getMission(),descObj);
 		}

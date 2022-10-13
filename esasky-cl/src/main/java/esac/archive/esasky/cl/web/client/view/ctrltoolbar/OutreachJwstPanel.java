@@ -145,7 +145,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     public void show() {
         super.show();
         getData();
-        if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+        if(imageEntity != null) {
             imageEntity.setIsPanelClosed(false);
         }
     }
