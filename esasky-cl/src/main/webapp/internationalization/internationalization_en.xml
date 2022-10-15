@@ -3980,14 +3980,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="header_highResolutionImages">
 		Hubble outreach images
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
-
-	<!-- internationalization_es.xml is up to date for everything above -->
-	<text key="outreachJwstPanel_closePanel">
-		Close panel
-	</text>
-
-
 	<text key="eROSITA_flux_b1">
 		Flux&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
@@ -4020,6 +4012,78 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="eROSITA_flux_b4_err">
 		Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
+
+	<!-- internationalization_es.xml is up to date for everything above -->
+	<text key="outreachJwstPanel_closePanel">
+		Close panel
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) is
+		a wide-field X-ray telescope on-board the Russian-German
+		"Spectrum-Roentgen-Gamma" (SRG) observatory, and it was developed under
+		the leadership of the Max-Planck Institute for extraterrestrial Physics (MPE)
+		in Germany (DE). eROSITA is a sensitive X-ray telescope capable of delivering
+		deep, sharp images over very large areas of the sky in the energy range ~0.2-8 keV.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#eROSITA"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+		X-ray sources detected in the 0.2-2.3 keV band using eSASS adopting a detection likelihood threshold of 5.
+		The sources with detection likelihood larger than 6 are selected as the main eFEDS catalog (27910 sources).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDSmain"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+		Hard X-ray selected eFEDS catalogue. Based on sources detection in three bands
+		(1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5 keV) using eSASS adopting a detection likelihood
+		threshold of 5, we select the sources with a 2.3-5 keV band detection likelihood greater
+		than 10 and a zero extent likelihood as the hard eFEDS catalog (246 sources).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDShard"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+		Catalog of X-ray sources in the eta Chamaeleontis field scan observation (OBSID 300004)
+		main catalogue, see Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChamain"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+		For eROSITA etaCha hard catalogue: 'Catalog of X-ray sources in the eta Chamaeleontis
+		field scan observation (OBSID 300004) hard catalogue, see Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChahard"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
 	</text>
 
 	
