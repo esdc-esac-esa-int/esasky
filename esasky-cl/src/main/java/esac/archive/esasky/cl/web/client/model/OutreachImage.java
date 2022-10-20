@@ -45,7 +45,7 @@ public class OutreachImage {
 		this.opacity = opacity;
 
 		OutreachImageDescriptorMapper mapper = GWT.create(OutreachImageDescriptorMapper.class);
-		String newJson = imageObject.jsonStringify().replace("\"[", "[").replace("]\"", "]");
+		String newJson = imageObject.jsonStringify().replaceAll("\"(\\[\\d+?,\\s?\\d+?\\])\"", "$1");
 		OutreachImageDescriptor desc = mapper.read(newJson);
 		onResponseParsed(desc, mission, true);
 		this.mission = mission;
