@@ -126,7 +126,7 @@ public class ImageListEntity extends EsaSkyEntity {
 			for(int i = 0; i < rowDataArray.length; i++) {
 				if(rowDataArray[i].getStringProperty(getDescriptor().getUniqueIdentifierField()).equals(outreachImageIdToBeOpened)) {
 					selectShapes(i);
-					tablePanel.selectRow(i);
+					tablePanel.selectRow(i, true);
 					return;
 				}
 			}

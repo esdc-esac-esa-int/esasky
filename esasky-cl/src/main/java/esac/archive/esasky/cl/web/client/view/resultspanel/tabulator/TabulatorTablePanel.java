@@ -238,7 +238,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void selectRow(int rowId) {
-		if(isVisible()) {
+		selectRow(rowId, false);
+	}
+
+	public void selectRow(int rowId, boolean delay) {
+		if(isVisible() && !delay) {
 			table.selectRow(rowId);
 		} else {
 			new SelectTimer(rowId).schedule(50);

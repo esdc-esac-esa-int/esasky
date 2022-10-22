@@ -11,88 +11,89 @@ import java.util.Map;
 
 public interface ITablePanel {
 
-	public void insertData(String url);
-	public void insertData(GeneralJavaScriptObject data);
+	void insertData(String url);
+	void insertData(GeneralJavaScriptObject data);
 
-	public IDescriptor getDescriptor();
+	IDescriptor getDescriptor();
 
-	public GeneralEntityInterface getEntity();
+	GeneralEntityInterface getEntity();
 
-	public GeneralJavaScriptObject[] getSelectedRows();
+	GeneralJavaScriptObject[] getSelectedRows();
 
-	public GeneralJavaScriptObject[] getAllRows();
+	GeneralJavaScriptObject[] getAllRows();
 
-	public void clearTable();
+	void clearTable();
 	
-	public String getEsaSkyUniqID();
+	String getEsaSkyUniqID();
 
-	public String getLabel();
+	String getLabel();
 
-	public void selectRow(int rowId);
+	void selectRow(int rowId);
+	void selectRow(int rowId, boolean delay);
 	
-	public void selectRows(int[] rowIds);
+	void selectRows(int[] rowIds);
 
-	public void deselectRow(int rowId);
+	void deselectRow(int rowId);
 	
-	public void deselectRows(int[] rowIds);
+	void deselectRows(int[] rowIds);
 
-	public void deselectAllRows();
+	void deselectAllRows();
 
-	public void hoverStartRow(int rowId);
+	void hoverStartRow(int rowId);
 
-	public void hoverStopRow(int rowId);
+	void hoverStopRow(int rowId);
 
-	public void selectTablePanel();
+	void selectTablePanel();
 	
-	public void deselectTablePanel();
+	void deselectTablePanel();
 
-	public void closeTablePanel();
-	public boolean hasBeenClosed();
+	void closeTablePanel();
+	boolean hasBeenClosed();
 
-	public boolean getIsHidingTable();
+	boolean getIsHidingTable();
 
-	public void registerObserver(TableObserver observer);
+	void registerObserver(TableObserver observer);
 
-	public void unregisterObserver(TableObserver observer);
+	void unregisterObserver(TableObserver observer);
 	
-	public JSONObject exportAsJSON();
-	public JSONObject exportAsJSON(boolean applyFilters);
-	public void exportAsCsv();
-	public void exportAsVot();
-	public String getFullId();	
+	JSONObject exportAsJSON();
+	JSONObject exportAsJSON(boolean applyFilters);
+	void exportAsCsv();
+	void exportAsVot();
+	String getFullId();	
 	
-	public void setEmptyTable(String emptyTableText);
+	void setEmptyTable(String emptyTableText);
 	
-	public abstract void showStylePanel(int x, int y);
+	void showStylePanel(int x, int y);
 	
-	public void downloadSelected(DDRequestForm ddForm);
+	void downloadSelected(DDRequestForm ddForm);
 	
-	public void updateData();
-	public void openConfigurationPanel();
+	void updateData();
+	void openConfigurationPanel();
 	
-	public Widget getWidget();
-	public void registerClosingObserver(ClosingObserver closingObserver);
+	Widget getWidget();
+	void registerClosingObserver(ClosingObserver closingObserver);
 	
-	public void registerFilterObserver(TableFilterObserver observer);
-	public Map<String, String> getTapFilters();
-	public String getFilterString();
-	public void clearFilters();
+	void registerFilterObserver(TableFilterObserver observer);
+	Map<String, String> getTapFilters();
+	String getFilterString();
+	void clearFilters();
 	
-	public String getVoTableString();
+	String getVoTableString();
 	
-	public void setPlaceholderText(String text);
+	void setPlaceholderText(String text);
 
-	public void insertHeader(GeneralJavaScriptObject data, String mode);
-	public void goToCoordinateOfFirstRow();
+	void insertHeader(GeneralJavaScriptObject data, String mode);
+	void goToCoordinateOfFirstRow();
 	
-	public boolean isMOCMode();
-	public void setMOCMode(boolean input);
-	public void notifyObservers();
-	public void disableFilters();
-	public void enableFilters();
+	boolean isMOCMode();
+	void setMOCMode(boolean input);
+	void notifyObservers();
+	void disableFilters();
+	void enableFilters();
 	
-	public boolean isDataProductDatalink();
-    public int getNumberOfShownRows();
+	boolean isDataProductDatalink();
+    int getNumberOfShownRows();
 	void filterOnFoV(String raCol, String decCol);
 	
 	void setMaxHeight(int height);
