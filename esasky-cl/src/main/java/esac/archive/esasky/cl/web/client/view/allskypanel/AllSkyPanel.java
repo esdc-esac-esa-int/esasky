@@ -2,14 +2,9 @@ package esac.archive.esasky.cl.web.client.view.allskypanel;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -20,11 +15,16 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.ShowEvaEvent;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.AllSkyPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -42,7 +42,8 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     private String fovFromUrl;
     private String coordinateFrameFromUrl;
 
-    private Image esaLogo; 
+    private Image esaLogo;
+    private EsaSkyButton evaButton;
     private Tooltip tooltip;
     
     /**
@@ -88,11 +89,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     	
 		@Override
 		public void run() {
-        	Scheduler.get().scheduleFinally(new ScheduledCommand() {
-        		public void execute() {
-        			resizeAladin(width, height);
-        		}; 
-        	});
+        	Scheduler.get().scheduleFinally(() -> resizeAladin(width, height));
 		}
 	};
 	
@@ -106,13 +103,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         AladinLiteWrapper.init(this.allSkyContainerPanel, null, initialTarget, fovFromUrl, coordinateFrameFromUrl);
         this.aladinLiteFocusPanel = AllSkyFocusPanel.getInstance();
 
-        addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(final ResizeEvent event) {
-            	resizeAladinTimer.setNewSize(event.getWidth(), event.getHeight());
-            }
-        });
+        addResizeHandler(event -> resizeAladinTimer.setNewSize(event.getWidth(), event.getHeight()));
 
         FlowPanel zoomAndSelectionToolBox = new FlowPanel();
         zoomAndSelectionToolBox.addStyleName("zoomAndSelectionContainer");
@@ -126,13 +117,19 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         
         esaLogo = new Image(resources.logo());
         esaLogo.getElement().setId("allSkyESALogo");
-        esaLogo.addClickHandler(new ClickHandler() {
+        esaLogo.addClickHandler(event -> Window.open("//www.esa.int", "_blank", ""));
 
-            @Override
-            public void onClick(final ClickEvent event) {
-                Window.open("//www.esa.int", "_blank", "");
-            }
+        evaButton = new EsaSkyButton(Icons.getChatIcon());
+        evaButton.getElement().setId("allSkyEvaButton");
+        evaButton.setTitle(TextMgr.getInstance().getText("header_eva"));
+        evaButton.setBigStyle();
+        evaButton.addClickHandler(event -> {
+            CommonEventBus.getEventBus().fireEvent(new ShowEvaEvent());
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_EVA, GoogleAnalytics.ACT_SKIES_PANEL_EVA_TOGGLE, "");
         });
+
+        MainLayoutPanel.addElementToMainArea(evaButton);
+
 
         // Get aladinLite instance a wrap it into an aladinLiteFocusPanel
         this.aladinLiteFocusPanel.add(AladinLiteWrapper.getAladinLite());
@@ -143,27 +140,28 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         this.allSkyContainerPanel.add(zoomAndSelectionToolBox);
         
         this.allSkyContainerPanel.add(esaLogo);
+        this.allSkyContainerPanel.add(evaButton);
 
         add(this.allSkyContainerPanel);
         
-        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				updateEsaLogoToFollowAladinLogo();
-			}
-		});
-        updateEsaLogoToFollowAladinLogo();
+        MainLayoutPanel.addMainAreaResizeHandler(event -> updateElementsWithAladinLogo());
+        updateElementsWithAladinLogo();
         addStyleName("notSelectable");
     }
     
-    private void updateEsaLogoToFollowAladinLogo() {
+    private void updateElementsWithAladinLogo() {
     	if(MainLayoutPanel.getMainAreaWidth() <= 800) {
     		esaLogo.getElement().getStyle().setWidth(57, Unit.PX);
-    		esaLogo.getElement().getStyle().setRight(37, Unit.PX);
+    		esaLogo.getElement().getStyle().setRight(96, Unit.PX);
+            evaButton.setSmallStyle();
+            evaButton.getElement().getStyle().setRight(18, Unit.PX);
+            evaButton.getElement().getStyle().setBottom(5, Unit.PX);
     	} else {
     		esaLogo.getElement().getStyle().setWidth(94, Unit.PX);
-    		esaLogo.getElement().getStyle().setRight(86, Unit.PX);
+    		esaLogo.getElement().getStyle().setRight(136, Unit.PX);
+            evaButton.setBigStyle();
+            evaButton.getElement().getStyle().setRight(10, Unit.PX);
+            evaButton.getElement().getStyle().setBottom(10, Unit.PX);
     	}
     }
     

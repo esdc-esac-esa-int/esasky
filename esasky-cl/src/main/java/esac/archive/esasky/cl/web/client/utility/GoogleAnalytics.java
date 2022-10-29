@@ -247,6 +247,8 @@ public final class GoogleAnalytics {
     public static final String ACT_IMAGES_JWSTIMAGE_SUCCESS = "jwstImageSuccess";
     public static final String ACT_IMAGES_JWSTIMAGE_FAIL = "jwstImageFail";
 
+    public static final String ACT_SKIES_PANEL_EVA_TOGGLE= "toggleEva";
+
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{

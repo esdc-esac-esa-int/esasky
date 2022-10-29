@@ -8,6 +8,23 @@
     z-index: 9;
 }
 
+#allSkyEvaButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: auto;
+    z-index: 9;
+}
+
+.aladin-logo-container {
+    position: absolute;
+    bottom: 2px;
+    right: 60px;
+    z-index: 20;
+    min-width: 32px;
+    max-width: 90px;
+}
+
 .notSelectable {
   -moz-user-select: none;
   -webkit-user-select: none;
