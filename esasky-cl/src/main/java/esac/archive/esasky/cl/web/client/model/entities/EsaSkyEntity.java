@@ -1,8 +1,8 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -15,10 +15,7 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.SourceConstant;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
@@ -28,10 +25,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.HashMap;
@@ -48,7 +42,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     protected IShapeDrawer drawer;
     protected CombinedSourceFootprintDrawer combinedDrawer;
-    protected IDescriptor descriptor;
+    protected CommonTapDescriptor descriptor;
     protected MOCEntity mocEntity;
     protected AbstractTAPService metadataService;
     private SecondaryShapeAdder secondaryShapeAdder;
@@ -57,6 +51,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private SkyViewPosition skyViewPosition;
     private String histoLabel;
     private String esaSkyUniqId;
+    private String regionColumn;
     private TapRowList metadata;
     private CountStatus countStatus;
     private boolean isRefreshable = true;
@@ -65,44 +60,57 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<>();
     private String adql; 
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, 
                 SourceShapeType.SQUARE.getName(), secondaryShapeAdder, "solid");
 
     }
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, 
                 CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName());
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle) {
     	this(descriptor, null, skyViewPosition, esaSkyUniqId, null,
     			CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService) {
         this(descriptor, null, skyViewPosition, esaSkyUniqId, metadataService,
                 CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, Object shapeType) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService, String regionColumn) {
+        this(descriptor, null, skyViewPosition, esaSkyUniqId, metadataService,
+                CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle, regionColumn);
+    }
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId,
+                        AbstractTAPService metadataService, int shapeSize, Object shapeType) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null, "solid");
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, Object shapeType, 
-            SecondaryShapeAdder secondaryShapeAdder, String lineStyle) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId,
+                        AbstractTAPService metadataService, int shapeSize, Object shapeType,
+                        SecondaryShapeAdder secondaryShapeAdder, String lineStyle) {
+        this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, secondaryShapeAdder, lineStyle, null);
+    }
+
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId,
+                        AbstractTAPService metadataService, int shapeSize, Object shapeType,
+                        SecondaryShapeAdder secondaryShapeAdder, String lineStyle, String regionColumn) {
         this.metadataService = metadataService;
         this.descriptor = descriptor;
         this.secondaryShapeAdder = secondaryShapeAdder;
+        this.regionColumn = regionColumn;
 
+        String color = descriptor.getWavelengthColor();
         JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-                descriptor.getPrimaryColor(), lineStyle);
+                color, lineStyle);
 
         Map<String, Object> details = new HashMap<>();
 
@@ -113,57 +121,36 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
 
         JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
-                esaSkyUniqId, shapeSize, descriptor.getPrimaryColor(), details);
+                esaSkyUniqId, shapeSize, color, details);
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
+
         drawer = combinedDrawer;
 
-        drawer.setPrimaryColor(descriptor.getPrimaryColor());
-        drawer.setSecondaryColor(descriptor.getSecondaryColor());
+        drawer.setPrimaryColor(color);
+        drawer.setSecondaryColor(color);
 
         this.skyViewPosition = skyViewPosition;
         this.esaSkyUniqId = esaSkyUniqId;
-        this.metadataService = metadataService;
         this.countStatus = countStatus;
-        
+
 
     }
-
-
-    // TODO: Move these to a general place?
-    private native String getUcdDec(String decUcdName, String ucdMain, GeneralJavaScriptObject metadata, GeneralJavaScriptObject rowData) /*-{
-        var decName = "";
-        for(var i = 0; i < metadata.length; i++) {
-            if (metadata[i].ucd.includes(decUcdName)) {
-                if (decName === "" || metadata[i].ucd.includes(ucdMain)) {
-                    decName = metadata[i].name;
-                }
-            }
-        }
-        return  rowData[decName];
-    }-*/;
-
-    private native String getUcdRa(String raUcdName, String ucdMain, GeneralJavaScriptObject metadata, GeneralJavaScriptObject rowData) /*-{
-        var raName = "";
-        for(var i = 0; i < metadata.length; i++) {
-            if (metadata[i].ucd.includes(raUcdName)) {
-                if (raName === "" || metadata[i].ucd.includes(ucdMain)) {
-                    raName = metadata[i].name;
-                }
-            }
-        }
-        return  rowData[raName];
-    }-*/;
-
 
 
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
-        	String stcs = null;
-            if(!"".equals(getDescriptor().getTapSTCSColumn())) {
-        		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
-        	}
+            String stcs = null;
+
+            String stcsColumn = EsaSkyEntity.this.regionColumn;
+            if (stcsColumn == null || stcsColumn.isEmpty()) {
+                stcsColumn = descriptor.getRegionColumn();
+            }
+
+            if(stcsColumn != null && !stcsColumn.isEmpty()) {
+                stcs = rowData.getStringProperty(stcsColumn);
+            }
 
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
                 return catalogBuilder(rowId, rowData);
@@ -177,11 +164,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     polygon.getStcs(), rowId)));
 
             polygon.setShapeId(rowId);
-            String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
+            String shapeName = rowData.getStringProperty(descriptor.getIdColumn());
             polygon.setShapeName(shapeName);
 
-            String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-            String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+            String ra = rowData.getStringProperty(descriptor.getRaColumn());
+            String dec = rowData.getStringProperty(descriptor.getDecColumn());
             polygon.setRa(ra);
             polygon.setDec(dec);
 
@@ -189,10 +176,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
     };
 
+
     public SourceShape catalogBuilder(int shapeId, GeneralJavaScriptObject rowData) {
-        String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-        String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
-        String sourceName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
+        String ra = rowData.getStringProperty(descriptor.getRaColumn());
+        String dec = rowData.getStringProperty(descriptor.getDecColumn());
+        String sourceName = rowData.getStringProperty(descriptor.getIdColumn());
 
         SourceShape mySource = new SourceShape();
         mySource.setShapeId(shapeId);
@@ -201,50 +189,51 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         mySource.setDec(dec);
         mySource.setShapeName(sourceName);
 
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
 
         details.put(SourceConstant.SOURCE_NAME, mySource.getShapeName());
 
         details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
         details.put(SourceConstant.ID, Integer.toString(shapeId));
-
-        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
-            details.put(SourceConstant.EXTRA_PARAMS, null);
-        } else {
-            String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
-                    .split(",");
-            String extraDetailsLabels = "";
-            for (String currTapName : extraDetailsTapName) {
-                extraDetailsLabels += getKeyToShow(currTapName) + ",";
-            }
-            if(extraDetailsLabels.length() > 0) {
-                extraDetailsLabels = extraDetailsLabels.substring(0, extraDetailsLabels.length() - 1);
-            }
-            details.put(SourceConstant.EXTRA_PARAMS, extraDetailsLabels);
-
-            for (String currTapName : extraDetailsTapName) {
-                MetadataDescriptor cmd = this.getDescriptor()
-                        .getMetadataDescriptorByTapName(currTapName);
-                Integer precision = null;
-                String value = rowData.getStringProperty(currTapName);
-                if (value != null && cmd != null && cmd.getMaxDecimalDigits() != null
-                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
-                        .getType() == ColumnType.DOUBLE)) {
-                    StringBuilder sb = new StringBuilder();
-                    precision = cmd.getMaxDecimalDigits();
-                    sb.append("#0.");
-                    if (precision != null) {
-                        for (int i = 0; i < precision; i++) {
-                            sb.append("0");
-                        }
-                    } else {
-                        sb.append("00");
-                    }
-                	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
-                }
-                details.put(getKeyToShow(currTapName), value);
-            }
-        }
+        details.put(SourceConstant.EXTRA_PARAMS, null);
+//        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
+//            details.put(SourceConstant.EXTRA_PARAMS, null);
+//        }
+//        else {
+//            String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
+//                    .split(",");
+//            String extraDetailsLabels = "";
+//            for (String currTapName : extraDetailsTapName) {
+//                extraDetailsLabels += getKeyToShow(currTapName) + ",";
+//            }
+//            if(extraDetailsLabels.length() > 0) {
+//                extraDetailsLabels = extraDetailsLabels.substring(0, extraDetailsLabels.length() - 1);
+//            }
+//            details.put(SourceConstant.EXTRA_PARAMS, extraDetailsLabels);
+//
+//            for (String currTapName : extraDetailsTapName) {
+//                MetadataDescriptor cmd = this.getDescriptor()
+//                        .getMetadataDescriptorByTapName(currTapName);
+//                Integer precision = null;
+//                String value = rowData.getStringProperty(currTapName);
+//                if (value != null && cmd != null && cmd.getMaxDecimalDigits() != null
+//                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
+//                        .getType() == ColumnType.DOUBLE)) {
+//                    StringBuilder sb = new StringBuilder();
+//                    precision = cmd.getMaxDecimalDigits();
+//                    sb.append("#0.");
+//                    if (precision != null) {
+//                        for (int i = 0; i < precision; i++) {
+//                            sb.append("0");
+//                        }
+//                    } else {
+//                        sb.append("00");
+//                    }
+//                	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
+//                }
+//                details.put(getKeyToShow(currTapName), value);
+//            }
+//        }
 
         if(secondaryShapeAdder != null) {
             secondaryShapeAdder.addSecondaryShape(rowData, ra, dec, details);
@@ -255,11 +244,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         return mySource;
     }
 
-    private String getKeyToShow(String tapName) {
-        MetadataDescriptor metadataDescriptor = descriptor.getMetadataDescriptorByTapName(tapName);
-        return metadataDescriptor == null ? tapName : TextMgr.getDefaultInstance().getText(metadataDescriptor.getLabel());
-    }
-    
     private String makeSureSTCSHasFrame(String input) {
         String stcs = input.toUpperCase();
         if(stcs.contains("J2000")  || stcs.contains("ICRS")) {
@@ -275,21 +259,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     }
 
-    public class MocBuilder implements ShapeBuilder{
-
-        @Override
-        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row, GeneralJavaScriptObject metadata) {
-            PolygonShape shape = new PolygonShape();
-            String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
-            shape.setStcs(stcs);
-            shape.setJsObject(((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs())).getProperty("0"));
-            return shape;
-        }
-    }
 
     @Override
     public void fetchData() {
-        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 && !descriptor.hasSearchArea()) {
+        if (getCountStatus().hasMoved(descriptor) && descriptor.getSchemaName() == null && !descriptor.hasSearchArea()) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {
@@ -315,7 +288,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
  	        mocEntity.clearAll();
  	        mocEntity.setShouldBeShown(false);
          }
-         String url = descriptor.getTapQuery(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
+
+         String url = descriptor.createTapUrl(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
 
          clearAll();
          tablePanel.insertData(url);
@@ -336,18 +310,21 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         tablePanel.insertExternalTapData(data);
     }
 
+    public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> {
+    }
 
     protected void fetchShapesAndMetadata() {
         clearAll();
         int shapeLimit = DeviceUtils.getDeviceShapeLimit(descriptor);
 
-        if (shapeLimit > 0 && getCountStatus().getCount(descriptor) > shapeLimit) {
+        if (descriptor instanceof CommonTapDescriptor && getCountStatus().getCount(descriptor) > shapeLimit) {
             Log.debug("Showing dynamic moc");
             if(mocEntity == null){
-                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this);
+                mocEntity = new MOCEntity(descriptor, getCountStatus(), EsaSkyEntity.this);
             }
+
             if(getLineStyle() == null) {
-            	setLineStyle(LineStyle.SOLID.getName());
+                setLineStyle(LineStyle.SOLID.getName());
             }
             mocEntity.setTablePanel(tablePanel);
             mocEntity.setShouldBeShown(true);
@@ -376,8 +353,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
     
     public String getTapUrl() {
-    	this.adql = metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString());
-    	return descriptor.getTapQuery(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON);
+    	this.adql = metadataService.getMetadataAdql(descriptor, tablePanel.getFilterString());
+    	return descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON);
     }
 
     public void fetchDataWithoutMOC(String whereQuery) {
@@ -391,7 +368,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	
     	clearAll();
     	this.adql = metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery);
-    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
+    	tablePanel.insertData(descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
     }
     public void fetchDataWithoutMOC(MOCInfo mocInfo, String whereQuery) {
 
@@ -420,28 +397,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	    mocEntity.setShouldBeShown(true);
 	    tablePanel.setMOCMode(true);
 	    return this.mocEntity;
-    }
-
-    public void setDescriptorMetaData() {
-        List<MetadataDescriptor> metaList = new LinkedList<>();
-        int i = 0;
-        for(TapMetadata tmd : getMetadata().getMetadata()) {
-            MetadataDescriptor metaDatadescriptor = new MetadataDescriptor();
-            metaDatadescriptor.setTapName(tmd.getName());
-            if(tmd.getName().equals("access_url")) {
-                metaDatadescriptor.setType(ColumnType.DATALINK);
-                metaDatadescriptor.setIndex(0);
-            }else {
-                metaDatadescriptor.setType(ColumnType.valueOf(tmd.getDatatype().toUpperCase()));
-                metaDatadescriptor.setIndex(i++);
-            }
-            metaDatadescriptor.setLabel(tmd.getName());
-            metaDatadescriptor.setVisible(true);
-            metaDatadescriptor.setMaxDecimalDigits(4);
-            metaDatadescriptor.setDescription(tmd.getDescription());
-            metaList.add(metaDatadescriptor.getIndex(),metaDatadescriptor);
-        }
-        descriptor.setMetadata(metaList);
     }
 
     @Override
@@ -591,7 +546,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public String getTabLabel() {
-        return getDescriptor().getGuiShortName();
+        return getDescriptor().getShortName();
     }
 
     @Override
@@ -600,16 +555,18 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
     
     @Override
+    // TODO: Fix
     public Object getTAPDataByTAPName(TapRowList tapRowList, int rowIndex, String tapName) {
-    	Object data = null;
-        for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
-            if (tapMetadata.getName().equals(tapName)) {
-                int dataIndex = tapRowList.getMetadata().indexOf(tapMetadata);
-                data = (tapRowList.getData().get(rowIndex)).get(dataIndex);
-                break;
-            }
-        }
-        return data;
+//    	Object data = null;
+//        for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
+//            if (tapMetadata.getName().equals(tapName)) {
+//                int dataIndex = tapRowList.getMetadata().indexOf(tapMetadata);
+//                data = (tapRowList.getData().get(rowIndex)).get(dataIndex);
+//                break;
+//            }
+//        }
+//        return data;
+        return null;
     }
 
     @Override
@@ -625,7 +582,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public IDescriptor getDescriptor() {
+    public CommonTapDescriptor getDescriptor() {
         return descriptor;
     }
 
@@ -726,7 +683,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
+        String url = descriptor.createTapUrl(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
 
         clearAll();
         tablePanel.insertData(url);
@@ -778,8 +735,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
             @Override
             public void onSecondaryColorChanged(String color) {
-                descriptor.setSecondaryColor(color);
-                combinedDrawer.setSecondaryColor(color);
+                // TODO: fix this
+//                descriptor.setSecondaryColor(color);
+//                combinedDrawer.setSecondaryColor(color);
             }
 
             @Override
@@ -815,16 +773,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		}
 	}
     private void setStylePanelSecondaryContainerVisibility() {
-        if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
-            Boolean showAvgProperMotion = null;
-            if(secondaryShapeAdder != null) {
-                showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
-            }
-        	stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
-        			showAvgProperMotion, combinedDrawer.getUseMedianOnAvgProperMotion());
-        }else {
-        	stylePanel.hideSecondaryContainer();
-        }
+        // TODO: fix this
+//        if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
+//            Boolean showAvgProperMotion = null;
+//            if(secondaryShapeAdder != null) {
+//                showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
+//            }
+//        	stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
+//        			showAvgProperMotion, combinedDrawer.getUseMedianOnAvgProperMotion());
+//        }else {
+//        	stylePanel.hideSecondaryContainer();
+//        }
     }
     private void setStylePanelLineStyleVisibility() {
         if(mocEntity != null && mocEntity.isShouldBeShown()) {
@@ -956,7 +915,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getHelpText() {
-		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getDescriptorId());
+		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getId());
 	}
     
 	@Override
@@ -976,23 +935,28 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();
 	    boolean disableLink2ArchiveColumn = false;
-	    if (getDescriptor() instanceof ExtTapDescriptor
-	    		&& getDescriptor().getArchiveProductURI() != null
-	    		&& getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
-	            disableLink2ArchiveColumn = true;
-	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
-	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
-	                settings.setAddDatalinkLink2ArchiveColumn(true);
-	            }
-	    }
-		settings.setAddSendToVOApplicationColumn(getDescriptor().getSampEnabled());
-		settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null
-                && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
-                && !disableLink2ArchiveColumn);
-		settings.setAddLink2AdsColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
-		settings.setAddSourcesInPublicationColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
-        settings.setAddSelectionColumn(true);
-        settings.setUseUcd(descriptor.useUcd());
+//	    if (getDescriptor() instanceof ExtTapDescriptor
+//	    		&& getDescriptor().getArchiveProductURI() != null
+//	    		&& getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
+//	            disableLink2ArchiveColumn = true;
+//	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null
+//	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
+//	                settings.setAddDatalinkLink2ArchiveColumn(true);
+//	            }
+//	    }
+
+        if (descriptor instanceof CommonTapDescriptor) {
+            CommonTapDescriptor commonTapDescriptor = (CommonTapDescriptor) descriptor;
+            settings.setAddSendToVOApplicationColumn(commonTapDescriptor.isSampEnabled());
+            settings.setAddLink2ArchiveColumn(commonTapDescriptor.getArchiveProductURI() != null
+                    && !getDescriptor().getId().contains("PUBLICATIONS")
+                    && !disableLink2ArchiveColumn);
+            settings.setAddLink2AdsColumn(getDescriptor().getId().contains("PUBLICATIONS"));
+            settings.setAddSourcesInPublicationColumn(getDescriptor().getId().contains("PUBLICATIONS"));
+            settings.setAddSelectionColumn(true);
+            settings.setUseUcd(true);
+        }
+
 		
 		return settings;
 	}

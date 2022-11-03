@@ -49,17 +49,17 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	}
 	
 	private boolean checkValidUpdate() {
-		if(countStatus.getUpdateTime(descriptor) != null 
-        		&& countStatus.getUpdateTime(descriptor) > timecall) {
-        	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
-        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
-        	return false;
-        }
-		if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT){
-			Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
-					+ Double.toString(CoordinateUtils.getCenterCoordinateInJ2000().getFov() ));
-        	return false;
-		}
+//		if(countStatus.getUpdateTime(descriptor) != null
+//        		&& countStatus.getUpdateTime(descriptor) > timecall) {
+//        	Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
+//        			+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
+//        	return false;
+//        }
+//		if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT){
+//			Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
+//					+ Double.toString(CoordinateUtils.getCenterCoordinateInJ2000().getFov() ));
+//        	return false;
+//		}
 		return true;
 	}
 	
@@ -77,10 +77,10 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	}
 	
 	private void updateCountStatus(int totalCount) {
-		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-		countStatus.setUpdateTime(descriptor, timecall);
-        countStatus.setCountDetails(descriptor, totalCount, System.currentTimeMillis(),
-        		skyViewPosition);
+//		SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+//		countStatus.setUpdateTime(descriptor, timecall);
+//        countStatus.setCountDetails(descriptor, totalCount, System.currentTimeMillis(),
+//        		skyViewPosition);
 	}
 	
 	private String findLevelName(HashMap<String, ExtTapTreeMapLevel> levels, String value) {
@@ -122,48 +122,48 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	
 	@Override
 	protected void onSuccess(final Response response) {
-		Scheduler.get().scheduleFinally(new ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				
-				if(!checkValidUpdate()) {
-					return;
-				}
-			 
-			 	String logPrefix = "[ExtTapCheckCallback]";
-			 
-			 	
-				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-				TapRowList rowList = mapper.read(response.getText());
-	
-				int totalCount = rowList.getData().size();
-				logReceived(logPrefix, totalCount);
-				updateCountStatus(totalCount);
-
-		        
-		        if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getTreeMapLevel()) {
-		        	
-		        	if(totalCount > 0) {
-		        		extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();
-		        		
-		        		int level1Index = rowList.getColumnIndex(descriptor.getLevelColumnNames().get(0));
-		        		int level2Index = rowList.getColumnIndex(descriptor.getLevelColumnNames().get(1));
-		        		
-		        		
-		        		for(ArrayList<Object> row : rowList.getData()) {
-		        			createDescriptors(level1Index, level2Index, row);
-		        		}
-		        	}
-		        }
-		        if(descriptors.size() > 0) {
-			        descriptors.add(0,descriptor);
-			        counts.add(0,totalCount);
-		        }
-		        countStatus.updateCount();
-		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
-			}
-		});
+//		Scheduler.get().scheduleFinally(new ScheduledCommand() {
+//
+//			@Override
+//			public void execute() {
+//
+//				if(!checkValidUpdate()) {
+//					return;
+//				}
+//
+//			 	String logPrefix = "[ExtTapCheckCallback]";
+//
+//
+//				TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
+//				TapRowList rowList = mapper.read(response.getText());
+//
+//				int totalCount = rowList.getData().size();
+//				logReceived(logPrefix, totalCount);
+//				updateCountStatus(totalCount);
+//
+//
+//		        if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getTreeMapLevel()) {
+//
+//		        	if(totalCount > 0) {
+//		        		extTapDescriptors = DescriptorRepository.getInstance().getExtTapDescriptors();
+//
+//		        		int level1Index = rowList.getColumnIndex(descriptor.getLevelColumnNames().get(0));
+//		        		int level2Index = rowList.getColumnIndex(descriptor.getLevelColumnNames().get(1));
+//
+//
+//		        		for(ArrayList<Object> row : rowList.getData()) {
+//		        			createDescriptors(level1Index, level2Index, row);
+//		        		}
+//		        	}
+//		        }
+//		        if(descriptors.size() > 0) {
+//			        descriptors.add(0,descriptor);
+//			        counts.add(0,totalCount);
+//		        }
+//		        countStatus.updateCount();
+//		        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
+//			}
+//		});
 	}
 	
 	private void createDescriptors(int level1Index, int level2Index, ArrayList<Object> row) {
@@ -190,12 +190,12 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	}
 	
 	private void addDescToCount(ExtTapDescriptor desc) {
-		if(!descriptors.contains(desc)) {
-			descriptors.add(desc);	
-			counts.add(1);
-			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
-			countStatus.setCountDetails(desc, 1, System.currentTimeMillis(), skyViewPosition);
-		}
+//		if(!descriptors.contains(desc)) {
+//			descriptors.add(desc);
+//			counts.add(1);
+//			SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
+//			countStatus.setCountDetails(desc, 1, System.currentTimeMillis(), skyViewPosition);
+//		}
 	}
 	
 }

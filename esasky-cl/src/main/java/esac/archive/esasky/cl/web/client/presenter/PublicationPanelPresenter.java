@@ -26,7 +26,7 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
+//import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
 import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.query.TAPUtils;
@@ -48,7 +48,7 @@ public class PublicationPanelPresenter {
     
     private final DescriptorRepository descriptorRepo;
     private final EntityRepository entityRepo;
-    private PublicationsEntity entity;
+//    private PublicationsEntity entity;
     private int sourceLimit;
     private long lastTimecall;
     private long lastSuccessfulTimecall;
@@ -71,14 +71,15 @@ public class PublicationPanelPresenter {
 			}
 		}
 	};
-	
-   private Timer sourceLimitNotificationTimer = new Timer() {
 
-        @Override
-        public void run() {
-            CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(entity.getEsaSkyUniqId() + "SourceLimit"));
-        }
-    };
+	// TODO: FIX
+//   private Timer sourceLimitNotificationTimer = new Timer() {
+//
+//        @Override
+//        public void run() {
+//            CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(entity.getEsaSkyUniqId() + "SourceLimit"));
+//        }
+//    };
 
     public interface View {
     	void hide();
@@ -144,11 +145,12 @@ public class PublicationPanelPresenter {
 				isUpdateOnMoveChecked = !isUpdateOnMoveChecked;
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_UPDATEONMOVE, "UpdateOnMove: " + isUpdateOnMoveChecked);
 				view.setUpdateOnMoveSwitchValue(isUpdateOnMoveChecked);
-				if(isUpdateOnMoveChecked
-						&& (entity == null || !entity.getSkyViewPosition().compare(CoordinateUtils.getCenterCoordinateInJ2000(), 0.01))
-						) {
-					getPublications();
-				}
+				// TODO: FIX
+//				if(isUpdateOnMoveChecked
+//						&& (entity == null || !entity.getSkyViewPosition().compare(CoordinateUtils.getCenterCoordinateInJ2000(), 0.01))
+//						) {
+//					getPublications();
+//				}
 			}
 		});
 
@@ -170,11 +172,13 @@ public class PublicationPanelPresenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				removeProgressIndicator();
-				sourceLimitNotificationTimer.run();
+				// TODO: FIX
+//				sourceLimitNotificationTimer.run();
 				numberOfShownSources = 0;
 				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PUBLICATION, GoogleAnalytics.ACT_PUBLICATION_REMOVE, UrlUtils.getUrlForCurrentState());
-				entity.removeAllShapes();
-				entity = null;
+				// TODO: FIX
+//				entity.removeAllShapes();
+//				entity = null;
 				isShowingDataOrCallInProgress = false;
 				view.hide();
 			}
@@ -224,11 +228,12 @@ public class PublicationPanelPresenter {
 		isShowingDataOrCallInProgress = true;
 
 		String mostOrLeastAdql = isMostChecked ? "bibcount DESC" : "bibcount ASC";
-        if (entity == null) {            
-            entity = entityRepo.createPublicationsEntity(descriptor);
-        } else {
-        	entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
-        }
+		// TODO: FIX
+//        if (entity == null) {
+//            entity = entityRepo.createPublicationsEntity(descriptor);
+//        } else {
+//        	entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
+//        }
         
         // Get Query in ADQL format for SIMBAD TAP or ESASKY TAP.
         String url = "";	
@@ -244,8 +249,9 @@ public class PublicationPanelPresenter {
         		url = TAPUtils.getSIMBADTAPQuery("pub_sources", URL.encodeQueryString(adql), null);
         	}
         } else {
-            final String adql = TAPPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
-            url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
+			// TODO: Fix
+//            final String adql = TAPPublicationsService.getMetadataAdqlFromEsaSkyTap(descriptor, view.getLimit(), mostOrLeastAdql);
+//            url = TAPUtils.getTAPQuery(URL.encodeQueryString(adql), EsaSkyConstants.JSON);
         }
         
         getPublications(url);
@@ -254,10 +260,11 @@ public class PublicationPanelPresenter {
     
     public void getPublications(String url) {
     	final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-    	 if (entity == null) {            
-             entity = entityRepo.createPublicationsEntity(descriptor);
-         }
-    	entity.setAdql(url);
+		// TODO: FIX
+//    	 if (entity == null) {
+//             entity = entityRepo.createPublicationsEntity(descriptor);
+//         }
+//    	entity.setAdql(url);
         final String debugPrefix = "[getPublicationsSources][" + descriptor.getGuiShortName() + "]";
     	Log.debug(debugPrefix + "Query [" + url + "]");
         isCallInProgress = true;
@@ -274,17 +281,17 @@ public class PublicationPanelPresenter {
 			            onError(request, new Exception(response.getStatusCode() + " ("
 			                    + response.getStatusText() + ")"));
 			        }
-					
-					if(entity != null && timecall > lastSuccessfulTimecall) {
-						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
-						TapRowList rowList = mapper.read(response.getText());
-						entity.addShapes(convertResult(response.getText()), null);
-						numberOfShownSources = rowList.getData().size();
-						lastSuccessfulTimecall = timecall;
-			    		if(timecall == lastTimecall) {
-			    			onValidResponse(rowList);
-				    	}
-		    		}
+					// TODO: FIX
+//					if(entity != null && timecall > lastSuccessfulTimecall) {
+//						TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
+//						TapRowList rowList = mapper.read(response.getText());
+//						entity.addShapes(convertResult(response.getText()), null);
+//						numberOfShownSources = rowList.getData().size();
+//						lastSuccessfulTimecall = timecall;
+//			    		if(timecall == lastTimecall) {
+//			    			onValidResponse(rowList);
+//				    	}
+//		    		}
 				}
 				
 				@Override
@@ -326,18 +333,19 @@ public class PublicationPanelPresenter {
 				isShowingTruncatedDataset = true;
 				view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextTruncated") + " "
 						+ TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));
-				
-                if(sourceLimitNotificationTimer.isRunning()) {
-                    sourceLimitNotificationTimer.run();
-                }
-                String orderBy = isMostChecked ? TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost") : TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast");
-                String sourceLimitDescription = TextMgr.getInstance().getText("publicationShapeLimitDescription")
-                        .replace("$sourceLimit$", sourceLimit + "")
-                        .replace("$orderBy$", orderBy.toLowerCase())
-                        .replace("$mostOrLeast$", orderBy.toLowerCase());
-                CommonEventBus.getEventBus().fireEvent( 
-                        new ProgressIndicatorPushEvent(entity.getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
-                sourceLimitNotificationTimer.schedule(6000);
+
+				// TODO: FIX
+//                if(sourceLimitNotificationTimer.isRunning()) {
+//                    sourceLimitNotificationTimer.run();
+//                }
+//                String orderBy = isMostChecked ? TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationMost") : TextMgr.getInstance().getText("publicationPanel_truncationValuePublicationLeast");
+//                String sourceLimitDescription = TextMgr.getInstance().getText("publicationShapeLimitDescription")
+//                        .replace("$sourceLimit$", sourceLimit + "")
+//                        .replace("$orderBy$", orderBy.toLowerCase())
+//                        .replace("$mostOrLeast$", orderBy.toLowerCase());
+//                CommonEventBus.getEventBus().fireEvent(
+//                        new ProgressIndicatorPushEvent(entity.getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
+//                sourceLimitNotificationTimer.schedule(6000);
 			} else {
 				isShowingTruncatedDataset = false;
 				view.setPublicationStatusText(TextMgr.getInstance().getText("publicationPanel_statusTextNumSources").replace("$NUM_SOURCES$", formattedNumber));

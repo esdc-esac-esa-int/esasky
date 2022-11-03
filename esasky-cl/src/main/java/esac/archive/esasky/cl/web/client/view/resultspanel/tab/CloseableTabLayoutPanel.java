@@ -35,8 +35,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -249,12 +248,14 @@ public class CloseableTabLayoutPanel extends Composite {
         } else {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
         }
-        if (entity.getDescriptor() instanceof ExtTapDescriptor
-                || "publications".equals(entity.getDescriptor().getIcon())) {
-            configureButton.getElement().getStyle().setDisplay(Display.NONE);
-        } else {
-            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
-        }
+        // TODO: FIX
+//        if (entity.getDescriptor() instanceof ExtTapDescriptor
+//                || "publications".equals(entity.getDescriptor().getIcon())) {
+//            configureButton.getElement().getStyle().setDisplay(Display.NONE);
+//        } else {
+//            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
+//        }
+        configureButton.getElement().getStyle().setDisplay(Display.BLOCK); // TODO: remove after uncom
         
     }
 
@@ -321,20 +322,21 @@ public class CloseableTabLayoutPanel extends Composite {
         return saveButton;
     }
     
-    private boolean hasProductUrl(IDescriptor descriptor) {
-    	
-    	if(descriptor instanceof ExtTapDescriptor) {
-    		return true;
-    	}
-    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null){
-    		return true;
-    		
-    	}
-    	if(descriptor.getMetadataDescriptorByTapName("access_url") != null
-                && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId())){
-    		return true;
-    	}
-        return "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
+    private boolean hasProductUrl(CommonTapDescriptor descriptor) {
+    	// TODO: Fix
+//    	if(descriptor instanceof ExtTapDescriptor) {
+//    		return true;
+//    	}
+//    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null){
+//    		return true;
+//
+//    	}
+//    	if(descriptor.getMetadataDescriptorByTapName("access_url") != null
+//                && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId())){
+//    		return true;
+//    	}
+//        return "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
+        return false;
     }
 
     private EsaSkyButton createSendButton() {
@@ -547,7 +549,7 @@ public class CloseableTabLayoutPanel extends Composite {
 				}
 			}
 		});
-        styleButton.setCircleColor(tabPanel.getDescriptor().getPrimaryColor());
+        styleButton.setCircleColor(tabPanel.getDescriptor().getWavelengthColor());
         setCloseAllButtonVisibility();
         
         notifyOpeningObservers(tab.getId());

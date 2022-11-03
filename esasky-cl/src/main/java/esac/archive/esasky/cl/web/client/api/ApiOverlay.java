@@ -137,8 +137,8 @@ public class ApiOverlay extends ApiBase{
 
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, footprintsSet);
-
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), shouldBeInTablePanel);
+			// TODO: fix
+//			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), shouldBeInTablePanel);
 
 			AladinLiteWrapper.getAladinLite().goToRaDec(
 					((Footprint) fooprintList.getSkyObjectList().get(0)).getRa_deg(),
@@ -205,7 +205,8 @@ public class ApiOverlay extends ApiBase{
 
 			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, userCatalogue);
-			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), shouldBeInTablePanel);
+			// TODO: fix
+//			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), shouldBeInTablePanel);
 
 		} catch (Exception ex) {
 			Log.error(ex.getMessage(), ex);

@@ -2,9 +2,9 @@ package esac.archive.esasky.cl.web.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 public class TreeMapSelectionEvent extends GwtEvent<TreeMapSelectionEventHandler> {
 
@@ -35,7 +35,7 @@ public class TreeMapSelectionEvent extends GwtEvent<TreeMapSelectionEventHandler
     	return pointInformation.context;
     }
     
-    public IDescriptor getDescriptor(){
+    public CommonTapDescriptor getDescriptor(){
     	return pointInformation.descriptor;
     }
 }

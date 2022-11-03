@@ -39,7 +39,8 @@ public class PublicationTooltip extends Tooltip {
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					CommonEventBus.getEventBus().fireEvent(new AladinLiteShapeSelectedEvent(new Integer(source.getId()), EntityRepository.getInstance().getPublications().getEsaSkyUniqId(), source));
+                    // TODO: Fix
+//					CommonEventBus.getEventBus().fireEvent(new AladinLiteShapeSelectedEvent(new Integer(source.getId()), EntityRepository.getInstance().getPublications().getEsaSkyUniqId(), source));
 				}
 			});
             typeSpecificFlowPanel.add(button);

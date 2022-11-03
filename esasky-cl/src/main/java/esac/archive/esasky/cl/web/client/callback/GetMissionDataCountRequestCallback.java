@@ -43,23 +43,23 @@ public class GetMissionDataCountRequestCallback extends JsonRequestCallback {
 
     @Override
     protected void onSuccess(Response response) {
-        if (timecall < latestUpdates.get(tablePanel.getEsaSkyUniqID())) {
-            Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
-                    + timecall + " , dif:" + (latestUpdates.get(tablePanel.getEsaSkyUniqID()) - timecall));
-            return;
-        }
-        if(tablePanel.hasBeenClosed()) {
-            return;
-        }
-        
-        JsArray<JavaScriptObject> array = JSONUtils.evalJsonGetData("(" + response.getText() + ")");
-        DynamicCountObject countObject = JsonUtils.<DynamicCountObject> safeEval(array.get(0).toString());
-
-        entity.getCountStatus().setCount(entity.getDescriptor(), countObject.getCount());
-        entity.getCountStatus().updateCount();
-        
-		if(onComplete != null) {
-			onComplete.onComplete();
-		}
+//        if (timecall < latestUpdates.get(tablePanel.getEsaSkyUniqID())) {
+//            Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
+//                    + timecall + " , dif:" + (latestUpdates.get(tablePanel.getEsaSkyUniqID()) - timecall));
+//            return;
+//        }
+//        if(tablePanel.hasBeenClosed()) {
+//            return;
+//        }
+//
+//        JsArray<JavaScriptObject> array = JSONUtils.evalJsonGetData("(" + response.getText() + ")");
+//        DynamicCountObject countObject = JsonUtils.<DynamicCountObject> safeEval(array.get(0).toString());
+//
+//        entity.getCountStatus().setCount(entity.getDescriptor(), countObject.getCount());
+//        entity.getCountStatus().updateCount();
+//
+//		if(onComplete != null) {
+//			onComplete.onComplete();
+//		}
     }
 }

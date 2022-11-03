@@ -11,7 +11,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.UCD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -562,7 +562,7 @@ public abstract class BaseDescriptor implements IDescriptor {
         }
 
         GeneralJavaScriptObject[] metadataColumns = GeneralJavaScriptObject.convertToArray(this.tapTableMetadata);
-        final String metaMain = EsaSkyConstants.UCD_META_MAIN;
+        final String metaMain = UCD.META_MAIN.getValue();
         String columnName = "";
         for(int i = 0; i < metadataColumns.length; i++) {
             if (metadataColumns[i].hasProperty("ucd") && metadataColumns[i].getStringProperty("ucd").contains(ucdName)) {

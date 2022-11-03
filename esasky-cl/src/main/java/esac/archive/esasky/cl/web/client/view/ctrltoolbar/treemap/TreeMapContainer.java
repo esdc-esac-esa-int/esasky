@@ -23,7 +23,7 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GlobalTapPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 import java.util.LinkedList;
@@ -251,11 +251,11 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		}
 	}
 
-	public void updateData(List<IDescriptor> descriptors, List<Integer> counts) {
+	public void updateData(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
 		treeMap.updateData(descriptors, counts);
 	}
 	
-	public void addData(List<IDescriptor> descriptors, List<Integer> counts) {
+	public void addData(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
 		treeMap.addData(descriptors, counts);
 		if(context == EntityContext.SSO) {
 			header.setText(TextMgr.getInstance().getText("treeMap_nameOfSelectedLabel").replace("$SSONAME$", GUISessionStatus.getTrackedSso().name)

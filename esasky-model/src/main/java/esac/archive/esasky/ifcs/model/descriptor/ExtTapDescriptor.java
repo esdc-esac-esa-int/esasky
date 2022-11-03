@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.UCD;
 
 
 /**
@@ -253,7 +254,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		if (!useUcd()) {
 			return tapRaColumn;
 		} else {
-			return getUcdColumnName(EsaSkyConstants.UCD_POS_EQ_RA);
+			return getUcdColumnName(UCD.POS_EQ_RA.getValue());
 		}
 	}
 
@@ -267,7 +268,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		if (!useUcd()) {
 			return tapDecColumn;
 		} else {
-			return getUcdColumnName(EsaSkyConstants.UCD_POS_EQ_DEC);
+			return getUcdColumnName(UCD.POS_EQ_DEC.getValue());
 		}
 	}
 
@@ -276,7 +277,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 		if (!useUcd()) {
 			return super.getUniqueIdentifierField();
 		} else {
-			return getUcdColumnName(EsaSkyConstants.UCD_META_ID);
+			return getUcdColumnName(UCD.META_ID.getValue());
 		}
 	}
 

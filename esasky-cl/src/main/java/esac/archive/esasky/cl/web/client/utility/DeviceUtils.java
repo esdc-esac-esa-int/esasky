@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.utility;
 
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
 
 public final class DeviceUtils {
 
@@ -27,7 +29,7 @@ public final class DeviceUtils {
 		return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     }-*/;
 	
-	public static int getDeviceShapeLimit(IDescriptor descriptor) {
+	public static int getDeviceShapeLimit(CommonTapDescriptor descriptor) {
 	    int shapeLimit = descriptor.getShapeLimit();
 	    if(shapeLimit > 0 && DeviceUtils.isMobile()) {
 	        return EsaSkyWebConstants.MAX_SHAPES_FOR_MOBILE;

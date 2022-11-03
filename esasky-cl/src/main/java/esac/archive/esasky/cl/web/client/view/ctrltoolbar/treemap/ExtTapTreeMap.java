@@ -1,10 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import org.moxieapps.gwt.highcharts.client.Credits;
 import org.moxieapps.gwt.highcharts.client.Point;
 import org.moxieapps.gwt.highcharts.client.ToolTip;
@@ -27,10 +27,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.ifcs.model.descriptor.ColorChangeObserver;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ExtTapTreeMap extends TreeMap {
 
@@ -88,7 +85,7 @@ public class ExtTapTreeMap extends TreeMap {
                 	for(Point point : series.getPoints()) {
                 		PointInformation pointInformation = allPoints.get(point.getText());
                 		if(pointInformation != null) {
-                			String color = pointInformation.descriptor.getPrimaryColor();
+                			String color = pointInformation.descriptor.getWavelengthColor();
                 			setColor(point, color);
                 		}
                 	}
@@ -153,119 +150,121 @@ public class ExtTapTreeMap extends TreeMap {
     }
 	
     private void cleanChildren(ExtTapDescriptor parent) {
-    		for(PointInformation pointInformation : allPoints.values()) {
-    			
-    			ExtTapDescriptor childDesc = (ExtTapDescriptor) pointInformation.descriptor;
-				
-    			if( childDesc.getParent() == parent) {
-    					Point child = getPoint(childDesc);
-    					child.update(0,false);
-    					cleanChildren(childDesc);
-				}
-    		}
+//    		for(PointInformation pointInformation : allPoints.values()) {
+//
+//    			ExtTapDescriptor childDesc = (ExtTapDescriptor) pointInformation.descriptor;
+//
+//    			if( childDesc.getParent() == parent) {
+//    					Point child = getPoint(childDesc);
+//    					child.update(0,false);
+//    					cleanChildren(childDesc);
+//				}
+//    		}
     }
     
     private void clearAll() {
-    	for(PointInformation pointInformation : allPoints.values()) {
-    		ExtTapDescriptor desc = (ExtTapDescriptor) pointInformation.descriptor;
-    		Point child = getPoint(desc);
-			child.update(0,false);
-    	}
-    	
-    	makeSureGhostPointIsInGraph(ghostPoint.id);
+//    	for(PointInformation pointInformation : allPoints.values()) {
+//    		ExtTapDescriptor desc = (ExtTapDescriptor) pointInformation.descriptor;
+//    		Point child = getPoint(desc);
+//			child.update(0,false);
+//    	}
+//
+//    	makeSureGhostPointIsInGraph(ghostPoint.id);
     }
     
     
     @Override
-    public void addData(final List<IDescriptor> descriptors, List<Integer> counts) {
+    public void addData(final List<CommonTapDescriptor> descriptors, List<Integer> counts) {
         
-        if ((descriptors.size() > 0)
-                && (descriptors.size() == counts.size())) {
-            
-        	boolean redraw = false;
-            List<Integer> zeroCountList = new ArrayList<Integer>();
-            
-            
-            for (int i = 0; i < descriptors.size(); i ++) {
-            	ExtTapDescriptor desc = (ExtTapDescriptor) descriptors.get(i);
-            	if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == desc.getTreeMapLevel()) {
-            		cleanChildren(desc);            	
-            	}
-            	
-                if (counts.get(i) > 0) {
-                    //Only add descriptors with non zero count
-                	addPoints(desc, counts.get(i), false);
-            		
-                } else {
-                    //Store this index for later removing
-                    zeroCountList.add(i);
-                }
-                
-            	redraw = true;
-            }
-            
-            for (int i : zeroCountList) {
-            	addPoints(descriptors.get(i), counts.get(i), false);
-            }
-            
-            update(redraw);
-        }
+//        if ((descriptors.size() > 0)
+//                && (descriptors.size() == counts.size())) {
+//
+//        	boolean redraw = false;
+//            List<Integer> zeroCountList = new ArrayList<Integer>();
+//
+//
+//            for (int i = 0; i < descriptors.size(); i ++) {
+//            	ExtTapDescriptor desc = (ExtTapDescriptor) descriptors.get(i);
+//            	if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == desc.getTreeMapLevel()) {
+//            		cleanChildren(desc);
+//            	}
+//
+//                if (counts.get(i) > 0) {
+//                    //Only add descriptors with non zero count
+//                	addPoints(desc, counts.get(i), false);
+//
+//                } else {
+//                    //Store this index for later removing
+//                    zeroCountList.add(i);
+//                }
+//
+//            	redraw = true;
+//            }
+//
+//            for (int i : zeroCountList) {
+//            	addPoints(descriptors.get(i), counts.get(i), false);
+//            }
+//
+//            update(redraw);
+//        }
     }
     
-    private Point getPoint2(IDescriptor descriptor) {
-    	if(allPointMap.containsKey(descriptor.getGuiLongName())){
-    		return allPointMap.get(descriptor.getGuiLongName());
+    private Point getPoint2(CommonTapDescriptor descriptor) {
+    	if(allPointMap.containsKey(descriptor.getLongName())){
+    		return allPointMap.get(descriptor.getLongName());
     	}
     	return null;
     }
     
-    private String getDescriptorColor(IDescriptor descriptor) {
-        String color;
-        if(((ExtTapDescriptor)descriptor).getParent() != null) {
-        	if(((ExtTapDescriptor)descriptor).getParent().getParent() != null) {
-        		color = ((ExtTapDescriptor)descriptor).getParent().getParent().getPrimaryColor();
-        	}else {
-        		color = ((ExtTapDescriptor)descriptor).getParent().getPrimaryColor();
-        	}
-        }else {
-        	color = descriptor.getPrimaryColor();
-        }
-        return color;
+    private String getDescriptorColor(CommonTapDescriptor descriptor) {
+//        String color;
+//        if(((ExtTapDescriptor)descriptor).getParent() != null) {
+//        	if(((ExtTapDescriptor)descriptor).getParent().getParent() != null) {
+//        		color = ((ExtTapDescriptor)descriptor).getParent().getParent().getPrimaryColor();
+//        	}else {
+//        		color = ((ExtTapDescriptor)descriptor).getParent().getPrimaryColor();
+//        	}
+//        }else {
+//        	color = descriptor.getPrimaryColor();
+//        }
+//        return color;
+        return null;
     }
     
     @Override
-    protected String generateNewPoint(IDescriptor descriptor, String color, PointInformation pointInformation, int count) {
-    	String pointId = descriptor.generateId();
-        
-    	if(isRendered()) {
-	        final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
-	
-	    	ExtTapDescriptor desc = (ExtTapDescriptor) descriptor;
-	    	if(desc.getTreeMapLevel() > EsaSkyConstants.TREEMAP_LEVEL_SERVICE) {
-	            Point parentPoint = getPoint2(desc.getParent());
-	            newPoint.setParent(parentPoint);
-	    	}
-	        
-	        series.addPoint(newPoint, false, false, false);
-	        allPointMap.put(descriptor.getGuiLongName(), newPoint);
-    	}
-    	
-		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
-			@Override
-			public void onColorChange(IDescriptor descriptor, String newColor) {
-				setPointColor(descriptor, newColor);
-			}
-		});
-		
-		return pointId;
+    protected String generateNewPoint(CommonTapDescriptor descriptor, String color, PointInformation pointInformation, int count) {
+//    	String pointId = descriptor.generateId();
+//
+//    	if(isRendered()) {
+//	        final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
+//
+//	    	ExtTapDescriptor desc = (ExtTapDescriptor) descriptor;
+//	    	if(desc.getTreeMapLevel() > EsaSkyConstants.TREEMAP_LEVEL_SERVICE) {
+//	            Point parentPoint = getPoint2(desc.getParent());
+//	            newPoint.setParent(parentPoint);
+//	    	}
+//
+//	        series.addPoint(newPoint, false, false, false);
+//	        allPointMap.put(descriptor.getGuiLongName(), newPoint);
+//    	}
+//
+//		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
+//			@Override
+//			public void onColorChange(IDescriptor descriptor, String newColor) {
+//				setPointColor(descriptor, newColor);
+//			}
+//		});
+//
+//		return pointId;
+        return null;
     }
     
     @Override
-    protected void addPoints(IDescriptor descriptor, int count, boolean updateView) {
+    protected void addPoints(CommonTapDescriptor descriptor, int count, boolean updateView) {
         String pointId = null;
 
-        PointInformation pointInformation = new PointInformation(descriptor.getGuiLongName(),
-                descriptor.getMission(), descriptor.getCreditedInstitutions(), count, descriptor, context);
+        PointInformation pointInformation = new PointInformation(descriptor.getLongName(),
+                descriptor.getMission(), descriptor.getCredits(), count, descriptor, context);
         
         String color = getDescriptorColor(descriptor);
         pointInformation.setParentColor(color);

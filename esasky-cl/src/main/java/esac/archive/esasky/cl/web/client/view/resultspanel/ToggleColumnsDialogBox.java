@@ -2,13 +2,12 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -17,8 +16,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabu
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
 public class ToggleColumnsDialogBox extends AutoHidingMovablePanel{
 	private final Resources resources = GWT.create(Resources.class);
@@ -74,11 +71,7 @@ public class ToggleColumnsDialogBox extends AutoHidingMovablePanel{
 
 		closeButton = new CloseButton();
 		closeButton.addStyleName("toggleColumns__closeButton");
-		closeButton.addClickHandler(new ClickHandler() {
-			public void onClick(final ClickEvent event) {
-				hide();
-			}
-		});
+		closeButton.addClickHandler(event -> hide());
 
 		missionLabel = new Label(mission);
 		missionLabel.setStyleName("toggleColumns__missionLabel");

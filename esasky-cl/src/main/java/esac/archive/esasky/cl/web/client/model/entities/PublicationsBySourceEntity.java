@@ -6,6 +6,8 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -18,13 +20,14 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.PublicationTooltip;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.PublicationsTablePanel;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 public class PublicationsBySourceEntity extends EsaSkyEntity {
 
-    private PublicationsDescriptor publicationsDescriptor;
-    public PublicationsBySourceEntity(PublicationsDescriptor descriptor,
-            CountStatus countStatus, SkyViewPosition skyViewPosition,
-            String esaSkyUniqId, double ra, double dec, String bibcount) {
+    private CommonTapDescriptor publicationsDescriptor;
+    public PublicationsBySourceEntity(CommonTapDescriptor descriptor,
+                                      CountStatus countStatus, SkyViewPosition skyViewPosition,
+                                      String esaSkyUniqId, double ra, double dec, String bibcount) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
         super.addShapes(getTableShapeInfo(ra, dec, bibcount, getEsaSkyUniqId()), null);
         this.publicationsDescriptor = descriptor;
@@ -42,8 +45,9 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
             
             @Override
             public void execute() {
-                tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId()) 
-                    + "&ROWS=" + publicationsDescriptor.getAdsPublicationsMaxRows()); 
+                // TODO: FIX
+//                tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId())
+//                    + "&ROWS=" + publicationsDescriptor.getAdsPublicationsMaxRows());
             }
         });
     }

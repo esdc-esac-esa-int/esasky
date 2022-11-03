@@ -7,20 +7,20 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Response;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.model.DynamicCountObject;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 public class CountRequestCallback extends JsonRequestCallback {
     
-    private IDescriptor descriptor;
+    private CommonTapDescriptor descriptor;
     private CountStatus countStatus;
     private long timecall;
 
-    public CountRequestCallback(IDescriptor descriptor, CountStatus countStatus,
-            ICountRequestHandler countRequestHandler, String url) {
+    public CountRequestCallback(CommonTapDescriptor descriptor, CountStatus countStatus,
+                                ICountRequestHandler countRequestHandler, String url) {
         super(countRequestHandler.getProgressIndicatorMessage(), url);
         this.descriptor = descriptor;
         this.countStatus = countStatus;
@@ -37,7 +37,7 @@ public class CountRequestCallback extends JsonRequestCallback {
         }
         
         countStatus.setUpdateTime(descriptor, timecall);
-        Log.debug(this.getClass().getSimpleName() + " RESPONSE for " + descriptor.getDescriptorId()
+        Log.debug(this.getClass().getSimpleName() + " RESPONSE for " + descriptor.getId()
                 + " : " + response.getText());
         JsArray<JavaScriptObject> array = JSONUtils.evalJsonGetData("(" + response.getText() + ")");
 
@@ -51,7 +51,7 @@ public class CountRequestCallback extends JsonRequestCallback {
 
         countStatus.setCountDetails(descriptor, value, System.currentTimeMillis(),
         		skyViewPosition);
-        Log.debug(this.getClass().getSimpleName() + " " + descriptor.getDescriptorId() + ": [" + value
+        Log.debug(this.getClass().getSimpleName() + " " + descriptor.getId() + ": [" + value
                 + "] results found");
         countStatus.updateCount();
     }

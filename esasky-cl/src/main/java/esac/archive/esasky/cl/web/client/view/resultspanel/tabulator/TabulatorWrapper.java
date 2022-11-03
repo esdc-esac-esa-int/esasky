@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -22,6 +21,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilte
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -508,7 +508,7 @@ public class TabulatorWrapper {
     		final DropDownMenu<String> dropDownMenu = new DropDownMenu<String>("", "", 125, filterButtonId + "_DropDownMenu");
 
     		for(String item : list.split(",")) {
-    			MenuItem<String> dropdownItem = new MenuItem<String>(item, item, item, true);
+    			MenuItem<String> dropdownItem = new MenuItem<>(item, item, item, true);
     			dropDownMenu.addMenuItem(dropdownItem);
     		}
     		
@@ -624,147 +624,42 @@ public class TabulatorWrapper {
     		});
     }-*/;
     
-    public void setDefaultQueryMode(){
-        setDefaultQueryMode(this, tableJsObject);
-    }
+//    public void setDefaultQueryMode(){
+//        setDefaultQueryMode(this, tableJsObject);
+//    }
 
-    public void setExtTapQueryMode() {
-        setExtTapQueryMode(this, tableJsObject);
+    public void setQueryMode() {
+        setQueryMode(this, tableJsObject);
     }
-    
-    private native void setDefaultQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
+    private native void setQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
         tableJsObject.options.ajaxResponse = function(url, params, response){
             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponse()();
-			descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
-			
-			var metadata = response.metadata;
+            var descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
 
-			var sortedMetadata = [];
-			var indexesMoved = [];
-			for(var j = 0; j < metadata.length; j++){
-				if(metadata[j].name == "id"){
-					metadata[j].name = 'identifier';
-				}
-				metadata[j]["visible"] = (metadata[j].name !== "s_region");
-				metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
-				
-				if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
-				
-					if(descriptorMetaData[metadata[j].name].hasOwnProperty("visible")){
-						metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
-					}
-					if(descriptorMetaData[metadata[j].name].hasOwnProperty("label") 
-						&& descriptorMetaData[metadata[j].name].label != "" 
-						&& descriptorMetaData[metadata[j].name].label != "undefined"
-						&& descriptorMetaData[metadata[j].name].label != "null"){
-					    if(url.includes("publications-by")){					        
-				            metadata[j].displayName = $wnd.esasky.getInternationalizationText(descriptorMetaData[metadata[j].name]["label"]);
-					    } else {
-				            metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
-					    }
-					}
-					if(descriptorMetaData[metadata[j].name].hasOwnProperty("maxDecimalDigits") && descriptorMetaData[metadata[j].name].maxDecimalDigits != null){
-				        metadata[j].maxDecimalDigits = descriptorMetaData[metadata[j].name].maxDecimalDigits;
-					}
-					sortedMetadata[descriptorMetaData[metadata[j].name].index] = metadata[j];
-					indexesMoved.push(j);
-				} else if (!$wnd.$.isEmptyObject(descriptorMetaData)){
-					metadata[j].visible = false;
-				}
-			}
-			
-			sortedMetadata = sortedMetadata.filter(function( element ) {
-               return element !== undefined;
-            });
-			
-			var data = [];
-			for(var i = 0; i < response.data.length; i++){
-				var row = {id:i};
-				for(var j = 0; j < metadata.length; j++){
-	    			if(metadata[j].datatype.toUpperCase() === "DOUBLE" || metadata[j].datatype.toUpperCase() === "FLOAT" || metadata[j].datatype.toUpperCase() === "REAL"){
-						row[metadata[j].name] = parseFloat(response.data[i][j]);
-		    			if(isNaN(row[metadata[j].name])){
-							row[metadata[j].name] = undefined;
-		    			}
-	    			} else if(metadata[j].datatype.toUpperCase() === "INTEGER" || metadata[j].datatype.toUpperCase() === "INT" || metadata[j].datatype.toUpperCase() === "SHORT"){
-						row[metadata[j].name] = parseInt(response.data[i][j]);
-		    			if(isNaN(row[metadata[j].name])){
-							row[metadata[j].name] = undefined;
-		    			}
-	    			} else if(metadata[j].datatype.toUpperCase() === "BIGINT"|| metadata[j].datatype.toUpperCase() === "LONG"){
-						row[metadata[j].name] = response.data[i][j];
-	    			} else {
-						row[metadata[j].name] = response.data[i][j];
-	    			}
-				}
-				data[i] = row;
-			}
-			
-	        var index = indexesMoved.pop();
-            while(index !== undefined){
-                metadata.splice(index, 1);
-                index = indexesMoved.pop();
-            }
-            metadata = sortedMetadata.concat(metadata);
-            
-			tableJsObject.metadata = metadata;
-			tableJsObject.filterData = []
-			tableJsObject.columnDef = [];
-			tableJsObject.showCount = true;
-			tableJsObject.dataLoaded = true;
-            console.log(data);
-	        return data;
-	    }
-    }-*/;
-
-    private native void setExtTapQueryMode(TabulatorWrapper wrapper, GeneralJavaScriptObject tableJsObject)/*-{
-        tableJsObject.options.ajaxResponse = function(url, params, response){
-            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponse()();
-            descriptorMetaData = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
-            // here obs
             var metadata = response.metadata == null ? response.columns : response.metadata;
+
+            var raColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaColumnName()();
+            var decColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecColumnName()();
 
             var sortedMetadata = [];
             var indexesMoved = [];
             for(var j = 0; j < metadata.length; j++){
-                if(metadata[j].name == "id"){
+                if(metadata[j].name === "id"){
                     metadata[j].name = 'identifier';
-                }
-                metadata[j]["visible"] = (metadata[j].name !== "s_region");
-                metadata[j]["displayName"] = $wnd.esasky.getColumnDisplayText(metadata[j].name);
-
-                if (metadata[j]["ucd"] != null) {
-                    if (metadata[j]["ucd"].includes("pos.eq.ra")) {
-                        metadata[j].datatype = "RA"
-                    } else if (metadata[j]["ucd"].includes("pos.eq.dec")) {
-                        metadata[j].datatype = "DEC"
-                    }
+                } else if (metadata[j].name === raColumnName) {
+                    metadata[j].datatype = "RA";
+                } else if (metadata[j].name === decColumnName) {
+                    metadata[j].datatype = "DEC";
                 }
 
-
-                if(descriptorMetaData.hasOwnProperty(metadata[j].name)){
-
-                    if(descriptorMetaData[metadata[j].name].hasOwnProperty("visible")){
-                        metadata[j].visible = descriptorMetaData[metadata[j].name]["visible"];
-                    }
-                    if(descriptorMetaData[metadata[j].name].hasOwnProperty("label")
-                        && descriptorMetaData[metadata[j].name].label != ""
-                        && descriptorMetaData[metadata[j].name].label != "undefined"
-                        && descriptorMetaData[metadata[j].name].label != "null"){
-                        if(url.includes("publications-by")){
-                            metadata[j].displayName = $wnd.esasky.getInternationalizationText(descriptorMetaData[metadata[j].name]["label"]);
-                        } else {
-                            metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(descriptorMetaData[metadata[j].name]["label"]);
-                        }
-                    }
-                    if(descriptorMetaData[metadata[j].name].hasOwnProperty("maxDecimalDigits") && descriptorMetaData[metadata[j].name].maxDecimalDigits != null){
-                        metadata[j].maxDecimalDigits = descriptorMetaData[metadata[j].name].maxDecimalDigits;
-                    }
-                    sortedMetadata[descriptorMetaData[metadata[j].name].index] = metadata[j];
-                    indexesMoved.push(j);
-                } else if (!$wnd.$.isEmptyObject(descriptorMetaData)){
-                    metadata[j].visible = false;
+                var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
+                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
+                metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+                if (unit) {
+                    metadata[j].displayName += " (" + unit + ")";
                 }
+
+
             }
 
             sortedMetadata = sortedMetadata.filter(function( element ) {
@@ -780,7 +675,7 @@ public class TabulatorWrapper {
             // Tabulator has reserved the ID column
             var uidField = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getUniqueIdentifierField()();
             for(var i = 0; i < data.length; i++){
-                if (uidField == "id") {
+                if (uidField === "id") {
                     data[i]["identifier"] = data[i]["id"];
                 }
                 data[i]["id"]  = i;
@@ -804,13 +699,7 @@ public class TabulatorWrapper {
     
     public void show() {
         if(isMOCMode()) { //In defaultQueryMode MutationObserver redraws, if necessary
-            Scheduler.get().scheduleFinally(new ScheduledCommand() {
-                
-                @Override
-                public void execute() {
-                    redraw(tableJsObject); 
-                }
-            });
+            Scheduler.get().scheduleFinally(() -> redraw(tableJsObject));
         }
     }
 
@@ -1008,7 +897,7 @@ public class TabulatorWrapper {
 					name = cell.getColumn()._column.definition.field;
 					list = table.filterData[name]["list"];
 					wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-						(editorParams["tapName"],editorParams["title"], filterButtonId, minVal, maxVal, functionObject);
+						(editorParams["tapName"],editorParams["title"], filterButtonId, minVal + "," + maxVal, functionObject);
 				}				
 			});	
 			var container = $wnd.$("<span></span>")
@@ -2379,7 +2268,19 @@ public class TabulatorWrapper {
     public GeneralJavaScriptObject getDescriptorMetaData() {
     	return tabulatorCallback.getDescriptorMetaData();
     }
-    
+
+    public ITapDescriptor getDescriptor() {
+        return tabulatorCallback.getDescriptor();
+    }
+
+    public boolean isColumnVisible(String columnName) {
+        return getDescriptor().isColumnVisible(columnName);
+    }
+
+    public String getColumnUnit(String columnName) {
+        return tabulatorCallback.getColumnUnit(columnName);
+    }
+
     public String getRaColumnName() {
         return tabulatorCallback.getRaColumnName();
     }

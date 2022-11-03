@@ -6,8 +6,7 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 
 public class TAPObservationService extends AbstractTAPService {
 
@@ -25,18 +24,12 @@ public class TAPObservationService extends AbstractTAPService {
 
     
     @Override
-    public String getMetadataAdql(IDescriptor descriptorInput) {
+    public String getMetadataAdql(CommonTapDescriptor descriptorInput) {
     	return getMetadataAdql(descriptorInput, "");
     }
-    
-    /**
-     * getMetadata4Footprints().
-     * @param aladinLite Input AladinLiteWidget.
-     * @param obsDescriptor Input ObservationDescriptor
-     * @return Query in ADQL format.
-     */
+
     @Override
-    public String getMetadataAdql(IDescriptor descriptor, String filter) {
+    public String getMetadataAdql(CommonTapDescriptor descriptor, String filter) {
         final String debugPrefix = "[TAPObservationService.getMetadata]";
 
         Log.debug(debugPrefix);
@@ -46,49 +39,45 @@ public class TAPObservationService extends AbstractTAPService {
             adql = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor)  + " *";
         } else {
             adql = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor) + " ";
-            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-                MetadataDescriptor castMetadata = currMetadata;
-                adql += " " + castMetadata.getTapName() + ", ";
+            for (TapMetadataDescriptor currMetadata : descriptor.getMetadata()) {
+                TapMetadataDescriptor castMetadata = currMetadata;
+                adql += " " + castMetadata.getName() + ", ";
             }
     
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
         }
-        adql += " FROM " + descriptor.getTapTable() + " WHERE ";
+        adql += " FROM " + descriptor.getTableName() + " WHERE ";
 
         adql += getGeometricConstraint(descriptor);
         
         if(!"".equals(filter)) {
         	adql += " AND " + filter;
         }
-        
-        adql += getOrderBy(descriptor);
 
         Log.debug(debugPrefix + " ADQL " + adql);
         return adql;
     }
-    
-    public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition pos) {
+
+    public String getMetadataAdqlRadial(CommonTapDescriptor descriptor, SkyViewPosition pos) {
     	String adql;
-    	
+
     	int top = DeviceUtils.getDeviceShapeLimit(descriptor);
-    	
+
     	if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
     	    adql = "SELECT top " + top +  " * ";
     	} else {
             adql = "SELECT top " + top + " ";
-            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-                MetadataDescriptor castMetadata = currMetadata;
-                adql += " " + castMetadata.getTapName() + ", ";
+            for (TapMetadataDescriptor currMetadata : descriptor.getMetadata()) {
+                TapMetadataDescriptor castMetadata = currMetadata;
+                adql += " " + castMetadata.getName() + ", ";
             }
             adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
     	}
-        adql += " FROM " + descriptor.getTapTable() + " WHERE "
+        adql += " FROM " + descriptor.getTableName() + " WHERE "
         		+ "1=INTERSECTS(fov, CIRCLE(\'ICRS\', "
-				+ Double.toString(pos.getCoordinate().getRa()) + ", "  +  Double.toString(pos.getCoordinate().getDec()) + ", "
-				+ Double.toString(pos.getFov()/2) +"))";
+				+ pos.getCoordinate().getRa() + ", "  + pos.getCoordinate().getDec() + ", "
+				+ pos.getFov() / 2 +"))";
 
-        adql += getOrderBy(descriptor);
-        
         return adql;
     }
     

@@ -19,7 +19,10 @@ import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltipObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 
 public class MocRepository {
@@ -54,13 +57,14 @@ public class MocRepository {
 				for(int i = 0; i < length; i++) {
 					GeneralJavaScriptObject data = mocsClicked.getProperty(Integer.toString(i));
 					String name = data.getProperty("name").toString();
-					IDescriptor descriptor;
+					CommonTapDescriptor descriptor;
 					for(MOCEntity entity : allEntities) {
-						if(name.startsWith(entity.getDescriptor().getDescriptorId())) {
+						if(name.startsWith(entity.getDescriptor().getId())) {
 							descriptor = entity.getDescriptor();
-							mocInfos.add(new MOCInfo(descriptor, entity, 
-									GeneralJavaScriptObject.convertToInteger(data.getProperty("count")), 
-							        data.getProperty("pixels")));
+							// TODO: Fix
+//							mocInfos.add(new MOCInfo(descriptor, entity,
+//									GeneralJavaScriptObject.convertToInteger(data.getProperty("count")),
+//							        data.getProperty("pixels")));
 							break;
 						}
 					}

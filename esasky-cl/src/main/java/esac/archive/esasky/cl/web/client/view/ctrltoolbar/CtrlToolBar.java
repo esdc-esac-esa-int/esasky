@@ -24,6 +24,7 @@ import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
@@ -39,16 +40,13 @@ import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
 import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -71,6 +69,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
     private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
     private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
+
 
     private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
 
@@ -715,55 +714,29 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts) {
-        List<IDescriptor> observationDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> observationCounts = new LinkedList<Integer>();
-        List<IDescriptor> ssoDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> ssoCounts = new LinkedList<Integer>();
-        List<IDescriptor> catalogDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> catalogCounts = new LinkedList<Integer>();
-        List<IDescriptor> spectraDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> spectraCounts = new LinkedList<Integer>();
-        List<IDescriptor> extTapDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> extTapCounts = new LinkedList<Integer>();
+    public void addTreeMapData(Collection<DescriptorCountAdapter> descriptorCounts) {
 
-        for (int i = 0; i < descriptors.size(); i++) {
-            if (descriptors.get(i) instanceof ImageDescriptor) {
-                continue;
-            }
-            if (descriptors.get(i) instanceof ObservationDescriptor) {
-                observationDescriptors.add(descriptors.get(i));
-                observationCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof SSODescriptor) {
-                ssoDescriptors.add(descriptors.get(i));
-                ssoCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof CatalogDescriptor) {
-                catalogDescriptors.add(descriptors.get(i));
-                catalogCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof SpectraDescriptor) {
-                spectraDescriptors.add(descriptors.get(i));
-                spectraCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof ExtTapDescriptor) {
-                extTapDescriptors.add(descriptors.get(i));
-                extTapCounts.add(counts.get(i));
+        for (DescriptorCountAdapter descriptorCount : descriptorCounts.stream().filter(ca -> !ca.isZeroCount()).collect(Collectors.toList())) {
+
+            switch (descriptorCount.getCategory()) {
+                case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+                    observationTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_CATALOGUES:
+                    catalogTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_SPECTRA:
+                    spectraTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_SSO:
+                    ssoTreeMapContainer.updateData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                default:
+                    Log.warn("[CtrlToolBar] Unknown category " + descriptorCount.getCategory());
             }
         }
 
-        if (observationDescriptors.size() > 0) {
-            observationTreeMapContainer.addData(observationDescriptors, observationCounts);
-        }
-        if (ssoDescriptors.size() > 0) {
-            ssoTreeMapContainer.addData(ssoDescriptors, ssoCounts);
-        }
-        if (catalogDescriptors.size() > 0) {
-            catalogTreeMapContainer.addData(catalogDescriptors, catalogCounts);
-        }
-        if (spectraDescriptors.size() > 0) {
-            spectraTreeMapContainer.addData(spectraDescriptors, spectraCounts);
-        }
-        if (extTapDescriptors.size() > 0) {
-            extTapTreeMapContainer.addData(extTapDescriptors, extTapCounts);
-        }
+        // TODO: External tap
     }
 
     public class CustomTreeMap {
@@ -778,51 +751,51 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 
     public void updateCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
-        CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
-        if (customTreeMap != null) {
-            LinkedList<Integer> counts = new LinkedList<Integer>();
-
-            for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
-                counts.add(1);
-            }
-            customTreeMap.treeMapContainer.updateData(treeMapDescriptor.getMissionDescriptors(), counts);
-        }
+//        CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
+//        if (customTreeMap != null) {
+//            LinkedList<Integer> counts = new LinkedList<Integer>();
+//
+//            for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
+//                counts.add(1);
+//            }
+//            customTreeMap.treeMapContainer.updateData(treeMapDescriptor.getMissionDescriptors(), counts);
+//        }
 
     }
 
     public void addCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
-        TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
-        treeMapContainer.setHeaderText(treeMapDescriptor.getIconText());
-
-        EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
-
-        customTreeMaps.put(treeMapDescriptor.getName(), new CustomTreeMap(treeMapContainer, button));
-
-        addCommonButtonStyle(button, treeMapDescriptor.getDescription());
-        button.addClickHandler(
-                new ClickHandler() {
-
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        treeMapContainer.toggle();
-                        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
-                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
-                    }
-                });
-        ctrlToolBarPanel.add(button);
-        ctrlToolBarPanel.add(treeMapContainer);
-        catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
-            @Override
-            public void onClose() {
-                button.setToggleStatus(false);
-            }
-        });
-
-        LinkedList<Integer> counts = new LinkedList<Integer>();
-        for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
-            counts.add(1);
-        }
-        treeMapContainer.addData(treeMapDescriptor.getMissionDescriptors(), counts);
+//        TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
+//        treeMapContainer.setHeaderText(treeMapDescriptor.getIconText());
+//
+//        EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
+//
+//        customTreeMaps.put(treeMapDescriptor.getName(), new CustomTreeMap(treeMapContainer, button));
+//
+//        addCommonButtonStyle(button, treeMapDescriptor.getDescription());
+//        button.addClickHandler(
+//                new ClickHandler() {
+//
+//                    @Override
+//                    public void onClick(ClickEvent event) {
+//                        treeMapContainer.toggle();
+//                        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
+//                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
+//                    }
+//                });
+//        ctrlToolBarPanel.add(button);
+//        ctrlToolBarPanel.add(treeMapContainer);
+//        catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
+//            @Override
+//            public void onClose() {
+//                button.setToggleStatus(false);
+//            }
+//        });
+//
+//        LinkedList<Integer> counts = new LinkedList<Integer>();
+//        for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
+//            counts.add(1);
+//        }
+//        treeMapContainer.addData(treeMapDescriptor.getMissionDescriptors(), counts);
 
     }
 

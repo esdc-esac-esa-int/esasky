@@ -1,11 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -40,10 +36,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
-import esac.archive.esasky.ifcs.model.descriptor.GwDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IceCubeDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel.TabIndex;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
@@ -332,7 +325,7 @@ public class Session {
 		JSONObject mmeObj = new JSONObject();
 		for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 			
-			if(ent.getDescriptor() instanceof GwDescriptor) {
+			if(Objects.equals(ent.getDescriptor().getTableName(), "alerts.mv_v_gravitational_waves_fdw")) {
 				if(ent.getTablePanel() != null) {
 					GeneralJavaScriptObject[] rows = ent.getTablePanel().getSelectedRows();
 					if(rows.length > 0 ) {
@@ -341,7 +334,7 @@ public class Session {
 					}
 				}
 			}
-			else if(ent.getDescriptor() instanceof IceCubeDescriptor) {
+			else if(ent.getDescriptor().getTableName() == "alerts.mv_v_icecube_event_fdw") {
 				 int size = ent.getNumberOfShapes();
 				 if(size > 0) {
 					JSONObject icecubeObj = new JSONObject();
@@ -351,7 +344,7 @@ public class Session {
 				 }
 			}
 		}
-		if(mmeObj.keySet().size() > 0) {
+		if(!mmeObj.keySet().isEmpty()) {
 			return mmeObj;
 		}
 		return null;
@@ -493,10 +486,9 @@ public class Session {
 	
 	
 	private boolean checkIfSpecialEntity(GeneralEntityInterface ent) {
-		return ent.getDescriptor() instanceof GwDescriptor 
-				|| ent.getDescriptor() instanceof PublicationsDescriptor
-				|| ent instanceof ImageListEntity
-				|| ent.getDescriptor() instanceof IceCubeDescriptor;
+		return Objects.equals(ent.getDescriptor().getSchemaName(), "alerts")
+				|| Objects.equals(ent.getDescriptor().getSchemaName(), "public")
+				|| ent instanceof ImageListEntity;
 	}
 	
 	private JSONArray getDataJson() {
@@ -509,7 +501,7 @@ public class Session {
 			
 			JSONObject entObj = new JSONObject();
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_MISSION, new JSONString(ent.getDescriptor().getMission()));
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_TABLE,new JSONString(ent.getDescriptor().getTapTable()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_TABLE,new JSONString(ent.getDescriptor().getTableName()));
 			
 			String isMoc = "False";
 			if(ent instanceof EsaSkyEntity && ((EsaSkyEntity) ent).getMocEntity() != null
@@ -552,7 +544,7 @@ public class Session {
 				String adql = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ADQL);
 				boolean isMoc = Boolean.parseBoolean(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ISMOC));
 
-				IDescriptor desc = DescriptorRepository.getInstance().getDescriptorFromTable(tableName, mission);
+				CommonTapDescriptor desc = DescriptorRepository.getInstance().getDescriptorFromTable(tableName, mission);
 				GeneralEntityInterface ent = EntityRepository.getInstance().createEntity(desc);
 				MainPresenter.getInstance().getResultsPresenter().addResultsTab(ent);
 				String filterString = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_FILTERS);

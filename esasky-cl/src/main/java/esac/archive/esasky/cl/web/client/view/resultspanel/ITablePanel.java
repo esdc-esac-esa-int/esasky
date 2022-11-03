@@ -4,7 +4,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,7 @@ public interface ITablePanel {
 	public void insertData(GeneralJavaScriptObject data);
 	public void insertExternalTapData(GeneralJavaScriptObject data);
 
-	public IDescriptor getDescriptor();
+	public CommonTapDescriptor getDescriptor();
 
 	public GeneralEntityInterface getEntity();
 

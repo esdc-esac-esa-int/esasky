@@ -8,7 +8,10 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.Navigator;
 
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -126,7 +129,7 @@ public final class UrlUtils {
         Window.open(url, "", "");
     }
 
-	public static void setSelectedOutreachImageId(String id, IDescriptor descriptor) {
+	public static void setSelectedOutreachImageId(String id, CommonTapDescriptor descriptor) {
 		if (Objects.equals(descriptor.getMission(), EsaSkyConstants.HST_MISSION)) {
 			selectedHstImageId = id;
 		} else {

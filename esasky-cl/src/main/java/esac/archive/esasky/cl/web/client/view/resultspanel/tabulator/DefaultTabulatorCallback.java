@@ -5,6 +5,7 @@ import java.util.List;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
 
 public class DefaultTabulatorCallback implements TabulatorCallback{
 
@@ -114,6 +115,11 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
+	public ITapDescriptor getDescriptor() {
+		return null;
+	}
+
+	@Override
 	public String getRaColumnName() {
 		return null;
 	}
@@ -124,6 +130,16 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	public String getUniqueIdentifierField() {
+		return null;
+	}
+
+	@Override
+	public boolean isColumnVisible(String column) {
+		return false;
+	}
+
+	@Override
+	public String getColumnUnit(String columnName) {
 		return null;
 	}
 

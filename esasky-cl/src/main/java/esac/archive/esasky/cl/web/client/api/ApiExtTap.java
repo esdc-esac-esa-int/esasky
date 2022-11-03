@@ -8,7 +8,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 
 import esac.archive.esasky.cl.web.client.Controller;
-import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
+//import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -43,39 +43,41 @@ public class ApiExtTap extends ApiBase{
 	}
 	
 	private JSONObject countToJSON(final ExtTapDescriptor parent, CountStatus countStatus) {
-		JSONObject obsCount = new  JSONObject();
-		
-		for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
-			if(desc.hasParent(parent)) {
-				if(countStatus.containsDescriptor(desc)) {
-					obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
-				}
-			}
-		}
-		
-		return obsCount;
+//		JSONObject obsCount = new  JSONObject();
+//
+//		for(ExtTapDescriptor desc : DescriptorRepository.getInstance().getExtTapDescriptors().getDescriptors()) {
+//			if(desc.hasParent(parent)) {
+//				if(countStatus.containsDescriptor(desc)) {
+//					obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
+//				}
+//			}
+//		}
+//
+//		return obsCount;
+		return null;
 	}
 	
 	private void getExtTapCount(final ExtTapDescriptor parent, final JavaScriptObject widget) {
-		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
-		if(!countStatus.hasMoved(parent)) {
-			JSONObject obsCount = countToJSON(parent, countStatus);
-			
-			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
-			sendBackValuesToWidget(obsCount, widget);
-			
-		}else {
-			countStatus.registerObserver(new CountObserver() {
-				@Override
-				public void onCountUpdate(long newCount) {
-					JSONObject obsCount = countToJSON(parent, countStatus);
-					
-					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
-					sendBackValuesToWidget(obsCount, widget);
-					countStatus.unregisterObserver(this);
-				}
-			});
-		}
+		// TODO: Fix
+//		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
+//		if(!countStatus.hasMoved(parent)) {
+//			JSONObject obsCount = countToJSON(parent, countStatus);
+//
+//			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
+//			sendBackValuesToWidget(obsCount, widget);
+//
+//		}else {
+//			countStatus.registerObserver(new CountObserver() {
+//				@Override
+//				public void onCountUpdate(long newCount) {
+//					JSONObject obsCount = countToJSON(parent, countStatus);
+//
+//					GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
+//					sendBackValuesToWidget(obsCount, widget);
+//					countStatus.unregisterObserver(this);
+//				}
+//			});
+//		}
 	}
 	
 	public JSONArray getAvailableTapServices() {
@@ -140,10 +142,11 @@ public class ApiExtTap extends ApiBase{
 		ExtTapDescriptor desc = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(desc != null) {
-			JSONObject callbackMessage = new  JSONObject();
-			String adql = TAPExtTapService.getInstance().getMetadataAdql(desc);
-			callbackMessage.put(missionId,new JSONString(adql));
-			sendBackToWidget(callbackMessage, null, widget);
+			// TODO: Fix
+//			JSONObject callbackMessage = new  JSONObject();
+//			String adql = TAPExtTapService.getInstance().getMetadataAdql(desc);
+//			callbackMessage.put(missionId,new JSONString(adql));
+//			sendBackToWidget(callbackMessage, null, widget);
 		}else {
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString(ApiConstants.EXTTAP_MSG_UNKNOWN  + missionId));
@@ -159,10 +162,11 @@ public class ApiExtTap extends ApiBase{
 		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
 		
 		if(desc != null ) {
-			controller.getRootPresenter().getRelatedMetadata(desc);
-			JSONObject callbackMessage = new JSONObject();
-			callbackMessage.put(ApiConstants.MESSAGE, new JSONString("Data from TAP: " + missionId + " displayed in the ESASky"));
-			sendBackToWidget(null, callbackMessage, widget);
+			// TODO: Fix
+//			controller.getRootPresenter().getRelatedMetadata(desc);
+//			JSONObject callbackMessage = new JSONObject();
+//			callbackMessage.put(ApiConstants.MESSAGE, new JSONString("Data from TAP: " + missionId + " displayed in the ESASky"));
+//			sendBackToWidget(null, callbackMessage, widget);
 			
 		}else {
 			JSONObject callbackMessage = new JSONObject();
@@ -194,8 +198,8 @@ public class ApiExtTap extends ApiBase{
 		if(options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)) {
 			descriptor.setIntersectColumn(options.getStringProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN));
 		}
-		
-		controller.getRootPresenter().getRelatedMetadata(descriptor);
+		// TODO: Fix
+//		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
 
 	public void plotExtTapADQL(GeneralJavaScriptObject options, JavaScriptObject widget) {
@@ -236,8 +240,8 @@ public class ApiExtTap extends ApiBase{
 		if(options.hasProperty(ApiConstants.EXTTAP_STCS_COLUMN)) {
 			descriptor.setTapSTCSColumn(options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN));
 		}
-		
-		controller.getRootPresenter().getRelatedMetadata(descriptor, adql);
+		// TODO: Fix
+//		controller.getRootPresenter().getRelatedMetadata(descriptor, adql);
 	}
 
 	public void openExtTapPanel() {

@@ -4,15 +4,18 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.ui.Image;
 
+import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
@@ -35,7 +38,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     
     public CountStatus getCountStatus();
 
-    public IDescriptor getDescriptor();
+    public CommonTapDescriptor getDescriptor();
 
     public void clearAll();
     
@@ -74,6 +77,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 	public TabulatorSettings getTabulatorSettings();
 	
 	public String getAdql();
+
 
 	
 }

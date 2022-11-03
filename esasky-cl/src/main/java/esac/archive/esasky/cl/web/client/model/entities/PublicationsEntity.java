@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -12,11 +14,12 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.SourceConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PublicationTooltip;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 public class PublicationsEntity extends EsaSkyEntity {
 
-    public PublicationsEntity(PublicationsDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId) {
+    public PublicationsEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                              SkyViewPosition skyViewPosition, String esaSkyUniqId) {
         super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
     }
 	
