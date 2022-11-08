@@ -108,9 +108,10 @@ public class TapDescriptor extends TapDescriptorBase {
      * @return the metadata object.
      */
     protected TapMetadataDescriptor getMetadata(IContentDescriptor... contentDescriptors) {
-        TapMetadataDescriptor descriptor = getMetadata(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof UCD).toArray(UCD[]::new));
+        TapMetadataDescriptor descriptor = getMetadata(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof ObsCore).toArray(ObsCore[]::new));
+
         if (descriptor == null) {
-            descriptor = getMetadata(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof ObsCore).toArray(ObsCore[]::new));
+            descriptor = getMetadata(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof UCD).toArray(UCD[]::new));
         }
         return descriptor;
     }
