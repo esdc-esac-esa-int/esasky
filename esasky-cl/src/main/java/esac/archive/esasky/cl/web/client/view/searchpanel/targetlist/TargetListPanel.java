@@ -164,13 +164,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         getElement().setId("uploadTargetListPanel");
         add(container);
 
-        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(ResizeEvent event) {
-                updateMaxSize();
-            }
-        });
+        MainLayoutPanel.addMainAreaResizeHandler((ResizeHandler) event -> updateMaxSize());
     }
 
     private void updateMaxSize() {
@@ -199,19 +193,15 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
                                     + TextMgr.getInstance().getText("uploadTargetList_uploadTargetList") 
                              + "</span>");
 
-        uploader.setUploadProgressHandler(new UploadProgressHandler() {
-
-            @Override
-            public boolean onUploadProgress(final UploadProgressEvent uploadProgressEvent) {
-                String progress = "...";
-                if (uploadProgressEvent.getBytesTotal() > 0) {
-                    progress = NumberFormat.getPercentFormat().format(
-                            uploadProgressEvent.getBytesComplete()
-                                    / ((double) uploadProgressEvent.getBytesTotal()));
-                }
-                Log.info("Into onUploadProgress(" + progress + ")...");
-                return true;
+        uploader.setUploadProgressHandler((UploadProgressHandler) uploadProgressEvent -> {
+            String progress = "...";
+            if (uploadProgressEvent.getBytesTotal() > 0) {
+                progress = NumberFormat.getPercentFormat().format(
+                        uploadProgressEvent.getBytesComplete()
+                                / ((double) uploadProgressEvent.getBytesTotal()));
             }
+            Log.info("Into onUploadProgress(" + progress + ")...");
+            return true;
         });
 
         uploader.setFileQueueErrorHandler(new FileQueueErrorHandler() {
@@ -410,13 +400,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         for (ESASkySearchResult currTarget : inputData) {
             final int index = inputData.indexOf(currTarget);
             TargetWidget currTargetWidget = new TargetWidget(currTarget, WIDTH);
-            currTargetWidget.registerObserver(new TargetObserver() {
-
-                @Override
-                public void onTargetSelectionEvent(TargetWidget newlySelectedTarget) {
-                    setSelectedTarget(index);
-                }
-            });
+            currTargetWidget.registerObserver((TargetObserver) newlySelectedTarget -> setSelectedTarget(index));
             targetListTable.setWidget(index, 0, currTargetWidget);
             if (currTarget.getValidInput()) {
                 addPolygons(currTarget, index);
@@ -441,7 +425,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 
     private void addPolygons(ESASkySearchResult currEntity, Integer id) {
 
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
 
         details.put(MultiTargetSourceConstants.SIMBAD_MAIN_ID, currEntity.getSimbadMainId());
         details.put(
