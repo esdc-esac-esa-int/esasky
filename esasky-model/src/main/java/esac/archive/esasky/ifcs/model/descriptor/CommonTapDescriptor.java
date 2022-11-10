@@ -149,14 +149,17 @@ public class CommonTapDescriptor extends TapDescriptorBase {
         return "TAP_DESCRIPTOR_" + this.getMission();
     }
 
-    @Override
     public Double getWavelengthCenter() {
         return (getWavelengthStart() + getWavelengthEnd()) / 2;
     }
 
     @Override
-    public String getWavelengthColor() {
-        return ESASkyColors.getColorFromWavelength((Math.max(getWavelengthStart(), 0) + Math.min(getWavelengthEnd(), 100)) / 2);
+    public String getColor() {
+        if (super.color != null && !super.color.isEmpty()) {
+            return color;
+        } else {
+            return ESASkyColors.getColorFromWavelength((Math.max(getWavelengthStart(), 0) + Math.min(getWavelengthEnd(), 100)) / 2);
+        }
     }
 
     public void setTapDescriptor(TapDescriptor tapDescriptor) {

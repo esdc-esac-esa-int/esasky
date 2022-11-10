@@ -222,46 +222,42 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     }
 
     private void loadNeutrinoData(Promise<JSONObject> neutrinoDataPromise) {
-        // TODO: fix
-//        if (getTabItem(TabIndex.NEUTRINO) == null) {
-//            IceCubeDescriptor descriptor = DescriptorRepository.getInstance().getIceCubeDescriptors().getDescriptors().get(0);
-//
-//            descriptor.setTapSTCSColumn("stc_s");
-//            descriptor.setArchiveColumn("event_page");
-//            EsaSkyEntity entity = EntityRepository.getInstance().createIceCubeEntity(descriptor);
-//
-//            Widget tabContentContainer = tabLayoutPanel.getWidget(TabIndex.NEUTRINO.ordinal());
-//            if (tabContentContainer instanceof FlowPanel) {
-//                ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
-//            }
-//
-//            List<String> columnsToHide = Arrays.asList("stc_s","title","sun_postn_ra","sun_postn_dec","sun_dist_deg",
-//                    "stc_error","stc_error50","ra_current","ra_1950","moon_postn_ra","moon_postn_dec","moon_dist",
-//                    "ecl_coords_lat","ecl_coords_lon","gal_coords_lat","gal_coords_lon","discovery_date","discovery_time");
-//
-//            TabItem tabItem = new TabItem(descriptor, columnsToHide, entity);
-//
-//            entity.getTablePanel().registerObserver(new TableObserver() {
-//                @Override
-//                public void onDataLoaded(int numberOfRows) {
-//                    tabItem.setDataLoaded(true);
-//
-//                    if (neutrinoDataPromise != null) {
-//                        neutrinoDataPromise.fulfill(entity.getTablePanel().exportAsJSON(false));
-//                    }
-//                }
-//
-//                @Override
-//                public void onDataFilterChanged(List<Integer> filteredIndexList) {
-//                    filteredNeutrinoData = filteredIndexList;
-//                }
-//            });
-//
-//            entity.fetchDataWithoutMOC();
-//
-//            setTabItem(TabIndex.NEUTRINO, tabItem);
-//            setMaxSize();
-//        }
+        if (getTabItem(TabIndex.NEUTRINO) == null) {
+            CommonTapDescriptor descriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_NEUTRINOS);
+            EsaSkyEntity entity = EntityRepository.getInstance().createIceCubeEntity(descriptor);
+
+            Widget tabContentContainer = tabLayoutPanel.getWidget(TabIndex.NEUTRINO.ordinal());
+            if (tabContentContainer instanceof FlowPanel) {
+                ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
+            }
+
+            List<String> columnsToHide = Arrays.asList("stc_s","title","sun_postn_ra","sun_postn_dec","sun_dist_deg",
+                    "stc_error","stc_error50","ra_current","ra_1950","moon_postn_ra","moon_postn_dec","moon_dist",
+                    "ecl_coords_lat","ecl_coords_lon","gal_coords_lat","gal_coords_lon","discovery_date","discovery_time");
+
+            TabItem tabItem = new TabItem(descriptor, columnsToHide, entity);
+
+            entity.getTablePanel().registerObserver(new TableObserver() {
+                @Override
+                public void onDataLoaded(int numberOfRows) {
+                    tabItem.setDataLoaded(true);
+
+                    if (neutrinoDataPromise != null) {
+                        neutrinoDataPromise.fulfill(entity.getTablePanel().exportAsJSON(false));
+                    }
+                }
+
+                @Override
+                public void onDataFilterChanged(List<Integer> filteredIndexList) {
+                    filteredNeutrinoData = filteredIndexList;
+                }
+            });
+
+            entity.fetchDataWithoutMOC();
+
+            setTabItem(TabIndex.NEUTRINO, tabItem);
+            setMaxSize();
+        }
 
     }
 
@@ -272,7 +268,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     private void loadGwData(String idToShow, Promise<JSONObject> gwDataPromise) {
         if (getTabItem(TabIndex.GW) == null) {
             CommonTapDescriptor commonDescriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES);
-
+            commonDescriptor.setColor("#FF0000");
             String entityId = commonDescriptor.getId() + "_90";
             EsaSkyEntity entity = EntityRepository.getInstance().createGwEntity(commonDescriptor, entityId, "dashed", STCS90_STRING);
 

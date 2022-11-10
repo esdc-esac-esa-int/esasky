@@ -549,7 +549,7 @@ public class CloseableTabLayoutPanel extends Composite {
 				}
 			}
 		});
-        styleButton.setCircleColor(tabPanel.getDescriptor().getWavelengthColor());
+        styleButton.setCircleColor(tabPanel.getDescriptor().getColor());
         setCloseAllButtonVisibility();
         
         notifyOpeningObservers(tab.getId());

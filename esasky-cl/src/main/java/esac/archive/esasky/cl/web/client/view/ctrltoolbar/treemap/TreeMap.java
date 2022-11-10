@@ -11,10 +11,6 @@ import org.moxieapps.gwt.highcharts.client.Point;
 import org.moxieapps.gwt.highcharts.client.Series;
 import org.moxieapps.gwt.highcharts.client.Style;
 import org.moxieapps.gwt.highcharts.client.ToolTip;
-import org.moxieapps.gwt.highcharts.client.ToolTipData;
-import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
-import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEvent;
-import org.moxieapps.gwt.highcharts.client.events.ChartRedrawEventHandler;
 import org.moxieapps.gwt.highcharts.client.labels.DataLabels;
 import org.moxieapps.gwt.highcharts.client.labels.Labels;
 import org.moxieapps.gwt.highcharts.client.plotOptions.PlotOptions.Cursor;
@@ -317,10 +313,10 @@ public class TreeMap extends Chart {
                 descriptor.getMission(), descriptor.getCredits(), count, descriptor, context);
 
         if (isRendered()) {
-            pointId = addRenderedPoint(descriptor, pointInformation, descriptor.getWavelengthColor(), count, updateView);
+            pointId = addRenderedPoint(descriptor, pointInformation, descriptor.getColor(), count, updateView);
 
         } else {
-            pointId = addNotRenderedPoint(descriptor, pointInformation, descriptor.getWavelengthColor(), count, updateView);
+            pointId = addNotRenderedPoint(descriptor, pointInformation, descriptor.getColor(), count, updateView);
         }
 
         allPoints.put(pointId, pointInformation);

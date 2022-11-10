@@ -23,6 +23,10 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
     @JsonIgnore
     private final List<MetadataVisibilityObserver> visibilityObservers = new LinkedList<>();
 
+    @JsonIgnore
+    protected String color;
+
+
     public void setSearchArea(SearchArea searchArea) {
         this.searchArea = searchArea;
     }
@@ -56,16 +60,6 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
     private TapMetadataDescriptor getColumn(String columnName) {
         return getColumnMetadata().stream()
                 .filter(cm -> cm.getName().equals(columnName)).findFirst().orElse(null);
-    }
-
-    @Override
-    public Double getWavelengthCenter() {
-        return null;
-    }
-
-    @Override
-    public String getWavelengthColor() {
-        return ESASkyColors.getNext();
     }
 
     @Override
@@ -123,5 +117,13 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
 
     }
 
+    @Override
+    public String getColor() {
+        return this.color != null ? color : ESASkyColors.getNext();
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
 }

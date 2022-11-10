@@ -2,8 +2,6 @@ package esac.archive.esasky.ifcs.model.descriptor;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.shared.ObsCore;
-import esac.archive.esasky.ifcs.model.shared.UCD;
 
 import java.util.List;
 
@@ -12,9 +10,9 @@ public interface ITapDescriptor {
 
     GeneralJavaScriptObject getRawMetadata();
 
-    Double getWavelengthCenter();
+    String getColor();
 
-    String getWavelengthColor();
+    void setColor(String color);
 
     void setSearchArea(SearchArea searchArea);
 

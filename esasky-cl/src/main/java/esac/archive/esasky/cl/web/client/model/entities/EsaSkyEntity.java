@@ -108,7 +108,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         this.secondaryShapeAdder = secondaryShapeAdder;
         this.regionColumn = regionColumn;
 
-        String color = descriptor.getWavelengthColor();
+        String color = descriptor.getColor();
         JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
                 color, lineStyle);
 

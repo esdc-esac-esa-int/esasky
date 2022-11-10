@@ -85,7 +85,7 @@ public class ExtTapTreeMap extends TreeMap {
                 	for(Point point : series.getPoints()) {
                 		PointInformation pointInformation = allPoints.get(point.getText());
                 		if(pointInformation != null) {
-                			String color = pointInformation.descriptor.getWavelengthColor();
+                			String color = pointInformation.descriptor.getColor();
                 			setColor(point, color);
                 		}
                 	}

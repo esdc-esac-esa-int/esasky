@@ -20,7 +20,6 @@ import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -30,7 +29,6 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.*;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
 
 import java.util.*;
 
@@ -373,7 +371,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getWavelengthColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -420,7 +418,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void updateOverlay() {
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getWavelengthColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
