@@ -60,50 +60,12 @@ public class DescriptorRepository {
     public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> {
     }
 
-//    public interface TapWavelengthListMapper extends ObjectMapper<WavelengthRangeDescriptorList> {
-//    }
-
-    public interface SSODescriptorListMapper extends ObjectMapper<SSODescriptorList> {
-    }
-
-    public interface SpectraDescriptorListMapper extends ObjectMapper<SpectraDescriptorList> {
-    }
-
-    public interface CatalogDescriptorListMapper extends ObjectMapper<CatalogDescriptorList> {
-    }
-
-    public interface ExternalTapDescriptorListMapper extends ObjectMapper<ExtTapDescriptorList> {
-    }
-
-    public interface PublicationsDescriptorListMapper extends ObjectMapper<PublicationsDescriptorList> {
-    }
-
-    public interface ImageDescriptorListMapper extends ObjectMapper<ImageDescriptorList> {
-    }
-
-    public interface GwDescriptorListMapper extends ObjectMapper<GwDescriptorList> {
-    }
-
-    public interface IceCubeDescriptorListMapper extends ObjectMapper<IceCubeDescriptorList> {
-    }
-
     public interface SingleCountListMapper extends ObjectMapper<List<SingleCount>> {
     }
 
-//    private DescriptorListAdapter<CatalogDescriptor> catDescriptors;
-//    private DescriptorListAdapter<ObservationDescriptor> obsDescriptors;
-//    private DescriptorListAdapter<SSODescriptor> ssoDescriptors;
-//    private DescriptorListAdapter<SpectraDescriptor> spectraDescriptors;
-//    private DescriptorListAdapter<PublicationsDescriptor> publicationsDescriptors;
-//    private DescriptorListAdapter<ExtTapDescriptor> extTapDescriptors;
-//    private DescriptorListAdapter<ImageDescriptor> imageDescriptors;
-//    private DescriptorListAdapter<GwDescriptor> gwDescriptors;
-//    private DescriptorListAdapter<IceCubeDescriptor> iceCubeDescriptors;
-//    private DescriptorCountAdapter observationDescriptors;
 
     private Map<String, DescriptorCountAdapter> descriptorCountAdapterMap = new HashMap<>();
     private Map<String, String> tableCategoryMap = new HashMap<>();
-    private DescriptorCountAdapter catalogueDescriptors;
 
     /**
      * Descriptor and CountStatus hashMaps for improve counts
@@ -154,17 +116,10 @@ public class DescriptorRepository {
         this.countRequestHandler = countRequestHandler;
     }
 
-    public DescriptorCountAdapter getCatalogueDescriptors() {
-        return catalogueDescriptors;
-    }
-
     public DescriptorListAdapter<ExtTapDescriptor> getExtTapDescriptors() {
         return null;
     }
 
-//    public DescriptorCountAdapter getObservationDescriptors() {
-//        return observationDescriptors;
-//    }
 
     public void setDescriptors(String category, DescriptorCountAdapter descriptors) {
         descriptorCountAdapterMap.put(category, descriptors);
@@ -188,6 +143,11 @@ public class DescriptorRepository {
         return tdl != null ? tdl.getDescriptors() : null;
     }
 
+    public boolean hasDescriptors(String category) {
+        List<CommonTapDescriptor> descriptors = getDescriptors(category);
+        return descriptors != null && !descriptors.isEmpty();
+    }
+
     public CommonTapDescriptor getFirstDescriptor(String category) {
         List<CommonTapDescriptor> descriptors = getDescriptors(category);
 
@@ -206,21 +166,11 @@ public class DescriptorRepository {
         return null;
     }
 
-    public DescriptorListAdapter<PublicationsDescriptor> getPublicationsDescriptors() {
-        return null;
-    }
 
     public DescriptorListAdapter<ImageDescriptor> getImageDescriptors() {
         return null;
     }
 
-    public DescriptorListAdapter<GwDescriptor> getGwDescriptors() {
-        return null;
-    }
-
-    public DescriptorListAdapter<IceCubeDescriptor> getIceCubeDescriptors() {
-        return null;
-    }
 
     public void initExtDescriptors(final CountObserver countObserver) {
 

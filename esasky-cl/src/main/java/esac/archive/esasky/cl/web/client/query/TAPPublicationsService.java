@@ -38,11 +38,11 @@ public class TAPPublicationsService extends AbstractTAPService {
      * @param descriptor Input PublicationsDescriptor.
      * @return Query in ADQL format.
      */
-    public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
+    public static String getMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit 
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-                + descriptor.getTapDecColumn() + "), ";
+                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+                + descriptor.getDecColumn() + "), ";
 
         String shape = null;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
@@ -80,11 +80,11 @@ public class TAPPublicationsService extends AbstractTAPService {
         return adql;
     }
     
-    public static String getConeSearchMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, SkyViewPosition pos, int limit, String orderBy) {
+    public static String getConeSearchMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, SkyViewPosition pos, int limit, String orderBy) {
     	String adql = "select top " + limit 
     			+ " main_id as name, ra, dec, nbref as bibcount from basic"
-    			+ " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-    			+ descriptor.getTapDecColumn() + "), ";
+    			+ " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+    			+ descriptor.getDecColumn() + "), ";
     	
     	String shape = null;
  
@@ -102,11 +102,11 @@ public class TAPPublicationsService extends AbstractTAPService {
     	return adql;
     }
 
-    public static String getSearchAreaMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
+    public static String getSearchAreaMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-                + descriptor.getTapDecColumn() + "), ";
+                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+                + descriptor.getDecColumn() + "), ";
 
         adql += descriptor.getSearchAreaShape() + ") and nbref > 0";
 

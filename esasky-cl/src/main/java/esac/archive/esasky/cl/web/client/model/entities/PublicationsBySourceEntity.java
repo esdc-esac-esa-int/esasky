@@ -1,14 +1,8 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Image;
-
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
@@ -17,10 +11,11 @@ import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PublicationTooltip;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.PublicationsTablePanel;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 public class PublicationsBySourceEntity extends EsaSkyEntity {
 
@@ -41,15 +36,8 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
     
     @Override
     public void fetchData() {
-        Scheduler.get().scheduleFinally(new ScheduledCommand() {
-            
-            @Override
-            public void execute() {
-                // TODO: FIX
-//                tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId())
-//                    + "&ROWS=" + publicationsDescriptor.getAdsPublicationsMaxRows());
-            }
-        });
+        Scheduler.get().scheduleFinally(() -> tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getEsaSkyUniqId())
+            + "&ROWS=" + 50000));
     }
     
     @Override

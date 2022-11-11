@@ -55,7 +55,7 @@ public class ApiPlot extends ApiBase{
 	
 	public void plotCatalogues(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTCATALOGUES, missionId);
-		DescriptorCountAdapter descriptors = controller.getRootPresenter().getDescriptorRepository().getCatalogueDescriptors();
+		DescriptorCountAdapter descriptors = controller.getRootPresenter().getDescriptorRepository().getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_CATALOGUES);
 		CommonTapDescriptor currObs  = descriptors.getDescriptorByMission(missionId);
 		
 		if(currObs != null ) {
@@ -72,7 +72,7 @@ public class ApiPlot extends ApiBase{
 	}
 	
 	public void coneSearchCatalogues(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
-		DescriptorCountAdapter descriptors = controller.getRootPresenter().getDescriptorRepository().getCatalogueDescriptors();
+		DescriptorCountAdapter descriptors = controller.getRootPresenter().getDescriptorRepository().getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_CATALOGUES);
 		CommonTapDescriptor currObs  = descriptors.getDescriptorByMission(missionId);
 		
 		if(currObs != null ) {

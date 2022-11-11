@@ -133,7 +133,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		public void openToggleColumnDialog() {
 			if(table.getColumns().length > 0) {
-				new ToggleColumnsDialogBox(entity.getDescriptor().getLongName(), table.getColumns(), new ToggleColumnAction() {
+				new ToggleColumnsDialogBox(entity.getDescriptor().getLongNameColumn(), table.getColumns(), new ToggleColumnAction() {
 
 					@Override
 					public void onShow(String field) {
@@ -345,7 +345,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void exportAsVot() {
-		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getLongName());
+		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getLongNameColumn());
 	}
 
 	public Widget getWidget() {
@@ -540,7 +540,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getVoTableString() {
-		return table.getVot(getDescriptor().getLongName());
+		return table.getVot(getDescriptor().getLongNameColumn());
 	}
 
 	@Override

@@ -285,13 +285,9 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 		
 		slider.setHTML("<input type=\"range\" value=\"" + value + "\" min=\"" + min + "\" max=\"" + max + "\" "
 				+ "class=\"slider\" id=\"" + sliderId + "\">");
-		numberBox.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				setSliderValue(numberBox.getNumber(), sliderId);
-				warningLabel.setVisible(numberBox.getNumber() > value);
-			}
+		numberBox.addValueChangeHandler(event -> {
+			setSliderValue(numberBox.getNumber(), sliderId);
+			warningLabel.setVisible(numberBox.getNumber() > value);
 		});
 	}
 	

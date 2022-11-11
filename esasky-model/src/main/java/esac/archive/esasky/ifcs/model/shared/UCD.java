@@ -528,15 +528,29 @@ public enum UCD implements IContentDescriptor{
 
     private final String value;
 
+    private boolean negative = false;
+
     UCD(String value) {
         this.value = value;
+    }
+
+    /**
+     *  UCD value that should not exist to be considered a match.
+     *
+     * @return The UCD object.
+     */
+    public UCD negative() {
+        this.negative = true;
+        return this;
     }
 
     public String getValue() {
         return value;
     }
+
     public boolean matches(String str) {
-        return str.toLowerCase().contains(value.toLowerCase());
+        boolean isMatch = str.toLowerCase().contains(value.toLowerCase());
+        return negative != isMatch;
     }
 
     public static boolean isMain(String str) {
@@ -546,5 +560,9 @@ public enum UCD implements IContentDescriptor{
     @Override
     public String toString() {
         return value;
+    }
+
+    public boolean isNegative() {
+        return negative;
     }
 }

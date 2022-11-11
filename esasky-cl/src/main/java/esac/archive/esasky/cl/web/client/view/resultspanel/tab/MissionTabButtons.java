@@ -6,18 +6,14 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ToggleImage;
-import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 import java.util.Objects;
 
@@ -59,7 +55,7 @@ public class MissionTabButtons extends Composite {
             wavelengthCanvas.addStyleName("missionTab__wavelengthCanvas");
             wavelengthCanvas.setTitle(Objects.requireNonNull(WavelengthUtils.getWavelengthNameFromValue(descriptor.getWavelengthCenter())).longName);
             compositePanel.add(wavelengthCanvas);
-            compositePanel.setTitle(descriptor.getLongName());
+            compositePanel.setTitle(descriptor.getLongNameColumn());
         }
         if(entity.getTypeLogo() != null) {
         	Image logo = entity.getTypeLogo();

@@ -546,7 +546,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public String getTabLabel() {
-        return getDescriptor().getShortName();
+        return getDescriptor().getShortNameColumn();
     }
 
     @Override

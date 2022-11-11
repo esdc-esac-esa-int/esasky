@@ -123,8 +123,8 @@ public class ResultsPresenter implements ICountRequestHandler {
 			
 	    	ITablePanel panel = entity.getTablePanel();
 	    	if(panel == null) {
-	    		panel = this.view.addResultsTab(entity, entity.getDescriptor().getLongName(),
-	    				"User defined metadata table for " + entity.getDescriptor().getLongName());
+	    		panel = this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(),
+	    				"User defined metadata table for " + entity.getDescriptor().getLongNameColumn());
 	    	}
 	        panel.insertData(userData);
 	        panel.goToCoordinateOfFirstRow();
@@ -136,54 +136,54 @@ public class ResultsPresenter implements ICountRequestHandler {
     }
 
     protected final void coneSearch(final GeneralEntityInterface entity, final SkyViewPosition conePos) {
-        final String debugPrefix = "[coneSearch][" + entity.getDescriptor().getShortName() + "]";
+        final String debugPrefix = "[coneSearch][" + entity.getDescriptor().getShortNameColumn() + "]";
         Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
         
-    	this.view.addResultsTab(entity, entity.getDescriptor().getLongName(), entity.getHelpText());
+    	this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(), entity.getHelpText());
 
         entity.coneSearch(conePos);
     }
 
     protected final void getMetadata(final GeneralEntityInterface entity) {
-        final String debugPrefix = GET_METADATA + entity.getDescriptor().getShortName() + "]";
+        final String debugPrefix = GET_METADATA + entity.getDescriptor().getShortNameColumn() + "]";
         Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
 
-    	this.view.addResultsTab(entity, entity.getDescriptor().getLongName(), entity.getHelpText());
+    	this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(), entity.getHelpText());
 
         entity.fetchData();
     }
 
     protected final void getMetadata(final GeneralEntityInterface entity, final GeneralJavaScriptObject data) {
-        final String debugPrefix = GET_METADATA + entity.getDescriptor().getLongName() + "]";
+        final String debugPrefix = GET_METADATA + entity.getDescriptor().getLongNameColumn() + "]";
         Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
 
-        this.view.addResultsTab(entity, entity.getDescriptor().getLongName(), entity.getHelpText());
+        this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(), entity.getHelpText());
 
         entity.insertExternalData(data);
     }
    
     protected final void getMetadataWithoutMOC(final GeneralEntityInterface entity) {
-    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getShortName() + "]";
+    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getShortNameColumn() + "]";
     	Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
     	
-    	this.view.addResultsTab(entity, entity.getDescriptor().getLongName(), entity.getHelpText());
+    	this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(), entity.getHelpText());
 
     	entity.fetchDataWithoutMOC();
     }
     
     protected final void getMetadata(final GeneralEntityInterface entity, String adql) {
-    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getLongName() + "]";
+    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getLongNameColumn() + "]";
     	Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
     	
-    	this.view.addResultsTab(entity, entity.getDescriptor().getLongName(), entity.getHelpText());
+    	this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(), entity.getHelpText());
     	entity.fetchData(adql);
     }
 
     public final ITablePanel addResultsTab(final GeneralEntityInterface entity) {
-    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getShortName() + "]";
+    	final String debugPrefix = GET_METADATA + entity.getDescriptor().getShortNameColumn() + "]";
     	Log.debug(debugPrefix + ENTITY_TYPE + entity.getClass().getSimpleName());
     	
-    	return this.view.addResultsTab(entity, entity.getDescriptor().getLongName(), entity.getHelpText());
+    	return this.view.addResultsTab(entity, entity.getDescriptor().getLongNameColumn(), entity.getHelpText());
     }
 
     private void sendToSamp() {

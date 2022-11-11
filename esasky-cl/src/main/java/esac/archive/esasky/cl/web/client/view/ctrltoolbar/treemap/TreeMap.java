@@ -309,7 +309,7 @@ public class TreeMap extends Chart {
     protected void addPoints(CommonTapDescriptor descriptor, int count, boolean updateView) {
         String pointId;
 
-        PointInformation pointInformation = new PointInformation(descriptor.getLongName(),
+        PointInformation pointInformation = new PointInformation(descriptor.getLongNameColumn(),
                 descriptor.getMission(), descriptor.getCredits(), count, descriptor, context);
 
         if (isRendered()) {
@@ -329,7 +329,7 @@ public class TreeMap extends Chart {
     }
 
     protected Point getNewPoint(String pointId, CommonTapDescriptor descriptor, String color, PointInformation pointInformation, double logCount) {
-        String displayText = descriptor.getShortName();
+        String displayText = descriptor.getShortNameColumn();
         if (!pointInformation.getWavelengthShortName().isEmpty()) {
             displayText += " <br/><p style=\"font-size: 10px;\">("
                     + pointInformation.getWavelengthShortName() + ")</p>";
@@ -354,7 +354,7 @@ public class TreeMap extends Chart {
 
         if (foundPoint != null) {
 
-            String pointId = new String(foundPoint.getText());
+            String pointId = foundPoint.getText();
 
             final PointInformation pointInfo = allPoints.get(foundPoint.getText());
 
@@ -367,7 +367,7 @@ public class TreeMap extends Chart {
 
     protected boolean isMatch(CommonTapDescriptor descriptor, Point point) {
         final PointInformation pointInfo = allPoints.get(point.getText());
-        return point.getName().contains(descriptor.getShortName())
+        return point.getName().contains(descriptor.getShortNameColumn())
                 && pointInfo != null
                 && point.getName().contains(pointInfo.getWavelengthShortName())
                 && pointInfo.missionName.equals(descriptor.getMission())

@@ -86,11 +86,11 @@ public class CommonTapDescriptor extends TapDescriptorBase {
         return mocTable;
     }
 
-    public String getLongName() {
+    public String getLongNameColumn() {
         return longName;
     }
 
-    public String getShortName() {
+    public String getShortNameColumn() {
         return shortName;
     }
 
@@ -191,6 +191,35 @@ public class CommonTapDescriptor extends TapDescriptorBase {
         return tapDescriptor.getIdColumn();
     }
 
+    public String getProperMotionRaColumn() {
+        return tapDescriptor.getProperMotionRaColumn();
+    }
+
+    public String getProperMotionDecColumn() {
+        return tapDescriptor.getProperMotionDecColumn();
+    }
+
+    public String getProperMotionColumn() {
+        return tapDescriptor.getProperMotionColumn();
+    }
+
+    public String getParallaxTrigColumn() {
+        return tapDescriptor.getParallaxTrigColumn();
+    }
+
+    public String getRadialVelocityColumn() {
+        return tapDescriptor.getRadialVelocityColumn();
+    }
+
+    public boolean hasProperMotion() {
+        return getProperMotionColumn() != null && !getProperMotionColumn().isEmpty();
+    }
+
+    public Double getReferenceEpoch() {
+        return tapDescriptor.getReferenceEpoch();
+    }
+
+
     public List<TapMetadataDescriptor> getMetadata() {
         return tapDescriptor.getMetadata();
     }
@@ -198,5 +227,7 @@ public class CommonTapDescriptor extends TapDescriptorBase {
     public GeneralJavaScriptObject getRawMetadata() {
         return tapDescriptor.getRawMetadata();
     }
+
+
 
 }

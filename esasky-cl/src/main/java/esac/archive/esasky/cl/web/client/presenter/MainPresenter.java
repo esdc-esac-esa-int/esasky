@@ -108,6 +108,8 @@ public class MainPresenter {
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SSO, newCount -> ctrlTBPresenter.updateSsoCount(newCount));
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
         getExtTapList();
 
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
@@ -480,18 +482,13 @@ public class MainPresenter {
     }
 
     public void loadOrQueueAuthorInformationFromSimbad(final String author) {
-        if (descriptorRepo.getPublicationsDescriptors() != null
-                && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+        if (descriptorRepo.hasDescriptors(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
             loadAuthorInformationFromSimbad(author);
 
         } else {
-            descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
-
-                @Override
-                public void onLoad() {
-                    Log.debug("[MainPresenter] PublicationDescriptor ready, loading author informaiton");
-                    loadAuthorInformationFromSimbad(author);
-                }
+            descriptorRepo.addPublicationDescriptorLoadObserver(() -> {
+                Log.debug("[MainPresenter] PublicationDescriptor ready, loading author informaiton");
+                loadAuthorInformationFromSimbad(author);
             });
             Log.debug(
                     "[MainPresenter] Can't show author information, publicationsDescriptor is not ready. Waiting for descriptor...");
@@ -499,18 +496,12 @@ public class MainPresenter {
     }
 
     public void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
-        if (descriptorRepo.getPublicationsDescriptors() != null
-                && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+        if (descriptorRepo.hasDescriptors(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
             loadBibcodeInformaitonFromSimbad(bibcode);
-
         } else {
-            descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
-
-                @Override
-                public void onLoad() {
-                    Log.debug("[MainPresenter] PublicationDescriptor ready, loading bibcode informaiton");
-                    loadBibcodeInformaitonFromSimbad(bibcode);
-                }
+            descriptorRepo.addPublicationDescriptorLoadObserver(() -> {
+                Log.debug("[MainPresenter] PublicationDescriptor ready, loading bibcode informaiton");
+                loadBibcodeInformaitonFromSimbad(bibcode);
             });
             Log.debug(
                     "[MainPresenter] Can't show soruces from bibcode, publicationsDescriptor is not ready. Waiting for descriptor...");
@@ -518,10 +509,8 @@ public class MainPresenter {
     }
 
     private void loadAuthorInformationFromSimbad(String author) {
-        final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-
-        getTargetPresenter().showAuthorInfo(author, descriptor.getAdsAuthorSeparator(), descriptor.getAdsAuthorUrl(),
-                descriptor.getAdsAuthorUrlReplace());
+        final String authorUrl = "https://ui.adsabs.harvard.edu/#search/q=author%3A%22@@@AUTHOR@@@%22&sort=date%20desc%2C%20bibcode%20desc";
+        getTargetPresenter().showAuthorInfo(author, "\n", authorUrl, "@@@AUTHOR@@@");
         CommonEventBus.getEventBus().fireEvent(new AddTableEvent(entityRepo.createPublicationsByAuthorEntity(author)));
 
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AUTHORINURL, author);

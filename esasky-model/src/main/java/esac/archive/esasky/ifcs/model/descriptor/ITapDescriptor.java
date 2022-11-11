@@ -40,9 +40,9 @@ public interface ITapDescriptor {
 
     String getIdColumn();
 
-    String getLongName();
+    String getLongNameColumn();
 
-    String getShortName();
+    String getShortNameColumn();
 
     String createTapUrl(String baseUrl, String query, String responseFormat);
 
