@@ -148,13 +148,82 @@ public class CommonTapDescriptor extends TapDescriptorBase {
         }
     }
 
-    public void setTapDescriptor(TapDescriptor tapDescriptor) {
-        this.tapDescriptor = tapDescriptor;
-    }
-
     @Override
     public List<TapMetadataDescriptor> getColumnMetadata() {
         return columns;
+    }
+
+
+    /*********************
+     * Setters
+     *********************/
+
+    public void setMission(String mission) {
+        this.mission = mission;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
+    }
+
+    public void setShapeLimit(int shapeLimit) {
+        this.shapeLimit = shapeLimit;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public void setArchiveBaseURL(String archiveBaseURL) {
+        this.archiveBaseURL = archiveBaseURL;
+    }
+
+    public void setArchiveProductURI(String archiveProductURI) {
+        this.archiveProductURI = archiveProductURI;
+    }
+
+    public void setSampBaseURL(String sampBaseURL) {
+        this.sampBaseURL = sampBaseURL;
+    }
+
+    public void setSampProductURI(String sampProductURI) {
+        this.sampProductURI = sampProductURI;
+    }
+
+    public void setSampEnabled(boolean sampEnabled) {
+        this.sampEnabled = sampEnabled;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
+    }
+
+    public void setWavelengthStart(double wavelengthStart) {
+        this.wavelengthStart = wavelengthStart;
+    }
+
+    public void setWavelengthEnd(double wavelengthEnd) {
+        this.wavelengthEnd = wavelengthEnd;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setColumns(List<TapMetadataDescriptor> columns) {
+        this.columns = columns;
+    }
+
+    public void setTapDescriptor(TapDescriptor tapDescriptor) {
+        this.tapDescriptor = tapDescriptor;
     }
 
     /*************************
@@ -213,7 +282,5 @@ public class CommonTapDescriptor extends TapDescriptorBase {
     public GeneralJavaScriptObject getRawMetadata() {
         return tapDescriptor.getRawMetadata();
     }
-
-
 
 }

@@ -69,9 +69,6 @@ public class TapMetadataDescriptor {
         return utype;
     }
 
-    public boolean isPrincipal() {
-        return principal;
-    }
 
     @JsonSetter("principal")
     public void setPrincipal(Boolean principal) {
@@ -80,5 +77,41 @@ public class TapMetadataDescriptor {
         } else {
             this.principal = principal;
         }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
+
+    public void setXtype(String xtype) {
+        this.xtype = xtype;
+    }
+
+    public void setArraySize(String arraySize) {
+        this.arraySize = arraySize;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public void setUcd(String ucd) {
+        this.ucd = ucd;
+    }
+
+    public void setUtype(String utype) {
+        this.utype = utype;
+    }
+
+    public boolean isPrincipal() {
+        return principal;
     }
 }

@@ -9,6 +9,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
+import esac.archive.esasky.cl.web.client.api.model.GeneralSkyObject;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
@@ -819,38 +820,34 @@ public class DescriptorRepository {
         }
     }
 
-    public IDescriptor initUserDescriptor(List<MetadataDescriptor> metadata, IJSONWrapper jsonWrapper) {
+    public CommonTapDescriptor initUserDescriptor(List<TapMetadataDescriptor> metadataList, IJSONWrapper jsonWrapper, GeneralSkyObject generalSkyObject) {
+        TapDescriptor tapDescriptor = new TapDescriptor();
+        tapDescriptor.setMetadata(metadataList);
+
+        tapDescriptor.setColor(jsonWrapper.getOverlaySet().getColor());
+        tapDescriptor.setProperties(tapDescriptor.getDecColumn(), generalSkyObject.getDec_deg());
+        tapDescriptor.setProperties(tapDescriptor.getRaColumn(), generalSkyObject.getRa_deg());
+        tapDescriptor.setProperties(tapDescriptor.getLongNameColumn(), generalSkyObject.getName());
+        tapDescriptor.setProperties(tapDescriptor.getShortNameColumn(), generalSkyObject.getName());
+        tapDescriptor.setProperties(tapDescriptor.getIdColumn(), generalSkyObject.getId());
+
+
+        CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
+        commonTapDescriptor.setTapDescriptor(tapDescriptor);
+        commonTapDescriptor.setColumns(metadataList);
+        commonTapDescriptor.setLongName(jsonWrapper.getOverlaySet().getOverlayName());
+        commonTapDescriptor.setShortName(jsonWrapper.getOverlaySet().getOverlayName());
+        commonTapDescriptor.setMission(jsonWrapper.getOverlaySet().getOverlayName());
+        commonTapDescriptor.setSampEnabled(false);
+        commonTapDescriptor.setColor(jsonWrapper.getOverlaySet().getColor());
+
         if (jsonWrapper instanceof FootprintListJSONWrapper) {
-            return initUserDescriptor4Footprint(metadata, (FootprintListJSONWrapper) jsonWrapper);
+            commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_OBSERVATIONS);
         } else if (jsonWrapper instanceof SourceListJSONWrapper) {
-            return initUserDescriptor4Catalogue(metadata, (SourceListJSONWrapper) jsonWrapper);
+            commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_CATALOGUES);
         }
-        return null;
-    }
 
-    private ObservationDescriptor initUserDescriptor4Footprint(List<MetadataDescriptor> metadata,
-                                                               FootprintListJSONWrapper footprintsSet) {
-        ObservationDescriptor descriptor = new UserObservationDescriptor();
-
-        descriptor.setMetadata(metadata);
-
-        descriptor.setMission(footprintsSet.getOverlaySet().getOverlayName());
-        descriptor.setGuiLongName(footprintsSet.getOverlaySet().getOverlayName());
-        descriptor.setGuiShortName(footprintsSet.getOverlaySet().getOverlayName());
-        descriptor.setDescriptorId(footprintsSet.getOverlaySet().getOverlayName());
-        descriptor.setPrimaryColor(footprintsSet.getOverlaySet().getColor());
-
-        descriptor.setUniqueIdentifierField(ApiConstants.OBS_NAME);
-
-        descriptor.setTapSTCSColumn("stcs");
-        descriptor.setSampEnabled(false);
-
-        descriptor.setFovLimit(360.0);
-
-        descriptor.setTapTable(NOT_SET);
-        descriptor.setTabCount(0);
-
-        return descriptor;
+        return commonTapDescriptor;
     }
 
     public BaseDescriptor initUserDescriptor4MOC(String name, GeneralJavaScriptObject options) {
@@ -884,30 +881,6 @@ public class DescriptorRepository {
         return descriptor;
     }
 
-    private CatalogDescriptor initUserDescriptor4Catalogue(List<MetadataDescriptor> metadata,
-                                                           SourceListJSONWrapper userCatalogue) {
-        CatalogDescriptor descriptor = new UserCatalogueDescriptor();
-
-        descriptor.setMetadata(metadata);
-
-        descriptor.setMission(userCatalogue.getOverlaySet().getOverlayName());
-        descriptor.setGuiLongName(userCatalogue.getOverlaySet().getOverlayName());
-        descriptor.setGuiShortName(userCatalogue.getOverlaySet().getOverlayName());
-        descriptor.setPrimaryColor(userCatalogue.getOverlaySet().getColor());
-
-        descriptor.setFovLimit(360.0);
-
-        descriptor.setShapeLimit(10000);
-
-        descriptor.setTapTable(NOT_SET);
-        descriptor.setTabCount(0);
-
-        descriptor.setTapRaColumn(ApiConstants.CENTER_RA_DEG);
-        descriptor.setTapDecColumn(ApiConstants.CENTER_DEC_DEG);
-        descriptor.setUniqueIdentifierField(ApiConstants.CAT_NAME);
-
-        return descriptor;
-    }
 
     public void registerExtTapObserver() {
 

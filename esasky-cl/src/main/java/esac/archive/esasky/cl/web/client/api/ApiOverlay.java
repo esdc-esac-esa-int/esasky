@@ -28,19 +28,16 @@ import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.shared.UCD;
 
 public class ApiOverlay extends ApiBase{
 	
 	public interface FootprintsSetMapper extends ObjectMapper<FootprintListJSONWrapper> {}
-	public interface CatalogDescriptorMapper extends ObjectMapper<CatalogDescriptor> {}
 	public interface CatalogueMapper extends ObjectMapper<SourceListJSONWrapper> {}
 
-	Map<String, JavaScriptObject> userCatalogues = new HashMap<String, JavaScriptObject>();
-	Map<String, JavaScriptObject> setOfFootprints = new HashMap<String, JavaScriptObject>();
+
 	
 	public ApiOverlay(Controller controller) {
 		this.controller = controller;
@@ -78,71 +75,63 @@ public class ApiOverlay extends ApiBase{
 		FootprintsSetMapper mapper = GWT.create(FootprintsSetMapper.class);
 
 		try {
-			FootprintListJSONWrapper footprintsSet = (FootprintListJSONWrapper) mapper.read(footprintsSetJSON);
+			FootprintListJSONWrapper footprintsSet = mapper.read(footprintsSetJSON);
 
 			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OVERLAYFOOTPRINTSWITHDETAILS, footprintsSet.getOverlaySet().getOverlayName());
 
-			List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
+			List<TapMetadataDescriptor> metadata = new LinkedList<>();
 
-			MetadataDescriptor mName = new MetadataDescriptor();
-			mName.setIndex(0);
-			mName.setLabel(ApiConstants.OBS_NAME);
-			mName.setMaxDecimalDigits(null);
-			mName.setTapName(ApiConstants.OBS_NAME);
-			mName.setType(ColumnType.STRING);
-			mName.setVisible(true);
+			TapMetadataDescriptor mName = new TapMetadataDescriptor();
+			mName.setName(ApiConstants.OBS_NAME);
+			mName.setDataType(ColumnType.CHAR.getName());
+			mName.setUcd(UCD.META_ID.getValue());
+			mName.setArraySize("*");
+			mName.setPrincipal(true);
 			metadata.add(mName);
 
-			MetadataDescriptor mStcs = new MetadataDescriptor();
-			mStcs.setIndex(0);
-			mStcs.setLabel(ApiConstants.FOOTPRINT_STCS);
-			mStcs.setMaxDecimalDigits(null);
-			mStcs.setTapName(ApiConstants.FOOTPRINT_STCS);
-			mStcs.setType(ColumnType.STRING);
-			mStcs.setVisible(false);
+			TapMetadataDescriptor mStcs = new TapMetadataDescriptor();
+			mStcs.setName(ApiConstants.FOOTPRINT_STCS);
+			mStcs.setDataType(ColumnType.CHAR.getName());
+			mName.setArraySize("*");
+			mStcs.setPrincipal(false);
+			mStcs.setUcd(UCD.POS_OUTLINE.getValue());
 			metadata.add(mStcs);
 
-			MetadataDescriptor mRa = new MetadataDescriptor();
-			mRa.setIndex(0);
-			mRa.setLabel(ApiConstants.CENTER_RA_DEG);
-			mRa.setMaxDecimalDigits(null);
-			mRa.setTapName(ApiConstants.CENTER_RA_DEG);
-			mRa.setType(ColumnType.RA);
-			mRa.setVisible(false);
+			TapMetadataDescriptor mRa = new TapMetadataDescriptor();
+			mRa.setName(ApiConstants.CENTER_RA_DEG);
+			mRa.setDataType(ColumnType.DOUBLE.getName());
+			mRa.setUcd(UCD.POS_EQ_RA.getValue());
+			mRa.setPrincipal(false);
 			metadata.add(mRa);
 
-			MetadataDescriptor mDec = new MetadataDescriptor();
-			mDec.setIndex(0);
-			mDec.setLabel(ApiConstants.CENTER_DEC_DEG);
-			mDec.setMaxDecimalDigits(null);
-			mDec.setTapName(ApiConstants.CENTER_DEC_DEG);
-			mDec.setType(ColumnType.DEC);
-			mDec.setVisible(false);
+			TapMetadataDescriptor mDec = new TapMetadataDescriptor();
+			mDec.setName(ApiConstants.CENTER_DEC_DEG);
+			mDec.setDataType(ColumnType.DOUBLE.getName());
+			mDec.setUcd(UCD.POS_EQ_DEC.getValue());
+			mDec.setPrincipal(false);
 			metadata.add(mDec);
 
 			FootprintListOverlay fooprintList = (FootprintListOverlay) footprintsSet.getOverlaySet();
 
-			GeneralSkyObject generalSkyObject = (GeneralSkyObject) fooprintList.getSkyObjectList().get(0);
+			GeneralSkyObject generalSkyObject = fooprintList.getSkyObjectList().get(0);
 
 			for (MetadataAPI currMetadata : generalSkyObject.getData()) {
-				MetadataDescriptor m = new MetadataDescriptor();
-				m.setIndex(0);
-				m.setLabel(currMetadata.getName());
-				m.setMaxDecimalDigits(null);
-				m.setTapName(currMetadata.getName());
-				m.setType(ColumnType.STRING);
-				m.setVisible(true);
+				TapMetadataDescriptor m = new TapMetadataDescriptor();
+				m.setName(currMetadata.getName());
+				m.setDataType(ColumnType.CHAR.getName());
+				m.setArraySize("*");
+				m.setPrincipal(true);
 				metadata.add(m);
 			}
 
-			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
-					.initUserDescriptor(metadata, footprintsSet);
-			// TODO: fix
-//			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), shouldBeInTablePanel);
+			CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+					.initUserDescriptor(metadata, footprintsSet, generalSkyObject);
+
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), shouldBeInTablePanel);
 
 			AladinLiteWrapper.getAladinLite().goToRaDec(
-					((Footprint) fooprintList.getSkyObjectList().get(0)).getRa_deg(),
-					((Footprint) fooprintList.getSkyObjectList().get(0)).getDec_deg());
+					fooprintList.getSkyObjectList().get(0).getRa_deg(),
+					fooprintList.getSkyObjectList().get(0).getDec_deg());
 		} catch (Exception ex) {
 			Log.error(ex.getMessage(), ex);
 		}
@@ -157,56 +146,48 @@ public class ApiOverlay extends ApiBase{
 			
 			userCatalogueJSON = userCatalogueJSON.replace("\"ra\":", "\"ra_deg\":");
 			userCatalogueJSON = userCatalogueJSON.replace("\"dec\":", "\"dec_deg\":");
-			SourceListJSONWrapper userCatalogue = (SourceListJSONWrapper) mapper.read(userCatalogueJSON);
+			SourceListJSONWrapper userCatalogue = mapper.read(userCatalogueJSON);
 			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OVERLAYCATALOGUEWITHDETAILS, userCatalogue.getOverlaySet().getOverlayName());
 
-			List<MetadataDescriptor> metadata = new LinkedList<MetadataDescriptor>();
-			
-			MetadataDescriptor mName = new MetadataDescriptor();
-			mName.setIndex(0);
-			mName.setLabel(ApiConstants.CAT_NAME);
-			mName.setMaxDecimalDigits(null);
-			mName.setTapName(ApiConstants.CAT_NAME);
-			mName.setType(ColumnType.STRING);
-			mName.setVisible(true);
+			List<TapMetadataDescriptor> metadata = new LinkedList<>();
+
+			TapMetadataDescriptor mName = new TapMetadataDescriptor();
+			mName.setName(ApiConstants.CAT_NAME);
+			mName.setUcd(UCD.META_ID.getValue());
+			mName.setDataType(ColumnType.CHAR.getName());
+			mName.setArraySize("*");
+			mName.setPrincipal(true);
 			metadata.add(mName);
 
-			MetadataDescriptor mRa = new MetadataDescriptor();
-			mRa.setIndex(0);
-			mRa.setLabel(ApiConstants.CENTER_RA_DEG);
-			mRa.setMaxDecimalDigits(null);
-			mRa.setTapName(ApiConstants.CENTER_RA_DEG);
-			mRa.setType(ColumnType.RA);
-			mRa.setVisible(true);
+			TapMetadataDescriptor mRa = new TapMetadataDescriptor();
+			mRa.setName(ApiConstants.CENTER_RA_DEG);
+			mRa.setUcd(UCD.POS_EQ_RA.getValue());
+			mRa.setDataType(ColumnType.DOUBLE.getName());
+			mRa.setPrincipal(true);
 			metadata.add(mRa);
 
-			MetadataDescriptor mDec = new MetadataDescriptor();
-			mDec.setIndex(0);
-			mDec.setLabel(ApiConstants.CENTER_DEC_DEG);
-			mDec.setMaxDecimalDigits(null);
-			mDec.setTapName(ApiConstants.CENTER_DEC_DEG);
-			mDec.setType(ColumnType.DEC);
-			mDec.setVisible(true);
+			TapMetadataDescriptor mDec = new TapMetadataDescriptor();
+			mDec.setName(ApiConstants.CENTER_DEC_DEG);
+			mRa.setUcd(UCD.POS_EQ_DEC.getValue());
+			mDec.setDataType(ColumnType.DOUBLE.getName());
+			mDec.setPrincipal(true);
 			metadata.add(mDec);
 
 			SourceListOverlay sourceList = (SourceListOverlay) userCatalogue.getOverlaySet();
-			GeneralSkyObject generalSkyObject = (GeneralSkyObject) sourceList.getSkyObjectList().get(0);
+			GeneralSkyObject generalSkyObject = sourceList.getSkyObjectList().get(0);
 
 			for (MetadataAPI currMetadata : generalSkyObject.getData()) {
-				MetadataDescriptor m = new MetadataDescriptor();
-				m.setIndex(0);
-				m.setLabel(currMetadata.getName());
-				m.setMaxDecimalDigits(null);
-				m.setTapName(currMetadata.getName());
-				m.setType(ColumnType.STRING);
-				m.setVisible(true);
+				TapMetadataDescriptor m = new TapMetadataDescriptor();
+				m.setName(currMetadata.getName());
+				m.setDataType(ColumnType.CHAR.getName());
+				m.setArraySize("*");
+				m.setPrincipal(true);
 				metadata.add(m);
 			}
 
-			IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
-					.initUserDescriptor(metadata, userCatalogue);
-			// TODO: fix
-//			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), shouldBeInTablePanel);
+			CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+					.initUserDescriptor(metadata, userCatalogue, generalSkyObject);
+			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(userCatalogueJSON), shouldBeInTablePanel);
 
 		} catch (Exception ex) {
 			Log.error(ex.getMessage(), ex);

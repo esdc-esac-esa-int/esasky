@@ -17,7 +17,6 @@ import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
-import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.PublicationDescriptorLoadObserver;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -34,9 +33,8 @@ import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.HashMap;
@@ -353,17 +351,10 @@ public class MainPresenter {
         return descriptorRepo;
     }
 
-    public EntityRepository getEntityRepository() {
-        return entityRepo;
-    }
 
     public void coneSearch(CommonTapDescriptor descriptor, SkyViewPosition conePos) {
         resultsPresenter.coneSearch(entityRepo.createEntity(descriptor), conePos);
     }
-
-//    public void getImagesMetadata(TapDescriptor descriptor) {
-//    	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor, () -> {}));
-//    }
 
     public void insertRelatedMetadata(CommonTapDescriptor descriptor, GeneralJavaScriptObject data) {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), data);
@@ -375,15 +366,6 @@ public class MainPresenter {
 
     public void getRelatedMetadataWithoutMOC(CommonTapDescriptor descriptor) {
         resultsPresenter.getMetadataWithoutMOC(entityRepo.createEntity(descriptor));
-    }
-
-    public void getRelatedMetadata(CommonTapDescriptor descriptor, String adql) {
-
-        // To make sure that no tab with the same ID already exists in the layout panel
-//        while (resultsPresenter.getTabPanel().checkIfIdExists(descriptor.getId()));
-//        descriptor.setTabCount(descriptor.getTabCount() - 1);
-
-        resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);
     }
 
     public void getRelatedMetadata(GeneralEntityInterface entity, String adql) {
