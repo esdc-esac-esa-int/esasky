@@ -158,6 +158,16 @@ public class DescriptorRepository {
         }
     }
 
+    public CommonTapDescriptor getFirstDescriptor(String category, String mission) {
+        List<CommonTapDescriptor> descriptors = getDescriptors(category);
+
+        if (descriptors != null && !descriptors.isEmpty()) {
+            return descriptors.stream().filter(d -> d.getMission().equals(mission)).findFirst().orElse(null);
+        } else {
+            return null;
+        }
+    }
+
     public DescriptorListAdapter<SSODescriptor> getSsoDescriptors() {
         return null;
     }

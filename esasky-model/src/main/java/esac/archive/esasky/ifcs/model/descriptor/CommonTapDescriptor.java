@@ -14,12 +14,6 @@ public class CommonTapDescriptor extends TapDescriptorBase {
     @JsonProperty("mission")
     private String mission;
 
-    @JsonProperty("moc_stcs_column")
-    private String mocSTCSColumn;
-
-    @JsonProperty("moc_table")
-    private String mocTable;
-
     @JsonProperty("name")
     private String longName;
 
@@ -77,14 +71,6 @@ public class CommonTapDescriptor extends TapDescriptorBase {
         return mission;
     }
 
-
-    public String getMocSTCSColumn() {
-        return mocSTCSColumn;
-    }
-
-    public String getMocTable() {
-        return mocTable;
-    }
 
     public String getLongNameColumn() {
         return longName;

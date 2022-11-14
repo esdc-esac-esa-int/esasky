@@ -10,6 +10,7 @@ import esac.archive.esasky.cl.web.client.model.entities.*;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.query.TAPGwService;
 import esac.archive.esasky.cl.web.client.query.TAPIceCubeService;
+import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.query.TAPObservationService;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -19,7 +20,6 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 import java.util.LinkedList;
@@ -121,26 +121,24 @@ public class EntityRepository {
     	return allEntities;
     }
 
-    public ImageListEntity createImageListEntity(BaseDescriptor descriptor, ICallback footprintSelected) {
-        // TODO: FIX
-        return null;
-//    	ImageListEntity newEntity =  new ImageListEntity(descriptor, descriptorRepo.getImageDescriptors().getCountStatus(),
-//                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), TAPImageListService.getInstance(), selectedEntity -> {
-////                    deselectOtherImageEntityShapes(selectedEntity); // TODO: FIX
-//                    footprintSelected.onCallback();
-//                });
-//    	addEntity(newEntity);
-//    	return newEntity;
+    public ImageListEntity createImageListEntity(CommonTapDescriptor descriptor, ICallback footprintSelected) {
+        ImageListEntity newEntity = new ImageListEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_IMAGES).getCountStatus(),
+                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPImageListService.getInstance(), selectedEntity -> {
+            deselectOtherImageEntityShapes(selectedEntity);
+            footprintSelected.onCallback();
+        });
+        addEntity(newEntity);
+        return newEntity;
     }
-//
-//    public void deselectOtherImageEntityShapes(ImageListEntity myEntity) {
-//        for (GeneralEntityInterface entity : allEntities) {
-//            if (entity != myEntity)  {
-//                entity.deselectAllShapes();
-//                entity.getTablePanel().deselectAllRows();
-//            }
-//        }
-//    }
+
+  public void deselectOtherImageEntityShapes(ImageListEntity myEntity) {
+      for (GeneralEntityInterface entity : allEntities) {
+          if (entity != myEntity)  {
+              entity.deselectAllShapes();
+              entity.getTablePanel().deselectAllRows();
+          }
+      }
+  }
 
     public GeneralEntityInterface createEntity(CommonTapDescriptor descriptor) {
         // TODO: Common service (TAPObservationService)?

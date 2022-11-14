@@ -110,12 +110,14 @@ public class MainPresenter {
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES);
+
         getExtTapList();
 
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
 
 
-        getImageList();
+
 
 
 
@@ -427,20 +429,6 @@ public class MainPresenter {
         descriptorRepo.initExtDescriptors(newCount -> newCount++);
     }
 
-    private void getImageList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getImageList");
-        descriptorRepo.initImageDescriptors();
-    }
-
-    private void getGwList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getGwList");
-        descriptorRepo.initGwDescriptors(newCount -> newCount++);
-    }
-
-    private void getIceCubeList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getIceCubeList");
-        descriptorRepo.initIceCubeDescriptors(newCount -> newCount++);
-    }
 
     public final AllSkyPresenter getAllSkyPresenter() {
         if (allSkyPresenter == null) {

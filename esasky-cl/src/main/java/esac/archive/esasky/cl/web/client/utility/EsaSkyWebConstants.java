@@ -186,6 +186,7 @@ public class EsaSkyWebConstants {
     public static final String SCHEMA_CATALOGUES = "catalogues";
     public static final String SCHEMA_ALERTS = "alerts";
     public static final String SCHEMA_PUBLIC = "public";
+    public static final String SCHEMA_IMAGES = "images";
     public static final String CATEGORY_OBSERVATIONS = "observations";
     public static final String CATEGORY_SPECTRA = "spectra";
     public static final String CATEGORY_CATALOGUES = "catalogues";
@@ -193,6 +194,7 @@ public class EsaSkyWebConstants {
     public static final String CATEGORY_GRAVITATIONAL_WAVES = "gravitational_waves";
     public static final String CATEGORY_NEUTRINOS = "neutrinos";
     public static final String CATEGORY_PUBLICATIONS = "publications";
+    public static final String CATEGORY_IMAGES = "images";
 
 
 
