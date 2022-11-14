@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Base descriptor with default implementations of common descriptor functionality.
  */
-public abstract class TapDescriptorBase implements ITapDescriptor{
+public abstract class TapDescriptorBase {
     @JsonIgnore
     private String id;
 
@@ -26,6 +26,8 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
     @JsonIgnore
     protected String color;
 
+
+    public abstract List<TapMetadataDescriptor> getMetadata();
 
     public void setSearchArea(SearchArea searchArea) {
         this.searchArea = searchArea;
@@ -58,11 +60,10 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
     }
 
     private TapMetadataDescriptor getColumn(String columnName) {
-        return getColumnMetadata().stream()
+        return getMetadata().stream()
                 .filter(cm -> cm.getName().equals(columnName)).findFirst().orElse(null);
     }
 
-    @Override
     public String getId() {
         if (id == null) {
             id = "TAP_DESCRIPTOR_" + UUID.randomUUID();
@@ -70,12 +71,11 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
         return id;
     }
 
-    @Override
     public int getShapeLimit() {
         return 1500;
     }
 
-    @Override
+
     public String createTapUrl(String baseUrl, String query, String responseFormat) {
         long currentTime = System.currentTimeMillis();
         String encodedQuery = URL.encodeQueryString(query);
@@ -84,10 +84,6 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
                 + responseFormat + "&query=" + encodedQuery + "&timecall=" + currentTime;
     }
 
-    @Override
-    public String getSchemaName() {
-        return null;
-    }
 
     public void registerVisibilityObserver(MetadataVisibilityObserver observer) {
         visibilityObservers.add(observer);
@@ -101,13 +97,12 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
         visibilityObservers.forEach(vo -> vo.onVisibilityChange(column, visible));
     }
 
-    @Override
+
     public boolean isColumnVisible(String columnName) {
         TapMetadataDescriptor column = getColumn(columnName);
         return column == null || column.isPrincipal();
     }
 
-    @Override
     public void setColumnVisibility(String columnName, boolean visible) {
         TapMetadataDescriptor column = getColumn(columnName);
         if (column != null) {
@@ -117,7 +112,6 @@ public abstract class TapDescriptorBase implements ITapDescriptor{
 
     }
 
-    @Override
     public String getColor() {
         return this.color != null ? color : ESASkyColors.getNext();
     }

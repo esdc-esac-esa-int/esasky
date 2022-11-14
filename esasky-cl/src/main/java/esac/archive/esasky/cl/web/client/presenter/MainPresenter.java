@@ -119,7 +119,7 @@ public class MainPresenter {
 
 
 
-        descriptorRepo.initPubDescriptors();
+//        descriptorRepo.initPubDescriptors();
 
         bindSampRequests();
         bind();

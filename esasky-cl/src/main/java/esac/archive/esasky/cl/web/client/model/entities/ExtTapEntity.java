@@ -40,6 +40,6 @@ public class ExtTapEntity extends EsaSkyEntity {
     
     @Override
     public String getTabLabel() {
-        return getDescriptor().getShortNameColumn();
+        return getDescriptor().getShortName();
     }
 }

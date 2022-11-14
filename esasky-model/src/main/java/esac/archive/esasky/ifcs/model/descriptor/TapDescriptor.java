@@ -2,6 +2,8 @@ package esac.archive.esasky.ifcs.model.descriptor;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
+import com.google.gwt.core.client.GWT;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.IContentDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ObsCore;
@@ -14,6 +16,8 @@ import java.util.*;
  */
 public class TapDescriptor extends TapDescriptorBase {
 
+    public interface MetadataListMapper extends ObjectMapper<List<TapMetadataDescriptor>> { }
+
     private Map<String, Object> properties;
 
     @JsonIgnore
@@ -21,6 +25,7 @@ public class TapDescriptor extends TapDescriptorBase {
 
     @JsonIgnore
     private GeneralJavaScriptObject rawMetadata;
+
 
     /**
      * Catch-all setter for JSON properties.
@@ -237,7 +242,6 @@ public class TapDescriptor extends TapDescriptorBase {
      *  Metadata Getters & setters
      ********************************/
 
-    @Override
     public List<TapMetadataDescriptor> getMetadata() {
         if (metadata == null) {
             metadata = new ArrayList<>();
@@ -245,8 +249,13 @@ public class TapDescriptor extends TapDescriptorBase {
         return metadata;
     }
 
-    @Override
     public GeneralJavaScriptObject getRawMetadata() {
+        if (rawMetadata == null && metadata != null) {
+            MetadataListMapper metadataMapper = GWT.create(MetadataListMapper.class);
+            String json = metadataMapper.write(metadata);
+            rawMetadata = GeneralJavaScriptObject.createJsonObject(json);
+        }
+
         return rawMetadata;
     }
 
@@ -256,11 +265,6 @@ public class TapDescriptor extends TapDescriptorBase {
 
     public void setRawMetadata(GeneralJavaScriptObject metadata) {
         this.rawMetadata = metadata;
-    }
-
-    @Override
-    public List<TapMetadataDescriptor> getColumnMetadata() {
-        return getMetadata();
     }
 
     /***************************
@@ -294,6 +298,10 @@ public class TapDescriptor extends TapDescriptorBase {
         return getMetadataNameAny(UCD.POS_PM);
     }
 
+    public boolean hasProperMotion() {
+        return getProperMotionColumn() != null && !getProperMotionColumn().isEmpty();
+    }
+
     public String getParallaxTrigColumn() {
         return getMetadataNameAll(UCD.POS_PARALLAX_TRIG, UCD.STAT.negative());
     }
@@ -302,25 +310,12 @@ public class TapDescriptor extends TapDescriptorBase {
         return getMetadataNameAll(UCD.SPECT_DOPPLERVELOC, UCD.STAT.negative());
     }
 
-    public String getLongNameColumn() {
+    public String getNameColumn() {
         return getMetadataNameAny(UCD.META_ID, ObsCore.OBS_ID, ObsCore.TARGET_NAME);
     }
 
-    public String getShortNameColumn() {
-        return getLongNameColumn();
-    }
-
-
-    public Double getReferenceEpoch() {
-        return Double.valueOf(getPropertyAll(UCD.META_REF, UCD.TIME_EPOCH).toString());
-    }
-
-    public String getMission() {
-        return getPropertyAny(UCD.INSTR_OBSTY, ObsCore.INSTRUMENT_NAME).toString();
-    }
-
-    public String getTableName() {
-        return getPropertyAny(UCD.META_TABLE, ObsCore.ACCESS_URL).toString();
+    public String getReferenceEpochColumn() {
+        return getMetadataNameAny(UCD.META_REF, UCD.TIME_EPOCH);
     }
 
 }

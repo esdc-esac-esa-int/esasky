@@ -104,7 +104,7 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 		}
 		Log.debug("Added " + rowDataArray.length + " rows and shapes");
 		
-		if(sourceShapes.size() > 0) {
+		if(!sourceShapes.isEmpty()) {
 			AladinLiteWrapper.getAladinLite().addCatalogToAladin(sourceOverlay);
 		}
 		

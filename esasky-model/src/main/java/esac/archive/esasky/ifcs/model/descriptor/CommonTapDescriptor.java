@@ -1,15 +1,14 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommonTapDescriptor extends TapDescriptorBase {
+public class CommonTapDescriptor extends TapDescriptor {
 
     @JsonProperty("mission")
     private String mission;
@@ -56,39 +55,34 @@ public class CommonTapDescriptor extends TapDescriptorBase {
     @JsonProperty("category")
     private String category;
 
-    @JsonProperty("columns")
-    private List<TapMetadataDescriptor> columns;
-
-    @JsonIgnore
-    private TapDescriptor tapDescriptor;
-
 
     /*********************
      * Getters
      *********************/
 
+
     public String getMission() {
         return mission;
     }
 
-
-    public String getLongNameColumn() {
+    public String getLongName() {
         return longName;
     }
 
-    public String getShortNameColumn() {
+    public String getShortName() {
         return shortName;
     }
 
-    @Override
+
     public String getSchemaName() {
         return schemaName;
     }
 
-    @Override
+
     public int getShapeLimit() {
         return shapeLimit;
     }
+
 
     public String getTableName() {
         return tableName;
@@ -147,12 +141,6 @@ public class CommonTapDescriptor extends TapDescriptorBase {
             return ESASkyColors.getColorFromWavelength((Math.max(getWavelengthStart(), 0) + Math.min(getWavelengthEnd(), 100)) / 2);
         }
     }
-
-    @Override
-    public List<TapMetadataDescriptor> getColumnMetadata() {
-        return columns;
-    }
-
 
     /*********************
      * Setters
@@ -218,69 +206,9 @@ public class CommonTapDescriptor extends TapDescriptorBase {
         this.category = category;
     }
 
+    @JsonSetter("columns")
     public void setColumns(List<TapMetadataDescriptor> columns) {
-        this.columns = columns;
-    }
-
-    public void setTapDescriptor(TapDescriptor tapDescriptor) {
-        this.tapDescriptor = tapDescriptor;
-    }
-
-    /*************************
-     * TAPDescriptor methods
-     *************************/
-
-    public String getRaColumn() {
-        return tapDescriptor.getRaColumn();
-    }
-
-    public String getDecColumn() {
-        return tapDescriptor.getDecColumn();
-    }
-
-    public String getRegionColumn() {
-        return tapDescriptor.getRegionColumn();
-    }
-
-    public String getIdColumn() {
-        return tapDescriptor.getIdColumn();
-    }
-
-    public String getProperMotionRaColumn() {
-        return tapDescriptor.getProperMotionRaColumn();
-    }
-
-    public String getProperMotionDecColumn() {
-        return tapDescriptor.getProperMotionDecColumn();
-    }
-
-    public String getProperMotionColumn() {
-        return tapDescriptor.getProperMotionColumn();
-    }
-
-    public String getParallaxTrigColumn() {
-        return tapDescriptor.getParallaxTrigColumn();
-    }
-
-    public String getRadialVelocityColumn() {
-        return tapDescriptor.getRadialVelocityColumn();
-    }
-
-    public boolean hasProperMotion() {
-        return getProperMotionColumn() != null && !getProperMotionColumn().isEmpty();
-    }
-
-    public Double getReferenceEpoch() {
-        return tapDescriptor.getReferenceEpoch();
-    }
-
-
-    public List<TapMetadataDescriptor> getMetadata() {
-        return tapDescriptor.getMetadata();
-    }
-
-    public GeneralJavaScriptObject getRawMetadata() {
-        return tapDescriptor.getRawMetadata();
+        this.setMetadata(columns);
     }
 
 }

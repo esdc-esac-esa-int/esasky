@@ -21,7 +21,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilte
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueFormatter;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -2269,7 +2269,7 @@ public class TabulatorWrapper {
     	return tabulatorCallback.getDescriptorMetaData();
     }
 
-    public ITapDescriptor getDescriptor() {
+    public CommonTapDescriptor getDescriptor() {
         return tabulatorCallback.getDescriptor();
     }
 

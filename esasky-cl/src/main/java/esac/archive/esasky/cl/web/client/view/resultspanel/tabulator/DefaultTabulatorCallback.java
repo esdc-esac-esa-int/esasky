@@ -1,11 +1,10 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
-
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+
+import java.util.List;
 
 public class DefaultTabulatorCallback implements TabulatorCallback{
 
@@ -115,7 +114,7 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
-	public ITapDescriptor getDescriptor() {
+	public CommonTapDescriptor getDescriptor() {
 		return null;
 	}
 

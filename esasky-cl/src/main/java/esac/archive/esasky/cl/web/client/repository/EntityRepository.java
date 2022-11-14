@@ -148,11 +148,13 @@ public class EntityRepository {
             case EsaSkyWebConstants.CATEGORY_CATALOGUES:
                 newEntity = createCatalogueEntity(descriptor);
                 break;
+            case EsaSkyWebConstants.CATEGORY_PUBLICATIONS:
+                newEntity = createPublicationsEntity(descriptor);
+                break;
             default:
                 newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
                         CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPObservationService.getInstance());
         }
-
 
         addEntity(newEntity);
         return newEntity;
@@ -242,7 +244,7 @@ public class EntityRepository {
                                 final Double pm_dec = rowData
                                         .getDoubleOrNullProperty(descriptor.getProperMotionDecColumn());
 
-                                if ((pm_ra != null) && (pm_dec != null) && descriptor.getReferenceEpoch() != null) {
+                                if ((pm_ra != null) && (pm_dec != null) && descriptor.getReferenceEpochColumn() != null) {
                                     double[] inputA = new double[6];
                                     inputA[0] = new Double(ra);
                                     inputA[1] = new Double(dec);
@@ -266,12 +268,12 @@ public class EntityRepository {
 
                                     double[] outputA = new double[6];
 
-                                    ProperMotionUtils.pos_prop(descriptor.getReferenceEpoch(), inputA, 2000, outputA);
+                                    ProperMotionUtils.pos_prop(rowData.getDoubleProperty(descriptor.getReferenceEpochColumn()), inputA, 2000, outputA);
 
                                     finalRa = outputA[0];
                                     finalDec = outputA[1];
 
-                                    if (descriptor.getReferenceEpoch() > 2000.0) {
+                                    if (rowData.getDoubleProperty(descriptor.getReferenceEpochColumn()) > 2000.0) {
                                         // For catalogs in J2015 put the source in J2015 but draw the arrow
                                         // flipped... from J2000 to J2015
                                         details.put("arrowFlipped", "true");

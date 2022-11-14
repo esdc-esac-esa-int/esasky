@@ -3,7 +3,7 @@ package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 import java.util.List;
 
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 public interface TabulatorCallback {
     void onDataLoaded(GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata);
@@ -27,7 +27,7 @@ public interface TabulatorCallback {
     void onAjaxResponseError(String error);
     String getLabelFromTapName(String tapName);
     GeneralJavaScriptObject getDescriptorMetaData();
-    ITapDescriptor getDescriptor();
+    CommonTapDescriptor getDescriptor();
     String getRaColumnName();
     String getDecColumnName();
     String getUniqueIdentifierField();

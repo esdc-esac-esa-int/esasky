@@ -370,23 +370,6 @@ public class DescriptorRepository {
             public void onSuccess(String responseText) {
                 CommonTapDescriptorListMapper mapper = GWT.create(CommonTapDescriptorListMapper.class);
                 CommonTapDescriptorList mappedDescriptorList  = mapper.read(responseText);
-                for(CommonTapDescriptor descriptor : mappedDescriptorList.getDescriptors()) {
-                    TAPDescriptorService.getInstance().initializeColumns(descriptor, new IJSONRequestCallback() {
-                        @Override
-                        public void onSuccess(String responseText) {
-                            TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
-                            TapDescriptorList mappedDesc  = mapper.read(responseText);
-                            TapDescriptor tapDesc = mappedDesc.getDescriptors().get(0);
-                            descriptor.setTapDescriptor(tapDesc);
-                        }
-
-                        @Override
-                        public void onError(String errorCause) {
-                            Log.error("[DescriptorRepository] initDescriptors ERROR: " + errorCause);
-                        }
-                    });
-                }
-
                 promise.fulfill(mappedDescriptorList);
             }
 
@@ -821,19 +804,16 @@ public class DescriptorRepository {
     }
 
     public CommonTapDescriptor initUserDescriptor(List<TapMetadataDescriptor> metadataList, IJSONWrapper jsonWrapper, GeneralSkyObject generalSkyObject) {
-        TapDescriptor tapDescriptor = new TapDescriptor();
-        tapDescriptor.setMetadata(metadataList);
-
-        tapDescriptor.setColor(jsonWrapper.getOverlaySet().getColor());
-        tapDescriptor.setProperties(tapDescriptor.getDecColumn(), generalSkyObject.getDec_deg());
-        tapDescriptor.setProperties(tapDescriptor.getRaColumn(), generalSkyObject.getRa_deg());
-        tapDescriptor.setProperties(tapDescriptor.getLongNameColumn(), generalSkyObject.getName());
-        tapDescriptor.setProperties(tapDescriptor.getShortNameColumn(), generalSkyObject.getName());
-        tapDescriptor.setProperties(tapDescriptor.getIdColumn(), generalSkyObject.getId());
-
-
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
-        commonTapDescriptor.setTapDescriptor(tapDescriptor);
+        commonTapDescriptor.setMetadata(metadataList);
+
+        commonTapDescriptor.setColor(jsonWrapper.getOverlaySet().getColor());
+        commonTapDescriptor.setProperties(commonTapDescriptor.getDecColumn(), generalSkyObject.getDec_deg());
+        commonTapDescriptor.setProperties(commonTapDescriptor.getRaColumn(), generalSkyObject.getRa_deg());
+        commonTapDescriptor.setProperties(commonTapDescriptor.getLongName(), generalSkyObject.getName());
+        commonTapDescriptor.setProperties(commonTapDescriptor.getShortName(), generalSkyObject.getName());
+        commonTapDescriptor.setProperties(commonTapDescriptor.getIdColumn(), generalSkyObject.getId());
+
         commonTapDescriptor.setColumns(metadataList);
         commonTapDescriptor.setLongName(jsonWrapper.getOverlaySet().getOverlayName());
         commonTapDescriptor.setShortName(jsonWrapper.getOverlaySet().getOverlayName());

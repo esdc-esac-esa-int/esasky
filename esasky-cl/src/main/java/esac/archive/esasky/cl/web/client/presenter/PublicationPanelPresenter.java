@@ -227,7 +227,7 @@ public class PublicationPanelPresenter {
              entity = entityRepo.createPublicationsEntity(descriptor);
          }
     	entity.setAdql(url);
-        final String debugPrefix = "[getPublicationsSources][" + descriptor.getShortNameColumn() + "]";
+        final String debugPrefix = "[getPublicationsSources][" + descriptor.getShortName() + "]";
     	Log.debug(debugPrefix + "Query [" + url + "]");
         isCallInProgress = true;
         final long timecall = System.currentTimeMillis();

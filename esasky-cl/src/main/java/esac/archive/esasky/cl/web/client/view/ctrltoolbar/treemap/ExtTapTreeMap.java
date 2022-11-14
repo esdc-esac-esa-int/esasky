@@ -210,8 +210,8 @@ public class ExtTapTreeMap extends TreeMap {
     }
     
     private Point getPoint2(CommonTapDescriptor descriptor) {
-    	if(allPointMap.containsKey(descriptor.getLongNameColumn())){
-    		return allPointMap.get(descriptor.getLongNameColumn());
+    	if(allPointMap.containsKey(descriptor.getLongName())){
+    		return allPointMap.get(descriptor.getLongName());
     	}
     	return null;
     }
@@ -263,7 +263,7 @@ public class ExtTapTreeMap extends TreeMap {
     protected void addPoints(CommonTapDescriptor descriptor, int count, boolean updateView) {
         String pointId = null;
 
-        PointInformation pointInformation = new PointInformation(descriptor.getLongNameColumn(),
+        PointInformation pointInformation = new PointInformation(descriptor.getLongName(),
                 descriptor.getMission(), descriptor.getCredits(), count, descriptor, context);
         
         String color = getDescriptorColor(descriptor);

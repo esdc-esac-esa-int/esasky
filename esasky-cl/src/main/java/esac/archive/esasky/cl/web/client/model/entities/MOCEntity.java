@@ -242,7 +242,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     private void getPrecomputedMOC(boolean precomputedMaxmin) {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortNameColumn() + "]";
+    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortName() + "]";
 
         String constraint = metadataService.getPrecomputedMocConstraint(descriptor);
 		Coordinate coord = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
@@ -256,7 +256,7 @@ public class MOCEntity implements GeneralEntityInterface {
         ((EsaSkyEntity) this.parentEntity).setAdql(url);
         try {
             builder.sendRequest(null,
-                new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongNameColumn()), () -> {
+                new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
 					getVisibleCount();
 					setTableCountText();
 					onFoVChanged();
@@ -316,13 +316,13 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void loadMOC(String url) {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortNameColumn() + "]";
+    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortName() + "]";
 
     	Log.debug(debugPrefix + "Query [" + url + "]");
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     	try {
     		builder.sendRequest(null,
-    				new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongNameColumn()), () -> {
+    				new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
 						getVisibleCount();
 						setTableCountText();
 					   	onFoVChanged();
@@ -609,7 +609,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getTabLabel() {
-		return getDescriptor().getLongNameColumn();
+		return getDescriptor().getLongName();
 	}
 	
 	@Override

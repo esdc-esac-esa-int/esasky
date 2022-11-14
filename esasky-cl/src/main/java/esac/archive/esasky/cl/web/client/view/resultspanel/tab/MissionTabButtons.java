@@ -55,7 +55,7 @@ public class MissionTabButtons extends Composite {
             wavelengthCanvas.addStyleName("missionTab__wavelengthCanvas");
             wavelengthCanvas.setTitle(Objects.requireNonNull(WavelengthUtils.getWavelengthNameFromValue(descriptor.getWavelengthCenter())).longName);
             compositePanel.add(wavelengthCanvas);
-            compositePanel.setTitle(descriptor.getLongNameColumn());
+            compositePanel.setTitle(descriptor.getLongName());
         }
         if(entity.getTypeLogo() != null) {
         	Image logo = entity.getTypeLogo();

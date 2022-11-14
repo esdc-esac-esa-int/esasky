@@ -133,7 +133,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		public void openToggleColumnDialog() {
 			if(table.getColumns().length > 0) {
-				new ToggleColumnsDialogBox(entity.getDescriptor().getLongNameColumn(), table.getColumns(), new ToggleColumnAction() {
+				new ToggleColumnsDialogBox(entity.getDescriptor().getLongName(), table.getColumns(), new ToggleColumnAction() {
 
 					@Override
 					public void onShow(String field) {
@@ -345,7 +345,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void exportAsVot() {
-		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getLongNameColumn());
+		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getLongName());
 	}
 
 	public Widget getWidget() {
@@ -540,7 +540,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getVoTableString() {
-		return table.getVot(getDescriptor().getLongNameColumn());
+		return table.getVot(getDescriptor().getLongName());
 	}
 
 	@Override
@@ -887,7 +887,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getLabelFromTapName(String tapName) {
-		TapMetadataDescriptor md = entity.getDescriptor().getColumnMetadata().stream().filter(m -> m.getName().equals(tapName)).findFirst().orElse(null);
+		TapMetadataDescriptor md = entity.getDescriptor().getMetadata().stream().filter(m -> m.getName().equals(tapName)).findFirst().orElse(null);
 		if(md != null && md.getUnit() != null) {
 			return md.getUnit();
 		}
@@ -975,7 +975,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public boolean isColumnVisible(String columnName) {
-		TapMetadataDescriptor column = getDescriptor().getColumnMetadata()
+		TapMetadataDescriptor column = getDescriptor().getMetadata()
 				.stream().filter(c -> Objects.equals(c.getName(), columnName)).findFirst().orElse(null);
 
 		return column == null || column.isPrincipal();
@@ -983,7 +983,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getColumnUnit(String columnName) {
-		TapMetadataDescriptor column = getDescriptor().getColumnMetadata()
+		TapMetadataDescriptor column = getDescriptor().getMetadata()
 				.stream().filter(c -> Objects.equals(c.getName(), columnName)).findFirst().orElse(null);
 		return column != null ? column.getUnit() : "";
 	}
