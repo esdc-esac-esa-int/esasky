@@ -1,6 +1,6 @@
 package esac.archive.esasky.ifcs.model.shared;
 
-public enum ObsCore implements IContentDescriptor {
+public enum ObsCore implements IUType {
     DATAPRODUCT_TYPE("ObsDataset.dataProductType"), // Data product (file content) primary type
     DATAPRODUCT_SUBTYPE("ObsDataset.dataProductSubtype"), // Data product specific type
     CALIB_LEVEL("ObsDataset.calibLevel"), // Calibration level of the observation: in {0, 1, 2, 3, 4}
@@ -71,12 +71,13 @@ public enum ObsCore implements IContentDescriptor {
         return value;
     }
 
-    public boolean matches(String str) {
-        return str.toLowerCase().contains(value.toLowerCase());
-    }
-
     @Override
     public String toString() {
         return value;
+    }
+
+    @Override
+    public String getType() {
+        return "obscore";
     }
 }
