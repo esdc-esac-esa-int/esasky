@@ -55,6 +55,9 @@ public class CommonTapDescriptor extends TapDescriptor {
     @JsonProperty("category")
     private String category;
 
+    @JsonProperty("external")
+    private boolean external;
+
 
     /*********************
      * Getters
@@ -79,6 +82,7 @@ public class CommonTapDescriptor extends TapDescriptor {
     }
 
 
+    @Override
     public int getShapeLimit() {
         return shapeLimit;
     }
@@ -124,9 +128,8 @@ public class CommonTapDescriptor extends TapDescriptor {
         return category;
     }
 
-    @Override
-    public String getId() {
-        return "TAP_DESCRIPTOR_" + this.getMission();
+    public boolean isExternal() {
+        return external;
     }
 
     public Double getWavelengthCenter() {
@@ -211,4 +214,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         this.setMetadata(columns);
     }
 
+    public void setExternal(boolean external) {
+        this.external = external;
+    }
 }

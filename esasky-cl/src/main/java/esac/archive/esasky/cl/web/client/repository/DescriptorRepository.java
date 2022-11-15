@@ -32,6 +32,7 @@ import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DescriptorRepository {
 
@@ -370,6 +371,28 @@ public class DescriptorRepository {
             public void onSuccess(String responseText) {
                 CommonTapDescriptorListMapper mapper = GWT.create(CommonTapDescriptorListMapper.class);
                 CommonTapDescriptorList mappedDescriptorList  = mapper.read(responseText);
+                for (CommonTapDescriptor commonTapDescriptor : mappedDescriptorList.getDescriptors()) {
+
+                    // If external descriptor we don't have any column metadata, we need to fetch it.
+                    if (commonTapDescriptor.isExternal()) {
+                        TAPDescriptorService.getInstance().initializeColumns(commonTapDescriptor, new IJSONRequestCallback() {
+                            @Override
+                            public void onSuccess(String responseText) {
+                                TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                                TapDescriptorList mappedDescriptorList  = mapper.read(responseText);
+
+                                List<TapMetadataDescriptor> metadataDescriptorList  = mappedDescriptorList.getDescriptors().stream()
+                                        .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
+                                commonTapDescriptor.setMetadata(metadataDescriptorList);
+                            }
+
+                            @Override
+                            public void onError(String errorCause) {
+                                Log.error("[DescriptorRepository] initDescriptors ERROR fetching external metadata: " + errorCause);
+                            }
+                        });
+                    }
+                }
                 promise.fulfill(mappedDescriptorList);
             }
 

@@ -34,6 +34,28 @@ public class TapMetadataDescriptor {
     @JsonProperty("principal")
     protected boolean principal;
 
+
+
+    /**
+     * Creates a TapMetadataDescriptor from a TapDescriptor.
+     * This is a useful conversion when performing metadata queries against tap_schema.* tables.
+     *
+     * @param tapDescriptor the tapDescriptor
+     * @return the TapMetadataDescriptor
+     */
+    public static TapMetadataDescriptor fromTapDescriptor(TapDescriptor tapDescriptor) {
+        TapMetadataDescriptor metadataDescriptor = new TapMetadataDescriptor();
+        metadataDescriptor.setName(tapDescriptor.getProperty("column_name").toString());
+        metadataDescriptor.setDataType(tapDescriptor.getProperty("datatype").toString());
+        metadataDescriptor.setArraySize(tapDescriptor.getProperty("arraysize").toString());
+        metadataDescriptor.setDescription(tapDescriptor.getProperty("description").toString());
+        metadataDescriptor.setUnit(tapDescriptor.getProperty("unit").toString());
+        metadataDescriptor.setUcd(tapDescriptor.getProperty("ucd").toString());
+        metadataDescriptor.setUtype(tapDescriptor.getProperty("utype").toString());
+        metadataDescriptor.setPrincipal(Boolean.valueOf(tapDescriptor.getProperty("principal").toString()));
+        return metadataDescriptor;
+    }
+
     public String getName() {
         return name;
     }

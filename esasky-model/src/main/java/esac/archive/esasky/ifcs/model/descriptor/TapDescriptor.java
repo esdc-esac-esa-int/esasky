@@ -51,7 +51,7 @@ public class TapDescriptor extends TapDescriptorBase {
      * @param key the key of the property value to be retrieved.
      * @return the property or null.
      */
-    private Object getProperty(String key) {
+    protected Object getProperty(String key) {
         return properties.getOrDefault(key, null);
     }
 

@@ -3,14 +3,11 @@ package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyMocUtility;
 import esac.archive.esasky.ifcs.model.shared.RangeTree;
 import esac.archive.esasky.ifcs.model.shared.RangeTree.Interval;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class TAPMOCService {
 
