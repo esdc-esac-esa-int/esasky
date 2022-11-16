@@ -378,6 +378,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 			String url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("product_url"));
 			if (url == null || url.trim().isEmpty()) {
+				url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("prod_url"));
+			}
+			if (url == null || url.trim().isEmpty()) {
 				url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("access_url"));
 			}
 			if (url == null || "ASTRO_SPECTRA_CHEOPS".equals(entity.getDescriptor().getDescriptorId())) {
@@ -697,6 +700,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			sampUrl = rowData.getStringProperty("product_url");
 		}
 		if (sampUrl == null) {
+			sampUrl = rowData.getStringProperty("prod_url");
+		}
+		if (sampUrl == null) {
 			sampUrl = rowData.getStringProperty("access_url");
 		}
 		if (sampUrl == null) {
@@ -854,6 +860,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 		return tapName;
 	}
+
+
+	@Override
+	public boolean hasLabel(String tapName) {
+		MetadataDescriptor md = entity.getDescriptor().getMetadataDescriptorByTapName(tapName);
+		return md != null && md.getLabel() != null;
+	}
+
 
 	@Override
 	public GeneralJavaScriptObject getDescriptorMetaData() {

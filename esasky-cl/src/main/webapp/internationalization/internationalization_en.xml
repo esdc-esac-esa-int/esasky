@@ -2031,6 +2031,10 @@
 		RA &lt;i&gt;(J2000)&lt;/i&gt; </text>
 	<text key="DEC_J2000">
 		Dec &lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="RA_J2000_LB">
+		RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="DEC_J2000_LB">
+		Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt; </text>
 	<text key="RA_J2015">
 		RA &lt;i&gt;(J2015.0)&lt;/i&gt; </text>
 	<text key="DEC_J2015">
@@ -4014,31 +4018,34 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="eROSITA_radec_err">
-		Error Radius (arcsec)
+		Error Radius &lt;br&gt;(arcsec)
 	</text>
 	<text key="eROSITA_ml_cts">
-		Counts (ct)
+		Counts&lt;br&gt;(ct)
 	</text>
 	<text key="eROSITA_ml_cts_err">
-		Counts Error (ct)
+		Counts Error &lt;br&gt;(ct)
 	</text>
 	<text key="eROSITA_ml_rate">
-		Count Rate (ct)
+		Count Rate &lt;br&gt;(ct)
 	</text>
 	<text key="eROSITA_ml_rate_err">
-		Count Rate Error &lt;i&gt;(ct s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+		Count Rate Error &lt;br&gt;&lt;i&gt;(ct s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="eROSITA_ml_flux">
-		Flux &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+		Flux &lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="eROSITA_ml_flux_err">
-		Flux Error &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+		Flux Error &lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="eROSITA_det_like">
 		Detect Likelihood
 	</text>
 	<text key="eROSITA_ml_bkg">
-		Bkg Counts &lt;i&gt;(ct arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
+		Bkg Counts &lt;br&gt;&lt;i&gt;(ct
+		arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
 

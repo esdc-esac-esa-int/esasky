@@ -330,6 +330,10 @@ public class CloseableTabLayoutPanel extends Composite {
     		return true;
     		
     	}
+        if (descriptor.getMetadataDescriptorByTapName("prod_url") != null){
+            return true;
+        }
+
     	if(descriptor.getMetadataDescriptorByTapName("access_url") != null
                 && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId())){
     		return true;
