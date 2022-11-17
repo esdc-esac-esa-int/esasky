@@ -7,6 +7,7 @@ import com.google.gwt.json.client.JSONString;
 
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
@@ -91,8 +92,8 @@ public class ApiPlot extends ApiBase{
 	
 	public void plotSpectra(String missionId, JavaScriptObject widget) {
 		GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_PLOTSPECTRA, missionId);
-		DescriptorCountAdapter descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
-		CommonTapDescriptor currObs  = descriptors.getDescriptorByMission(missionId);
+
+		CommonTapDescriptor currObs = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_SPECTRA, missionId);
 		
 		if(currObs != null ) {
 			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
@@ -108,8 +109,7 @@ public class ApiPlot extends ApiBase{
 	}
 	
 	public void coneSearchSpectra(String missionId, double ra, double dec, double radius, JavaScriptObject widget) {
-		DescriptorCountAdapter descriptors = controller.getRootPresenter().getDescriptorRepository().getSpectraDescriptors();
-		CommonTapDescriptor currObs  = descriptors.getDescriptorByMission(missionId);
+		CommonTapDescriptor currObs  = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_SPECTRA, missionId);
 		
 		if(currObs != null ) {
 			SkyViewPosition conePos = new SkyViewPosition(new Coordinate(ra, dec), 2 * radius);

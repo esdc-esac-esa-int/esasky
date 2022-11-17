@@ -69,11 +69,6 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
-	public void onCenterClicked(String ra, String dec) {
-		//Do nothing by default - To be overridden if needed.
-	}
-
-	@Override
 	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
 		//Do nothing by default - To be overridden if needed.
 	}

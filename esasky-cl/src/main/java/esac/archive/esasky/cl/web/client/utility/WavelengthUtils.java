@@ -4,43 +4,45 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.WavelengthDescriptor;
 
 public class WavelengthUtils {
 
+    private WavelengthUtils() {}
+
     private static double minWavelengthRange = Double.MAX_VALUE;
     private static double maxWavelengthRange = Double.MIN_VALUE;
 
-    public static String getShortName(IDescriptor descriptor) {
-        List<WavelengthDescriptor> wavelengthDescriptors = descriptor.getWavelengths();
-        final WavelengthDescriptor firstWlDesc = wavelengthDescriptors.get(0);
-        String wavelengthShortName = TextMgr.getInstance().getText(firstWlDesc.getPrefix() + firstWlDesc.getShortName());
-        if(descriptor.getWavelengths().size() > 1) {
-            final WavelengthDescriptor lastWlDesc = wavelengthDescriptors.get(descriptor.getWavelengths().size() - 1);
-            final String toText = TextMgr.getInstance().getText("PointInformation_to");
-            wavelengthShortName = toText.replace("$FROM$", wavelengthShortName)
-                    .replace("$TO$", TextMgr.getInstance().getText(lastWlDesc.getPrefix() + lastWlDesc.getShortName()));
-        }
-        return wavelengthShortName;
+    public static String getShortName(CommonTapDescriptor descriptor) {
+        final double wavelengthStart = descriptor.getWavelengthStart();
+        final double wavelengthEnd = descriptor.getWavelengthEnd();
+
+        WavelengthName wls = getWavelengthNameFromValue(wavelengthStart);
+        WavelengthName wle = getWavelengthNameFromValue(wavelengthEnd);
+        String wavelengthStartName=  wls != null ? TextMgr.getInstance().getText(wls.shortName) : "Unknown";
+        String wavelengthEndName = wle != null ? TextMgr.getInstance().getText(wle.shortName) : "Unknown";
+
+        final String toText = TextMgr.getInstance().getText("PointInformation_to");
+        return toText.replace("$FROM$", wavelengthStartName).replace("$TO$", wavelengthEndName);
     }
     
-    public static String getLongName(IDescriptor descriptor) {
-        List<WavelengthDescriptor> wavelengthDescriptors = descriptor.getWavelengths();
-        final WavelengthDescriptor firstWlDesc = wavelengthDescriptors.get(0);
-        String wavelengthLongName = TextMgr.getInstance().getText(firstWlDesc.getPrefix() + firstWlDesc.getLongName());
-        if(descriptor.getWavelengths().size() > 1) {
-            final WavelengthDescriptor lastWlDesc = wavelengthDescriptors.get(descriptor.getWavelengths().size() - 1);
-            final String toText = TextMgr.getInstance().getText("PointInformation_to");
-            wavelengthLongName = toText.replace("$FROM$", wavelengthLongName)
-                    .replace("$TO$", TextMgr.getInstance().getText(lastWlDesc.getPrefix() + lastWlDesc.getLongName()));
-        }
-        return wavelengthLongName;
+    public static String getLongName(CommonTapDescriptor descriptor) {
+        final double wavelengthStart = descriptor.getWavelengthStart();
+        final double wavelengthEnd = descriptor.getWavelengthEnd();
+
+        WavelengthName wls = getWavelengthNameFromValue(wavelengthStart);
+        WavelengthName wle = getWavelengthNameFromValue(wavelengthEnd);
+        String wavelengthStartName=  wls != null ? TextMgr.getInstance().getText(wls.longName) : "Unknown";
+        String wavelengthEndName = wle != null ? TextMgr.getInstance().getText(wle.longName) : "Unknown";
+
+        final String toText = TextMgr.getInstance().getText("PointInformation_to");
+        return toText.replace("$FROM$", wavelengthStartName).replace("$TO$", wavelengthEndName);
     }
 
-    public static void setWavelengthRangeMaxMin(List<? extends IDescriptor> descriptors) {
-        for(IDescriptor descriptor : descriptors) {
-            double meanWavelength = descriptor.getCenterWavelengthValue();
+    public static void setWavelengthRangeMaxMin(List<CommonTapDescriptor> descriptors) {
+        for(CommonTapDescriptor descriptor : descriptors) {
+            double meanWavelength = descriptor.getWavelengthCenter();
             minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
             maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
         }

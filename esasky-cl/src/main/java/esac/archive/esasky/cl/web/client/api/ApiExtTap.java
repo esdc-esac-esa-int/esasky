@@ -3,21 +3,15 @@ package esac.archive.esasky.cl.web.client.api;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-
 import esac.archive.esasky.cl.web.client.Controller;
-//import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
-import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
-import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class ApiExtTap extends ApiBase{
 	
@@ -27,8 +21,12 @@ public class ApiExtTap extends ApiBase{
 	}
 	
 	public void extTapCount(String missionId, JavaScriptObject widget) {
-		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
-		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+//		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
+//		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+
+		CommonTapDescriptor desc =  controller.getRootPresenter().getDescriptorRepository()
+				.getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL)
+				.getDescriptorByMission(missionId);
 		
 		if(desc != null ) {
 			controller.getRootPresenter().getDescriptorRepository().updateCount4ExtTap(desc);
@@ -57,7 +55,7 @@ public class ApiExtTap extends ApiBase{
 		return null;
 	}
 	
-	private void getExtTapCount(final ExtTapDescriptor parent, final JavaScriptObject widget) {
+	private void getExtTapCount(final CommonTapDescriptor parent, final JavaScriptObject widget) {
 		// TODO: Fix
 //		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getCountStatus();
 //		if(!countStatus.hasMoved(parent)) {
@@ -82,10 +80,12 @@ public class ApiExtTap extends ApiBase{
 	
 	public JSONArray getAvailableTapServices() {
 		JSONArray tapServices = new JSONArray();
-		for(ExtTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptors()) {
-			if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == desc.getTreeMapLevel()) {
-				tapServices.set(tapServices.size(), new JSONString(desc.getMission()));
-			}
+
+		for(CommonTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+			// TODO: fix when exttap is implemented
+//			if(EsaSkyConstants.TREEMAP_LEVEL_SERVICE == desc.getTreeMapLevel()) {
+//				tapServices.set(tapServices.size(), new JSONString(desc.getMission()));
+//			}
 		}
 		return tapServices;
 	}
@@ -97,9 +97,9 @@ public class ApiExtTap extends ApiBase{
 	
 	public JSONObject getAllAvailableTapMissions() {
 		JSONObject tapServices = new  JSONObject();
-		for(ExtTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptors()) {
-			
-			checkAndPutJSONObject(tapServices, desc);
+		for(CommonTapDescriptor desc : controller.getRootPresenter().getDescriptorRepository().getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+			// TODO: fix
+//			checkAndPutJSONObject(tapServices, desc);
 		}
 		return tapServices;
 	}
@@ -139,8 +139,7 @@ public class ApiExtTap extends ApiBase{
 	
 
 	public void getExtTapADQL(String missionId, JavaScriptObject widget) {
-		ExtTapDescriptor desc = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors().getDescriptorByMissionNameCaseInsensitive(missionId);
-		
+		CommonTapDescriptor desc = controller.getRootPresenter().getDescriptorRepository().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, missionId);
 		if(desc != null) {
 			// TODO: Fix
 //			JSONObject callbackMessage = new  JSONObject();
@@ -158,8 +157,7 @@ public class ApiExtTap extends ApiBase{
 	}
 
 	public void plotExtTap(String missionId, JavaScriptObject widget) {
-		DescriptorListAdapter<ExtTapDescriptor> descriptors = controller.getRootPresenter().getDescriptorRepository().getExtTapDescriptors();
-		ExtTapDescriptor desc  = descriptors.getDescriptorByMissionNameCaseInsensitive(missionId);
+		CommonTapDescriptor desc = controller.getRootPresenter().getDescriptorRepository().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, missionId);
 		
 		if(desc != null ) {
 			// TODO: Fix

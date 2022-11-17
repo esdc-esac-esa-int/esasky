@@ -15,6 +15,8 @@ import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
 import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
 import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
 import esac.archive.esasky.cl.web.client.callback.Promise;
+import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
+import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
@@ -23,6 +25,7 @@ import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.query.*;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -30,31 +33,12 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class DescriptorRepository {
-
-    /**
-     * Descriptor List of adapter.
-     */
-    public static class DescriptorListAdapter<T extends IDescriptor> extends DescriptorList<T> {
-
-
-        public DescriptorListAdapter(DescriptorList<T> descriptorList, CountObserver countObserver) {
-//            descriptors = descriptorList.getDescriptors();
-//            setTotal(descriptorList.getTotal());
-//            countStatus = new CountStatus(descriptorList);
-//            countStatus.registerObserver(countObserver);
-        }
-
-        public CountStatus getCountStatus() {
-            return null;
-        }
-
-    }
-
 
     public interface CommonTapDescriptorListMapper extends ObjectMapper<CommonTapDescriptorList> {
     }
@@ -67,15 +51,8 @@ public class DescriptorRepository {
 
 
     private Map<String, DescriptorCountAdapter> descriptorCountAdapterMap = new HashMap<>();
-    private Map<String, String> tableCategoryMap = new HashMap<>();
+    private final Map<String, String> tableCategoryMap = new HashMap<>();
 
-    /**
-     * Descriptor and CountStatus hashMaps for improve counts
-     */
-//    private HashMap<String, List<CommonTapDescriptor>> descriptorsMap;
-//    private HashMap<String, List<CountStatus>> countStatusMap;
-
-    private CountObserver imageCountObserver = count -> {};
 
     private boolean catDescriptorsIsReady = false;
     private boolean obsDescriptorsIsReady = false;
@@ -89,10 +66,9 @@ public class DescriptorRepository {
 
     private ICountRequestHandler countRequestHandler;
     private SearchArea searchArea;
-
     private static DescriptorRepository _instance;
 
-    private LinkedList<PublicationDescriptorLoadObserver> publicationDescriptorLoadObservers = new LinkedList<PublicationDescriptorLoadObserver>();
+    private LinkedList<PublicationDescriptorLoadObserver> publicationDescriptorLoadObservers = new LinkedList<>();
 
     public interface PublicationDescriptorLoadObserver {
         void onLoad();
@@ -117,11 +93,6 @@ public class DescriptorRepository {
     public void setCountRequestHandler(ICountRequestHandler countRequestHandler) {
         this.countRequestHandler = countRequestHandler;
     }
-
-    public DescriptorListAdapter<ExtTapDescriptor> getExtTapDescriptors() {
-        return null;
-    }
-
 
     public void setDescriptors(String category, DescriptorCountAdapter descriptors) {
         descriptorCountAdapterMap.put(category, descriptors);
@@ -170,22 +141,8 @@ public class DescriptorRepository {
         }
     }
 
-    public DescriptorListAdapter<SSODescriptor> getSsoDescriptors() {
-        return null;
-    }
-
-    public DescriptorCountAdapter getSpectraDescriptors() {
-        return null;
-    }
-
-
-    public DescriptorListAdapter<ImageDescriptor> getImageDescriptors() {
-        return null;
-    }
-
-
     public void initExtDescriptors(final CountObserver countObserver) {
-
+            // TODO: fix when external tap is fixed
 //        Log.debug("[DescriptorRepository] Into DescriptorRepository.initExtDescriptors");
 //        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL, new IJSONRequestCallback() {
 //
@@ -371,11 +328,17 @@ public class DescriptorRepository {
     public void initDescriptors(String schema, String category, Promise<CommonTapDescriptorList> promise) {
         Log.debug("[DescriptorRepository] Into DescriptorRepository.initDescriptors");
 
+        if (!GUISessionStatus.getIsInScienceMode()) {
+            GUISessionStatus.setDoCountOnEnteringScienceMode();
+        }
+
         TAPDescriptorService.getInstance().fetchDescriptors(schema, category, new IJSONRequestCallback() {
             @Override
             public void onSuccess(String responseText) {
                 CommonTapDescriptorListMapper mapper = GWT.create(CommonTapDescriptorListMapper.class);
                 CommonTapDescriptorList mappedDescriptorList  = mapper.read(responseText);
+                WavelengthUtils.setWavelengthRangeMaxMin(mappedDescriptorList.getDescriptors());
+
                 for (CommonTapDescriptor commonTapDescriptor : mappedDescriptorList.getDescriptors()) {
 
                     // If external descriptor we don't have any column metadata, we need to fetch it.
@@ -410,204 +373,6 @@ public class DescriptorRepository {
 
     }
 
-    public void setOutreachImageCountObserver(final CountObserver imageCountObserver) {
-        this.imageCountObserver = imageCountObserver;
-    }
-
-    public void initImageDescriptors() {
-
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initImageDescriptors");
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.IMAGES_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//                ImageDescriptorListMapper mapper = GWT.create(ImageDescriptorListMapper.class);
-//                DescriptorList<ImageDescriptor> mappedDescriptorList = mapper.read(responseText);
-//
-//                imageDescriptors = new DescriptorListAdapter<>(mappedDescriptorList,
-//                        imageCountObserver);
-//
-//                for (ImageDescriptor desc : imageDescriptors.getDescriptors()) {
-//                    if (desc.isHst()) {
-//                        desc.setBaseUrl("https://esahubble.org/images/");
-//                    } else {
-//                        desc.setBaseUrl("https://esawebb.org/images/");
-//                    }
-//
-//                    for (MetadataDescriptor md : desc.getMetadata()) {
-//                        if (md.getType() == ColumnType.RA) {
-//                            desc.setTapRaColumn(md.getTapName());
-//                        } else if (md.getType() == ColumnType.DEC) {
-//                            desc.setTapDecColumn(md.getTapName());
-//                        } else if (EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())) {
-//                            desc.setTapSTCSColumn(md.getTapName());
-//                        }
-//                    }
-//                }
-//
-//                Log.debug("[DescriptorRepository] [init image ]Total image entries: " + imageDescriptors.getTotal());
-//                WavelengthUtils.setWavelengthRangeMaxMin(imageDescriptors.getDescriptors());
-//
-//                imageCountObserver.onCountUpdate(imageDescriptors.getTotal());
-//            }
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initImageDescriptors ERROR: " + errorCause);
-//                DescriptorList<ImageDescriptor> list = new DescriptorList<ImageDescriptor>() {};
-//                imageDescriptors = new DescriptorListAdapter<>(list, imageCountObserver);
-//            }
-//
-//        });
-    }
-
-    public void initGwDescriptors(final CountObserver gwCountObserver) {
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initGwDescriptors");
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.GW_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//                GwDescriptorListMapper mapper = GWT.create(GwDescriptorListMapper.class);
-//                DescriptorList<GwDescriptor> mappedDescriptorList = mapper.read(responseText);
-//
-//                gwDescriptors = new DescriptorListAdapter<>(mappedDescriptorList, gwCountObserver);
-//
-//                for (GwDescriptor desc : gwDescriptors.getDescriptors()) {
-//                    for (MetadataDescriptor md : desc.getMetadata()) {
-//                        if (md.getType() == ColumnType.RA) {
-//                            desc.setTapRaColumn(md.getTapName());
-//                        } else if (md.getType() == ColumnType.DEC) {
-//                            desc.setTapDecColumn(md.getTapName());
-//                        } else if (EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())) {
-//                            desc.setTapSTCSColumn(md.getTapName());
-//                        }
-//                    }
-//                }
-//
-//                Log.debug("[DescriptorRepository] [init gw] Total gw entries: " + gwDescriptors.getTotal());
-//                //WavelengthUtils.setWavelengthRangeMaxMin(gwDescriptors.getDescriptors());
-//
-//                gwCountObserver.onCountUpdate(gwDescriptors.getTotal());
-//            }
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initGwDescriptors ERROR: " + errorCause);
-//                DescriptorList<GwDescriptor> list = new DescriptorList<GwDescriptor>() {};
-//                gwDescriptors = new DescriptorListAdapter<>(list, gwCountObserver);
-//            }
-//
-//        });
-    }
-
-    public void initIceCubeDescriptors(final CountObserver iceCubeCountObserver) {
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initIceCubeDescriptors");
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.ICECUBE_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//                IceCubeDescriptorListMapper mapper = GWT.create(IceCubeDescriptorListMapper.class);
-//                DescriptorList<IceCubeDescriptor> mappedDescriptorList = mapper.read(responseText);
-//
-//                iceCubeDescriptors = new DescriptorListAdapter<>(mappedDescriptorList, iceCubeCountObserver);
-//
-//                for (IceCubeDescriptor desc : iceCubeDescriptors.getDescriptors()) {
-//                    for (MetadataDescriptor md : desc.getMetadata()) {
-//                        if (md.getType() == ColumnType.RA) {
-//                            desc.setTapRaColumn(md.getTapName());
-//                        } else if (md.getType() == ColumnType.DEC) {
-//                            desc.setTapDecColumn(md.getTapName());
-//                        } else if (EsaSkyWebConstants.S_REGION.equalsIgnoreCase(md.getTapName())) {
-//                            desc.setTapSTCSColumn(md.getTapName());
-//                        }
-//                    }
-//                }
-//
-//                Log.debug("[DescriptorRepository] [init iceCube] Total iceCube entries: " + iceCubeDescriptors.getTotal());
-//                //WavelengthUtils.setWavelengthRangeMaxMin(gwDescriptors.getDescriptors());
-//
-//                iceCubeCountObserver.onCountUpdate(iceCubeDescriptors.getTotal());
-//            }
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initIceCubeDescriptor ERROR: " + errorCause);
-//                DescriptorList<IceCubeDescriptor> list = new DescriptorList<IceCubeDescriptor>() {};
-//                iceCubeDescriptors = new DescriptorListAdapter<>(list, iceCubeCountObserver);
-//            }
-//
-//        });
-    }
-
-    public void initSSODescriptors(final CountObserver ssoCountObserver) {
-//
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initSSODescriptors");
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.SSO_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//
-//                SSODescriptorListMapper mapperSSO = GWT.create(SSODescriptorListMapper.class);
-//                SSODescriptorList ssoMappedDescriptorList = mapperSSO.read(responseText);
-//                ssoDescriptors = new DescriptorListAdapter<SSODescriptor>(ssoMappedDescriptorList, ssoCountObserver);
-//
-//
-//                Log.debug("[DescriptorRepository] [initSSODescriptors] Total observation entries: " + ssoDescriptors.getTotal());
-//                WavelengthUtils.setWavelengthRangeMaxMin(ssoDescriptors.getDescriptors());
-//                if (!GUISessionStatus.getIsInScienceMode()) {
-//                    GUISessionStatus.setDoCountOnEnteringScienceMode();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initSSODescriptors ERROR: " + errorCause);
-//                checkDoCountAll();
-//            }
-//
-//        });
-    }
-
-
-
-    public void initPubDescriptors() {
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initPubDescriptors");
-//
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.PUBLICATIONS_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//                PublicationsDescriptorListMapper mapper = GWT.create(PublicationsDescriptorListMapper.class);
-//                publicationsDescriptors = new DescriptorListAdapter<PublicationsDescriptor>(mapper.read(responseText),
-//                        new CountObserver() {
-//
-//                            @Override
-//                            public void onCountUpdate(long newCount) {
-//                            }
-//                        });
-//                for (PublicationDescriptorLoadObserver observer : publicationDescriptorLoadObservers) {
-//                    observer.onLoad();
-//                }
-//
-//                Log.debug("[DescriptorRepository] Total publications entries: " + publicationsDescriptors.getTotal());
-//            }
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initPubDescriptors ERROR: " + errorCause);
-//            }
-//
-//        });
-    }
-
-    private void checkDoCountAll() {
-        if (EsaSkyWebConstants.SINGLE_COUNT_ENABLED && catDescriptorsIsReady && obsDescriptorsIsReady
-                && spectraDescriptorsIsReady
-                && isInitialPositionDescribedInCoordinates) {
-            doCountAll();
-        }
-    }
-
     public void doCountAll() {
 
 		// Single dynamic count
@@ -618,21 +383,23 @@ public class DescriptorRepository {
     }
 
     public void updateCount4AllExtTaps() {
-//        double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
-//        CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
-//        if (fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
-//            for (ExtTapDescriptor descriptor : extTapDescriptors.getDescriptors()) {
+        double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+        CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
+        if (fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+            for (CommonTapDescriptor descriptor : getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+                // TODO: fix when exttap is implemented again
 //                if (EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getTreeMapLevel()) {
 //                    if (extTapDescriptors.getCountStatus().hasMoved(descriptor)) {
 //                        updateCount4ExtTap(descriptor);
 //                    }
 //                }
-//            }
-//        }
+            }
+        }
     }
 
-    public void updateCount4ExtTap(ExtTapDescriptor descriptor) {
-//        final CountStatus cs = extTapDescriptors.getCountStatus();
+    public void updateCount4ExtTap(CommonTapDescriptor descriptor) {
+        // TODO : fix
+//        final CountStatus cs = getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus();
 //        if (!cs.containsDescriptor(descriptor)) {
 //            cs.addDescriptor(descriptor);
 //        }
@@ -644,18 +411,14 @@ public class DescriptorRepository {
 //                countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
     }
 
-    public void doCountExtTap(IDescriptor descriptor, CountStatus cs) {
-
-    }
 
     public void doCountSSO(String ssoName, ESASkySSOObjType ssoType) {
+        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPSSOService.getInstance().getCount(ssoName, ssoType)),
+                EsaSkyConstants.JSON);
 
-//        String url = TAPUtils.getTAPQuery(URL.encodeQueryString(TAPSSOService.getInstance().getCount(ssoName, ssoType)),
-//                EsaSkyConstants.JSON);
-//
-//        Log.debug("[doCountSSO] SSO count Query [" + url + "]");
-//        JSONUtils.getJSONFromUrl(url,
-//                new SsoCountRequestCallback(ssoDescriptors, ssoName, ssoType));
+        Log.debug("[doCountSSO] SSO count Query [" + url + "]");
+        JSONUtils.getJSONFromUrl(url, new SsoCountRequestCallback(
+                getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_SSO), ssoName, ssoType));
     }
 
     public void updateSearchArea(SearchArea area) {
@@ -782,6 +545,7 @@ public class DescriptorRepository {
         }
     }
 
+    // TODO: Notify only those that changed
     private void notifyCountChange(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
         CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorCountAdapterMap.values()));
 

@@ -1,8 +1,6 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
 
 public final class DeviceUtils {
 

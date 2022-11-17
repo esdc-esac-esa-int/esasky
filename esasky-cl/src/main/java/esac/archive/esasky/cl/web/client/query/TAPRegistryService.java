@@ -2,9 +2,6 @@ package esac.archive.esasky.cl.web.client.query;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 public class TAPRegistryService extends AbstractTAPService {
 

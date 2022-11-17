@@ -2,9 +2,6 @@ package esac.archive.esasky.cl.web.client.query;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 public class TAPImageListService extends AbstractTAPService {
@@ -38,8 +35,8 @@ public class TAPImageListService extends AbstractTAPService {
 		return null;
 	}
 	
-    public String getImageMetadata(IDescriptor descriptor, String id) {
-    	return "SELECT * from " + descriptor.getTapTable() + " WHERE " + EsaSkyConstants.HST_IMAGE_ID_PARAM + " = '" + id + "'";
+    public String getImageMetadata(CommonTapDescriptor descriptor, String id) {
+    	return "SELECT * from " + descriptor.getTableName() + " WHERE " + EsaSkyConstants.HST_IMAGE_ID_PARAM + " = '" + id + "'";
     }
     
 }

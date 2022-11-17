@@ -1,15 +1,11 @@
 package esac.archive.esasky.cl.web.client.api;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.resources.client.ImageResource;
-
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -18,9 +14,11 @@ import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ApiModules extends ApiBase{
 	
@@ -147,7 +145,7 @@ public class ApiModules extends ApiBase{
 			return;
 		}
 		
-		List<IDescriptor> descriptors = createTreeMapDescriptors(widget, descriptorArray);
+		List<CommonTapDescriptor> descriptors = createTreeMapDescriptors(widget, descriptorArray);
 		if(descriptors.isEmpty()) {
 		    return;
 		}
@@ -180,13 +178,13 @@ public class ApiModules extends ApiBase{
 		}
 		
 		CustomTreeMapDescriptor customTreeMapDescriptor = controller.getRootPresenter().getCtrlTBPresenter().getCustomTreeMapDescriptor(treeMapName);
-		List<IDescriptor> newMissions = createTreeMapDescriptors(widget, descriptorArray);
+		List<CommonTapDescriptor> newMissions = createTreeMapDescriptors(widget, descriptorArray);
 		if(add) {
 			customTreeMapDescriptor.getMissionDescriptors().addAll(newMissions);
 		}else {
-			for(IDescriptor missionToRemove : newMissions) {
-				for(IDescriptor existingMission : customTreeMapDescriptor.getMissionDescriptors()) {
-					if(missionToRemove.getDescriptorId().equals(existingMission.getDescriptorId())){
+			for(CommonTapDescriptor missionToRemove : newMissions) {
+				for(CommonTapDescriptor existingMission : customTreeMapDescriptor.getMissionDescriptors()) {
+					if(missionToRemove.getId().equals(existingMission.getId())){
 						customTreeMapDescriptor.getMissionDescriptors().remove(existingMission);
 					}
 				}
@@ -196,20 +194,15 @@ public class ApiModules extends ApiBase{
 		
 	}
 
-    private List<IDescriptor> createTreeMapDescriptors(JavaScriptObject widget,
+    private List<CommonTapDescriptor> createTreeMapDescriptors(JavaScriptObject widget,
             GeneralJavaScriptObject descriptorArray) {
-        List<IDescriptor> descriptors = new LinkedList<>();
+        List<CommonTapDescriptor> descriptors = new LinkedList<>();
 		int i = 0;
 		while(descriptorArray.hasProperty(Integer.toString(i))) {
 			
 			GeneralJavaScriptObject mission = descriptorArray.getProperty(Integer.toString(i));
 			
-			BaseDescriptor descriptor = new BaseDescriptor() {
-				@Override
-				public String getIcon() {
-					return null;
-				}
-			};
+			CommonTapDescriptor descriptor = new CommonTapDescriptor();
 			
 			String missionName = "";
 			if(mission.hasProperty(ApiConstants.TREEMAP_MISSION_NAME)) {
@@ -228,16 +221,12 @@ public class ApiModules extends ApiBase{
 			}
 			
 			descriptor.setMission(missionName);
-			descriptor.setGuiShortName(missionName);
-			descriptor.setGuiLongName(missionName);
-			descriptor.setDescriptorId(missionName);
-			descriptor.setPrimaryColor(color);
-			descriptor.setUniqueIdentifierField(ApiConstants.OBS_NAME);
-			descriptor.setTapSTCSColumn("");
+			descriptor.setShortName(missionName);
+			descriptor.setLongName(missionName);
+			descriptor.setColor(color);
 			descriptor.setSampEnabled(false);
 			descriptor.setFovLimit(360.0);
-			descriptor.setTapTable("<not_set>");
-			descriptor.setTabCount(0);
+			descriptor.setTableName("<not_set>");
 			descriptors.add(descriptor);
 			i++;
 		}

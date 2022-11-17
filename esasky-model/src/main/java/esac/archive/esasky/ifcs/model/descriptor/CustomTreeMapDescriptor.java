@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CustomTreeMapDescriptor{
 	
-	private List<IDescriptor> missionDescriptors;
+	private List<CommonTapDescriptor> missionDescriptors;
 	private String description;
 	private String name;
 	private String iconText;
@@ -14,17 +14,17 @@ public class CustomTreeMapDescriptor{
 		public void onMissionClicked(String mission);
 	}
 	
-	public CustomTreeMapDescriptor(String name, String description, String iconText, List<IDescriptor> missionDescriptors) {
+	public CustomTreeMapDescriptor(String name, String description, String iconText, List<CommonTapDescriptor> missionDescriptors) {
 		this.name = name;
 		this.description = description;
 		this.iconText = iconText;
 		this.missionDescriptors = missionDescriptors;
 	}
 	
-	public List<IDescriptor> getMissionDescriptors() {
+	public List<CommonTapDescriptor> getMissionDescriptors() {
 		return missionDescriptors;
 	}
-	public void setMissionDescriptors(List<IDescriptor> missionDescriptors) {
+	public void setMissionDescriptors(List<CommonTapDescriptor> missionDescriptors) {
 		this.missionDescriptors = missionDescriptors;
 	}
 	public String getName() {

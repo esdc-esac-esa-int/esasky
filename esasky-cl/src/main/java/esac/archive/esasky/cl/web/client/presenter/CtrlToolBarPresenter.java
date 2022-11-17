@@ -22,9 +22,8 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 
 import java.util.*;
@@ -263,7 +262,7 @@ public class CtrlToolBarPresenter {
     
     public void customTreeMapClicked(TreeMapSelectionEvent event) {
     	for(CustomTreeMapDescriptor treeMapDescriptor : treeMapDescriptors) {
-    		for(IDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
+    		for(CommonTapDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
     			if(event.getDescriptor() == desc) {
     				treeMapDescriptor.getOnMissionClicked().onMissionClicked(desc.getMission());
     				return;

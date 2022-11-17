@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.event.exttap;
 import com.google.gwt.event.shared.GwtEvent;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class TapRegistrySelectEvent extends GwtEvent<TapRegistrySelectEventHandler> {
     public static final Type<TapRegistrySelectEventHandler> TYPE = new Type<>();

@@ -106,7 +106,8 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 			if(DescriptorRepository.getInstance().hasDescriptors(EsaSkyWebConstants.CATEGORY_IMAGES)) {
 				fetchData();
 			} else {
-				DescriptorRepository.getInstance().setOutreachImageCountObserver(newCount -> fetchData());
+				DescriptorRepository.getInstance().getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_IMAGES)
+						.getCountStatus().registerObserver(newCount -> fetchData());
 			}
 		}
 	}

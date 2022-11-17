@@ -4,6 +4,7 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -23,6 +24,8 @@ import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
+import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
+import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.JupyterDownloadDialog;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -64,7 +67,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			}
 		}
 	}
-	public interface DescriptorMapper extends ObjectMapper<IDescriptor> {}
+	public interface DescriptorMapper extends ObjectMapper<CommonTapDescriptor> {}
 	private TabulatorWrapper table;
 	/** is the esaSkyUniqID, the same saved into the Entities. */
 	private String esaSkyUniqID;
@@ -167,11 +170,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		this.entity = entity;
 		this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll("[^A-Za-z0-9-_]", "_");
 
-		// TODO: fix this
-//		if(entity.getDescriptor() instanceof ExtTapDescriptor
-//				|| "publications".equals(entity.getDescriptor().getIcon())) {
-//			disableToggleColumns();
-//		}
+
+		if(entity.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL) ||
+			entity.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)){
+			disableToggleColumns();
+		}
 
 		FlowPanel container = new FlowPanel();
 		container.addStyleName("dataPanelContainer");
@@ -684,27 +687,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void onCenterClicked(String ra, String dec) {
-
-		double fov = AladinLiteWrapper.getInstance().getFovDeg();
-
-		AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
-//		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_RECENTER, getFullId(),
-//				rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
-	}
-
-	@Override
 	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
 		String uniqueIdentifierField = rowData.getStringProperty(getDescriptor().getIdColumn());
 
-		// TODO: fix this
-//		if(getEntity().getDescriptor().getSampUrl() != null){
-//			executeSampFileList(uniqueIdentifierField);
-//			return;
-//		}
+		if(getEntity().getDescriptor().isSampEnabled() && getEntity().getDescriptor().getSampBaseURL() != null){
+			executeSampFileList(uniqueIdentifierField);
+			return;
+		}
 
 		String tableName = getLabel() + "-" + uniqueIdentifierField + "-" + GUISessionStatus.getNextUniqueSampNumber();
-		HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
+		HashMap<String, String> sampUrlsPerMissionMap = new HashMap<>();
 
 		// Display top progress bar...
 		Log.debug("[sendSelectedProductToSampApp()] About to send 'show top progress bar...' event!!!");
@@ -715,8 +707,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_SENDTOVOTOOLS, getFullId(), uniqueIdentifierField);
 		String sampUrl = null;
-		if (getEntity().getDescriptor() instanceof CommonTapDescriptor) {
-			CommonTapDescriptor desc = (CommonTapDescriptor) getEntity().getDescriptor();
+		if (getEntity().getDescriptor() != null) {
+			CommonTapDescriptor desc = getEntity().getDescriptor();
 			if (desc.getSampBaseURL() != null && !desc.getSampBaseURL().isEmpty()) {
 				String tapName = desc.getSampProductURI().split("@@@")[1];
 				String valueURI = rowData.getStringProperty(tapName);
@@ -745,82 +737,81 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		CommonEventBus.getEventBus().fireEvent(sampEvent);
 	}
 
-	// TODO: fix this
-//	public void executeSampFileList(String obsId) {
-//
-//		String completeUrl = EsaSkyWebConstants.TAP_CONTEXT + "/samp-files?";
-//
-//		StringBuilder data = new StringBuilder();
-//		DescriptorMapper mapper = GWT.create(DescriptorMapper.class);
-//
-//		String json = mapper.write(getDescriptor());
-//
-//		data.append("descriptor=" + URL.encodeQueryString(json));
-//		data.append("&observation_id=" + obsId);
-//
-//		Log.debug("[executeSampFileList] URL:" + completeUrl);
-//		Log.debug("[executeSampFileList] JSON:" + data.toString());
-//		completeUrl = completeUrl + data.toString();
-//		Log.debug("[executeSampFileList] CompleteURL:" + completeUrl);
-//
-//		UncachedRequestBuilder requestBuilder = new UncachedRequestBuilder(
-//				RequestBuilder.GET, completeUrl);
-//
-//		try {
-//			requestBuilder.sendRequest(null, new RequestCallback() {
-//
-//				@Override
-//				public void onError(
-//						final com.google.gwt.http.client.Request request,
-//						final Throwable exception) {
-//					Log.debug(
-//							"[TabulatorTablePanel/executeSampFileList()] Failed file reading",
-//							exception);
-//				}
-//
-//				@Override
-//				public void onResponseReceived(final Request request,
-//											   final Response response) {
-//					String data = "";
-//					data = response.getText();
-//					List<SampMessageItem> messageItems = SampXmlParser.parse(data);
-//					try {
-//
-//						int counter = 0;
-//						String tableNameTmp="";
-//
-//						// Send all URL to Samp
-//						HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
-//						for (SampMessageItem i : messageItems) {
-//							// Prepare sending message
-//							tableNameTmp = getDescriptor().getTapTable() + "_" + counter + "-" + GUISessionStatus.getNextUniqueSampNumber();
-//							String fullUrl = getDescriptor().getDdBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
-//							if (fullUrl.contains("README")) {
-//								continue;
-//							}
-//							sampUrlsPerMissionMap.put(tableNameTmp, fullUrl);
-//							Log.debug("SAMP URL=" + fullUrl);
-//							counter++;
-//						}
-//						ESASkySampEvent sampEvent  = new ESASkySampEvent(SampAction.SEND_PRODUCT_TO_SAMP_APP, sampUrlsPerMissionMap);
-//						CommonEventBus.getEventBus().fireEvent(sampEvent);
-//
-//					} catch (Exception e) {
-//
-//						Log.debug("[TabulatorTablePanel/executeSampFileList()] Exception in ESASkySampEventHandlerImpl.processEvent",e);
-//
-//						throw new IllegalStateException(
-//								"[TabulatorTablePanel.executeSampFileList] Unexpected SampAction: SEND_VO_TABLE");
-//					}
-//				}
-//
-//			});
-//		} catch (RequestException e) {
-//			Log.debug(
-//					"[TabulatorTablePanel/executeSampFileList()] Failed file reading",
-//					e);
-//		}
-//	}
+	public void executeSampFileList(String obsId) {
+
+		String completeUrl = EsaSkyWebConstants.TAP_CONTEXT + "/samp-files?";
+
+		StringBuilder data = new StringBuilder();
+		DescriptorMapper mapper = GWT.create(DescriptorMapper.class);
+
+		String json = mapper.write(getDescriptor());
+
+		data.append("descriptor=" + URL.encodeQueryString(json));
+		data.append("&observation_id=" + obsId);
+
+		Log.debug("[executeSampFileList] URL:" + completeUrl);
+		Log.debug("[executeSampFileList] JSON:" + data.toString());
+		completeUrl = completeUrl + data.toString();
+		Log.debug("[executeSampFileList] CompleteURL:" + completeUrl);
+
+		UncachedRequestBuilder requestBuilder = new UncachedRequestBuilder(
+				RequestBuilder.GET, completeUrl);
+
+		try {
+			requestBuilder.sendRequest(null, new RequestCallback() {
+
+				@Override
+				public void onError(
+						final com.google.gwt.http.client.Request request,
+						final Throwable exception) {
+					Log.debug(
+							"[TabulatorTablePanel/executeSampFileList()] Failed file reading",
+							exception);
+				}
+
+				@Override
+				public void onResponseReceived(final Request request,
+											   final Response response) {
+					String data = "";
+					data = response.getText();
+					List<SampMessageItem> messageItems = SampXmlParser.parse(data);
+					try {
+
+						int counter = 0;
+						String tableNameTmp="";
+
+						// Send all URL to Samp
+						HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
+						for (SampMessageItem i : messageItems) {
+							// Prepare sending message
+							tableNameTmp = getDescriptor().getTableName() + "_" + counter + "-" + GUISessionStatus.getNextUniqueSampNumber();
+							String fullUrl = getDescriptor().getArchiveBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
+							if (fullUrl.contains("README")) {
+								continue;
+							}
+							sampUrlsPerMissionMap.put(tableNameTmp, fullUrl);
+							Log.debug("SAMP URL=" + fullUrl);
+							counter++;
+						}
+						ESASkySampEvent sampEvent  = new ESASkySampEvent(SampAction.SEND_PRODUCT_TO_SAMP_APP, sampUrlsPerMissionMap);
+						CommonEventBus.getEventBus().fireEvent(sampEvent);
+
+					} catch (Exception e) {
+
+						Log.debug("[TabulatorTablePanel/executeSampFileList()] Exception in ESASkySampEventHandlerImpl.processEvent",e);
+
+						throw new IllegalStateException(
+								"[TabulatorTablePanel.executeSampFileList] Unexpected SampAction: SEND_VO_TABLE");
+					}
+				}
+
+			});
+		} catch (RequestException e) {
+			Log.debug(
+					"[TabulatorTablePanel/executeSampFileList()] Failed file reading",
+					e);
+		}
+	}
 
 	private void selectRowWhileDialogBoxIsOpen(final GeneralJavaScriptObject row, AutoHidingMovablePanel dialogBox) {
 		if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {

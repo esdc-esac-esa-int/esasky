@@ -1,19 +1,13 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.Timer;
-
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.ICallbackParam;
-import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.OutreachImage;
 import esac.archive.esasky.cl.web.client.query.TAPImageListService;
@@ -24,10 +18,9 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.List;
+import java.util.UUID;
 
 public class ImageListEntity extends EsaSkyEntity {
 

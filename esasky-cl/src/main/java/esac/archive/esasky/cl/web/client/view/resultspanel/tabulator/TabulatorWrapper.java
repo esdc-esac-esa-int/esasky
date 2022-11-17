@@ -2222,9 +2222,6 @@ public class TabulatorWrapper {
         tabulatorCallback.onCenterClicked(rowData);
     }
 
-    public void onCenterClicked(final String ra, final String dec) {
-        tabulatorCallback.onCenterClicked(ra, dec);
-    }
     
     public void onSendToVoApplicaitionClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onSendToVoApplicaitionClicked(rowData);

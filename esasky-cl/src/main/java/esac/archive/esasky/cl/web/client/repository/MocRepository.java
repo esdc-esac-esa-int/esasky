@@ -1,16 +1,6 @@
 package esac.archive.esasky.cl.web.client.repository;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.*;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
@@ -20,9 +10,10 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltipObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class MocRepository {

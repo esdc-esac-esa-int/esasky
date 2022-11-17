@@ -37,25 +37,20 @@ public class MOCTooltip extends Tooltip {
 	    for(final MOCInfo mocInfo : mocInfos) {
     	    HTML wavelengthInfo = new HTML("(" + WavelengthUtils.getShortName(mocInfo.descriptor) + ")");
     	    wavelengthInfo.addStyleName("mocTooltip__wavelength");
-    	    container.add(new HTML("<h2>" + mocInfo.descriptor.getGuiShortName() + "</h2>" + wavelengthInfo));
+    	    container.add(new HTML("<h2>" + mocInfo.descriptor.getShortName() + "</h2>" + wavelengthInfo));
     	    container.add(new HTML("<b>" + TextMgr.getInstance().getText("MocTooltip_count") + ":</b> " + NumberFormatter.formatToNumberWithSpaces(mocInfo.count)));
 
-			// TODO: Fix
-//    	    if(mocInfo.count < DeviceUtils.getDeviceShapeLimit(mocInfo.descriptor)) {
-//				EsaSkyStringButton loadButton = new EsaSkyStringButton(TextMgr.getInstance().getText("mocDialog_loadData"));
-//				loadButton.setMediumStyle();
-//				loadButton.addClickHandler(new ClickHandler() {
-//
-//					@Override
-//					public void onClick(ClickEvent event) {
-//						for(MOCTooltipObserver observer : observers) {
-//							observer.onLoad(mocInfo);
-//						}
-//						hide();
-//					}
-//				});
-//				container.add(loadButton);
-//		    }
+    	    if(mocInfo.count < DeviceUtils.getDeviceShapeLimit(mocInfo.descriptor)) {
+				EsaSkyStringButton loadButton = new EsaSkyStringButton(TextMgr.getInstance().getText("mocDialog_loadData"));
+				loadButton.setMediumStyle();
+				loadButton.addClickHandler(event -> {
+					for(MOCTooltipObserver observer : observers) {
+						observer.onLoad(mocInfo);
+					}
+					hide();
+				});
+				container.add(loadButton);
+		    }
     	    
             if(mocInfos.indexOf(mocInfo) + 1 < mocInfos.size()) {
                 FlowPanel separator = new FlowPanel();
