@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gwt.http.client.URL;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,6 +25,14 @@ public abstract class TapDescriptorBase {
 
     @JsonIgnore
     protected String color;
+
+    @JsonIgnore
+    private String tapUrl;
+
+    @JsonIgnore
+    private boolean fovLimitDisabled = false;
+    private String selectADQL;
+    private String whereADQL;
 
 
     public abstract List<TapMetadataDescriptor> getMetadata();
@@ -75,13 +83,62 @@ public abstract class TapDescriptorBase {
         return 1500;
     }
 
+    public boolean isExternal() {
+        return true;
+    }
+
+
+    public String getTapUrl() {
+        return tapUrl;
+    }
+
+    public void setTapUrl(String tapUrl) {
+        // Remove trailing slash
+        if (tapUrl.endsWith("/")) {
+            tapUrl = tapUrl.substring(0, tapUrl.length() - 2);
+        }
+
+        // Async queries are not supported
+        if (tapUrl.endsWith("/async")) {
+            tapUrl = tapUrl.replace("/async", "/sync");
+        }
+
+        // Add sync if not present
+        if(!tapUrl.endsWith("/sync")) {
+            tapUrl += "/sync";
+        }
+
+        this.tapUrl = tapUrl;
+    }
 
     public String createTapUrl(String baseUrl, String query, String responseFormat) {
         long currentTime = System.currentTimeMillis();
         String encodedQuery = URL.encodeQueryString(query);
 
-        return baseUrl + "/tap/sync?request=doQuery&lang=ADQL&format="
-                + responseFormat + "&query=" + encodedQuery + "&timecall=" + currentTime;
+        if (!isExternal()) {
+            return baseUrl + "/tap/sync?request=doQuery&lang=ADQL&format="
+                    + responseFormat + "&query=" + encodedQuery + "&timecall=" + currentTime;
+        } else {
+            return baseUrl + "&" + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + encodedQuery + "&"
+                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + getTapUrl();
+        }
+
+    }
+
+    public String getSelectADQL() {
+        return selectADQL;
+    }
+
+    public void setSelectADQL(String selectADQL) {
+        this.selectADQL = selectADQL;
+    }
+
+    public String getWhereADQL() {
+        return whereADQL;
+    }
+
+    public void setWhereADQL(String whereADQL) {
+        this.whereADQL = whereADQL;
     }
 
 
@@ -120,4 +177,11 @@ public abstract class TapDescriptorBase {
         this.color = color;
     }
 
+    public boolean isFovLimitDisabled() {
+        return fovLimitDisabled;
+    }
+
+    public void setFovLimitDisabled(boolean fovLimitDisabled) {
+        this.fovLimitDisabled = fovLimitDisabled;
+    }
 }

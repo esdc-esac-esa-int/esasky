@@ -58,6 +58,12 @@ public class CommonTapDescriptor extends TapDescriptor {
     @JsonProperty("external")
     private boolean external;
 
+    @JsonProperty("fov_limit")
+    private double fovLimit;
+
+    @JsonProperty("intersect_polygon_query")
+    private boolean useIntersectsPolygon;
+
 
     /*********************
      * Getters
@@ -128,9 +134,20 @@ public class CommonTapDescriptor extends TapDescriptor {
         return category;
     }
 
+    @Override
     public boolean isExternal() {
         return external;
     }
+
+    public double getFovLimit() {
+        return fovLimit;
+    }
+
+    public boolean useIntersectsPolygon() {
+        return useIntersectsPolygon;
+    }
+
+
 
     public Double getWavelengthCenter() {
         return (getWavelengthStart() + getWavelengthEnd()) / 2;
@@ -214,7 +231,15 @@ public class CommonTapDescriptor extends TapDescriptor {
         this.setMetadata(columns);
     }
 
-    public void setExternal(boolean external) {
+    public void setIsExternal(boolean external) {
         this.external = external;
+    }
+
+    public void setFovLimit(double fovLimit) {
+        this.fovLimit = fovLimit;
+    }
+
+    public void setUseIntersectsPolygon(boolean useIntersectsPolygon) {
+        this.useIntersectsPolygon = useIntersectsPolygon;
     }
 }

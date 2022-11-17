@@ -142,7 +142,7 @@ public class TAPPublicationsService extends AbstractTAPService {
 
 	        String shape = null;
 	        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-	        if (fovDeg < 360) { // TODO: Fix desc.getFovLimit()
+	        if (fovDeg < descriptor.getFovLimit()) {
 	            if (fovDeg < 1) {
 	                Log.debug("[TAPPublicationsService/getMetadataAdql()] FoV < 1d");
 	                shape = "POLYGON('ICRS', "

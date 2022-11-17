@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
@@ -11,7 +12,6 @@ import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -20,11 +20,16 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabu
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
+import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
+import java.util.List;
+import java.util.stream.Collectors;
 
+public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
+    public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> { }
     private FlowPanel container;
     private PopupHeader<GlobalTapPanel> header;
     private final GlobalTapPanel.Resources resources;
@@ -129,21 +134,22 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                 + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
                 + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + schemaQuery + "&"
-                + EsaSkyConstants.EXT_TAP_URL + "=" + tapUrl;
+                + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
 
         JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
             @Override
             public void onSuccess(String responseText) {
                 setIsLoading(false);
-                GeneralJavaScriptObject responseObject = GeneralJavaScriptObject.createJsonObject(responseText);
-                GeneralJavaScriptObject meta = responseObject.hasProperty("metadata")
-                        ? responseObject.getProperty("metadata")
-                        : responseObject.getProperty("columns");
 
-                GeneralJavaScriptObject data = ExtTapUtils.formatExternalTapData(responseObject.getProperty("data"), meta);
+                TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                TapDescriptorList descriptorList = mapper.read(responseText);
 
-                ExtTapDescriptor descriptor = DescriptorRepository.getInstance().addExtTapDescriptor(tapUrl, tableName, query, data, fovLimit);
-                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+                if (descriptorList != null) {
+                    List<TapMetadataDescriptor> metadataDescriptorList  = descriptorList.getDescriptors().stream()
+                            .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
+                    CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().addExtTapDescriptor(metadataDescriptorList, tapUrl, tableName, query, fovLimit);
+                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
+                }
             }
 
             @Override

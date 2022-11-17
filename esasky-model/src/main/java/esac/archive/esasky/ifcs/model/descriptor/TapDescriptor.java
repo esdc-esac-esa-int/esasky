@@ -45,6 +45,24 @@ public class TapDescriptor extends TapDescriptorBase {
     }
 
     /**
+     * Set properties map.
+     *
+     * @param properties the map of properties
+     */
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
+    /**
+     * Returns the properties map.
+     *
+     * @return the properties map object.
+     */
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    /**
      * Finds the property value corresponding to the key or null if
      * the key was not found.
      *
@@ -54,6 +72,7 @@ public class TapDescriptor extends TapDescriptorBase {
     protected Object getProperty(String key) {
         return properties.getOrDefault(key, null);
     }
+
 
     /**
      * Finds the property value corresponding to ONE of the provided content descriptors.

@@ -32,7 +32,7 @@ public class TapMetadataDescriptor {
     protected String utype;
 
     @JsonProperty("principal")
-    protected boolean principal;
+    protected int principal;
 
 
 
@@ -52,7 +52,7 @@ public class TapMetadataDescriptor {
         metadataDescriptor.setUnit(tapDescriptor.getProperty("unit").toString());
         metadataDescriptor.setUcd(tapDescriptor.getProperty("ucd").toString());
         metadataDescriptor.setUtype(tapDescriptor.getProperty("utype").toString());
-        metadataDescriptor.setPrincipal(Boolean.valueOf(tapDescriptor.getProperty("principal").toString()));
+        metadataDescriptor.setPrincipal(Integer.valueOf(tapDescriptor.getProperty("principal").toString()));
         return metadataDescriptor;
     }
 
@@ -93,12 +93,12 @@ public class TapMetadataDescriptor {
 
 
     @JsonSetter("principal")
+    public void setPrincipal(Integer principal) {
+        this.principal = principal == null ? 0 : principal;
+    }
+
     public void setPrincipal(Boolean principal) {
-        if (principal == null) {
-            this.principal = true;
-        } else {
-            this.principal = principal;
-        }
+        this.principal = Boolean.TRUE.equals(principal) ? 1 : 0;
     }
 
     public void setName(String name) {
@@ -134,6 +134,6 @@ public class TapMetadataDescriptor {
     }
 
     public boolean isPrincipal() {
-        return principal;
+        return principal == 1;
     }
 }

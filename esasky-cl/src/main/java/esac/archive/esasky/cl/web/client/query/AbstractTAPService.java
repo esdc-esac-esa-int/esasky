@@ -93,8 +93,13 @@ public abstract class AbstractTAPService {
         final String debugPrefix = "[TAPService.getGeometricConstraint]";
         String containsOrIntersect;
 
-        containsOrIntersect = "1=CONTAINS(POINT('ICRS',"
-                + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), ";
+        if (descriptor.useIntersectsPolygon()) {
+            containsOrIntersect = "1=INTERSECTS(fov,";
+        } else {
+            containsOrIntersect = "1=CONTAINS(POINT('ICRS',"
+                    + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), ";
+        }
+
         String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
 

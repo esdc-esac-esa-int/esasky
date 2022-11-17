@@ -1780,6 +1780,7 @@ public class TabulatorWrapper {
 		    	if(isInitializing){
 		    		return;
 		    	}
+
 			    selectionMap = [];
 			    
 	    		wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionInProgress()();

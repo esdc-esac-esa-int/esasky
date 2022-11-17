@@ -109,7 +109,6 @@ public class MainPresenter {
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES);
-
         getExtTapList();
 
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
@@ -306,11 +305,9 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(TapRegistrySelectEvent.TYPE, event -> {
             if (event.getDescriptor() != null) {
                 if (event.hasData()) {
-                    // TODO: fix
-//                    insertRelatedMetadata(event.getDescriptor(), event.getData());
+                    insertRelatedMetadata(event.getDescriptor(), event.getData());
                 } else {
-                    // TODO: Fix
-//                    getRelatedMetadata(event.getDescriptor());
+                    getRelatedMetadata(event.getDescriptor());
                 }
             }
         });

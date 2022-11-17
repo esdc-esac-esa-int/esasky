@@ -6,12 +6,10 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.cl.web.client.event.MultiSelectableDataInSkyChangedEvent;
+import esac.archive.esasky.cl.web.client.model.SourceShapeType;
 import esac.archive.esasky.cl.web.client.model.entities.*;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
-import esac.archive.esasky.cl.web.client.query.TAPGwService;
-import esac.archive.esasky.cl.web.client.query.TAPIceCubeService;
-import esac.archive.esasky.cl.web.client.query.TAPImageListService;
-import esac.archive.esasky.cl.web.client.query.TAPObservationService;
+import esac.archive.esasky.cl.web.client.query.*;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -141,7 +139,6 @@ public class EntityRepository {
   }
 
     public GeneralEntityInterface createEntity(CommonTapDescriptor descriptor) {
-        // TODO: Common service (TAPObservationService)?
         GeneralEntityInterface newEntity;
 
         switch(descriptor.getCategory()) {
@@ -150,6 +147,12 @@ public class EntityRepository {
                 break;
             case EsaSkyWebConstants.CATEGORY_PUBLICATIONS:
                 newEntity = createPublicationsEntity(descriptor);
+                break;
+            case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                newEntity = createExternalTapEntity(descriptor);
+                break;
+            case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+                newEntity = createObservationEntity(descriptor);
                 break;
             default:
                 newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
@@ -204,6 +207,25 @@ public class EntityRepository {
         return iceCubeEntity;
     }
 
+    public GeneralEntityInterface createExternalTapEntity(final CommonTapDescriptor descriptor) {
+        return new ExtTapEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
+                CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPExtTapService.getInstance());
+    }
+
+    public GeneralEntityInterface createObservationEntity(final CommonTapDescriptor descriptor) {
+        GeneralEntityInterface newEntity;
+
+        if(descriptor.useIntersectsPolygon()) {
+            newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
+                    CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPObservationService.getInstance());
+        } else {
+            newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
+                    CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(),
+                    TAPObservationService.getInstance(), 20, SourceShapeType.CROSS.getName());
+        }
+
+        return newEntity;
+    }
 
     // CATALOG -------------
     public GeneralEntityInterface createCatalogueEntity(final CommonTapDescriptor descriptor) {

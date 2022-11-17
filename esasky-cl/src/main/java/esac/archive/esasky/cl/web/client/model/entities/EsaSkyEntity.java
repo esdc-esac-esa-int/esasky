@@ -262,7 +262,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void fetchData() {
-        if (getCountStatus().hasMoved(descriptor) && descriptor.getSchemaName() == null && !descriptor.hasSearchArea()) {
+        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 && !descriptor.hasSearchArea()) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {

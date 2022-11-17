@@ -244,51 +244,56 @@ public class DescriptorRepository {
 //        });
     }
 
-    public ExtTapDescriptor addExtTapDescriptor(String tapUrl, String tableName, String adql, GeneralJavaScriptObject metadata, boolean fovLimit) {
-//        String longName = tapUrl+"/"+tableName ;
-//        String umission = longName + "?" + adql;
-//
-//        ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(umission);
-//        if (descriptor == null) {
-//            descriptor = new ExtTapDescriptor();
-//        }
-//        descriptor.setTapTableMetadata(metadata);
-//        descriptor.setUseUcd(true);
-//        descriptor.setGuiShortName(tableName);
-//        descriptor.setGuiLongName(longName);
-//        descriptor.setMission(umission);
-//        descriptor.setCreditedInstitutions(tapUrl);
-//        descriptor.setFovLimit(180.0);
-//        descriptor.setShapeLimit(3000);
-//
-//        if (!tapUrl.contains("/sync")) {
-//            tapUrl += "/sync";
-//        }
-//        descriptor.setTapUrl(tapUrl);
-//        descriptor.setResponseFormat("VOTable");
-//        descriptor.setInBackend(false);
-//        descriptor.setPrimaryColor(ESASkyColors.getNext());
-//        descriptor.setTapTable(tableName);
-//
-//        if(fovLimit && descriptor.tapMetadataContainsPos()) {
-//            descriptor.setSearchFunction("cointainsPoint");
-//        } else {
-//            descriptor.setSearchFunction("");
-//        }
-//
-//        adql = adql.replace("from", "FROM");
-//        adql = adql.replace("where", "WHERE");
-//        String[] whereSplit = adql.split("WHERE");
-//        if (whereSplit.length > 1) {
-//            descriptor.setWhereADQL(whereSplit[1]);
-//        }
-//        String[] fromSplit = adql.split("FROM");
-//        descriptor.setSelectADQL(fromSplit[0]);
-//
-//
-//        extTapDescriptors.getDescriptors().add(descriptor);
-//        return descriptor;
-        return null;
+    public CommonTapDescriptor addExtTapDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String query, boolean useFovLimiter) {
+        String longName = tapUrl+"/"+tableName ;
+        String mission = longName + "?" + query;
+
+        CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
+        commonTapDescriptor.setMetadata(metadataDescriptorList);
+        commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
+        commonTapDescriptor.setShortName(tableName);
+        commonTapDescriptor.setLongName(longName);
+        commonTapDescriptor.setMission(mission);
+        commonTapDescriptor.setSchemaName("external");
+        commonTapDescriptor.setTapUrl(tapUrl);
+        commonTapDescriptor.setIsExternal(true);
+        commonTapDescriptor.setTableName(tableName);
+        commonTapDescriptor.setFovLimit(10.0);
+
+        if (useFovLimiter && commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null) {
+            commonTapDescriptor.setFovLimitDisabled(false);
+        } else {
+            commonTapDescriptor.setFovLimitDisabled(true);
+        }
+
+        final String from = "FROM";
+        final String where = "WHERE";
+
+        // Make sure "from" is uppercase
+        int start = query.toUpperCase().indexOf(from);
+        String subStr = query.substring(start, start + from.length());
+        query = query.replace(subStr, from);
+
+        // Make sure "where" is uppercase
+        start = query.toUpperCase().indexOf(where);
+        subStr = query.substring(start, start + where.length());
+        query = query.replace(subStr, where);
+
+
+
+        String[] whereSplit = query.split(where);
+        if (whereSplit.length > 1) {
+            commonTapDescriptor.setWhereADQL(whereSplit[1]);
+        }
+        String[] fromSplit = query.split(from);
+        commonTapDescriptor.setSelectADQL(fromSplit[0]);
+
+        CommonTapDescriptorList commonTapDescriptorList = new CommonTapDescriptorList();
+        commonTapDescriptorList.setDescriptors(Arrays.asList(commonTapDescriptor));
+        DescriptorCountAdapter countAdapter = new DescriptorCountAdapter(commonTapDescriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
+        this.setDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL, countAdapter);
+        return commonTapDescriptor;
+
     }
 
     public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {

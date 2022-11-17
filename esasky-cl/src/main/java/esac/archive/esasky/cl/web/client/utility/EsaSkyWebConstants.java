@@ -195,6 +195,7 @@ public class EsaSkyWebConstants {
     public static final String CATEGORY_NEUTRINOS = "neutrinos";
     public static final String CATEGORY_PUBLICATIONS = "publications";
     public static final String CATEGORY_IMAGES = "images";
+    public static final String CATEGORY_EXTERNAL = "external";
 
 
 

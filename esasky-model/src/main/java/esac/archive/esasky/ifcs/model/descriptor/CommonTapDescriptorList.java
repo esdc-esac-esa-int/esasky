@@ -14,6 +14,10 @@ public class CommonTapDescriptorList  {
         return descriptors;
     }
 
+    public void setDescriptors(List<CommonTapDescriptor> descriptors) {
+        this.descriptors = descriptors;
+    }
+
     public int getTotal() {
         return descriptors.size();
     }

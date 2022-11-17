@@ -183,7 +183,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
             if(!tapUrl.endsWith("/sync")) {
                 tapUrl += "/sync";
             }
-            url += "&" + EsaSkyConstants.EXT_TAP_URL + "=" + tapUrl +
+            url += "&" + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl +
                     "&" + EsaSkyConstants.EXT_TAP_RESPONSE_FORMAT + "=" + getResponseFormat();
         }
         return url + adqlParameterAndValue;
