@@ -44,7 +44,7 @@ public class TAPPublicationsService extends AbstractTAPService {
                 + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
                 + descriptor.getDecColumn() + "), ";
 
-        String shape = null;
+        String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {

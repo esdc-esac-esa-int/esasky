@@ -52,7 +52,7 @@ public class TapMetadataDescriptor {
         metadataDescriptor.setUnit(tapDescriptor.getProperty("unit").toString());
         metadataDescriptor.setUcd(tapDescriptor.getProperty("ucd").toString());
         metadataDescriptor.setUtype(tapDescriptor.getProperty("utype").toString());
-        metadataDescriptor.setPrincipal(Integer.valueOf(tapDescriptor.getProperty("principal").toString()));
+        metadataDescriptor.setPrincipal(tapDescriptor.getProperty("principal").toString());
         return metadataDescriptor;
     }
 
@@ -99,6 +99,10 @@ public class TapMetadataDescriptor {
 
     public void setPrincipal(Boolean principal) {
         this.principal = Boolean.TRUE.equals(principal) ? 1 : 0;
+    }
+
+    public void setPrincipal(String principal) {
+        setPrincipal(principal.equals("1") || principal.equals("true"));
     }
 
     public void setName(String name) {

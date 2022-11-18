@@ -565,7 +565,7 @@
 	</text>
 
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_INTEGRAL">
+		key="resultsPresenter_helpDescription_observations_INTEGRAL">
 		INTEGRAL/IBIS observations consist on a large number of individual
 		exposures (science windows) around a target position. For this reason
 		and because of the large size of the IBIS field-of-view, it is
@@ -580,7 +580,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM">
+		key="resultsPresenter_helpDescription_observations_XMM">
 		The XMM-Newton observations include public high-level Processing
 		Pipeline System
 		(PPS) products present in the XMM-Newton Science
@@ -603,7 +603,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Chandra">
+	<text key="resultsPresenter_helpDescription_observations_Chandra">
 		The Chandra dataset includes all public observations
 		(images and spectra), updated regularly, from the ACIS, LETG,
 		HETG and HRC instruments, available in the Chandra Data Archive
@@ -620,7 +620,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_SUZAKU">
+	<text key="resultsPresenter_helpDescription_observations_SUZAKU">
 		The observations include all public imaging products
 		present in the SUZAKU archive at DARTS.
 		Detailed information on the SUZAKU mission and its products can be found at
@@ -633,7 +633,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM-OM-OPTICAL">
+		key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
 		The
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -652,7 +652,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM-OM-UV">
+		key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
 		The
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -670,7 +670,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-OPTICAL">
+	<text key="resultsPresenter_helpDescription_observations_HST-OPTICAL">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -699,7 +699,7 @@
 		More information
 		&lt;/a&gt; </text>
 		
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-UV">
+	<text key="resultsPresenter_helpDescription_observations_HST-UV">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -728,7 +728,7 @@
 		More information
 		&lt;/a&gt; </text>
 		
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-IR">
+	<text key="resultsPresenter_helpDescription_observations_HST-IR">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -757,7 +757,7 @@
 		More information
 		&lt;/a&gt; </text>
 		
-		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Near-IR">
+		<text key="resultsPresenter_helpDescription_observations_JWST_Near-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -771,7 +771,7 @@
 		More information
 		&lt;/a&gt; </text>
 		
-		<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST_Mid-IR">
+		<text key="resultsPresenter_helpDescription_observations_JWST_Mid-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -785,7 +785,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Near-IR">
+		<text key="resultsPresenter_helpDescription_spectra_JWST_Near-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -799,7 +799,7 @@
 		More information
 		&lt;/a&gt; </text>
 		
-		<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST_Mid-IR">
+		<text key="resultsPresenter_helpDescription_spectra_JWST_Mid-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -814,7 +814,7 @@
 		&lt;/a&gt; </text>
 		
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_Herschel">
+		key="resultsPresenter_helpDescription_observations_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -833,7 +833,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO-IR">
+	<text key="resultsPresenter_helpDescription_observations_ISO-IR">
 		The Infrared Space Observatory (ISO) was the world's
 		first true orbiting infrared observatory launched in November 1995. It
 		carried four scientific instruments: two spectrometers (SWS and LWS),
@@ -848,7 +848,7 @@
 		More information
 		&lt;/a&gt; </text>
 		
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ALMA">
+	<text key="resultsPresenter_helpDescription_observations_ALMA">
 		ALMA (Atacama Large Millimeter/submillimeter Array) is the world's largest 
 		ground-based facility for observations in the millimeter/submillimeter regime. 
 		ALMA comprises a giant array of fifty 12-m antennas, which can be configured 
@@ -863,7 +863,7 @@
 		&lt;/a&gt; </text>
 
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_INTEGRAL">
+		key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
 		The IBIS/ISGRI Soft Gamma-Ray Source Catalog is an all-sky catalog
 		based on INTEGRAL-IBIS observations performed during the first 1000
 		orbits of the satellite. The catalogue was released in 2009 and
@@ -879,7 +879,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_CHANDRA-SC2">
+		key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
                 The Chandra Source Catalog (CSC) is the definitive catalog of X-ray sources 
 		detected by the Chandra X-ray Observatory. Version 2.0 (CSC 2.0) is the second 
 		major release of the catalog, and represents a significant improvement with 
@@ -897,7 +897,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
+		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
     The 4XMM-DR11 catalogue contains source detections drawn from 12,210
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
@@ -910,7 +910,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
+		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
     	The stacked catalogue 4XMM-DR11s has been compiled from 1,475 groups,
 		comprising 8,292  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
@@ -928,7 +928,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-OM">
+		key="resultsPresenter_helpDescription_catalogues_XMM-OM">
 		The SUSS5.0 catalogue is a catalogue of sources serendipitously
 		detected by the Optical Monitor (OM) on board the XMM-Newton
 		observatory. It provides source positions, magnitudes and fluxes in
@@ -942,7 +942,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-SLEW">
+		key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
 		​XMMSL2 is the second catalogue of X-ray sources detected in
 		XMM-Newton slew data, and has been constructed by members of the
 		XMM-Newton SOC and the EPIC consortium on behalf of ESA. This release uses
@@ -957,7 +957,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Tycho-2">
+		key="resultsPresenter_helpDescription_catalogues_Tycho-2">
 		​ The Tycho-2 Catalogue is an astrometric reference catalogue
 		containing positions, proper motions and two-colour photometry (B and
 		V) for the 2.5 million brightest stars in the sky. The catalogue is
@@ -974,7 +974,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_TwoMASS">
+	<text key="resultsPresenter_helpDescription_catalogues_TwoMASS">
 		The Two-Micron All Sky Survey (2MASS) covered 99.998% of
 		the sky in three near-
 		infrared bands, J, H and Ks. The 2MASS Point
@@ -994,7 +994,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AKARI-IRC-SC">
+	<text key="resultsPresenter_helpDescription_catalogues_AKARI-IRC-SC">
 		The AKARI IRC Point Source Catalogue Version 1.0 provides positions
 		and fluxes of 870,973 sources (844,649 sources in 9 micron band and
 		194,551 sources in 18 micron band) in the Mid-Infrared wavelengths.
@@ -1013,7 +1013,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AllWise">
+		key="resultsPresenter_helpDescription_catalogues_AllWise">
 		The AllWISE Source Catalog provides astrometry and mid-infrared
 		photometry in four
 		bands (3.4, 4.6, 12 and 22 microns) for 747,634,026
@@ -1034,7 +1034,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Hipparcos-2">
+		key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
 		The Hipparcos-2 Catalogue is a new reduction of the data from the
 		Hipparcos mission that improved up to a factor of 4 the accuracy of
 		stars with Hp magnitude 8 or lower. It contains positions, parallaxes
@@ -1046,7 +1046,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_HSC">
+	<text key="resultsPresenter_helpDescription_catalogues_HSC">
 		The Hubble Source Catalog is a combination of all the visit-based source
 		lists in the Hubble Legacy Archive (HLA) into a single catalogue and is
 		designed to optimize science from the Hubble Space Telescope by combining
@@ -1066,7 +1066,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-070">
+		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1087,7 +1087,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-100">
+		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1108,7 +1108,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-160">
+		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1129,7 +1129,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-250">
+		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1147,7 +1147,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-350">
+		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1165,7 +1165,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-500">
+		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1183,7 +1183,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PGCC">
+		key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
 		The PGCC2 contains 13,188 Galactic sources and 54 sources located in the Magellanic Clouds, all of them identified as cold sources in Planck data (sources colder than their environment). The sources are extracted from the Planck HFI 857, 545 and 353 GHz maps and the 3 THz IRIS map. A detection requires SNR &gt; 4 in all Planck bands and a minimum angular distance of 5 arcmin to other detections.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1192,7 +1192,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2E-HFI">
+		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For the channels 100-353 GHz, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;
 		The catalogue at 100 Ghz and above has been
@@ -1209,7 +1209,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2-HFI">
+		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For the channels 100-353 GHz, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;
 		The catalogue at 100 Ghz and above has been
@@ -1226,7 +1226,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2-LFI">
+		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For all the LFI channels, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#PCCS2"
@@ -1234,7 +1234,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PSZ2">
+		key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
 		The Planck SZ catalogue is a nearly all-sky list of SZ detections
 		obtained from the Planck data, derived from the HFI frequency channel
 		maps after masking and filling the bright point sources (SNR>10) from
@@ -1248,7 +1248,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_XMM-NEWTON">
+		key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
 		The XMM-Newton observations include public high-level Processing
 		Pipeline System
 		(PPS) products present in the XMM-Newton Science
@@ -1267,7 +1267,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Chandra">
+	<text key="resultsPresenter_helpDescription_spectra_Chandra">
 		The Chandra dataset includes all public observations
 		(images and spectra), updated regularly, from the ACIS, LETG,
 		HETG and HRC instruments, available in the Chandra Data Archive
@@ -1286,7 +1286,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_IUE">
+	<text key="resultsPresenter_helpDescription_spectra_IUE">
 		The International Ultraviolet Explorer (IUE) was a joint
 		project between ESA, NASA
 		and the UK PPARC. The mission operated
@@ -1318,7 +1318,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-UV">
+	<text key="resultsPresenter_helpDescription_spectra_HST-UV">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1347,7 +1347,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-OPTICAL">
+		key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
 		The Hubble Space Telescope (HST) observational data provided by
 		ESASky are science products from the two Hubble data collections:
 		&lt;ul&gt;
@@ -1373,7 +1373,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-IR">
+	<text key="resultsPresenter_helpDescription_spectra_HST-IR">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1401,7 +1401,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_ISO-IR">
+	<text key="resultsPresenter_helpDescription_spectra_ISO-IR">
 		The Infrared Space Observatory (ISO) was the world's
 		first true orbiting infrared observatory launched in November 1995. It
 		carried four scientific instruments: two spectrometers (SWS and LWS),
@@ -1416,7 +1416,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Herschel">
+		key="resultsPresenter_helpDescription_spectra_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -1435,7 +1435,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_Herschel">
+	<text key="resultsPresenter_helpDescription_sso_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -1454,7 +1454,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_HST">
+	<text key="resultsPresenter_helpDescription_sso_HST">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1482,7 +1482,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_XMM">
+	<text key="resultsPresenter_helpDescription_sso_XMM">
 		The observations include public high-level Processing
 		Pipeline System (PPS) products present in the XMM-Newton Science
 		Archive
@@ -1501,7 +1501,7 @@
 		More information
 		&lt;/a&gt; </text>
 	
-		<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
+		<text key="resultsPresenter_helpDescription_sso_XMM-OM">
 		The observations include public high-level Processing
 		Pipeline System (PPS) products present in the XMM-Newton Science
 		Archive
@@ -3051,7 +3051,7 @@
 		</text>
 
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST">
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
 		The fifth LAMOST data release (LAMOST DR5) includes observations until July 2017. The General Catalog contains 9,026,365 targets, of which 8,183,160 are stars, 152,863 galaxies, 52,453 QSO, and 637,889 unknown objects. There are 5,808,985 objects with g-band SNR larger than 10, 7,701,235 objects with i-band SNR larger than 10, and 5,734,239 objects with both g-band SNR larger than 10 and i-band SNR larger than 10.
@@ -3063,7 +3063,7 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST">
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
 		The fifth LAMOST data release (LAMOST DR5) includes observations until July 2017. The General Catalog contains 9,026,365 targets, of which 8,183,160 are stars, 152,863 galaxies, 52,453 QSO, and 637,889 unknown objects. There are 5,808,985 objects with g-band SNR larger than 10, 7,701,235 objects with i-band SNR larger than 10, and 5,734,239 objects with both g-band SNR larger than 10 and i-band SNR larger than 10.
@@ -3075,7 +3075,7 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
+	<text key="resultsPresenter_helpDescription_observations_AKARI">
 		ESASky serves all pointed observations taken with the InfraRed Camera (IRC) of this mission, which are directly downloaded from DARTS. The IRC consisted of three independent camera systems, NIR, MIR-S and MIR-L, which observed the wavelength bands of 1.7-5.5 μm, 5.8-14.1 μm, and 12.4-26.5 μm, respectively. Each camera system had three filters available. NIR and MIR-S covered the same field of view (FoV), while MIR-L had a different one, which did not overlap with the NIR/MIR-S FoV. A brief description of the instrument and data products is given in
 		&lt;a
 		href="//repository.exst.jaxa.jp/dspace/bitstream/a-is/906920/1/AA1830017000.pdf"
@@ -3089,7 +3089,7 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Spitzer">
+	<text key="resultsPresenter_helpDescription_catalogues_Spitzer">
 		The Spitzer Science Center and the Infrared Processing and Analysis Center have produced as part of the Cryogenic Release 3 the SEIP Source List. This list contains photometry for 42 million stars and galaxies for the Infrared Array Camera (IRAC) at 3.6, 4.5, 5.8 adn 8 microns and for the 24 micron band of the Multiband Imaging Photometer (MIPS). The Spitzer SEIP Source List has been produced combining data across multiple Astronomical Observation Request (AOR) archival data that allows the extraction of fainter sources using a uniform processing pipeline taking advantage of the best and final calibration of the cryogenic imaging data.
 
 		&lt;br&gt;&lt;br&gt;
@@ -3099,7 +3099,7 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Spitzer">
+	<text key="resultsPresenter_helpDescription_observations_Spitzer">
 		Spitzer Enhanced Imaging Products (SEIP), Cryogenic Release version 3.0. These are combined images ("Super Mosaics") for data from Spitzer's cryogenic mission, including all four bands (3.6, 4.5, 5.8, 8 microns) of the Infrared Array Camera (IRAC), and the 24 micron band of the Multiband Imaging Photometer for Spitzer ("MIPS").
 
 		&lt;br&gt;&lt;br&gt;
@@ -3430,7 +3430,7 @@
 	</text>
 	
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+		key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
 		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
 		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
 		the &lt;a
@@ -3516,7 +3516,7 @@
 	<text key="tabulator_addHipsColumn">Add</text>
 	<text key="tabulator_addHips_tooltip">Adds this HiPS as a new row to the Sky panel</text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
+	<text key="resultsPresenter_helpDescription_spectra_CHEOPS">
 		CHEOPS is an ESA mission developed in partnership with Switzerland, with a dedicated consortium led by the University of Bern, and with important contributions from Austria, Belgium, France, Germany, Hungary, Italy, Portugal, Spain, Sweden and the UK. The satellite has a single payload comprising an ultra-high precision photometer covering the 330 - 1100 nm wavelength range in a single photometric band. Observations are made as part of the Guaranteed Time Observing Programme that is formulated by the CHEOPS Science Team and the Guest Observers Programme through which the Community at large can apply for CHEOPS time. 
 		&lt;br&gt;&lt;br&gt;
 		The subset of CHEOPS data available through ESASky includes an example of a light curve (the highest level data product produced by the automated data reduction pipeline) and the data reduction pipeline report for each public science observation. 
@@ -3665,7 +3665,7 @@
 	<text key="header_highResolutionImagesTooltip">
 		Visualise outreach images from the Hubble Space Telescope
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4FGL-DR2">
 		The Fermi Large Area Telescope (LAT) has been surveying the high-energy gamma-ray sky since 2008 and the LAT Collaboration has published a succession of source catalogs based on comprehensive analyses of LAT data. The fourth source catalog second data release was derived from analysis of the first 10 years of LAT science data.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3674,7 +3674,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_3FHL">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_3FHL">
 		Third Catalog of Hard Fermi-LAT Sources (3FHL), a catalog of sources detected above 10 GeV by the Fermi Large Area Telescope (LAT) in the first 7 years of data using the Pass 8 event-level analysis, containing 1556 objects characterised in the 10 GeV-2 TeV energy range.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3683,7 +3683,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4LAC-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4LAC-DR2">
 		Fourth Catalog of Active Galactic Nuclei detected by the Fermi Large Area Telescope (LAT) (4LAC-DR2) based on 10 years of data. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3692,7 +3692,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_OU_Blazars">
+	<text key="resultsPresenter_helpDescription_catalogues_OU_Blazars">
 		Open Universe for Blazars relies on a master list of blazars. The second version of this list was assembled by combining the 5BZCAT, the 3HSP and the 4LAC catalogs.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3866,7 +3866,7 @@
 		Search
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+	<text key="resultsPresenter_helpDescription_catalogues_Icecube">
 		The IceCube All-Sky Point-Source Events Catalog (2008 - 2018; Icecubepsc). IceCube has performed several searches for point-like sources of neutrinos. The events contained in this catalogue make up the sample used in IceCube's 10-year time-integrated neutrino point source search. Events in the sample are track-like neutrino candidates detected by IceCube between April 2008 and July 2018.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3875,7 +3875,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+	<text key="resultsPresenter_helpDescription_catalogues_2RXS">
 		The second ROSAT all-sky survey source catalogue (2RXS) is the second publicly released ROSAT catalogue of point-like sources obtained from the ROSAT all-sky survey (RASS) observations performed with the position-sensitive proportional counter (PSPC) between June 1990 and August 1991, and is an extended and revised version of the bright and faint source catalogues. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3884,7 +3884,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+	<text key="resultsPresenter_helpDescription_catalogues_2WHSP">
 		A multi-frequency selected catalogue of high energy and very high energy gamma-ray blazars and blazar candidates (2WHSP). This catalogue contains the largest and most complete list of High Synchrotron Peaked blazars (HSPs) available to date (in 2017), which is an expansion of the 1WHSP catalog of gamma-ray source candidates off the Galactic plane. A number of multi-wavelength surveys (in the radio, infrared and X-ray bands) have been cross-matched and applied selection criteria based on the radio to IR and IR to X-ray spectral slopes. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a

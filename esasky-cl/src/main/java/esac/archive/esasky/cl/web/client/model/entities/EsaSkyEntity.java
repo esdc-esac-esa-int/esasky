@@ -915,7 +915,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getHelpText() {
-		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getId());
+		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_"
+                + getDescriptor().getCategory() + "_" + descriptor.getMission());
 	}
     
 	@Override

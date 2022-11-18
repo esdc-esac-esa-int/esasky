@@ -32,9 +32,10 @@ public class ExtTapEntity extends EsaSkyEntity {
     
     @Override
 	public String getHelpText() {
-    	return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getId());
+    	return TextMgr.getInstance().getText("resultsPresenter_helpDescription_"
+                + getDescriptor().getCategory() + "_" + getDescriptor().getMission());
     }
-    
+
     @Override
     public String getTabLabel() {
         return getDescriptor().getShortName();

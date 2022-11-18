@@ -506,7 +506,7 @@
 		与 $SSOTEXT$ 进行交叉证认
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_INTEGRAL">
+		key="resultsPresenter_helpDescription_observations_INTEGRAL">
 		INTEGRAL/IBIS卫星的观测结果包含了目标位置周围大量的单次曝光(科学窗口)。
 		由于这个原因，加之IBIS视场非常大，使得其难以显示其所有科学窗口的天区覆盖情况。
 		因而ESASky只显示其每次观测所指向的中心位置，并列出所有覆盖了该位置的科学窗口。
@@ -518,7 +518,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM">
+		key="resultsPresenter_helpDescription_observations_XMM">
 		XMM牛顿望远镜(XMM-Newton)观测数据中包含出现在XMM-Newton归档数据(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home"
 		target="_blank"&gt;XSA&lt;/a&gt;)中已公开的高级处理管道系统(PPS)数据产品。
 		所包含的数据结合了三个摄像机（EPIC PN、EPIC MOS1和EPIC MOS2）在0.2-12 keV能量范围的高级图像产品。
@@ -532,7 +532,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Chandra">
+	<text key="resultsPresenter_helpDescription_observations_Chandra">
 		钱德拉(Chandra)数据集包括Chandra数据中心提供的来自ACIS、LETG、HETG和HRC仪器的全部公开观测结果(图像和光谱)，并会持续更新
 		(&lt;a href="//cda.harvard.edu/chaser/"
 		target="_blank"&gt;cda.harvard.edu/chaser/&lt;/a&gt;)。
@@ -546,7 +546,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_SUZAKU">
+	<text key="resultsPresenter_helpDescription_observations_SUZAKU">
 		这些观测结果包括了出现在日本ISAS数据记录传输系统(DARTS)中的朱雀号探测器(SUZAKU)的所有公开图像产品。
 		有关SUZAKU任务及其数据产品可访问
 		&lt;a href="//www.darts.isas.jaxa.jp/astro/suzaku/" target="_blank"&gt;
@@ -559,7 +559,7 @@
 		&lt;/a&gt;
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM-OM-OPTICAL">
+		key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
 		ESASky中的&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
 		光学监视器(OM)
@@ -574,7 +574,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM-OM-UV">
+		key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
 		ESASky中的
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -590,7 +590,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO-IR">
+	<text key="resultsPresenter_helpDescription_observations_ISO-IR">
 		1995年11月发射的红外空间天文台(ISO)是世界上第一个真正的在轨红外天文台。
 		它携带了四种科学仪器:两台光谱仪(SWS和LWS)、一台成像光偏振仪(ISOPHOT)和一台照相机(ISOCAM)。
 		ESASky仅能提供来自于ISOCAM的ISO图像数据，而来自全部四台仪器的光谱数据则均能提供。
@@ -603,7 +603,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_INTEGRAL">
+		key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
 		IBIS/ISGRI软伽玛射线源星表是一个全天星表，基于INTERGRAL-IBIS卫星的前1000轨数据。
 		该星表于2009年发布，并于2016年进行了更新。
 		它由卫星任务在2002年至2010年末期间所有高质量的公开数据构建而成，
@@ -617,7 +617,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
+		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
 		4XMM-DR11星表包含了由XMM牛顿望远镜12,210次PIC观测中的源，覆盖从0.2 keV到12 keV的能量范围。
 		目前，ESASky中只显示质量标志(QUALITY flag)为0或1的源(即“好”或“有可疑参数”的源)。
 
@@ -629,7 +629,7 @@
 		&lt;/a&gt;
 	</text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-OM">
+		key="resultsPresenter_helpDescription_catalogues_XMM-OM">
 		SUSS5.0 星表集合了XMM-Newton太空望远镜所搭载的光学监视器偶然观测到的目标。
 		它提供了超过590万个源的位置、星等，及其在六个宽域紫外、光学滤镜的流量，还包括了其诊断报告和变量统计。
 
@@ -640,7 +640,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Tycho-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Tycho-2">
 		Tycho-2星表是一个天体测量参考星表，包含了天空中250万颗最亮恒星的位置、自行和二色测光(B和V波段)数据。该星表基于依巴谷卫星星图仪的观测，创建所用观测数据与原始第谷星表相同。使用改进的处理技术，光谱条数明显增多，精度显著提高。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -650,7 +650,7 @@
 		&lt;/a&gt; 
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_TwoMASS">
+	<text key="resultsPresenter_helpDescription_catalogues_TwoMASS">
 		2微米全天巡视(2MASS)观测在三个近红外波段（J、H、Ks）覆盖了99.998%的星空。2MASS点源星表(PSC)包含470,992,970个点源的位置和测光信息。该星表中的源至少在一个波段的观测数据信噪比大于7，或三个波段的信噪比都大于5。此外，源的位置也必须满足一些条件，以确保它不是伪信号或存在源之间互相干扰。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -659,7 +659,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AllWise">
+	<text key="resultsPresenter_helpDescription_catalogues_AllWise">
 		AllWISE源星表包含了AllWISE多波段星图中747,634,026个天体的天体测量信息，以及四个波段(3.4微米、4.6微米、12微米和22微米)的中红外测光信息。相对WISE星表，AllWISE星表改进了全部四个波段离散光源的测光信息。此外，该星表还改进了每颗星变源概率的值。同时，由于在两次巡天观测相隔的11年间，2MASS参考星表的自行修正，天体测量信息得以改进。
 	&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -668,7 +668,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Hipparcos-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
 		Hipparcos-2星表是对依巴谷观测任务获得数据的更新。它将Hp星等小于等于8的恒星的精度提高了4倍。它包含了118,218颗恒星的位置、视差和自行数据。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -677,7 +677,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-070">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
 		赫歇尔-帕克斯点源星表(HPPSC)包含大约50万个条目。数据来自赫歇尔望远镜搭载的光电阵列相机和光谱仪（PACS）可观测的三个波段，覆盖约8%的远红外星空。
 		宽带滤波器集中在70微米、100微米和160微米，角分辨率分别为5.6"、6.8"和11.3"。这个星表由三张表格组成，每个波段对应一个星表。
 		&lt;br&gt;&lt;br&gt;
@@ -687,7 +687,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>	
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-100">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
 		赫歇尔-帕克斯点源星表(HPPSC)包含大约50万个条目。数据来自赫歇尔望远镜搭载的光电阵列相机和光谱仪（PACS）可观测的三个波段，覆盖约8%的远红外星空。
 		宽带滤波器集中在70微米、100微米和160微米，角分辨率分别为5.6"、6.8"和11.3"。这个星表由三张表格组成，每个波段对应一个星表。 
 		&lt;br&gt;&lt;br&gt;
@@ -697,7 +697,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>		
-	<text	key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-160">
+	<text	key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
 		赫歇尔-帕克斯点源星表(HPPSC)包含大约50万个条目。数据来自赫歇尔望远镜搭载的光电阵列相机和光谱仪（PACS）可观测的三个波段，覆盖约8%的远红外星空。
 		宽带滤波器集中在70微米、100微米和160微米，角分辨率分别为5.6"、6.8"和11.3"。这个星表由三张表格组成，每个波段对应一个星表。 
 		&lt;br&gt;&lt;br&gt;
@@ -707,7 +707,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>		
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-250">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
 		SPIRE点源星表(SPSC)有超过160万个条目，由赫歇尔望远镜上搭载的光谱及测光成象接收机(SPIRE)在亚毫米范围内所进行的6878次观测中提取出来。该星表由三个表格组成，每个表格对应SPIRE的一个测光波段：250微米、350微米和500微米(分别对应1199千兆赫、857千兆赫和600千兆赫)。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -716,7 +716,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-350">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
 		SPIRE点源星表(SPSC)有超过160万个条目，由赫歇尔望远镜上搭载的光谱及测光成象接收机(SPIRE)在亚毫米范围内所进行的6878次观测中提取出来。该星表由三个表格组成，每个表格对应SPIRE的一个测光波段：250微米、350微米和500微米(分别对应1199千兆赫、857千兆赫和600千兆赫)。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -725,7 +725,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-500">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
 		SPIRE点源星表(SPSC)有超过160万个条目，由赫歇尔望远镜上搭载的光谱及测光成象接收机(SPIRE)在亚毫米范围内所进行的6878次观测中提取出来。该星表由三个表格组成，每个表格对应SPIRE的一个测光波段：250微米、350微米和500微米(分别对应1199千兆赫、857千兆赫和600千兆赫)。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -734,7 +734,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PGCC">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
 		PGCC2包含13，188个银河系内的源和54个麦哲伦星云内的源，都在普朗克数据中被定义为冷源(低于周围环境温度的源)。这些源都是从普朗克HFI 857、545和353 GHz图和3 THz IRIS图中筛选出来的。观测标准为在所有普朗克波段的信噪比大于4，并且与其他源的最小角距离为5角分。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -743,7 +743,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2E-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
 		PCCS2是从普朗克全任务强度和偏振图中提取的一组单频源星表。这些星图包含了LFI通道48个月的数据，以及HFI通道29个月的数据。因此，从这些图中得到的流量密度，是这两个时间段内，源发射的平均值。对于100-353兆赫兹通道，星表中还包含了有显著偏振（>99.99%）的源的偏振流量密度磁通密度和偏振角。
 		&lt;br&gt;
 		100兆赫兹及以上源的星表被分成了两个次星表：PCCS2，包括所有可靠观测(>80%)；PCCS2E，包含位于无法估计其可靠性天区的源。
@@ -754,7 +754,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
 		PCCS2是从普朗克全任务强度和偏振图中提取的一组单频源星表。这些星图包含了LFI通道48个月的数据，以及HFI通道29个月的数据。因此，从这些图中得到的流量密度，是这两个时间段内，源发射的平均值。对于100-353兆赫兹通道，星表中还包含了有显著偏振（>99.99%）的源的偏振流量密度磁通密度和偏振角。
 		&lt;br&gt;
 		100兆赫兹及以上源的星表被分成了两个次星表：PCCS2，包括所有可靠观测(>80%)；PCCS2E，包含位于无法估计其可靠性天区的源。
@@ -765,7 +765,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2-LFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
 		PCCS2是从普朗克全任务强度和偏振图中提取的一组单频源星表。这些星图包含了LFI通道48个月的数据，以及HFI通道29个月的数据。因此，从这些图中得到的流量密度，是这两个时间段内，源发射的平均值。对于100-353兆赫兹通道，星表中还包含了有显著偏振（>99.99%）的源的偏振流量密度磁通密度和偏振角。
 	 	&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#PCCS2"
@@ -773,7 +773,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PSZ2">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
 		普朗克SZ星表是从普朗克数据中提取出来的一个几乎覆盖全天的SZ探测表，源于HFI频率通道图，并使用PCCS星表中相应通道的亮点源（信噪比＞10）遮挡、填充生成。这个星表包含1653个探测数据，其中1203个经由外部数据对比确认为星团。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -782,7 +782,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_XMM-NEWTON">
+	<text key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
 		包括高级别数据处理流水线系统（PPS）产生数据在内的XMM牛顿望远镜的观测数据在XXM牛顿望远镜科学归档中已经开放。(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home" target="_blank"&gt;XSA&lt;/a&gt;). 
 		RGS设备在5-35 ?[0.33-2.5 keV]（第一级光谱）获得高分辨本领（150-800）。对两个频谱仪，有效面积在15 ? [0.83 keV] (第一级)达到峰值，约为150平方厘米。
 		&lt;br&gt;&lt;br&gt;
@@ -791,7 +791,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Chandra">
+	<text key="resultsPresenter_helpDescription_spectra_Chandra">
 		钱德拉数据集包括来自ACIS、LETG、HETG和HRC仪器所有截至2017年10月8日前公开的观测数据（图像和光谱），并且可通过(&lt;a href="//cda.harvard.edu/chaser/" target="_blank"&gt;cda.harvard.edu/chaser/&lt;/a&gt;)在钱德拉数据归档中查找。
 		更多关于钱德拉任务的详细信息及其数据产品可访问：&lt;a href="//cxc.harvard.edu/" target="_blank"&gt; cxc.harvard.edu/&lt;/a&gt;
 		&lt;br&gt;&lt;br&gt;
@@ -801,7 +801,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_IUE">
+	<text key="resultsPresenter_helpDescription_spectra_IUE">
 		国际紫外探测(IUE)是欧洲空间局、美国航天局和英国粒子物理学和天文学研究委员会（PPARC）的联合项目。
 		该任务在1978年至1996年运行期间，使用了三种中阶梯光栅摄谱仪：单波长光谱仪(SWP)、低功率光谱仪(LWP)和低功率光谱仪(LWR)。
 		在低分辨率模式下，光谱分辨率为~0.6 纳米, 对应R~250在150纳米和R~450在270纳米的分辨本领。在高分辨率模式下，分辨率为~0.02纳米,对应R~7500在150纳米和R~13500在270纳米的分辨本领。
@@ -812,7 +812,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_ISO-IR">
+	<text key="resultsPresenter_helpDescription_spectra_ISO-IR">
 		红外空间天文台(ISO)是世界上第一个真正的轨道红外天文台，于1995年11月发射升空。它携带了四种科学设备：两台光谱仪(SWS和LWS)、一台成像光偏振仪(ISOPHOT)和一台照相机(ISOCAM)。可通过ESASky界面浏览的ISO图像数据只有来自ISOCAM的数据。四台仪器获得的光谱数据则可全部浏览。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -821,7 +821,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Herschel">
+	<text key="resultsPresenter_helpDescription_spectra_Herschel">
 		可使用的赫歇尔（Herschel)数据包括了来自远红外外差光谱仪、光电探测器阵列照相机和光谱仪以及光谱和光度成像接收器三大设备的所有开放观测数据(包括PACS/SPIRE的平行观测)。
 		这些可下载的科学数据是独立浏览产品。产品的简介:点击&lt;a href="//www.cosmos.esa.int/web/herschel/data-products-overview" target="_blank"&gt; 这里 &lt;/a&gt; 了解赫歇尔数据产品的更多信息。
 		&lt;br&gt;&lt;br&gt;
@@ -831,7 +831,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_SSO_Herschel">
+	<text key="resultsPresenter_helpDescription_sso_Herschel">
 		可使用的赫歇尔（Herschel)数据包括了来自远红外外差光谱仪、光电探测器阵列照相机和光谱仪以及光谱和光度成像接收器三大设备的所有开放观测数据(包括PACS/SPIRE的平行观测)。
 		这些可下载的科学数据是独立浏览产品。产品的简介:点击&lt;a href="//www.cosmos.esa.int/web/herschel/data-products-overview" target="_blank"&gt; 这里 &lt;/a&gt; 了解赫歇尔数据产品的更多信息。
 		&lt;br&gt;&lt;br&gt;
@@ -841,7 +841,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_SSO_XMM">
+	<text key="resultsPresenter_helpDescription_sso_XMM">
 		包括高级别数据处理流水线系统（PPS）产生数据在内的XMM牛顿望远镜的观测数据在XXM牛顿望远镜科学归档中已经开放。(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home" target="_blank"&gt;XSA&lt;/a&gt;). 
 		关于XMM牛顿望远镜数据产品的详细信息可在&lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products" target="_blank"&gt;XXM牛顿望远镜科学归档数据产品指南&lt;/a&gt;中查看。
 		&lt;br&gt;&lt;br&gt;
@@ -1453,7 +1453,7 @@
 	<text key="treeMap_notInRange_SSO">
 		在此波长范围内未找到太阳系天体观测数据
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-OPTICAL">
+	<text key="resultsPresenter_helpDescription_observations_HST-OPTICAL">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1474,7 +1474,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-UV">
+	<text key="resultsPresenter_helpDescription_observations_HST-UV">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1495,7 +1495,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-IR">
+	<text key="resultsPresenter_helpDescription_observations_HST-IR">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1516,7 +1516,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ALMA">
+	<text key="resultsPresenter_helpDescription_observations_ALMA">
     ALMA（阿塔卡玛毫米/亚毫米波阵列望远镜）是世界上最大的毫米/亚毫米波地基观测设备。ALMA是一个由50面直径12米天线组成的巨型阵列，最长基线达16千米。它配备了先进的接收机，可覆盖1太赫兹以下的所有大气观测窗口。	
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1526,7 +1526,7 @@
 		&lt;/a&gt; </text>
 	
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_CHANDRA-SC2">
+		key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
 	钱德拉源表（CSC）是最权威的X射线源星表，由钱德拉X射线望远镜探测得到。2.0版本（CSC 2.0）是该星表的第二个主要的版本。与1.1版本相比，它在天区覆盖、灵敏度以及性能方面都有显著提升。CSC 2.0包含了317,167颗致密X射线源和X射线展源的观测结果，可用于大样本统计学分析或单个源的深入研究。基于到2014年底公开发布的10,382次钱德拉ACIS、HRC-I图像观测数据，共提取出928,280组单次观测结果。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1536,7 +1536,7 @@
 		&lt;/a&gt; </text>
 	
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
+		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
 		4XMM-DR11s堆叠星表由1,475组共计8,292次高质量XMM-牛顿望远镜观测数据编纂而成。这些数据的获取时间为2000年2月3日至2020年12月17日。它们在半径上至少重叠1角分，且没有受非常高的背景辐射影响。该星表包含358,809颗源，其中275,440颗进行了多次观测。星表提供的信息包括位置和其他参数，例如XMM-牛顿标准能带流量、硬度比系数、质量评估以及多次观测间的变化性信息等。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1545,7 +1545,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-SLEW">
+		key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
 		XMMSL2是第二版从XMM-牛顿望远镜回转数据中探测得到的X射线源星表。该星表由代表ESA的XMM-牛顿望远镜SOC和EPIC联盟成员完成。该版本数据使用了EXTraS项目框架下的工作成果。在对重叠部分进行校正后，回转巡天覆盖了84%的天区范围。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1554,7 +1554,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text
-		key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AKARI-IRC-SC">
+		key="resultsPresenter_helpDescription_catalogues_AKARI-IRC-SC">
     AKARI IRC点源星表1.0版本提供了中红外波段870,973个源的位置和流量信息。其中9微米波段有844,649个源，18微米波段有194,551个源。
 		&lt;br&gt;&lt;br&gt;
     在16个月的低温观测任务期间，IRC在9/18微米波段对96%-97%的天区进行了两次以上扫描。这个点源星表是AKARI IRC巡天的主星表。每一次扫描观测采用了相同的探测极限，使得本星表在全天范围内拥有一致的探测极限。冗余观测被用来增强探测的可靠性。
@@ -1564,7 +1564,7 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_HSC">
+	<text key="resultsPresenter_helpDescription_catalogues_HSC">
     HSC哈勃星表将哈勃遗珍档案库（HLA）中所有独立观测的源表合并为一个星表。将HLA中数以万计的独立观测源表整合成为一个星表，旨在提升哈勃空间望远镜的科学产出。HSC哈勃星表第三版收录了HLA第十次数据发布的数据，包括从WFPC2、ACS/WFC、WFC3/UVIS及WFC3/IR设备观测中提取的源。为了最小化不同图像中相近源的位置偏移，交叉证认过程中对重叠图像的天体测量结果进行了修正。经过修正，这些证认源的天体测量残差显著减小，平均误差小于8毫角秒。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1572,7 +1572,7 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-UV">
+	<text key="resultsPresenter_helpDescription_spectra_HST-UV">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1593,7 +1593,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 		<text
-		key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-OPTICAL">
+		key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1613,7 +1613,7 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-IR">
+	<text key="resultsPresenter_helpDescription_spectra_HST-IR">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1633,7 +1633,7 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_HST">
+	<text key="resultsPresenter_helpDescription_sso_HST">
     ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
@@ -1693,7 +1693,7 @@
 	</text>
 	
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST">
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST">
     郭守敬望远镜（LAMOST，大天区面积多目标光纤光谱天文望远镜）是一架新类型的大视场兼备大口径望远镜。LAMOST应用薄镜面主动光学加拼接镜面主动光学技术，在曝光1.5小时内可以观测到暗达20.5等的天体，使其成为大口径兼大视场光学望远镜的世界之最。同时，采用并行可控的光纤定位技术，在5度视场，直径为1.75米的焦面上放置4000根光纤，同时获得4000个天体的光谱，使其成为世界上光谱获取率最高的望远镜。LAMOST安放在中国科学院国家天文台兴隆观测站。    
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第五次巡天观测数据(LAMOST DR5)包括了截至2017年6月的观测数据。总星表包含了9,026,365个观测目标，其中恒星8183160颗,星系152863个,类星体52453颗以及637889个未知天体。在g波段信噪比大于10的星体有5808985个，i波段信噪比大于10的星体有7701235个，两个波段信噪比都大于10的星体有5734239个。
@@ -1704,7 +1704,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST">
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST">
     郭守敬望远镜（LAMOST，大天区面积多目标光纤光谱天文望远镜）是一架新类型的大视场兼备大口径望远镜。LAMOST应用薄镜面主动光学加拼接镜面主动光学技术，在曝光1.5小时内可以观测到暗达20.5等的天体，使其成为大口径兼大视场光学望远镜的世界之最。同时，采用并行可控的光纤定位技术，在5度视场，直径为1.75米的焦面上放置4000根光纤，同时获得4000个天体的光谱，使其成为世界上光谱获取率最高的望远镜。LAMOST安放在中国科学院国家天文台兴隆观测站。    
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第五次巡天观测数据(LAMOST DR5)包括了截至2017年6月的观测数据。总星表包含了9,026,365个观测目标，其中恒星8183160颗,星系152863个,类星体52453颗以及637889个未知天体。在g波段信噪比大于10的星体有5808985个，i波段信噪比大于10的星体有7701235个，两个波段信噪比都大于10的星体有5734239个。
@@ -1715,7 +1715,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
+	<text key="resultsPresenter_helpDescription_observations_AKARI">
     ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接下载自日本ISAS数据存档和传输系统（DARTS）。该IRC红外相机包含NIR、MIR-S和MIR-L三个独立的系统，分别可观测1.7-5.5微米、5.8-14.1微米和12.4-26.5微米三个波段。每个系统都有三个滤光片可用。NIR和MIR-S视场相同，而MIR-L的视场与它们没有重叠。该设备的简要说明和数据产品请参考这个文档：
 		&lt;a
 		href="//repository.exst.jaxa.jp/dspace/bitstream/a-is/906920/1/AA1830017000.pdf"
@@ -1729,7 +1729,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Spitzer">
+	<text key="resultsPresenter_helpDescription_catalogues_Spitzer">
 		斯皮策科学中心和红外处理分析中心（IPAC）SEIP源表是低温观测数据发布3的一部分。该表包含了4200万个恒星和星系的测光数据，来自红外阵列相机（IRAC）在3.6微米, 4.5微米, 5.8微米和8微米波段，以及多波段成像光度计（MIPS）在24微米波段的观测结果。斯皮策SEIP源表综合了多个天文观测请求（AOR）的归档数据，利用最好和最终的定标图像数据和统一的处理流程实现对更暗弱源的识别。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1738,7 +1738,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Spitzer">
+	<text key="resultsPresenter_helpDescription_observations_Spitzer">
 		斯皮策增强图像产品（SEIP），低温数据发布3.0。这些是来自斯皮策低温任务数据的合成图像（“超级拼图”），包含了红外阵列相机全部四个波段（3.6微米, 4.5微米, 5.8微米, 8微米），以及多波段成像光度计（MIPS）的24微米波段数据。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1765,7 +1765,7 @@
 	<text key="scientific_category">
 		科学分类
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Herschel">
+	<text key="resultsPresenter_helpDescription_observations_Herschel">
 		现有赫歇尔空间天文台数据包括了HIFI、PACS和SPIRE仪器（包括PACS、SPIRE并行观测）的全部公开观测结果。供下载使用的科学数据另由单独的产品提供。关于赫歇尔空间天文台数据产品的简要描述可以点击
 		&lt;a href="//www.cosmos.esa.int/web/herschel/data-products-overview"
 		target="_blank"&gt;
@@ -1988,7 +1988,7 @@
 		下载数据库数据
 	</text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+	<text key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
 		Gaia DR3星表提供了超过14.6亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据
 		。天体测量解算结果还包含了RUWE（重归一化单位权重误差）以及源图像描述符。同时
 		，本版星表还提供了18.06亿颗源的G星等，15.42亿颗源的G&lt;sub&gt;BP&lt;/sub&gt; 星等，15.55亿颗源的G&lt;sub&gt;RP&lt;/sub&gt; 星等。源
@@ -2070,7 +2070,7 @@
 	<text key="tabulator_addHipsColumn">添加</text>
 	<text key="tabulator_addHips_tooltip">作为新行把这个HiPS添加到天空面板</text>
 	
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
+	<text key="resultsPresenter_helpDescription_spectra_CHEOPS">
 		CHEOPS系外行星监测卫星，发射于2019年12月，是第一个通过高精度测光观测来研究系外行星凌星的计划。它的主要监测目标是那些已知具有行星的亮星。
 		CHEOPS只有一个仪器：一架有效口径30厘米的反射式望远镜，视场直径0.32度。
 		观测频带为330-1100纳米，覆盖可见光到近红外。
@@ -2221,7 +2221,7 @@
 	<text key="header_highResolutionImagesTooltip">
 		显示欧空局哈勃空间望远镜网站图片
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4FGL-DR2">
 		费米大视场望远镜（LAT）自2008年以来一直在进行高能伽马射线巡天观测。LAT协作体通过对LAT数据的全面分析发布了一系列源表。第四版第二次发布（4FGL-DR2）来源于对LAT前10年科学数据的分析。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2230,7 +2230,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_3FHL">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_3FHL">
 		费米大视场望远镜高能源表第三版（3FHL），是费米大视场望远镜（LAT）最初7年数据使用第8版（Pass 8）数据处理系统事例分析得到的源表，包含1556颗能量在10GeV 到2TeV的源。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2239,7 +2239,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4LAC-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4LAC-DR2">
 		费米大视场望远镜活动星系核源表第四版第二次发布（4LAC-DR2）基于费米大视场望远镜（LAT）10年的观测数据。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2248,7 +2248,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_OU_Blazars">
+	<text key="resultsPresenter_helpDescription_catalogues_OU_Blazars">
 		耀变体的开放宇宙基于一个耀变体主星表。这个表的第二版通过合并5BZCAT、3HSP和4LAC表而成。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2318,7 +2318,7 @@
 	</text>
 
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+	<text key="resultsPresenter_helpDescription_catalogues_Icecube">
 		冰立方（IceCube）全天点源事件星表(2008 - 2018; Icecubepsc)。IceCube已经执行了多次类点源中微子搜寻任务。这个星表中收录的事件构成了IceCube 10年时间集成中微子点源搜索的样本。样本中的事件是IceCube在2008年4月至2018年7月间探测到的中微子候选体。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2327,7 +2327,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+	<text key="resultsPresenter_helpDescription_catalogues_2RXS">
 		第二版ROSAT全天巡天源表（2RXS）是ROSAT点源星表的第二个公开发布版本，来自1990年6月至1991年8月ROSAT全天巡天（RASS）位置灵敏正比计数管（PSPC）的观测，是对原亮源和暗源星表的扩展和修订。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2336,7 +2336,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+	<text key="resultsPresenter_helpDescription_catalogues_2WHSP">
 		2WHSP是一个多频段高能甚高能耀变体和耀变体候选体合成星表。这个星表收录了截止至2017年最大最全的高同步峰频耀变体(HSPs)样本。2WHSP是对银道面外伽马射线源候选体表1WHSP的扩展。依据射电-红外和红外-X射线光谱斜率制定的选择标准对大量多波段巡天数据（射电、红外、X射线波段）进行了交叉证认。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
