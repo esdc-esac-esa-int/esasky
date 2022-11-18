@@ -196,6 +196,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
         details.put(SourceConstant.ID, Integer.toString(shapeId));
         details.put(SourceConstant.EXTRA_PARAMS, null);
+        // TODO: fix this (publication extra)
 //        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
 //            details.put(SourceConstant.EXTRA_PARAMS, null);
 //        }

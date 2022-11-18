@@ -73,7 +73,7 @@
 	<text key="PublicationsBySourceCallback_helpTitle">
 		文章
 	</text>
-	<text key="resultsPresenter_helpDescription_PUBLICATIONS_ADS-PUB">
+	<text key="resultsPresenter_helpDescription_publications_ADS-PUB">
 		SIMBAD天文数据库中与目标相关联的文章，或访问每篇文章所包含的目标。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
