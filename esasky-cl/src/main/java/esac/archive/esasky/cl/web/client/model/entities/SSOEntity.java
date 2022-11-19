@@ -5,7 +5,6 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
-import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -51,7 +50,7 @@ public class SSOEntity extends EsaSkyEntity {
 	}
 
 	public void setOrbitPolyline(double[] polylinePoints) {
-	    combinedDrawer.addPolylineOverlay(getEsaSkyUniqId(), polylinePoints, getDescriptor().getColor());
+	    combinedDrawer.addPolylineOverlay(getId(), polylinePoints, getDescriptor().getColor());
 	}
 	
     @Override

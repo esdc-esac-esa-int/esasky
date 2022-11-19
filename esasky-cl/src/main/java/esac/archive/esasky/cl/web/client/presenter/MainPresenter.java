@@ -375,7 +375,7 @@ public class MainPresenter {
         GeneralEntityInterface entity = entityRepo.getEntity(descriptor.getId());
         if (entity == null) {
             entity = entityRepo.createEntity(descriptor);
-            entity.setEsaSkyUniqId(descriptor.getId());
+            entity.setId(descriptor.getId());
         }
 
         entity.setRefreshable(false);

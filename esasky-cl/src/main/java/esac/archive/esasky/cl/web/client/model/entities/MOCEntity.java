@@ -371,7 +371,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -418,7 +418,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void updateOverlay() {
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -588,13 +588,18 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public String getEsaSkyUniqId() {
-		return parentEntity.getEsaSkyUniqId();
+	public String getId() {
+		return parentEntity.getId();
 	}
 
 	@Override
-	public void setEsaSkyUniqId(String esaSkyUniqId) {
-		parentEntity.setEsaSkyUniqId(esaSkyUniqId);
+	public String getIcon() {
+		return parentEntity.getIcon();
+	}
+
+	@Override
+	public void setId(String id) {
+		parentEntity.setId(id);
 	}
 
 	@Override
@@ -639,7 +644,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public ITablePanel createTablePanel() {
-        setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
+        setTablePanel(new TabulatorTablePanel(getTabLabel(), getId(), this));
         return tablePanel;
 	}
 

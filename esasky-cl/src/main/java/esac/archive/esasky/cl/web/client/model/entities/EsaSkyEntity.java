@@ -28,10 +28,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EsaSkyEntity implements GeneralEntityInterface {
 
@@ -50,7 +47,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     protected Tooltip tooltip;
     private SkyViewPosition skyViewPosition;
     private String histoLabel;
-    private String esaSkyUniqId;
+    private String id;
     private String regionColumn;
     private TapRowList metadata;
     private CountStatus countStatus;
@@ -107,10 +104,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         this.descriptor = descriptor;
         this.secondaryShapeAdder = secondaryShapeAdder;
         this.regionColumn = regionColumn;
+        this.id = "ESASKY_ENTITY_" + UUID.randomUUID();
 
         String color = descriptor.getColor();
-        JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-                color, lineStyle);
+        JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(id, color, lineStyle);
 
         Map<String, Object> details = new HashMap<>();
 
@@ -120,8 +117,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             details.put("shape", shapeType);
         }
 
-        JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
-                esaSkyUniqId, shapeSize, color, details);
+        JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(id, shapeSize, color, details);
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
 
@@ -131,7 +127,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         drawer.setSecondaryColor(color);
 
         this.skyViewPosition = skyViewPosition;
-        this.esaSkyUniqId = esaSkyUniqId;
         this.countStatus = countStatus;
 
 
@@ -193,7 +188,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         details.put(SourceConstant.SOURCE_NAME, mySource.getShapeName());
 
-        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
+        details.put(SourceConstant.CATALOGE_NAME, getId());
         details.put(SourceConstant.ID, Integer.toString(shapeId));
         details.put(SourceConstant.EXTRA_PARAMS, null);
         // TODO: fix this (publication extra)
@@ -267,7 +262,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {
-				    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("WaitingForCount" + getEsaSkyUniqId()));
+				    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("WaitingForCount" + getId()));
 	                fetchShapesAndMetadata();
 					getCountStatus().unregisterObserver(this);
 				}
@@ -318,7 +313,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         clearAll();
         int shapeLimit = DeviceUtils.getDeviceShapeLimit(descriptor);
 
-        if (descriptor instanceof CommonTapDescriptor && getCountStatus().getCount(descriptor) > shapeLimit) {
+        if (shapeLimit > 0 && getCountStatus().getCount(descriptor) > shapeLimit) {
             Log.debug("Showing dynamic moc");
             if(mocEntity == null){
                 mocEntity = new MOCEntity(descriptor, getCountStatus(), EsaSkyEntity.this);
@@ -526,13 +521,34 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public String getEsaSkyUniqId() {
-        return esaSkyUniqId;
+    public String getId() {
+        return id;
     }
 
     @Override
-    public void setEsaSkyUniqId(String esaSkyUniqId) {
-        this.esaSkyUniqId = esaSkyUniqId;
+    public String getIcon() {
+        switch (descriptor.getCategory()) {
+            case EsaSkyWebConstants.CATEGORY_PUBLICATIONS:
+                return "publications";
+            case EsaSkyWebConstants.CATEGORY_CATALOGUES:
+                return "catalog";
+            case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                return "ext_tap";
+            case EsaSkyWebConstants.CATEGORY_SSO:
+                return "sso";
+            case EsaSkyWebConstants.CATEGORY_SPECTRA:
+                return "spectra";
+            case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+            case EsaSkyWebConstants.CATEGORY_NEUTRINOS:
+            case EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES:
+            default:
+                return "galaxy";
+        }
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -556,18 +572,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
     
     @Override
-    // TODO: Fix
     public Object getTAPDataByTAPName(TapRowList tapRowList, int rowIndex, String tapName) {
-//    	Object data = null;
-//        for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
-//            if (tapMetadata.getName().equals(tapName)) {
-//                int dataIndex = tapRowList.getMetadata().indexOf(tapMetadata);
-//                data = (tapRowList.getData().get(rowIndex)).get(dataIndex);
-//                break;
-//            }
-//        }
-//        return data;
-        return null;
+    	Object data = null;
+        for (TapMetadata tapMetadata : tapRowList.getMetadata()) {
+            if (tapMetadata.getName().equals(tapName)) {
+                int dataIndex = tapRowList.getMetadata().indexOf(tapMetadata);
+                data = (tapRowList.getData().get(rowIndex)).get(dataIndex);
+                break;
+            }
+        }
+        return data;
     }
 
     @Override
@@ -650,7 +664,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	
 	@Override
     public ITablePanel createTablePanel() {
-        setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
+        setTablePanel(new TabulatorTablePanel(getTabLabel(), getId(), this));
         return tablePanel;
     }
 
@@ -697,7 +711,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
         }
         
-        stylePanel = new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShapeType(),
+        stylePanel = new StylePanel(getId(), getTabLabel(), getColor(), getSize(), getShapeType(),
                 getLineStyle(), getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
                 combinedDrawer.getUseMedianOnAvgProperMotion(), new StylePanelCallback() {
 

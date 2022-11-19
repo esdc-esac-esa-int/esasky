@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.ui.Image;
 
-import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
@@ -14,8 +13,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
@@ -27,9 +24,11 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 
     void setHistoLabel(String histoLabel);
 
-    String getEsaSkyUniqId();
+    String getId();
 
-    void setEsaSkyUniqId(String esaSkyUniqId);
+    String getIcon();
+
+    void setId(String id);
 
     TapRowList getMetadata();
 

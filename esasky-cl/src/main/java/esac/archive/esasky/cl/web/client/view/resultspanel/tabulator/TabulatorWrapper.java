@@ -2020,21 +2020,28 @@ public class TabulatorWrapper {
 				var val = col.value
 				var metaName = colName.substring(0,colName.length - 4)
 				var datatype = col.datatype;
+                var label = colName;
 
 				//If not in descMetaData add to unique spot in end and then we remove all empty slots in end
 				var metaDataIndex = data.length + newMeta.length;
 				var visible = false;
-				
-				
-				if(descMetaData.hasOwnProperty(metaName)){
-					metaDataIndex = parseInt(descMetaData[metaName].index);
-					datatype = descMetaData[metaName].type.toUpperCase();
-					if(descMetaData[metaName].hasOwnProperty("visible")){
-                        visible = descMetaData[metaName]["visible"];
+
+                var metaObj = (function(name){
+                    return descMetaData.find(function(x) {
+                        if (x.name === name) {
+                            return x;
+                        }
+                    });
+                })(metaName);
+
+                if (metaObj) {
+                    label = metaObj.name;
+                    visible = metaObj.principal;
+                    if (metaObj.datatype !== null) {
+                        datatype = metaObj.datatype.toUpperCase();
                     }
-				}
-				
-				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+                }
+
 				
 				var displayName = $wnd.esasky.getDefaultLanguageText(label);
 				displayName  = $wnd.esasky.getColumnDisplayText(displayName);

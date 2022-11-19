@@ -194,7 +194,7 @@ public class Session {
 			}else if (ent instanceof PublicationsByAuthorEntity) {
 				JSONObject pubObj = new JSONObject();
 				pubObj.put(EsaSkyWebConstants.SESSION_PUB_TYPE, new JSONString(EsaSkyWebConstants.SESSION_PUB_TYPE_AUTHOR));
-				pubObj.put(EsaSkyWebConstants.SESSION_PUB_AUTHOR, new JSONString(ent.getEsaSkyUniqId()));
+				pubObj.put(EsaSkyWebConstants.SESSION_PUB_AUTHOR, new JSONString(ent.getId()));
 				array.set(array.size(), pubObj);
 			
 			}else if (ent instanceof PublicationsBySourceEntity) {
@@ -202,7 +202,7 @@ public class Session {
 				Shape shape = pubEnt.getShape(0);
 				JSONObject pubObj = new JSONObject();
 				pubObj.put(EsaSkyWebConstants.SESSION_PUB_TYPE, new JSONString(EsaSkyWebConstants.SESSION_PUB_TYPE_SOURCE));
-				pubObj.put(EsaSkyWebConstants.SESSION_PUB_SOURCE, new JSONString(ent.getEsaSkyUniqId()));
+				pubObj.put(EsaSkyWebConstants.SESSION_PUB_SOURCE, new JSONString(ent.getId()));
 				pubObj.put(EsaSkyWebConstants.SESSION_RA, new JSONString(shape.getRa()));
 				pubObj.put(EsaSkyWebConstants.SESSION_DEC, new JSONString(shape.getDec()));
 				String bibcount = shape.getJsObject().getProperty("data").getStringProperty(EsaSkyWebConstants.SESSION_PUB_BIBCOUNT);

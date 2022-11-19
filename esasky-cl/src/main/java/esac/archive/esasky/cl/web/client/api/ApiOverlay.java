@@ -1,10 +1,8 @@
 package esac.archive.esasky.cl.web.client.api;
 
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
@@ -15,7 +13,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 
 import esac.archive.esasky.cl.web.client.Controller;
-import esac.archive.esasky.cl.web.client.api.model.Footprint;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListOverlay;
 import esac.archive.esasky.cl.web.client.api.model.GeneralSkyObject;
@@ -278,7 +275,7 @@ public class ApiOverlay extends ApiBase{
 	
 		JSONArray arr = new JSONArray();
 		for(GeneralEntityInterface ent : list) {
-			arr.set(arr.size(),new JSONString(ent.getEsaSkyUniqId()));
+			arr.set(arr.size(),new JSONString(ent.getId()));
 		}
 		JSONObject result = new JSONObject();
 		result.put("Overlays", arr);

@@ -3,21 +3,16 @@ package esac.archive.esasky.cl.web.client.model.entities;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Image;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.query.TAPPublicationsService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.PublicationsTablePanel;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
@@ -31,7 +26,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
     @Override
     public ITablePanel createTablePanel() {
-        tablePanel = new PublicationsTablePanel(getTabLabel(), getEsaSkyUniqId(), this);
+        tablePanel = new PublicationsTablePanel(getTabLabel(), getId(), this);
         return tablePanel;
     }
     
@@ -55,7 +50,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     
     @Override
     public String getTabLabel() {
-    	return getEsaSkyUniqId();
+    	return getId();
     }
     
     @Override

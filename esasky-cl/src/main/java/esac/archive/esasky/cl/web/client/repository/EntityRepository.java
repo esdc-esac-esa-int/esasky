@@ -51,7 +51,7 @@ public class EntityRepository {
 
     public GeneralEntityInterface getEntity(String id) {
         for (GeneralEntityInterface currEntity : allEntities) {
-            if (currEntity.getEsaSkyUniqId().equals(id)) {
+            if (currEntity.getId().equals(id)) {
                 return currEntity;
             }
         }
@@ -110,7 +110,7 @@ public class EntityRepository {
     public List<String> getAllEntityNames() {
     	LinkedList<String> list = new LinkedList<String>();
     	for(GeneralEntityInterface ent : allEntities) {
-    		list.add(ent.getEsaSkyUniqId());
+    		list.add(ent.getId());
     	}
     	return list;
     }

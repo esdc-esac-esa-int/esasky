@@ -63,7 +63,7 @@ public class PublicationPanelPresenter {
 
         @Override
         public void run() {
-            CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(entity.getEsaSkyUniqId() + "SourceLimit"));
+            CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(entity.getId() + "SourceLimit"));
         }
     };
 
@@ -305,7 +305,7 @@ public class PublicationPanelPresenter {
                         .replace("$orderBy$", orderBy.toLowerCase())
                         .replace("$mostOrLeast$", orderBy.toLowerCase());
                 CommonEventBus.getEventBus().fireEvent(
-                        new ProgressIndicatorPushEvent(entity.getEsaSkyUniqId() + "SourceLimit", sourceLimitDescription, true));
+                        new ProgressIndicatorPushEvent(entity.getId() + "SourceLimit", sourceLimitDescription, true));
                 sourceLimitNotificationTimer.schedule(6000);
 			} else {
 				isShowingTruncatedDataset = false;

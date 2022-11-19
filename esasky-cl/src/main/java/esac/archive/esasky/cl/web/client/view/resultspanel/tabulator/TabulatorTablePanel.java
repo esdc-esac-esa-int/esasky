@@ -344,11 +344,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void exportAsCsv() {
-		table.downloadCsv(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv");
+		table.downloadCsv(DownloadUtils.getValidFilename(getEntity().getId()) + ".csv");
 	}
 
 	public void exportAsVot() {
-		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getLongName());
+		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getId()) + ".vot", "ESASky " + getDescriptor().getLongName());
 	}
 
 	public Widget getWidget() {
@@ -356,7 +356,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public String getFullId() {
-		return getEntity().getEsaSkyUniqId() + "-" + getLabel();
+		return getEntity().getId() + "-" + getLabel();
 	}
 
 	public void setEmptyTable(String emptyTableText) {
@@ -935,7 +935,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getEsaSkyUniqId() {
-		return entity.getEsaSkyUniqId();
+		return entity.getId();
 	}
 
 	@Override

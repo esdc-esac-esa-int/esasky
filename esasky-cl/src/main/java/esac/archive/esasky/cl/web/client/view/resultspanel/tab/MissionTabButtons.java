@@ -30,7 +30,7 @@ public class MissionTabButtons extends Composite {
 
     public MissionTabButtons(final String helpTitle, final String helpDescription, GeneralEntityInterface entity) {
         
-        this.esaSkyUniqId = entity.getEsaSkyUniqId();
+        this.esaSkyUniqId = entity.getId();
         this.compositePanel = new FlowPanel();
         
         this.tabTitleLabel = new LabelWithHelpButton(entity.getTabLabel(), helpDescription, helpTitle, "labelWithHelpButtonLabelNoFontSize");
@@ -70,11 +70,10 @@ public class MissionTabButtons extends Composite {
         
         initWidget(this.compositePanel);
 
-        // TODO: Fix
-//        this.toggleImage = new ToggleImage(new Image("images/" + entity.getDescriptor().getIcon() + ".png"),
-//                new Image("images/" + entity.getDescriptor().getIcon() + "_toggled.png"));
-//        toggleImage.addStyleName("tabIcon");
-//        this.compositePanel.insert(toggleImage, 0);
+        this.toggleImage = new ToggleImage(new Image("images/" + entity.getIcon() + ".png"),
+                new Image("images/" + entity.getIcon() + "_toggled.png"));
+        toggleImage.addStyleName("tabIcon");
+        this.compositePanel.insert(toggleImage, 0);
         
         entity.registerColorChangeObserver(this::setColor);
     }

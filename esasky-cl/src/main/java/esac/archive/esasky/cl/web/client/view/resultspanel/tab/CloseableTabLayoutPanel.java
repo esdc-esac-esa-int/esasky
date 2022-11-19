@@ -21,7 +21,6 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -390,7 +389,7 @@ public class CloseableTabLayoutPanel extends Composite {
                         Double.toString(entity.getSkyViewPosition().getCoordinate().getDec()));
                 AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
 
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_RECENTER, entity.getEsaSkyUniqId());
+                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_RECENTER, entity.getId());
             }
         });
         recenterButton.addStyleName("tabButton");
@@ -466,38 +465,28 @@ public class CloseableTabLayoutPanel extends Composite {
         addTab(new MissionTabButtons(helpTitle, helpDescription, tabPanel.getEntity()), tabPanel);
     }
     
-    private final void addTab(final MissionTabButtons tab, final ITablePanel tabPanel) {
+    private void addTab(final MissionTabButtons tab, final ITablePanel tabPanel) {
 
-        tab.setCloseClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                tabPanel.closeTablePanel();
-            }
-        });
+        tab.setCloseClickHandler(event -> tabPanel.closeTablePanel());
         
-        tab.setStyleClickHandler(new ClickHandler() {
+        tab.setStyleClickHandler(event -> {
+            // Fires the show style menu delayed to allow the event bus to propagate the ResultTabSelectedEvent first,
+            // to avoid that this stylePanel get closed just after being opened. If the tab is different that selected on
+            // the call is delayed, else none
+            Timer timer = new Timer() {
+                public void run () {
+                    CloseableTabLayoutPanel.this.fireShowStylePanel(tab.getId());
+                }
+            };
 
-            @Override
-            public void onClick(final ClickEvent event) {
-                // Fires the show style menu delayed to allow the event bus to propagate the ResultTabSelectedEvent first,
-                // to avoid that this stylePanel get closed just after being opened. If the tab is different that selected on
-                // the call is delayed, else none
-                Timer timer = new Timer() {
-                    public void run () {
-                        CloseableTabLayoutPanel.this.fireShowStylePanel(tab.getId());
-                    }
-                };
-  
-                timer.schedule((!tabs.get(tabLayout.getSelectedIndex()).getId().equals(tab.getId())) ? 300 : 5);
-            }
+            timer.schedule((!tabs.get(tabLayout.getSelectedIndex()).getId().equals(tab.getId())) ? 300 : 5);
         });
         
         tabPanel.registerClosingObserver(() -> removeTab(tab));
         
         
         this.tabs.add(tab);
-        this.tabWidgetIds.put(tab, tab.getId());
+        this.tabWidgetIds.put(tab, tab.getId()  );
         shadedArea.removeStyleName("hidden");
         
         this.tabLayout.add(tabPanel.getWidget(), tab);
@@ -540,15 +529,11 @@ public class CloseableTabLayoutPanel extends Composite {
 
         
         GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TAB_OPENED, tabPanel.getFullId());
-        tabPanel.getEntity().registerColorChangeObserver(new ColorChangeObserver() {
-			
-			@Override
-			public void onColorChange(String newColor) {
-				if (styleButton != null && styleButton.isVisible()) {
-					styleButton.setCircleColor(newColor);
-				}
-			}
-		});
+        tabPanel.getEntity().registerColorChangeObserver(newColor -> {
+            if (styleButton != null && styleButton.isVisible()) {
+                styleButton.setCircleColor(newColor);
+            }
+        });
         styleButton.setCircleColor(tabPanel.getDescriptor().getColor());
         setCloseAllButtonVisibility();
         
@@ -564,11 +549,7 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     public boolean checkIfIdExists(String id) {
-    	if(tabWidgetIds.inverse().get(id) != null) {
-    		return true;
-    	}
-    	
-    	return false;
+        return tabWidgetIds.inverse().get(id) != null;
     }
     
     private void ensureCorrectButtonClickability(int numberOfShownRows) {
@@ -592,7 +573,7 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     public final ITablePanel getWidget(final int index) {
-        return (ITablePanel)this.tabLayout.getWidget(index);
+        return this.tabLayout.getWidget(index);
     }
 
     public final int getWidgetIndex(final Widget w) {
