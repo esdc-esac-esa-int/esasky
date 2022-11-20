@@ -45,14 +45,14 @@ public class TapMetadataDescriptor {
      */
     public static TapMetadataDescriptor fromTapDescriptor(TapDescriptor tapDescriptor) {
         TapMetadataDescriptor metadataDescriptor = new TapMetadataDescriptor();
-        metadataDescriptor.setName(tapDescriptor.getProperty("column_name").toString());
-        metadataDescriptor.setDataType(tapDescriptor.getProperty("datatype").toString());
-        metadataDescriptor.setArraySize(tapDescriptor.getProperty("arraysize").toString());
-        metadataDescriptor.setDescription(tapDescriptor.getProperty("description").toString());
-        metadataDescriptor.setUnit(tapDescriptor.getProperty("unit").toString());
-        metadataDescriptor.setUcd(tapDescriptor.getProperty("ucd").toString());
-        metadataDescriptor.setUtype(tapDescriptor.getProperty("utype").toString());
-        metadataDescriptor.setPrincipal(tapDescriptor.getProperty("principal").toString());
+        metadataDescriptor.setName(tapDescriptor.getPropertyString("column_name"));
+        metadataDescriptor.setDataType(tapDescriptor.getPropertyString("datatype"));
+        metadataDescriptor.setArraySize(tapDescriptor.getPropertyString("arraysize"));
+        metadataDescriptor.setDescription(tapDescriptor.getPropertyString("description"));
+        metadataDescriptor.setUnit(tapDescriptor.getPropertyString("unit"));
+        metadataDescriptor.setUcd(tapDescriptor.getPropertyString("ucd"));
+        metadataDescriptor.setUtype(tapDescriptor.getPropertyString("utype"));
+        metadataDescriptor.setPrincipal(tapDescriptor.getPropertyString("principal"));
         return metadataDescriptor;
     }
 
@@ -94,15 +94,15 @@ public class TapMetadataDescriptor {
 
     @JsonSetter("principal")
     public void setPrincipal(Integer principal) {
-        this.principal = principal == null ? 0 : principal;
+        this.principal = principal == null ? 1 : principal;
     }
 
     public void setPrincipal(Boolean principal) {
-        this.principal = Boolean.TRUE.equals(principal) ? 1 : 0;
+        this.principal = Boolean.FALSE.equals(principal) ? 0 : 1;
     }
 
     public void setPrincipal(String principal) {
-        setPrincipal(principal.equals("1") || principal.equals("true"));
+        setPrincipal(principal == null || principal.equals("1") || principal.equals("true"));
     }
 
     public void setName(String name) {

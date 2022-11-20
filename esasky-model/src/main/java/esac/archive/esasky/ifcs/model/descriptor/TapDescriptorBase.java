@@ -70,6 +70,11 @@ public abstract class TapDescriptorBase {
     private TapMetadataDescriptor getColumn(String columnName) {
         return getMetadata().stream()
                 .filter(cm -> cm.getName().equals(columnName)).findFirst().orElse(null);
+
+    }
+
+    private boolean anyColumnVisible() {
+        return getMetadata().stream().anyMatch(TapMetadataDescriptor::isPrincipal);
     }
 
     public String getId() {
@@ -157,7 +162,7 @@ public abstract class TapDescriptorBase {
 
     public boolean isColumnVisible(String columnName) {
         TapMetadataDescriptor column = getColumn(columnName);
-        return column == null || column.isPrincipal();
+        return column == null || column.isPrincipal() || !anyColumnVisible();
     }
 
     public void setColumnVisibility(String columnName, boolean visible) {

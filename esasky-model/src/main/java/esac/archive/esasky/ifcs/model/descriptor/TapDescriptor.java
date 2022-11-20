@@ -73,6 +73,18 @@ public class TapDescriptor extends TapDescriptorBase {
         return properties.getOrDefault(key, null);
     }
 
+    /**
+     * Finds the property value corresponding to the key and converts it
+     * to a String.
+     *
+     * @param key the key of the property value to be retrieved.
+     * @return the property as a String or null.
+     */
+    protected String getPropertyString(String key) {
+        Object property = getProperty(key);
+        return property != null ? property.toString() : null;
+    }
+
 
     /**
      * Finds the property value corresponding to ONE of the provided content descriptors.
