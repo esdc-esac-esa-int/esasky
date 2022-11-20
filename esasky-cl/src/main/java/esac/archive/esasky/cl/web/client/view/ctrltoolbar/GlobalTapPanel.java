@@ -14,6 +14,7 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabulatorCallback;
@@ -38,6 +39,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private FlowPanel tabulatorContainer;
     private QueryPopupPanel queryPopupPanel;
     private LoadingSpinner loadingSpinner;
+    private boolean fovLimiterEnabled;
 
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
@@ -71,6 +73,19 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         header = new PopupHeader<>(this, "External Tap Registry",
                 "help text",
                 "help title");
+
+        fovLimiterEnabled = true;
+        EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
+                "Limit query results to the FOV", "Limit query results to the FOV");
+
+        switchBtn.addClickHandler(event -> {
+            fovLimiterEnabled = !fovLimiterEnabled;
+            switchBtn.setChecked(fovLimiterEnabled);
+        });
+
+        FlowPanel switchContainer = new FlowPanel();
+        switchContainer.add(switchBtn);
+        header.addActionWidget(switchContainer);
 
 
         loadingSpinner = new LoadingSpinner(true);
@@ -147,7 +162,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 if (descriptorList != null) {
                     List<TapMetadataDescriptor> metadataDescriptorList  = descriptorList.getDescriptors().stream()
                             .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                    CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().addExtTapDescriptor(metadataDescriptorList, tapUrl, tableName, query, fovLimit);
+                    CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().addExtTapDescriptor(metadataDescriptorList, tapUrl, tableName, query, fovLimit && fovLimiterEnabled);
                     CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
                 }
             }
