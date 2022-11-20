@@ -228,13 +228,18 @@ public class DescriptorRepository {
 
         // Make sure "from" is uppercase
         int start = query.toUpperCase().indexOf(from);
-        String subStr = query.substring(start, start + from.length());
-        query = query.replace(subStr, from);
+        if (start >= 0) {
+            String subStr = query.substring(start, start + from.length());
+            query = query.replace(subStr, from);
+        }
 
         // Make sure "where" is uppercase
         start = query.toUpperCase().indexOf(where);
-        subStr = query.substring(start, start + where.length());
-        query = query.replace(subStr, where);
+        if (start >= 0) {
+            String subStr = query.substring(start, start + where.length());
+            query = query.replace(subStr, where);
+        }
+
 
 
 
