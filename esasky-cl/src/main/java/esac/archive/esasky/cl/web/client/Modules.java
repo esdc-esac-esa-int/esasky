@@ -196,6 +196,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
 		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, false);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD, false);
+		map.put(EsaSkyWebConstants.MODULE_EVA_MENU, false);
 
 		return map;
 	}
