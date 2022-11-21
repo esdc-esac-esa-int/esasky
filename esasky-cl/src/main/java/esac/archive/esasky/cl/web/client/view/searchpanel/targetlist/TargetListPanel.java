@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
@@ -148,14 +149,16 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 
         uploadContainer.add(createPreparedListDropDown());
 
-        Label orUploadLabel = new Label();
-        orUploadLabel.setText(TextMgr.getInstance().getText("uploadTargetList_orUpload"));
-        orUploadLabel.setStyleName("orUploadLabel");
-        uploadContainer.add(orUploadLabel);
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD)) {
+            Label orUploadLabel = new Label();
+            orUploadLabel.setText(TextMgr.getInstance().getText("uploadTargetList_orUpload"));
+            orUploadLabel.setStyleName("orUploadLabel");
+            uploadContainer.add(orUploadLabel);
 
-        initUploader();
-        uploadContainer.add(uploader);
+            initUploader();
+            uploadContainer.add(uploader);
 
+        }
         container.add(uploadContainer);
         container.add(targetsContainer);
 

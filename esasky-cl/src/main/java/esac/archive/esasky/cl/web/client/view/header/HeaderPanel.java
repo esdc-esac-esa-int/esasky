@@ -124,11 +124,14 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		header.add(coordinateContainer);
 
 		hipsLabelButton.getElement().setId("selectedSky");
+		hipsLabelButton.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU));
+
 		header.add(hipsLabelButton);
 
 		header.add(statusPanel);
-		
-		
+
+
+
 		gridButton.setTitle(TextMgr.getInstance().getText("header_gridFull"));
 		gridButton.setMediumStyle();
 		gridButton.getElement().setId("header__gridButton");
@@ -671,7 +674,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		int pxWidth = ScreenSizeService.getInstance().getScreenSize().getWidth().getPxSize();
 		
 		
-		if(pxWidth <= ScreenWidth.LARGE.getPxSize()) {
+		if(pxWidth <= ScreenWidth.LARGE.getPxSize() || !Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU)) {
 			hipsLabelButton.setVisible(false);
 		} else {
 			hipsLabelButton.setVisible(true);

@@ -151,7 +151,7 @@ body {
   filter: brightness(0.8); 
 }
 
-.dragImageVertical:hover { 
+.dragImageVertical:hover {
   filter: brightness(1); 
   cursor: row-resize;
 }

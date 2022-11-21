@@ -128,6 +128,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_MODE_ESASKY = "ESASKY";
     public static final String MODULE_MODE_JWST = "JWST";
     public static final String MODULE_MODE_CLEAN = "CLEAN";
+    public static final String MODULE_MODE_KIOSK = "KIOSK";
 
     
     public static final String MODULE_SCIENTIFIC_BUTTON = "scientific_toggle_button";
@@ -149,6 +150,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SSO = "sso_button";
     public static final String MODULE_PUBLICATIONS = "publications_button";
     public static final String MODULE_TARGETLIST = "target_list_button";
+    public static final String MODULE_TARGETLIST_UPLOAD = "target_list_upload";
     public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE_MODE = "science_mode";
@@ -156,7 +158,6 @@ public class EsaSkyWebConstants {
     public static final String MODULE_EVA_MENU = "eva_menu";
     public static final String MODULE_EVA = "eva";
     public static final String MODULE_SEARCH_TOOL = "search_tool";
-    
     
     // DEFAULT ONES
     public static final String MODULE_WWT_LINK = "wwtLink";

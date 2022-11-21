@@ -26,6 +26,7 @@ public class Modules {
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_CLEAN, createCleanMap());
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_ESASKY, createEsaskyMap());
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_JWST, createJWSTMap());
+		allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_KIOSK, createKioskMap());
         
         currentModuleMap = allModuleMaps.get(EsaSkyWebConstants.MODULE_MODE_ESASKY);
     	
@@ -101,7 +102,6 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
-
         
         return map;
 	}
@@ -167,6 +167,38 @@ public class Modules {
 		
 		return map;
 	}
+
+	private static HashMap<String, Boolean> createKioskMap() {
+		HashMap<String, Boolean> map = createDefaultMap();
+
+		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, false);
+		map.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
+		map.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
+		map.put(EsaSkyWebConstants.MODULE_SCREENSHOT, false);
+		map.put(EsaSkyWebConstants.MODULE_SHARE, false);
+		map.put(EsaSkyWebConstants.MODULE_HELP, false);
+		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
+		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, false);
+		map.put(EsaSkyWebConstants.MODULE_OBS, false);
+		map.put(EsaSkyWebConstants.MODULE_CAT, false);
+		map.put(EsaSkyWebConstants.MODULE_SPE, false);
+		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, true);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, true);
+		map.put(EsaSkyWebConstants.MODULE_GW, false);
+		map.put(EsaSkyWebConstants.MODULE_SSO, false);
+		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
+		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
+		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, false);
+		map.put(EsaSkyWebConstants.MODULE_DICE, true);
+		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
+		map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
+		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, false);
+		map.put(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD, false);
+
+		return map;
+	}
 	
 	private static HashMap<String, Boolean> createDefaultMap() {
 		HashMap<String, Boolean> map = new HashMap<>();
@@ -178,6 +210,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SHOW_MISSING_TRANSLATIONS, Boolean.parseBoolean(Dictionary.getDictionary(SERVER_PROPERTIES).get("showMissingTranslationBox")));
 		map.put(EsaSkyWebConstants.MODULE_EVA_MENU, Boolean.parseBoolean(Dictionary.getDictionary(SERVER_PROPERTIES).get("showEva")));
 		map.put(EsaSkyWebConstants.MODULE_EVA, false);
+		map.put(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD, true);
 		
 		return map;
 	}
