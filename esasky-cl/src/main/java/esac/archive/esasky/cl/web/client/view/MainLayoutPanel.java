@@ -228,7 +228,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 			welcomeDialogBox.show();
 		}
 
-		if (Objects.equals(Modules.getMode(), EsaSkyWebConstants.MODULE_MODE_KIOSK)) {
+		if (Objects.equals(Modules.getMode().toUpperCase(), EsaSkyWebConstants.MODULE_MODE_KIOSK)) {
 			disableAnchorElements();
 		}
 	}
