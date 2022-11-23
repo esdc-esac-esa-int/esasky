@@ -22,7 +22,10 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.callback.Promise;
-import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
+import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
+import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
+import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter;
@@ -346,7 +349,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         button.addStyleName("ctrlToolBarBtn");
         button.setTitle(tooltip);
     }
-
+    
     public EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description) {
         EsaSkyButton button;
         if (icon != null) {
@@ -529,23 +532,31 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 
     public EsaSkyButton createExploreButton() {
-        final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreRandomTarget") : null;
+
+        final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon(), label);
         button.getElement().setId("exploreButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreRandomTarget"));
-        button.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                if (!exploreActionInProgress) {
-                    showRandomSource();
-                    sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
-                }
+        button.addClickHandler(event -> {
+            if (!exploreActionInProgress) {
+                showRandomSource();
+                sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
             }
         });
+
+        if (isKiosk) {
+            button.addStyleName("kioskBtn");
+        }
 
         return button;
     }
 
     public EsaSkyToggleButton createTargetListButton() {
-        final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_uploadTargetList") : null;
+
+        final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon(), label);
         button.getElement().setId("targetListButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_uploadTargetList"));
         button.addClickHandler(event -> {
@@ -553,11 +564,18 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
         });
 
+        if (isKiosk) {
+            button.addStyleName("kioskBtn");
+        }
+
         return button;
     }
 
     public EsaSkyToggleButton createHstOutreachButton() {
-        outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreHstImages") : null;
+
+        outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon(),  label);
         outreachImageButton.getElement().setId("imageButton");
         addCommonButtonStyle(outreachImageButton, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
         outreachImageButton.addClickHandler(event -> {
@@ -572,12 +590,21 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachImagePanel.hide();
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
 
+        if (isKiosk) {
+            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 350);
+            outreachImagePanel.definePositionFromTopAndLeft();
+            outreachImageButton.addStyleName("kioskBtn");
+        }
+
         return outreachImageButton;
 
     }
 
     public EsaSkyToggleButton createJwstOutreachButton() {
-        outreachJwstButton = new EsaSkyToggleButton(Icons.getJwstIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreJwstImages") : null;
+
+        outreachJwstButton = new EsaSkyToggleButton(Icons.getJwstIcon(), label);
         outreachJwstButton.getElement().setId("jwstButton");
         addCommonButtonStyle(outreachJwstButton, TextMgr.getInstance().getText("webConstants_exploreJwstImages"));
         outreachJwstButton.addClickHandler(event -> {
@@ -591,6 +618,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachJwstPanel.definePositionFromTopAndLeft();
         outreachJwstPanel.hide();
         outreachJwstPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
+
+        if (isKiosk) {
+            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 350);
+            outreachJwstPanel.definePositionFromTopAndLeft();
+            outreachJwstButton.addStyleName("kioskBtn");
+        }
 
         return outreachJwstButton;
 

@@ -198,6 +198,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD, false);
 		map.put(EsaSkyWebConstants.MODULE_EVA_MENU, false);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU, false);
+		map.put(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS, true);
 
 		return map;
 	}
@@ -214,7 +215,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_EVA, false);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU, true);
-		
+		map.put(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS, false);
 		return map;
 	}
     

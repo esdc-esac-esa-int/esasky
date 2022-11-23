@@ -152,3 +152,11 @@
     flex-direction: column;
     justify-content: center
 }
+
+.imageLabelButton {
+	margin: auto auto 10px;
+}
+
+.imageLabelButtonLabel {
+	font-size: 0.8em;
+}

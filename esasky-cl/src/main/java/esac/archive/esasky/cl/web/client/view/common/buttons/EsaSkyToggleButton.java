@@ -23,20 +23,7 @@ public class EsaSkyToggleButton extends EsaSkyButton{
     }
 	
 	public EsaSkyToggleButton(ImageResource image){
-		super(image);
-		
-        this.style = this.resources.style();
-        this.style.ensureInjected();
-        
-		button.addStyleName("toggleButtonOff");
-		
-		addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				toggle();
-			}
-		});
+		this(image, null);
 	}
 
 	public EsaSkyToggleButton(String text){
@@ -48,13 +35,19 @@ public class EsaSkyToggleButton extends EsaSkyButton{
 		button.addStyleName("smallStringToggleButton");
 
 		
-		addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				toggle();
-			}
-		});
+		addClickHandler(event -> toggle());
+	}
+
+	public EsaSkyToggleButton(ImageResource image, String label){
+		super(image, label);
+
+		this.style = this.resources.style();
+		this.style.ensureInjected();
+
+		button.addStyleName("toggleButtonOff");
+
+		addClickHandler(event -> toggle());
+
 	}
 
     public void setToggleStatus(boolean toggleStatus) {

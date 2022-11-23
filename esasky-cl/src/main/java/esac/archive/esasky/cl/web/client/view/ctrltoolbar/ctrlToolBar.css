@@ -8,6 +8,11 @@
 	vertical-align: middle;
 }
 
+.kioskBtn{
+	display: block !important;
+	margin-bottom: 10px !important;
+}
+
 .badgeButtonContainer{
 	display: inline-block;
 	vertical-align: middle;

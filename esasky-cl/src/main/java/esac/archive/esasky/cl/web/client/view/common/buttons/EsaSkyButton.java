@@ -6,12 +6,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 
-import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.RotateAnimation;
 
 
@@ -41,28 +37,7 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
     }
 
 	public EsaSkyButton(ImageResource image){
-		FlowPanel container = new FlowPanel();
-		button = new PushButtonWithVisibleOnClick(new Image(image));
-		container.add(button);
-
-		initWidget(container);
-
-		initStyle();
-
-		this.enabledImage = new Image(image);
-        this.enabledImage.addStyleName("fillParent");
-        button.getUpFace().setImage(enabledImage);
-
-
-        rotateAnimation = new RotateAnimation(enabledImage.getElement());
-
-        rotateAnimation.addObserver(new AnimationObserver() {
-
-            @Override
-            public void onComplete(double currentPosition) {
-            	button.getUpFace().setImage(enabledImage);
-            }
-        });
+		this(image, null);
 	}
 
 	public EsaSkyButton(String text){
@@ -77,6 +52,30 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 
 		initStyle();
 
+	}
+
+	public EsaSkyButton(ImageResource image, String labelText){
+		FlowPanel container = new FlowPanel();
+		button = new PushButtonWithVisibleOnClick(new Image(image));
+		container.add(button);
+
+		initWidget(container);
+
+		initStyle();
+
+		this.enabledImage = new Image(image);
+		this.enabledImage.addStyleName("fillParent");
+		button.getUpFace().setImage(enabledImage);
+
+		rotateAnimation = new RotateAnimation(enabledImage.getElement());
+		rotateAnimation.addObserver(currentPosition -> button.getUpFace().setImage(enabledImage));
+
+		if (labelText != null) {
+			button.addStyleName("imageLabelButton");
+			Label label = new Label(labelText);
+			label.addStyleName("imageLabelButtonLabel");
+			container.add(label);
+		}
 	}
 
 	public EsaSkyButton(String color, boolean isSmall){
@@ -104,11 +103,11 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	}
 
 	public void setNonTransparentBackground() {
-		this.addStyleName("nonTransparentButton");
+		button.addStyleName("nonTransparentButton");
 	}
 
 	public void setTransparentBackground() {
-		this.removeStyleName("nonTransparentButton");
+		button.removeStyleName("nonTransparentButton");
 	}
 
 	public void setTextStyle(){
