@@ -349,6 +349,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         button.addStyleName("ctrlToolBarBtn");
         button.setTitle(tooltip);
     }
+
+    private void addKioskButtonStyle(EsaSkyButton button) {
+        button.addStyleName("kioskBtn");
+    }
     
     public EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description) {
         EsaSkyButton button;
@@ -546,7 +550,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         if (isKiosk) {
-            button.addStyleName("kioskBtn");
+            addKioskButtonStyle(button);
         }
 
         return button;
@@ -565,7 +569,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         if (isKiosk) {
-            button.addStyleName("kioskBtn");
+            addKioskButtonStyle(button);
         }
 
         return button;
@@ -593,7 +597,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         if (isKiosk) {
             outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 350);
             outreachImagePanel.definePositionFromTopAndLeft();
-            outreachImageButton.addStyleName("kioskBtn");
+            addKioskButtonStyle(outreachImageButton);
         }
 
         return outreachImageButton;
@@ -622,7 +626,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         if (isKiosk) {
             outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 350);
             outreachJwstPanel.definePositionFromTopAndLeft();
-            outreachJwstButton.addStyleName("kioskBtn");
+            addKioskButtonStyle(outreachJwstButton);
         }
 
         return outreachJwstButton;
