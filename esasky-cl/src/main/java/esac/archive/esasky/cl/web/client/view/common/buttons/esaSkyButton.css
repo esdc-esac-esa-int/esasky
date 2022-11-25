@@ -154,7 +154,7 @@
 }
 
 .imageLabelButton {
-	margin-left: 50px;
+	margin-left: 20px;
 
 }
 
@@ -183,5 +183,5 @@
 	border-style: solid;
 	border-color: transparent transparent #FFFFFF transparent;
 	top: -23px;
-	left: 70px;
+	left: 40px;
 }

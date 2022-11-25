@@ -1038,20 +1038,22 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     }
 
-    private void rotateButtonLabelVisibility(List<EsaSkyButton> list) {
+    private void rotateButtonLabelVisibility(List<EsaSkyButton> btnList) {
+        if (!btnList.isEmpty()) {
+            btnList.get(0).showLabel();
+        }
         Timer timer = new Timer() {
             @Override
             public void run() {
-                for (int i = 0; i < list.size(); i++) {
-                    EsaSkyButton current = list.get(i);
-                    EsaSkyButton next = list.get(i + 1 < list.size() ? i + 1 : 0);
-                    if (current.isLabelVisible()) {
-                        current.hideLabel();
-                        next.showLabel();
+                for (int i = 0; i < btnList.size(); i++) {
+                    EsaSkyButton currentBtn = btnList.get(i);
+                    int nextIndex = i + 1 < btnList.size() ? i + 1 : 0;
+                    if (currentBtn.isLabelVisible()) {
+                        currentBtn.hideLabel();
+                        btnList.get(nextIndex).showLabel();
                         break;
-                    } else if (i + 1 == list.size()) {
-                        next.showLabel();
                     }
+
                 }
             }
 
