@@ -1014,7 +1014,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void groupOnColumn(String columnName) {
-		table.groupByColumn(columnName);
+		table.groupByColumns(columnName);
 	}
 
 	@Override

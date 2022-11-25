@@ -348,15 +348,14 @@ public class TabulatorWrapper {
         groupByFov(tableJsObject, raCol, filterString, decCol, minDec, maxDec);
     }
 
-    public void groupByColumn(String columnName) {
-        groupByColumn(tableJsObject, columnName);
+    public void groupByColumns(String... columnNames) {
+        groupByColumns(tableJsObject, columnNames);
     }
 
-
-
-    public native void groupByColumn(GeneralJavaScriptObject tableJsObject, String columnName) /*-{
-        tableJsObject.setGroupBy(columnName);
+    public native void groupByColumns(GeneralJavaScriptObject tableJsObject, String... columnNames) /*-{
+        tableJsObject.setGroupBy(columnNames);
     }-*/;
+    
 
     public native void groupByFov(GeneralJavaScriptObject tableJsObject, String raColumn, String filterString,
     		String decColumn, double minDec, double maxDec)/*-{

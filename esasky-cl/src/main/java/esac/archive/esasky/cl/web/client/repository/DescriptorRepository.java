@@ -216,12 +216,7 @@ public class DescriptorRepository {
         commonTapDescriptor.setIsExternal(true);
         commonTapDescriptor.setTableName(tableName);
         commonTapDescriptor.setFovLimit(10.0);
-
-        if (useFovLimiter && commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null) {
-            commonTapDescriptor.setFovLimitDisabled(false);
-        } else {
-            commonTapDescriptor.setFovLimitDisabled(true);
-        }
+        commonTapDescriptor.setFovLimitDisabled(!useFovLimiter || commonTapDescriptor.getRaColumn() == null || commonTapDescriptor.getDecColumn() == null);
 
         final String from = "FROM";
         final String where = "WHERE";

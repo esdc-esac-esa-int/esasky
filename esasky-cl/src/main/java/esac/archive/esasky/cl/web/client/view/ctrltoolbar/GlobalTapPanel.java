@@ -108,7 +108,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
         tabulatorTable = new TabulatorWrapper("browseTap__tabulatorContainer", new TabulatorCallback(), settings);
-        tabulatorTable.groupByColumn("res_title");
+        tabulatorTable.groupByColumns("harvested_from","res_title");
         tabulatorTable.insertExternalTapData(obj.getProperty("data"), obj.getProperty("columns"));
         tabulatorTable.restoreRedraw();
         tabulatorTable.redrawAndReinitializeHozVDom();
