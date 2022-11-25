@@ -16,11 +16,12 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 
     private Resources resources = GWT.create(Resources.class);
     private CssResource style;
-
 	private RotateAnimation rotateAnimation;
 
 	protected final PushButtonWithVisibleOnClick button;
 	protected Label label;
+
+	private static final String DISPLAY_NONE = "displayNone";
 
 	protected interface ClickAction{
 		void action();
@@ -73,7 +74,7 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 		if (labelText != null) {
 			button.addStyleName("imageLabelButton");
 			label = new Label(labelText);
-			label.addStyleName("displayNone");
+			label.addStyleName(DISPLAY_NONE);
 			label.addStyleName("imageLabelButtonLabel");
 			container.add(label);
 		}
@@ -294,17 +295,17 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 
 	public void showLabel() {
 		if (label != null) {
-			label.removeStyleName("displayNone");
+			label.removeStyleName(DISPLAY_NONE);
 		}
 	}
 
 	public void hideLabel() {
 		if (label != null) {
-			label.addStyleName("displayNone");
+			label.addStyleName(DISPLAY_NONE);
 		}
 	}
 
 	public boolean isLabelVisible() {
-		return label != null && !label.getStyleName().contains("displayNone");
+		return label != null && !label.getStyleName().contains(DISPLAY_NONE);
 	}
 }

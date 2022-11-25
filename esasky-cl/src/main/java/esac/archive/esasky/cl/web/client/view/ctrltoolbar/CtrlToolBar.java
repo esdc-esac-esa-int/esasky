@@ -221,33 +221,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
 
         if (Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS)) {
-            Timer timer = new Timer() {
-                @Override
-                public void run() {
-                    List<EsaSkyButton> list = Arrays.asList(exploreBtn, targetListButton, outreachImageButton, outreachJwstButton);
-                    for (int i = 0; i < list.size(); i++) {
-                        EsaSkyButton current = list.get(i);
-                        EsaSkyButton next = list.get(i + 1 < list.size() ? i + 1 : 0);
-                        if (current.isLabelVisible()) {
-                            current.hideLabel();
-                            next.showLabel();
-                            break;
-                        } else if (i + 1 == list.size()) {
-                            next.showLabel();
-                        }
-                    }
-                }
-
-            };
-
-            timer.scheduleRepeating(5000);
+            rotateButtonLabelVisibility(Arrays.asList(exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
         }
 
         initWidget(ctrlToolBarPanel);
 
         updateModuleVisibility();
     }
-
 
     @Override
     protected void onLoad() {
@@ -1056,5 +1036,27 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             }
         }
 
+    }
+
+    private void rotateButtonLabelVisibility(List<EsaSkyButton> list) {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                for (int i = 0; i < list.size(); i++) {
+                    EsaSkyButton current = list.get(i);
+                    EsaSkyButton next = list.get(i + 1 < list.size() ? i + 1 : 0);
+                    if (current.isLabelVisible()) {
+                        current.hideLabel();
+                        next.showLabel();
+                        break;
+                    } else if (i + 1 == list.size()) {
+                        next.showLabel();
+                    }
+                }
+            }
+
+        };
+
+        timer.scheduleRepeating(5000);
     }
 }
