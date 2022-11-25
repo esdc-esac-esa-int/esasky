@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -48,10 +49,7 @@ import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -222,6 +220,29 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             hideWidget(outreachJwstButton);
         }
 
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS)) {
+            Timer timer = new Timer() {
+                @Override
+                public void run() {
+                    List<EsaSkyButton> list = Arrays.asList(exploreBtn, targetListButton, outreachImageButton, outreachJwstButton);
+                    for (int i = 0; i < list.size(); i++) {
+                        EsaSkyButton current = list.get(i);
+                        EsaSkyButton next = list.get(i + 1 < list.size() ? i + 1 : 0);
+                        if (current.isLabelVisible()) {
+                            current.hideLabel();
+                            next.showLabel();
+                            break;
+                        } else if (i + 1 == list.size()) {
+                            next.showLabel();
+                        }
+                    }
+                }
+
+            };
+
+            timer.scheduleRepeating(5000);
+        }
+
         initWidget(ctrlToolBarPanel);
 
         updateModuleVisibility();
@@ -351,7 +372,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private void addKioskButtonStyle(EsaSkyButton button) {
-        button.addStyleName("kioskBtn");
+        button.setVeryBigStyle();
     }
     
     public EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description) {
@@ -595,7 +616,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
 
         if (isKiosk) {
-            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 350);
+            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 250);
             outreachImagePanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(outreachImageButton);
         }
@@ -624,7 +645,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachJwstPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
 
         if (isKiosk) {
-            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 350);
+            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 250);
             outreachJwstPanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(outreachJwstButton);
         }

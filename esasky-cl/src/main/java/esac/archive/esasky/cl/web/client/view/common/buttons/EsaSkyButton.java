@@ -20,6 +20,7 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	private RotateAnimation rotateAnimation;
 
 	protected final PushButtonWithVisibleOnClick button;
+	protected Label label;
 
 	protected interface ClickAction{
 		void action();
@@ -44,9 +45,8 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 		FlowPanel container = new FlowPanel();
 		button = new PushButtonWithVisibleOnClick(text);
 		button.addStyleName("stringButton");
+
 		container.add(button);
-
-
 
 		initWidget(container);
 
@@ -72,7 +72,8 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 
 		if (labelText != null) {
 			button.addStyleName("imageLabelButton");
-			Label label = new Label(labelText);
+			label = new Label(labelText);
+			label.addStyleName("displayNone");
 			label.addStyleName("imageLabelButtonLabel");
 			container.add(label);
 		}
@@ -225,20 +226,8 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	}
 
 	private void stopPropagationOfMouseDownAndTouchStartToParentElements() {
-		button.addMouseDownHandler(new MouseDownHandler() {
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				event.stopPropagation();
-			}
-		});
-		button.addTouchStartHandler(new TouchStartHandler() {
-
-			@Override
-			public void onTouchStart(TouchStartEvent event) {
-				event.stopPropagation();
-			}
-		});
+		button.addMouseDownHandler(DomEvent::stopPropagation);
+		button.addTouchStartHandler(DomEvent::stopPropagation);
 	}
 
 	public void addMouseOverHandler(MouseOverHandler handler) {
@@ -302,4 +291,20 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
     public void click() {
         button.fireEvent(new ClickEvent(){});
     }
+
+	public void showLabel() {
+		if (label != null) {
+			label.removeStyleName("displayNone");
+		}
+	}
+
+	public void hideLabel() {
+		if (label != null) {
+			label.addStyleName("displayNone");
+		}
+	}
+
+	public boolean isLabelVisible() {
+		return label != null && !label.getStyleName().contains("displayNone");
+	}
 }
