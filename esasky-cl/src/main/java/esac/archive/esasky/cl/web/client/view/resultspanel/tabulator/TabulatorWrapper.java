@@ -1804,7 +1804,7 @@ public class TabulatorWrapper {
 
 		 	movableColumns: true,
 		 	autoColumns: true,
-		 	layout: "fitDataFill"
+		 	layout: "fitColumns"
 //		 	layout: "fitDataStretch"
 		});
 		
@@ -2321,11 +2321,30 @@ public class TabulatorWrapper {
     public boolean isMOCMode() {
     	return tabulatorCallback.isMOCMode();
     }
+
+    public void columnIncludesFilter(String query, String... columns) {
+        columnIncludesFilter(tableJsObject, query, columns);
+    }
+
+    private native void columnIncludesFilter(GeneralJavaScriptObject table, String query, String... columns) /*-{
+        function customFilter(data, params) {
+            for(var i = 0; i < params.columns.length; i++) {
+                var value = data[params.columns[i]];
+                if (value && value.includes(params.query)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        table.setFilter(customFilter, {query: query, columns: columns})
+    }-*/;
     
     public void disableFilters() {
     	disableFilters(tableJsObject);
     	filtersShouldBeEnabled = false;
     }
+
     
     private native void disableFilters(GeneralJavaScriptObject table) /*-{
     	function loopChildren(el){

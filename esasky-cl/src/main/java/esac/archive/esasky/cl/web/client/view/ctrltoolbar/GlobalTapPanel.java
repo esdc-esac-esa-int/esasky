@@ -6,10 +6,11 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
-import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
@@ -35,8 +36,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private PopupHeader<GlobalTapPanel> header;
     private final GlobalTapPanel.Resources resources;
     private CssResource style;
-    TabulatorWrapper tabulatorTable;
+    private TabulatorWrapper tabulatorTable;
     private FlowPanel tabulatorContainer;
+    private FlowPanel searchContainer;
+
     private QueryPopupPanel queryPopupPanel;
     private LoadingSpinner loadingSpinner;
     private boolean fovLimiterEnabled;
@@ -70,13 +73,11 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         tabulatorContainer.getElement().setId("browseTap__tabulatorContainer");
         this.addStyleName("globalTapPanel__container");
 
-        header = new PopupHeader<>(this, "External Tap Registry",
-                "help text",
-                "help title");
+        header = new PopupHeader<>(this, "External Tap Registry", "help text","help title");
 
         fovLimiterEnabled = true;
         EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
-                "Limit query results to the FOV", "Limit query results to the FOV");
+                "Limit table data to FOV", "Limit query results to the FOV");
 
         switchBtn.addClickHandler(event -> {
             fovLimiterEnabled = !fovLimiterEnabled;
@@ -87,17 +88,39 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         switchContainer.add(switchBtn);
         header.addActionWidget(switchContainer);
 
+        searchContainer = new FlowPanel();
+        searchContainer.addStyleName("globalTapPanel__searchContainer");
+
+        TextBox searchBox = new TextBox();
+        searchBox.getElement().setPropertyString("placeholder", "Filter tap services...");
+        searchBox.setStyleName("globalTapPanel__searchBox");
+        Timer searchDelayTimer = new Timer() {
+            @Override
+            public void run() {
+                tabulatorTable.columnIncludesFilter(searchBox.getText(), "res_title", "table_description", "access_url", "table_name");
+            }
+        };
+
+        searchBox.addKeyUpHandler(event -> {
+            searchDelayTimer.cancel();
+            searchDelayTimer.schedule(500);
+        });
+
+        searchContainer.add(searchBox);
+
 
         loadingSpinner = new LoadingSpinner(true);
         loadingSpinner.setStyleName("globalTapPanel__loadingSpinner");
         loadingSpinner.setVisible(false);
 
         container.add(header);
+        container.add(searchContainer);
         container.add(tabulatorContainer);
         container.add(loadingSpinner);
         container.getElement().setId("globalTapPanelContainer");
 
         this.add(container);
+        setDefaultSize();
     }
 
     public void onJsonLoaded(String jsonString) {
@@ -112,10 +135,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         tabulatorTable.insertExternalTapData(obj.getProperty("data"), obj.getProperty("columns"));
         tabulatorTable.restoreRedraw();
         tabulatorTable.redrawAndReinitializeHozVDom();
+        setTabulatorHeight();
     }
 
     private void loadData() {
-        setDefaultSize();
         setIsLoading(true);
         JSONUtils.getJSONFromUrl(EsaSkyWebConstants.TAPREGISTRY_URL, new JSONUtils.IJSONRequestCallback() {
             @Override
@@ -225,15 +248,16 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
         elementStyle.setPropertyPx("maxWidth", maxWidth);
         elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-        setMaxHeight();
+        setTabulatorHeight();
     }
 
-    private void setMaxHeight() {
-        int headerSize = header.getOffsetHeight();
-        int height = container.getOffsetHeight() - headerSize - 5;
+
+    private void setTabulatorHeight() {
+        int occupiedHeight = tabulatorContainer.getAbsoluteTop() - this.getAbsoluteTop();
+        int height = container.getOffsetHeight() - occupiedHeight;
 
         if (height > MainLayoutPanel.getMainAreaHeight()) {
-            height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
+            height = MainLayoutPanel.getMainAreaHeight() - occupiedHeight;
         }
 
         tabulatorContainer.getElement().getStyle().setPropertyPx("height", height);
@@ -241,13 +265,15 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
 
     private void setDefaultSize() {
-        Size size = getDefaultSize();
-        container.setWidth(size.width + "px");
-        container.setHeight(size.height + "px");
+        int width = (int) (MainLayoutPanel.getMainAreaWidth() * 0.6);
+        int height = (int) (MainLayoutPanel.getMainAreaHeight() * 0.6);
+        container.setWidth(width + "px");
+        container.setHeight(height + "px");
 
         Style containerStyle = container.getElement().getStyle();
         containerStyle.setPropertyPx("minWidth", 350);
         containerStyle.setPropertyPx("minHeight", 300);
+        setTabulatorHeight();
     }
 
     @Override
