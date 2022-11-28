@@ -78,7 +78,11 @@ public class Controller implements ValueChangeHandler<String> {
 		OutreachJwstPanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_JWST_IMAGE));
 
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
-		final boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");
+		boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");
+
+		if (hideWelcomeString == null) {
+			hideWelcome =  !Modules.getModule(EsaSkyWebConstants.MODULE_WELCOME_DIALOG);
+		}
 		
 		if (Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIPS) != null
 				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) != null

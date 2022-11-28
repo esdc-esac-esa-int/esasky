@@ -160,6 +160,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SEARCH_TOOL = "search_tool";
     public static final String MODULE_SEARCH_IN_MENU = "search_in";
     public static final String MODULE_KIOSK_BUTTONS = "kiosk_buttons";
+    public static final String MODULE_WELCOME_DIALOG = "welcome_dialog";
     
     // DEFAULT ONES
     public static final String MODULE_WWT_LINK = "wwtLink";
