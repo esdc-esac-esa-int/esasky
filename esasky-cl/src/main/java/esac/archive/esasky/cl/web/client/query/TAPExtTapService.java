@@ -15,6 +15,10 @@ public class TAPExtTapService extends AbstractTAPService {
 
     private static TAPExtTapService instance = null;
 
+    private static final String FROM = " FROM ";
+    private static final String WHERE = " WHERE ";
+    private static final String AND = " AND ";
+
     private TAPExtTapService() {
     }
 
@@ -37,25 +41,25 @@ public class TAPExtTapService extends AbstractTAPService {
 
 		// Handle tables with non-alphanumeric characters (excluding ".")
 		if (tapTable.matches("^[a-zA-Z0-9]*$") || tapTable.contains(".")) {
-			adql += " FROM " + descriptor.getTableName();
+			adql += FROM + descriptor.getTableName();
 		} else {
-			adql += " FROM \"" + tapTable + "\"";
+			adql += FROM + "\"" + tapTable + "\"";
 		}
 
         if (!descriptor.isFovLimitDisabled()) {
             if(descriptor.useIntersectsPolygon()) {
-                adql +=  " WHERE " + polygonIntersectSearch(descriptor);
+                adql +=  WHERE + polygonIntersectSearch(descriptor);
             } else {
-                adql += " WHERE " + cointainsPointSearch(descriptor);
+                adql += WHERE + cointainsPointSearch(descriptor);
             }
         }
 
 
     	if(descriptor.getWhereADQL() != null) {
-    		if(adql.contains("WHERE")) {
-    			adql += " AND ";
+    		if(adql.contains(WHERE.trim())) {
+    			adql += AND;
     		}else {
-    			adql += " WHERE ";
+    			adql += WHERE;
     		}
     		adql += descriptor.getWhereADQL();
     	}
@@ -143,12 +147,10 @@ public class TAPExtTapService extends AbstractTAPService {
 	        }
         }
 
-        String adql = descriptor.getTapRaColumn() + " > " + minRa + " AND " +
+        return descriptor.getTapRaColumn() + " > " + minRa + " AND " +
         		descriptor.getTapRaColumn() + " < " + maxRa + "  AND " +
         		descriptor.getTapDecColumn() + " > " + minDec + "  AND " +
         		descriptor.getTapDecColumn() + " < " + maxDec;
-
-        return adql;
     }
 
     @Override

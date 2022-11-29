@@ -258,7 +258,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void fetchData() {
-        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 && !descriptor.hasSearchArea()) {
+        if (getCountStatus().hasMoved(descriptor) && Double.compare(descriptor.getFovLimit(), 0) == 0 && !descriptor.hasSearchArea()) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {
@@ -961,14 +961,14 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 //	            }
 //	    }
 
-        if (descriptor instanceof CommonTapDescriptor) {
-            CommonTapDescriptor commonTapDescriptor = (CommonTapDescriptor) descriptor;
-            settings.setAddSendToVOApplicationColumn(commonTapDescriptor.isSampEnabled());
-            settings.setAddLink2ArchiveColumn(commonTapDescriptor.getArchiveProductURI() != null
-                    && !getDescriptor().getId().contains("PUBLICATIONS")
+        if (descriptor != null) {
+            boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+            settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
+            settings.setAddLink2ArchiveColumn(descriptor.getArchiveProductURI() != null
+                    && !isPub
                     && !disableLink2ArchiveColumn);
-            settings.setAddLink2AdsColumn(getDescriptor().getId().contains("PUBLICATIONS"));
-            settings.setAddSourcesInPublicationColumn(getDescriptor().getId().contains("PUBLICATIONS"));
+            settings.setAddLink2AdsColumn(isPub);
+            settings.setAddSourcesInPublicationColumn(isPub);
             settings.setAddSelectionColumn(true);
             settings.setUseUcd(true);
         }

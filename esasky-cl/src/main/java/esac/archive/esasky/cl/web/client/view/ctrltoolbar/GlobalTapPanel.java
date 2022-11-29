@@ -54,6 +54,9 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private boolean fovLimiterEnabled;
     private boolean dataLoadedOnce = false;
 
+    private static final String TABLE_NAME_COL = "table_name";
+    private static final String ACCESS_URL_COL = "access_url";
+
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
         @CssResource.NotStrict
@@ -114,7 +117,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             @Override
             public void run() {
                 tapServicesWrapper.columnIncludesFilter(searchBox.getText(), "res_title", "short_name", "res_subjects", "publisher");
-                tapTablesWrapper.columnIncludesFilter(searchBox.getText(), "schema_name", "table_name", "description");
+                tapTablesWrapper.columnIncludesFilter(searchBox.getText(), "schema_name", TABLE_NAME_COL, "description");
             }
         };
 
@@ -226,18 +229,18 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         @Override
         public void onRowSelection(GeneralJavaScriptObject row) {
             GeneralJavaScriptObject rowData = row.invokeFunction("getData");
-            String accessUrl = rowData.hasProperty("access_url") 
-                    ? rowData.getStringProperty("access_url") 
+            String accessUrl = rowData.hasProperty(ACCESS_URL_COL)
+                    ? rowData.getStringProperty(ACCESS_URL_COL)
                     : storedAccessUrl;
             
             storedAccessUrl = accessUrl;
 
-            if (!rowData.hasProperty("table_name")) {
+            if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
                 queryExternalTapService(accessUrl);
             } else  {
                 // Query specific table
-                String tableName = rowData.getStringProperty("table_name");
+                String tableName = rowData.getStringProperty(TABLE_NAME_COL);
                 String query = "SELECT * FROM " + tableName;
                 queryExternalTapTable(accessUrl, tableName, query, true);
             }
@@ -253,13 +256,13 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 queryPopupPanel.setSuggestedPositionCenter();
             }
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
-            queryPopupPanel.setTapTable(rowData.getStringProperty("table_name"));
+            queryPopupPanel.setTapTable(rowData.getStringProperty(TABLE_NAME_COL));
             showQueryPanel();
         }
 
         @Override
         public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
-            String tableName = rowData.getStringProperty("table_name");
+            String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
 
             queryExternalTapTable(storedAccessUrl, "tap_schema.columns", query, false);

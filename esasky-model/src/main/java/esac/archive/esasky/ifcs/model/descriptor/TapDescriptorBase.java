@@ -98,19 +98,22 @@ public abstract class TapDescriptorBase {
     }
 
     public void setTapUrl(String tapUrl) {
+        final String syncPath = "/sync";
+        final String asyncPath = "/async";
+
         // Remove trailing slash
         if (tapUrl.endsWith("/")) {
             tapUrl = tapUrl.substring(0, tapUrl.length() - 2);
         }
 
         // Async queries are not supported
-        if (tapUrl.endsWith("/async")) {
-            tapUrl = tapUrl.replace("/async", "/sync");
+        if (tapUrl.endsWith(asyncPath)) {
+            tapUrl = tapUrl.replace(asyncPath, syncPath);
         }
 
         // Add sync if not present
-        if(!tapUrl.endsWith("/sync")) {
-            tapUrl += "/sync";
+        if(!tapUrl.endsWith(syncPath)) {
+            tapUrl += syncPath;
         }
 
         this.tapUrl = tapUrl;

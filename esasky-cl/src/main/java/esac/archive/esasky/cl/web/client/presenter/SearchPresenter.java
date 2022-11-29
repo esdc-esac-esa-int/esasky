@@ -63,6 +63,16 @@ public class SearchPresenter {
     private boolean isMouseOverSearchTool;
     private static long latestBibCodeTimeCall;
 
+    private static final String HTML_REPLACE = "$HTML$";
+    private static final String JOURNAL_REPLACE = "$JOURNAL$";
+    private static final String DATE_REPLACE = "$DATE$";
+    private static final String H3_OPEN = "<h3 style='font-size: 0.85em;'>";
+    private static final String H3_CLOSE = "</h3>";
+    private static final String H4_OPEN = "<h4>";
+    private static final String H4_CLOSE = "</h4>";
+    private static final String H5_OPEN = "<h5>";
+    private static final String H5_CLOSE = "</h5>";
+
     Timer updateBoxSizeTimer = new Timer() {
         @Override
         public void run() {
@@ -587,14 +597,12 @@ public class SearchPresenter {
 			final String journal, final String date, final int maxSources, String responseText) {
 		//Shows the sources for this publication
         final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-        
-        
         final CommonTapDescriptor descriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
-        final String titleHtml = "<h3 style='font-size: 0.85em;'>" + title + "</h3>" +
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace("$HTML$", getLinkHtml(bibcode, descriptor.getArchiveBaseURL(), descriptor.getArchiveProductURI()).asString()) + "</h5>" +
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace("$HTML$", ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + "</h5>" +
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace("$JOURNAL$", journal).replace("$DATE$", date) + "</h5>" +
-                "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + "</h4>";
+        final String titleHtml = H3_OPEN + title + H3_CLOSE +
+                H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace(HTML_REPLACE, getLinkHtml(bibcode, descriptor.getArchiveBaseURL(), descriptor.getArchiveProductURI()).asString()) + H5_CLOSE +
+                H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace(HTML_REPLACE, ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + H5_CLOSE +
+                H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace(JOURNAL_REPLACE, journal).replace(DATE_REPLACE, date) + H5_CLOSE +
+                H4_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + H4_CLOSE;
         view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
 	}
     
@@ -640,9 +648,9 @@ public class SearchPresenter {
 				EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
 				EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
 		
-		final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
-				"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
-				"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
+		final String titleHtml = H3_OPEN + author + H3_CLOSE +
+				H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace(HTML_REPLACE, authorHtml) + H5_CLOSE +
+				H4_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + H4_CLOSE;
 		
 		//Shows the sources for this publication
 		final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);

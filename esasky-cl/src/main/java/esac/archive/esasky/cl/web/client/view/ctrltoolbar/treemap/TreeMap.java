@@ -367,8 +367,12 @@ public class TreeMap extends Chart {
 
     protected boolean isMatch(CommonTapDescriptor descriptor, Point point) {
         final PointInformation pointInfo = allPoints.get(point.getText());
+
+        if (pointInfo == null) {
+            return false;
+        }
+
         return point.getName().contains(descriptor.getShortName())
-                && pointInfo != null
                 && point.getName().contains(pointInfo.getWavelengthShortName())
                 && pointInfo.missionName.equals(descriptor.getMission())
                 && pointInfo.descriptor.getId().equals(descriptor.getId());

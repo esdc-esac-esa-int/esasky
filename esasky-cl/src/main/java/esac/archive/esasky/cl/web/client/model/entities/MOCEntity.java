@@ -501,6 +501,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	@Override
 	public void selectShapes(int shapeId) {
+		// Not used here
 	}
 	
 	@Override
@@ -510,6 +511,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void deselectShapes(int shapeId) {
+		// Not used here
 	}
 
 	@Override
