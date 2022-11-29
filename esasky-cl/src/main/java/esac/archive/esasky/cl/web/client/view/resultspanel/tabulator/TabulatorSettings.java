@@ -24,6 +24,8 @@ public class TabulatorSettings{
 	private  Boolean addAdqlColumn = false;
 	private Boolean addMetadataColumn = false;
 
+	private String tableLayout = "fitDataFill";
+
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
 		json.put("addSendToVOApplicationColumn", JSONBoolean.getInstance(addSendToVOApplicationColumn));
@@ -49,6 +51,7 @@ public class TabulatorSettings{
 		json.put("isDownloadable", JSONBoolean.getInstance(isDownloadable));
 		json.put("addAdqlColumn", JSONBoolean.getInstance(addAdqlColumn));
 		json.put("addMetadataColumn", JSONBoolean.getInstance(addMetadataColumn));
+		json.put("tableLayout", new JSONString(tableLayout));
 		return json.toString();
 	}
 
@@ -161,5 +164,13 @@ public class TabulatorSettings{
 	
 	public void setAddMetadataColumn(boolean addMetadataColumn) {
 		this.addMetadataColumn = addMetadataColumn;
+	}
+
+	public String getTableLayout() {
+		return tableLayout;
+	}
+
+	public void setTableLayout(String tableLayout) {
+		this.tableLayout = tableLayout;
 	}
 }

@@ -158,6 +158,9 @@ public class Icons {
 
 		@Source("external.png")
 		ImageResource externalIcon();
+
+		@Source("back-arrow.png")
+		ImageResource backArrow();
 	}
 	
 	private static void initMap() {
@@ -375,4 +378,6 @@ public class Icons {
 	public static ImageResource getSettingsIcon() { return resources.settingsIcon(); }
 
 	public static ImageResource getExternalIcon() { return resources.externalIcon(); }
+
+	public static ImageResource getBackArrowIcon() { return resources.backArrow(); }
 }

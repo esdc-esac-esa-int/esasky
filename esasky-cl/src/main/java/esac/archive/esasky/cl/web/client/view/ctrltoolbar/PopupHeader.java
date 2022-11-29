@@ -20,6 +20,7 @@ public class PopupHeader<T> extends FlowPanel{
 	private final LabelWithHelpButton labelWithHelpButton;
 
 	private final FlowPanel actionPanel = new FlowPanel();
+	private final FlowPanel prefixPanel = new FlowPanel();
 
 	public interface Resources extends ClientBundle {
 		@Source("ctrlToolBarPopupHeader.css")
@@ -41,13 +42,18 @@ public class PopupHeader<T> extends FlowPanel{
 		labelWithHelpButton = new LabelWithHelpButton(headerText, helpText, helpHeader);
 		labelWithHelpButton.addStyleName("popupHeaderLabelWithHelpButton");
 
+
 		FlowPanel titlePanel = new FlowPanel();
+		titlePanel.addStyleName("titlePanel");
+		prefixPanel.addStyleName("popupHeaderPrefixPanel");
+		titlePanel.add(prefixPanel);
 		titlePanel.add(labelWithHelpButton);
 		add(titlePanel);
 
 
 		actionPanel.addStyleName("popupHeaderActionPanel");
 		add(actionPanel);
+
 
 		if(onCloseClick != null) {
 			CloseButton closeButton = new CloseButton();
@@ -77,5 +83,13 @@ public class PopupHeader<T> extends FlowPanel{
 
 	public void addActionWidget(Widget widget) {
 		actionPanel.insert(widget, 0);
+	}
+
+	public void addPrefixWidget(Widget widget) {
+		prefixPanel.add(widget);
+	}
+
+	public void removePrefixWidget(Widget widget) {
+		prefixPanel.remove(widget);
 	}
 }

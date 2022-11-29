@@ -394,6 +394,14 @@ public class TabulatorWrapper {
         tableJsObject.setGroupBy(isInFov);
     }-*/;
 
+    public void clearGroups() {
+        clearGroups(tableJsObject);
+    }
+
+    private native void clearGroups(GeneralJavaScriptObject tableJsObject) /*-{
+        tableJsObject.setGroupBy();
+    }-*/;
+
     public void filter(String column, String comparison, String value) {
         this.filter(tableJsObject, column, comparison, value);
     }
@@ -1588,7 +1596,7 @@ public class TabulatorWrapper {
                             formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecFormatterFunc()(),
                             sorter: "number",
                             sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1607,7 +1615,7 @@ public class TabulatorWrapper {
                             formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(divId),
                             sorter: "number",
                             sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header")
@@ -1627,7 +1635,7 @@ public class TabulatorWrapper {
                             formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
                             sorter: "number",
                             sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1648,7 +1656,7 @@ public class TabulatorWrapper {
                             formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
                             sorter: "number",
                             sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1669,7 +1677,7 @@ public class TabulatorWrapper {
                             download: true,
                             formatter: "plaintext",
                             sorter: "string",
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1691,7 +1699,7 @@ public class TabulatorWrapper {
                             formatterParams: {maxDecimalDigits: 0},
                             sorter: "number",
                             sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1731,7 +1739,7 @@ public class TabulatorWrapper {
                             sorter: "number",
                             sorterParams: {thousandSeperator: ""},
                             formatter: "plaintext",
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper,  this, divId),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1780,7 +1788,7 @@ public class TabulatorWrapper {
                             formatter: "plaintext",
                             sorter: "string",
                             sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)( this),
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(this),
                             headerFilterParams: {
                                 tapName: this.metadata[i].name,
                                 title: this.metadata[i].displayName
@@ -1908,13 +1916,13 @@ public class TabulatorWrapper {
 
             movableColumns: true,
             autoColumns: true,
-            layout: "fitColumns"
-//		 	layout: "fitDataStretch"
+            layout: settings.tableLayout
         });
 
         if (settings.blockRedraw) {
             table.blockRedraw();
         }
+
 
         table.isEsaskyData = settings.isEsaskyData;
         //Remove the clearSelection function to make sure that it is possible to select and copy text from the table
@@ -2508,6 +2516,29 @@ public class TabulatorWrapper {
             list[i].setAttribute("disabled", false);
         }
         ;
+    }-*/;
+
+    public void clearFilters(boolean clearUserFilters)
+    {
+        clearFilters(tableJsObject, clearUserFilters);
+    }
+
+    private native void clearFilters(GeneralJavaScriptObject table, boolean clearUserFilters) /*-{
+        table.clearFilter(clearUserFilters);
+    }-*/;
+
+
+    public String getFilterQuery() {
+        return getFilterQuery(tableJsObject);
+    }
+
+    private native String getFilterQuery(GeneralJavaScriptObject table) /*-{
+        var filters =  table.getFilters();
+        if (filters.length > 0 && filters[0].type) {
+            return filters[0].type.query;
+        } else {
+            return "";
+        }
     }-*/;
 
     public void setCorrectFilterBehaviour() {

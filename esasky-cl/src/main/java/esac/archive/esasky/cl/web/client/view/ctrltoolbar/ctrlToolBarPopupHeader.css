@@ -5,10 +5,19 @@
 	font-weight: bold;
 	padding: 3px;
 }
+.titlePanel {
+	display: inline-flex;
+}
 
 .popupHeaderActionPanel {
 	display: flex;
 	flex-direction: row;
+}
+
+.popupHeaderPrefixPanel {
+	display: flex;
+	flex-direction: row;
+	margin-right: 5px;
 }
 
 .popupHeaderActionPanel > div {

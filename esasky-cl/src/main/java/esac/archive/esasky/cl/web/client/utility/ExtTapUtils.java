@@ -69,7 +69,9 @@ public class ExtTapUtils {
 		for  (var j = 0; j < metadata.length; j++) {
 			var dataItemResult = metadata[j];
             if (!dataItemResult.hasOwnProperty("displayName"))
-				dataItemResult["displayName"] = metadata[j]["name"];
+				var displayName = $wnd.esasky.getDefaultLanguageText(metadata[j].name);
+				displayName = $wnd.esasky.getColumnDisplayText(displayName);
+				dataItemResult["displayName"] = displayName;
 			dataItemResult["visible"] = true;
 			dataResult.push(dataItemResult);
 		}

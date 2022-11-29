@@ -3962,5 +3962,18 @@
 	<text key="outreachJwstPanel_helpTitle">
 		ESA/James Webb Space Telescope  Outreach Images
 	</text>
+
+	<text key="short_name">
+		Short Name
+	</text>
+	<text key="res_title">
+		Title
+	</text>
+	<text key="res_subjects">
+		Subjects
+	</text>
+	<text key="ivoid">
+		Identifier
+	</text>
 	
 </Internationalization>
