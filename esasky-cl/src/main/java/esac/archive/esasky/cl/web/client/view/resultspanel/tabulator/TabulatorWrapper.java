@@ -714,1147 +714,6 @@ public class TabulatorWrapper {
     }-*/;
 
 
-    public native JavaScriptObject getFilterButtonFunc() /*-{
-        return function (filterButtonId) {
-            var filterButton = $wnd.$("" + "<div id=\'" + filterButtonId
-                + "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
-                + "title=\"" + "\""
-                + "\"" + ">" + "<img src=\"images/filter.png\" class=\"fillParent\" />" + "</div>");
-
-            filterButton.on("mouseenter", function (e) {
-                filterButton.toggleClass("gwt-PushButton-up-hovering");
-            });
-            filterButton.on("mouseleave", function (e) {
-                filterButton.toggleClass("gwt-PushButton-up-hovering");
-                filterButton.removeClass("gwt-PushButton-down");
-            });
-            filterButton.on("mouseover", function (e) {
-                e.stopPropagation();
-            });
-            filterButton.on("mousedown", function (e) {
-                filterButton.toggleClass("gwt-PushButton-down");
-                e.stopPropagation();
-            });
-            filterButton.on("mouseup", function (e) {
-                filterButton.toggleClass("gwt-PushButton-down");
-                e.stopPropagation();
-            });
-            return filterButton;
-        }
-    }-*/;
-
-
-    public native JavaScriptObject getNumericFilterEditorFunc(TabulatorWrapper wrapper, GeneralJavaScriptObject table, String divId) /*-{
-        return function (cell, onRendered, success, cancel, editorParams) {
-            var filterButtonId = divId + "_" + editorParams["tapName"];
-            var filterButton = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFilterButtonFunc()()(filterButtonId);
-
-            var functionObject = {};
-            functionObject.onChange = function (filter) {
-                success(filter);
-                onFilterChanged(filter);
-            }
-            filterButton.on("click", function (e) {
-                e.stopPropagation();
-                var minVal = Infinity;
-                var maxVal = -Infinity;
-
-                name = cell.getColumn()._column.definition.field;
-                if (table.filterData[name]) {
-                    minVal = table.filterData[name].min;
-                    maxVal = table.filterData[name].max;
-                } else {
-                    cell.getColumn()._column.table.rowManager.rows.forEach(function (row) {
-
-                        if (row.data.hasOwnProperty(name) && row.data[name] != undefined) {
-                            minVal = Math.min(minVal, row.data[name])
-                            maxVal = Math.max(maxVal, row.data[name])
-                        }
-                    });
-                }
-
-                if (minVal == Infinity) {
-                    minVal = -100;
-                    maxVal = 100;
-                }
-
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;DD)
-                (editorParams["tapName"], minVal, maxVal);
-            });
-
-            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-            (editorParams["tapName"], editorParams["title"], filterButtonId, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
-
-
-            var container = $wnd.$("<span></span>")
-
-            container.append(filterButton);
-
-            //create and style input
-
-            function onFilterChanged(input) {
-                values = input.split(",");
-                var filter = "";
-                if (values[0].length > 0) {
-                    filter += cell.getField() + " >=  " + values[0]
-                }
-                if (values.length > 1 && values[1].length > 0) {
-                    if (filter.length > 0) {
-                        filter += " AND ";
-                    }
-                    filter += cell.getField() + " <=  " + values[1]
-                }
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filter);
-            }
-
-            return container[0];
-
-        }
-    }-*/;
-
-
-    public native JavaScriptObject getDateFilterEditorFunc(TabulatorWrapper wrapper, GeneralJavaScriptObject table, String divId) /*-{
-        return function (cell, onRendered, success, cancel, editorParams) {
-            var filterButtonId = divId + "_" + editorParams["tapName"];
-            var filterButton = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFilterButtonFunc()()(filterButtonId);
-
-            var functionObject = {};
-            functionObject.onChange = function (filter) {
-                success(filter);
-                onFilterChanged(filter);
-            }
-
-            filterButton.on("click", function (e) {
-                e.stopPropagation();
-                var minVal = "2100-01-01";
-                var maxVal = "1800-01-01";
-
-                name = cell.getColumn()._column.definition.field;
-                if (table.filterData[name]) {
-                    minVal = table.filterData[name].min;
-                    maxVal = table.filterData[name].max;
-                } else {
-                    cell.getColumn()._column.table.rowManager.rows.forEach(function (row) {
-
-                        if (row.data[name] && row.data[name] != undefined) {
-                            if (minVal > row.data[name]) {
-                                minVal = row.data[name];
-                            }
-                            if (maxVal < row.data[name]) {
-                                maxVal = row.data[name];
-                            }
-                        }
-                    });
-                }
-
-                if (minVal > maxVal) {
-                    tmp = minVal
-                    minVal = maxVal
-                    maxVal = tmp;
-                }
-
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
-                (editorParams["tapName"], minVal, maxVal);
-            });
-
-            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-            (editorParams["tapName"], editorParams["title"], filterButtonId, functionObject);
-            var container = $wnd.$("<span></span>")
-
-            container.append(filterButton);
-
-            //create and style input
-
-            function onFilterChanged(input) {
-                values = input.split(",");
-                var filter = "";
-                if (values[0].length > 0) {
-                    filter += cell.getField() + " >=  '" + values[0] + "'";
-                }
-                if (values.length > 1 && values[1].length > 0) {
-                    if (filter.length > 0) {
-                        filter += " AND ";
-                    }
-                    filter += cell.getField() + " <=  '" + values[1] + "'";
-                }
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filter);
-            }
-
-            return container[0];
-
-        }
-    }-*/;
-
-
-    public native JavaScriptObject getListFilterEditorFunc(TabulatorWrapper wrapper, GeneralJavaScriptObject table, String divId) /*-{
-        return function (cell, onRendered, success, cancel, editorParams) {
-
-            var filterButtonId = divId + "_" + editorParams["tapName"];
-            var filterButton = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFilterButtonFunc()()(filterButtonId);
-
-            var functionObject = {};
-            functionObject.onChange = function (filter) {
-                success(filter);
-                onFilterChanged(filter);
-            }
-
-            filterButton.on("click", function (e) {
-                e.stopPropagation();
-                if (table.filterData != []) {
-                    name = cell.getColumn()._column.definition.field;
-                    list = table.filterData[name]["list"];
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
-                    (editorParams["tapName"], editorParams["title"], filterButtonId, minVal + "," + maxVal, functionObject);
-                }
-            });
-            var container = $wnd.$("<span></span>")
-
-            container.append(filterButton);
-
-            //create and style input
-
-            function onFilterChanged(input) {
-                values = input.split(",");
-                var filter = "";
-                if (values[0].length > 0) {
-                    filter += cell.getField() + " = ''" + values[0] + "''";
-                }
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filter);
-            }
-
-            return container[0];
-
-        }
-    }-*/;
-
-    public native JavaScriptObject getRaFormatterFunc() /*-{
-        return function (cell, formatterParams, onRendered) {
-            var raDeg = cell.getValue();
-            if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(Ljava/lang/String;)(raDeg)
-                    .@esac.archive.esasky.cl.web.client.model.RaPosition::getRaDeg()();
-            } else {
-                if (raDeg === undefined || raDeg === "") {
-                    return "";
-                }
-                if (@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()) {
-                    return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
-                        .@esac.archive.esasky.cl.web.client.model.RaPosition::getDegreeString()();
-                } else {
-                    return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
-                        .@esac.archive.esasky.cl.web.client.model.RaPosition::getHmsString()();
-                }
-            }
-        }
-    }-*/;
-
-
-    public native JavaScriptObject getDecFormatterFunc() /*-{
-        return function (cell, formatterParams, onRendered) {
-            var decDeg = cell.getValue();
-            if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(Ljava/lang/String;)(decDeg)
-                    .@esac.archive.esasky.cl.web.client.model.DecPosition::getDecDeg()();
-            } else {
-                if (decDeg === undefined || decDeg === "") {
-                    return "";
-                }
-                if (@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()) {
-                    return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
-                        .@esac.archive.esasky.cl.web.client.model.DecPosition::getDegreeString()();
-                } else {
-                    return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
-                        .@esac.archive.esasky.cl.web.client.model.DecPosition::getSymbolDmsString()();
-                }
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getFileSizeFormatterFunc(String divId) /*-{
-        return function (cell, formatterParams, onRendered) {
-            var value = cell.getValue();
-            if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                if (divId.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value);
-                } else {
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value) / 1024;
-                }
-            } else {
-                if (value === undefined || value === "") {
-                    return "";
-                }
-                if (divId.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
-                } else {
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
-                }
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getDoubleFormatterFunc() /*-{
-        return function (cell, formatterParams, onRendered) {
-            if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatStringToDouble(Ljava/lang/String;I)(cell.getValue(), formatterParams.maxDecimalDigits);
-            } else {
-                if (cell.getValue() == undefined) {
-                    return "";
-                }
-                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(cell.getValue(), formatterParams.maxDecimalDigits);
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getPercentFormatterFunc() /*-{
-        return function (cell, formatterParams, onRendered) {
-            if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                return parseFloat(cell.getValue()) / 100;
-            } else {
-                if (cell.getValue() == undefined) {
-                    return "";
-                }
-                return Number(cell.getValue()).toLocaleString(undefined, {
-                    style: 'percent',
-                    maximumFractionDigits: formatterParams.maxDecimalDigits
-                });
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getHideNonDatabaseColumnFormatterFunc() /*-{
-        return function (cell, formatterParams, onRendered) {
-            if ($wnd.esasky.nonDatabaseColumns.includes(cell.getValue())) {
-                return "";
-            }
-            return cell.getValue();
-        }
-    }-*/;
-
-    public native JavaScriptObject getDoubleFilterFunc() /*-{
-        return function (headerValue, rowValue, rowData, filterParams) {
-
-            var split = headerValue.split(",");
-
-            if (split.length == 2) {
-
-                if (rowValue == null) {
-                    // If any filter is added Null should be removed
-                    return false;
-                }
-
-                var startTrue = true;
-                var endTrue = true;
-                if (split[0].length > 0 && rowValue < parseFloat(split[0])) {
-                    startTrue = false;
-                }
-                if (split[1].length > 0 && rowValue > parseFloat(split[1])) {
-
-                    endTrue = false;
-                }
-                return startTrue && endTrue;
-            }
-            return true;
-        }
-    }-*/;
-
-
-    public native JavaScriptObject getDateFilterFunc() /*-{
-        return function (headerValue, rowValue, rowData, filterParams) {
-
-            var split = headerValue.split(",");
-            if (split.length == 2) {
-                if (!rowValue) {
-                    return false;
-                }
-                var startTrue = true;
-                var endTrue = true;
-                if (split[0].length > 0 && rowValue < split[0]) {
-                    startTrue = false;
-                }
-                if (split[1].length > 0 && rowValue > split[1]) {
-                    endTrue = false;
-                }
-                return startTrue && endTrue;
-            }
-            return true;
-        }
-    }-*/;
-
-    public native JavaScriptObject getStringFilterEditorFunc(TabulatorWrapper wrapper) /*-{
-        return function (cell, onRendered, success, cancel, editorParams) {
-            var editor = this.table.modules.edit.editors["input"];
-
-            var successFunc = function (filter) {
-                success(filter);
-                var filterString = cell.getField() + " like '%" + filter + "%'";
-
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filterString);
-            }
-
-            var cancelFunc = function () {
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), "");
-                cancel();
-            }
-
-            return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
-        }
-    }-*/;
-
-    public native JavaScriptObject getBooleanFilterEditorFunc(TabulatorWrapper wrapper) /*-{
-        return function (cell, onRendered, success, cancel, editorParams) {
-
-            var editor = this.table.modules.edit.editors["input"];
-
-            var successFunc = function (filter) {
-                success(filter);
-                var filterString = cell.getField() + " = '" + filter + "'";
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filterString);
-            }
-
-            var cancelFunc = function () {
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), "");
-                cancel();
-            }
-
-            return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
-        }
-    }-*/;
-
-    public native JavaScriptObject getGroupHeaderFunc() /*-{
-        return function (value, count, data, group) {
-            if (value == "Outside Field of View") {
-                return "<span style='color:#777777;'>" + value + "</span><span style='color:#777777; margin-left:10px;'>(" + count + " images)</span>";
-            } else if (value == "In Field of View") {
-                return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " images)</span>";
-            } else {
-                return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " tables)</span>";
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getGroupStartOpenFunc() /*-{
-        return function (value, count, data, group) {
-            return value == "In Field of View";
-        }
-    }-*/;
-
-    public native JavaScriptObject getDataFilteredFunc(TabulatorWrapper wrapper) /*-{
-        return function (filters, rows) {
-            var returnString = "";
-            for (var i = 0; i < rows.length; i++) {
-                returnString += rows[i].getIndex() + ",";
-            }
-
-            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDataFiltered(Ljava/lang/String;)(returnString);
-
-            var footerCounter = this.footerManager.element.getElementsByClassName("footerCounter")[0];
-            var text = $wnd.esasky.getInternationalizationText("tabulator_rowCount");
-            text = text.replace("$count$", @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(rows.length, 0));
-            if (footerCounter) {
-                footerCounter.innerHTML = text;
-            }
-            if (!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()()) {
-                if (rows.length == 0 && this.getHeaderFilters().length > 0) {
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_filtered_empty"));
-                }
-                if (this.filteredOnFov) {
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_no_images"));
-                }
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getDataLoadedFunc(TabulatorWrapper wrapper, JavaScriptObject settings) /*-{
-        return function (data) {
-            var imageButtonFormatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
-
-            if ((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
-                || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
-                return;
-            }
-            this.rowManager.adjustTableSize();
-            if (this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()() && data.length == 0) {
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(this, $wnd.esasky.getInternationalizationText("tabulator_no_data"));
-            } else if (!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()()) {
-                this.options.placeholder.innerText = "";
-            }
-            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDataLoaded()();
-
-            // Fix for setting the access_url and preview column next to the center button
-            // until we get some better handling of external tap metadata
-            // preview column is from ASTRON
-            var accessUrlColumn = this.getColumn("access_url");
-            if (accessUrlColumn && settings.isDownloadable) {
-                accessUrlColumn.move("centre", true);
-            }
-            var previewColumn = this.getColumn("preview");
-            if (previewColumn) {
-                previewColumn.move("centre", true);
-            }
-
-            if (settings.addMetadataColumn) {
-                this.addColumn({
-                    title: "Columns",
-                    field: "metadataBtn",
-                    visible: true,
-                    headerSort: false,
-                    headerTooltip: "Column metadata",
-                    minWidth: 75,
-                    download: false,
-                    hozAlign: "center",
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
-                    formatterParams: {image: "column_icon.png", tooltip: "Load column metadata"},
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
-                    }
-                }, true);
-            }
-
-            if (settings.addAdqlColumn) {
-                this.addColumn({
-                    title: "ADQL",
-                    field: "adqlBtn",
-                    visible: true,
-                    headerSort: false,
-                    headerTooltip: "ADQL query",
-                    minWidth: 55,
-                    download: false,
-                    hozAlign: "center",
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
-                    formatterParams: {image: "adql_icon.png", tooltip: "Create a custom ADQL query"},
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
-                    }
-                }, true);
-            }
-        }
-    }-*/;
-
-    public native JavaScriptObject getDataLoadingFunc(TabulatorWrapper wrapper, String divId, JavaScriptObject settings) /*-{
-        return function (data) {
-            var columnDef = [];
-
-            if ((data.length === 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
-                || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
-                return;
-            }
-            var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
-            var activeColumnGroup = [];
-            var isSSO = false;
-            if (settings.addSelectionColumn) {
-                activeColumnGroup.push({
-                    formatter: "rowSelection",
-                    titleFormatterParams: {title: settings.selectionHeaderTitle},
-                    field: "rowSelection",
-                    visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
-                    title: "Selection",
-                    download: false,
-                    titleFormatter: "rowSelection",
-                    sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
-                        return bRow.isSelected() - aRow.isSelected();
-                    }
-                });
-            }
-            var imageButtonFormatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
-            };
-            var linkListFormatter = function (cell, formatterParams, onRendered) {
-                return $wnd.esasky.linkListFormatter(cell.getValue(), 100);
-            };
-
-
-            var raName = "";
-            var decName = "";
-            if (this.metadata) {
-                var raColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaColumnName()();
-                var decColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecColumnName()();
-
-                for (var i = 0; i < this.metadata.length; i++) {
-                    if (this.metadata[i].name === raColumnName) {
-                        raName = this.metadata[i].name;
-                    } else if (this.metadata[i].name === decColumnName) {
-                        decName = this.metadata[i].name;
-                    }
-
-                }
-            }
-            if (raName !== "" && decName !== "" && !settings.disableGoToColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
-                    field: "centre",
-                    visible: descriptorMetadata && descriptorMetadata.centre ? descriptorMetadata.centre.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
-                    minWidth: 50,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "recenter.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_centreOnCoordinates")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        var data = cell.getData();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(data);
-                    }
-                });
-            }
-            if (settings.addSendToVOApplicationColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_sendToVOApplicationHeader"),
-                    field: "samp",
-                    visible: descriptorMetadata && descriptorMetadata.samp ? descriptorMetadata.samp.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
-                    minWidth: 50,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "send_small.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
-                    }
-                });
-            }
-
-            if (settings.addLink2ArchiveColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeader"),
-                    field: "link2archive",
-                    visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
-                    minWidth: 63,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "link2archive.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                    }
-                });
-            }
-            if (settings.addDatalinkLink2ArchiveColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_products"),
-                    titleDownload: $wnd.esasky.getInternationalizationText("tabulator_products"),
-                    field: "link2archive",
-                    visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_columnHeader_browseProducts"),
-                    minWidth: 85,
-                    download: true,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "download_small.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_browseProducts")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                    }
-                });
-            }
-            if (settings.addLink2AdsColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_link2AdsHeader"),
-                    field: "link2archive",
-                    visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2AdsHeaderTooltip"),
-                    minWidth: 63,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "link2archive.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2AdsButtonTooltip")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                    }
-                });
-            }
-            if (settings.addSourcesInPublicationColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeader"),
-                    field: "sourcesInPublication",
-                    visible: descriptorMetadata && descriptorMetadata.sourcesInPublication ? descriptorMetadata.sourcesInPublication.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
-                    minWidth: 67,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "target_list.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
-                    }
-                });
-            }
-            if (this.addHipsColumn) {
-                activeColumnGroup.push({
-                    title: $wnd.esasky.getInternationalizationText("tabulator_addHipsColumn"),
-                    field: "addHipsColumn",
-                    visible: descriptorMetadata && descriptorMetadata.sourcesInPublication ? descriptorMetadata.sourcesInPublication.visible : true,
-                    headerSort: false,
-                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
-                    minWidth: 50,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "plus-sign-light-small.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_addHips_tooltip")
-                    },
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAddHipsClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
-                    }
-                });
-            }
-
-            if (this.metadata) {
-                for (var i = 0; i < this.metadata.length; i++) {
-                    var shouldHideColumn = false;
-                    for (var j = 0; j < $wnd.esasky.databaseColumnsToHide.length; j++) {
-                        if (this.metadata[i].name.toLowerCase() === $wnd.esasky.databaseColumnsToHide[j]) {
-                            shouldHideColumn = true;
-                        }
-                    }
-                    if (this.metadata[i].name.toLowerCase() === "observation_oid"
-                        && isSSO) {
-                        shouldHideColumn = true;
-                    }
-                    if (shouldHideColumn && this.isEsaskyData) {
-                        activeColumnGroup.push({
-                            download: false,
-                            field: this.metadata[i].name,
-                            visible: false,
-                        });
-                        continue;
-                    }
-                    if (this.metadata[i].name.toLowerCase() === "sso_name") {
-                        isSSO = true;
-                        columnDef.push(activeColumnGroup[0]); //Selection column
-                        columnDef.push({
-                            title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"),
-                            columns: activeColumnGroup.slice(1)
-                        });
-                        activeColumnGroup = [];
-                        columnDef.push({
-                            title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(),
-                            columns: activeColumnGroup
-                        });
-                    }
-                    if (this.metadata[i].name.toLowerCase() == "event_page") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].displayName,
-                            field: this.metadata[i].name,
-                            visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
-                            headerSort: false,
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
-                            minWidth: 85,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "link2archive.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                            }
-                        });
-                    } else if ((this.metadata[i].name.toLowerCase() === "access_url"
-                        || this.metadata[i].name.toLowerCase() === "product_url"
-                    ) && settings.isDownloadable) {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("tabulator_download"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerSort: false,
-                            headerTooltip: this.metadata[i].description,
-                            minWidth: 85,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "download_small.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                                } else {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
-                                }
-                            }
-                        });
-                        continue;
-                    } else if (this.metadata[i].ucd == "meta.ref.url;meta.product") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerSort: false,
-                            headerTooltip: this.metadata[i].description,
-                            minWidth: 85,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "download_small.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                                } else {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
-                                }
-                            }
-                        });
-                        continue;
-                    } else if (this.metadata[i].name.toLowerCase() === "postcard_url" || this.metadata[i].name.toLowerCase() === "preview") {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("tabulator_previewHeader"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerSort: false,
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
-                            minWidth: 66,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "preview.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_preview")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
-                            }
-                        });
-                        continue;
-                    } else if (this.metadata[i].name.toLowerCase() === "author") {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("Authors"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            download: true,
-                            sorter: "string",
-                            headerFilter: true,
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name},
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
-                            formatter: linkListFormatter
-                        });
-                        continue;
-                    } else if (this.metadata[i].name.toLowerCase() === "ra"
-                        || this.metadata[i].name.toLowerCase() === "ra_deg"
-                        || this.metadata[i].name.toLowerCase() === "ra_deg_1"
-                        || this.metadata[i].name.toLowerCase() === "ra_deg_2"
-                        || this.metadata[i].name.toLowerCase() === "s_ra"
-                        || this.metadata[i].ucd === "pos.eq.ra;meta.main") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaFormatterFunc()(),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "dec"
-                        || this.metadata[i].name.toLowerCase() === "dec_deg"
-                        || this.metadata[i].name.toLowerCase() === "dec_deg_1"
-                        || this.metadata[i].name.toLowerCase() === "dec_deg_2"
-                        || this.metadata[i].name.toLowerCase() === "s_dec"
-                        || this.metadata[i].ucd === "pos.eq.dec;meta.main") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecFormatterFunc()(),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "access_estsize") {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(divId),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header")
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "FLOAT" || this.metadata[i].datatype.toUpperCase() === "REAL") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
-                            formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-
-                    } else if (this.metadata[i].datatype.toUpperCase() === "PERCENT") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getPercentFormatterFunc()(),
-                            formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-
-                    } else if (this.metadata[i].datatype.toUpperCase() === "TIMESTAMP"
-                        || this.metadata[i].datatype.toUpperCase() === "DATETIME"
-                        || this.metadata[i].xtype == "adql:TIMESTAMP") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "INTEGER"
-                        || this.metadata[i].datatype.toUpperCase() === "INT"
-                        || this.metadata[i].datatype.toUpperCase() === "SHORT") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
-                            formatterParams: {maxDecimalDigits: 0},
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "BIGINT"
-                        || this.metadata[i].datatype.toUpperCase() === "LONG") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "LIST") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            formatter: "plaintext",
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like"
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "HTML") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: function (cell, formatterParams, onRendered) {
-                                if (formatterParams.makeHref) {
-                                    return "<a href=\"" + cell.getValue() + "\" target=\"blank\">" + cell.getValue() + "</a>"
-                                } else {
-                                    return cell.getValue();
-                                }
-                            },
-                            sorter: "string",
-                            formatterParams: {makeHref: this.metadata[i].makeHref},
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "has_xp_continuous"
-                        || this.metadata[i].name.toLowerCase() === "has_xp_sampled"
-                        || this.metadata[i].name.toLowerCase() === "has_rvs"
-                        || this.metadata[i].name.toLowerCase() === "has_epoch_photometry"
-                        || this.metadata[i].name.toLowerCase() === "has_mcmc_gspphot"
-                        || this.metadata[i].name.toLowerCase() === "has_mcmc_msc") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(this),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "STRING_HIDE_NON_DATABASE_VALUES") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getHideNonDatabaseColumnFormatterFunc()(),
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    }
-                }
-                if (!isSSO) {
-                    columnDef = activeColumnGroup;
-                }
-
-                this.setColumns(columnDef);
-                this.getColumns().forEach(function (column) {
-                    if (column.getDefinition().sorter) {
-                        column.getElement().onmouseover = function () {
-                            column.getElement().style.backgroundColor = "#d0d0d0";
-                        }
-                        column.getElement().onmouseout = function () {
-                            column.getElement().style.backgroundColor = "";
-                        }
-                    }
-                });
-            }
-        }
-    }-*/;
-
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
         var settings = JSON.parse(settingsString);
         if (settings.selectable == null) {
@@ -1862,12 +721,6 @@ public class TabulatorWrapper {
         }
 
         $wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
-
-
-        var isInitializing = true;
-        var previouslySelectedMap = [];
-        var selectionMap = [];
-
 
         var footerCounter = "<div></div><div id=\"" + divId + "_rowCount\" class=\"footerCounter\">0</div>"
         var table = new $wnd.Tabulator("#" + divId, {
@@ -1887,28 +740,7 @@ public class TabulatorWrapper {
             },
             ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
             ajaxLoaderError: $wnd.esasky.getInternationalizationText("tabulator_loadFailed"),
-            rowSelectionChanged: function (data, rows) {
-                if (isInitializing) {
-                    return;
-                }
-
-                selectionMap = [];
-
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionInProgress()();
-                rows.forEach(function (item, index, array) {
-                    selectionMap[item.getIndex()] = true;
-                    if (!previouslySelectedMap[item.getIndex()]) {
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowSelection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(item);
-                    }
-                });
-                Object.keys(previouslySelectedMap).forEach(function (item, index, array) {
-                    if (!selectionMap[item] && table.getRow(item)) {
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowDeselection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(table.getRow(item));
-                    }
-                });
-                previouslySelectedMap = selectionMap;
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionFinished()();
-            },
+            rowSelectionChanged: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRowSelectionChangedFunc(*)(wrapper),
 
             rowMouseEnter: function (e, row) {
                 wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowEnter(I)(row.getIndex());
@@ -2307,7 +1139,6 @@ public class TabulatorWrapper {
 
         table.filterData = [];
         table.showCount = false;
-        isInitializing = false;
         table.dataLoaded = false;
 
         table.element.onmouseleave = function () {
@@ -2319,6 +1150,1170 @@ public class TabulatorWrapper {
 
 
         return table;
+    }-*/;
+
+
+    private native JavaScriptObject getFilterButtonFunc() /*-{
+        return function (filterButtonId) {
+            var filterButton = $wnd.$("" + "<div id=\'" + filterButtonId
+                + "\' class=\"filterButton defaultEsaSkyButton darkStyle smallButton squaredButton gwt-PushButton-up\" "
+                + "title=\"" + "\""
+                + "\"" + ">" + "<img src=\"images/filter.png\" class=\"fillParent\" />" + "</div>");
+
+            filterButton.on("mouseenter", function (e) {
+                filterButton.toggleClass("gwt-PushButton-up-hovering");
+            });
+            filterButton.on("mouseleave", function (e) {
+                filterButton.toggleClass("gwt-PushButton-up-hovering");
+                filterButton.removeClass("gwt-PushButton-down");
+            });
+            filterButton.on("mouseover", function (e) {
+                e.stopPropagation();
+            });
+            filterButton.on("mousedown", function (e) {
+                filterButton.toggleClass("gwt-PushButton-down");
+                e.stopPropagation();
+            });
+            filterButton.on("mouseup", function (e) {
+                filterButton.toggleClass("gwt-PushButton-down");
+                e.stopPropagation();
+            });
+            return filterButton;
+        }
+    }-*/;
+
+
+    private native JavaScriptObject getNumericFilterEditorFunc(TabulatorWrapper wrapper, GeneralJavaScriptObject table, String divId) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+            var filterButtonId = divId + "_" + editorParams["tapName"];
+            var filterButton = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFilterButtonFunc()()(filterButtonId);
+
+            var functionObject = {};
+            functionObject.onChange = function (filter) {
+                success(filter);
+                onFilterChanged(filter);
+            }
+            filterButton.on("click", function (e) {
+                e.stopPropagation();
+                var minVal = Infinity;
+                var maxVal = -Infinity;
+
+                name = cell.getColumn()._column.definition.field;
+                if (table.filterData[name]) {
+                    minVal = table.filterData[name].min;
+                    maxVal = table.filterData[name].max;
+                } else {
+                    cell.getColumn()._column.table.rowManager.rows.forEach(function (row) {
+
+                        if (row.data.hasOwnProperty(name) && row.data[name] != undefined) {
+                            minVal = Math.min(minVal, row.data[name])
+                            maxVal = Math.max(maxVal, row.data[name])
+                        }
+                    });
+                }
+
+                if (minVal == Infinity) {
+                    minVal = -100;
+                    maxVal = 100;
+                }
+
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleNumericFilterDialog(Ljava/lang/String;DD)
+                (editorParams["tapName"], minVal, maxVal);
+            });
+
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createNumericFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+            (editorParams["tapName"], editorParams["title"], filterButtonId, functionObject, cell.getColumn().getDefinition().formatter, cell.getColumn().getDefinition().formatterParams);
+
+
+            var container = $wnd.$("<span></span>")
+
+            container.append(filterButton);
+
+            //create and style input
+
+            function onFilterChanged(input) {
+                values = input.split(",");
+                var filter = "";
+                if (values[0].length > 0) {
+                    filter += cell.getField() + " >=  " + values[0]
+                }
+                if (values.length > 1 && values[1].length > 0) {
+                    if (filter.length > 0) {
+                        filter += " AND ";
+                    }
+                    filter += cell.getField() + " <=  " + values[1]
+                }
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filter);
+            }
+
+            return container[0];
+
+        }
+    }-*/;
+
+
+    private native JavaScriptObject getDateFilterEditorFunc(TabulatorWrapper wrapper, GeneralJavaScriptObject table, String divId) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+            var filterButtonId = divId + "_" + editorParams["tapName"];
+            var filterButton = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFilterButtonFunc()()(filterButtonId);
+
+            var functionObject = {};
+            functionObject.onChange = function (filter) {
+                success(filter);
+                onFilterChanged(filter);
+            }
+
+            filterButton.on("click", function (e) {
+                e.stopPropagation();
+                var minVal = "2100-01-01";
+                var maxVal = "1800-01-01";
+
+                name = cell.getColumn()._column.definition.field;
+                if (table.filterData[name]) {
+                    minVal = table.filterData[name].min;
+                    maxVal = table.filterData[name].max;
+                } else {
+                    cell.getColumn()._column.table.rowManager.rows.forEach(function (row) {
+
+                        if (row.data[name] && row.data[name] != undefined) {
+                            if (minVal > row.data[name]) {
+                                minVal = row.data[name];
+                            }
+                            if (maxVal < row.data[name]) {
+                                maxVal = row.data[name];
+                            }
+                        }
+                    });
+                }
+
+                if (minVal > maxVal) {
+                    tmp = minVal
+                    minVal = maxVal
+                    maxVal = tmp;
+                }
+
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::toggleDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
+                (editorParams["tapName"], minVal, maxVal);
+            });
+
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDateFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+            (editorParams["tapName"], editorParams["title"], filterButtonId, functionObject);
+            var container = $wnd.$("<span></span>")
+
+            container.append(filterButton);
+
+            //create and style input
+
+            function onFilterChanged(input) {
+                values = input.split(",");
+                var filter = "";
+                if (values[0].length > 0) {
+                    filter += cell.getField() + " >=  '" + values[0] + "'";
+                }
+                if (values.length > 1 && values[1].length > 0) {
+                    if (filter.length > 0) {
+                        filter += " AND ";
+                    }
+                    filter += cell.getField() + " <=  '" + values[1] + "'";
+                }
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filter);
+            }
+
+            return container[0];
+
+        }
+    }-*/;
+
+
+    private native JavaScriptObject getListFilterEditorFunc(TabulatorWrapper wrapper, GeneralJavaScriptObject table, String divId) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+
+            var filterButtonId = divId + "_" + editorParams["tapName"];
+            var filterButton = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFilterButtonFunc()()(filterButtonId);
+
+            var functionObject = {};
+            functionObject.onChange = function (filter) {
+                success(filter);
+                onFilterChanged(filter);
+            }
+
+            filterButton.on("click", function (e) {
+                e.stopPropagation();
+                if (table.filterData != []) {
+                    name = cell.getColumn()._column.definition.field;
+                    list = table.filterData[name]["list"];
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::showListFilterDialog(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)
+                    (editorParams["tapName"], editorParams["title"], filterButtonId, minVal + "," + maxVal, functionObject);
+                }
+            });
+            var container = $wnd.$("<span></span>")
+
+            container.append(filterButton);
+
+            //create and style input
+
+            function onFilterChanged(input) {
+                values = input.split(",");
+                var filter = "";
+                if (values[0].length > 0) {
+                    filter += cell.getField() + " = ''" + values[0] + "''";
+                }
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filter);
+            }
+
+            return container[0];
+
+        }
+    }-*/;
+
+    private native JavaScriptObject getRaFormatterFunc() /*-{
+        return function (cell, formatterParams, onRendered) {
+            var raDeg = cell.getValue();
+            if (formatterParams.convertBack && formatterParams.convertBack === true) {
+                return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(Ljava/lang/String;)(raDeg)
+                    .@esac.archive.esasky.cl.web.client.model.RaPosition::getRaDeg()();
+            } else {
+                if (raDeg === undefined || raDeg === "") {
+                    return "";
+                }
+                if (@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()) {
+                    return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
+                        .@esac.archive.esasky.cl.web.client.model.RaPosition::getDegreeString()();
+                } else {
+                    return @esac.archive.esasky.cl.web.client.model.RaPosition::construct(D)(raDeg)
+                        .@esac.archive.esasky.cl.web.client.model.RaPosition::getHmsString()();
+                }
+            }
+        }
+    }-*/;
+
+
+    private native JavaScriptObject getDecFormatterFunc() /*-{
+        return function (cell, formatterParams, onRendered) {
+            var decDeg = cell.getValue();
+            if (formatterParams.convertBack && formatterParams.convertBack === true) {
+                return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(Ljava/lang/String;)(decDeg)
+                    .@esac.archive.esasky.cl.web.client.model.DecPosition::getDecDeg()();
+            } else {
+                if (decDeg === undefined || decDeg === "") {
+                    return "";
+                }
+                if (@esac.archive.esasky.cl.web.client.status.GUISessionStatus::isShowingCoordinatesInDegrees()()) {
+                    return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
+                        .@esac.archive.esasky.cl.web.client.model.DecPosition::getDegreeString()();
+                } else {
+                    return @esac.archive.esasky.cl.web.client.model.DecPosition::construct(D)(decDeg)
+                        .@esac.archive.esasky.cl.web.client.model.DecPosition::getSymbolDmsString()();
+                }
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getFileSizeFormatterFunc(String divId) /*-{
+        return function (cell, formatterParams, onRendered) {
+            var value = cell.getValue();
+            if (formatterParams.convertBack && formatterParams.convertBack === true) {
+                if (divId.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value);
+                } else {
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value) / 1024;
+                }
+            } else {
+                if (value === undefined || value === "") {
+                    return "";
+                }
+                if (divId.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
+                } else {
+                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
+                }
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getDoubleFormatterFunc() /*-{
+        return function (cell, formatterParams, onRendered) {
+            if (formatterParams.convertBack && formatterParams.convertBack === true) {
+                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatStringToDouble(Ljava/lang/String;I)(cell.getValue(), formatterParams.maxDecimalDigits);
+            } else {
+                if (cell.getValue() == undefined) {
+                    return "";
+                }
+                return @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(cell.getValue(), formatterParams.maxDecimalDigits);
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getPercentFormatterFunc() /*-{
+        return function (cell, formatterParams, onRendered) {
+            if (formatterParams.convertBack && formatterParams.convertBack === true) {
+                return parseFloat(cell.getValue()) / 100;
+            } else {
+                if (cell.getValue() == undefined) {
+                    return "";
+                }
+                return Number(cell.getValue()).toLocaleString(undefined, {
+                    style: 'percent',
+                    maximumFractionDigits: formatterParams.maxDecimalDigits
+                });
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getHideNonDatabaseColumnFormatterFunc() /*-{
+        return function (cell, formatterParams, onRendered) {
+            if ($wnd.esasky.nonDatabaseColumns.includes(cell.getValue())) {
+                return "";
+            }
+            return cell.getValue();
+        }
+    }-*/;
+
+    private native JavaScriptObject getDoubleFilterFunc() /*-{
+        return function (headerValue, rowValue, rowData, filterParams) {
+
+            var split = headerValue.split(",");
+
+            if (split.length == 2) {
+
+                if (rowValue == null) {
+                    // If any filter is added Null should be removed
+                    return false;
+                }
+
+                var startTrue = true;
+                var endTrue = true;
+                if (split[0].length > 0 && rowValue < parseFloat(split[0])) {
+                    startTrue = false;
+                }
+                if (split[1].length > 0 && rowValue > parseFloat(split[1])) {
+
+                    endTrue = false;
+                }
+                return startTrue && endTrue;
+            }
+            return true;
+        }
+    }-*/;
+
+
+    private native JavaScriptObject getDateFilterFunc() /*-{
+        return function (headerValue, rowValue, rowData, filterParams) {
+
+            var split = headerValue.split(",");
+            if (split.length == 2) {
+                if (!rowValue) {
+                    return false;
+                }
+                var startTrue = true;
+                var endTrue = true;
+                if (split[0].length > 0 && rowValue < split[0]) {
+                    startTrue = false;
+                }
+                if (split[1].length > 0 && rowValue > split[1]) {
+                    endTrue = false;
+                }
+                return startTrue && endTrue;
+            }
+            return true;
+        }
+    }-*/;
+
+    private native JavaScriptObject getStringFilterEditorFunc(TabulatorWrapper wrapper) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+            var editor = this.table.modules.edit.editors["input"];
+
+            var successFunc = function (filter) {
+                success(filter);
+                var filterString = cell.getField() + " like '%" + filter + "%'";
+
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filterString);
+            }
+
+            var cancelFunc = function () {
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), "");
+                cancel();
+            }
+
+            return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
+        }
+    }-*/;
+
+    private native JavaScriptObject getBooleanFilterEditorFunc(TabulatorWrapper wrapper) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+
+            var editor = this.table.modules.edit.editors["input"];
+
+            var successFunc = function (filter) {
+                success(filter);
+                var filterString = cell.getField() + " = '" + filter + "'";
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filterString);
+            }
+
+            var cancelFunc = function () {
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), "");
+                cancel();
+            }
+
+            return editor(cell, onRendered, successFunc, cancelFunc, editorParams);
+        }
+    }-*/;
+
+    private native JavaScriptObject getGroupHeaderFunc() /*-{
+        return function (value, count, data, group) {
+            if (value == "Outside Field of View") {
+                return "<span style='color:#777777;'>" + value + "</span><span style='color:#777777; margin-left:10px;'>(" + count + " images)</span>";
+            } else if (value == "In Field of View") {
+                return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " images)</span>";
+            } else {
+                return "<span style='color:#4EB265;'>" + value + "</span><span style='color:#4EB265; margin-left:10px;'>(" + count + " tables)</span>";
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getGroupStartOpenFunc() /*-{
+        return function (value, count, data, group) {
+            return value == "In Field of View";
+        }
+    }-*/;
+
+    private native JavaScriptObject getDataFilteredFunc(TabulatorWrapper wrapper) /*-{
+        return function (filters, rows) {
+            var returnString = "";
+            for (var i = 0; i < rows.length; i++) {
+                returnString += rows[i].getIndex() + ",";
+            }
+
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDataFiltered(Ljava/lang/String;)(returnString);
+
+            var footerCounter = this.footerManager.element.getElementsByClassName("footerCounter")[0];
+            var text = $wnd.esasky.getInternationalizationText("tabulator_rowCount");
+            text = text.replace("$count$", @esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.NumberValueFormatter::formatDouble(DI)(rows.length, 0));
+            if (footerCounter) {
+                footerCounter.innerHTML = text;
+            }
+            if (!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()()) {
+                if (rows.length == 0 && this.getHeaderFilters().length > 0) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_filtered_empty"));
+                }
+                if (this.filteredOnFov) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_no_images"));
+                }
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getDataLoadedFunc(TabulatorWrapper wrapper, JavaScriptObject settings) /*-{
+        return function (data) {
+            var imageButtonFormatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+
+            if ((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
+                || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
+                return;
+            }
+            this.rowManager.adjustTableSize();
+            if (this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()() && data.length == 0) {
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(this, $wnd.esasky.getInternationalizationText("tabulator_no_data"));
+            } else if (!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()()) {
+                this.options.placeholder.innerText = "";
+            }
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDataLoaded()();
+
+            // Fix for setting the access_url and preview column next to the center button
+            // until we get some better handling of external tap metadata
+            // preview column is from ASTRON
+            var accessUrlColumn = this.getColumn("access_url");
+            if (accessUrlColumn && settings.isDownloadable) {
+                accessUrlColumn.move("centre", true);
+            }
+            var previewColumn = this.getColumn("preview");
+            if (previewColumn) {
+                previewColumn.move("centre", true);
+            }
+
+            if (settings.addMetadataColumn) {
+                this.addColumn({
+                    title: "Columns",
+                    field: "metadataBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: "Column metadata",
+                    minWidth: 75,
+                    download: false,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    formatterParams: {image: "column_icon.png", tooltip: "Load column metadata"},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
+                    }
+                }, true);
+            }
+
+            if (settings.addAdqlColumn) {
+                this.addColumn({
+                    title: "ADQL",
+                    field: "adqlBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: "ADQL query",
+                    minWidth: 55,
+                    download: false,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    formatterParams: {image: "adql_icon.png", tooltip: "Create a custom ADQL query"},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                }, true);
+            }
+        }
+    }-*/;
+
+    private native JavaScriptObject getDataLoadingFunc(TabulatorWrapper wrapper, String divId, JavaScriptObject settings) /*-{
+        return function (data) {
+            var columnDef = [];
+
+            if ((data.length === 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
+                || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
+                return;
+            }
+            var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
+            var activeColumnGroup = [];
+            var isSSO = false;
+            var imageButtonFormatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
+            };
+            var linkListFormatter = function (cell, formatterParams, onRendered) {
+                return $wnd.esasky.linkListFormatter(cell.getValue(), 100);
+            };
+
+
+            var raName = "";
+            var decName = "";
+            if (this.metadata) {
+                var raColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaColumnName()();
+                var decColumnName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecColumnName()();
+
+                for (var i = 0; i < this.metadata.length; i++) {
+                    if (this.metadata[i].name === raColumnName) {
+                        raName = this.metadata[i].name;
+                    } else if (this.metadata[i].name === decColumnName) {
+                        decName = this.metadata[i].name;
+                    }
+
+                }
+            }
+
+            // Add additional columns from settings
+            if (settings.addSelectionColumn) {
+                activeColumnGroup.push({
+                    formatter: "rowSelection",
+                    titleFormatterParams: {title: settings.selectionHeaderTitle},
+                    field: "rowSelection",
+                    visible: descriptorMetadata && descriptorMetadata.rowSelection ? descriptorMetadata.rowSelection.visible : true,
+                    title: "Selection",
+                    download: false,
+                    titleFormatter: "rowSelection",
+                    sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
+                        return bRow.isSelected() - aRow.isSelected();
+                    }
+                });
+            }
+            if (raName !== "" && decName !== "" && !settings.disableGoToColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_centreHeader"),
+                    field: "centre",
+                    visible: descriptorMetadata && descriptorMetadata.centre ? descriptorMetadata.centre.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
+                    minWidth: 50,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "recenter.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_centreOnCoordinates")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        var data = cell.getData();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCenterClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(data);
+                    }
+                });
+            }
+            if (settings.addSendToVOApplicationColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_sendToVOApplicationHeader"),
+                    field: "samp",
+                    visible: descriptorMetadata && descriptorMetadata.samp ? descriptorMetadata.samp.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
+                    minWidth: 50,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "send_small.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onSendToVoApplicaitionClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                });
+            }
+
+            if (settings.addLink2ArchiveColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeader"),
+                    field: "link2archive",
+                    visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
+                    minWidth: 63,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "link2archive.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                    }
+                });
+            }
+            if (settings.addDatalinkLink2ArchiveColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_products"),
+                    titleDownload: $wnd.esasky.getInternationalizationText("tabulator_products"),
+                    field: "link2archive",
+                    visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_columnHeader_browseProducts"),
+                    minWidth: 85,
+                    download: true,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "download_small.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_browseProducts")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                    }
+                });
+            }
+            if (settings.addLink2AdsColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_link2AdsHeader"),
+                    field: "link2archive",
+                    visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2AdsHeaderTooltip"),
+                    minWidth: 63,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "link2archive.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2AdsButtonTooltip")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                    }
+                });
+            }
+            if (settings.addSourcesInPublicationColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeader"),
+                    field: "sourcesInPublication",
+                    visible: descriptorMetadata && descriptorMetadata.sourcesInPublication ? descriptorMetadata.sourcesInPublication.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
+                    minWidth: 67,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "target_list.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onSourcesInPublicationClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                });
+            }
+            if (this.addHipsColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_addHipsColumn"),
+                    field: "addHipsColumn",
+                    visible: descriptorMetadata && descriptorMetadata.sourcesInPublication ? descriptorMetadata.sourcesInPublication.visible : true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
+                    minWidth: 50,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "plus-sign-light-small.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_addHips_tooltip")
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAddHipsClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                });
+            }
+
+            if (this.metadata) {
+                for (var i = 0; i < this.metadata.length; i++) {
+                    var shouldHideColumn = false;
+                    for (var j = 0; j < $wnd.esasky.databaseColumnsToHide.length; j++) {
+                        if (this.metadata[i].name.toLowerCase() === $wnd.esasky.databaseColumnsToHide[j]) {
+                            shouldHideColumn = true;
+                        }
+                    }
+
+                    if (this.metadata[i].name.toLowerCase() === "observation_oid"
+                        && isSSO) {
+                        shouldHideColumn = true;
+                    }
+                    if (shouldHideColumn && this.isEsaskyData) {
+                        activeColumnGroup.push({
+                            download: false,
+                            field: this.metadata[i].name,
+                            visible: false,
+                        });
+                        continue;
+                    }
+
+                    if (this.metadata[i].name.toLowerCase() === "sso_name") {
+                        isSSO = true;
+                        columnDef.push(activeColumnGroup[0]); //Selection column
+                        columnDef.push({
+                            title: $wnd.esasky.getInternationalizationText("tableGroup_Observation"),
+                            columns: activeColumnGroup.slice(1)
+                        });
+                        activeColumnGroup = [];
+                        columnDef.push({
+                            title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(),
+                            columns: activeColumnGroup
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() == "event_page") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].displayName,
+                            field: this.metadata[i].name,
+                            visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
+                            headerSort: false,
+                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
+                            minWidth: 85,
+                            download: true,
+                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                                image: "link2archive.png",
+                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+                            },
+                            cellClick: function (e, cell) {
+                                e.stopPropagation();
+                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                            }
+                        });
+                    } else if ((this.metadata[i].name.toLowerCase() === "access_url" || this.metadata[i].name.toLowerCase() === "product_url") && settings.isDownloadable) {
+                        activeColumnGroup.push({
+                            title: $wnd.esasky.getInternationalizationText("tabulator_download"),
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerSort: false,
+                            headerTooltip: this.metadata[i].description,
+                            minWidth: 85,
+                            download: true,
+                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                                image: "download_small.png",
+                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
+                            },
+                            cellClick: function (e, cell) {
+                                e.stopPropagation();
+                                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
+                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                                } else {
+                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
+                                }
+                            }
+                        });
+                    } else if (this.metadata[i].ucd == "meta.ref.url;meta.product") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerSort: false,
+                            headerTooltip: this.metadata[i].description,
+                            minWidth: 85,
+                            download: true,
+                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                                image: "download_small.png",
+                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
+                            },
+                            cellClick: function (e, cell) {
+                                e.stopPropagation();
+                                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
+                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                                } else {
+                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
+                                }
+                            }
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() === "postcard_url" || this.metadata[i].name.toLowerCase() === "preview") {
+                        activeColumnGroup.push({
+                            title: $wnd.esasky.getInternationalizationText("tabulator_previewHeader"),
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerSort: false,
+                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
+                            minWidth: 66,
+                            download: true,
+                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                                image: "preview.png",
+                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_preview")
+                            },
+                            cellClick: function (e, cell) {
+                                e.stopPropagation();
+                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
+                            }
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() === "author") {
+                        activeColumnGroup.push({
+                            title: $wnd.esasky.getInternationalizationText("Authors"),
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            download: true,
+                            sorter: "string",
+                            headerFilter: true,
+                            headerFilterFunc: "like",
+                            headerFilterFuncParams: {tapName: this.metadata[i].name},
+                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
+                            formatter: linkListFormatter
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() === "ra"
+                        || this.metadata[i].name.toLowerCase() === "ra_deg"
+                        || this.metadata[i].name.toLowerCase() === "ra_deg_1"
+                        || this.metadata[i].name.toLowerCase() === "ra_deg_2"
+                        || this.metadata[i].name.toLowerCase() === "s_ra"
+                        || this.metadata[i].ucd === "pos.eq.ra;meta.main") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaFormatterFunc()(),
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() === "dec"
+                        || this.metadata[i].name.toLowerCase() === "dec_deg"
+                        || this.metadata[i].name.toLowerCase() === "dec_deg_1"
+                        || this.metadata[i].name.toLowerCase() === "dec_deg_2"
+                        || this.metadata[i].name.toLowerCase() === "s_dec"
+                        || this.metadata[i].ucd === "pos.eq.dec;meta.main") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecFormatterFunc()(),
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() === "access_estsize") {
+                        activeColumnGroup.push({
+                            title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(divId),
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header")
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "FLOAT" || this.metadata[i].datatype.toUpperCase() === "REAL") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
+                            formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+
+                    } else if (this.metadata[i].datatype.toUpperCase() === "PERCENT") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getPercentFormatterFunc()(),
+                            formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+
+                    } else if (this.metadata[i].datatype.toUpperCase() === "TIMESTAMP"
+                        || this.metadata[i].datatype.toUpperCase() === "DATETIME"
+                        || this.metadata[i].xtype == "adql:TIMESTAMP") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: "plaintext",
+                            sorter: "string",
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].datatype.toUpperCase() === "INTEGER"
+                        || this.metadata[i].datatype.toUpperCase() === "INT"
+                        || this.metadata[i].datatype.toUpperCase() === "SHORT") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
+                            formatterParams: {maxDecimalDigits: 0},
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].datatype.toUpperCase() === "BIGINT"
+                        || this.metadata[i].datatype.toUpperCase() === "LONG") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: "plaintext",
+                            sorter: "string",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: "like",
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].datatype.toUpperCase() === "LIST") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
+                            sorter: "number",
+                            sorterParams: {thousandSeperator: ""},
+                            formatter: "plaintext",
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: "like"
+                        });
+                    } else if (this.metadata[i].datatype.toUpperCase() === "HTML") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: function (cell, formatterParams, onRendered) {
+                                if (formatterParams.makeHref) {
+                                    return "<a href=\"" + cell.getValue() + "\" target=\"blank\">" + cell.getValue() + "</a>"
+                                } else {
+                                    return cell.getValue();
+                                }
+                            },
+                            sorter: "string",
+                            formatterParams: {makeHref: this.metadata[i].makeHref},
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: "like",
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].name.toLowerCase() === "has_xp_continuous"
+                        || this.metadata[i].name.toLowerCase() === "has_xp_sampled"
+                        || this.metadata[i].name.toLowerCase() === "has_rvs"
+                        || this.metadata[i].name.toLowerCase() === "has_epoch_photometry"
+                        || this.metadata[i].name.toLowerCase() === "has_mcmc_gspphot"
+                        || this.metadata[i].name.toLowerCase() === "has_mcmc_msc") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: "plaintext",
+                            sorter: "string",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(this),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: "like",
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else if (this.metadata[i].datatype.toUpperCase() === "STRING_HIDE_NON_DATABASE_VALUES") {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getHideNonDatabaseColumnFormatterFunc()(),
+                            sorter: "string",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: "like",
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    } else {
+                        activeColumnGroup.push({
+                            title: this.metadata[i].displayName,
+                            titleDownload: this.metadata[i].name,
+                            field: this.metadata[i].name,
+                            visible: this.metadata[i].visible,
+                            headerTooltip: this.metadata[i].description,
+                            download: true,
+                            formatter: "plaintext",
+                            sorter: "string",
+                            sorterParams: {thousandSeperator: ""},
+                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
+                            headerFilterParams: {
+                                tapName: this.metadata[i].name,
+                                title: this.metadata[i].displayName
+                            },
+                            headerFilterFunc: "like",
+                            headerFilterFuncParams: {tapName: this.metadata[i].name}
+                        });
+                    }
+                }
+                if (!isSSO) {
+                    columnDef = activeColumnGroup;
+                }
+
+                this.setColumns(columnDef);
+                this.getColumns().forEach(function (column) {
+                    if (column.getDefinition().sorter) {
+                        column.getElement().onmouseover = function () {
+                            column.getElement().style.backgroundColor = "#d0d0d0";
+                        }
+                        column.getElement().onmouseout = function () {
+                            column.getElement().style.backgroundColor = "";
+                        }
+                    }
+                });
+            }
+        }
+    }-*/;
+
+
+    private native JavaScriptObject getRowSelectionChangedFunc(TabulatorWrapper wrapper) /*-{
+        var previouslySelectedMap = [];
+        var selectionMap = [];
+        return function (data, rows) {
+            var table = this;
+            selectionMap = [];
+
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionInProgress()();
+            rows.forEach(function (item, index, array) {
+                selectionMap[item.getIndex()] = true;
+                if (!previouslySelectedMap[item.getIndex()]) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowSelection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(item);
+                }
+            });
+            Object.keys(previouslySelectedMap).forEach(function (item, index, array) {
+                if (!selectionMap[item] && table.getRow(item)) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowDeselection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(table.getRow(item));
+                }
+            });
+            previouslySelectedMap = selectionMap;
+            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionFinished()();
+        }
     }-*/;
 
     public void onRowEnter(int rowId) {
@@ -2518,8 +2513,7 @@ public class TabulatorWrapper {
         ;
     }-*/;
 
-    public void clearFilters(boolean clearUserFilters)
-    {
+    public void clearFilters(boolean clearUserFilters) {
         clearFilters(tableJsObject, clearUserFilters);
     }
 
@@ -2533,7 +2527,7 @@ public class TabulatorWrapper {
     }
 
     private native String getFilterQuery(GeneralJavaScriptObject table) /*-{
-        var filters =  table.getFilters();
+        var filters = table.getFilters();
         if (filters.length > 0 && filters[0].type) {
             return filters[0].type.query;
         } else {
