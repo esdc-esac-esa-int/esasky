@@ -185,8 +185,7 @@ public class EntityRepository {
 
             @Override
             public void onShapeDeselection(AladinShape shape) {
-            	MainPresenter.getInstance().getCtrlTBPresenter().openGWPanel(GwPanel.TabIndex.GW.ordinal());
-            	super.onShapeSelection(shape);
+                onShapeSelection(shape);
             }
 
         };
@@ -256,9 +255,6 @@ public class EntityRepository {
                             // Adds the details for drawing the proper motion arrows
                             try {
 
-                                Double finalRa = null;
-                                Double finalDec = null;
-
                                 // Proper motion ra, dec not coming from descriptor data, so we need to
                                 // calculate it
                                 final Double pm_ra = rowData
@@ -266,10 +262,14 @@ public class EntityRepository {
                                 final Double pm_dec = rowData
                                         .getDoubleOrNullProperty(descriptor.getProperMotionDecColumn());
 
-                                if ((pm_ra != null) && (pm_dec != null) && descriptor.getReferenceEpochColumn() != null) {
+                                final boolean hasValidData = pm_ra != null
+                                        && pm_dec != null
+                                        && descriptor.getReferenceEpochColumn() != null;
+
+                                if (hasValidData) {
                                     double[] inputA = new double[6];
-                                    inputA[0] = new Double(ra);
-                                    inputA[1] = new Double(dec);
+                                    inputA[0] = Double.parseDouble(ra);
+                                    inputA[1] = Double.parseDouble(dec);
                                     inputA[2] = rowData.getDoubleProperty(descriptor.getParallaxTrigColumn()); // Consider
                                                                                                            // the
                                                                                                            // parallax
@@ -292,47 +292,42 @@ public class EntityRepository {
 
                                     ProperMotionUtils.pos_prop(rowData.getDoubleProperty(descriptor.getReferenceEpochColumn()), inputA, 2000, outputA);
 
-                                    finalRa = outputA[0];
-                                    finalDec = outputA[1];
+                                    double finalRa = outputA[0];
+                                    double finalDec = outputA[1];
 
                                     if (rowData.getDoubleProperty(descriptor.getReferenceEpochColumn()) > 2000.0) {
                                         // For catalogs in J2015 put the source in J2015 but draw the arrow
                                         // flipped... from J2000 to J2015
                                         details.put("arrowFlipped", "true");
                                     }
-                                }
 
-
-                                if ((finalRa != null) && (finalDec != null)) {
                                     details.put("arrowRa", finalRa + "");
                                     details.put("arrowDec", finalDec + "");
 
                                     // Creates the ra dec normalized vector of 10 degrees
-                                    final double raInc = finalRa - new Double(ra);
-                                    final double decInc = finalDec - new Double(dec);
+                                    final double raInc = finalRa - Double.parseDouble(ra);
+                                    final double decInc = finalDec - Double.parseDouble(dec);
                                     final double m = Math.sqrt((raInc * raInc) + (decInc * decInc));
                                     final double mRatio = 2 / m; // 2 degrees
-                                    final double raNorm = new Double(ra) + (raInc * mRatio);
-                                    final double decNorm = new Double(dec) + (decInc * mRatio);
+                                    final double raNorm = Double.parseDouble(ra) + (raInc * mRatio);
+                                    final double decNorm = Double.parseDouble(dec) + (decInc * mRatio);
 
                                     // Calculates the scale factor, this function is also in AladinESDC.js (modify
                                     // there also)
                                     final double arrowRatio = 4.0
                                             - (3.0 * Math.pow(Math.log((m * 1000) + 2.72), -2.0)); // See:
-                                                                                                   // //rechneronline.de/function-graphs/
-                                                                                                   // , using
-                                                                                                   // function: 4 -
-                                                                                                   // (3*(log((x*
-                                                                                                   // 1000)+2.72)^(-2)))
+                                    // //rechneronline.de/function-graphs/
+                                    // , using
+                                    // function: 4 -
+                                    // (3*(log((x*
+                                    // 1000)+2.72)^(-2)))
 
                                     details.put("arrowRaNorm", raNorm + "");
                                     details.put("arrowDecNorm", decNorm + "");
                                     details.put("arrowRatio", arrowRatio + "");
                                 }
-
                             } catch (Exception ex) {
-                                Log.error(this.getClass().getSimpleName() + ", Calculate proper motion error: ",
-                                        ex);
+                                Log.error(this.getClass().getSimpleName() + ", Calculate proper motion error: ", ex);
                             }
                         }
                     }

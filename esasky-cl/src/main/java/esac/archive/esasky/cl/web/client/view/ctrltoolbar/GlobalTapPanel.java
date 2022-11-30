@@ -56,6 +56,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     private static final String TABLE_NAME_COL = "table_name";
     private static final String ACCESS_URL_COL = "access_url";
+    private static final String DISPLAY_NONE = "displayNone";
 
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
@@ -212,11 +213,11 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         searchBox.setText(wrapper.getFilterQuery());
 
         if(wrapper.equals(tapServicesWrapper)) {
-            tapTablesContainer.addStyleName("displayNone");
-            tapServicesContainer.removeStyleName("displayNone");
+            tapTablesContainer.addStyleName(DISPLAY_NONE);
+            tapServicesContainer.removeStyleName(DISPLAY_NONE);
         } else {
-            tapServicesContainer.addStyleName("displayNone");
-            tapTablesContainer.removeStyleName("displayNone");
+            tapServicesContainer.addStyleName(DISPLAY_NONE);
+            tapTablesContainer.removeStyleName(DISPLAY_NONE);
         }
 
         setTabulatorHeight();
@@ -299,7 +300,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
             // Find additional joined tables
             if (query.toUpperCase().contains("JOIN")) {
-                String[] split = query.split("[\\n\\s]");
+                String[] split = query.split("\\s");
                 for (int i = 0; i < split.length; i++) {
                     int tableIndex = i + 1;
                     if (split[i].equalsIgnoreCase("JOIN") && tableIndex < split.length) {

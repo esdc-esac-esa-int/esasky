@@ -11,6 +11,10 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class TAPExtTapService extends AbstractTAPService {
 
     private static TAPExtTapService instance = null;
@@ -68,8 +72,8 @@ public class TAPExtTapService extends AbstractTAPService {
     	return adql;
     }
 
-    private String screenPolygon(CommonTapDescriptor descriptor) {
-    	String shape = null;
+    private String screenPolygon() {
+    	String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
@@ -101,12 +105,12 @@ public class TAPExtTapService extends AbstractTAPService {
 
     private String polygonIntersectSearch(CommonTapDescriptor descriptor) {
     	String constraint = "1=INTERSECTS(" + descriptor.getRegionColumn() + ",";
-    	return constraint + screenPolygon(descriptor);
+    	return constraint + screenPolygon();
     }
 
     private String cointainsPointSearch(CommonTapDescriptor descriptor) {
     	String constraint = "1=CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), ";
-    	return constraint + screenPolygon(descriptor);
+    	return constraint + screenPolygon();
     }
 
     private String heasarcSearch(ExtTapDescriptor descriptor) {
@@ -118,7 +122,7 @@ public class TAPExtTapService extends AbstractTAPService {
     			+ "+ cos(radians("+ descriptor.getTapDecColumn() + ")) * cos(radians(" + dec + "))"
     			+ "* POWER(SIN((radians(" + descriptor.getTapRaColumn() + ") - radians(" + ra + "))/2),2)"
     			+ "< POWER((radians(" + fov +")/2),2) AND "+ descriptor.getTapDecColumn()
-    			+ " BETWEEN " + (dec - fov) + " AND " + (dec + fov);
+    			+ " BETWEEN " + (dec - fov) + AND + (dec + fov);
     	return constraint;
     }
 
@@ -137,19 +141,18 @@ public class TAPExtTapService extends AbstractTAPService {
 
         }else {
         	String[] fovCorners = AladinLiteWrapper.getAladinLite().getFovCorners(2).toString().split(",");
-	        for(int i = 0; i < fovCorners.length - 1; i += 2) {
-	        	double ra = Double.parseDouble(fovCorners[i]);
-	        	double dec = Double.parseDouble(fovCorners[i+1]);
-	        	if(ra < minRa) minRa = ra;
-	        	if(ra > maxRa) maxRa = ra;
-	        	if(dec < minDec) minDec = dec;
-	        	if(dec > maxDec) maxDec = dec;
-	        }
+            List<String> raValues = IntStream.range(0, fovCorners.length).filter(i -> i % 2 == 0).mapToObj(i -> fovCorners[i]).collect(Collectors.toList());
+            List<String> decValues = IntStream.range(0, fovCorners.length).filter(i -> i % 2 != 0).mapToObj(i -> fovCorners[i]).collect(Collectors.toList());
+
+            minRa = raValues.stream().mapToDouble(Double::parseDouble).min().orElse(minRa);
+            maxRa = raValues.stream().mapToDouble(Double::parseDouble).max().orElse(maxRa);
+            minDec = decValues.stream().mapToDouble(Double::parseDouble).min().orElse(minDec);
+            maxDec = decValues.stream().mapToDouble(Double::parseDouble).max().orElse(maxDec);
         }
 
-        return descriptor.getTapRaColumn() + " > " + minRa + " AND " +
-        		descriptor.getTapRaColumn() + " < " + maxRa + "  AND " +
-        		descriptor.getTapDecColumn() + " > " + minDec + "  AND " +
+        return descriptor.getTapRaColumn() + " > " + minRa + AND +
+        		descriptor.getTapRaColumn() + " < " + maxRa + AND +
+        		descriptor.getTapDecColumn() + " > " + minDec + AND +
         		descriptor.getTapDecColumn() + " < " + maxDec;
     }
 
