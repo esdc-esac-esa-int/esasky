@@ -544,6 +544,11 @@ public enum UCD implements IContentDescriptor{
         return this;
     }
 
+    public UCD positive() {
+        this.negative = false;
+        return this;
+    }
+
     public String getValue() {
         return value;
     }

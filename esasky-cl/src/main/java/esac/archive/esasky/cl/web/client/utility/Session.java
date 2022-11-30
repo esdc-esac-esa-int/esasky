@@ -334,7 +334,7 @@ public class Session {
 					}
 				}
 			}
-			else if(ent.getDescriptor().getTableName() == "alerts.mv_v_icecube_event_fdw") {
+			else if(Objects.equals(ent.getDescriptor().getTableName(), "alerts.mv_v_icecube_event_fdw")) {
 				 int size = ent.getNumberOfShapes();
 				 if(size > 0) {
 					JSONObject icecubeObj = new JSONObject();

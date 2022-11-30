@@ -828,8 +828,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
-		if (getDescriptor() instanceof CommonTapDescriptor) {
-			CommonTapDescriptor desc = (CommonTapDescriptor) getDescriptor();
+		if (getDescriptor() != null) {
+			CommonTapDescriptor desc = getDescriptor();
 			String archiveUrl = desc.getArchiveBaseURL();
 			if (!archiveUrl.isEmpty()) {
 				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
@@ -848,8 +848,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	private String buildArchiveURL(GeneralJavaScriptObject rowData) {
-		if (getDescriptor() instanceof CommonTapDescriptor) {
-			CommonTapDescriptor desc = (CommonTapDescriptor) getDescriptor();
+		if (getDescriptor() != null) {
+			CommonTapDescriptor desc = getDescriptor();
 			String productURI = desc.getArchiveProductURI();
 			RegExp regularExpression = RegExp.compile("@@@(.*?)@@@", "gm");
 
