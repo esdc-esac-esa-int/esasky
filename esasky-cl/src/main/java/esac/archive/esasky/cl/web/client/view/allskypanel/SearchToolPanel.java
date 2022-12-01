@@ -267,10 +267,14 @@ public class SearchToolPanel extends FlowPanel {
 
 				String raStr = raText.getText();
 				String decStr = decText.getText();
-				double[] coords = convertCoordinatesToFrame(raStr, decStr, oldCooFrame, newCooFrame);
-				String[] coordStr = updateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
-				raText.setText(coordStr[0]);
-				decText.setText(coordStr[1]);
+				if (!raStr.isEmpty() && !decStr.isEmpty())
+				{
+					double[] coords = convertCoordinatesToFrame(raStr, decStr, oldCooFrame, newCooFrame);
+					String[] coordStr = updateCoordinateFormat(new RaPosition(coords[0]), new DecPosition(coords[1]));
+					raText.setText(coordStr[0]);
+					decText.setText(coordStr[1]);
+				}
+
 			} catch (Exception ex) {
 				Log.debug(ex.getMessage(), ex);
 			}
