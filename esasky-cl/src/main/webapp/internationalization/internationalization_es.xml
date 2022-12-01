@@ -3525,5 +3525,70 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 		&lt;/a&gt; </text>
 	<text key="header_highResolutionImages">
 		Imágenes de Divulgación de Hubble</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) es
+		un telescopio de Rayos X de amplio espectro que se encuentra a bordo del
+		observatorio ruso-alemán "Spectrum-Roentgen-Gamma" (SRG), desarrollado bajo la
+		dirección del Instituto Max-Planck de Física Extraterrestre (MPE) en Alemania (DE).
+		eRosita es un telescopio sensible a los Rayos X capaz de ofrecer imágenes nítidas
+		y profundas a lo largo de zonas muy amplias del cielo en el rango de energía de ~0.2-8 keV.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#eROSITA"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+		Fuentes de Rayos X detectadas en la banda 0.2-2.3 keV usando eSASS y adoptando un umbral de probabilidad de detección de 5.
+		Las fuentes con probabilidad de detección superior a 6 se encuentran en el catálogo principal de eFEDS (27910 fuentes).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDSmain"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+		Catálogo de eFEDS de Rayos X duros seleccionados. Basado en la detección de fuentes en tres
+		bandas (1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5 keV) utilizando eSASS con un umbral de probabilidad de
+		detección de 5, seleccionamos las fuentes con una probabilidad de detección de en banda 2.3-5 keV
+		mayor que 10 y una probabilidad de extensión cero como el catálogo eFEDS de fuentes duras (246 fuentes).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDShard"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+		Fuentes de Rayos X de observaciones de scan en el área de eta Chamaeleontis incluidas en
+		el catálogo principal (OBSID 300004), ver Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChamain"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+		Fuentes de Rayos X de observaciones de scan en el área de eta Chamaeleontis incluidas en
+		el catálogo de fuentes duras (OBSID 300004), ver Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChahard"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
 
 </Internationalization>
