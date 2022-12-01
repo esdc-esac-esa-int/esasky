@@ -24,6 +24,7 @@ public interface TabulatorCallback {
     public void onAjaxResponse();
     public void onAjaxResponseError(String error);
     public String getLabelFromTapName(String tapName);
+    public boolean hasLabel(String tapName);
     public GeneralJavaScriptObject getDescriptorMetaData();
     public String getRaColumnName();
     public String getDecColumnName();

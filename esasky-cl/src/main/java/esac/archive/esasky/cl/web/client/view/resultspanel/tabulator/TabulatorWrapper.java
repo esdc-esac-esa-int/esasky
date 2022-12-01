@@ -1993,10 +1993,20 @@ public class TabulatorWrapper {
                     }
 				}
 				
-				var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
-				
-				var displayName = $wnd.esasky.getDefaultLanguageText(label);
-				displayName  = $wnd.esasky.getColumnDisplayText(displayName);
+                var hasLabel = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasLabel(*)(metaName);
+
+                var displayName  = "";
+                if (hasLabel) {
+                    var label = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getLabelFromTapName(Ljava/lang/String;)(metaName);
+                    displayName = $wnd.esasky.getDefaultLanguageText(label);
+                } else {
+                    displayName = $wnd.esasky.getColumnDisplayText(metaName);
+                }
+
+
+
+
+
 				
 				if(!filterData.hasOwnProperty(metaName)){	
 					filterData[metaName] = {};
@@ -2211,6 +2221,10 @@ public class TabulatorWrapper {
     
     public String getLabelFromTapName(String tapName) {
     	return tabulatorCallback.getLabelFromTapName(tapName);
+    }
+
+    public boolean hasLabel(String tapName) {
+        return tabulatorCallback.hasLabel(tapName);
     }
 
     public GeneralJavaScriptObject getDescriptorMetaData() {

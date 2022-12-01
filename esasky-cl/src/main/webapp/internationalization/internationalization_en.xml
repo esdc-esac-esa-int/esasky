@@ -365,7 +365,7 @@
 		&lt;a href="//www.stsci.edu/hst/proposing/apt" target="_blank"&gt;
 		this STSci webpage&lt;/a&gt;; for details on the different JWST
 		instruments,
-		&lt;a href="//jwst.stsci.edu/instrumentation" target="_blank"&gt;
+		&lt;a href="//stsci.edu/jwst/instrumentation" target="_blank"&gt;
 		click here.&lt;/a&gt;
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2031,6 +2031,10 @@
 		RA &lt;i&gt;(J2000)&lt;/i&gt; </text>
 	<text key="DEC_J2000">
 		Dec &lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="RA_J2000_LB">
+		RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="DEC_J2000_LB">
+		Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt; </text>
 	<text key="RA_J2015">
 		RA &lt;i&gt;(J2015.0)&lt;/i&gt; </text>
 	<text key="DEC_J2015">
@@ -4013,13 +4017,37 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
-
-	<!-- internationalization_es.xml is up to date for everything above -->
-	<text key="outreachJwstPanel_closePanel">
-		Close panel
+	<text key="eROSITA_radec_err">
+		Error Radius &lt;br&gt;(arcsec)
 	</text>
-
+	<text key="eROSITA_ml_cts">
+		Counts&lt;br&gt;(ct)
+	</text>
+	<text key="eROSITA_ml_cts_err">
+		Counts Error &lt;br&gt;(ct)
+	</text>
+	<text key="eROSITA_ml_rate">
+		Count Rate &lt;br&gt;(ct)
+	</text>
+	<text key="eROSITA_ml_rate_err">
+		Count Rate Error &lt;br&gt;&lt;i&gt;(ct s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_ml_flux">
+		Flux &lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_ml_flux_err">
+		Flux Error &lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_det_like">
+		Detect Likelihood
+	</text>
+	<text key="eROSITA_ml_bkg">
+		Bkg Counts &lt;br&gt;&lt;i&gt;(ct
+		arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
 		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) is
 		a wide-field X-ray telescope on-board the Russian-German
@@ -4075,7 +4103,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 
 	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
-		For eROSITA etaCha hard catalogue: 'Catalog of X-ray sources in the eta Chamaeleontis
+		Catalog of X-ray sources in the eta Chamaeleontis
 		field scan observation (OBSID 300004) hard catalogue, see Robrade et al. (2021).
 
 		&lt;br&gt;&lt;br&gt;
@@ -4085,7 +4113,9 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-
-	
+	<!-- internationalization_es.xml is up to date for everything above -->
+	<text key="outreachJwstPanel_closePanel">
+		Close panel
+	</text>
 
 </Internationalization>

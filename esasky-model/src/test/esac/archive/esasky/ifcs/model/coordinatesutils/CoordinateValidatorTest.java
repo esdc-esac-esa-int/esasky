@@ -99,4 +99,24 @@ public class CoordinateValidatorTest {
     	comparison = new SkyViewPosition(new Coordinate(10.0, 1.0), 10.5);
     	assertThat(base.compare(comparison,0.01), is(false));
     }
+
+	@Test
+	public void distance_returns_correctly() {
+		Coordinate base = new  Coordinate(10.0, 1.0);
+
+		Coordinate comparison = new Coordinate(10.0, 5.0);
+		assertThat(base.distance(comparison), is(4.0));
+
+		comparison = new Coordinate(5.0, 1.0);
+		assertThat(base.distance(comparison), is(5.0));
+
+		comparison = new Coordinate(5.0, 5.0);
+		assertThat(base.distance(comparison), is(6.4031242374328485));
+
+		comparison = new Coordinate(10.0, -1.0);
+		assertThat(base.distance(comparison), is(2.0));
+
+		comparison = new Coordinate(-10.0, -1.0);
+		assertThat(base.distance(comparison), is(20.09975124224178));
+	}
 }

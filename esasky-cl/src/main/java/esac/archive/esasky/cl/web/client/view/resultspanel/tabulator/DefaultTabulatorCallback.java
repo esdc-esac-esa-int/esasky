@@ -104,6 +104,11 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
+	public boolean hasLabel(String tapName) {
+		return true;
+	}
+
+	@Override
 	public GeneralJavaScriptObject getDescriptorMetaData() {
 		return null;
 	}
