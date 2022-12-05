@@ -165,6 +165,7 @@ public enum UCD implements IContentDescriptor{
     META_UCD("meta.ucd"), //  UCD
     META_UNIT("meta.unit"), //  Unit
     META_VERSION("meta.version"), //  Version
+    META_PGSPHERE("meta.pgsphere"), //  Not real UCD, but is used for FOV columns in ESASky
     OBS("obs"), //  Observation
     OBS_AIRMASS("obs.airMass"), //  Airmass
     OBS_ATMOS("obs.atmos"), //  Atmosphere), atmospheric phenomena affecting an observation

@@ -310,7 +310,7 @@ public class TapDescriptor extends TapDescriptorBase {
     }
 
     public String getRegionColumn() {
-        return getMetadataNameAny(UCD.POS_OUTLINE, UCD.OBS_FIELD, ObsCore.S_REGION);
+        return getMetadataNameAny(UCD.POS_OUTLINE, UCD.OBS_FIELD, UCD.META_PGSPHERE.negative(), ObsCore.S_REGION);
     }
 
     public String getIdColumn() {
@@ -347,6 +347,10 @@ public class TapDescriptor extends TapDescriptorBase {
 
     public String getReferenceEpochColumn() {
         return getMetadataNameAny(UCD.META_REF, UCD.TIME_EPOCH);
+    }
+
+    public String getDatasetSize() {
+        return getMetadataNameAll(UCD.PHYS_SIZE, UCD.META_FILE, ObsCore.ACCESS_ESTSIZE);
     }
 
 }

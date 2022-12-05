@@ -1687,9 +1687,7 @@ public class TabulatorWrapper {
             var imageButtonFormatter = function (cell, formatterParams, onRendered) {
                 return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
             };
-            var linkListFormatter = function (cell, formatterParams, onRendered) {
-                return $wnd.esasky.linkListFormatter(cell.getValue(), 100);
-            };
+
 
 
             var raName = "";
@@ -1869,15 +1867,15 @@ public class TabulatorWrapper {
                         }
                     }
 
-                    if (this.metadata[i].name.toLowerCase() === "observation_oid"
-                        && isSSO) {
+                    if (this.metadata[i].name.toLowerCase() === "observation_oid" && isSSO) {
                         shouldHideColumn = true;
                     }
+
                     if (shouldHideColumn && this.isEsaskyData) {
                         activeColumnGroup.push({
                             download: false,
                             field: this.metadata[i].name,
-                            visible: false,
+                            visible: false
                         });
                         continue;
                     }
@@ -1894,385 +1892,14 @@ public class TabulatorWrapper {
                             title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(),
                             columns: activeColumnGroup
                         });
-                    } else if (this.metadata[i].name.toLowerCase() == "event_page") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].displayName,
-                            field: this.metadata[i].name,
-                            visible: descriptorMetadata && descriptorMetadata.link2archive ? descriptorMetadata.link2archive.visible : true,
-                            headerSort: false,
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
-                            minWidth: 85,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "link2archive.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                            }
-                        });
-                    } else if ((this.metadata[i].name.toLowerCase() === "access_url" || this.metadata[i].name.toLowerCase() === "product_url") && settings.isDownloadable) {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("tabulator_download"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerSort: false,
-                            headerTooltip: this.metadata[i].description,
-                            minWidth: 85,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "download_small.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                                } else {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
-                                }
-                            }
-                        });
-                    } else if (this.metadata[i].ucd == "meta.ref.url;meta.product") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerSort: false,
-                            headerTooltip: this.metadata[i].description,
-                            minWidth: 85,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "download_small.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
-                                } else {
-                                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
-                                }
-                            }
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "postcard_url" || this.metadata[i].name.toLowerCase() === "preview") {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("tabulator_previewHeader"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerSort: false,
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip"),
-                            minWidth: 66,
-                            download: true,
-                            formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                                image: "preview.png",
-                                tooltip: $wnd.esasky.getInternationalizationText("tabulator_preview")
-                            },
-                            cellClick: function (e, cell) {
-                                e.stopPropagation();
-                                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
-                            }
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "author") {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("Authors"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            download: true,
-                            sorter: "string",
-                            headerFilter: true,
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name},
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip"),
-                            formatter: linkListFormatter
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "ra"
-                        || this.metadata[i].name.toLowerCase() === "ra_deg"
-                        || this.metadata[i].name.toLowerCase() === "ra_deg_1"
-                        || this.metadata[i].name.toLowerCase() === "ra_deg_2"
-                        || this.metadata[i].name.toLowerCase() === "s_ra"
-                        || this.metadata[i].ucd === "pos.eq.ra;meta.main") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaFormatterFunc()(),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "dec"
-                        || this.metadata[i].name.toLowerCase() === "dec_deg"
-                        || this.metadata[i].name.toLowerCase() === "dec_deg_1"
-                        || this.metadata[i].name.toLowerCase() === "dec_deg_2"
-                        || this.metadata[i].name.toLowerCase() === "s_dec"
-                        || this.metadata[i].ucd === "pos.eq.dec;meta.main") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecFormatterFunc()(),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "access_estsize") {
-                        activeColumnGroup.push({
-                            title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header"),
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip"),
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(divId),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header")
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "DOUBLE" || this.metadata[i].datatype.toUpperCase() === "FLOAT" || this.metadata[i].datatype.toUpperCase() === "REAL") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
-                            formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-
-                    } else if (this.metadata[i].datatype.toUpperCase() === "PERCENT") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getPercentFormatterFunc()(),
-                            formatterParams: {maxDecimalDigits: this.metadata[i].maxDecimalDigits || 4},
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-
-                    } else if (this.metadata[i].datatype.toUpperCase() === "TIMESTAMP"
-                        || this.metadata[i].datatype.toUpperCase() === "DATETIME"
-                        || this.metadata[i].xtype == "adql:TIMESTAMP") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "INTEGER"
-                        || this.metadata[i].datatype.toUpperCase() === "INT"
-                        || this.metadata[i].datatype.toUpperCase() === "SHORT") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
-                            formatterParams: {maxDecimalDigits: 0},
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()(),
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "BIGINT"
-                        || this.metadata[i].datatype.toUpperCase() === "LONG") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "LIST") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()(),
-                            sorter: "number",
-                            sorterParams: {thousandSeperator: ""},
-                            formatter: "plaintext",
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like"
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "HTML") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: function (cell, formatterParams, onRendered) {
-                                if (formatterParams.makeHref) {
-                                    return "<a href=\"" + cell.getValue() + "\" target=\"blank\">" + cell.getValue() + "</a>"
-                                } else {
-                                    return cell.getValue();
-                                }
-                            },
-                            sorter: "string",
-                            formatterParams: {makeHref: this.metadata[i].makeHref},
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].name.toLowerCase() === "has_xp_continuous"
-                        || this.metadata[i].name.toLowerCase() === "has_xp_sampled"
-                        || this.metadata[i].name.toLowerCase() === "has_rvs"
-                        || this.metadata[i].name.toLowerCase() === "has_epoch_photometry"
-                        || this.metadata[i].name.toLowerCase() === "has_mcmc_gspphot"
-                        || this.metadata[i].name.toLowerCase() === "has_mcmc_msc") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(this),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
-                    } else if (this.metadata[i].datatype.toUpperCase() === "STRING_HIDE_NON_DATABASE_VALUES") {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getHideNonDatabaseColumnFormatterFunc()(),
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
                     } else {
-                        activeColumnGroup.push({
-                            title: this.metadata[i].displayName,
-                            titleDownload: this.metadata[i].name,
-                            field: this.metadata[i].name,
-                            visible: this.metadata[i].visible,
-                            headerTooltip: this.metadata[i].description,
-                            download: true,
-                            formatter: "plaintext",
-                            sorter: "string",
-                            sorterParams: {thousandSeperator: ""},
-                            headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper),
-                            headerFilterParams: {
-                                tapName: this.metadata[i].name,
-                                title: this.metadata[i].displayName
-                            },
-                            headerFilterFunc: "like",
-                            headerFilterFuncParams: {tapName: this.metadata[i].name}
-                        });
+                        activeColumnGroup.push(wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::generateColumn(*)(wrapper, this, this.metadata[i], divId));
                     }
                 }
                 if (!isSSO) {
+                    activeColumnGroup.sort(function(a,b) {
+                        return a.moveToFront > b.moveToFront ? -1 : 1;
+                    })
                     columnDef = activeColumnGroup;
                 }
 
@@ -2314,6 +1941,263 @@ public class TabulatorWrapper {
             previouslySelectedMap = selectionMap;
             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionFinished()();
         }
+    }-*/;
+
+
+    private native JavaScriptObject createDefaultColumn(JavaScriptObject wrapper, JavaScriptObject columnMeta, JavaScriptObject formatter, JavaScriptObject formatterParams, JavaScriptObject headerFilter, JavaScriptObject headerFilterFunc, String sorter) /*-{
+        return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createCustomColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter, columnMeta.displayName, columnMeta.description, undefined);
+
+    }-*/;
+
+    private native JavaScriptObject createCustomColumn(JavaScriptObject wrapper, JavaScriptObject columnMeta, JavaScriptObject formatter, JavaScriptObject formatterParams, JavaScriptObject headerFilter, JavaScriptObject headerFilterFunc, String sorter, String title, String headerTooltip, JavaScriptObject cellClick) /*-{
+
+        return {
+            title: title ? title : columnMeta.displayName,
+            titleDownload: columnMeta.name,
+            field: columnMeta.name,
+            visible: (columnMeta.visible === undefined) ? columnMeta.principal : columnMeta.visible,
+            headerTooltip: headerTooltip ? headerTooltip : columnMeta.description,
+            download: true,
+            formatter: formatter,
+            formatterParams: formatterParams,
+            sorter: sorter,
+            sorterParams: {thousandSeperator: ""},
+            headerFilter: headerFilter,
+            headerFilterParams: {
+                tapName: columnMeta.name,
+                title: columnMeta.displayName
+            },
+            headerFilterFunc: headerFilterFunc,
+            headerFilterFuncParams: {tapName: columnMeta.name},
+            cellClick: cellClick,
+            moveToFront: cellClick ? 1 : 0
+        }
+
+    }-*/;
+
+    private native JavaScriptObject generateColumn(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+
+        // Try to generate column from UCD or UType values
+        var column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithContentDescriptors(*)(wrapper, table, columnMeta, divId);
+
+        // If column is undefined, try to generate column from xtype
+        if (!column) {
+            column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithXType(*)(wrapper, table, columnMeta, divId);
+        }
+
+        // If column is undefined, try to generate column from data type
+        if (!column) {
+            column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithDatatype(*)(wrapper, table, columnMeta, divId);
+        }
+
+
+        // If column could not be generated, create default column
+        if (!column) {
+            var formatter = "plaintext";
+            var formatterParams = undefined;
+            var headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
+            var headerFilterFunc = "like";
+            var sorter = "string"
+            column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
+        }
+
+
+        return column;
+
+
+    }-*/;
+
+    private native JavaScriptObject createColumnWithContentDescriptors(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+        var formatter, formatterParams, headerFilter, headerFilterFunc, sorter, title, tooltip, cellClick;
+        var ucd = columnMeta.ucd ? columnMeta.ucd : "";
+        var utype = columnMeta.utype ? columnMeta.utype : "";
+        if ((ucd.includes("phys.size") && ucd.includes("meta.file")) || utype.includes("Access.Size")) {
+            formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(divId);
+            headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
+            headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
+            sorter = "number";
+            title = $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_header");
+            tooltip = $wnd.esasky.getInternationalizationText("tabulator_accessEstSize_headerTooltip");
+
+        } else if (ucd.includes("meta.code.status")) {
+            formatter = "plaintext";
+            headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(wrapper);
+            headerFilterFunc = "like";
+            sorter = "string";
+        } else if (ucd.includes("pos.eq.dec") || utype.includes("Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C2")) {
+            formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecFormatterFunc()();
+            headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
+            headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
+            sorter = "number";
+        } else if (ucd.includes("pos.eq.ra") || utype.includes("Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C1")) {
+            formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaFormatterFunc()();
+            headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
+            headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
+            sorter = "number";
+        } else if (ucd.includes("meta.bib.author")) {
+            formatter = function (cell, formatterParams, onRendered) {
+                return $wnd.esasky.linkListFormatter(cell.getValue(), 100);
+            };
+            headerFilter = true;
+            headerFilterFunc = "like";
+            sorter = "string";
+            title = $wnd.esasky.getInternationalizationText("Authors");
+            tooltip = $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip");
+        } else if (((ucd.includes("meta.dataset") || ucd.includes("meta.product")) && ucd.includes("meta.ref.url"))) {
+            formatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+            formatterParams = {
+                image: "download_small.png",
+                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
+            }
+            cellClick = function (e, cell) {
+                e.stopPropagation();
+                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                } else {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
+                }
+            };
+        } else if (ucd === "meta.ref.url") {
+            formatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+            formatterParams = {
+                image: "link2archive.png",
+                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+            };
+
+            tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
+            cellClick = function (e, cell) {
+                e.stopPropagation();
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+            }
+        } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
+            title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
+            tooltip = $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip");
+            formatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+            formatterParams = {
+                image: "preview.png",
+                tooltip: $wnd.esasky.getInternationalizationText("tabulator_preview")
+            }
+            cellClick = function (e, cell) {
+                e.stopPropagation();
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
+            }
+        } else {
+            return undefined;
+        }
+
+
+        return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createCustomColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter, title, tooltip, cellClick)
+
+    }-*/;
+
+
+    private native JavaScriptObject createColumnWithXType(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+        var formatter, formatterParams, headerFilter, headerFilterFunc, sorter;
+        var xtype = columnMeta.xtype ? columnMeta.xtype : "";
+        switch (xtype.toLowerCase()) {
+            case "adql:timestamp":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
+                sorter = "string";
+                break;
+            default:
+                return undefined;
+        }
+
+        return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
+
+    }-*/;
+
+    private native JavaScriptObject createColumnWithDatatype(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+        var formatter, formatterParams, headerFilter, headerFilterFunc, sorter;
+        var datatype = columnMeta.datatype ? columnMeta.datatype : "";
+        switch (datatype.toLowerCase()) {
+            case "char":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
+                headerFilterFunc = "like";
+                sorter = "string";
+                break;
+            case "boolean":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(wrapper);
+                headerFilterFunc = "like";
+                sorter = "string";
+                break;
+            case "double":
+            case "float":
+            case "real":
+                formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()();
+                formatterParams = {maxDecimalDigits: columnMeta.maxDecimalDigits || 4};
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
+                sorter = "number";
+                break;
+            case "long":
+            case "bigint":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
+                headerFilterFunc = "like";
+                sorter = "string";
+                break;
+            case "int":
+            case "integer":
+            case "short":
+                formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()();
+                formatterParams = {maxDecimalDigits: 0};
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
+                sorter = "number";
+                break;
+            case "percent":
+                formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getPercentFormatterFunc()();
+                formatterParams = {maxDecimalDigits: columnMeta.maxDecimalDigits || 4};
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
+                sorter = "number";
+                break;
+            case "list":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilterFunc = "like";
+                break;
+            case "datetime":
+            case "timestamp":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
+                sorter = "string";
+                break;
+            case "html":
+                formatter = function (cell, formatterParams, onRendered) {
+                    if (formatterParams.makeHref) {
+                        return "<a href=\"" + cell.getValue() + "\" target=\"blank\">" + cell.getValue() + "</a>"
+                    } else {
+                        return cell.getValue();
+                    }
+                };
+                formatterParams = {makeHref: columnMeta.makeHref};
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
+                headerFilterFunc = "like";
+                break;
+            case "string_hide_non_database_values":
+                formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getHideNonDatabaseColumnFormatterFunc()();
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
+                headerFilterFunc = "like";
+                sorter = "string";
+                break;
+            default:
+                return undefined;
+        }
+
+        return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
     }-*/;
 
     public void onRowEnter(int rowId) {
