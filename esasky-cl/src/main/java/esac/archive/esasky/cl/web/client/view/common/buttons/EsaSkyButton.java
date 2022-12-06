@@ -72,7 +72,7 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 		rotateAnimation.addObserver(currentPosition -> button.getUpFace().setImage(enabledImage));
 
 		if (labelText != null) {
-			button.addStyleName("imageLabelButton");
+			this.addStyleName("imageLabelButton");
 			label = new Label(labelText);
 			label.addStyleName(DISPLAY_NONE);
 			label.addStyleName("imageLabelButtonLabel");
@@ -105,11 +105,11 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	}
 
 	public void setNonTransparentBackground() {
-		button.addStyleName("nonTransparentButton");
+		this.addStyleName("nonTransparentButton");
 	}
 
 	public void setTransparentBackground() {
-		button.removeStyleName("nonTransparentButton");
+		this.removeStyleName("nonTransparentButton");
 	}
 
 	public void setTextStyle(){
