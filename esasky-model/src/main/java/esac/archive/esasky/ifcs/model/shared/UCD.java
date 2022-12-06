@@ -555,8 +555,17 @@ public enum UCD implements IContentDescriptor{
     }
 
     public boolean matches(String str) {
+        if (str == null) {
+            return false;
+        }
+
         boolean isMatch = str.toLowerCase().contains(value.toLowerCase());
-        return negative != isMatch;
+
+        if (isNegative()) {
+            return !isMatch;
+        } else {
+            return isMatch;
+        }
     }
 
     public static boolean isMain(String str) {

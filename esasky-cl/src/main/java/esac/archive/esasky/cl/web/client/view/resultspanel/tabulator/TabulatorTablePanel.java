@@ -785,7 +785,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 						for (SampMessageItem i : messageItems) {
 							// Prepare sending message
 							tableNameTmp = getDescriptor().getTableName() + "_" + counter + "-" + GUISessionStatus.getNextUniqueSampNumber();
-							String fullUrl = getDescriptor().getArchiveBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
+							String fullUrl = getDescriptor().getSampBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
 							if (fullUrl.contains("README")) {
 								continue;
 							}
@@ -830,7 +830,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
 		if (getDescriptor() != null) {
 			CommonTapDescriptor desc = getDescriptor();
-			String archiveUrl = desc.getArchiveBaseURL();
+			String archiveUrl = desc.getArchiveUrl(row.invokeFunction("getData"));
+
 			if (!archiveUrl.isEmpty()) {
 				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
 				UrlUtils.openUrl(archiveUrl);

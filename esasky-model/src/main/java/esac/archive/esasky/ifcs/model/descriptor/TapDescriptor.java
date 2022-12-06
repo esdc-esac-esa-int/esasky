@@ -123,7 +123,9 @@ public class TapDescriptor extends TapDescriptorBase {
         for (TapMetadataDescriptor metaDesc : getMetadata()) {
             String ucdStr = metaDesc.getUcd();
 
-            if (ucdStr != null && Arrays.stream(ucdList).anyMatch(u -> u.matches(ucdStr))) {
+            boolean postiveMatch = Arrays.stream(ucdList).filter(u -> !u.isNegative()).anyMatch(u -> u.matches(ucdStr));
+            boolean negativeMatch =  Arrays.stream(ucdList).filter(u -> u.isNegative()).allMatch(u -> u.matches(ucdStr));
+            if (ucdStr != null && postiveMatch && negativeMatch) {
                 descriptor = metaDesc;
                 if (UCD.isMain(ucdStr)) {
                     break;

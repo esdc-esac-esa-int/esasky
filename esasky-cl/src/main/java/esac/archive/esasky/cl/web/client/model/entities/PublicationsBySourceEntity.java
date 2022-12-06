@@ -18,14 +18,13 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 public class PublicationsBySourceEntity extends EsaSkyEntity {
-
-    private CommonTapDescriptor publicationsDescriptor;
+    private final String publicationId;
     public PublicationsBySourceEntity(CommonTapDescriptor descriptor,
                                       CountStatus countStatus, SkyViewPosition skyViewPosition,
-                                      String esaSkyUniqId, double ra, double dec, String bibcount) {
-        super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
+                                      String publicationId, double ra, double dec, String bibcount) {
+        super(descriptor, countStatus, skyViewPosition, publicationId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
         super.addShapes(getTableShapeInfo(ra, dec, bibcount, getId()), null);
-        this.publicationsDescriptor = descriptor;
+        this.publicationId = publicationId;
     }
 
     @Override
@@ -36,7 +35,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
     
     @Override
     public void fetchData() {
-        Scheduler.get().scheduleFinally(() -> tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(getId())
+        Scheduler.get().scheduleFinally(() -> tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_SOURCE_URL + "?SOURCE=" + URL.encodeQueryString(publicationId)
             + "&ROWS=" + 50000));
     }
     

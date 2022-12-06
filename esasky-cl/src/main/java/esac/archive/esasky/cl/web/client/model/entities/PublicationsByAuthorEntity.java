@@ -2,9 +2,10 @@ package esac.archive.esasky.cl.web.client.model.entities;
 
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Image;
 
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
@@ -16,12 +17,12 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.Publication
 
 public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
-    private CommonTapDescriptor publicationsDescriptor;
+    private final String authorId;
     public PublicationsByAuthorEntity(CommonTapDescriptor descriptor,
                                       CountStatus countStatus, SkyViewPosition skyViewPosition,
-                                      String esaSkyUniqId) {
-        super(descriptor, countStatus, skyViewPosition, esaSkyUniqId, TAPPublicationsService.getInstance());
-        this.publicationsDescriptor = descriptor; 
+                                      String authorId) {
+        super(descriptor, countStatus, skyViewPosition, authorId, TAPPublicationsService.getInstance());
+        this.authorId = authorId;
     }
 
     @Override
@@ -32,15 +33,8 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     
     @Override
     public void fetchData() {
-        Scheduler.get().scheduleFinally(new ScheduledCommand() {
-            
-            @Override
-            public void execute() {
-                // TODO: FIX
-//                tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL + "?AUTHOR=" + URL.encodeQueryString(getEsaSkyUniqId())
-//                + "&ROWS=" + publicationsDescriptor.getAdsPublicationsMaxRows());
-            }
-        });
+        Scheduler.get().scheduleFinally(() -> tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL
+                + "?AUTHOR=" + URL.encodeQueryString(authorId) + "&ROWS=" + 50000));
     }
     
     @Override

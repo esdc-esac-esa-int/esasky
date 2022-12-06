@@ -3,6 +3,7 @@ package esac.archive.esasky.ifcs.model.descriptor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
 import java.util.List;
@@ -159,6 +160,19 @@ public class CommonTapDescriptor extends TapDescriptor {
             return color;
         } else {
             return ESASkyColors.getColorFromWavelength((Math.max(getWavelengthStart(), 0) + Math.min(getWavelengthEnd(), 100)) / 2);
+        }
+    }
+
+    public String getArchiveUrl(GeneralJavaScriptObject rowData) {
+        String uri = getArchiveProductURI();
+        String column = uri.replaceAll(".*@@@(.+)@@@.*", "$1");
+
+        if (rowData.hasProperty(column)) {
+            String columnValue = rowData.getProperty(column).toString();
+            uri = uri.replaceAll("@@@(.+)@@@", columnValue);
+            return getArchiveBaseURL() + uri;
+        } else {
+            return "";
         }
     }
 

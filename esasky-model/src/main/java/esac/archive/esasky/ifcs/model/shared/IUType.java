@@ -5,12 +5,16 @@ public interface IUType extends IContentDescriptor{
 
     String getType();
 
+    default String getTypeString() {
+        return getType() + ":";
+
+    }
     default boolean isType(String ucd) {
         return ucd.toLowerCase().startsWith(getType().toLowerCase());
     }
 
     default boolean matches(String str) {
-        return isType(str) && str.toLowerCase().contains(getValue().toLowerCase());
+        return isType(str) && str.replace(getTypeString(), "").equalsIgnoreCase(getValue());
     }
 
 }
