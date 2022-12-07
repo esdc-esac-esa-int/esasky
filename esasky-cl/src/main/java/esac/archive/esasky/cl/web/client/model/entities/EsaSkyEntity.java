@@ -190,46 +190,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         details.put(SourceConstant.CATALOGE_NAME, getId());
         details.put(SourceConstant.ID, Integer.toString(shapeId));
-        details.put(SourceConstant.EXTRA_PARAMS, null);
-        // TODO: fix this (publication extra)
-//        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
-//            details.put(SourceConstant.EXTRA_PARAMS, null);
-//        }
-//        else {
-//            String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
-//                    .split(",");
-//            String extraDetailsLabels = "";
-//            for (String currTapName : extraDetailsTapName) {
-//                extraDetailsLabels += getKeyToShow(currTapName) + ",";
-//            }
-//            if(extraDetailsLabels.length() > 0) {
-//                extraDetailsLabels = extraDetailsLabels.substring(0, extraDetailsLabels.length() - 1);
-//            }
-//            details.put(SourceConstant.EXTRA_PARAMS, extraDetailsLabels);
-//
-//            for (String currTapName : extraDetailsTapName) {
-//                MetadataDescriptor cmd = this.getDescriptor()
-//                        .getMetadataDescriptorByTapName(currTapName);
-//                Integer precision = null;
-//                String value = rowData.getStringProperty(currTapName);
-//                if (value != null && cmd != null && cmd.getMaxDecimalDigits() != null
-//                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
-//                        .getType() == ColumnType.DOUBLE)) {
-//                    StringBuilder sb = new StringBuilder();
-//                    precision = cmd.getMaxDecimalDigits();
-//                    sb.append("#0.");
-//                    if (precision != null) {
-//                        for (int i = 0; i < precision; i++) {
-//                            sb.append("0");
-//                        }
-//                    } else {
-//                        sb.append("00");
-//                    }
-//                	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
-//                }
-//                details.put(getKeyToShow(currTapName), value);
-//            }
-//        }
+
+        if (this.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
+            final String bibcount = "bibcount";
+            if (rowData.hasProperty(bibcount)) {
+                details.put(SourceConstant.EXTRA_PARAMS, bibcount);
+                details.put(bibcount, rowData.getStringProperty(bibcount));
+            }
+        }
+        else {
+            details.put(SourceConstant.EXTRA_PARAMS, null);
+        }
 
         if(secondaryShapeAdder != null) {
             secondaryShapeAdder.addSecondaryShape(rowData, ra, dec, details);
