@@ -1594,10 +1594,10 @@ public class TabulatorWrapper {
             }
             if (!wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()()) {
                 if (rows.length == 0 && this.getHeaderFilters().length > 0) {
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_filtered_empty"));
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(this, $wnd.esasky.getInternationalizationText("tabulator_filtered_empty"));
                 }
                 if (this.filteredOnFov) {
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(table, $wnd.esasky.getInternationalizationText("tabulator_no_images"));
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setPlaceholderText(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(this, $wnd.esasky.getInternationalizationText("tabulator_no_images"));
                 }
             }
         }
