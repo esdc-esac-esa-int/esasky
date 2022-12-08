@@ -2511,6 +2511,58 @@
 	<text key="header_highResolutionImages">
 	    哈勃科普图片库
 	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+		eROSITA（成像望远镜组扩展伦琴巡天）是一架宽视场X射线望远镜，安装在俄德“光谱-伦琴-伽马”（SRG）空间天文台上，由德国马普地外物理研究所（MPE）牵头研制。eROSITA是一台灵敏的空间X射线望远镜，可以在0.2-8千电子伏特能段内获得非常大天区的深度精确图像。
 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#eROSITA"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+		用eROSITA科学分析软件系统（eSASS）在0.2-2.3千电子伏特能段探测到的似然概率阈值高于5的X射线源。选择其中探测似然概率高于6的源作为主eREDS源表里的源（共27910个源）。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDSmain"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+		eFEDS源表里的硬X射线源。用eROSITA科学分析软件系统（eSASS）在三个能段进行源探测（1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5千电子伏特），并设置探测似然概率阈值高于5，我们选择了在2.3-5千电子伏特里探测似然概率高于10，且延展源似然概率为0的源，作为eFEDS硬X射线源表（共246个源）。
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDShard"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+		Eta Chamaeleontis天区扫描观测（观测ID 300004）里探测的主X射线源表，参见Robrade et al. (2021)。
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChamain"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+		Eta Chamaeleontis天区扫描观测（观测ID 300004）里探测的硬X射线源表，参见Robrade et al. (2021)。
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChahard"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
 
 </Internationalization>
