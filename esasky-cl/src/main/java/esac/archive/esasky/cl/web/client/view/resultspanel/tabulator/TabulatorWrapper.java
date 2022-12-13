@@ -1897,9 +1897,6 @@ public class TabulatorWrapper {
                     }
                 }
                 if (!isSSO) {
-                    activeColumnGroup.sort(function(a,b) {
-                        return a.moveToFront > b.moveToFront ? -1 : 1;
-                    })
                     columnDef = activeColumnGroup;
                 }
 
@@ -1969,8 +1966,7 @@ public class TabulatorWrapper {
             },
             headerFilterFunc: headerFilterFunc,
             headerFilterFuncParams: {tapName: columnMeta.name},
-            cellClick: cellClick,
-            moveToFront: cellClick ? 1 : 0
+            cellClick: cellClick
         }
 
     }-*/;
