@@ -27,10 +27,11 @@ public abstract class TapDescriptorBase {
     protected String color;
 
     @JsonIgnore
-    private String tapUrl;
+    private boolean fovLimitDisabled = false;
 
     @JsonIgnore
-    private boolean fovLimitDisabled = false;
+    private int count = 0;
+
     private String selectADQL;
     private String whereADQL;
 
@@ -94,30 +95,9 @@ public abstract class TapDescriptorBase {
 
 
     public String getTapUrl() {
-        return tapUrl;
+        return "";
     }
 
-    public void setTapUrl(String tapUrl) {
-        final String syncPath = "/sync";
-        final String asyncPath = "/async";
-
-        // Remove trailing slash
-        if (tapUrl.endsWith("/")) {
-            tapUrl = tapUrl.substring(0, tapUrl.length() - 2);
-        }
-
-        // Async queries are not supported
-        if (tapUrl.endsWith(asyncPath)) {
-            tapUrl = tapUrl.replace(asyncPath, syncPath);
-        }
-
-        // Add sync if not present
-        if(!tapUrl.endsWith(syncPath)) {
-            tapUrl += syncPath;
-        }
-
-        this.tapUrl = tapUrl;
-    }
 
     public String createTapUrl(String baseUrl, String query, String responseFormat) {
         long currentTime = System.currentTimeMillis();
@@ -191,5 +171,13 @@ public abstract class TapDescriptorBase {
 
     public void setFovLimitDisabled(boolean fovLimitDisabled) {
         this.fovLimitDisabled = fovLimitDisabled;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

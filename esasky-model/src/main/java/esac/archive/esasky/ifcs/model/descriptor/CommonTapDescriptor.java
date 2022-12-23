@@ -1,11 +1,13 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -65,6 +67,20 @@ public class CommonTapDescriptor extends TapDescriptor {
     @JsonProperty("intersect_polygon_query")
     private boolean useIntersectsPolygon;
 
+    @JsonProperty("external_tap_url")
+    private String tapUrl;
+
+    @JsonProperty("group_column1")
+    private String groupColumn1;
+
+    @JsonProperty("group_column2")
+    private String groupColumn2;
+
+    @JsonIgnore
+    private CommonTapDescriptor parent;
+
+    @JsonIgnore
+    private final List<CommonTapDescriptor> children = new LinkedList<>();
 
     /*********************
      * Getters
@@ -176,6 +192,21 @@ public class CommonTapDescriptor extends TapDescriptor {
         }
     }
 
+    @Override
+    public String getTapUrl() {
+        return tapUrl;
+    }
+
+    public String getGroupColumn1() {
+        return groupColumn1;
+    }
+
+
+    public String getGroupColumn2() {
+        return groupColumn2;
+    }
+
+
     /*********************
      * Setters
      *********************/
@@ -255,5 +286,90 @@ public class CommonTapDescriptor extends TapDescriptor {
 
     public void setUseIntersectsPolygon(boolean useIntersectsPolygon) {
         this.useIntersectsPolygon = useIntersectsPolygon;
+    }
+
+    @JsonSetter("external_tap_url")
+    public void setTapUrl(String tapUrl) {
+        final String syncPath = "/sync";
+        final String asyncPath = "/async";
+
+        if (tapUrl != null) {
+            // Remove trailing slash
+            if (tapUrl.endsWith("/")) {
+                tapUrl = tapUrl.substring(0, tapUrl.length() - 2);
+            }
+
+            // Async queries are not supported
+            if (tapUrl.endsWith(asyncPath)) {
+                tapUrl = tapUrl.replace(asyncPath, syncPath);
+            }
+
+            // Add sync if not present
+            if(!tapUrl.endsWith(syncPath)) {
+                tapUrl += syncPath;
+            }
+        }
+
+        this.tapUrl = tapUrl;
+    }
+
+    public void setGroupColumn1(String groupColumn1) {
+        this.groupColumn1 = groupColumn1;
+    }
+
+    public void setGroupColumn2(String groupColumn2) {
+        this.groupColumn2 = groupColumn2;
+    }
+
+    public TapDescriptorBase getParent() {
+        return parent;
+    }
+
+    public void setParent(CommonTapDescriptor parent) {
+        this.parent = parent;
+    }
+
+    public List<CommonTapDescriptor> getChildren() {
+        return children;
+    }
+
+    public List<CommonTapDescriptor> getAllChildren() {
+        List<CommonTapDescriptor> allChildren = new LinkedList<>();
+        for (CommonTapDescriptor child : children) {
+            allChildren.add(child);
+            allChildren.addAll(child.getAllChildren());
+        }
+        return allChildren;
+    }
+
+    public void removeChildren(List<String> idsNotToRemove) {
+        for (CommonTapDescriptor child : children) {
+            child.removeChildren(idsNotToRemove);
+
+            if (!idsNotToRemove.contains(child.getId())) {
+                children.remove(child);
+            }
+        }
+    }
+
+    public void addChild(CommonTapDescriptor child) {
+        this.children.add(child);
+        child.setParent(this);
+    }
+
+    public int getLevel() {
+        if (parent == null) {
+            return 0;
+        } else {
+            return 1 + parent.getLevel();
+        }
+    }
+
+    public TapDescriptorBase getOriginalParent() {
+        if (parent == null) {
+            return this;
+        } else {
+            return parent.getOriginalParent();
+        }
     }
 }

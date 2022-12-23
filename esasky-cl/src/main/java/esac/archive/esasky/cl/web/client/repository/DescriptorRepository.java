@@ -12,18 +12,13 @@ import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.GeneralSkyObject;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.SourceListJSONWrapper;
-import esac.archive.esasky.cl.web.client.callback.ICountRequestHandler;
-import esac.archive.esasky.cl.web.client.callback.JsonRequestCallback;
-import esac.archive.esasky.cl.web.client.callback.Promise;
-import esac.archive.esasky.cl.web.client.callback.SsoCountRequestCallback;
+import esac.archive.esasky.cl.web.client.callback.*;
 import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
-import esac.archive.esasky.cl.web.client.event.ExtTapToggleEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.query.*;
-import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
@@ -50,6 +45,7 @@ public class DescriptorRepository {
     }
 
 
+    // Key: category, Value: DescriptorCountAdapter
     private Map<String, DescriptorCountAdapter> descriptorCountAdapterMap = new HashMap<>();
     private final Map<String, String> tableCategoryMap = new HashMap<>();
 
@@ -141,77 +137,17 @@ public class DescriptorRepository {
         }
     }
 
-    public void initExtDescriptors(final CountObserver countObserver) {
-            // TODO: fix when external tap is fixed
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initExtDescriptors");
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.EXT_TAP_GET_TAPS_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//                ExternalTapDescriptorListMapper mapper = GWT.create(ExternalTapDescriptorListMapper.class);
-//                extTapDescriptors = new DescriptorListAdapter<ExtTapDescriptor>(mapper.read(responseText), countObserver);
-//                registerExtTapObserver();
-//
-//                List<IDescriptor> descriptorsList = new LinkedList<IDescriptor>();
-//                List<Integer> counts = new LinkedList<Integer>();
-//
-//                for (ExtTapDescriptor tapService : extTapDescriptors.getDescriptors()) {
-////                    tapService.setInBackend(true);
-//                    descriptorsList.add(tapService);
-//                    counts.add(0);
-//
-//                    for (String level1Name : tapService.getSubLevels().keySet()) {
-//
-//                        ExtTapDescriptor level1Desc = ExtTapUtils.createLevelDescriptor(tapService, EsaSkyConstants.TREEMAP_LEVEL_1,
-//                                level1Name, tapService.getLevelColumnNames().get(0), tapService.getSubLevels().get(level1Name));
-//
-//                        descriptorsList.add(level1Desc);
-//                        counts.add(0);
-//
-//                        for (String level2Name : level1Desc.getSubLevels().keySet()) {
-//                            ExtTapDescriptor level2Desc = ExtTapUtils.createLevelDescriptor(level1Desc, EsaSkyConstants.TREEMAP_LEVEL_2,
-//                                    level2Name, tapService.getLevelColumnNames().get(1), level1Desc.getSubLevels().get(level2Name));
-//
-//                            level2Desc.setInBackend(true);
-//                            descriptorsList.add(level2Desc);
-//                            counts.add(0);
-//                        }
-//
-//
-//                    }
-//                }
-//
-//                CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorsList, counts));
-//
-//                for (IDescriptor descriptor : descriptorsList) {
-//                    if (extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(descriptor.getMission()) == null) {
-//                        extTapDescriptors.getDescriptors().add((ExtTapDescriptor) descriptor);
-//                    }
-//                }
-//
-//                Log.debug("[DescriptorRepository] Total extTap entries: " + extTapDescriptors.getTotal());
-//            }
-//
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initExtDescriptors ERROR: " + errorCause);
-//            }
-//
-//        });
-    }
-
-    public CommonTapDescriptor addExtTapDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String query, boolean useFovLimiter) {
+    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String query, boolean useFovLimiter) {
         String longName = tapUrl+"/"+tableName ;
         String mission = longName + "?" + query;
 
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
         commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
+        commonTapDescriptor.setSchemaName(EsaSkyWebConstants.SCHEMA_EXTERNAL);
         commonTapDescriptor.setShortName(tableName);
         commonTapDescriptor.setLongName(longName);
         commonTapDescriptor.setMission(mission);
-        commonTapDescriptor.setSchemaName("external");
         commonTapDescriptor.setTapUrl(tapUrl);
         commonTapDescriptor.setIsExternal(true);
         commonTapDescriptor.setTableName(tableName);
@@ -236,8 +172,6 @@ public class DescriptorRepository {
         }
 
 
-
-
         String[] whereSplit = query.split(where);
         if (whereSplit.length > 1) {
             commonTapDescriptor.setWhereADQL(whereSplit[1]);
@@ -245,10 +179,7 @@ public class DescriptorRepository {
         String[] fromSplit = query.split(from);
         commonTapDescriptor.setSelectADQL(fromSplit[0]);
 
-        CommonTapDescriptorList commonTapDescriptorList = new CommonTapDescriptorList();
-        commonTapDescriptorList.setDescriptors(Arrays.asList(commonTapDescriptor));
-        DescriptorCountAdapter countAdapter = new DescriptorCountAdapter(commonTapDescriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
-        this.setDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL, countAdapter);
+
         return commonTapDescriptor;
 
     }
@@ -295,36 +226,6 @@ public class DescriptorRepository {
     }
 
 
-    public void initCatalogueDescriptors(final CountObserver countObserver) {
-
-//        Log.debug("[DescriptorRepository] Into DescriptorRepository.initCatDescriptors");
-//        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.CATALOGS_URL, new IJSONRequestCallback() {
-//
-//            @Override
-//            public void onSuccess(String responseText) {
-//                CatalogDescriptorListMapper mapper = GWT.create(CatalogDescriptorListMapper.class);
-//                catDescriptors = new DescriptorListAdapter<CatalogDescriptor>(mapper.read(responseText), countObserver);
-//                catDescriptorsIsReady = true;
-//
-//                Log.debug("[DescriptorRepository] Total catalog entries: " + catDescriptors.getTotal());
-//                WavelengthUtils.setWavelengthRangeMaxMin(catDescriptors.getDescriptors());
-//                if (!GUISessionStatus.getIsInScienceMode()) {
-//                    GUISessionStatus.setDoCountOnEnteringScienceMode();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String errorCause) {
-//                Log.error("[DescriptorRepository] initCatDescriptors ERROR: " + errorCause);
-//                DescriptorList<CatalogDescriptor> list = new DescriptorList<CatalogDescriptor>() {};
-//                catDescriptors = new DescriptorListAdapter<CatalogDescriptor>(list, countObserver);
-//                catDescriptorsIsReady = true;
-//            }
-//
-//        });
-    }
-
-
     public void initDescriptors(String schema, String category, Promise<CommonTapDescriptorList> promise) {
         Log.debug("[DescriptorRepository] Into DescriptorRepository.initDescriptors");
 
@@ -349,9 +250,8 @@ public class DescriptorRepository {
                                 TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
                                 TapDescriptorList mappedDescriptorList  = mapper.read(responseText);
 
-                                List<TapMetadataDescriptor> metadataDescriptorList  = mappedDescriptorList.getDescriptors().stream()
-                                        .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                                commonTapDescriptor.setMetadata(metadataDescriptorList);
+                                boolean isSchemaQuery = commonTapDescriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+                                commonTapDescriptor.setMetadata(ExtTapUtils.getMetadataFromTapDescriptorList(mappedDescriptorList, isSchemaQuery));
                             }
 
                             @Override
@@ -374,7 +274,6 @@ public class DescriptorRepository {
     }
 
     public void doCountAll() {
-
 		// Single dynamic count
         requestSingleCount();
         if (isExtTapOpen) {
@@ -387,29 +286,34 @@ public class DescriptorRepository {
         CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
         if (fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
             for (CommonTapDescriptor descriptor : getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
-                // TODO: fix when exttap is implemented again
-//                if (EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getTreeMapLevel()) {
-//                    if (extTapDescriptors.getCountStatus().hasMoved(descriptor)) {
-//                        updateCount4ExtTap(descriptor);
-//                    }
-//                }
+                if (EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getLevel()
+                        && getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus().hasMoved(descriptor)) {
+                    updateCount4ExtTap(descriptor);
+                }
             }
         }
     }
 
     public void updateCount4ExtTap(CommonTapDescriptor descriptor) {
-        // TODO : fix
-//        final CountStatus cs = getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus();
-//        if (!cs.containsDescriptor(descriptor)) {
-//            cs.addDescriptor(descriptor);
-//        }
-//
-//        String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
-//        String url = descriptor.getTapQuery(EsaSkyWebConstants.EXT_TAP_REQUEST_URL, adql, descriptor.getResponseFormat());
-//
-//        JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
-//                countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
+        final CountStatus cs = getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus();
+        if (!cs.containsDescriptor(descriptor)) {
+            cs.addDescriptor(descriptor);
+        }
+
+        String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
+
+        String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + adql + "&"
+                + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + descriptor.getTapUrl();
+
+        JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
+        countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
     }
+
+
+
+
 
 
     public void doCountSSO(String ssoName, ESASkySSOObjType ssoType) {
@@ -529,7 +433,7 @@ public class DescriptorRepository {
 //        }
 //    }
 
-        private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
+    private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
 
         ArrayList<String> remainingDescriptors = new ArrayList<>(tableCategoryMap.keySet());
 
@@ -541,15 +445,18 @@ public class DescriptorRepository {
         setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors, counts);
 
         if (!descriptors.isEmpty()) {
-            notifyCountChange(descriptors, counts);
+            notifyCountChange(descriptors);
         }
     }
 
-    // TODO: Notify only those that changed
-    private void notifyCountChange(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
-        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorCountAdapterMap.values()));
+    private void notifyCountChange(List<CommonTapDescriptor> descriptors) {
+        Set<String> categories = descriptors.stream().map(CommonTapDescriptor::getCategory).collect(Collectors.toSet());
+        List<DescriptorCountAdapter> descriptorCountAdapterList =  descriptorCountAdapterMap.values().stream()
+                .filter(dca -> categories.contains(dca.getCategory())).collect(Collectors.toList());
 
-        for (DescriptorCountAdapter dca : descriptorCountAdapterMap.values()) {
+        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorCountAdapterList));
+
+        for (DescriptorCountAdapter dca : descriptorCountAdapterList) {
             dca.getCountStatus().updateCount();
         }
     }
@@ -559,6 +466,7 @@ public class DescriptorRepository {
 
         for (SingleCount singleCount : singleCountList) {
             String category = tableCategoryMap.get(singleCount.getTableName());
+
             if (category != null) {
                 DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
                 CountStatus cs = descriptorCountAdapter.getCountStatus();
@@ -583,14 +491,17 @@ public class DescriptorRepository {
                                                   List<CommonTapDescriptor> descriptors, List<Integer> counts) {
         for (String tableName : remainingDescriptors) {
             String category = tableCategoryMap.get(tableName);
+
             DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
 
             final int count = 0;
             for (CommonTapDescriptor descriptor : descriptorCountAdapter.getDescriptors()) {
-                CountStatus cs = descriptorCountAdapter.getCountStatus();
-                cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
-                descriptors.add(descriptor);
-                counts.add(count);
+                if (!descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+                    CountStatus cs = descriptorCountAdapter.getCountStatus();
+                    cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
+                    descriptors.add(descriptor);
+                    counts.add(count);
+                }
             }
         }
     }
@@ -657,15 +568,11 @@ public class DescriptorRepository {
     public void registerExtTapObserver() {
 
         CommonEventBus.getEventBus().addHandler(ExtTapToggleEvent.TYPE,
-                new ExtTapToggleEventHandler() {
-
-                    @Override
-                    public void onToggle(final ExtTapToggleEvent event) {
-                        boolean wasOpen = isExtTapOpen;
-                        isExtTapOpen = event.isOpen();
-                        if (!wasOpen && isExtTapOpen) {
-                            updateCount4AllExtTaps();
-                        }
+                event -> {
+                    boolean wasOpen = isExtTapOpen;
+                    isExtTapOpen = event.isOpen();
+                    if (!wasOpen && isExtTapOpen) {
+                        updateCount4AllExtTaps();
                     }
                 });
     }

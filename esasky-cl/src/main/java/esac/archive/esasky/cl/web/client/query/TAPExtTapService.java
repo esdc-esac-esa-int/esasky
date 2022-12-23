@@ -22,6 +22,7 @@ public class TAPExtTapService extends AbstractTAPService {
     private static final String FROM = " FROM ";
     private static final String WHERE = " WHERE ";
     private static final String AND = " AND ";
+    private static final String HEASARC = "HEASARC";
 
     private TAPExtTapService() {
     }
@@ -50,9 +51,17 @@ public class TAPExtTapService extends AbstractTAPService {
 			adql += FROM + "\"" + tapTable + "\"";
 		}
 
+        if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
+            adql += " JOIN master_table.indexview on table_name = name";
+        }
+
         if (!descriptor.isFovLimitDisabled()) {
             if(descriptor.useIntersectsPolygon()) {
                 adql +=  WHERE + polygonIntersectSearch(descriptor);
+            } else if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
+                adql += WHERE + heasarcSearch();
+                adql += " AND table_name in ('halomaster', 'hitomaster', 'maximaster', 'nicermastr', 'numaster', " +
+                        "'rassmaster', 'rassfsc', 'rosmaster', 'xtemaster', 'swiftmastr', 'suzamaster', 'wmapptsr')";
             } else {
                 adql += WHERE + cointainsPointSearch(descriptor);
             }
@@ -113,17 +122,16 @@ public class TAPExtTapService extends AbstractTAPService {
     	return constraint + screenPolygon();
     }
 
-    private String heasarcSearch(ExtTapDescriptor descriptor) {
+    private String heasarcSearch() {
     	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
     	double fov = pos.getFov();
     	double ra = pos.getCoordinate().getRa();
     	double dec = pos.getCoordinate().getDec();
-    	String constraint = " POWER(SIN((radians("+ descriptor.getTapDecColumn() + ") - radians(" + dec + "))/2),2)"
-    			+ "+ cos(radians("+ descriptor.getTapDecColumn() + ")) * cos(radians(" + dec + "))"
-    			+ "* POWER(SIN((radians(" + descriptor.getTapRaColumn() + ") - radians(" + ra + "))/2),2)"
-    			+ "< POWER((radians(" + fov +")/2),2) AND "+ descriptor.getTapDecColumn()
-    			+ " BETWEEN " + (dec - fov) + AND + (dec + fov);
-    	return constraint;
+        return " POWER(SIN((radians(dec) - radians(" + dec + "))/2),2)"
+                + "+ cos(radians(dec)) * cos(radians(" + dec + "))"
+                + "* POWER(SIN((radians(ra) - radians(" + ra + "))/2),2)"
+                + "< POWER((radians(" + fov +")/2),2) AND dec"
+                + " BETWEEN " + (dec - fov/2) + AND + (dec + fov/2);
     }
 
     private String raDecCenterSearch(ExtTapDescriptor descriptor) {
@@ -167,67 +175,32 @@ public class TAPExtTapService extends AbstractTAPService {
         }
     }
 
-//    public String getCountAdql(IDescriptor descriptorInput) {
-//    	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-//		if("heasarc".equals(descriptor.getSearchFunction())) {
-//			return URL.encodeQueryString(getHeasarcCountAdql(descriptor));
-//		}
-//		return URL.encodeQueryString(getDefaultCountAdql(descriptor));
-//
-//    }
+    public String getCountAdql(CommonTapDescriptor descriptor) {
+		if(HEASARC.equalsIgnoreCase(descriptor.getMission())) {
+			return URL.encodeQueryString(getHeasarcCountAdql(descriptor));
+		}
+		return URL.encodeQueryString(getDefaultCountAdql(descriptor));
 
-//    public String getObsCoreCountAdql(IDescriptor descriptorInput) {
-//
-//        String selectADQL = "SELECT DISTINCT " + EsaSkyConstants.OBSCORE_COLLECTION + ", " + EsaSkyConstants.OBSCORE_DATAPRODUCT;
-//        ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-//        if(descriptor.isInBackend()) {
-//        	return getAdql(descriptor, selectADQL);
-//        }else {
-//        	return getAdqlNewService(descriptor);
-//        }
-//    }
+    }
 
-//    public String getDefaultCountAdql(CommonTapDescriptor descriptor) {
-//
-//    	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-//    	String selectADQL = "SELECT count(*) as c";
-//    	for(String column : descriptor.getLevelColumnNames()) {
-//    		selectADQL += ", " + column;
-//    	}
-//    	String adql;
-//    	if(descriptor.isInBackend()) {
-//    		adql = getAdql(descriptor, selectADQL);
-//    	}else {
-//    		adql = getAdqlNewService(descriptor);
-//    	}
-//    	adql += " group by ";
-//    	boolean first = true;
-//    	for(String column : descriptor.getLevelColumnNames()) {
-//    		if(first) {
-//    			first = false;
-//    		}else {
-//    			adql += ", ";
-//    		}
-//    			adql += column;
-//    	}
-//
-//      	if(descriptor.getOrderBy() != null) {
-//    		adql += " ORDER BY " + descriptor.getOrderBy();
-//    	}
-//
-//    	return adql;
-//    }
+    public String getDefaultCountAdql(CommonTapDescriptor descriptor) {
+    	String selectADQL = "SELECT count(*) as c, MIN(em_min) as em_min, MAX(em_max) as em_max";
+        selectADQL += ", " + descriptor.getGroupColumn1() + ", " + descriptor.getGroupColumn2();
 
-//    public String getHeasarcCountAdql(IDescriptor descriptorInput) {
-//
-//    	ExtTapDescriptor descriptor = (ExtTapDescriptor) descriptorInput;
-//    	String adql = "SELECT table_name, count(*) ";
-//    	adql = getAdql(descriptor, adql);
-//    	adql += " group by table_name";
-//
-//    	String finalAdql = adql + " UNION " + adql.replace("pos_small", "pos_big");
-//     	return finalAdql;
-//    }
+        String adql = getAdql(descriptor, selectADQL);
+    	adql += " group by " + descriptor.getGroupColumn1() + ", " + descriptor.getGroupColumn2();
+
+
+    	return adql;
+    }
+
+    public String getHeasarcCountAdql(CommonTapDescriptor descriptor) {
+    	String adql = "SELECT table_name, description, count(*) as c";
+    	adql = getAdql(descriptor, adql);
+    	adql += " group by table_name,description";
+
+        return adql + " UNION " + adql.replace("pos_small", "pos_big");
+    }
 
 	@Override
 	public String getMetadataAdqlRadial(CommonTapDescriptor descriptor, SkyViewPosition conePos) {

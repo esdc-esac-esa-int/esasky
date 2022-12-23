@@ -321,6 +321,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		//Do nothing by default - To be overridden if needed.
 	}
 
+	@Override
+	public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
 	public boolean getIsHidingTable() {
 		return isHidingTable;
 	}

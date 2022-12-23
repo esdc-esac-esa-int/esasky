@@ -37,7 +37,6 @@ public class EsaSkyWebConstants {
 
     public static final String TAP_SYNC_URL = BACKEND_CONTEXT + "/tap/sync";
     public static final String TAP_DESCRIPTOR_URL = BACKEND_CONTEXT + "/tap/descriptors";
-//    public static final String OBSERVATIONS_URL = BACKEND_CONTEXT + "/tap/sync?request=doQuery&lang=ADQL&format=json&query=SELECT%20*%20FROM%20tap_descriptors.descriptors%20where%20schema_name%3D%27observations%27";
     public static final String IMAGES_URL = BACKEND_CONTEXT + "/outreach-image";
     public static final String SSO_URL = BACKEND_CONTEXT + "/sso";
     public static final String SPECTRA_URL = BACKEND_CONTEXT + "/spectra";
@@ -187,6 +186,7 @@ public class EsaSkyWebConstants {
     public static final String SCHEMA_ALERTS = "alerts";
     public static final String SCHEMA_PUBLIC = "public";
     public static final String SCHEMA_IMAGES = "images";
+    public static final String SCHEMA_EXTERNAL = "external";
     public static final String CATEGORY_OBSERVATIONS = "observations";
     public static final String CATEGORY_SPECTRA = "spectra";
     public static final String CATEGORY_CATALOGUES = "catalogues";

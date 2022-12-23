@@ -272,6 +272,7 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
     public static final String EXT_TAP_URL_FLAG = "TAP_URL";
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
+    public static final String EXT_TAP_MAX_REC_FLAG = "MAX_REC";
 
 
     /*************************************************************************/

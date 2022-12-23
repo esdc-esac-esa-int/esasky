@@ -46,7 +46,7 @@ public class TreeMap extends Chart {
     private final EntityContext context;
 
     protected Series series;
-    protected HashMap<String, PointInformation> allPoints = new HashMap<String, PointInformation>();
+    protected HashMap<String, PointInformation> allPoints = new HashMap<>();
 
     protected GhostPoint ghostPoint;
     protected boolean firstSelection = false;
@@ -251,13 +251,6 @@ public class TreeMap extends Chart {
             series.addPoint(newPoint, false, false, false);
         }
 
-//		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
-//			@Override
-//			public void onColorChange(TapDescriptor descriptor, String newColor) {
-//				setPointColor(descriptor, newColor);
-//			}
-//		});
-
         return pointId;
     }
 
@@ -373,7 +366,6 @@ public class TreeMap extends Chart {
         }
 
         return point.getName().contains(descriptor.getShortName())
-                && point.getName().contains(pointInfo.getWavelengthShortName())
                 && pointInfo.missionName.equals(descriptor.getMission())
                 && pointInfo.descriptor.getId().equals(descriptor.getId());
     }
@@ -545,7 +537,6 @@ public class TreeMap extends Chart {
             double lowWavelength = ESASkyColors.valueToWaveLength(high);
 
             boolean anyPointsAreShown = false;
-
             for (Point point : series.getPoints()) {
                 PointInformation pointInformation = allPoints.get(point.getText());
                 if (pointInformation != null) {
@@ -553,7 +544,7 @@ public class TreeMap extends Chart {
                     Point pointInSeries = getPoint(pointInformation.descriptor);
                     if (!shouldBeShown) {
                         pointInSeries.update(0, false);
-                    } else if (shouldBeShown) {
+                    } else {
                         pointInSeries.update(logCount(pointInformation.getCount()), false);
                         anyPointsAreShown = true;
                     }

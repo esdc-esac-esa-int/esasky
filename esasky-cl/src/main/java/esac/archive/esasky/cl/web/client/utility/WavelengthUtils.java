@@ -25,8 +25,13 @@ public class WavelengthUtils {
         String wavelengthStartName=  wls != null ? TextMgr.getInstance().getText(wls.shortName) : UNKNOWN;
         String wavelengthEndName = wle != null ? TextMgr.getInstance().getText(wle.shortName) : UNKNOWN;
 
-        final String toText = TextMgr.getInstance().getText("PointInformation_to");
-        return toText.replace("$FROM$", wavelengthStartName).replace("$TO$", wavelengthEndName);
+        if (!wavelengthStartName.equals(wavelengthEndName)) {
+            final String toText = TextMgr.getInstance().getText("PointInformation_to");
+            return toText.replace("$FROM$", wavelengthStartName).replace("$TO$", wavelengthEndName);
+        } else {
+            return wavelengthEndName;
+        }
+
     }
     
     public static String getLongName(CommonTapDescriptor descriptor) {
@@ -38,8 +43,13 @@ public class WavelengthUtils {
         String wavelengthStartName=  wls != null ? TextMgr.getInstance().getText(wls.longName) : UNKNOWN;
         String wavelengthEndName = wle != null ? TextMgr.getInstance().getText(wle.longName) : UNKNOWN;
 
-        final String toText = TextMgr.getInstance().getText("PointInformation_to");
-        return toText.replace("$FROM$", wavelengthStartName).replace("$TO$", wavelengthEndName);
+        if (!wavelengthStartName.equals(wavelengthEndName)) {
+            final String toText = TextMgr.getInstance().getText("PointInformation_to");
+            return toText.replace("$FROM$", wavelengthStartName).replace("$TO$", wavelengthEndName);
+        } else {
+            return wavelengthEndName;
+        }
+
     }
 
     public static void setWavelengthRangeMaxMin(List<CommonTapDescriptor> descriptors) {
@@ -94,6 +104,7 @@ public class WavelengthUtils {
             this.longName = longName;
             this.maxWavelength = maxWavelength;
         }
+
     }
     
     protected static WavelengthName [] wavelengthNames = new WavelengthName[] {

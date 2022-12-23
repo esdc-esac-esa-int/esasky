@@ -731,12 +731,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                 case EsaSkyWebConstants.CATEGORY_SSO:
                     ssoTreeMapContainer.updateData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
                     break;
+                case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                    extTapTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
                 default:
                     Log.warn("[CtrlToolBar] Unknown category " + descriptorCount.getCategory());
             }
         }
 
-        // TODO: External tap
     }
 
     public class CustomTreeMap {
@@ -751,51 +753,42 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 
     public void updateCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
-//        CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
-//        if (customTreeMap != null) {
-//            LinkedList<Integer> counts = new LinkedList<Integer>();
-//
-//            for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
-//                counts.add(1);
-//            }
-//            customTreeMap.treeMapContainer.updateData(treeMapDescriptor.getMissionDescriptors(), counts);
-//        }
+        CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
+        if (customTreeMap != null) {
+            LinkedList<Integer> counts = new LinkedList<Integer>();
+
+            for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
+                counts.add(1);
+            }
+            customTreeMap.treeMapContainer.updateData(treeMapDescriptor.getMissionDescriptors(), counts);
+        }
 
     }
 
     public void addCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
-//        TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
-//        treeMapContainer.setHeaderText(treeMapDescriptor.getIconText());
-//
-//        EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
-//
-//        customTreeMaps.put(treeMapDescriptor.getName(), new CustomTreeMap(treeMapContainer, button));
-//
-//        addCommonButtonStyle(button, treeMapDescriptor.getDescription());
-//        button.addClickHandler(
-//                new ClickHandler() {
-//
-//                    @Override
-//                    public void onClick(ClickEvent event) {
-//                        treeMapContainer.toggle();
-//                        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
-//                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
-//                    }
-//                });
-//        ctrlToolBarPanel.add(button);
-//        ctrlToolBarPanel.add(treeMapContainer);
-//        catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
-//            @Override
-//            public void onClose() {
-//                button.setToggleStatus(false);
-//            }
-//        });
-//
-//        LinkedList<Integer> counts = new LinkedList<Integer>();
-//        for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
-//            counts.add(1);
-//        }
-//        treeMapContainer.addData(treeMapDescriptor.getMissionDescriptors(), counts);
+        TreeMapContainer treeMapContainer = new TreeMapContainer(EntityContext.USER_TREEMAP, false);
+        treeMapContainer.setHeaderText(treeMapDescriptor.getIconText());
+
+        EsaSkyToggleButton button = new EsaSkyToggleButton(treeMapDescriptor.getIconText());
+
+        customTreeMaps.put(treeMapDescriptor.getName(), new CustomTreeMap(treeMapContainer, button));
+
+        addCommonButtonStyle(button, treeMapDescriptor.getDescription());
+        button.addClickHandler(
+                event -> {
+                    treeMapContainer.toggle();
+                    CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
+                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
+                });
+        ctrlToolBarPanel.add(button);
+        ctrlToolBarPanel.add(treeMapContainer);
+        catalogTreeMapContainer.registerObserver(() -> button.setToggleStatus(false));
+
+        LinkedList<Integer> counts = new LinkedList<Integer>();
+        for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
+            counts.add(1);
+        }
+        treeMapContainer.addData(treeMapDescriptor.getMissionDescriptors(), counts);
 
     }
 

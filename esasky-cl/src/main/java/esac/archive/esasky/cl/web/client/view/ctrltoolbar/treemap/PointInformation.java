@@ -32,17 +32,17 @@ public class PointInformation {
 
 		WavelengthUtils.WavelengthName wln = WavelengthUtils.getWavelengthNameFromValue(descriptor.getWavelengthCenter());
 		if (wln != null) {
-			this.wavelengthShortName = wln.shortName;
-			this.wavelengthLongName = wln.longName;
+			this.wavelengthShortName = WavelengthUtils.getShortName(descriptor);
+			this.wavelengthLongName = WavelengthUtils.getLongName(descriptor);
 		}
 		
-		if(context == EntityContext.EXT_TAP) { // TODO: Fix this
-//			int treemapLevel = ((ExtTapDescriptor) descriptor).getTreeMapLevel();
-//			if(treemapLevel != -1) {
-//				this.treemapLevel = treemapLevel;
-//			}else {
-//				this.treemapLevel = EsaSkyConstants.TREEMAP_LEVEL_SERVICE;
-//			}
+		if(context == EntityContext.EXT_TAP) {
+			int treemapLevel = descriptor.getLevel();
+			if(treemapLevel != -1) {
+				this.treemapLevel = treemapLevel;
+			}else {
+				this.treemapLevel = EsaSkyConstants.TREEMAP_LEVEL_SERVICE;
+			}
 		}else {
 			this.treemapLevel = EsaSkyConstants.TREEMAP_LEVEL_1;
 		}

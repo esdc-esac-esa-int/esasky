@@ -39,5 +39,6 @@ public interface TabulatorCallback {
     boolean hasBeenClosed();
     void onAdqlButtonPressed(GeneralJavaScriptObject rowData);
     void onMetadataButtonPressed(GeneralJavaScriptObject rowData);
+    void onAddObscoreTableClicked(GeneralJavaScriptObject rowData);
 
 }

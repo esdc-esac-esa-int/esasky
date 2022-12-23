@@ -325,7 +325,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     if (descriptorList != null) {
                         List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
                                 .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().addExtTapDescriptor(metadataDescriptorList, tapUrl, tableName, query, fovLimit && fovLimiterEnabled);
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl, tableName, query, fovLimit && fovLimiterEnabled);
                         CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
                     }
                 }

@@ -39,6 +39,7 @@ import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -109,16 +110,10 @@ public class MainPresenter {
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES);
-        getExtTapList();
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_EXTERNAL, EsaSkyWebConstants.CATEGORY_EXTERNAL);
 
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
 
-
-
-
-
-
-//        descriptorRepo.initPubDescriptors();
 
         bindSampRequests();
         bind();
@@ -282,10 +277,9 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(TreeMapSelectionEvent.TYPE, event -> {
             if (event.getContext() == EntityContext.EXT_TAP) {
                 PointInformation pointInformation = event.getPointInformation();
-
                 if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
 
-//                    getRelatedMetadata(event.getDescriptor());
+                    getRelatedMetadata(event.getDescriptor());
                     GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,
                             GoogleAnalytics.ACT_EXTTAP_GETTINGDATA, pointInformation.longName);
 
@@ -400,12 +394,14 @@ public class MainPresenter {
             protected void failure() {
                 Log.debug("Failed to initialise descriptors with Schema: " + schema + ", Category: " + category);
             }
-        });
-    }
 
-    private void getExtTapList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
-        descriptorRepo.initExtDescriptors(newCount -> newCount++);
+            @Override
+            protected void whenComplete() {
+                if (Objects.equals(category, EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+                    descriptorRepo.registerExtTapObserver();
+                }
+            }
+        });
     }
 
 
