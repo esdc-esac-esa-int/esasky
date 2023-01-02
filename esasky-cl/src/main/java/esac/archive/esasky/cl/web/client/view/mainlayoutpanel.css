@@ -127,6 +127,11 @@ body {
 	background-color: rgba(255, 255, 255, 0.14);
 }
 
+.buttonCellDisabled {
+	pointer-events: none;
+	opacity: 0.4;
+}
+
 .buttonCell img{
 	display: block;
 	margin: auto;

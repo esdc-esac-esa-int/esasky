@@ -454,14 +454,7 @@ public class TabulatorWrapper {
             }
         };
 
-        FilterObserver filterObserver = new FilterObserver() {
-
-            @Override
-            public void onNewFilter(String filter) {
-                onChangeFunc.invokeFunction("onChange", filter);
-
-            }
-        };
+        FilterObserver filterObserver = filter -> onChangeFunc.invokeFunction("onChange", filter);
 
         RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
         filterDialogs.put(tapName, filterDialog);
@@ -1606,7 +1599,19 @@ public class TabulatorWrapper {
     private native JavaScriptObject getDataLoadedFunc(TabulatorWrapper wrapper, JavaScriptObject settings) /*-{
         return function (data) {
             var imageButtonFormatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                var isDisabled = false;
+
+                if (formatterParams.isDisabledFunc) {
+                    isDisabled = formatterParams.isDisabledFunc(cell);
+                }
+
+                var disabledClass = isDisabled ? "buttonCellDisabled" : "";
+                return "<div class='buttonCell " + disabledClass + "' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+
+            var obscoreButtonDisabled = function (cell) {
+                var data = cell.getData();
+                return data["table_name"].toLowerCase() !== "ivoa.obscore";
             };
 
             if ((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
@@ -1667,6 +1672,27 @@ public class TabulatorWrapper {
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                }, true);
+            }
+
+            if (settings.addObscoreTableColumn) {
+                this.addColumn({
+                    title: "Add",
+                    field: "obscoreAddBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: "Add to External Data Center Panel",
+                    minWidth: 55,
+                    download: false,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    formatterParams: {image: "plus-sign-light-small.png", tooltip: "Add to External Data Center Panel", isDisabledFunc: obscoreButtonDisabled},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        if (obscoreButtonDisabled(cell) === false) {
+                            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAddObscoreTableClicked(*)(cell.getData());
+                        }
                     }
                 }, true);
             }
@@ -2262,6 +2288,10 @@ public class TabulatorWrapper {
 
     public void onMetadataClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onMetadataButtonPressed(rowData);
+    }
+
+    public void onAddObscoreTableClicked(final GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onAddObscoreTableClicked(rowData);
     }
 
     public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {

@@ -98,6 +98,16 @@ public class DescriptorRepository {
         }
     }
 
+    public void addDescriptor(String category, CommonTapDescriptor descriptor) {
+        CommonTapDescriptorList descriptorList =  descriptorCountAdapterMap.get(category).getTapDescriptorList();
+        List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors();
+        descriptors.add(descriptor);
+        descriptorList.setDescriptors(descriptors);
+        DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, null);
+
+        setDescriptors(category, dca);
+    }
+
     public DescriptorCountAdapter getDescriptorCountAdapter(String category) {
        return descriptorCountAdapterMap.get(category);
     }
@@ -137,22 +147,24 @@ public class DescriptorRepository {
         }
     }
 
-    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String query, boolean useFovLimiter) {
-        String longName = tapUrl+"/"+tableName ;
-        String mission = longName + "?" + query;
+    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String missionName, String query, boolean useFovLimiter) {
+        String name = missionName + " (" + tableName + ")" ;
 
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
         commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
         commonTapDescriptor.setSchemaName(EsaSkyWebConstants.SCHEMA_EXTERNAL);
-        commonTapDescriptor.setShortName(tableName);
-        commonTapDescriptor.setLongName(longName);
-        commonTapDescriptor.setMission(mission);
+        commonTapDescriptor.setLongName(name);
+        commonTapDescriptor.setShortName(name);
+        commonTapDescriptor.setMission(missionName);
         commonTapDescriptor.setTapUrl(tapUrl);
         commonTapDescriptor.setIsExternal(true);
         commonTapDescriptor.setTableName(tableName);
         commonTapDescriptor.setFovLimit(10.0);
         commonTapDescriptor.setFovLimitDisabled(!useFovLimiter || commonTapDescriptor.getRaColumn() == null || commonTapDescriptor.getDecColumn() == null);
+
+        commonTapDescriptor.setGroupColumn1("dataproduct_type");
+        commonTapDescriptor.setGroupColumn2("facility_name");
 
         final String from = "FROM";
         final String where = "WHERE";
@@ -182,6 +194,12 @@ public class DescriptorRepository {
 
         return commonTapDescriptor;
 
+    }
+
+
+    public void addExternalDataCenterDescriptor(CommonTapDescriptor descriptor) {
+        addDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, descriptor);
+        updateCount4ExtTap(descriptor);
     }
 
     public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {

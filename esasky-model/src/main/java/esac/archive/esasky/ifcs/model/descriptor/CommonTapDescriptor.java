@@ -358,18 +358,10 @@ public class CommonTapDescriptor extends TapDescriptor {
     }
 
     public int getLevel() {
-        if (parent == null) {
-            return 0;
-        } else {
-            return 1 + parent.getLevel();
-        }
+        return parent == null ? 0 : 1 + parent.getLevel();
     }
 
     public TapDescriptorBase getOriginalParent() {
-        if (parent == null) {
-            return this;
-        } else {
-            return parent.getOriginalParent();
-        }
+        return parent == null ? this : parent.getOriginalParent();
     }
 }

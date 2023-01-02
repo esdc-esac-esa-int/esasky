@@ -56,6 +56,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     private static final String TABLE_NAME_COL = "table_name";
     private static final String ACCESS_URL_COL = "access_url";
+    private static final String SHORT_NAME_COL = "short_name";
     private static final String DISPLAY_NONE = "displayNone";
 
     public interface Resources extends ClientBundle {
@@ -171,6 +172,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
         settings.setTableLayout("fitColumns");
+        settings.setAddObscoreTableColumn(true);
         tapTablesWrapper = new TabulatorWrapper("browseTap__tabulatorTablesContainer", tabulatorCallback, settings);
         tapTablesWrapper.groupByColumns("schema_name");
     }
@@ -226,6 +228,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     private class TabulatorCallback extends DefaultTabulatorCallback {
         private String storedAccessUrl;
+        private String storedName;
 
         @Override
         public void onRowSelection(GeneralJavaScriptObject row) {
@@ -233,8 +236,13 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String accessUrl = rowData.hasProperty(ACCESS_URL_COL)
                     ? rowData.getStringProperty(ACCESS_URL_COL)
                     : storedAccessUrl;
-            
+
+            String name = rowData.hasProperty(SHORT_NAME_COL)
+                    ? rowData.getStringProperty(SHORT_NAME_COL)
+                    : storedName;
+
             storedAccessUrl = accessUrl;
+            storedName = name;
 
             if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
@@ -259,6 +267,34 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
             queryPopupPanel.setTapTable(rowData.getStringProperty(TABLE_NAME_COL));
             showQueryPanel();
+        }
+
+        @Override
+        public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
+            String tableName = rowData.getStringProperty(TABLE_NAME_COL);
+            String schemaQuery = "SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'";
+            queryExternalTapTable(storedAccessUrl, tableName, schemaQuery, new JSONUtils.IJSONRequestCallback() {
+                @Override
+                public void onSuccess(String responseText) {
+                    setIsLoading(false);
+
+                    TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                    TapDescriptorList descriptorList = mapper.read(responseText);
+
+                    if (descriptorList != null) {
+                        List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
+                                .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, storedAccessUrl, tableName, storedName, "", true);
+                        DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
+                    }
+                }
+
+                @Override
+                public void onError(String errorCause) {
+                    setIsLoading(false);
+                }
+            });
+
         }
 
         @Override
@@ -295,6 +331,30 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         }
 
         private void queryExternalTapTable(String tapUrl, String tableName, String query, boolean fovLimit) {
+            queryExternalTapTable(tapUrl, tableName, query, new JSONUtils.IJSONRequestCallback() {
+                @Override
+                public void onSuccess(String responseText) {
+                    setIsLoading(false);
+
+                    TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                    TapDescriptorList descriptorList = mapper.read(responseText);
+
+                    if (descriptorList != null) {
+                        List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
+                                .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl, tableName, storedName, query, fovLimit && fovLimiterEnabled);
+                        CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
+                    }
+                }
+
+                @Override
+                public void onError(String errorCause) {
+                    setIsLoading(false);
+                }
+            });
+        }
+
+        private void queryExternalTapTable(String tapUrl, String tableName, String query, JSONUtils.IJSONRequestCallback callback) {
             setIsLoading(true);
             StringBuilder schemaQuery = new StringBuilder("SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'");
 
@@ -314,27 +374,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + schemaQuery + "&"
                     + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
 
-            JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
-                @Override
-                public void onSuccess(String responseText) {
-                    setIsLoading(false);
-
-                    TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
-                    TapDescriptorList descriptorList = mapper.read(responseText);
-
-                    if (descriptorList != null) {
-                        List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
-                                .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl, tableName, query, fovLimit && fovLimiterEnabled);
-                        CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
-                    }
-                }
-
-                @Override
-                public void onError(String errorCause) {
-                    setIsLoading(false);
-                }
-            });
+            JSONUtils.getJSONFromUrl(url, callback);
         }
     }
 
