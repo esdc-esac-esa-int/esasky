@@ -24,12 +24,12 @@ import java.util.List;
 
 public class ExtTapTreeMap extends TreeMap {
 
-	private EntityContext context;
-    private HashMap<String, Point> allPointMap = new HashMap<>();
+	private final EntityContext context;
+    private final HashMap<String, Point> allPointMap = new HashMap<>();
     private boolean isColoredByParent = true;
     private boolean firstResultReceived = false;
-    
-    private List<TreeMapHeaderChanged> headerObservers = new LinkedList<TreeMapHeaderChanged>();
+
+    private List<TreeMapHeaderChanged> headerObservers = new LinkedList<>();
 	
 	public ExtTapTreeMap(final EntityContext context) {
 		super(context);
@@ -176,7 +176,6 @@ public class ExtTapTreeMap extends TreeMap {
         
         if ((!descriptors.isEmpty()) && (descriptors.size() == counts.size())) {
 
-        	boolean redraw = false;
             List<Integer> zeroCountList = new ArrayList<>();
 
 
@@ -195,27 +194,25 @@ public class ExtTapTreeMap extends TreeMap {
                     zeroCountList.add(i);
                 }
 
-            	redraw = true;
             }
 
             for (int i : zeroCountList) {
             	addPoints(descriptors.get(i), counts.get(i), false);
             }
 
-            update(redraw);
+            update(true);
         }
     }
     
     private Point getPoint2(CommonTapDescriptor descriptor) {
-    	if(allPointMap.containsKey(descriptor.getLongName())){
-    		return allPointMap.get(descriptor.getLongName());
+    	if(allPointMap.containsKey(descriptor.getId())){
+    		return allPointMap.get(descriptor.getId());
     	}
     	return null;
     }
     
     private String getDescriptorColor(CommonTapDescriptor descriptor) {
-        CommonTapDescriptor desc = descriptor;
-        return desc.getOriginalParent().getColor();
+        return descriptor.getOriginalParent().getColor();
     }
     
     @Override
@@ -225,29 +222,21 @@ public class ExtTapTreeMap extends TreeMap {
     	if(isRendered()) {
 	        final Point newPoint = getNewPoint (pointId, descriptor, color, pointInformation, logCount(count));
 
-            CommonTapDescriptor desc = descriptor;
-	    	if(desc.getLevel() > EsaSkyConstants.TREEMAP_LEVEL_SERVICE) {
-	            Point parentPoint = getPoint2((CommonTapDescriptor)desc.getParent());
+            if(descriptor.getLevel() > EsaSkyConstants.TREEMAP_LEVEL_SERVICE) {
+	            Point parentPoint = getPoint2((CommonTapDescriptor) descriptor.getParent());
 	            newPoint.setParent(parentPoint);
 	    	}
 
 	        series.addPoint(newPoint, false, false, false);
-	        allPointMap.put(descriptor.getLongName(), newPoint);
+	        allPointMap.put(descriptor.getId(), newPoint);
     	}
-
-//		descriptor.registerColorChangeObservers(new ColorChangeObserver() {
-//			@Override
-//			public void onColorChange(IDescriptor descriptor, String newColor) {
-//				setPointColor(descriptor, newColor);
-//			}
-//		});
 
 		return pointId;
     }
     
     @Override
     protected void addPoints(CommonTapDescriptor descriptor, int count, boolean updateView) {
-        String pointId = null;
+        String pointId;
 
         PointInformation pointInformation = new PointInformation(descriptor.getLongName(),
                 descriptor.getMission(), descriptor.getCredits(), count, descriptor, context);
@@ -287,10 +276,8 @@ public class ExtTapTreeMap extends TreeMap {
     private void update(boolean redraw) {
     	nativeSetData(series.getNativeSeries(), redraw);
     	String id = getIdOfSelectedLevel(series.getNativeSeries());
-        if(redraw) {
-        	if(!id.equals("")) {
-        		zoomToPoint(series.getNativeSeries(), id);
-        	}
+        if(redraw && !id.equals("")) {
+            zoomToPoint(series.getNativeSeries(), id);
         }
     }
     

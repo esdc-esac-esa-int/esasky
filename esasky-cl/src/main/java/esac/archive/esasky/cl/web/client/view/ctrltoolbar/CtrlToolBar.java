@@ -755,7 +755,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void updateCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
         CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
         if (customTreeMap != null) {
-            LinkedList<Integer> counts = new LinkedList<Integer>();
+            LinkedList<Integer> counts = new LinkedList<>();
 
             for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
                 counts.add(1);

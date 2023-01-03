@@ -97,7 +97,6 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			emMin = emMin != null ? Math.abs(Math.log10(emMin)) : 0;
 			emMax = emMax != null ? Math.abs(Math.log10(emMax)) : 10;
 
-
 			String whereADQL = ExtTapUtils.createLevelDescriptorWhereADQL(descriptor.getGroupColumn1(), column1Value, descriptor.getGroupColumn2(), column2Value);
 
 			// Create new level1 descriptor if it does not already exist otherwise update it.
