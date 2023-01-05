@@ -25,6 +25,7 @@ public class TabulatorSettings{
 	private Boolean addMetadataColumn = false;
 	private String tableLayout = "fitDataFill";
 	private Boolean addObscoreTableColumn = false;
+	private Boolean showDetailedErrors = false;
 
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
@@ -53,6 +54,7 @@ public class TabulatorSettings{
 		json.put("addMetadataColumn", JSONBoolean.getInstance(addMetadataColumn));
 		json.put("tableLayout", new JSONString(tableLayout));
 		json.put("addObscoreTableColumn", JSONBoolean.getInstance(addObscoreTableColumn));
+		json.put("showDetailedErrors", JSONBoolean.getInstance(showDetailedErrors));
 		return json.toString();
 	}
 
@@ -177,5 +179,13 @@ public class TabulatorSettings{
 
 	public void setAddObscoreTableColumn(boolean addObscoreTableColumn) {
 		this.addObscoreTableColumn = addObscoreTableColumn;
+	}
+
+	public Boolean getShowDetailedErrors() {
+		return showDetailedErrors;
+	}
+
+	public void setShowDetailedErrors(Boolean showDetailedErrors) {
+		this.showDetailedErrors = showDetailedErrors;
 	}
 }

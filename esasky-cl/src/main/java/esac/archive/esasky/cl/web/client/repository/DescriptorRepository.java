@@ -161,7 +161,12 @@ public class DescriptorRepository {
         commonTapDescriptor.setIsExternal(true);
         commonTapDescriptor.setTableName(tableName);
         commonTapDescriptor.setFovLimit(10.0);
-        commonTapDescriptor.setFovLimitDisabled(!useFovLimiter || commonTapDescriptor.getRaColumn() == null || commonTapDescriptor.getDecColumn() == null);
+
+        boolean hasPointColumns = commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null;
+        boolean hasRegionColumn = commonTapDescriptor.getRegionColumn() != null;
+        commonTapDescriptor.setFovLimitDisabled(!useFovLimiter || (!hasPointColumns && !hasRegionColumn));
+        commonTapDescriptor.setUseIntersectsPolygon(!hasPointColumns && hasRegionColumn);
+
 
         commonTapDescriptor.setGroupColumn1("dataproduct_type");
         commonTapDescriptor.setGroupColumn2("facility_name");

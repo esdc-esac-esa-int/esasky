@@ -296,7 +296,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         if (tapUrl != null) {
             // Remove trailing slash
             if (tapUrl.endsWith("/")) {
-                tapUrl = tapUrl.substring(0, tapUrl.length() - 2);
+                tapUrl = tapUrl.substring(0, tapUrl.length() - 1);
             }
 
             // Async queries are not supported

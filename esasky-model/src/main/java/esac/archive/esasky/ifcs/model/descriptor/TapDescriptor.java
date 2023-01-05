@@ -304,31 +304,31 @@ public class TapDescriptor extends TapDescriptorBase {
     *  Public Helper Methods
     ****************************/
     public String getRaColumn() {
-        return getMetadataNameAny(UCD.POS_EQ_RA, ObsCore.S_RA);
+        return getMetadataNameAny(UCD.POS_EQ_RA.positive(), UCD.STAT_ERROR.negative(), ObsCore.S_RA);
     }
 
     public String getDecColumn() {
-        return getMetadataNameAny(UCD.POS_EQ_DEC, ObsCore.S_DEC);
+        return getMetadataNameAny(UCD.POS_EQ_DEC.positive(), UCD.STAT_ERROR.negative(), ObsCore.S_DEC);
     }
 
     public String getRegionColumn() {
-        return getMetadataNameAny(UCD.POS_OUTLINE, UCD.OBS_FIELD, UCD.META_PGSPHERE.negative(), ObsCore.S_REGION);
+        return getMetadataNameAny(UCD.POS_OUTLINE.positive(), UCD.OBS_FIELD.positive(), UCD.META_PGSPHERE.negative(), ObsCore.S_REGION);
     }
 
     public String getIdColumn() {
-        return getMetadataNameAny(UCD.META_ID, ObsCore.OBS_ID, ObsCore.OBS_CREATOR_DID);
+        return getMetadataNameAny(UCD.META_ID.positive(), ObsCore.OBS_ID, ObsCore.OBS_CREATOR_DID);
     }
 
     public String getProperMotionRaColumn() {
-        return getMetadataNameAll(UCD.POS_PM, UCD.POS_EQ_RA, UCD.STAT.negative());
+        return getMetadataNameAll(UCD.POS_PM.positive(), UCD.POS_EQ_RA.positive(), UCD.STAT.negative());
     }
 
     public String getProperMotionDecColumn() {
-        return getMetadataNameAll(UCD.POS_PM, UCD.POS_EQ_DEC, UCD.STAT.negative());
+        return getMetadataNameAll(UCD.POS_PM.positive(), UCD.POS_EQ_DEC.positive(), UCD.STAT.negative());
     }
 
     public String getProperMotionColumn() {
-        return getMetadataNameAny(UCD.POS_PM);
+        return getMetadataNameAny(UCD.POS_PM.positive());
     }
 
     public boolean hasProperMotion() {
@@ -336,23 +336,23 @@ public class TapDescriptor extends TapDescriptorBase {
     }
 
     public String getParallaxTrigColumn() {
-        return getMetadataNameAll(UCD.POS_PARALLAX_TRIG, UCD.STAT.negative());
+        return getMetadataNameAll(UCD.POS_PARALLAX_TRIG.positive(), UCD.STAT.negative());
     }
 
     public String getRadialVelocityColumn() {
-        return getMetadataNameAll(UCD.SPECT_DOPPLERVELOC, UCD.STAT.negative());
+        return getMetadataNameAll(UCD.SPECT_DOPPLERVELOC.positive(), UCD.STAT.negative());
     }
 
     public String getNameColumn() {
-        return getMetadataNameAny(UCD.META_ID, ObsCore.OBS_ID, ObsCore.TARGET_NAME);
+        return getMetadataNameAny(UCD.META_ID.positive(), ObsCore.OBS_ID, ObsCore.TARGET_NAME);
     }
 
     public String getReferenceEpochColumn() {
-        return getMetadataNameAny(UCD.META_REF, UCD.TIME_EPOCH);
+        return getMetadataNameAny(UCD.META_REF.positive(), UCD.TIME_EPOCH.positive());
     }
 
     public String getDatasetSize() {
-        return getMetadataNameAll(UCD.PHYS_SIZE, UCD.META_FILE, ObsCore.ACCESS_ESTSIZE);
+        return getMetadataNameAll(UCD.PHYS_SIZE.positive(), UCD.META_FILE.positive(), ObsCore.ACCESS_ESTSIZE);
     }
 
 }

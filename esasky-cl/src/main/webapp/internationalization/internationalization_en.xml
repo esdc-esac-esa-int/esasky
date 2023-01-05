@@ -3975,5 +3975,12 @@
 	<text key="ivoid">
 		Identifier
 	</text>
+
+	<text key="tabulator_loadFailed_500">
+		We are unable to process the response from this resource. See details for more information.
+	</text>
+	<text key="tabulator_loadFailed_400">
+		This resource might not support cone search. Please try again without the FOV limit.
+	</text>
 	
 </Internationalization>

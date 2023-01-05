@@ -303,6 +303,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			stylePanel.removeFromParent();
 		}
 		entity.clearAll();
+		table.abortRequest();
 		EntityRepository.getInstance().removeEntity(entity);
 		notifyClosingObservers();
 	}

@@ -15,7 +15,6 @@ import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.DateFilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.FilterDialogBox;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.RangeFilterDialogBox;
@@ -34,6 +33,7 @@ public class TabulatorWrapper {
 
     private TabulatorCallback tabulatorCallback;
     private GeneralJavaScriptObject tableJsObject;
+    private GeneralJavaScriptObject abortController;
     private Map<String, FilterDialogBox> filterDialogs = new HashMap<>();
     private long lastHoverTime = 0;
     private int lastHoveredRow = -1;
@@ -46,6 +46,7 @@ public class TabulatorWrapper {
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, TabulatorSettings settings) {
         this.tabulatorCallback = tabulatorCallback;
         tableJsObject = createColumnTabulator(this, divId, settings.convertToJsonString());
+        abortController = createAbortController();
         CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, () -> reformat(tableJsObject));
 
         rowCountFooterId = divId + "_rowCount";
@@ -515,13 +516,9 @@ public class TabulatorWrapper {
                 dropDownMenu.addMenuItem(dropdownItem);
             }
 
-            dropDownMenu.registerObserver(new MenuObserver() {
-
-                @Override
-                public void onSelectedChange() {
-                    String object = dropDownMenu.getSelectedObject();
-                    onChangeFunc.invokeFunction("onChange", object);
-                }
+            dropDownMenu.registerObserver(() -> {
+                String object = dropDownMenu.getSelectedObject();
+                onChangeFunc.invokeFunction("onChange", object);
             });
 
             dropDownMenu.toggleMenuBar();
@@ -534,19 +531,19 @@ public class TabulatorWrapper {
 
     public void insertData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata) {
         setMetadata(tableJsObject, metadata);
-        setData(tableJsObject, data);
+        setData(tableJsObject, abortController, data);
     }
 
     public void insertData(String data, GeneralJavaScriptObject metadata) {
         setMetadata(tableJsObject, metadata);
-        setData(tableJsObject, data);
+        setData(tableJsObject, abortController, data);
     }
 
     public void insertExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata) {
         GeneralJavaScriptObject formattedMetadata = ExtTapUtils.formatExternalTapMetadata(metadata);
         GeneralJavaScriptObject formattedData = ExtTapUtils.formatExternalTapData(data, formattedMetadata);
         setMetadata(tableJsObject, formattedMetadata);
-        setData(tableJsObject, formattedData);
+        setData(tableJsObject, abortController, formattedData);
     }
 
     private native String setMetadata(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject metadata)/*-{
@@ -561,7 +558,7 @@ public class TabulatorWrapper {
 
     public void insertUserHeader(GeneralJavaScriptObject data) {
         setIsUserDataBool(tableJsObject);
-        setData(tableJsObject, convertDataToHeaderFormat(tableJsObject, data));
+        setData(tableJsObject, abortController, convertDataToHeaderFormat(tableJsObject, data));
     }
 
     private native void setIsUserDataBool(GeneralJavaScriptObject tableJsObject)/*-{
@@ -577,7 +574,7 @@ public class TabulatorWrapper {
     }-*/;
 
     public void setData(String dataOrUrl) {
-        setData(tableJsObject, dataOrUrl);
+        setData(tableJsObject, abortController, dataOrUrl);
     }
 
     public void clearTable() {
@@ -601,9 +598,9 @@ public class TabulatorWrapper {
         tableJsObject.setData([]);
     }-*/;
 
-    private native void setData(GeneralJavaScriptObject tableJsObject, Object dataOrUrl)/*-{
+    private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
         tableJsObject.dataLoaded = false;
-        tableJsObject.setData(dataOrUrl);
+        tableJsObject.setData(dataOrUrl, {}, {signal: abortController.signal});
 
         var observer = new MutationObserver(function (mutations) {
             for (var i = 0; i < mutations.length; i++) {
@@ -702,10 +699,37 @@ public class TabulatorWrapper {
         }
     }
 
+    private native GeneralJavaScriptObject createAbortController() /*-{
+        return new AbortController();
+    }-*/;
+
+
     public native String[] getNonDatabaseColumns() /*-{
         return $wnd.esasky.nonDatabaseColumns;
     }-*/;
 
+
+
+    private void setTableErrorMessage(String error, String details) {
+        setTableErrorMessage(tableJsObject, error, details);
+    }
+
+    private native void setTableErrorMessage(GeneralJavaScriptObject tableJsObject, String error, String details) /*-{
+        var template = document.createElement('template');
+
+        if (details != null && details.length > 0) {
+            template.innerHTML = "<div>" + $wnd.esasky.getInternationalizationText("tabulator_loadFailed")
+                + ".<br><br>" + error.trim()
+                + "<br><br> <details style=\"color: grey; opacity: 60%;border: 1px solid grey;border-radius: 4px;padding: 0.5em;\">"
+                + details + "</details></div>";
+        } else {
+            template.innerHTML = "<div>" + $wnd.esasky.getInternationalizationText("tabulator_loadFailed")
+                + ".<br><br>" + error.trim() +  "</div>";
+        }
+
+        tableJsObject.modules.ajax.errorElement = template.content.firstChild;
+        tableJsObject.modules.ajax.showError();
+    }-*/;
 
     private native GeneralJavaScriptObject createColumnTabulator(TabulatorWrapper wrapper, String divId, String settingsString) /*-{
         var settings = JSON.parse(settingsString);
@@ -729,6 +753,24 @@ public class TabulatorWrapper {
             dataLoading: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDataLoadingFunc(*)(wrapper, divId, settings),
             selectable: settings.selectable,
             ajaxError: function (error) {
+                var test = settings;
+                if (settings.showDetailedErrors) {
+                    var mainError = "";
+                    if (error.status >= 500) {
+                        mainError = $wnd.esasky.getInternationalizationText("tabulator_loadFailed_500");
+                    } else {
+                        mainError = $wnd.esasky.getInternationalizationText("tabulator_loadFailed_400");
+                    }
+
+                    if (error.text) {
+                        error.text().then(function(text){
+                            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setTableErrorMessage(Ljava/lang/String;Ljava/lang/String;)(mainError, text);
+                        });
+                    } else {
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::setTableErrorMessage(Ljava/lang/String;Ljava/lang/String;)(mainError, null);
+                    }
+                }
+
                 wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAjaxResponseError(Ljava/lang/String;)(error.message);
             },
             ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
@@ -2361,6 +2403,14 @@ public class TabulatorWrapper {
     public boolean hasBeenClosed() {
         return tabulatorCallback.hasBeenClosed();
     }
+
+    public void abortRequest() {
+        abortRequest(abortController);
+    }
+    
+    private native void abortRequest(GeneralJavaScriptObject abortController) /*-{
+        abortController.abort();
+    }-*/;
 
 
     public boolean isMOCMode() {

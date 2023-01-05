@@ -6,7 +6,6 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -45,7 +44,7 @@ public class TAPExtTapService extends AbstractTAPService {
 		String tapTable = descriptor.getTableName();
 
 		// Handle tables with non-alphanumeric characters (excluding ".")
-		if (tapTable.matches("^[a-zA-Z0-9]*$") || tapTable.contains(".")) {
+		if (tapTable.matches("^[a-zA-Z0-9_]*$") || tapTable.contains(".")) {
 			adql += FROM + descriptor.getTableName();
 		} else {
 			adql += FROM + "\"" + tapTable + "\"";
@@ -81,45 +80,21 @@ public class TAPExtTapService extends AbstractTAPService {
     	return adql;
     }
 
-    private String screenPolygon() {
-    	String shape;
-        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (AladinLiteWrapper.isCornersInsideHips()) {
-            if (fovDeg < 1) {
-                shape = "POLYGON('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")";
-
-            } else {
-                shape = "POLYGON('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")";
-            }
-        } else {
-
-            String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
-            if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
-                // convert to J2000
-                double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
-                        AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg(),
-                        AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg());
-                shape = "CIRCLE('ICRS', " + ccInJ2000[0] + "," + ccInJ2000[1] + ",90)";
-            } else {
-                shape = "CIRCLE('ICRS', "
-                        + AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg() + ","
-                        + AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg() + ",90)";
-            }
-
-        }
-        return shape + ")";
+    private String screenCircle() {
+        double fovDeg = Math.min(90, AladinLiteWrapper.getAladinLite().getFovDeg());
+        double centerLong = AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg();
+        double centerLat = AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg();
+        return "CIRCLE('ICRS', " + centerLong + "," + centerLat + ", " + fovDeg + ")" + ")";
     }
 
     private String polygonIntersectSearch(CommonTapDescriptor descriptor) {
     	String constraint = "1=INTERSECTS(" + descriptor.getRegionColumn() + ",";
-    	return constraint + screenPolygon();
+    	return constraint + screenCircle();
     }
 
     private String cointainsPointSearch(CommonTapDescriptor descriptor) {
     	String constraint = "1=CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), ";
-    	return constraint + screenPolygon();
+    	return constraint + screenCircle();
     }
 
     private String heasarcSearch() {
