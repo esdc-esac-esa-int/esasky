@@ -141,12 +141,13 @@ public class TAPExtTapService extends AbstractTAPService {
 
     @Override
     public String getMetadataAdql(CommonTapDescriptor descriptor) {
-        String selectADQL = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor) + " * ";
-
         if(!descriptor.isExternal()) {
+            String selectADQL = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor) + " * ";
         	return URL.encodeQueryString(getAdql(descriptor, selectADQL));
+        } else if(descriptor.getUnprocessedADQL() != null) {
+            return descriptor.getUnprocessedADQL();
         } else {
-        	return getAdql(descriptor, descriptor.getSelectADQL());
+            return getAdql(descriptor, descriptor.getSelectADQL());
         }
     }
 

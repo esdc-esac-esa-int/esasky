@@ -26,6 +26,7 @@ public class TabulatorSettings{
 	private String tableLayout = "fitDataFill";
 	private Boolean addObscoreTableColumn = false;
 	private Boolean showDetailedErrors = false;
+	private Boolean fovLimitDisabled = false;
 
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
@@ -55,6 +56,7 @@ public class TabulatorSettings{
 		json.put("tableLayout", new JSONString(tableLayout));
 		json.put("addObscoreTableColumn", JSONBoolean.getInstance(addObscoreTableColumn));
 		json.put("showDetailedErrors", JSONBoolean.getInstance(showDetailedErrors));
+		json.put("fovLimitDisabled", JSONBoolean.getInstance(fovLimitDisabled));
 		return json.toString();
 	}
 
@@ -187,5 +189,13 @@ public class TabulatorSettings{
 
 	public void setShowDetailedErrors(Boolean showDetailedErrors) {
 		this.showDetailedErrors = showDetailedErrors;
+	}
+
+	public Boolean getFovLimiterDisabled() {
+		return fovLimitDisabled;
+	}
+
+	public void setFovLimiterDisabled(Boolean fovLimitDisabled) {
+		this.fovLimitDisabled = fovLimitDisabled;
 	}
 }

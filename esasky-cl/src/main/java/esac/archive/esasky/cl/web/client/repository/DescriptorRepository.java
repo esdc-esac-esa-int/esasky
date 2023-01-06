@@ -147,8 +147,11 @@ public class DescriptorRepository {
         }
     }
 
-    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String missionName, String description, String query, boolean useFovLimiter) {
-        String name = missionName + " (" + tableName + ")" ;
+    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl,
+                                                        String tableName, String missionName, String description, String query,
+                                                        boolean useFovLimiter, boolean useUnprocessedQuery) {
+
+        String name = useUnprocessedQuery ? missionName : missionName + " (" + tableName + ")";
 
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
@@ -169,35 +172,37 @@ public class DescriptorRepository {
         commonTapDescriptor.setFovLimitDisabled(!useFovLimiter || (!hasPointColumns && !hasRegionColumn));
         commonTapDescriptor.setUseIntersectsPolygon(!hasPointColumns && hasRegionColumn);
 
-
         commonTapDescriptor.setGroupColumn1("dataproduct_type");
         commonTapDescriptor.setGroupColumn2("facility_name");
 
-        final String from = "FROM";
-        final String where = "WHERE";
+        if (useUnprocessedQuery) {
+            commonTapDescriptor.setUnprocessedADQL(query);
+        } else {
+            final String from = "FROM";
+            final String where = "WHERE";
 
-        // Make sure "from" is uppercase
-        int start = query.toUpperCase().indexOf(from);
-        if (start >= 0) {
-            String subStr = query.substring(start, start + from.length());
-            query = query.replace(subStr, from);
+            // Make sure "from" is uppercase
+            int start = query.toUpperCase().indexOf(from);
+            if (start >= 0) {
+                String subStr = query.substring(start, start + from.length());
+                query = query.replace(subStr, from);
+            }
+
+            // Make sure "where" is uppercase
+            start = query.toUpperCase().indexOf(where);
+            if (start >= 0) {
+                String subStr = query.substring(start, start + where.length());
+                query = query.replace(subStr, where);
+            }
+
+
+            String[] whereSplit = query.split(where);
+            if (whereSplit.length > 1) {
+                commonTapDescriptor.setWhereADQL(whereSplit[1]);
+            }
+            String[] fromSplit = query.split(from);
+            commonTapDescriptor.setSelectADQL(fromSplit[0]);
         }
-
-        // Make sure "where" is uppercase
-        start = query.toUpperCase().indexOf(where);
-        if (start >= 0) {
-            String subStr = query.substring(start, start + where.length());
-            query = query.replace(subStr, where);
-        }
-
-
-        String[] whereSplit = query.split(where);
-        if (whereSplit.length > 1) {
-            commonTapDescriptor.setWhereADQL(whereSplit[1]);
-        }
-        String[] fromSplit = query.split(from);
-        commonTapDescriptor.setSelectADQL(fromSplit[0]);
-
 
         return commonTapDescriptor;
 

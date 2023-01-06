@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
@@ -30,7 +30,7 @@ import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
@@ -247,23 +247,25 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
             if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
-                queryExternalTapService(accessUrl);
+                exploreTapServiceTables(accessUrl);
             } else  {
                 // Query specific table
                 String tableName = rowData.getStringProperty(TABLE_NAME_COL);
                 String description = rowData.getStringProperty(DESCRIPTION_COL);
                 String query = "SELECT * FROM " + tableName;
-                queryExternalTapTable(accessUrl, tableName, description, query, true);
+                queryExternalTapServiceData(accessUrl, tableName, description, query, true, false);
             }
         }
 
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
             if (queryPopupPanel == null) {
-                queryPopupPanel = new QueryPopupPanel("test", true);
+                queryPopupPanel = new QueryPopupPanel(GoogleAnalytics.CAT_GLOBALTAP_ADQLPANEL, true);
                 queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
                 queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
-                queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getDescription(), event.getQuery(), true));
+                String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
+                queryPopupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
+                        description + event.getQuery(), event.getQuery(), false, true));
                 queryPopupPanel.setSuggestedPositionCenter();
             }
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
@@ -276,7 +278,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String schemaQuery = "SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'";
-            queryExternalTapTable(storedAccessUrl, tableName, schemaQuery, new JSONUtils.IJSONRequestCallback() {
+            queryExternalTapServiceMetadata(storedAccessUrl, schemaQuery, new JSONUtils.IJSONRequestCallback() {
                 @Override
                 public void onSuccess(String responseText) {
                     setIsLoading(false);
@@ -284,16 +286,17 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
                     TapDescriptorList descriptorList = mapper.read(responseText);
 
-                    if (descriptorList != null) {
-                        List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
-                                .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, storedAccessUrl, tableName, storedName, null, "", true);
+                    if (descriptorList != null) { 
+                        List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, true);
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
+                                storedAccessUrl, tableName, storedName, null, "", true, false);
                         DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
                     }
                 }
 
                 @Override
                 public void onError(String errorCause) {
+                    showErrorMessage(storedName);
                     setIsLoading(false);
                 }
             });
@@ -305,10 +308,10 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
 
-            queryExternalTapTable(storedAccessUrl, "tap_schema.columns", query, null,false);
+            queryExternalTapServiceData(storedAccessUrl, "tap_schema.columns", query, null,false, false);
         }
 
-        private void queryExternalTapService(String tapUrl) {
+        private void exploreTapServiceTables(String tapUrl) {
             setIsLoading(true);
 
             String query = "SELECT schema_name, table_name, description FROM tap_schema.tables";
@@ -328,13 +331,14 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
                 @Override
                 public void onError(String errorCause) {
+                    showErrorMessage(storedName);
                     setIsLoading(false);
                 }
             });
         }
 
-        private void queryExternalTapTable(String tapUrl, String tableName, String description, String query, boolean fovLimit) {
-            queryExternalTapTable(tapUrl, tableName, query, new JSONUtils.IJSONRequestCallback() {
+        private void queryExternalTapServiceData(String tapUrl, String tableName, String description, String query, boolean fovLimit, boolean useUnprocessedQuery) {
+            queryExternalTapServiceMetadata(tapUrl, query, new JSONUtils.IJSONRequestCallback() {
                 @Override
                 public void onSuccess(String responseText) {
                     setIsLoading(false);
@@ -343,41 +347,37 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     TapDescriptorList descriptorList = mapper.read(responseText);
 
                     if (descriptorList != null) {
-                        List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
-                                .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl, tableName, storedName, description, query, fovLimit && fovLimiterEnabled);
+                        List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
+                                tableName, storedName, description, query, fovLimit && fovLimiterEnabled, useUnprocessedQuery);
                         CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
                     }
                 }
 
                 @Override
                 public void onError(String errorCause) {
+                    showErrorMessage(storedName);
                     setIsLoading(false);
                 }
             });
         }
 
-        private void queryExternalTapTable(String tapUrl, String tableName, String query, JSONUtils.IJSONRequestCallback callback) {
+        private void queryExternalTapServiceMetadata(String tapUrl, String query, JSONUtils.IJSONRequestCallback callback) {
             setIsLoading(true);
-            StringBuilder schemaQuery = new StringBuilder("SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'");
-
-            // Find additional joined tables
-            if (query.toUpperCase().contains("JOIN")) {
-                String[] split = query.split("\\s");
-                for (int i = 0; i < split.length; i++) {
-                    int tableIndex = i + 1;
-                    if (split[i].equalsIgnoreCase("JOIN") && tableIndex < split.length) {
-                        schemaQuery.append(" OR table_name='").append(split[tableIndex]).append("'");
-                    }
-                }
-            }
 
             String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                     + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + schemaQuery + "&"
-                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
+                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
+                    + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 1;
 
             JSONUtils.getJSONFromUrl(url, callback);
+        }
+
+        private void showErrorMessage(String name) {
+            String title = TextMgr.getInstance().getText("global_tap_panel_query_failed_title");
+            String body = TextMgr.getInstance().getText("global_tap_panel_query_failed_body").replace("$TAP_SERVICE$", name);
+            DisplayUtils.showMessageDialogBox(body, title, UUID.randomUUID().toString(), GoogleAnalytics.CAT_GLOBALTAPPANEL_ERRORDIALOG);
         }
     }
 

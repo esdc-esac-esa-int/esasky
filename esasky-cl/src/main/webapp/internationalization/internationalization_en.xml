@@ -3982,5 +3982,23 @@
 	<text key="tabulator_loadFailed_400">
 		This resource might not support cone search. Please try again without the FOV limit.
 	</text>
-	
+	<text key="global_tap_panel_custom_query_description">
+		A user-generated query was used to retrieve this dataset.
+		&lt;br&gt;&lt;br&gt;
+		The query used was:
+	</text>
+	<text key="tabulator_no_data_fov_limit_disabled">
+		Empty dataset
+	</text>
+
+	<text key="global_tap_panel_query_failed_title">
+		Query failed
+	</text>
+
+	<text key="global_tap_panel_query_failed_body">
+		The query to TAP service "$TAP_SERVICE$" failed. This might be due to the service not responding or because the data could not be interpreted.
+	</text>
+
+
+
 </Internationalization>

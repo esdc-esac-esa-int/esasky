@@ -34,6 +34,7 @@ public abstract class TapDescriptorBase {
 
     private String selectADQL;
     private String whereADQL;
+    private String unprocessedADQL;
 
 
     public abstract List<TapMetadataDescriptor> getMetadata();
@@ -179,5 +180,13 @@ public abstract class TapDescriptorBase {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getUnprocessedADQL() {
+        return unprocessedADQL;
+    }
+
+    public void setUnprocessedADQL(String unprocessedADQL) {
+        this.unprocessedADQL = unprocessedADQL;
     }
 }

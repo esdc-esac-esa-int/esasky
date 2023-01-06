@@ -59,6 +59,9 @@ public final class GoogleAnalytics {
     public static final String CAT_OUTREACHIMAGES = "OutreachImages";
     public static final String CAT_SELECTSKY = "SelectSky";
     public static final String CAT_EVA = "Eva";
+    public static final String CAT_GLOBALTAPPANEL = "ExternalTapPanel";
+    public static final String CAT_GLOBALTAP_ADQLPANEL = "ExternalTapAdqlPanel";
+    public static final String CAT_GLOBALTAPPANEL_ERRORDIALOG = "ExternalTapPanelErrorDialog";
     
     //Actions
     public static final String ACT_MISSINGTRANSLATION = "MissingTranslation";

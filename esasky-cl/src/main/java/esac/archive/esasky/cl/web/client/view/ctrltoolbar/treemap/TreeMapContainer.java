@@ -102,7 +102,7 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 			EsaSkyButton globalTapBtn = new EsaSkyButton(Icons.getExternalIcon());
 			globalTapBtn.addClickHandler(event -> {
 				if (globalTapPanel == null) {
-					globalTapPanel = new GlobalTapPanel("test", true);
+					globalTapPanel = new GlobalTapPanel(GoogleAnalytics.CAT_GLOBALTAPPANEL, true);
 					globalTapPanel.setSuggestedPositionCenter();
 					globalTapPanel.definePositionFromTopAndLeft();
 					MainLayoutPanel.addElementToMainArea(globalTapPanel);

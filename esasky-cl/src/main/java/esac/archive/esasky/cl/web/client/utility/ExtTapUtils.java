@@ -93,11 +93,12 @@ public class ExtTapUtils {
 
 
     public static List<TapMetadataDescriptor> getMetadataFromTapDescriptorList(TapDescriptorList descriptorList, boolean isSchemaQuery) {
+        // If fetching from tap_schema the data result is the metadata
         if (isSchemaQuery) {
             return descriptorList.getDescriptors().stream()
                     .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
         } else {
-            return descriptorList.getDescriptors().get(0).getMetadata();
+            return descriptorList.getDescriptorMetadata();
         }
 
     }

@@ -24,7 +24,7 @@ public class TapDescriptorList {
     protected List<TapDescriptor> descriptors;
 
     @JsonIgnore
-    private GeneralJavaScriptObject[] formattedData;
+    private List<TapMetadataDescriptor> descriptorMetadata;
 
     public int getTotal() {
         return descriptors != null ? descriptors.size() : 0;
@@ -40,16 +40,31 @@ public class TapDescriptorList {
         }
     }
 
+    public List<TapMetadataDescriptor> getDescriptorMetadata() {
+        if (descriptorMetadata == null) {
+            MetadataMapper metadataMapper = GWT.create(MetadataMapper.class);
+            return createMetadata(metadataMapper);
+        } else {
+            return this.descriptorMetadata;
+        }
+    }
+
+    private List<TapMetadataDescriptor> createMetadata(MetadataMapper metadataMapper) {
+        descriptorMetadata = new ArrayList<>();
+        for (GeneralJavaScriptObject rawMetadataSlice : GeneralJavaScriptObject.convertToArray(rawMetadata)) {
+            String json = rawMetadataSlice.toJSONString();
+            TapMetadataDescriptor metadataEntry = metadataMapper.read(json);
+            descriptorMetadata.add(metadataEntry);
+        }
+
+        return descriptorMetadata;
+    }
+
     private List<TapDescriptor> createDescriptors(Mapper dataMapper, MetadataMapper metadataMapper) {
         descriptors = new LinkedList<>();
         GeneralJavaScriptObject[] dataArray = formatData(rawData, rawMetadata);
 
-        List<TapMetadataDescriptor> metadata = new ArrayList<>();
-        for (GeneralJavaScriptObject rawMetadataSlice : GeneralJavaScriptObject.convertToArray(rawMetadata)) {
-            String json = rawMetadataSlice.toJSONString();
-            TapMetadataDescriptor metadataEntry = metadataMapper.read(json);
-            metadata.add(metadataEntry);
-        }
+        List<TapMetadataDescriptor> metadata = createMetadata(metadataMapper);
 
         for (GeneralJavaScriptObject data : dataArray) {
             String json = data.toJSONString();

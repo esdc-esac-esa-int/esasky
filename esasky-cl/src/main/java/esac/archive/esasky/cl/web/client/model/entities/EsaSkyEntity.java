@@ -943,6 +943,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             settings.setAddSelectionColumn(true);
             settings.setUseUcd(true);
             settings.setShowDetailedErrors(descriptor.isExternal());
+            settings.setFovLimiterDisabled(descriptor.isFovLimitDisabled());
         }
 
 		
