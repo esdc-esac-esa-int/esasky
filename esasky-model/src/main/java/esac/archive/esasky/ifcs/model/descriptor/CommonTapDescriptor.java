@@ -82,6 +82,9 @@ public class CommonTapDescriptor extends TapDescriptor {
     @JsonIgnore
     private final List<CommonTapDescriptor> children = new LinkedList<>();
 
+    @JsonIgnore
+    private String description;
+
     /*********************
      * Getters
      *********************/
@@ -206,6 +209,47 @@ public class CommonTapDescriptor extends TapDescriptor {
         return groupColumn2;
     }
 
+    public List<CommonTapDescriptor> getChildren() {
+        return children;
+    }
+
+    public List<CommonTapDescriptor> getAllChildren() {
+        List<CommonTapDescriptor> allChildren = new LinkedList<>();
+        for (CommonTapDescriptor child : children) {
+            allChildren.add(child);
+            allChildren.addAll(child.getAllChildren());
+        }
+        return allChildren;
+    }
+
+
+    public int getLevel() {
+        return parent == null ? 0 : 1 + parent.getLevel();
+    }
+
+    public TapDescriptorBase getOriginalParent() {
+        return parent == null ? this : parent.getOriginalParent();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+
+    public void removeChildren(List<String> idsNotToRemove) {
+        for (CommonTapDescriptor child : children) {
+            child.removeChildren(idsNotToRemove);
+
+            if (!idsNotToRemove.contains(child.getId())) {
+                children.remove(child);
+            }
+        }
+    }
+
+    public void addChild(CommonTapDescriptor child) {
+        this.children.add(child);
+        child.setParent(this);
+    }
 
     /*********************
      * Setters
@@ -329,39 +373,8 @@ public class CommonTapDescriptor extends TapDescriptor {
         this.parent = parent;
     }
 
-    public List<CommonTapDescriptor> getChildren() {
-        return children;
-    }
 
-    public List<CommonTapDescriptor> getAllChildren() {
-        List<CommonTapDescriptor> allChildren = new LinkedList<>();
-        for (CommonTapDescriptor child : children) {
-            allChildren.add(child);
-            allChildren.addAll(child.getAllChildren());
-        }
-        return allChildren;
-    }
-
-    public void removeChildren(List<String> idsNotToRemove) {
-        for (CommonTapDescriptor child : children) {
-            child.removeChildren(idsNotToRemove);
-
-            if (!idsNotToRemove.contains(child.getId())) {
-                children.remove(child);
-            }
-        }
-    }
-
-    public void addChild(CommonTapDescriptor child) {
-        this.children.add(child);
-        child.setParent(this);
-    }
-
-    public int getLevel() {
-        return parent == null ? 0 : 1 + parent.getLevel();
-    }
-
-    public TapDescriptorBase getOriginalParent() {
-        return parent == null ? this : parent.getOriginalParent();
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

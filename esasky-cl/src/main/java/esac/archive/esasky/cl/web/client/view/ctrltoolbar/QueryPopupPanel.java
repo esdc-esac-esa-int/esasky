@@ -29,6 +29,7 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
 
     private String tapServiceUrl;
     private String tapTableName;
+    private String tapDescription;
     private boolean isShowing = false;
 
 
@@ -66,7 +67,7 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
 
         searchButton.addClickHandler(event -> {
             this.hide();
-            this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.queryTextBoxValue));
+            this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.tapDescription, this.queryTextBoxValue));
         });
 
         container.add(header);
@@ -83,6 +84,10 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
     public void setTapTable(String tableName) {
         this.tapTableName = tableName;
         setQuery("SELECT TOP 50 * FROM " + tableName); // Default query
+    }
+
+    public void setTapDescription(String description) {
+        this.tapDescription = description;
     }
 
     public void setQuery(String query) {

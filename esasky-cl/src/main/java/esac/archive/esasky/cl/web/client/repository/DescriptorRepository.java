@@ -147,7 +147,7 @@ public class DescriptorRepository {
         }
     }
 
-    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String missionName, String query, boolean useFovLimiter) {
+    public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl, String tableName, String missionName, String description, String query, boolean useFovLimiter) {
         String name = missionName + " (" + tableName + ")" ;
 
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
@@ -161,6 +161,8 @@ public class DescriptorRepository {
         commonTapDescriptor.setIsExternal(true);
         commonTapDescriptor.setTableName(tableName);
         commonTapDescriptor.setFovLimit(10.0);
+        commonTapDescriptor.setDescription(description);
+        commonTapDescriptor.setColor(ESASkyColors.getNext());
 
         boolean hasPointColumns = commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null;
         boolean hasRegionColumn = commonTapDescriptor.getRegionColumn() != null;

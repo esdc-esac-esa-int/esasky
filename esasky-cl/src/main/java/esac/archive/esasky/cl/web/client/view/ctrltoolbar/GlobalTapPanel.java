@@ -55,6 +55,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private boolean dataLoadedOnce = false;
 
     private static final String TABLE_NAME_COL = "table_name";
+    private static final String DESCRIPTION_COL = "description";
     private static final String ACCESS_URL_COL = "access_url";
     private static final String SHORT_NAME_COL = "short_name";
     private static final String DISPLAY_NONE = "displayNone";
@@ -250,8 +251,9 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             } else  {
                 // Query specific table
                 String tableName = rowData.getStringProperty(TABLE_NAME_COL);
+                String description = rowData.getStringProperty(DESCRIPTION_COL);
                 String query = "SELECT * FROM " + tableName;
-                queryExternalTapTable(accessUrl, tableName, query, true);
+                queryExternalTapTable(accessUrl, tableName, description, query, true);
             }
         }
 
@@ -261,11 +263,12 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 queryPopupPanel = new QueryPopupPanel("test", true);
                 queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
                 queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
-                queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getQuery(), true));
+                queryPopupPanel.addQueryHandler(event -> queryExternalTapTable(event.getTapUrl(), event.getTableName(), event.getDescription(), event.getQuery(), true));
                 queryPopupPanel.setSuggestedPositionCenter();
             }
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
             queryPopupPanel.setTapTable(rowData.getStringProperty(TABLE_NAME_COL));
+            queryPopupPanel.setTapDescription(rowData.getStringProperty(DESCRIPTION_COL));
             showQueryPanel();
         }
 
@@ -284,7 +287,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     if (descriptorList != null) {
                         List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
                                 .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, storedAccessUrl, tableName, storedName, "", true);
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, storedAccessUrl, tableName, storedName, null, "", true);
                         DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
                     }
                 }
@@ -302,7 +305,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
 
-            queryExternalTapTable(storedAccessUrl, "tap_schema.columns", query, false);
+            queryExternalTapTable(storedAccessUrl, "tap_schema.columns", query, null,false);
         }
 
         private void queryExternalTapService(String tapUrl) {
@@ -330,7 +333,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             });
         }
 
-        private void queryExternalTapTable(String tapUrl, String tableName, String query, boolean fovLimit) {
+        private void queryExternalTapTable(String tapUrl, String tableName, String description, String query, boolean fovLimit) {
             queryExternalTapTable(tapUrl, tableName, query, new JSONUtils.IJSONRequestCallback() {
                 @Override
                 public void onSuccess(String responseText) {
@@ -342,7 +345,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     if (descriptorList != null) {
                         List<TapMetadataDescriptor> metadataDescriptorList = descriptorList.getDescriptors().stream()
                                 .map(TapMetadataDescriptor::fromTapDescriptor).collect(Collectors.toList());
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl, tableName, storedName, query, fovLimit && fovLimiterEnabled);
+                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl, tableName, storedName, description, query, fovLimit && fovLimiterEnabled);
                         CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
                     }
                 }

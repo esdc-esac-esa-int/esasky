@@ -440,11 +440,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 				TextMgr.getInstance().getText("tabulator_retrievingMissionData").replace("$NAME$", tabTitle),  url));
 
 		table.setQueryMode();
-//		if (getDescriptor().useUcd()) {
-//			table.setExtTapQueryMode();
-//		} else {
-//			table.setDefaultQueryMode();
-//		}
 		
 		table.setData(url);
 		tableNotShowingContainer.addStyleName("displayNone");
