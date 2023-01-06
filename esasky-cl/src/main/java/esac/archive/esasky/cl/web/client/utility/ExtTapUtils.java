@@ -100,6 +100,13 @@ public class ExtTapUtils {
         } else {
             return descriptorList.getDescriptorMetadata();
         }
+    }
 
+    public static String encapsulateTableName(String tableName) {
+        if (tableName.matches("^[a-zA-Z0-9_]*$") || tableName.contains(".") || tableName.contains("\"")) {
+            return tableName;
+        } else {
+            return "\"" + tableName + "\"";
+        }
     }
 }

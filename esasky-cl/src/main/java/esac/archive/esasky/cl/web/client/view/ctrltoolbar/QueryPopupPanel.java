@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEvent;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEventHandler;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
@@ -82,8 +83,8 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
     }
 
     public void setTapTable(String tableName) {
-        this.tapTableName = tableName;
-        setQuery("SELECT TOP 50 * FROM " + tableName); // Default query
+        this.tapTableName = ExtTapUtils.encapsulateTableName(tableName);
+        setQuery("SELECT TOP 50 * FROM " + tapTableName); // Default query
     }
 
     public void setTapDescription(String description) {

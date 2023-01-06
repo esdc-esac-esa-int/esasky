@@ -2,10 +2,7 @@ package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -43,12 +40,8 @@ public class TAPExtTapService extends AbstractTAPService {
 
 		String tapTable = descriptor.getTableName();
 
-		// Handle tables with non-alphanumeric characters (excluding ".")
-		if (tapTable.matches("^[a-zA-Z0-9_]*$") || tapTable.contains(".")) {
-			adql += FROM + descriptor.getTableName();
-		} else {
-			adql += FROM + "\"" + tapTable + "\"";
-		}
+		// Handle tables with non-alphanumeric characters
+        adql += FROM + ExtTapUtils.encapsulateTableName(tapTable);
 
         if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
             adql += " JOIN master_table.indexview on table_name = name";

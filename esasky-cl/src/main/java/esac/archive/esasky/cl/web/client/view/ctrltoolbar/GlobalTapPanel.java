@@ -4,6 +4,7 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Timer;
@@ -250,7 +251,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                 exploreTapServiceTables(accessUrl);
             } else  {
                 // Query specific table
-                String tableName = rowData.getStringProperty(TABLE_NAME_COL);
+                String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
                 String description = rowData.getStringProperty(DESCRIPTION_COL);
                 String query = "SELECT * FROM " + tableName;
                 queryExternalTapServiceData(accessUrl, tableName, description, query, true, false);
@@ -276,7 +277,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
         @Override
         public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
-            String tableName = rowData.getStringProperty(TABLE_NAME_COL);
+            String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
             String schemaQuery = "SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'";
             queryExternalTapServiceMetadata(storedAccessUrl, schemaQuery, new JSONUtils.IJSONRequestCallback() {
                 @Override
@@ -308,7 +309,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
 
-            queryExternalTapServiceData(storedAccessUrl, "tap_schema.columns", query, null,false, false);
+            queryExternalTapServiceData(storedAccessUrl, "tap_schema.columns", null, query,false, false);
         }
 
         private void exploreTapServiceTables(String tapUrl) {
@@ -367,7 +368,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
             String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                     + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + URL.encodeQueryString(query) + "&"
                     + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
                     + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 1;
 
