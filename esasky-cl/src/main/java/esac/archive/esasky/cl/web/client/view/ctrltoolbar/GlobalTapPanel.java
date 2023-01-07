@@ -120,8 +120,9 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         Timer searchDelayTimer = new Timer() {
             @Override
             public void run() {
-                tapServicesWrapper.columnIncludesFilter(searchBox.getText(), "res_title", "short_name", "res_subjects", "publisher");
-                tapTablesWrapper.columnIncludesFilter(searchBox.getText(), "schema_name", TABLE_NAME_COL, "description");
+                TabulatorWrapper table = getCurrentTable();
+                String[] columns = getTableFilterColumns(table);
+                table.columnIncludesFilter(searchBox.getText(), columns);
             }
         };
 
@@ -227,6 +228,15 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         setTabulatorHeight();
     }
 
+    private TabulatorWrapper getCurrentTable() {
+        return tapTablesContainer.getStyleName().contains(DISPLAY_NONE) ? tapServicesWrapper : tapTablesWrapper;
+    }
+
+    private String[] getTableFilterColumns(TabulatorWrapper wrapper) {
+        return wrapper.equals(tapServicesWrapper)
+                ? new String[] {"res_title", "short_name", "res_subjects", "publisher"}
+                : new String[] {"schema_name", TABLE_NAME_COL, "description"};
+    }
 
     private class TabulatorCallback extends DefaultTabulatorCallback {
         private String storedAccessUrl;
