@@ -19,7 +19,8 @@ public interface TabulatorCallback {
     void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName);
     void onCenterClicked(GeneralJavaScriptObject rowData);
     void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
-    void onLink2ArchiveClicked(GeneralJavaScriptObject rowData);
+    void onLink2ArchiveClicked(GeneralJavaScriptObject row);
+    void onLink2ArchiveClicked(GeneralJavaScriptObject row, String columnName);
     void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
     void onAddHipsClicked(GeneralJavaScriptObject rowData);
     void onAjaxResponse();

@@ -2147,7 +2147,7 @@ public class TabulatorWrapper {
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
                 e.stopPropagation();
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
             }
         } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
             title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
@@ -2328,9 +2328,14 @@ public class TabulatorWrapper {
         tabulatorCallback.onSendToVoApplicaitionClicked(rowData);
     }
 
-    public void onLink2ArchiveClicked(final GeneralJavaScriptObject rowData) {
-        tabulatorCallback.onLink2ArchiveClicked(rowData);
+    public void onLink2ArchiveClicked(final GeneralJavaScriptObject row) {
+        tabulatorCallback.onLink2ArchiveClicked(row);
     }
+
+    public void onLink2ArchiveClicked(final GeneralJavaScriptObject row, final String columnName) {
+        tabulatorCallback.onLink2ArchiveClicked(row, columnName);
+    }
+
 
     public void onSourcesInPublicationClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onSourcesInPublicationClicked(rowData);

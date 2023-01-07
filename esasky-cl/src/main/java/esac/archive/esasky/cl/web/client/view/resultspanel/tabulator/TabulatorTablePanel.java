@@ -832,21 +832,37 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		if (getDescriptor() != null) {
 			CommonTapDescriptor desc = getDescriptor();
 			String archiveUrl = desc.getArchiveUrl(row.invokeFunction("getData"));
-
-			if (!archiveUrl.isEmpty()) {
-				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
-				UrlUtils.openUrl(archiveUrl);
-			} else {
-				String url = buildArchiveURL(row.invokeFunction("getData"));
-				if(url.toLowerCase().contains("datalink")) {
-					onDatalinkClicked(row);
-				}else {
-					GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
-					Window.open(url, "_blank", "");
-				}
-			}
+			openArchiveUrl(archiveUrl, row);
 		}
 
+	}
+
+	@Override
+	public void onLink2ArchiveClicked(GeneralJavaScriptObject row, String columnName) {
+		GeneralJavaScriptObject rowData = row.invokeFunction("getData");
+
+		String archiveUrl = "";
+		if (rowData.hasProperty(columnName)) {
+			archiveUrl = rowData.getProperty(columnName).toString();
+		}
+
+		openArchiveUrl(archiveUrl, row);
+	}
+
+
+	private void openArchiveUrl(String archiveUrl, GeneralJavaScriptObject row) {
+		if (!archiveUrl.isEmpty()) {
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
+			UrlUtils.openUrl(archiveUrl);
+		} else {
+			String url = buildArchiveURL(row.invokeFunction("getData"));
+			if(url.toLowerCase().contains("datalink")) {
+				onDatalinkClicked(row);
+			}else {
+				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
+				Window.open(url, "_blank", "");
+			}
+		}
 	}
 
 	private String buildArchiveURL(GeneralJavaScriptObject rowData) {

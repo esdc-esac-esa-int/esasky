@@ -75,6 +75,11 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData) {
+
+	}
+
+	@Override
+	public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData, String columnName) {
 		//Do nothing by default - To be overridden if needed.
 	}
 
