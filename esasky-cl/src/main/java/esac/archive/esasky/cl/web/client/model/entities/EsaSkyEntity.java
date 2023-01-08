@@ -147,7 +147,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                 stcs = rowData.getStringProperty(stcsColumn);
             }
 
-            if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
+            if(stcs == null || stcs.toUpperCase().startsWith("POSITION") || !isValidSTCS(stcs)) {
                 return catalogBuilder(rowId, rowData);
             }
 
@@ -224,6 +224,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
         return stcs;
 
+    }
+
+    private boolean isValidSTCS(String input) {
+        String[] validShapes = new String[]{"polygon", "circle", "ellipse"};
+        return Arrays.stream(validShapes).anyMatch(input.toLowerCase()::contains);
     }
 
 
@@ -922,15 +927,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();
 	    boolean disableLink2ArchiveColumn = false;
-//	    if (getDescriptor() instanceof ExtTapDescriptor
-//	    		&& getDescriptor().getArchiveProductURI() != null
-//	    		&& getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
-//	            disableLink2ArchiveColumn = true;
-//	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null
-//	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
-//	                settings.setAddDatalinkLink2ArchiveColumn(true);
-//	            }
-//	    }
 
         if (descriptor != null) {
             boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
