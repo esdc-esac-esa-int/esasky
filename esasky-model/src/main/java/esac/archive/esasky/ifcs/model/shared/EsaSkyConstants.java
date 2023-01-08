@@ -274,6 +274,7 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
     public static final String EXT_TAP_MAX_REC_FLAG = "MAX_REC";
 
+    public static final String REGISTRY_TAP_TARGET = "REGISTRY_TAP_TARGET";
 
     /*************************************************************************/
     /** IVOA OBSCORE **/

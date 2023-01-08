@@ -325,27 +325,45 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         private void exploreTapServiceTables(String tapUrl) {
             setIsLoading(true);
 
-            String query = "SELECT schema_name, table_name, description FROM tap_schema.tables";
-            String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
-                    + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
-                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
-
+            // First we attempt to get tables from the tap/tables route.
+            // If that fails, we attempt to retrieve table data from tap_schema.
+            String url = EsaSkyWebConstants.TAPREGISTRY_URL
+                    + "?" + EsaSkyConstants.REGISTRY_TAP_TARGET + "=" + tapUrl;
             JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
                 @Override
                 public void onSuccess(String responseText) {
                     setIsLoading(false);
                     header.addPrefixWidget(backButton);
                     GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
-
                 }
 
                 @Override
                 public void onError(String errorCause) {
-                    showErrorMessage(storedName);
-                    setIsLoading(false);
+                    String query = "SELECT schema_name, table_name, description FROM tap_schema.tables";
+                    String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                            + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                            + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                            + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
+
+                    JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+                        @Override
+                        public void onSuccess(String responseText) {
+                            setIsLoading(false);
+                            header.addPrefixWidget(backButton);
+                            GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
+
+                        }
+
+                        @Override
+                        public void onError(String errorCause) {
+                            showErrorMessage(storedName);
+                            setIsLoading(false);
+                        }
+                    });
                 }
             });
+
+
         }
 
         private void queryExternalTapServiceData(String tapUrl, String tableName, String description, String query, boolean fovLimit, boolean useUnprocessedQuery) {
