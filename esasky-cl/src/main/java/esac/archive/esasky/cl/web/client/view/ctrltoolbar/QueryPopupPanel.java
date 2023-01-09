@@ -13,7 +13,9 @@ import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEvent;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEventHandler;
 import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
 import esac.archive.esasky.cl.web.client.view.common.Hidable;
+import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 
@@ -61,21 +63,59 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
             queryTextBoxValue = event.getValue();
         });
 
+
         textBoxContainer.add(queryTextBox);
 
-        searchButton = new EsaSkyStringButton("Execute");
+        searchButton = new EsaSkyStringButton("Run Query");
         searchButton.setMediumStyle();
-
+        searchButton.setStyleName("queryPopupPanel__queryButton");
         searchButton.addClickHandler(event -> {
             this.hide();
             this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.tapDescription, this.queryTextBoxValue));
         });
 
         container.add(header);
+        container.add(createDropdownMenu());
         container.add(textBoxContainer);
         container.add(searchButton);
         this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
         this.add(container);
+    }
+
+
+    private DropDownMenu<PopupMenuItems> createDropdownMenu() {
+        DropDownMenu<PopupMenuItems> dropDownMenu = new DropDownMenu<>("Examples...", "Query examples", 550, "queryPopupPanelDropdownMenu");
+        MenuItem<PopupMenuItems> menuItem1 = new MenuItem<>(PopupMenuItems.METADATA, "Columns in table", true);
+        MenuItem<PopupMenuItems> menuItem2 = new MenuItem<>(PopupMenuItems.TABLE, "Full table", true);
+        MenuItem<PopupMenuItems> menuItem3 = new MenuItem<>(PopupMenuItems.COUNT, "Count rows", true);
+
+        dropDownMenu.addMenuItem(menuItem1);
+        dropDownMenu.addMenuItem(menuItem2);
+        dropDownMenu.addMenuItem(menuItem3);
+
+
+
+        dropDownMenu.registerObserver(() -> {
+            switch (dropDownMenu.getSelectedObject()) {
+                case METADATA:
+                    setQuery("SELECT * FROM TAP_SCHEMA.columns WHERE table_name = '" + tapTableName + "'");
+                    break;
+                case TABLE:
+                    setQuery("SELECT TOP 1000 * FROM " + tapTableName); // Default query
+                    break;
+                case COUNT:
+                    setQuery("SELECT COUNT(*) FROM " + tapTableName);
+                    break;
+
+            }
+        });
+
+        return dropDownMenu;
+    }
+
+
+    private enum PopupMenuItems{
+        METADATA, TABLE, COUNT;
     }
 
     public void setTapServiceUrl(String tapServiceUrl) {
@@ -84,7 +124,6 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
 
     public void setTapTable(String tableName) {
         this.tapTableName = ExtTapUtils.encapsulateTableName(tableName);
-        setQuery("SELECT TOP 50 * FROM " + tapTableName); // Default query
     }
 
     public void setTapDescription(String description) {

@@ -181,4 +181,9 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
 		//Do nothing by default - To be overridden if needed.
 	}
+
+	@Override
+	public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
 }

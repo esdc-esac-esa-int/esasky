@@ -128,9 +128,13 @@ body {
 }
 
 .buttonCellDisabled {
-	pointer-events: none;
 	opacity: 0.4;
 }
+
+.buttonCellDisabled:active {
+	pointer-events: none;
+}
+
 
 .buttonCell img{
 	display: block;

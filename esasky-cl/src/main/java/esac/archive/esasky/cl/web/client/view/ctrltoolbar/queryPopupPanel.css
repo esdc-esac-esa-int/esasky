@@ -18,8 +18,18 @@
     flex-direction: row;
     margin-bottom: 10px;
     margin-top: 10px;
+    height: 125px;
 }
 
 .queryPopupPanel__textBox {
     width: 100%;
+}
+
+.queryPopupPanelDropdownMenu {
+    z-index: 1050;
+}
+
+.queryPopupPanel__queryButton {
+    text-align: center;
+    margin: 10px;
 }

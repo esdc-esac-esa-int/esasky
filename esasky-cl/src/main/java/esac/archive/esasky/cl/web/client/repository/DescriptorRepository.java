@@ -425,6 +425,15 @@ public class DescriptorRepository {
 
     	return null;
     }
+
+    public CommonTapDescriptor getDescriptorFromTable(String tableName) {
+        String category = tableCategoryMap.get(tableName);
+        if (category != null) {
+            return getDescriptorCountAdapter(category).getDescriptorByTable(tableName);
+        }
+
+        return null;
+    }
     
 //    private HashMap<String, List<CommonTapDescriptor>> getDescriptorsMap() {
 //        if (descriptorsMap == null) {

@@ -720,7 +720,7 @@ public class TabulatorWrapper {
         if (details != null && details.length > 0) {
             template.innerHTML = "<div>" + $wnd.esasky.getInternationalizationText("tabulator_loadFailed")
                 + ".<br><br>" + error.trim()
-                + "<br><br> <details style=\"color: grey; opacity: 60%;border: 1px solid grey;border-radius: 4px;padding: 0.5em;\">"
+                + "<br><br> <details style=\"color: grey; opacity: 60%;border: 1px solid grey;border-radius: 4px;padding: 0.5em; overflow: scroll; max-height: 80px;\">"
                 + details + "</details></div>";
         } else {
             template.innerHTML = "<div>" + $wnd.esasky.getInternationalizationText("tabulator_loadFailed")
@@ -1648,7 +1648,13 @@ public class TabulatorWrapper {
                 }
 
                 var disabledClass = isDisabled ? "buttonCellDisabled" : "";
-                return "<div class='buttonCell " + disabledClass + "' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+
+                var toolTip = formatterParams.tooltip;
+                if (isDisabled && formatterParams.disabledTooltip) {
+                    toolTip = formatterParams.disabledTooltip;
+                }
+
+                return "<div class='buttonCell " + disabledClass + "' title='" + toolTip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
             };
 
             var obscoreButtonDisabled = function (cell) {
@@ -1701,31 +1707,11 @@ public class TabulatorWrapper {
                     headerTooltip: "Column metadata",
                     minWidth: 75,
                     download: false,
-                    hozAlign: "center",
                     formatter: imageButtonFormatter, width: 40, hozAlign: "center",
                     formatterParams: {image: "column_icon.png", tooltip: "Load column metadata"},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
-                    }
-                }, true);
-            }
-
-            if (settings.addAdqlColumn) {
-                this.addColumn({
-                    title: "ADQL",
-                    field: "adqlBtn",
-                    visible: true,
-                    headerSort: false,
-                    headerTooltip: "ADQL query",
-                    minWidth: 55,
-                    download: false,
-                    hozAlign: "center",
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
-                    formatterParams: {image: "adql_icon.png", tooltip: "Create a custom ADQL query"},
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
                     }
                 }, true);
             }
@@ -1736,17 +1722,59 @@ public class TabulatorWrapper {
                     field: "obscoreAddBtn",
                     visible: true,
                     headerSort: false,
-                    headerTooltip: "Add to External Data Center Panel",
+                    headerTooltip: "Add ObsCore table to External Data Center Panel",
                     minWidth: 55,
                     download: false,
-                    hozAlign: "center",
                     formatter: imageButtonFormatter, width: 40, hozAlign: "center",
-                    formatterParams: {image: "plus-sign-light-small.png", tooltip: "Add to External Data Center Panel", isDisabledFunc: obscoreButtonDisabled},
+                    formatterParams: {
+                        image: "plus-sign-light-small.png",
+                        tooltip: "Add ObsCore table to External Data Center Panel",
+                        disabledTooltip: "Only ObsCore tables can be added to the External Data Center Panel",
+                        isDisabledFunc: obscoreButtonDisabled
+                    },
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         if (obscoreButtonDisabled(cell) === false) {
                             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAddObscoreTableClicked(*)(cell.getData());
                         }
+                    }
+                }, true);
+            }
+
+            if (settings.addAdqlColumn) {
+                this.addColumn({
+                    title: "Query",
+                    field: "adqlBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: "ADQL query",
+                    minWidth: 65,
+                    download: false,
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    formatterParams: {image: "adql_icon.png", tooltip: "Create a custom ADQL query"},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                }, true);
+            }
+
+
+            if (settings.addOpenTableColumn) {
+                this.addColumn({
+                    title: "Open",
+                    field: "openTableBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: "Open table",
+                    minWidth: 60,
+                    download: false,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    formatterParams: {image: "table-icon.png", tooltip: "Open table"},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onOpenTableClicked(*)(cell.getData());
                     }
                 }, true);
             }
@@ -2351,6 +2379,10 @@ public class TabulatorWrapper {
 
     public void onAddObscoreTableClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onAddObscoreTableClicked(rowData);
+    }
+
+    public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onOpenTableClicked(rowData);
     }
 
     public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {

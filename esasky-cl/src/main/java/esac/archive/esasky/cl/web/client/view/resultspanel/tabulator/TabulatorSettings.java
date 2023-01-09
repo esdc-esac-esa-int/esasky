@@ -23,6 +23,7 @@ public class TabulatorSettings{
 
 	private  Boolean addAdqlColumn = false;
 	private Boolean addMetadataColumn = false;
+	private Boolean addOpenTableColumn = false;
 	private String tableLayout = "fitDataFill";
 	private Boolean addObscoreTableColumn = false;
 	private Boolean showDetailedErrors = false;
@@ -57,6 +58,7 @@ public class TabulatorSettings{
 		json.put("addObscoreTableColumn", JSONBoolean.getInstance(addObscoreTableColumn));
 		json.put("showDetailedErrors", JSONBoolean.getInstance(showDetailedErrors));
 		json.put("fovLimitDisabled", JSONBoolean.getInstance(fovLimitDisabled));
+		json.put("addOpenTableColumn", JSONBoolean.getInstance(addOpenTableColumn));
 		return json.toString();
 	}
 
@@ -197,5 +199,13 @@ public class TabulatorSettings{
 
 	public void setFovLimiterDisabled(Boolean fovLimitDisabled) {
 		this.fovLimitDisabled = fovLimitDisabled;
+	}
+
+	public Boolean getAddOpenTableColumn() {
+		return addOpenTableColumn;
+	}
+
+	public void setAddOpenTableColumn(Boolean addOpenTableColumn) {
+		this.addOpenTableColumn = addOpenTableColumn;
 	}
 }

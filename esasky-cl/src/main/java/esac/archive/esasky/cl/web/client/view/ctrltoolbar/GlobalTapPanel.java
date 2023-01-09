@@ -171,11 +171,12 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private void initTapServicesTableWrapper() {
         TabulatorSettings settings = new TabulatorSettings();
         settings.setAddAdqlColumn(true);
-        settings.setAddMetadataColumn(true);
+        settings.setAddMetadataColumn(false);
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
         settings.setTableLayout("fitColumns");
         settings.setAddObscoreTableColumn(true);
+        settings.setAddOpenTableColumn(true);
         tapTablesWrapper = new TabulatorWrapper("browseTap__tabulatorTablesContainer", tabulatorCallback, settings);
         tapTablesWrapper.groupByColumns("schema_name");
     }
@@ -259,13 +260,15 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
                 exploreTapServiceTables(accessUrl);
-            } else  {
-                // Query specific table
-                String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
-                String description = rowData.getStringProperty(DESCRIPTION_COL);
-                String query = "SELECT * FROM " + tableName;
-                queryExternalTapServiceData(accessUrl, tableName, description, query, true, false);
             }
+        }
+
+        @Override
+        public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
+            String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
+            String description = rowData.getStringProperty(DESCRIPTION_COL);
+            String query = "SELECT * FROM " + tableName;
+            queryExternalTapServiceData(storedAccessUrl, tableName, description, query, true, false);
         }
 
         @Override
