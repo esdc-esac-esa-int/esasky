@@ -291,8 +291,8 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
         @Override
         public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
             String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
-            String schemaQuery = "SELECT * FROM tap_schema.columns WHERE table_name='" + tableName + "'";
-            queryExternalTapServiceMetadata(storedAccessUrl, schemaQuery, new JSONUtils.IJSONRequestCallback() {
+            String query = "SELECT * FROM " + tableName;
+            queryExternalTapServiceMetadata(storedAccessUrl, query, new JSONUtils.IJSONRequestCallback() {
                 @Override
                 public void onSuccess(String responseText) {
                     setIsLoading(false);
@@ -301,7 +301,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     TapDescriptorList descriptorList = mapper.read(responseText);
 
                     if (descriptorList != null) { 
-                        List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, true);
+                        List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
                                 storedAccessUrl, tableName, storedName, null, "", true, false);
                         DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
