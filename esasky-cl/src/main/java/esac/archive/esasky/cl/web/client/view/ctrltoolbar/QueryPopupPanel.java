@@ -35,6 +35,7 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
     private String tapDescription;
     private boolean isShowing = false;
 
+    private DropDownMenu<PopupMenuItems> dropDownMenu;
 
     public interface Resources extends ClientBundle {
         @Source("queryPopupPanel.css")
@@ -84,7 +85,7 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
 
 
     private DropDownMenu<PopupMenuItems> createDropdownMenu() {
-        DropDownMenu<PopupMenuItems> dropDownMenu = new DropDownMenu<>("Examples...", "Query examples", 550, "queryPopupPanelDropdownMenu");
+        dropDownMenu = new DropDownMenu<>("Examples...", "Query examples", 550, "queryPopupPanelDropdownMenu");
         MenuItem<PopupMenuItems> menuItem1 = new MenuItem<>(PopupMenuItems.METADATA, "Columns in table", true);
         MenuItem<PopupMenuItems> menuItem2 = new MenuItem<>(PopupMenuItems.TABLE, "Full table", true);
         MenuItem<PopupMenuItems> menuItem3 = new MenuItem<>(PopupMenuItems.COUNT, "Count rows", true);
@@ -124,6 +125,8 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
 
     public void setTapTable(String tableName) {
         this.tapTableName = ExtTapUtils.encapsulateTableName(tableName);
+        dropDownMenu.clearSelection();
+        dropDownMenu.selectObject(PopupMenuItems.TABLE);
     }
 
     public void setTapDescription(String description) {
