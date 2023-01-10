@@ -107,7 +107,6 @@ public class MainPresenter {
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SSO, newCount -> ctrlTBPresenter.updateSsoCount(newCount));
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_EXTERNAL, EsaSkyWebConstants.CATEGORY_EXTERNAL);

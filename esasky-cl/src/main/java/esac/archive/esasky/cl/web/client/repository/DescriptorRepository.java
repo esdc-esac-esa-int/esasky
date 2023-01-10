@@ -535,7 +535,7 @@ public class DescriptorRepository {
 
             final int count = 0;
             for (CommonTapDescriptor descriptor : descriptorCountAdapter.getDescriptors()) {
-                if (!descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+                if (!descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL) && descriptor.getTableName().equals(tableName)) {
                     CountStatus cs = descriptorCountAdapter.getCountStatus();
                     cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
                     descriptors.add(descriptor);
