@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.ifcs.model.shared.UCD;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 
 /**

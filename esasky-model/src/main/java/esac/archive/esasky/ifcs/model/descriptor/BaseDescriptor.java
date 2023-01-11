@@ -11,7 +11,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
-import esac.archive.esasky.ifcs.model.shared.UCD;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 import java.util.ArrayList;
 import java.util.Arrays;

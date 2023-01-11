@@ -32,7 +32,7 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-import esac.archive.esasky.ifcs.model.shared.UCD;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 import java.util.List;
 import java.util.Objects;

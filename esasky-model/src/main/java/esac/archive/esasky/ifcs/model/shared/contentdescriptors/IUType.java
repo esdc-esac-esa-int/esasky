@@ -1,4 +1,4 @@
-package esac.archive.esasky.ifcs.model.shared;
+package esac.archive.esasky.ifcs.model.shared.contentdescriptors;
 
 public interface IUType extends IContentDescriptor{
     String getValue();

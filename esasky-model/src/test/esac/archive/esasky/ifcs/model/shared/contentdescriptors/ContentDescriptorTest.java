@@ -1,4 +1,4 @@
-package esac.archive.esasky.ifcs.model.shared;
+package esac.archive.esasky.ifcs.model.shared.contentdescriptors;
 
 import org.junit.jupiter.api.Test;
 

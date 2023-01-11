@@ -34,7 +34,6 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.descriptor.*;
-import esac.archive.esasky.ifcs.model.shared.UCD;
 
 import java.util.*;
 import java.util.stream.Collectors;

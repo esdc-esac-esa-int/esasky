@@ -1,4 +1,4 @@
-package esac.archive.esasky.ifcs.model.shared;
+package esac.archive.esasky.ifcs.model.shared.contentdescriptors;
 
 public enum UCD implements IContentDescriptor{
     ARITH("arith"), //  Arithmetic quantities

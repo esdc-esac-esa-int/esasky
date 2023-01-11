@@ -27,7 +27,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
-import esac.archive.esasky.ifcs.model.shared.UCD;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 public class ApiOverlay extends ApiBase{
 	

@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.shared.IContentDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ObsCore;
-import esac.archive.esasky.ifcs.model.shared.UCD;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.IContentDescriptor;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.Name;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.ObsCore;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 import java.util.*;
 
@@ -205,6 +206,53 @@ public class TapDescriptor extends TapDescriptorBase {
         return descriptor;
     }
 
+
+    /**
+     * Finds the metadata object matching ONE of the provided Name values.
+     *
+     * @param nameList list of name values.
+     * @return the metadata object or null.
+     */
+    protected TapMetadataDescriptor getMetadataAny(Name... nameList) {
+        if (nameList.length == 0) {
+            return null;
+        }
+
+        TapMetadataDescriptor descriptor = null;
+        for (TapMetadataDescriptor metaDesc : getMetadata()) {
+            String nameStr = metaDesc.getName();
+
+            if (nameStr != null && Arrays.stream(nameList).anyMatch(u -> u.matches(nameStr))) {
+                descriptor = metaDesc;
+                break;
+            }
+        }
+        return descriptor;
+    }
+
+    /**
+     * Finds the metadata object matching ALL the provided Name values.
+     *
+     * @param nameList list of Name values.
+     * @return the metadata object or null.
+     */
+    protected TapMetadataDescriptor getMetadataAll(Name... nameList) {
+        if (nameList.length == 0) {
+            return null;
+        }
+
+        TapMetadataDescriptor descriptor = null;
+        for (TapMetadataDescriptor metaDesc : getMetadata()) {
+            String nameStr = metaDesc.getName();
+
+            if (nameStr != null && Arrays.stream(nameList).allMatch(u -> u.matches(nameStr))) {
+                descriptor = metaDesc;
+                break;
+            }
+        }
+        return descriptor;
+    }
+
     /**
      * Finds the metadata object matching one of the provided content descriptors.
      *
@@ -217,6 +265,11 @@ public class TapDescriptor extends TapDescriptorBase {
         if (descriptor == null) {
             descriptor = getMetadataAny(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof UCD).toArray(UCD[]::new));
         }
+
+        if (descriptor == null) {
+            descriptor = getMetadataAny(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof Name).toArray(Name[]::new));
+        }
+
         return descriptor;
     }
 
@@ -232,6 +285,11 @@ public class TapDescriptor extends TapDescriptorBase {
         if (descriptor == null) {
             descriptor = getMetadataAll(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof UCD).toArray(UCD[]::new));
         }
+
+        if (descriptor == null) {
+            descriptor = getMetadataAll(Arrays.stream(contentDescriptors).filter(cd -> cd instanceof Name).toArray(Name[]::new));
+        }
+
         return descriptor;
     }
 
@@ -304,15 +362,21 @@ public class TapDescriptor extends TapDescriptorBase {
     *  Public Helper Methods
     ****************************/
     public String getRaColumn() {
-        return getMetadataNameAny(UCD.POS_EQ_RA.positive(), UCD.STAT_ERROR.negative(), ObsCore.S_RA);
+        return getMetadataNameAny(UCD.POS_EQ_RA.positive(), UCD.STAT_ERROR.negative(),
+                ObsCore.S_RA,
+                Name.RA, Name.S_RA);
     }
 
     public String getDecColumn() {
-        return getMetadataNameAny(UCD.POS_EQ_DEC.positive(), UCD.STAT_ERROR.negative(), ObsCore.S_DEC);
+        return getMetadataNameAny(UCD.POS_EQ_DEC.positive(), UCD.STAT_ERROR.negative(),
+                ObsCore.S_DEC,
+                Name.DEC, Name.S_DEC);
     }
 
     public String getRegionColumn() {
-        return getMetadataNameAny(UCD.POS_OUTLINE.positive(), UCD.OBS_FIELD.positive(), UCD.META_PGSPHERE.negative(), ObsCore.S_REGION);
+        return getMetadataNameAny(UCD.POS_OUTLINE.positive(), UCD.OBS_FIELD.positive(), UCD.META_PGSPHERE.negative(),
+                ObsCore.S_REGION, Name.REGION,
+                Name.S_REGION);
     }
 
     public String getIdColumn() {

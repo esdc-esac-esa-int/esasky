@@ -1,4 +1,4 @@
-package esac.archive.esasky.ifcs.model.shared;
+package esac.archive.esasky.ifcs.model.shared.contentdescriptors;
 
 public enum ObsCore implements IUType {
     DATAPRODUCT_TYPE("ObsDataset.dataProductType"), // Data product (file content) primary type
