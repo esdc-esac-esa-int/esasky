@@ -28,14 +28,14 @@ public class PopupHeader<T> extends FlowPanel{
 		CssResource style();
 	}
 	
-	public PopupHeader(final Hidable<T> panel, String headerText, String helpText) {
+	public PopupHeader(final Hidable<? extends T> panel, String headerText, String helpText) {
 		this(panel, headerText, helpText, headerText);
 	}
-	public PopupHeader(final Hidable<T> panel, String headerText, String helpText, String helpHeader) {
+	public PopupHeader(final Hidable<? extends T> panel, String headerText, String helpText, String helpHeader) {
 		this(panel, headerText, helpText, helpHeader, null, "");
 	}
 	
-	public PopupHeader(final Hidable<T> panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
+	public PopupHeader(final Hidable<? extends T> panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
 		this.style = resources.style();
 		this.style.ensureInjected();
 

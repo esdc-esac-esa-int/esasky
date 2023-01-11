@@ -11,11 +11,14 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.DialogActionEvent;
 import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.esasky.cl.web.client.view.ColumnSelectorPopupPanel;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
@@ -29,8 +32,10 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.UCD;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
@@ -48,7 +53,6 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private FlowPanel tapTablesContainer;
     private TextBox searchBox;
     private EsaSkyButton backButton;
-    private QueryPopupPanel queryPopupPanel;
     private LoadingSpinner loadingSpinner;
 
     private TabulatorCallback tabulatorCallback;
@@ -133,7 +137,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
         searchContainer.add(searchBox);
 
-        backButton = new  EsaSkyButton(Icons.getBackArrowIcon());
+        backButton = new EsaSkyButton(Icons.getBackArrowIcon());
         backButton.addClickHandler(event -> {
             header.removePrefixWidget(backButton);
             showTable(tapServicesWrapper);
@@ -218,7 +222,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
     private void showTable(TabulatorWrapper wrapper) {
         searchBox.setText(wrapper.getFilterQuery());
 
-        if(wrapper.equals(tapServicesWrapper)) {
+        if (wrapper.equals(tapServicesWrapper)) {
             tapTablesContainer.addStyleName(DISPLAY_NONE);
             tapServicesContainer.removeStyleName(DISPLAY_NONE);
         } else {
@@ -235,13 +239,84 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
     private String[] getTableFilterColumns(TabulatorWrapper wrapper) {
         return wrapper.equals(tapServicesWrapper)
-                ? new String[] {"res_title", "short_name", "res_subjects", "publisher"}
-                : new String[] {"schema_name", TABLE_NAME_COL, "description"};
+                ? new String[]{"res_title", "short_name", "res_subjects", "publisher"}
+                : new String[]{"schema_name", TABLE_NAME_COL, "description"};
     }
 
+
+    @Override
+    protected Element getMovableElement() {
+        return header.getElement();
+    }
+
+    @Override
+    protected void onResize() {
+        setMaxSize();
+    }
+
+    @Override
+    public void setMaxSize() {
+        Style elementStyle = mainContainer.getElement().getStyle();
+        int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+        elementStyle.setPropertyPx("maxWidth", maxWidth);
+        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+        setTabulatorHeight();
+    }
+
+
+    private void setTabulatorHeight() {
+        setTabulatorHeight(tapServicesContainer);
+        setTabulatorHeight(tapTablesContainer);
+    }
+
+    private void setTabulatorHeight(FlowPanel tableContainer) {
+        int occupiedHeight = tableContainer.getAbsoluteTop() - this.getAbsoluteTop();
+        int height = mainContainer.getOffsetHeight() - occupiedHeight;
+
+        if (height > MainLayoutPanel.getMainAreaHeight()) {
+            height = MainLayoutPanel.getMainAreaHeight() - occupiedHeight;
+        }
+
+        tableContainer.getElement().getStyle().setPropertyPx("height", height);
+    }
+
+
+    private void setDefaultSize() {
+        int width = (int) (MainLayoutPanel.getMainAreaWidth() * 0.6);
+        int height = (int) (MainLayoutPanel.getMainAreaHeight() * 0.6);
+        mainContainer.setWidth(width + "px");
+        mainContainer.setHeight(height + "px");
+
+        Style containerStyle = mainContainer.getElement().getStyle();
+        containerStyle.setPropertyPx("minWidth", 350);
+        containerStyle.setPropertyPx("minHeight", 300);
+        setTabulatorHeight();
+    }
+
+    @Override
+    protected Element getResizeElement() {
+        return mainContainer.getElement();
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        if (!dataLoadedOnce) {
+            loadData();
+        }
+    }
+
+    private void setIsLoading(boolean isLoading) {
+        loadingSpinner.setVisible(isLoading);
+        setGlassEnabled(isLoading);
+    }
+
+
+    // Tabulator interaction
     private class TabulatorCallback extends DefaultTabulatorCallback {
         private String storedAccessUrl;
         private String storedName;
+        private QueryPopupPanel queryPopupPanel;
 
         @Override
         public void onRowSelection(GeneralJavaScriptObject row) {
@@ -265,27 +340,23 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
 
         @Override
         public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
-            String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
+            String encapsulateTableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
             String description = rowData.getStringProperty(DESCRIPTION_COL);
-            String query = "SELECT * FROM " + tableName;
-            queryExternalTapServiceData(storedAccessUrl, tableName, description, query, true, false);
+            String query = "SELECT * FROM " + encapsulateTableName;
+
+            queryExternalTapServiceData(storedAccessUrl, encapsulateTableName, description, query, true, false);
         }
 
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
             if (queryPopupPanel == null) {
-                queryPopupPanel = new QueryPopupPanel(GoogleAnalytics.CAT_GLOBALTAP_ADQLPANEL, true);
-                queryPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
-                queryPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
-                String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
-                queryPopupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
-                        description + event.getQuery(), event.getQuery(), false, true));
-                queryPopupPanel.setSuggestedPositionCenter();
+                queryPopupPanel = createQueryPopupPanel();
             }
+
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
             queryPopupPanel.setTapTable(rowData.getStringProperty(TABLE_NAME_COL));
             queryPopupPanel.setTapDescription(rowData.getStringProperty(DESCRIPTION_COL));
-            showQueryPanel();
+            queryPopupPanel.show();
         }
 
         @Override
@@ -300,7 +371,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                     TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
                     TapDescriptorList descriptorList = mapper.read(responseText);
 
-                    if (descriptorList != null) { 
+                    if (descriptorList != null) {
                         List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
                                 storedAccessUrl, tableName, storedName, null, "", true, false);
@@ -322,7 +393,7 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
 
-            queryExternalTapServiceData(storedAccessUrl, "tap_schema.columns", null, query,false, false);
+            queryExternalTapServiceData(storedAccessUrl, "tap_schema.columns", null, query, false, false);
         }
 
         private void exploreTapServiceTables(String tapUrl) {
@@ -382,7 +453,12 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
                         List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
                                 tableName, storedName, description, query, fovLimit && fovLimiterEnabled, useUnprocessedQuery);
-                        CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
+
+                        if (fovLimit && fovLimiterEnabled && commonTapDescriptor.isFovLimitDisabled()) {
+                            handleMissingColumns(commonTapDescriptor);
+                        } else {
+                            CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
+                        }
                     }
                 }
 
@@ -411,81 +487,64 @@ public class GlobalTapPanel extends MovableResizablePanel<GlobalTapPanel> {
             String body = TextMgr.getInstance().getText("global_tap_panel_query_failed_body").replace("$TAP_SERVICE$", name);
             DisplayUtils.showMessageDialogBox(body, title, UUID.randomUUID().toString(), GoogleAnalytics.CAT_GLOBALTAPPANEL_ERRORDIALOG);
         }
-    }
 
-    @Override
-    protected Element getMovableElement() {
-        return header.getElement();
-    }
+        private void handleMissingColumns(CommonTapDescriptor descriptor) {
+            ConfirmationPopupPanel confirmationPopupPanel = createConfirmationPopupPanel();
 
-    @Override
-    protected void onResize() {
-        setMaxSize();
-    }
-
-    @Override
-    public void setMaxSize() {
-        Style elementStyle = mainContainer.getElement().getStyle();
-        int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
-        elementStyle.setPropertyPx("maxWidth", maxWidth);
-        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-        setTabulatorHeight();
-    }
-
-
-    private void setTabulatorHeight(){
-        setTabulatorHeight(tapServicesContainer);
-        setTabulatorHeight(tapTablesContainer);
-    }
-
-    private void setTabulatorHeight(FlowPanel tableContainer) {
-        int occupiedHeight = tableContainer.getAbsoluteTop() - this.getAbsoluteTop();
-        int height = mainContainer.getOffsetHeight() - occupiedHeight;
-
-        if (height > MainLayoutPanel.getMainAreaHeight()) {
-            height = MainLayoutPanel.getMainAreaHeight() - occupiedHeight;
+            confirmationPopupPanel.addDialogEventHandler(action -> {
+                if (action.getAction() == DialogActionEvent.DialogAction.YES) {
+                    handleColumnSelection(descriptor);
+                } else if (action.getAction() == DialogActionEvent.DialogAction.NO) {
+                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+                }
+            });
+            confirmationPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
+            confirmationPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
+            confirmationPopupPanel.show();
         }
 
-        tableContainer.getElement().getStyle().setPropertyPx("height", height);
-    }
+        private void handleColumnSelection(CommonTapDescriptor descriptor) {
+            ColumnSelectorPopupPanel columnSelectorPopupPanel = createColumnSelectionPopupPanel(descriptor.getMetadata());
+            columnSelectorPopupPanel.addColumnSelectionHandler(event -> {
+                if (event.isRegionQuery()) {
+                    descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getRegionColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_OUTLINE.getValue()));
+                    descriptor.setUseIntersectsPolygon(true);
+                } else {
+                    descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getRaColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_EQ_RA.getValue()));
+                    descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getDecColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_EQ_DEC.getValue()));
+                }
 
+                descriptor.setFovLimitDisabled(false);
+                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+            });
 
-    private void setDefaultSize() {
-        int width = (int) (MainLayoutPanel.getMainAreaWidth() * 0.6);
-        int height = (int) (MainLayoutPanel.getMainAreaHeight() * 0.6);
-        mainContainer.setWidth(width + "px");
-        mainContainer.setHeight(height + "px");
-
-        Style containerStyle = mainContainer.getElement().getStyle();
-        containerStyle.setPropertyPx("minWidth", 350);
-        containerStyle.setPropertyPx("minHeight", 300);
-        setTabulatorHeight();
-    }
-
-    @Override
-    protected Element getResizeElement() {
-        return mainContainer.getElement();
-    }
-
-    @Override
-    public void show() {
-        super.show();
-        if (!dataLoadedOnce) {
-            loadData();
+            columnSelectorPopupPanel.addCloseHandler(event -> setGlassEnabled(false));
+            columnSelectorPopupPanel.addOpenHandler(event -> setGlassEnabled(true));
+            columnSelectorPopupPanel.show();
         }
-    }
 
-    public void showQueryPanel() {
-        queryPopupPanel.show();
-    }
+        private QueryPopupPanel createQueryPopupPanel() {
+            QueryPopupPanel popupPanel = new QueryPopupPanel();
+            popupPanel.addCloseHandler(event -> setGlassEnabled(false));
+            popupPanel.addOpenHandler(event -> setGlassEnabled(true));
+            String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
+            popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
+                    description + event.getQuery(), event.getQuery(), false, true));
 
-    public void hideQueryPanel() {
-        queryPopupPanel.hide();
-    }
+            return popupPanel;
+        }
 
-    private void setIsLoading(boolean isLoading) {
-        loadingSpinner.setVisible(isLoading);
-        setGlassEnabled(isLoading);
+        private ConfirmationPopupPanel createConfirmationPopupPanel() {
+            return new ConfirmationPopupPanel(
+                    GoogleAnalytics.CAT_GLOBALTAP_SELECTCOLUMNPANEL,
+                    "Missing column information", "We were unable to locate any columns defining RA, Dec, or Region for this table. "
+                    + "<br> We cannot perform a cone search without these columns; instead, the complete table will be obtained."
+                    + "<br><br> <b>Would you like to assign the columns manually?</b>", "helptext");
+        }
+
+        private ColumnSelectorPopupPanel createColumnSelectionPopupPanel(List<TapMetadataDescriptor> metadataList) {
+            return new ColumnSelectorPopupPanel("Select column", "help", metadataList);
+        }
     }
 
 }

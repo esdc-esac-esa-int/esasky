@@ -1,0 +1,17 @@
+
+
+.basePopupPanel {
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid;
+    border-radius: 12px;
+    padding: 5px 5px 0 5px;
+    overflow: auto !important;
+    display: block;
+    position: absolute;
+}
+
+.basePopupPanel__glass {
+    z-index: 1048;
+    background-color: #0cf;
+    opacity: 0.3;
+}

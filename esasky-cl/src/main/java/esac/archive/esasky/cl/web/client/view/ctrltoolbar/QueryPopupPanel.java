@@ -2,8 +2,6 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -12,28 +10,24 @@ import com.google.gwt.user.client.ui.TextArea;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEvent;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEventHandler;
 import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.common.BaseMovablePopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
-import esac.archive.esasky.cl.web.client.view.common.Hidable;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 
-public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupPanel> {
+public class QueryPopupPanel extends BaseMovablePopupPanel {
 
-    private FlowPanel container;
 
-    private EsaSkyStringButton searchButton;
+
     private TextArea queryTextBox;
-    private PopupHeader<QueryPopupPanel> header;
-    private final QueryPopupPanel.Resources resources;
+    private final Resources resources;
     private final CssResource style;
     private String queryTextBoxValue;
-
     private String tapServiceUrl;
     private String tapTableName;
     private String tapDescription;
-    private boolean isShowing = false;
 
     private DropDownMenu<PopupMenuItems> dropDownMenu;
 
@@ -42,8 +36,8 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
         @CssResource.NotStrict
         CssResource style();
     }
-    public QueryPopupPanel(String googleEventCategory, boolean isSuggestedPositionCenter) {
-        super(googleEventCategory, isSuggestedPositionCenter);
+    public QueryPopupPanel() {
+        super(GoogleAnalytics.CAT_GLOBALTAP_ADQLPANEL,"Custom ADQL Query", "help text");
         this.resources = GWT.create(QueryPopupPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -51,9 +45,6 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
     }
 
     public void initView() {
-        this.addStyleName("queryPopupPanel__container");
-        container = new FlowPanel();
-        header = new PopupHeader<>(this, "Custom ADQL Query", "helptext", "help title");
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 
         FlowPanel textBoxContainer = new FlowPanel();
@@ -67,7 +58,7 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
 
         textBoxContainer.add(queryTextBox);
 
-        searchButton = new EsaSkyStringButton("Run Query");
+        EsaSkyStringButton searchButton = new EsaSkyStringButton("Run Query");
         searchButton.setMediumStyle();
         searchButton.setStyleName("queryPopupPanel__queryButton");
         searchButton.addClickHandler(event -> {
@@ -75,17 +66,16 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
             this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.tapDescription, this.queryTextBoxValue));
         });
 
-        container.add(header);
+
         container.add(createDropdownMenu());
         container.add(textBoxContainer);
         container.add(searchButton);
-        this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
-        this.add(container);
+
     }
 
 
     private DropDownMenu<PopupMenuItems> createDropdownMenu() {
-        dropDownMenu = new DropDownMenu<>("Examples...", "Query examples", 550, "queryPopupPanelDropdownMenu");
+        dropDownMenu = new DropDownMenu<>("Examples...", "Query examples", 550, "queryPopupPanel__dropdownMenu");
         MenuItem<PopupMenuItems> menuItem1 = new MenuItem<>(PopupMenuItems.METADATA, "Columns in table", true);
         MenuItem<PopupMenuItems> menuItem2 = new MenuItem<>(PopupMenuItems.TABLE, "Full table", true);
         MenuItem<PopupMenuItems> menuItem3 = new MenuItem<>(PopupMenuItems.COUNT, "Count rows", true);
@@ -148,35 +138,5 @@ public class QueryPopupPanel extends MovablePanel implements Hidable<QueryPopupP
         return addHandler(handler, QueryTapEvent.TYPE);
     }
 
-    @Override
-    public void show(){
-        isShowing = true;
-        this.removeStyleName("displayNone");
-        updateHandlers();
-        setMaxSize();
-        ensureDialogFitsInsideWindow();
-        OpenEvent.fire(this, null);
-
-        setDefaultSize();
-        this.setFocus(true);
-        this.updateZIndex();
-
-        MainLayoutPanel.addElementToMainArea(this);
-    }
-
-    @Override
-    public void hide() {
-        isShowing = false;
-        this.addStyleName("displayNone");
-        this.removeHandlers();
-        CloseEvent.fire(this, null);
-
-        MainLayoutPanel.removeElementFromMainArea(this);
-    }
-
-    @Override
-    public boolean isShowing() {
-        return isShowing;
-    }
 
 }
