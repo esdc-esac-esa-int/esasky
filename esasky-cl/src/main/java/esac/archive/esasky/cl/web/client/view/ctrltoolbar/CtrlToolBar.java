@@ -729,7 +729,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     spectraTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
                     break;
                 case EsaSkyWebConstants.CATEGORY_SSO:
-                    ssoTreeMapContainer.updateData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    ssoTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
                     break;
                 case EsaSkyWebConstants.CATEGORY_EXTERNAL:
                     extTapTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());

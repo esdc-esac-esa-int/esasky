@@ -154,6 +154,9 @@ public class EntityRepository {
             case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
                 newEntity = createObservationEntity(descriptor);
                 break;
+            case EsaSkyWebConstants.CATEGORY_SSO:
+                newEntity = new SSOEntity(descriptor);
+                break;
             default:
                 newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
                         CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPObservationService.getInstance());

@@ -257,7 +257,7 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	
 	public void addData(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
 		treeMap.addData(descriptors, counts);
-		if(context == EntityContext.SSO) {
+		if(context == EntityContext.SSO && GUISessionStatus.getTrackedSso() != null) {
 			header.setText(TextMgr.getInstance().getText("treeMap_nameOfSelectedLabel").replace("$SSONAME$", GUISessionStatus.getTrackedSso().name)
 					.replace("$SSOTYPE$", GUISessionStatus.getTrackedSso().type.getType()));
 		}
