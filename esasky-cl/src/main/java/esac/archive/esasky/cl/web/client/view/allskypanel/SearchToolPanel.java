@@ -180,6 +180,7 @@ public class SearchToolPanel extends FlowPanel {
 		}
 	}
 
+	@SuppressWarnings("java:S3776")
 	private FlowPanel initConeDetails() {
 
 		FlowPanel detailContainer = new FlowPanel();
