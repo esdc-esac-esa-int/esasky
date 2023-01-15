@@ -68,7 +68,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private final TreeMapContainer catalogTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_CATALOGUE);
     private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
     private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
-    private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
+    private final ExtTapPanel extTapPanel = new ExtTapPanel();
 
 
     private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
@@ -159,10 +159,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         spectraTreeMapContainer.registerObserver(() -> spectraButton.setToggleStatus(false));
 
         ctrlToolBarPanel.add(createExtTapBtn());
-        MainLayoutPanel.addElementToMainArea(extTapTreeMapContainer);
-        extTapTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
-        extTapTreeMapContainer.definePositionFromTopAndLeft();
-        extTapTreeMapContainer.registerObserver(() -> {
+        MainLayoutPanel.addElementToMainArea(extTapPanel);
+        extTapPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        extTapPanel.definePositionFromTopAndLeft();
+        extTapPanel.registerObserver(() -> {
             extTapButton.setToggleStatus(false);
             CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
         });
@@ -270,8 +270,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         addCommonButtonStyle(extTapButton, TextMgr.getInstance().getText("webConstants_exploreExtTaps"));
         extTapButton.addClickHandler(
                 event -> {
-                    extTapTreeMapContainer.toggle();
-                    CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
+                    extTapPanel.toggle();
+                    CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapPanel.isShowing()));
                     CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
                     sendGAEvent(EntityContext.EXT_TAP.toString());
                 });
@@ -436,7 +436,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             publicationPanel.hide();
         }
         if (!button.equals(extTapButton)) {
-            extTapTreeMapContainer.hide();
+            extTapPanel.hide();
         }
         if (!button.equals(gwButton)) {
             gwPanel.hide();
@@ -691,7 +691,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     public boolean isExtTapOpen() {
-        return extTapTreeMapContainer.isShowing();
+        return extTapPanel.isShowing();
     }
 
     @Override
@@ -732,7 +732,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     ssoTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
                     break;
                 case EsaSkyWebConstants.CATEGORY_EXTERNAL:
-                    extTapTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    extTapPanel.addTreeMapData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
                     break;
                 default:
                     Log.warn("[CtrlToolBar] Unknown category " + descriptorCount.getCategory());
@@ -881,8 +881,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void openExtTapPanel() {
         if (!extTapButton.getToggleStatus()) {
             extTapButton.toggle();
-            extTapTreeMapContainer.toggle();
-            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
+            extTapPanel.toggle();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapPanel.isShowing()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
             sendGAEvent(EntityContext.EXT_TAP.toString());
         }
@@ -892,8 +892,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void closeExtTapPanel() {
         if (extTapButton.getToggleStatus()) {
             extTapButton.toggle();
-            extTapTreeMapContainer.toggle();
-            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
+            extTapPanel.toggle();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapPanel.isShowing()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
             sendGAEvent(EntityContext.EXT_TAP.toString());
         }
@@ -951,7 +951,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         sliderMap.put(EntityContext.ASTRO_CATALOGUE.toString(), catalogTreeMapContainer.getSliderValues());
         sliderMap.put(EntityContext.ASTRO_SPECTRA.toString(), spectraTreeMapContainer.getSliderValues());
         sliderMap.put(EntityContext.SSO.toString(), ssoTreeMapContainer.getSliderValues());
-        sliderMap.put(EntityContext.EXT_TAP.toString(), extTapTreeMapContainer.getSliderValues());
+        sliderMap.put(EntityContext.EXT_TAP.toString(), extTapPanel.getTreeMapSliderValues());
 
         return sliderMap;
     }
@@ -969,7 +969,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             } else if (EntityContext.SSO.toString().contentEquals(key)) {
                 ssoTreeMapContainer.setSliderValues(values[0], values[1]);
             } else if (EntityContext.EXT_TAP.toString().contentEquals(key)) {
-                extTapTreeMapContainer.setSliderValues(values[0], values[1]);
+                extTapPanel.setTreeMapSliderValues(values[0], values[1]);
             }
         }
 

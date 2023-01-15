@@ -303,6 +303,12 @@ public class EsaSkyConstants {
     public static final int TREEMAP_LEVEL_1 = 1;
     public static final int TREEMAP_LEVEL_2 = 2;
     public static final int TREEMAP_LEVEL_3 = 3;
+    public static final int DEFAULT_TREEMAP_HEIGHT_DESKTOP = 400;
+    public static final int DEFAULT_TREEMAP_HEIGHT_TABLET = 800;
+    public static final int DEFAULT_TREEMAP_WIDTH_TABLET = 800;
+    public static final int DEFAULT_TREEMAP_WIDTH_DESKTOP = 500;
+    public static final int DEFAULT_TREEMAP_HEIGHT_MOBILE = 1000;
+    public static final int DEFAULT_TREEMAP_WIDTH_MOBILE = 1000;
 
     /*************************************************************************/
     /** MOC **/

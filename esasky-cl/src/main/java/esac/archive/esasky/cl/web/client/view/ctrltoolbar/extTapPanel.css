@@ -1,0 +1,31 @@
+.extTapPanel {
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 1px solid;
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 12px;
+    height: auto;
+    padding: 5px 5px 0 5px;
+    z-index: 41;
+    overflow: auto !important;
+    position: absolute;
+}
+
+.extTapPanel__deck {
+    border-top: 1px solid white;
+}
+
+.extTapPanel__container {
+
+}
+
+.extTapPanel__tabPanel {
+    display: block;
+}
+
+
+.gwt-TabBarItem{
+    border-radius: 10px 10px 0 0 !important;
+}
+.gwt-TabBarItem-selected{
+    background: white !important;
+}
