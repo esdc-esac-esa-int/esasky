@@ -4117,5 +4117,11 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="outreachJwstPanel_closePanel">
 		Close panel
 	</text>
+	<text key="webConstants_changeSky">
+		Change the sky
+	</text>
+	<text key="webConstants_exploreTargetList">
+		Explore Target Lists
+	</text>
 
 </Internationalization>

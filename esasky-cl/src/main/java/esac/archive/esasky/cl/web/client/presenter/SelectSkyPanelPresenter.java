@@ -9,6 +9,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -20,6 +21,8 @@ import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.SkiesMen
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
+
+import java.util.Objects;
 
 public class SelectSkyPanelPresenter {
 
@@ -97,6 +100,12 @@ public class SelectSkyPanelPresenter {
         String url = null;
 
         url = EsaSkyWebConstants.HIPS_SOURCES_URL;
+
+        String mode = Modules.getMode();
+        if (mode != null && Objects.equals(mode.toUpperCase(), EsaSkyWebConstants.MODULE_MODE_KIOSK)) {
+            url += "?defaultHips=true";
+        }
+
         Log.debug("Query [" + url + "]");
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);

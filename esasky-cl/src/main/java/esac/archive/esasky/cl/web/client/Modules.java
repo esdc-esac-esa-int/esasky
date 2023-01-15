@@ -178,7 +178,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SHARE, false);
 		map.put(EsaSkyWebConstants.MODULE_HELP, false);
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
-		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, false);
+		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, false);
 		map.put(EsaSkyWebConstants.MODULE_CAT, false);
 		map.put(EsaSkyWebConstants.MODULE_SPE, false);

@@ -138,7 +138,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         selectSkyPanel.definePositionFromTopAndLeft();
         selectSkyPanel.hide();
-        ctrlToolBarPanel.add(createSkiesMenuBtn());
+        EsaSkyButton skiesBtn = createSkiesMenuBtn();
+        ctrlToolBarPanel.add(skiesBtn);
         MainLayoutPanel.addElementToMainArea(selectSkyPanel);
 
         ctrlToolBarPanel.add(createObservationBtn());
@@ -221,7 +222,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
 
         if (Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS)) {
-            rotateButtonLabelVisibility(Arrays.asList(exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+            rotateButtonLabelVisibility(Arrays.asList(skiesBtn, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
         }
 
         initWidget(ctrlToolBarPanel);
@@ -235,7 +236,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private EsaSkyButton createSkiesMenuBtn() {
-        selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_changeSky") : null;
+
+        selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon(), label);
         addCommonButtonStyle(selectSkyButton, TextMgr.getInstance().getText("webConstants_manageSkies"));
 
         selectSkyButton.addClickHandler(event -> {
@@ -244,6 +248,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         selectSkyPanel.addCloseHandler(event -> selectSkyButton.setToggleStatus(false));
+
+
+        if (isKiosk) {
+            selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            selectSkyPanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(selectSkyButton);
+        }
+
         return selectSkyButton;
     }
 
@@ -559,7 +571,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     public EsaSkyToggleButton createTargetListButton() {
         boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
-        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_uploadTargetList") : null;
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreTargetList") : null;
 
         final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon(), label);
         button.getElement().setId("targetListButton");
@@ -596,7 +608,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
 
         if (isKiosk) {
-            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 250);
+            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 180);
             outreachImagePanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(outreachImageButton);
         }
@@ -625,7 +637,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachJwstPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
 
         if (isKiosk) {
-            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 250);
+            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 180);
             outreachJwstPanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(outreachJwstButton);
         }
