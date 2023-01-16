@@ -20,8 +20,10 @@
 
 .welcomeEsaLogo{
 	position: absolute;
-	right: 12px;
-	top: 20px;
+	right: 0px;
+	top: 1px;
+	height: auto;
+	width: 118px;
 }
 
 .welcomeTitle{

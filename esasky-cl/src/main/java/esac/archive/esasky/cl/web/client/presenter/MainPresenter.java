@@ -350,6 +350,10 @@ public class MainPresenter {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), data);
     }
 
+    public void getImagesMetadata(CommonTapDescriptor descriptor) {
+    	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor));
+    }
+
     public void getRelatedMetadata(CommonTapDescriptor descriptor) {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor));
     }

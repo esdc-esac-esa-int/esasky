@@ -9,8 +9,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.callback.ICallback;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
+import esac.archive.esasky.cl.web.client.event.ImageListSelectedEvent;
 import esac.archive.esasky.cl.web.client.event.OpenSeaDragonActiveEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.Size;
@@ -30,6 +30,8 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
+import java.util.Objects;
+
 public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> {
 
     private CommonTapDescriptor outreachJwstDescriptor;
@@ -44,8 +46,6 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     private PopupHeader<OutreachJwstPanel> header;
 
     private final OutreachJwstPanel.Resources resources;
-
-    private final ICallback footprintSelected;
     private CssResource style;
 
     public static interface Resources extends ClientBundle {
@@ -54,16 +54,25 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         CssResource style();
     }
 
-    public OutreachJwstPanel(ICallback footprintSelected) {
-        super(GoogleAnalytics.CAT_OUTREACHIMAGES, false);
+    public OutreachJwstPanel() {
+        super(GoogleAnalytics.CAT_JWSTOUTREACHIMAGES, false);
         this.resources = GWT.create(OutreachJwstPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
-        this.footprintSelected = footprintSelected;
 
         initView();
         setMaxSize();
         CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
+        CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
+            if (Objects.equals(entity.getSelectedEntity(), imageEntity)) {
+                if (!isShowing()) {
+                    show();
+                }
+            } else if (isShowing()) {
+                hide();
+            }
+        }));
+
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
     }
 
@@ -123,7 +132,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
             return;
         }
 
-        imageEntity = EntityRepository.getInstance().createImageListEntity(outreachJwstDescriptor, footprintSelected);
+        imageEntity = EntityRepository.getInstance().createImageListEntity(outreachJwstDescriptor);
         if(outreachImageIdToBeOpened != null) {
             imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
         }
@@ -134,14 +143,14 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     public void show() {
         super.show();
         getData();
-        if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+        if(imageEntity != null) {
             imageEntity.setIsPanelClosed(false);
         }
     }
 
 
     public void close() {
-        if(imageEntity != null && !DeviceUtils.isMobileOrTablet()) {
+        if(imageEntity != null) {
             imageEntity.setIsPanelClosed(true);
         }
         super.hide();
@@ -153,7 +162,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachJwstPanel_header"),
                 TextMgr.getInstance().getText("outreachJwstPanel_helpText"),
                 TextMgr.getInstance().getText("outreachJwstPanel_helpTitle"),
-                event -> close(), "Close panel");
+                event -> close(), TextMgr.getInstance().getText("outreachJwstPanel_closePanel"));
 
 
 

@@ -156,6 +156,9 @@ public class Icons {
 		@Source("gear_icon_outline.png")
 		ImageResource settingsIcon();
 
+		@Source("chat-icon.png")
+		ImageResource chatIcon();
+
 		@Source("external.png")
 		ImageResource externalIcon();
 
@@ -376,6 +379,8 @@ public class Icons {
 	public static ImageResource getConeDashedIcon() { return resources.coneDashedIcon(); }
 
 	public static ImageResource getSettingsIcon() { return resources.settingsIcon(); }
+
+	public static ImageResource getChatIcon() { return resources.chatIcon(); }
 
 	public static ImageResource getExternalIcon() { return resources.externalIcon(); }
 

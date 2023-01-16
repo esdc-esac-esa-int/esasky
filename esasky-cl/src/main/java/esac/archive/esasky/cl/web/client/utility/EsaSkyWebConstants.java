@@ -2,10 +2,10 @@ package esac.archive.esasky.cl.web.client.utility;
 
 import com.google.gwt.i18n.client.Dictionary;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
 import esac.archive.esasky.ifcs.model.client.HiPSCoordsFrame;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 /**
@@ -131,6 +131,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_MODE_ESASKY = "ESASKY";
     public static final String MODULE_MODE_JWST = "JWST";
     public static final String MODULE_MODE_CLEAN = "CLEAN";
+    public static final String MODULE_MODE_KIOSK = "KIOSK";
 
     
     public static final String MODULE_SCIENTIFIC_BUTTON = "scientific_toggle_button";
@@ -152,6 +153,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SSO = "sso_button";
     public static final String MODULE_PUBLICATIONS = "publications_button";
     public static final String MODULE_TARGETLIST = "target_list_button";
+    public static final String MODULE_TARGETLIST_UPLOAD = "target_list_upload";
     public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE_MODE = "science_mode";
@@ -159,7 +161,9 @@ public class EsaSkyWebConstants {
     public static final String MODULE_EVA_MENU = "eva_menu";
     public static final String MODULE_EVA = "eva";
     public static final String MODULE_SEARCH_TOOL = "search_tool";
-    
+    public static final String MODULE_SEARCH_IN_MENU = "search_in";
+    public static final String MODULE_KIOSK_BUTTONS = "kiosk_buttons";
+    public static final String MODULE_WELCOME_DIALOG = "welcome_dialog";
     
     // DEFAULT ONES
     public static final String MODULE_WWT_LINK = "wwtLink";

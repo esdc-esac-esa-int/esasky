@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE internationalization [
-<!ELEMENT text (#PCDATA)>
-<!ATTLIST text key ID #REQUIRED>
+	<!ELEMENT text (#PCDATA)>
+	<!ATTLIST text key ID #REQUIRED>
 ]>
 
 <Internationalization langCode="en">
@@ -61,8 +61,6 @@
 	<text key="header_gridDropdown">
 		Coordinate grid
 	</text>
-	
-	
 
 
 	<!-- SSOOrbitMetadataCallback -->
@@ -320,9 +318,6 @@
 	<text key="hiPSDetailsPopup_close">
 		Close
 	</text>
-	<text key="instrumentDetailsPopup_close">
-		Close
-	</text>
 
 	<!-- Change Palette Button -->
 	<text key="changePaletteBtn_changePaletteTooltip">
@@ -370,7 +365,7 @@
 		&lt;a href="//www.stsci.edu/hst/proposing/apt" target="_blank"&gt;
 		this STSci webpage&lt;/a&gt;; for details on the different JWST
 		instruments,
-		&lt;a href="//jwst.stsci.edu/instrumentation" target="_blank"&gt;
+		&lt;a href="//stsci.edu/jwst/instrumentation" target="_blank"&gt;
 		click here.&lt;/a&gt;
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -532,7 +527,7 @@
 		Explore publications data for this region
 	</text>
 	<text key="webConstants_exploreRandomTarget">
-		Explore random target
+		Explore a random target
 	</text>
 
 	<!-- displayUtils -->
@@ -564,8 +559,7 @@
 		Computing data cross-match for $SSOTEXT$
 	</text>
 
-	<text
-		key="resultsPresenter_helpDescription_observations_INTEGRAL">
+	<text key="resultsPresenter_helpDescription_observations_INTEGRAL">
 		INTEGRAL/IBIS observations consist on a large number of individual
 		exposures (science windows) around a target position. For this reason
 		and because of the large size of the IBIS field-of-view, it is
@@ -579,8 +573,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_observations_XMM">
+	<text key="resultsPresenter_helpDescription_observations_XMM">
 		The XMM-Newton observations include public high-level Processing
 		Pipeline System
 		(PPS) products present in the XMM-Newton Science
@@ -632,8 +625,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
+	<text key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
 		The
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -651,8 +643,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
+	<text key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
 		The
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -698,7 +689,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
+
 	<text key="resultsPresenter_helpDescription_observations_HST-UV">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
@@ -727,7 +718,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
+
 	<text key="resultsPresenter_helpDescription_observations_HST-IR">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
@@ -756,7 +747,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
+
 		<text key="resultsPresenter_helpDescription_observations_JWST_Near-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
@@ -770,7 +761,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
+
 		<text key="resultsPresenter_helpDescription_observations_JWST_Mid-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
@@ -798,7 +789,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
+
 		<text key="resultsPresenter_helpDescription_spectra_JWST_Mid-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
@@ -812,9 +803,8 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
-	<text
-		key="resultsPresenter_helpDescription_observations_Herschel">
+
+	<text key="resultsPresenter_helpDescription_observations_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -847,7 +837,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-		
+
 	<text key="resultsPresenter_helpDescription_observations_ALMA">
 		ALMA (Atacama Large Millimeter/submillimeter Array) is the world's largest 
 		ground-based facility for observations in the millimeter/submillimeter regime. 
@@ -862,8 +852,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text
-		key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
+	<text key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
 		The IBIS/ISGRI Soft Gamma-Ray Source Catalog is an all-sky catalog
 		based on INTEGRAL-IBIS observations performed during the first 1000
 		orbits of the satellite. The catalogue was released in 2009 and
@@ -878,8 +867,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
+	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
                 The Chandra Source Catalog (CSC) is the definitive catalog of X-ray sources 
 		detected by the Chandra X-ray Observatory. Version 2.0 (CSC 2.0) is the second 
 		major release of the catalog, and represents a significant improvement with 
@@ -896,9 +884,8 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
-    The 4XMM-DR11 catalogue contains source detections drawn from 12,210
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
+    The 4XMM-DR12 catalogue contains source detections drawn from 12,712
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
 		(sources "good" or "with suspect parameters") are displayed in ESASky.
@@ -909,14 +896,13 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-    	The stacked catalogue 4XMM-DR11s has been compiled from 1,475 groups,
-		comprising 8,292  overlapping good-quality XMM-Newton observations. They
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
+    	The stacked catalogue 4XMM-DR12s has been compiled from 1,620 groups,
+		comprising 9,355  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
-		3 and 2020 December 17 which overlap by at least one arcminute in radius
-		and are not affected by very high background emission. It contains 358,809
-		unique sources, 275,440 of them multiply observed, with positions and
+		1 and 2021 December 4 which overlap by at least one arcminute in radius
+		and are not affected by very high background emission. It contains 386,043
+		unique sources, 298,626 of them multiply observed, with positions and
 		source parameters like fluxes in the XMM-Newton standard energy bands,
 		hardness ratios, quality estimate, and information on inter-observation
 		variability. 
@@ -927,8 +913,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-OM">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-OM">
 		The SUSS5.0 catalogue is a catalogue of sources serendipitously
 		detected by the Optical Monitor (OM) on board the XMM-Newton
 		observatory. It provides source positions, magnitudes and fluxes in
@@ -941,8 +926,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
 		​XMMSL2 is the second catalogue of X-ray sources detected in
 		XMM-Newton slew data, and has been constructed by members of the
 		XMM-Newton SOC and the EPIC consortium on behalf of ESA. This release uses
@@ -956,8 +940,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Tycho-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Tycho-2">
 		​ The Tycho-2 Catalogue is an astrometric reference catalogue
 		containing positions, proper motions and two-colour photometry (B and
 		V) for the 2.5 million brightest stars in the sky. The catalogue is
@@ -1012,8 +995,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_AllWise">
+	<text key="resultsPresenter_helpDescription_catalogues_AllWise">
 		The AllWISE Source Catalog provides astrometry and mid-infrared
 		photometry in four
 		bands (3.4, 4.6, 12 and 22 microns) for 747,634,026
@@ -1033,8 +1015,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
 		The Hipparcos-2 Catalogue is a new reduction of the data from the
 		Hipparcos mission that improved up to a factor of 4 the accuracy of
 		stars with Hp magnitude 8 or lower. It contains positions, parallaxes
@@ -1065,8 +1046,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1086,8 +1066,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1107,8 +1086,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1128,8 +1106,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1146,8 +1123,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1164,8 +1140,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1182,8 +1157,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
 		The PGCC2 contains 13,188 Galactic sources and 54 sources located in the Magellanic Clouds, all of them identified as cold sources in Planck data (sources colder than their environment). The sources are extracted from the Planck HFI 857, 545 and 353 GHz maps and the 3 THz IRIS map. A detection requires SNR &gt; 4 in all Planck bands and a minimum angular distance of 5 arcmin to other detections.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1191,8 +1165,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For the channels 100-353 GHz, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;
 		The catalogue at 100 Ghz and above has been
@@ -1208,8 +1181,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For the channels 100-353 GHz, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;
 		The catalogue at 100 Ghz and above has been
@@ -1225,16 +1197,14 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For all the LFI channels, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#PCCS2"
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
 		The Planck SZ catalogue is a nearly all-sky list of SZ detections
 		obtained from the Planck data, derived from the HFI frequency channel
 		maps after masking and filling the bright point sources (SNR>10) from
@@ -1247,8 +1217,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
+	<text key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
 		The XMM-Newton observations include public high-level Processing
 		Pipeline System
 		(PPS) products present in the XMM-Newton Science
@@ -1346,8 +1315,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
+	<text key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
 		The Hubble Space Telescope (HST) observational data provided by
 		ESASky are science products from the two Hubble data collections:
 		&lt;ul&gt;
@@ -1415,8 +1383,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_Herschel">
+	<text key="resultsPresenter_helpDescription_spectra_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -1754,11 +1721,11 @@
 		Exposure &lt;i&gt;(ksec)&lt;/i&gt;
 	</text>
 	<text key="XMM_EPIC_ep_8_flux">
-		Flux&lt;br&gt;&lt;i&gt;(erg
+		Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_EPIC_ep_8_flux_err">
-		Flux error&lt;br&gt;&lt;i&gt;(erg
+		Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<text key="XMM_EPIC_ep_2_flux">
@@ -1793,7 +1760,6 @@
 		Flux error&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-
 
 
 	<text key="i1_f_ap1">
@@ -1932,8 +1898,8 @@
 		B - V colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="v_i">
 		V - I colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt; </text>
-	
-		<text key="Gaia_DR3_TGAS_parallax_error">
+
+	<text key="Gaia_DR3_TGAS_parallax_error">
 		Parallax error&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt; </text>
 	<text key="Gaia_DR3_TGAS_pmra_error">
 		PM in RA error&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt; </text>
@@ -2048,7 +2014,7 @@
 	</text>
 	<text key="duration">
 		Duration &lt;i&gt;(s)&lt;/i&gt; </text>
-		
+
 	<text key="band">
 		Band </text>
 	<text key="s_fov">
@@ -2059,7 +2025,7 @@
 		Max Frequency (GHz) </text>
 	<text key="scientific_category">
 		Scientific Category</text>
-		
+
 	<text key="EP_STACK_ONTIME">
 		EP Ontime &lt;i&gt;(s)&lt;/i&gt; </text>
 	<text key="Chandra_ProposalID">
@@ -2125,6 +2091,9 @@
 	<text key="XMM_EPIC_ep_8_iau_name">
 		IAU Name
 	</text>
+	<text key="XMM_EPIC_ep_8_name">
+		Stack Catalogue Name
+	</text>
 	<text key="RA_J1991">
 		RA &lt;i&gt;(&#126;J1991)&lt;/i&gt; </text>
 	<text key="DEC_J1991">
@@ -2137,6 +2106,10 @@
 		RA &lt;i&gt;(J2000)&lt;/i&gt; </text>
 	<text key="DEC_J2000">
 		Dec &lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="RA_J2000_LB">
+		RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt; </text>
+	<text key="DEC_J2000_LB">
+		Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt; </text>
 	<text key="RA_J2015">
 		RA &lt;i&gt;(J2015.0)&lt;/i&gt; </text>
 	<text key="DEC_J2015">
@@ -2156,7 +2129,13 @@
 	<text key="SoftX-ray">
 		Soft X-ray
 	</text>
+	<text key="Soft&#032;X-ray">
+		Soft X-ray
+	</text>
 	<text key="HardX-ray">
+		Hard X-ray
+	</text>
+	<text key="Hard&#032;X-ray">
 		Hard X-ray
 	</text>
 	<text key="UV">
@@ -2168,26 +2147,44 @@
 	<text key="Optical">
 		Optical
 	</text>
+	<text key="Near-IR">
+		Near-IR
+	</text>
 	<text key="NearIR">
 		Near-IR
 	</text>
 	<text key="MidToFarIR">
 		Mid to Far-IR
 	</text>
+	<text key="Mid-IR">
+		Mid-IR
+	</text>
 	<text key="MidIR">
 		Mid-IR
+	</text>
+	<text key="Mid-Infrared">
+		Mid-Infrared
 	</text>
 	<text key="MidInfrared">
 		Mid-Infrared
 	</text>
+	<text key="Far-IR">
+		Far-IR
+	</text>
 	<text key="FarIR">
 		Far-IR
+	</text>
+	<text key="Near-Infrared">
+		Near-Infrared
 	</text>
 	<text key="NearInfrared">
 		Near-Infrared
 	</text>
 	<text key="MidToFarInfrared">
 		Mid to Far-Infrared
+	</text>
+	<text key="Far-Infrared">
+		Far-Infrared
 	</text>
 	<text key="FarInfrared">
 		Far-Infrared
@@ -2243,97 +2240,97 @@
 		Upper Flux HRC &lt;i&gt;(erg
 		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-  <text key="CSC2_flux_aper_avg_b">
+	<text key="CSC2_flux_aper_avg_b">
 	  Average Flux ACIS &lt;i&gt;(erg
 	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
   </text>
-  <text key="CSC2_flux_aper_avg_lolim_b">
+	<text key="CSC2_flux_aper_avg_lolim_b">
 	  Average Lower Flux ACIS &lt;i&gt;(erg
 	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
   </text>
-  <text key="CSC2_flux_aper_avg_hilim_b">
+	<text key="CSC2_flux_aper_avg_hilim_b">
 	  Average Upper Flux ACIS &lt;i&gt;(erg
 	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
   </text>
-  <text key="CSC2_flux_aper_avg_w">
+	<text key="CSC2_flux_aper_avg_w">
 	  Average Flux HRC &lt;i&gt;(erg
 	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
   </text>
-  <text key="CSC2_flux_aper_avg_lolim_w">
+	<text key="CSC2_flux_aper_avg_lolim_w">
 	  Average Lower Flux HRC &lt;i&gt;(erg
 	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
   </text>
-  <text key="CSC2_flux_aper_avg_hilim_w">
+	<text key="CSC2_flux_aper_avg_hilim_w">
 	  Average Upper Flux HRC &lt;i&gt;(erg
 	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
   </text>
-  <text key="CSC2_err_ellipse_r0">
+	<text key="CSC2_err_ellipse_r0">
 	  Major radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;
   </text>
-  <text key="CSC2_err_ellipse_r1">
+	<text key="CSC2_err_ellipse_r1">
   	Minor radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;
   </text>
-  <text key="CSC2_err_ellipse_ang">
+	<text key="CSC2_err_ellipse_ang">
 	  Position angle error ellipse &lt;i&gt;(deg)&lt;/i&gt;
   </text>
-  <text key="CSC2_significance">
+	<text key="CSC2_significance">
 	  Highest Flux Significance
   </text>
-  <text key="CSC2_likelihood">
+	<text key="CSC2_likelihood">
 	  Likelihood
   </text>
-  <text key="CSC2_likelihood_class">
+	<text key="CSC2_likelihood_class">
 	  Likelihood Classification
   </text>
-  <text key="CSC2_conf_flag">
+	<text key="CSC2_conf_flag">
 	  Confusion Flag
   </text>
-  <text key="CSC2_extent_flag">
+	<text key="CSC2_extent_flag">
 	  Extent Flag
   </text>
-  <text key="CSC2_sat_src_flag">
+	<text key="CSC2_sat_src_flag">
 	  Source Saturation Flag
   </text>
-  <text key="CSC2_streak_src_flag">
+	<text key="CSC2_streak_src_flag">
 	  Source Streak Flag
   </text>
-  <text key="CSC2_var_flag">
+	<text key="CSC2_var_flag">
 	  Variability Flag
   </text>
-  <text key="CSC2_var_inter_hard_flag">
+	<text key="CSC2_var_inter_hard_flag">
 	  Hardness Ratio Variability Flag
   </text>
-  <text key="CSC2_hard_hm">
+	<text key="CSC2_hard_hm">
 	  Hard-Medium Hardness Ratio
   </text>
-  <text key="CSC2_hard_hm_lolim">
+	<text key="CSC2_hard_hm_lolim">
 	  Lower Hard-Medium Hardness Ratio
   </text>
-  <text key="CSC2_hard_hm_hilim">
+	<text key="CSC2_hard_hm_hilim">
 	  Upper Hard-Medium Hardness Ratio
   </text>
-  <text key="CSC2_hard_ms">
+	<text key="CSC2_hard_ms">
 	  Medium-Soft Hardness Ratio
   </text>
-  <text key="CSC2_hard_ms_lolim">
+	<text key="CSC2_hard_ms_lolim">
 	  Lower Medium-Soft Hardness Ratio
   </text>
-  <text key="CSC2_hard_ms_hilim">
+	<text key="CSC2_hard_ms_hilim">
 	  Upper Medium-Soft Hardness Ratio
   </text>
-  <text key="CSC2_var_intra_index_b">
+	<text key="CSC2_var_intra_index_b">
 	  ACIS Intra-Obs Variability Index
   </text>
-  <text key="CSC2_var_intra_index_w">
+	<text key="CSC2_var_intra_index_w">
 	  HRC Intra-Obs Variability Index
   </text>
-  <text key="CSC2_var_inter_index_b">
+	<text key="CSC2_var_inter_index_b">
 		ACIS Inter-Obs Variability Index
 	</text>
 	<text key="CSC2_var_inter_index_w">
 		HRC Inter-Obs Variability Index
 	</text>
-  <text key="CSC2_var_inter_hard_prob_hm">
+	<text key="CSC2_var_inter_hard_prob_hm">
     Hard-Medium Hardness Ratio Variability Prob
   </text>
 	<text key="CSC2_var_inter_hard_prob_ms">
@@ -2800,6 +2797,9 @@
 	<text key="colorPalette_GREYSCALE">
 		Greyscale
 	</text>
+	<text key="colorPalette_GREYSCALE_INV">
+		Greyscale (Reverse)
+	</text>
 	<text key="colorPalette_CUBEHELIX">
 		Cubehelix
 	</text>
@@ -3002,7 +3002,7 @@
 	<text key="commonObservationTablePanel_showingGlobalSkyCoverage">
 		Showing global sky coverage for the dataset. Zoom in and refresh the table to get the actual footprints of the individual observations.
 	</text>
-		<text key="treeMapContainer_help_SSO">
+	<text key="treeMapContainer_help_SSO">
 		In ESASky, you can now search for any planet, satellite
 		or comet observed by HST, Herschel and XMM-Newton (targeted or
 		serendipitous images).
@@ -3037,7 +3037,7 @@
 		&gt;
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
-		<text key="treeMapContainer_help_EXT_TAP">
+	<text key="treeMapContainer_help_EXT_TAP">
 		In ESASky you can now explore data from external data centres
 		which conforms with Virtual Observatory (IVOA) standards.
 
@@ -3051,11 +3051,10 @@
 		</text>
 
 
-	<text key="resultsPresenter_helpDescription_catalogues_LAMOST">
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
-		The fifth LAMOST data release (LAMOST DR5) includes observations until July 2017. The General Catalog contains 9,026,365 targets, of which 8,183,160 are stars, 152,863 galaxies, 52,453 QSO, and 637,889 unknown objects. There are 5,808,985 objects with g-band SNR larger than 10, 7,701,235 objects with i-band SNR larger than 10, and 5,734,239 objects with both g-band SNR larger than 10 and i-band SNR larger than 10.
-
+		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3063,11 +3062,10 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_spectra_LAMOST">
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
-		The fifth LAMOST data release (LAMOST DR5) includes observations until July 2017. The General Catalog contains 9,026,365 targets, of which 8,183,160 are stars, 152,863 galaxies, 52,453 QSO, and 637,889 unknown objects. There are 5,808,985 objects with g-band SNR larger than 10, 7,701,235 objects with i-band SNR larger than 10, and 5,734,239 objects with both g-band SNR larger than 10 and i-band SNR larger than 10.
-
+The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3075,6 +3073,18 @@
 		More information
 		&lt;/a&gt;
 	</text>
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.
+		&lt;br&gt;&lt;br&gt;
+		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
 	<text key="resultsPresenter_helpDescription_observations_AKARI">
 		ESASky serves all pointed observations taken with the InfraRed Camera (IRC) of this mission, which are directly downloaded from DARTS. The IRC consisted of three independent camera systems, NIR, MIR-S and MIR-L, which observed the wavelength bands of 1.7-5.5 μm, 5.8-14.1 μm, and 12.4-26.5 μm, respectively. Each camera system had three filters available. NIR and MIR-S covered the same field of view (FoV), while MIR-L had a different one, which did not overlap with the NIR/MIR-S FoV. A brief description of the instrument and data products is given in
 		&lt;a
@@ -3172,6 +3182,12 @@
 	<text key="LAMOST_radial_velocity">
 		Radial Velocity &lt;i&gt;(km/s)&lt;/i&gt;
 	</text>
+	<text key="LAMOST_radial_velocity_b">
+		Radial Velocity B band &lt;i&gt;(km/s)&lt;/i&gt;
+	</text>
+	<text key="LAMOST_radial_velocity_r">
+		Radial Velocity R band  &lt;i&gt;(km/s)&lt;/i&gt;
+	</text>
 	<text key="LAMOST_mag">
 		magnitude
 	</text>
@@ -3208,7 +3224,7 @@
 	<text key="AKARI_IRC_orderBy_flux_s9w">
 		Flux S9W
 	</text>
-	
+
 	<text key="publicationPanel_helpText">
 		Shown are the sources in the field-of-view that have associated publications according to SIMBAD. Clicking on each icon will open a table listing the publications for that object, including basic information (title, authors, publication date) and a link to the paper in ADS. There is also the possibility to load the full list of objects studied in a given publication for further exploration with ESASky. &lt;br&gt; &lt;br&gt; By default, ESASky is showing at most 3 000 sources with related publications at the same time, but this number can be changed in the settings.
 
@@ -3428,7 +3444,7 @@
 	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
 		Download archive data
 	</text>
-	
+
 	<text
 		key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
 		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
@@ -3484,12 +3500,12 @@
 	<text key="addSkyMenuItem_URL">HiPS from URL</text>
 	<text key="addSkyMenuItem_LOCAL">HiPS from your computer</text>
 	<text key="addSkyMenuItem_BROWSE">Browse HiPS registry</text>
-	
+
 	<text key="addUrl_Header"> Adding HiPS from URL </text>
 	<text key="addUrl_Description"> Add a HiPS into ESASky from an external URL.
 	Enter the URL of the HiPS you wish to visualise and ESASky will try to parse the URL for properties and display it on the sky
 	</text>
-	
+
 	<text key="addSky_errorParsingProperties">
 		Error parsing properties due to:
 		&lt;br&gt;
@@ -3498,7 +3514,7 @@
 		The problem might by that the HiPS service provider doesn't allow Cross origin requests (CORS)
 		or doesn't have a secure https protocol which unfortunately makes it impossible to load the HiPS into ESASky
 	</text>
-	
+
 	<text key="browseHips_headerLabel">Global HiPS Registry List </text>
 	<text key="browseHips_errorLoadingGlobal">
 		ESASky could not load the global hips list from: $URL$ </text>
@@ -3515,7 +3531,7 @@
 	<text key="hips_em_max">Max Wavelength &lt;i&gt;(m)&lt;/i&gt;</text>
 	<text key="tabulator_addHipsColumn">Add</text>
 	<text key="tabulator_addHips_tooltip">Adds this HiPS as a new row to the Sky panel</text>
-	
+
 	<text key="resultsPresenter_helpDescription_spectra_CHEOPS">
 		CHEOPS is an ESA mission developed in partnership with Switzerland, with a dedicated consortium led by the University of Bern, and with important contributions from Austria, Belgium, France, Germany, Hungary, Italy, Portugal, Spain, Sweden and the UK. The satellite has a single payload comprising an ultra-high precision photometer covering the 330 - 1100 nm wavelength range in a single photometric band. Observations are made as part of the Guaranteed Time Observing Programme that is formulated by the CHEOPS Science Team and the Guest Observers Programme through which the Community at large can apply for CHEOPS time. 
 		&lt;br&gt;&lt;br&gt;
@@ -3567,7 +3583,7 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	
+
 	<text key="Gamma-ray">
 		Gamma-ray
 	</text>
@@ -3580,7 +3596,7 @@
 	<text key="treeMap_noData_ASTRO_SPECTRA">
 		No Spectral or Light-Curve Data Found
 	</text>
-		<text key="treeMap_ASTRO_SPECTRA">
+	<text key="treeMap_ASTRO_SPECTRA">
 		Spectra and Light-Curves
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
@@ -3658,9 +3674,6 @@
 	</text>
 	<text key="imageListEntity_imageNotFound">
 		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
-	</text>
-	<text key="header_highResolutionImages">
-		Outreach images
 	</text>
 	<text key="header_highResolutionImagesTooltip">
 		Visualise outreach images from the Hubble Space Telescope
@@ -3817,11 +3830,6 @@
 	<text key="FHL_nuFnu5">
 		SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;
 	</text>
-
-
-	<!-- internationalization_zh.xml is up to date for everything above -->
-	<!-- internationalization_es.xml is up to date for everything above -->
-	
 	<text key="searchToolbox_title">
 		Search Tools
 	</text>
@@ -3893,74 +3901,309 @@
 		More information
 		&lt;/a&gt; 
 	</text>
-	
+
 	<text key="header_session_save">
 		Save ESASky Session
 	</text>
 	<text key="header_session_restore">
 		Restore ESASky Session
 	</text>
-	
+
 	<text key="header_eva">
 		ESA Virtual Assistant
 	</text>
-	
+
 	<text key="header_sessionSaveEntryTooltip">
 		Save all current settings, open data panels etc to a json file
 	</text>
-	
+
 	<text key="header_sessionRestoreEntryTooltip">
 		Restore all settings from a json file
 	</text>
-	
+
 	<text key="Neutrino">
 		Neutrino
 	</text>
-	
+	<text key="instrumentDetailsPopup_close">
+		Close
+	</text>
+	<text key="searchToolbox_radius">
+		Radius (deg)
+	</text>
+
+	<text key="header_acknowledge">
+		Acknowledge ESASky
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-NEAR-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-MID-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST-NEAR-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST-MID-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
+		The observations include public high-level Processing
+		Pipeline System (PPS) products present in the XMM-Newton Science
+		Archive
+		(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home"
+		target="_blank"&gt;XSA&lt;/a&gt;).
+		Detailed information on XMM-Newton products can be found in the
+		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products"
+		target="_blank"&gt;
+		XMM-Newton Science Archive Data Products
+		Guide&lt;/a&gt;.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
 	<text key="observing_mode">
 		Observing Mode
 	</text>
 	<text key="detector">
 		Detector
 	</text>
-
-	<!-- internationalization_zh.xml is up to date for everything above -->
-
-	<text key="searchToolbox_radius">
-		Radius (deg)
-	</text>
-
-	<!-- internationalization_es.xml is up to date for everything above -->
-
 	<text key="calibration_level">
 		Calibration Level
-	</text>
-
-	<text key="header_acknowledge">
-		Acknowledge ESASky
 	</text>
 
 	<text key="webConstants_exploreJwstImages">
 		Explore outreach images from the James Webb Space Telescope
 	</text>
 	<text key="outreachJwstPanel_header">
-		ESA/JWST Outreach Images
+		ESA/Webb Outreach Images
 	</text>
 	<text key="outreachJwstPanel_helpText">
 		Visualise outreach astronomical images from the &lt;a
-		href="https://esahubble.org/images/"
+		href="https://esawebb.org/images/"
 		target="_blank"&gt;
-		ESA/Hubble website.
+		ESA/Webb website.
 		&lt;/a&gt;
 		&lt;br&gt;&lt;br&gt;
-		This panel displays a list with the ESA/Hubble outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by green rectangles, you can hide them by clicking in Hide Footprints.
+		This panel displays a list with the ESA/Webb outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by orange rectangles, you can hide them by clicking in Hide Footprints.
 		&lt;br&gt;&lt;br&gt;
-		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Hubble website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
+		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Webb website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
 		&lt;br&gt;&lt;br&gt;
 		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
 	</text>
 	<text key="outreachJwstPanel_helpTitle">
-		ESA/James Webb Space Telescope  Outreach Images
+		ESA/Webb Outreach Images
+	</text>
+	<text key="header_jwstOutreachImages">
+		Webb outreach images
+	</text>
+	<text key="header_jwstImagesTooltip">
+		Visualise outreach images from the James Webb Space Telescope
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21.
+		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with
+		the &lt;a
+		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
+		target="_blank"
+		&gt;known issue&lt;/a&gt; present in EDR3 corrected in Gaia DR3),
+		and G&lt;sub&gt;BP&lt;/sub&gt;
+		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.54 billion and 1.55 billion sources, respectively are also provided.
+		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+	<text key="header_highResolutionImages">
+		Hubble outreach images
+	</text>
+	<text key="eROSITA_flux_b1">
+		Flux&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b2">
+		Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b3">
+		Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b4">
+		Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+
+	<text key="eROSITA_flux_b1_err">
+		Flux error&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b2_err">
+		Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b3_err">
+		Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_flux_b4_err">
+		Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_radec_err">
+		Error Radius &lt;br&gt;(arcsec)
+	</text>
+	<text key="eROSITA_ml_cts">
+		Counts&lt;br&gt;(ct)
+	</text>
+	<text key="eROSITA_ml_cts_err">
+		Counts Error &lt;br&gt;(ct)
+	</text>
+	<text key="eROSITA_ml_rate">
+		Count Rate &lt;br&gt;(ct)
+	</text>
+	<text key="eROSITA_ml_rate_err">
+		Count Rate Error &lt;br&gt;&lt;i&gt;(ct s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_ml_flux">
+		Flux &lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_ml_flux_err">
+		Flux Error &lt;br&gt;&lt;i&gt;(erg
+		cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<text key="eROSITA_det_like">
+		Detect Likelihood
+	</text>
+	<text key="eROSITA_ml_bkg">
+		Bkg Counts &lt;br&gt;&lt;i&gt;(ct
+		arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
+	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) is
+		a wide-field X-ray telescope on-board the Russian-German
+		"Spectrum-Roentgen-Gamma" (SRG) observatory, and it was developed under
+		the leadership of the Max-Planck Institute for extraterrestrial Physics (MPE)
+		in Germany (DE). eROSITA is a sensitive X-ray telescope capable of delivering
+		deep, sharp images over very large areas of the sky in the energy range ~0.2-8 keV.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#eROSITA"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+		X-ray sources detected in the 0.2-2.3 keV band using eSASS adopting a detection likelihood threshold of 5.
+		The sources with detection likelihood larger than 6 are selected as the main eFEDS catalog (27910 sources).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDSmain"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+		Hard X-ray selected eFEDS catalogue. Based on sources detection in three bands
+		(1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5 keV) using eSASS adopting a detection likelihood
+		threshold of 5, we select the sources with a 2.3-5 keV band detection likelihood greater
+		than 10 and a zero extent likelihood as the hard eFEDS catalog (246 sources).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDShard"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+		Catalog of X-ray sources in the eta Chamaeleontis field scan observation (OBSID 300004)
+		main catalogue, see Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChamain"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+		Catalog of X-ray sources in the eta Chamaeleontis
+		field scan observation (OBSID 300004) hard catalogue, see Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChahard"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
+	<text key="outreachJwstPanel_closePanel">
+		Close panel
+	</text>
+	<text key="webConstants_changeSky">
+		Change the sky
+	</text>
+	<text key="webConstants_exploreTargetList">
+		Explore Target Lists
 	</text>
 
 	<text key="short_name">

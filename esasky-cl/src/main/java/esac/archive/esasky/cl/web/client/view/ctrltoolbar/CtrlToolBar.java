@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -22,7 +23,10 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.callback.Promise;
-import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
+import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
+import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
+import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
@@ -137,7 +141,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         selectSkyPanel.definePositionFromTopAndLeft();
         selectSkyPanel.hide();
-        ctrlToolBarPanel.add(createSkiesMenuBtn());
+        EsaSkyButton skiesBtn = createSkiesMenuBtn();
+        ctrlToolBarPanel.add(skiesBtn);
         MainLayoutPanel.addElementToMainArea(selectSkyPanel);
 
         ctrlToolBarPanel.add(createObservationBtn());
@@ -219,11 +224,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             hideWidget(outreachJwstButton);
         }
 
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS)) {
+            rotateButtonLabelVisibility(Arrays.asList(skiesBtn, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+        }
+
         initWidget(ctrlToolBarPanel);
 
         updateModuleVisibility();
     }
-
 
     @Override
     protected void onLoad() {
@@ -231,7 +239,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private EsaSkyButton createSkiesMenuBtn() {
-        selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_changeSky") : null;
+
+        selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon(), label);
         addCommonButtonStyle(selectSkyButton, TextMgr.getInstance().getText("webConstants_manageSkies"));
 
         selectSkyButton.addClickHandler(event -> {
@@ -240,6 +251,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         selectSkyPanel.addCloseHandler(event -> selectSkyButton.setToggleStatus(false));
+
+
+        if (isKiosk) {
+            selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            selectSkyPanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(selectSkyButton);
+        }
+
         return selectSkyButton;
     }
 
@@ -345,6 +364,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         button.setBigStyle();
         button.addStyleName("ctrlToolBarBtn");
         button.setTitle(tooltip);
+    }
+
+    private void addKioskButtonStyle(EsaSkyButton button) {
+        button.setVeryBigStyle();
     }
 
     public EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description) {
@@ -529,23 +552,31 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 
     public EsaSkyButton createExploreButton() {
-        final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreRandomTarget") : null;
+
+        final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon(), label);
         button.getElement().setId("exploreButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreRandomTarget"));
-        button.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                if (!exploreActionInProgress) {
-                    showRandomSource();
-                    sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
-                }
+        button.addClickHandler(event -> {
+            if (!exploreActionInProgress) {
+                showRandomSource();
+                sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
             }
         });
+
+        if (isKiosk) {
+            addKioskButtonStyle(button);
+        }
 
         return button;
     }
 
     public EsaSkyToggleButton createTargetListButton() {
-        final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreTargetList") : null;
+
+        final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon(), label);
         button.getElement().setId("targetListButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_uploadTargetList"));
         button.addClickHandler(event -> {
@@ -553,11 +584,18 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
         });
 
+        if (isKiosk) {
+            addKioskButtonStyle(button);
+        }
+
         return button;
     }
 
     public EsaSkyToggleButton createHstOutreachButton() {
-        outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreHstImages") : null;
+
+        outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon(),  label);
         outreachImageButton.getElement().setId("imageButton");
         addCommonButtonStyle(outreachImageButton, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
         outreachImageButton.addClickHandler(event -> {
@@ -566,22 +604,27 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
                 }
         );
-        outreachImagePanel = new OutreachImagePanel(() -> {
-            if (!outreachImagePanel.isShowing()) {
-                outreachImageButton.click();
-            }
-        });
+        outreachImagePanel = new OutreachImagePanel();
         outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachImagePanel.definePositionFromTopAndLeft();
         outreachImagePanel.hide();
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
+
+        if (isKiosk) {
+            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            outreachImagePanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(outreachImageButton);
+        }
 
         return outreachImageButton;
 
     }
 
     public EsaSkyToggleButton createJwstOutreachButton() {
-        outreachJwstButton = new EsaSkyToggleButton(Icons.getJwstIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreJwstImages") : null;
+
+        outreachJwstButton = new EsaSkyToggleButton(Icons.getJwstIcon(), label);
         outreachJwstButton.getElement().setId("jwstButton");
         addCommonButtonStyle(outreachJwstButton, TextMgr.getInstance().getText("webConstants_exploreJwstImages"));
         outreachJwstButton.addClickHandler(event -> {
@@ -590,15 +633,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
                 }
         );
-        outreachJwstPanel = new OutreachJwstPanel(() -> {
-            if (!outreachJwstPanel.isShowing()) {
-                outreachJwstButton.click();
-            }
-        });
+        outreachJwstPanel = new OutreachJwstPanel();
         outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachJwstPanel.definePositionFromTopAndLeft();
         outreachJwstPanel.hide();
         outreachJwstPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
+
+        if (isKiosk) {
+            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            outreachJwstPanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(outreachJwstButton);
+        }
 
         return outreachJwstButton;
 
@@ -973,5 +1018,29 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             }
         }
 
+    }
+
+    private void rotateButtonLabelVisibility(List<EsaSkyButton> btnList) {
+        if (!btnList.isEmpty()) {
+            btnList.get(0).showLabel();
+        }
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                for (int i = 0; i < btnList.size(); i++) {
+                    EsaSkyButton currentBtn = btnList.get(i);
+                    int nextIndex = i + 1 < btnList.size() ? i + 1 : 0;
+                    if (currentBtn.isLabelVisible()) {
+                        currentBtn.hideLabel();
+                        btnList.get(nextIndex).showLabel();
+                        break;
+                    }
+
+                }
+            }
+
+        };
+
+        timer.scheduleRepeating(5000);
     }
 }

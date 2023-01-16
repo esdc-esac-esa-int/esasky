@@ -5,6 +5,7 @@
 .esasky__spinner {
 	width: 32px;
 	height: 30px;
+	pointer-events: none;
 }
 
 .esasky__spinner div {

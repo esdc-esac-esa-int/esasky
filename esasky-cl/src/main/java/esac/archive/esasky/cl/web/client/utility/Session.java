@@ -14,7 +14,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FileUpload;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -37,6 +36,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.descriptor.*;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel.TabIndex;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;

@@ -2,7 +2,8 @@ package esac.archive.esasky.ifcs.model.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
+
 
 /**
  * @author fgiordano Copyright (c) 2015- European Space Agency
@@ -54,6 +55,8 @@ public class HiPS {
 
     boolean isLocal;
     JavaScriptObject files;
+    
+    boolean isReversedColorMap = false;
     
     public String getMission() {
         return mission;
@@ -213,6 +216,14 @@ public class HiPS {
 
 	public void setHipsWavelength(HipsWavelength hipsWavelength) {
 		this.hipsWavelength = hipsWavelength;
+	}
+
+	public boolean isReversedColorMap() {
+		return isReversedColorMap;
+	}
+
+	public void setReversedColorMap(boolean isReversedColorMap) {
+		this.isReversedColorMap = isReversedColorMap;
 	}
 	
 }

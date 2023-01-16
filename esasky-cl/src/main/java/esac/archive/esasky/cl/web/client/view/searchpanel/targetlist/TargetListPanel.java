@@ -3,8 +3,6 @@ package esac.archive.esasky.cl.web.client.view.searchpanel.targetlist;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -20,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.MultiTargetClickEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
@@ -130,6 +129,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         targetsContainer.add(simbadLogo);
         
         targetListScrollPanel = new ScrollPanel();
+        addElementNotAbleToInitiateMoveOperation(targetListScrollPanel.getElement());
         targetsContainer.add(targetListScrollPanel);
         scrollPanelAnimation = new ScrollPanelAnimation(targetListScrollPanel);
 
@@ -149,14 +149,16 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 
         uploadContainer.add(createPreparedListDropDown());
 
-        Label orUploadLabel = new Label();
-        orUploadLabel.setText(TextMgr.getInstance().getText("uploadTargetList_orUpload"));
-        orUploadLabel.setStyleName("orUploadLabel");
-        uploadContainer.add(orUploadLabel);
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST_UPLOAD)) {
+            Label orUploadLabel = new Label();
+            orUploadLabel.setText(TextMgr.getInstance().getText("uploadTargetList_orUpload"));
+            orUploadLabel.setStyleName("orUploadLabel");
+            uploadContainer.add(orUploadLabel);
 
-        initUploader();
-        uploadContainer.add(uploader);
+            initUploader();
+            uploadContainer.add(uploader);
 
+        }
         container.add(uploadContainer);
         container.add(targetsContainer);
 
@@ -165,13 +167,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         getElement().setId("uploadTargetListPanel");
         add(container);
 
-        MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(ResizeEvent event) {
-                updateMaxSize();
-            }
-        });
+        MainLayoutPanel.addMainAreaResizeHandler((ResizeHandler) event -> updateMaxSize());
     }
 
     private void updateMaxSize() {
@@ -191,7 +187,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 
         uploader = new EsaSkyUploader();
         uploader.getElement().setId("uploader");
-
+        addElementNotAbleToInitiateMoveOperation(uploader.getElement());
         uploader.setUploadURL(EsaSkyWebConstants.FILE_RESOLVER_URL);
 
         uploader.setFileSizeLimit("50 MB");
@@ -200,19 +196,15 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
                                     + TextMgr.getInstance().getText("uploadTargetList_uploadTargetList") 
                              + "</span>");
 
-        uploader.setUploadProgressHandler(new UploadProgressHandler() {
-
-            @Override
-            public boolean onUploadProgress(final UploadProgressEvent uploadProgressEvent) {
-                String progress = "...";
-                if (uploadProgressEvent.getBytesTotal() > 0) {
-                    progress = NumberFormat.getPercentFormat().format(
-                            uploadProgressEvent.getBytesComplete()
-                                    / ((double) uploadProgressEvent.getBytesTotal()));
-                }
-                Log.info("Into onUploadProgress(" + progress + ")...");
-                return true;
+        uploader.setUploadProgressHandler((UploadProgressHandler) uploadProgressEvent -> {
+            String progress = "...";
+            if (uploadProgressEvent.getBytesTotal() > 0) {
+                progress = NumberFormat.getPercentFormat().format(
+                        uploadProgressEvent.getBytesComplete()
+                                / ((double) uploadProgressEvent.getBytesTotal()));
             }
+            Log.info("Into onUploadProgress(" + progress + ")...");
+            return true;
         });
 
         uploader.setFileQueueErrorHandler(new FileQueueErrorHandler() {
@@ -329,11 +321,11 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
     }
 
     private DropDownMenu<String> createPreparedListDropDown() {
-
         preparedListDropDown = new DropDownMenu<String>(
                 TextMgr.getInstance().getText("uploadTargetList_selectList"), 
                 TextMgr.getInstance().getText("uploadTargetList_selectList"), 207, "preparedListDropDown");
-
+        addElementNotAbleToInitiateMoveOperation(preparedListDropDown.getElement());
+        
         preparedListDropDown.registerObserver(new MenuObserver() {
 
             @Override
@@ -411,13 +403,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
         for (ESASkySearchResult currTarget : inputData) {
             final int index = inputData.indexOf(currTarget);
             TargetWidget currTargetWidget = new TargetWidget(currTarget, WIDTH);
-            currTargetWidget.registerObserver(new TargetObserver() {
-
-                @Override
-                public void onTargetSelectionEvent(TargetWidget newlySelectedTarget) {
-                    setSelectedTarget(index);
-                }
-            });
+            currTargetWidget.registerObserver((TargetObserver) newlySelectedTarget -> setSelectedTarget(index));
             targetListTable.setWidget(index, 0, currTargetWidget);
             if (currTarget.getValidInput()) {
                 addPolygons(currTarget, index);
@@ -442,7 +428,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
 
     private void addPolygons(ESASkySearchResult currEntity, Integer id) {
 
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
 
         details.put(MultiTargetSourceConstants.SIMBAD_MAIN_ID, currEntity.getSimbadMainId());
         details.put(

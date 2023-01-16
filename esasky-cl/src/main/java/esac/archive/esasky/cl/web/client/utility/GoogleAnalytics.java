@@ -37,6 +37,7 @@ public final class GoogleAnalytics {
     public static final String CAT_API = "API";
     public static final String CAT_PUBLICATION = "Publication";
     public static final String CAT_WELCOME = "Welcome";
+    public static final String CAT_INITIALISATION = "Initialisation";
     public static final String CAT_PREVIEW = "Preview";
     public static final String CAT_DATALINK = "Datalink";
     public static final String CAT_DOWNLOADROW = "DownloadRow";
@@ -57,6 +58,7 @@ public final class GoogleAnalytics {
     public static final String CAT_BROWSEHIPS = "BrowseHips";
     public static final String CAT_IMAGES = "Images";
     public static final String CAT_OUTREACHIMAGES = "OutreachImages";
+    public static final String CAT_JWSTOUTREACHIMAGES = "jwstOutreachImages";
     public static final String CAT_SELECTSKY = "SelectSky";
     public static final String CAT_EVA = "Eva";
     public static final String CAT_GLOBALTAPPANEL = "ExternalTapPanel";
@@ -65,6 +67,9 @@ public final class GoogleAnalytics {
     public static final String CAT_GLOBALTAP_SELECTCOLUMNPANEL = "ExternalTapSelectColumnPanel";
     
     //Actions
+    public static final String ACT_INITIALISATION_TIME = "InitialisationTime";
+    public static final String ACT_DESC_INITIALISATION_TIME = "InitialisationEndOfDescTime";
+    
     public static final String ACT_MISSINGTRANSLATION = "MissingTranslation";
     public static final String ACT_LOADINGOFXMLFAILED = "LoadingOfXMLFailed";
     public static final String ACT_HEADER_VIEWINWWT = "ViewInWWT";
@@ -108,6 +113,7 @@ public final class GoogleAnalytics {
     public static final String ACT_CTRLTOOLBAR_PUBLICATIONS = "Publications";
     public static final String ACT_CTRLTOOLBAR_GW = "GravitationalWave";
     public static final String ACT_CTRLTOOLBAR_OUTREACH_IMAGE = "OutreachImage";
+    public static final String ACT_CTRLTOOLBAR_JWST_IMAGE = "jwstOutreachImage";
     public static final String ACT_CTRLTOOLBAR_SESSION_SAVE = "SaveSession";
     public static final String ACT_CTRLTOOLBAR_SESSION_RESTORE = "RestoreSession";
     public static final String ACT_CTRLTOOLBAR_DICE = "Dice";
@@ -242,6 +248,10 @@ public final class GoogleAnalytics {
     
     public static final String ACT_IMAGES_HSTIMAGE_SUCCESS = "hstImageSuccess";
     public static final String ACT_IMAGES_HSTIMAGE_FAIL = "hstImageFail";
+    public static final String ACT_IMAGES_JWSTIMAGE_SUCCESS = "jwstImageSuccess";
+    public static final String ACT_IMAGES_JWSTIMAGE_FAIL = "jwstImageFail";
+
+    public static final String ACT_SKIES_PANEL_EVA_TOGGLE= "toggleEva";
 
     
     //Send events methods

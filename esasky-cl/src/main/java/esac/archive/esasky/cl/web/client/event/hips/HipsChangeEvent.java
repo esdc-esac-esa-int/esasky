@@ -2,9 +2,9 @@ package esac.archive.esasky.cl.web.client.event.hips;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 // import esac.archive.esasky.ifcs.model.client.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 
 /**
  * Event to record closing results event tab sent by Tab components.

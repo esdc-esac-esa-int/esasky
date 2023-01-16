@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE internationalization [
-<!ELEMENT text (#PCDATA)>
-<!ATTLIST text key ID #REQUIRED>
+	<!ELEMENT text (#PCDATA)>
+	<!ATTLIST text key ID #REQUIRED>
 ]>
 <Internationalization langCode="es">
-	
+
 	<text key="headerPresenter_languageNameAbbreviation">
 		Es
 	</text>
@@ -150,7 +150,7 @@
 	<text key="treeMap_nameOfSelectedLabel">
 		OSS: $SSONAME$ ($SSOTYPE$)
 	</text>
-	
+
 	<text key="treeMap_notInRange_ASTRO_IMAGING">
 		Ninguna im&#225;gen encontrada en este rango de longitudes de onda.
 	</text>
@@ -185,7 +185,7 @@
 	<text key="hiPSDetailsPopup_close">
 		Cerrar
 	</text>
-	
+
 	<text key="instrumentDetailsPopup_close">
 		Cerrar
 	</text>
@@ -491,7 +491,13 @@
 	<text key="SoftX-ray">
 		Rayos X Blandos
 	</text>
+	<text key="Soft&#032;X-ray">
+		Rayos X Blandos
+	</text>
 	<text key="HardX-ray">
+		Rayos X Duros
+	</text>
+	<text key="Hard&#032;X-ray">
 		Rayos X Duros
 	</text>
 	<text key="UV">
@@ -503,20 +509,32 @@
 	<text key="Optical">
 		&#211;ptico
 	</text>
+	<text key="Near-IR">
+		IR cercano
+	</text>
 	<text key="NearIR">
 		IR cercano
 	</text>
 	<text key="MidToFarIR">
 		IR medio a lejano
 	</text>
+	<text key="Far-IR">
+		IR lejano
+	</text>
 	<text key="FarIR">
 		IR lejano
+	</text>
+	<text key="Near-Infrared">
+		Infrarrojo cercano
 	</text>
 	<text key="NearInfrared">
 		Infrarrojo cercano
 	</text>
 	<text key="MidToFarInfrared">
 		Infrarrojo medio a lejano
+	</text>
+	<text key="Far-Infrared">
+		Infrarrojo lejano
 	</text>
 	<text key="FarInfrared">
 		Infrarrojo lejano
@@ -548,7 +566,7 @@
 	<text key="Date">
 		Fecha
 	</text>
-	
+
 	<text key="header_learnMore">
 		&#161;Aprenda m&#225;s sobre ESASky!
 	</text>
@@ -749,7 +767,7 @@
 		de los
 		distintos instrumentos del JWST,
 		&lt;a
-		href="//jwst.stsci.edu/instrumentation" target="_blank"&gt;
+		href="//stsci.edu/jwst/instrumentation" target="_blank"&gt;
 		haga clic
 		aqu&#237;.&lt;/a&gt;
 		&lt;br&gt;&lt;br&gt;
@@ -790,8 +808,7 @@
 		Para comunicarse con DS9, es necesario lanzar
 		tambi&#233;n una
 	</text>
-	<text
-		key="resultsPresenter_helpDescription_observations_INTEGRAL">
+	<text key="resultsPresenter_helpDescription_observations_INTEGRAL">
 		Las observaciones de INTEGRAL/IBIS consisten
 		en un gran n&#250;mero
 		de exposiciones (&quot;science windows&quot;)
@@ -814,8 +831,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_observations_XMM-EPIC">
+	<text key="resultsPresenter_helpDescription_observations_XMM-EPIC">
 		Las observaciones de XMM-Newton son productos de alto nivel del
 		Processing Pipeline System (PPS) presentes en el archivo
 		cient&#237;fico de la misi&#243;n
@@ -880,8 +896,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
+	<text key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
 		Los datos del
 		&lt;a
 		href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
@@ -908,8 +923,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
+	<text key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
 		Los datos del
 		&lt;a
 		href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
@@ -936,7 +950,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-		
+
 	<text key="resultsPresenter_helpDescription_observations_HST-OPTICAL">
 		Los datos observacionales del Telescopio Espacial Hubble
 		(HST)
@@ -971,7 +985,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-		
+
 	<text key="resultsPresenter_helpDescription_observations_HST-UV">
 		Los datos observacionales del Telescopio Espacial Hubble
 		(HST)
@@ -1006,7 +1020,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-		
+
 	<text key="resultsPresenter_helpDescription_observations_HST-IR">
 		Los datos observacionales del Telescopio Espacial Hubble
 		(HST)
@@ -1041,7 +1055,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-		
+
 		<text key="resultsPresenter_helpDescription_observations_JWST_Near-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
@@ -1055,7 +1069,7 @@
 		target="_blank"&gt;
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
-		
+
 		<text key="resultsPresenter_helpDescription_observations_JWST_Mid-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
@@ -1097,9 +1111,8 @@
 		target="_blank"&gt;
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
-		
-	<text
-		key="resultsPresenter_helpDescription_observations_Herschel">
+
+	<text key="resultsPresenter_helpDescription_observations_Herschel">
 		Los datos de Herschel disponibles incluyen
 		todas las observaciones
 		p&#250;blicas de los instrumentos HIFI, PACS y
@@ -1148,8 +1161,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 
-	<text
-		key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
+	<text key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
 		El cat&#225;logo IBIS/ISGRI de fuentes de rayos gamma blandos
 		es un
 		cat&#225;logo de todo el cielo basado en observaciones de
@@ -1185,8 +1197,7 @@
 		target="_blank"&gt;
 		Más información
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
+	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
 		El cat&#225;logo CSC (Chandra Source Catalog) contiene posiciones
 		y
 		flujos
@@ -1204,11 +1215,10 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
-		El cat&#225;logo 4XMM-DR11 contiene fuentes detectadas
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
+		El cat&#225;logo 4XMM-DR12 contiene fuentes detectadas
 		a partir de
-		12 210 observaciones con las c&#225;maras EPIC de
+		12 712 observaciones con las c&#225;maras EPIC de
 		XMM-Newton,
 		las cuales
 		cubren el intervalo de energ&#237;a entre 0.2 y 12 keV.
@@ -1221,15 +1231,14 @@
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#3XMM"
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#4XMM"
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-		El cat&#xE1;logo 4XMM-DR11s se ha compilado a partir de 1 475 grupos, que comprenden 8 292 observaciones superpuestas de buena calidad de XMM-Newton. 
-		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 3 de febrero de 2000 y el 17 de diciembre de 2020 que se superponen en al menos un radio de un 
-		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 358 809 fuentes &#xFA;nicas, 275 440 de ellas observadas en m&#xFA;ltiples ocasiones,  
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
+		El cat&#xE1;logo 4XMM-DR12s se ha compilado a partir de 1 620 grupos, que comprenden 9 355 observaciones superpuestas de buena calidad de XMM-Newton.
+		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 1 de febrero de 2000 y el 4 de diciembre de 2021 que se superponen en al menos un radio de un
+		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 386 043 fuentes &#xFA;nicas, 298 626 de ellas observadas en m&#xFA;ltiples ocasiones,
 		con posiciones y par&#xE1;metros de las fuentes como flujos en las bandas de energ&#xED;a est&#xE1;ndar de XMM-Newton, estimaci&#xF3;n de calidad e informaci&#xF3;n sobre la variabilidad entre observaciones.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1237,8 +1246,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-OM">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-OM">
 		SUSS5.0 es un cat&#225;logo de fuentes casualmente detectadas
 		por
 		el Optical Monitor (OM) a bordo del observatorio XMM-Newton.
@@ -1257,8 +1265,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
 		​XMMSL1 es el primer cat&#225;logo de fuentes de rayos X
 		detectadas en los datos de &quot;slew&quot; de XMM-Newton,
 		compilado
@@ -1273,8 +1280,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Tycho-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Tycho-2">
 		​El cat&#225;logo Tycho-2 es un cat&#225;logo astrom&#233;trico
 		que contiene posiciones, movimientos propios y fotometr&#237;a en dos
 		colores (B y V)
@@ -1324,8 +1330,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_AllWise">
+	<text key="resultsPresenter_helpDescription_catalogues_AllWise">
 		El cat&#225;logo AllWISE proporciona astrometr&#237;a y
 		fotometr&#237;a en cuatro bandas del infrarrojo medio (3.4, 4.6, 12
 		and 22 micras)
@@ -1356,8 +1361,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
 		El cat&#225;logo Hipparcos-2 es una nueva reducci&#243;n
 		de los
 		datos de la misi&#243;n Hipparcos,
@@ -1410,8 +1414,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
 		El cat&#225;logo Herschel-PACS de fuentes puntuales (HPPSC)
 		contiene en torno al medio mill&#243;n de entradas,
 		corresponidentes a
@@ -1435,8 +1438,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
 		El cat&#225;logo Herschel-PACS de fuentes puntuales (HPPSC)
 		contiene en torno al medio mill&#243;n de entradas,
 		corresponidentes a
@@ -1460,8 +1462,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
 		El cat&#225;logo Herschel-PACS de fuentes puntuales (HPPSC)
 		contiene en torno al medio mill&#243;n de entradas,
 		corresponidentes a
@@ -1485,8 +1486,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
 		El cat&#225;logo SPIRE de fuentes puntuales (SPSC)
 		contiene
 		m&#225;s de 1.6 millones de entradas,
@@ -1508,8 +1508,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
 		El cat&#225;logo SPIRE de fuentes puntuales (SPSC)
 		contiene
 		m&#225;s de 1.6 millones de entradas,
@@ -1531,8 +1530,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
 		El cat&#225;logo SPIRE de fuentes puntuales (SPSC)
 		contiene
 		m&#225;s de 1.6 millones de entradas,
@@ -1554,8 +1552,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
 		PGCC2 contiene 13,188 fuentes gal&#225;cticas y 54
 		fuentes
 		localizadas en las Nubes de Magallanes, todas
@@ -1577,8 +1574,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
 		PCCS2 es un conjunto de cat&#225;logos monofrecuencia
 		extra&#237;dos de los mapas finales de intensidad y polarizaci&#243;n
 		de la misi&#243;n Planck.
@@ -1615,8 +1611,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
 		PCCS2 es un conjunto de cat&#225;logos monofrecuencia
 		extra&#237;dos de los mapas finales de intensidad y polarizaci&#243;n
 		de la misi&#243;n Planck.
@@ -1653,8 +1648,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
 		PCCS2 es un conjunto de cat&#225;logos monofrecuencia,
 		extra&#237;dos de los mapas finales de intensidad y polarizaci&#243;n
 		de la misi&#243;n Planck.
@@ -1681,8 +1675,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 
-	<text
-		key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
 		El catálogo PSZ de Planck es una lista de detecciones de
 		distorsiones causadas por el efecto Sunyaev-Zel'dovich (SZ) en casi
 		todo el cielo.
@@ -1704,8 +1697,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
+	<text key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
 		Las observaciones de XMM-Newton consisten en
 		productos PPS
 		(Processing Pipeline System) p&#250;blicos
@@ -1830,8 +1822,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
+	<text key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
 		Los datos observacionales del Telescopio Espacial Hubble (HST)
 		proporcionados por ESASky son productos cient&#237;ficos
 		de las dos
@@ -1865,8 +1856,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_HST-IR">
+	<text key="resultsPresenter_helpDescription_spectra_HST-IR">
 		Los datos observacionales del Telescopio Espacial Hubble (HST)
 		proporcionados por ESASky son productos cient&#237;ficos
 		de las dos
@@ -1922,8 +1912,7 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
-	<text
-		key="resultsPresenter_helpDescription_spectra_Herschel">
+	<text key="resultsPresenter_helpDescription_spectra_Herschel">
 		Los datos de Herschel disponibles incluyen
 		todas las observaciones
 		p&#250;blicas de los instrumentos HIFI, PACS y
@@ -2077,13 +2066,18 @@
 		observaciones
 		(N&#250;mero de im&#225;genes)
 	</text>
+	<text key="Mid-IR">
+		IR medio
+	</text>
 	<text key="MidIR">
 		IR medio
+	</text>
+	<text key="Mid-Infrared">
+		Infrarrojo medio
 	</text>
 	<text key="MidInfrared">
 		Infrarrojo medio
 	</text>
-
 	<text key="GalaxyClusters">
 		C&#250;mulos de galaxias
 	</text>
@@ -2401,7 +2395,7 @@
 		&gt;
 		Documentaci&#243;n completa de esta funcionalidad.
 		&lt;/a&gt; </text>
-		
+
 	<text key="treeMapContainer_help_EXT_TAP">
 	Con ESASky es posible inspeccionar datos de servicios de datos externos que cumplan con los est&#225;ndares 
 	del Observatorio Virtual.
@@ -2414,7 +2408,7 @@
 	Al pinchar en una colecci&#243;n se cargar&#225;n los datos en el panel y se mostrar&#225;n las correspondientes
 	 huellas de las observaciones.
 	</text>
-	
+
 	<text key="ResizingDataPanel">
 		Re-escalando el Panel de Datos
 	</text>
@@ -2565,6 +2559,9 @@
 	</text>
 	<text key="colorPalette_GREYSCALE">
 		Escala de grises
+	</text>
+	<text key="colorPalette_GREYSCALE_INV">
+		Escala de grises (Inversa)
 	</text>
 	<text key="colorPalette_CUBEHELIX">
 		Cubehelix
@@ -2760,7 +2757,7 @@
 	<text key="searchPanel_bibcode">
 		C&#243;digo bibcode
 	</text>
-		<text key="searchPanel_inputByBibcode">
+	<text key="searchPanel_inputByBibcode">
 		Por c&#243;digo bibcode
 	</text>
 	<text key="searchPanel_inputByAuthor">
@@ -2800,10 +2797,21 @@
 		Descargar
 	</text>
 
-	<text key="resultsPresenter_helpDescription_catalogues_LAMOST">
-		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalaci&#243;n cient&#237;fica china operada por los Observatorios Astron&#243;micos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras en un campo de visi&#243;n de 20 grados. El estudio LAMOST, iniciado en 2012, proporciona espectros calibrados en longitud de onda y flujo, sustra&#237;dos de cielo, en el rango  3690-9100 &#197;, con una resoluci&#243;n de 1800 a 5500 &#197;, para muchos tipos diferentes de objetos astron&#243;micos.
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
+		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La quinta edici&#243;n del estudio (LAMOST DR5) incluye observaciones hasta julio de 2017. El Cat&#225;logo General contiene 9.026.365 objetos, de los cuales 8.183.160 son estrellas, 152.863 galaxias, 52.453 qu&#225;sares, y 637.889 son de tipo desconocido. Se incluyen 5.808.985 objetos con una ratio se&#241;al-ruido (S/N) mayor que 10 en la banda g, 7.701.235 objetos con ratio se&#241;al-ruido mayor que 10 en la banda i, y 5.734.239 objetos con ratio se&#241;al-ruido mayor que 10 en ambas bandas.
+		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopia a baja resolución (LRS) contiene 10,633,515 espectros, de los cuales 10,336,752 son estrellas, 224,702 son galaxias, 72,061 son QSOs. Hay 9,385,159 objetos que presentan señal a ruido por encima de 10 en la bandas g o i.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_LRS">
+		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
+		&lt;br&gt;&lt;br&gt;
+		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopia a baja resolución (LRS) contiene 10,633,515 espectros, de los cuales 10,336,752 son estrellas, 224,702 son galaxias, 72,061 son QSOs. Hay 9,385,159 objetos que presentan señal a ruido por encima de 10 en la bandas g o i.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2811,10 +2819,22 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_spectra_LAMOST">
-		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalaci&#243;n cient&#237;fica china operada por los Observatorios Astron&#243;micos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras en un campo de visi&#243;n de 20 grados. El estudio LAMOST, iniciado en 2012, proporciona espectros calibrados en longitud de onda y flujo, sustra&#237;dos de cielo, en el rango  3690-9100 &#197;, con una resoluci&#243;n de 1800 a 5500 &#197;, para muchos tipos diferentes de objetos astron&#243;micos.
+
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
+		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La quinta edici&#243;n del estudio (LAMOST DR5) incluye observaciones hasta julio de 2017. El Cat&#225;logo General contiene 9.026.365 objetos, de los cuales 8.183.160 son estrellas, 152.863 galaxias, 52.453 qu&#225;sares, y 637.889 son de tipo desconocido. Se incluyen 5.808.985 objetos con una ratio se&#241;al-ruido (S/N) mayor que 10 en la banda g, 7.701.235 objetos con ratio se&#241;al-ruido mayor que 10 en la banda i, y 5.734.239 objetos con ratio se&#241;al-ruido mayor que 10 en ambas bandas.
+		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene  5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_MRS">
+		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
+		&lt;br&gt;&lt;br&gt;
+		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene  5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2822,7 +2842,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; 
 	</text>
-	
+
 	<text key="resultsPresenter_helpDescription_catalogues_AKARI-IRC-SC">
 		La versi&#243;n 1.0 del cat&#225;logo IRC de fuentes puntuales de la 
 		misi&#243;n AKARI contiene posiciones y flujos de 870,973 fuentes 
@@ -2844,7 +2864,7 @@
 		M&#225;s informacion
 		&lt;/a&gt; 
 	</text>
-	
+
 	<text key="resultsPresenter_helpDescription_observations_AKARI">
 		ESASky ofrece todas las observaciones de objetos espec&#237;ficos realizadas con la c&#225;mara infrarroja IRC de esta misi&#243;n, las cuales se descargan directamente de DARTS. La IRC consist&#237;a en tres sistemas independientes, NIR, MIR-S y MIR-L, que observaban en los rangos 1.7-5.5 &#956;m, 5.8-14.1 &#956;m y 12.4-26.5 &#956;m, respectivamente. Cada sistema dispon&#237;a de tres filtros. NIR y MIR-S cubr&#237;an el mismo campo de visi&#243;n, mientras que el de MIR-L era diferente y no se solapaba con el anterior. Este documento
 		&lt;a
@@ -2881,7 +2901,7 @@
 	<text key="searchPanel_target">
 		Destino
 	</text>
-		<text key="tabulator_centreOnCoordinates">
+	<text key="tabulator_centreOnCoordinates">
 		Centrar en coordenadas
 	</text>
 	<text key="tabulator_centreHeader">
@@ -2893,12 +2913,12 @@
 	<text key="tabulator_sendToVOApplicationHeader">
 		&lt;div class="esasky_column_header"&gt;Enviar&lt;/div&gt;
 	</text>
-	
+
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		Enviar productos/datos a la aplicación del Observatorio Virtual 
 	</text>
 
-	
+
 	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
 		Datos externos proporcionados por 
 		&lt;a
@@ -2970,7 +2990,7 @@
 		
 		Para reducir el número de objetos, usar filtros o ampliar la imagen
 	</text>
-	
+
 	<text key="tabulator_authorHeaderTooltip">
 		Clicar en el nombre de cualquier autor para ver su lista de publicaciones en ADS
 	</text>
@@ -3094,14 +3114,14 @@
 		Tercera Publicación de Datos de Gaia (DR3)
 		&lt;br&gt;&lt;br&gt;
 
-		El cat&#225;logo de Gaia DR3 incluye posiciones, paralajes y movimientos propios 
-		para m&#225;s de 1468 millones de fuentes en el rango de magnitudes 3 - 21 en la banda G. 
-		La solución astrométrica se acompaña de nuevos indicadores de calidad como RUWE. 
-		Además se incluyen magnitudes en la banda G para aproximadamente 1860 millones de fuentes, 
-		y magnitudes G&lt;sub&gt;BP&lt;/sub&gt; y G&lt;sub&gt;RP&lt;/sub&gt; para 1542 y 1555 millones de fuentes, respectivamente. 
-		Las incertidumbres en la determinación de los paralajes se encuentran en el rango 0.02 mas para 
-		magnitudes G&lt;15 y 1.3 mas para G=21. 
-		Las incertidumbres en la determinación de los movimientos propios se encuentran en entre 0.02 mas/yr para 
+		El cat&#225;logo de Gaia DR3 incluye posiciones, paralajes y movimientos propios
+		para m&#225;s de 1468 millones de fuentes en el rango de magnitudes 3 - 21 en la banda G.
+		La solución astrométrica se acompaña de nuevos indicadores de calidad como RUWE.
+		Además se incluyen magnitudes en la banda G para aproximadamente 1860 millones de fuentes,
+		y magnitudes G&lt;sub&gt;BP&lt;/sub&gt; y G&lt;sub&gt;RP&lt;/sub&gt; para 1542 y 1555 millones de fuentes, respectivamente.
+		Las incertidumbres en la determinación de los paralajes se encuentran en el rango 0.02 mas para
+		magnitudes G&lt;15 y 1.3 mas para G=21.
+		Las incertidumbres en la determinación de los movimientos propios se encuentran en entre 0.02 mas/yr para
 		G&lt;15 y 1.4 mas/yr para G=21.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3193,19 +3213,19 @@
 	<text key="addSkyMenuItem_URL">HiPS desde una URL</text>
 	<text key="addSkyMenuItem_LOCAL">HiPS desde su ordenador</text>
 	<text key="addSkyMenuItem_BROWSE">Explorar lista de HiPS</text>
-	
+
 	<text key="addUrl_Header"> Añadir HiPS desde una URL </text>
 	<text key="addUrl_Description"> Añadir HiPS en ESASky desde una URL externa.
     Introduzca la URL del HiPS que desea visualizar y ESASky examinará las propiedades en la URL y lo representará en el cielo
 	</text>
-	
+
 	<text key="addSky_errorParsingProperties">
 		Error en el análisis de las propiedades debido a: &lt;br&gt; $DUE_TO$
 		&lt;br&gt;&lt;br&gt;
 		Puede ser que el proveedor del servicio HiPS no permita Cross origin requests (CORS) o que no tenga un protocolo
         de seguridad https lo que hace imposible cargar el HiPS en ESASky
 	</text>
-	
+
 	<text key="browseHips_headerLabel">Listado de HiPS Global</text>
 	<text key="browseHips_errorLoadingGlobal">
 		ESASky no pudo cargar la listal de HiPS global desde: $URL$ </text>
@@ -3222,7 +3242,7 @@
 	<text key="hips_em_max">Longitud de Onda Max &lt;i&gt;(m)&lt;/i&gt;</text>
 	<text key="tabulator_addHipsColumn">Añadir</text>
 	<text key="tabulator_addHips_tooltip">Añadir HiPS como nueva fila en el panel cielo</text>
-	
+
 	<text key="resultsPresenter_helpDescription_spectra_CHEOPS">
 		CHEOPS es una misión de la ESA desarrollada en colaboración con Suiza, con un consorcio liderado por la Universidad de Berna, y con una importante contribución de Austria, Bélgica, Francia, Alemania, Hungría, Italia, España Suecia y Reino Unido. El satélite consiste en un único instrumento, un fotómetro de ultra-alta precisión que cubre el rango de longitud de onda 330 - 1100 nm en una sola banda. Las observaciones se realizan como parte del Guaranteed Time Observing Programme diseñado por el Equipo Científico de CHEOPS y del Guest Observers Programme a través del cual la comunidad astronómica puede solicitar tiempo de observación.
 		&lt;br&gt;&lt;br&gt;
@@ -3273,7 +3293,7 @@
         Más información
 		&lt;/a&gt; 
 	</text>
-	
+
 	<text key="Gamma-ray">
 		Rayos Gamma
 	</text>
@@ -3286,7 +3306,7 @@
 	<text key="treeMap_noData_ASTRO_SPECTRA">
         No se ha encontrado ningún Espectro o Curva de Luz.
 	</text>
-		<text key="treeMap_ASTRO_SPECTRA">
+	<text key="treeMap_ASTRO_SPECTRA">
         Espectros y Curvas de Luz
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
@@ -3362,14 +3382,11 @@
 	<text key="imageListEntity_imageNotFound">
 		No se puede encontrar la imagen con ID: $ID$ Por favor asegúrese de que el ID introducido es correcto.
 	</text>
-	<text key="header_highResolutionImages">
-		Im. Divulgación
-	</text>
 	<text key="header_highResolutionImagesTooltip">
 		Visualizar imágenes de divulgación de ESA/Hubble	
 	</text>
-	
-	
+
+
 		<text key="resultsPresenter_helpDescription_catalogues_Fermi_4FGL-DR2">
 		El telescopio Fermi Large Area (LAT) escanea el cielo en rayos gamma de altas energías desde 2008 y la colaboración LAT desde entonces ha publicado una serie de catálogos de fuentes en rayos basados en análisis exhaustivos de los datos de LAT. El segundo lanzamiento de datos del cuarto catálogo de fuentes 4FGL-DR2 procede del análisis científico de los datos de los 10 primeros años de esta misión.
 		&lt;br&gt;&lt;br&gt;
@@ -3405,7 +3422,7 @@
 		Más información
 		&lt;/a&gt; 
 	</text>
-	
+
 		<text key="resultsPresenter_helpDescription_catalogues_Icecube">
 		Catálogo de eventos puntuales a todo el cielo de IceCube (IceCube All-Sky Point-Source Events Catalog; 2008 - 2018; Icecubepsc). IceCube ha realizado múltiples búsquedas de fuentes puntuales de neutrinos. Los eventos contenidos en este catálogo forman la muestra de datos integrados a lo largo de 10 años utilizada en la búsqueda de este tipo de eventos. Los eventos en la muestra son candidatos detectados por IceCube entre abril de 2008 y julio de 2018.		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3430,8 +3447,8 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 		Más información
 		&lt;/a&gt; 
 	</text>
-	
-	
+
+
 	<text key="Gamma-rays">
 		rayos gamma
 	</text>
@@ -3442,38 +3459,155 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 		No hay imágenes disponibles en el campo de visión actual.
 		Aleje la imagen o resetee los filtros para mostrar más.
 	</text>
-		<text key="wavelength_GW">
+	<text key="wavelength_GW">
 		Ondas Gravitacionales
 	</text>
 	<text key="wavelength_GW_Tooltip">
 		Mapas de probabilidad de Ondas Gravitacionales
 	</text>
-	
+
 	<text key="header_session_save">
 		Guardar Sesión de ESASky
 	</text>
 	<text key="header_session_restore">
 		Reestablecer Sesión de ESASky
 	</text>
-	
+
 	<text key="header_eva">
 		ESA Asistente Virtual 
 	</text>
-	
+
 	<text key="header_sessionSaveEntryTooltip">
 		Guardar la configuración en un archivo JSON
 	</text>
-	
+
 	<text key="header_sessionRestoreEntryTooltip">
 		Reestablecer la configuración desde un archivo JSON
 	</text>
-	
+
 	<text key="Neutrino">
 		Neutrino
 	</text>
 	<text key="searchToolbox_radius">
 		Radio (deg)
 	</text>
+	<text key="header_acknowledge">
+		Agradecimiento a ESASky
+	</text>
+	<text key="observing_mode">
+		Modo de Observación	</text>
+	<text key="detector">
+		Detector
+		</text>
+	<text key="calibration_level">
+		Nivel de Calibración
+		</text>
+	<text key="webConstants_exploreJwstImages">
+		Explora imágenes  de Divulgación del Telescopio Espacial James Webb
+		</text>
+	<text key="outreachJwstPanel_header">
+		ESA/Webb Imágenes de Divulgación
+		</text>
+	<text key="outreachJwstPanel_helpText">
+		Visualiza imágenes de divulgación astronómica en la web de ESA/Webb &lt;a
+		href="https://esawebb.org/images/"
+		target="_blank"&gt;
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		Este panel muestra una lista con las imágenes de divulgación astronómica de ESA/Webb disponibles en esa región del cielo. En el campo de visión se muestran como rectángulos cuadrados las huellas proyectadas en el cielo de estas imágenes, y puedes ocultarlas haciendo click en Ocultar Huellas.
+
+		&lt;br&gt;&lt;br&gt;
+		Haz click en una huella o en un objeto de la lista y su huella se mostrará superpuesta en esa zona del cielo. Un caja de texto se abre con la descripción de la imagen y el enlace a su localización en la web de ESA/Webb. Puedes jugar con la opacidad de la imagen moviendo la barra de opacidad de la imagen a derecha e izquierda.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANTE:&lt;/b&gt; Estas imágenes se ha creado con el objetivo de divulgar la ciencia del Telescopio James Webb, y no están pensadas para su uso científico.
+		</text>
+	<text key="outreachJwstPanel_helpTitle">
+		Imáges de Divulgación de ESA/Webb
+		</text>
+	<text key="header_jwstOutreachImages">
+		Imagenes de Divulgación del ESA/Webb
+		</text>
+	<text key="header_jwstImagesTooltip">
+		Visualiza imágenes de divulgación del Telescopio Janes Webb
+		</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+		El catálogo de Gaia DR3 proporciona posiciones, paralajes, y movimientos propios de más de 1460 millones de fuentes en el rango de magnitud-G 3 y 21.
+		La solución astrométrica viene acompañada de algunos indicadores de calidad, como RUWE, y otros descriptores. Adicionalmente, las magnitudes G de alrededor de 1806 millones es fuentes con problemas conocidos en EDR3 han sido actualizadas.
+		La incertidumbre en los paralajes se encuentra en los 0.02 mas para magnitud G mayor de 15 y 1.3 mas para G=21. Las incertidumbres en los movimientos propios se encuentra en el rango 0.02 mas/yr para G mayor de 15 y 1.4 mas a G=21.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt; </text>
+	<text key="header_highResolutionImages">
+		Imágenes de Divulgación de Hubble</text>
+	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) es
+		un telescopio de Rayos X de amplio espectro que se encuentra a bordo del
+		observatorio ruso-alemán "Spectrum-Roentgen-Gamma" (SRG), desarrollado bajo la
+		dirección del Instituto Max-Planck de Física Extraterrestre (MPE) en Alemania (DE).
+		eRosita es un telescopio sensible a los Rayos X capaz de ofrecer imágenes nítidas
+		y profundas a lo largo de zonas muy amplias del cielo en el rango de energía de ~0.2-8 keV.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#eROSITA"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+		Fuentes de Rayos X detectadas en la banda 0.2-2.3 keV usando eSASS y adoptando un umbral de probabilidad de detección de 5.
+		Las fuentes con probabilidad de detección superior a 6 se encuentran en el catálogo principal de eFEDS (27910 fuentes).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDSmain"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+		Catálogo de eFEDS de Rayos X duros seleccionados. Basado en la detección de fuentes en tres
+		bandas (1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5 keV) utilizando eSASS con un umbral de probabilidad de
+		detección de 5, seleccionamos las fuentes con una probabilidad de detección de en banda 2.3-5 keV
+		mayor que 10 y una probabilidad de extensión cero como el catálogo eFEDS de fuentes duras (246 fuentes).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#eFEDShard"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+		Fuentes de Rayos X de observaciones de scan en el área de eta Chamaeleontis incluidas en
+		el catálogo principal (OBSID 300004), ver Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChamain"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+		Fuentes de Rayos X de observaciones de scan en el área de eta Chamaeleontis incluidas en
+		el catálogo de fuentes duras (OBSID 300004), ver Robrade et al. (2021).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#etaChahard"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
 
 </Internationalization>
-

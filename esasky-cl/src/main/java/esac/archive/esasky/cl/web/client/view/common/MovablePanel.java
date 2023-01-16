@@ -191,13 +191,7 @@ public class MovablePanel extends FocusPanel {
 
 	public void setSuggestedPositionCenter() {
 		isSuggestedPositionCenter = true;
-		Scheduler.get().scheduleFinally(new ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                setCenterPosition();
-            }
-        });
+		Scheduler.get().scheduleFinally(this::setCenterPosition);
 		setCenterPosition();
 	}
 

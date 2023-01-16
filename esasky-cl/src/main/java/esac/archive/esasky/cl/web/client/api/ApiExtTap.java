@@ -179,8 +179,10 @@ public class ApiExtTap extends ApiBase{
 	}
 	
 	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit, GeneralJavaScriptObject options) {
-		ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, dataOnlyInView, adql);
-		if("".equals(color)) {
+		
+	    ExtTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, dataOnlyInView, adql);
+		
+	    if("".equals(color)) {
 			color = ESASkyColors.getNext();
 		}
 		if(limit == -1) {
@@ -193,8 +195,18 @@ public class ApiExtTap extends ApiBase{
 			descriptor.setTapSTCSColumn(options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN));
 		}
 		
+		if(options.hasProperty(ApiConstants.EXTTAP_RA_COLUMN)) {
+		    descriptor.setTapRaColumn(options.getStringProperty(ApiConstants.EXTTAP_RA_COLUMN));
+		}
+		
+		if(options.hasProperty(ApiConstants.EXTTAP_DEC_COLUMN)) {
+		    descriptor.setTapDecColumn(options.getStringProperty(ApiConstants.EXTTAP_DEC_COLUMN));
+		}
+		
 		if(options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)) {
 			descriptor.setIntersectColumn(options.getStringProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN));
+		}else {
+		    descriptor.setSearchFunction("cointainsPoint");
 		}
 		// TODO: Fix
 //		controller.getRootPresenter().getRelatedMetadata(descriptor);

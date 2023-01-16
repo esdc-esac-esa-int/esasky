@@ -238,7 +238,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void selectRow(int rowId) {
-		if(isVisible()) {
+		selectRow(rowId, false);
+	}
+
+	public void selectRow(int rowId, boolean delay) {
+		if(isVisible() && !delay) {
 			table.selectRow(rowId);
 		} else {
 			new SelectTimer(rowId).schedule(50);
@@ -394,6 +398,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		for (GeneralJavaScriptObject tableRow : getSelectedRows()) {
 
 			String url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("product_url"));
+			if (url == null || url.trim().isEmpty()) {
+				url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("prod_url"));
+			}
 			if (url == null || url.trim().isEmpty()) {
 				url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("access_url"));
 			}
@@ -724,6 +731,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		if (sampUrl == null) {
 			sampUrl = rowData.getStringProperty("product_url");
+		}
+		if (sampUrl == null) {
+			sampUrl = rowData.getStringProperty("prod_url");
 		}
 		if (sampUrl == null) {
 			sampUrl = rowData.getStringProperty("access_url");

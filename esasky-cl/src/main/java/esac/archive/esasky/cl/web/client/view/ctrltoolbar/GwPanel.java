@@ -11,7 +11,6 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
@@ -34,6 +33,7 @@ import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.descriptor.*;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -366,6 +366,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         setMaxHeight();
 
     }
+
 
     private void setMaxHeight() {
         int headerSize = header.getOffsetHeight() + tableHeaderTabRow.getOffsetHeight();

@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -12,12 +13,10 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.FileUpload;
 
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.hips.HipsAddedEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.HipsParser;
-import esac.archive.esasky.cl.web.client.utility.HipsParserObserver;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
@@ -54,7 +53,13 @@ public class AddSkyButton extends DisablablePushButton{
 	private EsaSkyMenuPopupPanel<AddSkyMenuItems> createPopupMenu() {
 		EsaSkyMenuPopupPanel<AddSkyMenuItems> menu = new EsaSkyMenuPopupPanel<AddSkyMenuItems>();
         for (final AddSkyMenuItems item : AddSkyMenuItems.values()) {
-        	menu.addMenuItem(new MenuItem<AddSkyMenuItems>(item, TextMgr.getInstance().getText("addSkyMenuItem_" + item.name()), true));
+			// In kiosk mode, we only want to show the "Add new row" option
+			String mode = Modules.getMode();
+			if (mode != null && Objects.equals(mode.toUpperCase(), EsaSkyWebConstants.MODULE_MODE_KIOSK) && !item.name().equals("ESASKY")) {
+				continue;
+			}
+
+        	menu.addMenuItem(new MenuItem<>(item, TextMgr.getInstance().getText("addSkyMenuItem_" + item.name()), true));
         }
         int defaultLeft = this.getAbsoluteLeft() + this.getOffsetWidth() / 2;
         if (defaultLeft + menu.getOffsetWidth() > MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft()) {
