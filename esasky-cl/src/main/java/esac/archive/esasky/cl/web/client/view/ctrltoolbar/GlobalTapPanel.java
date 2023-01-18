@@ -2,7 +2,6 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
@@ -19,11 +18,9 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.ColumnSelectorPopupPanel;
-import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
+import esac.archive.esasky.cl.web.client.view.common.GlassFlowPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
-import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabulatorCallback;
@@ -42,6 +39,7 @@ import java.util.UUID;
 
 public class GlobalTapPanel extends FlowPanel {
 
+
     public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> {
     }
 
@@ -51,15 +49,18 @@ public class GlobalTapPanel extends FlowPanel {
     private CssResource style;
     private TabulatorWrapper tapServicesWrapper;
     private TabulatorWrapper tapTablesWrapper;
+
+    private GlassFlowPanel tapServicesGlass;
+    private GlassFlowPanel tapTablesGlass;
     private FlowPanel tapServicesContainer;
     private FlowPanel tapTablesContainer;
+    private GlassFlowPanel currentContainer;
+    private TabulatorWrapper currentWrapper;
     private TextBox searchBox;
     private EsaSkyButton backButton;
     private LoadingSpinner loadingSpinner;
 
     private TabulatorCallback tabulatorCallback;
-    private boolean fovLimiterEnabled;
-    private boolean dataLoadedOnce = false;
 
     private static final String TABLE_NAME_COL = "table_name";
     private static final String DESCRIPTION_COL = "description";
@@ -95,30 +96,23 @@ public class GlobalTapPanel extends FlowPanel {
 
         mainContainer = new FlowPanel();
         mainContainer.addStyleName("globalTapPanel__container");
+
+        tapServicesGlass = new GlassFlowPanel();
+        tapServicesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
         tapServicesContainer = new FlowPanel();
         tapServicesContainer.getElement().setId("browseTap__tabulatorServicesContainer");
         tapServicesContainer.addStyleName("globalTapPanel__tabulatorContainer");
+        tapServicesGlass.add(tapServicesContainer);
 
+        tapTablesGlass = new GlassFlowPanel();
+        tapTablesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
         tapTablesContainer = new FlowPanel();
         tapTablesContainer.getElement().setId("browseTap__tabulatorTablesContainer");
         tapTablesContainer.addStyleName("globalTapPanel__tabulatorContainer");
+        tapTablesGlass.add(tapTablesContainer);
 
-
-
-
-
-        fovLimiterEnabled = true;
-        EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
-                "FOV restricted", "Limit table data to the field of view");
-        switchBtn.addStyleName("globalTapPanel__fovSwitch");
-
-        switchBtn.addClickHandler(event -> {
-            fovLimiterEnabled = !fovLimiterEnabled;
-            switchBtn.setChecked(fovLimiterEnabled);
-        });
-
-
-
+        currentContainer = tapServicesGlass;
+        currentWrapper = tapServicesWrapper;
 
         FlowPanel searchContainer = new FlowPanel();
         searchContainer.addStyleName("globalTapPanel__searchContainer");
@@ -129,7 +123,7 @@ public class GlobalTapPanel extends FlowPanel {
         Timer searchDelayTimer = new Timer() {
             @Override
             public void run() {
-                TabulatorWrapper table = getCurrentTable();
+                TabulatorWrapper table = currentWrapper;
                 String[] columns = getTableFilterColumns(table);
                 table.columnIncludesFilter(searchBox.getText(), columns);
             }
@@ -154,7 +148,7 @@ public class GlobalTapPanel extends FlowPanel {
 
         searchContainer.add(backButtonContainer);
         searchContainer.add(searchBox);
-        searchContainer.add(switchBtn);
+//        searchContainer.add(switchBtn);
 
         tabulatorCallback = new TabulatorCallback();
 
@@ -163,8 +157,8 @@ public class GlobalTapPanel extends FlowPanel {
         loadingSpinner.setVisible(false);
 
         mainContainer.add(searchContainer);
-        mainContainer.add(tapServicesContainer);
-        mainContainer.add(tapTablesContainer);
+        mainContainer.add(tapServicesGlass);
+        mainContainer.add(tapTablesGlass);
         mainContainer.add(loadingSpinner);
 
         this.add(mainContainer);
@@ -210,7 +204,7 @@ public class GlobalTapPanel extends FlowPanel {
         wrapper.insertExternalTapData(data, metadata);
         wrapper.restoreRedraw();
         wrapper.redrawAndReinitializeHozVDom();
-        setTabulatorHeight();
+
 
 //        if (openVizier) {
 //            GeneralJavaScriptObject[] formatted = GeneralJavaScriptObject.convertToArray(ExtTapUtils.formatExternalTapData(data, metadata));
@@ -237,7 +231,6 @@ public class GlobalTapPanel extends FlowPanel {
             public void onSuccess(String responseText) {
                 setIsLoading(false);
                 onDataLoaded(responseText, tapServicesWrapper);
-                dataLoadedOnce = true;
             }
 
             @Override
@@ -254,18 +247,17 @@ public class GlobalTapPanel extends FlowPanel {
         searchBox.setText(wrapper.getFilterQuery());
 
         if (wrapper.equals(tapServicesWrapper)) {
-            tapTablesContainer.addStyleName(DISPLAY_NONE);
-            tapServicesContainer.removeStyleName(DISPLAY_NONE);
+            tapTablesGlass.addStyleName(DISPLAY_NONE);
+            tapServicesGlass.removeStyleName(DISPLAY_NONE);
+            currentContainer = tapServicesGlass;
         } else {
-            tapServicesContainer.addStyleName(DISPLAY_NONE);
-            tapTablesContainer.removeStyleName(DISPLAY_NONE);
+            tapServicesGlass.addStyleName(DISPLAY_NONE);
+            tapTablesGlass.removeStyleName(DISPLAY_NONE);
+            currentContainer = tapTablesGlass;
         }
 
-        setTabulatorHeight();
-    }
+        currentWrapper = wrapper;
 
-    private TabulatorWrapper getCurrentTable() {
-        return tapTablesContainer.getStyleName().contains(DISPLAY_NONE) ? tapServicesWrapper : tapTablesWrapper;
     }
 
     private String[] getTableFilterColumns(TabulatorWrapper wrapper) {
@@ -274,25 +266,13 @@ public class GlobalTapPanel extends FlowPanel {
                 : new String[]{"schema_name", TABLE_NAME_COL, "description"};
     }
 
-
-    private void setTabulatorHeight() {
-        setTabulatorHeight(tapServicesContainer);
-        setTabulatorHeight(tapTablesContainer);
-    }
-
-    private void setTabulatorHeight(FlowPanel tableContainer) {
-        int occupiedHeight = tableContainer.getAbsoluteTop() - this.getAbsoluteTop();
-        int height = mainContainer.getOffsetHeight() - occupiedHeight;
-
-        if (height > MainLayoutPanel.getMainAreaHeight()) {
-            height = MainLayoutPanel.getMainAreaHeight() - occupiedHeight;
+    private void setIsLoading(boolean isLoading) {
+        if (isLoading){
+            currentContainer.showGlass();
+        } else {
+            currentContainer.hideGlass();
         }
 
-        tableContainer.getElement().getStyle().setPropertyPx("height", height);
-    }
-
-
-    private void setIsLoading(boolean isLoading) {
         loadingSpinner.setVisible(isLoading);
     }
 
@@ -443,9 +423,9 @@ public class GlobalTapPanel extends FlowPanel {
                     if (descriptorList != null) {
                         List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
-                                tableName, storedName, description, query, fovLimit && fovLimiterEnabled, useUnprocessedQuery);
+                                tableName, storedName, description, query, fovLimit, useUnprocessedQuery);
 
-                        if (fovLimit && fovLimiterEnabled && commonTapDescriptor.isFovLimitDisabled()) {
+                        if (fovLimit && commonTapDescriptor.isFovLimitDisabled()) {
                             handleMissingColumns(commonTapDescriptor);
                         } else {
                             CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));

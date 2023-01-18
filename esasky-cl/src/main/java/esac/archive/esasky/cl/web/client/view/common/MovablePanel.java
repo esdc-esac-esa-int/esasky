@@ -46,8 +46,7 @@ public class MovablePanel extends FocusPanel {
 	private boolean isWindowResize = false;
 	private boolean isSnappingEnabled = true;
 	private FlowPanel container = new FlowPanel();
-	private FlowPanel glass;
-	private boolean isGlassEnabled = false;
+
 	private Element moveInitiatorElement;
 	private HandlerRegistration nativePreviewHandlerRegistration;
 
@@ -500,26 +499,4 @@ public class MovablePanel extends FocusPanel {
 		this.moveInitiatorElement = partner;
 	}
 
-	public void setGlassEnabled(boolean enabled) {
-		this.isGlassEnabled = enabled;
-
-		if (glass == null) {
-			glass = new FlowPanel();
-			glass.getElement().setClassName("gwt-PopupPanelGlass");
-			glass.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
-			glass.getElement().getStyle().setLeft(0, Style.Unit.PX);
-			glass.getElement().getStyle().setTop(0, Style.Unit.PX);
-			glass.getElement().getStyle().setWidth(100, Style.Unit.PCT);
-			glass.getElement().getStyle().setHeight(100, Style.Unit.PCT);
-			this.add(glass);
-		}
-
-		if (enabled) {
-			glass.removeStyleName("displayNone");
-		} else {
-			glass.addStyleName("displayNone");
-		}
-
-
-	}
 }

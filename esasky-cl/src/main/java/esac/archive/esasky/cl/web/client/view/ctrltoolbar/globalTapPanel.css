@@ -37,9 +37,13 @@
     top: 50%;
 }
 
+.globalTapPanel__tabulatorGlassContainer {
+    height: literal("calc(100% - 58px)");
+}
+
 .globalTapPanel__tabulatorContainer {
-    height: 100% !important;
     width: 100% !important;
+    min-height: 100px;
 }
 
 .globalTapPanel__searchContainer {
@@ -56,7 +60,7 @@
     margin-left: auto;
     border: 1px solid;
     border-radius: 12px;
-    width: 40%;
+    width: 65%;
     padding: 10px;
 
 }
