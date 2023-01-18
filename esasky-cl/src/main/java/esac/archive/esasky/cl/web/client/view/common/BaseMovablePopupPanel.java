@@ -15,7 +15,7 @@ public class BaseMovablePopupPanel extends MovablePanel implements Hidable<Popup
 
     protected FlowPanel container;
     private boolean isShowing = false;
-
+    PopupHeader<PopupPanel> header;
     private final Resources resources;
     private final CssResource style;
 
@@ -40,7 +40,8 @@ public class BaseMovablePopupPanel extends MovablePanel implements Hidable<Popup
         this.addStyleName("basePopupPanel");
 
         container = new FlowPanel();
-        PopupHeader<PopupPanel> header = new PopupHeader<>(this, headerText, helpText);
+
+        header = new PopupHeader<>(this, headerText, helpText);
         container.add(header);
 
         this.add(container);
@@ -50,6 +51,7 @@ public class BaseMovablePopupPanel extends MovablePanel implements Hidable<Popup
     protected void onLoad() {
         super.onLoad();
         setMaxSize();
+        this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
     }
 
 

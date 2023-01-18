@@ -19,8 +19,6 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 
 public class QueryPopupPanel extends BaseMovablePopupPanel {
 
-
-
     private TextArea queryTextBox;
     private final Resources resources;
     private final CssResource style;
