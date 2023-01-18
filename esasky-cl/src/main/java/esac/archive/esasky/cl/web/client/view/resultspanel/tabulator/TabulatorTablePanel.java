@@ -171,8 +171,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll("[^A-Za-z0-9-_]", "_");
 
 
-		if(entity.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL) ||
-			entity.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)){
+		if(entity.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)){
 			disableToggleColumns();
 		}
 
