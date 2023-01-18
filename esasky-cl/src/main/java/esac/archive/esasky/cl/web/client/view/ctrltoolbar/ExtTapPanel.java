@@ -36,7 +36,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
     private int selectedTabIndex = 0;
 
-
     private ESASkyMultiRangeSlider slider;
 
     private final List<TreeMapChanged> observers = new LinkedList<>();
@@ -69,6 +68,10 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         tabPanel = new TabPanel();
         tabPanel.addSelectionHandler(event -> {
             selectedTabIndex = event.getSelectedItem();
+            if (selectedTabIndex != 0) {
+                header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
+            }
+
             setDefaultSize();
         });
 
@@ -76,7 +79,11 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
         FlowPanel treeMapContainer = new FlowPanel();
         treeMap = new ExtTapTreeMap(EntityContext.EXT_TAP);
-        treeMap.registerHeaderObserver(text -> header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP) + text));
+        treeMap.registerHeaderObserver(text -> {
+            if (tabPanel.getTabBar().getSelectedTab() == 0) {
+                header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP) + text);
+            }
+        });
         treeMapContainer.add(treeMap);
         FlowPanel sliderContainer = initSliderContainer();
         treeMapContainer.add(sliderContainer);
