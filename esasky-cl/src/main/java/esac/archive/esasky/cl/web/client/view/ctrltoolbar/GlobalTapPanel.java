@@ -183,11 +183,12 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setAddMetadataColumn(false);
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
-//        settings.setTableLayout("fitColumns");
         settings.setAddObscoreTableColumn(true);
         settings.setAddOpenTableColumn(true);
         tapTablesWrapper = new TabulatorWrapper("browseTap__tabulatorTablesContainer", tabulatorCallback, settings);
         tapTablesWrapper.groupByColumns("schema_name");
+        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorTablesContainer_rowCount");
+        rowCountFooter.getStyle().setMarginTop(-25, Style.Unit.PX);
     }
 
 

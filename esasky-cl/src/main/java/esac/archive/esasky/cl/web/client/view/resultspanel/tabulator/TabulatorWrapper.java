@@ -1988,7 +1988,7 @@ public class TabulatorWrapper {
                         continue;
                     }
 
-                    if (this.metadata[i].name.toLowerCase() === "sso_name") {
+                    if (this.metadata[i].name.toLowerCase() === "sso_name_splitter") {
                         isSSO = true;
                         columnDef.push(activeColumnGroup[0]); //Selection column
                         columnDef.push({
@@ -2163,20 +2163,6 @@ public class TabulatorWrapper {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
                 }
             };
-        } else if (ucd === "meta.ref.url") {
-            formatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
-            formatterParams = {
-                image: "link2archive.png",
-                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
-            };
-
-            tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
-            cellClick = function (e, cell) {
-                e.stopPropagation();
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
-            }
         } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
             title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip");
@@ -2190,6 +2176,24 @@ public class TabulatorWrapper {
             cellClick = function (e, cell) {
                 e.stopPropagation();
                 wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
+            }
+        } else if (ucd.includes("meta.ref.url")) {
+            formatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+            formatterParams = {
+                image: "link2archive.png",
+                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+            };
+
+            tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
+            cellClick = function (e, cell) {
+                e.stopPropagation();
+                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                } else {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
+                }
             }
         } else {
             return undefined;

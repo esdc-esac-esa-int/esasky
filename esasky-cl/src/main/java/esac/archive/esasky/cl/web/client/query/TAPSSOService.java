@@ -29,52 +29,24 @@ public class TAPSSOService extends AbstractTAPService {
     	return getMetadataAdql(descriptorInput, "");
     }
 
-    public String getMetadataAdql(final CommonTapDescriptor inputDescriptor, String filter) {
-        return "";
-        // TODO: FIX
-//        final String debugPrefix = "[TAPSSOService.getMetadataAdql]";
-//        SSODescriptor descriptor = (SSODescriptor) inputDescriptor;
-//
-//        String adql;
-//        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
-//            adql = "SELECT *";
-//        } else {
-//            adql = "SELECT ";
-//            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-//                boolean found = false;
-//                for(MetadataDescriptor ssoMetadata : descriptor.getSsoXMatchMetadata()) {
-//                    if(ssoMetadata.getTapName().equals(currMetadata.getTapName())) {
-//                        adql += " b." + currMetadata.getTapName() + ", ";
-//                        found = true;
-//                        break;
-//                    }
-//                }
-//                if(!found) {
-//                    adql += " a." + currMetadata.getTapName() + ", ";
-//                }
-//            }
-//            adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-//        }
-//
-//        adql += " FROM " + descriptor.getTapTable() + " AS a JOIN "
-//                + descriptor.getSsoXMatchTapTable()
-//                + " AS b on a.observation_oid = b.observation_oid";
-//        if(descriptor.getTapTable().contains("xmm_om")) {
-//        	adql += " AND a.filter = b.filter";
-//        }
-//        adql += " WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
-//
-//        Log.debug(debugPrefix + " ADQL " + adql);
-//
-//        return adql;
+    public String getMetadataAdql(final CommonTapDescriptor descriptor, String filter) {
+        String adql = "SELECT a.*, b.sso_name as sso_name_splitter, b.* FROM " + descriptor.getTableName() + " AS a JOIN "
+                + descriptor.getProperties().get("xmatch_table")
+                + " AS b on a.observation_oid = b.observation_oid";
+
+
+        if(descriptor.getTableName().contains("xmm_om")) {
+        	adql += " AND a.filter = b.filter";
+        }
+
+        adql += " WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
+
+        return adql;
     }
 
     public String getPolylineAdql(CommonTapDescriptor descriptor) {
-        if(Objects.equals(descriptor.getSchemaName(), "sso")) {
-
-            // TODO: fix this
-//            String ssoCardReductionTapTable = ((SSODescriptor)descriptor).getSsoCardReductionTapTable();
-            String ssoCardReductionTapTable = "";
+        if(Objects.equals(descriptor.getCategory(), EsaSkyWebConstants.CATEGORY_SSO)) {
+            String ssoCardReductionTapTable = descriptor.getProperties().get("card_reduction_table").toString();
             return "select positions from " + ssoCardReductionTapTable + " where "
                     + ssoCardReductionTapTable + ".sso_oid=" + GUISessionStatus.getTrackedSso().id;
         }
