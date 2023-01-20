@@ -309,7 +309,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         this.useIntersectsPolygon = useIntersectsPolygon;
     }
 
-    public TapDescriptorBase getParent() {
+    public CommonTapDescriptor getParent() {
         return parent;
     }
 

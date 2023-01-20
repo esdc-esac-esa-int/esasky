@@ -29,6 +29,7 @@ import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,7 +102,9 @@ public class DescriptorRepository {
     public boolean addDescriptor(String category, CommonTapDescriptor descriptor) {
         CommonTapDescriptorList descriptorList =  descriptorCountAdapterMap.get(category).getTapDescriptorList();
         List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors();
-        if (!descriptors.stream().anyMatch(d -> d.getMission() == descriptor.getMission() && d.getTableName() == descriptor.getTableName())) {
+        if (descriptors.stream().noneMatch(d ->
+                Objects.equals(d.getMission(), descriptor.getMission())
+                && Objects.equals(d.getTableName(), descriptor.getTableName()))) {
             descriptors.add(descriptor);
             descriptorList.setDescriptors(descriptors);
             DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, null);
@@ -220,45 +223,67 @@ public class DescriptorRepository {
         }
     }
 
-    public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {
-        return null;
-//        ExtTapDescriptor descriptor = extTapDescriptors.getDescriptorByMissionNameCaseInsensitive(name);
-//        if (descriptor == null) {
-//            descriptor = new ExtTapDescriptor();
-//        }
-//
-//        descriptor.setGuiShortName(name);
-//        descriptor.setGuiLongName(name);
-//        descriptor.setMission(name);
-//        descriptor.setCreditedInstitutions(name);
-//        descriptor.setTapRaColumn(EsaSkyWebConstants.S_RA);
-//        descriptor.setTapDecColumn(EsaSkyWebConstants.S_DEC);
-//        descriptor.setTapSTCSColumn(EsaSkyWebConstants.S_REGION);
-//        descriptor.setFovLimit(180.0);
-//        descriptor.setShapeLimit(3000);
-//        descriptor.setTapUrl(tapUrl);
-//        descriptor.setUniqueIdentifierField("obs_id");
-//        if (dataOnlyInView) {
-//            descriptor.setSearchFunction("polygonIntersect");
-//        } else {
-//            descriptor.setSearchFunction("");
-//        }
-//        descriptor.setResponseFormat("VOTable");
-//        descriptor.setInBackend(false);
-//
-//        adql = adql.replace("from", "FROM");
-//        adql = adql.replace("where", "WHERE");
-//        String[] whereSplit = adql.split("WHERE");
-//        if (whereSplit.length > 1) {
-//            descriptor.setWhereADQL(whereSplit[1]);
-//        }
-//        String[] fromSplit = adql.split("FROM");
-//        descriptor.setSelectADQL(fromSplit[0]);
-//
-//        String[] tapTable = fromSplit[1].split("\\s");
-//        descriptor.setTapTable(tapTable[1]);
-//        extTapDescriptors.getDescriptors().add(descriptor);
-//        return descriptor;
+
+    public List<TapMetadataDescriptor> mockSpatialMetadata(String raColumn, String decColumn, String regionColumn) {
+        List<TapMetadataDescriptor> result = new LinkedList<>();
+
+        if (raColumn != null && !raColumn.isEmpty()) {
+            TapMetadataDescriptor raMeta = new TapMetadataDescriptor();
+            raMeta.setName(raColumn);
+            raMeta.setUcd(UCD.POS_EQ_RA.getValue());
+            result.add(raMeta);
+        }
+
+
+        if (decColumn != null && !decColumn.isEmpty()) {
+            TapMetadataDescriptor decMeta = new TapMetadataDescriptor();
+            decMeta.setName(decColumn);
+            decMeta.setUcd(UCD.POS_EQ_DEC.getValue());
+            result.add(decMeta);
+
+        }
+
+        if (regionColumn != null && !regionColumn.isEmpty()) {
+            TapMetadataDescriptor regionMeta = new TapMetadataDescriptor();
+            regionMeta.setName(regionColumn);
+            regionMeta.setUcd(UCD.POS_OUTLINE.getValue() + ";" + UCD.OBS_FIELD.getValue());
+            result.add(regionMeta);
+        }
+
+        return result;
+    }
+
+    public CommonTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {
+        CommonTapDescriptor descriptor = new CommonTapDescriptor();
+
+        descriptor.setShortName(name);
+        descriptor.setLongName(name);
+        descriptor.setMission(name);
+        descriptor.setCredits(name);
+        descriptor.setFovLimit(180.0);
+        descriptor.setShapeLimit(3000);
+        descriptor.setUseIntersectsPolygon(true);
+        descriptor.setTapUrl(tapUrl);
+
+        descriptor.setMetadata(mockSpatialMetadata(EsaSkyWebConstants.S_RA, EsaSkyWebConstants.S_DEC, EsaSkyWebConstants.S_REGION));
+
+        if (!dataOnlyInView) {
+            descriptor.setFovLimitDisabled(true);
+        }
+
+        adql = adql.replace("from", "FROM");
+        adql = adql.replace("where", "WHERE");
+        String[] whereSplit = adql.split("WHERE");
+        if (whereSplit.length > 1) {
+            descriptor.setWhereADQL(whereSplit[1]);
+        }
+        String[] fromSplit = adql.split("FROM");
+        descriptor.setSelectADQL(fromSplit[0]);
+
+        String[] tapTable = fromSplit[1].split("\\s");
+        descriptor.setTableName(tapTable[1]);
+        addDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, descriptor);
+        return descriptor;
     }
 
 
@@ -422,7 +447,6 @@ public class DescriptorRepository {
     }
 
 
-    // TODO: Kolla denna (session använder)
     public CommonTapDescriptor getDescriptorFromTable(String tableName, String mission) {
         String category = tableCategoryMap.get(tableName);
         if (category != null) {
@@ -578,33 +602,14 @@ public class DescriptorRepository {
         return commonTapDescriptor;
     }
 
-    public BaseDescriptor initUserDescriptor4MOC(String name, GeneralJavaScriptObject options) {
-        BaseDescriptor descriptor = new BaseDescriptor() {
-
-            @Override
-            public String getIcon() {
-                return "catalog";
-            }
-        };
+    public CommonTapDescriptor initUserDescriptor4MOC(String name, GeneralJavaScriptObject options) {
+        CommonTapDescriptor descriptor = new CommonTapDescriptor();
 
         descriptor.setMission(name);
-        descriptor.setGuiLongName(name);
-        descriptor.setGuiShortName(name);
-        descriptor.setDescriptorId(name);
-        if (options.hasProperty(COLOR_STRING)) {
-            descriptor.setPrimaryColor(options.getStringProperty(COLOR_STRING));
-        } else {
-            descriptor.setPrimaryColor(ESASkyColors.getNext());
-        }
-
-        descriptor.setUniqueIdentifierField(ApiConstants.OBS_NAME);
-
+        descriptor.setLongName(name);
+        descriptor.setShortName(name);
         descriptor.setSampEnabled(false);
-
         descriptor.setFovLimit(360.0);
-
-        descriptor.setTapTable(NOT_SET);
-        descriptor.setTabCount(0);
 
         return descriptor;
     }

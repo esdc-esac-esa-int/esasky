@@ -39,6 +39,7 @@ import esac.archive.esasky.ifcs.model.descriptor.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -247,15 +248,12 @@ public class CloseableTabLayoutPanel extends Composite {
         } else {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
         }
-        // TODO: FIX
-//        if (entity.getDescriptor() instanceof ExtTapDescriptor
-//                || "publications".equals(entity.getDescriptor().getIcon())) {
-//            configureButton.getElement().getStyle().setDisplay(Display.NONE);
-//        } else {
-//            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
-//        }
-        configureButton.getElement().getStyle().setDisplay(Display.BLOCK); // TODO: remove after uncom
-        
+        if (Objects.equals(entity.getDescriptor().getCategory(), EsaSkyWebConstants.CATEGORY_EXTERNAL)
+                || "publications".equals(entity.getIcon())) {
+            configureButton.getElement().getStyle().setDisplay(Display.NONE);
+        } else {
+            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
+        }
     }
 
     private EsaSkyButton createSaveButton() {
@@ -322,23 +320,22 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     private boolean hasProductUrl(CommonTapDescriptor descriptor) {
-    	// TODO: Fix
-//    	if(descriptor instanceof ExtTapDescriptor) {
-//    		return true;
-//    	}
-//    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null){
-//    		return true;
-//
-//    	}
-//        if (descriptor.getMetadataDescriptorByTapName("prod_url") != null){
-//            return true;
-//        }
-//    	if(descriptor.getMetadataDescriptorByTapName("access_url") != null
-//                && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId())){
-//    		return true;
-//    	}
-//        return "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
-        return false;
+    	if(descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+    		return true;
+    	}
+    	if(descriptor.getMetadata().stream().anyMatch(x -> x.getName().equals("product_url"))){
+    		return true;
+
+    	}
+        if (descriptor.getMetadata().stream().anyMatch(x -> x.getName().equals("prod_url"))){
+            return true;
+        }
+    	if(descriptor.getMetadata().stream().anyMatch(x -> x.getName().equals("access_url"))
+                &&  !(descriptor.getMission().equalsIgnoreCase("alma") && descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_OBSERVATIONS))){
+    		return true;
+    	}
+
+        return descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_SPECTRA)  && descriptor.getMission().equalsIgnoreCase("cheops");
     }
 
     private EsaSkyButton createSendButton() {
