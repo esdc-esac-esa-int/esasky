@@ -67,15 +67,6 @@ public class CommonTapDescriptor extends TapDescriptor {
     @JsonProperty("intersect_polygon_query")
     private boolean useIntersectsPolygon;
 
-    @JsonProperty("external_tap_url")
-    private String tapUrl;
-
-    @JsonProperty("group_column1")
-    private String groupColumn1;
-
-    @JsonProperty("group_column2")
-    private String groupColumn2;
-
     @JsonIgnore
     private CommonTapDescriptor parent;
 
@@ -193,20 +184,6 @@ public class CommonTapDescriptor extends TapDescriptor {
         } else {
             return "";
         }
-    }
-
-    @Override
-    public String getTapUrl() {
-        return tapUrl;
-    }
-
-    public String getGroupColumn1() {
-        return groupColumn1;
-    }
-
-
-    public String getGroupColumn2() {
-        return groupColumn2;
     }
 
     public List<CommonTapDescriptor> getChildren() {
@@ -330,39 +307,6 @@ public class CommonTapDescriptor extends TapDescriptor {
 
     public void setUseIntersectsPolygon(boolean useIntersectsPolygon) {
         this.useIntersectsPolygon = useIntersectsPolygon;
-    }
-
-    @JsonSetter("external_tap_url")
-    public void setTapUrl(String tapUrl) {
-        final String syncPath = "/sync";
-        final String asyncPath = "/async";
-
-        if (tapUrl != null) {
-            // Remove trailing slash
-            if (tapUrl.endsWith("/")) {
-                tapUrl = tapUrl.substring(0, tapUrl.length() - 1);
-            }
-
-            // Async queries are not supported
-            if (tapUrl.endsWith(asyncPath)) {
-                tapUrl = tapUrl.replace(asyncPath, syncPath);
-            }
-
-            // Add sync if not present
-            if(!tapUrl.endsWith(syncPath)) {
-                tapUrl += syncPath;
-            }
-        }
-
-        this.tapUrl = tapUrl;
-    }
-
-    public void setGroupColumn1(String groupColumn1) {
-        this.groupColumn1 = groupColumn1;
-    }
-
-    public void setGroupColumn2(String groupColumn2) {
-        this.groupColumn2 = groupColumn2;
     }
 
     public TapDescriptorBase getParent() {

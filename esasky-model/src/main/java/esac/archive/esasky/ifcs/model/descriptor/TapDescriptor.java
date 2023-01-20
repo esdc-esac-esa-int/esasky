@@ -60,6 +60,10 @@ public class TapDescriptor extends TapDescriptorBase {
      * @return the properties map object.
      */
     public Map<String, Object> getProperties() {
+        if (this.properties == null) {
+            this.properties = new HashMap<>();
+        }
+
         return properties;
     }
 

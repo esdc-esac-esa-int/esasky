@@ -32,13 +32,28 @@ public abstract class TapDescriptorBase {
     @JsonIgnore
     private int count = 0;
 
+    @JsonIgnore
     private String selectADQL;
+
+    @JsonIgnore
     private String whereADQL;
+
+    @JsonIgnore
     private String unprocessedADQL;
+
+    @JsonIgnore
+    private static final String TAP_URL_KEY = "external_tap_url";
+
+    @JsonIgnore
+    private static final String GROUP_COL1_KEY = "group_column1";
+
+    @JsonIgnore
+    private static final String GROUP_COL2_KEY = "group_column2";
+
 
 
     public abstract List<TapMetadataDescriptor> getMetadata();
-
+    public abstract Map<String, Object> getProperties();
     public void setSearchArea(SearchArea searchArea) {
         this.searchArea = searchArea;
     }
@@ -95,10 +110,38 @@ public abstract class TapDescriptorBase {
     }
 
 
-    public String getTapUrl() {
-        return "";
+    public void setTapUrl(String tapUrl) {
+        getProperties().put(TAP_URL_KEY, formatTapUrl(tapUrl));
     }
 
+    public String getTapUrl() {
+        Map<String, Object> properties = getProperties();
+        return properties.containsKey(TAP_URL_KEY) ? formatTapUrl(properties.get(TAP_URL_KEY).toString()) : null;
+    }
+
+    private String formatTapUrl(String tapUrl) {
+        final String syncPath = "/sync";
+        final String asyncPath = "/async";
+
+        if (tapUrl != null) {
+            // Remove trailing slash
+            if (tapUrl.endsWith("/")) {
+                tapUrl = tapUrl.substring(0, tapUrl.length() - 1);
+            }
+
+            // Async queries are not supported
+            if (tapUrl.endsWith(asyncPath)) {
+                tapUrl = tapUrl.replace(asyncPath, syncPath);
+            }
+
+            // Add sync if not present
+            if(!tapUrl.endsWith(syncPath)) {
+                tapUrl += syncPath;
+            }
+        }
+
+        return tapUrl;
+    }
 
     public String createTapUrl(String baseUrl, String query, String responseFormat) {
         long currentTime = System.currentTimeMillis();
@@ -130,6 +173,25 @@ public abstract class TapDescriptorBase {
         this.whereADQL = whereADQL;
     }
 
+
+    public String getGroupColumn1() {
+        Map<String, Object> properties = getProperties();
+        return properties.containsKey(GROUP_COL1_KEY) ? properties.get(GROUP_COL1_KEY).toString() : "";
+    }
+
+
+    public String getGroupColumn2() {
+        Map<String, Object> properties = getProperties();
+        return properties.containsKey(GROUP_COL2_KEY) ? properties.get(GROUP_COL2_KEY).toString() : "";
+    }
+
+    public void setGroupColumn1(String groupColumn1) {
+        getProperties().put(GROUP_COL1_KEY, groupColumn1);
+    }
+
+    public void setGroupColumn2(String groupColumn2) {
+        getProperties().put(GROUP_COL2_KEY, groupColumn2);
+    }
 
     public void registerVisibilityObserver(MetadataVisibilityObserver observer) {
         visibilityObservers.add(observer);
