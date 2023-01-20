@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -13,6 +14,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.DialogActionEvent;
+import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
+import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEventHandler;
 import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
@@ -348,6 +351,7 @@ public class GlobalTapPanel extends FlowPanel {
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
                                 storedAccessUrl, tableName, storedName, null, "", true, false);
                         DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
+                        fireEvent(new TreeMapNewDataEvent(null));
                     }
                 }
 
@@ -371,10 +375,14 @@ public class GlobalTapPanel extends FlowPanel {
         private void exploreTapServiceTables(String tapUrl) {
             setIsLoading(true);
 
-            // First we attempt to get tables from the tap/tables route.
-            // If that fails, we attempt to retrieve table data from tap_schema.
-            String url = EsaSkyWebConstants.TAPREGISTRY_URL
-                    + "?" + EsaSkyConstants.REGISTRY_TAP_TARGET + "=" + tapUrl;
+            // First we attempt to get tables from the tap_schema.
+            // If that fails, we attempt to retrieve tables from tap/tables route.
+            String query = "SELECT schema_name, table_name, description FROM tap_schema.tables";
+            String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                    + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
+
             JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
                 @Override
                 public void onSuccess(String responseText) {
@@ -385,19 +393,15 @@ public class GlobalTapPanel extends FlowPanel {
 
                 @Override
                 public void onError(String errorCause) {
-                    String query = "SELECT schema_name, table_name, description FROM tap_schema.tables";
-                    String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
-                            + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                            + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
-                            + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
 
+                    String url = EsaSkyWebConstants.TAPREGISTRY_URL
+                            + "?" + EsaSkyConstants.REGISTRY_TAP_TARGET + "=" + tapUrl;
                     JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
                         @Override
                         public void onSuccess(String responseText) {
                             setIsLoading(false);
                             backButton.setVisible(true);
                             GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
-
                         }
 
                         @Override
@@ -408,8 +412,6 @@ public class GlobalTapPanel extends FlowPanel {
                     });
                 }
             });
-
-
         }
 
         private void queryExternalTapServiceData(String tapUrl, String tableName, String description, String query, boolean fovLimit, boolean useUnprocessedQuery) {
@@ -513,6 +515,10 @@ public class GlobalTapPanel extends FlowPanel {
         private ColumnSelectorPopupPanel createColumnSelectionPopupPanel(List<TapMetadataDescriptor> metadataList) {
             return new ColumnSelectorPopupPanel("Select column", "help", metadataList);
         }
+    }
+
+    public HandlerRegistration addTreeMapNewDataHandler(TreeMapNewDataEventHandler handler) {
+        return addHandler(handler, TreeMapNewDataEvent.TYPE);
     }
 
 }

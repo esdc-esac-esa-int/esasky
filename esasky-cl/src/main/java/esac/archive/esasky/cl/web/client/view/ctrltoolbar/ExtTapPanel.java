@@ -91,7 +91,9 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         tabPanel.add(treeMapContainer, "Treemap");
 
         globalTapPanel = new GlobalTapPanel();
-        tabPanel.add(new GlobalTapPanel(), "TAP Registry");
+        globalTapPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
+
+        tabPanel.add(globalTapPanel, "TAP Registry");
 
         tabPanel.getDeckPanel().setStyleName("extTapPanel__deck");
         tabPanel.selectTab(0);

@@ -98,14 +98,19 @@ public class DescriptorRepository {
         }
     }
 
-    public void addDescriptor(String category, CommonTapDescriptor descriptor) {
+    public boolean addDescriptor(String category, CommonTapDescriptor descriptor) {
         CommonTapDescriptorList descriptorList =  descriptorCountAdapterMap.get(category).getTapDescriptorList();
         List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors();
-        descriptors.add(descriptor);
-        descriptorList.setDescriptors(descriptors);
-        DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, null);
+        if (!descriptors.stream().anyMatch(d -> d.getMission() == descriptor.getMission() && d.getTableName() == descriptor.getTableName())) {
+            descriptors.add(descriptor);
+            descriptorList.setDescriptors(descriptors);
+            DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, null);
+            setDescriptors(category, dca);
 
-        setDescriptors(category, dca);
+            return true;
+         }
+
+        return false;
     }
 
     public DescriptorCountAdapter getDescriptorCountAdapter(String category) {
@@ -210,8 +215,9 @@ public class DescriptorRepository {
 
 
     public void addExternalDataCenterDescriptor(CommonTapDescriptor descriptor) {
-        addDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, descriptor);
-        updateCount4ExtTap(descriptor);
+        if (addDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, descriptor)) {
+            updateCount4ExtTap(descriptor);
+        }
     }
 
     public ExtTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {
