@@ -87,7 +87,7 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
         dropDownMenu.registerObserver(() -> {
             switch (dropDownMenu.getSelectedObject()) {
                 case METADATA:
-                    setQuery("SELECT * FROM TAP_SCHEMA.columns WHERE table_name = '" + tapTableName + "'");
+                    setQuery("SELECT * FROM TAP_SCHEMA.columns WHERE table_name = '" + tapTableName.replace("\"", "") + "'");
                     break;
                 case TABLE:
                     setQuery("SELECT TOP 1000 * FROM " + tapTableName); // Default query
