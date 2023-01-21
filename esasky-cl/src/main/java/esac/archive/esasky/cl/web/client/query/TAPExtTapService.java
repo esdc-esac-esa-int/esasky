@@ -164,9 +164,9 @@ public class TAPExtTapService extends AbstractTAPService {
     }
 
     public String getHeasarcCountAdql(CommonTapDescriptor descriptor) {
-    	String adql = "SELECT table_name, description, count(*) as c";
+    	String adql = "SELECT table_name, description, regime, count(*) as c";
     	adql = getAdql(descriptor, adql);
-    	adql += " group by table_name,description";
+    	adql += " group by table_name,description,regime";
 
         return adql + " UNION " + adql.replace("pos_small", "pos_big");
     }

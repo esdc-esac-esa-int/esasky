@@ -7,10 +7,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
@@ -92,10 +89,19 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			int count = Integer.parseInt(data.getStringProperty("c"));
 			final String column1Value = data.getStringProperty(descriptor.getGroupColumn1());
 			final String column2Value = data.getStringProperty(descriptor.getGroupColumn2());
+
 			Double emMin = data.getDoubleOrNullProperty("em_min");
 			Double emMax = data.getDoubleOrNullProperty("em_max");
 			emMin = emMin != null ? Math.abs(Math.log10(emMin)) : 0;
 			emMax = emMax != null ? Math.abs(Math.log10(emMax)) : 10;
+
+			if ("HEASARC".equalsIgnoreCase(descriptor.getMission())) {
+				Double regimeValue = WavelengthUtils.getWavelengthValueFromName(data.getStringProperty("regime"));
+				if (regimeValue != null) {
+					emMin = regimeValue;
+					emMax = regimeValue;
+				}
+			}
 
 			String whereADQL = ExtTapUtils.createLevelDescriptorWhereADQL(descriptor.getGroupColumn1(), column1Value, descriptor.getGroupColumn2(), column2Value);
 

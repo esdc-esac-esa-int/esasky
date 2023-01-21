@@ -42,6 +42,9 @@ public abstract class TapDescriptorBase {
     private String unprocessedADQL;
 
     @JsonIgnore
+    private boolean isCustom = false;
+
+    @JsonIgnore
     private static final String TAP_URL_KEY = "external_tap_url";
 
     @JsonIgnore
@@ -49,7 +52,6 @@ public abstract class TapDescriptorBase {
 
     @JsonIgnore
     private static final String GROUP_COL2_KEY = "group_column2";
-
 
 
     public abstract List<TapMetadataDescriptor> getMetadata();
@@ -250,5 +252,13 @@ public abstract class TapDescriptorBase {
 
     public void setUnprocessedADQL(String unprocessedADQL) {
         this.unprocessedADQL = unprocessedADQL;
+    }
+
+    public boolean isCustom() {
+        return isCustom;
+    }
+
+    public void setCustom(boolean custom) {
+        isCustom = custom;
     }
 }

@@ -86,6 +86,17 @@ public class WavelengthUtils {
         return result;
     }
 
+    public static Double getWavelengthValueFromName(String name) {
+        WavelengthName wln =  Arrays.stream(wavelengthNames).filter(x -> x.shortName.contains(name)
+                || x.longName.contains(name)).findFirst().orElse(null);
+
+        if (wln != null) {
+            return wln.maxWavelength;
+        }
+
+        return null;
+    }
+
     public static List<WavelengthDescriptor> createWavelengthDescriptor(double minWavelength, double maxWavelength) {
         List<WavelengthDescriptor> wavelengths = new LinkedList<WavelengthDescriptor>();
         

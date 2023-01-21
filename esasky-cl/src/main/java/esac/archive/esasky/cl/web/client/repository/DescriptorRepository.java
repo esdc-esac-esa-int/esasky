@@ -173,7 +173,7 @@ public class DescriptorRepository {
         commonTapDescriptor.setTableName(tableName);
         commonTapDescriptor.setFovLimit(10.0);
         commonTapDescriptor.setDescription(description);
-        commonTapDescriptor.setColor(ESASkyColors.getNext());
+        commonTapDescriptor.setCustom(true);
 
         boolean hasPointColumns = commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null;
         boolean hasRegionColumn = commonTapDescriptor.getRegionColumn() != null;
@@ -264,6 +264,7 @@ public class DescriptorRepository {
         descriptor.setShapeLimit(3000);
         descriptor.setUseIntersectsPolygon(true);
         descriptor.setTapUrl(tapUrl);
+        descriptor.setCustom(true);
 
         descriptor.setMetadata(mockSpatialMetadata(EsaSkyWebConstants.S_RA, EsaSkyWebConstants.S_DEC, EsaSkyWebConstants.S_REGION));
 

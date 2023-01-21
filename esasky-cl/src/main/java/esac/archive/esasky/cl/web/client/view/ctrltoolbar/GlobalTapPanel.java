@@ -33,6 +33,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
@@ -427,7 +428,7 @@ public class GlobalTapPanel extends FlowPanel {
                         List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
                                 tableName, storedName, description, query, fovLimit, useUnprocessedQuery);
-
+                        commonTapDescriptor.setColor(ESASkyColors.getNext());
                         if (fovLimit && commonTapDescriptor.isFovLimitDisabled()) {
                             handleMissingColumns(commonTapDescriptor);
                         } else {

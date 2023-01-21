@@ -21,8 +21,6 @@ public class ExtTapUtils {
         descriptor.setMission(parent.getMission());
         descriptor.setLongName(name);
         descriptor.setShortName(name);
-        descriptor.setWavelengthStart(wavelengthStart);
-        descriptor.setWavelengthEnd(wavelengthEnd);
         descriptor.setCategory(parent.getCategory());
         descriptor.setFovLimit(parent.getFovLimit());
         descriptor.setTableName(parent.getTableName());
@@ -34,6 +32,10 @@ public class ExtTapUtils {
         descriptor.setIsExternal(parent.isExternal());
         descriptor.setMetadata(parent.getMetadata());
         descriptor.setUseIntersectsPolygon(parent.useIntersectsPolygon());
+        descriptor.setCustom(true);
+        updateWavelength(descriptor, wavelengthStart, wavelengthEnd);
+        updateWavelength(parent, wavelengthStart, wavelengthEnd);
+
         parent.addChild(descriptor);
 
         return descriptor;
@@ -43,6 +45,18 @@ public class ExtTapUtils {
         descriptor.setWhereADQL(whereADQL);
         descriptor.setWavelengthStart(wavelengthStart);
         descriptor.setWavelengthEnd(wavelengthEnd);
+        updateWavelength(descriptor.getParent(), wavelengthStart, wavelengthEnd);
+    }
+
+    private static void updateWavelength(CommonTapDescriptor descriptor, double start, double end) {
+        if (descriptor == null || !descriptor.isCustom()) {
+            return;
+        }
+
+        if (start > 0 && end > 0) {
+            descriptor.setWavelengthStart(descriptor.getWavelengthStart() > 0 ? Math.min(descriptor.getWavelengthStart(), start) : start);
+            descriptor.setWavelengthEnd(Math.max(descriptor.getWavelengthEnd(), end));
+        }
     }
 
     public static void setCount(CommonTapDescriptor parent, CommonTapDescriptor child, int childCount) {
