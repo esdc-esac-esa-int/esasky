@@ -11,6 +11,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.DialogActionEvent;
@@ -22,6 +23,7 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.ColumnSelectorPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.GlassFlowPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
@@ -47,8 +49,6 @@ public class GlobalTapPanel extends FlowPanel {
     public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> {
     }
 
-    private FlowPanel mainContainer;
-
     private final Resources resources;
     private CssResource style;
     private TabulatorWrapper tapServicesWrapper;
@@ -56,16 +56,16 @@ public class GlobalTapPanel extends FlowPanel {
 
     private GlassFlowPanel tapServicesGlass;
     private GlassFlowPanel tapTablesGlass;
-    private FlowPanel tapServicesContainer;
-    private FlowPanel tapTablesContainer;
     private GlassFlowPanel currentContainer;
     private TabulatorWrapper currentWrapper;
     private TextBox searchBox;
     private EsaSkyButton backButton;
     private LoadingSpinner loadingSpinner;
-
     private TabulatorCallback tabulatorCallback;
+    private final PopupHeader<? extends Panel> parentHeader;
+    private EsaSkySwitch switchBtn;
 
+    private boolean fovLimiterEnabled;
     private static final String TABLE_NAME_COL = "table_name";
     private static final String DESCRIPTION_COL = "description";
     private static final String ACCESS_URL_COL = "access_url";
@@ -78,11 +78,11 @@ public class GlobalTapPanel extends FlowPanel {
         CssResource style();
     }
 
-    public GlobalTapPanel() {
+    public GlobalTapPanel(PopupHeader<? extends Panel> parentHeader) {
         this.resources = GWT.create(GlobalTapPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
-
+        this.parentHeader = parentHeader;
         initView();
     }
 
@@ -98,19 +98,19 @@ public class GlobalTapPanel extends FlowPanel {
     private void initView() {
         this.addStyleName("globalTapPanel");
 
-        mainContainer = new FlowPanel();
+        FlowPanel mainContainer = new FlowPanel();
         mainContainer.addStyleName("globalTapPanel__container");
 
         tapServicesGlass = new GlassFlowPanel();
         tapServicesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
-        tapServicesContainer = new FlowPanel();
+        FlowPanel tapServicesContainer = new FlowPanel();
         tapServicesContainer.getElement().setId("browseTap__tabulatorServicesContainer");
         tapServicesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapServicesGlass.add(tapServicesContainer);
 
         tapTablesGlass = new GlassFlowPanel();
         tapTablesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
-        tapTablesContainer = new FlowPanel();
+        FlowPanel tapTablesContainer = new FlowPanel();
         tapTablesContainer.getElement().setId("browseTap__tabulatorTablesContainer");
         tapTablesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapTablesGlass.add(tapTablesContainer);
@@ -139,6 +139,16 @@ public class GlobalTapPanel extends FlowPanel {
         });
 
 
+        fovLimiterEnabled = true;
+        switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
+                "FOV restricted", "Limit table data to the field of view");
+        switchBtn.addStyleName("globalTapPanel__fovSwitch");
+
+        switchBtn.addClickHandler(event -> {
+            fovLimiterEnabled = !fovLimiterEnabled;
+            switchBtn.setChecked(fovLimiterEnabled);
+        });
+
 
         FlowPanel backButtonContainer = new FlowPanel();
         backButtonContainer.setWidth("10px");
@@ -152,7 +162,6 @@ public class GlobalTapPanel extends FlowPanel {
 
         searchContainer.add(backButtonContainer);
         searchContainer.add(searchBox);
-//        searchContainer.add(switchBtn);
 
         tabulatorCallback = new TabulatorCallback();
 
@@ -255,10 +264,12 @@ public class GlobalTapPanel extends FlowPanel {
             tapTablesGlass.addStyleName(DISPLAY_NONE);
             tapServicesGlass.removeStyleName(DISPLAY_NONE);
             currentContainer = tapServicesGlass;
+            searchBox.getElement().setPropertyString("placeholder", "Filter tap services...");
         } else {
             tapServicesGlass.addStyleName(DISPLAY_NONE);
             tapTablesGlass.removeStyleName(DISPLAY_NONE);
             currentContainer = tapTablesGlass;
+            searchBox.getElement().setPropertyString("placeholder", "Filter tables...");
         }
 
         currentWrapper = wrapper;
@@ -427,9 +438,9 @@ public class GlobalTapPanel extends FlowPanel {
                     if (descriptorList != null) {
                         List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                         CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
-                                tableName, storedName, description, query, fovLimit, useUnprocessedQuery);
+                                tableName, storedName, description, query, fovLimit && fovLimiterEnabled, useUnprocessedQuery);
                         commonTapDescriptor.setColor(ESASkyColors.getNext());
-                        if (fovLimit && commonTapDescriptor.isFovLimitDisabled()) {
+                        if (fovLimit && fovLimiterEnabled && commonTapDescriptor.isFovLimitDisabled()) {
                             handleMissingColumns(commonTapDescriptor);
                         } else {
                             CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
@@ -520,6 +531,14 @@ public class GlobalTapPanel extends FlowPanel {
 
     public HandlerRegistration addTreeMapNewDataHandler(TreeMapNewDataEventHandler handler) {
         return addHandler(handler, TreeMapNewDataEvent.TYPE);
+    }
+
+    public void hideActionWidgets() {
+        parentHeader.removeActionWidget(switchBtn);
+    }
+
+    public void showActionWidgets() {
+        parentHeader.addActionWidget(switchBtn);
     }
 
 }

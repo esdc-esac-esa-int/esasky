@@ -68,8 +68,12 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         tabPanel = new TabPanel();
         tabPanel.addSelectionHandler(event -> {
             selectedTabIndex = event.getSelectedItem();
-            if (selectedTabIndex != 0) {
+
+            if (selectedTabIndex > 0) {
+                globalTapPanel.showActionWidgets();
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
+            } else {
+                globalTapPanel.hideActionWidgets();
             }
 
             setDefaultSize();
@@ -90,7 +94,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
         tabPanel.add(treeMapContainer, "Treemap");
 
-        globalTapPanel = new GlobalTapPanel();
+        globalTapPanel = new GlobalTapPanel(header);
         globalTapPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
 
         tabPanel.add(globalTapPanel, "TAP Registry");

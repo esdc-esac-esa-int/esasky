@@ -85,6 +85,10 @@ public class PopupHeader<T> extends FlowPanel{
 		actionPanel.insert(widget, 0);
 	}
 
+	public void removeActionWidget(Widget widget) {
+		actionPanel.remove(widget);
+	}
+
 	public void addPrefixWidget(Widget widget) {
 		prefixPanel.add(widget);
 	}
