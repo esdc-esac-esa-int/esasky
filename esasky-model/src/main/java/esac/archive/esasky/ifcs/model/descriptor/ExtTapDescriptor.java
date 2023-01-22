@@ -251,11 +251,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	@Override
 	public String getTapRaColumn() {
-		if (!useUcd()) {
-			return tapRaColumn;
-		} else {
-			return getUcdColumnName(UCD.POS_EQ_RA.getValue());
-		}
+		return tapRaColumn;
 	}
 
 	@Override
@@ -265,23 +261,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
 
 	@Override
 	public String getTapDecColumn() {
-		if (!useUcd()) {
-			return tapDecColumn;
-		} else {
-			return getUcdColumnName(UCD.POS_EQ_DEC.getValue());
-		}
-	}
-
-	@Override
-	public String getUniqueIdentifierField() {
-		if (!useUcd()) {
-			return super.getUniqueIdentifierField();
-		} else {
-			return getUcdColumnName(UCD.META_ID.getValue());
-		}
-	}
-
-	public boolean tapMetadataContainsPos() {
-		return !this.getTapRaColumn().isEmpty() && !this.getTapDecColumn().isEmpty();
+		return tapDecColumn;
 	}
 }
