@@ -65,4 +65,17 @@ class ContentDescriptorTest {
         assertEquals(OBSCORE_RA_NO_PREFIX_STR, OBSCORE_RA.getValue());
     }
 
+    @Test
+    void testNameMatches() {
+        assertTrue(Name.RA.matches("ra"));
+        assertTrue(Name.RA.matches("RA"));
+        assertFalse(Name.DEC.matches("ra"));
+    }
+
+    @Test
+    void testNameValue() {
+        assertEquals("dec", Name.DEC.getValue());
+
+    }
+
 }
