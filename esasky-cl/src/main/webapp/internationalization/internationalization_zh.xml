@@ -1836,7 +1836,7 @@
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		发送数据至虚拟天文台程序
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+	<text key="resultsPresenter_helpDescription_external_CADC">
 		外部数据提供
 		&lt;a
 		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
@@ -1854,7 +1854,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+	<text key="resultsPresenter_helpDescription_external_ESO">
 		外部数据提供
 		&lt;a
 		href="//www.eso.org/"
@@ -1872,7 +1872,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+	<text key="resultsPresenter_helpDescription_external_MAST">
 		外部数据提供
 		&lt;a
 		href="//archive.stsci.edu/"
@@ -2131,7 +2131,7 @@
 	<text key="show_more">显示更多</text>
 	<text key="show_more_tooltip">单击展开并显示全文</text>
 
-	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+	<text key="resultsPresenter_helpDescription_external_HEASARC">
 		外部数据源自 
 		&lt;a
 		href="//heasarc.gsfc.nasa.gov"
@@ -2148,7 +2148,7 @@
 		更多信息
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+	<text key="resultsPresenter_helpDescription_external_ASTRON">
 		外部数据源自 
 		&lt;a
 		href="//astron.nl"

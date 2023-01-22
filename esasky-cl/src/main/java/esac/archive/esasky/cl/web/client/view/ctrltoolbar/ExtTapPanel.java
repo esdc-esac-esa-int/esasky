@@ -59,9 +59,9 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         mainContainer = new FlowPanel();
         mainContainer.addStyleName("extTapPanel__container");
         mainContainer.getElement().setId("someId234");
-        header = new PopupHeader<>(this, TextMgr.getInstance().getText("gwPanel_header"),
-                TextMgr.getInstance().getText("gwPanel_helpText"),
-                TextMgr.getInstance().getText("gwPanel_helpTitle"));
+        header = new PopupHeader<>(this, TextMgr.getInstance().getText("treeMap_EXT_TAP"),
+                TextMgr.getInstance().getText("treeMapContainer_help_EXT_TAP"),
+                TextMgr.getInstance().getText("treeMap_EXT_TAP"));
 
 
 

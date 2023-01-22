@@ -122,7 +122,7 @@ public class GlobalTapPanel extends FlowPanel {
         searchContainer.addStyleName("globalTapPanel__searchContainer");
 
         searchBox = new TextBox();
-        searchBox.getElement().setPropertyString("placeholder", "Filter tap services...");
+        searchBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
         searchBox.setStyleName("globalTapPanel__searchBox");
         Timer searchDelayTimer = new Timer() {
             @Override
@@ -141,7 +141,8 @@ public class GlobalTapPanel extends FlowPanel {
 
         fovLimiterEnabled = true;
         switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
-                "FOV restricted", "Limit table data to the field of view");
+                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
+                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted_tooltip"));
         switchBtn.addStyleName("globalTapPanel__fovSwitch");
 
         switchBtn.addClickHandler(event -> {
@@ -264,12 +265,12 @@ public class GlobalTapPanel extends FlowPanel {
             tapTablesGlass.addStyleName(DISPLAY_NONE);
             tapServicesGlass.removeStyleName(DISPLAY_NONE);
             currentContainer = tapServicesGlass;
-            searchBox.getElement().setPropertyString("placeholder", "Filter tap services...");
+            searchBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
         } else {
             tapServicesGlass.addStyleName(DISPLAY_NONE);
             tapTablesGlass.removeStyleName(DISPLAY_NONE);
             currentContainer = tapTablesGlass;
-            searchBox.getElement().setPropertyString("placeholder", "Filter tables...");
+            searchBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("global_tap_panel_filter_tap_tables"));
         }
 
         currentWrapper = wrapper;
@@ -519,13 +520,13 @@ public class GlobalTapPanel extends FlowPanel {
         private ConfirmationPopupPanel createConfirmationPopupPanel() {
             return new ConfirmationPopupPanel(
                     GoogleAnalytics.CAT_GLOBALTAP_SELECTCOLUMNPANEL,
-                    "Missing column information", "We were unable to locate any columns defining RA, Dec, or Region for this table. "
-                    + "<br> We cannot perform a cone search without these columns; instead, the complete table will be obtained."
-                    + "<br><br> <b>Would you like to assign the columns manually?</b>", "helptext");
+                    TextMgr.getInstance().getText("global_tap_panel_missing_column_title"),
+                    TextMgr.getInstance().getText("global_tap_panel_missing_column_body"), "helptext");
         }
 
         private ColumnSelectorPopupPanel createColumnSelectionPopupPanel(List<TapMetadataDescriptor> metadataList) {
-            return new ColumnSelectorPopupPanel("Select column", "help", metadataList);
+            return new ColumnSelectorPopupPanel(TextMgr.getInstance().getText("global_tap_panel_column_selector_header"),
+                    TextMgr.getInstance().getText("global_tap_panel_column_selector_help"), metadataList);
         }
     }
 

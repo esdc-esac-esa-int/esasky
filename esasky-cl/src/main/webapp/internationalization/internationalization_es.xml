@@ -2919,7 +2919,7 @@
 	</text>
 
 
-	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+	<text key="resultsPresenter_helpDescription_external_CADC">
 		Datos externos proporcionados por 
 		&lt;a
 		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
@@ -2937,7 +2937,7 @@
 		Más información
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+	<text key="resultsPresenter_helpDescription_external_ESO">
 		Datos externos proporcionados por
 		&lt;a
 		href="//www.eso.org/"
@@ -2954,7 +2954,7 @@
 		Más información
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+	<text key="resultsPresenter_helpDescription_external_MAST">
 		Datos externos proporcionados por
 		&lt;a
 		href="//archive.stsci.edu/"
@@ -3259,7 +3259,7 @@
 	<text key="show_more">Mostrar más</text>
 	<text key="show_more_tooltip">Click para expandir y mostrar todo el texto</text>
 
-	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+	<text key="resultsPresenter_helpDescription_external_HEASARC">
 	Datos externos proporcionados por
 		&lt;a
 		href="//heasarc.gsfc.nasa.gov"
@@ -3276,7 +3276,7 @@
 		Más información
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+	<text key="resultsPresenter_helpDescription_external_ASTRON">
         Datos externos proporcionados por
 		&lt;a
 		href="//astron.nl"

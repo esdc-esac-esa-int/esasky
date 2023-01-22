@@ -758,7 +758,7 @@ public class TabulatorWrapper {
                     var mainError = "";
                     if (error.status >= 500) {
                         mainError = $wnd.esasky.getInternationalizationText("tabulator_loadFailed_500");
-                    } else {
+                    } else if (settings.fovLimitDisabled === false){
                         mainError = $wnd.esasky.getInternationalizationText("tabulator_loadFailed_400");
                     }
 

@@ -3250,7 +3250,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		Send data product to Virtual Observatory application
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+	<text key="resultsPresenter_helpDescription_external_CADC">
 		External data provided by 
 		&lt;a
 		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
@@ -3268,7 +3268,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+	<text key="resultsPresenter_helpDescription_external_ESO">
 		External data provided by 
 		&lt;a
 		href="//www.eso.org/"
@@ -3286,7 +3286,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+	<text key="resultsPresenter_helpDescription_external_MAST">
 		External data provided by 
 		&lt;a
 		href="//archive.stsci.edu/"
@@ -3547,7 +3547,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="show_more">Show More</text>
 	<text key="show_more_tooltip">Click to expand and show the full text</text>
 
-	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+	<text key="resultsPresenter_helpDescription_external_HEASARC">
 	External data provided by 
 		&lt;a
 		href="//heasarc.gsfc.nasa.gov"
@@ -3565,7 +3565,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+	<text key="resultsPresenter_helpDescription_external_ASTRON">
 		External data provided by 
 		&lt;a
 		href="//astron.nl"
@@ -4223,7 +4223,8 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		We are unable to process the response from this resource. See details for more information.
 	</text>
 	<text key="tabulator_loadFailed_400">
-		This resource might not support cone search. Please try again without the FOV limit.
+		This resource might not support cone search. Please try again without the FOV restriction.&lt;br&gt;
+		(top right toggle button in the External TAP Registry window)
 	</text>
 	<text key="global_tap_panel_custom_query_description">
 		A user-generated query was used to retrieve this dataset.
@@ -4242,6 +4243,38 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		The query to TAP service "$TAP_SERVICE$" failed. This might be due to the service not responding or because the data could not be interpreted.
 	</text>
 
+	<text key="global_tap_panel_filter_tap_services">
+		Filter TAP services...
+	</text>
 
+	<text key="global_tap_panel_filter_tap_tables">
+		Filter TAP tables...
+	</text>
+
+	<text key="global_tap_panel_toggle_fov_restricted">
+		FOV restricted
+	</text>
+
+	<text key="global_tap_panel_fov_restricted_tooltip">
+		Limit table data to the field of view
+	</text>
+
+	<text key="global_tap_panel_missing_column_title">
+		Missing column information
+	</text>
+
+	<text key="global_tap_panel_missing_column_body">
+		We were unable to locate any columns defining RA, Dec, or Region for this table.
+		&lt;br&gt; We cannot perform a cone search without these columns; instead, the complete table will be obtained.
+		&lt;br&gt;&lt;br&gt; &lt;b&gt;Would you like to assign the columns manually?&lt;/b&gt;
+	</text>
+
+	<text key="global_tap_panel_column_selector_header">
+		Select columns
+	</text>
+
+	<text key="global_tap_panel_column_selector_help">
+		Choose table columns that define RA, Dec or Region for this table.
+	</text>
 
 </Internationalization>

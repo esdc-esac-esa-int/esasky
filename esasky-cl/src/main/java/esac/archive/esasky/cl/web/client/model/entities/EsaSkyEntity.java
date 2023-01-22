@@ -938,7 +938,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             settings.setAddSourcesInPublicationColumn(isPub);
             settings.setAddSelectionColumn(true);
             settings.setUseUcd(true);
-            settings.setShowDetailedErrors(descriptor.isExternal());
+            settings.setShowDetailedErrors(descriptor.isExternal() && descriptor.isCustom());
             settings.setFovLimiterDisabled(descriptor.isFovLimitDisabled());
         }
 

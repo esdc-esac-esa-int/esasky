@@ -7,7 +7,6 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
-import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
 import esac.archive.esasky.cl.web.client.api.model.GeneralSkyObject;
 import esac.archive.esasky.cl.web.client.api.model.IJSONWrapper;
@@ -25,8 +24,10 @@ import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.*;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
+import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
@@ -159,7 +160,9 @@ public class DescriptorRepository {
                                                         String tableName, String missionName, String description, String query,
                                                         boolean useFovLimiter, boolean useUnprocessedQuery) {
 
-        String name = useUnprocessedQuery ? missionName : missionName + " (" + tableName + ")";
+        String name = useUnprocessedQuery
+                ? missionName + " (" + query + ")"
+                : missionName + " (" + tableName + ")";
 
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
