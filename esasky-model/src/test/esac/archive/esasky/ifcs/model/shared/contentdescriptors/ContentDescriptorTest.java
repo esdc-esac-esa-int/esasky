@@ -12,6 +12,7 @@ class ContentDescriptorTest {
 
     private static final IUType OBSCORE_RA = ObsCore.S_RA;
     private static final String OBSCORE_RA_NO_PREFIX_STR = "Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C1";
+    private static final String OBSCORE_RA_LOWER_CASE = "obscore:char.spatialaxis.coverage.Location.coord.position2d.value2.c1";
     private static final String OBSCORE_RA_STR = "obscore:" + OBSCORE_RA_NO_PREFIX_STR;
 
     @Test
@@ -56,6 +57,7 @@ class ContentDescriptorTest {
     void testUTypeMatches() {
         assertFalse(OBSCORE_RA.matches(OBSCORE_RA_NO_PREFIX_STR));
         assertTrue(OBSCORE_RA.matches(OBSCORE_RA_STR));
+        assertTrue(OBSCORE_RA.matches(OBSCORE_RA_LOWER_CASE));
 
     }
     @Test
