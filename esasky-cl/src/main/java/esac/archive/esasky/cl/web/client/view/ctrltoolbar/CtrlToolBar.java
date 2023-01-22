@@ -761,7 +761,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     @Override
     public void addTreeMapData(Collection<DescriptorCountAdapter> descriptorCounts) {
 
-        for (DescriptorCountAdapter descriptorCount : descriptorCounts.stream().filter(ca -> !ca.isZeroCount()).collect(Collectors.toList())) {
+        for (DescriptorCountAdapter descriptorCount : descriptorCounts) {
 
             switch (descriptorCount.getCategory()) {
                 case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
