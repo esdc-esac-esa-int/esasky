@@ -521,7 +521,8 @@ public class GlobalTapPanel extends FlowPanel {
             return new ConfirmationPopupPanel(
                     GoogleAnalytics.CAT_GLOBALTAP_SELECTCOLUMNPANEL,
                     TextMgr.getInstance().getText("global_tap_panel_missing_column_title"),
-                    TextMgr.getInstance().getText("global_tap_panel_missing_column_body"), "helptext");
+                    TextMgr.getInstance().getText("global_tap_panel_missing_column_body"),
+                    TextMgr.getInstance().getText("global_tap_panel_missing_column_body"));
         }
 
         private ColumnSelectorPopupPanel createColumnSelectionPopupPanel(List<TapMetadataDescriptor> metadataList) {

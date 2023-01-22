@@ -4224,7 +4224,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 	<text key="tabulator_loadFailed_400">
 		This resource might not support cone search. Please try again without the FOV restriction.&lt;br&gt;
-		(top right toggle button in the External TAP Registry window)
+		(Top right toggle button in the External TAP Registry window)
 	</text>
 	<text key="global_tap_panel_custom_query_description">
 		A user-generated query was used to retrieve this dataset.
@@ -4255,7 +4255,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		FOV restricted
 	</text>
 
-	<text key="global_tap_panel_fov_restricted_tooltip">
+	<text key="global_tap_panel_toggle_fov_restricted_tooltip">
 		Limit table data to the field of view
 	</text>
 
