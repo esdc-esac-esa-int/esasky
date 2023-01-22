@@ -4277,4 +4277,32 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Choose table columns that define RA, Dec or Region for this table.
 	</text>
 
+	<text key="global_tap_panel_custom_query_help">
+		Create a custom ADQL query to fetch data from the TAP Service, or choose from one of the examples.
+	</text>
+
+	<text key="global_tap_panel_custom_query_title">
+		Custom ADQL query
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_tooltip">
+		Choose one of the examples or write your own query.
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_columns">
+		Columns in table
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_table">
+		Full table
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_row_count">
+		Count rows
+	</text>
+
+	<text key="global_tap_panel_custom_query_run_query">
+		Run Query
+	</text>
+
 </Internationalization>

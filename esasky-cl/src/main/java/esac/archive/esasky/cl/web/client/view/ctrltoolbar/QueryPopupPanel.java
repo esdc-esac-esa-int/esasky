@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEvent;
 import esac.archive.esasky.cl.web.client.event.exttap.QueryTapEventHandler;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
@@ -35,7 +36,9 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
         CssResource style();
     }
     public QueryPopupPanel() {
-        super(GoogleAnalytics.CAT_GLOBALTAP_ADQLPANEL,"Custom ADQL Query", "help text");
+        super(GoogleAnalytics.CAT_GLOBALTAP_ADQLPANEL,
+                TextMgr.getInstance().getText("global_tap_panel_custom_query_title"),
+                TextMgr.getInstance().getText("global_tap_panel_custom_query_help"));
         this.resources = GWT.create(QueryPopupPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
@@ -56,7 +59,7 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
 
         textBoxContainer.add(queryTextBox);
 
-        EsaSkyStringButton searchButton = new EsaSkyStringButton("Run Query");
+        EsaSkyStringButton searchButton = new EsaSkyStringButton(TextMgr.getInstance().getText("global_tap_panel_custom_query_run_query"));
         searchButton.setMediumStyle();
         searchButton.setStyleName("queryPopupPanel__queryButton");
         searchButton.addClickHandler(event -> {
@@ -73,10 +76,18 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
 
 
     private DropDownMenu<PopupMenuItems> createDropdownMenu() {
-        dropDownMenu = new DropDownMenu<>("Examples...", "Query examples", 550, "queryPopupPanel__dropdownMenu");
-        MenuItem<PopupMenuItems> menuItem1 = new MenuItem<>(PopupMenuItems.METADATA, "Columns in table", true);
-        MenuItem<PopupMenuItems> menuItem2 = new MenuItem<>(PopupMenuItems.TABLE, "Full table", true);
-        MenuItem<PopupMenuItems> menuItem3 = new MenuItem<>(PopupMenuItems.COUNT, "Count rows", true);
+        dropDownMenu = new DropDownMenu<>("Examples...",
+                TextMgr.getInstance().getText("global_tap_panel_custom_query_dropdown_tooltip"),
+                550, "queryPopupPanel__dropdownMenu");
+
+        MenuItem<PopupMenuItems> menuItem1 = new MenuItem<>(PopupMenuItems.METADATA,
+                TextMgr.getInstance().getText("global_tap_panel_custom_query_dropdown_option_columns"), true);
+
+        MenuItem<PopupMenuItems> menuItem2 = new MenuItem<>(PopupMenuItems.TABLE,
+                TextMgr.getInstance().getText("global_tap_panel_custom_query_dropdown_option_table"), true);
+
+        MenuItem<PopupMenuItems> menuItem3 = new MenuItem<>(PopupMenuItems.COUNT,
+                TextMgr.getInstance().getText("global_tap_panel_custom_query_dropdown_option_row_count"), true);
 
         dropDownMenu.addMenuItem(menuItem1);
         dropDownMenu.addMenuItem(menuItem2);
