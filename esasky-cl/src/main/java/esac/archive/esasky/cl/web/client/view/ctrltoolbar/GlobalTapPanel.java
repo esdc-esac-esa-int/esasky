@@ -71,6 +71,7 @@ public class GlobalTapPanel extends FlowPanel {
     private static final String ACCESS_URL_COL = "access_url";
     private static final String SHORT_NAME_COL = "short_name";
     private static final String DISPLAY_NONE = "displayNone";
+    private static final String PLACEHOLDER = "placeholder";
 
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
@@ -122,7 +123,7 @@ public class GlobalTapPanel extends FlowPanel {
         searchContainer.addStyleName("globalTapPanel__searchContainer");
 
         searchBox = new TextBox();
-        searchBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
+        searchBox.getElement().setPropertyString(PLACEHOLDER, TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
         searchBox.setStyleName("globalTapPanel__searchBox");
         Timer searchDelayTimer = new Timer() {
             @Override
@@ -265,12 +266,12 @@ public class GlobalTapPanel extends FlowPanel {
             tapTablesGlass.addStyleName(DISPLAY_NONE);
             tapServicesGlass.removeStyleName(DISPLAY_NONE);
             currentContainer = tapServicesGlass;
-            searchBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
+            searchBox.getElement().setPropertyString(PLACEHOLDER, TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
         } else {
             tapServicesGlass.addStyleName(DISPLAY_NONE);
             tapTablesGlass.removeStyleName(DISPLAY_NONE);
             currentContainer = tapTablesGlass;
-            searchBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("global_tap_panel_filter_tap_tables"));
+            searchBox.getElement().setPropertyString(PLACEHOLDER, TextMgr.getInstance().getText("global_tap_panel_filter_tap_tables"));
         }
 
         currentWrapper = wrapper;
@@ -279,8 +280,8 @@ public class GlobalTapPanel extends FlowPanel {
 
     private String[] getTableFilterColumns(TabulatorWrapper wrapper) {
         return wrapper.equals(tapServicesWrapper)
-                ? new String[]{"res_title", "short_name", "res_subjects", "publisher"}
-                : new String[]{"schema_name", TABLE_NAME_COL, "description"};
+                ? new String[]{"res_title", SHORT_NAME_COL, "res_subjects", "publisher"}
+                : new String[]{"schema_name", TABLE_NAME_COL, DESCRIPTION_COL};
     }
 
     private void setIsLoading(boolean isLoading) {

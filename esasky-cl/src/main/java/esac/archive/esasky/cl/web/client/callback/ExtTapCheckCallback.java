@@ -92,8 +92,8 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 
 			Double emMin = data.getDoubleOrNullProperty("em_min");
 			Double emMax = data.getDoubleOrNullProperty("em_max");
-			emMin = emMin != null ? Math.abs(Math.log10(emMin)) : 0;
-			emMax = emMax != null ? Math.abs(Math.log10(emMax)) : 10;
+			emMin = scaleWavelength(emMin);
+			emMax = scaleWavelength(emMax);
 
 			if ("HEASARC".equalsIgnoreCase(descriptor.getMission())) {
 				Double regimeValue = WavelengthUtils.getWavelengthValueFromName(data.getStringProperty("regime"));
@@ -105,25 +105,14 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 
 			String whereADQL = ExtTapUtils.createLevelDescriptorWhereADQL(descriptor.getGroupColumn1(), column1Value, descriptor.getGroupColumn2(), column2Value);
 
-			// Create new level1 descriptor if it does not already exist otherwise update it.
-			CommonTapDescriptor level1Descriptor = descriptor.getChildren().stream().filter(x -> Objects.equals(x.getLongName(), column1Value)).findFirst().orElse(null);
-			if (level1Descriptor == null) {
-				level1Descriptor =  ExtTapUtils.createLevelDescriptor(descriptor, column1Value, whereADQL, emMin, emMax);
-			} else {
-				ExtTapUtils.updateLevelDescriptor(level1Descriptor, whereADQL, emMin, emMax);
-			}
-
+			// Create or update level1 descriptor
+			CommonTapDescriptor level1Descriptor = createOrUpdateLevelDescriptor(column1Value, descriptor, whereADQL, emMin, emMax);
 			updatedIds.add(level1Descriptor.getId());
 			ExtTapUtils.setCount(descriptor, level1Descriptor, count);
 
-			// Create new level2 descriptor if it does not already exist otherwise update it.
+			// Create or update level1 descriptor
 			String name = column2Value != null && !column2Value.trim().isEmpty() ? column2Value : "Other";
-			CommonTapDescriptor level2Descriptor = level1Descriptor.getAllChildren().stream().filter(x -> Objects.equals(x.getLongName(), name)).findFirst().orElse(null);
-			if (level2Descriptor == null) {
-				level2Descriptor = ExtTapUtils.createLevelDescriptor(level1Descriptor, name, whereADQL, emMin, emMax);
-			} else {
-				ExtTapUtils.updateLevelDescriptor(level2Descriptor, whereADQL, emMin, emMax);
-			}
+			CommonTapDescriptor level2Descriptor = createOrUpdateLevelDescriptor(name, level1Descriptor, whereADQL, emMin, emMax);
 
 			updatedIds.add(level2Descriptor.getId());
 			ExtTapUtils.setCount(level1Descriptor, level2Descriptor, count);
@@ -152,11 +141,31 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		commonTapDescriptorList.setDescriptors(descriptorList);
 		DescriptorCountAdapter countAdapter = new DescriptorCountAdapter(commonTapDescriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
 
+		updateCount(descriptorList, descriptorCountList, countAdapter);
+
+		return countAdapter;
+	}
+
+	private double scaleWavelength(Double em) {
+		return em != null ? Math.abs(Math.log10(em)) : 0;
+	}
+
+	private CommonTapDescriptor createOrUpdateLevelDescriptor(String name, CommonTapDescriptor parent, String whereADQL, double emMin, double emMax) {
+		CommonTapDescriptor descriptor1 = parent.getAllChildren().stream().filter(x -> Objects.equals(x.getLongName(), name)).findFirst().orElse(null);
+		if (descriptor1 == null) {
+			descriptor1 = ExtTapUtils.createLevelDescriptor(parent, name, whereADQL, emMin, emMax);
+		} else {
+			ExtTapUtils.updateLevelDescriptor(descriptor1, whereADQL, emMin, emMax);
+		}
+
+		return descriptor1;
+	}
+
+
+	private void updateCount(List<CommonTapDescriptor> descriptorList, List<Integer> descriptorCountList, DescriptorCountAdapter countAdapter) {
 		for (int i = 0; i < descriptorList.size(); i++) {
 			countAdapter.getCountStatus().setCount(descriptorList.get(i), descriptorCountList.get(i));
 		}
-
-		return countAdapter;
 	}
 	
 }

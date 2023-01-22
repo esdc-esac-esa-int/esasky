@@ -30,8 +30,9 @@ public class ColumnSelectorPopupPanel extends BaseMovablePopupPanel {
     DropDownMenu<String> decDropdownMenu;
     DropDownMenu<String> regionDropdownMenu;
     private final List<TapMetadataDescriptor> metadataDescriptorList;
-
-
+    private static final String DISPLAY_NONE = "displayNone";
+    private static final String COLUMN_SELECT_LABEL_STYLE = "columnSelectorPopupPanel__label";
+    private static final String COLUMN_SELECT_DROPDOWN_CONTAINER_STYLE = "columnSelectorPopupPanel__dropdownContainer";
     private boolean isRegionSelected;
 
 
@@ -54,18 +55,18 @@ public class ColumnSelectorPopupPanel extends BaseMovablePopupPanel {
         raDecDropdownContainer = new FlowPanel();
 
         FlowPanel raDropdownContainer = new FlowPanel();
-        raDropdownContainer.setStyleName("columnSelectorPopupPanel__dropdownContainer");
+        raDropdownContainer.setStyleName(COLUMN_SELECT_DROPDOWN_CONTAINER_STYLE);
         raDropdownMenu = createDropdownMenu(metadataDescriptorList, "RA");
         Label raLabel = new Label("RA:");
-        raLabel.setStyleName("columnSelectorPopupPanel__label");
+        raLabel.setStyleName(COLUMN_SELECT_LABEL_STYLE);
         raDropdownContainer.add(raLabel);
         raDropdownContainer.add(raDropdownMenu);
 
         FlowPanel decDropdownContainer = new FlowPanel();
-        decDropdownContainer.setStyleName("columnSelectorPopupPanel__dropdownContainer");
+        decDropdownContainer.setStyleName(COLUMN_SELECT_DROPDOWN_CONTAINER_STYLE);
         decDropdownMenu = createDropdownMenu(metadataDescriptorList, "Dec");
         Label decLabel = new Label("Dec:");
-        decLabel.setStyleName("columnSelectorPopupPanel__label");
+        decLabel.setStyleName(COLUMN_SELECT_LABEL_STYLE);
         decDropdownContainer.add(decLabel);
         decDropdownContainer.add(decDropdownMenu);
 
@@ -74,10 +75,10 @@ public class ColumnSelectorPopupPanel extends BaseMovablePopupPanel {
 
 
         regionDropdownContainer = new FlowPanel();
-        regionDropdownContainer.setStyleName("columnSelectorPopupPanel__dropdownContainer");
+        regionDropdownContainer.setStyleName(COLUMN_SELECT_DROPDOWN_CONTAINER_STYLE);
         regionDropdownMenu = createDropdownMenu(metadataDescriptorList, "Region");
         Label dropDownregionLabel = new Label("Region:");
-        dropDownregionLabel.setStyleName("columnSelectorPopupPanel__label");
+        dropDownregionLabel.setStyleName(COLUMN_SELECT_LABEL_STYLE);
         regionDropdownContainer.add(dropDownregionLabel);
         regionDropdownContainer.add(regionDropdownMenu);
 
@@ -96,7 +97,7 @@ public class ColumnSelectorPopupPanel extends BaseMovablePopupPanel {
         });
 
         Label raDecLabel = new Label("RA, Dec");
-        raDecLabel.setStyleName("columnSelectorPopupPanel__label");
+        raDecLabel.setStyleName(COLUMN_SELECT_LABEL_STYLE);
         raDecLabel.addClickHandler(event -> raDecRadio.setSelected(true));
 
         raDecRadioContainer.add(raDecLabel);
@@ -114,7 +115,7 @@ public class ColumnSelectorPopupPanel extends BaseMovablePopupPanel {
         });
 
         Label regionLabel = new Label("STC-S Region");
-        regionLabel.setStyleName("columnSelectorPopupPanel__label");
+        regionLabel.setStyleName(COLUMN_SELECT_LABEL_STYLE);
         regionLabel.addClickHandler(event -> regionRadio.setSelected(true));
         regionRadioContainer.add(regionLabel);
         regionRadioContainer.add(regionRadio);
@@ -182,17 +183,17 @@ public class ColumnSelectorPopupPanel extends BaseMovablePopupPanel {
 
     private void setRaDecContainerVisibility(boolean visible) {
         if (visible) {
-            raDecDropdownContainer.removeStyleName("displayNone");
+            raDecDropdownContainer.removeStyleName(DISPLAY_NONE);
         } else {
-            raDecDropdownContainer.addStyleName("displayNone");
+            raDecDropdownContainer.addStyleName(DISPLAY_NONE);
         }
     }
 
     private void setRegionContainerVisibility(boolean visible) {
         if (visible) {
-            regionDropdownContainer.removeStyleName("displayNone");
+            regionDropdownContainer.removeStyleName(DISPLAY_NONE);
         } else {
-            regionDropdownContainer.addStyleName("displayNone");
+            regionDropdownContainer.addStyleName(DISPLAY_NONE);
         }
     }
 

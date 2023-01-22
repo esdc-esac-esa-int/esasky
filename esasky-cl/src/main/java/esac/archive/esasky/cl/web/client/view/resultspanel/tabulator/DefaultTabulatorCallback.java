@@ -75,7 +75,7 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData) {
-
+		//Do nothing by default - To be overridden if needed.
 	}
 
 	@Override

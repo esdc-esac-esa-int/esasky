@@ -274,14 +274,29 @@ public class DescriptorRepository {
         if (!dataOnlyInView) {
             descriptor.setFovLimitDisabled(true);
         }
+        final String from = "FROM";
+        final String where = "WHERE";
 
-        adql = adql.replace("from", "FROM");
-        adql = adql.replace("where", "WHERE");
-        String[] whereSplit = adql.split("WHERE");
+        // Make sure "from" is uppercase
+        int start = adql.toUpperCase().indexOf(from);
+        if (start >= 0) {
+            String subStr = adql.substring(start, start + from.length());
+            adql = adql.replace(subStr, from);
+        }
+
+        // Make sure "where" is uppercase
+        start = adql.toUpperCase().indexOf(where);
+        if (start >= 0) {
+            String subStr = adql.substring(start, start + where.length());
+            adql = adql.replace(subStr, where);
+        }
+
+
+        String[] whereSplit = adql.split(where);
         if (whereSplit.length > 1) {
             descriptor.setWhereADQL(whereSplit[1]);
         }
-        String[] fromSplit = adql.split("FROM");
+        String[] fromSplit = adql.split(from);
         descriptor.setSelectADQL(fromSplit[0]);
 
         String[] tapTable = fromSplit[1].split("\\s");

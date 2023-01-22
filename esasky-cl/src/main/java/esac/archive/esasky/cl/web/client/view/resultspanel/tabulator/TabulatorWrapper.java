@@ -42,6 +42,7 @@ public class TabulatorWrapper {
     private final OpacityAnimation resultInformationAnimation;
     private boolean filtersShouldBeEnabled = true;
     private boolean waitingForMoc = false;
+    private static final String ON_CHANGE = "onChange";
 
     public TabulatorWrapper(String divId, TabulatorCallback tabulatorCallback, TabulatorSettings settings) {
         this.tabulatorCallback = tabulatorCallback;
@@ -455,7 +456,7 @@ public class TabulatorWrapper {
             }
         };
 
-        FilterObserver filterObserver = filter -> onChangeFunc.invokeFunction("onChange", filter);
+        FilterObserver filterObserver = filter -> onChangeFunc.invokeFunction(ON_CHANGE, filter);
 
         RangeFilterDialogBox filterDialog = new RangeFilterDialogBox(tapName, title, valueFormatter, filterButtonId, filterObserver);
         filterDialogs.put(tapName, filterDialog);
@@ -487,7 +488,7 @@ public class TabulatorWrapper {
 
             @Override
             public void onNewFilter(String filter) {
-                onChangeFunc.invokeFunction("onChange", filter);
+                onChangeFunc.invokeFunction(ON_CHANGE, filter);
 
             }
         };
@@ -518,7 +519,7 @@ public class TabulatorWrapper {
 
             dropDownMenu.registerObserver(() -> {
                 String object = dropDownMenu.getSelectedObject();
-                onChangeFunc.invokeFunction("onChange", object);
+                onChangeFunc.invokeFunction(ON_CHANGE, object);
             });
 
             dropDownMenu.toggleMenuBar();
