@@ -136,6 +136,10 @@ public class DescriptorRepository {
         return descriptors != null && !descriptors.isEmpty();
     }
 
+    public boolean hasAllDescriptors(String... categories) {
+        return categories != null && Arrays.stream(categories).allMatch(this::hasDescriptors);
+    }
+
     public CommonTapDescriptor getFirstDescriptor(String category) {
         List<CommonTapDescriptor> descriptors = getDescriptors(category);
 
@@ -319,34 +323,20 @@ public class DescriptorRepository {
         }
 
         TAPDescriptorService.getInstance().fetchDescriptors(schema, category, new IJSONRequestCallback() {
+
             @Override
             public void onSuccess(String responseText) {
                 CommonTapDescriptorListMapper mapper = GWT.create(CommonTapDescriptorListMapper.class);
                 CommonTapDescriptorList mappedDescriptorList  = mapper.read(responseText);
                 WavelengthUtils.setWavelengthRangeMaxMin(mappedDescriptorList.getDescriptors());
 
-                for (CommonTapDescriptor commonTapDescriptor : mappedDescriptorList.getDescriptors()) {
-
-                    // If external descriptor we don't have any column metadata, we need to fetch it.
-                    if (commonTapDescriptor.isExternal()) {
-                        TAPDescriptorService.getInstance().initializeColumns(commonTapDescriptor, new IJSONRequestCallback() {
-                            @Override
-                            public void onSuccess(String responseText) {
-                                TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
-                                TapDescriptorList mappedDescriptorList  = mapper.read(responseText);
-
-                                boolean isSchemaQuery = commonTapDescriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
-                                commonTapDescriptor.setMetadata(ExtTapUtils.getMetadataFromTapDescriptorList(mappedDescriptorList, isSchemaQuery));
-                            }
-
-                            @Override
-                            public void onError(String errorCause) {
-                                Log.error("[DescriptorRepository] initDescriptors ERROR fetching external metadata: " + errorCause);
-                            }
-                        });
-                    }
+                // If external we don't have any column metadata, we need to fetch it.
+                boolean anyExternal = mappedDescriptorList.getDescriptors().stream().anyMatch(CommonTapDescriptor::isExternal);
+                if (anyExternal) {
+                    initializeColumns(mappedDescriptorList, promise);
+                } else {
+                    promise.fulfill(mappedDescriptorList);
                 }
-                promise.fulfill(mappedDescriptorList);
             }
 
             @Override
@@ -356,6 +346,40 @@ public class DescriptorRepository {
             }
         });
 
+    }
+
+    private void initializeColumns(CommonTapDescriptorList mappedDescriptorList, Promise<CommonTapDescriptorList> promise) {
+        final int[] descriptorsInitialized = {0};
+        for (CommonTapDescriptor commonTapDescriptor : mappedDescriptorList.getDescriptors()) {
+            if (commonTapDescriptor.isExternal()) {
+                TAPDescriptorService.getInstance().initializeColumns(commonTapDescriptor, new IJSONRequestCallback() {
+                    @Override
+                    public void onSuccess(String responseText) {
+                        TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                        TapDescriptorList mappedDescriptorList2  = mapper.read(responseText);
+
+                        boolean isSchemaQuery = commonTapDescriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+                        commonTapDescriptor.setMetadata(ExtTapUtils.getMetadataFromTapDescriptorList(mappedDescriptorList2, isSchemaQuery));
+
+                    }
+
+                    @Override
+                    public void onError(String errorCause) {
+                        Log.error("[DescriptorRepository] initializeColumns ERROR fetching external metadata: " + errorCause);
+                    }
+
+                    @Override
+                    public void whenComplete() {
+                        descriptorsInitialized[0]++;
+                        if (descriptorsInitialized[0] == mappedDescriptorList.getTotal()) {
+                            promise.fulfill(mappedDescriptorList);
+                        }
+                    }
+                });
+            } else {
+                descriptorsInitialized[0]++;
+            }
+        }
     }
 
     public void doCountAll() {
@@ -431,7 +455,7 @@ public class DescriptorRepository {
 
     private static long lastestSingleCountTimecall;
 
-    private void requestSingleCount() {
+    public void requestSingleCount() {
 
         final SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 

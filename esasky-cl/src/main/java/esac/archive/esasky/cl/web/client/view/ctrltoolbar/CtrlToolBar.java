@@ -945,6 +945,11 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
+    public boolean isExtTapPanelOpen() {
+        return extTapPanel.isShowing();
+    }
+
+    @Override
     public void openOutreachPanel() {
         if (!outreachImageButton.getToggleStatus()) {
             outreachImageButton.toggle();

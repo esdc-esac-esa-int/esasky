@@ -37,6 +37,7 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -101,16 +102,21 @@ public class MainPresenter {
 
         descriptorRepo.setCountRequestHandler(resultsPresenter);
 
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_OBSERVATIONS, newCount -> ctrlTBPresenter.updateObservationCount(newCount));
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_CATALOGUES, EsaSkyWebConstants.CATEGORY_CATALOGUES, newCount -> ctrlTBPresenter.updateCatalogCount(newCount));
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SPECTRA, newCount -> ctrlTBPresenter.updateSpectraCount(newCount));
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SSO, newCount -> ctrlTBPresenter.updateSsoCount(newCount));
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES);
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS);
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES);
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_EXTERNAL, EsaSkyWebConstants.CATEGORY_EXTERNAL);
+        // Wait for these categories to load before performing first count
+        String[] requiredCategoryArr = {EsaSkyWebConstants.CATEGORY_OBSERVATIONS,
+                EsaSkyWebConstants.CATEGORY_CATALOGUES,
+                EsaSkyWebConstants.CATEGORY_SPECTRA,
+                EsaSkyWebConstants.CATEGORY_SSO};
 
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_OBSERVATIONS, requiredCategoryArr, newCount -> ctrlTBPresenter.updateObservationCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_CATALOGUES, EsaSkyWebConstants.CATEGORY_CATALOGUES, requiredCategoryArr, newCount -> ctrlTBPresenter.updateCatalogCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SPECTRA, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSpectraCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SSO, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSsoCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_EXTERNAL, EsaSkyWebConstants.CATEGORY_EXTERNAL, requiredCategoryArr);
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
 
 
@@ -380,11 +386,11 @@ public class MainPresenter {
     }
 
 
-    private void fetchDescriptorList(String schema, String category) {
-        fetchDescriptorList(schema, category, null);
+    private void fetchDescriptorList(String schema, String category, String[] requiredCategoryArr) {
+        fetchDescriptorList(schema, category, requiredCategoryArr, null);
     }
 
-    private void fetchDescriptorList(String schema, String category, CountObserver observer) {
+    private void fetchDescriptorList(String schema, String category, String[] requiredCategoryArr, CountObserver observer) {
         Log.debug("[MainPresenter] MainPresenter.fetchDescriptorList - Schema: " + schema + ", Category: " + category);
         descriptorRepo.initDescriptors(schema, category, new Promise<CommonTapDescriptorList>() {
             @Override
@@ -400,8 +406,17 @@ public class MainPresenter {
 
             @Override
             protected void whenComplete() {
-                if (Objects.equals(category, EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+                if (Arrays.asList(requiredCategoryArr).contains(category)) {
+                    boolean descriptorsLoaded = descriptorRepo.hasAllDescriptors(requiredCategoryArr);
+                    if (descriptorsLoaded) {
+                        descriptorRepo.requestSingleCount();
+                    }
+                } else if (Objects.equals(category, EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
                     descriptorRepo.registerExtTapObserver();
+
+                    if (ctrlTBPresenter.isExtTapPanelOpen()) {
+                        descriptorRepo.updateCount4AllExtTaps();
+                    }
                 }
             }
         });

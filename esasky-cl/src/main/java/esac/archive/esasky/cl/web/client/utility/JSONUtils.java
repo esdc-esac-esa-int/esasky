@@ -17,8 +17,9 @@ public class JSONUtils {
     private static final int DEFAULT_JSON_TIMEOUT = 25000;
 
     public interface IJSONRequestCallback {
-        public void onSuccess(final String responseText);
-        public void onError(final String errorCause);
+        void onSuccess(final String responseText);
+        void onError(final String errorCause);
+        default void whenComplete(){}
     }
     
     /** Prevents Utility class calls. */
@@ -59,6 +60,8 @@ public class JSONUtils {
                                 + response.getStatusText() + ") from " + url);
                         callback.onError("Couldn't retrieve JSON: " + response.getStatusText());
                     }
+
+                    callback.whenComplete();
                 }
 
                 @Override
@@ -66,6 +69,7 @@ public class JSONUtils {
                     Log.error(e.getMessage());
                     Log.error("[getJSONFromUrl] Error fetching JSON data from server");
                     callback.onError(e.getMessage());
+                    callback.whenComplete();
                 }
             });
             
@@ -73,6 +77,7 @@ public class JSONUtils {
             Log.error(e.getMessage());
             Log.error("[getJSONFromUrl] Error fetching JSON data from server");
             callback.onError(e.getMessage());
+            callback.whenComplete();
         }
     }
     

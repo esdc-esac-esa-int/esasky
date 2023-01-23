@@ -92,6 +92,7 @@ public class CtrlToolBarPresenter {
         void openExtTapPanel();
 
         void closeExtTapPanel();
+        boolean isExtTapPanelOpen();
 
         void openOutreachPanel();
 
@@ -329,6 +330,10 @@ public class CtrlToolBarPresenter {
 
     public void openExtTapPanel() {
         view.openExtTapPanel();
+    }
+
+    public boolean isExtTapPanelOpen() {
+        return view.isExtTapPanelOpen();
     }
 
     public void closeExtTapPanel() {
