@@ -2148,7 +2148,21 @@ public class TabulatorWrapper {
             sorter = "string";
             title = $wnd.esasky.getInternationalizationText("Authors");
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip");
-        } else if (((ucd.includes("meta.dataset") || ucd.includes("meta.product")) && ucd.includes("meta.ref.url"))) {
+        } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
+            title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
+            tooltip = $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip");
+            formatter = function (cell, formatterParams, onRendered) {
+                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+            formatterParams = {
+                image: "preview.png",
+                tooltip: $wnd.esasky.getInternationalizationText("tabulator_preview")
+            }
+            cellClick = function (e, cell) {
+                e.stopPropagation();
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
+            }
+        } else if (((ucd.includes("meta.dataset") || ucd.includes("meta.product")) && ucd.includes("meta.ref.url")) || utype.includes("Access.Reference")) {
             formatter = function (cell, formatterParams, onRendered) {
                 return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
             };
@@ -2164,20 +2178,6 @@ public class TabulatorWrapper {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
                 }
             };
-        } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
-            title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
-            tooltip = $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip");
-            formatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
-            formatterParams = {
-                image: "preview.png",
-                tooltip: $wnd.esasky.getInternationalizationText("tabulator_preview")
-            }
-            cellClick = function (e, cell) {
-                e.stopPropagation();
-                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
-            }
         } else if (ucd.includes("meta.ref.url")) {
             formatter = function (cell, formatterParams, onRendered) {
                 return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
