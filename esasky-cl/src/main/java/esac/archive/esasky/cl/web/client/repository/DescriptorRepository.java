@@ -163,22 +163,17 @@ public class DescriptorRepository {
     public CommonTapDescriptor createExternalDescriptor(List<TapMetadataDescriptor> metadataDescriptorList, String tapUrl,
                                                         String tableName, String missionName, String description, String query,
                                                         boolean useFovLimiter, boolean useUnprocessedQuery) {
-
         String name = useUnprocessedQuery
                 ? missionName + " (" + query + ")"
                 : missionName + " (" + tableName + ")";
 
-        String shortName = name;
-        if (shortName.length() > 15) {
-            shortName = shortName.substring(0, 12) + "...";
-        }
 
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
         commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
         commonTapDescriptor.setSchemaName(EsaSkyWebConstants.SCHEMA_EXTERNAL);
         commonTapDescriptor.setLongName(name);
-        commonTapDescriptor.setShortName(shortName);
+        commonTapDescriptor.setShortName(missionName);
         commonTapDescriptor.setMission(missionName);
         commonTapDescriptor.setTapUrl(tapUrl);
         commonTapDescriptor.setIsExternal(true);
