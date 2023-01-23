@@ -91,6 +91,7 @@ public interface GeneralEntityInterface extends IShapeDrawer {
     void onShapeUnhover(AladinShape shape);
 
     String getHelpText();
+    String getHelpTitle();
 
     void registerColorChangeObserver(ColorChangeObserver colorChangeObserver);
 

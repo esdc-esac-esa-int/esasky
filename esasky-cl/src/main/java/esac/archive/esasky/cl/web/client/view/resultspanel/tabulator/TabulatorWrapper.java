@@ -1729,8 +1729,8 @@ public class TabulatorWrapper {
                     formatter: imageButtonFormatter, width: 40, hozAlign: "center",
                     formatterParams: {
                         image: "plus-sign-light-small.png",
-                        tooltip: "Add ObsCore table to External Data Center Panel",
-                        disabledTooltip: "Only ObsCore tables can be added to the External Data Center Panel",
+                        tooltip: "Add ObsCore table to the Treemap",
+                        disabledTooltip: "Add ObsCore table to the Treemap",
                         isDisabledFunc: obscoreButtonDisabled
                     },
                     cellClick: function (e, cell) {

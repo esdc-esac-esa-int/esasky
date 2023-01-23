@@ -909,6 +909,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_"
                 + getDescriptor().getCategory() + "_" + descriptor.getMission());
 	}
+
+    @Override
+    public String getHelpTitle() {
+        return this.getDescriptor().getLongName();
+    }
     
 	@Override
 	public Shape getShape(int shapeId) {

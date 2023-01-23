@@ -164,12 +164,17 @@ public class DescriptorRepository {
                 ? missionName + " (" + query + ")"
                 : missionName + " (" + tableName + ")";
 
+        String shortName = name;
+        if (shortName.length() > 15) {
+            shortName = shortName.substring(0, 12) + "...";
+        }
+
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
         commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
         commonTapDescriptor.setSchemaName(EsaSkyWebConstants.SCHEMA_EXTERNAL);
         commonTapDescriptor.setLongName(name);
-        commonTapDescriptor.setShortName(name);
+        commonTapDescriptor.setShortName(shortName);
         commonTapDescriptor.setMission(missionName);
         commonTapDescriptor.setTapUrl(tapUrl);
         commonTapDescriptor.setIsExternal(true);

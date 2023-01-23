@@ -805,6 +805,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
+	public String getHelpTitle() {
+		return descriptor.getLongName();
+	}
+
+	@Override
 	public Shape getShape(int shapeId) {
 		return parentEntity.getShape(shapeId);
 	}

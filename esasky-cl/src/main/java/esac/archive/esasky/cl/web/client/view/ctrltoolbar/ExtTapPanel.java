@@ -75,8 +75,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             } else {
                 globalTapPanel.hideActionWidgets();
             }
-
-            setDefaultSize();
         });
 
         tabPanel.addStyleName("extTapPanel__tabPanel");
@@ -227,27 +225,16 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
 
     private void setDefaultSize() {
-        if (selectedTabIndex == 0) {
-            if(DeviceUtils.isMobile()) {
-                mainContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_MOBILE, Style.Unit.PX);
-                mainContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_MOBILE, Style.Unit.PX);
-            } else if(DeviceUtils.isTablet()){
-                mainContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_TABLET, Style.Unit.PX);
-                mainContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_TABLET, Style.Unit.PX);
-            } else {
-                mainContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_DESKTOP , Style.Unit.PX);
-                mainContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_DESKTOP, Style.Unit.PX);
-            }
+        if(DeviceUtils.isMobile()) {
+            mainContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_MOBILE, Style.Unit.PX);
+            mainContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_MOBILE, Style.Unit.PX);
+        } else if(DeviceUtils.isTablet()){
+            mainContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_TABLET, Style.Unit.PX);
+            mainContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_TABLET, Style.Unit.PX);
         } else {
-            Size size = super.getDefaultSize();
-            mainContainer.setWidth(size.width + "px");
-            mainContainer.setHeight(size.height + "px");
-
-            Style containerStyle = mainContainer.getElement().getStyle();
-            containerStyle.setPropertyPx("minWidth", 350);
-            containerStyle.setPropertyPx("minHeight", 300);
+            mainContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_DESKTOP , Style.Unit.PX);
+            mainContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_DESKTOP, Style.Unit.PX);
         }
-
     }
 
     private void updateTreeMapSize() {
