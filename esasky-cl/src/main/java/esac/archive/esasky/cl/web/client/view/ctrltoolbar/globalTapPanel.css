@@ -46,7 +46,7 @@
     min-height: 100px;
 }
 
-.globalTapPanel__searchContainer {
+.globalTapPanel__searchRowContainer {
     width: 100%;
     margin-bottom: 10px;
     margin-top: 10px;
@@ -54,17 +54,26 @@
     align-items: center;
 }
 
-.globalTapPanel__searchBox {
+.globalTapPanel__searchBoxContainer {
     display: block;
+    position: relative;
     margin-right: auto;
     margin-left: auto;
-    border: 1px solid;
-    border-radius: 12px;
     width: 65%;
-    padding: 10px;
-
 }
 
+.globalTapPanel__searchBox {
+    border: 1px solid;
+    border-radius: 12px;
+    padding: 10px;
+    width: 100%;
+}
+
+.globalTapPanel__searchClearButton {
+    position: absolute;
+    top: 5px;
+    right: 0;
+}
 
 .globalTapPanel__fovSwitch{
     top: 1px;

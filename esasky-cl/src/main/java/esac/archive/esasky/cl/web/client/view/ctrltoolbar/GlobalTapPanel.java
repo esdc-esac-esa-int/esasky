@@ -26,6 +26,7 @@ import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.GlassFlowPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.DefaultTabulatorCallback;
@@ -59,6 +60,7 @@ public class GlobalTapPanel extends FlowPanel {
     private GlassFlowPanel currentContainer;
     private TabulatorWrapper currentWrapper;
     private TextBox searchBox;
+    private CloseButton searchClearBtn;
     private EsaSkyButton backButton;
     private LoadingSpinner loadingSpinner;
     private TabulatorCallback tabulatorCallback;
@@ -119,18 +121,21 @@ public class GlobalTapPanel extends FlowPanel {
         currentContainer = tapServicesGlass;
         currentWrapper = tapServicesWrapper;
 
-        FlowPanel searchContainer = new FlowPanel();
-        searchContainer.addStyleName("globalTapPanel__searchContainer");
+        FlowPanel searchRowContainer = new FlowPanel();
+        searchRowContainer.addStyleName("globalTapPanel__searchRowContainer");
 
+        FlowPanel searchBoxContainer = new FlowPanel();
+        searchBoxContainer.setStyleName("globalTapPanel__searchBoxContainer");
         searchBox = new TextBox();
-        searchBox.getElement().setPropertyString(PLACEHOLDER, TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
         searchBox.setStyleName("globalTapPanel__searchBox");
+        searchBox.getElement().setPropertyString(PLACEHOLDER, TextMgr.getInstance().getText("global_tap_panel_filter_tap_services"));
         Timer searchDelayTimer = new Timer() {
             @Override
             public void run() {
                 TabulatorWrapper table = currentWrapper;
                 String[] columns = getTableFilterColumns(table);
                 table.columnIncludesFilter(searchBox.getText(), columns);
+                searchClearBtn.setVisible(searchBox.getText().length() > 0);
             }
         };
 
@@ -139,6 +144,25 @@ public class GlobalTapPanel extends FlowPanel {
             searchDelayTimer.schedule(500);
         });
 
+        searchBox.addChangeHandler(event -> {
+            searchDelayTimer.cancel();
+            searchDelayTimer.schedule(500);
+        });
+
+        searchClearBtn = new CloseButton();
+        searchClearBtn.addStyleName("globalTapPanel__searchClearButton");
+        searchClearBtn.setDarkStyle();
+        searchClearBtn.setSecondaryIcon();
+        searchClearBtn.addClickHandler(event -> {
+            searchBox.setText("");
+            searchBox.setFocus(true);
+            searchClearBtn.setVisible(false);
+            searchDelayTimer.run();
+        });
+        searchClearBtn.setVisible(false);
+
+        searchBoxContainer.add(searchBox);
+        searchBoxContainer.add(searchClearBtn);
 
         fovLimiterEnabled = true;
         switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
@@ -162,8 +186,8 @@ public class GlobalTapPanel extends FlowPanel {
         });
         backButtonContainer.add(backButton);
 
-        searchContainer.add(backButtonContainer);
-        searchContainer.add(searchBox);
+        searchRowContainer.add(backButtonContainer);
+        searchRowContainer.add(searchBoxContainer);
 
         tabulatorCallback = new TabulatorCallback();
 
@@ -171,7 +195,7 @@ public class GlobalTapPanel extends FlowPanel {
         loadingSpinner.setStyleName("globalTapPanel__loadingSpinner");
         loadingSpinner.setVisible(false);
 
-        mainContainer.add(searchContainer);
+        mainContainer.add(searchRowContainer);
         mainContainer.add(tapServicesGlass);
         mainContainer.add(tapTablesGlass);
         mainContainer.add(loadingSpinner);
@@ -261,6 +285,7 @@ public class GlobalTapPanel extends FlowPanel {
 
     private void showTable(TabulatorWrapper wrapper) {
         searchBox.setText(wrapper.getFilterQuery());
+        searchClearBtn.setVisible(searchBox.getText().length() > 0);
 
         if (wrapper.equals(tapServicesWrapper)) {
             tapTablesGlass.addStyleName(DISPLAY_NONE);
@@ -395,7 +420,8 @@ public class GlobalTapPanel extends FlowPanel {
             String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                     + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
                     + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
-                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
+                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl
+                    + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 100000;
 
             JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
                 @Override
