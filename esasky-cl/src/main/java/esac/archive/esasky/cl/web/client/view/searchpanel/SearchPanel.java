@@ -150,6 +150,13 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         this.searchTextBox.getElement().setId("allSkySearchTextBox");
         this.searchTextBox.addStyleName("searchTextBox");
         this.searchTextBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("searchPanel_search"));
+
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_TOOL)) {
+//            searchToolPanel.getElement().getStyle().setDisplay(Display.NONE);
+            searchTextBox.setVisible(true);
+        }else {
+            searchTextBox.setVisible(false);
+        }
         searchTextBox.addValueChangeHandler(new ValueChangeHandler<String>() {
 
             @Override
@@ -312,6 +319,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         if (!Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_TOOL)) {
             searchToolBoxButton.getElement().getStyle().setDisplay(Display.NONE);
         }
+
 
         return selectionContainer;
     }
