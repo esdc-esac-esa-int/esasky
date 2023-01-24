@@ -420,7 +420,7 @@ public class GlobalTapPanel extends FlowPanel {
             String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                     + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
                     + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
-                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl
+                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
                     + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 100000;
 
             JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
