@@ -29,7 +29,7 @@ public final class TAPDescriptorService {
 
     public void initializeColumns(CommonTapDescriptor descriptor, JSONUtils.IJSONRequestCallback callback) {
         String url;
-        String query = "SELECT * FROM tap_schema.columns where table_name='" + descriptor.getTableName() + "'";
+        String query = "SELECT * FROM TAP_SCHEMA.columns where table_name='" + descriptor.getTableName() + "'";
         if (Objects.equals(descriptor.getCategory(), EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
             query = query.replaceAll("='[A-Za-z0-9._-]+'", "='basic'");
             url = TAPUtils.getSIMBADTAPQuery("pub_meta", URL.encodeQueryString(query), null);

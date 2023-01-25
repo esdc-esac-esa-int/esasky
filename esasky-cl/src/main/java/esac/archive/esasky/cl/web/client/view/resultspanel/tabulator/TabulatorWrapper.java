@@ -186,6 +186,14 @@ public class TabulatorWrapper {
         tableJsObject.getColumn(field).hide(true);
     }-*/;
 
+    public void sortByColumn(String column, boolean asc) {
+        sortByColumn(tableJsObject, column, asc ? "asc" : "desc");
+    }
+
+    private native void sortByColumn(GeneralJavaScriptObject tableJsObject, String column, String direction) /*-{
+        tableJsObject.setSort(column, direction);
+    }-*/;
+
     public void downloadCsv(String fileName) {
         downloadCsv(tableJsObject, fileName);
     }
@@ -1699,24 +1707,6 @@ public class TabulatorWrapper {
                 previewColumn.move("centre", true);
             }
 
-            if (settings.addMetadataColumn) {
-                this.addColumn({
-                    title: "Columns",
-                    field: "metadataBtn",
-                    visible: true,
-                    headerSort: false,
-                    headerTooltip: "Column metadata",
-                    minWidth: 75,
-                    download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
-                    formatterParams: {image: "column_icon.png", tooltip: "Load column metadata"},
-                    cellClick: function (e, cell) {
-                        e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
-                    }
-                }, true);
-            }
-
             if (settings.addObscoreTableColumn) {
                 this.addColumn({
                     title: "Add",
@@ -1726,7 +1716,9 @@ public class TabulatorWrapper {
                     headerTooltip: "Add ObsCore table to External Data Center Panel",
                     minWidth: 55,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter,
                     formatterParams: {
                         image: "plus-sign-light-small.png",
                         tooltip: "Add ObsCore table to the Treemap",
@@ -1751,7 +1743,9 @@ public class TabulatorWrapper {
                     headerTooltip: "ADQL query",
                     minWidth: 65,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter,
                     formatterParams: {image: "adql_icon.png", tooltip: "Create a custom ADQL query"},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
@@ -1760,6 +1754,25 @@ public class TabulatorWrapper {
                 }, true);
             }
 
+            if (settings.addMetadataColumn) {
+                this.addColumn({
+                    title: "Columns",
+                    field: "metadataBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: "Column metadata",
+                    minWidth: 75,
+                    download: false,
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter,
+                    formatterParams: {image: "column_icon.png", tooltip: "Show column metadata"},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
+                    }
+                }, true);
+            }
 
             if (settings.addOpenTableColumn) {
                 this.addColumn({
@@ -1770,8 +1783,9 @@ public class TabulatorWrapper {
                     headerTooltip: "Open table",
                     minWidth: 60,
                     download: false,
+                    width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center",
+                    formatter: imageButtonFormatter,
                     formatterParams: {image: "table-icon.png", tooltip: "Open table"},
                     cellClick: function (e, cell) {
                         e.stopPropagation();

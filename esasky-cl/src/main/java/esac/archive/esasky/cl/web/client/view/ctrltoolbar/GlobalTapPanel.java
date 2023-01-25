@@ -219,7 +219,7 @@ public class GlobalTapPanel extends FlowPanel {
     private void initTapServicesTableWrapper() {
         TabulatorSettings settings = new TabulatorSettings();
         settings.setAddAdqlColumn(true);
-        settings.setAddMetadataColumn(false);
+        settings.setAddMetadataColumn(true);
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
         settings.setAddObscoreTableColumn(true);
@@ -231,7 +231,19 @@ public class GlobalTapPanel extends FlowPanel {
     }
 
 
-    public void onDataLoaded(String jsonString, TabulatorWrapper wrapper) {
+    private void onDataLoaded(String jsonString, TabulatorWrapper wrapper) {
+        onDataLoaded(jsonString, wrapper, null, (String) null);
+
+
+//        if (openVizier) {
+//            GeneralJavaScriptObject[] formatted = GeneralJavaScriptObject.convertToArray(ExtTapUtils.formatExternalTapData(data, metadata));
+//            GeneralJavaScriptObject row = findVizier(formatted);
+//            wrapper.onRowSelection(row);
+//        }
+
+    }
+
+    private void onDataLoaded(String jsonString, TabulatorWrapper wrapper, String sortByColumn, String... hiddenColumns) {
         GeneralJavaScriptObject obj = GeneralJavaScriptObject.createJsonObject(jsonString);
 
         GeneralJavaScriptObject data = obj.getProperty("data");
@@ -242,16 +254,19 @@ public class GlobalTapPanel extends FlowPanel {
         wrapper.clearFilters(true);
         showTable(wrapper);
         wrapper.insertExternalTapData(data, metadata);
+
+        if (hiddenColumns != null) {
+            for (String column : hiddenColumns) {
+                wrapper.hideColumn(column);
+            }
+        }
+
+        if (sortByColumn != null) {
+            wrapper.sortByColumn(sortByColumn, false);
+        }
+
         wrapper.restoreRedraw();
         wrapper.redrawAndReinitializeHozVDom();
-
-
-//        if (openVizier) {
-//            GeneralJavaScriptObject[] formatted = GeneralJavaScriptObject.convertToArray(ExtTapUtils.formatExternalTapData(data, metadata));
-//            GeneralJavaScriptObject row = findVizier(formatted);
-//            wrapper.onRowSelection(row);
-//        }
-
     }
 
     private native GeneralJavaScriptObject findVizier(GeneralJavaScriptObject[] dataArr) /*-{
@@ -270,7 +285,7 @@ public class GlobalTapPanel extends FlowPanel {
             @Override
             public void onSuccess(String responseText) {
                 setIsLoading(false);
-                onDataLoaded(responseText, tapServicesWrapper);
+                onDataLoaded(responseText, tapServicesWrapper, "table_count", "table_count", "table_names");
             }
 
             @Override
@@ -305,7 +320,7 @@ public class GlobalTapPanel extends FlowPanel {
 
     private String[] getTableFilterColumns(TabulatorWrapper wrapper) {
         return wrapper.equals(tapServicesWrapper)
-                ? new String[]{"res_title", SHORT_NAME_COL, "res_subjects", "publisher"}
+                ? new String[]{"res_title", SHORT_NAME_COL, "res_subjects", "publisher", "table_names"}
                 : new String[]{"schema_name", TABLE_NAME_COL, DESCRIPTION_COL};
     }
 
@@ -406,9 +421,9 @@ public class GlobalTapPanel extends FlowPanel {
         @Override
         public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
-            String query = "SELECT * FROM tap_schema.columns where table_name='" + tableName + "'";
+            String query = "SELECT * FROM TAP_SCHEMA.columns where table_name='" + tableName + "'";
 
-            queryExternalTapServiceData(storedAccessUrl, "tap_schema.columns", null, query, false, false);
+            queryExternalTapServiceData(storedAccessUrl, "TAP_SCHEMA.columns", null, query, false, false);
         }
 
         private void exploreTapServiceTables(String tapUrl) {
@@ -416,7 +431,7 @@ public class GlobalTapPanel extends FlowPanel {
 
             // First we attempt to get tables from the tap_schema.
             // If that fails, we attempt to retrieve tables from tap/tables route.
-            String query = "SELECT schema_name, table_name, description FROM tap_schema.tables";
+            String query = "SELECT schema_name, table_name, description FROM TAP_SCHEMA.tables";
             String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                     + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
                     + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
