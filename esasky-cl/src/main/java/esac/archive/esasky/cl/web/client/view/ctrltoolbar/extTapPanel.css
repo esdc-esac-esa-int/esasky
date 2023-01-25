@@ -20,6 +20,7 @@
 
 .extTapPanel__tabPanel {
     display: block;
+    height: 100%;
 }
 
 

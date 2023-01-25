@@ -7,9 +7,8 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
@@ -29,7 +28,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
     private PopupHeader<ExtTapPanel> header;
     FlowPanel mainContainer;
-    TabPanel tabPanel;
+    TabLayoutPanel tabPanel;
 
     ExtTapTreeMap treeMap;
     GlobalTapPanel globalTapPanel;
@@ -65,24 +64,16 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
 
 
-        tabPanel = new TabPanel();
-        tabPanel.addSelectionHandler(event -> {
-            selectedTabIndex = event.getSelectedItem();
+        tabPanel = new TabLayoutPanel(50, Style.Unit.PX );
 
-            if (selectedTabIndex > 0) {
-                globalTapPanel.showActionWidgets();
-                header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
-            } else {
-                globalTapPanel.hideActionWidgets();
-            }
-        });
 
         tabPanel.addStyleName("extTapPanel__tabPanel");
 
         FlowPanel treeMapContainer = new FlowPanel();
         treeMap = new ExtTapTreeMap(EntityContext.EXT_TAP);
         treeMap.registerHeaderObserver(text -> {
-            if (tabPanel.getTabBar().getSelectedTab() == 0) {
+
+            if (tabPanel.getSelectedIndex() == 0) {
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP) + text);
             }
         });
@@ -97,8 +88,18 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
         tabPanel.add(globalTapPanel, "TAP Registry");
 
-        tabPanel.getDeckPanel().setStyleName("extTapPanel__deck");
         tabPanel.selectTab(0);
+
+        tabPanel.addSelectionHandler(event -> {
+            selectedTabIndex = event.getSelectedItem();
+
+            if (selectedTabIndex > 0) {
+                globalTapPanel.showActionWidgets();
+                header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
+            } else {
+                globalTapPanel.hideActionWidgets();
+            }
+        });
 
         mainContainer.add(header);
         mainContainer.add(tabPanel);
@@ -207,22 +208,8 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         elementStyle.setPropertyPx("maxWidth", maxWidth);
         elementStyle.setPropertyPx("maxHeight", maxHeight);
         updateDeckSize();
-        setMaxHeight();
-
         updateTreeMapSize();
     }
-
-    private void setMaxHeight() {
-        int headerSize = 50;
-        int height = mainContainer.getOffsetHeight() - headerSize - 5;
-
-        if (height > MainLayoutPanel.getMainAreaHeight()) {
-            height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
-        }
-
-        tabPanel.getElement().getStyle().setPropertyPx("height", height);
-    }
-
 
     private void setDefaultSize() {
         if(DeviceUtils.isMobile()) {
@@ -238,7 +225,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
     }
 
     private void updateTreeMapSize() {
-        treeMap.setSize(mainContainer.getOffsetWidth(), mainContainer.getOffsetHeight() - header.getOffsetHeight() - 98);
+        treeMap.setSize(mainContainer.getOffsetWidth(), mainContainer.getOffsetHeight() - header.getOffsetHeight() - 105);
         if (slider != null) {
             slider.updateSize(mainContainer.getOffsetWidth() - 30);
         }
@@ -246,13 +233,10 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
 
     private void updateDeckSize() {
-        Style elementStyle = tabPanel.getDeckPanel().getElement().getStyle();
+        Style elementStyle = tabPanel.getElement().getStyle();
         int maxWidth = mainContainer.getOffsetWidth() - 4;
-        int maxHeight = mainContainer.getOffsetHeight() - header.getOffsetHeight() - 34;
+        int maxHeight = mainContainer.getOffsetHeight() - header.getOffsetHeight();
         if (maxHeight > 0 && maxWidth > 0) {
-
-            tabPanel.getDeckPanel().setHeight(maxHeight + "px");
-            tabPanel.getDeckPanel().setWidth(maxWidth + "px");
             elementStyle.setPropertyPx("maxWidth", maxWidth);
             elementStyle.setPropertyPx("maxHeight", maxHeight);
         }

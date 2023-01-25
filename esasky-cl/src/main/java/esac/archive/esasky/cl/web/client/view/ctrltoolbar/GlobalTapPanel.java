@@ -117,6 +117,7 @@ public class GlobalTapPanel extends FlowPanel {
         tapTablesContainer.getElement().setId("browseTap__tabulatorTablesContainer");
         tapTablesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapTablesGlass.add(tapTablesContainer);
+        tapTablesGlass.addStyleName(DISPLAY_NONE);
 
         currentContainer = tapServicesGlass;
         currentWrapper = tapServicesWrapper;
@@ -178,7 +179,11 @@ public class GlobalTapPanel extends FlowPanel {
 
         FlowPanel backButtonContainer = new FlowPanel();
         backButtonContainer.setWidth("10px");
+        backButtonContainer.getElement().getStyle().setPropertyPx("marginLeft", 10);
+
         backButton = new EsaSkyButton(Icons.getBackArrowIcon());
+        backButton.setBackgroundColor("#000");
+        backButton.setRoundStyle();
         backButton.setVisible(false);
         backButton.addClickHandler(event -> {
             backButton.setVisible(false);
