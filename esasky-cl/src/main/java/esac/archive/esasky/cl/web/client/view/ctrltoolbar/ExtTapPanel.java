@@ -134,6 +134,8 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             switchBtn.setChecked(fovLimiterEnabled);
         });
 
+        setFovLimiterEnabled(fovLimiterEnabled);
+
         mainContainer.add(header);
         mainContainer.add(tabPanel);
         this.add(mainContainer);
