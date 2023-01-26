@@ -11,7 +11,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.DialogActionEvent;
@@ -64,9 +63,7 @@ public class GlobalTapPanel extends FlowPanel {
     private EsaSkyButton backButton;
     private LoadingSpinner loadingSpinner;
     private TabulatorCallback tabulatorCallback;
-    private final PopupHeader<? extends Panel> parentHeader;
-    private EsaSkySwitch switchBtn;
-
+    private boolean initialDataLoaded = false;
     private boolean fovLimiterEnabled;
     private static final String TABLE_NAME_COL = "table_name";
     private static final String DESCRIPTION_COL = "description";
@@ -75,17 +72,26 @@ public class GlobalTapPanel extends FlowPanel {
     private static final String DISPLAY_NONE = "displayNone";
     private static final String PLACEHOLDER = "placeholder";
 
+    public enum Modes {REGISTRY, VIZIER, ESA}
+
+    private final Modes mode;
+
+
     public interface Resources extends ClientBundle {
         @Source("globalTapPanel.css")
         @CssResource.NotStrict
         CssResource style();
     }
 
-    public GlobalTapPanel(PopupHeader<? extends Panel> parentHeader) {
+    public GlobalTapPanel() {
+        this(Modes.REGISTRY);
+    }
+
+    public GlobalTapPanel(Modes mode) {
         this.resources = GWT.create(GlobalTapPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
-        this.parentHeader = parentHeader;
+        this.mode = mode;
         initView();
     }
 
@@ -94,8 +100,6 @@ public class GlobalTapPanel extends FlowPanel {
         super.onLoad();
         initTapServicesWrapper();
         initTapServicesTableWrapper();
-        loadData();
-
     }
 
     private void initView() {
@@ -107,14 +111,14 @@ public class GlobalTapPanel extends FlowPanel {
         tapServicesGlass = new GlassFlowPanel();
         tapServicesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
         FlowPanel tapServicesContainer = new FlowPanel();
-        tapServicesContainer.getElement().setId("browseTap__tabulatorServicesContainer");
+        tapServicesContainer.getElement().setId("browseTap__tabulatorServicesContainer_" + mode);
         tapServicesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapServicesGlass.add(tapServicesContainer);
 
         tapTablesGlass = new GlassFlowPanel();
         tapTablesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
         FlowPanel tapTablesContainer = new FlowPanel();
-        tapTablesContainer.getElement().setId("browseTap__tabulatorTablesContainer");
+        tapTablesContainer.getElement().setId("browseTap__tabulatorTablesContainer_" + mode);
         tapTablesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapTablesGlass.add(tapTablesContainer);
         tapTablesGlass.addStyleName(DISPLAY_NONE);
@@ -165,28 +169,16 @@ public class GlobalTapPanel extends FlowPanel {
         searchBoxContainer.add(searchBox);
         searchBoxContainer.add(searchClearBtn);
 
-        fovLimiterEnabled = true;
-        switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
-                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
-                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted_tooltip"));
-        switchBtn.addStyleName("globalTapPanel__fovSwitch");
-
-        switchBtn.addClickHandler(event -> {
-            fovLimiterEnabled = !fovLimiterEnabled;
-            switchBtn.setChecked(fovLimiterEnabled);
-        });
-
-
         FlowPanel backButtonContainer = new FlowPanel();
         backButtonContainer.setWidth("10px");
         backButtonContainer.getElement().getStyle().setPropertyPx("marginLeft", 10);
 
         backButton = new EsaSkyButton(Icons.getBackArrowIcon());
-        backButton.setBackgroundColor("#000");
+        backButton.setBackgroundColor("#aaa");
         backButton.setRoundStyle();
-        backButton.setVisible(false);
+        setBackButtonVisible(false);
         backButton.addClickHandler(event -> {
-            backButton.setVisible(false);
+            setBackButtonVisible(false);
             showTable(tapServicesWrapper);
         });
         backButtonContainer.add(backButton);
@@ -215,8 +207,8 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setAddMetadataColumn(false);
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
-        tapServicesWrapper = new TabulatorWrapper("browseTap__tabulatorServicesContainer", tabulatorCallback, settings);
-        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorServicesContainer_rowCount");
+        tapServicesWrapper = new TabulatorWrapper("browseTap__tabulatorServicesContainer_" + mode, tabulatorCallback, settings);
+        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorServicesContainer_" + mode + "_rowCount");
         rowCountFooter.getStyle().setMarginTop(-25, Style.Unit.PX);
 
     }
@@ -229,23 +221,15 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setSelectable(1);
         settings.setAddObscoreTableColumn(true);
         settings.setAddOpenTableColumn(true);
-        tapTablesWrapper = new TabulatorWrapper("browseTap__tabulatorTablesContainer", tabulatorCallback, settings);
+        tapTablesWrapper = new TabulatorWrapper("browseTap__tabulatorTablesContainer_" + mode, tabulatorCallback, settings);
         tapTablesWrapper.groupByColumns("schema_name");
-        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorTablesContainer_rowCount");
+        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorTablesContainer_" + mode + "_rowCount");
         rowCountFooter.getStyle().setMarginTop(-25, Style.Unit.PX);
     }
 
 
     private void onDataLoaded(String jsonString, TabulatorWrapper wrapper) {
         onDataLoaded(jsonString, wrapper, null, (String) null);
-
-
-//        if (openVizier) {
-//            GeneralJavaScriptObject[] formatted = GeneralJavaScriptObject.convertToArray(ExtTapUtils.formatExternalTapData(data, metadata));
-//            GeneralJavaScriptObject row = findVizier(formatted);
-//            wrapper.onRowSelection(row);
-//        }
-
     }
 
     private void onDataLoaded(String jsonString, TabulatorWrapper wrapper, String sortByColumn, String... hiddenColumns) {
@@ -274,19 +258,29 @@ public class GlobalTapPanel extends FlowPanel {
         wrapper.redrawAndReinitializeHozVDom();
     }
 
-    private native GeneralJavaScriptObject findVizier(GeneralJavaScriptObject[] dataArr) /*-{
-        for (var i = 0; i < dataArr.length; i++) {
-            if (dataArr[i].ivoid === "ivo://cds.vizier/tap") {
-                return dataArr[i];
-            }
-        }
-
-        return {}
-    }-*/;
-
     public void loadData() {
-        setIsLoading(true);
-        JSONUtils.getJSONFromUrl(EsaSkyWebConstants.TAPREGISTRY_URL, new JSONUtils.IJSONRequestCallback() {
+        if (!initialDataLoaded) {
+            setIsLoading(true);
+
+            if (mode.equals(Modes.REGISTRY)) {
+                loadRegistryData("");
+            } else if (mode.equals(Modes.VIZIER)) {
+                loadVizierData();
+            } else if (mode.equals(Modes.ESA)) {
+                loadRegistryData("ivo://esavo");
+            }
+
+            initialDataLoaded = true;
+        }
+    }
+
+
+    private void loadRegistryData(String ivoid) {
+        String url = EsaSkyWebConstants.TAPREGISTRY_URL;
+        if (ivoid != null && !ivoid.isEmpty()) {
+            url += "?" + EsaSkyConstants.REGISTRY_TAP_IVOID + "=" + ivoid;
+        }
+        JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
             @Override
             public void onSuccess(String responseText) {
                 setIsLoading(false);
@@ -296,12 +290,16 @@ public class GlobalTapPanel extends FlowPanel {
             @Override
             public void onError(String errorCause) {
                 setIsLoading(false);
+                showErrorMessage("Registry", errorCause);
             }
-        });
+        }, true);
     }
 
-
-
+    private void loadVizierData() {
+        exploreTapServiceTables("http://tapvizier.cds.unistra.fr/TAPVizieR/tap", "VizieR");
+        tabulatorCallback.storedAccessUrl = "http://tapvizier.cds.unistra.fr/TAPVizieR/tap";
+        tabulatorCallback.storedName = "VizieR";
+    }
 
     private void showTable(TabulatorWrapper wrapper) {
         searchBox.setText(wrapper.getFilterQuery());
@@ -339,6 +337,165 @@ public class GlobalTapPanel extends FlowPanel {
         loadingSpinner.setVisible(isLoading);
     }
 
+    private void queryExternalTapServiceData(String tapUrl, String tableName, String mission, String description, String query, boolean fovLimit, boolean useUnprocessedQuery) {
+        queryExternalTapServiceMetadata(tapUrl, query, new JSONUtils.IJSONRequestCallback() {
+            @Override
+            public void onSuccess(String responseText) {
+                setIsLoading(false);
+
+                TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                TapDescriptorList descriptorList = mapper.read(responseText);
+
+                if (descriptorList != null) {
+                    List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
+                    CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
+                            tableName, mission, description, query, fovLimit && fovLimiterEnabled, useUnprocessedQuery);
+                    commonTapDescriptor.setColor(ESASkyColors.getNext());
+                    if (fovLimit && fovLimiterEnabled && commonTapDescriptor.isFovLimitDisabled()) {
+                        handleMissingColumns(commonTapDescriptor);
+                    } else {
+                        CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String errorCause) {
+                showErrorMessage(mission, errorCause);
+                setIsLoading(false);
+            }
+        });
+    }
+
+    private void queryExternalTapServiceMetadata(String tapUrl, String query, JSONUtils.IJSONRequestCallback callback) {
+        setIsLoading(true);
+
+        String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + URL.encodeQueryString(query) + "&"
+                + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
+                + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 1;
+
+        JSONUtils.getJSONFromUrl(url, callback, true);
+    }
+
+    public void exploreTapServiceTables(String tapUrl, String mission) {
+        setIsLoading(true);
+
+        // First we attempt to get tables from the tap_schema.
+        // If that fails, we attempt to retrieve tables from tap/tables route.
+        String query = "SELECT schema_name, table_name, description FROM TAP_SCHEMA.tables";
+        String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
+                + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
+                + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
+                + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 100000;
+
+        JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+            @Override
+            public void onSuccess(String responseText) {
+                setIsLoading(false);
+                setBackButtonVisible(true);
+                GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
+            }
+
+            @Override
+            public void onError(String errorCause) {
+
+                String url = EsaSkyWebConstants.TAPREGISTRY_URL
+                        + "?" + EsaSkyConstants.REGISTRY_TAP_TARGET + "=" + tapUrl;
+                JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+                    @Override
+                    public void onSuccess(String responseText) {
+                        setIsLoading(false);
+                        setBackButtonVisible(true);
+                        GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
+                    }
+
+                    @Override
+                    public void onError(String errorCause) {
+                        showErrorMessage(mission, errorCause);
+                        setIsLoading(false);
+                    }
+                });
+            }
+        }, true);
+    }
+
+    private void showErrorMessage(String name, String details) {
+        String title = TextMgr.getInstance().getText("global_tap_panel_query_failed_title");
+        String body = TextMgr.getInstance().getText("global_tap_panel_query_failed_body").replace("$TAP_SERVICE$", name);
+        body += "<br><br><details style=\"overflow: scroll; max-height: 80px;\">" + details + "</details>";
+        DisplayUtils.showMessageDialogBox(body, title, UUID.randomUUID().toString(), GoogleAnalytics.CAT_GLOBALTAPPANEL_ERRORDIALOG);
+    }
+
+    private void handleMissingColumns(CommonTapDescriptor descriptor) {
+        ConfirmationPopupPanel confirmationPopupPanel = createConfirmationPopupPanel();
+
+        confirmationPopupPanel.addDialogEventHandler(action -> {
+            if (action.getAction() == DialogActionEvent.DialogAction.YES) {
+                handleColumnSelection(descriptor);
+            } else if (action.getAction() == DialogActionEvent.DialogAction.NO) {
+                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+            }
+        });
+
+        confirmationPopupPanel.show();
+    }
+
+    private void handleColumnSelection(CommonTapDescriptor descriptor) {
+        ColumnSelectorPopupPanel columnSelectorPopupPanel = createColumnSelectionPopupPanel(descriptor.getMetadata());
+        columnSelectorPopupPanel.addColumnSelectionHandler(event -> {
+            if (event.isRegionQuery()) {
+                descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getRegionColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_OUTLINE.getValue()));
+                descriptor.setUseIntersectsPolygon(true);
+            } else {
+                descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getRaColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_EQ_RA.getValue()));
+                descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getDecColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_EQ_DEC.getValue()));
+            }
+
+            descriptor.setFovLimitDisabled(false);
+            CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
+        });
+
+        columnSelectorPopupPanel.show();
+    }
+
+    private QueryPopupPanel createQueryPopupPanel(String mission) {
+        QueryPopupPanel popupPanel = new QueryPopupPanel();
+
+        String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
+        popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
+                mission, description + event.getQuery(), event.getQuery(), false, true));
+
+        return popupPanel;
+    }
+
+    private ConfirmationPopupPanel createConfirmationPopupPanel() {
+        return new ConfirmationPopupPanel(
+                GoogleAnalytics.CAT_GLOBALTAP_SELECTCOLUMNPANEL,
+                TextMgr.getInstance().getText("global_tap_panel_missing_column_title"),
+                TextMgr.getInstance().getText("global_tap_panel_missing_column_body"),
+                TextMgr.getInstance().getText("global_tap_panel_missing_column_body"));
+    }
+
+    private ColumnSelectorPopupPanel createColumnSelectionPopupPanel(List<TapMetadataDescriptor> metadataList) {
+        return new ColumnSelectorPopupPanel(TextMgr.getInstance().getText("global_tap_panel_column_selector_header"),
+                TextMgr.getInstance().getText("global_tap_panel_column_selector_help"), metadataList);
+    }
+
+
+    public HandlerRegistration addTreeMapNewDataHandler(TreeMapNewDataEventHandler handler) {
+        return addHandler(handler, TreeMapNewDataEvent.TYPE);
+    }
+
+    public void setBackButtonVisible(boolean visible) {
+        backButton.setVisible(visible && !mode.equals(Modes.VIZIER));
+    }
+
+    public void setFovLimiterEnabled(boolean enabled) {
+        fovLimiterEnabled = enabled;
+    }
 
     // Tabulator interaction
     private class TabulatorCallback extends DefaultTabulatorCallback {
@@ -371,7 +528,7 @@ public class GlobalTapPanel extends FlowPanel {
 
             if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
-                exploreTapServiceTables(accessUrl);
+                exploreTapServiceTables(accessUrl, storedName);
             }
         }
 
@@ -381,13 +538,13 @@ public class GlobalTapPanel extends FlowPanel {
             String description = rowData.getStringProperty(DESCRIPTION_COL);
             String query = "SELECT * FROM " + encapsulateTableName;
 
-            queryExternalTapServiceData(storedAccessUrl, encapsulateTableName, description, query, true, false);
+            queryExternalTapServiceData(storedAccessUrl, encapsulateTableName, storedName, description, query, true, false);
         }
 
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
             if (queryPopupPanel == null) {
-                queryPopupPanel = createQueryPopupPanel();
+                queryPopupPanel = createQueryPopupPanel(storedName);
             }
 
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
@@ -431,167 +588,8 @@ public class GlobalTapPanel extends FlowPanel {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM TAP_SCHEMA.columns where table_name='" + tableName + "'";
 
-            queryExternalTapServiceData(storedAccessUrl, "TAP_SCHEMA.columns", null, query, false, false);
+            queryExternalTapServiceData(storedAccessUrl, "TAP_SCHEMA.columns", storedName,null, query, false, false);
         }
-
-        private void exploreTapServiceTables(String tapUrl) {
-            setIsLoading(true);
-
-            // First we attempt to get tables from the tap_schema.
-            // If that fails, we attempt to retrieve tables from tap/tables route.
-            String query = "SELECT schema_name, table_name, description FROM TAP_SCHEMA.tables";
-            String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
-                    + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + query + "&"
-                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
-                    + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 100000;
-
-            JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
-                @Override
-                public void onSuccess(String responseText) {
-                    setIsLoading(false);
-                    backButton.setVisible(true);
-                    GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
-                }
-
-                @Override
-                public void onError(String errorCause) {
-
-                    String url = EsaSkyWebConstants.TAPREGISTRY_URL
-                            + "?" + EsaSkyConstants.REGISTRY_TAP_TARGET + "=" + tapUrl;
-                    JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
-                        @Override
-                        public void onSuccess(String responseText) {
-                            setIsLoading(false);
-                            backButton.setVisible(true);
-                            GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
-                        }
-
-                        @Override
-                        public void onError(String errorCause) {
-                            showErrorMessage(storedName, errorCause);
-                            setIsLoading(false);
-                        }
-                    });
-                }
-            }, true);
-        }
-
-        private void queryExternalTapServiceData(String tapUrl, String tableName, String description, String query, boolean fovLimit, boolean useUnprocessedQuery) {
-            queryExternalTapServiceMetadata(tapUrl, query, new JSONUtils.IJSONRequestCallback() {
-                @Override
-                public void onSuccess(String responseText) {
-                    setIsLoading(false);
-
-                    TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
-                    TapDescriptorList descriptorList = mapper.read(responseText);
-
-                    if (descriptorList != null) {
-                        List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, tapUrl,
-                                tableName, storedName, description, query, fovLimit && fovLimiterEnabled, useUnprocessedQuery);
-                        commonTapDescriptor.setColor(ESASkyColors.getNext());
-                        if (fovLimit && fovLimiterEnabled && commonTapDescriptor.isFovLimitDisabled()) {
-                            handleMissingColumns(commonTapDescriptor);
-                        } else {
-                            CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(commonTapDescriptor));
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(String errorCause) {
-                    showErrorMessage(storedName, errorCause);
-                    setIsLoading(false);
-                }
-            });
-        }
-
-        private void queryExternalTapServiceMetadata(String tapUrl, String query, JSONUtils.IJSONRequestCallback callback) {
-            setIsLoading(true);
-
-            String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
-                    + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
-                    + EsaSkyConstants.EXT_TAP_ADQL_FLAG + "=" + URL.encodeQueryString(query) + "&"
-                    + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
-                    + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 1;
-
-            JSONUtils.getJSONFromUrl(url, callback, true);
-        }
-
-        private void showErrorMessage(String name, String details) {
-            String title = TextMgr.getInstance().getText("global_tap_panel_query_failed_title");
-            String body = TextMgr.getInstance().getText("global_tap_panel_query_failed_body").replace("$TAP_SERVICE$", name);
-            body += "<br><br><details style=\"overflow: scroll; max-height: 80px;\">" + details + "</details>";
-            DisplayUtils.showMessageDialogBox(body, title, UUID.randomUUID().toString(), GoogleAnalytics.CAT_GLOBALTAPPANEL_ERRORDIALOG);
-        }
-
-        private void handleMissingColumns(CommonTapDescriptor descriptor) {
-            ConfirmationPopupPanel confirmationPopupPanel = createConfirmationPopupPanel();
-
-            confirmationPopupPanel.addDialogEventHandler(action -> {
-                if (action.getAction() == DialogActionEvent.DialogAction.YES) {
-                    handleColumnSelection(descriptor);
-                } else if (action.getAction() == DialogActionEvent.DialogAction.NO) {
-                    CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
-                }
-            });
-
-            confirmationPopupPanel.show();
-        }
-
-        private void handleColumnSelection(CommonTapDescriptor descriptor) {
-            ColumnSelectorPopupPanel columnSelectorPopupPanel = createColumnSelectionPopupPanel(descriptor.getMetadata());
-            columnSelectorPopupPanel.addColumnSelectionHandler(event -> {
-                if (event.isRegionQuery()) {
-                    descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getRegionColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_OUTLINE.getValue()));
-                    descriptor.setUseIntersectsPolygon(true);
-                } else {
-                    descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getRaColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_EQ_RA.getValue()));
-                    descriptor.getMetadata().stream().filter(x -> Objects.equals(x.getName(), event.getDecColumn())).findFirst().ifPresent(y -> y.setUcd(UCD.POS_EQ_DEC.getValue()));
-                }
-
-                descriptor.setFovLimitDisabled(false);
-                CommonEventBus.getEventBus().fireEvent(new TapRegistrySelectEvent(descriptor));
-            });
-
-            columnSelectorPopupPanel.show();
-        }
-
-        private QueryPopupPanel createQueryPopupPanel() {
-            QueryPopupPanel popupPanel = new QueryPopupPanel();
-
-            String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
-            popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
-                    description + event.getQuery(), event.getQuery(), false, true));
-
-            return popupPanel;
-        }
-
-        private ConfirmationPopupPanel createConfirmationPopupPanel() {
-            return new ConfirmationPopupPanel(
-                    GoogleAnalytics.CAT_GLOBALTAP_SELECTCOLUMNPANEL,
-                    TextMgr.getInstance().getText("global_tap_panel_missing_column_title"),
-                    TextMgr.getInstance().getText("global_tap_panel_missing_column_body"),
-                    TextMgr.getInstance().getText("global_tap_panel_missing_column_body"));
-        }
-
-        private ColumnSelectorPopupPanel createColumnSelectionPopupPanel(List<TapMetadataDescriptor> metadataList) {
-            return new ColumnSelectorPopupPanel(TextMgr.getInstance().getText("global_tap_panel_column_selector_header"),
-                    TextMgr.getInstance().getText("global_tap_panel_column_selector_help"), metadataList);
-        }
-    }
-
-    public HandlerRegistration addTreeMapNewDataHandler(TreeMapNewDataEventHandler handler) {
-        return addHandler(handler, TreeMapNewDataEvent.TYPE);
-    }
-
-    public void hideActionWidgets() {
-        parentHeader.removeActionWidget(switchBtn);
-    }
-
-    public void showActionWidgets() {
-        parentHeader.addActionWidget(switchBtn);
     }
 
 }

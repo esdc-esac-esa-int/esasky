@@ -13,6 +13,7 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.ExtTapTreeMap;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
@@ -31,13 +32,19 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
     TabLayoutPanel tabPanel;
 
     ExtTapTreeMap treeMap;
-    GlobalTapPanel globalTapPanel;
+    GlobalTapPanel registryPanel;
+    GlobalTapPanel vizierPanel;
+    GlobalTapPanel esaPanel;
 
     private int selectedTabIndex = 0;
 
     private ESASkyMultiRangeSlider slider;
 
     private final List<TreeMapChanged> observers = new LinkedList<>();
+    private boolean fovLimiterEnabled;
+    private EsaSkySwitch switchBtn;
+
+    private enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
 
     public interface Resources extends ClientBundle {
         @Source("extTapPanel.css")
@@ -63,42 +70,68 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
                 TextMgr.getInstance().getText("treeMap_EXT_TAP"));
 
 
+        fovLimiterEnabled = true;
+        switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
+                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
+                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted_tooltip"));
+        switchBtn.addStyleName("globalTapPanel__fovSwitch");
+
 
         tabPanel = new TabLayoutPanel(50, Style.Unit.PX );
-
-
         tabPanel.addStyleName("extTapPanel__tabPanel");
 
         FlowPanel treeMapContainer = new FlowPanel();
         treeMap = new ExtTapTreeMap(EntityContext.EXT_TAP);
         treeMap.registerHeaderObserver(text -> {
-
-            if (tabPanel.getSelectedIndex() == 0) {
+            if (tabPanel.getSelectedIndex() == TabIndex.REGISTRY.ordinal()) {
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP) + text);
             }
         });
+
         treeMapContainer.add(treeMap);
         FlowPanel sliderContainer = initSliderContainer();
         treeMapContainer.add(sliderContainer);
 
         tabPanel.add(treeMapContainer, "Treemap");
 
-        globalTapPanel = new GlobalTapPanel(header);
-        globalTapPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
+        registryPanel = new GlobalTapPanel();
+        registryPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
+        tabPanel.add(registryPanel, "TAP Registry");
 
-        tabPanel.add(globalTapPanel, "TAP Registry");
+        vizierPanel = new GlobalTapPanel(GlobalTapPanel.Modes.VIZIER);
+        registryPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
+        tabPanel.add(vizierPanel, "VizieR");
 
-        tabPanel.selectTab(0);
+        esaPanel = new GlobalTapPanel(GlobalTapPanel.Modes.ESA);
+        esaPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
+        tabPanel.add(esaPanel, "ESA");
+
+        tabPanel.selectTab(TabIndex.TREEMAP.ordinal());
 
         tabPanel.addSelectionHandler(event -> {
             selectedTabIndex = event.getSelectedItem();
 
-            if (selectedTabIndex > 0) {
-                globalTapPanel.showActionWidgets();
+            if (selectedTabIndex == TabIndex.REGISTRY.ordinal()) {
+                registryPanel.loadData();
+            } else if (selectedTabIndex == TabIndex.VIZIER.ordinal()) {
+                vizierPanel.loadData();
+            } else if (selectedTabIndex == TabIndex.ESA.ordinal()) {
+                esaPanel.loadData();
+            }
+
+            if (selectedTabIndex != TabIndex.TREEMAP.ordinal()) {
+                header.addActionWidget(switchBtn);
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
             } else {
-                globalTapPanel.hideActionWidgets();
+                header.removeActionWidget(switchBtn);
             }
+
+        });
+
+
+        switchBtn.addClickHandler(event -> {
+            setFovLimiterEnabled(!fovLimiterEnabled);
+            switchBtn.setChecked(fovLimiterEnabled);
         });
 
         mainContainer.add(header);
@@ -154,11 +187,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             updateSliderColor(0, ESASkyColors.maxIndex());
         }
         setMaxSize();
-    }
-
-
-    public TreeMapContainer getTreeMapContainer() {
-        return null;
     }
 
     public void addTreeMapData(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
@@ -240,12 +268,9 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             elementStyle.setPropertyPx("maxWidth", maxWidth);
             elementStyle.setPropertyPx("maxHeight", maxHeight);
         }
-
-
     }
 
     public void updateSliderColor(double low, double high) {
-
         double botPosition = (1 - (low - Math.floor(low))) / (high - low);
         double topPosition = (1 - (Math.ceil(high) - high)) / (high - low);
 
@@ -283,4 +308,12 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             observer.onClose();
         }
     }
+
+    public void setFovLimiterEnabled(boolean enabled) {
+        fovLimiterEnabled = enabled;
+        registryPanel.setFovLimiterEnabled(fovLimiterEnabled);
+        vizierPanel.setFovLimiterEnabled(fovLimiterEnabled);
+        esaPanel.setFovLimiterEnabled(fovLimiterEnabled);
+    }
+
 }
