@@ -19,9 +19,7 @@ import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
-import esac.archive.esasky.cl.web.client.event.AuthorSearchEvent;
-import esac.archive.esasky.cl.web.client.event.BibcodeSearchEvent;
-import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.event.sso.SSOCrossMatchEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SearchPresenter;
@@ -152,7 +150,6 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         this.searchTextBox.getElement().setPropertyString("placeholder", TextMgr.getInstance().getText("searchPanel_search"));
 
         if (Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_TOOL)) {
-//            searchToolPanel.getElement().getStyle().setDisplay(Display.NONE);
             searchTextBox.setVisible(true);
         }else {
             searchTextBox.setVisible(false);
@@ -316,14 +313,29 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         selectionContainer.add(searchToolBoxButton);
 
-        if (!Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_TOOL)) {
-            searchToolBoxButton.getElement().getStyle().setDisplay(Display.NONE);
-        }
-
+        // Remove Cone Button if Science mode is disabled
+        CommonEventBus.getEventBus().addHandler(IsInScienceModeChangeEvent.TYPE, () -> {
+            if(!GUISessionStatus.getIsInScienceMode()) {
+                hideToolBoxButton(searchToolBoxButton);
+            } else {
+                showToolBoxButton(searchToolBoxButton);
+            }
+        });
 
         return selectionContainer;
     }
 
+    private void hideToolBoxButton(Widget widget) {
+        if (widget != null) {
+            widget.getElement().getStyle().setDisplay(Display.NONE);
+        }
+    }
+
+    private void showToolBoxButton(Widget widget) {
+        if (widget != null) {
+            widget.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+        }
+    }
 	private EsaSkyButton createTargetListBtn() {
 		targetListPanel = new TargetListPanel();
 
