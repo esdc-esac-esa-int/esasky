@@ -729,8 +729,11 @@ public class TabulatorWrapper {
         if (details != null && details.length > 0) {
             template.innerHTML = "<div>" + $wnd.esasky.getInternationalizationText("tabulator_loadFailed")
                 + ".<br><br>" + error.trim()
-                + "<br><br> <details style=\"color: grey; opacity: 60%;border: 1px solid grey;border-radius: 4px;padding: 0.5em; overflow: scroll; max-height: 80px;\">"
-                + details + "</details></div>";
+                + "<br><br> "
+                + "<details style=\"color: grey; opacity: 60%;border: 1px solid grey;border-radius: 4px;padding: 0.5em; overflow: scroll; max-height: 80px;font-size: small;\">"
+                + "<p style=\"white-space: pre-line; text-align: left; font-size: smaller;\">" + details + "</p>"
+                + "</details>"
+                + "</div>";
         } else {
             template.innerHTML = "<div>" + $wnd.esasky.getInternationalizationText("tabulator_loadFailed")
                 + ".<br><br>" + error.trim() +  "</div>";

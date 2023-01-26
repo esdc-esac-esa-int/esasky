@@ -39,10 +39,18 @@ public class JSONUtils {
 
     /** Request a JSON String from url passed as parameter. */
     public static void getJSONFromUrl(final String url, final IJSONRequestCallback callback) {
-        getJSONFromUrl(url, callback, DEFAULT_JSON_TIMEOUT);
+        getJSONFromUrl(url, callback, DEFAULT_JSON_TIMEOUT, false);
     }
-    
+
+    public static void getJSONFromUrl(final String url, final IJSONRequestCallback callback, boolean handleServerError) {
+        getJSONFromUrl(url, callback, DEFAULT_JSON_TIMEOUT, handleServerError);
+    }
+
     public static void getJSONFromUrl(final String url, final IJSONRequestCallback callback, int timeoutMillis) {
+        getJSONFromUrl(url, callback, timeoutMillis, false);
+    }
+
+    public static void getJSONFromUrl(final String url, final IJSONRequestCallback callback, int timeoutMillis, boolean handleServerError) {
         
         Log.debug("[getJSONFromUrl] Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -58,7 +66,14 @@ public class JSONUtils {
                     } else {
                         Log.error("[getJSONFromUrl] Couldn't retrieve JSON ("
                                 + response.getStatusText() + ") from " + url);
-                        callback.onError("Couldn't retrieve JSON: " + response.getStatusText());
+
+                        if (handleServerError) {
+                            callback.onError(response.getText());
+                        } else {
+                            callback.onError("Couldn't retrieve JSON: " + response.getStatusText());
+                        }
+
+
                     }
 
                     callback.whenComplete();

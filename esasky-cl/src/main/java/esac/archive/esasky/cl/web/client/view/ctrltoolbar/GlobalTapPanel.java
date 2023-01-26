@@ -359,12 +359,15 @@ public class GlobalTapPanel extends FlowPanel {
                     ? rowData.getStringProperty(ACCESS_URL_COL)
                     : storedAccessUrl;
 
-            String name = rowData.hasProperty(SHORT_NAME_COL)
-                    ? rowData.getStringProperty(SHORT_NAME_COL)
-                    : storedName;
+            if (!Objects.equals(accessUrl, storedAccessUrl)) {
+                String name = rowData.hasProperty(SHORT_NAME_COL)
+                        ? rowData.getStringProperty(SHORT_NAME_COL)
+                        : rowData.getStringProperty("res_title");
 
-            storedAccessUrl = accessUrl;
-            storedName = name;
+                storedAccessUrl = accessUrl;
+                storedName = name;
+            }
+
 
             if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
@@ -416,7 +419,7 @@ public class GlobalTapPanel extends FlowPanel {
 
                 @Override
                 public void onError(String errorCause) {
-                    showErrorMessage(storedName);
+                    showErrorMessage(storedName, errorCause);
                     setIsLoading(false);
                 }
             });
@@ -466,12 +469,12 @@ public class GlobalTapPanel extends FlowPanel {
 
                         @Override
                         public void onError(String errorCause) {
-                            showErrorMessage(storedName);
+                            showErrorMessage(storedName, errorCause);
                             setIsLoading(false);
                         }
                     });
                 }
-            });
+            }, true);
         }
 
         private void queryExternalTapServiceData(String tapUrl, String tableName, String description, String query, boolean fovLimit, boolean useUnprocessedQuery) {
@@ -498,7 +501,7 @@ public class GlobalTapPanel extends FlowPanel {
 
                 @Override
                 public void onError(String errorCause) {
-                    showErrorMessage(storedName);
+                    showErrorMessage(storedName, errorCause);
                     setIsLoading(false);
                 }
             });
@@ -513,12 +516,13 @@ public class GlobalTapPanel extends FlowPanel {
                     + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl + "&"
                     + EsaSkyConstants.EXT_TAP_MAX_REC_FLAG + "=" + 1;
 
-            JSONUtils.getJSONFromUrl(url, callback);
+            JSONUtils.getJSONFromUrl(url, callback, true);
         }
 
-        private void showErrorMessage(String name) {
+        private void showErrorMessage(String name, String details) {
             String title = TextMgr.getInstance().getText("global_tap_panel_query_failed_title");
             String body = TextMgr.getInstance().getText("global_tap_panel_query_failed_body").replace("$TAP_SERVICE$", name);
+            body += "<br><br><details style=\"overflow: scroll; max-height: 80px;\">" + details + "</details>";
             DisplayUtils.showMessageDialogBox(body, title, UUID.randomUUID().toString(), GoogleAnalytics.CAT_GLOBALTAPPANEL_ERRORDIALOG);
         }
 

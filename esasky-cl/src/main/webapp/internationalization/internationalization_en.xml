@@ -4223,7 +4223,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		We are unable to process the response from this resource. See details for more information.
 	</text>
 	<text key="tabulator_loadFailed_400">
-		This resource might not support cone search. Please try again without the FOV restriction.&lt;br&gt;
+		This resource might not support cone search. Please try again without the FoV restriction.&lt;br&gt;
 		(Top right toggle button in the External TAP Registry window)
 	</text>
 	<text key="global_tap_panel_custom_query_description">
