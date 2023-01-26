@@ -183,7 +183,10 @@ public class TabulatorWrapper {
     }
 
     private native void hideColumn(GeneralJavaScriptObject tableJsObject, String field)/*-{
-        tableJsObject.getColumn(field).hide(true);
+        var column = tableJsObject.getColumn(field);
+        if (column  ) {
+            column.hide(true);
+        }
     }-*/;
 
     public void sortByColumn(String column, boolean asc) {

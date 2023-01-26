@@ -71,6 +71,8 @@ public class GlobalTapPanel extends FlowPanel {
     private static final String SHORT_NAME_COL = "short_name";
     private static final String DISPLAY_NONE = "displayNone";
     private static final String PLACEHOLDER = "placeholder";
+    private static final String TABULATOR_SERVICE_ID_PREFIX = "browseTap__tabulatorServicesContainer_";
+    private static final String TABULATOR_TABLE_ID_PREFIX = "browseTap__tabulatorTablesContainer_";
 
     public enum Modes {REGISTRY, VIZIER, ESA}
 
@@ -111,14 +113,14 @@ public class GlobalTapPanel extends FlowPanel {
         tapServicesGlass = new GlassFlowPanel();
         tapServicesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
         FlowPanel tapServicesContainer = new FlowPanel();
-        tapServicesContainer.getElement().setId("browseTap__tabulatorServicesContainer_" + mode);
+        tapServicesContainer.getElement().setId(TABULATOR_SERVICE_ID_PREFIX + mode);
         tapServicesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapServicesGlass.add(tapServicesContainer);
 
         tapTablesGlass = new GlassFlowPanel();
         tapTablesGlass.addStyleName("globalTapPanel__tabulatorGlassContainer");
         FlowPanel tapTablesContainer = new FlowPanel();
-        tapTablesContainer.getElement().setId("browseTap__tabulatorTablesContainer_" + mode);
+        tapTablesContainer.getElement().setId(TABULATOR_TABLE_ID_PREFIX + mode);
         tapTablesContainer.addStyleName("globalTapPanel__tabulatorContainer");
         tapTablesGlass.add(tapTablesContainer);
         tapTablesGlass.addStyleName(DISPLAY_NONE);
@@ -207,8 +209,8 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setAddMetadataColumn(false);
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
-        tapServicesWrapper = new TabulatorWrapper("browseTap__tabulatorServicesContainer_" + mode, tabulatorCallback, settings);
-        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorServicesContainer_" + mode + "_rowCount");
+        tapServicesWrapper = new TabulatorWrapper(TABULATOR_SERVICE_ID_PREFIX + mode, tabulatorCallback, settings);
+        final Element rowCountFooter = Document.get().getElementById(TABULATOR_SERVICE_ID_PREFIX + mode + "_rowCount");
         rowCountFooter.getStyle().setMarginTop(-25, Style.Unit.PX);
 
     }
@@ -221,9 +223,9 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setSelectable(1);
         settings.setAddObscoreTableColumn(true);
         settings.setAddOpenTableColumn(true);
-        tapTablesWrapper = new TabulatorWrapper("browseTap__tabulatorTablesContainer_" + mode, tabulatorCallback, settings);
+        tapTablesWrapper = new TabulatorWrapper(TABULATOR_TABLE_ID_PREFIX + mode, tabulatorCallback, settings);
         tapTablesWrapper.groupByColumns("schema_name");
-        final Element rowCountFooter = Document.get().getElementById("browseTap__tabulatorTablesContainer_" + mode + "_rowCount");
+        final Element rowCountFooter = Document.get().getElementById(TABULATOR_TABLE_ID_PREFIX + mode + "_rowCount");
         rowCountFooter.getStyle().setMarginTop(-25, Style.Unit.PX);
     }
 
