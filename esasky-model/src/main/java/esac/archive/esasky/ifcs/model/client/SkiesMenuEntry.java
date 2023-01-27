@@ -6,7 +6,7 @@ import java.util.List;
 public class SkiesMenuEntry {
 
     private Integer total;
-    private HipsWavelength wavelength;
+    private String wavelength;
     private List<HiPS> hips = new LinkedList<HiPS>();
 
     public Integer getTotal() {
@@ -17,11 +17,11 @@ public class SkiesMenuEntry {
         this.total = total;
     }
 
-    public HipsWavelength getWavelength() {
+    public String getWavelength() {
         return wavelength;
     }
 
-    public void setWavelength(HipsWavelength wavelength) {
+    public void setWavelength(String wavelength) {
         this.wavelength = wavelength;
     }
 

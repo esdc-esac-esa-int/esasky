@@ -1,8 +1,13 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import com.gargoylesoftware.htmlunit.javascript.host.Console;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -48,10 +53,9 @@ public class SkyRow extends Composite implements Selectable{
  
 	private EsaSkyRadioButton isSelectedBtn;
 	private CloseButton removeSkyBtn;
-	private DropDownMenu<HipsWavelength> wavelengthDropDown;
+	private DropDownMenu<String> wavelengthDropDown;
 	private DropDownMenu<HiPS> hipsDropDown;
 	private boolean onlyOneSkyActive = true;
-	private static List<HiPS> listOfUserHips = new LinkedList<HiPS>();
 	private boolean isChosenFromSlider = false;
 	private boolean blockNotifications = false;
 
@@ -85,22 +89,27 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public SkyRow(SkiesMenu skiesMenu, String hipsName){
+	    this(skiesMenu, hipsName, null);
+	}
+	
+	public SkyRow(SkiesMenu skiesMenu, String hipsName, String category){
 	    blockNotifications = true;
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		this.skiesMenu = skiesMenu;
 
-		HipsWavelength wavelength = skiesMenu.getWavelengthFromHiPSName(hipsName);
+		String wavelength = category != null ? category : skiesMenu.getWavelengthFromHiPSName(hipsName);
 		if(wavelength == null){
-			wavelength = EsaSkyConstants.DEFAULT_WAVELENGTH;
+			wavelength = EsaSkyConstants.DEFAULT_WAVELENGTH.toString();
 			hipsName = EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
 		}
+		
 		initView(wavelength, hipsName);
 		blockNotifications = false;
 	}
 
-	private void initView(HipsWavelength defaultWavelength, String defaultHips) {
+	private void initView(String defaultWavelength, String defaultHips) {
 		skyPanel = new FlowPanel();
 		skyPanel.setStyleName(this.style.skyPanel());
 
@@ -140,9 +149,9 @@ public class SkyRow extends Composite implements Selectable{
 		}
 	}
 
-	private DropDownMenu<HipsWavelength> createWavelengthDropdown() {
+	private DropDownMenu<String> createWavelengthDropdown() {
 
-		final DropDownMenu<HipsWavelength> wavelengthDropDown = new DropDownMenu<HipsWavelength>
+		final DropDownMenu<String> wavelengthDropDown = new DropDownMenu<String>
 		(TextMgr.getInstance().getText("sky_wavelength"), 
 				TextMgr.getInstance().getText("sky_selectWavelength"), WAVELENGTH_PX_SIZE, "wavelengthDropDown");
 
@@ -151,8 +160,10 @@ public class SkyRow extends Composite implements Selectable{
 			@Override
 			public void onSelectedChange() {
 				List<HiPS> listOfHipsByWavelength;
-				if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
-					listOfHipsByWavelength = listOfUserHips;
+				if(!HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject()) || wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
+					listOfHipsByWavelength = HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject().toString());
+					consoleLog("meto user hips");
+					consoleLog(String.valueOf(listOfHipsByWavelength.size()));
 					fillHiPSMenuBar(listOfHipsByWavelength, true);
 				} else {
 					listOfHipsByWavelength = skiesMenu.getHiPSListByWavelength(wavelengthDropDown.getSelectedObject()).getHips();
@@ -194,27 +205,64 @@ public class SkyRow extends Composite implements Selectable{
 		return hipsDropDown;
 	}    
 
-	private void fillDropDownMenus(HipsWavelength defaultWavelength, String defaultHips) {
+	private void fillDropDownMenus(String defaultWavelength, String defaultHips) {
 	    blockNotifications = true;
+	    for(String wave:HipsWavelength.wavelengthList) {
+	    }
+	    
 		for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
-			if(menuEntry.getWavelength() == HipsWavelength.USER) {
+			if(menuEntry.getWavelength() == HipsWavelength.USER || 
+					(!HipsWavelength.wavelengthList.contains(menuEntry.getWavelength()) )) {
 				for(HiPS hips: menuEntry.getHips()) {
-				    if(!listOfUserHips.contains(hips)) {
-				        listOfUserHips.add(hips);
+					
+					if(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()) == null) {
+						consoleLog("inicializo1");
+						HipsWavelength.getListOfUserHips().put(menuEntry.getWavelength(), new LinkedList<HiPS>());
+					}
+					
+				    if(!HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).contains(hips)) {
+				    	consoleLog("venga para dentro");
+				    	consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).size()));
+				    	HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).add(hips);
+				    	consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).size()));
 				    }
 				}
 			}
 			createWavelengthOption(menuEntry.getWavelength());
 		}
+		
+		for(String category: HipsWavelength.getListOfUserHips().keySet()) {
+			if(!category.equals(HipsWavelength.USER)) {
+				createWavelengthOption(category);
+			}
+			
+		}
+		
+		if(!HipsWavelength.wavelengthList.contains(defaultWavelength)) {
+			
+			if(HipsWavelength.getListOfUserHips().get(defaultWavelength) == null) {
+				consoleLog("inicializo2");
+				HipsWavelength.getListOfUserHips().put(defaultWavelength, new LinkedList<HiPS>());
+			}
+		}
+		
 		wavelengthDropDown.selectObject(defaultWavelength);
-		setSelectHips(defaultHips, false, false);
+		setSelectHips(defaultHips, false, false, null);
 		blockNotifications = false;
 	}
 
-	private void createWavelengthOption(HipsWavelength wavelength) {
-		MenuItem<HipsWavelength> dropdownItem = new MenuItem<HipsWavelength>(
-				wavelength, TextMgr.getInstance().getText("wavelength_" + wavelength.name()), 
-				TextMgr.getInstance().getText("wavelength_" + wavelength.name() + "_Tooltip"), true);
+	private void createWavelengthOption(String wavelength) {
+		MenuItem<String> dropdownItem = null;
+		if(HipsWavelength.wavelengthList.contains(wavelength)) {
+			dropdownItem = new MenuItem<String>(
+					wavelength, TextMgr.getInstance().getText("wavelength_" + wavelength), 
+					TextMgr.getInstance().getText("wavelength_" + wavelength + "_Tooltip"), true);
+		}else {
+			dropdownItem = new MenuItem<String>(
+					wavelength, wavelength, 
+					wavelength, true);
+		}
+		
 		wavelengthDropDown.addMenuItem(dropdownItem);
 	}  
 
@@ -284,10 +332,10 @@ public class SkyRow extends Composite implements Selectable{
 
     private void removeEntries(MenuItem<HiPS> menuItemToRemove) {
         hipsDropDown.removeMenuItem(menuItemToRemove);
-        listOfUserHips.remove(menuItemToRemove.getItem());
+        HipsWavelength.getListOfUserHips().remove(menuItemToRemove.getItem());
         List<SkiesMenuEntry> entriesToDelete = new LinkedList<SkiesMenuEntry>();
         for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
-            if(menuEntry.getWavelength() == HipsWavelength.USER) {
+            if(menuEntry.getWavelength() == HipsWavelength.USER || !HipsWavelength.wavelengthList.contains(menuEntry.getWavelength())) {
                 for(HiPS hips: menuEntry.getHips()) {
                     if(menuItemToRemove.getItem().equals(hips)) {
                         entriesToDelete.add(menuEntry);
@@ -312,16 +360,20 @@ public class SkyRow extends Composite implements Selectable{
 	private HiPS lastCreatedUserHiPS;
 	public void setHiPSFromAPI(HiPS hips, boolean notifiyObservers, boolean newHips){
 		lastCreatedUserHiPS = hips;
-		setSelectHips(hips.getSurveyName(), notifiyObservers, newHips);
+		setSelectHips(hips.getSurveyName(), notifiyObservers, newHips, hips.getHipsCategory());
 	}
 	
-	public boolean setSelectHips(String hipsName, boolean notifiyObservers, boolean newHips){
+	public boolean setSelectHips(String hipsName, boolean notifiyObservers, boolean newHips, String category){
 		blockNotifications = true;
-	    HipsWavelength wavelength = skiesMenu.getWavelengthFromHiPSName(hipsName);
+		String wavelength = skiesMenu.getWavelengthFromHiPSName(hipsName);
 	    if(wavelength == null) {
-	    	wavelength = HipsWavelength.USER;
-	    	if(listOfUserHips.size() == 0) {
-	    		createWavelengthOption(HipsWavelength.USER);
+	    	wavelength = category != null ? category : HipsWavelength.USER;
+	    	if(!HipsWavelength.wavelengthList.contains(wavelength) && HipsWavelength.getListOfUserHips().get(wavelength) == null) {
+	    		consoleLog("inicializo3");
+	    		HipsWavelength.getListOfUserHips().put(wavelength, new LinkedList<HiPS>());
+	    	}
+	    	if(HipsWavelength.getListOfUserHips().get(wavelength).size() == 0) {
+	    		createWavelengthOption(wavelength);
 	    	}
 	    }
 	    
@@ -330,10 +382,9 @@ public class SkyRow extends Composite implements Selectable{
 		}
 		for(MenuItem<HiPS> menuItem: hipsDropDown.getMenuItems()){
 			if(menuItem.getItem().getSurveyName().equalsIgnoreCase(hipsName)){
-
 				if(newHips) {
 					hipsDropDown.removeMenuItem(menuItem);
-					listOfUserHips.remove(menuItem.getItem());
+					HipsWavelength.getListOfUserHips().get(wavelength).remove(menuItem.getItem());
 				}else {
 					hipsDropDown.selectObject(menuItem.getItem());
 					if (notifiyObservers) {
@@ -346,7 +397,12 @@ public class SkyRow extends Composite implements Selectable{
 			}
 		}
 		if(newHips) {
-			listOfUserHips.add(lastCreatedUserHiPS);
+			String hipsCategory = category != null ? category : lastCreatedUserHiPS.getHipsWavelength();
+			consoleLog("adding HiPS");
+			consoleLog(hipsCategory);
+			consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(hipsCategory).size()));
+			HipsWavelength.getListOfUserHips().get(hipsCategory).add(lastCreatedUserHiPS);
+			consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(hipsCategory).size()));
 			MenuItem<HiPS> menuItem = new MenuItem<HiPS>(lastCreatedUserHiPS, hipsName, true, true, new OnRemove<HiPS>() {
 
                 @Override
@@ -539,7 +595,7 @@ public class SkyRow extends Composite implements Selectable{
 	}
 	
     public String getFullId() {
-        return wavelengthDropDown.getSelectedObject().name() + " - " + getNameofSelected() + " - " + getSelectedPalette().name();
+        return wavelengthDropDown.getSelectedObject() + " - " + getNameofSelected() + " - " + getSelectedPalette().name();
     }
     
     public void setOverlayStatus(boolean status) {
@@ -576,13 +632,43 @@ public class SkyRow extends Composite implements Selectable{
 	
 	public void refreshUserDropdown() {
 	    blockNotifications = true;
-	    if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
-	        HiPS selectedObject = hipsDropDown.getSelectedObject();
-	        fillHiPSMenuBar(listOfUserHips, true);
+	    consoleLog("selectedObject");
+	    consoleLog("wavelengthDropDown.getSelectedObject()");
+	    refreshWavelengthDropdown();
+	    if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER || !HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject())) {
+	    	consoleLog("HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject())");
+	    	consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()).size()));
+	    	HiPS selectedObject = hipsDropDown.getSelectedObject();
+	        fillHiPSMenuBar(HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()), true);
 	        hipsDropDown.selectObject(selectedObject);
 	    }
 	    blockNotifications = false;
 	}
+	
+	private void refreshWavelengthDropdown() {
+		Set<String> customWavelengths = HipsWavelength.getListOfUserHips().keySet();
+		List<String> wavelengthsAdded = new ArrayList<String>();
+		for(MenuItem<String> item: wavelengthDropDown.getMenuItems()) {
+			if(!HipsWavelength.wavelengthList.contains(item.getText()) && customWavelengths.contains(item.getText())) {
+				wavelengthsAdded.add(item.getText());
+			}
+		}
+		for(String wavelength: customWavelengths) {
+			if(!wavelengthsAdded.contains(wavelength)) {
+				MenuItem<String> dropdownItem = new MenuItem<String>(
+						wavelength, wavelength, 
+						wavelength, true);
+				wavelengthDropDown.addMenuItem(dropdownItem);
+			}
+			
+	
+		
+		}
+	}
+
+    public native void consoleLog(String msg) /*-{
+		console.log("SKYROW - " + msg);
+    }-*/;
     
     
     

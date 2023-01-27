@@ -428,11 +428,17 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 	public static void setHiPSFromAPI (HiPS hips, boolean newHips) {
 		SkyRow skyTmp = getSelectedSky();
+		consoleLog("aqui ando");
 		if(skyTmp == null) {
 			SkiesMenuEntry entry = new SkiesMenuEntry();
 			entry.getHips().add(hips);
 			entry.setTotal(1);
-			entry.setWavelength(HipsWavelength.USER);
+			if(hips.getHipsCategory() == null) {
+				entry.setWavelength(HipsWavelength.USER);
+			}else {
+				entry.setWavelength(hips.getHipsCategory());
+			}
+			
 			instance.skiesMenu.getMenuEntries().add(entry);
 
 			skyTmp = new SkyRow(instance.skiesMenu, "Sky");
@@ -441,11 +447,17 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			instance.player.addEntryToPlayer(skyTmp);
 			skies.add(skyTmp);
 			instance.ensureCorrectSkyStyle();
-			instance.refreshUserDropdowns();
+			consoleLog("hago algo por aqui?");
+			
 		}
+		
+		consoleLog("aqui salgo");
+		
 		final SkyRow sky = skyTmp;
 		sky.setHiPSFromAPI(hips, true, newHips);
+		consoleLog("lo elijo");
 		sky.setSelected();
+		instance.refreshUserDropdowns();
 		instance.addSkyButton.enableButton();
 	}
 
@@ -458,7 +470,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		final SkyRow sky = getSelectedSky();
 		if (sky != null) {
 			if (!hipsName.equals(sky.getNameofSelected())) {
-				sky.setSelectHips(hipsName, true, false);
+				sky.setSelectHips(hipsName, true, false, sky.getSelectedHips().getHipsCategory());
 			}
 		}
 	}
@@ -528,5 +540,8 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			movableResizablePanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel::setMaxSize()();
 		});
 	}-*/;
-
+	
+    public native static void consoleLog(String msg) /*-{
+		console.log("SelectSkyPanel - " + msg);
+    }-*/;
 }

@@ -51,7 +51,7 @@ public class SelectSkyPanelPresenter {
         getHiPSMapsList();
         CommonEventBus.getEventBus().addHandler(HipsAddedEvent.TYPE, changeEvent -> {
         	if(changeEvent.getAddIfAlreadyExist()) {
-        		if(changeEvent.getHipsWavelength() == HipsWavelength.USER || changeEvent.getHipsWavelength() == HipsWavelength.GW) {
+        		if(changeEvent.getHipsWavelength() == HipsWavelength.USER || changeEvent.getHipsWavelength() == HipsWavelength.GW || !HipsWavelength.wavelengthList.contains(changeEvent.getHipsWavelength())) {
         			addUrlHips(changeEvent.getHiPS(), null);
         		} else {
         			view.createSky(true);
@@ -81,7 +81,12 @@ public class SelectSkyPanelPresenter {
 			entry.getHips().add(hips);
 			entry.setTotal(1);
 			if(hips.getHipsWavelength() == null) {
-				hips.setHipsWavelength(HipsWavelength.USER);
+				if (hips.getHipsCategory() == null) {
+					hips.setHipsWavelength(HipsWavelength.USER);
+				}else {
+					hips.setHipsWavelength(hips.getHipsCategory());
+				}
+				
 			}
 			entry.setWavelength(hips.getHipsWavelength());
 			getSkiesMenu().getMenuEntries().add(entry);
@@ -91,8 +96,10 @@ public class SelectSkyPanelPresenter {
 		if(skyRow == null) {
 			skyRow = view.createSky(false);
 		}
-		skyRow.setSelectHips(hips.getSurveyName(), false, false);
+		skyRow.setSelectHips(hips.getSurveyName(), false, false, hips.getHipsCategory());
+		consoleLog("llegoooo!");
 		view.refreshUserDropdowns();
+		consoleLog("salgoooo!");
     }
 
     private void getHiPSMapsList() {
@@ -158,4 +165,8 @@ public class SelectSkyPanelPresenter {
     public boolean isShowing() {
     	return view.isShowing();
     }
+    
+    public native static void consoleLog(String msg) /*-{
+		console.log("SelectSkyPanel - " + msg);
+    }-*/;
 }

@@ -100,36 +100,28 @@ public class ApiMessageParser {
 						(msg.content.hipsName,e);
 					break;
 				
-				case 'changeHipsWithParamsOld':
-					console.log('changeHiPSWithParams event captured!');
-					console.log(msg);
-					console.log("HiPS URL "+msg.content.hips.url);
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
-					break
-				
 				case 'changeHipsWithParams':
 					console.log('changeHiPSWithParams event captured!');
 					console.log(msg);
 					console.log("HiPS URL "+msg.content.hips.url);
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content.hips.name, msg.content.hips.url, false, e);
+					msg.content.hips['category'] = ""
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, false, e);
 					break
 	
 				case 'addHipsWithParams':
 					console.log('changeHiPSWithParams event captured!');
 					console.log(msg);
 					console.log("HiPS URL "+msg.content.hips.url);
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content.hips.name, msg.content.hips.url, true, e);
-					break
-	
-				case 'addHipsWithParamsOld':
-					console.log('addHipsWithParams event captured!');
-					console.log(msg);
-					console.log("HiPS URL "+msg.content.hips.url);
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::addHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.cooframe, msg.content.hips.maxnorder, msg.content.hips.imgformat);
+					if(!msg.content.hips.hasOwnProperty('category')){
+					   msg.content.hips['category'] = "";
+					}
+					msg.content.index = 0;
+					if(msg.content.hips.hasOwnProperty('removeFirst') && msg.content.hips('removeFirst') == 'true'){
+					   	apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::removeSkyRow(ILcom/google/gwt/core/client/JavaScriptObject;)(msg.content.index,e);
+					}
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, true, e);
 					break
 					
 				case 'removeHips':

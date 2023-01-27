@@ -437,7 +437,7 @@ public class Session {
 				skyRow = SelectSkyPanel.getSelectedSky();
 				first = false;
 			}
-			if(!skyRow.setSelectHips(name, true, false)) {
+			if(!skyRow.setSelectHips(name, true, false, null)) {
 				//Means that we can't find it in the list
 				//Setting from url instead
 				String url = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_URL);
@@ -466,7 +466,7 @@ public class Session {
 			
 			@Override
 			public void onSuccess(HiPS hips) {
-				hips.setHipsWavelength(HipsWavelength.USER);
+				hips.setHipsWavelength(hips.getHipsCategory() != null ? hips.getHipsCategory() : HipsWavelength.USER);
 				skyRow.setHiPSFromAPI(hips, false, true);
 				skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
 			}
