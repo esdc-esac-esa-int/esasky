@@ -664,7 +664,7 @@ public class TabulatorWrapper {
                 metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
                 metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
                 if (unit) {
-                    metadata[j].displayName += " (" + unit + ")";
+                    metadata[j].displayName += " <i>[" + unit + "]</i>";
                 }
 
 
