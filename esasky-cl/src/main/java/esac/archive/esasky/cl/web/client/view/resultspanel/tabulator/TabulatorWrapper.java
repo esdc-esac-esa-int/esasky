@@ -1674,15 +1674,13 @@ public class TabulatorWrapper {
 
             var obscoreButtonDisabled = function (cell) {
                 var data = cell.getData();
-                var schema = data["schema_name"];
-                var table = data["table_name"];
+                var tableNames = data["table_names"];
 
-                if (!schema || !table) {
+                if (!tableNames) {
                     return true;
                 }
 
-                return data["schema_name"].toLowerCase() !== "ivoa"
-                    || !data["table_name"].toLowerCase().includes("obscore");
+                return !tableNames.toLowerCase().includes("ivoa.obscore");
             };
 
             if ((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())

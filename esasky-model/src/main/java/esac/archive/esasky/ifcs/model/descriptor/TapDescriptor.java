@@ -378,9 +378,9 @@ public class TapDescriptor extends TapDescriptorBase {
     }
 
     public String getRegionColumn() {
-        return getMetadataNameAny(UCD.POS_OUTLINE.positive(), UCD.OBS_FIELD.positive(), UCD.META_PGSPHERE.negative(),
-                ObsCore.S_REGION, Name.REGION,
-                Name.S_REGION);
+        return getMetadataNameAny(UCD.POS_OUTLINE.positive(), UCD.META_PGSPHERE.negative(),
+                ObsCore.S_REGION,
+                Name.REGION, Name.S_REGION);
     }
 
     public String getIdColumn() {

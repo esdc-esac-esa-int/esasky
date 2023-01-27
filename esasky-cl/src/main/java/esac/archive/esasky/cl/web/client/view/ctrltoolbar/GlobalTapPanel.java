@@ -208,6 +208,7 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setAddAdqlColumn(false);
         settings.setAddMetadataColumn(false);
         settings.setIsDownloadable(false);
+        settings.setAddObscoreTableColumn(true);
         settings.setSelectable(1);
         tapServicesWrapper = new TabulatorWrapper(TABULATOR_SERVICE_ID_PREFIX + mode, tabulatorCallback, settings);
         final Element rowCountFooter = Document.get().getElementById(TABULATOR_SERVICE_ID_PREFIX + mode + "_rowCount");
@@ -221,7 +222,7 @@ public class GlobalTapPanel extends FlowPanel {
         settings.setAddMetadataColumn(true);
         settings.setIsDownloadable(false);
         settings.setSelectable(1);
-        settings.setAddObscoreTableColumn(true);
+        settings.setAddObscoreTableColumn(false);
         settings.setAddOpenTableColumn(true);
         tapTablesWrapper = new TabulatorWrapper(TABULATOR_TABLE_ID_PREFIX + mode, tabulatorCallback, settings);
         tapTablesWrapper.groupByColumns("schema_name");
@@ -463,15 +464,6 @@ public class GlobalTapPanel extends FlowPanel {
         columnSelectorPopupPanel.show();
     }
 
-    private QueryPopupPanel createQueryPopupPanel(String mission) {
-        QueryPopupPanel popupPanel = new QueryPopupPanel();
-
-        String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
-        popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
-                mission, description + event.getQuery(), event.getQuery(), false, true));
-
-        return popupPanel;
-    }
 
     private ConfirmationPopupPanel createConfirmationPopupPanel() {
         return new ConfirmationPopupPanel(
@@ -546,7 +538,7 @@ public class GlobalTapPanel extends FlowPanel {
         @Override
         public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
             if (queryPopupPanel == null) {
-                queryPopupPanel = createQueryPopupPanel(storedName);
+                queryPopupPanel = createQueryPopupPanel();
             }
 
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
@@ -557,7 +549,7 @@ public class GlobalTapPanel extends FlowPanel {
 
         @Override
         public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
-            String tableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
+            String tableName = ExtTapUtils.encapsulateTableName("ivoa.obscore");
             String query = "SELECT * FROM " + tableName;
             queryExternalTapServiceMetadata(storedAccessUrl, query, new JSONUtils.IJSONRequestCallback() {
                 @Override
@@ -591,6 +583,16 @@ public class GlobalTapPanel extends FlowPanel {
             String query = "SELECT * FROM TAP_SCHEMA.columns where table_name='" + tableName + "'";
 
             queryExternalTapServiceData(storedAccessUrl, "TAP_SCHEMA.columns", storedName,null, query, false, false);
+        }
+
+        private QueryPopupPanel createQueryPopupPanel() {
+            QueryPopupPanel popupPanel = new QueryPopupPanel();
+
+            String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
+            popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
+                    storedName, description + event.getQuery(), event.getQuery(), false, true));
+
+            return popupPanel;
         }
     }
 

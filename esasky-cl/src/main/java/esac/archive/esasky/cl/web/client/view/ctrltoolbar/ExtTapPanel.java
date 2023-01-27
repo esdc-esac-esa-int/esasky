@@ -42,8 +42,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
     private final List<TreeMapChanged> observers = new LinkedList<>();
     private boolean fovLimiterEnabled;
-    private EsaSkySwitch switchBtn;
-
     private enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
 
     public interface Resources extends ClientBundle {
@@ -64,14 +62,14 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
     private void initView() {
         mainContainer = new FlowPanel();
         mainContainer.addStyleName("extTapPanel__container");
-        mainContainer.getElement().setId("someId234");
+        mainContainer.getElement().setId("extTapPanel_container_1");
         header = new PopupHeader<>(this, TextMgr.getInstance().getText("treeMap_EXT_TAP"),
                 TextMgr.getInstance().getText("treeMapContainer_help_EXT_TAP"),
                 TextMgr.getInstance().getText("treeMap_EXT_TAP"));
 
 
         fovLimiterEnabled = true;
-        switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
+        EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
                 TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
                 TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted_tooltip"));
         switchBtn.addStyleName("globalTapPanel__fovSwitch");
