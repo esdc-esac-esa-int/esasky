@@ -1,18 +1,17 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.LinkedList;
-
 import com.google.gwt.user.client.ui.Image;
-
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+
+import java.util.LinkedList;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
@@ -101,7 +100,11 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 
     TabulatorSettings getTabulatorSettings();
 
-    String getAdql();
+    String getQuery();
 
+    void setQuery(String query);
 
+    void registerQueryChangedObserver(QueryChangeObserver queryChangeObserver);
+
+    void unregisterQueryChangedObserver(QueryChangeObserver queryChangeObserver);
 }

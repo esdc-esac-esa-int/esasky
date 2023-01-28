@@ -25,7 +25,8 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.*;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.*;
@@ -54,6 +55,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private boolean isRefreshable = true;
     private StylePanel stylePanel;
     private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
+    private LinkedList<QueryChangeObserver> queryChangeObservers = new LinkedList<>();
     protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<>();
     private String adql; 
 
@@ -255,7 +257,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
          tablePanel.setMOCMode(false);
          tablePanel.notifyObservers();
 
-         this.adql = adql;
+         setQuery(adql);
          if(mocEntity != null){
  	        mocEntity.clearAll();
  	        mocEntity.setShouldBeShown(false);
@@ -325,7 +327,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
     
     public String getTapUrl() {
-    	this.adql = metadataService.getMetadataAdql(descriptor, tablePanel.getFilterString());
+    	setQuery(metadataService.getMetadataAdql(descriptor, tablePanel.getFilterString()));
     	return descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON);
     }
 
@@ -339,8 +341,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
     	
     	clearAll();
-    	this.adql = metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery);
-    	tablePanel.insertData(descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
+    	setQuery(metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery));
+        tablePanel.insertData(descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
     }
     public void fetchDataWithoutMOC(MOCInfo mocInfo, String whereQuery) {
 
@@ -354,7 +356,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
         
         GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(descriptor);
-        this.adql = adql;
+        setQuery(adql);
         MainPresenter.getInstance().getRelatedMetadata(entity, adql);
         entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     	
@@ -952,18 +954,33 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	}
 	
 	@Override
-	public String getAdql() {
+	public String getQuery() {
 		return this.adql;
 	}
-	
-	public void setAdql(String adql) {
-		this.adql = adql;
+
+    @Override
+	public void setQuery(String query) {
+		this.adql = query;
+        notifyQueryChangedObserver(query);
 	}
-	
+
+    public void registerQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+        queryChangeObservers.add(queryChangeObserver);
+    }
+
+    public void unregisterQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+        queryChangeObservers.remove(queryChangeObserver);
+    }
+
+    private void notifyQueryChangedObserver(String query) {
+        for(QueryChangeObserver obs : queryChangeObservers) {
+            obs.onQueryChange(query);
+        }
+    }
+
     @Override
     public int getNumberOfShapes() {
     	return drawer.getNumberOfShapes();
     }
-	
 
 }

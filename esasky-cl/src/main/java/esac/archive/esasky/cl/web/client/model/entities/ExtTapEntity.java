@@ -42,7 +42,7 @@ public class ExtTapEntity extends EsaSkyEntity {
 
     @Override
     public String getHelpTitle() {
-        if (descriptor.isCustom() && descriptor.getUnprocessedADQL() != null) {
+        if (descriptor.isCustom()) {
             return descriptor.getMission();
         } else {
             return super.getHelpTitle();

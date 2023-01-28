@@ -167,7 +167,6 @@ public class DescriptorRepository {
                 ? missionName + " (" + query + ")"
                 : missionName + " (" + tableName + ")";
 
-
         CommonTapDescriptor commonTapDescriptor = new CommonTapDescriptor();
         commonTapDescriptor.setMetadata(metadataDescriptorList);
         commonTapDescriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);

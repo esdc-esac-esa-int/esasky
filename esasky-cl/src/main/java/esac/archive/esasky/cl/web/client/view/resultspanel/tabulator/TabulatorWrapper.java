@@ -1750,7 +1750,7 @@ public class TabulatorWrapper {
                     width: 40,
                     hozAlign: "center",
                     formatter: imageButtonFormatter,
-                    formatterParams: {image: "adql_icon.png", tooltip: "Create a custom ADQL query"},
+                    formatterParams: {image: "query-icon.png", tooltip: "Create a custom ADQL query"},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());

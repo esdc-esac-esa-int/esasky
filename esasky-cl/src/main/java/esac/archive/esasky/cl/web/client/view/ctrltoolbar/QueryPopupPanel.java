@@ -36,16 +36,21 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
         CssResource style();
     }
     public QueryPopupPanel() {
+        this(true);
+    }
+
+    public QueryPopupPanel(boolean showExamples) {
         super(GoogleAnalytics.CAT_GLOBALTAP_ADQLPANEL,
                 TextMgr.getInstance().getText("global_tap_panel_custom_query_title"),
                 TextMgr.getInstance().getText("global_tap_panel_custom_query_help"));
         this.resources = GWT.create(QueryPopupPanel.Resources.class);
         this.style = this.resources.style();
         this.style.ensureInjected();
-        initView();
+        initView(showExamples);
+        setDefaultSize();
     }
 
-    public void initView() {
+    public void initView(boolean showExamples) {
         MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
 
         FlowPanel textBoxContainer = new FlowPanel();
@@ -67,8 +72,10 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
             this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.tapDescription, this.queryTextBoxValue));
         });
 
+        if (showExamples) {
+            container.add(createDropdownMenu());
+        }
 
-        container.add(createDropdownMenu());
         container.add(textBoxContainer);
         container.add(searchButton);
 
@@ -78,7 +85,7 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
     private DropDownMenu<PopupMenuItems> createDropdownMenu() {
         dropDownMenu = new DropDownMenu<>("Examples...",
                 TextMgr.getInstance().getText("global_tap_panel_custom_query_dropdown_tooltip"),
-                550, "queryPopupPanel__dropdownMenu");
+                500, "queryPopupPanel__dropdownMenu");
 
         MenuItem<PopupMenuItems> menuItem1 = new MenuItem<>(PopupMenuItems.METADATA,
                 TextMgr.getInstance().getText("global_tap_panel_custom_query_dropdown_option_columns"), true);
@@ -139,7 +146,7 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
 
     private void setDefaultSize() {
         Style containerStyle = container.getElement().getStyle();
-        containerStyle.setPropertyPx("minWidth", 550);
+        containerStyle.setPropertyPx("minWidth", 500);
         containerStyle.setPropertyPx("minHeight", 150);
     }
 

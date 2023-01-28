@@ -226,7 +226,7 @@ public class PublicationPanelPresenter {
     	 if (entity == null) {
              entity = entityRepo.createPublicationsEntity(descriptor);
          }
-    	entity.setAdql(url);
+    	entity.setQuery(url);
         final String debugPrefix = "[getPublicationsSources][" + descriptor.getShortName() + "]";
     	Log.debug(debugPrefix + "Query [" + url + "]");
         isCallInProgress = true;

@@ -114,4 +114,5 @@ public interface ITablePanel {
 	void redrawAndReinitializeHozVDom();
 	void addTapFilter(String label, String tapFilter);
 	GeneralJavaScriptObject getTableMetadata();
+	void openQueryPanel();
 }

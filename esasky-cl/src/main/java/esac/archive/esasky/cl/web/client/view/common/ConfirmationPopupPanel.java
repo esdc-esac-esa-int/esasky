@@ -67,7 +67,7 @@ public class ConfirmationPopupPanel extends BaseMovablePopupPanel {
 
     private void setDefaultSize() {
         Style containerStyle = container.getElement().getStyle();
-        containerStyle.setPropertyPx("minWidth", 550);
+        containerStyle.setPropertyPx("minWidth", 500);
         containerStyle.setPropertyPx("minHeight", 150);
     }
 

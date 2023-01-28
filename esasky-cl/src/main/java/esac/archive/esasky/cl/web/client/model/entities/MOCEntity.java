@@ -252,8 +252,8 @@ public class MOCEntity implements GeneralEntityInterface {
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        this.adql = url;
-        ((EsaSkyEntity) this.parentEntity).setAdql(url);
+        setQuery(url);
+        ((EsaSkyEntity) this.parentEntity).setQuery(url);
         try {
             builder.sendRequest(null,
                 new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
@@ -835,8 +835,23 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 	
 	@Override
-	public String getAdql() {
+	public String getQuery() {
 		return this.adql;
+	}
+
+	@Override
+	public void setQuery(String query) {
+		this.adql = query;
+	}
+
+	@Override
+	public void registerQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+		//There is no current reason to register an observer for this
+	}
+
+	@Override
+	public void unregisterQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+		//There is no current reason to register an observer for this
 	}
 
 	@Override

@@ -189,7 +189,7 @@ public class Session {
 			if(ent instanceof PublicationsEntity) {
 				JSONObject pubObj = new JSONObject();
 				pubObj.put(EsaSkyWebConstants.SESSION_PUB_TYPE, new JSONString(EsaSkyWebConstants.SESSION_PUB_TYPE_AREA));
-				pubObj.put(EsaSkyWebConstants.SESSION_PUB_URL, new JSONString(ent.getAdql()));
+				pubObj.put(EsaSkyWebConstants.SESSION_PUB_URL, new JSONString(ent.getQuery()));
 				array.set(array.size(), pubObj);
 			}else if (ent instanceof PublicationsByAuthorEntity) {
 				JSONObject pubObj = new JSONObject();
@@ -517,7 +517,7 @@ public class Session {
 				entObj.put(EsaSkyWebConstants.SESSION_DATA_HAS_PANEL,new JSONString("False"));
 			}
 			
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_ADQL,new JSONString(ent.getAdql()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_ADQL,new JSONString(ent.getQuery()));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_FILTERS, new JSONString(ent.getTablePanel().getFilterString()));
 			
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN,new JSONString(ent.getPrimaryColor()));

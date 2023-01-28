@@ -29,11 +29,14 @@ import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.JupyterDownloadDialog;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.QueryPopupPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.*;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.*;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.MetadataVisibilityObserver;
+import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -925,6 +928,20 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public GeneralJavaScriptObject getTableMetadata() {
 		return this.tableMetadata;
+	}
+
+	@Override
+	public void openQueryPanel() {
+		QueryPopupPanel popupPanel = new QueryPopupPanel();
+		popupPanel.setTapTable(entity.getDescriptor().getTableName());
+		popupPanel.setTapServiceUrl(entity.getDescriptor().getTapUrl());
+		popupPanel.setQuery(entity.getQuery());
+		popupPanel.addQueryHandler(event -> {
+			entity.getDescriptor().setUnprocessedADQL(event.getQuery());
+			entity.setQuery(event.getQuery());
+			updateData();
+		});
+		popupPanel.show();
 	}
 
 	@Override
