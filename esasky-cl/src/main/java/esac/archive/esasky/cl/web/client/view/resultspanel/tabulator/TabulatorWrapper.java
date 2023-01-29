@@ -252,7 +252,16 @@ public class TabulatorWrapper {
     }
 
     private native GeneralJavaScriptObject[] getSelectedRows(GeneralJavaScriptObject tableJsObject)/*-{
-        return tableJsObject.getSelectedData();
+        var filteredData = tableJsObject.getData(true);
+        var selectedData = tableJsObject.getSelectedData();
+
+        function isRowSelected(row){
+            function hasIdenticalId(selectedRow) {
+                return selectedRow.id === row.id;
+            }
+            return selectedData.find(hasIdenticalId);
+        }
+        return filteredData.filter(isRowSelected);
     }-*/;
 
     public GeneralJavaScriptObject[] getAllRows() {
