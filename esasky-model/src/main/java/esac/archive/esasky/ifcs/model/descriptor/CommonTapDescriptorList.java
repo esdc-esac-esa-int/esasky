@@ -1,5 +1,6 @@
 package esac.archive.esasky.ifcs.model.descriptor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
@@ -18,6 +19,7 @@ public class CommonTapDescriptorList  {
         this.descriptors = descriptors;
     }
 
+    @JsonIgnore
     public int getTotal() {
         return descriptors.size();
     }

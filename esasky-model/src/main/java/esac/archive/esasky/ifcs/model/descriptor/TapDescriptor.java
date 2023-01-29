@@ -21,7 +21,7 @@ public class TapDescriptor extends TapDescriptorBase {
 
     private Map<String, Object> properties;
 
-    @JsonIgnore
+
     private List<TapMetadataDescriptor> metadata;
 
     @JsonIgnore

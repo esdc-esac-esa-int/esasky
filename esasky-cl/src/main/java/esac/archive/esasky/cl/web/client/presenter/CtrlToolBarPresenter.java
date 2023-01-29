@@ -61,6 +61,7 @@ public class CtrlToolBarPresenter {
         PublicationPanelPresenter.View getPublicationPanelView();
 
         void addTreeMapData(Collection<DescriptorCountAdapter> descriptorCountAdapters);
+        void replaceTreeMapData(Collection<DescriptorCountAdapter> descriptorCountAdapters);
 
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
 
@@ -172,7 +173,14 @@ public class CtrlToolBarPresenter {
                     }
                 });
         
-        CommonEventBus.getEventBus().addHandler(TreeMapNewDataEvent.TYPE, newDataEvent -> view.addTreeMapData(newDataEvent.getCountAdapterList()));
+        CommonEventBus.getEventBus().addHandler(TreeMapNewDataEvent.TYPE, newDataEvent -> {
+            if (newDataEvent.replaceData()) {
+                view.replaceTreeMapData(newDataEvent.getCountAdapterList());
+                DescriptorRepository.getInstance().doCountAll();
+            } else {
+                view.addTreeMapData(newDataEvent.getCountAdapterList());
+            }
+        });
          
         view.getPublicationButton().addClickHandler(event -> {
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PUBLICATIONS, "");

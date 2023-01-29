@@ -297,6 +297,7 @@ public class EsaSkyWebConstants {
     public static final String SESSION_TREEMAP = "treemap";
     public static final String SESSION_TREEMAP_LOW = "low";
     public static final String SESSION_TREEMAP_HIGH = "high";
+    public static final String SESSION_EXTERNAL_DATA_CENTERS = "external_data_centers";
     
 
 }

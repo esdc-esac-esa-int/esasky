@@ -413,6 +413,7 @@ public class MainPresenter {
                     }
                 } else if (Objects.equals(category, EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
                     descriptorRepo.registerExtTapObserver();
+                    descriptorRepo.setIsExtTapOpen(ctrlTBPresenter.isExtTapPanelOpen());
 
                     if (ctrlTBPresenter.isExtTapPanelOpen()) {
                         descriptorRepo.updateCount4AllExtTaps();

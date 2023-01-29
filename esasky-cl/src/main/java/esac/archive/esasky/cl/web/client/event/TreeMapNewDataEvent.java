@@ -1,21 +1,25 @@
 package esac.archive.esasky.cl.web.client.event;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.google.gwt.event.shared.GwtEvent;
 
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
-import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 public class TreeMapNewDataEvent extends GwtEvent<TreeMapNewDataEventHandler> {
 
-    public final static Type<TreeMapNewDataEventHandler> TYPE = new Type<>();
+    public static final Type<TreeMapNewDataEventHandler> TYPE = new Type<>();
 
     private final Collection<DescriptorCountAdapter> descriptors;
+    private final boolean replaceData;
 
     public TreeMapNewDataEvent(Collection<DescriptorCountAdapter> countAdapters) {
+        this(countAdapters, false);
+    }
+
+    public TreeMapNewDataEvent(Collection<DescriptorCountAdapter> countAdapters, boolean replaceData) {
         this.descriptors = countAdapters;
+        this.replaceData = replaceData;
     }
 
     @Override
@@ -32,4 +36,7 @@ public class TreeMapNewDataEvent extends GwtEvent<TreeMapNewDataEventHandler> {
         return descriptors;
     }
 
+    public boolean replaceData() {
+        return replaceData;
+    }
 }

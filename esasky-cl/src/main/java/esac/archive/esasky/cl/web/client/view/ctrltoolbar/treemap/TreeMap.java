@@ -224,6 +224,14 @@ public class TreeMap extends Chart {
         }
     }
 
+    public void clearData() {
+        for (Point point : series.getPoints()) {
+            removePoint(point, true);
+        }
+
+        addGhostPoint(ghostPoint.getLoadingText());
+    }
+
     protected double logCount(int count) {
         double logCount = Math.log(count);
         if (count == 1) {

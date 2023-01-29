@@ -549,32 +549,35 @@ public class GlobalTapPanel extends FlowPanel {
 
         @Override
         public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
-            String tableName = ExtTapUtils.encapsulateTableName("ivoa.obscore");
-            String query = "SELECT * FROM " + tableName;
-            queryExternalTapServiceMetadata(storedAccessUrl, query, new JSONUtils.IJSONRequestCallback() {
-                @Override
-                public void onSuccess(String responseText) {
-                    setIsLoading(false);
+            if (rowData.hasProperty(ACCESS_URL_COL)) {
+                String accessUrl = rowData.getStringProperty(ACCESS_URL_COL);
+                String missionName = rowData.getStringProperty(SHORT_NAME_COL);
+                String tableName = ExtTapUtils.encapsulateTableName("ivoa.obscore");
+                String query = "SELECT * FROM " + tableName;
+                queryExternalTapServiceMetadata(accessUrl, query, new JSONUtils.IJSONRequestCallback() {
+                    @Override
+                    public void onSuccess(String responseText) {
+                        setIsLoading(false);
 
-                    TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
-                    TapDescriptorList descriptorList = mapper.read(responseText);
+                        TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
+                        TapDescriptorList descriptorList = mapper.read(responseText);
 
-                    if (descriptorList != null) {
-                        List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
-                        CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
-                                storedAccessUrl, tableName, storedName, null, "", true, false);
-                        DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
-                        fireEvent(new TreeMapNewDataEvent(null));
+                        if (descriptorList != null) {
+                            List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
+                            CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
+                                    accessUrl, tableName, missionName, null, "", true, false);
+                            DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
+                            fireEvent(new TreeMapNewDataEvent(null));
+                        }
                     }
-                }
 
-                @Override
-                public void onError(String errorCause) {
-                    showErrorMessage(storedName, errorCause);
-                    setIsLoading(false);
-                }
-            });
-
+                    @Override
+                    public void onError(String errorCause) {
+                        showErrorMessage(storedName, errorCause);
+                        setIsLoading(false);
+                    }
+                });
+            }
         }
 
         @Override

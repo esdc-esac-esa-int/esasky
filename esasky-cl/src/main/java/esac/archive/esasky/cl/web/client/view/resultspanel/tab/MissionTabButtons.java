@@ -63,7 +63,7 @@ public class MissionTabButtons extends Composite {
 
             entity.registerQueryChangedObserver(query -> {
                 if (descriptor.isCustom()) {
-                    compositePanel.setTitle(descriptor.getMission() + "(" + entity.getQuery() + ")");
+                    compositePanel.setTitle(descriptor.getMission() + " (" + entity.getQuery() + ")");
                 }
             });
         }

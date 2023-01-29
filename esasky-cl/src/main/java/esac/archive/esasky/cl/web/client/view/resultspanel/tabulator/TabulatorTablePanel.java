@@ -46,6 +46,7 @@ import java.util.*;
 public class TabulatorTablePanel extends Composite implements ITablePanel, TabulatorCallback {
 
 	JupyterDownloadDialog dialog  = new JupyterDownloadDialog();
+	QueryPopupPanel queryPopupPanel;
 
 	private class SelectTimer extends Timer {
 		private final int rowId;
@@ -932,16 +933,19 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void openQueryPanel() {
-		QueryPopupPanel popupPanel = new QueryPopupPanel();
-		popupPanel.setTapTable(entity.getDescriptor().getTableName());
-		popupPanel.setTapServiceUrl(entity.getDescriptor().getTapUrl());
-		popupPanel.setQuery(entity.getQuery());
-		popupPanel.addQueryHandler(event -> {
-			entity.getDescriptor().setUnprocessedADQL(event.getQuery());
-			entity.setQuery(event.getQuery());
-			updateData();
-		});
-		popupPanel.show();
+		if (queryPopupPanel == null) {
+			queryPopupPanel = new QueryPopupPanel();
+			queryPopupPanel.addQueryHandler(event -> {
+				entity.getDescriptor().setUnprocessedADQL(event.getQuery());
+				entity.setQuery(event.getQuery());
+				updateData();
+			});
+		}
+
+		queryPopupPanel.setTapTable(entity.getDescriptor().getTableName());
+		queryPopupPanel.setTapServiceUrl(entity.getDescriptor().getTapUrl());
+		queryPopupPanel.setQuery(entity.getQuery());
+		queryPopupPanel.show();
 	}
 
 	@Override

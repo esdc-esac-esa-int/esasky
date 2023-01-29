@@ -58,6 +58,9 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
 					+ CoordinateUtils.getCenterCoordinateInJ2000().getFov());
 			isValid = false;
+		} else if (countStatus.isMarkedForRemoval(descriptor)) {
+			Log.warn(this.getClass().getSimpleName() + " discarded server answer marked for removal");
+			isValid = false;
 		}
 		return isValid;
 	}

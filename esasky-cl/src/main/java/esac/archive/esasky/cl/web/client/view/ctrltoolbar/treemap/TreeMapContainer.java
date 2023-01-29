@@ -229,6 +229,10 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 					.replace("$SSOTYPE$", GUISessionStatus.getTrackedSso().type.getType()));
 		}
 	}
+
+	public void clearData() {
+		treeMap.clearData();
+	}
 	
 	public void registerObserver(TreeMapChanged observer){
 		observers.add(observer);

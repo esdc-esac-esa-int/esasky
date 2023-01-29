@@ -63,6 +63,16 @@ public class CountStatus {
         countStatus.get(descriptor.getId()).setUpdateTime(updateTime);
     }
 
+    public void markForRemoval(CommonTapDescriptor descriptor) {
+        if (countStatus.containsKey(descriptor.getId())) {
+            countStatus.get(descriptor.getId()).markForRemoval();
+        }
+    }
+
+    public boolean isMarkedForRemoval(CommonTapDescriptor descriptor) {
+        return countStatus.get(descriptor.getId()).isMarkedForRemoval();
+    }
+
     public SkyViewPosition getSkyViewPosition(CommonTapDescriptor descriptor) {
         return countStatus.get(descriptor.getId()).getSkyViewPosition();
     }

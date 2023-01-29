@@ -93,6 +93,12 @@ public class DescriptorRepository {
     }
 
     public void setDescriptors(String category, DescriptorCountAdapter descriptors) {
+        if (descriptorCountAdapterMap.containsKey(category)) {
+            for (CommonTapDescriptor desc : descriptorCountAdapterMap.get(category).getDescriptors()) {
+                descriptorCountAdapterMap.get(category).getCountStatus().markForRemoval(desc);
+            }
+        }
+        
         descriptorCountAdapterMap.put(category, descriptors);
 
         for (CommonTapDescriptor desc : descriptors.getDescriptors()) {
@@ -667,6 +673,10 @@ public class DescriptorRepository {
                         updateCount4AllExtTaps();
                     }
                 });
+    }
+
+    public void setIsExtTapOpen(boolean isExtTapOpen) {
+        this.isExtTapOpen = isExtTapOpen;
     }
 
     public void addPublicationDescriptorLoadObserver(PublicationDescriptorLoadObserver observer) {

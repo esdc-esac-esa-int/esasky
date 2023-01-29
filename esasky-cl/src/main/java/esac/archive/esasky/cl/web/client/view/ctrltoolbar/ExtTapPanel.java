@@ -193,6 +193,10 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         treeMap.addData(descriptors, counts);
     }
 
+    public void clearTreeMapData() {
+        treeMap.clearData();;
+    }
+
     public void setTreeMapSliderValues(double x, double y) {
         if (slider != null) {
             slider.setSliderValue(x, y);

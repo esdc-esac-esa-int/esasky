@@ -4,7 +4,9 @@ package esac.archive.esasky.cl.web.client.utility;
 import java.util.*;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.json.client.JSONArray;
@@ -18,6 +20,8 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesOb
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddTableEvent;
+import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
+import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.Shape;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -77,6 +81,7 @@ public class Session {
 		stateObj.put(EsaSkyWebConstants.SESSION_PUB, getPublicationJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
+		stateObj.put(EsaSkyWebConstants.SESSION_EXTERNAL_DATA_CENTERS, getExternalDatacentersJson());
 		
 		return stateObj;
 	}
@@ -104,6 +109,7 @@ public class Session {
 			restorePlanning(saveStateObj);
 			restoreSettings(saveStateObj);
 			restoreTreemap(saveStateObj);
+			restoreExternalDataCenters(saveStateObj);
 		} catch (SaveStateException e) {
 			Log.error(e.getMessage(), e);
 		}
@@ -137,6 +143,17 @@ public class Session {
 			MainPresenter.getInstance().getCtrlTBPresenter().setSliderValues(map);
 		}
 	}
+
+	private void restoreExternalDataCenters(GeneralJavaScriptObject saveStateObj) {
+		if (saveStateObj.hasProperty(EsaSkyWebConstants.SESSION_EXTERNAL_DATA_CENTERS)) {
+			GeneralJavaScriptObject edcObject = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_EXTERNAL_DATA_CENTERS);
+			DescriptorRepository.CommonTapDescriptorListMapper mapper = GWT.create(DescriptorRepository.CommonTapDescriptorListMapper.class);
+			CommonTapDescriptorList commonTapDescriptorList = mapper.read(edcObject.toJSONString());
+			DescriptorCountAdapter dca = new DescriptorCountAdapter(commonTapDescriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
+			DescriptorRepository.getInstance().setDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
+			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca), true));
+		}
+	}
 	
 	private JSONObject getSettingsJson() {
 		JSONObject settingsObj = new JSONObject();
@@ -166,6 +183,15 @@ public class Session {
 			stcs = sb.toString().trim();
 		}
 		return stcs;
+	}
+
+	private JSONObject getExternalDatacentersJson() {
+		List<CommonTapDescriptor> descriptors = DescriptorRepository.getInstance().getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL);
+		DescriptorRepository.CommonTapDescriptorListMapper mapper = GWT.create(DescriptorRepository.CommonTapDescriptorListMapper.class);
+		CommonTapDescriptorList commonTapDescriptorList = new CommonTapDescriptorList();
+		commonTapDescriptorList.setDescriptors(descriptors);
+		String jsonString = mapper.write(commonTapDescriptorList);
+		return new JSONObject(JsonUtils.safeEval(jsonString));
 	}
 	
 	private void restoreSettings(GeneralJavaScriptObject saveStateObj) {

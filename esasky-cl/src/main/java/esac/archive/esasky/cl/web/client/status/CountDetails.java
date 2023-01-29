@@ -7,10 +7,12 @@ public class CountDetails {
     private Integer count;
     private Long updateTime;
     private SkyViewPosition skyViewPosition;
+    private boolean markedForRemoval;
 
     public CountDetails(Integer count) {
         super();
         this.count = count;
+        this.markedForRemoval = false;
     }
 
     public Integer getCount() {
@@ -36,4 +38,12 @@ public class CountDetails {
 	public void setSkyViewPosition(SkyViewPosition skyViewPosition) {
 		this.skyViewPosition = skyViewPosition;
 	}
+
+    public void markForRemoval() {
+        this.markedForRemoval = true;
+    }
+
+    public boolean isMarkedForRemoval() {
+        return this.markedForRemoval;
+    }
 }

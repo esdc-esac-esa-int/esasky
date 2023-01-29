@@ -173,6 +173,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         }
     }
 
+    @JsonIgnore
     public String getArchiveUrl(GeneralJavaScriptObject rowData) {
         String uri = getArchiveProductURI();
         String column = uri.replaceAll(".*@@@(.+)@@@.*", "$1");
@@ -186,10 +187,12 @@ public class CommonTapDescriptor extends TapDescriptor {
         }
     }
 
+    @JsonIgnore
     public List<CommonTapDescriptor> getChildren() {
         return children;
     }
 
+    @JsonIgnore
     public List<CommonTapDescriptor> getAllChildren() {
         List<CommonTapDescriptor> allChildren = new LinkedList<>();
         for (CommonTapDescriptor child : children) {
@@ -199,11 +202,12 @@ public class CommonTapDescriptor extends TapDescriptor {
         return allChildren;
     }
 
-
+    @JsonIgnore
     public int getLevel() {
         return parent == null ? 0 : 1 + parent.getLevel();
     }
 
+    @JsonIgnore
     public TapDescriptorBase getOriginalParent() {
         return parent == null ? this : parent.getOriginalParent();
     }
@@ -212,7 +216,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         return description;
     }
 
-
+    @JsonIgnore
     public void removeChildren(List<String> idsNotToRemove) {
         for (CommonTapDescriptor child : children) {
             child.removeChildren(idsNotToRemove);
@@ -223,6 +227,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         }
     }
 
+    @JsonIgnore
     public void addChild(CommonTapDescriptor child) {
         this.children.add(child);
         child.setParent(this);
@@ -309,6 +314,7 @@ public class CommonTapDescriptor extends TapDescriptor {
         this.useIntersectsPolygon = useIntersectsPolygon;
     }
 
+    @JsonIgnore
     public CommonTapDescriptor getParent() {
         return parent;
     }
