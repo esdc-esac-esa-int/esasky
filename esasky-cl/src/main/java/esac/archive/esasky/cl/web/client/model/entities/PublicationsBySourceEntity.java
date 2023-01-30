@@ -61,6 +61,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
     
     @Override
     public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
+        // Not needed for this entity
     }
     
     private native GeneralJavaScriptObject getTableShapeInfo(double ra, double dec, String bibcount, String name)/*-{
