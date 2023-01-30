@@ -663,15 +663,27 @@ public class TabulatorWrapper {
             for (var j = 0; j < metadata.length; j++) {
                 if (metadata[j].name === "id") {
                     metadata[j].name = 'identifier';
-                } else if (metadata[j].name === raColumnName) {
+                }
+
+                if (metadata[j].name === raColumnName) {
                     metadata[j].datatype = "RA";
+                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText("RA_LABEL");
                 } else if (metadata[j].name === decColumnName) {
                     metadata[j].datatype = "DEC";
+                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText("DEC_LABEL");
+                } else {
+                    var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
+                    var textKey = tableName + "_" + metadata[j].name;
+                    if ($wnd.esasky.hasInternationalizationText(textKey)) {
+                        metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(textKey);
+                    } else {
+                        metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+                    }
                 }
 
                 var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
                 metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
-                metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+
                 if (unit) {
                     metadata[j].displayName += " <i>[" + unit + "]</i>";
                 }
@@ -2445,6 +2457,15 @@ public class TabulatorWrapper {
         return tabulatorCallback.getDescriptor();
     }
 
+    public String getTableName() {
+        CommonTapDescriptor descriptor = getDescriptor();
+        if (descriptor != null) {
+            return descriptor.getTableName();
+        } else {
+            return null;
+        }
+    }
+
     public boolean isColumnVisible(String columnName) {
         return getDescriptor().isColumnVisible(columnName);
     }
@@ -2488,7 +2509,7 @@ public class TabulatorWrapper {
     public void abortRequest() {
         abortRequest(abortController);
     }
-    
+
     private native void abortRequest(GeneralJavaScriptObject abortController) /*-{
         abortController.abort();
     }-*/;
