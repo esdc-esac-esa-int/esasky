@@ -2,15 +2,14 @@ package esac.archive.esasky.cl.web.client.api;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
-
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.LineStyle;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 
 public class ApiMoc extends ApiBase{
 	
@@ -25,11 +24,11 @@ public class ApiMoc extends ApiBase{
 			old.closeFromAPI();
 			MocRepository.getInstance().removeEntity(old);
 		}
-		
-		IDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
+
+		CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 				.initUserDescriptor4MOC(name, options);
 		MOCEntity entity = new MOCEntity(descriptor);
-		
+
 		if(options.hasProperty(ApiConstants.MOC_LINE_STYLE)) {
 			entity.setLineStyle(options.getStringProperty(ApiConstants.MOC_LINE_STYLE));
 		}else {
@@ -39,12 +38,12 @@ public class ApiMoc extends ApiBase{
 		if(options.hasProperty(ApiConstants.MOC_OPACITY)) {
 			entity.setSizeRatio(options.getDoubleProperty(ApiConstants.MOC_OPACITY));
 		}
-		
+
 		if(!options.hasProperty(ApiConstants.MOC_MODE)) {
 			options.setProperty(ApiConstants.MOC_MODE, ApiConstants.MOC_HEALPIX);
 		}
-		
-		if(options.hasProperty(ApiConstants.MOC_ADD_TAB) 
+
+		if(options.hasProperty(ApiConstants.MOC_ADD_TAB)
 				&& GeneralJavaScriptObject.convertToBoolean(options.getProperty(ApiConstants.MOC_ADD_TAB))) {
 			ITablePanel panel = controller.getRootPresenter().getResultsPresenter().addResultsTab(entity);
 			entity.setTablePanel(panel);

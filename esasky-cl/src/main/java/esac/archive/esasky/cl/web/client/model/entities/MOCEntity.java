@@ -20,7 +20,6 @@ import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
-import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableFilterObserver;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
@@ -29,15 +28,9 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTa
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CatalogDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MOCEntity implements GeneralEntityInterface {
 
@@ -46,7 +39,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private ITablePanel tablePanel;
     protected IShapeDrawer drawer;
     protected IShapeDrawer combinedDrawer;
-    private IDescriptor descriptor;
+    private CommonTapDescriptor descriptor;
     private GeneralJavaScriptObject overlay;
     private int currentDataOrder = 8; 
     private int currentDisplayOrder; 
@@ -78,11 +71,11 @@ public class MOCEntity implements GeneralEntityInterface {
 				tablePanel.disableFilters();
 				return;
 			}
-			
+
 			tablePanel.enableFilters();
 			getVisibleCount();
 			setTableCountText();
-			
+
 			if(filterRequested && perMissionNewCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
 				loadMOC();
 				filterRequested = false;
@@ -99,7 +92,6 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 		@Override
 		public void run() {
-
 			if (getCountStatus().hasMoved(descriptor)) {
 	    		filterRequested = true;
 	    	} else if( getCountStatus().getCount(descriptor) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
@@ -117,7 +109,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	};
 	
 
-	public MOCEntity(IDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent) {
+	public MOCEntity(CommonTapDescriptor descriptor, CountStatus countStatus, GeneralEntityInterface parent) {
 		
 		overlay = null;
 		drawer = null;
@@ -133,24 +125,18 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		MocRepository.getInstance().addMocEntity(this);
-		filterObserver = new TableFilterObserver() {
-			
-			@Override
-			public void filterChanged(Map<String, String> tapFilters) {
-				filterTimer.schedule(2000);
-			}
-		};
+		filterObserver = tapFilters -> filterTimer.schedule(2000);
 		
 		getCountStatus().registerObserver(countObserver);
 		setShouldBeShown(true);
 	}
 
-	public MOCEntity(IDescriptor descriptor) {
+	public MOCEntity(CommonTapDescriptor descriptor) {
 		overlay = null;
 		drawer = null;
 		this.descriptor = descriptor;
 		metadataService = TAPMOCService.getInstance();
-		EsaSkyEntity esaskyEntity = new EsaSkyEntity(descriptor,null, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getDescriptorId(), null);
+		EsaSkyEntity esaskyEntity = new EsaSkyEntity(descriptor,null, CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), null);
 		esaskyEntity.setMocEntity(this);
 		this.parentEntity = esaskyEntity;
 		this.lineStyle = LineStyle.SOLID.getName();
@@ -165,13 +151,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			this.tablePanel = panel;
 			panel.registerFilterObserver(filterObserver);
 			
-			tablePanel.registerClosingObserver(new ClosingObserver() {
-				
-				@Override
-				public void onClose() {
-					closingTablePanel();
-				}
-			});
+			tablePanel.registerClosingObserver(this::closingTablePanel);
 		}
 	}
 	
@@ -181,18 +161,15 @@ public class MOCEntity implements GeneralEntityInterface {
 
     public void sendLoadQuery() {
 		GeneralJavaScriptObject visibleIpixels = (GeneralJavaScriptObject)AladinLiteWrapper.getAladinLite().getVisiblePixelsInMOC(overlay, MocRepository.getMinOrderFromFoV(), false);
-    	
-		if(descriptor instanceof CatalogDescriptor) {
+
+
+		if(Objects.equals(descriptor.getSchemaName(), "catalogues") && "".equals(tablePanel.getFilterString())){
+			parentEntity.fetchDataWithoutMOC();
+		}else {
 			String whereQuery = metadataService.getWhereQueryFromPixels(descriptor, visibleIpixels, tablePanel.getFilterString());
 			((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
-		}else {
-			if("".equals(tablePanel.getFilterString())){
-				((EsaSkyEntity) parentEntity).fetchDataWithoutMOC();
-			}else {
-				String whereQuery = metadataService.getWhereQueryFromPixels(descriptor, visibleIpixels, tablePanel.getFilterString());
-				((EsaSkyEntity) parentEntity).fetchDataWithoutMOC(whereQuery);
-			}
 		}
+
     	parentEntity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     	setShouldBeShown(false);
     	clearAll();
@@ -233,12 +210,12 @@ public class MOCEntity implements GeneralEntityInterface {
     		freshLoad = false;
     		return;
     	}
-    	
-    	
+
+
     	int targetOrder = MocRepository.getTargetOrderFromFoV();
-    	
+
     	boolean precomputedMaxmin = count >  EsaSkyWebConstants.MOC_GLOBAL_MINMAX_LIMIT;
-    	
+
     	if((targetOrder == 8 && tablePanel.getTapFilters().size() == 0)) {
     		getPrecomputedMOC(precomputedMaxmin);
     		currentDataOrder = 8;
@@ -247,7 +224,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			getSplitMOC(targetOrder, precomputedMaxmin);
     		currentDataOrder = targetOrder;
     	}
-    	
+
     	freshLoad = false;
     }
     
@@ -265,33 +242,29 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     private void getPrecomputedMOC(boolean precomputedMaxmin) {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
+    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortName() + "]";
 
         String constraint = metadataService.getPrecomputedMocConstraint(descriptor);
 		Coordinate coord = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
 		String center = "POINT(" + coord.getRa() + "," + coord.getDec() + ")";
         String url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint),
-        		descriptor.getTapTable(), 8,  null, precomputedMaxmin).replaceAll("#", "%23");
+        		descriptor.getTableName(), 8,  null, precomputedMaxmin).replaceAll("#", "%23");
 
         Log.debug(debugPrefix + "Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-        this.adql = url;
-        ((EsaSkyEntity) this.parentEntity).setAdql(url);
+        setQuery(url);
+        ((EsaSkyEntity) this.parentEntity).setQuery(url);
         try {
             builder.sendRequest(null,
-                new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), new MocCallback.OnComplete() {
-               	 
-                	@Override
-                	public void onComplete() {
-                		getVisibleCount();
-                		setTableCountText();
-                		onFoVChanged();
+                new MocCallback(tablePanel, constraint, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
+					getVisibleCount();
+					setTableCountText();
+					onFoVChanged();
 
-                		if(currentVisibleCount< DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
-                			sendLoadQuery();
-                		}
-                	}
-                }));
+					if(currentVisibleCount< DeviceUtils.getDeviceShapeLimit(descriptor) && currentVisibleCount > 0) {
+						sendLoadQuery();
+					}
+				}));
         } catch (RequestException e) {
             Log.error(e.getMessage());
             Log.error("[getMocMetadata] Error fetching JSON data from server");
@@ -303,10 +276,10 @@ public class MOCEntity implements GeneralEntityInterface {
     	if(getCountStatus() == null || getCountStatus().getCount(descriptor) == null ) {
     		return;
     	}
-    	
+
     	String text = "";
     	int count = getCountStatus().getCount(descriptor);
-    	
+
     	if(count > EsaSkyWebConstants.MOC_FILTER_LIMIT) {
     		text = TextMgr.getInstance().getText("MOC_large_count_text");
     	}
@@ -331,10 +304,10 @@ public class MOCEntity implements GeneralEntityInterface {
                 String constraint = metadataService.getPrecomputedMocConstraint(descriptor);
         		Coordinate coord = CoordinateUtils.getCenterCoordinateInJ2000().getCoordinate();
         		String center = "POINT(" + coord.getRa() + "," + coord.getDec() + ")";
-        		url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint), descriptor.getTapTable(),
+        		url = TAPUtils.getTAPMocQuery(center, URL.encodeQueryString(constraint), descriptor.getTableName(),
         				order, tablePanel.getFilterString(), precomputedMaxmin).replaceAll("#", "%23");
         	}else {
-        		url = TAPUtils.getTAPMocFilteredQuery(descriptor.getTapTable(), order, visibleIpixels, tablePanel.getFilterString(), freshLoad).replaceAll("#", "%23");
+        		url = TAPUtils.getTAPMocFilteredQuery(descriptor.getTableName(), order, visibleIpixels, tablePanel.getFilterString(), freshLoad).replaceAll("#", "%23");
         	}
         	clearAll();
 	    	loadMOC(url);
@@ -343,13 +316,13 @@ public class MOCEntity implements GeneralEntityInterface {
     }
     
     public void loadMOC(String url) {
-    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getGuiShortName() + "]";
+    	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortName() + "]";
 
     	Log.debug(debugPrefix + "Query [" + url + "]");
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     	try {
     		builder.sendRequest(null,
-    				new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getGuiLongName()), () -> {
+    				new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
 						getVisibleCount();
 						setTableCountText();
 					   	onFoVChanged();
@@ -398,7 +371,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -445,7 +418,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void updateOverlay() {
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getPrimaryColor() + "\", \"name\":\"" + parentEntity.getEsaSkyUniqId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -525,46 +498,10 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void setShouldBeShown(boolean shouldBeShown) {
 		this.shouldBeShown = shouldBeShown;
 	}
-
-	public void setDescriptorMetaData() {
-		List<MetadataDescriptor> metaList = new LinkedList<>();
-		
-		MetadataDescriptor metaDatadescriptorNorder = new MetadataDescriptor();
-		metaDatadescriptorNorder.setTapName("Norder");
-		metaDatadescriptorNorder.setType(ColumnType.INTEGER);
-		metaDatadescriptorNorder.setIndex(0);
-		metaDatadescriptorNorder.setLabel("Norder");
-		metaDatadescriptorNorder.setVisible(true);
-		metaDatadescriptorNorder.setMaxDecimalDigits(0);
-		metaList.add(metaDatadescriptorNorder);
-		
-		MetadataDescriptor metaDatadescriptorNpix = new MetadataDescriptor();
-		metaDatadescriptorNpix.setTapName("Npix");
-		metaDatadescriptorNpix.setType(ColumnType.LONG);
-		metaDatadescriptorNpix.setIndex(1);
-		metaDatadescriptorNpix.setLabel("Npix");
-		metaDatadescriptorNpix.setVisible(true);
-		metaDatadescriptorNpix.setMaxDecimalDigits(0);
-		metaList.add(metaDatadescriptorNpix);
-		
-		int i = 0;
-		MetadataDescriptor metaDatadescriptor = new MetadataDescriptor();
-		metaDatadescriptor.setTapName("Count");
-		metaDatadescriptor.setType(ColumnType.LONG);
-		metaDatadescriptor.setIndex(i + 2);
-		metaDatadescriptor.setLabel("Count");
-		metaDatadescriptor.setVisible(true);
-		metaDatadescriptor.setMaxDecimalDigits(0);
-		metaList.add(metaDatadescriptor);
-		i++;
-		descriptor.setMetadata(metaList);
-		
-	}
-	
 	
 	@Override
 	public void selectShapes(int shapeId) {
-		return;
+		// Not used here
 	}
 	
 	@Override
@@ -574,7 +511,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public void deselectShapes(int shapeId) {
-		return;
+		// Not used here
 	}
 
 	@Override
@@ -653,13 +590,18 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public String getEsaSkyUniqId() {
-		return parentEntity.getEsaSkyUniqId();
+	public String getId() {
+		return parentEntity.getId();
 	}
 
 	@Override
-	public void setEsaSkyUniqId(String esaSkyUniqId) {
-		parentEntity.setEsaSkyUniqId(esaSkyUniqId);
+	public String getIcon() {
+		return parentEntity.getIcon();
+	}
+
+	@Override
+	public void setId(String id) {
+		parentEntity.setId(id);
 	}
 
 	@Override
@@ -674,7 +616,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getTabLabel() {
-		return getDescriptor().getGuiLongName();
+		return getDescriptor().getLongName();
 	}
 	
 	@Override
@@ -693,7 +635,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
-	public IDescriptor getDescriptor() {
+	public CommonTapDescriptor getDescriptor() {
 		return descriptor;
 	}
 
@@ -704,7 +646,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public ITablePanel createTablePanel() {
-        setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
+        setTablePanel(new TabulatorTablePanel(getTabLabel(), getId(), this));
         return tablePanel;
 	}
 
@@ -731,7 +673,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
 
 	@Override
-	public void addShapes(GeneralJavaScriptObject javaScriptObject) {
+	public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
 	  //This entity has only MOC data
 	}
 
@@ -739,7 +681,12 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void fetchData() {
 	  //This entity has only MOC data
 	}
-	
+
+	@Override
+	public void insertExternalData(GeneralJavaScriptObject data) {
+		//This entity has only MOC data
+	}
+
 	@Override
 	public void fetchData(String adql) {
 	  //This entity has only MOC data
@@ -858,6 +805,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 
 	@Override
+	public String getHelpTitle() {
+		return descriptor.getLongName();
+	}
+
+	@Override
 	public Shape getShape(int shapeId) {
 		return parentEntity.getShape(shapeId);
 	}
@@ -883,8 +835,23 @@ public class MOCEntity implements GeneralEntityInterface {
 	}
 	
 	@Override
-	public String getAdql() {
+	public String getQuery() {
 		return this.adql;
+	}
+
+	@Override
+	public void setQuery(String query) {
+		this.adql = query;
+	}
+
+	@Override
+	public void registerQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+		//There is no current reason to register an observer for this
+	}
+
+	@Override
+	public void unregisterQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+		//There is no current reason to register an observer for this
 	}
 
 	@Override

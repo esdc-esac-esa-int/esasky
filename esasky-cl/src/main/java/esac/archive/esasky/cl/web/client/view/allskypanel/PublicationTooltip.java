@@ -35,13 +35,7 @@ public class PublicationTooltip extends Tooltip {
             }
             EsaSkyStringButton button = new EsaSkyStringButton(buttonStringBuilder.toString());
             button.getElement().setId("publicationTooltip__button");
-            button.addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					CommonEventBus.getEventBus().fireEvent(new AladinLiteShapeSelectedEvent(new Integer(source.getId()), EntityRepository.getInstance().getPublications().getEsaSkyUniqId(), source));
-				}
-			});
+            button.addClickHandler(event -> CommonEventBus.getEventBus().fireEvent(new AladinLiteShapeSelectedEvent(Integer.parseInt(source.getId()), EntityRepository.getInstance().getPublications().getId(), source)));
             typeSpecificFlowPanel.add(button);
         }
         

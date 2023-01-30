@@ -15,8 +15,7 @@ import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDra
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.OutreachImageDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
@@ -34,10 +33,9 @@ public class OutreachImage {
 	private OpenSeaDragonWrapper lastOpenseadragon = null;
 	private final String mission;
 	
-	public OutreachImage(String id, double opacity, ImageDescriptor descriptor) {
+	public OutreachImage(String id, double opacity, CommonTapDescriptor descriptor) {
 		this.id = id;
 		this.opacity = opacity;
-		this.baseUrl = descriptor.getBaseUrl() + id;
 		this.mission = descriptor.getMission();
 	}
 
@@ -53,13 +51,13 @@ public class OutreachImage {
 	
 	public interface OutreachImageDescriptorMapper extends ObjectMapper<OutreachImageDescriptor> {}
 
-	public void loadImage(IDescriptor descriptor, TAPImageListService metadataService) {
+	public void loadImage(CommonTapDescriptor descriptor, TAPImageListService metadataService) {
 		loadImage(descriptor, metadataService, true);
 	}
 	
-	public void loadImage(IDescriptor descriptor, TAPImageListService metadataService, boolean moveToCenter) {
+	public void loadImage(CommonTapDescriptor descriptor, TAPImageListService metadataService, boolean moveToCenter) {
 		String mission = this.mission;
-		String query = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
+		String query = descriptor.createTapUrl(metadataService.getRequestUrl(), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
 		JSONUtils.getJSONFromUrl(query , new IJSONRequestCallback() {
 
 			@Override
@@ -204,7 +202,7 @@ public class OutreachImage {
 
 		}
 	}
-	
+
 	public double getOpacity() {
 		return opacity;
 	}

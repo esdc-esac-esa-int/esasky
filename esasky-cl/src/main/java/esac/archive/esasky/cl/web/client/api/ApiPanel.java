@@ -95,7 +95,7 @@ public class ApiPanel extends ApiBase{
 			}
 			
 			tablePanel.closeTablePanel();
-			String id = tablePanel.getEntity().getEsaSkyUniqId();
+			String id = tablePanel.getEntity().getId();
 			MissionTabButtons tab = controller.getRootPresenter().getResultsPresenter().getTabPanel().getTabFromId(id);
 			controller.getRootPresenter().getResultsPresenter().getTabPanel().removeTab(tab);
 		}catch(IndexOutOfBoundsException e) {

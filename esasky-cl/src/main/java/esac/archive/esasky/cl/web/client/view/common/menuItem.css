@@ -19,6 +19,11 @@
 	padding: 4px;
 }
 
+.dropdownItemDisabled {
+	pointer-events: none;
+	opacity: 40%;
+}
+
 .fillWidth {
 	width: 100%;
 	display: flex;

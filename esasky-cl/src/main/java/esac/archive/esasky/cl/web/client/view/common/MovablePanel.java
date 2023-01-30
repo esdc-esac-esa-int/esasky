@@ -2,10 +2,7 @@ package esac.archive.esasky.cl.web.client.view.common;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -49,16 +46,17 @@ public class MovablePanel extends FocusPanel {
 	private boolean isWindowResize = false;
 	private boolean isSnappingEnabled = true;
 	private FlowPanel container = new FlowPanel();
+
 	private Element moveInitiatorElement;
 	private HandlerRegistration nativePreviewHandlerRegistration;
-	
+
 	private OnKeyPress onKeyPress = new OnKeyPress() {
-	    
+
 	    @Override
 	    public void onEscapeKey() {
 	    }
 	};
-	
+
 	private static int highestZIndex = 1000;
 
 	public MovablePanel(String googleEventCategory, boolean isSuggestedPositionCenter, boolean updateZIndex) {
@@ -83,7 +81,7 @@ public class MovablePanel extends FocusPanel {
 		super.add(container);
         setFocus(true);
     }
-    
+
 	@Override
 	public void add(Widget w) {
 	    container.add(w);
@@ -107,11 +105,11 @@ public class MovablePanel extends FocusPanel {
 			nativePreviewHandlerRegistration = null;
 		}
 	}
-	
+
 	public void addHideOnEscapeKeyBehavior(OnKeyPress onKeyPress) {
 	    this.onKeyPress = onKeyPress;
 	}
-	
+
 	@Override
 	public void onBrowserEvent(Event event) {
 		final int eventType = DOM.eventGetType(event);
@@ -164,7 +162,7 @@ public class MovablePanel extends FocusPanel {
 		}
 	}
 
-	private void updateZIndex() {
+	public void updateZIndex() {
 		if (updateZIndex) {
 			int currentZIndexNumber = 0;
 			String currentZIndex = getElement().getStyle().getZIndex();
@@ -189,13 +187,13 @@ public class MovablePanel extends FocusPanel {
 			setPosition(suggestedPositionLeft, suggestedPositionTop);
 		}
 	}
-	
+
 	public void setSuggestedPositionCenter() {
 		isSuggestedPositionCenter = true;
 		Scheduler.get().scheduleFinally(this::setCenterPosition);
 		setCenterPosition();
 	}
-	
+
 	private void setCenterPosition() {
 	    suggestedPositionLeft = MainLayoutPanel.getMainAreaWidth() / 2 - getOffsetWidth() / 2;
 	    suggestedPositionTop = MainLayoutPanel.getMainAreaHeight() / 2 - getOffsetHeight() / 2;
@@ -207,7 +205,7 @@ public class MovablePanel extends FocusPanel {
 	private void setPosition(int left, int top) {
 		setPosition(left, top, false);
 	}
-	
+
 	private static int MIN_BOTTOM_DISTANCE = 2;
 	private static int MIN_RIGHT_DISTANCE = 1;
 	private void setPosition(int left, int top, boolean forceTopLeftDefinition) {
@@ -232,7 +230,7 @@ public class MovablePanel extends FocusPanel {
 				setTop(top);
 			}
 		}
-		
+
 		if(isWindowResize && isRight && !forceTopLeftDefinition) {
 			setRight(MIN_RIGHT_DISTANCE);
 		} else {
@@ -279,7 +277,7 @@ public class MovablePanel extends FocusPanel {
 			if(isSuggestedPositionCenter) {
 				setSuggestedPositionCenter();
 			}
-			
+
 			int left = suggestedPositionLeft;
 			if(suggestedPositionLeft + getOffsetWidth() > MainLayoutPanel.getMainAreaWidth()) {
 				left = MainLayoutPanel.getMainAreaWidth() - getOffsetWidth();
@@ -330,7 +328,7 @@ public class MovablePanel extends FocusPanel {
 		getElement().getStyle().setBottom(bottom, Unit.PX);
 		getElement().getStyle().setProperty("top", "auto");
 	}
-	
+
 	public void definePositionFromTopAndLeft() {
 		if(hasBeenMovedByUser) {
 			setPosition(userSetPositionLeft, userSetPositionTop, true);
@@ -367,16 +365,16 @@ public class MovablePanel extends FocusPanel {
 
 		return new Size(width, height);
 	}
-	
+
 	public void setSnapping(boolean isSnappingEnabled) {
 		this.isSnappingEnabled = isSnappingEnabled;
 	}
-	
+
 /*
  * Below code implemented to add the possibility to mark certain
  * elements inside the MovablePanel as unable to initiate move operation
  * Original code adapted from source code of gwt PopupPanel
- * */	
+ * */
 	protected void previewNativeEvent(NativePreviewEvent event) {
 		// If the event has been canceled or consumed, ignore it
 		if (event.isCanceled() || (event.isConsumed())) {
@@ -424,9 +422,9 @@ public class MovablePanel extends FocusPanel {
 				return false;
 		}
 	}
-	
+
 	private boolean elementCanStartDragOperation = false;
-	
+
 	private boolean eventTargetsPopup(NativeEvent event) {
 		EventTarget target = event.getEventTarget();
 		if (Element.is(target)) {
@@ -473,9 +471,9 @@ public class MovablePanel extends FocusPanel {
 	}
 
 	private List<Element> elementsNotInitiatingMoveOperations;
-	
+
 	/**
-	 * Mouse events that occur within an the partner element will not 
+	 * Mouse events that occur within an the partner element will not
 	 * initiate a move operation
 	 */
 	public void addElementNotAbleToInitiateMoveOperation(Element partner) {
@@ -500,4 +498,5 @@ public class MovablePanel extends FocusPanel {
 
 		this.moveInitiatorElement = partner;
 	}
+
 }

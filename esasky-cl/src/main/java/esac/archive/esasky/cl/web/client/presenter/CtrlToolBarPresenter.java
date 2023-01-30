@@ -2,8 +2,6 @@ package esac.archive.esasky.cl.web.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.resources.client.ImageResource;
@@ -13,6 +11,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -23,14 +22,11 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -39,8 +35,8 @@ public class CtrlToolBarPresenter {
 
     private View view;
     
-    private SelectSkyPanelPresenter selectSkyPresenter;
-    private PublicationPanelPresenter publicationPresenter;
+    private final SelectSkyPanelPresenter selectSkyPresenter;
+    private final PublicationPanelPresenter publicationPresenter;
     List<CustomTreeMapDescriptor> treeMapDescriptors = new LinkedList<CustomTreeMapDescriptor>();
     HashMap<String, EsaSkyButton> customButtons = new HashMap<String, EsaSkyButton>();
 
@@ -64,7 +60,8 @@ public class CtrlToolBarPresenter {
         SelectSkyPanelPresenter.View getSelectSkyView();
         PublicationPanelPresenter.View getPublicationPanelView();
 
-        void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts);
+        void addTreeMapData(Collection<DescriptorCountAdapter> descriptorCountAdapters);
+        void replaceTreeMapData(Collection<DescriptorCountAdapter> descriptorCountAdapters);
 
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
 
@@ -96,6 +93,7 @@ public class CtrlToolBarPresenter {
         void openExtTapPanel();
 
         void closeExtTapPanel();
+        boolean isExtTapPanelOpen();
 
         void openOutreachPanel();
 
@@ -129,116 +127,80 @@ public class CtrlToolBarPresenter {
         /*
          * Multitarget pointer in the middle of the current sky
          */
-        CommonEventBus.getEventBus().addHandler(MultiTargetClickEvent.TYPE, new MultiTargetClickEventHandler() {
+        CommonEventBus.getEventBus().addHandler(MultiTargetClickEvent.TYPE, clickEvent -> {
+            ESASkySearchResult target = clickEvent.getTarget();
+            if (Boolean.TRUE.equals(target.getValidInput())) {
 
-            @Override
-            public void onClickEvent(final MultiTargetClickEvent clickEvent) {
-                ESASkySearchResult target = clickEvent.getTarget();
-                if (target.getValidInput()) {
+                if (target.getUserInputType() == SearchInputType.TARGET) {
+                    AladinLiteWrapper.getInstance().goToTarget(target.getSimbadRaDeg(), target.getSimbadDecDeg(), target.getFoVDeg(), false, target.getCooFrame());
+                } else {
 
-                    if (target.getUserInputType() == SearchInputType.TARGET) {
-                        AladinLiteWrapper.getInstance().goToTarget(target.getSimbadRaDeg(), target.getSimbadDecDeg(), target.getFoVDeg(), false, target.getCooFrame());
-                    } else {
+                    String[] raDecDeg = { target.getUserRaDeg(), target.getUserDecDeg() };
+                    if (target.getCooFrame() != null) {
 
-                        String[] raDecDeg = { target.getUserRaDeg(), target.getUserDecDeg() };
-                        if (target.getCooFrame() != null) {
+                        if (target.getCooFrame().equals(AladinLiteConstants.FRAME_GALACTIC)) {
+                            // Since Aladin.View.pointTo always does the conversion from GAL
+                            // to J2000 even if the coordinates are already in GAL we need to
+                            // convert the coordinates back to J2000 and leave AladinLite to do the conversion
 
-                            if (target.getCooFrame().equals(AladinLiteConstants.FRAME_GALACTIC)) {
-                                // Since Aladin.View.pointTo does the always the conversion from GAL
-                                // to
-                                // J2000 even if the coordinates are already in GAL we need to
-                                // convert
-                                // the coordinates back to J2000 and leave AladinLite to do the
-                                // conversion
-
-                                Log.debug("Clicked on source uploaded with FRAME GALACTIC");
-                                Log.debug("mtl source SIMBADinput [" + target.getSimbadRaDeg() + ","
-                                		+ target.getSimbadDecDeg() + "]");
-                                double[] raDecDegJ2000 = CoordinatesConversion
-                                        .convertPointGalacticToJ2000(
-                                                Double.parseDouble(target.getSimbadRaDeg()),
-                                                Double.parseDouble(target.getSimbadDecDeg()));
-                                Log.debug("mtl (after conversion) source input ["
-                                        + raDecDegJ2000[0] + "," + raDecDegJ2000[1] + "]");
-                                raDecDeg[0] = target.getSimbadRaDeg();
-                                raDecDeg[1] = target.getSimbadDecDeg();
-                            }
-                            AladinLiteWrapper.getInstance().goToTarget(raDecDeg[0], raDecDeg[1],
-                                    target.getFoVDeg(), false, AladinLiteConstants.FRAME_J2000);
+                            Log.debug("Clicked on source uploaded with FRAME GALACTIC");
+                            Log.debug("mtl source SIMBADinput [" + target.getSimbadRaDeg() + ","
+                                    + target.getSimbadDecDeg() + "]");
+                            double[] raDecDegJ2000 = CoordinatesConversion
+                                    .convertPointGalacticToJ2000(
+                                            Double.parseDouble(target.getSimbadRaDeg()),
+                                            Double.parseDouble(target.getSimbadDecDeg()));
+                            Log.debug("mtl (after conversion) source input ["
+                                    + raDecDegJ2000[0] + "," + raDecDegJ2000[1] + "]");
+                            raDecDeg[0] = target.getSimbadRaDeg();
+                            raDecDeg[1] = target.getSimbadDecDeg();
                         }
                         AladinLiteWrapper.getInstance().goToTarget(raDecDeg[0], raDecDeg[1],
                                 target.getFoVDeg(), false, AladinLiteConstants.FRAME_J2000);
                     }
+                    AladinLiteWrapper.getInstance().goToTarget(raDecDeg[0], raDecDeg[1],
+                            target.getFoVDeg(), false, AladinLiteConstants.FRAME_J2000);
                 }
             }
         });
         
-        CommonEventBus.getEventBus().addHandler(IsTrackingSSOEvent.TYPE, new IsTrackingSSOEventHandler() {
-
-			@Override
-			public void onIsTrackingSSOEventChanged() {
-				view.onIsTrackingSSOEventChanged();
-			}
-
-        });       
+        CommonEventBus.getEventBus().addHandler(IsTrackingSSOEvent.TYPE, () -> view.onIsTrackingSSOEventChanged());
 
         CommonEventBus.getEventBus().addHandler(TreeMapSelectionEvent.TYPE,
-                new TreeMapSelectionEventHandler() {
-
-            @Override
-            public void onSelection(TreeMapSelectionEvent event) {
-                if(DeviceUtils.isMobile()) {
-        	        view.closeTreeMap();
-                }
+                event -> {
+                    if(DeviceUtils.isMobile()) {
+                        view.closeTreeMap();
+                    }
+                });
+        
+        CommonEventBus.getEventBus().addHandler(TreeMapNewDataEvent.TYPE, newDataEvent -> {
+            if (newDataEvent.replaceData()) {
+                view.replaceTreeMapData(newDataEvent.getCountAdapterList());
+                DescriptorRepository.getInstance().doCountAll();
+            } else {
+                view.addTreeMapData(newDataEvent.getCountAdapterList());
             }
         });
-        
-        CommonEventBus.getEventBus().addHandler(TreeMapNewDataEvent.TYPE, new TreeMapNewDataEventHandler() {
-			
-			@Override
-			public void onNewDataEvent(TreeMapNewDataEvent newDataEvent) {
-				view.addTreeMapData(newDataEvent.getDescriptors(), newDataEvent.getCounts());
-			}
-		});
          
-        view.getPublicationButton().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PUBLICATIONS, "");
-                publicationPresenter.toggle();
-                view.closeAllOtherPanels(view.getPublicationButton());
-            }
+        view.getPublicationButton().addClickHandler(event -> {
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PUBLICATIONS, "");
+            publicationPresenter.toggle();
+            view.closeAllOtherPanels(view.getPublicationButton());
         });
         
-        CommonEventBus.getEventBus().addHandler(IsInScienceModeChangeEvent.TYPE, new IsInScienceModeEventHandler() {
-			
-			@Override
-			public void onIsInScienceModeChanged() {
-				updateScienceModeElements();
-			}
-		});    
+        CommonEventBus.getEventBus().addHandler(IsInScienceModeChangeEvent.TYPE, this::updateScienceModeElements);
         
-        CommonEventBus.getEventBus().addHandler(ToggleSkyPanelEvent.TYPE, new ToggleSkyPanelEventHandler() {
-			
-			@Override
-			public void onEvent(ToggleSkyPanelEvent event) {
-				selectSkyPresenter.toggle();
-				view.getSkyPanelButton().setToggleStatus(selectSkyPresenter.isShowing());;
-				view.closeAllOtherPanels(view.getSkyPanelButton());
-			}
-		});
+        CommonEventBus.getEventBus().addHandler(ToggleSkyPanelEvent.TYPE, event -> {
+            selectSkyPresenter.toggle();
+            view.getSkyPanelButton().setToggleStatus(selectSkyPresenter.isShowing());;
+            view.closeAllOtherPanels(view.getSkyPanelButton());
+        });
         
         CommonEventBus.getEventBus().addHandler(CloseOtherPanelsEvent.TYPE, event -> 
 				view.closeAllOtherPanels(event.getWidgetNotToClose())
 		); 
         
-        view.getSkyPanelButton().addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				selectSkyPresenter.toggle();
-			}
-		});
+        view.getSkyPanelButton().addClickHandler(event -> selectSkyPresenter.toggle());
     }
     
     private void updateScienceModeElements() {
@@ -309,7 +271,7 @@ public class CtrlToolBarPresenter {
     
     public void customTreeMapClicked(TreeMapSelectionEvent event) {
     	for(CustomTreeMapDescriptor treeMapDescriptor : treeMapDescriptors) {
-    		for(IDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
+    		for(CommonTapDescriptor desc : treeMapDescriptor.getMissionDescriptors()) {
     			if(event.getDescriptor() == desc) {
     				treeMapDescriptor.getOnMissionClicked().onMissionClicked(desc.getMission());
     				return;
@@ -376,6 +338,10 @@ public class CtrlToolBarPresenter {
 
     public void openExtTapPanel() {
         view.openExtTapPanel();
+    }
+
+    public boolean isExtTapPanelOpen() {
+        return view.isExtTapPanelOpen();
     }
 
     public void closeExtTapPanel() {

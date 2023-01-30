@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.callback;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -10,8 +11,8 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
+import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
@@ -22,21 +23,20 @@ import esac.archive.esasky.cl.web.client.model.TapMetadata;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.TrackedSso;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter.TapRowListMapper;
-import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.DescriptorListAdapter;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 
 public class SsoCountRequestCallback implements RequestCallback {
 
-    private String progressIndicatorId;
-    private DescriptorListAdapter<SSODescriptor> descriptorList;
-    private String ssoName;
-    private ESASkySSOObjType ssoType;
+    private final String progressIndicatorId;
+    private final DescriptorCountAdapter descriptorCountAdapter;
+    private final String ssoName;
+    private final ESASkySSOObjType ssoType;
 
-    public SsoCountRequestCallback(DescriptorListAdapter<SSODescriptor> descriptorList, String ssoName, ESASkySSOObjType ssoType) {
+    public SsoCountRequestCallback(DescriptorCountAdapter descriptorCountAdapter, String ssoName, ESASkySSOObjType ssoType) {
 
         this.progressIndicatorId = UUID.randomUUID().toString();
-        this.descriptorList = descriptorList;
+        this.descriptorCountAdapter = descriptorCountAdapter;
         this.ssoName = ssoName;
         this.ssoType = ssoType;
         addProgressIndicator(TextMgr.getInstance().getText("resultsPresenter_computingDataCrossMatch").replace("$SSOTEXT$", ssoType.getType() + " " + ssoName));
@@ -86,10 +86,10 @@ public class SsoCountRequestCallback implements RequestCallback {
         TapRowListMapper mapper = GWT.create(TapRowListMapper.class);
         TapRowList rowList = mapper.read(response.getText());
         Log.debug("[SSO] count response received" + response.getText());
-        if (rowList.getData().size() == 0) {
+        if (rowList.getData().isEmpty()) {
             String missions = "";
-            for(IDescriptor descriptor : descriptorList.getDescriptors()) {
-                missions += descriptor.getGuiLongName() + ", ";
+            for(CommonTapDescriptor descriptor : descriptorCountAdapter.getDescriptors()) {
+                missions = descriptor.getLongName() + ", ";
             }
             DisplayUtils
             .showMessageDialogBox(TextMgr.getInstance().getText("SsoCountRequestCallback_noCrossMatchResultsMessage").replace("$MISSIONS$", missions.subSequence(0, missions.length() - 2)),
@@ -97,29 +97,25 @@ public class SsoCountRequestCallback implements RequestCallback {
                     progressIndicatorId, "NoSSOCrossMatchFoundDialog");
             GUISessionStatus.setIsTrackingSSO(false);
         } else {
-        	List<IDescriptor> descriptors = new LinkedList<IDescriptor>();
-        	List<Integer> counts = new LinkedList<Integer>();
         	int ssoId = 0;
-        	
+
             for (TapMetadata currMtd : rowList.getMetadata()) {
                 if (currMtd.getName().equals("sso_oid")) {
                     ssoId = Integer.parseInt(rowList.getDataValue("sso_oid", 0));
                 } else {
                 	currMtd.setName(currMtd.getName().replace("_", "-"));
-                    SSODescriptor descriptor = descriptorList
-                            .getDescriptorByMissionNameCaseInsensitive(currMtd.getName());
+                    CommonTapDescriptor descriptor = descriptorCountAdapter
+                            .getDescriptorByMission(currMtd.getName());
                     if (descriptor != null) {
                         Integer count = Integer
                                 .parseInt(rowList.getDataValue(currMtd.getName(), 0));
-                        descriptorList.getCountStatus().setCount(descriptor, count);
-                        descriptors.add(descriptor);
-                        counts.add(count);
+                        descriptorCountAdapter.getCountStatus().setCount(descriptor, count);
                     }
                 }
             }
-            descriptorList.getCountStatus().updateCount();
+            descriptorCountAdapter.getCountStatus().updateCount();
             GUISessionStatus.setTrackedSSO(new TrackedSso(ssoName, ssoType, ssoId));
-            CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptors, counts));
+            CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(descriptorCountAdapter)));
         }
 
     }

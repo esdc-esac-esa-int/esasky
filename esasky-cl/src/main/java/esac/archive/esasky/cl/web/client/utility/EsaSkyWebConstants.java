@@ -34,7 +34,9 @@ public class EsaSkyWebConstants {
     public static final String GENERAL_RESOLVER_URL = BACKEND_CONTEXT + "/generalresolver";
     public static final String SSO_RESOLVER_URL = BACKEND_CONTEXT + "/ssoresolver";
     public static final String DATA_REQUEST_URL = BACKEND_CONTEXT + "/data-request";
-    public static final String OBSERVATIONS_URL = BACKEND_CONTEXT + "/observations";
+
+    public static final String TAP_SYNC_URL = BACKEND_CONTEXT + "/tap/sync";
+    public static final String TAP_DESCRIPTOR_URL = BACKEND_CONTEXT + "/tap/descriptors";
     public static final String IMAGES_URL = BACKEND_CONTEXT + "/outreach-image";
     public static final String SSO_URL = BACKEND_CONTEXT + "/sso";
     public static final String SPECTRA_URL = BACKEND_CONTEXT + "/spectra";
@@ -58,6 +60,7 @@ public class EsaSkyWebConstants {
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
     public static final String HIPSLIST_URL = BACKEND_CONTEXT + "/global-hipslist";
+    public static final String TAPREGISTRY_URL = BACKEND_CONTEXT + "/tap-registry";
 
     public static final String URL_PARAM_TARGET = "target";
     public static final String URL_PARAM_HIPS = "hips";
@@ -181,7 +184,25 @@ public class EsaSkyWebConstants {
 
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
-    
+
+    public static final String SCHEMA_OBSERVATIONS = "observations";
+    public static final String SCHEMA_CATALOGUES = "catalogues";
+    public static final String SCHEMA_ALERTS = "alerts";
+    public static final String SCHEMA_PUBLIC = "public";
+    public static final String SCHEMA_IMAGES = "images";
+    public static final String SCHEMA_EXTERNAL = "external";
+    public static final String CATEGORY_OBSERVATIONS = "observations";
+    public static final String CATEGORY_SPECTRA = "spectra";
+    public static final String CATEGORY_CATALOGUES = "catalogues";
+    public static final String CATEGORY_SSO = "sso";
+    public static final String CATEGORY_GRAVITATIONAL_WAVES = "gravitational_waves";
+    public static final String CATEGORY_NEUTRINOS = "neutrinos";
+    public static final String CATEGORY_PUBLICATIONS = "publications";
+    public static final String CATEGORY_IMAGES = "images";
+    public static final String CATEGORY_EXTERNAL = "external";
+
+
+
     /** Prevents Utility class calls. */
     protected EsaSkyWebConstants() {
         // prevents calls from subclass
@@ -276,6 +297,7 @@ public class EsaSkyWebConstants {
     public static final String SESSION_TREEMAP = "treemap";
     public static final String SESSION_TREEMAP_LOW = "low";
     public static final String SESSION_TREEMAP_HIGH = "high";
+    public static final String SESSION_EXTERNAL_DATA_CENTERS = "external_data_centers";
     
 
 }

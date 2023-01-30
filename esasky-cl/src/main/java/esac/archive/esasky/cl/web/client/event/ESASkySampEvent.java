@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.event;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.shared.GwtEvent;
@@ -15,7 +16,7 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 public class ESASkySampEvent extends GwtEvent<ESASkySampEventHandler> {
 
     /** Defining event type. */
-    public final static Type<ESASkySampEventHandler> TYPE = new Type<ESASkySampEventHandler>();
+    public static final Type<ESASkySampEventHandler> TYPE = new Type<>();
 
     /** Samp action: register, load.votable... */
     private SampAction action;
@@ -23,15 +24,14 @@ public class ESASkySampEvent extends GwtEvent<ESASkySampEventHandler> {
     /**
      * /** List of Urls to be sent to SAMP.
      */
-    private HashMap<String, String> sampUrlsPerMissionMap;
+    private Map<String, String> sampUrlsPerMissionMap;
 
     /**
      * Default constructor.
      * @param inputAction Input SampAction
      * @param inputSampUrlsPerMissionMap Input HashMap<String, String>
      */
-    public ESASkySampEvent(final SampAction inputAction,
-            final HashMap<String, String> inputSampUrlsPerMissionMap) {
+    public ESASkySampEvent(final SampAction inputAction, final Map<String, String> inputSampUrlsPerMissionMap) {
         super();
         setAction(inputAction);
         setSampUrlsPerMissionMap(inputSampUrlsPerMissionMap);
@@ -47,7 +47,7 @@ public class ESASkySampEvent extends GwtEvent<ESASkySampEventHandler> {
             final String inputTableName) {
         super();
         setAction(inputAction);
-        this.sampUrlsPerMissionMap = new HashMap<String, String>();
+        this.sampUrlsPerMissionMap = new HashMap<>();
         this.sampUrlsPerMissionMap.put(inputTableName, inputResourceUrl);
 
     }
@@ -83,7 +83,7 @@ public class ESASkySampEvent extends GwtEvent<ESASkySampEventHandler> {
      * getSampUrlsPerMissionMap().
      * @return the sampUrlsPerMissionMap
      */
-    public final HashMap<String, String> getSampUrlsPerMissionMap() {
+    public final Map<String, String> getSampUrlsPerMissionMap() {
         return sampUrlsPerMissionMap;
     }
 
@@ -91,8 +91,7 @@ public class ESASkySampEvent extends GwtEvent<ESASkySampEventHandler> {
      * setSampUrlsPerMissionMap().
      * @param inputSampUrlsPerMissionMap the sampUrlsPerMissionMap to set
      */
-    public final void setSampUrlsPerMissionMap(
-            final HashMap<String, String> inputSampUrlsPerMissionMap) {
+    public final void setSampUrlsPerMissionMap(final Map<String, String> inputSampUrlsPerMissionMap) {
         this.sampUrlsPerMissionMap = inputSampUrlsPerMissionMap;
     }
 

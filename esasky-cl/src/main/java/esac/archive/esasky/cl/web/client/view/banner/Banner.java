@@ -82,13 +82,7 @@ public class Banner extends Composite implements View{
 			banner.getElement().getStyle().setBackgroundColor("green");
 		}
 		
-		animation.addObserver(new AnimationObserver() {
-			
-			@Override
-			public void onComplete(double currentPosition) {
-				banner.setVisible(isShowing);
-			}
-		});
+		animation.addObserver(currentPosition -> banner.setVisible(isShowing));
 		contentContainer.setHeight("100%");
 		contentContainer.setWidth("100%");
 		banner.setVisible(false);

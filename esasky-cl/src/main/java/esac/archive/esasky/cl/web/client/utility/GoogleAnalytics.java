@@ -61,6 +61,10 @@ public final class GoogleAnalytics {
     public static final String CAT_JWSTOUTREACHIMAGES = "jwstOutreachImages";
     public static final String CAT_SELECTSKY = "SelectSky";
     public static final String CAT_EVA = "Eva";
+    public static final String CAT_GLOBALTAPPANEL = "ExternalTapPanel";
+    public static final String CAT_GLOBALTAP_ADQLPANEL = "ExternalTapAdqlPanel";
+    public static final String CAT_GLOBALTAPPANEL_ERRORDIALOG = "ExternalTapPanelErrorDialog";
+    public static final String CAT_GLOBALTAP_SELECTCOLUMNPANEL = "ExternalTapSelectColumnPanel";
     
     //Actions
     public static final String ACT_INITIALISATION_TIME = "InitialisationTime";

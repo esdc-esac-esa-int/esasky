@@ -24,14 +24,14 @@ public class SSOOrbitMetadataCallback extends JsonRequestCallback {
         super(progressIndicatorMessage, url);
         this.entity = entity;
         timecall = System.currentTimeMillis();
-        latestUpdates.put(entity.getEsaSkyUniqId(), timecall);
+        latestUpdates.put(entity.getId(), timecall);
     }
 
     @Override
     protected void onSuccess(Response response) {
-    	if (timecall < latestUpdates.get(entity.getEsaSkyUniqId())) {
+    	if (timecall < latestUpdates.get(entity.getId())) {
     		Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
-    				+ timecall + " , dif:" + (latestUpdates.get(entity.getEsaSkyUniqId()) - timecall));
+    				+ timecall + " , dif:" + (latestUpdates.get(entity.getId()) - timecall));
     		return;
     	}
     	if(!GUISessionStatus.getIsTrackingSSO()) {

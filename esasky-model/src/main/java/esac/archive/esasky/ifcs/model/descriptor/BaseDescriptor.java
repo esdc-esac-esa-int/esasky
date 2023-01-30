@@ -11,6 +11,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.shared.ColumnType;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public abstract class BaseDescriptor implements IDescriptor {
     
     /** DB table name. */
     private String tapTable;
+    private GeneralJavaScriptObject tapTableMetadata;
 
     /** Name of corresponding count column in the aggregated count table. */
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -130,7 +132,9 @@ public abstract class BaseDescriptor implements IDescriptor {
    
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String creditedInstitutions;
-    
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private Boolean useUcd = false;
     private int tabCount = 0;
 
     @Override
@@ -151,6 +155,16 @@ public abstract class BaseDescriptor implements IDescriptor {
     @Override
     public final void setTapTable(final String inputTapTable) {
         this.tapTable = inputTapTable;
+    }
+
+    @Override
+    public final GeneralJavaScriptObject getTapTableMetadata() {
+        return tapTableMetadata;
+    }
+
+    @Override
+    public final void setTapTableMetadata(final GeneralJavaScriptObject metadata) {
+        this.tapTableMetadata = metadata;
     }
 
     @Override
@@ -539,5 +553,36 @@ public abstract class BaseDescriptor implements IDescriptor {
         }
         return shape;
     }
-    
+
+
+    @Override
+    public  String getUcdColumnName(String ucdName) {
+        if (this.tapTableMetadata == null) {
+            return "";
+        }
+
+        GeneralJavaScriptObject[] metadataColumns = GeneralJavaScriptObject.convertToArray(this.tapTableMetadata);
+        final String metaMain = UCD.META_MAIN.getValue();
+        String columnName = "";
+        for(int i = 0; i < metadataColumns.length; i++) {
+            if (metadataColumns[i].hasProperty("ucd") && metadataColumns[i].getStringProperty("ucd").contains(ucdName)) {
+                if (columnName.equals("") || metadataColumns[i].getStringProperty("ucd").contains(metaMain)) {
+                    columnName =  metadataColumns[i].hasProperty("column_name")
+                            ? metadataColumns[i].getStringProperty("column_name")
+                            : metadataColumns[i].getStringProperty("name");
+                }
+            }
+        }
+        return columnName;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean useUcd() {
+        return useUcd;
+    }
+
+    public void setUseUcd(Boolean useUcd) {
+        this.useUcd = useUcd;
+    }
 }

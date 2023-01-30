@@ -64,13 +64,7 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 		this.style.ensureInjected();
 
 		initView();
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-
-			@Override
-			public void onResize(ResizeEvent event) {
-				setMaxSize();
-			}
-		});
+		MainLayoutPanel.addMainAreaResizeHandler(event -> setMaxSize());
 	}
 	
 	@Override
@@ -104,14 +98,8 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 
 		header = new PopupHeader(this, TextMgr.getInstance().getText("publicationPanel_title"), 
 				TextMgr.getInstance().getText("publicationPanel_helpText"), 
-				TextMgr.getInstance().getText("publicationPanel_title"), 
-				new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				removeButtonClickHandler.onClick(event);				
-			}
-		}, TextMgr.getInstance().getText("publicationPanel_removeAndClose"));
+				TextMgr.getInstance().getText("publicationPanel_title"),
+				event -> removeButtonClickHandler.onClick(event), TextMgr.getInstance().getText("publicationPanel_removeAndClose"));
 
 		publicationPanel.add(header);
 		
@@ -285,13 +273,9 @@ public class PublicationPanel extends MovablePanel implements PublicationPanelPr
 		
 		slider.setHTML("<input type=\"range\" value=\"" + value + "\" min=\"" + min + "\" max=\"" + max + "\" "
 				+ "class=\"slider\" id=\"" + sliderId + "\">");
-		numberBox.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				setSliderValue(numberBox.getNumber(), sliderId);
-				warningLabel.setVisible(numberBox.getNumber() > value);
-			}
+		numberBox.addValueChangeHandler(event -> {
+			setSliderValue(numberBox.getNumber(), sliderId);
+			warningLabel.setVisible(numberBox.getNumber() > value);
 		});
 	}
 	

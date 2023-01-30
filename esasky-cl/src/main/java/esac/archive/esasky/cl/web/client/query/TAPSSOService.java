@@ -3,13 +3,13 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.SSODescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+
+import java.util.Objects;
 
 public class TAPSSOService extends AbstractTAPService {
 
@@ -25,52 +25,28 @@ public class TAPSSOService extends AbstractTAPService {
         return instance;
     }
 
-    public String getMetadataAdql(IDescriptor descriptorInput) {
+    public String getMetadataAdql(CommonTapDescriptor descriptorInput) {
     	return getMetadataAdql(descriptorInput, "");
     }
-    
-    public String getMetadataAdql(final IDescriptor inputDescriptor, String filter) {
-        final String debugPrefix = "[TAPSSOService.getMetadataAdql]";
-        SSODescriptor descriptor = (SSODescriptor) inputDescriptor;
 
-        String adql;
-        if(Modules.getModule(EsaSkyWebConstants.MODULE_TOGGLE_COLUMNS)) {
-            adql = "SELECT *";
-        } else {
-            adql = "SELECT ";
-            for (MetadataDescriptor currMetadata : descriptor.getMetadata()) {
-                boolean found = false;
-                for(MetadataDescriptor ssoMetadata : descriptor.getSsoXMatchMetadata()) {
-                    if(ssoMetadata.getTapName().equals(currMetadata.getTapName())) {
-                        adql += " b." + currMetadata.getTapName() + ", ";
-                        found = true;
-                        break;
-                    }
-                }
-                if(!found) {
-                    adql += " a." + currMetadata.getTapName() + ", ";
-                }
-            }
-            adql = adql.substring(0, adql.indexOf(",", adql.length() - 2));
-        }
-
-        adql += " FROM " + descriptor.getTapTable() + " AS a JOIN "
-                + descriptor.getSsoXMatchTapTable()
+    public String getMetadataAdql(final CommonTapDescriptor descriptor, String filter) {
+        String adql = "SELECT a.*, b.sso_name as sso_name_splitter, b.* FROM " + descriptor.getTableName() + " AS a JOIN "
+                + descriptor.getProperties().get("xmatch_table")
                 + " AS b on a.observation_oid = b.observation_oid";
-        if(descriptor.getTapTable().contains("xmm_om")) {
+
+
+        if(descriptor.getTableName().contains("xmm_om")) {
         	adql += " AND a.filter = b.filter";
         }
-        adql += " WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
 
-        Log.debug(debugPrefix + " ADQL " + adql);
+        adql += " WHERE b.sso_oid=" + GUISessionStatus.getTrackedSso().id;
 
         return adql;
     }
 
-    public String getPolylineAdql(IDescriptor descriptor) {
-        if(descriptor instanceof SSODescriptor) {
-            String ssoCardReductionTapTable = ((SSODescriptor)descriptor).getSsoCardReductionTapTable();
-            
+    public String getPolylineAdql(CommonTapDescriptor descriptor) {
+        if(Objects.equals(descriptor.getCategory(), EsaSkyWebConstants.CATEGORY_SSO)) {
+            String ssoCardReductionTapTable = descriptor.getProperties().get("card_reduction_table").toString();
             return "select positions from " + ssoCardReductionTapTable + " where "
                     + ssoCardReductionTapTable + ".sso_oid=" + GUISessionStatus.getTrackedSso().id;
         }
@@ -79,11 +55,11 @@ public class TAPSSOService extends AbstractTAPService {
     }
 
 	@Override
-	public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
+	public String getMetadataAdqlRadial(CommonTapDescriptor descriptor, SkyViewPosition conePos) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
     public String getCount(String ssoName, ESASkySSOObjType ssoType) {
 
         String dbSSOType = "aster";

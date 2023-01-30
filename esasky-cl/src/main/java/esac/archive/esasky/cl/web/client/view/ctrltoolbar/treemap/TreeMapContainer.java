@@ -19,9 +19,11 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GlobalTapPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,13 +35,6 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	private final Resources resources;
 	private boolean firstOpening = true;
 	private final EntityContext context;
-	
-	private final int DEFAULT_TREEMAP_HEIGHT_DESKTOP = 400;
-	private final int DEFAULT_TREEMAP_WIDTH_DESKTOP = 500;
-	private final int DEFAULT_TREEMAP_HEIGHT_TABLET = 800;
-	private final int DEFAULT_TREEMAP_WIDTH_TABLET = 800;
-	private final int DEFAULT_TREEMAP_HEIGHT_MOBILE = 1000;
-	private final int DEFAULT_TREEMAP_WIDTH_MOBILE = 1000;
 
 	private TreeMap treeMap;
 	private FlowPanel treeMapContainer = new FlowPanel();
@@ -47,6 +42,8 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	private ESASkyMultiRangeSlider slider;
 	private FlowPanel sliderContainer;
 	boolean haveSlider;
+
+	private GlobalTapPanel globalTapPanel;
 	
 	private final List<TreeMapChanged> observers = new LinkedList<>();
 	
@@ -71,19 +68,8 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		this.style = this.resources.style();
 		this.style.ensureInjected();
 		this.context = context;
-		
-		if(context.equals(EntityContext.EXT_TAP)) {
-			treeMap = new ExtTapTreeMap(context);
-			((ExtTapTreeMap) treeMap).registerHeaderObserver(new TreeMapHeaderChanged() {
-				
-				@Override
-				public void onHeaderChanged(String text) {
-					header.setText(TextMgr.getInstance().getText("treeMap_" + TreeMapContainer.this.context) + text);
-				}
-			});
-		}else {
-			treeMap = new TreeMap(context);
-		}
+
+		treeMap = new TreeMap(context);
 
 
 		this.addStyleName("treeMapContainer");
@@ -93,6 +79,7 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		treeMapContainer.getElement().setId("treeMapContainer_" + context);
 
 		header = new PopupHeader<>(this, "", "");
+
 		Image ssoDnetLogo = new Image(resources.ssoDNetLogo().getSafeUri());
 		ssoDnetLogo.addStyleName("treeMap__ssoLogo");
 		header.add(ssoDnetLogo);
@@ -100,7 +87,7 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 		treeMapContainer.add(header);
 		treeMapContainer.add(treeMap);
-		
+
 		if(shouldHaveSlider) {
 			sliderContainer = initSliderContainer();
 			treeMapContainer.add(sliderContainer);
@@ -220,27 +207,31 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 	private void setDefaultSize() {
 		if(DeviceUtils.isMobile()) {
-			treeMapContainer.getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_MOBILE, Unit.PX);
-			treeMapContainer.getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_MOBILE, Unit.PX);
+			treeMapContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_MOBILE, Unit.PX);
+			treeMapContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_MOBILE, Unit.PX);
 		} else if(DeviceUtils.isTablet()){
-			treeMapContainer.getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_TABLET, Unit.PX);
-			treeMapContainer.getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_TABLET, Unit.PX);
+			treeMapContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_TABLET, Unit.PX);
+			treeMapContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_TABLET, Unit.PX);
 		} else {
-			treeMapContainer.getElement().getStyle().setWidth(DEFAULT_TREEMAP_WIDTH_DESKTOP , Unit.PX);
-			treeMapContainer.getElement().getStyle().setHeight(DEFAULT_TREEMAP_HEIGHT_DESKTOP, Unit.PX);
+			treeMapContainer.getElement().getStyle().setWidth(EsaSkyConstants.DEFAULT_TREEMAP_WIDTH_DESKTOP , Unit.PX);
+			treeMapContainer.getElement().getStyle().setHeight(EsaSkyConstants.DEFAULT_TREEMAP_HEIGHT_DESKTOP, Unit.PX);
 		}
 	}
 
-	public void updateData(List<IDescriptor> descriptors, List<Integer> counts) {
+	public void updateData(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
 		treeMap.updateData(descriptors, counts);
 	}
 	
-	public void addData(List<IDescriptor> descriptors, List<Integer> counts) {
+	public void addData(List<CommonTapDescriptor> descriptors, List<Integer> counts) {
 		treeMap.addData(descriptors, counts);
-		if(context == EntityContext.SSO) {
+		if(context == EntityContext.SSO && GUISessionStatus.getTrackedSso() != null) {
 			header.setText(TextMgr.getInstance().getText("treeMap_nameOfSelectedLabel").replace("$SSONAME$", GUISessionStatus.getTrackedSso().name)
 					.replace("$SSOTYPE$", GUISessionStatus.getTrackedSso().type.getType()));
 		}
+	}
+
+	public void clearData() {
+		treeMap.clearData();
 	}
 	
 	public void registerObserver(TreeMapChanged observer){

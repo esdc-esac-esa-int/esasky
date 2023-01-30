@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 
 /**
@@ -182,7 +183,7 @@ public class ExtTapDescriptor extends BaseDescriptor {
             if(!tapUrl.endsWith("/sync")) {
                 tapUrl += "/sync";
             }
-            url += "&" + EsaSkyConstants.EXT_TAP_URL + "=" + tapUrl +
+            url += "&" + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl +
                     "&" + EsaSkyConstants.EXT_TAP_RESPONSE_FORMAT + "=" + getResponseFormat();
         }
         return url + adqlParameterAndValue;
@@ -247,6 +248,19 @@ public class ExtTapDescriptor extends BaseDescriptor {
 	public void setBaseMission(String baseMission) {
 		this.baseMission = baseMission;
 	}
-	
-	
+
+	@Override
+	public String getTapRaColumn() {
+		return tapRaColumn;
+	}
+
+	@Override
+	public void setTapRaColumn(String tapRaColumn) {
+		this.tapRaColumn = tapRaColumn;
+	}
+
+	@Override
+	public String getTapDecColumn() {
+		return tapDecColumn;
+	}
 }

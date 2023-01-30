@@ -4,7 +4,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.ITapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptor;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +15,9 @@ public interface ITablePanel {
 
 	void insertData(String url);
 	void insertData(GeneralJavaScriptObject data);
+	public void insertExternalTapData(GeneralJavaScriptObject data);
 
-	IDescriptor getDescriptor();
+	public CommonTapDescriptor getDescriptor();
 
 	GeneralEntityInterface getEntity();
 
@@ -60,7 +63,7 @@ public interface ITablePanel {
 	JSONObject exportAsJSON(boolean applyFilters);
 	void exportAsCsv();
 	void exportAsVot();
-	String getFullId();	
+	String getFullId();
 	
 	void setEmptyTable(String emptyTableText);
 	
@@ -95,7 +98,9 @@ public interface ITablePanel {
 	boolean isDataProductDatalink();
     int getNumberOfShownRows();
 	void filterOnFoV(String raCol, String decCol);
-	
+
+	void groupOnColumn(String columnName);
+
 	void setMaxHeight(int height);
 	void setVisibleColumns(List<String> columns);
 
@@ -108,4 +113,6 @@ public interface ITablePanel {
 	void restoreRedraw();
 	void redrawAndReinitializeHozVDom();
 	void addTapFilter(String label, String tapFilter);
+	GeneralJavaScriptObject getTableMetadata();
+	void openQueryPanel();
 }

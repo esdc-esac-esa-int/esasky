@@ -18,7 +18,17 @@ public class TabulatorSettings{
     private Boolean addDatalinkLink2ArchiveColumn = false;
     private Integer selectable = null; // number of rows that can be selected simultaneously. null = no limit
 	private Boolean disableGoToColumn = false; // true to force remove goto column, even if there is a ra an dec column
-	
+	private Boolean useUcd = false;
+	private Boolean isDownloadable = true;
+
+	private  Boolean addAdqlColumn = false;
+	private Boolean addMetadataColumn = false;
+	private Boolean addOpenTableColumn = false;
+	private String tableLayout = "fitDataFill";
+	private Boolean addObscoreTableColumn = false;
+	private Boolean showDetailedErrors = false;
+	private Boolean fovLimitDisabled = false;
+
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
 		json.put("addSendToVOApplicationColumn", JSONBoolean.getInstance(addSendToVOApplicationColumn));
@@ -40,6 +50,15 @@ public class TabulatorSettings{
 			json.put("selectable", new JSONNumber(selectable));
 		}
 		json.put("disableGoToColumn", JSONBoolean.getInstance(disableGoToColumn));
+		json.put("useUcd", JSONBoolean.getInstance(useUcd));
+		json.put("isDownloadable", JSONBoolean.getInstance(isDownloadable));
+		json.put("addAdqlColumn", JSONBoolean.getInstance(addAdqlColumn));
+		json.put("addMetadataColumn", JSONBoolean.getInstance(addMetadataColumn));
+		json.put("tableLayout", new JSONString(tableLayout));
+		json.put("addObscoreTableColumn", JSONBoolean.getInstance(addObscoreTableColumn));
+		json.put("showDetailedErrors", JSONBoolean.getInstance(showDetailedErrors));
+		json.put("fovLimitDisabled", JSONBoolean.getInstance(fovLimitDisabled));
+		json.put("addOpenTableColumn", JSONBoolean.getInstance(addOpenTableColumn));
 		return json.toString();
 	}
 
@@ -129,5 +148,64 @@ public class TabulatorSettings{
 
 	public void setDisableGoToColumn(Boolean disableGoToColumn) {
 		this.disableGoToColumn = disableGoToColumn;
+	}
+
+	public Boolean getUseUcd() {
+		return useUcd;
+	}
+
+	public void setUseUcd(Boolean useUcd) {
+		this.useUcd = useUcd;
+	}
+
+	public Boolean getIsDownloadable() {
+		return isDownloadable;
+	}
+	public void setIsDownloadable(Boolean isDownloadable) {
+		this.isDownloadable = isDownloadable;
+	}
+
+	public void setAddAdqlColumn(boolean addAdqlColumn) {
+		this.addAdqlColumn = addAdqlColumn;
+	}
+	
+	public void setAddMetadataColumn(boolean addMetadataColumn) {
+		this.addMetadataColumn = addMetadataColumn;
+	}
+
+	public String getTableLayout() {
+		return tableLayout;
+	}
+
+	public void setTableLayout(String tableLayout) {
+		this.tableLayout = tableLayout;
+	}
+
+	public void setAddObscoreTableColumn(boolean addObscoreTableColumn) {
+		this.addObscoreTableColumn = addObscoreTableColumn;
+	}
+
+	public Boolean getShowDetailedErrors() {
+		return showDetailedErrors;
+	}
+
+	public void setShowDetailedErrors(Boolean showDetailedErrors) {
+		this.showDetailedErrors = showDetailedErrors;
+	}
+
+	public Boolean getFovLimiterDisabled() {
+		return fovLimitDisabled;
+	}
+
+	public void setFovLimiterDisabled(Boolean fovLimitDisabled) {
+		this.fovLimitDisabled = fovLimitDisabled;
+	}
+
+	public Boolean getAddOpenTableColumn() {
+		return addOpenTableColumn;
+	}
+
+	public void setAddOpenTableColumn(Boolean addOpenTableColumn) {
+		this.addOpenTableColumn = addOpenTableColumn;
 	}
 }

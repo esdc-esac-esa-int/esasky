@@ -8,8 +8,6 @@ import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -21,7 +19,6 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -35,12 +32,12 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -49,15 +46,15 @@ public class CloseableTabLayoutPanel extends Composite {
 	
 
     private final Resources resources = GWT.create(Resources.class);
-    private CssResource style;
-    private BiMap<MissionTabButtons, String> tabWidgetIds = HashBiMap.create();
+    private final CssResource style;
+    private final BiMap<MissionTabButtons, String> tabWidgetIds = HashBiMap.create();
 
-    private List<MissionTabButtons> tabs = new ArrayList<MissionTabButtons>();
-    private ScrollTabLayoutPanel tabLayout;
+    private final List<MissionTabButtons> tabs = new ArrayList<MissionTabButtons>();
+    private final ScrollTabLayoutPanel tabLayout;
     private SaveAllView saveAllView;
     private final HTML emptyTableMessage;
-    private EsaSkyButton toggleDataPanelButton = new EsaSkyButton(this.resources.arrowIcon());
-    private EsaSkyAnimation toggleDataPanelButtonMoveAnimation = new EsaSkyAnimation() {
+    private final EsaSkyButton toggleDataPanelButton = new EsaSkyButton(this.resources.arrowIcon());
+    private final EsaSkyAnimation toggleDataPanelButtonMoveAnimation = new EsaSkyAnimation() {
         
         @Override
         protected void setCurrentPosition(double newPosition) {
@@ -77,11 +74,12 @@ public class CloseableTabLayoutPanel extends Composite {
         }
     };
     
-    private VerticalPanel shadedArea;
-    private EsaSkyButton closeAllButton;
-    private EsaSkyButton refreshButton;
-    private EsaSkyButton styleButton;
-    private EsaSkyButton recenterButton;
+    private final VerticalPanel shadedArea;
+    private final EsaSkyButton queryButton;
+    private final EsaSkyButton closeAllButton;
+    private final EsaSkyButton refreshButton;
+    private final EsaSkyButton styleButton;
+    private final EsaSkyButton recenterButton;
     private EsaSkyButton sendButton;
     private EsaSkyButton saveButton;
     private EsaSkyButton configureButton;
@@ -114,6 +112,9 @@ public class CloseableTabLayoutPanel extends Composite {
         @ImageOptions(flipRtl = true)
         ImageResource configureIcon();
 
+        @Source("query-icon.png")
+        ImageResource queryIcon();
+
         @Source("closeableTabLayoutPanel.css")
         @CssResource.NotStrict
         CssResource style();
@@ -136,53 +137,40 @@ public class CloseableTabLayoutPanel extends Composite {
 		
         toggleDataPanelButton.addStyleName("toggleDataPanelButton");
         toggleDataPanelButton.setNonTransparentBackground();
-        toggleDataPanelButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent arg0) {
-				ResultsPanel.toggleOpenCloseDataPanel();
-			}
-		});
+        toggleDataPanelButton.addClickHandler(arg0 -> ResultsPanel.toggleOpenCloseDataPanel());
         
 		closeAllButton = createCloseAllButton();
 		
     	closeMinimizeButtonsPanel.add(toggleDataPanelButton);
     	closeMinimizeButtonsPanel.add(closeAllButton);
         
-        CommonEventBus.getEventBus().addHandler(DataPanelResizeEvent.TYPE, new DataPanelResizeEventHandler() {
-			
-			@Override
-			public void onDataPanelResize(DataPanelResizeEvent event) {
-				if(event.getNewHeight() > 40) {
-					toggleDataPanelButton.rotate(180, 1000);
-					toggleDataPanelButtonMoveAnimation.animateTo(2, 1000);
-				} else {
-					toggleDataPanelButton.rotate(0, 1000);
-					toggleDataPanelButtonMoveAnimation.animateTo(10, 1000);
-				}
-			}
-		});
+        CommonEventBus.getEventBus().addHandler(DataPanelResizeEvent.TYPE, event -> {
+            if(event.getNewHeight() > 40) {
+                toggleDataPanelButton.rotate(180, 1000);
+                toggleDataPanelButtonMoveAnimation.animateTo(2, 1000);
+            } else {
+                toggleDataPanelButton.rotate(0, 1000);
+                toggleDataPanelButtonMoveAnimation.animateTo(10, 1000);
+            }
+        });
         
-        CommonEventBus.getEventBus().addHandler(DataPanelAnimationCompleteEvent.TYPE, new DataPanelAnimationCompleteEventHandler() {
-            
-            @Override
-            public void onDataPanelAnimationComplete(DataPanelAnimationCompleteEvent event) {
-                if(GUISessionStatus.isDataPanelOpen()) {
-                    closeAllButton.removeStyleName("hidden");
-                } else {
-                    closeAllButton.addStyleName("hidden");
-                }
+        CommonEventBus.getEventBus().addHandler(DataPanelAnimationCompleteEvent.TYPE, event -> {
+            if(GUISessionStatus.isDataPanelOpen()) {
+                closeAllButton.removeStyleName("hidden");
+            } else {
+                closeAllButton.addStyleName("hidden");
             }
         });
 
 
         shadedArea = new VerticalPanel();
         shadedArea.add(closeMinimizeButtonsPanel);
-        
+        queryButton = createChangeQueryButton();
         refreshButton = createRefreshButton();
         styleButton = createStyleButton();
         recenterButton = createRecenterButton();
-        
+
+        shadedArea.add(queryButton);
         shadedArea.add(refreshButton);
         shadedArea.add(styleButton);
         shadedArea.add(recenterButton);
@@ -197,20 +185,16 @@ public class CloseableTabLayoutPanel extends Composite {
         buttonsAndObservationPanel.add(shadedArea);
 
         tabLayout = new ScrollTabLayoutPanel(height, unit, showScroll);
-        tabLayout.addSelectionHandler(new SelectionHandler<Integer>() {
+        tabLayout.addSelectionHandler(event -> {
+            final int index = event.getSelectedItem().intValue();
 
-            @Override
-            public void onSelection(final SelectionEvent<Integer> event) {
-                final int index = event.getSelectedItem().intValue();
-                
-                updateStyleOnTab(index);
-                
-                ITablePanel tabPanel = CloseableTabLayoutPanel.this.getWidget(index);
-                final GeneralEntityInterface entity = tabPanel.getEntity();
-                
-                ensureCorrectRelatedInformationVisibilty(entity);
-                ensureCorrectButtonClickability(getSelectedWidget().getNumberOfShownRows());
-            }
+            updateStyleOnTab(index);
+
+            ITablePanel tabPanel = CloseableTabLayoutPanel.this.getWidget(index);
+            final GeneralEntityInterface entity = tabPanel.getEntity();
+
+            ensureCorrectRelatedInformationVisibilty(entity);
+            ensureCorrectButtonClickability(getSelectedWidget().getNumberOfShownRows());
         });
         buttonsAndObservationPanel.add(tabLayout);
 
@@ -240,8 +224,14 @@ public class CloseableTabLayoutPanel extends Composite {
     	}
     	if(entity.isRefreshable()) {
     		refreshButton.getElement().getStyle().setDisplay(Display.BLOCK);
+            if (entity.getDescriptor().isCustom()) {
+                queryButton.getElement().getStyle().setDisplay(Display.BLOCK);
+            } else {
+                queryButton.getElement().getStyle().setDisplay(Display.NONE);
+            }
     	} else {
     		refreshButton.getElement().getStyle().setDisplay(Display.NONE);
+            queryButton.getElement().getStyle().setDisplay(Display.NONE);
     	}
         if (entity.isCustomizable()) {
             styleButton.getElement().getStyle().setDisplay(Display.BLOCK);
@@ -249,13 +239,12 @@ public class CloseableTabLayoutPanel extends Composite {
         } else {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
         }
-        if (entity.getDescriptor() instanceof ExtTapDescriptor
-                || "publications".equals(entity.getDescriptor().getIcon())) {
+        if (Objects.equals(entity.getDescriptor().getCategory(), EsaSkyWebConstants.CATEGORY_EXTERNAL)
+                || "publications".equals(entity.getIcon())) {
             configureButton.getElement().getStyle().setDisplay(Display.NONE);
         } else {
             configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
         }
-        
     }
 
     private EsaSkyButton createSaveButton() {
@@ -275,26 +264,17 @@ public class CloseableTabLayoutPanel extends Composite {
         });
 
         // Bind save as VOTABLE anchor
-        saveAllView.getSaveAsVOTableAnchor().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
-                CommonEventBus.getEventBus().fireEvent(
-                        new ExportVOTableEvent(selectedTabId, saveAllView));
-            }
-
+        saveAllView.getSaveAsVOTableAnchor().addClickHandler(event -> {
+            String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
+            CommonEventBus.getEventBus().fireEvent(
+                    new ExportVOTableEvent(selectedTabId, saveAllView));
         });
 
         // Bind save as CSV anchor
-        saveAllView.getSaveAsCSVAnchor().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
-                CommonEventBus.getEventBus().fireEvent(
-                        new ExportCSVEvent(selectedTabId, saveAllView));
-            }
+        saveAllView.getSaveAsCSVAnchor().addClickHandler(event -> {
+            String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
+            CommonEventBus.getEventBus().fireEvent(
+                    new ExportCSVEvent(selectedTabId, saveAllView));
         });
 
         saveButton.addClickHandler((final ClickEvent event) -> {
@@ -307,13 +287,9 @@ public class CloseableTabLayoutPanel extends Composite {
                 saveAllView.setProductsDownloadVisible(hasProductUrl(entity.getDescriptor()) && !getSelectedWidget().isDataProductDatalink());
                 // Set pop-up position.
                 saveAllView.getSaveOrDownloadDialog().setPopupPositionAndShow(
-                        new PopupPanel.PositionCallback() {
-
-                            @Override
-                            public void setPosition(final int offsetWidth, final int offsetHeight) {
-                                saveAllView.getSaveOrDownloadDialog().showRelativeTo(saveButton);
-                                saveAllView.getSaveOrDownloadDialog().show();
-                            }
+                        (offsetWidth, offsetHeight) -> {
+                            saveAllView.getSaveOrDownloadDialog().showRelativeTo(saveButton);
+                            saveAllView.getSaveOrDownloadDialog().show();
                         });
         });
         saveButton.addStyleName("tabButton");
@@ -321,24 +297,37 @@ public class CloseableTabLayoutPanel extends Composite {
         return saveButton;
     }
     
-    private boolean hasProductUrl(IDescriptor descriptor) {
-    	
-    	if(descriptor instanceof ExtTapDescriptor) {
+    private boolean hasProductUrl(CommonTapDescriptor descriptor) {
+    	if(descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
     		return true;
     	}
-    	if(descriptor.getMetadataDescriptorByTapName("product_url") != null){
+    	if(descriptor.getMetadata().stream().anyMatch(x -> x.getName().equals("product_url"))){
     		return true;
-    		
+
     	}
-        if (descriptor.getMetadataDescriptorByTapName("prod_url") != null){
+        if (descriptor.getMetadata().stream().anyMatch(x -> x.getName().equals("prod_url"))){
             return true;
         }
-
-    	if(descriptor.getMetadataDescriptorByTapName("access_url") != null
-                && !"ASTRO_IMAGING_ALMA".equals(descriptor.getDescriptorId())){
+    	if(descriptor.getMetadata().stream().anyMatch(x -> x.getName().equals("access_url"))
+                &&  !(descriptor.getMission().equalsIgnoreCase("alma") && descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_OBSERVATIONS))){
     		return true;
     	}
-        return "ASTRO_SPECTRA_CHEOPS".equals(descriptor.getDescriptorId());
+
+        return descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_SPECTRA)  && descriptor.getMission().equalsIgnoreCase("cheops");
+    }
+
+    private EsaSkyButton createChangeQueryButton() {
+
+        EsaSkyButton queryButton = new EsaSkyButton(resources.queryIcon());
+        queryButton.setMediumStyle();
+        queryButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        queryButton.addClickHandler(arg0 -> {
+            ITablePanel tabPanel = getSelectedWidget();
+            tabPanel.openQueryPanel();
+        });
+
+        queryButton.addStyleName("tabButton");
+        return queryButton;
     }
 
     private EsaSkyButton createSendButton() {
@@ -348,15 +337,11 @@ public class CloseableTabLayoutPanel extends Composite {
         sendButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_sendTableToVOA"));
 
         // Bind 'send' Icon
-        sendButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId() + "-" + GUISessionStatus.getNextUniqueSampNumber();
-                Log.debug("Samp on ObservationsTablePanel");
-                CommonEventBus.getEventBus().fireEvent(
-                        new SendTableToEvent(selectedTabId));
-            }
+        sendButton.addClickHandler(event -> {
+            String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId() + "-" + GUISessionStatus.getNextUniqueSampNumber();
+            Log.debug("Samp on ObservationsTablePanel");
+            CommonEventBus.getEventBus().fireEvent(
+                    new SendTableToEvent(selectedTabId));
         });
         sendButton.addStyleName("tabButton");
         return sendButton;
@@ -367,13 +352,7 @@ public class CloseableTabLayoutPanel extends Composite {
         configureButton = new EsaSkyButton(resources.configureIcon());
         configureButton.setMediumStyle();
         configureButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_configure"));
-        configureButton.addClickHandler(new ClickHandler() {
-            
-            @Override
-            public void onClick(final ClickEvent arg0) {
-                getSelectedWidget().openConfigurationPanel();
-            }
-        });
+        configureButton.addClickHandler(arg0 -> getSelectedWidget().openConfigurationPanel());
         configureButton.addStyleName("tabButton");
         
         return configureButton;
@@ -383,17 +362,13 @@ public class CloseableTabLayoutPanel extends Composite {
         EsaSkyButton recenterButton = new EsaSkyButton(resources.recenterIcon());
         recenterButton.setMediumStyle();
         recenterButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_recentre"));
-        recenterButton.addClickHandler(new ClickHandler() {
+        recenterButton.addClickHandler(arg0 -> {
+            GeneralEntityInterface entity = getSelectedWidget().getEntity();
+            AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(entity.getSkyViewPosition().getCoordinate().getRa()),
+                    Double.toString(entity.getSkyViewPosition().getCoordinate().getDec()));
+            AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
 
-            @Override
-            public void onClick(final ClickEvent arg0) {
-                GeneralEntityInterface entity = getSelectedWidget().getEntity();
-                AladinLiteWrapper.getAladinLite().goToRaDec(Double.toString(entity.getSkyViewPosition().getCoordinate().getRa()),
-                        Double.toString(entity.getSkyViewPosition().getCoordinate().getDec()));
-                AladinLiteWrapper.getAladinLite().setZoom(entity.getSkyViewPosition().getFov());
-
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_RECENTER, entity.getEsaSkyUniqId());
-            }
+            GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_RECENTER, entity.getId());
         });
         recenterButton.addStyleName("tabButton");
         
@@ -405,16 +380,12 @@ public class CloseableTabLayoutPanel extends Composite {
     	EsaSkyButton closeAllButton = new CloseButton();
     	closeAllButton.setSmallStyle();
     	closeAllButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_closeAll"));
-    	closeAllButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent arg0) {
-                List<ITablePanel> tablePanels = tabLayout.getTablePanels();
-                for(ITablePanel tablePanel : tablePanels) {
-    				tablePanel.closeTablePanel();
-    			}
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_CLOSEALL, "");
+    	closeAllButton.addClickHandler(arg0 -> {
+            List<ITablePanel> tablePanels = tabLayout.getTablePanels();
+            for(ITablePanel tablePanel : tablePanels) {
+                tablePanel.closeTablePanel();
             }
+            GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_CLOSEALL, "");
         });
     	closeAllButton.addStyleName("closeAllTabsButton");
     	closeAllButton.setNonTransparentBackground();
@@ -426,17 +397,12 @@ public class CloseableTabLayoutPanel extends Composite {
     	EsaSkyButton refreshButton = new EsaSkyButton(resources.refreshIcon());
     	refreshButton.setMediumStyle();
     	refreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
-    	refreshButton.addClickHandler(new ClickHandler() {
-    		
-    		@Override
-    		public void onClick(final ClickEvent arg0) {
-    			ITablePanel tabPanel = getSelectedWidget();
-    			tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
-    			tabPanel.updateData();
-    			
-    			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_REFRESH, tabPanel.getFullId());
-    		}
-    	});
+    	refreshButton.addClickHandler(arg0 -> {
+            ITablePanel tabPanel = getSelectedWidget();
+            tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
+            tabPanel.updateData();
+            GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_REFRESH, tabPanel.getFullId());
+        });
     	refreshButton.addStyleName("tabButton");
     	return refreshButton;
     }
@@ -446,15 +412,11 @@ public class CloseableTabLayoutPanel extends Composite {
         EsaSkyButton styleButton = new EsaSkyButton("#000000", false);
         styleButton.setMediumStyle();
         styleButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_styleBtn"));
-        styleButton.addClickHandler(new ClickHandler() {
-    
-            @Override
-            public void onClick(final ClickEvent arg0) {
-                final String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
-                CloseableTabLayoutPanel.this.fireShowStylePanel(selectedTabId);
-                
-                GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_SETSTYLE, getSelectedWidget().getEsaSkyUniqID());
-            }
+        styleButton.addClickHandler(arg0 -> {
+            final String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
+            CloseableTabLayoutPanel.this.fireShowStylePanel(selectedTabId);
+
+            GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_SETSTYLE, getSelectedWidget().getEsaSkyUniqID());
         });
         styleButton.addStyleName("tabButton");
         return styleButton;
@@ -468,38 +430,28 @@ public class CloseableTabLayoutPanel extends Composite {
         addTab(new MissionTabButtons(helpTitle, helpDescription, tabPanel.getEntity()), tabPanel);
     }
     
-    private final void addTab(final MissionTabButtons tab, final ITablePanel tabPanel) {
+    private void addTab(final MissionTabButtons tab, final ITablePanel tabPanel) {
 
-        tab.setCloseClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                tabPanel.closeTablePanel();
-            }
-        });
+        tab.setCloseClickHandler(event -> tabPanel.closeTablePanel());
         
-        tab.setStyleClickHandler(new ClickHandler() {
+        tab.setStyleClickHandler(event -> {
+            // Fires the show style menu delayed to allow the event bus to propagate the ResultTabSelectedEvent first,
+            // to avoid that this stylePanel get closed just after being opened. If the tab is different that selected on
+            // the call is delayed, else none
+            Timer timer = new Timer() {
+                public void run () {
+                    CloseableTabLayoutPanel.this.fireShowStylePanel(tab.getId());
+                }
+            };
 
-            @Override
-            public void onClick(final ClickEvent event) {
-                // Fires the show style menu delayed to allow the event bus to propagate the ResultTabSelectedEvent first,
-                // to avoid that this stylePanel get closed just after being opened. If the tab is different that selected on
-                // the call is delayed, else none
-                Timer timer = new Timer() {
-                    public void run () {
-                        CloseableTabLayoutPanel.this.fireShowStylePanel(tab.getId());
-                    }
-                };
-  
-                timer.schedule((!tabs.get(tabLayout.getSelectedIndex()).getId().equals(tab.getId())) ? 300 : 5);
-            }
+            timer.schedule((!tabs.get(tabLayout.getSelectedIndex()).getId().equals(tab.getId())) ? 300 : 5);
         });
         
         tabPanel.registerClosingObserver(() -> removeTab(tab));
         
         
         this.tabs.add(tab);
-        this.tabWidgetIds.put(tab, tab.getId());
+        this.tabWidgetIds.put(tab, tab.getId()  );
         shadedArea.removeStyleName("hidden");
         
         this.tabLayout.add(tabPanel.getWidget(), tab);
@@ -542,16 +494,12 @@ public class CloseableTabLayoutPanel extends Composite {
 
         
         GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TAB_OPENED, tabPanel.getFullId());
-        tabPanel.getEntity().registerColorChangeObserver(new ColorChangeObserver() {
-			
-			@Override
-			public void onColorChange(String newColor) {
-				if (styleButton != null && styleButton.isVisible()) {
-					styleButton.setCircleColor(newColor);
-				}
-			}
-		});
-        styleButton.setCircleColor(tabPanel.getDescriptor().getPrimaryColor());
+        tabPanel.getEntity().registerColorChangeObserver(newColor -> {
+            if (styleButton != null && styleButton.isVisible()) {
+                styleButton.setCircleColor(newColor);
+            }
+        });
+        styleButton.setCircleColor(tabPanel.getDescriptor().getColor());
         setCloseAllButtonVisibility();
         
         notifyOpeningObservers(tab.getId());
@@ -566,11 +514,7 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     public boolean checkIfIdExists(String id) {
-    	if(tabWidgetIds.inverse().get(id) != null) {
-    		return true;
-    	}
-    	
-    	return false;
+        return tabWidgetIds.inverse().get(id) != null;
     }
     
     private void ensureCorrectButtonClickability(int numberOfShownRows) {
@@ -594,7 +538,7 @@ public class CloseableTabLayoutPanel extends Composite {
     }
     
     public final ITablePanel getWidget(final int index) {
-        return (ITablePanel)this.tabLayout.getWidget(index);
+        return this.tabLayout.getWidget(index);
     }
 
     public final int getWidgetIndex(final Widget w) {

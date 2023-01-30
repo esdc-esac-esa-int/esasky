@@ -5,8 +5,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 
 public class TAPPublicationsService extends AbstractTAPService {
 
@@ -21,16 +20,10 @@ public class TAPPublicationsService extends AbstractTAPService {
         }
         return instance;
     }
-    
-    /**
-     * getMetadataAdql().
-     * @param descriptor Input PublicationsDescriptor.
-     * @param cs Input CountStatus
-     * @return Query in ADQL format.
-     */
-    public static String getMetadataAdqlFromEsaSkyTap(PublicationsDescriptor descriptor, int limit, String orderBy) {
+
+    public static String getMetadataAdqlFromEsaSkyTap(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit
-                + " name, ra, dec, bibcount  from " + descriptor.getTapTable()
+                + " name, ra, dec, bibcount  from " + descriptor.getTableName()
                 + " where bibcount>0 AND " + TAPPublicationsService.getInstance().getGeometricConstraint(descriptor);
         
         adql += " ORDER BY " + orderBy;
@@ -45,13 +38,13 @@ public class TAPPublicationsService extends AbstractTAPService {
      * @param descriptor Input PublicationsDescriptor.
      * @return Query in ADQL format.
      */
-    public static String getMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
+    public static String getMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit 
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-                + descriptor.getTapDecColumn() + "), ";
+                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+                + descriptor.getDecColumn() + "), ";
 
-        String shape = null;
+        String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
         if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
@@ -87,11 +80,11 @@ public class TAPPublicationsService extends AbstractTAPService {
         return adql;
     }
     
-    public static String getConeSearchMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, SkyViewPosition pos, int limit, String orderBy) {
+    public static String getConeSearchMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, SkyViewPosition pos, int limit, String orderBy) {
     	String adql = "select top " + limit 
     			+ " main_id as name, ra, dec, nbref as bibcount from basic"
-    			+ " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-    			+ descriptor.getTapDecColumn() + "), ";
+    			+ " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+    			+ descriptor.getDecColumn() + "), ";
     	
     	String shape = null;
  
@@ -109,11 +102,11 @@ public class TAPPublicationsService extends AbstractTAPService {
     	return adql;
     }
 
-    public static String getSearchAreaMetadataAdqlforSIMBAD(PublicationsDescriptor descriptor, int limit, String orderBy) {
+    public static String getSearchAreaMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-                + descriptor.getTapDecColumn() + "), ";
+                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+                + descriptor.getDecColumn() + "), ";
 
         adql += descriptor.getSearchAreaShape() + ") and nbref > 0";
 
@@ -125,27 +118,27 @@ public class TAPPublicationsService extends AbstractTAPService {
     }
     
     @Override
-    public String getMetadataAdql(IDescriptor descriptor) {
+    public String getMetadataAdql(CommonTapDescriptor descriptor) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String getMetadataAdql(IDescriptor descriptor, String filter) {
+    public String getMetadataAdql(CommonTapDescriptor descriptor, String filter) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String getMetadataAdqlRadial(IDescriptor descriptor, SkyViewPosition conePos) {
+    public String getMetadataAdqlRadial(CommonTapDescriptor descriptor, SkyViewPosition conePos) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-	protected String getGeometricConstraint(IDescriptor descriptor) {
-		String adql =  "1=CONTAINS(POINT('ICRS'," + descriptor.getTapRaColumn() + ", "
-	                + descriptor.getTapDecColumn() + "), ";
+	protected String getGeometricConstraint(CommonTapDescriptor descriptor) {
+		String adql =  "1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+	                + descriptor.getDecColumn() + "), ";
 
 	        String shape = null;
 	        double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();

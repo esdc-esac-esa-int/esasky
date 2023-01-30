@@ -1,15 +1,15 @@
 package esac.archive.esasky.cl.web.client.view.resultspanel.tabulator;
 
-import java.util.List;
-
 import com.allen_sauer.gwt.log.client.Log;
-
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+
+import java.util.List;
 
 public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
-	public void onDataLoaded(GeneralJavaScriptObject rowData) {
+	public void onDataLoaded(GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
 		//Do nothing by default - To be overridden if needed.
 	}
 
@@ -79,6 +79,11 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
+	public void onLink2ArchiveClicked(GeneralJavaScriptObject rowData, String columnName) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
 	public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
 		//Do nothing by default - To be overridden if needed.
 	}
@@ -104,12 +109,12 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
-	public boolean hasLabel(String tapName) {
-		return true;
+	public GeneralJavaScriptObject getDescriptorMetaData() {
+		return null;
 	}
 
 	@Override
-	public GeneralJavaScriptObject getDescriptorMetaData() {
+	public CommonTapDescriptor getDescriptor() {
 		return null;
 	}
 
@@ -120,6 +125,20 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 
 	@Override
 	public String getDecColumnName() {
+		return null;
+	}
+
+	public String getUniqueIdentifierField() {
+		return null;
+	}
+
+	@Override
+	public boolean isColumnVisible(String column) {
+		return false;
+	}
+
+	@Override
+	public String getColumnUnit(String columnName) {
 		return null;
 	}
 
@@ -146,5 +165,25 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	@Override
 	public boolean hasBeenClosed() {
 		return false;
+	}
+
+	@Override
+	public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
 	}
 }

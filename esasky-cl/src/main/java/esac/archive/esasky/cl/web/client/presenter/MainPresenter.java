@@ -10,11 +10,13 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
-import esac.archive.esasky.cl.web.client.repository.DescriptorRepository.PublicationDescriptorLoadObserver;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
@@ -31,12 +33,14 @@ import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -51,11 +55,11 @@ public class MainPresenter {
 
     private DescriptorRepository descriptorRepo;
     private EntityRepository entityRepo;
-    
+
     private View view;
-    
+
     private static MainPresenter instance;
-    
+
     public interface View {
 
         Widget asWidget();
@@ -63,85 +67,86 @@ public class MainPresenter {
         AllSkyPanel getAllSkyPanel();
 
         CtrlToolBar getCtrlToolBar();
-        
+
         ResultsPanel getResultsPanel();
 
         SearchPanel getSearchPanel();
 
         void initEvaPanel();
+
         boolean isEvaShowing();
+
         void toggleEvaPanelWithDrag();
-        
+
         HeaderPresenter.View getHeaderPanel();
-        
+
         BannerPresenter.View getBannerPanel();
+
         BannerPresenter.View getBannerPanelLeftSide();
+
         BannerPresenter.View getBannerPanelRightSide();
+
         BannerPresenter.View getBannerPanelBottom();
     }
 
     public MainPresenter(final View inputView, String coordinateFrameFromUrl, boolean isInitialPositionDescribedInCoordinates) {
         this.view = inputView;
-        
+
         // Creates the descriptors repository
         descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
-        
+
         entityRepo = EntityRepository.init(descriptorRepo);
         MocRepository.init();
-        
+
         initChildPresenters(coordinateFrameFromUrl);
 
         descriptorRepo.setCountRequestHandler(resultsPresenter);
-        
-        // Retrieve available observations entries
-        getObservationsList();
-        
-        getSsoList();
 
-        // Retrieve available catalogs entries
-        getCatalogsList();
-        
-        getExtTapList();
-        
+        // Wait for these categories to load before performing first count
+        String[] requiredCategoryArr = {EsaSkyWebConstants.CATEGORY_OBSERVATIONS,
+                EsaSkyWebConstants.CATEGORY_CATALOGUES,
+                EsaSkyWebConstants.CATEGORY_SPECTRA,
+                EsaSkyWebConstants.CATEGORY_SSO};
+
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_OBSERVATIONS, requiredCategoryArr, newCount -> ctrlTBPresenter.updateObservationCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_CATALOGUES, EsaSkyWebConstants.CATEGORY_CATALOGUES, requiredCategoryArr, newCount -> ctrlTBPresenter.updateCatalogCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SPECTRA, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSpectraCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SSO, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSsoCount(newCount));
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_PUBLIC, EsaSkyWebConstants.CATEGORY_PUBLICATIONS, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES, requiredCategoryArr);
+        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_EXTERNAL, EsaSkyWebConstants.CATEGORY_EXTERNAL, requiredCategoryArr);
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
 
-        getSpectraList();
-        
-        getImageList();
-
-        getGwList();
-
-        getIceCubeList();
-
-        descriptorRepo.initPubDescriptors();
 
         bindSampRequests();
         bind();
-        
+
         addShiftListener(this);
-        
+
         instance = this;
     }
-    
+
     public static MainPresenter getInstance() {
-    	return instance;
+        return instance;
     }
 
     /**
      * initChildPresenters(). Only the Presenters needed at start up are initialized here.
      */
     private void initChildPresenters(String coordinateFrameFromUrl) {
-        
+
         this.allSkyPresenter = getAllSkyPresenter();
         this.ctrlTBPresenter = getCtrlTBPresenter();
         this.resultsPresenter = getResultsPresenter();
         this.headerPresenter = new HeaderPresenter(view.getHeaderPanel(), coordinateFrameFromUrl);
-        new BannerPresenter(view.getBannerPanel());
-        if (Modules.getModule(EsaSkyWebConstants.MODULE_BANNERS_ALL_SIDE)) {
-            new BannerPresenter(view.getBannerPanelLeftSide());
-            new BannerPresenter(view.getBannerPanelRightSide());
-            new BannerPresenter(view.getBannerPanelBottom());
-        }
+//        new BannerPresenter(view.getBannerPanel());
+//        if (Modules.getModule(EsaSkyWebConstants.MODULE_BANNERS_ALL_SIDE)) {
+//            new BannerPresenter(view.getBannerPanelLeftSide());
+//            new BannerPresenter(view.getBannerPanelRightSide());
+//            new BannerPresenter(view.getBannerPanelBottom());
+//        }
     }
 
     public final void go(final HasWidgets root) {
@@ -161,10 +166,10 @@ public class MainPresenter {
                         .get(EsaSkyWebConstants.PUBLICATIONS_BIBCODE_URL_PARAM).get(0));
             }
         }
-        
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA)) {
-			CommonEventBus.getEventBus().fireEvent(new ShowEvaEvent());
-		}
+
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_EVA)) {
+            CommonEventBus.getEventBus().fireEvent(new ShowEvaEvent());
+        }
     }
 
     public final void bind() {
@@ -172,11 +177,11 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
                 selectEvent -> {
                     GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
-                    if(entity != null) {
+                    if (entity != null) {
                         entity.onShapeSelection(selectEvent.getShape());
                     }
                 });
-        
+
         CommonEventBus.getEventBus().addHandler(AladinLiteSelectAreaEvent.TYPE,
                 selectEvent -> {
                     GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
@@ -213,26 +218,26 @@ public class MainPresenter {
                 deselectEvent -> {
                     GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) deselectEvent.getObjects());
                     HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<String, LinkedList<AladinShape>>();
-                    for(GeneralJavaScriptObject shape : shapes) {
+                    for (GeneralJavaScriptObject shape : shapes) {
                         String overlayName = null;
-                        if(shape.hasProperty("overlay")) {
+                        if (shape.hasProperty("overlay")) {
                             overlayName = shape.getProperty("overlay").getStringProperty("name");
-                        }else if(shape.hasProperty("catalog")) {
+                        } else if (shape.hasProperty("catalog")) {
                             overlayName = shape.getProperty("catalog").getStringProperty("name");
                         }
 
-                        if(!shapesToRemove.containsKey(overlayName)) {
+                        if (!shapesToRemove.containsKey(overlayName)) {
                             shapesToRemove.put(overlayName, new LinkedList<AladinShape>());
                         }
 
-                        shapesToRemove.get(overlayName).add((AladinShape)(JavaScriptObject) shape);
+                        shapesToRemove.get(overlayName).add((AladinShape) (JavaScriptObject) shape);
                     }
 
-                    for(String overlayName : shapesToRemove.keySet()) {
+                    for (String overlayName : shapesToRemove.keySet()) {
 
                         GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
 
-                        if(entity != null) {
+                        if (entity != null) {
                             entity.onMultipleShapesDeselection(shapesToRemove.get(overlayName));
                         }
                     }
@@ -253,7 +258,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeDeselectedEvent.TYPE,
                 selectEvent -> {
                     GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
-                    if(entity != null) {
+                    if (entity != null) {
                         entity.onShapeDeselection(selectEvent.getShape());
                     }
                 });
@@ -261,7 +266,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStartEvent.TYPE,
                 hoverEvent -> {
                     GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
-                    if(entity!= null) {
+                    if (entity != null) {
                         entity.onShapeHover(hoverEvent.getShape());
                     }
                 });
@@ -269,7 +274,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE,
                 hoverEvent -> {
                     GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
-                    if(entity!= null) {
+                    if (entity != null) {
                         entity.onShapeUnhover(hoverEvent.getShape());
                     }
                 });
@@ -277,7 +282,6 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(TreeMapSelectionEvent.TYPE, event -> {
             if (event.getContext() == EntityContext.EXT_TAP) {
                 PointInformation pointInformation = event.getPointInformation();
-
                 if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
 
                     getRelatedMetadata(event.getDescriptor());
@@ -290,168 +294,135 @@ public class MainPresenter {
                             GoogleAnalytics.ACT_EXTTAP_BROWSING, pointInformation.longName);
                 }
 
-            }else if(event.getContext() == EntityContext.USER_TREEMAP) {
-                    ctrlTBPresenter.customTreeMapClicked(event);
-            }
-            else {
+            } else if (event.getContext() == EntityContext.USER_TREEMAP) {
+                ctrlTBPresenter.customTreeMapClicked(event);
+            } else {
                 getRelatedMetadata(event.getDescriptor());
             }
         });
-        
+
+        CommonEventBus.getEventBus().addHandler(TapRegistrySelectEvent.TYPE, event -> {
+            if (event.getDescriptor() != null) {
+                if (event.hasData()) {
+                    insertRelatedMetadata(event.getDescriptor(), event.getData());
+                } else {
+                    getRelatedMetadata(event.getDescriptor());
+                }
+            }
+        });
+
         /*
          * When the url changed because the state has changed
          */
-        CommonEventBus.getEventBus().addHandler(UrlChangedEvent.TYPE, new UrlChangedEventHandler() {
-
-            @Override
-            public void onUrlChanged(UrlChangedEvent event) {
-                // Updates the url in the browser address bar
-                UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
-            }
+        CommonEventBus.getEventBus().addHandler(UrlChangedEvent.TYPE, event -> {
+            // Updates the url in the browser address bar
+            UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
         });
 
-        CommonEventBus.getEventBus().addHandler(AuthorSearchEvent.TYPE, new AuthorSearchEventHandler() {
-
-            @Override
-            public void onAuthorSelected(AuthorSearchEvent event) {
-                loadOrQueueAuthorInformationFromSimbad(event.getAuthorName());
-            }
-        });
+        CommonEventBus.getEventBus().addHandler(AuthorSearchEvent.TYPE, event -> loadOrQueueAuthorInformationFromSimbad(event.getAuthorName()));
 
         CommonEventBus.getEventBus().addHandler(BibcodeSearchEvent.TYPE, event -> loadOrQueueBibcodeTargetListFromSimbad(event.getBibcode()));
-        
+
         CommonEventBus.getEventBus().addHandler(ModuleUpdatedEvent.TYPE, event -> {
-           if(EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
-               GUISessionStatus.onScienceModeChanged(event.getValue());
-               updateModuleVisibility();
-           }
+            if (EsaSkyWebConstants.MODULE_SCIENCE_MODE.equals(event.getKey())) {
+                GUISessionStatus.onScienceModeChanged(event.getValue());
+                updateModuleVisibility();
+            }
         });
 
         CommonEventBus.getEventBus().addHandler(ShowEvaEvent.TYPE, event -> {
-        	showEva();
+            showEva();
         });
     }
 
     private void areaSelectionFinished() {
-        if(isShiftPressed()) {
+        if (isShiftPressed()) {
             AladinLiteWrapper.getAladinLite().startSelectionMode();
         } else {
-            allSkyPresenter.areaSelectionFinished();            
+            allSkyPresenter.areaSelectionFinished();
         }
     }
-    
+
     public DescriptorRepository getDescriptorRepository() {
         return descriptorRepo;
     }
 
-    public EntityRepository getEntityRepository() {
-        return entityRepo;
-    }
 
-    public void coneSearch(IDescriptor descriptor, SkyViewPosition conePos) {
+    public void coneSearch(CommonTapDescriptor descriptor, SkyViewPosition conePos) {
         resultsPresenter.coneSearch(entityRepo.createEntity(descriptor), conePos);
     }
 
-    public void getImagesMetadata(IDescriptor descriptor) {
+    public void insertRelatedMetadata(CommonTapDescriptor descriptor, GeneralJavaScriptObject data) {
+        resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), data);
+    }
+
+    public void getImagesMetadata(CommonTapDescriptor descriptor) {
     	resultsPresenter.getMetadata(entityRepo.createImageListEntity(descriptor));
     }
 
-    public void getRelatedMetadata(IDescriptor descriptor) {
+    public void getRelatedMetadata(CommonTapDescriptor descriptor) {
         resultsPresenter.getMetadata(entityRepo.createEntity(descriptor));
     }
 
-    public void getRelatedMetadataWithoutMOC(IDescriptor descriptor) {
-    	resultsPresenter.getMetadataWithoutMOC(entityRepo.createEntity(descriptor));
-    }
-
-    public void getRelatedMetadata(IDescriptor descriptor, String adql) {
-    	
-        // To make sure that no tab with the same ID already exists in the layout panel
-        while (resultsPresenter.getTabPanel().checkIfIdExists(descriptor.generateId()));
-        descriptor.setTabCount(descriptor.getTabCount() - 1);
-
-    	resultsPresenter.getMetadata(entityRepo.createEntity(descriptor), adql);
+    public void getRelatedMetadataWithoutMOC(CommonTapDescriptor descriptor) {
+        resultsPresenter.getMetadataWithoutMOC(entityRepo.createEntity(descriptor));
     }
 
     public void getRelatedMetadata(GeneralEntityInterface entity, String adql) {
-    	resultsPresenter.getMetadata(entity, adql);
+        resultsPresenter.getMetadata(entity, adql);
     }
 
-    public void showUserRelatedMetadata(IDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
+    public void showUserRelatedMetadata(CommonTapDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
         Log.debug("[MainPresenter][showUserRelatedMetadata]");
 
-        GeneralEntityInterface entity = entityRepo.getEntity(descriptor.getDescriptorId());
-        if(entity == null) {
-        	entity = entityRepo.createEntity(descriptor);
-        	entity.setEsaSkyUniqId(descriptor.getDescriptorId());
+        GeneralEntityInterface entity = entityRepo.getEntity(descriptor.getId());
+        if (entity == null) {
+            entity = entityRepo.createEntity(descriptor);
+            entity.setId(descriptor.getId());
         }
-        
+
         entity.setRefreshable(false);
         resultsPresenter.getUserMetadataAndPolygons(entity, userData, shouldHavePanel);
     }
 
-    private void getObservationsList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getObservationsList");
-        descriptorRepo.initObsDescriptors(new CountObserver() {
+
+    private void fetchDescriptorList(String schema, String category, String[] requiredCategoryArr) {
+        fetchDescriptorList(schema, category, requiredCategoryArr, null);
+    }
+
+    private void fetchDescriptorList(String schema, String category, String[] requiredCategoryArr, CountObserver observer) {
+        Log.debug("[MainPresenter] MainPresenter.fetchDescriptorList - Schema: " + schema + ", Category: " + category);
+        descriptorRepo.initDescriptors(schema, category, new Promise<CommonTapDescriptorList>() {
+            @Override
+            protected void success(CommonTapDescriptorList descriptorList) {
+                DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, observer);
+                descriptorRepo.setDescriptors(category, dca);
+            }
 
             @Override
-            public void onCountUpdate(long newCount) {
-                ctrlTBPresenter.updateObservationCount(newCount);
+            protected void failure() {
+                Log.debug("Failed to initialise descriptors with Schema: " + schema + ", Category: " + category);
+            }
+
+            @Override
+            protected void whenComplete() {
+                if (Arrays.asList(requiredCategoryArr).contains(category)) {
+                    boolean descriptorsLoaded = descriptorRepo.hasAllDescriptors(requiredCategoryArr);
+                    if (descriptorsLoaded) {
+                        descriptorRepo.requestSingleCount();
+                    }
+                } else if (Objects.equals(category, EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+                    descriptorRepo.registerExtTapObserver();
+                    descriptorRepo.setIsExtTapOpen(ctrlTBPresenter.isExtTapPanelOpen());
+
+                    if (ctrlTBPresenter.isExtTapPanelOpen()) {
+                        descriptorRepo.updateCount4AllExtTaps();
+                    }
+                }
             }
         });
     }
 
-    private void getSsoList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getSsoList");
-        descriptorRepo.initSSODescriptors(new CountObserver() {
-
-            @Override
-            public void onCountUpdate(long newCount) {
-                ctrlTBPresenter.updateSsoCount(newCount);
-            }
-        });
-    }
-
-    private void getSpectraList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getSpectrasList");
-        descriptorRepo.initSpectraDescriptors(new CountObserver() {
-            @Override
-            public void onCountUpdate(long newCount) {
-                ctrlTBPresenter.updateSpectraCount(newCount);
-            }
-        });
-    }
-
-    private void getCatalogsList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getCatalogsList");
-        descriptorRepo.initCatDescriptors(new CountObserver() {
-
-            @Override
-            public void onCountUpdate(long newCount) {
-                ctrlTBPresenter.updateCatalogCount(newCount);
-            }
-        });
-    }
-
-    private void getExtTapList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getExtTapList");
-        descriptorRepo.initExtDescriptors(newCount -> newCount++);
-    }
-
-    private void getImageList() {
-    	Log.debug("[MainPresenter] Into MainPresenter.getImageList");
-    	descriptorRepo.initImageDescriptors();
-    }
-
-    private void getGwList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getGwList");
-        descriptorRepo.initGwDescriptors(newCount -> newCount++);
-    }
-
-    private void getIceCubeList() {
-        Log.debug("[MainPresenter] Into MainPresenter.getIceCubeList");
-        descriptorRepo.initIceCubeDescriptors(newCount -> newCount++);
-    }
 
     public final AllSkyPresenter getAllSkyPresenter() {
         if (allSkyPresenter == null) {
@@ -493,18 +464,13 @@ public class MainPresenter {
     }
 
     public void loadOrQueueAuthorInformationFromSimbad(final String author) {
-        if (descriptorRepo.getPublicationsDescriptors() != null
-                && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+        if (descriptorRepo.hasDescriptors(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
             loadAuthorInformationFromSimbad(author);
 
         } else {
-            descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
-
-                @Override
-                public void onLoad() {
-                    Log.debug("[MainPresenter] PublicationDescriptor ready, loading author informaiton");
-                    loadAuthorInformationFromSimbad(author);
-                }
+            descriptorRepo.addPublicationDescriptorLoadObserver(() -> {
+                Log.debug("[MainPresenter] PublicationDescriptor ready, loading author informaiton");
+                loadAuthorInformationFromSimbad(author);
             });
             Log.debug(
                     "[MainPresenter] Can't show author information, publicationsDescriptor is not ready. Waiting for descriptor...");
@@ -512,18 +478,12 @@ public class MainPresenter {
     }
 
     public void loadOrQueueBibcodeTargetListFromSimbad(final String bibcode) {
-        if (descriptorRepo.getPublicationsDescriptors() != null
-                && descriptorRepo.getPublicationsDescriptors().getDescriptors().size() > 0) {
+        if (descriptorRepo.hasDescriptors(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
             loadBibcodeInformaitonFromSimbad(bibcode);
-
         } else {
-            descriptorRepo.addPublicationDescriptorLoadObserver(new PublicationDescriptorLoadObserver() {
-
-                @Override
-                public void onLoad() {
-                    Log.debug("[MainPresenter] PublicationDescriptor ready, loading bibcode informaiton");
-                    loadBibcodeInformaitonFromSimbad(bibcode);
-                }
+            descriptorRepo.addPublicationDescriptorLoadObserver(() -> {
+                Log.debug("[MainPresenter] PublicationDescriptor ready, loading bibcode informaiton");
+                loadBibcodeInformaitonFromSimbad(bibcode);
             });
             Log.debug(
                     "[MainPresenter] Can't show soruces from bibcode, publicationsDescriptor is not ready. Waiting for descriptor...");
@@ -531,10 +491,8 @@ public class MainPresenter {
     }
 
     private void loadAuthorInformationFromSimbad(String author) {
-        final PublicationsDescriptor descriptor = descriptorRepo.getPublicationsDescriptors().getDescriptors().get(0);
-
-        getTargetPresenter().showAuthorInfo(author, descriptor.getAdsAuthorSeparator(), descriptor.getAdsAuthorUrl(),
-                descriptor.getAdsAuthorUrlReplace());
+        final String authorUrl = "https://ui.adsabs.harvard.edu/#search/q=author%3A%22@@@AUTHOR@@@%22&sort=date%20desc%2C%20bibcode%20desc";
+        getTargetPresenter().showAuthorInfo(author, "\n", authorUrl, "@@@AUTHOR@@@");
         CommonEventBus.getEventBus().fireEvent(new AddTableEvent(entityRepo.createPublicationsByAuthorEntity(author)));
 
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_AUTHORINURL, author);
@@ -544,56 +502,58 @@ public class MainPresenter {
         getTargetPresenter().showPublicationInfo(bibcode);
         GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_API, GoogleAnalytics.ACT_API_BIBCODEINURL, bibcode);
     }
-    
+
     public void updateModuleVisibility() {
-    	ctrlTBPresenter.updateModuleVisibility();
-    	targetPresenter.updateModuleVisibility();
-    	headerPresenter.updateModuleVisibility();
+        ctrlTBPresenter.updateModuleVisibility();
+        targetPresenter.updateModuleVisibility();
+        headerPresenter.updateModuleVisibility();
     }
-    
+
     public void onShiftPressed() {
-        if(EntityRepository.getInstance().checkNumberOfEntitesWithMultiSelection() > 0) {
+        if (EntityRepository.getInstance().checkNumberOfEntitesWithMultiSelection() > 0) {
             AladinLiteWrapper.getAladinLite().startSelectionMode();
-            allSkyPresenter.areaSelectionKeyboardShortcutStart();        
+            allSkyPresenter.areaSelectionKeyboardShortcutStart();
         }
     }
-    
+
     public void onShiftReleased() {
         AladinLiteWrapper.getAladinLite().endSelectionMode();
         allSkyPresenter.areaSelectionFinished();
     }
-    
+
     private native void addShiftListener(MainPresenter mainPresenter) /*-{
-        if(!$wnd.esasky){$wnd.esasky = {}}
-        $doc.addEventListener('keydown', function(e){
-            if(e.key == "Shift"){
-                if(!$wnd.esasky.isShiftPressed){
+        if (!$wnd.esasky) {
+            $wnd.esasky = {}
+        }
+        $doc.addEventListener('keydown', function (e) {
+            if (e.key == "Shift") {
+                if (!$wnd.esasky.isShiftPressed) {
                     $wnd.esasky.isShiftPressed = true;
                     mainPresenter.@esac.archive.esasky.cl.web.client.presenter.MainPresenter::onShiftPressed()();
                 }
             }
         });
-        $doc.addEventListener('keyup', function(e){
-            if(e.key == "Shift"){
-                if($wnd.esasky.isShiftPressed){
+        $doc.addEventListener('keyup', function (e) {
+            if (e.key == "Shift") {
+                if ($wnd.esasky.isShiftPressed) {
                     $wnd.esasky.isShiftPressed = false;
                     mainPresenter.@esac.archive.esasky.cl.web.client.presenter.MainPresenter::onShiftReleased()();
                 }
             }
         });
     }-*/;
-    
+
     public static native boolean isShiftPressed() /*-{
         return $wnd.esasky.isShiftPressed;
     }-*/;
-    
+
     private void showEva() {
-    	if(view.isEvaShowing()) {
-    		view.toggleEvaPanelWithDrag();
-    	}else {
-    		view.initEvaPanel();
-    	}
-    	
+        if (view.isEvaShowing()) {
+            view.toggleEvaPanelWithDrag();
+        } else {
+            view.initEvaPanel();
+        }
+
     }
 
 }
