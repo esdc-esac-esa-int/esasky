@@ -984,6 +984,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
     }
 
+//    @Override
+//    public void openJwstOutreachPanel() {
+//        if (!outreachJwstButton.getToggleStatus()) {
+//            outreachJwstButton.toggle();
+//            outreachJwstButton.toggle();
+//            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
+//        }
+//    }
+
     @Override
     public void closeOutreachPanel() {
         if (outreachImagePanel.isShowing()) {
