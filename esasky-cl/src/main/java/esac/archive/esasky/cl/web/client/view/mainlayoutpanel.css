@@ -129,10 +129,14 @@ body {
 
 .buttonCellDisabled {
 	opacity: 0.4;
+	background-color: transparent !important;
+	border-color: #CCCCCC !important;
 }
 
 .buttonCellDisabled:active {
 	pointer-events: none;
+	padding: 2px !important;
+	border-color: #CCCCCC !important;
 }
 
 
