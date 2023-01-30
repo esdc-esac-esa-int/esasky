@@ -1,5 +1,5 @@
 #!/bin/bash
 
-. ../deploy_functions_ssh.sh
+. ../deploy_functions.sh
 
 process_gui "$@"
