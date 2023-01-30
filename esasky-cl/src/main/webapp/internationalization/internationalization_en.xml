@@ -3934,7 +3934,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="header_acknowledge">
 		Acknowledge ESASky
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-NEAR-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST-NEAR-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -3948,7 +3948,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-MID-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST-MID-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -4047,22 +4047,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="header_jwstImagesTooltip">
 		Visualise outreach images from the James Webb Space Telescope
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
-		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21.
-		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with
-		the &lt;a
-		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
-		target="_blank"
-		&gt;known issue&lt;/a&gt; present in EDR3 corrected in Gaia DR3),
-		and G&lt;sub&gt;BP&lt;/sub&gt;
-		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.54 billion and 1.55 billion sources, respectively are also provided.
-		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag.
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-		target="_blank"&gt;
-		More information
-		&lt;/a&gt; </text>
 	<text key="header_highResolutionImages">
 		Hubble outreach images
 	</text>
@@ -4130,7 +4114,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
 	</text>
 	<!-- internationalization_zh.xml is up to date for everything above -->
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+	<text key="resultsPresenter_helpDescription_observations_eROSITA">
 		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) is
 		a wide-field X-ray telescope on-board the Russian-German
 		"Spectrum-Roentgen-Gamma" (SRG) observatory, and it was developed under
@@ -4146,7 +4130,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eFEDS-main">
 		X-ray sources detected in the 0.2-2.3 keV band using eSASS adopting a detection likelihood threshold of 5.
 		The sources with detection likelihood larger than 6 are selected as the main eFEDS catalog (27910 sources).
 
@@ -4158,7 +4142,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eFEDS-hard">
 		Hard X-ray selected eFEDS catalogue. Based on sources detection in three bands
 		(1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5 keV) using eSASS adopting a detection likelihood
 		threshold of 5, we select the sources with a 2.3-5 keV band detection likelihood greater
@@ -4172,7 +4156,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-etaCha-main">
 		Catalog of X-ray sources in the eta Chamaeleontis field scan observation (OBSID 300004)
 		main catalogue, see Robrade et al. (2021).
 
@@ -4184,7 +4168,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-etaCha-hard">
 		Catalog of X-ray sources in the eta Chamaeleontis
 		field scan observation (OBSID 300004) hard catalogue, see Robrade et al. (2021).
 
