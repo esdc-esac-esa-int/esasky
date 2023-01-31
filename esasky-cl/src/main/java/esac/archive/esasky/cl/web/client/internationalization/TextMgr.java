@@ -116,6 +116,9 @@ public class TextMgr {
 			displayText = displayText.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase();} );
 			return displayText;	
      	}
+        $wnd.esasky.hasInternationalizationText = function(text) {
+			return defaultInstance.@esac.archive.esasky.cl.web.client.internationalization.TextMgr::hasText(*)(text);
+		}
     }-*/;
 	
 	public static boolean isInitialized() {
@@ -161,6 +164,22 @@ public class TextMgr {
 		    Log.warn("TextMgr.getText(), unknown key: " + key);
 		}
 		return key;
+	}
+
+	public boolean hasText(String key) {
+		if (key.isEmpty()) {
+			return false;
+		}
+
+		if (texts != null && texts.containsKey(key)) {
+			return true;
+		}
+
+		if(!EsaSkyConstants.DEFAULT_LANGCODE.equals(this.langCode)) {
+			return TextMgr.getDefaultInstance().hasText(key);
+		} else {
+			return false;
+		}
 	}
 	
 	private Set<String> reportedMissingTranslations = new HashSet<String>();

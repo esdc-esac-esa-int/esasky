@@ -36,10 +36,16 @@ class ContentDescriptorTest {
     }
 
     @Test
+    void testUCDMatchesNull() {
+        assertFalse(UCD_RA.matches(null));
+    }
+
+    @Test
     void testUCDMain() {
         assertTrue(UCD.isMain(UCD_RA_MAIN_STR));
         assertFalse(UCD.isMain(UCD_RA_STR));
     }
+
 
 
     @Test
@@ -58,8 +64,14 @@ class ContentDescriptorTest {
         assertFalse(OBSCORE_RA.matches(OBSCORE_RA_NO_PREFIX_STR));
         assertTrue(OBSCORE_RA.matches(OBSCORE_RA_STR));
         assertTrue(OBSCORE_RA.matches(OBSCORE_RA_LOWER_CASE));
-
     }
+
+    @Test
+    void testUTypeToString() {
+        assertEquals(OBSCORE_RA.toString(), OBSCORE_RA.getValue());
+    }
+
+
     @Test
     void testUTypeValue() {
         assertEquals(OBSCORE_RA_NO_PREFIX_STR, OBSCORE_RA.getValue());

@@ -14,7 +14,7 @@ public interface TabulatorCallback {
     void onRowMouseLeave(int rowId);
     void onFilterChanged(String label, String filter);
     void onDataFiltered(List<Integer> filteredRows);
-    void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject);
+    void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject, String url);
     void onAccessUrlClicked(String url);
     void onPostcardUrlClicked(GeneralJavaScriptObject rowData, String columnName);
     void onCenterClicked(GeneralJavaScriptObject rowData);

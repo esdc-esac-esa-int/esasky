@@ -49,7 +49,7 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
-	public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject) {
+	public void onDatalinkClicked(GeneralJavaScriptObject javaScriptObject, String url) {
 		//Do nothing by default - To be overridden if needed.
 	}
 

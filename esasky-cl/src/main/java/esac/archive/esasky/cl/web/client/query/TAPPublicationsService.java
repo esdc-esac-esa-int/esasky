@@ -10,6 +10,7 @@ import esac.archive.esasky.ifcs.model.descriptor.*;
 public class TAPPublicationsService extends AbstractTAPService {
 
     private static TAPPublicationsService instance = null;
+    private static final String WHERE = " where ";
 
     private TAPPublicationsService() {
     }
@@ -41,8 +42,7 @@ public class TAPPublicationsService extends AbstractTAPService {
     public static String getMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit 
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
-                + descriptor.getDecColumn() + "), ";
+                + WHERE + getSimpleGeometricConstraint(descriptor) + ", ";
 
         String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
@@ -83,8 +83,7 @@ public class TAPPublicationsService extends AbstractTAPService {
     public static String getConeSearchMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, SkyViewPosition pos, int limit, String orderBy) {
     	String adql = "select top " + limit 
     			+ " main_id as name, ra, dec, nbref as bibcount from basic"
-    			+ " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
-    			+ descriptor.getDecColumn() + "), ";
+    			+ WHERE + getSimpleGeometricConstraint(descriptor) + ", ";
     	
     	String shape = null;
  
@@ -105,8 +104,7 @@ public class TAPPublicationsService extends AbstractTAPService {
     public static String getSearchAreaMetadataAdqlforSIMBAD(CommonTapDescriptor descriptor, int limit, String orderBy) {
         String adql = "select top " + limit
                 + " main_id as name, ra, dec, nbref as bibcount from basic"
-                + " where 1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
-                + descriptor.getDecColumn() + "), ";
+                + WHERE + getSimpleGeometricConstraint(descriptor) + ", ";
 
         adql += descriptor.getSearchAreaShape() + ") and nbref > 0";
 
@@ -115,6 +113,11 @@ public class TAPPublicationsService extends AbstractTAPService {
         Log.debug("[TAPPublicationsService/getMetadataAdqlforSIMBAD()] ADQL " + adql);
 
         return adql;
+    }
+
+    private static String getSimpleGeometricConstraint(CommonTapDescriptor descriptor) {
+        return "1=CONTAINS(POINT('ICRS'," + descriptor.getRaColumn() + ", "
+                + descriptor.getDecColumn() + ")";
     }
     
     @Override
