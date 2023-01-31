@@ -106,9 +106,6 @@ public class ApiImage extends ApiBase{
 		controller.getRootPresenter().getCtrlTBPresenter().openOutreachPanel(telescope);
 	}
 
-//	public void openTelescopeOutreachPanel() {
-//		controller.getRootPresenter().getCtrlTBPresenter().openTelescopeOutreachPanel();
-//	}
 	public void closeOutreachPanel() {
 		controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
 	}
