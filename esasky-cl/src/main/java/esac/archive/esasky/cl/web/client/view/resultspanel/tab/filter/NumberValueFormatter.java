@@ -44,22 +44,7 @@ public class NumberValueFormatter implements ValueFormatter{
             if(format.format(value % 1).equals(".0") || format.format(value % 1).equals("0")) {
                 return NumberFormatter.formatToNumberWithSpaces((int)value);
             } else {
-            	String decimal = format.format(Math.abs(value) % 1);
-        		while (decimal.endsWith("0")) {
-        			decimal = decimal.substring(0, decimal.length() - 1);
-        		}
-        		if("0.".equals(decimal) || ".".equals(decimal)) {
-        			decimal = "";
-        		}
-            	if (decimal.startsWith("1")) {
-            		decimal = decimal.replaceFirst("1", "");
-            		if (".".equals(decimal)) {
-            			decimal = "";
-            		}
-            		return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value + 1) + decimal;
-            	} else {
-            		return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value) + decimal;
-            	}
+            	return formatDecimalValue(value);
                 
             }
         }
@@ -69,6 +54,25 @@ public class NumberValueFormatter implements ValueFormatter{
         }
         return sciFormatResult;
     }
+
+	private String formatDecimalValue(double value) {
+		String decimal = format.format(Math.abs(value) % 1);
+		while (decimal.endsWith("0")) {
+			decimal = decimal.substring(0, decimal.length() - 1);
+		}
+		if("0.".equals(decimal) || ".".equals(decimal)) {
+			decimal = "";
+		}
+		if (decimal.startsWith("1")) {
+			decimal = decimal.replaceFirst("1", "");
+			if (".".equals(decimal)) {
+				decimal = "";
+			}
+			return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value + 1) + decimal;
+		} else {
+			return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value) + decimal;
+		}
+	}
 
     @Override
     public double getValueFromFormat(String formattedValue) {
