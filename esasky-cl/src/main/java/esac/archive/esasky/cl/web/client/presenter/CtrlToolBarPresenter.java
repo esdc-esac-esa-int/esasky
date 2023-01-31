@@ -351,24 +351,20 @@ public class CtrlToolBarPresenter {
     }
 
     public void openOutreachPanel(String telescope) {
-        if(telescope.equals("JWST") || telescope.equals("jwst") ) {
+        if(telescope.equals("JWST")) {
             view.openJwstOutreachPanel();
         } else {
             view.openOutreachPanel();
         }
     }
 
-    public void closeOutreachPanel(String telescope) {
-        if(telescope.equals("JWST") || telescope.equals("jwst") ) {
-            view.closeJwstOutreachPanel();
-        } else {
-            view.closeOutreachPanel();
-        }
+    public void closeOutreachPanel() {
+        view.closeOutreachPanel();
     }
 
-//    public void closeJwstOutreachPanel() {
-//        view.closeJwstOutreachPanel();
-//    }
+    public void closeJwstOutreachPanel(String telescope) {
+        view.closeJwstOutreachPanel();
+    }
 
     public JSONArray getOutreachImageIds(ICommand command) {
         return view.getOutreachImageIds(command);

@@ -660,14 +660,18 @@ public class ApiMessageParser {
 
 				case 'openOutreachPanel':
 					console.log('openOutreachPanel event captured');
-					var telescope = Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST";
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
 					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::openOutreachPanel(Ljava/lang/String;)(telescope)
 					break;
 
 				case 'closeOutreachPanel':
 					console.log('closeOutreachPanel event captured');
-					var telescope = Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST";
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::closeOutreachPanel(Ljava/lang/String;)(telescope)
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+//					if (telescope.equals("JWST") || telescope.equals("jwst")) {
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::closeTelescopeOutreachPanel(Ljava/lang/String;)(telescope)
+//					} else {
+//						apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::closeOutreachPanel()()
+//					}
 					break;
 
 //				case 'openTelescopeOutreachPanel':

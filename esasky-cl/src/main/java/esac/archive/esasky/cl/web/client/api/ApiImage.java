@@ -109,9 +109,16 @@ public class ApiImage extends ApiBase{
 //	public void openTelescopeOutreachPanel() {
 //		controller.getRootPresenter().getCtrlTBPresenter().openTelescopeOutreachPanel();
 //	}
+	public void closeOutreachPanel() {
+		controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+	}
 
-	public void closeOutreachPanel(String telescope) {
-		controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel(telescope);
+	public void closeTelescopeOutreachPanel(String telescope) {
+		if(telescope.equals("JWST")){
+			controller.getRootPresenter().getCtrlTBPresenter().closeJwstOutreachPanel(telescope);
+		}else{
+			controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+		}
 	}
 
 	public void getAllOutreachImageIds(JavaScriptObject widget) {

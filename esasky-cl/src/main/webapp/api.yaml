@@ -1240,14 +1240,14 @@ Targetlist:
 Image:
   openOutreachPanel:
     description:
-      Open the outreach panel
+      Open the outreach panel of the available telescopes
     example:
-      "{event: 'openOutreachPanel'}"
+      "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
   closeOutreachPanel:
     description:
-      Close the outreach panel
+      Close the outreach panel of the available telescopes
     example:
-      "{event: 'closeOutreachPanel'}"
+      "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
   getOutreachImageIds:
     description:
       Get all available outreach image IDs
@@ -1280,7 +1280,7 @@ Image:
         description: Declination of the center of the image
       fov:
         type: (Double)
-        description: Field of View of the image width in degress
+        description: Field of View of the image width in degrees
       rotation:
         type: (Double)
         description: Rotation of the image
