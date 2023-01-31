@@ -2216,7 +2216,10 @@ public class TabulatorWrapper {
             }
             cellClick = function (e, cell) {
                 e.stopPropagation();
-                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
+                var cellData = cell.getData();
+                if ((cellData.access_format && cellData.access_format.toLowerCase().includes("datalink"))
+                    || (cellData.access_url && cellData.access_url.toLowerCase().includes("datalink"))
+                    || cellData.datalink) {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
                 } else {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
@@ -2234,7 +2237,10 @@ public class TabulatorWrapper {
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
                 e.stopPropagation();
-                if (cell.getData().access_format && cell.getData().access_format.toLowerCase().includes("datalink")) {
+                var cellData = cell.getData();
+                if ((cellData.access_format && cellData.access_format.toLowerCase().includes("datalink"))
+                || (cellData.access_url && cellData.access_url.toLowerCase().includes("datalink"))
+                || cellData.datalink) {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
                 } else {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
