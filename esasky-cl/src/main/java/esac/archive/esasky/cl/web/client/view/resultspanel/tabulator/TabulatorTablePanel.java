@@ -649,18 +649,18 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void onDatalinkClicked(GeneralJavaScriptObject row) {
-		String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
-		if(datalinkUrl == null || datalinkUrl.isEmpty()) {
-			datalinkUrl = buildArchiveURL(row.invokeFunction("getData"));
+	public void onDatalinkClicked(GeneralJavaScriptObject row, String url) {
+
+		if(url == null || url.isEmpty()) {
+			url = buildArchiveURL(row.invokeFunction("getData"));
 		}
-		if("https:".equals(Window.Location.getProtocol()) && datalinkUrl.startsWith("http:")){
-			datalinkUrl = datalinkUrl.replaceFirst("http:", "https:");
+		if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+			url = url.replaceFirst("http:", "https:");
 		}
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), datalinkUrl);
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
 		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getIdColumn());
 
-		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(datalinkUrl, title));
+		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(url, title));
 	}
 
 	@Override
@@ -875,7 +875,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		} else {
 			String url = buildArchiveURL(row.invokeFunction("getData"));
 			if(url.toLowerCase().contains("datalink")) {
-				onDatalinkClicked(row);
+				onDatalinkClicked(row, url);
 			}else {
 				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
 				Window.open(url, "_blank", "");

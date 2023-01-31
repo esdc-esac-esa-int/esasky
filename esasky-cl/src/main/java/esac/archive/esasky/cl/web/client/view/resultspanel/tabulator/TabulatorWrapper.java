@@ -2216,11 +2216,11 @@ public class TabulatorWrapper {
             }
             cellClick = function (e, cell) {
                 e.stopPropagation();
-                var cellData = cell.getData();
-                if ((cellData.access_format && cellData.access_format.toLowerCase().includes("datalink"))
-                    || (cellData.access_url && cellData.access_url.toLowerCase().includes("datalink"))
-                    || cellData.datalink) {
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                var rowData = cell.getData();
+                var cellData = cell.getValue();
+                if ((rowData.access_format && rowData.access_format.toLowerCase().includes("datalink"))
+                    || (cellData && typeof cellData === "string" && cellData.toLowerCase().includes("datalink"))) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(*)(cell.getRow(), cellData);
                 } else {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
                 }
@@ -2237,11 +2237,11 @@ public class TabulatorWrapper {
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
                 e.stopPropagation();
-                var cellData = cell.getData();
-                if ((cellData.access_format && cellData.access_format.toLowerCase().includes("datalink"))
-                || (cellData.access_url && cellData.access_url.toLowerCase().includes("datalink"))
-                || cellData.datalink) {
-                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                var rowData = cell.getData();
+                var cellData = cell.getValue();
+                if ((rowData.access_format && rowData.access_format.toLowerCase().includes("datalink"))
+                    || (cellData && typeof cellData === "string" && cellData.toLowerCase().includes("datalink"))) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(*)(cell.getRow(), cellData);
                 } else {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
                 }
@@ -2390,8 +2390,8 @@ public class TabulatorWrapper {
         }
     }
 
-    public void onDatalinkClicked(final GeneralJavaScriptObject row) {
-        tabulatorCallback.onDatalinkClicked(row);
+    public void onDatalinkClicked(final GeneralJavaScriptObject row, final String url) {
+        tabulatorCallback.onDatalinkClicked(row, url);
     }
 
     public void onAccessUrlClicked(String url) {
