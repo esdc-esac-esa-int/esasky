@@ -678,12 +678,12 @@ public class TabulatorWrapper {
 
                     // Only add DB units to the column header if we don't supply our own through internationalization.
                     var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
-                    metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
-
                     if (unit) {
                         metadata[j].displayName += " <i>[" + unit + "]</i>";
                     }
                 }
+
+                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
             }
 
             sortedMetadata = sortedMetadata.filter(function (element) {
