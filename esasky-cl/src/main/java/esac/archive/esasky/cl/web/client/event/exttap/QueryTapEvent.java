@@ -9,12 +9,14 @@ public class QueryTapEvent extends GwtEvent<QueryTapEventHandler> {
     private final String tableName;
     private final String description;
     private final String query;
+    private final String publisher;
 
-    public QueryTapEvent(String tapUrl, String tableName, String description, String query) {
+    public QueryTapEvent(String tapUrl, String tableName, String description, String publisher, String query) {
         this.tapUrl = tapUrl;
         this.tableName = tableName;
         this.query = query;
         this.description = description;
+        this.publisher = publisher;
     }
 
 
@@ -42,5 +44,9 @@ public class QueryTapEvent extends GwtEvent<QueryTapEventHandler> {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getPublisher() {
+        return publisher;
     }
 }

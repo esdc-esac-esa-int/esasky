@@ -5070,4 +5070,18 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		$MISSION$ has been added to the treemap but there is no data to show in the current FoV.
 	</text>
 
+	<text key="resultsPresenter_helpDescription_custom_tap_entity">
+		External data provided by $PUBLISHER$.
+
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
 </Internationalization>

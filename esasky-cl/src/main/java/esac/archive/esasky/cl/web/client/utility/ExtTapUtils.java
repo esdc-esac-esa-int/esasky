@@ -32,6 +32,7 @@ public class ExtTapUtils {
         descriptor.setIsExternal(parent.isExternal());
         descriptor.setMetadata(parent.getMetadata());
         descriptor.setUseIntersectsPolygon(parent.useIntersectsPolygon());
+        descriptor.setDescription(parent.getDescription());
         descriptor.setCustom(true);
         updateWavelength(descriptor, wavelengthStart, wavelengthEnd);
         updateWavelength(parent, wavelengthStart, wavelengthEnd);

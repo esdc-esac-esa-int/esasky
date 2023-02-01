@@ -318,16 +318,16 @@ public class CloseableTabLayoutPanel extends Composite {
 
     private EsaSkyButton createChangeQueryButton() {
 
-        EsaSkyButton queryButton = new EsaSkyButton(resources.queryIcon());
-        queryButton.setMediumStyle();
-        queryButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
-        queryButton.addClickHandler(arg0 -> {
+        EsaSkyButton btn = new EsaSkyButton(resources.queryIcon());
+        btn.setMediumStyle();
+        btn.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        btn.addStyleName("tabButton");
+        btn.addClickHandler(arg0 -> {
             ITablePanel tabPanel = getSelectedWidget();
             tabPanel.openQueryPanel();
         });
 
-        queryButton.addStyleName("tabButton");
-        return queryButton;
+        return btn;
     }
 
     private EsaSkyButton createSendButton() {
