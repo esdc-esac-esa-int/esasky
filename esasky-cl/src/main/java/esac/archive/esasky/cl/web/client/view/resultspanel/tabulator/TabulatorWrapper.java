@@ -663,32 +663,27 @@ public class TabulatorWrapper {
             for (var j = 0; j < metadata.length; j++) {
                 if (metadata[j].name === "id") {
                     metadata[j].name = 'identifier';
-                }
-
-                if (metadata[j].name === raColumnName) {
+                } else if (metadata[j].name === raColumnName) {
                     metadata[j].datatype = "RA";
-                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText("RA_LABEL");
                 } else if (metadata[j].name === decColumnName) {
                     metadata[j].datatype = "DEC";
-                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText("DEC_LABEL");
+                }
+
+                var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
+                var textKey = tableName + "_" + metadata[j].name;
+                if ($wnd.esasky.hasInternationalizationText(textKey)) {
+                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(textKey);
                 } else {
-                    var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
-                    var textKey = tableName + "_" + metadata[j].name;
-                    if ($wnd.esasky.hasInternationalizationText(textKey)) {
-                        metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(textKey);
-                    } else {
-                        metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+                    metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+
+                    // Only add DB units to the column header if we don't supply our own through internationalization.
+                    var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
+                    metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
+
+                    if (unit) {
+                        metadata[j].displayName += " <i>[" + unit + "]</i>";
                     }
                 }
-
-                var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
-                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
-
-                if (unit) {
-                    metadata[j].displayName += " <i>[" + unit + "]</i>";
-                }
-
-
             }
 
             sortedMetadata = sortedMetadata.filter(function (element) {
