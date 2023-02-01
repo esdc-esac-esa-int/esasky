@@ -5066,4 +5066,8 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Run Query
 	</text>
 
+	<text key="treemap_zero_count_alert">
+		$MISSION$ has been added to the treemap but there is no data to show in the current FoV.
+	</text>
+
 </Internationalization>

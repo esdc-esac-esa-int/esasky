@@ -15,6 +15,7 @@ import esac.archive.esasky.cl.web.client.callback.*;
 import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.SingleCount;
 import esac.archive.esasky.cl.web.client.query.*;
@@ -231,7 +232,7 @@ public class DescriptorRepository {
 
     public void addExternalDataCenterDescriptor(CommonTapDescriptor descriptor) {
         if (addDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, descriptor)) {
-            updateCount4ExtTap(descriptor);
+            updateCount4ExtTap(descriptor, TextMgr.getInstance().getText("treemap_zero_count_alert").replace("$MISSION$", descriptor.getMission()));
         }
     }
 
@@ -397,13 +398,13 @@ public class DescriptorRepository {
             for (CommonTapDescriptor descriptor : getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
                 if (EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getLevel()
                         && getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus().hasMoved(descriptor)) {
-                    updateCount4ExtTap(descriptor);
+                    updateCount4ExtTap(descriptor, null);
                 }
             }
         }
     }
 
-    public void updateCount4ExtTap(CommonTapDescriptor descriptor) {
+    public void updateCount4ExtTap(CommonTapDescriptor descriptor, String zeroCountMessage) {
         final CountStatus cs = getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus();
         if (!cs.containsDescriptor(descriptor)) {
             cs.addDescriptor(descriptor);
@@ -417,7 +418,7 @@ public class DescriptorRepository {
                 + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + descriptor.getTapUrl();
 
         JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
-        countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission()));
+        countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission(), zeroCountMessage));
     }
 
 
