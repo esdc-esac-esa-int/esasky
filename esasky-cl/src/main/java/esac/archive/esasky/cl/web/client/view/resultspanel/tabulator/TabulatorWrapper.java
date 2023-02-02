@@ -697,11 +697,7 @@ public class TabulatorWrapper {
 
 
             // Tabulator has reserved the ID column
-            var uidField = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getUniqueIdentifierField()();
             for (var i = 0; i < data.length; i++) {
-                if (uidField === "id") {
-                    data[i]["identifier"] = data[i]["id"];
-                }
                 data[i]["id"] = i;
             }
 
