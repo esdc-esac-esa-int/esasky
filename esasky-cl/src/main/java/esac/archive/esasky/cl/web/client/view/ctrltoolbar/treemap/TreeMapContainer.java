@@ -19,7 +19,6 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GlobalTapPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
@@ -36,16 +35,14 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	private boolean firstOpening = true;
 	private final EntityContext context;
 
-	private TreeMap treeMap;
-	private FlowPanel treeMapContainer = new FlowPanel();
+	private final TreeMap treeMap;
+	private final FlowPanel treeMapContainer = new FlowPanel();
 	private final PopupHeader<TreeMapContainer> header;
 	private ESASkyMultiRangeSlider slider;
 	private FlowPanel sliderContainer;
 	boolean haveSlider;
 
-	private GlobalTapPanel globalTapPanel;
-	
-	private final List<TreeMapChanged> observers = new LinkedList<>();
+	private final List<TreeMapChanged> treemapObservers = new LinkedList<>();
 	
 	
 	public interface Resources extends ClientBundle {
@@ -235,11 +232,11 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	}
 	
 	public void registerObserver(TreeMapChanged observer){
-		observers.add(observer);
+		treemapObservers.add(observer);
 	}
 	
 	private void notifyClosed(){
-		for(TreeMapChanged observer : observers){
+		for(TreeMapChanged observer : treemapObservers){
 			observer.onClose();		
 		}
 	}

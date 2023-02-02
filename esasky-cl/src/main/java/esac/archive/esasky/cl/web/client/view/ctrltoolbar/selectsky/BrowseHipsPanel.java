@@ -46,7 +46,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel {
     
     private static String aladinGlobalHipsListCache = null;
 	
-	private List<BrowseHipsPanelObserver> observers = new LinkedList<BrowseHipsPanelObserver>();
+	private final List<BrowseHipsPanelObserver> hipsPanelObservers = new LinkedList<>();
 	TabulatorWrapper tabulatorTable;
 	
 	public BrowseHipsPanel() {
@@ -197,7 +197,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel {
 	}
 
 	public void registerObserver(BrowseHipsPanelObserver observer) {
-		observers.add(observer);
+		hipsPanelObservers.add(observer);
 	}
 	
 	
@@ -219,7 +219,7 @@ public class BrowseHipsPanel extends AutoHidingMovablePanel {
 				i++;
 			}
 			
-			for(BrowseHipsPanelObserver observer : observers) {
+			for(BrowseHipsPanelObserver observer : hipsPanelObservers) {
 				observer.onHipsAdded(urls);
 			}
 		}

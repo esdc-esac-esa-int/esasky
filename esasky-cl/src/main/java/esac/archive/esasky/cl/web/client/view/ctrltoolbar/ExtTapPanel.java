@@ -17,7 +17,6 @@ import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.ExtTapTreeMap;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -40,7 +39,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
     private ESASkyMultiRangeSlider slider;
 
-    private final List<TreeMapChanged> observers = new LinkedList<>();
+    private final List<TreeMapChanged> treemapObservers = new LinkedList<>();
     private boolean fovLimiterEnabled;
     public enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
 
@@ -308,11 +307,11 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
 
     public void registerObserver(TreeMapChanged observer){
-        observers.add(observer);
+        treemapObservers.add(observer);
     }
 
     private void notifyClosed(){
-        for(TreeMapChanged observer : observers){
+        for(TreeMapChanged observer : treemapObservers){
             observer.onClose();
         }
     }
