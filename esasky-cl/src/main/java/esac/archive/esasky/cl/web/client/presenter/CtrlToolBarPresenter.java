@@ -89,22 +89,21 @@ public class CtrlToolBarPresenter {
         void showGWEvent(String id, Promise<Boolean> showPromise);
 
         void clickExploreButton();
-
         void openExtTapPanel();
-
         void closeExtTapPanel();
         boolean isExtTapPanelOpen();
 
-        void openOutreachPanel();
+        void openOutreachPanel(String id);
 
         void closeOutreachPanel();
 
-//        void openTelescopeOutreachPanel();
-
-        void openJwstOutreachPanel();
+        void openJwstOutreachPanel(String id);
 
         void closeJwstOutreachPanel();
 
+        void openExtTapPanelTab(int index);
+
+        void closeExtTapPanelTab();
         JSONArray getOutreachImageIds(ICommand command);
 
         void showOutreachImage(String id);
@@ -338,23 +337,15 @@ public class CtrlToolBarPresenter {
 
     public void clickExploreButton() { view.clickExploreButton(); }
 
-    public void openExtTapPanel() {
-        view.openExtTapPanel();
-    }
-
     public boolean isExtTapPanelOpen() {
         return view.isExtTapPanelOpen();
     }
 
-    public void closeExtTapPanel() {
-        view.closeExtTapPanel();
-    }
-
-    public void openOutreachPanel(String telescope) {
+    public void openOutreachPanel(String telescope, String id) {
         if(telescope.equals("JWST")) {
-            view.openJwstOutreachPanel();
+            view.openJwstOutreachPanel(id);
         } else {
-            view.openOutreachPanel();
+            view.openOutreachPanel(id);
         }
     }
 
@@ -364,6 +355,22 @@ public class CtrlToolBarPresenter {
 
     public void closeJwstOutreachPanel(String telescope) {
         view.closeJwstOutreachPanel();
+    }
+
+    public void openExternalTapPanel(String tab) {
+        if(tab.equals("TREEMAP") || tab == ""){
+            view.openExtTapPanelTab(0);
+        }else if(tab.equals(("TAP REGISTRY"))){
+            view.openExtTapPanelTab(1);
+        }else if(tab.equals(("VIZIER"))){
+            view.openExtTapPanelTab(2);
+        }else if(tab.equals(("ESA"))){
+            view.openExtTapPanelTab(3);
+        }
+    }
+
+    public void closeExtTapPanel() {
+        view.closeExtTapPanelTab();
     }
 
     public JSONArray getOutreachImageIds(ICommand command) {

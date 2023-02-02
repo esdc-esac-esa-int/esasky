@@ -507,12 +507,13 @@ public class ApiMessageParser {
 
 				case 'openExtTapPanel':
 					console.log('openExtTapPanel event captured');
-					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanel()();
+					var tab = Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'tab') ? msg.content.tab : "";
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanelTab(Ljava/lang/String;)(tab);
 					break;
 
 				case 'closeExtTapPanel':
 					console.log('closeExtTapPanel event captured');
-					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanel()();
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanelTab()();
 					break;
 
 					// MOC
@@ -661,7 +662,8 @@ public class ApiMessageParser {
 				case 'openOutreachPanel':
 					console.log('openOutreachPanel event captured');
 					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::openOutreachPanel(Ljava/lang/String;)(telescope)
+                    var id = Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'id') ? msg.content.id : null;
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::openTelescopeOutreachPanel(Ljava/lang/String;Ljava/lang/String;)(telescope, id)
 					break;
 
 				case 'closeOutreachPanel':

@@ -42,7 +42,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
     private final List<TreeMapChanged> observers = new LinkedList<>();
     private boolean fovLimiterEnabled;
-    private enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
+    public enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
 
     public interface Resources extends ClientBundle {
         @Source("extTapPanel.css")
@@ -141,6 +141,10 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
         setMaxSize();
 
+    }
+
+    public void openTab(int tabIndex) {
+        tabPanel.selectTab(tabIndex);
     }
 
     private FlowPanel initSliderContainer() {

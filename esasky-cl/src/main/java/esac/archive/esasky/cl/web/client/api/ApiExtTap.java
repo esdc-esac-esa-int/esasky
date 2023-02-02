@@ -254,11 +254,14 @@ public class ApiExtTap extends ApiBase{
 		controller.getRootPresenter().getRelatedMetadata(entity, adql);
 	}
 
-	public void openExtTapPanel() {
-		controller.getRootPresenter().getCtrlTBPresenter().openExtTapPanel();
+	public void openExtTapPanelTab(String tab) {
+		if(tab != "") {
+			tab = tab.toUpperCase();
+		}
+		controller.getRootPresenter().getCtrlTBPresenter().openExternalTapPanel(tab);
 	}
 
-	public void closeExtTapPanel() {
+	public void closeExtTapPanelTab() {
 		controller.getRootPresenter().getCtrlTBPresenter().closeExtTapPanel();
 	}
 	

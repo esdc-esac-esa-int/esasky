@@ -12,10 +12,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
@@ -73,7 +70,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
     private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
     private final ExtTapPanel extTapPanel = new ExtTapPanel();
-
+    private PopupHeader<ExtTapPanel> header;
+    enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
+    private int selectedTabIndex = 0;
 
     private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
 
@@ -94,7 +93,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     private final int suggestedPositionLeft = 5;
     private final int suggestedPositionTop = 77;
-
 
     private final CssResource style;
     private Resources resources = GWT.create(Resources.class);
@@ -976,10 +974,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void openOutreachPanel() {
-        if (!outreachImageButton.getToggleStatus()) {
-            outreachImageButton.toggle();
-            outreachImagePanel.toggle();
+    public void openOutreachPanel(String id) {
+        if(id == null){
+            if (!outreachImageButton.getToggleStatus()) {
+                outreachImageButton.toggle();
+                outreachImagePanel.toggle();
+                CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+            }
+        }else{
+            outreachImagePanel.selectShape(id);
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
         }
     }
@@ -993,7 +996,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void openJwstOutreachPanel() {
+    public void openJwstOutreachPanel(String id) {
         if (!outreachJwstButton.getToggleStatus()) {
             outreachJwstButton.toggle();
             outreachJwstPanel.toggle();
@@ -1007,6 +1010,16 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             outreachJwstButton.toggle();
             outreachJwstPanel.toggle();
         }
+    }
+
+    @Override
+    public void openExtTapPanelTab(int index) {
+        openExtTapPanel();
+        extTapPanel.openTab(index);
+    }
+
+    public void closeExtTapPanelTab() {
+        extTapPanel.hide();
     }
 
     @Override
