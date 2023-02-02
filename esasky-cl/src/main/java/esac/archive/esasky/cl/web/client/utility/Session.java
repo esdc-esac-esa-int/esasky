@@ -150,7 +150,7 @@ public class Session {
 			DescriptorRepository.CommonTapDescriptorListMapper mapper = GWT.create(DescriptorRepository.CommonTapDescriptorListMapper.class);
 			CommonTapDescriptorList commonTapDescriptorList = mapper.read(edcObject.toJSONString());
 			DescriptorCountAdapter dca = new DescriptorCountAdapter(commonTapDescriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
-			DescriptorRepository.getInstance().setDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
+			DescriptorRepository.getInstance().setDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca), true));
 		}
 	}

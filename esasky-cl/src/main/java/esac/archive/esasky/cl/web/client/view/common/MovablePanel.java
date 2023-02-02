@@ -1,7 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -18,8 +17,10 @@ import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MovablePanel extends FocusPanel {
@@ -49,6 +50,7 @@ public class MovablePanel extends FocusPanel {
 
 	private Element moveInitiatorElement;
 	private HandlerRegistration nativePreviewHandlerRegistration;
+	protected List<ClosingObserver> observers = new LinkedList<>();
 
 	private OnKeyPress onKeyPress = new OnKeyPress() {
 
@@ -100,6 +102,9 @@ public class MovablePanel extends FocusPanel {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
+		for(ClosingObserver onClose : observers) {
+			onClose.onClose();
+		}
 		if (nativePreviewHandlerRegistration != null) {
 			nativePreviewHandlerRegistration.removeHandler();
 			nativePreviewHandlerRegistration = null;
@@ -498,5 +503,12 @@ public class MovablePanel extends FocusPanel {
 
 		this.moveInitiatorElement = partner;
 	}
-
+	
+	public void registerCloseObserver(ClosingObserver onClose) {
+		observers.add(onClose);
+	}
+	
+	public void unregisterCloseObserver(ClosingObserver onClose) {
+		observers.remove(onClose);
+	}
 }

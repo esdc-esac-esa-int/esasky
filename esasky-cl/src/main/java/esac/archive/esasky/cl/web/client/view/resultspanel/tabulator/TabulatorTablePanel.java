@@ -27,8 +27,8 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.JupyterDownloadDialog;
-import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.QueryPopupPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.*;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
@@ -832,16 +832,10 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
-	private void selectRowWhileDialogBoxIsOpen(final GeneralJavaScriptObject row, AutoHidingMovablePanel dialogBox) {
+	private void selectRowWhileDialogBoxIsOpen(final GeneralJavaScriptObject row, MovablePanel dialogBox) {
 		if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
 			row.invokeFunction("select");
-			dialogBox.registerCloseObserver(new ClosingObserver() {
-
-				@Override
-				public void onClose() {
-					row.invokeFunction("deselect");
-				}
-			});
+			dialogBox.registerCloseObserver(() -> row.invokeFunction("deselect"));
 		}
 	}
 

@@ -396,7 +396,7 @@ public class MainPresenter {
             @Override
             protected void success(CommonTapDescriptorList descriptorList) {
                 DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, observer);
-                descriptorRepo.setDescriptors(category, dca);
+                descriptorRepo.setDescriptorCountAdapter(category, dca);
             }
 
             @Override

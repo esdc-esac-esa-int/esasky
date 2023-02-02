@@ -663,32 +663,27 @@ public class TabulatorWrapper {
             for (var j = 0; j < metadata.length; j++) {
                 if (metadata[j].name === "id") {
                     metadata[j].name = 'identifier';
-                }
-
-                if (metadata[j].name === raColumnName) {
+                } else if (metadata[j].name === raColumnName) {
                     metadata[j].datatype = "RA";
-                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText("RA_LABEL");
                 } else if (metadata[j].name === decColumnName) {
                     metadata[j].datatype = "DEC";
-                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText("DEC_LABEL");
+                }
+
+                var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
+                var textKey = tableName + "_" + metadata[j].name;
+                if ($wnd.esasky.hasInternationalizationText(textKey)) {
+                    metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(textKey);
                 } else {
-                    var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
-                    var textKey = tableName + "_" + metadata[j].name;
-                    if ($wnd.esasky.hasInternationalizationText(textKey)) {
-                        metadata[j].displayName = $wnd.esasky.getDefaultLanguageText(textKey);
-                    } else {
-                        metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+                    metadata[j].displayName = $wnd.esasky.getColumnDisplayText(metadata[j].name);
+
+                    // Only add DB units to the column header if we don't supply our own through internationalization.
+                    var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
+                    if (unit) {
+                        metadata[j].displayName += " <i>[" + unit + "]</i>";
                     }
                 }
 
-                var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(metadata[j].name);
                 metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
-
-                if (unit) {
-                    metadata[j].displayName += " <i>[" + unit + "]</i>";
-                }
-
-
             }
 
             sortedMetadata = sortedMetadata.filter(function (element) {
@@ -702,11 +697,7 @@ public class TabulatorWrapper {
 
 
             // Tabulator has reserved the ID column
-            var uidField = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getUniqueIdentifierField()();
             for (var i = 0; i < data.length; i++) {
-                if (uidField === "id") {
-                    data[i]["identifier"] = data[i]["id"];
-                }
                 data[i]["id"] = i;
             }
 
@@ -1480,11 +1471,12 @@ public class TabulatorWrapper {
         }
     }-*/;
 
-    private native JavaScriptObject getFileSizeFormatterFunc(String divId) /*-{
+    private native JavaScriptObject getFileSizeFormatterFunc(GeneralJavaScriptObject wrapper) /*-{
         return function (cell, formatterParams, onRendered) {
             var value = cell.getValue();
+            var missionName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getMission()()
             if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                if (divId.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                if (missionName.includes("MAST")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value);
                 } else {
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value) / 1024;
@@ -1493,7 +1485,7 @@ public class TabulatorWrapper {
                 if (value === undefined || value === "") {
                     return "";
                 }
-                if (divId.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                if (missionName.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
                 } else {
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
@@ -2161,7 +2153,7 @@ public class TabulatorWrapper {
         var ucd = columnMeta.ucd ? columnMeta.ucd : "";
         var utype = columnMeta.utype ? columnMeta.utype : "";
         if ((ucd.includes("phys.size") && ucd.includes("meta.file")) || utype.includes("Access.Size")) {
-            formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(divId);
+            formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(wrapper);
             headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
             headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
             sorter = "number";
@@ -2475,6 +2467,10 @@ public class TabulatorWrapper {
         } else {
             return null;
         }
+    }
+    
+    public String getMission() {
+        return getDescriptor().getMission();
     }
 
     public boolean isColumnVisible(String columnName) {

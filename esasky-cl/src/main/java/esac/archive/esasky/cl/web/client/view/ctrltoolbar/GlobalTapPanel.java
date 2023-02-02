@@ -69,11 +69,14 @@ public class GlobalTapPanel extends FlowPanel {
     private static final String DESCRIPTION_COL = "description";
     private static final String ACCESS_URL_COL = "access_url";
     private static final String SHORT_NAME_COL = "short_name";
+    private static final String PUBLISHER_COL = "publisher";
     private static final String DISPLAY_NONE = "displayNone";
     private static final String PLACEHOLDER = "placeholder";
     private static final String TABULATOR_SERVICE_ID_PREFIX = "browseTap__tabulatorServicesContainer_";
     private static final String TABULATOR_TABLE_ID_PREFIX = "browseTap__tabulatorTablesContainer_";
-
+    private static final String RESULT_HELP_DESCRIPTION_KEY = "resultsPresenter_helpDescription_custom_tap_entity";
+    private static final String PUBLISHER_REPLACE_KEY = "$PUBLISHER$";
+    
     public enum Modes {REGISTRY, VIZIER, ESA}
 
     private final Modes mode;
@@ -302,6 +305,7 @@ public class GlobalTapPanel extends FlowPanel {
         exploreTapServiceTables("http://tapvizier.cds.unistra.fr/TAPVizieR/tap", "VizieR");
         tabulatorCallback.storedAccessUrl = "http://tapvizier.cds.unistra.fr/TAPVizieR/tap";
         tabulatorCallback.storedName = "VizieR";
+        tabulatorCallback.storedPublisher = "CDS VizieR service";
     }
 
     private void showTable(TabulatorWrapper wrapper) {
@@ -495,6 +499,7 @@ public class GlobalTapPanel extends FlowPanel {
     private class TabulatorCallback extends DefaultTabulatorCallback {
         private String storedAccessUrl;
         private String storedName;
+        private String storedPublisher;
         private QueryPopupPanel queryPopupPanel;
 
         @Override
@@ -511,12 +516,14 @@ public class GlobalTapPanel extends FlowPanel {
                     : storedAccessUrl;
 
             if (!Objects.equals(accessUrl, storedAccessUrl)) {
-                String name = rowData.hasProperty(SHORT_NAME_COL)
-                        ? rowData.getStringProperty(SHORT_NAME_COL)
-                        : rowData.getStringProperty("res_title");
 
                 storedAccessUrl = accessUrl;
-                storedName = name;
+                storedName =  rowData.hasProperty(SHORT_NAME_COL)
+                        ? rowData.getStringProperty(SHORT_NAME_COL)
+                        : rowData.getStringProperty("res_title");
+                storedPublisher = rowData.hasProperty(PUBLISHER_COL)
+                        ? rowData.getStringProperty(PUBLISHER_COL)
+                        : "";
             }
 
 
@@ -529,7 +536,7 @@ public class GlobalTapPanel extends FlowPanel {
         @Override
         public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
             String encapsulateTableName = ExtTapUtils.encapsulateTableName(rowData.getStringProperty(TABLE_NAME_COL));
-            String description = rowData.getStringProperty(DESCRIPTION_COL);
+            String description =  TextMgr.getInstance().getText(RESULT_HELP_DESCRIPTION_KEY).replace(PUBLISHER_REPLACE_KEY, storedPublisher);
             String query = "SELECT * FROM " + encapsulateTableName;
 
             queryExternalTapServiceData(storedAccessUrl, encapsulateTableName, storedName, description, query, true, false);
@@ -544,6 +551,7 @@ public class GlobalTapPanel extends FlowPanel {
             queryPopupPanel.setTapServiceUrl(storedAccessUrl);
             queryPopupPanel.setTapTable(rowData.getStringProperty(TABLE_NAME_COL));
             queryPopupPanel.setTapDescription(rowData.getStringProperty(DESCRIPTION_COL));
+            queryPopupPanel.setPublisher(storedPublisher);
             queryPopupPanel.show();
         }
 
@@ -552,6 +560,7 @@ public class GlobalTapPanel extends FlowPanel {
             if (rowData.hasProperty(ACCESS_URL_COL)) {
                 String accessUrl = rowData.getStringProperty(ACCESS_URL_COL);
                 String missionName = rowData.getStringProperty(SHORT_NAME_COL);
+                String publisher = rowData.getStringProperty(PUBLISHER_COL);
                 String tableName = ExtTapUtils.encapsulateTableName("ivoa.obscore");
                 String query = "SELECT * FROM " + tableName;
                 queryExternalTapServiceMetadata(accessUrl, query, new JSONUtils.IJSONRequestCallback() {
@@ -565,7 +574,9 @@ public class GlobalTapPanel extends FlowPanel {
                         if (descriptorList != null) {
                             List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
                             CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList,
-                                    accessUrl, tableName, missionName, null, "", true, false);
+                                    accessUrl, tableName, missionName,
+                                    TextMgr.getInstance().getText(RESULT_HELP_DESCRIPTION_KEY).replace(PUBLISHER_REPLACE_KEY, publisher),
+                                    "", true, false);
                             DescriptorRepository.getInstance().addExternalDataCenterDescriptor(commonTapDescriptor);
                             fireEvent(new TreeMapNewDataEvent(null));
                         }
@@ -584,16 +595,16 @@ public class GlobalTapPanel extends FlowPanel {
         public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
             String tableName = rowData.getStringProperty(TABLE_NAME_COL);
             String query = "SELECT * FROM TAP_SCHEMA.columns where table_name='" + tableName + "'";
-
-            queryExternalTapServiceData(storedAccessUrl, "TAP_SCHEMA.columns", storedName,null, query, false, false);
+            String description =  TextMgr.getInstance().getText(RESULT_HELP_DESCRIPTION_KEY).replace(PUBLISHER_REPLACE_KEY, storedPublisher);
+            queryExternalTapServiceData(storedAccessUrl, "TAP_SCHEMA.columns", storedName, description, query, false, false);
         }
 
         private QueryPopupPanel createQueryPopupPanel() {
             QueryPopupPanel popupPanel = new QueryPopupPanel();
 
-            String description = TextMgr.getInstance().getText("global_tap_panel_custom_query_description") + " ";
-            popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(),
-                    storedName, description + event.getQuery(), event.getQuery(), false, true));
+            popupPanel.addQueryHandler(event -> queryExternalTapServiceData(event.getTapUrl(), event.getTableName(), storedName,
+                    TextMgr.getInstance().getText(RESULT_HELP_DESCRIPTION_KEY)
+                            .replace(PUBLISHER_REPLACE_KEY, event.getPublisher()), event.getQuery(), false, true));
 
             return popupPanel;
         }

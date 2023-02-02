@@ -21,6 +21,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ImageListEntity extends EsaSkyEntity {
@@ -122,8 +123,12 @@ public class ImageListEntity extends EsaSkyEntity {
 		}
 		if(outreachImageIdToBeOpened != null) {
 			GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
+
+			// Tabulator has reserved the id column and changes it to identifier
+			String idColumn = getDescriptor().getIdColumn();
+			idColumn = Objects.equals(idColumn, "id") ? IDENTIFIER_KEY : idColumn;
 			for(int i = 0; i < rowDataArray.length; i++) {
-				if(rowDataArray[i].getStringProperty(getDescriptor().getIdColumn()).equals(outreachImageIdToBeOpened)) {
+				if(rowDataArray[i].getStringProperty(idColumn).equals(outreachImageIdToBeOpened)) {
 					selectShapes(i);
 					tablePanel.selectRow(i, true);
 					return;

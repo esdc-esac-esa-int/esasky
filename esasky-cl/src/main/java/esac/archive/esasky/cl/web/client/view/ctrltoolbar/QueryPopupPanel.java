@@ -27,6 +27,7 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
     private String tapServiceUrl;
     private String tapTableName;
     private String tapDescription;
+    private String publisher;
 
     private DropDownMenu<PopupMenuItems> dropDownMenu;
 
@@ -69,7 +70,7 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
         searchButton.setStyleName("queryPopupPanel__queryButton");
         searchButton.addClickHandler(event -> {
             this.hide();
-            this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.tapDescription, this.queryTextBoxValue));
+            this.fireEvent(new QueryTapEvent(this.tapServiceUrl, this.tapTableName, this.tapDescription, this.publisher, this.queryTextBoxValue));
         });
 
         if (showExamples) {
@@ -137,6 +138,10 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
 
     public void setTapDescription(String description) {
         this.tapDescription = description;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public void setQuery(String query) {

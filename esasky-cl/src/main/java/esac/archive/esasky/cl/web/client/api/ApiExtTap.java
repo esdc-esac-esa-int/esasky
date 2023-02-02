@@ -36,7 +36,7 @@ public class ApiExtTap extends ApiBase{
 				.getDescriptorByMission(missionId);
 		
 		if(desc != null ) {
-			controller.getRootPresenter().getDescriptorRepository().updateCount4ExtTap(desc);
+			controller.getRootPresenter().getDescriptorRepository().updateCount4ExtTap(desc, null);
 			getExtTapCount(desc, widget);
 		}else {
 			JSONObject error = new JSONObject();

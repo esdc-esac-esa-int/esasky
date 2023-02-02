@@ -3,7 +3,10 @@ package esac.archive.esasky.cl.web.client.callback;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Timer;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
+import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
@@ -22,17 +25,17 @@ import java.util.stream.Collectors;
 public class ExtTapCheckCallback extends JsonRequestCallback {
 	private final long timecall;
 	private final CommonTapDescriptor descriptor;
-
 	private final CountStatus countStatus;
-	
+	private final String zeroCountMessage;
 
 	
 	public ExtTapCheckCallback(String adql, CommonTapDescriptor descriptor, CountStatus countStatus,
-			String progressIndicatorMessage) {
+			String progressIndicatorMessage, String zeroCountMessage) {
 		super(progressIndicatorMessage, adql);
 		this.timecall = System.currentTimeMillis();
 		this.countStatus = countStatus;
 		this.descriptor = descriptor;
+		this.zeroCountMessage = zeroCountMessage;
 	}
 
 	private void logReceived(int totalCount) {
@@ -82,6 +85,20 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			countStatus.setCountDetails(descriptor, formattedDataArr.length, System.currentTimeMillis(), CoordinateUtils.getCenterCoordinateInJ2000());
 			DescriptorCountAdapter dca = createDescriptors(formattedDataArr);
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca)));
+
+
+			if (zeroCountMessage != null && !zeroCountMessage.isEmpty() && dca.isZeroCount()) {
+				CommonEventBus.getEventBus().fireEvent(
+						new ProgressIndicatorPushEvent(descriptor.getId() + "zeroCount", zeroCountMessage, true));
+
+				new Timer() {
+					@Override
+					public void run() {
+						CommonEventBus.getEventBus().fireEvent(
+								new ProgressIndicatorPopEvent(descriptor.getId() + "zeroCount"));
+					}
+				}.schedule(10000);
+			}
 		});
 	}
 	
@@ -124,21 +141,17 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		List<CommonTapDescriptor> descriptorList = new LinkedList<>();
 		List<Integer> descriptorCountList = new LinkedList<>();
 
+		// Add root descriptor
+		descriptorList.add(descriptor);
+		descriptorCountList.add(dataArr.length);
 
-		if (dataArr.length > 0) {
-			// Add root descriptor
-			descriptorList.add(descriptor);
-			descriptorCountList.add(dataArr.length);
+		// Remove children that is not part of the update
+		descriptor.removeChildren(updatedIds);
 
-			// Remove children that is not part of the update
-			descriptor.removeChildren(updatedIds);
-
-			// Add all children
-			List<CommonTapDescriptor> allChildren =  descriptor.getAllChildren();
-			descriptorList.addAll(allChildren);
-			descriptorCountList.addAll(allChildren.stream().map(TapDescriptorBase::getCount).collect(Collectors.toList()));
-		}
-
+		// Add all children
+		List<CommonTapDescriptor> allChildren =  descriptor.getAllChildren();
+		descriptorList.addAll(allChildren);
+		descriptorCountList.addAll(allChildren.stream().map(TapDescriptorBase::getCount).collect(Collectors.toList()));
 
 		CommonTapDescriptorList commonTapDescriptorList = new CommonTapDescriptorList();
 		commonTapDescriptorList.setDescriptors(descriptorList);
