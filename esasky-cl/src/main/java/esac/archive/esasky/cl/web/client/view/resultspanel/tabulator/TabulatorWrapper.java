@@ -616,7 +616,6 @@ public class TabulatorWrapper {
         tableJsObject.clearHeaderFilter();
         previouslySelectedMap = [];
         tableJsObject.dataLoaded = false;
-        tableJsObject.setData([]);
     }-*/;
 
     private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
@@ -1826,6 +1825,11 @@ public class TabulatorWrapper {
                 || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
                 return;
             }
+
+            if (data.length === 0 && !this.dataLoaded) {
+                return;
+            }
+
             var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
             var activeColumnGroup = [];
             var isSSO = false;
