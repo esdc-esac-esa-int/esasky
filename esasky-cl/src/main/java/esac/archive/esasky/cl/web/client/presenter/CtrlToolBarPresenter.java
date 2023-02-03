@@ -358,7 +358,7 @@ public class CtrlToolBarPresenter {
     }
 
     public void openExternalTapPanel(String tab) {
-        if(tab.equals("TREEMAP") || tab == ""){
+        if(tab.equals("TREEMAP") || tab.equals("")){
             view.openExtTapPanelTab(0);
         }else if(tab.equals(("TAP REGISTRY"))){
             view.openExtTapPanelTab(1);
