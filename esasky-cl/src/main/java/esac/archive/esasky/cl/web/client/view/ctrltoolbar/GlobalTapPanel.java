@@ -330,7 +330,7 @@ public class GlobalTapPanel extends FlowPanel {
 
     private String[] getTableFilterColumns(TabulatorWrapper wrapper) {
         return wrapper.equals(tapServicesWrapper)
-                ? new String[]{"res_title", SHORT_NAME_COL, "res_subjects", "publisher", "table_names"}
+                ? new String[]{"res_title", SHORT_NAME_COL, "res_subjects", PUBLISHER_COL, "table_names"}
                 : new String[]{"schema_name", TABLE_NAME_COL, DESCRIPTION_COL};
     }
 
