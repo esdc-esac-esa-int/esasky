@@ -315,14 +315,19 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
         // Remove Cone Button if Science mode is disabled
         CommonEventBus.getEventBus().addHandler(IsInScienceModeChangeEvent.TYPE, () -> {
-            if(!GUISessionStatus.getIsInScienceMode()) {
-                hideToolBoxButton(searchToolBoxButton);
-            } else {
-                showToolBoxButton(searchToolBoxButton);
-            }
+            setSearchToolVisibility();
         });
+        setSearchToolVisibility();
 
         return selectionContainer;
+    }
+
+    private void setSearchToolVisibility(){
+        if(!GUISessionStatus.getIsInScienceMode()) {
+            hideToolBoxButton(searchToolBoxButton);
+        } else {
+            showToolBoxButton(searchToolBoxButton);
+        }
     }
 
     private void hideToolBoxButton(Widget widget) {

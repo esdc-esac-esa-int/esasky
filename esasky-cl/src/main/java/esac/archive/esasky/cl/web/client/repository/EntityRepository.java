@@ -65,7 +65,6 @@ public class EntityRepository {
         if(countEntitiesWithMultiSelectionEnabled() == 1 && !isPublicationEntityType(newEntity)) {
             CommonEventBus.getEventBus().fireEvent(new MultiSelectableDataInSkyChangedEvent(true));
         }
-        CommonEventBus.getEventBus().fireEvent(new MultiSelectableDataInSkyChangedEvent(true));
     }
 
     public void removeEntity(GeneralEntityInterface entity) {
