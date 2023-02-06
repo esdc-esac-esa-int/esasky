@@ -5,6 +5,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
 import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,10 +35,19 @@ public class ExtTapUtils {
         descriptor.setUseIntersectsPolygon(parent.useIntersectsPolygon());
         descriptor.setDescription(parent.getDescription());
         descriptor.setCustom(true);
+        descriptor.setArchiveBaseURL(parent.getArchiveBaseURL());
+        descriptor.setArchiveProductURI(parent.getArchiveProductURI());
+        descriptor.setSampBaseURL(parent.getSampBaseURL());
+        descriptor.setSampProductURI(parent.getSampProductURI());
+        descriptor.setSampEnabled(parent.isSampEnabled());
         updateWavelength(descriptor, wavelengthStart, wavelengthEnd);
         updateWavelength(parent, wavelengthStart, wavelengthEnd);
-
         parent.addChild(descriptor);
+
+        if(EsaSkyConstants.TABLE_NAME.contentEquals(parent.getGroupColumn2()) && descriptor.getLevel() > 1) {
+            String newProductURI = descriptor.getArchiveProductURI().replace("@@@" + EsaSkyConstants.TABLE_NAME+ "@@@", name);
+            descriptor.setArchiveProductURI(newProductURI);
+        }
 
         return descriptor;
     }

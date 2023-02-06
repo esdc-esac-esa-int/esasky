@@ -44,14 +44,20 @@ public class TAPExtTapService extends AbstractTAPService {
 		// Handle tables with non-alphanumeric characters
         adql += FROM + ExtTapUtils.encapsulateTableName(tapTable);
 
-        if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
-            adql += " JOIN master_table.indexview on table_name = name";
+        boolean isHEASARC = descriptor.getMission().equalsIgnoreCase(HEASARC);
+        boolean isChildHEASARC = isHEASARC && descriptor.getParent() != null;
+        if (isHEASARC) {
+            if (isChildHEASARC) {
+                adql = selectADQL + FROM + ExtTapUtils.encapsulateTableName(descriptor.getLongName());
+            } else {
+                adql += " JOIN master_table.indexview on table_name = name";
+            }
         }
 
         if (!descriptor.isFovLimitDisabled()) {
             if(descriptor.useIntersectsPolygon()) {
                 adql +=  WHERE + polygonIntersectSearch(descriptor);
-            } else if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
+            } else if (isHEASARC) {
                 adql += WHERE + heasarcSearch();
             } else {
                 adql += WHERE + cointainsPointSearch(descriptor);
@@ -61,11 +67,11 @@ public class TAPExtTapService extends AbstractTAPService {
         if (descriptor.getBlacklist() != null) {
             adql += descriptor.isFovLimitDisabled() ? WHERE  : AND;
             adql += descriptor.getGroupColumn2()
-                    + (!descriptor.getMission().equalsIgnoreCase(HEASARC) ? " NOT IN" : " IN ") // HEASARC blacklist used as whitelist
+                    + (!isHEASARC ? " NOT IN" : " IN ") // HEASARC blacklist used as whitelist
                     + "(" + Arrays.stream(descriptor.getBlacklist()).map(bl -> "'" + bl + "'").collect(Collectors.joining(", ")) + ")";
         }
 
-    	if(descriptor.getWhereADQL() != null) {
+    	if(descriptor.getWhereADQL() != null && !isChildHEASARC) {
     		if(adql.contains(WHERE.trim())) {
     			adql += AND;
     		}else {
