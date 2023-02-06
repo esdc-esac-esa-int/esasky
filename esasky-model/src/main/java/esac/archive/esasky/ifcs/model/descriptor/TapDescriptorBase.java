@@ -181,10 +181,21 @@ public abstract class TapDescriptorBase {
         return properties.containsKey(GROUP_COL1_KEY) ? properties.get(GROUP_COL1_KEY).toString() : "";
     }
 
-
     public String getGroupColumn2() {
         Map<String, Object> properties = getProperties();
         return properties.containsKey(GROUP_COL2_KEY) ? properties.get(GROUP_COL2_KEY).toString() : "";
+    }
+
+
+    public String[] getBlacklist() {
+        Map<String, Object> properties = getProperties();
+        if (properties.containsKey("blacklist") && properties.get("blacklist") != null) {
+            String blacklist = properties.get("blacklist").toString();
+            blacklist = blacklist.replaceAll("[{}]", "");
+            return blacklist.split(",");
+        } else {
+            return null;
+        }
     }
 
     public void setGroupColumn1(String groupColumn1) {

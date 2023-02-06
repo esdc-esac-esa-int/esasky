@@ -7,6 +7,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -52,13 +53,17 @@ public class TAPExtTapService extends AbstractTAPService {
                 adql +=  WHERE + polygonIntersectSearch(descriptor);
             } else if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
                 adql += WHERE + heasarcSearch();
-                adql += " AND table_name in ('halomaster', 'hitomaster', 'maximaster', 'nicermastr', 'numaster', " +
-                        "'rassmaster', 'rassfsc', 'rosmaster', 'xtemaster', 'swiftmastr', 'suzamaster', 'wmapptsr')";
             } else {
                 adql += WHERE + cointainsPointSearch(descriptor);
             }
         }
 
+        if (descriptor.getBlacklist() != null) {
+            adql += descriptor.isFovLimitDisabled() ? WHERE  : AND;
+            adql += descriptor.getGroupColumn2()
+                    + (!descriptor.getMission().equalsIgnoreCase(HEASARC) ? " NOT IN" : " IN ") // HEASARC blacklist used as whitelist
+                    + "(" + Arrays.stream(descriptor.getBlacklist()).map(bl -> "'" + bl + "'").collect(Collectors.joining(", ")) + ")";
+        }
 
     	if(descriptor.getWhereADQL() != null) {
     		if(adql.contains(WHERE.trim())) {
