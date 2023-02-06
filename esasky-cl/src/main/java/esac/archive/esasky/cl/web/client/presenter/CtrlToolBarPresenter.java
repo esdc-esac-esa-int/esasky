@@ -358,14 +358,14 @@ public class CtrlToolBarPresenter {
     }
 
     public void openExternalTapPanel(String tab) {
-        if("TREEMAP".equals(tab) || "".equals(tab)){
-            view.openExtTapPanelTab(0);
-        }else if("TAP REGISTRY".equals(tab)){
+        if("TAP REGISTRY".equals(tab)){
             view.openExtTapPanelTab(1);
-        }else if("VIZIER".equals(tab)){
+        } else if("VIZIER".equals(tab)){
             view.openExtTapPanelTab(2);
-        }else if("ESA".equals(tab)){
+        } else if("ESA".equals(tab)){
             view.openExtTapPanelTab(3);
+        } else {
+            view.openExtTapPanelTab(0);
         }
     }
 
