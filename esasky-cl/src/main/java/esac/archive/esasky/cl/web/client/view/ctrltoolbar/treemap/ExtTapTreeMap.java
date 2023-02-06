@@ -384,12 +384,8 @@ public class ExtTapTreeMap extends TreeMap {
     	for(i = 0; i < series.points.length; i++){
     		var point = series.points[i];
     		if(point.id){
-    			var count = series.nodeMap[point.id].val
-    			if(count > 0.5){
-    				point.update(0.27, false, false)
-    			}else{
-    				point.update(0, false, false)
-    			}
+    			var count = series.nodeMap[point.id].childrenTotal;
+                point.update(count, false, false)
     		}
     	}
     	

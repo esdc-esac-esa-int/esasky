@@ -164,7 +164,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	}
 
 	private double scaleWavelength(Double em) {
-		return em != null ? Math.abs(Math.log10(em)) : 0;
+		return em != null ? Math.min(Math.max(Math.abs(Math.log10(em)), 1), 12): 1;
 	}
 
 	private CommonTapDescriptor createOrUpdateLevelDescriptor(String name, CommonTapDescriptor parent, String whereADQL, double emMin, double emMax) {
