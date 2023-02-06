@@ -255,7 +255,7 @@ public class ApiExtTap extends ApiBase{
 	}
 
 	public void openExtTapPanelTab(String tab) {
-		if(!tab.equals("")) {
+		if(!("".equals(tab))) {
 			tab = tab.toUpperCase();
 		}
 		controller.getRootPresenter().getCtrlTBPresenter().openExternalTapPanel(tab);

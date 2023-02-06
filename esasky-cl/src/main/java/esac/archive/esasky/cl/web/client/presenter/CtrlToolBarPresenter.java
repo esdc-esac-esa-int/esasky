@@ -104,9 +104,9 @@ public class CtrlToolBarPresenter {
         void openExtTapPanelTab(int index);
 
         void closeExtTapPanelTab();
-        JSONArray getOutreachImageIds(ICommand command);
+        JSONArray getOutreachImageIds(ICommand command, String telescope);
 
-        void showOutreachImage(String id);
+        void showOutreachImage(String id, String telescope);
         
         Map<String, Double[]> getSliderValues();
         void setSliderValues(Map<String, Double[]> sliderMap);
@@ -342,7 +342,7 @@ public class CtrlToolBarPresenter {
     }
 
     public void openOutreachPanel(String telescope, String id) {
-        if(telescope.equals("JWST")) {
+        if("JWST".equals(telescope)) {
             view.openJwstOutreachPanel(id);
         } else {
             view.openOutreachPanel(id);
@@ -353,18 +353,18 @@ public class CtrlToolBarPresenter {
         view.closeOutreachPanel();
     }
 
-    public void closeJwstOutreachPanel(String telescope) {
+    public void closeJwstOutreachPanel() {
         view.closeJwstOutreachPanel();
     }
 
     public void openExternalTapPanel(String tab) {
-        if(tab.equals("TREEMAP") || tab.equals("")){
+        if("TREEMAP".equals(tab) || "".equals(tab)){
             view.openExtTapPanelTab(0);
-        }else if(tab.equals(("TAP REGISTRY"))){
+        }else if("TAP REGISTRY".equals(tab)){
             view.openExtTapPanelTab(1);
-        }else if(tab.equals(("VIZIER"))){
+        }else if("VIZIER".equals(tab)){
             view.openExtTapPanelTab(2);
-        }else if(tab.equals(("ESA"))){
+        }else if("ESA".equals(tab)){
             view.openExtTapPanelTab(3);
         }
     }
@@ -373,12 +373,12 @@ public class CtrlToolBarPresenter {
         view.closeExtTapPanelTab();
     }
 
-    public JSONArray getOutreachImageIds(ICommand command) {
-        return view.getOutreachImageIds(command);
+    public JSONArray getOutreachImageIds(ICommand command, String telescope) {
+        return view.getOutreachImageIds(command, telescope);
     }
 
-    public void showOutreachImage(String id) {
-        view.showOutreachImage(id);
+    public void showOutreachImage(String id, String telescope) {
+        view.showOutreachImage(id, telescope);
     }
     
     public Map<String, Double[]> getSliderValues(){

@@ -107,19 +107,19 @@ public class ApiImage extends ApiBase{
 	}
 
 	public void closeTelescopeOutreachPanel(String telescope) {
-		if(telescope.equals("JWST")){
-			controller.getRootPresenter().getCtrlTBPresenter().closeJwstOutreachPanel(telescope);
+		if("JWST".equals(telescope)){
+			controller.getRootPresenter().getCtrlTBPresenter().closeJwstOutreachPanel();
 		}else{
 			controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
 		}
 	}
 
-	public void getAllOutreachImageIds(JavaScriptObject widget) {
+	public void getAllOutreachImageIds(JavaScriptObject widget, String telescope) {
 		JSONObject obj = new JSONObject();
 		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds(result -> {
 			obj.put("Available_ids", result);
 			sendBackToWidget(obj, null, widget);
-		});
+		}, telescope);
 
 		if (ids.size() > 0) {
 			obj.put("Available_ids", ids);
@@ -128,8 +128,8 @@ public class ApiImage extends ApiBase{
 
 	}
 
-	public void showOutreachImage(String id) {
-		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id);
+	public void showOutreachImage(String id, String telescope) {
+		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id, telescope);
 	}
 
 	private void addTiledImage(String name, String url, double ra, double dec, double fov,

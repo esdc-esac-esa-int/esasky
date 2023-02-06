@@ -674,12 +674,14 @@ public class ApiMessageParser {
 
 				case 'getOutreachImageIds':
 					console.log('getOutreachImageIds event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::getAllOutreachImageIds(Lcom/google/gwt/core/client/JavaScriptObject;)(e)
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::getAllOutreachImageIds(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(e, telescope)
                     break;
 
 				case 'openOutreachImage':
 					console.log('openOutreachImage event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;)(msg.content.id)
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;Ljava/lang/String;)(msg.content.id, telescope)
 					break;
 					
 							

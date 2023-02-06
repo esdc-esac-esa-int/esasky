@@ -331,7 +331,7 @@ public class Session {
 			double opacity = Double.parseDouble(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_OPACITY));
 			boolean showFootPrints = Boolean.parseBoolean(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING));
 			boolean showPanel = Boolean.parseBoolean(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_PANEL_OPEN));
-			MainPresenter.getInstance().getCtrlTBPresenter().showOutreachImage(id);
+			MainPresenter.getInstance().getCtrlTBPresenter().showOutreachImage(id, "");
 			for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 				if(ent instanceof ImageListEntity) {
 					ImageListEntity imageEnt = (ImageListEntity) ent;

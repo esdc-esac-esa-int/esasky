@@ -70,10 +70,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
     private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
     private final ExtTapPanel extTapPanel = new ExtTapPanel();
-    private PopupHeader<ExtTapPanel> header;
     enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
-    private int selectedTabIndex = 0;
-
     private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
 
     private EsaSkyButton exploreBtn;
@@ -1023,14 +1020,23 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public JSONArray getOutreachImageIds(ICommand command) {
-        return outreachImagePanel.getAllImageIds(command);
+    public JSONArray getOutreachImageIds(ICommand command, String telescope) {
+        if("JWST".equals(telescope)){
+            return outreachJwstPanel.getAllImageIds(command);
+        } else {
+            return outreachImagePanel.getAllImageIds(command);
+        }
     }
 
     @Override
-    public void showOutreachImage(String id) {
-        outreachImagePanel.selectShape(id);
-        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+    public void showOutreachImage(String id, String telescope) {
+        if("JWST".equals(telescope)) {
+            outreachJwstPanel.selectShape(id);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
+        }else{
+            outreachImagePanel.selectShape(id);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+        }
     }
 
     @Override
