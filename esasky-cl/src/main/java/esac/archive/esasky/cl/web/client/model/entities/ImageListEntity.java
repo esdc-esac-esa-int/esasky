@@ -280,7 +280,9 @@ public class ImageListEntity extends EsaSkyEntity {
 
 		GeneralJavaScriptObject[] rowDataArray = tablePanel.getAllRows();
 		for(int i = 0; i < rowDataArray.length; i++) {
-			if(rowDataArray[i].getStringProperty(getDescriptor().getIdColumn()).equals(identifier)) {
+			String idColumn = getDescriptor().getIdColumn();
+			idColumn = Objects.equals(idColumn, "id") ? IDENTIFIER_KEY : idColumn;
+			if(rowDataArray[i].getStringProperty(idColumn).equals(identifier)) {
 				select();
 				tablePanel.deselectAllRows();
 				selectShapes(i);
