@@ -118,6 +118,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			if ("HEASARC".equalsIgnoreCase(descriptor.getMission())) {
 				Double regimeValue = WavelengthUtils.getWavelengthValueFromName(data.getStringProperty("regime"));
 				if (regimeValue != null) {
+					regimeValue = Math.min(regimeValue, 12);
 					emMin = regimeValue;
 					emMax = regimeValue;
 				}
