@@ -10,11 +10,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.ExtTapTreeMap;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
@@ -66,6 +69,11 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
                 TextMgr.getInstance().getText("treeMapContainer_help_EXT_TAP"),
                 TextMgr.getInstance().getText("treeMap_EXT_TAP"));
 
+
+        EsaSkyButton resetTreemapBtn = new EsaSkyButton(Icons.getUndoArrowIcon());
+        resetTreemapBtn.setTitle(TextMgr.getInstance().getText("extTapPanel_resetTreemapBtn"));
+        resetTreemapBtn.addClickHandler(event -> DescriptorRepository.getInstance().resetExternalDataCenterDescriptors());
+        header.addActionWidget(resetTreemapBtn);
 
         fovLimiterEnabled = true;
         EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
@@ -119,8 +127,10 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             if (selectedTabIndex != TabIndex.TREEMAP.ordinal()) {
                 header.addActionWidget(switchBtn);
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
+                header.removeActionWidget(resetTreemapBtn);
             } else {
                 header.removeActionWidget(switchBtn);
+                header.addActionWidget(resetTreemapBtn);
             }
 
         });

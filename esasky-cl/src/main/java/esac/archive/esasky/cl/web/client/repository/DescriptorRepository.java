@@ -253,6 +253,15 @@ public class DescriptorRepository {
         }
     }
 
+    public void resetExternalDataCenterDescriptors() {
+        CommonTapDescriptorList descriptorList =  descriptorCountAdapterMap.get(EsaSkyWebConstants.CATEGORY_EXTERNAL).getTapDescriptorList();
+        List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors().stream().filter(x -> !x.isCustom()).collect(Collectors.toList());
+        descriptorList.setDescriptors(descriptors);
+        DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
+        setDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
+        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca), true));
+    }
+
 
     public List<TapMetadataDescriptor> mockSpatialMetadata(String raColumn, String decColumn, String regionColumn) {
         List<TapMetadataDescriptor> result = new LinkedList<>();
