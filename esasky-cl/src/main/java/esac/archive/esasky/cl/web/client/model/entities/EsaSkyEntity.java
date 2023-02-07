@@ -933,14 +933,19 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	@Override
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();
-	    boolean disableLink2ArchiveColumn = false;
 
         if (descriptor != null) {
             boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
             settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
-            settings.setAddLink2ArchiveColumn(descriptor.getArchiveProductURI() != null
-                    && !isPub
-                    && !disableLink2ArchiveColumn);
+
+            if (descriptor.getArchiveProductURI() != null && !isPub) {
+                if (descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
+                    settings.setAddDatalinkLink2ArchiveColumn(true);
+                } else {
+                    settings.setAddLink2ArchiveColumn(true);
+                }
+            }
+
             settings.setAddLink2AdsColumn(isPub);
             settings.setAddSourcesInPublicationColumn(isPub);
             settings.setAddSelectionColumn(true);

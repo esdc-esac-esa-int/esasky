@@ -7,6 +7,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,24 +44,34 @@ public class TAPExtTapService extends AbstractTAPService {
 		// Handle tables with non-alphanumeric characters
         adql += FROM + ExtTapUtils.encapsulateTableName(tapTable);
 
-        if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
-            adql += " JOIN master_table.indexview on table_name = name";
+        boolean isHEASARC = descriptor.getMission().equalsIgnoreCase(HEASARC);
+        boolean isChildHEASARC = isHEASARC && descriptor.getParent() != null;
+        if (isHEASARC) {
+            if (isChildHEASARC) {
+                adql = selectADQL + FROM + ExtTapUtils.encapsulateTableName(descriptor.getLongName());
+            } else {
+                adql += " JOIN master_table.indexview on table_name = name";
+            }
         }
 
         if (!descriptor.isFovLimitDisabled()) {
             if(descriptor.useIntersectsPolygon()) {
                 adql +=  WHERE + polygonIntersectSearch(descriptor);
-            } else if (descriptor.getMission().equalsIgnoreCase(HEASARC)) {
+            } else if (isHEASARC) {
                 adql += WHERE + heasarcSearch();
-                adql += " AND table_name in ('halomaster', 'hitomaster', 'maximaster', 'nicermastr', 'numaster', " +
-                        "'rassmaster', 'rassfsc', 'rosmaster', 'xtemaster', 'swiftmastr', 'suzamaster', 'wmapptsr')";
             } else {
                 adql += WHERE + cointainsPointSearch(descriptor);
             }
         }
 
+        if (descriptor.getBlacklist() != null) {
+            adql += descriptor.isFovLimitDisabled() ? WHERE  : AND;
+            adql += descriptor.getGroupColumn2()
+                    + (!isHEASARC ? " NOT IN" : " IN ") // HEASARC blacklist used as whitelist
+                    + "(" + Arrays.stream(descriptor.getBlacklist()).map(bl -> "'" + bl + "'").collect(Collectors.joining(", ")) + ")";
+        }
 
-    	if(descriptor.getWhereADQL() != null) {
+    	if(descriptor.getWhereADQL() != null && !isChildHEASARC) {
     		if(adql.contains(WHERE.trim())) {
     			adql += AND;
     		}else {

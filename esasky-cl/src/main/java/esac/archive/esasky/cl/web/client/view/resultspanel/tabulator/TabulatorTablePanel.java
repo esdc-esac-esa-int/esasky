@@ -863,7 +863,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 
 	private void openArchiveUrl(String archiveUrl, GeneralJavaScriptObject row) {
-		if (!archiveUrl.isEmpty()) {
+		if (!archiveUrl.isEmpty() && !archiveUrl.toLowerCase().contains("datalink")) {
 			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
 			UrlUtils.openUrl(archiveUrl);
 		} else {
