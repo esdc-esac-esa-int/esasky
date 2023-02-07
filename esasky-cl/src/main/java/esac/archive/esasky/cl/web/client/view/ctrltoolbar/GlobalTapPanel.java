@@ -584,7 +584,7 @@ public class GlobalTapPanel extends FlowPanel {
 
                     @Override
                     public void onError(String errorCause) {
-                        showErrorMessage(storedName, errorCause);
+                        showErrorMessage(missionName, errorCause);
                         setIsLoading(false);
                     }
                 });
