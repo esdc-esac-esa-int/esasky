@@ -3037,20 +3037,6 @@
 		&gt;
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
-	<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external data centres
-		which conforms with Virtual Observatory (IVOA) standards.
-
-		Services which have any data in the current region will appear
-		in the tree map. Clicking on any service will show the available
-		dataproduct types in the visible region (Images, Spectra etc). Clicking
-		on a prdouct type will show the available collections these product exist in.
-
-		Clicking on the collection/facility will load the data into the data panel and display
-		the corresponding footprints in the sky.
-		</text>
-
-
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
@@ -5083,5 +5069,35 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
+
+	<text key="treeMapContainer_help_EXT_TAP">
+		In ESASky you can now explore data from external data centres
+		which conforms with Virtual Observatory (IVOA) standards.
+
+		Services which have any data in the current region will appear
+		in the tree map. Clicking on any service will show the available
+		dataproduct types in the visible region (Images, Spectra etc). Clicking
+		on a prdouct type will show the available collections these product exist in.
+
+		Clicking on the collection/facility will load the data into the data panel and display
+		the corresponding footprints in the sky.
+
+		&lt;br&gt;&lt;br&gt;
+		Navigate to the TAP Registry tab to explore all accessible datacenters.
+		By choosing one of the datacenters, you can browse their public tables and perform custom queries, display metadata, or view table data in the data panel.
+
+		Use the corresponding tabs to gain quick access to the services and tables provided by ESA or VizieR.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="extTapPanel_resetTreemapBtn">
+		Reset the treemap to its original state.
+	</text>
+
 
 </Internationalization>
