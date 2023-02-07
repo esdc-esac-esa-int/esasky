@@ -1040,6 +1040,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
+    public void hideOutreachImage(String telescope) {
+        if("JWST".equals(telescope)) {
+            outreachJwstPanel.close();
+        }else{
+            outreachImagePanel.close();
+        }
+    }
+
+    @Override
     public Map<String, Double[]> getSliderValues() {
         Map<String, Double[]> sliderMap = new HashMap<>();
         sliderMap.put(EntityContext.ASTRO_IMAGING.toString(), observationTreeMapContainer.getSliderValues());

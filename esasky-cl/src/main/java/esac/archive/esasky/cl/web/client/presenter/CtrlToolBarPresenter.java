@@ -107,7 +107,8 @@ public class CtrlToolBarPresenter {
         JSONArray getOutreachImageIds(ICommand command, String telescope);
 
         void showOutreachImage(String id, String telescope);
-        
+        void hideOutreachImage(String telescope);
+
         Map<String, Double[]> getSliderValues();
         void setSliderValues(Map<String, Double[]> sliderMap);
     }
@@ -380,7 +381,10 @@ public class CtrlToolBarPresenter {
     public void showOutreachImage(String id, String telescope) {
         view.showOutreachImage(id, telescope);
     }
-    
+
+    public void hideOutreachImage(String telescope) {
+        view.hideOutreachImage(telescope);
+    }
     public Map<String, Double[]> getSliderValues(){
     	return view.getSliderValues();
     }

@@ -132,6 +132,10 @@ public class ApiImage extends ApiBase{
 		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id, telescope);
 	}
 
+	public void hideOutreachImage(String telescope) {
+		controller.getRootPresenter().getCtrlTBPresenter().hideOutreachImage(telescope);
+	}
+
 	private void addTiledImage(String name, String url, double ra, double dec, double fov,
 			double rotation, int width, int height, OpenSeaDragonType type) {
 

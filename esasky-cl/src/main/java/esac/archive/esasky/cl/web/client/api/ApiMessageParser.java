@@ -683,8 +683,13 @@ public class ApiMessageParser {
 					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
 					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;Ljava/lang/String;)(msg.content.id, telescope)
 					break;
-					
-							
+
+				case 'closeOutreachImage':
+					console.log('closeOutreachImage event captured');
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::hideOutreachImage(Ljava/lang/String;)(telescope)
+					break;
+
 				// API ALERTS
 				case 'openGWPanel':
 					console.log('openGWPanel event captured');
