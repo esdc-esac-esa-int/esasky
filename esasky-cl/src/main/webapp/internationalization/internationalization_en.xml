@@ -5071,21 +5071,14 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 
 	<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external data centres
-		which conforms with Virtual Observatory (IVOA) standards.
-
-		Services which have any data in the current region will appear
-		in the tree map. Clicking on any service will show the available
-		dataproduct types in the visible region (Images, Spectra etc). Clicking
-		on a prdouct type will show the available collections these product exist in.
-
-		Clicking on the collection/facility will load the data into the data panel and display
-		the corresponding footprints in the sky.
+		In ESASky you can now explore data from external data centres which conform with Virtual Observatory (IVOA) standards.
+		Services which have any data in the current region will appear in the tree map. Clicking on any service will show the available data product types in the visible region
+		(Images, Spectra etc). Clicking on a product type will show the available collections these products exist in.
+		Clicking on the collection/facility will load the data into the data panel and display the corresponding footprints in the sky.
 
 		&lt;br&gt;&lt;br&gt;
-		Navigate to the TAP Registry tab to explore all accessible datacenters.
-		By choosing one of the datacenters, you can browse their public tables and perform custom queries, display metadata, or view table data in the data panel.
-
+		Navigate to the TAP Registry tab to explore all accessible data centres. By choosing one of the data centres,
+		you can browse their public tables and perform custom queries, display metadata, or view table data in the data panel.
 		Use the corresponding tabs to gain quick access to the services and tables provided by ESA or VizieR.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -5096,7 +5089,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 
 	<text key="extTapPanel_resetTreemapBtn">
-		Reset the treemap to its original state.
+		Reset the treemap to its original state
 	</text>
 
 
