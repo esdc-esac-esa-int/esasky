@@ -608,6 +608,7 @@ public class TabulatorWrapper {
     }
 
     private native void clearTable(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.clearing = true;
         tableJsObject.dataLoaded = false;
         tableJsObject.showCount = false;
         tableJsObject.clearData();
@@ -616,6 +617,7 @@ public class TabulatorWrapper {
         tableJsObject.clearHeaderFilter();
         previouslySelectedMap = [];
         tableJsObject.dataLoaded = false;
+        tableJsObject.clearing = false;
     }-*/;
 
     private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
@@ -1700,10 +1702,15 @@ public class TabulatorWrapper {
                 return !disabled;
             };
 
-            if ((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
+            if ((data.length === 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
                 || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
                 return;
             }
+
+            if (data.length === 0 && this.clearing) {
+                return;
+            }
+
             this.rowManager.adjustTableSize();
             if (this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()() && data.length == 0) {
                 if (settings.fovLimitDisabled) {
@@ -1826,9 +1833,10 @@ public class TabulatorWrapper {
                 return;
             }
 
-            if (data.length === 0 && !this.dataLoaded) {
+            if (data.length === 0 && this.clearing) {
                 return;
             }
+
 
             var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
             var activeColumnGroup = [];
