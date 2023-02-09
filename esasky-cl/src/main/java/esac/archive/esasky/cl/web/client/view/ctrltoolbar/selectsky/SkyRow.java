@@ -343,7 +343,6 @@ public class SkyRow extends Composite implements Selectable{
 
     private void removeEntries(MenuItem<HiPS> menuItemToRemove) {
         hipsDropDown.removeMenuItem(menuItemToRemove);
-        HipsWavelength.getListOfUserHips().remove(menuItemToRemove.getItem());
         List<SkiesMenuEntry> entriesToDelete = new LinkedList<SkiesMenuEntry>();
         for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
             if(menuEntry.getWavelength() == HipsWavelength.USER || !HipsWavelength.wavelengthList.contains(menuEntry.getWavelength())) {
