@@ -220,8 +220,14 @@ public abstract class TapDescriptorBase {
 
 
     public boolean isColumnVisible(String columnName) {
+        boolean anyColumnVisible = anyColumnVisible();
         TapMetadataDescriptor column = getColumn(columnName);
-        return column == null || column.isPrincipal() || !anyColumnVisible();
+
+        if (column == null) {
+            return !anyColumnVisible;
+        }
+
+        return  column.isPrincipal() || !anyColumnVisible;
     }
 
     public void setColumnVisibility(String columnName, boolean visible) {
