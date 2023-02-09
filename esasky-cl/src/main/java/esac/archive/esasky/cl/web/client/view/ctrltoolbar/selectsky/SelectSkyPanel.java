@@ -297,6 +297,18 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		newSky.setSelected(sendConvenienveEvent);
 		return newSky;
 	}
+	
+	@Override
+	public SkyRow createSky(boolean sendConvenienveEvent, String category, boolean isDefault){
+		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl, category, isDefault);
+		newSky.registerObserver(this);
+		skyTable.insertItem(newSky);
+		player.addEntryToPlayer(newSky);
+		skies.add(newSky);
+		ensureCorrectSkyStyle();
+		newSky.setSelected(sendConvenienveEvent);
+		return newSky;
+	}
 
 	private void ensureCorrectSkyStyle() {
 		slider.setMaxValue(skies.size() - 1.0);
@@ -310,6 +322,10 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			for(SkyRow sky: skies){
 				sky.removeOnlyOneSkyActiveStyle();
 				slider.removeStyleName("collapse");
+				if(sky.getSelectedHips().isDefaultHIPS()) {
+					sky.disableDeleteButton();
+				}
+				
 			}
 			sliderContainer.setVisible(true);
 		}
@@ -428,7 +444,6 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 	public static void setHiPSFromAPI (HiPS hips, boolean newHips) {
 		SkyRow skyTmp = getSelectedSky();
-		consoleLog("aqui ando");
 		if(skyTmp == null) {
 			SkiesMenuEntry entry = new SkiesMenuEntry();
 			entry.getHips().add(hips);
@@ -447,18 +462,19 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			instance.player.addEntryToPlayer(skyTmp);
 			skies.add(skyTmp);
 			instance.ensureCorrectSkyStyle();
-			consoleLog("hago algo por aqui?");
 			
 		}
 		
-		consoleLog("aqui salgo");
-		
 		final SkyRow sky = skyTmp;
 		sky.setHiPSFromAPI(hips, true, newHips);
-		consoleLog("lo elijo");
 		sky.setSelected();
 		instance.refreshUserDropdowns();
+		instance.ensureCorrectSkyStyle();
 		instance.addSkyButton.enableButton();
+	}
+	
+	public static void updateCustomHiPS () {
+		instance.refreshUserDropdowns();
 	}
 
 	@Override
@@ -540,8 +556,4 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			movableResizablePanel.@esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel::setMaxSize()();
 		});
 	}-*/;
-	
-    public native static void consoleLog(String msg) /*-{
-		console.log("SelectSkyPanel - " + msg);
-    }-*/;
 }

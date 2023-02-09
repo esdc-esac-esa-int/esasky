@@ -50,6 +50,9 @@ public class HiPS {
     String hipsWavelength;
     /** Category */
     String hipsCategory;
+    /** defaultHIPS */
+    boolean defaultHIPS = false;
+    
     /*
      * hips color default map
      */
@@ -234,6 +237,14 @@ public class HiPS {
 
 	public void setHipsCategory(String hipsCategory) {
 		this.hipsCategory = hipsCategory;
+	}
+
+	public boolean isDefaultHIPS() {
+		return defaultHIPS;
+	}
+
+	public void setDefaultHIPS(boolean defaultHIPS) {
+		this.defaultHIPS = defaultHIPS;
 	}
 	
 }

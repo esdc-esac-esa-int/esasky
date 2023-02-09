@@ -105,8 +105,8 @@ public class ApiMessageParser {
 					console.log(msg);
 					console.log("HiPS URL "+msg.content.hips.url);
 					msg.content.hips['category'] = ""
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, false, e);
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, @java.lang.Boolean::FALSE, false, e);
 					break
 	
 				case 'addHipsWithParams':
@@ -116,12 +116,20 @@ public class ApiMessageParser {
 					if(!msg.content.hips.hasOwnProperty('category')){
 					   msg.content.hips['category'] = "";
 					}
-					msg.content.index = 0;
-					if(msg.content.hips.hasOwnProperty('removeFirst') && msg.content.hips('removeFirst') == 'true'){
+					
+					if(msg.content.hips.hasOwnProperty('removeFirst') && msg.content.hips['removeFirst'] === 'true'){
+						msg.content.index = 0;
 					   	apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::removeSkyRow(ILcom/google/gwt/core/client/JavaScriptObject;)(msg.content.index,e);
 					}
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, true, e);
+					
+					if(msg.content.hips.hasOwnProperty('isDefault') && msg.content.hips['isDefault'] === 'true'){
+					   msg.content.hips['isDefault'] = @java.lang.Boolean::TRUE;
+					}else{
+					   msg.content.hips['isDefault'] = @java.lang.Boolean::FALSE;
+					}
+					
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, msg.content.hips.isDefault, true, e);
 					break
 					
 				case 'removeHips':

@@ -89,10 +89,10 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public SkyRow(SkiesMenu skiesMenu, String hipsName){
-	    this(skiesMenu, hipsName, null);
+	    this(skiesMenu, hipsName, null, false);
 	}
 	
-	public SkyRow(SkiesMenu skiesMenu, String hipsName, String category){
+	public SkyRow(SkiesMenu skiesMenu, String hipsName, String category, boolean isDefault){
 	    blockNotifications = true;
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
@@ -105,11 +105,11 @@ public class SkyRow extends Composite implements Selectable{
 			hipsName = EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
 		}
 		
-		initView(wavelength, hipsName);
+		initView(wavelength, hipsName, isDefault);
 		blockNotifications = false;
 	}
 
-	private void initView(String defaultWavelength, String defaultHips) {
+	private void initView(String defaultWavelength, String defaultHips, boolean isDefault) {
 		skyPanel = new FlowPanel();
 		skyPanel.setStyleName(this.style.skyPanel());
 
@@ -129,6 +129,7 @@ public class SkyRow extends Composite implements Selectable{
 		skyPanel.setStyleName(this.style.skyPanel());
 		skyPanel.addStyleName(this.style.selectedSky());
 
+		
 		initWidget(skyPanel);
 
 		ScreenSizeService.getInstance().registerObserver(new ScreenSizeObserver() {
@@ -139,6 +140,10 @@ public class SkyRow extends Composite implements Selectable{
 			}
 		});
 		setWidth();
+		
+		if (isDefault) {
+			removeSkyBtn.addStyleName("collapse");
+		}
 	}
 
 	private void setWidth() {
@@ -162,8 +167,6 @@ public class SkyRow extends Composite implements Selectable{
 				List<HiPS> listOfHipsByWavelength;
 				if(!HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject()) || wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
 					listOfHipsByWavelength = HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject().toString());
-					consoleLog("meto user hips");
-					consoleLog(String.valueOf(listOfHipsByWavelength.size()));
 					fillHiPSMenuBar(listOfHipsByWavelength, true);
 				} else {
 					listOfHipsByWavelength = skiesMenu.getHiPSListByWavelength(wavelengthDropDown.getSelectedObject()).getHips();
@@ -216,15 +219,11 @@ public class SkyRow extends Composite implements Selectable{
 				for(HiPS hips: menuEntry.getHips()) {
 					
 					if(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()) == null) {
-						consoleLog("inicializo1");
 						HipsWavelength.getListOfUserHips().put(menuEntry.getWavelength(), new LinkedList<HiPS>());
 					}
 					
 				    if(!HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).contains(hips)) {
-				    	consoleLog("venga para dentro");
-				    	consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).size()));
 				    	HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).add(hips);
-				    	consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()).size()));
 				    }
 				}
 			}
@@ -241,7 +240,6 @@ public class SkyRow extends Composite implements Selectable{
 		if(!HipsWavelength.wavelengthList.contains(defaultWavelength)) {
 			
 			if(HipsWavelength.getListOfUserHips().get(defaultWavelength) == null) {
-				consoleLog("inicializo2");
 				HipsWavelength.getListOfUserHips().put(defaultWavelength, new LinkedList<HiPS>());
 			}
 		}
@@ -315,6 +313,19 @@ public class SkyRow extends Composite implements Selectable{
             hipsDropDown.hideMenuBar();
             notifyClose();
         }
+        
+        //Remove custom HiPS
+        if(HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()) != null) {
+        	int indexToRemove = -1;
+        	for(HiPS hips : HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject())) {
+        		if(hips.getSurveyName().equals(menuItemToRemove.getText())) {
+        			indexToRemove= HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()).indexOf(hips);
+        		}
+        	}
+        	if(indexToRemove >=0) {
+        		HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()).remove(indexToRemove);
+        	}
+        }
 	}
 
     private void selectFirstNextEntry(MenuItem<HiPS> menuItemToRemove) {
@@ -369,7 +380,6 @@ public class SkyRow extends Composite implements Selectable{
 	    if(wavelength == null) {
 	    	wavelength = category != null ? category : HipsWavelength.USER;
 	    	if(!HipsWavelength.wavelengthList.contains(wavelength) && HipsWavelength.getListOfUserHips().get(wavelength) == null) {
-	    		consoleLog("inicializo3");
 	    		HipsWavelength.getListOfUserHips().put(wavelength, new LinkedList<HiPS>());
 	    	}
 	    	if(HipsWavelength.getListOfUserHips().get(wavelength).size() == 0) {
@@ -398,11 +408,7 @@ public class SkyRow extends Composite implements Selectable{
 		}
 		if(newHips) {
 			String hipsCategory = category != null ? category : lastCreatedUserHiPS.getHipsWavelength();
-			consoleLog("adding HiPS");
-			consoleLog(hipsCategory);
-			consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(hipsCategory).size()));
 			HipsWavelength.getListOfUserHips().get(hipsCategory).add(lastCreatedUserHiPS);
-			consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(hipsCategory).size()));
 			MenuItem<HiPS> menuItem = new MenuItem<HiPS>(lastCreatedUserHiPS, hipsName, true, true, new OnRemove<HiPS>() {
 
                 @Override
@@ -547,6 +553,11 @@ public class SkyRow extends Composite implements Selectable{
 		removeSkyBtn.addStyleName("collapse");
 		setWidth();
 	}
+	
+	
+	public void disableDeleteButton(){
+		removeSkyBtn.setEnabled(false);
+	}
 
 	public void removeOnlyOneSkyActiveStyle(){
 		onlyOneSkyActive = false;
@@ -559,7 +570,7 @@ public class SkyRow extends Composite implements Selectable{
 		observers.add(observer);
 	}
 
-	public void notifySkyChange(){
+	public void notifySkyChange(){ 
 		for(SkyObserver observer: observers){
 			observer.onUpdateSkyEvent(this);
 		}
@@ -632,12 +643,8 @@ public class SkyRow extends Composite implements Selectable{
 	
 	public void refreshUserDropdown() {
 	    blockNotifications = true;
-	    consoleLog("selectedObject");
-	    consoleLog("wavelengthDropDown.getSelectedObject()");
 	    refreshWavelengthDropdown();
 	    if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER || !HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject())) {
-	    	consoleLog("HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject())");
-	    	consoleLog(String.valueOf(HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()).size()));
 	    	HiPS selectedObject = hipsDropDown.getSelectedObject();
 	        fillHiPSMenuBar(HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()), true);
 	        hipsDropDown.selectObject(selectedObject);
@@ -664,12 +671,6 @@ public class SkyRow extends Composite implements Selectable{
 	
 		
 		}
-	}
-
-    public native void consoleLog(String msg) /*-{
-		console.log("SKYROW - " + msg);
-    }-*/;
-    
-    
+	}    
     
 }

@@ -38,6 +38,7 @@ public class SelectSkyPanelPresenter {
     	boolean isShowing();
     	void setSkiesMenu(SkiesMenu skiesMenu);
     	SkyRow createSky(boolean sendConvenienveEvent);
+    	SkyRow createSky(boolean sendConvenienveEvent, String category, boolean isDefault);
     	boolean select(HiPS hips);
     	
     	void refreshUserDropdowns();
@@ -97,9 +98,7 @@ public class SelectSkyPanelPresenter {
 			skyRow = view.createSky(false);
 		}
 		skyRow.setSelectHips(hips.getSurveyName(), false, false, hips.getHipsCategory());
-		consoleLog("llegoooo!");
 		view.refreshUserDropdowns();
-		consoleLog("salgoooo!");
     }
 
     private void getHiPSMapsList() {
@@ -164,9 +163,5 @@ public class SelectSkyPanelPresenter {
     
     public boolean isShowing() {
     	return view.isShowing();
-    }
-    
-    public native static void consoleLog(String msg) /*-{
-		console.log("SelectSkyPanel - " + msg);
-    }-*/;
+    }	
 }
