@@ -936,9 +936,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         if (descriptor != null) {
             boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+            boolean isExternal = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL);
             settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
 
-            if (descriptor.getArchiveProductURI() != null && !isPub) {
+            if (isExternal && descriptor.getArchiveProductURI() != null) {
                 if (descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
                     settings.setAddDatalinkLink2ArchiveColumn(true);
                 } else {

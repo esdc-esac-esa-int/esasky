@@ -251,6 +251,7 @@ public class EsaSkyWebConstants {
 
     public static final String SESSION_DATA = "data";
     public static final String SESSION_DATA_MISSION = "mission";
+    public static final String SESSION_DATA_CATEGORY = "category";
     public static final String SESSION_DATA_TABLE = "table";
     public static final String SESSION_DATA_ISMOC = "is_moc";
     public static final String SESSION_DATA_HAS_PANEL = "has_panel";

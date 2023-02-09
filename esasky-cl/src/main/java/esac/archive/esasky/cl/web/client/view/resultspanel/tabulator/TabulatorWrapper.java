@@ -1049,8 +1049,20 @@ public class TabulatorWrapper {
                 }
 
 
-                var displayName = $wnd.esasky.getDefaultLanguageText(label);
-                displayName = $wnd.esasky.getColumnDisplayText(displayName);
+                var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
+                var textKey = tableName + "_" + label;
+                var displayName = "";
+                if ($wnd.esasky.hasInternationalizationText(textKey)) {
+                    displayName = $wnd.esasky.getDefaultLanguageText(textKey);
+                } else {
+                    displayName = $wnd.esasky.getColumnDisplayText(label);
+
+                    // Only add DB units to the column header if we don't supply our own through internationalization.
+                    var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(label);
+                    if (unit) {
+                        displayName += " <i>[" + unit + "]</i>";
+                    }
+                }
 
                 if (!filterData.hasOwnProperty(metaName)) {
                     filterData[metaName] = {};
@@ -2218,12 +2230,13 @@ public class TabulatorWrapper {
                 image: "download_small.png",
                 tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
             }
+
             cellClick = function (e, cell) {
                 e.stopPropagation();
                 var rowData = cell.getData();
                 var cellData = cell.getValue();
                 if ((rowData.access_format && rowData.access_format.toLowerCase().includes("datalink"))
-                    || (cellData && typeof cellData === "string" && cellData.toLowerCase().includes("datalink"))) {
+                    || (cellData != null && typeof cellData === "string" && cellData.toLowerCase().includes("datalink"))) {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(*)(cell.getRow(), cellData);
                 } else {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());

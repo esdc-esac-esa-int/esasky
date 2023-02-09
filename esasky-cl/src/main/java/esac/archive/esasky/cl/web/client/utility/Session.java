@@ -528,6 +528,7 @@ public class Session {
 			JSONObject entObj = new JSONObject();
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_MISSION, new JSONString(ent.getDescriptor().getMission()));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_TABLE,new JSONString(ent.getDescriptor().getTableName()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_CATEGORY,new JSONString(ent.getDescriptor().getCategory()));
 			
 			String isMoc = "False";
 			if(ent instanceof EsaSkyEntity && ((EsaSkyEntity) ent).getMocEntity() != null
@@ -566,11 +567,11 @@ public class Session {
 			GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(saveStateObj.getProperty(EsaSkyWebConstants.SESSION_DATA));
 			for(GeneralJavaScriptObject dataObj : dataArray) {
 				String mission = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_MISSION);
-				String tableName = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_TABLE);
+				String category = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_CATEGORY);
 				String adql = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ADQL);
 				boolean isMoc = Boolean.parseBoolean(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ISMOC));
 
-				CommonTapDescriptor desc = DescriptorRepository.getInstance().getDescriptorFromTable(tableName, mission);
+				CommonTapDescriptor desc = DescriptorRepository.getInstance().getDescriptorFromMission(category, mission);
 				GeneralEntityInterface ent = EntityRepository.getInstance().createEntity(desc);
 				MainPresenter.getInstance().getResultsPresenter().addResultsTab(ent);
 				String filterString = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_FILTERS);
