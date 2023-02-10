@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
@@ -2499,7 +2500,8 @@ public class TabulatorWrapper {
     }
 
     public boolean isColumnVisible(String columnName) {
-        return getDescriptor().isColumnVisible(columnName);
+        return getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)
+                || getDescriptor().isColumnVisible(columnName);
     }
 
     public String getColumnUnit(String columnName) {
