@@ -27,7 +27,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
     @Override
     public ITablePanel createTablePanel() {
-        tablePanel = new PublicationsTablePanel(getTabLabel(), getId(), this);
+        tablePanel = new PublicationsTablePanel(getTabLabel(), authorId, this);
         return tablePanel;
     }
     
@@ -44,7 +44,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     
     @Override
     public String getTabLabel() {
-    	return getId();
+    	return authorId;
     }
     
     @Override
