@@ -1028,6 +1028,7 @@ public class TabulatorWrapper {
                 var metaName = colName.substring(0, colName.length - 4)
                 var datatype = col.datatype;
                 var label = colName;
+                var ucd = col.ucd ? col.ucd : "";
 
                 //If not in descMetaData add to unique spot in end and then we remove all empty slots in end
                 var metaDataIndex = data.length + newMeta.length;
@@ -1070,7 +1071,7 @@ public class TabulatorWrapper {
                 }
 
                 if (colName.endsWith("_min")) {
-                    if (datatype == "TIMESTAMP" || datatype == "DATETIME") {
+                    if (datatype === "TIMESTAMP" || datatype === "DATETIME" || ucd.includes("time.start") || ucd.includes("time.end") || col.unit === "time") {
                         filterData[metaName]["min"] = val;
                     } else {
                         filterData[metaName]["min"] = parseFloat(val);
@@ -1083,7 +1084,7 @@ public class TabulatorWrapper {
 
                 } else if (colName.endsWith("_max")) {
 
-                    if (datatype == "TIMESTAMP" || datatype == "DATETIME") {
+                    if (datatype === "TIMESTAMP" || datatype === "DATETIME" || ucd.includes("time.start") || ucd.includes("time.end") || col.unit === "time") {
                         filterData[metaName]["max"] = val;
 
                     } else {
@@ -2151,6 +2152,11 @@ public class TabulatorWrapper {
             column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithXType(*)(wrapper, table, columnMeta, divId);
         }
 
+        // If column is undefined, try to generate column from unit
+        if (!column) {
+            column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithUnit(*)(wrapper, table, columnMeta, divId);
+        }
+
         // If column is undefined, try to generate column from data type
         if (!column) {
             column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithDatatype(*)(wrapper, table, columnMeta, divId);
@@ -2264,6 +2270,11 @@ public class TabulatorWrapper {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
                 }
             }
+        } else if (ucd.includes("time.start") || ucd.includes("time.end")) {
+            formatter = "plaintext";
+            headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
+            headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
+            sorter = "string";
         } else {
             return undefined;
         }
@@ -2280,7 +2291,25 @@ public class TabulatorWrapper {
         switch (xtype.toLowerCase()) {
             case "adql:timestamp":
                 formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
+                sorter = "string";
+                break;
+            default:
+                return undefined;
+        }
+
+        return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
+
+    }-*/;
+
+    private native JavaScriptObject createColumnWithUnit(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+        var formatter, formatterParams, headerFilter, headerFilterFunc, sorter;
+        var unit = columnMeta.unit ? columnMeta.unit : "";
+        switch (unit.toLowerCase()) {
+            case "time":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
                 sorter = "string";
                 break;
@@ -2342,13 +2371,13 @@ public class TabulatorWrapper {
                 break;
             case "list":
                 formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = "like";
                 break;
             case "datetime":
             case "timestamp":
                 formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
                 sorter = "string";
                 break;
