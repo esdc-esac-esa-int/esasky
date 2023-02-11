@@ -1033,7 +1033,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public boolean isDataProductDatalink() {
-		if(entity.getDescriptor().getId().startsWith("HEASARC")) {
+		if(entity.getDescriptor().getMission().startsWith("HEASARC")) {
 			return true;
 		}
 		return table.isDataProductDatalink();

@@ -939,12 +939,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             boolean isExternal = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL);
             settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
 
-            if (isExternal && descriptor.getArchiveProductURI() != null) {
-                if (descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
-                    settings.setAddDatalinkLink2ArchiveColumn(true);
-                } else {
-                    settings.setAddLink2ArchiveColumn(true);
-                }
+            if (isExternal && descriptor.getArchiveProductURI() != null && descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
+                settings.setAddDatalinkLink2ArchiveColumn(!Objects.equals(descriptor.getLongName(), "rassfsc"));
+            } else {
+                settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null && !isPub);
             }
 
             settings.setAddLink2AdsColumn(isPub);

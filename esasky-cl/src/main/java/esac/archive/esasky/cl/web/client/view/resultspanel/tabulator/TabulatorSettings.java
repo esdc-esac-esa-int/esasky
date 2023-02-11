@@ -161,6 +161,7 @@ public class TabulatorSettings{
 	public Boolean getIsDownloadable() {
 		return isDownloadable;
 	}
+
 	public void setIsDownloadable(Boolean isDownloadable) {
 		this.isDownloadable = isDownloadable;
 	}
