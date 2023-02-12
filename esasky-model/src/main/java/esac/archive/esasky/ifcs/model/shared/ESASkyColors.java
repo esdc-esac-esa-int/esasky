@@ -1,7 +1,7 @@
 package esac.archive.esasky.ifcs.model.shared;
 
 public class ESASkyColors {
-    protected static final Color[] colors = new Color[]{new Color("#E8ECFB", 14), new Color("#D9CCE3", 13.5), new Color("#CAACCB", 13),
+    protected static final Color[] colors = new Color[]{new Color("#E8ECFB", 16), new Color("#D9CCE3", 13.5), new Color("#CAACCB", 13),
 				new Color("#BA8DB2", 12), new Color("#AA6F9E", 11), new Color("#994F88", 10), new Color("#882E72", 9),
 				new Color("#1965B0", 8), new Color("#437DBF", 7), new Color("#6195CF", 6.8), new Color("#7BAFDE", 6.5),
 				new Color("#4EB265", 6.3), new Color("#90C987", 6.2), new Color("#CAE0AB", 6.0), new Color("#F7F056", 5.66),

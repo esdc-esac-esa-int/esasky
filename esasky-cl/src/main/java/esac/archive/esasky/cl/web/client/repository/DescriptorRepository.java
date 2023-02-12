@@ -530,13 +530,12 @@ public class DescriptorRepository {
     private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
 
         ArrayList<String> remainingDescriptors = new ArrayList<>(tableCategoryMap.keySet());
-
         List<CommonTapDescriptor> descriptors = new ArrayList<>();
-        List<Integer> counts = new ArrayList<>();
 
-        setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors, counts);
+        setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors);
+
         //Handling that the fast count doesn't give any results for missing missions in the area, so we set them to 0
-        setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors, counts);
+        setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors);
 
         if (!descriptors.isEmpty()) {
             notifyCountChange(descriptors);
@@ -556,25 +555,21 @@ public class DescriptorRepository {
     }
 
     private void setCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition,
-                          ArrayList<String> remainingDescriptors, List<CommonTapDescriptor> descriptors, List<Integer> counts) {
+                          ArrayList<String> remainingDescriptors, List<CommonTapDescriptor> descriptors) {
 
         for (SingleCount singleCount : singleCountList) {
             List<String> categories = tableCategoryMap.get(singleCount.getTableName());
             if (categories != null) {
                 for (String category : categories) {
-                    if (category != null) {
-                        DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
-                        CountStatus cs = descriptorCountAdapter.getCountStatus();
-                        CommonTapDescriptor descriptor = descriptorCountAdapter.getDescriptorByTable(singleCount.getTableName());
+                    DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
+                    CountStatus cs = descriptorCountAdapter.getCountStatus();
+                    CommonTapDescriptor descriptor = descriptorCountAdapter.getDescriptorByTable(singleCount.getTableName());
 
-                        if (descriptor != null) {
-                            final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
-                            cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
-                            remainingDescriptors.remove(singleCount.getTableName());
-                            descriptors.add(descriptor);
-                            counts.add(count);
-                        }
-
+                    if (descriptor != null) {
+                        final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
+                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
+                        remainingDescriptors.remove(singleCount.getTableName());
+                        descriptors.add(descriptor);
                     }
                 }
             } else {
@@ -585,7 +580,7 @@ public class DescriptorRepository {
     }
 
     private void setZeroCountOnNoResponseMissions(final SkyViewPosition skyViewPosition, ArrayList<String> remainingDescriptors,
-                                                  List<CommonTapDescriptor> descriptors, List<Integer> counts) {
+                                                  List<CommonTapDescriptor> descriptors) {
         for (String tableName : remainingDescriptors) {
             List<String> categories = tableCategoryMap.get(tableName);
 
@@ -598,7 +593,6 @@ public class DescriptorRepository {
                         CountStatus cs = descriptorCountAdapter.getCountStatus();
                         cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
                         descriptors.add(descriptor);
-                        counts.add(count);
                     }
                 }
             }
