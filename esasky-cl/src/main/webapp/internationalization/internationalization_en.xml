@@ -4678,6 +4678,12 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="alerts.mv_v_gravitational_waves_fdw_nsbh">NSBH</text>
 	<text key="alerts.mv_v_gravitational_waves_fdw_has_ns">Has NS</text>
 
+	<text key="alerts.mv_v_icecube_event_fdw_event_num">Event</text>
+	<text key="alerts.mv_v_icecube_event_fdw_run_num">Run</text>
+	<text key="alerts.mv_v_icecube_event_fdw_ra">RA</text>
+	<text key="alerts.mv_v_icecube_event_fdw_dec">Dec</text>
+	<text key="alerts.mv_v_icecube_event_fdw_far">FAR</text>
+
 
 	<text key="images.mv_hst_outreach_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="images.mv_hst_outreach_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>

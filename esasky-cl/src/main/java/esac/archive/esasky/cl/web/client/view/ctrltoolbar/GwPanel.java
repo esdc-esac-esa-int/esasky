@@ -232,7 +232,8 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
             List<String> columnsToHide = Arrays.asList("stc_s","title","sun_postn_ra","sun_postn_dec","sun_dist_deg",
                     "stc_error","stc_error50","ra_current","ra_1950","moon_postn_ra","moon_postn_dec","moon_dist",
-                    "ecl_coords_lat","ecl_coords_lon","gal_coords_lat","gal_coords_lon","discovery_date","discovery_time");
+                    "ecl_coords_lat","ecl_coords_lon","gal_coords_lat","gal_coords_lon","discovery_date","discovery_time",
+                    "dec_1950", "dec_current", "npix", "icecube_event_oid", "notice_date", "revision", "src_error", "src_error50");
 
             TabItem tabItem = new TabItem(descriptor, columnsToHide, entity);
 
@@ -280,7 +281,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             }
 
             List<String> columnsToHide = Arrays.asList(STCS50_STRING, STCS90_STRING, "gravitational_waves_oid", "group_id",
-                    "hardware_inj", "internal", "open_alert", "pkt_ser_num", "search", "packet_type", "ra", "dec");
+                    "hardware_inj", "internal", "open_alert", "pkt_ser_num", "search", "packet_type", "ra", "dec", "oid", "npix");
 
             TabItem tabItem = new TabItem(commonDescriptor, columnsToHide, entity, extraEntity);
             entity.getTablePanel().registerObserver(new TableObserver() {
