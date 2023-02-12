@@ -4577,6 +4577,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_fermi_4lac_fdw_rfc">VLBI counterpart</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_gaia">Gaia DR2 counterpart</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_sedcl">SED Class</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_ccat">CCat</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_fvar">Fractional Variability</text>
 	<text key="catalogues.mv_cat2whsp_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2whsp_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>

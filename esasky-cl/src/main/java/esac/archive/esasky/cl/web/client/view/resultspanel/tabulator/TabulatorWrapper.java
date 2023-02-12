@@ -2340,18 +2340,13 @@ public class TabulatorWrapper {
             case "double":
             case "float":
             case "real":
+            case "long":
+            case "bigint":
                 formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()();
                 formatterParams = {maxDecimalDigits: columnMeta.maxDecimalDigits || 4};
                 headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
                 sorter = "number";
-                break;
-            case "long":
-            case "bigint":
-                formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
-                headerFilterFunc = "like";
-                sorter = "string";
                 break;
             case "int":
             case "integer":
