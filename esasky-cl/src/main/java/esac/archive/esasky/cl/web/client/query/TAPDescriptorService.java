@@ -8,6 +8,7 @@ import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
+import java.util.List;
 import java.util.Objects;
 
 public final class TAPDescriptorService {
@@ -22,8 +23,8 @@ public final class TAPDescriptorService {
         return instance;
     }
 
-    public void fetchDescriptors(String schema, String category, JSONUtils.IJSONRequestCallback callback) {
-        String url = EsaSkyWebConstants.TAP_DESCRIPTOR_URL + "?schema=" + schema + "&category=" + category;
+    public void fetchDescriptors(List<String> schemas, String category, JSONUtils.IJSONRequestCallback callback) {
+        String url = EsaSkyWebConstants.TAP_DESCRIPTOR_URL + "?schema=" + String.join(",", schemas) + "&category=" + category;
         JSONUtils.getJSONFromUrl(url, callback);
     }
 

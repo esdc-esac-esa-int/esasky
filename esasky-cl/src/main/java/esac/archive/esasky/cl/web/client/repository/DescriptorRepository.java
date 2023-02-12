@@ -342,14 +342,14 @@ public class DescriptorRepository {
     }
 
 
-    public void initDescriptors(String schema, String category, Promise<CommonTapDescriptorList> promise) {
+    public void initDescriptors(List<String> schemas, String category, Promise<CommonTapDescriptorList> promise) {
         Log.debug("[DescriptorRepository] Into DescriptorRepository.initDescriptors");
 
         if (!GUISessionStatus.getIsInScienceMode()) {
             GUISessionStatus.setDoCountOnEnteringScienceMode();
         }
 
-        TAPDescriptorService.getInstance().fetchDescriptors(schema, category, new IJSONRequestCallback() {
+        TAPDescriptorService.getInstance().fetchDescriptors(schemas, category, new IJSONRequestCallback() {
 
             @Override
             public void onSuccess(String responseText) {

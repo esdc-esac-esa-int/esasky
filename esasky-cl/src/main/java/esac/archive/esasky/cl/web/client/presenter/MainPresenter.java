@@ -37,10 +37,7 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -110,7 +107,7 @@ public class MainPresenter {
 
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_OBSERVATIONS, requiredCategoryArr, newCount -> ctrlTBPresenter.updateObservationCount(newCount));
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_CATALOGUES, EsaSkyWebConstants.CATEGORY_CATALOGUES, requiredCategoryArr, newCount -> ctrlTBPresenter.updateCatalogCount(newCount));
-        fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SPECTRA, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSpectraCount(newCount));
+        fetchDescriptorList(Arrays.asList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.SCHEMA_CATALOGUES), EsaSkyWebConstants.CATEGORY_SPECTRA, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSpectraCount(newCount));
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_OBSERVATIONS, EsaSkyWebConstants.CATEGORY_SSO, requiredCategoryArr, newCount -> ctrlTBPresenter.updateSsoCount(newCount));
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES, requiredCategoryArr);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_ALERTS, EsaSkyWebConstants.CATEGORY_NEUTRINOS, requiredCategoryArr);
@@ -386,13 +383,21 @@ public class MainPresenter {
     }
 
 
+    private void fetchDescriptorList(List<String> schemas, String category, String[] requiredCategoryArr) {
+        fetchDescriptorList(schemas, category, requiredCategoryArr, null);
+    }
+
     private void fetchDescriptorList(String schema, String category, String[] requiredCategoryArr) {
-        fetchDescriptorList(schema, category, requiredCategoryArr, null);
+        fetchDescriptorList(Arrays.asList(schema), category, requiredCategoryArr, null);
     }
 
     private void fetchDescriptorList(String schema, String category, String[] requiredCategoryArr, CountObserver observer) {
-        Log.debug("[MainPresenter] MainPresenter.fetchDescriptorList - Schema: " + schema + ", Category: " + category);
-        descriptorRepo.initDescriptors(schema, category, new Promise<CommonTapDescriptorList>() {
+        fetchDescriptorList(Arrays.asList(schema), category, requiredCategoryArr, observer);
+    }
+
+    private void fetchDescriptorList(List<String> schemas, String category, String[] requiredCategoryArr, CountObserver observer) {
+        Log.debug("[MainPresenter] MainPresenter.fetchDescriptorList - Schema: " + String.join(",", schemas) + ", Category: " + category);
+        descriptorRepo.initDescriptors(schemas, category, new Promise<CommonTapDescriptorList>() {
             @Override
             protected void success(CommonTapDescriptorList descriptorList) {
                 DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, observer);
@@ -401,7 +406,7 @@ public class MainPresenter {
 
             @Override
             protected void failure() {
-                Log.debug("Failed to initialise descriptors with Schema: " + schema + ", Category: " + category);
+                Log.debug("Failed to initialise descriptors with Schema: " +  String.join(",", schemas) + ", Category: " + category);
             }
 
             @Override
