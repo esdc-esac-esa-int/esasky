@@ -36,7 +36,13 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
         Scheduler.get().scheduleFinally(() -> tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL
                 + "?AUTHOR=" + URL.encodeQueryString(authorId) + "&ROWS=" + 50000));
     }
-    
+
+    @Override
+    public String getId() {
+        return authorId;
+    }
+
+
     @Override
     public boolean isCustomizable() {
     	return false;

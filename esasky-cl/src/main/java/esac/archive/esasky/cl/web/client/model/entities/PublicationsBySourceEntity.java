@@ -32,6 +32,11 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
         tablePanel = new PublicationsTablePanel(getTabLabel(), publicationId, this);
         return tablePanel;
     }
+
+    @Override
+    public String getId() {
+        return publicationId;
+    }
     
     @Override
     public void fetchData() {
