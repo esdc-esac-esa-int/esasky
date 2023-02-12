@@ -4575,6 +4575,10 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_cat2whsp_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2whsp_fdw_lognupeak">Synchrotron peak &lt;br&gt; &lt;i&gt;(log(Hz))&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2whsp_fdw_lognufnu">Synchrotron peak flux &lt;br&gt; &lt;i&gt;(log(erg/s/cm2))&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2whsp_fdw_z">Redshift</text>
+	<text key="catalogues.mv_cat2whsp_fdw_2whspj">2WHSPJ</text>
+	<text key="catalogues.mv_cat2whsp_fdw_5bzcat">5BZCAT</text>
+	<text key="catalogues.mv_cat2whsp_fdw_2fhl">2FHL</text>
 	<text key="catalogues.mv_cat2rxs_fdw_raj2000">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2rxs_fdw_dej2000">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2rxs_fdw_crate">Count Rate &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;</text>
