@@ -174,20 +174,6 @@ public class CommonTapDescriptor extends TapDescriptor {
     }
 
     @JsonIgnore
-    public String getArchiveUrl(GeneralJavaScriptObject rowData) {
-        String uri = getArchiveProductURI();
-        String column = uri.replaceAll(".*@@@(.+)@@@.*", "$1");
-
-        if (rowData.hasProperty(column)) {
-            String columnValue = rowData.getProperty(column).toString();
-            uri = uri.replaceAll("@@@(.+)@@@", columnValue);
-            return getArchiveBaseURL() + uri;
-        } else {
-            return "";
-        }
-    }
-
-    @JsonIgnore
     public List<CommonTapDescriptor> getChildren() {
         return children;
     }

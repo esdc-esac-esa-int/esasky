@@ -842,8 +842,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
 		if (getDescriptor() != null) {
-			CommonTapDescriptor desc = getDescriptor();
-			String archiveUrl = desc.getArchiveUrl(row.invokeFunction("getData"));
+			String archiveUrl = buildArchiveURL(row.invokeFunction("getData"));
 			openArchiveUrl(archiveUrl, row);
 		}
 
