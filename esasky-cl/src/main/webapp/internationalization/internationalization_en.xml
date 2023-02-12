@@ -4581,6 +4581,12 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu3">SED at 50-150GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu4">SED at 150-500GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu5">SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_sig">Significance</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_var">Variability</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_exname">Extended Source Name</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_assoc">Associated Gamma Source</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_cl">Class</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_assoc1">Associated Source</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_f1000i">Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
