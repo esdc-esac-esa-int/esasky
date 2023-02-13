@@ -248,6 +248,8 @@ public class EsaSkyWebConstants {
     public static final String SESSION_HIPS_URL = "url";
     public static final String SESSION_HIPS_WAVELENGTH = "wavelength";
     public static final String SESSION_HIPS_COLORPALETTE = "colorpalette";
+    public static final String SESSION_HIPS_CATEGORY = "category";
+    public static final String SESSION_HIPS_DEFAULT = "default";
 
     public static final String SESSION_DATA = "data";
     public static final String SESSION_DATA_MISSION = "mission";

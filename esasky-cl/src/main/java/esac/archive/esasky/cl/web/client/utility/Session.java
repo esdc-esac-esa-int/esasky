@@ -10,6 +10,7 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
@@ -430,6 +431,15 @@ public class Session {
 		for(GeneralJavaScriptObject hipObj : array) {
 			String name = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_NAME);
 			String colorPalette = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE);
+			String category = null;
+			if (hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_CATEGORY) != null) {
+				category = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_CATEGORY);
+			}
+			
+			boolean isDefaultHiPS = false;
+			if (hipObj.getProperty(EsaSkyWebConstants.SESSION_HIPS_DEFAULT) != null) {
+				isDefaultHiPS = Boolean.valueOf(hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_DEFAULT));
+			}
 			SkyRow skyRow;
 			if(!first) {
 				skyRow = SelectSkyPanel.getInstance().createSky(true);
@@ -437,11 +447,11 @@ public class Session {
 				skyRow = SelectSkyPanel.getSelectedSky();
 				first = false;
 			}
-			if(!skyRow.setSelectHips(name, true, false, null)) {
+			if(!skyRow.setSelectHips(name, true, false, category)) {
 				//Means that we can't find it in the list
 				//Setting from url instead
 				String url = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_URL);
-				addUrlHips(url, colorPalette, skyRow);
+				addUrlHips(url, colorPalette, skyRow, category, isDefaultHiPS);
 			}
 			skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
 		}
@@ -461,14 +471,19 @@ public class Session {
 
 	}
 	
-	private void addUrlHips(String url, String colorPalette, SkyRow skyRow) {
+	private void addUrlHips(String url, String colorPalette, SkyRow skyRow, String category, boolean isDefault) {
 		HipsParser parser = new HipsParser(new HipsParserObserver() {
 			
 			@Override
 			public void onSuccess(HiPS hips) {
-				hips.setHipsWavelength(hips.getHipsCategory() != null ? hips.getHipsCategory() : HipsWavelength.USER);
+				hips.setHipsWavelength(category != null ? category : HipsWavelength.USER);
+				hips.setHipsCategory(category != null ? category : HipsWavelength.USER);
 				skyRow.setHiPSFromAPI(hips, false, true);
 				skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
+				if(isDefault) {
+					skyRow.disableDeleteButton();
+				}
+				
 			}
 			
 			@Override
@@ -655,6 +670,13 @@ public class Session {
 			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_NAME, new JSONString(hips.getSurveyName().toString()));
 			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_URL, new JSONString(hips.getSurveyRootUrl().toString()));
 			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE, new JSONString(row.getSelectedPalette().toString()));
+			if(hips.getHipsCategory() != null) {
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CATEGORY, new JSONString(hips.getHipsCategory()));
+			}
+			if(hips.isDefaultHIPS()) {
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_DEFAULT, new JSONString(String.valueOf(hips.isDefaultHIPS())));
+			}
+			
 			hipsArray.set(hipsArray.size(), hipsObj);
 		}
 		
