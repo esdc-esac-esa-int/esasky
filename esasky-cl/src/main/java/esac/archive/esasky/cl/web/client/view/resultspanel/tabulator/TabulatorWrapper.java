@@ -685,7 +685,7 @@ public class TabulatorWrapper {
                     }
                 }
 
-                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
+                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name, j);
             }
 
             sortedMetadata = sortedMetadata.filter(function (element) {
@@ -2523,9 +2523,10 @@ public class TabulatorWrapper {
         return getDescriptor().getMission();
     }
 
-    public boolean isColumnVisible(String columnName) {
+    public boolean isColumnVisible(String columnName, int index) {
+        String tb = getDescriptor().getTableName();
         return getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)
-                || getDescriptor().isColumnVisible(columnName);
+                || getDescriptor().isColumnVisible(columnName, index);
     }
 
     public String getColumnUnit(String columnName) {

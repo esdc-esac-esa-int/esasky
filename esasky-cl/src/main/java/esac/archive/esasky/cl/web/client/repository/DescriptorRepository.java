@@ -538,7 +538,7 @@ public class DescriptorRepository {
         setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors);
 
         if (!descriptors.isEmpty()) {
-            notifyCountChange(descriptors);
+            notifyCountChange(descriptors.stream().filter(d -> !d.getCategory().equals(EsaSkyWebConstants.CATEGORY_SSO)).collect(Collectors.toList()));
         }
     }
 

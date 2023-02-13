@@ -4980,6 +4980,43 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="observations.v_mv_v_esasky_xmm_om_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
 
 
+	<!-- XMATCH -->
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_sso_name">Name</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
 
 
 	<!-- internationalization_es.xml is up to date for everything above -->

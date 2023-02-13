@@ -92,6 +92,17 @@ public abstract class TapDescriptorBase {
 
     }
 
+    private TapMetadataDescriptor getColumn(String columnName, int index) {
+        List<TapMetadataDescriptor> columns = getMetadata().stream().filter(cm -> cm.getName().equals(columnName)).collect(Collectors.toList());
+
+        if (columns.size() > 1) {
+            TapMetadataDescriptor column = getMetadata().get(index);
+            return Objects.equals(column.getName(), columnName) ? column : null;
+        } else {
+            return getColumn(columnName);
+        }
+    }
+
     private boolean anyColumnVisible() {
         return getMetadata().stream().anyMatch(TapMetadataDescriptor::isPrincipal);
     }
@@ -219,9 +230,9 @@ public abstract class TapDescriptorBase {
     }
 
 
-    public boolean isColumnVisible(String columnName) {
+    public boolean isColumnVisible(String columnName, int index) {
         boolean anyColumnVisible = anyColumnVisible();
-        TapMetadataDescriptor column = getColumn(columnName);
+        TapMetadataDescriptor column = getColumn(columnName, index);
 
         if (column == null) {
             return !anyColumnVisible;
