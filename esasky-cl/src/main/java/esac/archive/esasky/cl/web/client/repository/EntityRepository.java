@@ -235,7 +235,7 @@ public class EntityRepository {
                     @Override
                     public void createSpecializedOverlayShape(Map<String, Object> details) {
                         if (descriptor.hasProperMotion()) {
-                            JavaScriptObject functionPointer = AladinLiteWrapper.getAladinLite()
+                             JavaScriptObject functionPointer = AladinLiteWrapper.getAladinLite()
                                     .createFunctionPointer("drawSourceWithProperMotion");
                             details.put("shape", functionPointer);
 
@@ -260,9 +260,7 @@ public class EntityRepository {
                                 final Double pm_dec = rowData
                                         .getDoubleOrNullProperty(descriptor.getProperMotionDecColumn());
 
-                                final boolean hasValidData = pm_ra != null
-                                        && pm_dec != null
-                                        && descriptor.getReferenceEpochColumn() != null;
+                                final boolean hasValidData = pm_ra != null && pm_dec != null;
 
                                 if (hasValidData) {
                                     double[] inputA = new double[6];
@@ -287,13 +285,15 @@ public class EntityRepository {
                                                                                                        // Note 2
 
                                     double[] outputA = new double[6];
+                                    double referenceEpoch = Double.parseDouble(descriptor.getProperties().get("pm_orig_epoch").toString());
+                                    double finalEpoch = Double.parseDouble(descriptor.getProperties().get("pm_final_epoch").toString());
 
-                                    ProperMotionUtils.pos_prop(rowData.getDoubleProperty(descriptor.getReferenceEpochColumn()), inputA, 2000, outputA);
+                                    ProperMotionUtils.pos_prop(referenceEpoch, inputA, finalEpoch, outputA);
 
                                     double finalRa = outputA[0];
                                     double finalDec = outputA[1];
 
-                                    if (rowData.getDoubleProperty(descriptor.getReferenceEpochColumn()) > 2000.0) {
+                                    if (referenceEpoch > finalEpoch) {
                                         // For catalogs in J2015 put the source in J2015 but draw the arrow
                                         // flipped... from J2000 to J2015
                                         details.put("arrowFlipped", "true");

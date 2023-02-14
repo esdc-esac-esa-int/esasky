@@ -2524,7 +2524,6 @@ public class TabulatorWrapper {
     }
 
     public boolean isColumnVisible(String columnName, int index) {
-        String tb = getDescriptor().getTableName();
         return getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)
                 || getDescriptor().isColumnVisible(columnName, index);
     }

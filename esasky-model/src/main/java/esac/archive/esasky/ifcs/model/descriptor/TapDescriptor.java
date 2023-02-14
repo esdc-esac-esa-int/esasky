@@ -400,7 +400,10 @@ public class TapDescriptor extends TapDescriptorBase {
     }
 
     public boolean hasProperMotion() {
-        return getProperMotionColumn() != null && !getProperMotionColumn().isEmpty();
+        return getProperMotionRaColumn() != null
+                && getProperMotionDecColumn() != null
+                && getProperties().get("pm_orig_epoch") != null
+                && getProperties().get("pm_final_epoch") != null;
     }
 
     public String getParallaxTrigColumn() {
