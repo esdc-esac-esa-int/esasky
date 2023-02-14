@@ -765,7 +765,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		}
 	}
     private void setStylePanelSecondaryContainerVisibility() {
-        if(descriptor.hasProperMotion() && (mocEntity == null || !mocEntity.isShouldBeShown())) {
+        if((descriptor.hasProperMotion() || descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_SSO))
+                && (mocEntity == null || !mocEntity.isShouldBeShown())) {
             Boolean showAvgProperMotion = null;
             if(secondaryShapeAdder != null) {
                 showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();

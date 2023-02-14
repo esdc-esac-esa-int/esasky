@@ -50,7 +50,8 @@ public class SSOEntity extends EsaSkyEntity {
 	}
 
 	public void setOrbitPolyline(double[] polylinePoints) {
-	    combinedDrawer.addPolylineOverlay(getId(), polylinePoints, getDescriptor().getColor());
+		getDescriptor().setSecondaryColor(getDescriptor().getColor());
+	    combinedDrawer.addPolylineOverlay(getId(), polylinePoints, getDescriptor().getSecondaryColor());
 	}
 	
     @Override
