@@ -25,6 +25,8 @@ public abstract class TapDescriptorBase {
 
     @JsonIgnore
     protected String color;
+    @JsonIgnore
+    private String secondaryColor;
 
     @JsonIgnore
     private boolean fovLimitDisabled = false;
@@ -256,6 +258,14 @@ public abstract class TapDescriptorBase {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getSecondaryColor() {
+        return this.secondaryColor != null ? secondaryColor : ESASkyColors.invertColor(getColor());
+    }
+
+    public void setSecondaryColor(String color) {
+        this.secondaryColor = color;
     }
 
     public boolean isFovLimitDisabled() {

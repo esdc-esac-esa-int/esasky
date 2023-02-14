@@ -240,7 +240,7 @@ public class EntityRepository {
                             details.put("shape", functionPointer);
 
                             // Adds the arrow style details
-                            details.put("arrowColor", "#33ccff");
+                            details.put("arrowColor", descriptor.getSecondaryColor());
                             details.put("arrowWidth", 3.0);
                             details.put("arrowLength", 3.0 * 6);
                         }
