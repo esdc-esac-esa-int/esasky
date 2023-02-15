@@ -2217,7 +2217,7 @@ public class TabulatorWrapper {
             sorter = "string";
             title = $wnd.esasky.getInternationalizationText("Authors");
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip");
-        } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
+        } else if (ucd.includes("meta.ref.url") && ucd.includes("preview")) {
             title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip");
             formatter = function (cell, formatterParams, onRendered) {
