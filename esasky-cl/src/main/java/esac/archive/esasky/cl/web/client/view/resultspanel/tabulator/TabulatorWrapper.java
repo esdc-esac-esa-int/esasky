@@ -890,7 +890,7 @@ public class TabulatorWrapper {
 
             // Adds headers to xml
             table.metadata.forEach(function (columnInfo) {
-                if (table.getColumn(columnInfo.name).getDefinition().download) {
+                if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
                     votData += "<FIELD";
                     Object.keys(columnInfo).forEach(function (key) {
                         var value = columnInfo[key];
@@ -918,7 +918,7 @@ public class TabulatorWrapper {
                     case "row":
                         votData += "<TR>\n";
                         table.metadata.forEach(function (columnInfo) {
-                            if (table.getColumn(columnInfo.name).getDefinition().download) {
+                            if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
                                 var value = "";
                                 row.columns.some(function (column) {
                                     if (column.component.getField() == columnInfo.name) {
