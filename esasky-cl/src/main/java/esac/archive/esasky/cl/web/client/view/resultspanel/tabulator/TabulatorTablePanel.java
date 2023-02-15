@@ -1032,7 +1032,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public boolean isDataProductDatalink() {
-		if(entity.getDescriptor().getMission().startsWith("HEASARC")) {
+		if(entity.getDescriptor().getMission().startsWith(EsaSkyWebConstants.HEASARC_MISSION)) {
 			return true;
 		}
 		return table.isDataProductDatalink();

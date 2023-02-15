@@ -115,25 +115,32 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			emMin = scaleWavelength(emMin);
 			emMax = scaleWavelength(emMax);
 
-			if ("HEASARC".equalsIgnoreCase(descriptor.getMission())) {
+			String whereADQL = ExtTapUtils.createLevelDescriptorWhereADQL(descriptor.getGroupColumn1(), column1Value, descriptor.getGroupColumn2(), column2Value);
+			String level2Name = column2Value != null && !column2Value.trim().isEmpty() ? column2Value : "Other";
+
+			// Create or update level1 descriptor
+			CommonTapDescriptor level1Descriptor;
+			if (EsaSkyWebConstants.HEASARC_MISSION.equalsIgnoreCase(descriptor.getMission())) {
 				Double regimeValue = WavelengthUtils.getWavelengthValueFromName(data.getStringProperty("regime"));
 				if (regimeValue != null) {
 					regimeValue = Math.min(regimeValue, 12);
 					emMin = regimeValue;
 					emMax = regimeValue;
 				}
+
+				// No level2 for HEASARC
+				level1Descriptor = descriptor;
+				descriptor.setTableName(column2Value);
+				level2Name = column1Value;
+			} else {
+				// Create or update level1 descriptor
+				level1Descriptor = createOrUpdateLevelDescriptor(column1Value, descriptor, whereADQL, emMin, emMax);
+				updatedIds.add(level1Descriptor.getId());
+				ExtTapUtils.setCount(descriptor, level1Descriptor, count);
 			}
 
-			String whereADQL = ExtTapUtils.createLevelDescriptorWhereADQL(descriptor.getGroupColumn1(), column1Value, descriptor.getGroupColumn2(), column2Value);
 
-			// Create or update level1 descriptor
-			CommonTapDescriptor level1Descriptor = createOrUpdateLevelDescriptor(column1Value, descriptor, whereADQL, emMin, emMax);
-			updatedIds.add(level1Descriptor.getId());
-			ExtTapUtils.setCount(descriptor, level1Descriptor, count);
-
-			// Create or update level1 descriptor
-			String name = column2Value != null && !column2Value.trim().isEmpty() ? column2Value : "Other";
-			CommonTapDescriptor level2Descriptor = createOrUpdateLevelDescriptor(name, level1Descriptor, whereADQL, emMin, emMax);
+			CommonTapDescriptor level2Descriptor = createOrUpdateLevelDescriptor(level2Name, level1Descriptor, whereADQL, emMin, emMax);
 
 			updatedIds.add(level2Descriptor.getId());
 			ExtTapUtils.setCount(level1Descriptor, level2Descriptor, count);

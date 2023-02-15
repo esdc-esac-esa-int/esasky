@@ -19,7 +19,7 @@ public class TAPExtTapService extends AbstractTAPService {
     private static final String FROM = " FROM ";
     private static final String WHERE = " WHERE ";
     private static final String AND = " AND ";
-    private static final String HEASARC = "HEASARC";
+    private static final String HEASARC = EsaSkyWebConstants.HEASARC_MISSION;
 
     private TAPExtTapService() {
     }
@@ -46,12 +46,8 @@ public class TAPExtTapService extends AbstractTAPService {
 
         boolean isHEASARC = descriptor.getMission().equalsIgnoreCase(HEASARC);
         boolean isChildHEASARC = isHEASARC && descriptor.getParent() != null;
-        if (isHEASARC) {
-            if (isChildHEASARC) {
-                adql = selectADQL + FROM + ExtTapUtils.encapsulateTableName(descriptor.getLongName());
-            } else {
-                adql += " JOIN master_table.indexview on table_name = name";
-            }
+        if (isHEASARC && !isChildHEASARC) {
+            adql += " JOIN master_table.indexview on table_name = name";
         }
 
         if (!descriptor.isFovLimitDisabled()) {

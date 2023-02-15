@@ -279,7 +279,9 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(TreeMapSelectionEvent.TYPE, event -> {
             if (event.getContext() == EntityContext.EXT_TAP) {
                 PointInformation pointInformation = event.getPointInformation();
-                if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()) {
+                if (EsaSkyConstants.TREEMAP_LEVEL_2 == pointInformation.getTreemapLevel()
+                        || (Objects.equals(pointInformation.descriptor.getMission(), EsaSkyWebConstants.HEASARC_MISSION)
+                        && EsaSkyConstants.TREEMAP_LEVEL_1 == pointInformation.getTreemapLevel())) {
 
                     getRelatedMetadata(event.getDescriptor());
                     GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_EXTERNALTAPS,

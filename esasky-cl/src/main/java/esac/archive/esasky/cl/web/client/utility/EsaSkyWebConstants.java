@@ -184,7 +184,7 @@ public class EsaSkyWebConstants {
 
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
-
+    public static final String HEASARC_MISSION = "HEASARC";
     public static final String SCHEMA_OBSERVATIONS = "observations";
     public static final String SCHEMA_CATALOGUES = "catalogues";
     public static final String SCHEMA_ALERTS = "alerts";
