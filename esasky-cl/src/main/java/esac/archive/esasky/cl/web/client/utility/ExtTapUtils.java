@@ -44,8 +44,8 @@ public class ExtTapUtils {
         updateWavelength(parent, wavelengthStart, wavelengthEnd);
         parent.addChild(descriptor);
 
-        if(EsaSkyConstants.TABLE_NAME.contentEquals(parent.getGroupColumn2()) && descriptor.getLevel() > 1) {
-            String newProductURI = descriptor.getArchiveProductURI().replace("@@@" + EsaSkyConstants.TABLE_NAME+ "@@@", name);
+        if(EsaSkyConstants.TABLE_NAME.contentEquals(parent.getGroupColumn2()) && descriptor.getLevel() > 0) {
+            String newProductURI = descriptor.getArchiveProductURI().replace("@@@" + EsaSkyConstants.TABLE_NAME+ "@@@", descriptor.getTableName());
             descriptor.setArchiveProductURI(newProductURI);
         }
 
