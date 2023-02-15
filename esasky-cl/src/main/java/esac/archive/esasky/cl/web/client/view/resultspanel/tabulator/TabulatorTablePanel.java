@@ -857,7 +857,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			archiveUrl = rowData.getProperty(columnName).toString();
 
 			// Workaround for incorrect MAST SWIFT URL's until they fix them.
-			if (Objects.equals(getDescriptor().getMission(), "MAST") && getDescriptor().getLongName().equalsIgnoreCase("swift")) {
+			if (Objects.equals(getDescriptor().getMission(), "MAST") 
+					&& archiveUrl.contains("mast.stsci.edu/portal/Download/file?uri=")
+					&& !archiveUrl.contains("mast:")) {
 				archiveUrl = archiveUrl.substring(archiveUrl.indexOf("uri=")).replace("uri=", "");
 			}
 		}
