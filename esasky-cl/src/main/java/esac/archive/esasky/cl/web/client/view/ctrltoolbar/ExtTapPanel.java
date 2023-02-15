@@ -97,7 +97,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         FlowPanel sliderContainer = initSliderContainer();
         treeMapContainer.add(sliderContainer);
 
-        tabPanel.add(treeMapContainer, "Treemap");
+        tabPanel.add(treeMapContainer, "Dashboard");
 
         registryPanel = new GlobalTapPanel();
         registryPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
