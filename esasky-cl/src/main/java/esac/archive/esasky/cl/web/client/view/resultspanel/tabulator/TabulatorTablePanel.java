@@ -855,6 +855,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		String archiveUrl = "";
 		if (rowData.hasProperty(columnName)) {
 			archiveUrl = rowData.getProperty(columnName).toString();
+
+			// Workaround for incorrect MAST SWIFT URL's until they fix them.
+			if (Objects.equals(getDescriptor().getMission(), "MAST") && getDescriptor().getLongName().equalsIgnoreCase("swift")) {
+				archiveUrl = archiveUrl.substring(archiveUrl.indexOf("uri=")).replace("uri=", "");
+			}
 		}
 
 		openArchiveUrl(archiveUrl, row);

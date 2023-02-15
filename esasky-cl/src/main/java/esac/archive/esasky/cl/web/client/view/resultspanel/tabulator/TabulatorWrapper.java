@@ -2064,7 +2064,9 @@ public class TabulatorWrapper {
                             columns: activeColumnGroup
                         });
                     } else {
-                        activeColumnGroup.push(wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::generateColumn(*)(wrapper, this, this.metadata[i], divId));
+                        activeColumnGroup.push(wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::generateColumn(*)(wrapper, this, this.metadata[i], divId, this.metadata.find(function (obj) {
+                            return obj.name === "access_format"
+                        })));
                     }
                 }
                 if (!isSSO) {
@@ -2142,10 +2144,10 @@ public class TabulatorWrapper {
 
     }-*/;
 
-    private native JavaScriptObject generateColumn(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+    private native JavaScriptObject generateColumn(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId, String accessFormat) /*-{
 
         // Try to generate column from UCD or UType values
-        var column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithContentDescriptors(*)(wrapper, table, columnMeta, divId);
+        var column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithContentDescriptors(*)(wrapper, table, columnMeta, divId, accessFormat);
 
         // If column is undefined, try to generate column from xtype
         if (!column) {
@@ -2179,7 +2181,7 @@ public class TabulatorWrapper {
 
     }-*/;
 
-    private native JavaScriptObject createColumnWithContentDescriptors(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+    private native JavaScriptObject createColumnWithContentDescriptors(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId, String accessFormat) /*-{
         var formatter, formatterParams, headerFilter, headerFilterFunc, sorter, title, tooltip, cellClick;
         var ucd = columnMeta.ucd ? columnMeta.ucd : "";
         var utype = columnMeta.utype ? columnMeta.utype : "";
@@ -2249,14 +2251,25 @@ public class TabulatorWrapper {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
                 }
             };
-        } else if (ucd.includes("meta.ref.url")) {
-            formatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
-            formatterParams = {
-                image: "link2archive.png",
-                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
-            };
+        } else if (ucd.includes("meta.ref.url") && !ucd.includes("meta.curation")) {
+            if (accessFormat)  {
+                formatter = function (cell, formatterParams, onRendered) {
+                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                };
+                formatterParams = {
+                    image: "download_small.png",
+                    tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
+                }
+                columnMeta.displayName = "Download";
+            } else {
+                formatter = function (cell, formatterParams, onRendered) {
+                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                };
+                formatterParams = {
+                    image: "link2archive.png",
+                    tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+                };
+            }
 
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
