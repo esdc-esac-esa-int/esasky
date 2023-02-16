@@ -12,6 +12,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
@@ -21,6 +22,7 @@ import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.ExtTapTreeMap;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorBase;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
@@ -72,8 +74,12 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
         EsaSkyButton resetTreemapBtn = new EsaSkyButton(Icons.getUndoArrowIcon());
         resetTreemapBtn.setTitle(TextMgr.getInstance().getText("extTapPanel_resetTreemapBtn"));
-        resetTreemapBtn.addClickHandler(event -> DescriptorRepository.getInstance().resetExternalDataCenterDescriptors());
-        header.addActionWidget(resetTreemapBtn);
+        resetTreemapBtn.addClickHandler(event -> {
+            DescriptorRepository.getInstance().resetExternalDataCenterDescriptors();
+            header.removeActionWidget(resetTreemapBtn);
+        });
+
+
 
         fovLimiterEnabled = true;
         EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
@@ -130,7 +136,10 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
                 header.removeActionWidget(resetTreemapBtn);
             } else {
                 header.removeActionWidget(switchBtn);
-                header.addActionWidget(resetTreemapBtn);
+                if (hasCustomDescriptor()) {
+                    header.addActionWidget(resetTreemapBtn);
+                }
+
             }
 
         });
@@ -333,4 +342,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         esaPanel.setFovLimiterEnabled(fovLimiterEnabled);
     }
 
+    private boolean hasCustomDescriptor() {
+        return DescriptorRepository.getInstance().getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL).stream().anyMatch(TapDescriptorBase::isCustom);
+    }
 }
