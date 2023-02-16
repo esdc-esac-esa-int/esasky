@@ -5130,7 +5130,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 
 	<text key="treemap_zero_count_alert">
-		$MISSION$ has been added to the treemap but there is no data to show in the current FoV.
+		$MISSION$ has been added to the dashboard but there is no data to show in the current FoV.
 	</text>
 
 	<text key="resultsPresenter_helpDescription_custom_tap_entity">
@@ -5166,7 +5166,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 
 	<text key="extTapPanel_resetTreemapBtn">
-		Reset the treemap to its original state
+		Reset the dashboard to its original state
 	</text>
 
 
