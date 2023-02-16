@@ -81,7 +81,7 @@ public class OpenSeaDragonWrapper implements HasHandlers {
 		    showFullPageControl: false,
 		    showHomeControl: false,
 		    showZoomControl: false,
-			crossOriginPolicy: false
+			crossOriginPolicy: "Anonymous"
 		});
 		if (type == 'image'){
 			options = {
