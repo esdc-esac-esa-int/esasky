@@ -842,8 +842,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
 		if (getDescriptor() != null) {
-			CommonTapDescriptor desc = getDescriptor();
-			String archiveUrl = desc.getArchiveUrl(row.invokeFunction("getData"));
+			String archiveUrl = buildArchiveURL(row.invokeFunction("getData"));
 			openArchiveUrl(archiveUrl, row);
 		}
 
@@ -856,6 +855,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		String archiveUrl = "";
 		if (rowData.hasProperty(columnName)) {
 			archiveUrl = rowData.getProperty(columnName).toString();
+
+			// Workaround for incorrect MAST SWIFT URL's until they fix them.
+			if (Objects.equals(getDescriptor().getMission(), "MAST") 
+					&& archiveUrl.contains("mast.stsci.edu/portal/Download/file?uri=")
+					&& !archiveUrl.contains("mast:")) {
+				archiveUrl = archiveUrl.substring(archiveUrl.indexOf("uri=")).replace("uri=", "");
+			}
 		}
 
 		openArchiveUrl(archiveUrl, row);
@@ -1033,7 +1039,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public boolean isDataProductDatalink() {
-		if(entity.getDescriptor().getId().startsWith("HEASARC")) {
+		if(entity.getDescriptor().getMission().startsWith(EsaSkyWebConstants.HEASARC_MISSION)) {
 			return true;
 		}
 		return table.isDataProductDatalink();

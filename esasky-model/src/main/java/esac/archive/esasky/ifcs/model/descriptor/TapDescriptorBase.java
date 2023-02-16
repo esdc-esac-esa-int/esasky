@@ -25,6 +25,8 @@ public abstract class TapDescriptorBase {
 
     @JsonIgnore
     protected String color;
+    @JsonIgnore
+    private String secondaryColor;
 
     @JsonIgnore
     private boolean fovLimitDisabled = false;
@@ -90,6 +92,17 @@ public abstract class TapDescriptorBase {
         return getMetadata().stream()
                 .filter(cm -> cm.getName().equals(columnName)).findFirst().orElse(null);
 
+    }
+
+    private TapMetadataDescriptor getColumn(String columnName, int index) {
+        List<TapMetadataDescriptor> columns = getMetadata().stream().filter(cm -> cm.getName().equals(columnName)).collect(Collectors.toList());
+
+        if (columns.size() > 1) {
+            TapMetadataDescriptor column = getMetadata().get(index);
+            return Objects.equals(column.getName(), columnName) ? column : null;
+        } else {
+            return getColumn(columnName);
+        }
     }
 
     private boolean anyColumnVisible() {
@@ -219,9 +232,15 @@ public abstract class TapDescriptorBase {
     }
 
 
-    public boolean isColumnVisible(String columnName) {
-        TapMetadataDescriptor column = getColumn(columnName);
-        return column == null || column.isPrincipal() || !anyColumnVisible();
+    public boolean isColumnVisible(String columnName, int index) {
+        boolean anyColumnVisible = anyColumnVisible();
+        TapMetadataDescriptor column = getColumn(columnName, index);
+
+        if (column == null) {
+            return !anyColumnVisible;
+        }
+
+        return  column.isPrincipal() || !anyColumnVisible;
     }
 
     public void setColumnVisibility(String columnName, boolean visible) {
@@ -239,6 +258,14 @@ public abstract class TapDescriptorBase {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getSecondaryColor() {
+        return this.secondaryColor != null ? secondaryColor : ESASkyColors.invertColor(getColor());
+    }
+
+    public void setSecondaryColor(String color) {
+        this.secondaryColor = color;
     }
 
     public boolean isFovLimitDisabled() {

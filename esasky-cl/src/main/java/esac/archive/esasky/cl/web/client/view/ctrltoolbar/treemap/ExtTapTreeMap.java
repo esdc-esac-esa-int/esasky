@@ -4,7 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
-import esac.archive.esasky.cl.web.client.event.ExtTapFovEventHandler;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
@@ -148,16 +147,15 @@ public class ExtTapTreeMap extends TreeMap {
     }
 	
     private void cleanChildren(CommonTapDescriptor parent) {
-    		for(PointInformation pointInformation : allPoints.values()) {
-
-                CommonTapDescriptor childDesc =  pointInformation.descriptor;
-
-    			if( childDesc.getParent() == parent) {
-    					Point child = getPoint(childDesc);
-    					child.update(0,false);
-    					cleanChildren(childDesc);
-				}
-    		}
+        for(PointInformation pointInformation : allPoints.values()) {
+            CommonTapDescriptor childDesc =  pointInformation.descriptor;
+            if(childDesc.getParent() == parent) {
+                    Point child = getPoint(childDesc);
+                    child.update(0,false);
+                    pointInformation.setCount(0);
+                    cleanChildren(childDesc);
+            }
+        }
     }
     
     private void clearAll() {
@@ -173,9 +171,7 @@ public class ExtTapTreeMap extends TreeMap {
     
     @Override
     public void addData(final List<CommonTapDescriptor> descriptors, List<Integer> counts) {
-        
         if ((!descriptors.isEmpty()) && (descriptors.size() == counts.size())) {
-
             List<Integer> zeroCountList = new ArrayList<>();
 
 
@@ -197,10 +193,10 @@ public class ExtTapTreeMap extends TreeMap {
             }
 
             for (int i : zeroCountList) {
-            	addPoints(descriptors.get(i), counts.get(i), false);
+            	addPoints(descriptors.get(i), 0, false);
             }
 
-            update(true);
+            onSliderValueChange(sliderValueLow, sliderValueHigh);
         }
     }
     
@@ -298,7 +294,7 @@ public class ExtTapTreeMap extends TreeMap {
     
     private void notifyHeaderChange(String headerText) {
     	for(TreeMapHeaderChanged observer : headerObservers){
-			observer.onHeaderChanged(headerText);		
+			observer.onHeaderChanged(headerText);
 		}
     }
     
@@ -368,34 +364,10 @@ public class ExtTapTreeMap extends TreeMap {
         headerObservers.add(observer);
     }
     
-    private native void updateParentCount(JavaScriptObject series)/*-{
-    	var head = series.nodeMap[""];
-    	for(var i = 0; i < head.children.length; i++){
-    		var count = 0;
-			var lvl1 = head.children[i];
-			for(var j = 0; j < lvl1.children.length; j++){
-				var lvl2 = lvl1.children[j]
-				count += lvl2.childrenTotal
-				lvl2.val = lvl2.childrenTotal
-			}
-			lvl1.val = count
-    	}
-    	
-    	for(i = 0; i < series.points.length; i++){
-    		var point = series.points[i];
-    		if(point.id){
-    			var count = series.nodeMap[point.id].childrenTotal;
-                point.update(count, false, false)
-    		}
-    	}
-    	
-    }-*/;
-    
     @Override
     public void onSliderValueChange(double low, double high) {
     	super.onSliderValueChange(low, high);
-	    updateParentCount(series.getNativeSeries());
-		update(true);
+        update(true);
     }
     
     @Override
@@ -404,18 +376,14 @@ public class ExtTapTreeMap extends TreeMap {
     }
     private void registerLargeFovEventObserver() {
     	CommonEventBus.getEventBus().addHandler(ExtTapFovEvent.TYPE,
-                new ExtTapFovEventHandler() {
-
-				@Override
-				public void onFovChanged(ExtTapFovEvent extTapFovEvent) {
-					if(extTapFovEvent.getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
-						addLargeFovGhostPoint();
-					}else if(!ghostPoint.isRemoved()) {
-						ghostPoint.setLoading();		
-						update(true);
-					}
-				}
-    	});
+                extTapFovEvent -> {
+                    if(extTapFovEvent.getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+                        addLargeFovGhostPoint();
+                    }else if(!ghostPoint.isRemoved()) {
+                        ghostPoint.setLoading();
+                        update(true);
+                    }
+                });
     }
     
     protected void addLargeFovGhostPoint() {

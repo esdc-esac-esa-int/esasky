@@ -184,7 +184,7 @@ public class EsaSkyWebConstants {
 
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
-
+    public static final String HEASARC_MISSION = "HEASARC";
     public static final String SCHEMA_OBSERVATIONS = "observations";
     public static final String SCHEMA_CATALOGUES = "catalogues";
     public static final String SCHEMA_ALERTS = "alerts";
@@ -251,6 +251,7 @@ public class EsaSkyWebConstants {
 
     public static final String SESSION_DATA = "data";
     public static final String SESSION_DATA_MISSION = "mission";
+    public static final String SESSION_DATA_CATEGORY = "category";
     public static final String SESSION_DATA_TABLE = "table";
     public static final String SESSION_DATA_ISMOC = "is_moc";
     public static final String SESSION_DATA_HAS_PANEL = "has_panel";

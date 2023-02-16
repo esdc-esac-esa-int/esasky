@@ -164,6 +164,9 @@ public class Icons {
 
 		@Source("back-arrow.png")
 		ImageResource backArrow();
+
+		@Source("undo-arrow-icon.png")
+		ImageResource undoArrowIcon();
 	}
 	
 	private static void initMap() {
@@ -385,4 +388,6 @@ public class Icons {
 	public static ImageResource getExternalIcon() { return resources.externalIcon(); }
 
 	public static ImageResource getBackArrowIcon() { return resources.backArrow(); }
+
+	public static ImageResource getUndoArrowIcon() { return resources.undoArrowIcon(); }
 }

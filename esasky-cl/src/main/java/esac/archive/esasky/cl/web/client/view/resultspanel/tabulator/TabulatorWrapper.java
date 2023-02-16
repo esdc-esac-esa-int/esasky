@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.model.FilterObserver;
 import esac.archive.esasky.cl.web.client.repository.MocRepository;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.view.animation.OpacityAnimation;
 import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
@@ -608,6 +609,7 @@ public class TabulatorWrapper {
     }
 
     private native void clearTable(GeneralJavaScriptObject tableJsObject)/*-{
+        tableJsObject.clearing = true;
         tableJsObject.dataLoaded = false;
         tableJsObject.showCount = false;
         tableJsObject.clearData();
@@ -616,6 +618,7 @@ public class TabulatorWrapper {
         tableJsObject.clearHeaderFilter();
         previouslySelectedMap = [];
         tableJsObject.dataLoaded = false;
+        tableJsObject.clearing = false;
     }-*/;
 
     private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
@@ -682,7 +685,7 @@ public class TabulatorWrapper {
                     }
                 }
 
-                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name);
+                metadata[j].visible = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isColumnVisible(*)(metadata[j].name, j);
             }
 
             sortedMetadata = sortedMetadata.filter(function (element) {
@@ -887,7 +890,7 @@ public class TabulatorWrapper {
 
             // Adds headers to xml
             table.metadata.forEach(function (columnInfo) {
-                if (table.getColumn(columnInfo.name).getDefinition().download) {
+                if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
                     votData += "<FIELD";
                     Object.keys(columnInfo).forEach(function (key) {
                         var value = columnInfo[key];
@@ -915,7 +918,7 @@ public class TabulatorWrapper {
                     case "row":
                         votData += "<TR>\n";
                         table.metadata.forEach(function (columnInfo) {
-                            if (table.getColumn(columnInfo.name).getDefinition().download) {
+                            if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
                                 var value = "";
                                 row.columns.some(function (column) {
                                     if (column.component.getField() == columnInfo.name) {
@@ -1025,6 +1028,7 @@ public class TabulatorWrapper {
                 var metaName = colName.substring(0, colName.length - 4)
                 var datatype = col.datatype;
                 var label = colName;
+                var ucd = col.ucd ? col.ucd : "";
 
                 //If not in descMetaData add to unique spot in end and then we remove all empty slots in end
                 var metaDataIndex = data.length + newMeta.length;
@@ -1047,28 +1051,40 @@ public class TabulatorWrapper {
                 }
 
 
-                var displayName = $wnd.esasky.getDefaultLanguageText(label);
-                displayName = $wnd.esasky.getColumnDisplayText(displayName);
+                var tableName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getTableName()();
+                var textKey = tableName + "_" + label;
+                var displayName = "";
+                if ($wnd.esasky.hasInternationalizationText(textKey)) {
+                    displayName = $wnd.esasky.getDefaultLanguageText(textKey);
+                } else {
+                    displayName = $wnd.esasky.getColumnDisplayText(label);
+
+                    // Only add DB units to the column header if we don't supply our own through internationalization.
+                    var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(label);
+                    if (unit) {
+                        displayName += " <i>[" + unit + "]</i>";
+                    }
+                }
 
                 if (!filterData.hasOwnProperty(metaName)) {
                     filterData[metaName] = {};
                 }
 
                 if (colName.endsWith("_min")) {
-                    if (datatype == "TIMESTAMP" || datatype == "DATETIME") {
+                    if (datatype === "TIMESTAMP" || datatype === "DATETIME" || ucd.includes("time.start") || ucd.includes("time.end") || col.unit === "time") {
                         filterData[metaName]["min"] = val;
                     } else {
                         filterData[metaName]["min"] = parseFloat(val);
                     }
                     meta = {
                         name: metaName, displayName: displayName, datatype: datatype, visible: visible,
-                        description: col.description, ucd: col.ucd, unit: col.unit
+                        description: col.description, ucd: col.ucd, utype: col.utype, unit: col.unit
                     }
                     newMeta.splice(metaDataIndex, 1, meta)
 
                 } else if (colName.endsWith("_max")) {
 
-                    if (datatype == "TIMESTAMP" || datatype == "DATETIME") {
+                    if (datatype === "TIMESTAMP" || datatype === "DATETIME" || ucd.includes("time.start") || ucd.includes("time.end") || col.unit === "time") {
                         filterData[metaName]["max"] = val;
 
                     } else {
@@ -1078,7 +1094,7 @@ public class TabulatorWrapper {
                 } else {
                     meta = {
                         name: metaName, displayName: displayName, datatype: datatype, visible: visible,
-                        description: col.description, ucd: col.ucd, unit: col.unit
+                        description: col.description, ucd: col.ucd, utype: col.utype, unit: col.unit
                     }
                     newMeta.splice(metaDataIndex, 1, meta)
                 }
@@ -1700,10 +1716,15 @@ public class TabulatorWrapper {
                 return !disabled;
             };
 
-            if ((data.length == 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
+            if ((data.length === 0 && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode())
                 || wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasBeenClosed()()) {
                 return;
             }
+
+            if (data.length === 0 && this.clearing) {
+                return;
+            }
+
             this.rowManager.adjustTableSize();
             if (this.dataLoaded && !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isMOCMode()() && data.length == 0) {
                 if (settings.fovLimitDisabled) {
@@ -1826,9 +1847,10 @@ public class TabulatorWrapper {
                 return;
             }
 
-            if (data.length === 0 && !this.dataLoaded) {
+            if (data.length === 0 && this.clearing) {
                 return;
             }
+
 
             var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
             var activeColumnGroup = [];
@@ -2042,7 +2064,9 @@ public class TabulatorWrapper {
                             columns: activeColumnGroup
                         });
                     } else {
-                        activeColumnGroup.push(wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::generateColumn(*)(wrapper, this, this.metadata[i], divId));
+                        activeColumnGroup.push(wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::generateColumn(*)(wrapper, this, this.metadata[i], divId, this.metadata.find(function (obj) {
+                            return obj.name === "access_format"
+                        })));
                     }
                 }
                 if (!isSSO) {
@@ -2120,14 +2144,19 @@ public class TabulatorWrapper {
 
     }-*/;
 
-    private native JavaScriptObject generateColumn(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+    private native JavaScriptObject generateColumn(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId, String accessFormat) /*-{
 
         // Try to generate column from UCD or UType values
-        var column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithContentDescriptors(*)(wrapper, table, columnMeta, divId);
+        var column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithContentDescriptors(*)(wrapper, table, columnMeta, divId, accessFormat);
 
         // If column is undefined, try to generate column from xtype
         if (!column) {
             column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithXType(*)(wrapper, table, columnMeta, divId);
+        }
+
+        // If column is undefined, try to generate column from unit
+        if (!column) {
+            column = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createColumnWithUnit(*)(wrapper, table, columnMeta, divId);
         }
 
         // If column is undefined, try to generate column from data type
@@ -2152,7 +2181,7 @@ public class TabulatorWrapper {
 
     }-*/;
 
-    private native JavaScriptObject createColumnWithContentDescriptors(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+    private native JavaScriptObject createColumnWithContentDescriptors(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId, String accessFormat) /*-{
         var formatter, formatterParams, headerFilter, headerFilterFunc, sorter, title, tooltip, cellClick;
         var ucd = columnMeta.ucd ? columnMeta.ucd : "";
         var utype = columnMeta.utype ? columnMeta.utype : "";
@@ -2188,7 +2217,7 @@ public class TabulatorWrapper {
             sorter = "string";
             title = $wnd.esasky.getInternationalizationText("Authors");
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_authorHeaderTooltip");
-        } else if (ucd.includes("meta.ref.url") && ucd.includes("meta.preview")) {
+        } else if (ucd.includes("meta.ref.url") && ucd.includes("preview")) {
             title = $wnd.esasky.getInternationalizationText("tabulator_previewHeader");
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_previewHeaderTooltip");
             formatter = function (cell, formatterParams, onRendered) {
@@ -2210,25 +2239,37 @@ public class TabulatorWrapper {
                 image: "download_small.png",
                 tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
             }
+
             cellClick = function (e, cell) {
                 e.stopPropagation();
                 var rowData = cell.getData();
                 var cellData = cell.getValue();
                 if ((rowData.access_format && rowData.access_format.toLowerCase().includes("datalink"))
-                    || (cellData && typeof cellData === "string" && cellData.toLowerCase().includes("datalink"))) {
+                    || (cellData != null && typeof cellData === "string" && cellData.toLowerCase().includes("datalink"))) {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDatalinkClicked(*)(cell.getRow(), cellData);
                 } else {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAccessUrlClicked(Ljava/lang/String;)(cell.getValue());
                 }
             };
-        } else if (ucd.includes("meta.ref.url")) {
-            formatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
-            formatterParams = {
-                image: "link2archive.png",
-                tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
-            };
+        } else if (ucd.includes("meta.ref.url") && !ucd.includes("meta.curation")) {
+            if (accessFormat)  {
+                formatter = function (cell, formatterParams, onRendered) {
+                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                };
+                formatterParams = {
+                    image: "download_small.png",
+                    tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
+                }
+                columnMeta.displayName = "Download";
+            } else {
+                formatter = function (cell, formatterParams, onRendered) {
+                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                };
+                formatterParams = {
+                    image: "link2archive.png",
+                    tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+                };
+            }
 
             tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
@@ -2242,6 +2283,11 @@ public class TabulatorWrapper {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), columnMeta.name);
                 }
             }
+        } else if (ucd.includes("time.start") || ucd.includes("time.end")) {
+            formatter = "plaintext";
+            headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
+            headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
+            sorter = "string";
         } else {
             return undefined;
         }
@@ -2258,7 +2304,25 @@ public class TabulatorWrapper {
         switch (xtype.toLowerCase()) {
             case "adql:timestamp":
                 formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
+                headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
+                sorter = "string";
+                break;
+            default:
+                return undefined;
+        }
+
+        return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
+
+    }-*/;
+
+    private native JavaScriptObject createColumnWithUnit(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
+        var formatter, formatterParams, headerFilter, headerFilterFunc, sorter;
+        var unit = columnMeta.unit ? columnMeta.unit : "";
+        switch (unit.toLowerCase()) {
+            case "time":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
                 sorter = "string";
                 break;
@@ -2295,16 +2359,11 @@ public class TabulatorWrapper {
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
                 sorter = "number";
                 break;
-            case "long":
-            case "bigint":
-                formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
-                headerFilterFunc = "like";
-                sorter = "string";
-                break;
             case "int":
             case "integer":
             case "short":
+            case "long":
+            case "bigint":
                 formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFormatterFunc()();
                 formatterParams = {maxDecimalDigits: 0};
                 headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
@@ -2320,13 +2379,13 @@ public class TabulatorWrapper {
                 break;
             case "list":
                 formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getListFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = "like";
                 break;
             case "datetime":
             case "timestamp":
                 formatter = "plaintext";
-                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, this, divId);
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterEditorFunc(*)(wrapper, table, divId);
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
                 sorter = "string";
                 break;
@@ -2477,8 +2536,9 @@ public class TabulatorWrapper {
         return getDescriptor().getMission();
     }
 
-    public boolean isColumnVisible(String columnName) {
-        return getDescriptor().isColumnVisible(columnName);
+    public boolean isColumnVisible(String columnName, int index) {
+        return getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)
+                || getDescriptor().isColumnVisible(columnName, index);
     }
 
     public String getColumnUnit(String columnName) {

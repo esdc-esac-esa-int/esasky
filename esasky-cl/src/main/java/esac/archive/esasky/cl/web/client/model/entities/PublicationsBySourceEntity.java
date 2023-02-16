@@ -23,14 +23,19 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
                                       CountStatus countStatus, SkyViewPosition skyViewPosition,
                                       String publicationId, double ra, double dec, String bibcount) {
         super(descriptor, countStatus, skyViewPosition, publicationId, TAPPublicationsService.getInstance(), 14, AladinLiteWrapper.getAladinLite().createImageMarker("images/publications_shape.png"));
-        super.addShapes(getTableShapeInfo(ra, dec, bibcount, getId()), null);
+        super.addShapes(getTableShapeInfo(ra, dec, bibcount, publicationId), null);
         this.publicationId = publicationId;
     }
 
     @Override
     public ITablePanel createTablePanel() {
-        tablePanel = new PublicationsTablePanel(getTabLabel(), getId(), this);
+        tablePanel = new PublicationsTablePanel(getTabLabel(), publicationId, this);
         return tablePanel;
+    }
+
+    @Override
+    public String getId() {
+        return publicationId;
     }
     
     @Override
@@ -46,7 +51,7 @@ public class PublicationsBySourceEntity extends EsaSkyEntity {
     
     @Override
     public String getTabLabel() {
-    	return getId();
+    	return publicationId;
     }
     
     @Override

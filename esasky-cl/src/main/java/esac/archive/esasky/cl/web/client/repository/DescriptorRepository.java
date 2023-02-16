@@ -48,17 +48,15 @@ public class DescriptorRepository {
     public interface SingleCountListMapper extends ObjectMapper<List<SingleCount>> {
     }
 
-
     // Key: category
     private final Map<String, DescriptorCountAdapter> descriptorCountAdapterMap = new HashMap<>();
+
     // Key: category
     private final Map<String, List<DescriptorObserver>> waitingDescriptorObservers = new HashMap<>();
-    private final Map<String, String> tableCategoryMap = new HashMap<>();
 
+    // Key: tableName
+    private final Map<String, List<String>> tableCategoryMap = new HashMap<>();
 
-    private boolean catDescriptorsIsReady = false;
-    private boolean obsDescriptorsIsReady = false;
-    private boolean spectraDescriptorsIsReady = false;
 
     private final boolean isInitialPositionDescribedInCoordinates;
     private boolean isExtTapOpen = false;
@@ -102,11 +100,13 @@ public class DescriptorRepository {
                 descriptorCountAdapterMap.get(category).getCountStatus().markForRemoval(desc);
             }
         }
-        
+
         descriptorCountAdapterMap.put(category, dca);
 
         for (CommonTapDescriptor desc : dca.getDescriptors()) {
-            tableCategoryMap.put(desc.getTableName(), desc.getCategory());
+            tableCategoryMap.computeIfAbsent(desc.getTableName(), k -> new LinkedList<>());
+            tableCategoryMap.get(desc.getTableName()).add(desc.getCategory());
+
         }
 
         if (waitingDescriptorObservers.containsKey(category)) {
@@ -125,24 +125,24 @@ public class DescriptorRepository {
     }
 
     public boolean addDescriptor(String category, CommonTapDescriptor descriptor) {
-        CommonTapDescriptorList descriptorList =  descriptorCountAdapterMap.get(category).getTapDescriptorList();
+        CommonTapDescriptorList descriptorList = descriptorCountAdapterMap.get(category).getTapDescriptorList();
         List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors();
         if (descriptors.stream().noneMatch(d ->
                 Objects.equals(d.getMission(), descriptor.getMission())
-                && Objects.equals(d.getTableName(), descriptor.getTableName()))) {
+                        && Objects.equals(d.getTableName(), descriptor.getTableName()))) {
             descriptors.add(descriptor);
             descriptorList.setDescriptors(descriptors);
             DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, category, null);
             setDescriptorCountAdapter(category, dca);
 
             return true;
-         }
+        }
 
         return false;
     }
 
     public DescriptorCountAdapter getDescriptorCountAdapter(String category) {
-       return descriptorCountAdapterMap.get(category);
+        return descriptorCountAdapterMap.get(category);
     }
 
     public CommonTapDescriptorList getDescriptorList(String category) {
@@ -253,6 +253,15 @@ public class DescriptorRepository {
         }
     }
 
+    public void resetExternalDataCenterDescriptors() {
+        CommonTapDescriptorList descriptorList = descriptorCountAdapterMap.get(EsaSkyWebConstants.CATEGORY_EXTERNAL).getTapDescriptorList();
+        List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors().stream().filter(x -> !x.isCustom()).collect(Collectors.toList());
+        descriptorList.setDescriptors(descriptors);
+        DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
+        setDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
+        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca), true));
+    }
+
 
     public List<TapMetadataDescriptor> mockSpatialMetadata(String raColumn, String decColumn, String regionColumn) {
         List<TapMetadataDescriptor> result = new LinkedList<>();
@@ -333,19 +342,19 @@ public class DescriptorRepository {
     }
 
 
-    public void initDescriptors(String schema, String category, Promise<CommonTapDescriptorList> promise) {
+    public void initDescriptors(List<String> schemas, String category, Promise<CommonTapDescriptorList> promise) {
         Log.debug("[DescriptorRepository] Into DescriptorRepository.initDescriptors");
 
         if (!GUISessionStatus.getIsInScienceMode()) {
             GUISessionStatus.setDoCountOnEnteringScienceMode();
         }
 
-        TAPDescriptorService.getInstance().fetchDescriptors(schema, category, new IJSONRequestCallback() {
+        TAPDescriptorService.getInstance().fetchDescriptors(schemas, category, new IJSONRequestCallback() {
 
             @Override
             public void onSuccess(String responseText) {
                 CommonTapDescriptorListMapper mapper = GWT.create(CommonTapDescriptorListMapper.class);
-                CommonTapDescriptorList mappedDescriptorList  = mapper.read(responseText);
+                CommonTapDescriptorList mappedDescriptorList = mapper.read(responseText);
                 WavelengthUtils.setWavelengthRangeMaxMin(mappedDescriptorList.getDescriptors());
 
                 // If external we don't have any column metadata, we need to fetch it.
@@ -374,7 +383,7 @@ public class DescriptorRepository {
                     @Override
                     public void onSuccess(String responseText) {
                         TapDescriptorListMapper mapper = GWT.create(TapDescriptorListMapper.class);
-                        TapDescriptorList mappedDescriptorList2  = mapper.read(responseText);
+                        TapDescriptorList mappedDescriptorList2 = mapper.read(responseText);
 
                         boolean isSchemaQuery = commonTapDescriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
                         commonTapDescriptor.setMetadata(ExtTapUtils.getMetadataFromTapDescriptorList(mappedDescriptorList2, isSchemaQuery));
@@ -401,7 +410,7 @@ public class DescriptorRepository {
     }
 
     public void doCountAll() {
-		// Single dynamic count
+        // Single dynamic count
         requestSingleCount();
         if (isExtTapOpen) {
             updateCount4AllExtTaps();
@@ -435,12 +444,8 @@ public class DescriptorRepository {
                 + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + descriptor.getTapUrl();
 
         JSONUtils.getJSONFromUrl(url, new ExtTapCheckCallback(adql, descriptor, cs,
-        countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission(), zeroCountMessage));
+                countRequestHandler.getProgressIndicatorMessage() + " " + descriptor.getMission(), zeroCountMessage));
     }
-
-
-
-
 
 
     public void doCountSSO(String ssoName, ESASkySSOObjType ssoType) {
@@ -513,80 +518,33 @@ public class DescriptorRepository {
     }
 
 
-    public CommonTapDescriptor getDescriptorFromTable(String tableName, String mission) {
-        String category = tableCategoryMap.get(tableName);
+    public CommonTapDescriptor getDescriptorFromMission(String category, String mission) {
         if (category != null) {
             return getDescriptorCountAdapter(category).getDescriptorByMission(mission);
         }
 
-    	return null;
-    }
-
-    public CommonTapDescriptor getDescriptorFromTable(String tableName) {
-        String category = tableCategoryMap.get(tableName);
-        if (category != null) {
-            return getDescriptorCountAdapter(category).getDescriptorByTable(tableName);
-        }
-
         return null;
     }
-    
-//    private HashMap<String, List<CommonTapDescriptor>> getDescriptorsMap() {
-//        if (descriptorsMap == null) {
-//            prepareDescriptorsMap();
-//        }
-//        return descriptorsMap;
-//    }
 
-//    private void prepareDescriptorsMap() {
-//        descriptorsMap = new HashMap<>();
-//        countStatusMap = new HashMap<>();
-//
-////        addDescriptorsToHashMaps(catDescriptors);
-//        addDescriptorsToHashMaps(observationDescriptors);
-////        addDescriptorsToHashMaps(spectraDescriptors);
-////        addDescriptorsToHashMaps(publicationsDescriptors);
-////        addDescriptorsToHashMaps(imageDescriptors);
-////        addDescriptorsToHashMaps(extTapDescriptors);
-//    }
-
-//    private void addDescriptorsToHashMaps(DescriptorCountAdapter descriptorListAdapter) {
-//        if (descriptorListAdapter != null) {
-//            final CountStatus cs = descriptorListAdapter.getCountStatus();
-//            for (CommonTapDescriptor descriptor : descriptorListAdapter.getTapDescriptorList().getDescriptors()) {
-//                if (!descriptorsMap.containsKey(descriptor.getTableName())) {
-//                    descriptorsMap.put(descriptor.getTableName(), new LinkedList<>());
-//                }
-//                if (!countStatusMap.containsKey(descriptor.getTableName())) {
-//                    countStatusMap.put(descriptor.getTableName(), new LinkedList<>());
-//                }
-//                List<CommonTapDescriptor> descriptorList = descriptorsMap.get(descriptor.getTableName());
-//                List<CountStatus> countStatusList = countStatusMap.get(descriptor.getTableName());
-//                descriptorList.add(descriptor);
-//                countStatusList.add(cs);
-//            }
-//        }
-//    }
 
     private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
 
         ArrayList<String> remainingDescriptors = new ArrayList<>(tableCategoryMap.keySet());
-
         List<CommonTapDescriptor> descriptors = new ArrayList<>();
-        List<Integer> counts = new ArrayList<>();
 
-        setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors, counts);
+        setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors);
+
         //Handling that the fast count doesn't give any results for missing missions in the area, so we set them to 0
-        setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors, counts);
+        setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors);
 
         if (!descriptors.isEmpty()) {
-            notifyCountChange(descriptors);
+            notifyCountChange(descriptors.stream().filter(d -> !d.getCategory().equals(EsaSkyWebConstants.CATEGORY_SSO)).collect(Collectors.toList()));
         }
     }
 
     private void notifyCountChange(List<CommonTapDescriptor> descriptors) {
         Set<String> categories = descriptors.stream().map(CommonTapDescriptor::getCategory).collect(Collectors.toSet());
-        List<DescriptorCountAdapter> descriptorCountAdapterList =  descriptorCountAdapterMap.values().stream()
+        List<DescriptorCountAdapter> descriptorCountAdapterList = descriptorCountAdapterMap.values().stream()
                 .filter(dca -> categories.contains(dca.getCategory())).collect(Collectors.toList());
 
         CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(descriptorCountAdapterList));
@@ -597,24 +555,23 @@ public class DescriptorRepository {
     }
 
     private void setCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition,
-                          ArrayList<String> remainingDescriptors, List<CommonTapDescriptor> descriptors, List<Integer> counts) {
+                          ArrayList<String> remainingDescriptors, List<CommonTapDescriptor> descriptors) {
 
         for (SingleCount singleCount : singleCountList) {
-            String category = tableCategoryMap.get(singleCount.getTableName());
+            List<String> categories = tableCategoryMap.get(singleCount.getTableName());
+            if (categories != null) {
+                for (String category : categories) {
+                    DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
+                    CountStatus cs = descriptorCountAdapter.getCountStatus();
+                    CommonTapDescriptor descriptor = descriptorCountAdapter.getDescriptorByTable(singleCount.getTableName());
 
-            if (category != null) {
-                DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
-                CountStatus cs = descriptorCountAdapter.getCountStatus();
-                CommonTapDescriptor descriptor = descriptorCountAdapter.getDescriptorByTable(singleCount.getTableName());
-
-                if (descriptor != null) {
-                    final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
-                    cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
-                    remainingDescriptors.remove(singleCount.getTableName());
-                    descriptors.add(descriptor);
-                    counts.add(count);
+                    if (descriptor != null) {
+                        final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
+                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
+                        remainingDescriptors.remove(singleCount.getTableName());
+                        descriptors.add(descriptor);
+                    }
                 }
-
             } else {
                 Log.warn("[DescriptorRepository] doUpdateSingleCount. TABLE_NAME: '" + singleCount.getTableName()
                         + "' NOT FOUND IN DESCRIPTORS!");
@@ -623,19 +580,20 @@ public class DescriptorRepository {
     }
 
     private void setZeroCountOnNoResponseMissions(final SkyViewPosition skyViewPosition, ArrayList<String> remainingDescriptors,
-                                                  List<CommonTapDescriptor> descriptors, List<Integer> counts) {
+                                                  List<CommonTapDescriptor> descriptors) {
         for (String tableName : remainingDescriptors) {
-            String category = tableCategoryMap.get(tableName);
+            List<String> categories = tableCategoryMap.get(tableName);
 
-            DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
+            for (String category : categories) {
+                DescriptorCountAdapter descriptorCountAdapter = descriptorCountAdapterMap.get(category);
 
-            final int count = 0;
-            for (CommonTapDescriptor descriptor : descriptorCountAdapter.getDescriptors()) {
-                if (!descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL) && descriptor.getTableName().equals(tableName)) {
-                    CountStatus cs = descriptorCountAdapter.getCountStatus();
-                    cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
-                    descriptors.add(descriptor);
-                    counts.add(count);
+                final int count = 0;
+                for (CommonTapDescriptor descriptor : descriptorCountAdapter.getDescriptors()) {
+                    if (!descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL) && descriptor.getTableName().equals(tableName)) {
+                        CountStatus cs = descriptorCountAdapter.getCountStatus();
+                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
+                        descriptors.add(descriptor);
+                    }
                 }
             }
         }

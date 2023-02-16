@@ -20,8 +20,8 @@ public class WavelengthUtils {
         final double wavelengthStart = descriptor.getWavelengthStart();
         final double wavelengthEnd = descriptor.getWavelengthEnd();
 
-        WavelengthName wls = getWavelengthNameFromValue(wavelengthStart);
-        WavelengthName wle = getWavelengthNameFromValue(wavelengthEnd);
+        WavelengthName wls = getWavelengthNameFromValue(wavelengthEnd);
+        WavelengthName wle = getWavelengthNameFromValue(wavelengthStart);
         String wavelengthStartName=  wls != null ? TextMgr.getInstance().getText(wls.shortName) : UNKNOWN;
         String wavelengthEndName = wle != null ? TextMgr.getInstance().getText(wle.shortName) : UNKNOWN;
 
@@ -38,8 +38,8 @@ public class WavelengthUtils {
         final double wavelengthStart = descriptor.getWavelengthStart();
         final double wavelengthEnd = descriptor.getWavelengthEnd();
 
-        WavelengthName wls = getWavelengthNameFromValue(wavelengthStart);
-        WavelengthName wle = getWavelengthNameFromValue(wavelengthEnd);
+        WavelengthName wls = getWavelengthNameFromValue(wavelengthEnd);
+        WavelengthName wle = getWavelengthNameFromValue(wavelengthStart);
         String wavelengthStartName=  wls != null ? TextMgr.getInstance().getText(wls.longName) : UNKNOWN;
         String wavelengthEndName = wle != null ? TextMgr.getInstance().getText(wle.longName) : UNKNOWN;
 
@@ -128,7 +128,8 @@ public class WavelengthUtils {
             new WavelengthName("UV", "Ultraviolet", 8),
             new WavelengthName("Soft X-ray", "Soft X-ray", 10.),
             new WavelengthName("Hard X-ray", "Hard X-ray", 11),
-            new WavelengthName("Gamma-ray", "Gamma-ray", Double.MAX_VALUE)
+            new WavelengthName("Gamma-ray", "Gamma-ray", 15.5),
+            new WavelengthName("Neutrino", "Neutrino", Double.MAX_VALUE)
     };
     
     private static void addWavelengthDescriptor(double minWavelength, double maxWavelength, List<WavelengthDescriptor> wavelengths, int wavelengthIndex) {

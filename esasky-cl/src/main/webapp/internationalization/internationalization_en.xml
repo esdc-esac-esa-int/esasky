@@ -3037,20 +3037,6 @@
 		&gt;
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
-	<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external data centres
-		which conforms with Virtual Observatory (IVOA) standards.
-
-		Services which have any data in the current region will appear
-		in the tree map. Clicking on any service will show the available
-		dataproduct types in the visible region (Images, Spectra etc). Clicking
-		on a prdouct type will show the available collections these product exist in.
-
-		Clicking on the collection/facility will load the data into the data panel and display
-		the corresponding footprints in the sky.
-		</text>
-
-
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
@@ -3084,7 +3070,17 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_LRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+		&lt;br&gt;&lt;br&gt;
+		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
 	<text key="resultsPresenter_helpDescription_observations_AKARI">
 		ESASky serves all pointed observations taken with the InfraRed Camera (IRC) of this mission, which are directly downloaded from DARTS. The IRC consisted of three independent camera systems, NIR, MIR-S and MIR-L, which observed the wavelength bands of 1.7-5.5 μm, 5.8-14.1 μm, and 12.4-26.5 μm, respectively. Each camera system had three filters available. NIR and MIR-S covered the same field of view (FoV), while MIR-L had a different one, which did not overlap with the NIR/MIR-S FoV. A brief description of the instrument and data products is given in
 		&lt;a
@@ -4562,6 +4558,12 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_flux1000">Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_unc_flux1000">Photon Flux Error &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_signif_avg">Source significance</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_frac_variability">Fractional Variability</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_tevcat_flag">TeVCat Flag</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_assoc_tev">Associated TeV Source</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_class1">Class</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_assoc1">Associated Source</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_radio_flux">Radio Flux &lt;br&gt; &lt;i&gt;(mJy)&lt;/i&gt;</text>
@@ -4579,16 +4581,34 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu3">SED at 50-150GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu4">SED at 150-500GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu5">SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_sig">Significance</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_var">Variability</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_exname">Extended Source Name</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_assoc">Associated Gamma Source</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_cl">Class</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_assoc1">Associated Source</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_f1000i">Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_ef100">Energy Flux &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_nufnu">SED at Synchrotron peak frequency &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_fermi_4lac_fdw_emax">Energy max &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_z">Redshift</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_probby">ProbBY</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_problr">ProbLR</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_rfc">VLBI counterpart</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_gaia">Gaia DR2 counterpart</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_sedcl">SED Class</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_ccat">CCat</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_fvar">Fractional Variability</text>
 	<text key="catalogues.mv_cat2whsp_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2whsp_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2whsp_fdw_lognupeak">Synchrotron peak &lt;br&gt; &lt;i&gt;(log(Hz))&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2whsp_fdw_lognufnu">Synchrotron peak flux &lt;br&gt; &lt;i&gt;(log(erg/s/cm2))&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2whsp_fdw_z">Redshift</text>
+	<text key="catalogues.mv_cat2whsp_fdw_2whspj">2WHSPJ</text>
+	<text key="catalogues.mv_cat2whsp_fdw_5bzcat">5BZCAT</text>
+	<text key="catalogues.mv_cat2whsp_fdw_2fhl">2FHL</text>
 	<text key="catalogues.mv_cat2rxs_fdw_raj2000">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2rxs_fdw_dej2000">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_cat2rxs_fdw_crate">Count Rate &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;</text>
@@ -4657,6 +4677,12 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="alerts.mv_v_gravitational_waves_fdw_bns">BNS</text>
 	<text key="alerts.mv_v_gravitational_waves_fdw_nsbh">NSBH</text>
 	<text key="alerts.mv_v_gravitational_waves_fdw_has_ns">Has NS</text>
+
+	<text key="alerts.mv_v_icecube_event_fdw_event_num">Event</text>
+	<text key="alerts.mv_v_icecube_event_fdw_run_num">Run</text>
+	<text key="alerts.mv_v_icecube_event_fdw_ra">RA</text>
+	<text key="alerts.mv_v_icecube_event_fdw_dec">Dec</text>
+	<text key="alerts.mv_v_icecube_event_fdw_far">FAR</text>
 
 
 	<text key="images.mv_hst_outreach_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
@@ -4954,6 +4980,43 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="observations.v_mv_v_esasky_xmm_om_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
 
 
+	<!-- XMATCH -->
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_sso_name">Name</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
 
 
 	<!-- internationalization_es.xml is up to date for everything above -->
@@ -5067,7 +5130,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 
 	<text key="treemap_zero_count_alert">
-		$MISSION$ has been added to the treemap but there is no data to show in the current FoV.
+		$MISSION$ has been added to the dashboard but there is no data to show in the current FoV.
 	</text>
 
 	<text key="resultsPresenter_helpDescription_custom_tap_entity">
@@ -5083,5 +5146,28 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
+
+	<text key="treeMapContainer_help_EXT_TAP">
+		In ESASky you can now explore data from external data centres which conform with Virtual Observatory (IVOA) standards.
+		Services which have any data in the current region will appear in the tree map. Clicking on any service will show the available data product types in the visible region
+		(Images, Spectra etc). Clicking on a product type will show the available collections these products exist in.
+		Clicking on the collection/facility will load the data into the data panel and display the corresponding footprints in the sky.
+
+		&lt;br&gt;&lt;br&gt;
+		Navigate to the TAP Registry tab to explore all accessible data centres. By choosing one of the data centres,
+		you can browse their public tables and perform custom queries, display metadata, or view table data in the data panel.
+		Use the corresponding tabs to gain quick access to the services and tables provided by ESA or VizieR.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="extTapPanel_resetTreemapBtn">
+		Reset the dashboard to its original state
+	</text>
+
 
 </Internationalization>

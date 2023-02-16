@@ -10,14 +10,19 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.ExtTapTreeMap;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorBase;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
@@ -67,6 +72,15 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
                 TextMgr.getInstance().getText("treeMap_EXT_TAP"));
 
 
+        EsaSkyButton resetTreemapBtn = new EsaSkyButton(Icons.getUndoArrowIcon());
+        resetTreemapBtn.setTitle(TextMgr.getInstance().getText("extTapPanel_resetTreemapBtn"));
+        resetTreemapBtn.addClickHandler(event -> {
+            DescriptorRepository.getInstance().resetExternalDataCenterDescriptors();
+            header.removeActionWidget(resetTreemapBtn);
+        });
+
+
+
         fovLimiterEnabled = true;
         EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
                 TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
@@ -89,7 +103,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         FlowPanel sliderContainer = initSliderContainer();
         treeMapContainer.add(sliderContainer);
 
-        tabPanel.add(treeMapContainer, "Treemap");
+        tabPanel.add(treeMapContainer, "Dashboard");
 
         registryPanel = new GlobalTapPanel();
         registryPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
@@ -119,8 +133,13 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             if (selectedTabIndex != TabIndex.TREEMAP.ordinal()) {
                 header.addActionWidget(switchBtn);
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
+                header.removeActionWidget(resetTreemapBtn);
             } else {
                 header.removeActionWidget(switchBtn);
+                if (hasCustomDescriptor()) {
+                    header.addActionWidget(resetTreemapBtn);
+                }
+
             }
 
         });
@@ -323,4 +342,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         esaPanel.setFovLimiterEnabled(fovLimiterEnabled);
     }
 
+    private boolean hasCustomDescriptor() {
+        return DescriptorRepository.getInstance().getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL).stream().anyMatch(TapDescriptorBase::isCustom);
+    }
 }

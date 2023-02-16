@@ -1,7 +1,7 @@
 package esac.archive.esasky.ifcs.model.shared;
 
 public class ESASkyColors {
-    protected static final Color[] colors = new Color[]{new Color("#E8ECFB", 14), new Color("#D9CCE3", 13.5), new Color("#CAACCB", 13),
+    protected static final Color[] colors = new Color[]{new Color("#E8ECFB", 16), new Color("#D9CCE3", 13.5), new Color("#CAACCB", 13),
 				new Color("#BA8DB2", 12), new Color("#AA6F9E", 11), new Color("#994F88", 10), new Color("#882E72", 9),
 				new Color("#1965B0", 8), new Color("#437DBF", 7), new Color("#6195CF", 6.8), new Color("#7BAFDE", 6.5),
 				new Color("#4EB265", 6.3), new Color("#90C987", 6.2), new Color("#CAE0AB", 6.0), new Color("#F7F056", 5.66),
@@ -111,7 +111,32 @@ public class ESASkyColors {
 		}
 		return colors[colors.length - 1].wavelength;
 	}
-	
+
+	public static String invertColor(String hex) {
+		hex = hex.replace("#", "");
+
+		// convert 3-digit hex to 6-digits.
+		if (hex.length() == 3) {
+			hex = "" + hex.charAt(0) + hex.charAt(0) + hex.charAt(1) + hex.charAt(1) + hex.charAt(2) + hex.charAt(2);
+		}
+
+		// Invalid color
+		if (hex.length() != 6) {
+			return hex;
+		}
+
+		// invert color components
+		String r = Integer.toString (255 - Integer.parseInt(hex.substring(0, 2), 16), 16);
+		String g = Integer.toString (255 - Integer.parseInt(hex.substring(2, 4), 16), 16);
+		String b = Integer.toString (255 - Integer.parseInt(hex.substring(4, 6), 16), 16);
+
+		// pad each with zeros and return
+		return '#' + (r.length() < 2 ? "0" + r : r)
+				+ (g.length() < 2 ? "0" + g : g)
+				+ (b.length() < 2 ? "0" + b : b);
+	}
+
+
 	private static class Color{
 		public final String color;
 		public final double wavelength;

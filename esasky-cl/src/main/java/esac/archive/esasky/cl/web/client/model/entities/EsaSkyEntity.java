@@ -126,7 +126,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         drawer = combinedDrawer;
 
         drawer.setPrimaryColor(color);
-        drawer.setSecondaryColor(color);
+        drawer.setSecondaryColor(descriptor.getSecondaryColor());
 
         this.skyViewPosition = skyViewPosition;
         this.countStatus = countStatus;
@@ -632,12 +632,12 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
 	public void setSecondaryColor(String color) {
-    	drawer.setPrimaryColor(color);
+    	drawer.setSecondaryColor(color);
 		
 	}
 	@Override
 	public String getSecondaryColor() {
-		return drawer.getPrimaryColor();
+		return drawer.getSecondaryColor();
 	}
 	
 	@Override
@@ -728,9 +728,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
             @Override
             public void onSecondaryColorChanged(String color) {
-                // TODO: fix this
-//                descriptor.setSecondaryColor(color);
-//                combinedDrawer.setSecondaryColor(color);
+                descriptor.setSecondaryColor(color);
+                combinedDrawer.setSecondaryColor(color);
             }
 
             @Override
@@ -766,17 +765,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		}
 	}
     private void setStylePanelSecondaryContainerVisibility() {
-        // TODO: fix this
-//        if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
-//            Boolean showAvgProperMotion = null;
-//            if(secondaryShapeAdder != null) {
-//                showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
-//            }
-//        	stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
-//        			showAvgProperMotion, combinedDrawer.getUseMedianOnAvgProperMotion());
-//        }else {
-//        	stylePanel.hideSecondaryContainer();
-//        }
+        if((descriptor.hasProperMotion() || descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_SSO))
+                && (mocEntity == null || !mocEntity.isShouldBeShown())) {
+            Boolean showAvgProperMotion = null;
+            if(secondaryShapeAdder != null) {
+                showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
+            }
+        	stylePanel.showSecondaryContainer(descriptor.getSecondaryColor(), combinedDrawer.getSecondaryScale(),
+        			showAvgProperMotion, combinedDrawer.getUseMedianOnAvgProperMotion());
+        }else {
+        	stylePanel.hideSecondaryContainer();
+        }
     }
     private void setStylePanelLineStyleVisibility() {
         if(mocEntity != null && mocEntity.isShouldBeShown()) {
@@ -936,14 +935,13 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         if (descriptor != null) {
             boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+            boolean isExternal = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL);
             settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
 
-            if (descriptor.getArchiveProductURI() != null && !isPub) {
-                if (descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
-                    settings.setAddDatalinkLink2ArchiveColumn(true);
-                } else {
-                    settings.setAddLink2ArchiveColumn(true);
-                }
+            if (isExternal && descriptor.getArchiveProductURI() != null && descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
+                settings.setAddDatalinkLink2ArchiveColumn(!Objects.equals(descriptor.getLongName(), "rassfsc"));
+            } else {
+                settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null && !isPub);
             }
 
             settings.setAddLink2AdsColumn(isPub);

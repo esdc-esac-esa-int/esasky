@@ -27,7 +27,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
 
     @Override
     public ITablePanel createTablePanel() {
-        tablePanel = new PublicationsTablePanel(getTabLabel(), getId(), this);
+        tablePanel = new PublicationsTablePanel(getTabLabel(), authorId, this);
         return tablePanel;
     }
     
@@ -36,7 +36,13 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
         Scheduler.get().scheduleFinally(() -> tablePanel.insertData(EsaSkyWebConstants.PUBLICATIONS_BY_AUTHOR_URL
                 + "?AUTHOR=" + URL.encodeQueryString(authorId) + "&ROWS=" + 50000));
     }
-    
+
+    @Override
+    public String getId() {
+        return authorId;
+    }
+
+
     @Override
     public boolean isCustomizable() {
     	return false;
@@ -44,7 +50,7 @@ public class PublicationsByAuthorEntity extends EsaSkyEntity {
     
     @Override
     public String getTabLabel() {
-    	return getId();
+    	return authorId;
     }
     
     @Override
