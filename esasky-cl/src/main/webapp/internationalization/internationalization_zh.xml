@@ -1732,7 +1732,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_MRS">
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
     大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第八次数据发布包含了2020年6月底以前观测的所有数据，LAMOST低分辨总星表包 括10633515个光谱，其中有10336752个恒星光谱、224702个星系光谱以及72061个类星体光 谱，此外该表中g波段或i波段信噪比大于10的光谱有9563115个。LAMOST中分辨总星表包含 5975982个光谱，其中1465789个属于非时域巡天，4510193个属于时域巡天。（注意：该星 表共有22141635行记录，这与前面两个统计数字1465789和4510193不同。对于非时域巡天， 我们只统计了每一个合并光谱以构成统计数字1465789，而对于时域巡天，B和R波段的单次曝 光光谱被认为是统计数字4510193中的一个。）
@@ -1745,7 +1745,7 @@
 		更多信息
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_MRS">
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
    大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第八次数据发布包含了2020年6月底以前观测的所有数据，LAMOST低分辨总星表包 括10633515个光谱，其中有10336752个恒星光谱、224702个星系光谱以及72061个类星体光 谱，此外该表中g波段或i波段信噪比大于10的光谱有9563115个。LAMOST中分辨总星表包含 5975982个光谱，其中1465789个属于非时域巡天，4510193个属于时域巡天。（注意：该星 表共有22141635行记录，这与前面两个统计数字1465789和4510193不同。对于非时域巡天， 我们只统计了每一个合并光谱以构成统计数字1465789，而对于时域巡天，B和R波段的单次曝 光光谱被认为是统计数字4510193中的一个。）
@@ -2416,7 +2416,7 @@
 	<text key="header_acknowledge">
 	    致谢ESASky
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST-MID-IR">
+	<text key="resultsPresenter_helpDescription_spectra_JWST-MID-IR">
 	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
 	    &lt;br&gt;&lt;br&gt;
 	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
@@ -2426,7 +2426,7 @@
 	    更多信息
 	    &lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-NEAR-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST-NEAR-IR">
 	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
 	    &lt;br&gt;&lt;br&gt;
 	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
@@ -2436,7 +2436,7 @@
 	    更多信息
 	    &lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-MID-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST-MID-IR">
 	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
 	    &lt;br&gt;&lt;br&gt;
 	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
@@ -2446,7 +2446,7 @@
 	    更多信息
 	    &lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST-NEAR-IR">
+	<text key="resultsPresenter_helpDescription_spectra_JWST-NEAR-IR">
 	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
 	    &lt;br&gt;&lt;br&gt;
 	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
@@ -2507,7 +2507,7 @@
 	<text key="header_jwstImagesTooltip">
 	     可视化韦布空间望远镜科普图片
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
+	<text key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
 	    Gaia DR3星表提供了G星等在3至21等之间14.6亿(1.468 10&lt;sup&gt;9&lt;/sup&gt;) 颗源的位置、视差、自行信息。
 
 	    这里的天体测量方案附带了质量指标，例如RUWE，以及对原始图像的描述内容。此外，大约18.06亿颗源的G星等
@@ -2525,7 +2525,7 @@
 	<text key="header_highResolutionImages">
 	    哈勃科普图片库
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+	<text key="resultsPresenter_helpDescription_observations_eROSITA">
 		eROSITA（成像望远镜组扩展伦琴巡天）是一架宽视场X射线望远镜，安装在俄德“光谱-伦琴-伽马”（SRG）空间天文台上，由德国马普地外物理研究所（MPE）牵头研制。eROSITA是一台灵敏的空间X射线望远镜，可以在0.2-8千电子伏特能段内获得非常大天区的深度精确图像。
 
 		&lt;br&gt;&lt;br&gt;
@@ -2536,7 +2536,7 @@
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eFEDS-main">
 		用eROSITA科学分析软件系统（eSASS）在0.2-2.3千电子伏特能段探测到的似然概率阈值高于5的X射线源。选择其中探测似然概率高于6的源作为主eREDS源表里的源（共27910个源）。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2546,7 +2546,7 @@
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eFEDS-hard">
 		eFEDS源表里的硬X射线源。用eROSITA科学分析软件系统（eSASS）在三个能段进行源探测（1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5千电子伏特），并设置探测似然概率阈值高于5，我们选择了在2.3-5千电子伏特里探测似然概率高于10，且延展源似然概率为0的源，作为eFEDS硬X射线源表（共246个源）。
 
 		&lt;br&gt;&lt;br&gt;
@@ -2557,7 +2557,7 @@
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-etaCha-main">
 		Eta Chamaeleontis天区扫描观测（观测ID 300004）里探测的主X射线源表，参见Robrade et al. (2021)。
 
 		&lt;br&gt;&lt;br&gt;
@@ -2568,7 +2568,7 @@
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-etaCha-hard">
 		Eta Chamaeleontis天区扫描观测（观测ID 300004）里探测的硬X射线源表，参见Robrade et al. (2021)。
 
 		&lt;br&gt;&lt;br&gt;
