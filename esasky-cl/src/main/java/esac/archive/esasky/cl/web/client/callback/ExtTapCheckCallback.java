@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.callback;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Timer;
@@ -28,6 +29,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	private final CountStatus countStatus;
 	private final String zeroCountMessage;
 
+	private List<WavelengthCorrection> wavelengthCorrections;
 	
 	public ExtTapCheckCallback(String adql, CommonTapDescriptor descriptor, CountStatus countStatus,
 			String progressIndicatorMessage, String zeroCountMessage) {
@@ -36,6 +38,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		this.countStatus = countStatus;
 		this.descriptor = descriptor;
 		this.zeroCountMessage = zeroCountMessage;
+		createWavelengthCorrections();
 	}
 
 	private void logReceived(int totalCount) {
@@ -97,7 +100,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 						CommonEventBus.getEventBus().fireEvent(
 								new ProgressIndicatorPopEvent(descriptor.getId() + "zeroCount"));
 					}
-				}.schedule(10000);
+				}.schedule(20000);
 			}
 		});
 	}
@@ -112,8 +115,18 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 
 			Double emMin = data.getDoubleOrNullProperty("em_min");
 			Double emMax = data.getDoubleOrNullProperty("em_max");
+
 			emMin = scaleWavelength(emMin);
 			emMax = scaleWavelength(emMax);
+
+
+			// MAST workaround for incorrect table data..
+			WavelengthCorrection wlc = wavelengthCorrections.stream().filter(c -> c.name.equalsIgnoreCase(column2Value)).findFirst().orElse(null);
+			if ("MAST".equalsIgnoreCase(descriptor.getMission()) && wlc != null) {
+				emMin = wlc.getWavelengthMin();
+				emMax = wlc.getWavelengthMax();
+			}
+
 
 			String whereADQL = ExtTapUtils.createLevelDescriptorWhereADQL(descriptor.getGroupColumn1(), column1Value, descriptor.getGroupColumn2(), column2Value);
 			String level2Name = column2Value != null && !column2Value.trim().isEmpty() ? column2Value : "Other";
@@ -189,6 +202,56 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 	private void updateCount(List<CommonTapDescriptor> descriptorList, List<Integer> descriptorCountList, DescriptorCountAdapter countAdapter) {
 		for (int i = 0; i < descriptorList.size(); i++) {
 			countAdapter.getCountStatus().setCount(descriptorList.get(i), descriptorCountList.get(i));
+		}
+	}
+
+	private void createWavelengthCorrections() {
+		WavelengthCorrection[] corrections = {
+				new WavelengthCorrection("Kepler", 6.0, 6.4),
+				new WavelengthCorrection("KeplerFFI", 6.0, 6.4),
+				new WavelengthCorrection("K2", 6.0, 6.4),
+				new WavelengthCorrection("K2FFI", 6.0, 6.4),
+				new WavelengthCorrection("SPITZER_SHA", 3.7, 5.5),
+				new WavelengthCorrection("GALEX", 6.6, 6.9),
+				new WavelengthCorrection("TESS", 6.0, 6.2),
+				new WavelengthCorrection("HST", 6.2, 6.8),
+				new WavelengthCorrection("SWIFT", 6.2, 6.8),
+				new WavelengthCorrection("HUT", 7.0, 7.4),
+				new WavelengthCorrection("EUVE", 7.1, 8.1),
+				new WavelengthCorrection("FUSE", 6.9, 7.1),
+				new WavelengthCorrection("BEFS", 6.9, 7.1),
+				new WavelengthCorrection("WUPPE", 6.5, 6.9),
+				new WavelengthCorrection("TUES", 6.8, 7.0),
+				new WavelengthCorrection("PS1", 5.9, 6.4),
+				new WavelengthCorrection("HLA", 5.7, 6.8),
+				new WavelengthCorrection("IUE", 6.9, 7.1),
+				new WavelengthCorrection("HLSP", 5.5, 7.1)
+		};
+
+		wavelengthCorrections = Arrays.asList(corrections);
+	}
+
+	private class WavelengthCorrection {
+		private final String name;
+		private final Double wavelengthMin;
+		private final Double wavelengthMax;
+
+		public WavelengthCorrection(String name, Double wavelengthMin, Double wavelengthMax) {
+			this.name = name;
+			this.wavelengthMin = wavelengthMin;
+			this.wavelengthMax = wavelengthMax;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public Double getWavelengthMin() {
+			return wavelengthMin;
+		}
+
+		public Double getWavelengthMax() {
+			return wavelengthMax;
 		}
 	}
 	
