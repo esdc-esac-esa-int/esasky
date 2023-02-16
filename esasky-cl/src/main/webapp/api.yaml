@@ -772,6 +772,25 @@ JWST planning tool:
       Clear all
     example:
       "{'event': 'clearJwstAll'}"
+
+ExtTap:
+  openExtTapPanel:
+    parameters:
+      tab:
+        type: (String)
+        description: (Optional) The name of the tab to be opened - case-insensitive
+    description:
+      Open the External Tap Panel. If tab is specified it will open that one. Otherwise it will open on the first tab (Treemap)
+    example:
+        "{event:'openExtTapPanel'}"
+        "{event:'openExtTapPanel',  content:{tab: 'Tap Registry'}}"
+
+  closeExtTapPanel:
+    description:
+      Close the External Tap Panel
+    example:
+      "{event:'closeExtTapPanel'}"
+
 Healpix MOC:
   addMOC:
     parameters:
@@ -1239,29 +1258,58 @@ Targetlist:
       "{event: 'closeTargetList'}"
 Image:
   openOutreachPanel:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
     description:
       Open the outreach panel of the available telescopes
     example:
-      "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
+        "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
+        "{event: 'openOutreachPanel', content: {telescope: 'HST'}}"
   closeOutreachPanel:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
     description:
       Close the outreach panel of the available telescopes
     example:
-      "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
+        "{event: 'closeOutreachPanel', content: {telescope: 'JWST'}}"
+        "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
   getOutreachImageIds:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
     description:
-      Get all available outreach image IDs
+      Get all available outreach image IDs of the available telescopes
     example:
-      "{event: 'getOutreachImageIds'}"
+        "{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}"
+        "{event: 'getOutreachImageIds', content: {telescope: 'HST'}}"
   openOutreachImage:
     parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
       id:
         type: (String)
         description: The unique identifier of the outreach image to be opened
     description:
-      Close the outreach panel
+      Open an outreach image of a telescope
     example:
-      "{event:'openOutreachImage',  content:{ id:'heic0406a'}}"
+        "{event:'openOutreachImage',  content:{telescope: 'JWST', id:'potm2208b'}}"
+        "{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}"
+  closeOutreachImage:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
+    description:
+      Close the outreach image of a telescope
+    example:
+        "{event:'closeOutreachImage',  content:{telescope: 'JWST'}}"
+        "{event:'closeOutreachImage',  content:{telescope: 'HST'}}"
   addSingleImage:
     description:
       Adds a single image on the sky
