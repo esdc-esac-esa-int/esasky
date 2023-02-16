@@ -3300,7 +3300,7 @@
 	<text key="menuItem_removeEntry">
 		Borrar entrada
 	</text>
-	<text key="treeMap_notInRange_catalogues">
+	<text key="treeMap_notInRange_ASTRO_SPECTRA">
         No se ha encontrado ningún Espectro o Curva de Luz en este rango de longitud de onda.
 	</text>
 	<text key="treeMap_noData_ASTRO_SPECTRA">
