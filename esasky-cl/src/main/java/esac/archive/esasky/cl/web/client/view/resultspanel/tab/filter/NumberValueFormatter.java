@@ -38,11 +38,11 @@ public class NumberValueFormatter implements ValueFormatter{
     @Override
     public String formatValue(double value) {
         if(numberOfDecimals == 0) {
-            return NumberFormatter.formatToNumberWithSpaces((int)Math.round(value));
+            return NumberFormatter.formatToNumberWithSpaces(Math.round(value));
         }
         if(Math.abs(value) >= Math.pow(10, -numberOfDecimals)){
             if(format.format(value % 1).equals(".0") || format.format(value % 1).equals("0")) {
-                return NumberFormatter.formatToNumberWithSpaces((int)value);
+                return NumberFormatter.formatToNumberWithSpaces((long)value);
             } else {
             	return formatDecimalValue(value);
                 
@@ -68,9 +68,9 @@ public class NumberValueFormatter implements ValueFormatter{
 			if (".".equals(decimal)) {
 				decimal = "";
 			}
-			return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value + 1) + decimal;
+			return ((long)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((long)value + 1) + decimal;
 		} else {
-			return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value) + decimal;
+			return ((long)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((long)value) + decimal;
 		}
 	}
 
