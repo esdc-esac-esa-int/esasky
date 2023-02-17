@@ -113,6 +113,10 @@ public class ESASkyColors {
 	}
 
 	public static String invertColor(String hex) {
+		if (!hex.startsWith("#")) {
+			return ESASkyColors.getNext();
+		}
+
 		hex = hex.replace("#", "");
 
 		// convert 3-digit hex to 6-digits.
