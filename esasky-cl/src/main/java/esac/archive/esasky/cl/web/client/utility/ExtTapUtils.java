@@ -40,9 +40,15 @@ public class ExtTapUtils {
         descriptor.setSampBaseURL(parent.getSampBaseURL());
         descriptor.setSampProductURI(parent.getSampProductURI());
         descriptor.setSampEnabled(parent.isSampEnabled());
+
+        if (parent.getLevel() == EsaSkyConstants.TREEMAP_LEVEL_SERVICE) {
+            parent.setColor(parent.getColor());
+        }
+
+        parent.addChild(descriptor);
+
         updateWavelength(descriptor, wavelengthStart, wavelengthEnd);
         updateWavelength(parent, wavelengthStart, wavelengthEnd);
-        parent.addChild(descriptor);
 
         if(EsaSkyConstants.TABLE_NAME.contentEquals(parent.getGroupColumn2()) && descriptor.getLevel() > 0) {
             String newProductURI = descriptor.getArchiveProductURI().replace("@@@" + EsaSkyConstants.TABLE_NAME+ "@@@", descriptor.getTableName());
@@ -60,14 +66,20 @@ public class ExtTapUtils {
     }
 
     private static void updateWavelength(CommonTapDescriptor descriptor, double start, double end) {
-        if (descriptor == null || !descriptor.isCustom()) {
+        if (descriptor == null) {
             return;
         }
-
         if (start > 0 && end > 0) {
             descriptor.setWavelengthStart(descriptor.getWavelengthStart() > 0 ? Math.min(descriptor.getWavelengthStart(), start) : start);
             descriptor.setWavelengthEnd(Math.max(descriptor.getWavelengthEnd(), end));
+        } else if (descriptor.getWavelengthStart() == 0 && descriptor.getWavelengthEnd() == 0) {
+            CommonTapDescriptor parent = descriptor.getParent();
+            if (parent != null) {
+                descriptor.setWavelengthStart(parent.getWavelengthStart());
+                descriptor.setWavelengthEnd(parent.getWavelengthEnd());
+            }
         }
+
     }
 
     public static void setCount(CommonTapDescriptor parent, CommonTapDescriptor child, int childCount) {

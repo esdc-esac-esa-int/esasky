@@ -369,11 +369,7 @@ public class ExtTapTreeMap extends TreeMap {
     	super.onSliderValueChange(low, high);
         update(true);
     }
-    
-    @Override
-    public void update() {
-        //Use other update function
-    }
+
     private void registerLargeFovEventObserver() {
     	CommonEventBus.getEventBus().addHandler(ExtTapFovEvent.TYPE,
                 extTapFovEvent -> {
