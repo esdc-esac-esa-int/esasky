@@ -165,7 +165,7 @@ public class ApiOverlay extends ApiBase{
 
 			TapMetadataDescriptor mDec = new TapMetadataDescriptor();
 			mDec.setName(ApiConstants.CENTER_DEC_DEG);
-			mRa.setUcd(UCD.POS_EQ_DEC.getValue());
+			mDec.setUcd(UCD.POS_EQ_DEC.getValue());
 			mDec.setDataType(ColumnType.DOUBLE.getName());
 			mDec.setPrincipal(true);
 			metadata.add(mDec);
