@@ -57,6 +57,15 @@ public class EntityRepository {
         return null;
     }
 
+    public GeneralEntityInterface getEntityByName(String name) {
+        for (GeneralEntityInterface currEntity : allEntities) {
+            if (currEntity.getDescriptor().getLongName().equals(name)) {
+                return currEntity;
+            }
+        }
+        return null;
+    }
+
     public void addEntity(GeneralEntityInterface newEntity) {
         if (newEntity != null) {
             allEntities.add(newEntity);

@@ -41,14 +41,14 @@ public class ApiOverlay extends ApiBase{
 	}
 	
 	public void selectShape(String overlayName, String shapeName, JavaScriptObject widget) {
-		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+		GeneralEntityInterface ent = EntityRepository.getInstance().getEntityByName(overlayName);
 		if (ent != null) {
 			ent.selectShapes(shapeName);
 		}
 	}
 
 	public void deselectShape(String overlayName, String shapeName, JavaScriptObject widget) {
-		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+		GeneralEntityInterface ent = EntityRepository.getInstance().getEntityByName(overlayName);
 		if (ent != null) {
 			ent.deselectShapes(shapeName);
 		}
@@ -57,7 +57,7 @@ public class ApiOverlay extends ApiBase{
 	public void deselectAllShapes(String overlayName, JavaScriptObject widget) {
 		
 		if(overlayName != null && !"".equals(overlayName)) {
-			GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+			GeneralEntityInterface ent = EntityRepository.getInstance().getEntityByName(overlayName);
 			if (ent != null) {
 				ent.deselectAllShapes();
 			}
@@ -193,7 +193,7 @@ public class ApiOverlay extends ApiBase{
 	
 	public void removeOverlay(String overlayName, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CLEARFOOTPRINTSOVERLAY, overlayName);
-		GeneralEntityInterface ent = EntityRepository.getInstance().getEntity(overlayName);
+		GeneralEntityInterface ent = EntityRepository.getInstance().getEntityByName(overlayName);
 		if (ent != null) {
 			ent.clearAll();
 			EntityRepository.getInstance().removeEntity(ent);
@@ -222,7 +222,7 @@ public class ApiOverlay extends ApiBase{
 
 	
 	public void setOverlayColor(String overlayName, String color,  JavaScriptObject widget) {
-		GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(overlayName);
+		GeneralEntityInterface entity = EntityRepository.getInstance().getEntityByName(overlayName);
 		if(entity != null) {
 			entity.setPrimaryColor(color);
 		}else {
@@ -233,7 +233,7 @@ public class ApiOverlay extends ApiBase{
 	}
 
 	public void setOverlaySize(String overlayName, double size,  JavaScriptObject widget) {
-		GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(overlayName);
+		GeneralEntityInterface entity = EntityRepository.getInstance().getEntityByName(overlayName);
 		if(entity != null) {
 			entity.setSizeRatio(size);
 		}else {
@@ -244,7 +244,7 @@ public class ApiOverlay extends ApiBase{
 	}
 
 	public void setOverlayShape(String overlayName, String shape, JavaScriptObject widget) {
-		GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(overlayName);
+		GeneralEntityInterface entity = EntityRepository.getInstance().getEntityByName(overlayName);
 		if(entity != null) {
 			
 			LinkedList<String> sourceTypes = new LinkedList<String>();
