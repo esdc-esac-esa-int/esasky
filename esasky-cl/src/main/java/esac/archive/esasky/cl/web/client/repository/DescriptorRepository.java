@@ -636,6 +636,7 @@ public class DescriptorRepository {
         descriptor.setShortName(name);
         descriptor.setSampEnabled(false);
         descriptor.setFovLimit(360.0);
+        descriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
 
         return descriptor;
     }

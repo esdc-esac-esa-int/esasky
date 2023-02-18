@@ -97,6 +97,16 @@ public class MocRepository {
 		
 		return null;
 	}
+
+	public MOCEntity getEntityByName(String name) {
+		for(MOCEntity entity : allEntities) {
+			if(entity.getDescriptor().getLongName().equals(name)) {
+				return entity;
+			}
+		}
+
+		return null;
+	}
 	
 	public static int getMinOrderFromFoV() {
 		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();

@@ -19,7 +19,7 @@ public class ApiMoc extends ApiBase{
 	}
 	
 	public void addMOC(String name, GeneralJavaScriptObject options, GeneralJavaScriptObject mocData) {
-		MOCEntity old = MocRepository.getInstance().getEntity(name);
+		MOCEntity old = MocRepository.getInstance().getEntityByName(name);
 		if(old != null) {
 			old.closeFromAPI();
 			MocRepository.getInstance().removeEntity(old);
@@ -54,7 +54,7 @@ public class ApiMoc extends ApiBase{
 	}
 	
 	public void removeMOC(String name) {
-		MOCEntity entity = MocRepository.getInstance().getEntity(name);
+		MOCEntity entity = MocRepository.getInstance().getEntityByName(name);
 		if(entity != null) {
 			entity.closeFromAPI();
 			MocRepository.getInstance().removeEntity(entity);
