@@ -183,11 +183,7 @@ public class ApiModules extends ApiBase{
 			customTreeMapDescriptor.getMissionDescriptors().addAll(newMissions);
 		}else {
 			for(CommonTapDescriptor missionToRemove : newMissions) {
-				for(CommonTapDescriptor existingMission : customTreeMapDescriptor.getMissionDescriptors()) {
-					if(missionToRemove.getId().equals(existingMission.getId())){
-						customTreeMapDescriptor.getMissionDescriptors().remove(existingMission);
-					}
-				}
+				customTreeMapDescriptor.getMissionDescriptors().removeIf(existingMission -> missionToRemove.getLongName().equals(existingMission.getLongName()));
 			}
 		}
 		controller.getRootPresenter().getCtrlTBPresenter().updateCustomTreeMap(customTreeMapDescriptor);
