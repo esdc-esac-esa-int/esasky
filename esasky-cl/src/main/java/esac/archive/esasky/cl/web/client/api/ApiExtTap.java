@@ -53,7 +53,7 @@ public class ApiExtTap extends ApiBase{
 		for(CommonTapDescriptor desc : parent.getAllChildren()) {
 			if (desc.getChildren().isEmpty()) {
 				String key = mission + "-" + desc.getParent().getLongName() + "-" + desc.getLongName();
-				obsCount.put(key + "-" + desc.getLongName(), new JSONNumber(desc.getCount()));
+				obsCount.put(key, new JSONNumber(desc.getCount()));
 			}
 		}
 
