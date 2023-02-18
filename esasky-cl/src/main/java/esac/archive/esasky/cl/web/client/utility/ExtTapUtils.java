@@ -1,6 +1,7 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
@@ -8,6 +9,7 @@ import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ExtTapUtils {
@@ -144,6 +146,37 @@ public class ExtTapUtils {
             return tableName;
         } else {
             return "\"" + tableName + "\"";
+        }
+    }
+
+
+    public static CommonTapDescriptor getLevelDescriptor(String levelId) {
+        if (levelId == null || levelId.isEmpty()) {
+            return null;
+        } else if (!levelId.contains("-")) {
+            return DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, levelId);
+        } else {
+            String[] levelIds = levelId.split("-");
+            CommonTapDescriptor parent = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, levelIds[0]);
+
+            for (CommonTapDescriptor child : parent.getChildren()) {
+                String childName = child.getLongName();
+                if (Objects.equals(childName, levelIds[1])) {
+                    if (levelIds.length > 2) {
+                        for (CommonTapDescriptor grandChild : child.getChildren()) {
+                            String grandChildName = grandChild.getLongName();
+                            if (Objects.equals(grandChildName, levelIds[2])) {
+                                return grandChild;
+                            }
+
+                        }
+                    } else {
+                        return child;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

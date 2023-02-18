@@ -292,7 +292,7 @@ public class DescriptorRepository {
         return result;
     }
 
-    public CommonTapDescriptor addExtTapDescriptorFromAPI(String name, String tapUrl, boolean dataOnlyInView, String adql) {
+    public CommonTapDescriptor createCustomExternalTapDescriptor(String name, String tapUrl, boolean dataOnlyInView, String adql) {
         CommonTapDescriptor descriptor = new CommonTapDescriptor();
 
         descriptor.setShortName(name);
@@ -304,6 +304,9 @@ public class DescriptorRepository {
         descriptor.setUseIntersectsPolygon(true);
         descriptor.setTapUrl(tapUrl);
         descriptor.setCustom(true);
+        descriptor.setIsExternal(true);
+        descriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
+        descriptor.setDescription(" ");
 
         descriptor.setMetadata(mockSpatialMetadata(EsaSkyWebConstants.S_RA, EsaSkyWebConstants.S_DEC, EsaSkyWebConstants.S_REGION));
 
@@ -337,7 +340,6 @@ public class DescriptorRepository {
 
         String[] tapTable = fromSplit[1].split("\\s");
         descriptor.setTableName(tapTable[1]);
-        addDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, descriptor);
         return descriptor;
     }
 

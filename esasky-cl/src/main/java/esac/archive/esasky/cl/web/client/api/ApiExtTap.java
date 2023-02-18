@@ -9,11 +9,11 @@ import com.google.gwt.json.client.JSONString;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
@@ -49,10 +49,11 @@ public class ApiExtTap extends ApiBase{
 	
 	private JSONObject countToJSON(final CommonTapDescriptor parent, CountStatus countStatus) {
 		JSONObject obsCount = new  JSONObject();
-
-		for(CommonTapDescriptor desc : DescriptorRepository.getInstance().getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
-			if(desc.getParent() != null && countStatus.containsDescriptor(desc)) {
-				obsCount.put(desc.getMission(), new JSONNumber(countStatus.getCount(desc)));
+		String mission = parent.getMission();
+		for(CommonTapDescriptor desc : parent.getAllChildren()) {
+			if (desc.getChildren().isEmpty()) {
+				String key = mission + "-" + desc.getParent().getLongName() + "-" + desc.getLongName();
+				obsCount.put(key + "-" + desc.getLongName(), new JSONNumber(desc.getCount()));
 			}
 		}
 
@@ -158,9 +159,10 @@ public class ApiExtTap extends ApiBase{
 	}
 
 	public void plotExtTap(String missionId, JavaScriptObject widget) {
-		CommonTapDescriptor desc = controller.getRootPresenter().getDescriptorRepository().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, missionId);
+
+		CommonTapDescriptor desc = ExtTapUtils.getLevelDescriptor(missionId);
 		
-		if(desc != null ) {
+		if(desc != null && desc.getChildren().isEmpty()) {
 			controller.getRootPresenter().getRelatedMetadata(desc);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put(ApiConstants.MESSAGE, new JSONString("Data from TAP: " + missionId + " displayed in the ESASky"));
@@ -180,7 +182,7 @@ public class ApiExtTap extends ApiBase{
 	
 	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit, GeneralJavaScriptObject options) {
 		
-	    CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, dataOnlyInView, adql);
+	    CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().createCustomExternalTapDescriptor(name, tapUrl, dataOnlyInView, adql);
 
 		if(limit == -1) {
 			limit = 3000;
@@ -195,6 +197,10 @@ public class ApiExtTap extends ApiBase{
 		if(options.hasProperty(ApiConstants.EXTTAP_STCS_COLUMN)) {
 			region = options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN);
 		}
+
+		if (options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)) {
+			region = options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN);
+		}
 		
 		if(options.hasProperty(ApiConstants.EXTTAP_RA_COLUMN)) {
 		    ra = options.getStringProperty(ApiConstants.EXTTAP_RA_COLUMN);
@@ -204,13 +210,11 @@ public class ApiExtTap extends ApiBase{
 		    dec = options.getStringProperty(ApiConstants.EXTTAP_DEC_COLUMN);
 		}
 
-		List<TapMetadataDescriptor> meta = descriptor.getMetadata();
-		meta.addAll(controller.getRootPresenter().getDescriptorRepository().mockSpatialMetadata(ra, dec, region));
-		descriptor.setMetadata(meta);
-		
-		if(options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)) {
-			descriptor.setUseIntersectsPolygon(true);
-		}
+		descriptor.setMetadata(controller.getRootPresenter().getDescriptorRepository().mockSpatialMetadata(ra, dec, region));
+		descriptor.setUseIntersectsPolygon(options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN));
+
+		descriptor.setFovLimitDisabled(!dataOnlyInView);
+		descriptor.setColor(color);
 
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
@@ -240,7 +244,7 @@ public class ApiExtTap extends ApiBase{
 			return;
 		}
 		
-		CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().addExtTapDescriptorFromAPI(name, tapUrl, false, adql);
+		CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().createCustomExternalTapDescriptor(name, tapUrl, false, adql);
 
 
 		descriptor.setShapeLimit(100000);
