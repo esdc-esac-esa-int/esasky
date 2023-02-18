@@ -374,7 +374,7 @@ public class MainPresenter {
     public void showUserRelatedMetadata(CommonTapDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
         Log.debug("[MainPresenter][showUserRelatedMetadata]");
 
-        GeneralEntityInterface entity = entityRepo.getEntity(descriptor.getId());
+        GeneralEntityInterface entity = entityRepo.getEntityByName(descriptor.getLongName());
         if (entity == null) {
             entity = entityRepo.createEntity(descriptor);
             entity.setId(descriptor.getId());

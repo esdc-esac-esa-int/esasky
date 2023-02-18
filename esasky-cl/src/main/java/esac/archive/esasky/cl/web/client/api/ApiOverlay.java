@@ -275,7 +275,7 @@ public class ApiOverlay extends ApiBase{
 	
 		JSONArray arr = new JSONArray();
 		for(GeneralEntityInterface ent : list) {
-			arr.set(arr.size(),new JSONString(ent.getId()));
+			arr.set(arr.size(),new JSONString(ent.getDescriptor().getLongName()));
 		}
 		JSONObject result = new JSONObject();
 		result.put("Overlays", arr);
