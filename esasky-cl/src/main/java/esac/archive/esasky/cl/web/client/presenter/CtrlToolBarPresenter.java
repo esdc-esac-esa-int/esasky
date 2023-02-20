@@ -61,7 +61,7 @@ public class CtrlToolBarPresenter {
         PublicationPanelPresenter.View getPublicationPanelView();
 
         void addTreeMapData(Collection<DescriptorCountAdapter> descriptorCountAdapters);
-        void replaceTreeMapData(Collection<DescriptorCountAdapter> descriptorCountAdapters);
+        void clearTreeMapData(String category);
 
         void addCustomTreeMap(CustomTreeMapDescriptor customTreeMapDescriptor);
 
@@ -176,8 +176,8 @@ public class CtrlToolBarPresenter {
                 });
         
         CommonEventBus.getEventBus().addHandler(TreeMapNewDataEvent.TYPE, newDataEvent -> {
-            if (newDataEvent.replaceData()) {
-                view.replaceTreeMapData(newDataEvent.getCountAdapterList());
+            if (newDataEvent.clearData()) {
+                view.clearTreeMapData(newDataEvent.getClearCategory());
                 DescriptorRepository.getInstance().doCountAll();
             } else {
                 view.addTreeMapData(newDataEvent.getCountAdapterList());

@@ -167,7 +167,22 @@ public class ExtTapTreeMap extends TreeMap {
 
     	makeSureGhostPointIsInGraph(ghostPoint.id);
     }
-    
+
+
+    @Override
+    public void clearData() {
+        for (Point point : series.getPoints()) {
+            series.removePoint(point, false, false);
+            point.setParent(""); // remove from parent, otherwise it will stay in graph
+        }
+
+        allPoints.clear();
+        allPointMap.clear();
+
+        update();
+
+        addGhostPoint(ghostPoint.getLoadingText());
+    }
     
     @Override
     public void addData(final List<CommonTapDescriptor> descriptors, List<Integer> counts) {

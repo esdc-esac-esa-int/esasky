@@ -151,7 +151,7 @@ public class Session {
 			CommonTapDescriptorList commonTapDescriptorList = mapper.read(edcObject.toJSONString());
 			DescriptorCountAdapter dca = new DescriptorCountAdapter(commonTapDescriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
 			DescriptorRepository.getInstance().setDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
-			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca), true));
+			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(null, true, EsaSkyWebConstants.CATEGORY_EXTERNAL));
 		}
 	}
 	

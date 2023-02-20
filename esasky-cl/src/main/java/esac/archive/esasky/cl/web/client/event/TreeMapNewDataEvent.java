@@ -11,15 +11,17 @@ public class TreeMapNewDataEvent extends GwtEvent<TreeMapNewDataEventHandler> {
     public static final Type<TreeMapNewDataEventHandler> TYPE = new Type<>();
 
     private final Collection<DescriptorCountAdapter> descriptors;
-    private final boolean replaceData;
+    private final boolean clearData;
+    private String clearCategory;
 
     public TreeMapNewDataEvent(Collection<DescriptorCountAdapter> countAdapters) {
-        this(countAdapters, false);
+        this(countAdapters, false, "");
     }
 
-    public TreeMapNewDataEvent(Collection<DescriptorCountAdapter> countAdapters, boolean replaceData) {
+    public TreeMapNewDataEvent(Collection<DescriptorCountAdapter> countAdapters, boolean clearData, String category) {
         this.descriptors = countAdapters;
-        this.replaceData = replaceData;
+        this.clearData = clearData;
+        this.clearCategory = category;
     }
 
     @Override
@@ -36,7 +38,11 @@ public class TreeMapNewDataEvent extends GwtEvent<TreeMapNewDataEventHandler> {
         return descriptors;
     }
 
-    public boolean replaceData() {
-        return replaceData;
+    public boolean clearData() {
+        return clearData;
+    }
+
+    public String getClearCategory() {
+        return clearCategory;
     }
 }

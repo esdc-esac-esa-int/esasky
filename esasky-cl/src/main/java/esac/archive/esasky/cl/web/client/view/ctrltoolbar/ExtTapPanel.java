@@ -216,7 +216,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
     }
 
     public void clearTreeMapData() {
-        treeMap.clearData();;
+        treeMap.clearData();
     }
 
     public void setTreeMapSliderValues(double x, double y) {

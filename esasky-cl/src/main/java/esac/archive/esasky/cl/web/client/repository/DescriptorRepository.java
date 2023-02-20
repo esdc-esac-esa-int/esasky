@@ -26,10 +26,7 @@ import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
-import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
@@ -254,12 +251,16 @@ public class DescriptorRepository {
     }
 
     public void resetExternalDataCenterDescriptors() {
-        CommonTapDescriptorList descriptorList = descriptorCountAdapterMap.get(EsaSkyWebConstants.CATEGORY_EXTERNAL).getTapDescriptorList();
-        List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors().stream().filter(x -> !x.isCustom()).collect(Collectors.toList());
+        DescriptorCountAdapter oldDca = descriptorCountAdapterMap.get(EsaSkyWebConstants.CATEGORY_EXTERNAL);
+        CommonTapDescriptorList descriptorList = oldDca.getTapDescriptorList();
+        descriptorList.getDescriptors().stream().filter(TapDescriptorBase::isCustom).forEach(y -> oldDca.getCountStatus().markForRemoval(y));
+
+
+        List<CommonTapDescriptor> descriptors = descriptorList.getDescriptors().stream().filter(x -> !x.isCustom() && x.getParent() == null).collect(Collectors.toList());
         descriptorList.setDescriptors(descriptors);
         DescriptorCountAdapter dca = new DescriptorCountAdapter(descriptorList, EsaSkyWebConstants.CATEGORY_EXTERNAL, null);
         setDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL, dca);
-        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca), true));
+        CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(null, true, EsaSkyWebConstants.CATEGORY_EXTERNAL));
     }
 
 

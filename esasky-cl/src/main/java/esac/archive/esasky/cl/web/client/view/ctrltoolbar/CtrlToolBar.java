@@ -781,30 +781,26 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void replaceTreeMapData(Collection<DescriptorCountAdapter> descriptorCounts) {
-        for (DescriptorCountAdapter descriptorCount : descriptorCounts) {
-            switch (descriptorCount.getCategory()) {
-                case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
-                    observationTreeMapContainer.clearData();
-                    break;
-                case EsaSkyWebConstants.CATEGORY_CATALOGUES:
-                    catalogTreeMapContainer.clearData();
-                    break;
-                case EsaSkyWebConstants.CATEGORY_SPECTRA:
-                    spectraTreeMapContainer.clearData();
-                    break;
-                case EsaSkyWebConstants.CATEGORY_SSO:
-                    ssoTreeMapContainer.clearData();
-                    break;
-                case EsaSkyWebConstants.CATEGORY_EXTERNAL:
-                    extTapPanel.clearTreeMapData();
-                    break;
-                default:
-                    Log.warn("[CtrlToolBar] Unknown category " + descriptorCount.getCategory());
-            }
+    public void clearTreeMapData(String category) {
+        switch (category) {
+            case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+                observationTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_CATALOGUES:
+                catalogTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_SPECTRA:
+                spectraTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_SSO:
+                ssoTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                extTapPanel.clearTreeMapData();
+                break;
+            default:
+                Log.warn("[CtrlToolBar] Unknown category " + category);
         }
-
-        addTreeMapData(descriptorCounts);
     }
 
     public class CustomTreeMap {

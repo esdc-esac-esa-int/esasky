@@ -1,35 +1,28 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.moxieapps.gwt.highcharts.client.Chart;
-import org.moxieapps.gwt.highcharts.client.Credits;
-import org.moxieapps.gwt.highcharts.client.Point;
-import org.moxieapps.gwt.highcharts.client.Series;
-import org.moxieapps.gwt.highcharts.client.Style;
-import org.moxieapps.gwt.highcharts.client.ToolTip;
-import org.moxieapps.gwt.highcharts.client.labels.DataLabels;
-import org.moxieapps.gwt.highcharts.client.labels.Labels;
-import org.moxieapps.gwt.highcharts.client.plotOptions.PlotOptions.Cursor;
-import org.moxieapps.gwt.highcharts.client.plotOptions.SeriesPlotOptions;
-import org.moxieapps.gwt.highcharts.client.plotOptions.TreemapPlotOptions;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-
-import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMultiRangeSliderObserver;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
+import org.moxieapps.gwt.highcharts.client.*;
+import org.moxieapps.gwt.highcharts.client.labels.DataLabels;
+import org.moxieapps.gwt.highcharts.client.labels.Labels;
+import org.moxieapps.gwt.highcharts.client.plotOptions.PlotOptions.Cursor;
+import org.moxieapps.gwt.highcharts.client.plotOptions.SeriesPlotOptions;
+import org.moxieapps.gwt.highcharts.client.plotOptions.TreemapPlotOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TreeMap extends Chart {
 
@@ -226,8 +219,11 @@ public class TreeMap extends Chart {
 
     public void clearData() {
         for (Point point : series.getPoints()) {
-            removePoint(point, true);
+            series.removePoint(point, false, false);
+            point.setParent(""); // remove from parent, otherwise it will stay in graph
         }
+        allPoints.clear();
+        update();
 
         addGhostPoint(ghostPoint.getLoadingText());
     }
