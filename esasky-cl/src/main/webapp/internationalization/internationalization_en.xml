@@ -4109,7 +4109,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Bkg Counts &lt;br&gt;&lt;i&gt;(ct
 		arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="resultsPresenter_helpDescription_observations_eROSITA">
 		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) is
 		a wide-field X-ray telescope on-board the Russian-German
@@ -5017,9 +5016,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
 	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
 
-
-
-	<!-- internationalization_es.xml is up to date for everything above -->
 	<text key="outreachJwstPanel_closePanel">
 		Close panel
 	</text>
@@ -5149,7 +5145,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 
 	<text key="treeMapContainer_help_EXT_TAP">
 		In ESASky you can now explore data from external data centres which conform with Virtual Observatory (IVOA) standards.
-		Services which have any data in the current region will appear in the tree map. Clicking on any service will show the available data product types in the visible region
+		Services which have any data in the current region will appear in the dashboard. Clicking on any service will show the available data product types in the visible region
 		(Images, Spectra etc). Clicking on a product type will show the available collections these products exist in.
 		Clicking on the collection/facility will load the data into the data panel and display the corresponding footprints in the sky.
 
@@ -5168,6 +5164,8 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="extTapPanel_resetTreemapBtn">
 		Reset the dashboard to its original state
 	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
+	<!-- internationalization_zh.xml is up to date for everything above -->
 
 
 </Internationalization>
