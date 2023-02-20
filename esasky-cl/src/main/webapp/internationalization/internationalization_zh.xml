@@ -1697,13 +1697,6 @@
 		&gt;
 		此功能的完整文档。
 		&lt;/a&gt; </text>
-	<text key="treeMapContainer_help_EXT_TAP">
-		在ESASky中你现在可以访问符合虚拟天文台（VO）数据服务标准的外部数据。	
-	
-		在当前视图中有数据的服务都会出现在树状图中。点击一个服务将显示当前视图中可用的数据产品类型（图像、光谱等）。点击产品类型将显示该类产品包含的全部数据集。
-		
-    点击数据集或设备将加载其数据到数据面板，同时显示数据的天区覆盖。
-	</text>
 
 
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST">
@@ -2577,6 +2570,148 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt;
+	</text>
+	﻿
+	<text key="outreachJwstPanel_closePanel">
+		关闭面板
+	</text>
+	<text key="webConstants_changeSky">
+		更换天空
+	</text>
+	<text key="webConstants_exploreTargetList">
+		浏览目标列表
+	</text>
+
+	<text key="short_name">
+		短名称
+	</text>
+	<text key="res_title">
+		抬头
+	</text>
+	<text key="res_subjects">
+		标题
+	</text>
+	<text key="ivoid">
+		标识符
+	</text>
+
+	<text key="tabulator_loadFailed_500">
+		我们无法从这个资源来处理响应，请查看详情以获得更多信息。
+	</text>
+	<text key="tabulator_loadFailed_400">
+		这个资源可能不支持锥形检索。建议去除FoV限制后再次尝试。&lt;br&gt;(在外部TAP注册窗口中的右上角是切换按钮)。
+	</text>
+	<text key="global_tap_panel_custom_query_description">
+		一个用户编写的查询语句被用来检索这个数据集。
+		&lt;br&gt;&lt;br&gt;
+		被使用的语句是：
+	</text>
+	<text key="tabulator_no_data_fov_limit_disabled">
+		空数据集
+	</text>
+
+	<text key="global_tap_panel_query_failed_title">
+		查询失败
+	</text>
+
+	<text key="global_tap_panel_query_failed_body">
+		针对TAP服务“$TAP_SERVICE$”的查询失败。这可能是因为服务没有响应或者数据无法被解释。
+	</text>
+
+	<text key="global_tap_panel_filter_tap_services">
+		过滤TAP服务……
+	</text>
+
+	<text key="global_tap_panel_filter_tap_tables">
+		过滤TAP表……
+	</text>
+
+	<text key="global_tap_panel_toggle_fov_restricted">
+		FoV被限制
+	</text>
+
+	<text key="global_tap_panel_toggle_fov_restricted_tooltip">
+		把表格数据限制在当前视场中
+	</text>
+
+	<text key="global_tap_panel_missing_column_title">
+		缺少列信息
+	</text>
+
+	<text key="global_tap_panel_missing_column_body">
+		我们无法找到定义此表的赤经（RA）、赤纬（Dec）或区域（Region）的任何列。
+		&lt;br&gt; 没有这些列，我们无法执行锥形搜索；相反，将获取完整的表。
+		&lt;br&gt;&lt;br&gt; &lt;b&gt;您想手动指定这些列吗？&lt;/b&gt; </text>
+
+	<text key="global_tap_panel_column_selector_header">
+		选择列
+	</text>
+
+	<text key="global_tap_panel_column_selector_help">
+		选择定义此表的赤经（RA）、赤纬（Dec）或区域（Region）的列。
+	</text>
+
+	<text key="global_tap_panel_custom_query_help">
+		生成一个定制化的ADQL语句来从TAP服务中获取数据，或者从示例中选择一个。
+	</text>
+
+	<text key="global_tap_panel_custom_query_title">
+		定制ADQL查询
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_tooltip">
+		选择一个示例或者自己写查询语句。
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_columns">
+		表中的列
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_table">
+		完整的表
+	</text>
+
+	<text
+		key="global_tap_panel_custom_query_dropdown_option_row_count">
+		统计行数
+	</text>
+
+	<text key="global_tap_panel_custom_query_run_query">
+		运行语句
+	</text>
+
+	<text key="treemap_zero_count_alert">
+		$MISSION$已被添加到面板中，但当前视场内没有要显示的数据。
+	</text>
+
+	<text key="resultsPresenter_helpDescription_custom_tap_entity">
+		外部数据由$PUBLISHER$提供。
+
+		&lt;br&gt;&lt;br&gt;
+		必须提醒注意的是这些数据与通过图像、光谱、表功能获取的数据不同，它们不是由ESASky团队维护的。
+
+		&lt;br&gt;&lt;br&gt;
+		更多信息访问&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		这里
+		&lt;/a&gt; </text>
+
+	<text key="treeMapContainer_help_EXT_TAP">
+		在ESASky中，您现在可以浏览符合虚拟天文台（IVOA）标准的外部数据中心的数据。在树状图中，任何在当前区域内具有数据的服务都将出现。单击任何服务将显示可见区域中可用的数据产品类型（图像、光谱等）。单击产品类型将显示这些产品所在的可用数据集。单击数据集/设施将加载数据到数据面板并在天空中显示相应的覆盖图。
+
+		&lt;br&gt;&lt;br&gt;
+		转到TAP注册表选项卡，以浏览所有可访问的数据中心。通过选择其中一个数据中心，您可以浏览它们的公开数据表并执行自定义查询、显示元数据或在数据面板中查看表格数据。使用相应的选项卡能快速访问ESA或VizieR提供的服务和数据。
+
+		&lt;br&gt;&lt;br&gt;
+		更多信息访问&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		这里
+		&lt;/a&gt; </text>
+
+	<text key="extTapPanel_resetTreemapBtn">
+		重置面板到初始状态
 	</text>
 
 </Internationalization>
