@@ -3590,34 +3590,34 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 	<text key="webConstants_changeSky">
 		        Cambiar de cielo</text>
 	<text key="webConstants_exploreTargetList">
-		        Explorar lista de objetivos</text>
+		        Explorar lista de fuentes</text>
 	    
 	<text key="short_name">
 		        Nombre corto</text>
 	<text key="res_title">
 		        Título</text>
 	<text key="res_subjects">
-		        Sujetos</text>
+		        Temas</text>
 	<text key="ivoid">
 		        Identificador</text>
 	<text key="tabulator_loadFailed_500">
-		       No podemos procesar la respuesta de este recurso. Ver detalles para más
+		       No posible procesar la respuesta de este recurso. Ver detalles para más
 		información.</text>
 	<text key="tabulator_loadFailed_400">
-		        Este recurso no permite este tipo de consultas. Por favor inténtalo
+		        El recurso no permite este tipo de consultas. Por favor inténtalo
 		otra vez sin la restricción del campo de visión (“FoV”).&lt;br&gt;
-		        (El botón en la parte superior derecha en la ventana de
+		        (El botón en la parte superior derecha de la ventana de
 		“External Tap Registry”)</text>
 	<text key="global_tap_panel_custom_query_description">
 		        Una consulta personalizada por el usuario se ha utilizado para
 		obtener este set de datos.&lt;br&gt;&lt;br&gt;
-		        La consulta que se ha utilizado es:</text>
+		        La consulta utilizada es:</text>
 	<text key="tabulator_no_data_fov_limit_disabled">
 		       Set de datos vacío</text>
 	<text key="global_tap_panel_query_failed_title">
 		        Consulta fallida</text>
 	<text key="global_tap_panel_query_failed_body">
-		        La consulta al servicio TAP "$TAP_SERVICE$" ha fallado. Esto se puede
+		        La consulta al servicio TAP "$TAP_SERVICE$" ha fallado. Ésto se puede
 		deber a que el servicio no responde o porque los datos no han podido
 		ser interpretados.</text>
 	<text key="global_tap_panel_filter_tap_services">
@@ -3631,15 +3631,11 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 	<text key="global_tap_panel_missing_column_title">
 		        Información de la columna no disponible</text>
 	<text key="global_tap_panel_missing_column_body">
-		       No hemos podido identificar ninguna columna asociada a RA, Dec, o
-		Región en esta tabla.&lt;br&gt; No podemos realizar una búsqueda sin
-		estas, en su lugar se va a mostrar la tabla completa
-		.&lt;br&gt;&lt;br&gt; &lt;b&gt;Te gustaría seleccionar las columnas
-		manualmente?&lt;/b&gt;</text>
+		       No ha podido identificar ninguna columna asociada a RA, Dec, o Región en esta tabla.&lt;br&gt; No puede realizar una búsqueda sin éstas,; en su lugar se va a mostrar la tabla completa.&lt;br&gt;&lt;br&gt; &lt;b&gt;¿Desea seleccionar las columnas manualmente?&lt;/b&gt;</text>
 	<text key="global_tap_panel_column_selector_header">
 		        Seleccionar columnas</text>
 	<text key="global_tap_panel_column_selector_help">
-		       Elegir las columna de la table que contienen RA, Dec o Región para esta
+		       Elegir columna de la tabla que contienen RA, Dec o Región para dicha
 		tabla.</text>
 	<text key="global_tap_panel_custom_query_help">
 		        Crear consulta personalizada de ADQL para descargar datos del
@@ -3649,7 +3645,7 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 	<text key="global_tap_panel_custom_query_dropdown_tooltip">
 		        Elegir uno de los ejemplos o escribir tu propia consulta.</text>
 	<text key="global_tap_panel_custom_query_dropdown_option_columns">
-		        Columnas en la tabla</text>
+		        Columnas de la tabla</text>
 	<text key="global_tap_panel_custom_query_dropdown_option_table">
 		        Tabla entera</text>
 	<text
@@ -3663,23 +3659,17 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 	<text key="resultsPresenter_helpDescription_custom_tap_entity">
 		        Proveedor externo de datos de $PUBLISHER$.        
 		&lt;br&gt;&lt;br&gt;
-		       Nótese que estos datos, al contrario de los que se ofrecen a travén
+		       Nótese que estos datos, al contrario de los que se ofrecen a través
 		de las opciones de imágenes, catálogos y espectros, no han sido
 		revisados por el equipo de ESASky.         &lt;br&gt;&lt;br&gt;&lt;a
 		        href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
 		        target="_blank"&gt;
 		        Más información.&lt;/a&gt;</text>
 	<text key="treeMapContainer_help_EXT_TAP">
-		En ESASky ahora puede explorer datos de centros
-		de datos externos que siguen los estándares de Observatorio Virtual
+		En ESASky ahora puede explorar datos de centros
+		de datos externos que cumplen los estándares de Observatorio Virtual
 		(IVOA). Los servicios que ofrecen datos en esta región del cielo
-		aparecerán de forma automática en el árbol de datos. Seleccionando
-		cualquiera de estos servicios mostrará los distintos tipos de
-		productos disponibles en esa región del cielo (imágenes, espectros,
-		etc.). Seleccionando un tipo de producto mostrará las colecciones de
-		datos disponibles para esos tipos de productos. Seleccionando una de
-		estas colecciones cargará los datos en el panel de resultados de la
-		parte inferior mostrando las huellas en el cielo de esos
+		aparecerán de forma automática en el dashboard. Seleccionando cualquiera de estos servicios, se mostrará los distintos tipos de productos disponibles en esa región del cielo (imágenes, espectros, etc.). Seleccionando un tipo de producto, se mostrará las colecciones de datos disponibles para esos tipos de productos. Seleccionando una de estas colecciones, se cargarán los datos en el panel de resultados de la parte inferior mostrando las huellas en el cielo correspondientes a esos
 		productos.
 		&lt;br&gt;&lt;br&gt;Navegar a la pestaña del
 		Registro TAP para explorar todos los centros de datos disponibles.
