@@ -61,10 +61,7 @@ public class TAPExtTapService extends AbstractTAPService {
         }
 
         if (descriptor.getBlacklist() != null) {
-            adql += descriptor.isFovLimitDisabled() ? WHERE  : AND;
-            adql += descriptor.getGroupColumn2()
-                    + (!isHEASARC ? " NOT IN" : " IN ") // HEASARC blacklist used as whitelist
-                    + "(" + Arrays.stream(descriptor.getBlacklist()).map(bl -> "'" + bl + "'").collect(Collectors.joining(", ")) + ")";
+            adql += getBlacklistAdql(descriptor, isHEASARC);
         }
 
     	if(descriptor.getWhereADQL() != null && !isChildHEASARC) {
@@ -78,6 +75,15 @@ public class TAPExtTapService extends AbstractTAPService {
     	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
 
     	return adql;
+    }
+
+    private String getBlacklistAdql(CommonTapDescriptor descriptor, boolean isHEASARC) {
+        String adql = descriptor.isFovLimitDisabled() ? WHERE  : AND;
+        adql += descriptor.getGroupColumn2()
+                + (!isHEASARC ? " NOT IN" : " IN ") // HEASARC blacklist used as whitelist
+                + "(" + Arrays.stream(descriptor.getBlacklist()).map(bl -> "'" + bl + "'").collect(Collectors.joining(", ")) + ")";
+
+        return adql;
     }
 
     private String screenCircle() {

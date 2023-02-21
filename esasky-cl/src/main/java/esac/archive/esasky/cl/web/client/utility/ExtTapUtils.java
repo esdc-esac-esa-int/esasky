@@ -74,7 +74,7 @@ public class ExtTapUtils {
         if (start > 0 && end > 0) {
             descriptor.setWavelengthStart(descriptor.getWavelengthStart() > 0 ? Math.min(descriptor.getWavelengthStart(), start) : start);
             descriptor.setWavelengthEnd(Math.max(descriptor.getWavelengthEnd(), end));
-        } else if (descriptor.getWavelengthStart() == 0 && descriptor.getWavelengthEnd() == 0) {
+        } else if (descriptor.getWavelengthStart() <= 0 && descriptor.getWavelengthEnd() <= 0) {
             CommonTapDescriptor parent = descriptor.getParent();
             if (parent != null) {
                 descriptor.setWavelengthStart(parent.getWavelengthStart());
@@ -155,28 +155,29 @@ public class ExtTapUtils {
             return null;
         } else if (!levelId.contains("-")) {
             return DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, levelId);
-        } else {
-            String[] levelIds = levelId.split("-");
-            CommonTapDescriptor parent = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, levelIds[0]);
+        }
 
-            for (CommonTapDescriptor child : parent.getChildren()) {
-                String childName = child.getLongName();
-                if (Objects.equals(childName, levelIds[1])) {
-                    if (levelIds.length > 2) {
-                        for (CommonTapDescriptor grandChild : child.getChildren()) {
-                            String grandChildName = grandChild.getLongName();
-                            if (Objects.equals(grandChildName, levelIds[2])) {
-                                return grandChild;
-                            }
+        String[] levelIds = levelId.split("-");
+        CommonTapDescriptor parent = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_EXTERNAL, levelIds[0]);
 
+        for (CommonTapDescriptor child : parent.getChildren()) {
+            String childName = child.getLongName();
+            if (Objects.equals(childName, levelIds[1])) {
+                if (levelIds.length > 2) {
+                    for (CommonTapDescriptor grandChild : child.getChildren()) {
+                        String grandChildName = grandChild.getLongName();
+                        if (Objects.equals(grandChildName, levelIds[2])) {
+                            return grandChild;
                         }
-                    } else {
-                        return child;
+
                     }
+                } else {
+                    return child;
                 }
             }
-
-            return null;
         }
+
+        return null;
+
     }
 }

@@ -569,7 +569,7 @@ public class DescriptorRepository {
                     CommonTapDescriptor descriptor = descriptorCountAdapter.getDescriptorByTable(singleCount.getTableName());
 
                     if (descriptor != null) {
-                        final int count = (singleCount.getCount() != null) ? singleCount.getCount() : 0;
+                        final int count = Optional.ofNullable(singleCount.getCount()).orElse(0);
                         cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
                         remainingDescriptors.remove(singleCount.getTableName());
                         descriptors.add(descriptor);
