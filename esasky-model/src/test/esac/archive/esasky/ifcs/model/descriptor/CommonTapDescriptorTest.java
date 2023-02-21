@@ -48,12 +48,19 @@ class CommonTapDescriptorTest {
     @Test
     void testCommonTapDescriptorLevel() {
         CommonTapDescriptor descriptor1 = descriptorList.getDescriptors().get(0);
-        CommonTapDescriptor descriptor2 = descriptorList.getDescriptors().get(0);
+        CommonTapDescriptor descriptor2 = descriptorList.getDescriptors().get(1);
         assertNull(descriptor1.getParent());
         assertNull(descriptor2.getParent());
         descriptor1.addChild(descriptor2);
         assertEquals(descriptor1, descriptor2.getParent());
         assertEquals(1, descriptor1.getChildren().size());
+        assertEquals(1, descriptor1.getAllChildren().size());
         assertEquals(descriptor2, descriptor1.getChildren().get(0));
+        assertEquals(descriptor1, descriptor2.getOriginalParent());
+        descriptor1.removeChildren(Arrays.asList(descriptor2.getId()));
+        assertEquals(1, descriptor1.getChildren().size());
+        assertEquals(descriptor1, descriptor2.getParent());
+        descriptor1.removeChildren(Arrays.asList(""));
+        assertEquals(0, descriptor1.getChildren().size());
     }
 }
