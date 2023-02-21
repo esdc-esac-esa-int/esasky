@@ -108,6 +108,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         this.regionColumn = regionColumn;
         this.id = "ESASKY_ENTITY_" + UUID.randomUUID();
 
+        if (Objects.equals(descriptor.getMission(), "Gaia-DR3")) {
+            descriptor.setSecondaryColor("#33ccff");
+        }
+
         String color = descriptor.getColor();
         JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(id, color, lineStyle);
 
