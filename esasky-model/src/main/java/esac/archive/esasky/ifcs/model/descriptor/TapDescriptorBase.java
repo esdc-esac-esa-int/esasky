@@ -201,9 +201,10 @@ public abstract class TapDescriptorBase {
 
 
     public String[] getBlacklist() {
+        final String blacklistKey = "blacklist";
         Map<String, Object> properties = getProperties();
-        if (properties.containsKey("blacklist") && properties.get("blacklist") != null) {
-            String blacklist = properties.get("blacklist").toString();
+        if (properties.containsKey(blacklistKey) && properties.get(blacklistKey) != null) {
+            String blacklist = properties.get(blacklistKey).toString();
             blacklist = blacklist.replaceAll("[{}]", "");
             return blacklist.split(",");
         } else {
