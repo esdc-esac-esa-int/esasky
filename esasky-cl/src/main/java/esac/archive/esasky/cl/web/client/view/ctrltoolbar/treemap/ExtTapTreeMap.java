@@ -150,10 +150,10 @@ public class ExtTapTreeMap extends TreeMap {
         for(PointInformation pointInformation : allPoints.values()) {
             CommonTapDescriptor childDesc =  pointInformation.descriptor;
             if(childDesc.getParent() == parent) {
-                    Point child = getPoint(childDesc);
-                    child.update(0,false);
-                    pointInformation.setCount(0);
-                    cleanChildren(childDesc);
+                Point child = getPoint(childDesc);
+                child.update(0,false);
+                pointInformation.setCount(0);
+                cleanChildren(childDesc);
             }
         }
     }
@@ -182,6 +182,11 @@ public class ExtTapTreeMap extends TreeMap {
         update();
 
         addGhostPoint(ghostPoint.getLoadingText());
+    }
+
+    @Override
+    public void update() {
+        // Use other update functions
     }
     
     @Override
