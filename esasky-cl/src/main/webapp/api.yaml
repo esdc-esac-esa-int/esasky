@@ -1333,7 +1333,7 @@ Image:
         type: (Double)
         description: Rotation of the image
     example:
-      "{'event':'addSingleImage', 'content':{name:'MyImage', url:'https://hst.esac.esa.int/tap-server/data?OBSERVATIONID=hst_08597_46_wfpc2_f606w_wf&RETRIEVAL_TYPE=POSTCARD&TAPCLIENT=ESASKY', ra:192.6162107, dec:25.5088941, rot:0.0, fov:0.044}}"
+      "{'event':'addSingleImage', 'content':{name:'MyImage', url:'https://cdn.eso.org/images/screen/eso1740a.jpg', ra:272.5123750, dec:-24.0248889, rot:90.0, fov:1.0471666666666666666666666666667}}"
   addTiledImage:
     description:
       Adds a tiled image on the sky
@@ -1357,7 +1357,7 @@ Image:
         type: (Double)
         description: Rotation of the image
     example:
-      "{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso1723a/', ra:83.7844027714, dec:-5.47870026672, rot:0.18, fov:0.999, width:16877, height:13107}}"
+      "{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso0907a/', ra:337.4107083, dec:-20.8237005, rot:-0.1, fov:0.467, width:7059, height:6535}}"
 Player:
   playerPlay:
     description:
