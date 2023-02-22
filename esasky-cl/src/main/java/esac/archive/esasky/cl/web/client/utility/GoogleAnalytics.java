@@ -253,6 +253,10 @@ public final class GoogleAnalytics {
 
     public static final String ACT_SKIES_PANEL_EVA_TOGGLE= "toggleEva";
 
+    public static final String ACT_OPEN_VIZIER_TAB = "vizierTabOpened";
+    public static final String ACT_OPEN_ESA_TAB = "esaTabOpened";
+    public static final String ACT_OPEN_REGISTRY_TAB = "registryTabOpened";
+
     
     //Send events methods
 	public static native void sendEvent(String eventCategory, String eventAction, String eventLabel)/*-{

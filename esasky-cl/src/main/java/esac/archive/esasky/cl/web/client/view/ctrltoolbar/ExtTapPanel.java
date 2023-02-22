@@ -13,6 +13,7 @@ import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
@@ -55,7 +56,7 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
     }
 
     public ExtTapPanel() {
-        super("", false);
+        super(GoogleAnalytics.CAT_EXTERNALTAPS, false);
         Resources resources = GWT.create(Resources.class);
         CssResource style = resources.style();
         style.ensureInjected();
@@ -124,10 +125,13 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
             if (selectedTabIndex == TabIndex.REGISTRY.ordinal()) {
                 registryPanel.loadData();
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_EXTERNALTAPS, GoogleAnalytics.ACT_OPEN_REGISTRY_TAB, "");
             } else if (selectedTabIndex == TabIndex.VIZIER.ordinal()) {
                 vizierPanel.loadData();
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_EXTERNALTAPS, GoogleAnalytics.ACT_OPEN_VIZIER_TAB, "");
             } else if (selectedTabIndex == TabIndex.ESA.ordinal()) {
                 esaPanel.loadData();
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_EXTERNALTAPS, GoogleAnalytics.ACT_OPEN_ESA_TAB, "");
             }
 
             if (selectedTabIndex != TabIndex.TREEMAP.ordinal()) {
