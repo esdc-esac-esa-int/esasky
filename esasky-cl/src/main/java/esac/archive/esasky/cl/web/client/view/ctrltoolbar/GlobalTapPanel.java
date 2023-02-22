@@ -22,7 +22,6 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.ColumnSelectorPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.GlassFlowPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
