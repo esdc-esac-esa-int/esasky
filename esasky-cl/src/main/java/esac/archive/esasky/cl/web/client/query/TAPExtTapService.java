@@ -44,8 +44,12 @@ public class TAPExtTapService extends AbstractTAPService {
 		// Handle tables with non-alphanumeric characters
         adql += FROM + ExtTapUtils.encapsulateTableName(tapTable);
 
-        boolean isHEASARC = descriptor.getMission().equalsIgnoreCase(HEASARC);
+        boolean isHEASARC = descriptor.getMission().equalsIgnoreCase(HEASARC)
+                && descriptor.getOriginalParent() != null
+                && !descriptor.getOriginalParent().isCustom();
+
         boolean isChildHEASARC = isHEASARC && descriptor.getParent() != null;
+
         if (isHEASARC && !isChildHEASARC) {
             adql += " JOIN master_table.indexview on table_name = name";
         }
