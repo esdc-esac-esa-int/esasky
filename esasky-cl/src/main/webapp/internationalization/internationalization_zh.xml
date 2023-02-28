@@ -12,10 +12,10 @@
 	</text>
 	<text key="header_viewInWWTAbbr">
 		WWT视图
-    </text>
+	</text>
 	<text key="header_viewInWWTFull">
 		在万维望远镜中显示当前视图
-    </text>
+	</text>
 	<text key="header_takeScreenshotFull">
 		获取当前页面截屏
 	</text>
@@ -1205,7 +1205,7 @@
 		硬X射线
 	</text>
 	<text key="wavelength_HARD_X_RAY_Tooltip">
-    10 - 100 keV, 10 - 100 埃
+		10 - 100 keV, 10 - 100 埃
 	</text>
 	<text key="wavelength_SOFT_X_RAY">
 		软X射线
@@ -1472,7 +1472,7 @@
 		在此波长范围内未找到太阳系天体观测数据
 	</text>
 	<text key="resultsPresenter_helpDescription_observations_HST-OPTICAL">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1485,7 +1485,7 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
@@ -1493,7 +1493,7 @@
 		&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_observations_HST-UV">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1506,7 +1506,7 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。	
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。	
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
@@ -1514,7 +1514,7 @@
 		&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_observations_HST-IR">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1527,7 +1527,7 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
@@ -1535,7 +1535,7 @@
 		&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_observations_ALMA">
-    ALMA（阿塔卡玛毫米/亚毫米波阵列望远镜）是世界上最大的毫米/亚毫米波地基观测设备。ALMA是一个由50面直径12米天线组成的巨型阵列，最长基线达16千米。它配备了先进的接收机，可覆盖1太赫兹以下的所有大气观测窗口。	
+		ALMA（阿塔卡玛毫米/亚毫米波阵列望远镜）是世界上最大的毫米/亚毫米波地基观测设备。ALMA是一个由50面直径12米天线组成的巨型阵列，最长基线达16千米。它配备了先进的接收机，可覆盖1太赫兹以下的所有大气观测窗口。	
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-observations#ALMA-OBS"
@@ -1544,7 +1544,7 @@
 		&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
-	钱德拉源表（CSC）是最权威的X射线源星表，由钱德拉X射线望远镜探测得到。2.0版本（CSC 2.0）是该星表的第二个主要的版本。与1.1版本相比，它在天区覆盖、灵敏度以及性能方面都有显著提升。CSC 2.0包含了317,167颗致密X射线源和X射线展源的观测结果，可用于大样本统计学分析或单个源的深入研究。基于到2014年底公开发布的10,382次钱德拉ACIS、HRC-I图像观测数据，共提取出928,280组单次观测结果。
+		钱德拉源表（CSC）是最权威的X射线源星表，由钱德拉X射线望远镜探测得到。2.0版本（CSC 2.0）是该星表的第二个主要的版本。与1.1版本相比，它在天区覆盖、灵敏度以及性能方面都有显著提升。CSC 2.0包含了317,167颗致密X射线源和X射线展源的观测结果，可用于大样本统计学分析或单个源的深入研究。基于到2014年底公开发布的10,382次钱德拉ACIS、HRC-I图像观测数据，共提取出928,280组单次观测结果。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Chandra"
@@ -1569,9 +1569,9 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_AKARI-IRC-SC">
-    AKARI IRC点源星表1.0版本提供了中红外波段870,973个源的位置和流量信息。其中9微米波段有844,649个源，18微米波段有194,551个源。
+		AKARI IRC点源星表1.0版本提供了中红外波段870,973个源的位置和流量信息。其中9微米波段有844,649个源，18微米波段有194,551个源。
 		&lt;br&gt;&lt;br&gt;
-    在16个月的低温观测任务期间，IRC在9/18微米波段对96%-97%的天区进行了两次以上扫描。这个点源星表是AKARI IRC巡天的主星表。每一次扫描观测采用了相同的探测极限，使得本星表在全天范围内拥有一致的探测极限。冗余观测被用来增强探测的可靠性。
+		在16个月的低温观测任务期间，IRC在9/18微米波段对96%-97%的天区进行了两次以上扫描。这个点源星表是AKARI IRC巡天的主星表。每一次扫描观测采用了相同的探测极限，使得本星表在全天范围内拥有一致的探测极限。冗余观测被用来增强探测的可靠性。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#Akari"
@@ -1579,7 +1579,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_HSC">
-    HSC哈勃星表将哈勃遗珍档案库（HLA）中所有独立观测的源表合并为一个星表。将HLA中数以万计的独立观测源表整合成为一个星表，旨在提升哈勃空间望远镜的科学产出。HSC哈勃星表第三版收录了HLA第十次数据发布的数据，包括从WFPC2、ACS/WFC、WFC3/UVIS及WFC3/IR设备观测中提取的源。为了最小化不同图像中相近源的位置偏移，交叉证认过程中对重叠图像的天体测量结果进行了修正。经过修正，这些证认源的天体测量残差显著减小，平均误差小于8毫角秒。
+		HSC哈勃星表将哈勃遗珍档案库（HLA）中所有独立观测的源表合并为一个星表。将HLA中数以万计的独立观测源表整合成为一个星表，旨在提升哈勃空间望远镜的科学产出。HSC哈勃星表第三版收录了HLA第十次数据发布的数据，包括从WFPC2、ACS/WFC、WFC3/UVIS及WFC3/IR设备观测中提取的源。为了最小化不同图像中相近源的位置偏移，交叉证认过程中对重叠图像的天体测量结果进行了修正。经过修正，这些证认源的天体测量残差显著减小，平均误差小于8毫角秒。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#HSC"
@@ -1587,7 +1587,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_spectra_HST-UV">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1600,14 +1600,14 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1620,14 +1620,14 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
-    &lt;br&gt;&lt;br&gt;
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
+		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_spectra_HST-IR">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1640,14 +1640,14 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
-    &lt;br&gt;&lt;br&gt;
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
+		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_sso_HST">
-    ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
+		ESASky提供的哈勃空间望远镜观测数据来自两个HST数据库
 		&lt;ul&gt;
 		&lt;li&gt;
 		&lt;span&gt;
@@ -1660,8 +1660,8 @@
 		&lt;/span&gt;
 		&lt;/li&gt;
 		&lt;/ul&gt;
-    ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
-    &lt;br&gt;&lt;br&gt;
+		ESASky在显示HST数据时进行了优化，优先显示复合图像，继而显示单幅图像。
+		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#HST-OBS"
 		target="_blank"&gt;
 		更多信息
@@ -1673,7 +1673,7 @@
 		下载
 	</text>
 	<text key="WelcomeDialog_description">
-        ESASky是一个天文数据搜索和可视化软件。
+		ESASky是一个天文数据搜索和可视化软件。
 	</text>
 	<text key="commonObservationTablePanel_showingGlobalSkyCoverage">
  		显示该数据集的天区覆盖情况。可放大并刷新表格，以获得单个观测的天区覆盖图。
@@ -1690,7 +1690,7 @@
 		为了实现这一功能，ESASky团队创建了一个批处理管道程序，利用IMCCE(巴黎天体力学和星历计算研究所)的软件，结合航天器的位置来获取每个太阳系天体的星历信息，并对太阳系天体轨道与整个任务数据库进行交叉匹配，以发现在拍摄图像期间，太阳系天体落在成像仪器视野之内的观测结果。
 				
 		&lt;br&gt;&lt;br&gt;
-		小行星和其他太阳系天体将被添加到ESASky的下一个更新版本中，来自其他观测任务的图像结果很快也会被添加进来。        
+		小行星和其他太阳系天体将被添加到ESASky的下一个更新版本中，来自其他观测任务的图像结果很快也会被添加进来。   
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-interface#SSO"
 		target="_blank"
@@ -1700,7 +1700,7 @@
 
 
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST">
-    大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
+大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第八次数据发布包含了2020年6月底以前观测的所有数据，LAMOST低分辨总星表包 括10633515个光谱，其中有10336752个恒星光谱、224702个星系光谱以及72061个类星体光 谱，此外该表中g波段或i波段信噪比大于10的光谱有9563115个。LAMOST中分辨总星表包含 5975982个光谱，其中1465789个属于非时域巡天，4510193个属于时域巡天。（注意：该星 表共有22141635行记录，这与前面两个统计数字1465789和4510193不同。对于非时域巡天， 我们只统计了每一个合并光谱以构成统计数字1465789，而对于时域巡天，B和R波段的单次曝 光光谱被认为是统计数字4510193中的一个。）
 		&lt;br&gt;&lt;br&gt;
@@ -1713,7 +1713,7 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST">
-    大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
+大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第八次数据发布包含了2020年6月底以前观测的所有数据，LAMOST低分辨总星表包 括10633515个光谱，其中有10336752个恒星光谱、224702个星系光谱以及72061个类星体光 谱，此外该表中g波段或i波段信噪比大于10的光谱有9563115个。LAMOST中分辨总星表包含 5975982个光谱，其中1465789个属于非时域巡天，4510193个属于时域巡天。（注意：该星 表共有22141635行记录，这与前面两个统计数字1465789和4510193不同。对于非时域巡天， 我们只统计了每一个合并光谱以构成统计数字1465789，而对于时域巡天，B和R波段的单次曝 光光谱被认为是统计数字4510193中的一个。）
 		&lt;br&gt;&lt;br&gt;
@@ -1726,7 +1726,7 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
-    大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
+大天区面积多目标光纤光谱望远镜（LAMOST，也称郭守敬望远镜）是中国自主研发设计的大 型光学波段观测设备，由中国科学院国家天文台运行和维护。LAMOST是一个特殊的反射式施 密特望远镜，焦面上安装了4000根光纤，可以同时观测20平方度视场内的4000个目标 。LAMOST巡天为多种天体提供了波长和相对流量定标且减天光后的光谱数据，波长范围是 3700-9000埃。自2018年10月起，LAMOST开启了二期巡天，包括低分辨光谱巡天和中分辨光 谱巡天两个任务，中分辨光谱巡天又包括了时域和非时域两个项目。
 		&lt;br&gt;&lt;br&gt;
 		LAMOST第八次数据发布包含了2020年6月底以前观测的所有数据，LAMOST低分辨总星表包 括10633515个光谱，其中有10336752个恒星光谱、224702个星系光谱以及72061个类星体光 谱，此外该表中g波段或i波段信噪比大于10的光谱有9563115个。LAMOST中分辨总星表包含 5975982个光谱，其中1465789个属于非时域巡天，4510193个属于时域巡天。（注意：该星 表共有22141635行记录，这与前面两个统计数字1465789和4510193不同。对于非时域巡天， 我们只统计了每一个合并光谱以构成统计数字1465789，而对于时域巡天，B和R波段的单次曝 光光谱被认为是统计数字4510193中的一个。）
 		&lt;br&gt;&lt;br&gt;
@@ -1752,7 +1752,7 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_observations_AKARI">
-    ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接下载自日本ISAS数据存档和传输系统（DARTS）。该IRC红外相机包含NIR、MIR-S和MIR-L三个独立的系统，分别可观测1.7-5.5微米、5.8-14.1微米和12.4-26.5微米三个波段。每个系统都有三个滤光片可用。NIR和MIR-S视场相同，而MIR-L的视场与它们没有重叠。该设备的简要说明和数据产品请参考这个文档：
+ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接下载自日本ISAS数据存档和传输系统（DARTS）。该IRC红外相机包含NIR、MIR-S和MIR-L三个独立的系统，分别可观测1.7-5.5微米、5.8-14.1微米和12.4-26.5微米三个波段。每个系统都有三个滤光片可用。NIR和MIR-S视场相同，而MIR-L的视场与它们没有重叠。该设备的简要说明和数据产品请参考这个文档：
 		&lt;a
 		href="//repository.exst.jaxa.jp/dspace/bitstream/a-is/906920/1/AA1830017000.pdf"
 		target="_blank"&gt;
@@ -2023,21 +2023,6 @@
 	<text key="closeableTabLayoutPanel_saveResultsTableOrDownload">
 		下载数据库数据
 	</text>
-
-	<text key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
-		Gaia DR3星表提供了超过14.6亿颗G波段星等在3到21之间的恒星的位置、视差和自行数据
-		。天体测量解算结果还包含了RUWE（重归一化单位权重误差）以及源图像描述符。同时
-		，本版星表还提供了18.06亿颗源的G星等，15.42亿颗源的G&lt;sub&gt;BP&lt;/sub&gt; 星等，15.55亿颗源的G&lt;sub&gt;RP&lt;/sub&gt; 星等。源
-		位置误差在0.01毫角秒（G&lt;15 星等）至 1毫角秒（G=21 星等）之间，视差误差在0.02毫角秒
-		（G&lt;15星等）至1.3毫角秒（G=21星等）之间，自行误差在0.02毫角秒/年（G&lt;15星等）至
-		1.4毫角秒/年（G=21星等）。
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-		target="_blank"&gt;
-		更多信息
-		&lt;/a&gt;
-	</text>
 ﻿	<text key="selectionToolbox_showSelectionToolbox">
 		显示选择工具
 	</text>
@@ -2133,7 +2118,7 @@
 		&lt;/a&gt; 
 		
 		&lt;br&gt;&lt;br&gt;
-    	必须指出，这些数据与通过ESASky的图像、光谱和星表通道提供的数据不同，ESASky团队不对这些数据进行管理。	
+	必须指出，这些数据与通过ESASky的图像、光谱和星表通道提供的数据不同，ESASky团队不对这些数据进行管理。	
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
@@ -2150,7 +2135,7 @@
 		&lt;/a&gt; 
 		
 		&lt;br&gt;&lt;br&gt;
-    	必须指出，这些数据与通过ESASky的图像、光谱和星表通道提供的数据不同，ESASky团队不对这些数据进行管理。	
+	必须指出，这些数据与通过ESASky的图像、光谱和星表通道提供的数据不同，ESASky团队不对这些数据进行管理。	
 	
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -2185,7 +2170,7 @@
 		链接的数据产品
 	</text>
 	<text key="tabulator_products">
-    产品
+产品
   </text>
 	<text key="tabulator_columnHeader_browseProducts">
   	浏览产品
@@ -2404,119 +2389,119 @@
 	<text key="instrumentDetailsPopup_close">
 		关闭	</text>
 	<text key="searchToolbox_radius">
-	    半径（度）
+	半径（度）
 	</text>
 	<text key="header_acknowledge">
-	    致谢ESASky
+	致谢ESASky
 	</text>
 	<text key="resultsPresenter_helpDescription_spectra_JWST-MID-IR">
-	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
-	    &lt;br&gt;&lt;br&gt;
-	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
-	    target="_blank"&gt;
-	    更多信息
-	    &lt;/a&gt; </text>
+	韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	&lt;br&gt;&lt;br&gt;
+	成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	&lt;br&gt;&lt;br&gt;
+	&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	target="_blank"&gt;
+	更多信息
+	&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_observations_JWST-NEAR-IR">
-	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
-	    &lt;br&gt;&lt;br&gt;
-	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
-	    target="_blank"&gt;
-	    更多信息
-	    &lt;/a&gt; </text>
+	韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	&lt;br&gt;&lt;br&gt;
+	成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	&lt;br&gt;&lt;br&gt;
+	&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	target="_blank"&gt;
+	更多信息
+	&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_observations_JWST-MID-IR">
-	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
-	    &lt;br&gt;&lt;br&gt;
-	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
-	    target="_blank"&gt;
-	    更多信息
-	    &lt;/a&gt; </text>
+	韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	&lt;br&gt;&lt;br&gt;
+	成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	&lt;br&gt;&lt;br&gt;
+	&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	target="_blank"&gt;
+	更多信息
+	&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_spectra_JWST-NEAR-IR">
-	    韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
-	    &lt;br&gt;&lt;br&gt;
-	    成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
-	    target="_blank"&gt;
-	    更多信息
-	    &lt;/a&gt; </text>
+	韦布空间望远镜（JWST）是人类迄今发射到太空中最大的光学红外天文台，由NASA、ESA和CSA联合研制。韦布空间望远镜工作在红外波段，对宇宙进行探测。它的轨道位于距地球150万千米的拉格朗日2点（L2）。
+	&lt;br&gt;&lt;br&gt;
+	成功发射后，经过6个月的调试期，这个空间天文台已经进入常规科学运行阶段，正按照审批的观测计划开展工作。在科学运行阶段，控制中心将每天两次上传飞船的工作计划。天文学家们提交的观测项目已经开始不断收集数据。
+	&lt;br&gt;&lt;br&gt;
+	&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+	target="_blank"&gt;
+	更多信息
+	&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_SSO_XMM-OM">
-	    这些观测结果包括XMM-牛顿望远镜科学数据库中处理管道系统（PPS）的高阶公开数据产品
-	    (&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home" target="_blank"&gt;XSA&lt;/a&gt;)。
-	    关于XMM-牛顿望远镜数据产品的详细信息可以访问
-	    &lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products" target="_blank"&gt;
-	    XMM-牛顿望远镜科学数据产品指南
-	    &lt;/a&gt;.
+	这些观测结果包括XMM-牛顿望远镜科学数据库中处理管道系统（PPS）的高阶公开数据产品
+	(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home" target="_blank"&gt;XSA&lt;/a&gt;)。
+	关于XMM-牛顿望远镜数据产品的详细信息可以访问
+	&lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products" target="_blank"&gt;
+	XMM-牛顿望远镜科学数据产品指南
+	&lt;/a&gt;.
 
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;a
-	    href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
-	    target="_blank"&gt;
-	    更多信息
-	    &lt;/a&gt; </text>
+	&lt;br&gt;&lt;br&gt;
+	&lt;a
+	href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+	target="_blank"&gt;
+	更多信息
+	&lt;/a&gt; </text>
 	<text key="observing_mode">
-	    观测模式
+	观测模式
 	</text>
 	<text key="detector">
-	    探测器
+	探测器
 	</text>
 	<text key="calibration_level">
-	    定标级别
+	定标级别
 	</text>
 	<text key="webConstants_exploreJwstImages">
-	    浏览韦布空间望远镜的科普图片
+	浏览韦布空间望远镜的科普图片
 	</text>
 	<text key="outreachJwstPanel_header">
-	    欧空局韦布科普图片库
+	欧空局韦布科普图片库
 	</text>
 	<text key="outreachJwstPanel_helpText">
-	    本天文科普图片可视化服务源自
-	    &lt;a href="https://esawebb.org/images/" target="_blank"&gt;
-	    欧空局韦布空间望远镜网站。
-	    &lt;/a&gt;
-	    &lt;br&gt;&lt;br&gt;
-	    这个面板显示出当前天空区域欧空局韦布科普图片库中对应图片的列表。在视野中，这些图片的覆盖图用橙色矩形框显示。点击“隐藏覆盖图”可以关闭显示。
-	    &lt;br&gt;&lt;br&gt;
-	    点击一个覆盖图或者列表中的一个条目，对应的图片将覆盖在当前显示的天空背景上。同时弹出一个文本框给出这个图片的描述以及指向欧空局韦布空间望远镜网站的链接。你可以通过左右拖动“图像透明度”滑杆来调节图片的透明度。
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;b&gt;请注意：&lt;/b&gt; 这些图片是为科普教育目的而制作，可能不适用于科学研究。
+	本天文科普图片可视化服务源自
+	&lt;a href="https://esawebb.org/images/" target="_blank"&gt;
+	欧空局韦布空间望远镜网站。
+	&lt;/a&gt;
+	&lt;br&gt;&lt;br&gt;
+	这个面板显示出当前天空区域欧空局韦布科普图片库中对应图片的列表。在视野中，这些图片的覆盖图用橙色矩形框显示。点击“隐藏覆盖图”可以关闭显示。
+	&lt;br&gt;&lt;br&gt;
+	点击一个覆盖图或者列表中的一个条目，对应的图片将覆盖在当前显示的天空背景上。同时弹出一个文本框给出这个图片的描述以及指向欧空局韦布空间望远镜网站的链接。你可以通过左右拖动“图像透明度”滑杆来调节图片的透明度。
+	&lt;br&gt;&lt;br&gt;
+	&lt;b&gt;请注意：&lt;/b&gt; 这些图片是为科普教育目的而制作，可能不适用于科学研究。
 
 	</text>
 	<text key="outreachJwstPanel_helpTitle">
-	    欧空局韦布科普图片库
+	欧空局韦布科普图片库
 	</text>
 	<text key="header_jwstOutreachImages">
-	    韦布科普图片库
+	韦布科普图片库
 	</text>
 	<text key="header_jwstImagesTooltip">
-	     可视化韦布空间望远镜科普图片
+	 可视化韦布空间望远镜科普图片
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
-	    Gaia DR3星表提供了G星等在3至21等之间14.6亿(1.468 10&lt;sup&gt;9&lt;/sup&gt;) 颗源的位置、视差、自行信息。
+	Gaia DR3星表提供了G星等在3至21等之间14.6亿(1.468 10&lt;sup&gt;9&lt;/sup&gt;) 颗源的位置、视差、自行信息。
 
-	    这里的天体测量方案附带了质量指标，例如RUWE，以及对原始图像的描述内容。此外，大约18.06亿颗源的G星等
-	    (包括Gaia DR3中修正了的EDR3中那些 &lt;a href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections" target="_blank"
-	    &gt;已知问题&lt;/a&gt; ),
-	    同时分别为15.4亿和15.5亿颗源提供了 G&lt;sub&gt;BP&lt;/sub&gt; 和 G&lt;sub&gt;RP&lt;/sub&gt; 星等信息。
+	这里的天体测量方案附带了质量指标，例如RUWE，以及对原始图像的描述内容。此外，大约18.06亿颗源的G星等
+	(包括Gaia DR3中修正了的EDR3中那些 &lt;a href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections" target="_blank"
+	&gt;已知问题&lt;/a&gt; ),
+	同时分别为15.4亿和15.5亿颗源提供了 G&lt;sub&gt;BP&lt;/sub&gt; 和 G&lt;sub&gt;RP&lt;/sub&gt; 星等信息。
 
-	    视差误差在0.02 mas（G&lt;15 mag） 到1.3 mas （G=21 mag）之间。自行误差在 0.02 mas/yr（G&lt;15 mag）到1.4 mas/yr （G=21 mag）。
-	    &lt;br&gt;&lt;br&gt;
-	    &lt;a
-	    href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-	    target="_blank"&gt;
-	    更多信息
-	    &lt;/a&gt; </text>
+	视差误差在0.02 mas（G&lt;15 mag） 到1.3 mas （G=21 mag）之间。自行误差在 0.02 mas/yr（G&lt;15 mag）到1.4 mas/yr （G=21 mag）。
+	&lt;br&gt;&lt;br&gt;
+	&lt;a
+	href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+	target="_blank"&gt;
+	更多信息
+	&lt;/a&gt; </text>
 	<text key="header_highResolutionImages">
-	    哈勃科普图片库
+		哈勃科普图片库
 	</text>
 	<text key="resultsPresenter_helpDescription_observations_eROSITA">
 		eROSITA（成像望远镜组扩展伦琴巡天）是一架宽视场X射线望远镜，安装在俄德“光谱-伦琴-伽马”（SRG）空间天文台上，由德国马普地外物理研究所（MPE）牵头研制。eROSITA是一台灵敏的空间X射线望远镜，可以在0.2-8千电子伏特能段内获得非常大天区的深度精确图像。
@@ -2717,7 +2702,7 @@
 		VizieR
 	</text>
 	<text key="extTapPanel_esa">
-        ESA
+		ESA
 	</text>
 	<text key="tabulatorWrapper_addTable">
 		添加
