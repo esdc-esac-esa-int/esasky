@@ -32,12 +32,14 @@ public class MenuItem<T> extends FocusPanel{
 	private int width;
 	private FlowPanel horizontalPanel = new FlowPanel();
 	private CloseButton removeRowButton = new CloseButton();
+	private boolean isDisabled = false;
 	
     private final Resources resources = GWT.create(Resources.class);
 
     private CssResource style;
-    
-    public interface Resources extends ClientBundle {
+
+
+	public interface Resources extends ClientBundle {
 
         @Source("menuItem.css")
         @CssResource.NotStrict
@@ -138,11 +140,13 @@ public class MenuItem<T> extends FocusPanel{
 	}
 	
 	public void select(){
-		isSelected = true;
-		if(tickWhenSelected){
-			selectedImage.setVisible(true);
+		if (!isDisabled) {
+			isSelected = true;
+			if(tickWhenSelected){
+				selectedImage.setVisible(true);
+			}
+			updateMaximumWidth();
 		}
-		updateMaximumWidth();
 	}
 	
 	public void unSelect(){
@@ -179,6 +183,20 @@ public class MenuItem<T> extends FocusPanel{
 	
 	public boolean hasImage () {
 	    return this.image != null;
+	}
+
+	public boolean isDisabled() {
+		return isDisabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		isDisabled = disabled;
+
+		if (isDisabled) {
+			this.addStyleName("dropdownItemDisabled");
+		} else {
+			this.removeStyleName("dropdownItemDisabled");
+		}
 	}
 	
 }

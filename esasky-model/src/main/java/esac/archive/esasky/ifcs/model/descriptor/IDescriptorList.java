@@ -2,7 +2,7 @@ package esac.archive.esasky.ifcs.model.descriptor;
 
 import java.util.List;
 
-public interface IDescriptorList<T extends IDescriptor> {
+public interface IDescriptorList<T extends IDescriptor>  {
 
     public List<T> getDescriptors();
 

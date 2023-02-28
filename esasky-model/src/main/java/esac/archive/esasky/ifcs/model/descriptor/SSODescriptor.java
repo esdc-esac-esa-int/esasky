@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SSODescriptor extends CommonObservationDescriptor {
 
-	private List<MetadataDescriptor> ssoXMatchMetadata = new LinkedList<MetadataDescriptor>();
+	private List<MetadataDescriptor> ssoXMatchMetadata = new LinkedList<>();
     private String ssoCardReductionTapTable;
 
     private String ssoXMatchTapTable;

@@ -214,7 +214,7 @@ public class ApiEvents extends ApiBase{
 						item.put(ApiConstants.PANEL_ID, new JSONString(id));
 						result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_PANEL_CLOSED));
 						result.put(ApiConstants.VALUES, item);
-						sendBackValuesToWidget(result, widget);
+						sendBackEventToWidget(result, widget);
 					}
 		
 					@Override
@@ -225,7 +225,7 @@ public class ApiEvents extends ApiBase{
 						item.put(ApiConstants.PANEL_ID, new JSONString(id));
 						result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_PANEL_OPENED));
 						result.put(ApiConstants.VALUES, item);
-						sendBackValuesToWidget(result, widget);				
+						sendBackEventToWidget(result, widget);				
 					}
 				});
 	}
@@ -304,7 +304,7 @@ public class ApiEvents extends ApiBase{
 			//To be removed
 			result.put(ApiConstants.TREEMAP_INFO, treeMap);
 			
-			sendBackValuesToWidget(result, widget);
+			sendBackEventToWidget(result, widget);
 		}
 		
 	}
@@ -334,7 +334,7 @@ public class ApiEvents extends ApiBase{
 			result.put(ApiConstants.VALUES, button);
 			
 			
-			sendBackValuesToWidget(result, widget);
+			sendBackEventToWidget(result, widget);
 		}
 		
 	}

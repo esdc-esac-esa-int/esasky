@@ -68,3 +68,7 @@
 .header__statusPanel__exclamationIcon{
 	z-index: 10000;
 }
+
+.header__statusPanel__invisibleSpinner{
+	display: none;
+}

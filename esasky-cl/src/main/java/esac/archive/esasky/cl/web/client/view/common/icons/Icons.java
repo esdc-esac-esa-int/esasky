@@ -158,6 +158,15 @@ public class Icons {
 
 		@Source("chat-icon.png")
 		ImageResource chatIcon();
+
+		@Source("external.png")
+		ImageResource externalIcon();
+
+		@Source("back-arrow.png")
+		ImageResource backArrow();
+
+		@Source("undo-arrow-icon.png")
+		ImageResource undoArrowIcon();
 	}
 	
 	private static void initMap() {
@@ -375,4 +384,10 @@ public class Icons {
 	public static ImageResource getSettingsIcon() { return resources.settingsIcon(); }
 
 	public static ImageResource getChatIcon() { return resources.chatIcon(); }
+
+	public static ImageResource getExternalIcon() { return resources.externalIcon(); }
+
+	public static ImageResource getBackArrowIcon() { return resources.backArrow(); }
+
+	public static ImageResource getUndoArrowIcon() { return resources.undoArrowIcon(); }
 }

@@ -16,7 +16,9 @@ public abstract class Promise<T>  {
     }
 
     protected Promise(int timeoutMs) {
-        timeoutTimer.schedule(timeoutMs);
+        if (timeoutMs > 0) {
+            timeoutTimer.schedule(timeoutMs);
+        }
     }
 
     public final void fulfill(T data) {

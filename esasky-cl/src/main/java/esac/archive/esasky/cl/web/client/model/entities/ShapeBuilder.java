@@ -5,5 +5,5 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public interface ShapeBuilder {
-	Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row);
+	Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row, GeneralJavaScriptObject metadata);
 }

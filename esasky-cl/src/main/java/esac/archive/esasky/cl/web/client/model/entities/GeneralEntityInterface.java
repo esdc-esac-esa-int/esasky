@@ -1,77 +1,110 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
-import java.util.LinkedList;
-
 import com.google.gwt.user.client.ui.Image;
-
-import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+
+import java.util.LinkedList;
 
 public interface GeneralEntityInterface extends IShapeDrawer {
 
-    public SkyViewPosition getSkyViewPosition();
-    public void setSkyViewPosition(SkyViewPosition skyViewPosition);
-    
-    public String getHistoLabel();
-    public void setHistoLabel(String histoLabel);
-    public String getEsaSkyUniqId();
-    public void setEsaSkyUniqId(String esaSkyUniqId);
-    public TapRowList getMetadata();
-    public void setMetadata(TapRowList metadata);
-    public String getTabLabel();
+    SkyViewPosition getSkyViewPosition();
 
-    public Image getTypeLogo();
+    void setSkyViewPosition(SkyViewPosition skyViewPosition);
 
-    public Object getTAPDataByTAPName(TapRowList tapRowList, int rowIndex, String tapName);
-    
-    public Double getDoubleByTAPName(TapRowList tapRowList, int rowIndex, String tapName, Double defaultValue);
-    
-    public CountStatus getCountStatus();
+    String getHistoLabel();
 
-    public IDescriptor getDescriptor();
+    void setHistoLabel(String histoLabel);
 
-    public void clearAll();
-    
-    public String getColor();
-    public void setPrimaryColor(String color);
-    
-    public void fetchData();
-    public void fetchData(String adql);
-    public void fetchDataWithoutMOC();
-    public void coneSearch(SkyViewPosition conePos);
-    
-    public ITablePanel createTablePanel();
-    public ITablePanel getTablePanel();
-    public void setTablePanel(ITablePanel panel);
-    
-    public StylePanel createStylePanel();
-	public void setStylePanelVisibility();
-    public void select();
-    
-    public boolean isSampEnabled();
-    public boolean isRefreshable();
-    public void setRefreshable(boolean isRefreshable);
-	public boolean isCustomizable();
-	
-	public void onShapeSelection(AladinShape shape);
-	public void onShapeDeselection(AladinShape shape);
-	public void onShapeHover(AladinShape shape);
-	public void onShapeUnhover(AladinShape shape);
-	
-	public String getHelpText();
-	
-	public void registerColorChangeObserver(ColorChangeObserver colorChangeObserver);
-	public void onMultipleShapesSelection(LinkedList<AladinShape> shapes);
-	public void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList);
-	public TabulatorSettings getTabulatorSettings();
-	
-	public String getAdql();
+    String getId();
 
-	
+    String getIcon();
+
+    void setId(String id);
+
+    TapRowList getMetadata();
+
+    void setMetadata(TapRowList metadata);
+
+    String getTabLabel();
+
+    Image getTypeLogo();
+
+    Object getTAPDataByTAPName(TapRowList tapRowList, int rowIndex, String tapName);
+
+    Double getDoubleByTAPName(TapRowList tapRowList, int rowIndex, String tapName, Double defaultValue);
+
+    CountStatus getCountStatus();
+
+    CommonTapDescriptor getDescriptor();
+
+    void clearAll();
+
+    String getColor();
+
+    void setPrimaryColor(String color);
+
+    void fetchData();
+
+    void insertExternalData(GeneralJavaScriptObject data);
+
+    void fetchData(String adql);
+
+    void fetchDataWithoutMOC();
+
+    void coneSearch(SkyViewPosition conePos);
+
+    ITablePanel createTablePanel();
+
+    ITablePanel getTablePanel();
+
+    void setTablePanel(ITablePanel panel);
+
+    StylePanel createStylePanel();
+
+    void setStylePanelVisibility();
+
+    void select();
+
+    boolean isSampEnabled();
+
+    boolean isRefreshable();
+
+    void setRefreshable(boolean isRefreshable);
+
+    boolean isCustomizable();
+
+    void onShapeSelection(AladinShape shape);
+
+    void onShapeDeselection(AladinShape shape);
+
+    void onShapeHover(AladinShape shape);
+
+    void onShapeUnhover(AladinShape shape);
+
+    String getHelpText();
+    String getHelpTitle();
+
+    void registerColorChangeObserver(ColorChangeObserver colorChangeObserver);
+
+    void onMultipleShapesSelection(LinkedList<AladinShape> shapes);
+
+    void onMultipleShapesDeselection(LinkedList<AladinShape> linkedList);
+
+    TabulatorSettings getTabulatorSettings();
+
+    String getQuery();
+
+    void setQuery(String query);
+
+    void registerQueryChangedObserver(QueryChangeObserver queryChangeObserver);
+
+    void unregisterQueryChangedObserver(QueryChangeObserver queryChangeObserver);
 }

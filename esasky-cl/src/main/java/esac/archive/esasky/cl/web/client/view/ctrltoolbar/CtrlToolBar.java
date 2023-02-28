@@ -11,10 +11,8 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
@@ -22,8 +20,12 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.callback.Promise;
-import esac.archive.esasky.cl.web.client.event.*;
+import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
+import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
+import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
+import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
@@ -39,16 +41,13 @@ import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.publication.PublicationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapChanged;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.TreeMapContainer;
 import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -61,6 +60,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private PlanObservationPanel planObservationPanel;
     private GwPanel gwPanel;
     private OutreachImagePanel outreachImagePanel;
+    private GlobalTapPanel globalTapPanel;
 
     private OutreachJwstPanel outreachJwstPanel;
     private String HiPSFromURL = null;
@@ -69,8 +69,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private final TreeMapContainer catalogTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_CATALOGUE);
     private final TreeMapContainer spectraTreeMapContainer = new TreeMapContainer(EntityContext.ASTRO_SPECTRA);
     private final TreeMapContainer ssoTreeMapContainer = new TreeMapContainer(EntityContext.SSO);
-    private final TreeMapContainer extTapTreeMapContainer = new TreeMapContainer(EntityContext.EXT_TAP);
-
+    private final ExtTapPanel extTapPanel = new ExtTapPanel();
+    enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
     private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
 
     private EsaSkyButton exploreBtn;
@@ -90,7 +90,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     private final int suggestedPositionLeft = 5;
     private final int suggestedPositionTop = 77;
-
 
     private final CssResource style;
     private Resources resources = GWT.create(Resources.class);
@@ -137,7 +136,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         selectSkyPanel.definePositionFromTopAndLeft();
         selectSkyPanel.hide();
-        ctrlToolBarPanel.add(createSkiesMenuBtn());
+        EsaSkyButton skiesBtn = createSkiesMenuBtn();
+        ctrlToolBarPanel.add(skiesBtn);
         MainLayoutPanel.addElementToMainArea(selectSkyPanel);
 
         ctrlToolBarPanel.add(createObservationBtn());
@@ -159,10 +159,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         spectraTreeMapContainer.registerObserver(() -> spectraButton.setToggleStatus(false));
 
         ctrlToolBarPanel.add(createExtTapBtn());
-        MainLayoutPanel.addElementToMainArea(extTapTreeMapContainer);
-        extTapTreeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
-        extTapTreeMapContainer.definePositionFromTopAndLeft();
-        extTapTreeMapContainer.registerObserver(() -> {
+        MainLayoutPanel.addElementToMainArea(extTapPanel);
+        extTapPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        extTapPanel.definePositionFromTopAndLeft();
+        extTapPanel.registerObserver(() -> {
             extTapButton.setToggleStatus(false);
             CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(false));
         });
@@ -219,11 +219,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             hideWidget(outreachJwstButton);
         }
 
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS)) {
+            rotateButtonLabelVisibility(Arrays.asList(skiesBtn, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+        }
+
         initWidget(ctrlToolBarPanel);
 
         updateModuleVisibility();
     }
-
 
     @Override
     protected void onLoad() {
@@ -231,7 +234,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private EsaSkyButton createSkiesMenuBtn() {
-        selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_changeSky") : null;
+
+        selectSkyButton = new EsaSkyToggleButton(Icons.getSelectSkyIcon(), label);
         addCommonButtonStyle(selectSkyButton, TextMgr.getInstance().getText("webConstants_manageSkies"));
 
         selectSkyButton.addClickHandler(event -> {
@@ -240,6 +246,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         });
 
         selectSkyPanel.addCloseHandler(event -> selectSkyButton.setToggleStatus(false));
+
+
+        if (isKiosk) {
+            selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            selectSkyPanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(selectSkyButton);
+        }
+
         return selectSkyButton;
     }
 
@@ -270,8 +284,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         addCommonButtonStyle(extTapButton, TextMgr.getInstance().getText("webConstants_exploreExtTaps"));
         extTapButton.addClickHandler(
                 event -> {
-                    extTapTreeMapContainer.toggle();
-                    CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
+                    extTapPanel.toggle();
+                    CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapPanel.isShowing()));
                     CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
                     sendGAEvent(EntityContext.EXT_TAP.toString());
                 });
@@ -345,6 +359,10 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         button.setBigStyle();
         button.addStyleName("ctrlToolBarBtn");
         button.setTitle(tooltip);
+    }
+
+    private void addKioskButtonStyle(EsaSkyButton button) {
+        button.setVeryBigStyle();
     }
 
     public EsaSkyButton addCustomButton(ImageResource icon, String iconText, String description) {
@@ -436,7 +454,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             publicationPanel.hide();
         }
         if (!button.equals(extTapButton)) {
-            extTapTreeMapContainer.hide();
+            extTapPanel.hide();
         }
         if (!button.equals(gwButton)) {
             gwPanel.hide();
@@ -529,23 +547,31 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 
     public EsaSkyButton createExploreButton() {
-        final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreRandomTarget") : null;
+
+        final EsaSkyButton button = new EsaSkyButton(Icons.getExploreIcon(), label);
         button.getElement().setId("exploreButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreRandomTarget"));
-        button.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                if (!exploreActionInProgress) {
-                    showRandomSource();
-                    sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
-                }
+        button.addClickHandler(event -> {
+            if (!exploreActionInProgress) {
+                showRandomSource();
+                sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
             }
         });
+
+        if (isKiosk) {
+            addKioskButtonStyle(button);
+        }
 
         return button;
     }
 
     public EsaSkyToggleButton createTargetListButton() {
-        final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreTargetList") : null;
+
+        final EsaSkyToggleButton button = new EsaSkyToggleButton(Icons.getTargetListIcon(), label);
         button.getElement().setId("targetListButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_uploadTargetList"));
         button.addClickHandler(event -> {
@@ -553,11 +579,18 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
         });
 
+        if (isKiosk) {
+            addKioskButtonStyle(button);
+        }
+
         return button;
     }
 
     public EsaSkyToggleButton createHstOutreachButton() {
-        outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreHstImages") : null;
+
+        outreachImageButton = new EsaSkyToggleButton(Icons.getHubbleIcon(),  label);
         outreachImageButton.getElement().setId("imageButton");
         addCommonButtonStyle(outreachImageButton, TextMgr.getInstance().getText("webConstants_exploreHstImages"));
         outreachImageButton.addClickHandler(event -> {
@@ -572,12 +605,21 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachImagePanel.hide();
         outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
 
+        if (isKiosk) {
+            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            outreachImagePanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(outreachImageButton);
+        }
+
         return outreachImageButton;
 
     }
 
     public EsaSkyToggleButton createJwstOutreachButton() {
-        outreachJwstButton = new EsaSkyToggleButton(Icons.getJwstIcon());
+        boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+        String label = isKiosk ? TextMgr.getInstance().getText("webConstants_exploreJwstImages") : null;
+
+        outreachJwstButton = new EsaSkyToggleButton(Icons.getJwstIcon(), label);
         outreachJwstButton.getElement().setId("jwstButton");
         addCommonButtonStyle(outreachJwstButton, TextMgr.getInstance().getText("webConstants_exploreJwstImages"));
         outreachJwstButton.addClickHandler(event -> {
@@ -591,6 +633,12 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachJwstPanel.definePositionFromTopAndLeft();
         outreachJwstPanel.hide();
         outreachJwstPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
+
+        if (isKiosk) {
+            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            outreachJwstPanel.definePositionFromTopAndLeft();
+            addKioskButtonStyle(outreachJwstButton);
+        }
 
         return outreachJwstButton;
 
@@ -683,7 +731,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     public boolean isExtTapOpen() {
-        return extTapTreeMapContainer.isShowing();
+        return extTapPanel.isShowing();
     }
 
     @Override
@@ -706,54 +754,52 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void addTreeMapData(List<IDescriptor> descriptors, List<Integer> counts) {
-        List<IDescriptor> observationDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> observationCounts = new LinkedList<Integer>();
-        List<IDescriptor> ssoDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> ssoCounts = new LinkedList<Integer>();
-        List<IDescriptor> catalogDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> catalogCounts = new LinkedList<Integer>();
-        List<IDescriptor> spectraDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> spectraCounts = new LinkedList<Integer>();
-        List<IDescriptor> extTapDescriptors = new LinkedList<IDescriptor>();
-        List<Integer> extTapCounts = new LinkedList<Integer>();
+    public void addTreeMapData(Collection<DescriptorCountAdapter> descriptorCounts) {
 
-        for (int i = 0; i < descriptors.size(); i++) {
-            if (descriptors.get(i) instanceof ImageDescriptor) {
-                continue;
-            }
-            if (descriptors.get(i) instanceof ObservationDescriptor) {
-                observationDescriptors.add(descriptors.get(i));
-                observationCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof SSODescriptor) {
-                ssoDescriptors.add(descriptors.get(i));
-                ssoCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof CatalogDescriptor) {
-                catalogDescriptors.add(descriptors.get(i));
-                catalogCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof SpectraDescriptor) {
-                spectraDescriptors.add(descriptors.get(i));
-                spectraCounts.add(counts.get(i));
-            } else if (descriptors.get(i) instanceof ExtTapDescriptor) {
-                extTapDescriptors.add(descriptors.get(i));
-                extTapCounts.add(counts.get(i));
+        for (DescriptorCountAdapter descriptorCount : descriptorCounts) {
+            switch (descriptorCount.getCategory()) {
+                case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+                    observationTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_CATALOGUES:
+                    catalogTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_SPECTRA:
+                    spectraTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_SSO:
+                    ssoTreeMapContainer.addData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                    extTapPanel.addTreeMapData(descriptorCount.getDescriptors(), descriptorCount.getCounts());
+                    break;
+                default:
+                    Log.warn("[CtrlToolBar] Unknown category " + descriptorCount.getCategory());
             }
         }
 
-        if (observationDescriptors.size() > 0) {
-            observationTreeMapContainer.addData(observationDescriptors, observationCounts);
-        }
-        if (ssoDescriptors.size() > 0) {
-            ssoTreeMapContainer.addData(ssoDescriptors, ssoCounts);
-        }
-        if (catalogDescriptors.size() > 0) {
-            catalogTreeMapContainer.addData(catalogDescriptors, catalogCounts);
-        }
-        if (spectraDescriptors.size() > 0) {
-            spectraTreeMapContainer.addData(spectraDescriptors, spectraCounts);
-        }
-        if (extTapDescriptors.size() > 0) {
-            extTapTreeMapContainer.addData(extTapDescriptors, extTapCounts);
+    }
+
+    @Override
+    public void clearTreeMapData(String category) {
+        switch (category) {
+            case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+                observationTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_CATALOGUES:
+                catalogTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_SPECTRA:
+                spectraTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_SSO:
+                ssoTreeMapContainer.clearData();
+                break;
+            case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                extTapPanel.clearTreeMapData();
+                break;
+            default:
+                Log.warn("[CtrlToolBar] Unknown category " + category);
         }
     }
 
@@ -771,7 +817,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void updateCustomTreeMap(CustomTreeMapDescriptor treeMapDescriptor) {
         CustomTreeMap customTreeMap = customTreeMaps.get(treeMapDescriptor.getName());
         if (customTreeMap != null) {
-            LinkedList<Integer> counts = new LinkedList<Integer>();
+            LinkedList<Integer> counts = new LinkedList<>();
 
             for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
                 counts.add(1);
@@ -791,23 +837,14 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         addCommonButtonStyle(button, treeMapDescriptor.getDescription());
         button.addClickHandler(
-                new ClickHandler() {
-
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        treeMapContainer.toggle();
-                        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
-                        GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
-                    }
+                event -> {
+                    treeMapContainer.toggle();
+                    CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
+                    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
                 });
         ctrlToolBarPanel.add(button);
         ctrlToolBarPanel.add(treeMapContainer);
-        catalogTreeMapContainer.registerObserver(new TreeMapChanged() {
-            @Override
-            public void onClose() {
-                button.setToggleStatus(false);
-            }
-        });
+        catalogTreeMapContainer.registerObserver(() -> button.setToggleStatus(false));
 
         LinkedList<Integer> counts = new LinkedList<Integer>();
         for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
@@ -906,8 +943,8 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void openExtTapPanel() {
         if (!extTapButton.getToggleStatus()) {
             extTapButton.toggle();
-            extTapTreeMapContainer.toggle();
-            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
+            extTapPanel.toggle();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapPanel.isShowing()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
             sendGAEvent(EntityContext.EXT_TAP.toString());
         }
@@ -917,18 +954,28 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     public void closeExtTapPanel() {
         if (extTapButton.getToggleStatus()) {
             extTapButton.toggle();
-            extTapTreeMapContainer.toggle();
-            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapTreeMapContainer.isShowing()));
+            extTapPanel.toggle();
+            CommonEventBus.getEventBus().fireEvent(new ExtTapToggleEvent(extTapPanel.isShowing()));
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(extTapButton));
             sendGAEvent(EntityContext.EXT_TAP.toString());
         }
     }
 
     @Override
-    public void openOutreachPanel() {
-        if (!outreachImageButton.getToggleStatus()) {
-            outreachImageButton.toggle();
-            outreachImagePanel.toggle();
+    public boolean isExtTapPanelOpen() {
+        return extTapPanel.isShowing();
+    }
+
+    @Override
+    public void openOutreachPanel(String id) {
+        if(id == null){
+            if (!outreachImageButton.getToggleStatus()) {
+                outreachImageButton.toggle();
+                outreachImagePanel.toggle();
+                CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+            }
+        }else{
+            outreachImagePanel.selectShape(id);
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
         }
     }
@@ -942,7 +989,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public void openJwstOutreachPanel() {
+    public void openJwstOutreachPanel(String id) {
         if (!outreachJwstButton.getToggleStatus()) {
             outreachJwstButton.toggle();
             outreachJwstPanel.toggle();
@@ -959,14 +1006,42 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
-    public JSONArray getOutreachImageIds(ICommand command) {
-        return outreachImagePanel.getAllImageIds(command);
+    public void openExtTapPanelTab(int index) {
+        openExtTapPanel();
+        extTapPanel.openTab(index);
+    }
+
+    public void closeExtTapPanelTab() {
+        extTapPanel.hide();
     }
 
     @Override
-    public void showOutreachImage(String id) {
-        outreachImagePanel.selectShape(id);
-        CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+    public JSONArray getOutreachImageIds(ICommand command, String telescope) {
+        if("JWST".equals(telescope)){
+            return outreachJwstPanel.getAllImageIds(command);
+        } else {
+            return outreachImagePanel.getAllImageIds(command);
+        }
+    }
+
+    @Override
+    public void showOutreachImage(String id, String telescope) {
+        if("JWST".equals(telescope)) {
+            outreachJwstPanel.selectShape(id);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
+        }else{
+            outreachImagePanel.selectShape(id);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+        }
+    }
+
+    @Override
+    public void hideOutreachImage(String telescope) {
+        if("JWST".equals(telescope)) {
+            outreachJwstPanel.close();
+        }else{
+            outreachImagePanel.close();
+        }
     }
 
     @Override
@@ -976,7 +1051,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         sliderMap.put(EntityContext.ASTRO_CATALOGUE.toString(), catalogTreeMapContainer.getSliderValues());
         sliderMap.put(EntityContext.ASTRO_SPECTRA.toString(), spectraTreeMapContainer.getSliderValues());
         sliderMap.put(EntityContext.SSO.toString(), ssoTreeMapContainer.getSliderValues());
-        sliderMap.put(EntityContext.EXT_TAP.toString(), extTapTreeMapContainer.getSliderValues());
+        sliderMap.put(EntityContext.EXT_TAP.toString(), extTapPanel.getTreeMapSliderValues());
 
         return sliderMap;
     }
@@ -994,9 +1069,33 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             } else if (EntityContext.SSO.toString().contentEquals(key)) {
                 ssoTreeMapContainer.setSliderValues(values[0], values[1]);
             } else if (EntityContext.EXT_TAP.toString().contentEquals(key)) {
-                extTapTreeMapContainer.setSliderValues(values[0], values[1]);
+                extTapPanel.setTreeMapSliderValues(values[0], values[1]);
             }
         }
 
+    }
+
+    private void rotateButtonLabelVisibility(List<EsaSkyButton> btnList) {
+        if (!btnList.isEmpty()) {
+            btnList.get(0).showLabel();
+        }
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                for (int i = 0; i < btnList.size(); i++) {
+                    EsaSkyButton currentBtn = btnList.get(i);
+                    int nextIndex = i + 1 < btnList.size() ? i + 1 : 0;
+                    if (currentBtn.isLabelVisible()) {
+                        currentBtn.hideLabel();
+                        btnList.get(nextIndex).showLabel();
+                        break;
+                    }
+
+                }
+            }
+
+        };
+
+        timer.scheduleRepeating(5000);
     }
 }

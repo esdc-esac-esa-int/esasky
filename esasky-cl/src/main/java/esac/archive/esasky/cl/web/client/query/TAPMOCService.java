@@ -3,11 +3,11 @@ package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyMocUtility;
 import esac.archive.esasky.ifcs.model.shared.RangeTree;
 import esac.archive.esasky.ifcs.model.shared.RangeTree.Interval;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 
 public class TAPMOCService {
 
@@ -23,7 +23,7 @@ public class TAPMOCService {
         return instance;
     }
 
-    public String getPrecomputedMocConstraint(IDescriptor descriptor) {
+    public String getPrecomputedMocConstraint(CommonTapDescriptor descriptor) {
 		if (descriptor.hasSearchArea()) {
 			return descriptor.getSearchAreaShape();
 		} else {
@@ -55,7 +55,7 @@ public class TAPMOCService {
         return shape;
     }
     
-    public String getWhereQueryFromPixels(IDescriptor descriptor, GeneralJavaScriptObject pixels, String filter) {
+    public String getWhereQueryFromPixels(CommonTapDescriptor descriptor, GeneralJavaScriptObject pixels, String filter) {
     	String[] orderArray = pixels.getProperties().split(",");
     	RangeTree rangeTree = new RangeTree();
     	
@@ -72,8 +72,8 @@ public class TAPMOCService {
     	}
     	
     	String whereADQL = " WHERE (";
-    	String raColumn = descriptor.getTapRaColumn();
-    	String decColumn = descriptor.getTapDecColumn();
+    	String raColumn = descriptor.getRaColumn();
+    	String decColumn = descriptor.getDecColumn();
     	
     	for(Interval i : rangeTree.getTree()) {
     		whereADQL += " q3c_ang2ipix(" + raColumn+ "," + decColumn + ") BETWEEN "+ Long.toString(i.getStart())

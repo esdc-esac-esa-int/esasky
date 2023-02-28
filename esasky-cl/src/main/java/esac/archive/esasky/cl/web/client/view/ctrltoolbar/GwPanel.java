@@ -32,10 +32,7 @@ import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.GwDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IceCubeDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 
 import java.util.*;
@@ -225,10 +222,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private void loadNeutrinoData(Promise<JSONObject> neutrinoDataPromise) {
         if (getTabItem(TabIndex.NEUTRINO) == null) {
-            IceCubeDescriptor descriptor = DescriptorRepository.getInstance().getIceCubeDescriptors().getDescriptors().get(0);
-
-            descriptor.setTapSTCSColumn("stc_s");
-            descriptor.setArchiveColumn("event_page");
+            CommonTapDescriptor descriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_NEUTRINOS);
             EsaSkyEntity entity = EntityRepository.getInstance().createIceCubeEntity(descriptor);
 
             Widget tabContentContainer = tabLayoutPanel.getWidget(TabIndex.NEUTRINO.ordinal());
@@ -238,7 +232,8 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
             List<String> columnsToHide = Arrays.asList("stc_s","title","sun_postn_ra","sun_postn_dec","sun_dist_deg",
                     "stc_error","stc_error50","ra_current","ra_1950","moon_postn_ra","moon_postn_dec","moon_dist",
-                    "ecl_coords_lat","ecl_coords_lon","gal_coords_lat","gal_coords_lon","discovery_date","discovery_time");
+                    "ecl_coords_lat","ecl_coords_lon","gal_coords_lat","gal_coords_lon","discovery_date","discovery_time",
+                    "dec_1950", "dec_current", "npix", "icecube_event_oid", "notice_date", "revision", "src_error", "src_error50");
 
             TabItem tabItem = new TabItem(descriptor, columnsToHide, entity);
 
@@ -272,26 +267,23 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
     private void loadGwData(String idToShow, Promise<JSONObject> gwDataPromise) {
         if (getTabItem(TabIndex.GW) == null) {
-            GwDescriptor descriptor = DescriptorRepository.getInstance().getGwDescriptors().getDescriptors().get(0);
-            descriptor.setArchiveColumn("event_page");
-            descriptor.setTapSTCSColumn(STCS90_STRING);
-            String entityId = descriptor.getDescriptorId() + "_90";
-            EsaSkyEntity entity = EntityRepository.getInstance().createGwEntity(descriptor, entityId, "dashed");
+            CommonTapDescriptor commonDescriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES);
+            commonDescriptor.setColor("#FF0000");
+            String entityId = commonDescriptor.getId() + "_90";
+            EsaSkyEntity entity = EntityRepository.getInstance().createGwEntity(commonDescriptor, entityId, "dashed", STCS90_STRING);
 
-            descriptor.setTapSTCSColumn(STCS50_STRING);
-            entityId = descriptor.getDescriptorId() + "_50";
-            EsaSkyEntity extraEntity = EntityRepository.getInstance().createGwEntity(descriptor, entityId, "solid");
+            entityId = commonDescriptor.getId() + "_50";
+            EsaSkyEntity extraEntity = EntityRepository.getInstance().createGwEntity(commonDescriptor, entityId, "solid", STCS50_STRING);
 
-            descriptor.setTapSTCSColumn(STCS90_STRING);
             Widget tabContentContainer = tabLayoutPanel.getWidget(TabIndex.GW.ordinal());
             if (tabContentContainer instanceof FlowPanel) {
                 ((FlowPanel) tabContentContainer).add(entity.createTablePanel().getWidget());
             }
 
             List<String> columnsToHide = Arrays.asList(STCS50_STRING, STCS90_STRING, "gravitational_waves_oid", "group_id",
-                    "hardware_inj", "internal", "open_alert", "pkt_ser_num", "search", "packet_type", "ra", "dec");
+                    "hardware_inj", "internal", "open_alert", "pkt_ser_num", "search", "packet_type", "ra", "dec", "oid", "npix");
 
-            TabItem tabItem = new TabItem(descriptor, columnsToHide, entity, extraEntity);
+            TabItem tabItem = new TabItem(commonDescriptor, columnsToHide, entity, extraEntity);
             entity.getTablePanel().registerObserver(new TableObserver() {
                 @Override
                 public void numberOfShownRowsChanged(int numberOfShownRows) {
@@ -330,16 +322,14 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
                     String id = rowData.getStringProperty("grace_id");
 
                     testParsingHipsList("https://skies.esac.esa.int/GW/" + id, GeneralJavaScriptObject.convertToInteger(rowData.getProperty("id")));
-                    String ra = rowData.getStringProperty(descriptor.getTapRaColumn());
-                    String dec = rowData.getStringProperty(descriptor.getTapDecColumn());
+                    String ra = rowData.getStringProperty(commonDescriptor.getRaColumn());
+                    String dec = rowData.getStringProperty(commonDescriptor.getDecColumn());
                     AladinLiteWrapper.getInstance().goToTarget(ra, dec, 180, false, CoordinatesFrame.J2000.getValue());
                     GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_GW, GoogleAnalytics.ACT_GW_ROW_SELECTED, id);
 
-                    descriptor.setTapSTCSColumn(STCS90_STRING);
                     entity.showShape(Integer.parseInt(rowData.getProperty("id").toString()));
 
-                    descriptor.setTapSTCSColumn(STCS50_STRING);
-                    extraEntity.addShapes(rowData.wrapInArray());
+                    extraEntity.addShapes(rowData.wrapInArray(), null);
                     AladinLiteWrapper.getInstance().toggleGrid(true);
                 }
 
@@ -377,6 +367,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
         setMaxHeight();
 
     }
+
 
     private void setMaxHeight() {
         int headerSize = header.getOffsetHeight() + tableHeaderTabRow.getOffsetHeight();
@@ -579,7 +570,7 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
     }
 
     private class TabItem {
-        private final BaseDescriptor descriptor;
+        private final CommonTapDescriptor descriptor;
         private final EsaSkyEntity entity;
         private final EsaSkyEntity extraEntity;
         private boolean dataLoaded = false;
@@ -587,18 +578,18 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
 
         private boolean isExpanded = false;
 
-        public TabItem(BaseDescriptor descriptor, List<String> columnsToHide, EsaSkyEntity mainEntity) {
+        public TabItem(CommonTapDescriptor descriptor, List<String> columnsToHide, EsaSkyEntity mainEntity) {
             this(descriptor, columnsToHide, mainEntity, null);
         }
 
-        public TabItem(BaseDescriptor descriptor, List<String> columnsToHide, EsaSkyEntity entity, EsaSkyEntity extraEntity) {
+        public TabItem(CommonTapDescriptor descriptor, List<String> columnsToHide, EsaSkyEntity entity, EsaSkyEntity extraEntity) {
             this.descriptor = descriptor;
             this.entity = entity;
             this.extraEntity = extraEntity;
             this.columnsToHide = columnsToHide;
         }
 
-        public BaseDescriptor getDescriptor() {
+        public CommonTapDescriptor getDescriptor() {
             return descriptor;
         }
 
@@ -633,13 +624,13 @@ public class GwPanel extends MovableResizablePanel<GwPanel> {
             List<String> columns;
             if (isExpanded) {
                 columns = this.descriptor.getMetadata().stream()
-                        .filter(MetadataDescriptor::getVisible)
-                        .map(MetadataDescriptor::getTapName)
+                        .filter(TapMetadataDescriptor::isPrincipal)
+                        .map(TapMetadataDescriptor::getName)
                         .collect(Collectors.toList());
             } else {
                 columns = this.descriptor.getMetadata().stream()
-                        .map(MetadataDescriptor::getTapName)
-                        .filter(tapName -> !this.getColumnsToHide().contains(tapName))
+                        .map(TapMetadataDescriptor::getName)
+                        .filter(name -> !this.getColumnsToHide().contains(name))
                         .collect(Collectors.toList());
             }
             this.entity.getTablePanel().blockRedraw();

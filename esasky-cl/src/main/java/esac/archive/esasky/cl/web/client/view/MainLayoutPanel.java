@@ -2,40 +2,19 @@ package esac.archive.esasky.cl.web.client.view;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.DataTransfer.DropEffect;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DragEndEvent;
-import com.google.gwt.event.dom.client.DragEndHandler;
-import com.google.gwt.event.dom.client.DragEnterEvent;
-import com.google.gwt.event.dom.client.DragEnterHandler;
-import com.google.gwt.event.dom.client.DragEvent;
-import com.google.gwt.event.dom.client.DragHandler;
-import com.google.gwt.event.dom.client.DragLeaveEvent;
-import com.google.gwt.event.dom.client.DragLeaveHandler;
-import com.google.gwt.event.dom.client.DragOverEvent;
-import com.google.gwt.event.dom.client.DragOverHandler;
-import com.google.gwt.event.dom.client.DragStartEvent;
-import com.google.gwt.event.dom.client.DragStartHandler;
-import com.google.gwt.event.dom.client.DropEvent;
-import com.google.gwt.event.dom.client.DropHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.TouchEvent;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -46,15 +25,14 @@ import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.presenter.BannerPresenter;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter.View;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
 import esac.archive.esasky.cl.web.client.view.banner.Banner;
 import esac.archive.esasky.cl.web.client.view.banner.Banner.Side;
-import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
 import esac.archive.esasky.cl.web.client.view.evapanel.EvaPanel;
 import esac.archive.esasky.cl.web.client.view.header.HeaderPanel;
@@ -248,6 +226,11 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 		if (!hideWelcome) {
 			welcomeDialogBox = new WelcomeDialog();
 			welcomeDialogBox.show();
+		}
+
+		String mode = Modules.getMode();
+		if (mode != null && Objects.equals(mode.toUpperCase(), EsaSkyWebConstants.MODULE_MODE_KIOSK)) {
+			disableAnchorElements();
 		}
 	}
 
@@ -546,6 +529,14 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 
 		timer.schedule(1000);
 	}
+
+	private native void disableAnchorElements() /*-{
+		var styles = "a { pointer-events: none; } img { pointer-events: none; }"
+
+		var styleSheet = $doc.createElement("style")
+		styleSheet.innerText = styles
+		$doc.head.appendChild(styleSheet)
+	}-*/;
 	
 
 }

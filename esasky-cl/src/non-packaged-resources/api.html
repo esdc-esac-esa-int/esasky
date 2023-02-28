@@ -1,0 +1,1353 @@
+<script>
+    var msg_func = function(id){
+     var cmd = document.getElementById(id).innerHTML;
+     console.log(cmd)
+     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"')
+     var esaskyFrame = document.getElementsByClassName("iframe-container")[0].children[0];
+     console.log(cmd2)
+     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int')
+     var input = document.getElementById("messageinput");
+     console.log(input)
+     input.value=cmd;
+    }
+</script>
+<style type="text/css">.accordion {
+        background-color: #ffffff;
+        color:  #3277a6;
+        cursor: pointer;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 14px;
+        transition: 0.4s;
+        font-weight: bold;
+        font-family: NotesEsaBold,"Trebuchet MS",Tahoma,Arial;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        padding: 0px;
+    }
+
+    .panel {
+        display: none;
+    }
+
+    p {
+        font-size:12px;
+    }
+</style>
+<h1 style="text-align: center;">ESASky Javascript API</h1>
+
+<hr />
+<div id="main" style="overflow-y: scroll;height: 900px"><button class="accordion">Info:</button>
+
+<div class="panel" id="info" style="display: block;">
+<p>All commands should be sent to the ESASky element as http postmessages. For example by:</p>
+
+<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘http://sky.esa.int’)</p>
+
+<p>Where <i>esaskyFrameName</i> is the elementId where the esasky page is embedded, <i>command </i>is a JSON containing ‘event’ for function name and ‘content’ with all parameters</p>
+
+<p>There are a number of commands that will send back response from ESASky. These will also be sent as http messages directed to the sender element of the command sent to ESASky. Unless otherwise specified this will probably be the main window for you. Add a message listener if you want to handle the data sent back as:</p>
+
+<p>window.addEventListener("message",function(e){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; var data = e.data;<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; // Code to handle the data<br />
+&nbsp;});</p>
+
+<p>Available events described here and can be tested in the iframe on this page. Every command has a submit button which will send it to the iframe and paste it to the custom function input below the iframe. Here all responses from ESASky are also displayed:</p>
+
+<p>Click on the headers to expand them</p>
+</div>
+
+
+<!--***************
+***View***
+*************** -->
+<hr />
+<button class="accordion">View</button>
+<div class="panel" id="view">
+<p><b>Event:&nbsp;</b></p>
+<p>goToRaDec</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Moves centre of the screen to supplied ra and dec in current coordinate frame</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>ra (String, decimal degrees or sexagesimal format)<p>dec (String, decimal degrees or sexagesimal format)<p><b>Example:&nbsp;</b></p>
+<p id="gotoradec">{event:'goToRaDec', content:{ra:'10.68470',dec:'41.26875'}}</p>
+<p><button onclick="msg_func('gotoradec')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setFov</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Set the Field of View in degrees</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>fov (double, in deg)<p><b>Example:&nbsp;</b></p>
+<p id="setfov">{event:'setFov',  content:{fov:'3.2'}}</p>
+<p><button onclick="msg_func('setfov')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>goToTargetName</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Does a search against SIMBAD to get location of targetName and sets location in view</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>targetName (String)<p><b>Example:&nbsp;</b></p>
+<p id="gototargetname">{event:'goToTargetName',  content:{targetName:'Carina Nebula'}}</p>
+<p><button onclick="msg_func('gototargetname')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getCenter</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>cooFrame (String)(Optional) - Should be "J2000" or "GALACTIC", defaults to "J2000"</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>values.ra (Double) - Right ascension (lon) of the center in decimal degrees</p>
+<p>values.dec (Double) - Declination(lat) of the center in decimal degrees</p>
+<p>values.fov (Double) - Field of view in horizontal (lat) direction in decimal degrees</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getcenter">{event:'getCenter',  content:{cooFrame:'J2000'}}</p>
+<p><button onclick="msg_func('getcenter')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setCooFrame</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Set the coordinate frame</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>cooFrame (String) - J2000 or galactic</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setcooframe">{event:'setCooFrame',  content:{cooFrame: "galactic"}}</p>
+<p><button onclick="msg_func('setcooframe')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>clickExploreButton</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Explore a random target</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="clickexplorebutton">{event:'clickExploreButton'}</p>
+<p><button onclick="msg_func('clickexplorebutton')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Coordinate grid***
+*************** -->
+<hr />
+<button class="accordion">Coordinate grid</button>
+<div class="panel" id="coordinate_grid">
+<p><b>Event:&nbsp;</b></p>
+<p>showCoordinateGrid</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Enables or disables the coordinate grid overlay</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>show (Boolean) shows for true, hides for false<p><b>Example:&nbsp;</b></p>
+<p id="showcoordinategrid">{event:'showCoordinateGrid',  content:{show:true}}</p>
+<p><button onclick="msg_func('showcoordinategrid')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***HiPS***
+*************** -->
+<hr />
+<button class="accordion">HiPS</button>
+<div class="panel" id="hips">
+<p><b>Event:&nbsp;</b></p>
+<p>getAvailableHiPS</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>wavelength (String)(Optional) - Wavelength in capital e.g. "OPTICAL". Defaults to empty.</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>values(JSON dictionary) - If wavelength is empty this is a dictionary of wavlengths otherwise this is a dictionary with available HiPS in that wavlength</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getavailablehips">{event:'getAvailableHiPS',  content:{wavelength:'OPTICAL'}}</p>
+<p><button onclick="msg_func('getavailablehips')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>changeHips</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Change HiPS programmatically by using a HiPS present in ESASky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>hipsName (String)<p><b>Parameters:&nbsp;</b></p>
+<p>extras (Dictionary) - Empty if success</p>
+<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="changehips">{event:'changeHips',  content:{hipsName:'AllWISE color'}}</p>
+<p><button onclick="msg_func('changehips')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addHips</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Add a HiPS programmatically to the skypanel list</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>hipsName (String)<p><b>Parameters:&nbsp;</b></p>
+<p>extras (Dictionary) - Empty if succes</p>
+<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addhips">{event:'addHips',  content:{hipsName:'DSS2 color'}}</p>
+<p><button onclick="msg_func('addhips')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>changeHiPSWithParams</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Change HiPS programmatically by using a new HiPS not present in ESASky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
+<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
+<p><button onclick="msg_func('changehipswithparams')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addHiPSWithParams</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
+<p id="addhipswithparams">{event:'addHiPSWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
+<p><button onclick="msg_func('addhipswithparams')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setHipsColorPalette</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Changing color palette</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>colorPalette (String)<p><b>Example:&nbsp;</b></p>
+<p id="sethipscolorpalette">{event:'setHipsColorPalette',  content:{colorPalette:'PLANCK'}}</p>
+<p><button onclick="msg_func('sethipscolorpalette')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>removeHips</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Removes the hips in the sky panel list at described index with first starting at 0. Entering -1 will remove all except for the first row.</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>index (Integer)<p><b>Parameters:&nbsp;</b></p>
+<p>extras (Dictionary) - Empty if succes</p>
+<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="removehips">{event:'removeHips',  content:{index:0}}</p>
+<p><button onclick="msg_func('removehips')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>openSkyPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Opens the sky panel with all hips shown</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="openskypanel">{event:'openSkyPanel'}</p>
+<p><button onclick="msg_func('openskypanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeSkyPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes the sky panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closeskypanel">{event:'closeSkyPanel'}</p>
+<p><button onclick="msg_func('closeskypanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setHipsSliderValue</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Sets the hips slider to specified value. 0.0 for first in skypanel list 1.0 for second etc. For everything in between a interpolation of the 2 nearby HiPS will be shown</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>value (Double)<p><b>Example:&nbsp;</b></p>
+<p id="sethipsslidervalue">{event:'setHipsSliderValue',  content:{value:0.5}}</p>
+<p><button onclick="msg_func('sethipsslidervalue')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getNumberOfSkyRows</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>values (Integer)<p><b>Example:&nbsp;</b></p>
+<p id="getnumberofskyrows">{event:'getNumberOfSkyRows'}</p>
+<p><button onclick="msg_func('getnumberofskyrows')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Shape selection***
+*************** -->
+<hr />
+<button class="accordion">Shape selection</button>
+<div class="panel" id="shape_selection">
+<p><b>Event:&nbsp;</b></p>
+<p>selectShape</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Selects a shape (catalogue source or footprint)</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String) - Name of the overlaySet where we eant to selesct a shape</p>
+<p>shapeName (String) - Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="selectshape">{'event': 'selectShape',  content:{overlayName:'test footprints', shapeName:'test footprint1'}}</p>
+<p><button onclick="msg_func('selectshape')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>deselectShape</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Deselects a shape (catalogue source or footprint)</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String) - Name of the overlaySet where we want to select a shape</p>
+<p>shapeName (String) - Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="deselectshape">{'event': 'deselectShape',  content:{overlayName:'test footprints', shapeName:'test footprint1'}}</p>
+<p><button onclick="msg_func('deselectshape')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>deselectAllShapes</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Deselects all shapes selected (catalogue source or footprint)</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="deselectallshapes">{'event': 'deselectAllShapes'}</p>
+<p><button onclick="msg_func('deselectallshapes')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Catalogues***
+*************** -->
+<hr />
+<button class="accordion">Catalogues</button>
+<div class="panel" id="catalogues">
+<p><b>Event:&nbsp;</b></p>
+<p>overlayCatalogue</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Overlay a catalogue</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlaySet (String)<p>overlaySet.type (String)<p>overlaySet.overlayName (String)<p>overlaySet.cooframe (String)<p>overlaySet.color (String)<p>overlaySet.lineWidth (Int)<p>overlaySet.skyObjectList (List)<p>overlaySet.skyObjectList.name (String)<p>overlaySet.skyObjectList.id (Int)<p>overlaySet.skyObjectList.ra (String)<p>overlaySet.skyObjectList.dec (String)<p><b>Example:&nbsp;</b></p>
+<p id="overlaycatalogue">{'event': 'overlayCatalogue',  content:{'overlaySet': {'type': 'SourceListOverlay', 'overlayName': 'test catalogue name', 'cooframe': 'J2000', 'color': '#ee2345', 'lineWidth': 10, 'skyObjectList': [{'name': 'source name A', 'id': 1, 'ra': '150.44963', 'dec': '2.24640'}]}}}</p>
+<p><button onclick="msg_func('overlaycatalogue')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>overlayCatalogueWithDetails</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Overlay a catalogue with data</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlaySet (String)<p>overlaySet.type (String)<p>overlaySet.overlayName (String)<p>overlaySet.cooframe (String)<p>overlaySet.color (String)<p>overlaySet.lineWidth (Int)<p>overlaySet.skyObjectList (List)<p>overlaySet.skyObjectList.name (String)<p>overlaySet.skyObjectList.id (Int)<p>overlaySet.skyObjectList.ra (String)<p>overlaySet.skyObjectList.dec (String)<p>overlaySet.skyObjectList.data (List)<p>overlaySet.skyObjectList.data.name (String)<p>overlaySet.skyObjectList.data.type (String)<p>overlaySet.skyObjectList.data.value (type)<p><b>Example:&nbsp;</b></p>
+<p id="overlaycataloguewithdetails">{'event':'overlayCatalogueWithDetails',  content:{'overlaySet': {'type': 'SourceListOverlay', 'overlayName': 'test catalogue name', 'cooframe': 'J2000', 'color': '#ee2345', 'lineWidth': 10, 'skyObjectList': [{'name': 'source name A', 'id': 1, 'ra': '150.44963', 'dec': '2.24640', 'data': [{'name': 'Flux 1', 'value': '10.5', 'type': 'STRING'}]}]}}}</p>
+<p><button onclick="msg_func('overlaycataloguewithdetails')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>deleteCatalogue</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Remove an existing catalogue</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String)<p><b>Example:&nbsp;</b></p>
+<p id="deletecatalogue">{'event': 'deleteCatalogue', content:{ 'overlayName': 'test catalogue name'}}</p>
+<p><button onclick="msg_func('deletecatalogue')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>clearCatalogue</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Clear an existing catalogue</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String)<p><b>Example:&nbsp;</b></p>
+<p id="clearcatalogue">{'event': 'clearCatalogue',  content:{'overlayName': 'test catalogue name'}}</p>
+<p><button onclick="msg_func('clearcatalogue')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Footprints***
+*************** -->
+<hr />
+<button class="accordion">Footprints</button>
+<div class="panel" id="footprints">
+<p><b>Event:&nbsp;</b></p>
+<p>overlayFootprints</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Overlay a list of footprints</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlaySet (String)<p>overlaySet.type (String)<p>overlaySet.overlayName (String)<p>overlaySet.cooframe (String)<p>overlaySet.color (String)<p>overlaySet.lineWidth (Int)<p>overlaySet.skyObjectList (List)<p>overlaySet.skyObjectList.name (String)<p>overlaySet.skyObjectList.id (Int)<p>overlaySet.skyObjectList.stcs (stcs)<p><b>Example:&nbsp;</b></p>
+<p id="overlayfootprints">{'event': 'overlayFootprints',  content:{'overlaySet': {'type': 'FootprintListOverlay', 'overlayName': 'test footprints', 'cooframe': 'J2000', 'color': 'red', 'lineWidth': 5, 'skyObjectList': [{'name': 'test footprint1', 'id': 1, 'stcs': 'Polygon J2000 187.33912535049 -62.6616054228651 187.343512531474 -62.7116786437002 187.235239903703 -62.7136263115712 187.231036216914 -62.6635488923945', 'ra_deg': '187.287228500645', 'dec_deg': '-62.6876148176328'}]}}}</p>
+<p><button onclick="msg_func('overlayfootprints')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>overlayFootprintsWithDetails</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Overlay a list of footprints with data</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlaySet (JSON)<p>overlaySet.type (String)<p>overlaySet.overlayName (String)<p>overlaySet.cooframe (String)<p>overlaySet.color (String)<p>overlaySet.lineWidth (Int)<p>overlaySet.skyObjectList (List)<p>overlaySet.skyObjectList.name (String)<p>overlaySet.skyObjectList.id (Int)<p>overlaySet.skyObjectList.stcs (stcs)<p>overlaySet.skyObjectList.data (List)<p>overlaySet.skyObjectList.data.name (String)<p>overlaySet.skyObjectList.data.type (String)<p>overlaySet.skyObjectList.data.value (type)<p><b>Example:&nbsp;</b></p>
+<p id="overlayfootprintswithdetails">{'event': 'overlayFootprintsWithDetails',  content:{'overlaySet': {'type': 'FootprintListOverlay', 'overlayName': 'test footprints', 'cooframe': 'J2000', 'color': 'red', 'lineWidth': 5, 'skyObjectList': [{'name': 'test footprint1', 'id': 1, 'stcs': 'Polygon J2000 187.33912535049 -62.6616054228651 187.343512531474 -62.7116786437002 187.235239903703 -62.7136263115712 187.231036216914 -62.6635488923945', 'ra_deg': '187.287228500645', 'dec_deg': '-62.6876148176328', 'data': [{'name': 'wid', 'value': '0.0562381572800632', 'type': 'STRING'}, {'name': 'hei', 'value': '0.0260104443530693', 'type': 'STRING'}, {'name': 'score', 'value': '0.99999988079071', 'type': 'STRING'}]}]}}}</p>
+<p><button onclick="msg_func('overlayfootprintswithdetails')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>deleteFootprintsOverlay</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Remove an existing catalogue</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String)<p><b>Example:&nbsp;</b></p>
+<p id="deletefootprintsoverlay">{'event': 'deleteFootprintsOverlay',  content:{'overlayName': 'test catalogue name'}}</p>
+<p><button onclick="msg_func('deletefootprintsoverlay')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>clearFootprintsOverlay</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Clear an existing catalogue</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>catalogueName (String)<p><b>Example:&nbsp;</b></p>
+<p id="clearfootprintsoverlay">{'event': 'clearFootprintsOverlay',  content:{'overlayName': 'test catalogue name'}}</p>
+<p><button onclick="msg_func('clearfootprintsoverlay')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Overlays***
+*************** -->
+<hr />
+<button class="accordion">Overlays</button>
+<div class="panel" id="overlays">
+<p><b>Event:&nbsp;</b></p>
+<p>getActiveOverlays</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Returns all overlays (catalgoues/footprints) currently active on the sky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>values.overlays (List) - List of ids of the currently active overlays</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getactiveoverlays">{event:'getActiveOverlays'}</p>
+<p><button onclick="msg_func('getactiveoverlays')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setOverlayColor</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Changes the line/object color of all objects in the overlay to the selected color</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String) - OverlayName/Id of the overlay to update</p>
+<p>color (String) - Color as 'blue', 'red' etc or RGB code '#4567BB'</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setoverlaycolor">{event:'setOverlayColor', content:{overlayName:'MyOverlay', color:'red'}}</p>
+<p><button onclick="msg_func('setoverlaycolor')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setOverlaySize</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Changes the line/object color of all objects in the overlay to the selected color</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String) - OverlayName/Id of the overlay to update</p>
+<p>size (Double) - Changes the line/shape size of displayed objects. Values from 0.0-1.0</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setoverlaysize">{event:'setOverlaySize', content:{overlayName:'MyOverlay', size:0.85}}</p>
+<p><button onclick="msg_func('setoverlaysize')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setOverlayShape</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Changes the object shape of all objects in the overlay to the selected color</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String) - OverlayName/Id of the overlay to update</p>
+<p>shape (Double) - Changes the shape type displayed shapes. Returns available input values on errorneous input</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setoverlayshape">{event:'setOverlayShape', content:{overlayName:'MyOverlay', shape:'plus'}}</p>
+<p><button onclick="msg_func('setoverlayshape')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>removeOverlay</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Removes the overlay</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>overlayName (String) - OverlayName/Id of the overlay to remove</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="removeoverlay">{event:'removeOverlay', content:{overlayName:'MyOverlay'}}</p>
+<p><button onclick="msg_func('removeoverlay')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>removeAllOverlays</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Removes all overlays</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="removealloverlays">{event:'removeAllOverlays'}</p>
+<p><button onclick="msg_func('removealloverlays')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Results panel***
+*************** -->
+<hr />
+<button class="accordion">Results panel</button>
+<div class="panel" id="results_panel">
+<p><b>Event:&nbsp;</b></p>
+<p>showResultPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Opens the datapanel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="showresultpanel">{event:'showResultPanel'}</p>
+<p><button onclick="msg_func('showresultpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>hideResultPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Minimises the datapanel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="hideresultpanel">{event:'hideResultPanel'}</p>
+<p><button onclick="msg_func('hideresultpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeResultPanelTab</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes the result panel tab at index, starting with 0. -1 closes the current active tab.</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>index (Integer)<p><b>Example:&nbsp;</b></p>
+<p id="closeresultpaneltab">{event:'closeResultPanelTab',  content:{index: -1}}</p>
+<p><button onclick="msg_func('closeresultpaneltab')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeResultPanelTabById</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes the result panel tab with the id.</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>index (Integer)<p><b>Example:&nbsp;</b></p>
+<p id="closeresultpaneltabbyid">{event:'closeResultPanelTabById',  content:{id: myTapId}}</p>
+<p><button onclick="msg_func('closeresultpaneltabbyid')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeAllResultPanelTabs</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes all result panel tabs</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closeallresultpaneltabs">{event:'closeAllResultPanelTabs'}</p>
+<p><button onclick="msg_func('closeallresultpaneltabs')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getResultPanelData</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes all result panel tabs</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>values (Dictionary) - All data in the currently active result panel tab</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getresultpaneldata">{event:'getResultPanelData'}</p>
+<p><button onclick="msg_func('getresultpaneldata')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Plotting ESASky data***
+*************** -->
+<hr />
+<button class="accordion">Plotting ESASky data</button>
+<div class="panel" id="plotting_esasky_data">
+<p><b>Event:&nbsp;</b></p>
+<p>plotObservations</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Plot available image observation footprints in ESASky for he currently shown area for the given missionID</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>missionId (String)<p><b>Parameters:&nbsp;</b></p>
+<p>extras (Dictionary) - Empty if succes</p>
+<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="plotobservations">{event:'plotObservations',  content:{missionId: 'HST-UV'}}</p>
+<p><button onclick="msg_func('plotobservations')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>plotCatalogues</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Plot available catalogue data in ESASky for the currently shown area for the given missionID</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>missionId (String)<p><b>Parameters:&nbsp;</b></p>
+<p>extras (Dictionary) - Empty if succes</p>
+<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="plotcatalogues">{event:'plotCatalogues',  content:{missionId: 'GAIA DR2'}}</p>
+<p><button onclick="msg_func('plotcatalogues')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>plotSpectra</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Plot available spectra footprints in ESASky for he currently shown area for the given missionID</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>missionId (String)<p><b>Parameters:&nbsp;</b></p>
+<p>extras (Dictionary) - Empty if succes</p>
+<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="plotspectra">{event:'plotSpectra',  content:{missionId: 'IUE'}}</p>
+<p><button onclick="msg_func('plotspectra')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Plotting TAP Service data***
+*************** -->
+<hr />
+<button class="accordion">Plotting TAP Service data</button>
+<div class="panel" id="plotting_tap_service_data">
+<p><b>Event:&nbsp;</b></p>
+<p>getAvailableTapServices</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Lists the avaialble TAP services in ESASky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List with the available TAP Services<p><b>Example:&nbsp;</b></p>
+<p id="getavailabletapservices">{'event':'getAvailableTapServices'}</p>
+<p><button onclick="msg_func('getavailabletapservices')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getTapServiceCount</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Get list of missions in a TAP Serrivece wihtin the current FoV</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>tapService (String) - The name of the tapService to get available data from</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List with missions with data in the tapService within the current FoV<p><b>Example:&nbsp;</b></p>
+<p id="gettapservicecount">{'event':'getTapServiceCount',  content:{'tapService':'ESO'}}</p>
+<p><button onclick="msg_func('gettapservicecount')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>plotTapService</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Plots data from the mission in the TAP Service</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>tapService (String) - The mission from the tapService to get data from  (See getTapServiceCount for available missions in the current view)</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="plottapservice">{'event':'plotTapService',  content:{'tapService':'ESO-Spectrum-MPGESO-2.2'}}</p>
+<p><button onclick="msg_func('plottapservice')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>plotTapServiceWithDetails</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Plot available image observation footprints in ESASky for he currently shown area for the given missionID</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>name (String) - Will overwrite any exisitng dataPanel with the same name</p>
+<p>tapUrl (String)<p>color (String) - Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')</p>
+<p>raColumn (String) - Which column on the TAP side to use as ra</p>
+<p>decColumn (String) - Which column on the TAP side to use as dec</p>
+<p>STCSColumn (String) - Which column on the TAP side to use for displaying footprints</p>
+<p>intersectColumn (String) - Which column on the TAP side to use to insersect the current screen against if dataOnlyInView is true</p>
+<p>dataOnlyInView (Boolean) - If true will add a where clause to the adql to limit the data loaded. Parameter intersectColumn or ra and dec columns need to be set</p>
+<p>adql (String) - ADQL used for the TAP query</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="plottapservicewithdetails">{'event':'plotTapServiceWithDetails',  content:{'name':'myTAP2',color:'#FF00FF', dataOnlyInView: true, tapUrl:'https://gea.esac.esa.int/tap-server/tap', raColumn:'ra', decColumn:'dec', adql:'SELECT TOP 100 *  from gaiadr3.gaia_source'}}</p>
+<p><button onclick="msg_func('plottapservicewithdetails')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Counts***
+*************** -->
+<hr />
+<button class="accordion">Counts</button>
+<div class="panel" id="counts">
+<p><b>Event:&nbsp;</b></p>
+<p>getObservationCount</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List of available observations in ESASky with associated counts in the visible sky area<p><b>Example:&nbsp;</b></p>
+<p id="getobservationcount">{'event': 'getObservationsCount'}</p>
+<p><button onclick="msg_func('getobservationcount')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getCataloguesCount</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List of available catalogues in ESASky with associated counts in the visible sky area<p><b>Example:&nbsp;</b></p>
+<p id="getcataloguescount">{'event': 'getCataloguesCount'}</p>
+<p><button onclick="msg_func('getcataloguescount')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getSpectraCount</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List of available spectra in ESASky with associated counts in the visible sky area<p><b>Example:&nbsp;</b></p>
+<p id="getspectracount">{'event': 'getSpectraCount'}</p>
+<p><button onclick="msg_func('getspectracount')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getPublicationsCount</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>Number of publications in the visible sky area<p><b>Example:&nbsp;</b></p>
+<p id="getpublicationscount">{'event': 'getPublicationsCount'}</p>
+<p><button onclick="msg_func('getpublicationscount')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***JWST planning tool***
+*************** -->
+<hr />
+<button class="accordion">JWST planning tool</button>
+<div class="panel" id="jwst_planning_tool">
+<p><b>Event:&nbsp;</b></p>
+<p>addJwst</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Open the JWST planning tool and adds at center of screen</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>instrument (String)<p>detector (String)<p>showAllInstruments (boolean)<p><b>Example:&nbsp;</b></p>
+<p id="addjwst">{'event': 'addJwst',  content:{'instrument': 'NIRSpec', 'detector': 'NRS_FULL_MSA', 'showAllInstruments': false}}</p>
+<p><button onclick="msg_func('addjwst')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addJwstWithCoordinates</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Open the JWST planning tool and adds at supplied coordinates</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>instrument (String)<p>detector (String)<p>showAllInstruments (boolean)<p>ra (String, in degrees)<p>dec (String, in degrees)<p>rotation (String, in degrees)<p><b>Example:&nbsp;</b></p>
+<p id="addjwstwithcoordinates">{'event': 'addJwstWithCoordinates',  content:{'instrument': 'NIRISS', 'detector': 'NIS_CEN', 'showAllInstruments': true, 'ra': '210', 'dec': '12', 'rotation': '90'}}</p>
+<p><button onclick="msg_func('addjwstwithcoordinates')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeJwstPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes the JWST planning tool</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closejwstpanel">{'event': 'closeJwstPanel'}</p>
+<p><button onclick="msg_func('closejwstpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>openJwstPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Opens the JWST planning tool</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="openjwstpanel">{'event': 'openJwstPanel'}</p>
+<p><button onclick="msg_func('openjwstpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>clearJwstAll</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Clear all</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="clearjwstall">{'event': 'clearJwstAll'}</p>
+<p><button onclick="msg_func('clearjwstall')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Healpix MOC***
+*************** -->
+<hr />
+<button class="accordion">Healpix MOC</button>
+<div class="panel" id="healpix_moc">
+<p><b>Event:&nbsp;</b></p>
+<p>addMOC</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a MOC  ( HEALPix Multi-Order Coverage map) on the sky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>name (String) - Name of the MOC  (will overwrte existing MOC with same name)</p>
+<p>options.color (String) - Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')</p>
+<p>options.opacity (Float) - Opacity of the MOC in range 0.0</p>
+<p>options.lineStyle (String) (optional) - Sets the linestyle of the borders in case only the borders are shown. Possible parameters are "solid" and "dashed"</p>
+<p>options.mode (String) (optional) - Choose to display in "healpix" or "q3c" system. Default is healpix</p>
+<p>options.addTab (Boolean) (optional) - Adds a resultspanel tab to control style on true. Default is false</p>
+<p>mocData (Javascript Object) - Object where the keys are the orders and the values are lists of pixels in the order</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addmoc">{event:'addMOC', content:{name:'myMOC',options:{color:'#FF00FF',lineStyle:'dashed',opacity:.5, mode:'healpix', addTab:true}, mocData:{8:[0,1,2,3,4,5], 6:[165]}}}</p>
+<p><button onclick="msg_func('addmoc')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>removeMOC</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Removes a MOC  ( HEALPix Multi-Order Coverage map) from the sky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>name (String) - Name of the MOC  (if it has already been added) MOC added without name will be "MOC"</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="removemoc">{'event':'removeMOC', content:{name:'myMOC'}}</p>
+<p><button onclick="msg_func('removemoc')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Layout***
+*************** -->
+<hr />
+<button class="accordion">Layout</button>
+<div class="panel" id="layout">
+<p><b>Event:&nbsp;</b></p>
+<p>addCustomTreeMap</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a custom treeMap button to ESASky and starts listening for clicks on the missions inside it and send events</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>treeMap.name (String) - The nameID that will be used in any callbacks</p>
+<p>treeMap.description (String) (Optional) - description that will be shown when hovering on the button</p>
+<p>treeMap.iconText (String) (Otional) - Text showing on the button, will default to name if not specified</p>
+<p>treeMap.missions (List) - List of the missions that will show up in the treemap</p>
+<p>treeMap.missions.name (String) - Name of the mission which will be ID in callbacks</p>
+<p>treeMap.missions.color (String) - Default color showing up in the treeMap</p>
+<p><b>Events:&nbsp;</b></p>
+<p><b>treemap_mission_clicked</b></p>
+<p>values.action (String) - Always "treemap_mission_clicked"</p>
+<p>values.info.treemap (String) - treemap name as specified in the parameter</p>
+<p>values.info.mission (String) - mission name as specified in the parameter</p>
+<p>values.location.ra (Double) - Right ascension of center of screen when button was pressed</p>
+<p>values.location.dec (Double) - Declination of center of screen when button was pressed</p>
+<p>values.location.fov (Double) - Field of View of screen when button was pressed</p>
+<p>&nbsp;</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addcustomtreemap">{'event': 'addCustomTreeMap', content:{'treeMap':{name:'JWST', iconText:'JWST', description:'James webb imgages....', missions:[{'name':'NIRSpec','color':'blue'},{'name':'NIRCam','color':'green'}]}}}</p>
+<p><button onclick="msg_func('addcustomtreemap')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addTreeMapMission</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a or multiple custom mission to a custom treeMap</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>treeMap.treeMapName (String) - The nameID of the treemap on which to add a mission</p>
+<p>treeMap.missions (List) - List of the missions that will show up in the treemap</p>
+<p>treeMap.missions.name (String) - Name of the mission which will be ID in callbacks</p>
+<p>treeMap.missions.color (String) - Default color showing up in the treeMap</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addtreemapmission">{'event': 'addTreeMapMission', content:{'treeMap':{treeMapName:'JWST', missions:[{'name':'NIRSpec2','color':'red'}]}}}</p>
+<p><button onclick="msg_func('addtreemapmission')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>removeTreeMapMission</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Removes missions from a custom treeMap</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>treeMap.treeMapName (String) - The nameID of the treemap on which from remove a mission</p>
+<p>treeMap.missions (List) - List of the missions that will show up in the treemap</p>
+<p>treeMap.missions.name (String) - Name of the mission which will be ID in callbacks</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="removetreemapmission">{'event': 'removeTreeMapMission', content:{'treeMap':{treeMapName:'JWST', missions:[{'name':'NIRSpec2', 'color':'red'}]}}}</p>
+<p><button onclick="msg_func('removetreemapmission')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addCustomButton</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a custom button and starts listening for clicks on it</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>button.name (String) - The nameID of the custom button that will be used in callbacks</p>
+<p>button.description (String) - Description that will be shown on hover</p>
+<p>button.iconText (String) - If no icon this text will be the icon instead</p>
+<p>button.iconName (String) - Id of one of the existing icons in ESASky. Errouneous name will send back available ids</p>
+<p><b>Events:&nbsp;</b></p>
+<p><b>button_clicked</b></p>
+<p>values.action (String) - Always "button_clicked"</p>
+<p>values.values.button (String) - ID of button clicked</p>
+<p>values.location.ra (Double) - Right ascension of center of screen when button was pressed</p>
+<p>values.location.dec (Double) - Declination of center of screen when button was pressed</p>
+<p>values.location.fov (Double) - Field of View of screen when button was pressed</p>
+<p>&nbsp;</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addcustombutton">{'event': 'addCustomButton', content:{'button':{name:'myButton', description:'My button´s description', iconText:'My Button'}}}</p>
+<p><button onclick="msg_func('addcustombutton')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>updateCustomButton</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Updates an existing custom button</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>button.name (String) - The nameID of the button to update</p>
+<p>button.description (String) - Description that will be shown on hover</p>
+<p>button.iconText (String) - If no icon this text will be the icon instead</p>
+<p>button.iconName (String) - Id of one of the existing icons in ESASky. Errouneous name will send back available ids</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="updatecustombutton">{'event': 'updateCustomButton', content:{'button':{name:'myButton', description:'My button´s description', iconName:'exclamation'}}}</p>
+<p><button onclick="msg_func('updatecustombutton')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>removeCustomButton</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Removes an existing custom button</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>button.name (String) - The nameID of the button to remove</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="removecustombutton">{'event': 'removeCustomButton', content:{'button':{name:'myButton'}}}</p>
+<p><button onclick="msg_func('removecustombutton')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setModuleVisibility</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Sets visibility of the modifiable elements in ESASky.</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>modules (JSON Object) - Object on format; {key:boolean}. Errorneous id returns possible values</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setmodulevisibility">{event:'setModuleVisibility',  content:{modules:{skies_menu:false}}}</p>
+<p><button onclick="msg_func('setmodulevisibility')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getAvailableModules</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Returns the available ids to modify with setModuleVisibility</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>values.available (List) - List of available ids</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getavailablemodules">{event:'getAvailableModules'}</p>
+<p><button onclick="msg_func('getavailablemodules')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Alerts***
+*************** -->
+<hr />
+<button class="accordion">Alerts</button>
+<div class="panel" id="alerts">
+<p><b>Event:&nbsp;</b></p>
+<p>openGWPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Opens the Graviational Wave panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="opengwpanel">{'event': 'openGWPanel'}</p>
+<p><button onclick="msg_func('opengwpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>openNeutrinoPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Opens the Nutrino events panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="openneutrinopanel">{'event': 'openNeutrinoPanel'}</p>
+<p><button onclick="msg_func('openneutrinopanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeAlertPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes the Alert panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closealertpanel">{'event': 'closeAlertPanel'}</p>
+<p><button onclick="msg_func('closealertpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>minimiseAlertPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Mininises the Alert panel, i.e. keeps the events shown but removes the panel from the screen</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="minimisealertpanel">{'event': 'minimiseAlertPanel'}</p>
+<p><button onclick="msg_func('minimisealertpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getGWIds</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List of available GW ids in ESASky<p><b>Example:&nbsp;</b></p>
+<p id="getgwids">{'event': 'getGWIds'}</p>
+<p><button onclick="msg_func('getgwids')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getGWEventData</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>id (String)<p><b>Parameters:&nbsp;</b></p>
+<p>Data associated with the GW id<p><b>Example:&nbsp;</b></p>
+<p id="getgweventdata">{event:'getGWEventData',  content:{id: 'S200225q'}}</p>
+<p><button onclick="msg_func('getgweventdata')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>showGWEvent</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Shows the chosen GW id on ESASky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>id (String)<p><b>Example:&nbsp;</b></p>
+<p id="showgwevent">{event:'showGWEvent',  content:{id: 'S200225q'}}</p>
+<p><button onclick="msg_func('showgwevent')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getAllGWData</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List of available GW ids with data in ESASky<p><b>Example:&nbsp;</b></p>
+<p id="getallgwdata">{event:'getAllGWData'}</p>
+<p><button onclick="msg_func('getallgwdata')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getNeutrinoEventData</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>List of neutrino events with data in ESASky<p><b>Example:&nbsp;</b></p>
+<p id="getneutrinoeventdata">{event:'getNeutrinoEventData}</p>
+<p><button onclick="msg_func('getneutrinoeventdata')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Events***
+*************** -->
+<hr />
+<button class="accordion">Events</button>
+<div class="panel" id="events">
+<p><b>Event:&nbsp;</b></p>
+<p>registerEventListener</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a event listener which returns values of certain events</p>
+<p><b>Events:&nbsp;</b></p>
+<p><b>view_changed</b></p>
+<p>event.action (String) - view_changed</p>
+<p>event.values.ra (float) - Right ascension of center of screen in deg</p>
+<p>event.values.dec (float) - Declination of center of screen in deg</p>
+<p>event.values.fov (float) - Field of View in degld of View in deg</p>
+<p>&nbsp;</p>
+<p><b>shape_selected</b></p>
+<p>event.action (String) - Will allways be "shape_selected"</p>
+<p>event.values.overlay (String) - Overlayname to which the shape selected is attached</p>
+<p>event.values.name (String) - Name of the shape selected</p>
+<p>event.values.id (String) - Id of the shape selected</p>
+<p>&nbsp;</p>
+<p><b>result_panel_opened</b></p>
+<p>event.action (String) - Will allways be "result_panel_opened"</p>
+<p>event.values.id (String) - ID of the panel opened</p>
+<p>&nbsp;</p>
+<p><b>result_panel_closed</b></p>
+<p>event.action (String) - Will allways be "result_panel_closed"</p>
+<p>event.values.id (String) - ID of the panel closed</p>
+<p>&nbsp;</p>
+<p><b>search_area_used</b></p>
+<p>event.action (String) - Will allways be "search_area_used" This event triggers when a user sets the search area toll to a new area</p>
+<p>event.values.type (String) - POLYGON or CIRCLE</p>
+<p>event.values.coordinates (List) - if type is POLYGON this will be the points that makes up the area List with 1,3,5 etc being ra and 2,4,6 etc dec</p>
+<p>event.values.ra (Double) - Right ascension of the center of the circle if type is CIRCLE</p>
+<p>event.values.dec (Double) - Declination of the center of the circle if type is CIRCLE</p>
+<p>event.values.radius (Double) - Radius of the circle if type is CIRCLE</p>
+<p>&nbsp;</p>
+<p><b>area_shape_selection</b></p>
+<p>event.action (String) - Will allways be "area_shape_selection". this event will trigger when a user has used the area selection tool</p>
+<p>event.values.overlays (List) - List of overlays with entities that have been selected</p>
+<p>event.values.overlays.name (String) - Name of entity that have been selected in this event</p>
+<p>event.values.overlays.id (String) - ID of entity that have been selected in this event</p>
+<p>event.values.selection_area.type (String) - BOX, POLYGON or CIRCLE</p>
+<p>event.values.selection_area.points (List) - if type BOX is POLYGON this will be the points that makes up the area</p>
+<p>event.values.selection_area.points.ra (Double) - Right ascension of a point</p>
+<p>event.values.selection_area.points.dec (Double) - Declination of a point</p>
+<p>event.values.selection_area.circle.ra (Double) - Right ascension of the center of the circle if type is CIRCLE</p>
+<p>event.values.selection_area.circle.dec (Double) - Declination of the center of the circle if type is CIRCLE</p>
+<p>event.values.selection_area.circle.radius (Double) - Radius of the circle if type is CIRCLE</p>
+<p>&nbsp;</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="registereventlistener">{'event': 'registerEventListener'}</p>
+<p><button onclick="msg_func('registereventlistener')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>registerShapeSelectionCallback</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a event listener which returns values whenever a shape is selected</p>
+<p><b>Events:&nbsp;</b></p>
+<p><b>shape_selected</b></p>
+<p>event.action (String) - Will allways be "shape_selected"</p>
+<p>event.values.overlay (String) - Overlayname to which the shape selected is attached</p>
+<p>event.values.name (String) - Name of the shape</p>
+<p>event.values.id (String) - Id of the shape</p>
+<p>&nbsp;</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="registershapeselectioncallback">{'event': 'registerShapeSelectionCallback'}</p>
+<p><button onclick="msg_func('registershapeselectioncallback')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>registerFoVChangedListener</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a event listener which returns values whenever a the field of view is changed</p>
+<p><b>Events:&nbsp;</b></p>
+<p><b>view_changed</b></p>
+<p>event.action (String) - view_changed</p>
+<p>event.values.ra (float) - Right ascension of center of screen in deg</p>
+<p>event.values.dec (float) - Declination of center of screen in deg</p>
+<p>event.values.fov (float) - Field of View in deg</p>
+<p>&nbsp;</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="registerfovchangedlistener">{'event': 'registerFoVChangedListener'}</p>
+<p><button onclick="msg_func('registerfovchangedlistener')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Search Tool***
+*************** -->
+<hr />
+<button class="accordion">Search Tool</button>
+<div class="panel" id="search_tool">
+<p><b>Event:&nbsp;</b></p>
+<p>showSearchTool</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Shows the search tool panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="showsearchtool">{event: 'showSearchTool'}</p>
+<p><button onclick="msg_func('showsearchtool')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeSearchTool</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Closes the search tool panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closesearchtool">{event: 'closeSearchTool'}</p>
+<p><button onclick="msg_func('closesearchtool')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setConeSearchArea</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Sets a circle as cone search area. All counts and data retrival will be within this area. Outside of the area will be blurred</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>ra (double) - Right Ascension of the center of the circle</p>
+<p>dec (double) - Declination of the center of the circle</p>
+<p>radius (double) - Radius of the circle</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setconesearcharea">{event: 'setConeSearchArea',  content:{ra:15.0, dec:35.4, radius:5.0}}</p>
+<p><button onclick="msg_func('setconesearcharea')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>setPolygonSearchArea</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Sets a polygon as search area. All counts and data retrival will be within this area. Outside of the area will be blurred</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>stcs (String) - STC String of the polygon</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="setpolygonsearcharea">{event: 'setPolygonSearchArea',  content:{stcs:'POLYGON ICRS 3.5596 -10.9209 3.6914 -11.1109 3.6475 -11.3010 3.6035 -11.4913 3.4717 -11.6817 3.3398 -11.8722 3.1201 -11.6817 2.9004 -11.4913 2.7686 -11.3771 2.7246 -11.1869 2.5928 -10.9969 2.4609 -10.8069 2.3291 -10.6171 2.1973 -10.4274 2.0654 -10.2378 1.9336 -10.0484 1.8896 -9.8590 1.8457 -9.6697 1.7139 -9.4806 1.5820 -9.2916 1.5381 -9.1026 1.4941 -8.9138 1.4502 -8.7250 1.4062 -8.5364 1.2744 -8.3478 1.3184 -8.1594 1.1865 -7.9710 1.2305 -7.7827 1.0986 -7.5945 1.1426 -7.4064 1.0107 -7.2184 1.0547 -7.0304 0.9229 -6.8425 0.9668 -6.6547 0.8350 -6.4670 0.8789 -6.2793 0.8350 -6.0917 0.7910 -5.9042 0.8350 -5.7167 0.8789 -5.5293 0.8350 -5.3419 0.7910 -5.1546 0.8350 -4.9674 0.8789 -4.7802 0.9229 -4.5931 1.1426 -4.5556 1.3623 -4.6679 1.5820 -4.6305 1.8018 -4.8176 1.8457 -5.0048 1.8896 -5.1921 2.0215 -5.3794 2.1533 -5.5667 2.1973 -5.7542 2.3291 -5.9417 2.3730 -6.1292 2.5049 -6.3168 2.5488 -6.5045 2.5928 -6.6923 2.6367 -6.8801 2.6807 -7.0680 2.7246 -7.2560 2.8564 -7.4440 2.9883 -7.6321 2.9443 -7.8204 3.0762 -8.0087 3.1201 -8.1971 3.1641 -8.3855 3.2080 -8.5741 3.2520 -8.7628 3.2959 -8.9515 3.3398 -9.1404 3.4717 -9.3294 3.4277 -9.5184 3.4717 -9.7076 3.5156 -9.8969 3.5596 -10.0862 3.6035 -10.2757 3.5596 -10.4653 3.5156 -10.6551 3.5596 -10.8449'}}</p>
+<p><button onclick="msg_func('setpolygonsearcharea')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>clearSearchArea</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Clears the current active search area</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="clearsearcharea">{event: 'clearSearchArea'}</p>
+<p><button onclick="msg_func('clearsearcharea')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Targetlist***
+*************** -->
+<hr />
+<button class="accordion">Targetlist</button>
+<div class="panel" id="targetlist">
+<p><b>Event:&nbsp;</b></p>
+<p>getTargetLists</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Get all available target lists</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>A list of all available target lists.<p><b>Example:&nbsp;</b></p>
+<p id="gettargetlists">{event: 'getTargetLists'}</p>
+<p><button onclick="msg_func('gettargetlists')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>openTargetList</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Open the target list panel. If the optional parameter "targetlist" is provided, the panel is opened with the provided target list pre-selected</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>targetList (String) (Optional) - One of the available target lists</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="opentargetlist">{event: 'openTargetList',  content:{targetList: 'PeculiarGalaxies'}}</p>
+<p><button onclick="msg_func('opentargetlist')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeTargetList</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Close the target list panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closetargetlist">{event: 'closeTargetList'}</p>
+<p><button onclick="msg_func('closetargetlist')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Image***
+*************** -->
+<hr />
+<button class="accordion">Image</button>
+<div class="panel" id="image">
+<p><b>Event:&nbsp;</b></p>
+<p>openOutreachPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Open the outreach panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="openoutreachpanel">{event: 'openOutreachPanel'}</p>
+<p><button onclick="msg_func('openoutreachpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeOutreachPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Close the outreach panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closeoutreachpanel">{event: 'closeOutreachPanel'}</p>
+<p><button onclick="msg_func('closeoutreachpanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getOutreachImageIds</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Get all available outreach image IDs</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getoutreachimageids">{event: 'getOutreachImageIds'}</p>
+<p><button onclick="msg_func('getoutreachimageids')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>openOutreachImage</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Close the outreach panel</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>id (String) - The unique identifier of the outreach image to be opened</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="openoutreachimage">{event:'openOutreachImage',  content:{ id:'heic0406a'}}</p>
+<p><button onclick="msg_func('openoutreachimage')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addSingleImage</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a single image on the sky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>name (String) - Id of the image</p>
+<p>url (String) - Url pointing to the image</p>
+<p>ra (Double) - Right ascension of the center of the image</p>
+<p>dec (Double) - Declination of the center of the image</p>
+<p>fov (Double) - Field of View of the image width in degress</p>
+<p>rotation (Double) - Rotation of the image</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addsingleimage">{'event':'addSingleImage', 'content':{name:'MyImage', url:'https://hst.esac.esa.int/tap-server/data?OBSERVATIONID=hst_08597_46_wfpc2_f606w_wf&RETRIEVAL_TYPE=POSTCARD&TAPCLIENT=ESASKY', ra:192.6162107, dec:25.5088941, rot:0.0, fov:0.044}}</p>
+<p><button onclick="msg_func('addsingleimage')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>addTiledImage</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Adds a tiled image on the sky</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>name (String) - Id of the image</p>
+<p>url (String) - Url pointing to the image</p>
+<p>ra (Double) - Right ascension of the center of the image</p>
+<p>dec (Double) - Declination of the center of the image</p>
+<p>fov (Double) - Field of View of the image width in degress</p>
+<p>rotation (Double) - Rotation of the image</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addtiledimage">{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso1723a/', ra:83.7844027714, dec:-5.47870026672, rot:0.18, fov:0.999, width:16877, height:13107}}</p>
+<p><button onclick="msg_func('addtiledimage')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Player***
+*************** -->
+<hr />
+<button class="accordion">Player</button>
+<div class="panel" id="player">
+<p><b>Event:&nbsp;</b></p>
+<p>playerPlay</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Start the currently active player</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="playerplay">{event: 'playerPlay'}</p>
+<p><button onclick="msg_func('playerplay')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>playerPause</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Pause the currently active player</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="playerpause">{event: 'playerPause'}</p>
+<p><button onclick="msg_func('playerpause')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>playerNext</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Go to the next entry in the player queue</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="playernext">{event: 'playerNext'}</p>
+<p><button onclick="msg_func('playernext')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>playerPrevious</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Go to the previous entry in the player queue</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="playerprevious">{event: 'playerPrevious'}</p>
+<p><button onclick="msg_func('playerprevious')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+</div>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>

@@ -4,17 +4,17 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.ToggleImage;
-import esac.archive.esasky.cl.web.client.model.entities.ColorChangeObserver;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.utility.WavelengthUtils;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+
+import java.util.Objects;
 
 public class MissionTabButtons extends Composite {
 
@@ -25,11 +25,11 @@ public class MissionTabButtons extends Composite {
     protected ToggleImage toggleImage;
     private LabelWithHelpButton tabTitleLabel;
     private String canvasId;
-    private IDescriptor descriptor;
+    private CommonTapDescriptor descriptor;
 
     public MissionTabButtons(final String helpTitle, final String helpDescription, GeneralEntityInterface entity) {
         
-        this.esaSkyUniqId = entity.getEsaSkyUniqId();
+        this.esaSkyUniqId = entity.getId();
         this.compositePanel = new FlowPanel();
         
         this.tabTitleLabel = new LabelWithHelpButton(entity.getTabLabel(), helpDescription, helpTitle, "labelWithHelpButtonLabelNoFontSize");
@@ -44,7 +44,7 @@ public class MissionTabButtons extends Composite {
             compositePanel.add(styleButton);
             setColor(entity.getColor());
         } 
-        if(entity.getDescriptor().getWavelengths() != null) {
+        if(entity.getDescriptor().getWavelengthCenter() != null) {
             canvasId = esaSkyUniqId + "_wavelengthCanvas";
             descriptor = entity.getDescriptor();
             FlowPanel wavelengthCanvas = new FlowPanel("canvas");
@@ -52,9 +52,20 @@ public class MissionTabButtons extends Composite {
             wavelengthCanvas.getElement().setAttribute("width", "30");
             wavelengthCanvas.getElement().setId(canvasId);
             wavelengthCanvas.addStyleName("missionTab__wavelengthCanvas");
-            wavelengthCanvas.setTitle(WavelengthUtils.getLongName(descriptor));
+            wavelengthCanvas.setTitle(Objects.requireNonNull(WavelengthUtils.getWavelengthNameFromValue(descriptor.getWavelengthCenter())).longName);
             compositePanel.add(wavelengthCanvas);
-            compositePanel.setTitle(descriptor.getGuiLongName());
+
+            String title = descriptor.isCustom()
+                    ? descriptor.getMission() + "(" + entity.getQuery() + ")"
+                    : descriptor.getLongName();
+
+            compositePanel.setTitle(title);
+
+            entity.registerQueryChangedObserver(query -> {
+                if (descriptor.isCustom()) {
+                    compositePanel.setTitle(descriptor.getMission() + " (" + entity.getQuery() + ")");
+                }
+            });
         }
         if(entity.getTypeLogo() != null) {
         	Image logo = entity.getTypeLogo();
@@ -68,19 +79,13 @@ public class MissionTabButtons extends Composite {
         compositePanel.add(closeButton);
         
         initWidget(this.compositePanel);
-        
-        this.toggleImage = new ToggleImage(new Image("images/" + entity.getDescriptor().getIcon() + ".png"), 
-                new Image("images/" + entity.getDescriptor().getIcon() + "_toggled.png"));
+
+        this.toggleImage = new ToggleImage(new Image("images/" + entity.getIcon() + ".png"),
+                new Image("images/" + entity.getIcon() + "_toggled.png"));
         toggleImage.addStyleName("tabIcon");
         this.compositePanel.insert(toggleImage, 0);
         
-        entity.registerColorChangeObserver(new ColorChangeObserver() {
-			
-			@Override
-			public void onColorChange(String newColor) {
-				setColor(newColor);
-			}
-		});
+        entity.registerColorChangeObserver(this::setColor);
     }
     
     @Override
@@ -93,7 +98,7 @@ public class MissionTabButtons extends Composite {
         if(canvasId != null) {
             double minWavelengthAllowed = WavelengthUtils.getMinWavelengthRange();
             double maxWavelengthAllowed = WavelengthUtils.getMaxWavelengthRange();
-            double normalizedWavelength = (descriptor.getCenterWavelengthValue() - minWavelengthAllowed) 
+            double normalizedWavelength = (descriptor.getWavelengthCenter() - minWavelengthAllowed)
                     / (maxWavelengthAllowed - minWavelengthAllowed); // Normalized range to 0-1
             double invertedMean = -1 * (normalizedWavelength - 1);
             

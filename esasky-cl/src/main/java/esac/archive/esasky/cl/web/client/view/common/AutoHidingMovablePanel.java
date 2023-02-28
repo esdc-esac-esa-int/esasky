@@ -19,7 +19,6 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ClosingObserver;
 
 public class AutoHidingMovablePanel extends MovablePanel{
 	private boolean isShowing;
-	private List<ClosingObserver> observers = new LinkedList<ClosingObserver>();
 	
 	public AutoHidingMovablePanel(String googleEventCategoryForMoveOperation) {
 		super(googleEventCategoryForMoveOperation, true);
@@ -144,11 +143,5 @@ public class AutoHidingMovablePanel extends MovablePanel{
 		autoHidePartners.add(partner);
 	}
 	
-	public void registerCloseObserver(ClosingObserver onClose) {
-		observers.add(onClose);
-	}
-	
-	public void unregisterCloseObserver(ClosingObserver onClose) {
-		observers.remove(onClose);
-	}
+
 }

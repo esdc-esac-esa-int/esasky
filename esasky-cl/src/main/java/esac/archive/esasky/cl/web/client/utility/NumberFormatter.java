@@ -14,7 +14,7 @@ public final class NumberFormatter {
     	return string;
     }
 	
-	public static String formatToNumberWithSpaces(int number) {
+	public static String formatToNumberWithSpaces(long number) {
 		return formatToNumberWithSpaces(Long.toString(number));
 	}
 	

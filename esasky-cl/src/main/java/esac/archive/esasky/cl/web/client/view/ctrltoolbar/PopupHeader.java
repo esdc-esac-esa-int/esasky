@@ -20,6 +20,7 @@ public class PopupHeader<T> extends FlowPanel{
 	private final LabelWithHelpButton labelWithHelpButton;
 
 	private final FlowPanel actionPanel = new FlowPanel();
+	private final FlowPanel prefixPanel = new FlowPanel();
 
 	public interface Resources extends ClientBundle {
 		@Source("ctrlToolBarPopupHeader.css")
@@ -27,27 +28,32 @@ public class PopupHeader<T> extends FlowPanel{
 		CssResource style();
 	}
 	
-	public PopupHeader(final Hidable<T> panel, String headerText, String helpText) {
+	public PopupHeader(final Hidable<? extends T> panel, String headerText, String helpText) {
 		this(panel, headerText, helpText, headerText);
 	}
-	public PopupHeader(final Hidable<T> panel, String headerText, String helpText, String helpHeader) {
+	public PopupHeader(final Hidable<? extends T> panel, String headerText, String helpText, String helpHeader) {
 		this(panel, headerText, helpText, helpHeader, null, "");
 	}
 	
-	public PopupHeader(final Hidable<T> panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
+	public PopupHeader(final Hidable<? extends T> panel, String headerText, String helpText, String helpHeader, ClickHandler onCloseClick, String closeTooltip) {
 		this.style = resources.style();
 		this.style.ensureInjected();
 
 		labelWithHelpButton = new LabelWithHelpButton(headerText, helpText, helpHeader);
 		labelWithHelpButton.addStyleName("popupHeaderLabelWithHelpButton");
 
+
 		FlowPanel titlePanel = new FlowPanel();
+		titlePanel.addStyleName("titlePanel");
+		prefixPanel.addStyleName("popupHeaderPrefixPanel");
+		titlePanel.add(prefixPanel);
 		titlePanel.add(labelWithHelpButton);
 		add(titlePanel);
 
 
 		actionPanel.addStyleName("popupHeaderActionPanel");
 		add(actionPanel);
+
 
 		if(onCloseClick != null) {
 			CloseButton closeButton = new CloseButton();
@@ -77,5 +83,17 @@ public class PopupHeader<T> extends FlowPanel{
 
 	public void addActionWidget(Widget widget) {
 		actionPanel.insert(widget, 0);
+	}
+
+	public void removeActionWidget(Widget widget) {
+		actionPanel.remove(widget);
+	}
+
+	public void addPrefixWidget(Widget widget) {
+		prefixPanel.add(widget);
+	}
+
+	public void removePrefixWidget(Widget widget) {
+		prefixPanel.remove(widget);
 	}
 }

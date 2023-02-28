@@ -6,12 +6,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 
-import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.RotateAnimation;
 
 
@@ -20,10 +16,12 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 
     private Resources resources = GWT.create(Resources.class);
     private CssResource style;
-
 	private RotateAnimation rotateAnimation;
 
 	protected final PushButtonWithVisibleOnClick button;
+	protected Label label;
+
+	private static final String DISPLAY_NONE = "displayNone";
 
 	protected interface ClickAction{
 		void action();
@@ -41,6 +39,23 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
     }
 
 	public EsaSkyButton(ImageResource image){
+		this(image, null);
+	}
+
+	public EsaSkyButton(String text){
+		FlowPanel container = new FlowPanel();
+		button = new PushButtonWithVisibleOnClick(text);
+		button.addStyleName("stringButton");
+
+		container.add(button);
+
+		initWidget(container);
+
+		initStyle();
+
+	}
+
+	public EsaSkyButton(ImageResource image, String labelText){
 		FlowPanel container = new FlowPanel();
 		button = new PushButtonWithVisibleOnClick(new Image(image));
 		container.add(button);
@@ -50,33 +65,19 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 		initStyle();
 
 		this.enabledImage = new Image(image);
-        this.enabledImage.addStyleName("fillParent");
-        button.getUpFace().setImage(enabledImage);
+		this.enabledImage.addStyleName("fillParent");
+		button.getUpFace().setImage(enabledImage);
 
+		rotateAnimation = new RotateAnimation(enabledImage.getElement());
+		rotateAnimation.addObserver(currentPosition -> button.getUpFace().setImage(enabledImage));
 
-        rotateAnimation = new RotateAnimation(enabledImage.getElement());
-
-        rotateAnimation.addObserver(new AnimationObserver() {
-
-            @Override
-            public void onComplete(double currentPosition) {
-            	button.getUpFace().setImage(enabledImage);
-            }
-        });
-	}
-
-	public EsaSkyButton(String text){
-		FlowPanel container = new FlowPanel();
-		button = new PushButtonWithVisibleOnClick(text);
-		button.addStyleName("stringButton");
-		container.add(button);
-
-
-
-		initWidget(container);
-
-		initStyle();
-
+		if (labelText != null) {
+			this.addStyleName("imageLabelButton");
+			label = new Label(labelText);
+			label.addStyleName(DISPLAY_NONE);
+			label.addStyleName("imageLabelButtonLabel");
+			container.add(label);
+		}
 	}
 
 	public EsaSkyButton(String color, boolean isSmall){
@@ -226,20 +227,8 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
 	}
 
 	private void stopPropagationOfMouseDownAndTouchStartToParentElements() {
-		button.addMouseDownHandler(new MouseDownHandler() {
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				event.stopPropagation();
-			}
-		});
-		button.addTouchStartHandler(new TouchStartHandler() {
-
-			@Override
-			public void onTouchStart(TouchStartEvent event) {
-				event.stopPropagation();
-			}
-		});
+		button.addMouseDownHandler(DomEvent::stopPropagation);
+		button.addTouchStartHandler(DomEvent::stopPropagation);
 	}
 
 	public void addMouseOverHandler(MouseOverHandler handler) {
@@ -303,4 +292,20 @@ public class EsaSkyButton extends Composite implements HasClickHandlers{
     public void click() {
         button.fireEvent(new ClickEvent(){});
     }
+
+	public void showLabel() {
+		if (label != null) {
+			label.removeStyleName(DISPLAY_NONE);
+		}
+	}
+
+	public void hideLabel() {
+		if (label != null) {
+			label.addStyleName(DISPLAY_NONE);
+		}
+	}
+
+	public boolean isLabelVisible() {
+		return label != null && !label.getStyleName().contains(DISPLAY_NONE);
+	}
 }

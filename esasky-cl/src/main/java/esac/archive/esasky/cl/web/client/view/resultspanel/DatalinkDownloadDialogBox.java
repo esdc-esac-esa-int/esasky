@@ -19,8 +19,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.callback.StandardCallback;
@@ -31,7 +31,7 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 
-public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
+public class DatalinkDownloadDialogBox extends MovablePanel {
 	private final Resources resources = GWT.create(Resources.class);
 	private CssResource style;
 
@@ -56,7 +56,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 	};
 
 	public DatalinkDownloadDialogBox(final String url, String title) {
-		super(GoogleAnalytics.CAT_DATALINK);
+		super(GoogleAnalytics.CAT_DATALINK, true, true);
 		
 		if(title == null || title.isEmpty()) {
 			title = "Datalink";
@@ -101,7 +101,7 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 								if (!links.getDescription().isEmpty()) {
 									anchorName = links.getDescription();
 								}
-								if (!links.getContentType().isEmpty()) {
+								if (!links.getContentLength().isEmpty()) {
 									anchorName += links.getTypeAndSizeDisplayText();
 								}
 								Anchor anchor = new Anchor(anchorName, links.getAccessUrl(), "_blank");
@@ -218,11 +218,13 @@ public class DatalinkDownloadDialogBox extends AutoHidingMovablePanel {
 		});
 	}
 
-	@Override
+	public void show() {
+		MainLayoutPanel.addElementToMainArea(this);
+	}
 	public void hide() {
+		MainLayoutPanel.removeElementFromMainArea(this);
 		MainLayoutPanel.removeElementFromMainArea(loadingSpinner);
 		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("Loading datalink"));
-		super.hide();
 	}
 
 	private void setMaxHeight(int height) {

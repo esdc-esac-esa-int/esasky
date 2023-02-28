@@ -34,7 +34,9 @@ public class EsaSkyWebConstants {
     public static final String GENERAL_RESOLVER_URL = BACKEND_CONTEXT + "/generalresolver";
     public static final String SSO_RESOLVER_URL = BACKEND_CONTEXT + "/ssoresolver";
     public static final String DATA_REQUEST_URL = BACKEND_CONTEXT + "/data-request";
-    public static final String OBSERVATIONS_URL = BACKEND_CONTEXT + "/observations";
+
+    public static final String TAP_SYNC_URL = BACKEND_CONTEXT + "/tap/sync";
+    public static final String TAP_DESCRIPTOR_URL = BACKEND_CONTEXT + "/tap/descriptors";
     public static final String IMAGES_URL = BACKEND_CONTEXT + "/outreach-image";
     public static final String SSO_URL = BACKEND_CONTEXT + "/sso";
     public static final String SPECTRA_URL = BACKEND_CONTEXT + "/spectra";
@@ -58,6 +60,7 @@ public class EsaSkyWebConstants {
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
     public static final String HIPSLIST_URL = BACKEND_CONTEXT + "/global-hipslist";
+    public static final String TAPREGISTRY_URL = BACKEND_CONTEXT + "/tap-registry";
 
     public static final String URL_PARAM_TARGET = "target";
     public static final String URL_PARAM_HIPS = "hips";
@@ -128,6 +131,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_MODE_ESASKY = "ESASKY";
     public static final String MODULE_MODE_JWST = "JWST";
     public static final String MODULE_MODE_CLEAN = "CLEAN";
+    public static final String MODULE_MODE_KIOSK = "KIOSK";
 
     
     public static final String MODULE_SCIENTIFIC_BUTTON = "scientific_toggle_button";
@@ -149,6 +153,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SSO = "sso_button";
     public static final String MODULE_PUBLICATIONS = "publications_button";
     public static final String MODULE_TARGETLIST = "target_list_button";
+    public static final String MODULE_TARGETLIST_UPLOAD = "target_list_upload";
     public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
     public static final String MODULE_DICE = "dice_button";
     public static final String MODULE_SCIENCE_MODE = "science_mode";
@@ -156,7 +161,9 @@ public class EsaSkyWebConstants {
     public static final String MODULE_EVA_MENU = "eva_menu";
     public static final String MODULE_EVA = "eva";
     public static final String MODULE_SEARCH_TOOL = "search_tool";
-    
+    public static final String MODULE_SEARCH_IN_MENU = "search_in";
+    public static final String MODULE_KIOSK_BUTTONS = "kiosk_buttons";
+    public static final String MODULE_WELCOME_DIALOG = "welcome_dialog";
     
     // DEFAULT ONES
     public static final String MODULE_WWT_LINK = "wwtLink";
@@ -177,7 +184,25 @@ public class EsaSkyWebConstants {
 
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
-    
+    public static final String HEASARC_MISSION = "HEASARC";
+    public static final String SCHEMA_OBSERVATIONS = "observations";
+    public static final String SCHEMA_CATALOGUES = "catalogues";
+    public static final String SCHEMA_ALERTS = "alerts";
+    public static final String SCHEMA_PUBLIC = "public";
+    public static final String SCHEMA_IMAGES = "images";
+    public static final String SCHEMA_EXTERNAL = "external";
+    public static final String CATEGORY_OBSERVATIONS = "observations";
+    public static final String CATEGORY_SPECTRA = "spectra";
+    public static final String CATEGORY_CATALOGUES = "catalogues";
+    public static final String CATEGORY_SSO = "sso";
+    public static final String CATEGORY_GRAVITATIONAL_WAVES = "gravitational_waves";
+    public static final String CATEGORY_NEUTRINOS = "neutrinos";
+    public static final String CATEGORY_PUBLICATIONS = "publications";
+    public static final String CATEGORY_IMAGES = "images";
+    public static final String CATEGORY_EXTERNAL = "external";
+
+
+
     /** Prevents Utility class calls. */
     protected EsaSkyWebConstants() {
         // prevents calls from subclass
@@ -226,6 +251,7 @@ public class EsaSkyWebConstants {
 
     public static final String SESSION_DATA = "data";
     public static final String SESSION_DATA_MISSION = "mission";
+    public static final String SESSION_DATA_CATEGORY = "category";
     public static final String SESSION_DATA_TABLE = "table";
     public static final String SESSION_DATA_ISMOC = "is_moc";
     public static final String SESSION_DATA_HAS_PANEL = "has_panel";
@@ -272,6 +298,7 @@ public class EsaSkyWebConstants {
     public static final String SESSION_TREEMAP = "treemap";
     public static final String SESSION_TREEMAP_LOW = "low";
     public static final String SESSION_TREEMAP_HIGH = "high";
+    public static final String SESSION_EXTERNAL_DATA_CENTERS = "external_data_centers";
     
 
 }

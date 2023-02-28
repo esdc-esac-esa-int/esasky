@@ -496,7 +496,7 @@ public class ApiMessageParser {
 					}
 					
 					if(msg.content['dataOnlyInView']){
-						apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::plotExtTapWithDetails(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;ILesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject; )
+						apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::plotExtTapWithDetails(*)
 							(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit, msg.content);
 					
 					}else{
@@ -507,12 +507,13 @@ public class ApiMessageParser {
 
 				case 'openExtTapPanel':
 					console.log('openExtTapPanel event captured');
-					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanel()();
+					var tab = Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'tab') ? msg.content.tab : "";
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::openExtTapPanelTab(Ljava/lang/String;)(tab);
 					break;
 
 				case 'closeExtTapPanel':
 					console.log('closeExtTapPanel event captured');
-					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanel()();
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::closeExtTapPanelTab()();
 					break;
 
 					// MOC
@@ -660,25 +661,35 @@ public class ApiMessageParser {
 
 				case 'openOutreachPanel':
 					console.log('openOutreachPanel event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::openOutreachPanel()()
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+                    var id = Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'id') ? msg.content.id : null;
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::openTelescopeOutreachPanel(Ljava/lang/String;Ljava/lang/String;)(telescope, id)
 					break;
 
 				case 'closeOutreachPanel':
 					console.log('closeOutreachPanel event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::closeOutreachPanel()()
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::closeTelescopeOutreachPanel(Ljava/lang/String;)(telescope)
 					break;
 
 				case 'getOutreachImageIds':
 					console.log('getOutreachImageIds event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::getAllOutreachImageIds(Lcom/google/gwt/core/client/JavaScriptObject;)(e)
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::getAllOutreachImageIds(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(e, telescope)
                     break;
 
 				case 'openOutreachImage':
 					console.log('openOutreachImage event captured');
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;)(msg.content.id)
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;Ljava/lang/String;)(msg.content.id, telescope)
 					break;
-					
-							
+
+				case 'closeOutreachImage':
+					console.log('closeOutreachImage event captured');
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::hideOutreachImage(Ljava/lang/String;)(telescope)
+					break;
+
 				// API ALERTS
 				case 'openGWPanel':
 					console.log('openGWPanel event captured');

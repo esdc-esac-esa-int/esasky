@@ -94,6 +94,10 @@ public class DatalinkLinks {
         return contentType;
     }
     
+    public String getContentLength() {
+        return contentLength;
+    }
+    
     public String getDescription() {
         return description;
     }

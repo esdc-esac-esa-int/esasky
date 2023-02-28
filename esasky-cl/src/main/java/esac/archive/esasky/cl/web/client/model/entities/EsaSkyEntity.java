@@ -1,8 +1,8 @@
 package esac.archive.esasky.cl.web.client.model.entities;
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Image;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -15,10 +15,7 @@ import esac.archive.esasky.cl.web.client.query.AbstractTAPService;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.SourceConstant;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.allskypanel.CatalogueTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
@@ -28,16 +25,11 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSe
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorTablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ColumnType;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EsaSkyEntity implements GeneralEntityInterface {
 
@@ -48,63 +40,82 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     protected IShapeDrawer drawer;
     protected CombinedSourceFootprintDrawer combinedDrawer;
-    protected IDescriptor descriptor;
-    private MOCEntity mocEntity;
+    protected CommonTapDescriptor descriptor;
+    protected MOCEntity mocEntity;
     protected AbstractTAPService metadataService;
     private SecondaryShapeAdder secondaryShapeAdder;
     protected ITablePanel tablePanel;
     protected Tooltip tooltip;
     private SkyViewPosition skyViewPosition;
     private String histoLabel;
-    private String esaSkyUniqId;
+    private String id;
+    private String regionColumn;
     private TapRowList metadata;
     private CountStatus countStatus;
     private boolean isRefreshable = true;
     private StylePanel stylePanel;
     private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
+    private LinkedList<QueryChangeObserver> queryChangeObservers = new LinkedList<>();
     protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<>();
     private String adql; 
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, 
                 SourceShapeType.SQUARE.getName(), secondaryShapeAdder, "solid");
 
     }
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, 
                 CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName());
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle) {
     	this(descriptor, null, skyViewPosition, esaSkyUniqId, null,
     			CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService) {
         this(descriptor, null, skyViewPosition, esaSkyUniqId, metadataService,
                 CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle);
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, Object shapeType) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, SkyViewPosition skyViewPosition, String esaSkyUniqId, String lineStyle, AbstractTAPService metadataService, String regionColumn) {
+        this(descriptor, null, skyViewPosition, esaSkyUniqId, metadataService,
+                CombinedSourceFootprintDrawer.DEFAULT_SOURCE_SIZE, SourceShapeType.SQUARE.getName(), null, lineStyle, regionColumn);
+    }
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId,
+                        AbstractTAPService metadataService, int shapeSize, Object shapeType) {
         this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, null, "solid");
     }
 
-    public EsaSkyEntity(IDescriptor descriptor, CountStatus countStatus,
-            SkyViewPosition skyViewPosition, String esaSkyUniqId, 
-            AbstractTAPService metadataService, int shapeSize, Object shapeType, 
-            SecondaryShapeAdder secondaryShapeAdder, String lineStyle) {
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId,
+                        AbstractTAPService metadataService, int shapeSize, Object shapeType,
+                        SecondaryShapeAdder secondaryShapeAdder, String lineStyle) {
+        this(descriptor, countStatus, skyViewPosition, esaSkyUniqId, metadataService, shapeSize, shapeType, secondaryShapeAdder, lineStyle, null);
+    }
+
+    public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
+                        SkyViewPosition skyViewPosition, String esaSkyUniqId,
+                        AbstractTAPService metadataService, int shapeSize, Object shapeType,
+                        SecondaryShapeAdder secondaryShapeAdder, String lineStyle, String regionColumn) {
         this.metadataService = metadataService;
         this.descriptor = descriptor;
         this.secondaryShapeAdder = secondaryShapeAdder;
+        this.regionColumn = regionColumn;
+        this.id = "ESASKY_ENTITY_" + UUID.randomUUID();
 
-        JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(esaSkyUniqId,
-                descriptor.getPrimaryColor(), lineStyle);
+        if (Objects.equals(descriptor.getMission(), "Gaia-DR3")) {
+            descriptor.setSecondaryColor("#33ccff");
+        }
 
-        Map<String, Object> details = new HashMap<String, Object>();
+        String color = descriptor.getColor();
+        JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(id, color, lineStyle);
+
+        Map<String, Object> details = new HashMap<>();
 
         if (secondaryShapeAdder != null) {
             secondaryShapeAdder.createSpecializedOverlayShape(details);
@@ -112,31 +123,37 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             details.put("shape", shapeType);
         }
 
-        JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(
-                esaSkyUniqId, shapeSize, descriptor.getPrimaryColor(), details);
+        JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(id, shapeSize, color, details);
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
+
         drawer = combinedDrawer;
 
-        drawer.setPrimaryColor(descriptor.getPrimaryColor());
+        drawer.setPrimaryColor(color);
         drawer.setSecondaryColor(descriptor.getSecondaryColor());
-        
+
         this.skyViewPosition = skyViewPosition;
-        this.esaSkyUniqId = esaSkyUniqId;
-        this.metadataService = metadataService;
         this.countStatus = countStatus;
-        
+
 
     }
 
+
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
         @Override
-        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData) {
-        	String stcs = null;
-        	if(!"".equals(getDescriptor().getTapSTCSColumn())) {
-        		stcs = rowData.getStringProperty(getDescriptor().getTapSTCSColumn());
-        	}
-            if(stcs == null || stcs.toUpperCase().startsWith("POSITION")) {
+        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
+            String stcs = null;
+
+            String stcsColumn = EsaSkyEntity.this.regionColumn;
+            if (stcsColumn == null || stcsColumn.isEmpty()) {
+                stcsColumn = descriptor.getRegionColumn();
+            }
+
+            if(stcsColumn != null && !stcsColumn.isEmpty()) {
+                stcs = rowData.getStringProperty(stcsColumn);
+            }
+
+            if(stcs == null || stcs.toUpperCase().startsWith("POSITION") || !isValidSTCS(stcs)) {
                 return catalogBuilder(rowId, rowData);
             }
 
@@ -148,10 +165,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                     polygon.getStcs(), rowId)));
 
             polygon.setShapeId(rowId);
-            String shapeName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
+            String shapeName = rowData.getStringProperty(descriptor.getIdColumn());
             polygon.setShapeName(shapeName);
-            String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-            String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+
+            String ra = rowData.getStringProperty(descriptor.getRaColumn());
+            String dec = rowData.getStringProperty(descriptor.getDecColumn());
             polygon.setRa(ra);
             polygon.setDec(dec);
 
@@ -159,10 +177,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
     };
 
+
     public SourceShape catalogBuilder(int shapeId, GeneralJavaScriptObject rowData) {
-        String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-        String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
-        String sourceName = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
+        String ra = rowData.getStringProperty(descriptor.getRaColumn());
+        String dec = rowData.getStringProperty(descriptor.getDecColumn());
+        String sourceName = rowData.getStringProperty(descriptor.getIdColumn());
 
         SourceShape mySource = new SourceShape();
         mySource.setShapeId(shapeId);
@@ -171,49 +190,22 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         mySource.setDec(dec);
         mySource.setShapeName(sourceName);
 
-        Map<String, String> details = new HashMap<String, String>();
+        Map<String, String> details = new HashMap<>();
 
         details.put(SourceConstant.SOURCE_NAME, mySource.getShapeName());
 
-        details.put(SourceConstant.CATALOGE_NAME, getEsaSkyUniqId());
+        details.put(SourceConstant.CATALOGE_NAME, getId());
         details.put(SourceConstant.ID, Integer.toString(shapeId));
 
-        if (this.getDescriptor().getExtraPopupDetailsByTapName() == null) {
+        if (this.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
+            final String bibcount = "bibcount";
+            if (rowData.hasProperty(bibcount)) {
+                details.put(SourceConstant.EXTRA_PARAMS, bibcount);
+                details.put(bibcount, rowData.getStringProperty(bibcount));
+            }
+        }
+        else {
             details.put(SourceConstant.EXTRA_PARAMS, null);
-        } else {
-            String[] extraDetailsTapName = this.getDescriptor().getExtraPopupDetailsByTapName()
-                    .split(",");
-            String extraDetailsLabels = "";
-            for (String currTapName : extraDetailsTapName) {
-                extraDetailsLabels += getKeyToShow(currTapName) + ",";
-            }
-            if(extraDetailsLabels.length() > 0) {
-                extraDetailsLabels = extraDetailsLabels.substring(0, extraDetailsLabels.length() - 1);
-            }
-            details.put(SourceConstant.EXTRA_PARAMS, extraDetailsLabels);
-
-            for (String currTapName : extraDetailsTapName) {
-                MetadataDescriptor cmd = this.getDescriptor()
-                        .getMetadataDescriptorByTapName(currTapName);
-                Integer precision = null;
-                String value = rowData.getStringProperty(currTapName);
-                if (value != null && cmd != null && cmd.getMaxDecimalDigits() != null
-                        && (cmd.getType() == ColumnType.RA || cmd.getType() == ColumnType.DEC || cmd
-                        .getType() == ColumnType.DOUBLE)) {
-                    StringBuilder sb = new StringBuilder();
-                    precision = cmd.getMaxDecimalDigits();
-                    sb.append("#0.");
-                    if (precision != null) {
-                        for (int i = 0; i < precision; i++) {
-                            sb.append("0");
-                        }
-                    } else {
-                        sb.append("00");
-                    }
-                	value = NumberFormat.getFormat(sb.toString()).format(Double.parseDouble(value));
-                }
-                details.put(getKeyToShow(currTapName), value);
-            }
         }
 
         if(secondaryShapeAdder != null) {
@@ -225,11 +217,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         return mySource;
     }
 
-    private String getKeyToShow(String tapName) {
-        MetadataDescriptor metadataDescriptor = descriptor.getMetadataDescriptorByTapName(tapName);
-        return metadataDescriptor == null ? tapName : TextMgr.getDefaultInstance().getText(metadataDescriptor.getLabel());
-    }
-    
     private String makeSureSTCSHasFrame(String input) {
         String stcs = input.toUpperCase();
         if(stcs.contains("J2000")  || stcs.contains("ICRS")) {
@@ -245,25 +232,19 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     }
 
-    public class MocBuilder implements ShapeBuilder{
-
-        @Override
-        public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject row) {
-            PolygonShape shape = new PolygonShape();
-            String stcs = row.invokeFunction("getData").getStringProperty(getDescriptor().getTapSTCSColumn());
-            shape.setStcs(stcs);
-            shape.setJsObject(((GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createFootprintFromSTCS(shape.getStcs())).getProperty("0"));
-            return shape;
-        }
+    private boolean isValidSTCS(String input) {
+        String[] validShapes = new String[]{"polygon", "circle", "ellipse"};
+        return Arrays.stream(validShapes).anyMatch(input.toLowerCase()::contains);
     }
+
 
     @Override
     public void fetchData() {
-        if (getCountStatus().hasMoved(descriptor) && descriptor.getFovLimit() == 0 && !descriptor.hasSearchArea()) {
+        if (getCountStatus().hasMoved(descriptor) && Double.compare(descriptor.getFovLimit(), 0) == 0 && !descriptor.hasSearchArea()) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {
-				    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("WaitingForCount" + getEsaSkyUniqId()));
+				    CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent("WaitingForCount" + getId()));
 	                fetchShapesAndMetadata();
 					getCountStatus().unregisterObserver(this);
 				}
@@ -272,7 +253,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             fetchShapesAndMetadata();
         }
     }
-    
+
     @Override
     public void fetchData(String adql) {
     	 Log.debug("Showing real data");
@@ -280,17 +261,36 @@ public class EsaSkyEntity implements GeneralEntityInterface {
          tablePanel.setMOCMode(false);
          tablePanel.notifyObservers();
 
-         this.adql = adql;
+         setQuery(adql);
          if(mocEntity != null){
  	        mocEntity.clearAll();
  	        mocEntity.setShouldBeShown(false);
          }
-         String url = descriptor.getTapQuery(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
+
+         String url = descriptor.createTapUrl(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
 
          clearAll();
          tablePanel.insertData(url);
     }
-    
+
+    @Override
+    public void insertExternalData(GeneralJavaScriptObject data) {
+        drawer = combinedDrawer;
+        tablePanel.setMOCMode(false);
+        tablePanel.notifyObservers();
+
+        if(mocEntity != null){
+            mocEntity.clearAll();
+            mocEntity.setShouldBeShown(false);
+        }
+
+        clearAll();
+        tablePanel.insertExternalTapData(data);
+    }
+
+    public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> {
+    }
+
     protected void fetchShapesAndMetadata() {
         clearAll();
         int shapeLimit = DeviceUtils.getDeviceShapeLimit(descriptor);
@@ -298,10 +298,11 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         if (shapeLimit > 0 && getCountStatus().getCount(descriptor) > shapeLimit) {
             Log.debug("Showing dynamic moc");
             if(mocEntity == null){
-                this.mocEntity = new MOCEntity(descriptor, getCountStatus(), this);
+                mocEntity = new MOCEntity(descriptor, getCountStatus(), EsaSkyEntity.this);
             }
+
             if(getLineStyle() == null) {
-            	setLineStyle(LineStyle.SOLID.getName());
+                setLineStyle(LineStyle.SOLID.getName());
             }
             mocEntity.setTablePanel(tablePanel);
             mocEntity.setShouldBeShown(true);
@@ -330,8 +331,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
     
     public String getTapUrl() {
-    	this.adql = metadataService.getMetadataAdql(getDescriptor(), tablePanel.getFilterString());
-    	return descriptor.getTapQuery(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON);
+    	setQuery(metadataService.getMetadataAdql(descriptor, tablePanel.getFilterString()));
+    	return descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON);
     }
 
     public void fetchDataWithoutMOC(String whereQuery) {
@@ -344,8 +345,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
     	
     	clearAll();
-    	this.adql = metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery);
-    	tablePanel.insertData(descriptor.getTapQuery(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
+    	setQuery(metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery));
+        tablePanel.insertData(descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
     }
     public void fetchDataWithoutMOC(MOCInfo mocInfo, String whereQuery) {
 
@@ -359,7 +360,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	}
         
         GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(descriptor);
-        this.adql = adql;
+        setQuery(adql);
         MainPresenter.getInstance().getRelatedMetadata(entity, adql);
         entity.setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
     	
@@ -374,28 +375,6 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	    mocEntity.setShouldBeShown(true);
 	    tablePanel.setMOCMode(true);
 	    return this.mocEntity;
-    }
-
-    public void setDescriptorMetaData() {
-        List<MetadataDescriptor> metaList = new LinkedList<>();
-        int i = 0;
-        for(TapMetadata tmd : getMetadata().getMetadata()) {
-            MetadataDescriptor metaDatadescriptor = new MetadataDescriptor();
-            metaDatadescriptor.setTapName(tmd.getName());
-            if(tmd.getName().equals("access_url")) {
-                metaDatadescriptor.setType(ColumnType.DATALINK);
-                metaDatadescriptor.setIndex(0);
-            }else {
-                metaDatadescriptor.setType(ColumnType.valueOf(tmd.getDatatype().toUpperCase()));
-                metaDatadescriptor.setIndex(i++);
-            }
-            metaDatadescriptor.setLabel(tmd.getName());
-            metaDatadescriptor.setVisible(true);
-            metaDatadescriptor.setMaxDecimalDigits(4);
-            metaDatadescriptor.setDescription(tmd.getDescription());
-            metaList.add(metaDatadescriptor.getIndex(),metaDatadescriptor);
-        }
-        descriptor.setMetadata(metaList);
     }
 
     @Override
@@ -414,8 +393,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public void addShapes(GeneralJavaScriptObject javaScriptObject) {
-        drawer.addShapes(javaScriptObject);
+    public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
+        drawer.addShapes(javaScriptObject, metadata);
     }
 
     @Override
@@ -524,13 +503,34 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public String getEsaSkyUniqId() {
-        return esaSkyUniqId;
+    public String getId() {
+        return id;
     }
 
     @Override
-    public void setEsaSkyUniqId(String esaSkyUniqId) {
-        this.esaSkyUniqId = esaSkyUniqId;
+    public String getIcon() {
+        switch (descriptor.getCategory()) {
+            case EsaSkyWebConstants.CATEGORY_PUBLICATIONS:
+                return "publications";
+            case EsaSkyWebConstants.CATEGORY_CATALOGUES:
+                return "catalog";
+            case EsaSkyWebConstants.CATEGORY_EXTERNAL:
+                return "ext_tap";
+            case EsaSkyWebConstants.CATEGORY_SSO:
+                return "sso";
+            case EsaSkyWebConstants.CATEGORY_SPECTRA:
+                return "spectra";
+            case EsaSkyWebConstants.CATEGORY_OBSERVATIONS:
+            case EsaSkyWebConstants.CATEGORY_NEUTRINOS:
+            case EsaSkyWebConstants.CATEGORY_GRAVITATIONAL_WAVES:
+            default:
+                return "galaxy";
+        }
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -545,7 +545,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public String getTabLabel() {
-        return getDescriptor().getGuiShortName();
+        return getDescriptor().getShortName();
     }
 
     @Override
@@ -579,7 +579,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     }
 
     @Override
-    public IDescriptor getDescriptor() {
+    public CommonTapDescriptor getDescriptor() {
         return descriptor;
     }
 
@@ -636,17 +636,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     @Override
 	public void setSecondaryColor(String color) {
-    	drawer.setPrimaryColor(color);
+    	drawer.setSecondaryColor(color);
 		
 	}
 	@Override
 	public String getSecondaryColor() {
-		return drawer.getPrimaryColor();
+		return drawer.getSecondaryColor();
 	}
 	
 	@Override
     public ITablePanel createTablePanel() {
-        setTablePanel(new TabulatorTablePanel(getTabLabel(), getEsaSkyUniqId(), this));
+        setTablePanel(new TabulatorTablePanel(getTabLabel(), getId(), this));
         return tablePanel;
     }
 
@@ -680,7 +680,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.getTapQuery(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
+        String url = descriptor.createTapUrl(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
 
         clearAll();
         tablePanel.insertData(url);
@@ -693,7 +693,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
         }
         
-        stylePanel = new StylePanel(getEsaSkyUniqId(), getTabLabel(), getColor(), getSize(), getShapeType(),
+        stylePanel = new StylePanel(getId(), getTabLabel(), getColor(), getSize(), getShapeType(),
                 getLineStyle(), getSecondaryColor(), combinedDrawer.getSecondaryScale(), showAvgProperMotion, 
                 combinedDrawer.getUseMedianOnAvgProperMotion(), new StylePanelCallback() {
 
@@ -769,7 +769,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 		}
 	}
     private void setStylePanelSecondaryContainerVisibility() {
-        if(descriptor.getSecondaryColor() != null && (mocEntity == null || !mocEntity.isShouldBeShown())) {
+        if((descriptor.hasProperMotion() || descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_SSO))
+                && (mocEntity == null || !mocEntity.isShouldBeShown())) {
             Boolean showAvgProperMotion = null;
             if(secondaryShapeAdder != null) {
                 showAvgProperMotion = combinedDrawer.getShowAvgProperMotion();
@@ -910,8 +911,14 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getHelpText() {
-		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_" + getDescriptor().getDescriptorId());
+		return TextMgr.getInstance().getText("resultsPresenter_helpDescription_"
+                + getDescriptor().getCategory() + "_" + descriptor.getMission());
 	}
+
+    @Override
+    public String getHelpTitle() {
+        return this.getDescriptor().getLongName();
+    }
     
 	@Override
 	public Shape getShape(int shapeId) {
@@ -929,40 +936,58 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	@Override
 	public TabulatorSettings getTabulatorSettings() {
 		TabulatorSettings settings = new TabulatorSettings();
-	    boolean disableLink2ArchiveColumn = false;
-	    if (getDescriptor() instanceof ExtTapDescriptor
-	    		&& getDescriptor().getArchiveProductURI() != null
-	    		&& getDescriptor().getArchiveURL().toLowerCase().contains("datalink")) {
-	            disableLink2ArchiveColumn = true;
-	            if(((ExtTapDescriptor)getDescriptor()).getParent() != null 
-	                    && ((ExtTapDescriptor)getDescriptor()).getParent().getSubLevels().get(getDescriptor().getGuiShortName()).getHasDatalinkArchiveUrl()) {
-	                settings.setAddDatalinkLink2ArchiveColumn(true);
-	            }
-	    }
-		settings.setAddSendToVOApplicationColumn(getDescriptor().getSampEnabled());
-		settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null
-                && !getDescriptor().getDescriptorId().contains("PUBLICATIONS")
-                && !disableLink2ArchiveColumn);
-		settings.setAddLink2AdsColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
-		settings.setAddSourcesInPublicationColumn(getDescriptor().getDescriptorId().contains("PUBLICATIONS"));
-        settings.setAddSelectionColumn(true);
+
+        if (descriptor != null) {
+            boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+            boolean isExternal = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL);
+            settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
+
+            if (isExternal && descriptor.getArchiveProductURI() != null && descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
+                settings.setAddDatalinkLink2ArchiveColumn(!Objects.equals(descriptor.getLongName(), "rassfsc"));
+            } else {
+                settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null && !isPub);
+            }
+
+            settings.setAddLink2AdsColumn(isPub);
+            settings.setAddSourcesInPublicationColumn(isPub);
+            settings.setAddSelectionColumn(true);
+            settings.setUseUcd(true);
+            settings.setShowDetailedErrors(descriptor.isExternal() && descriptor.isCustom());
+            settings.setFovLimiterDisabled(descriptor.isFovLimitDisabled());
+        }
+
 		
 		return settings;
 	}
 	
 	@Override
-	public String getAdql() {
+	public String getQuery() {
 		return this.adql;
 	}
-	
-	public void setAdql(String adql) {
-		this.adql = adql;
+
+    @Override
+	public void setQuery(String query) {
+		this.adql = query;
+        notifyQueryChangedObserver(query);
 	}
-	
+
+    public void registerQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+        queryChangeObservers.add(queryChangeObserver);
+    }
+
+    public void unregisterQueryChangedObserver(QueryChangeObserver queryChangeObserver) {
+        queryChangeObservers.remove(queryChangeObserver);
+    }
+
+    private void notifyQueryChangedObserver(String query) {
+        for(QueryChangeObserver obs : queryChangeObservers) {
+            obs.onQueryChange(query);
+        }
+    }
+
     @Override
     public int getNumberOfShapes() {
     	return drawer.getNumberOfShapes();
     }
-	
 
 }

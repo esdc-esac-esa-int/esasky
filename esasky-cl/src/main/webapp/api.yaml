@@ -1,0 +1,1381 @@
+View:
+  goToRaDec:
+    parameters:
+      ra:
+        type: (String, decimal degrees or sexagesimal format)
+        description: 
+      dec:
+        type: (String, decimal degrees or sexagesimal format)
+        description: 
+    description:
+      Moves centre of the screen to supplied ra and dec in current coordinate frame
+    example:
+      "{event:'goToRaDec', content:{ra:'10.68470',dec:'41.26875'}}"
+  setFov:
+    parameters:
+      fov:
+        type: (double, in deg)
+        description: 
+    description:
+      Set the Field of View in degrees
+    example:
+      "{event:'setFov',  content:{fov:'3.2'}}"
+  goToTargetName:
+    parameters:
+      targetName:
+        type: (String)
+        description: 
+    description:
+      Does a search against SIMBAD to get location of targetName and sets location in view
+    example:
+      "{event:'goToTargetName',  content:{targetName:'Carina Nebula'}}"
+  getCenter:
+    parameters:
+      cooFrame:
+        type: (String)(Optional) 
+        description:  Should be "J2000" or "GALACTIC", defaults to "J2000"
+    returns:
+      values.ra:
+        type: (Double) 
+        description:  Right ascension (lon) of the center in decimal degrees
+      values.dec:
+        type: (Double) 
+        description:  Declination(lat) of the center in decimal degrees
+      values.fov:
+        type: (Double) 
+        description:  Field of view in horizontal (lat) direction in decimal degrees
+    example:
+      "{event:'getCenter',  content:{cooFrame:'J2000'}}"
+  setCooFrame:
+    parameters:
+      cooFrame:
+        type: (String) 
+        description:  J2000 or galactic
+    description:
+      Set the coordinate frame
+    example:
+      "{event:'setCooFrame',  content:{cooFrame: \"galactic\"}}"
+  clickExploreButton:
+    description:
+      Explore a random target
+    example:
+      "{event:'clickExploreButton'}"
+Coordinate grid:
+  showCoordinateGrid:
+    parameters:
+      show:
+        type: (Boolean) shows for true, hides for false
+        description: 
+    description:
+      Enables or disables the coordinate grid overlay
+    example:
+      "{event:'showCoordinateGrid',  content:{show:true}}"
+HiPS:
+  getAvailableHiPS:
+    parameters:
+      wavelength:
+        type: (String)(Optional) 
+        description:  Wavelength in capital e.g. "OPTICAL". Defaults to empty.
+    returns:
+      values(JSON:
+        type: dictionary) 
+        description:  If wavelength is empty this is a dictionary of wavlengths otherwise this is a dictionary with available HiPS in that wavlength
+    example:
+      "{event:'getAvailableHiPS',  content:{wavelength:'OPTICAL'}}"
+  changeHips:
+    parameters:
+      hipsName:
+        type: (String)
+        description: 
+    returns:
+      extras:
+        type: (Dictionary) 
+        description:  Empty if success
+      extras.message:
+        type: (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Change HiPS programmatically by using a HiPS present in ESASky
+    example:
+      "{event:'changeHips',  content:{hipsName:'AllWISE color'}}"
+  addHips:
+    parameters:
+      hipsName:
+        type: (String)
+        description: 
+    returns:
+      extras:
+        type: (Dictionary) 
+        description:  Empty if succes
+      extras.message:
+        type: (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Add a HiPS programmatically to the skypanel list
+    example:
+      "{event:'addHips',  content:{hipsName:'DSS2 color'}}"
+  changeHiPSWithParams:
+    parameters:
+      hips.id:
+        type: (String)
+        description: 
+      hips.name:
+        type: (String)
+        description: 
+      hips.url:
+        type: (String)
+        description: 
+      hips.cooframe:
+        type: (String)
+        description: 
+      hips.maxnorder:
+        type: (Int)
+        description: 
+      hips.imgformat:
+        type: (String)
+        description: 
+    description:
+      Change HiPS programmatically by using a new HiPS not present in ESASky
+    example:
+      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
+  addHiPSWithParams:
+    parameters:
+      hips.id:
+        type: (String)
+        description: 
+      hips.name:
+        type: (String)
+        description: 
+      hips.url:
+        type: (String)
+        description: 
+      hips.cooframe:
+        type: (String)
+        description: 
+      hips.maxnorder:
+        type: (Int)
+        description: 
+      hips.imgformat:
+        type: (String)
+        description: 
+    description:
+      Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
+    example:
+      "{event:'addHiPSWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
+  setHipsColorPalette:
+    parameters:
+      colorPalette:
+        type: (String)
+        description: 
+    description:
+      Changing color palette
+    example:
+      "{event:'setHipsColorPalette',  content:{colorPalette:'PLANCK'}}"
+  removeHips:
+    parameters:
+      index:
+        type: (Integer)
+        description: 
+    returns:
+      extras:
+        type: (Dictionary) 
+        description:  Empty if succes
+      extras.message:
+        type: (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Removes the hips in the sky panel list at described index with first starting at 0. Entering -1 will remove all except for the first row.
+    example:
+      "{event:'removeHips',  content:{index:0}}"
+  openSkyPanel:
+    description:
+      Opens the sky panel with all hips shown
+    example:
+      "{event:'openSkyPanel'}"
+  closeSkyPanel:
+    description:
+      Closes the sky panel
+    example:
+      "{event:'closeSkyPanel'}"
+  setHipsSliderValue:
+    parameters:
+      value:
+        type: (Double)
+        description: 
+    description:
+      Sets the hips slider to specified value. 0.0 for first in skypanel list 1.0 for second etc. For everything in between a interpolation of the 2 nearby HiPS will be shown
+    example:
+      "{event:'setHipsSliderValue',  content:{value:0.5}}"
+  getNumberOfSkyRows:
+    returns:
+      values:
+        type: (Integer)
+        description: 
+    example:
+      "{event:'getNumberOfSkyRows'}"
+Shape selection:
+  selectShape:
+    parameters:
+      overlayName:
+        type: (String) 
+        description:  Name of the overlaySet where we eant to selesct a shape
+      shapeName:
+        type: (String) 
+        description:  Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent
+    description:
+      Selects a shape (catalogue source or footprint)
+    example:
+      "{'event': 'selectShape',  content:{overlayName:'test footprints', shapeName:'test footprint1'}}"
+  deselectShape:
+    parameters:
+      overlayName:
+        type: (String) 
+        description:  Name of the overlaySet where we want to select a shape
+      shapeName:
+        type: (String) 
+        description:  Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent
+    description:
+      Deselects a shape (catalogue source or footprint)
+    example:
+      "{'event': 'deselectShape',  content:{overlayName:'test footprints', shapeName:'test footprint1'}}"
+  deselectAllShapes:
+    description:
+      Deselects all shapes selected (catalogue source or footprint)
+    example:
+      "{'event': 'deselectAllShapes'}"
+Catalogues:
+  overlayCatalogue:
+    parameters:
+      overlaySet:
+        type: (String)
+        description: 
+      overlaySet.type:
+        type: (String)
+        description: 
+      overlaySet.overlayName:
+        type: (String)
+        description: 
+      overlaySet.cooframe:
+        type: (String)
+        description: 
+      overlaySet.color:
+        type: (String)
+        description: 
+      overlaySet.lineWidth:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList:
+        type: (List)
+        description: 
+      overlaySet.skyObjectList.name:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.id:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList.ra:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.dec:
+        type: (String)
+        description: 
+    description:
+      Overlay a catalogue
+    example:
+      "{'event': 'overlayCatalogue',  content:{'overlaySet': {'type': 'SourceListOverlay', 'overlayName': 'test catalogue name', 'cooframe': 'J2000', 'color': '#ee2345', 'lineWidth': 10, 'skyObjectList': [{'name': 'source name A', 'id': 1, 'ra': '150.44963', 'dec': '2.24640'}]}}}"
+  overlayCatalogueWithDetails:
+    parameters:
+      overlaySet:
+        type: (String)
+        description: 
+      overlaySet.type:
+        type: (String)
+        description: 
+      overlaySet.overlayName:
+        type: (String)
+        description: 
+      overlaySet.cooframe:
+        type: (String)
+        description: 
+      overlaySet.color:
+        type: (String)
+        description: 
+      overlaySet.lineWidth:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList:
+        type: (List)
+        description: 
+      overlaySet.skyObjectList.name:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.id:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList.ra:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.dec:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.data:
+        type: (List)
+        description: 
+      overlaySet.skyObjectList.data.name:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.data.type:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.data.value:
+        type: (type)
+        description: 
+    description:
+      Overlay a catalogue with data
+    example:
+      "{'event':'overlayCatalogueWithDetails',  content:{'overlaySet': {'type': 'SourceListOverlay', 'overlayName': 'test catalogue name', 'cooframe': 'J2000', 'color': '#ee2345', 'lineWidth': 10, 'skyObjectList': [{'name': 'source name A', 'id': 1, 'ra': '150.44963', 'dec': '2.24640', 'data': [{'name': 'Flux 1', 'value': '10.5', 'type': 'STRING'}]}]}}}"
+  deleteCatalogue:
+    parameters:
+      overlayName:
+        type: (String)
+        description: 
+    description:
+      Remove an existing catalogue
+    example:
+      "{'event': 'deleteCatalogue', content:{ 'overlayName': 'test catalogue name'}}"
+  clearCatalogue:
+    parameters:
+      overlayName:
+        type: (String)
+        description: 
+    description:
+      Clear an existing catalogue
+    example:
+      "{'event': 'clearCatalogue',  content:{'overlayName': 'test catalogue name'}}"
+Footprints:
+  overlayFootprints:
+    parameters:
+      overlaySet:
+        type: (String)
+        description: 
+      overlaySet.type:
+        type: (String)
+        description: 
+      overlaySet.overlayName:
+        type: (String)
+        description: 
+      overlaySet.cooframe:
+        type: (String)
+        description: 
+      overlaySet.color:
+        type: (String)
+        description: 
+      overlaySet.lineWidth:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList:
+        type: (List)
+        description: 
+      overlaySet.skyObjectList.name:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.id:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList.stcs:
+        type: (stcs)
+        description: 
+    description:
+      Overlay a list of footprints
+    example:
+      "{'event': 'overlayFootprints',  content:{'overlaySet': {'type': 'FootprintListOverlay', 'overlayName': 'test footprints', 'cooframe': 'J2000', 'color': 'red', 'lineWidth': 5, 'skyObjectList': [{'name': 'test footprint1', 'id': 1, 'stcs': 'Polygon J2000 187.33912535049 -62.6616054228651 187.343512531474 -62.7116786437002 187.235239903703 -62.7136263115712 187.231036216914 -62.6635488923945', 'ra_deg': '187.287228500645', 'dec_deg': '-62.6876148176328'}]}}}"
+  overlayFootprintsWithDetails:
+    parameters:
+      overlaySet:
+        type: (JSON)
+        description: 
+      overlaySet.type:
+        type: (String)
+        description: 
+      overlaySet.overlayName:
+        type: (String)
+        description: 
+      overlaySet.cooframe:
+        type: (String)
+        description: 
+      overlaySet.color:
+        type: (String)
+        description: 
+      overlaySet.lineWidth:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList:
+        type: (List)
+        description: 
+      overlaySet.skyObjectList.name:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.id:
+        type: (Int)
+        description: 
+      overlaySet.skyObjectList.stcs:
+        type: (stcs)
+        description: 
+      overlaySet.skyObjectList.data:
+        type: (List)
+        description: 
+      overlaySet.skyObjectList.data.name:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.data.type:
+        type: (String)
+        description: 
+      overlaySet.skyObjectList.data.value:
+        type: (type)
+        description: 
+    description:
+      Overlay a list of footprints with data
+    example:
+      "{'event': 'overlayFootprintsWithDetails',  content:{'overlaySet': {'type': 'FootprintListOverlay', 'overlayName': 'test footprints', 'cooframe': 'J2000', 'color': 'red', 'lineWidth': 5, 'skyObjectList': [{'name': 'test footprint1', 'id': 1, 'stcs': 'Polygon J2000 187.33912535049 -62.6616054228651 187.343512531474 -62.7116786437002 187.235239903703 -62.7136263115712 187.231036216914 -62.6635488923945', 'ra_deg': '187.287228500645', 'dec_deg': '-62.6876148176328', 'data': [{'name': 'wid', 'value': '0.0562381572800632', 'type': 'STRING'}, {'name': 'hei', 'value': '0.0260104443530693', 'type': 'STRING'}, {'name': 'score', 'value': '0.99999988079071', 'type': 'STRING'}]}]}}}"
+  deleteFootprintsOverlay:
+    parameters:
+      overlayName:
+        type: (String)
+        description: 
+    description:
+      Remove an existing catalogue
+    example:
+      "{'event': 'deleteFootprintsOverlay',  content:{'overlayName': 'test catalogue name'}}"
+  clearFootprintsOverlay:
+    parameters:
+      catalogueName:
+        type: (String)
+        description: 
+    description:
+      Clear an existing catalogue
+    example:
+      "{'event': 'clearFootprintsOverlay',  content:{'overlayName': 'test catalogue name'}}"
+Overlays:
+  getActiveOverlays:
+    description:
+      Returns all overlays (catalgoues/footprints) currently active on the sky
+    returns:
+      values.overlays:
+        type: (List)
+        description: List of ids of the currently active overlays
+    example:
+      "{event:'getActiveOverlays'}"
+  setOverlayColor:
+    description:
+      Changes the line/object color of all objects in the overlay to the selected color
+    parameters:
+      overlayName:
+        type: (String)
+        description: OverlayName/Id of the overlay to update
+      color:
+        type: (String)
+        description: Color as 'blue', 'red' etc or RGB code '#4567BB'
+    example:
+      "{event:'setOverlayColor', content:{overlayName:'MyOverlay', color:'red'}}"
+  setOverlaySize:
+    description:
+      Changes the line/object color of all objects in the overlay to the selected color
+    parameters:
+      overlayName:
+        type: (String)
+        description: OverlayName/Id of the overlay to update
+      size:
+        type: (Double)
+        description: Changes the line/shape size of displayed objects. Values from 0.0-1.0
+    example:
+      "{event:'setOverlaySize', content:{overlayName:'MyOverlay', size:0.85}}"
+  setOverlayShape:
+    description:
+      Changes the object shape of all objects in the overlay to the selected color
+    parameters:
+      overlayName:
+        type: (String)
+        description: OverlayName/Id of the overlay to update
+      shape:
+        type: (Double)
+        description: Changes the shape type displayed shapes. Returns available input values on errorneous input
+    example:
+      "{event:'setOverlayShape', content:{overlayName:'MyOverlay', shape:'plus'}}"
+  removeOverlay:
+    description:
+      Removes the overlay
+    parameters:
+      overlayName:
+        type: (String)
+        description: OverlayName/Id of the overlay to remove
+    example:
+      "{event:'removeOverlay', content:{overlayName:'MyOverlay'}}"
+  removeAllOverlays:
+    description:
+      Removes all overlays
+    example:
+      "{event:'removeAllOverlays'}"
+Results panel:
+  showResultPanel:
+    description:
+      Opens the datapanel
+    example:
+      "{event:'showResultPanel'}"
+  hideResultPanel:
+    description:
+      Minimises the datapanel
+    example:
+      "{event:'hideResultPanel'}"
+  closeResultPanelTab:
+    parameters:
+      index:
+        type:  (Integer)
+        description: 
+    description:
+      Closes the result panel tab at index, starting with 0. -1 closes the current active tab.
+    example:
+      "{event:'closeResultPanelTab',  content:{index: -1}}"
+  closeResultPanelTabById:
+    parameters:
+      index:
+        type:  (Integer)
+        description: 
+    description:
+      Closes the result panel tab with the id.
+    example:
+      "{event:'closeResultPanelTabById',  content:{id: myTapId}}"
+  closeAllResultPanelTabs:
+    description:
+      Closes all result panel tabs
+    example:
+      "{event:'closeAllResultPanelTabs'}"
+  getResultPanelData:
+    returns:
+      values:
+        type:  (Dictionary) 
+        description:  All data in the currently active result panel tab
+    description:
+      Closes all result panel tabs
+    example:
+      "{event:'getResultPanelData'}"
+Plotting ESASky data:
+  plotObservations:
+    parameters:
+      missionId:
+        type:  (String)
+        description: 
+    returns:
+      extras:
+        type:  (Dictionary) 
+        description:  Empty if succes
+      extras.message:
+        type:  (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Plot available image observation footprints in ESASky for he currently shown area for the given missionID
+    example:
+      "{event:'plotObservations',  content:{missionId: 'HST-UV'}}"
+  plotCatalogues:
+    parameters:
+      missionId:
+        type:  (String)
+        description: 
+    returns:
+      extras:
+        type:  (Dictionary) 
+        description:  Empty if succes
+      extras.message:
+        type:  (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Plot available catalogue data in ESASky for the currently shown area for the given missionID
+    example:
+      "{event:'plotCatalogues',  content:{missionId: 'GAIA DR2'}}"
+  plotSpectra:
+    parameters:
+      missionId:
+        type:  (String)
+        description: 
+    returns:
+      extras:
+        type:  (Dictionary) 
+        description:  Empty if succes
+      extras.message:
+        type:  (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Plot available spectra footprints in ESASky for he currently shown area for the given missionID
+    example:
+      "{event:'plotSpectra',  content:{missionId: 'IUE'}}"
+  plotSpectra:
+    parameters:
+      missionId:
+        type:  (String)
+        description: 
+    returns:
+      extras:
+        type:  (Dictionary) 
+        description:  Empty if succes
+      extras.message:
+        type:  (String) 
+        description:  Not existing if success otherwise error message
+    description:
+      Plot available spectra footprints in ESASky for he currently shown area for the given missionID
+    example:
+      "{event:'plotSpectra',  content:{missionId: 'IUE'}}"
+Plotting TAP Service data:
+  getAvailableTapServices:
+    returns:
+      List:
+        type: with the available TAP Services
+        description: 
+    description:
+      Lists the avaialble TAP services in ESASky
+    example:
+      "{'event':'getAvailableTapServices'}"
+  getTapServiceCount:
+    parameters:
+      tapService:
+        type:  (String) 
+        description:  The name of the tapService to get available data from
+    returns:
+      List:
+        type: with missions with data in the tapService within the current FoV
+        description: 
+    description:
+      Get list of missions in a TAP Serrivece wihtin the current FoV
+    example:
+      "{'event':'getTapServiceCount',  content:{'tapService':'ESO'}}"
+  plotTapService:
+    parameters:
+      tapService:
+        type:  (String) 
+        description:  The mission from the tapService to get data from  (See getTapServiceCount for available missions in the current view)
+    description:
+      Plots data from the mission in the TAP Service
+    example:
+      "{'event':'plotTapService',  content:{'tapService':'ESO-Spectrum-MPGESO-2.2'}}"
+  plotTapServiceWithDetails:
+    parameters:
+      name:
+        type: (String) 
+        description:  Will overwrite any exisitng dataPanel with the same name
+      tapUrl: 
+        type: (String)
+        description: 
+      color:
+        type: (String) 
+        description:  Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')
+      raColumn:
+        type: (String)
+        description: Which column on the TAP side to use as ra
+      decColumn:
+        type: (String)
+        description: Which column on the TAP side to use as dec
+      STCSColumn:
+        type: (String)
+        description: Which column on the TAP side to use for displaying footprints
+      intersectColumn:
+        type: (String)
+        description: Which column on the TAP side to use to insersect the current screen against if dataOnlyInView is true
+      dataOnlyInView:
+        type:  (Boolean) 
+        description: If true will add a where clause to the adql to limit the data loaded. Parameter intersectColumn or ra and dec columns need to be set
+      adql:
+        type:  (String) 
+        description:  ADQL used for the TAP query
+    description:
+      Plot available image observation footprints in ESASky for he currently shown area for the given missionID
+    example:
+      "{'event':'plotTapServiceWithDetails',  content:{'name':'myTAP2',color:'#FF00FF', dataOnlyInView: true, tapUrl:'https://gea.esac.esa.int/tap-server/tap', raColumn:'ra', decColumn:'dec', adql:'SELECT TOP 100 *  from gaiadr3.gaia_source'}}"
+Counts:
+  getObservationCount:
+    returns:
+      List:
+        type: of available observations in ESASky with associated counts in the visible sky area
+        description: 
+    example:
+      "{'event': 'getObservationsCount'}"
+  getCataloguesCount:
+    returns:
+      List:
+        type: of available catalogues in ESASky with associated counts in the visible sky area
+        description: 
+    example:
+      "{'event': 'getCataloguesCount'}"
+  getSpectraCount:
+    returns:
+      List:
+        type: of available spectra in ESASky with associated counts in the visible sky area
+        description: 
+    example:
+      "{'event': 'getSpectraCount'}"
+  getPublicationsCount:
+    returns:
+      Number:
+        type: of publications in the visible sky area
+        description: 
+    example:
+      "{'event': 'getPublicationsCount'}"
+JWST planning tool:
+  addJwst:
+    parameters:
+      instrument:
+        type: (String)
+        description: 
+      detector:
+        type: (String)
+        description: 
+      showAllInstruments:
+        type: (boolean)
+        description: 
+    description:
+      Open the JWST planning tool and adds at center of screen
+    example:
+      "{'event': 'addJwst',  content:{'instrument': 'NIRSpec', 'detector': 'NRS_FULL_MSA', 'showAllInstruments': false}}"
+  addJwstWithCoordinates:
+    parameters:
+      instrument:
+        type: (String)
+        description: 
+      detector:
+        type: (String)
+        description: 
+      showAllInstruments:
+        type: (boolean)
+        description: 
+      ra:
+        type: (String, in degrees)
+        description: 
+      dec:
+        type: (String, in degrees)
+        description: 
+      rotation:
+        type: (String, in degrees)
+        description: 
+    description:
+      Open the JWST planning tool and adds at supplied coordinates
+    example:
+      "{'event': 'addJwstWithCoordinates',  content:{'instrument': 'NIRISS', 'detector': 'NIS_CEN', 'showAllInstruments': true, 'ra': '210', 'dec': '12', 'rotation': '90'}}"
+  closeJwstPanel:
+    description:
+      Closes the JWST planning tool
+    example:
+      "{'event': 'closeJwstPanel'}"
+  openJwstPanel:
+    description:
+      Opens the JWST planning tool
+    example:
+      "{'event': 'openJwstPanel'}"
+  clearJwstAll:
+    description:
+      Clear all
+    example:
+      "{'event': 'clearJwstAll'}"
+
+External Data Centres:
+  openExtTapPanel:
+    parameters:
+      tab:
+        type: (String)
+        description: (Optional) The name of the tab to be opened - case-insensitive
+    description:
+      Open the External Data Centres Panel. If tab is specified it will open that one. Otherwise it will open on the first tab (Dashboard)
+    example:
+        "{event:'openExtTapPanel'}"
+        "{event:'openExtTapPanel',  content:{tab: 'Tap Registry'}}"
+
+  closeExtTapPanel:
+    description:
+      Close the External Data Centres Panel
+    example:
+      "{event:'closeExtTapPanel'}"
+
+Healpix MOC:
+  addMOC:
+    parameters:
+      name:
+        type: (String) 
+        description:  Name of the MOC  (will overwrte existing MOC with same name)
+      options.color:
+        type: (String) 
+        description:  Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')
+      options.opacity:
+        type: (Float) 
+        description:  Opacity of the MOC in range 0.0 
+      options.lineStyle:
+        type: (String) (optional) 
+        description:  Sets the linestyle of the borders in case only the borders are shown. Possible parameters are "solid" and "dashed"
+      options.mode:
+        type: (String) (optional) 
+        description:  Choose to display in "healpix" or "q3c" system. Default is healpix
+      options.addTab:
+        type: (Boolean) (optional) 
+        description:  Adds a resultspanel tab to control style on true. Default is false
+      mocData:
+        type: (Javascript Object) 
+        description:  Object where the keys are the orders and the values are lists of pixels in the order
+    description:
+      Adds a MOC  ( HEALPix Multi-Order Coverage map) on the sky
+    example:
+      "{event:'addMOC', content:{name:'myMOC',options:{color:'#FF00FF',lineStyle:'dashed',opacity:.5, mode:'healpix', addTab:true}, mocData:{8:[0,1,2,3,4,5], 6:[165]}}}"
+  removeMOC:
+    parameters:
+      name:
+        type: (String) 
+        description:  Name of the MOC  (if it has already been added) MOC added without name will be "MOC"
+    description:
+      Removes a MOC  ( HEALPix Multi-Order Coverage map) from the sky
+    example:
+      "{'event':'removeMOC', content:{name:'myMOC'}}"
+Layout:
+  addCustomTreeMap:
+    parameters:
+      treeMap.name:
+        type: (String) 
+        description:  The nameID that will be used in any callbacks
+      treeMap.description:
+        type: (String) (Optional) 
+        description:  description that will be shown when hovering on the button
+      treeMap.iconText:
+        type: (String) (Otional) 
+        description:  Text showing on the button, will default to name if not specified
+      treeMap.missions:
+        type:  (List) 
+        description:  List of the missions that will show up in the treemap
+      treeMap.missions.name:
+        type: (String) 
+        description:  Name of the mission which will be ID in callbacks
+      treeMap.missions.color:
+        type: (String) 
+        description:  Default color showing up in the treeMap
+    events:
+      treemap_mission_clicked:
+        values.action:
+          type:  (String) 
+          description:  Always "treemap_mission_clicked"
+        values.info.treemap:
+          type: (String) 
+          description:  treemap name as specified in the parameter
+        values.info.mission:
+          type:  (String) 
+          description:  mission name as specified in the parameter
+        values.location.ra:
+          type:  (Double) 
+          description: Right ascension of center of screen when button was pressed
+        values.location.dec:
+          type:  (Double) 
+          description: Declination of center of screen when button was pressed
+        values.location.fov:
+          type:  (Double) 
+          description: Field of View of screen when button was pressed
+    description:
+      Adds a custom treeMap button to ESASky and starts listening for clicks on the missions inside it and send events
+    example:
+      "{'event': 'addCustomTreeMap', content:{'treeMap':{name:'JWST', iconText:'JWST', description:'James webb imgages....', missions:[{'name':'NIRSpec','color':'blue'},{'name':'NIRCam','color':'green'}]}}}"
+  addTreeMapMission:
+    parameters:
+      treeMap.treeMapName:
+        type: (String) 
+        description:  The nameID of the treemap on which to add a mission
+      treeMap.missions:
+        type:  (List) 
+        description:  List of the missions that will show up in the treemap
+      treeMap.missions.name:
+        type: (String) 
+        description:  Name of the mission which will be ID in callbacks
+      treeMap.missions.color:
+        type: (String) 
+        description:  Default color showing up in the treeMap
+    description:
+      Adds a or multiple custom mission to a custom treeMap 
+    example:
+      "{'event': 'addTreeMapMission', content:{'treeMap':{treeMapName:'JWST', missions:[{'name':'NIRSpec2','color':'red'}]}}}"
+  removeTreeMapMission:
+    parameters:
+      treeMap.treeMapName:
+        type: (String) 
+        description:  The nameID of the treemap on which from remove a mission
+      treeMap.missions:
+        type:  (List) 
+        description:  List of the missions that will show up in the treemap
+      treeMap.missions.name:
+        type: (String) 
+        description:  Name of the mission which will be ID in callbacks
+    description:
+      Removes missions from a custom treeMap 
+    example:
+      "{'event': 'removeTreeMapMission', content:{'treeMap':{treeMapName:'JWST', missions:[{'name':'NIRSpec2', 'color':'red'}]}}}"
+  addCustomButton:
+    parameters:
+      button.name:
+        type: (String) 
+        description:  The nameID of the custom button that will be used in callbacks
+      button.description:
+        required: false
+        type: (String) 
+        description:  Description that will be shown on hover
+      button.iconText:
+        required: false
+        type: (String) 
+        description:  If no icon this text will be the icon instead
+      button.iconName:
+        required: false
+        type:  (String) 
+        description:  Id of one of the existing icons in ESASky. Errouneous name will send back available ids
+    description:
+      Adds a custom button and starts listening for clicks on it
+    events:
+      button_clicked:
+        values.action:
+          type:  (String) 
+          description:  Always "button_clicked"
+        values.values.button:
+          type: (String) 
+          description: ID of button clicked
+        values.location.ra:
+          type:  (Double) 
+          description: Right ascension of center of screen when button was pressed
+        values.location.dec:
+          type:  (Double) 
+          description: Declination of center of screen when button was pressed
+        values.location.fov:
+          type:  (Double) 
+          description: Field of View of screen when button was pressed
+    example:
+      "{'event': 'addCustomButton', content:{'button':{name:'myButton', description:'My button´s description', iconText:'My Button'}}}"
+  updateCustomButton:
+    parameters:
+      button.name:
+        type: (String) 
+        description:  The nameID of the button to update
+      button.description:
+        required: false
+        type: (String) 
+        description:  Description that will be shown on hover
+      button.iconText:
+        required: false
+        type: (String) 
+        description:  If no icon this text will be the icon instead
+      button.iconName:
+        required: false
+        type:  (String) 
+        description:  Id of one of the existing icons in ESASky. Errouneous name will send back available ids
+    description:
+      Updates an existing custom button
+    example:
+      "{'event': 'updateCustomButton', content:{'button':{name:'myButton', description:'My button´s description', iconName:'exclamation'}}}"
+  removeCustomButton:
+    parameters:
+      button.name:
+        type: (String) 
+        description:  The nameID of the button to remove
+    description:
+      Removes an existing custom button
+    example:
+      "{'event': 'removeCustomButton', content:{'button':{name:'myButton'}}}"
+  setModuleVisibility:
+    parameters:
+      modules:
+        type: (JSON Object) 
+        description:  Object on format; {key:boolean}. Errorneous id returns possible values
+    description:
+      Sets visibility of the modifiable elements in ESASky. 
+    example:
+      "{event:'setModuleVisibility',  content:{modules:{skies_menu:false}}}"
+  getAvailableModules:
+    description:
+      Returns the available ids to modify with setModuleVisibility
+    returns:
+      values.available:
+        type: (List)
+        description: List of available ids
+    example:
+      "{event:'getAvailableModules'}"
+Alerts:
+  openGWPanel:
+    description:
+      Opens the Graviational Wave panel
+    example:
+      "{'event': 'openGWPanel'}"
+  openNeutrinoPanel:
+    description:
+      Opens the Nutrino events panel
+    example:
+      "{'event': 'openNeutrinoPanel'}"
+  closeAlertPanel:
+    description:
+      Closes the Alert panel
+    example:
+      "{'event': 'closeAlertPanel'}"
+  minimiseAlertPanel:
+    description:
+      Mininises the Alert panel, i.e. keeps the events shown but removes the panel from the screen
+    example:
+      "{'event': 'minimiseAlertPanel'}"
+  getGWIds:
+    returns:
+      List:
+        type: of available GW ids in ESASky
+        description: 
+    example:
+      "{'event': 'getGWIds'}"
+  getGWEventData:
+    parameters:
+      id:
+        type:  (String)
+        description: 
+    returns:
+      Data:
+        type: associated with the GW id
+        description: 
+    example:
+      "{event:'getGWEventData',  content:{id: 'S200225q'}}"
+  showGWEvent:
+    parameters:
+      id:
+        type:  (String)
+        description: 
+    description:
+      Shows the chosen GW id on ESASky
+    example:
+      "{event:'showGWEvent',  content:{id: 'S200225q'}}"
+  getAllGWData:
+    returns:
+      List:
+        type: of available GW ids with data in ESASky
+        description: 
+    example:
+      "{event:'getAllGWData'}"
+  getNeutrinoEventData:
+    returns:
+      List:
+        type: of neutrino events with data in ESASky
+        description: 
+    example:
+      "{event:'getNeutrinoEventData}"
+Events:
+  registerEventListener:
+    events:
+      view_changed:
+        event.action:
+          type:  (String) 
+          description:  "view_changed"
+        event.values.ra:
+          type:  (float) 
+          description:  Right ascension of center of screen in deg
+        event.values.dec:
+          type:  (float) 
+          description:  Declination of center of screen in deg
+        event.values.fov:
+          type:  (float) 
+          description:  Field of View in degld of View in deg
+      shape_selected:
+        event.action:
+          type:  (String) 
+          description:  Will allways be "shape_selected"
+        event.values.overlay:
+          type:  (String) 
+          description:  Overlayname to which the shape selected is attached
+        event.values.name:
+          type:  (String) 
+          description:  Name of the shape selected
+        event.values.id:
+          type:  (String) 
+          description:  Id of the shape selected
+      result_panel_opened:
+        event.action:
+          type:  (String) 
+          description:  Will allways be "result_panel_opened"
+        event.values.id:
+          type:  (String) 
+          description:  ID of the panel opened
+      result_panel_closed:
+        event.action:
+          type:  (String) 
+          description:  Will allways be "result_panel_closed"
+        event.values.id:
+          type:  (String) 
+          description:  ID of the panel closed
+      search_area_used:
+        event.action:
+          type:  (String) 
+          description:  Will allways be "search_area_used" This event triggers when a user sets the search area toll to a new area
+        event.values.type:
+          type:  (String) 
+          description:  POLYGON or CIRCLE
+        event.values.coordinates:
+          type:  (List) 
+          description:  if type is POLYGON this will be the points that makes up the area List with 1,3,5 etc being ra and 2,4,6 etc dec
+        event.values.ra:
+          type:  (Double) 
+          description:   Right ascension of the center of the circle if type is CIRCLE
+        event.values.dec:
+          type:  (Double) 
+          description: Declination of the center of the circle if type is CIRCLE
+        event.values.radius:
+          type:  (Double) 
+          description:  Radius of the circle if type is CIRCLE
+      area_shape_selection:
+        event.action:
+          type:  (String) 
+          description:  Will allways be "area_shape_selection". this event will trigger when a user has used the area selection tool
+        event.values.overlays:
+          type:  (List) 
+          description:  List of overlays with entities that have been selected
+        event.values.overlays.name:
+          type:  (String) 
+          description:  Name of entity that have been selected in this event
+        event.values.overlays.id:
+          type:  (String) 
+          description:  ID of entity that have been selected in this event
+        event.values.selection_area.type:
+          type:  (String) 
+          description:  BOX, POLYGON or CIRCLE
+        event.values.selection_area.points:
+          type:  (List) 
+          description:  if type BOX is POLYGON this will be the points that makes up the area
+        event.values.selection_area.points.ra:
+          type:  (Double) 
+          description:  Right ascension of a point
+        event.values.selection_area.points.dec:
+          type:  (Double) 
+          description:  Declination of a point
+        event.values.selection_area.circle.ra:
+          type:  (Double) 
+          description:   Right ascension of the center of the circle if type is CIRCLE
+        event.values.selection_area.circle.dec:
+          type:  (Double) 
+          description: Declination of the center of the circle if type is CIRCLE
+        event.values.selection_area.circle.radius:
+          type:  (Double) 
+          description:  Radius of the circle if type is CIRCLE
+    description:
+      Adds a event listener which returns values of certain events
+    example:
+      "{'event': 'registerEventListener'}"
+  registerShapeSelectionCallback:
+    events:
+      shape_selected:
+        event.action:
+          type:  (String) 
+          description:  Will allways be "shape_selected"
+        event.values.overlay:
+          type:  (String) 
+          description:  Overlayname to which the shape selected is attached
+        event.values.name:
+          type:  (String) 
+          description:  Name of the shape
+        event.values.id:
+          type:  (String) 
+          description:  Id of the shape
+    description:
+      Adds a event listener which returns values whenever a shape is selected
+    example:
+      "{'event': 'registerShapeSelectionCallback'}"
+  registerFoVChangedListener:
+    events:
+      view_changed:
+        event.action:
+          type:  (String) 
+          description:  "view_changed"
+        event.values.ra:
+          type:  (float) 
+          description:  Right ascension of center of screen in deg
+        event.values.dec:
+          type:  (float) 
+          description:  Declination of center of screen in deg
+        event.values.fov:
+          type:  (float) 
+          description:  Field of View in deg
+    description:
+      Adds a event listener which returns values whenever a the field of view is changed
+    example:
+      "{'event': 'registerFoVChangedListener'}"
+Search Tool:
+  showSearchTool:
+    description:
+      Shows the search tool panel
+    example:
+      "{event: 'showSearchTool'}"
+  closeSearchTool:
+    description:
+      Closes the search tool panel
+    example:
+      "{event: 'closeSearchTool'}"
+  setConeSearchArea:
+    parameters:
+      ra:
+        type:  (double) 
+        description:  Right Ascension of the center of the circle
+      dec:
+        type:  (double) 
+        description:  Declination of the center of the circle
+      radius:
+        type:  (double) 
+        description:  Radius of the circle
+    description:
+      Sets a circle as cone search area. All counts and data retrival will be within this area. Outside of the area will be blurred
+    example:
+      "{event: 'setConeSearchArea',  content:{ra:15.0, dec:35.4, radius:5.0}}"
+  setPolygonSearchArea:
+    parameters:
+      stcs:
+        type:  (String) 
+        description:  STC String of the polygon
+    description:
+      Sets a polygon as search area. All counts and data retrival will be within this area. Outside of the area will be blurred
+    example:
+      "{event: 'setPolygonSearchArea',  content:{stcs:'POLYGON ICRS 3.5596 -10.9209 3.6914 -11.1109 3.6475 -11.3010 3.6035 -11.4913 3.4717 -11.6817 3.3398 -11.8722 3.1201 -11.6817 2.9004 -11.4913 2.7686 -11.3771 2.7246 -11.1869 2.5928 -10.9969 2.4609 -10.8069 2.3291 -10.6171 2.1973 -10.4274 2.0654 -10.2378 1.9336 -10.0484 1.8896 -9.8590 1.8457 -9.6697 1.7139 -9.4806 1.5820 -9.2916 1.5381 -9.1026 1.4941 -8.9138 1.4502 -8.7250 1.4062 -8.5364 1.2744 -8.3478 1.3184 -8.1594 1.1865 -7.9710 1.2305 -7.7827 1.0986 -7.5945 1.1426 -7.4064 1.0107 -7.2184 1.0547 -7.0304 0.9229 -6.8425 0.9668 -6.6547 0.8350 -6.4670 0.8789 -6.2793 0.8350 -6.0917 0.7910 -5.9042 0.8350 -5.7167 0.8789 -5.5293 0.8350 -5.3419 0.7910 -5.1546 0.8350 -4.9674 0.8789 -4.7802 0.9229 -4.5931 1.1426 -4.5556 1.3623 -4.6679 1.5820 -4.6305 1.8018 -4.8176 1.8457 -5.0048 1.8896 -5.1921 2.0215 -5.3794 2.1533 -5.5667 2.1973 -5.7542 2.3291 -5.9417 2.3730 -6.1292 2.5049 -6.3168 2.5488 -6.5045 2.5928 -6.6923 2.6367 -6.8801 2.6807 -7.0680 2.7246 -7.2560 2.8564 -7.4440 2.9883 -7.6321 2.9443 -7.8204 3.0762 -8.0087 3.1201 -8.1971 3.1641 -8.3855 3.2080 -8.5741 3.2520 -8.7628 3.2959 -8.9515 3.3398 -9.1404 3.4717 -9.3294 3.4277 -9.5184 3.4717 -9.7076 3.5156 -9.8969 3.5596 -10.0862 3.6035 -10.2757 3.5596 -10.4653 3.5156 -10.6551 3.5596 -10.8449'}}"
+  clearSearchArea:
+    description:
+      Clears the current active search area
+    example:
+      "{event: 'clearSearchArea'}"
+Targetlist:
+  getTargetLists:
+    description:
+      Get all available target lists
+    returns:
+      A:
+        type: list of all available target lists.
+        description: 
+    example:
+      "{event: 'getTargetLists'}"
+  openTargetList:
+    parameters:
+      targetList:
+        type:  (String) (Optional) 
+        description:  One of the available target lists
+    description:
+      Open the target list panel. If the optional parameter "targetlist" is provided, the panel is opened with the provided target list pre-selected
+    example:
+      "{event: 'openTargetList',  content:{targetList: 'PeculiarGalaxies'}}"
+  closeTargetList:
+    description:
+      Close the target list panel
+    example:
+      "{event: 'closeTargetList'}"
+Image:
+  openOutreachPanel:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
+    description:
+      Open the outreach panel of the available telescopes
+    example:
+        "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
+        "{event: 'openOutreachPanel', content: {telescope: 'HST'}}"
+  closeOutreachPanel:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
+    description:
+      Close the outreach panel of the available telescopes
+    example:
+        "{event: 'closeOutreachPanel', content: {telescope: 'JWST'}}"
+        "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
+  getOutreachImageIds:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
+    description:
+      Get all available outreach image IDs of the available telescopes
+    example:
+        "{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}"
+        "{event: 'getOutreachImageIds', content: {telescope: 'HST'}}"
+  openOutreachImage:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
+      id:
+        type: (String)
+        description: The unique identifier of the outreach image to be opened
+    description:
+      Open an outreach image of a telescope
+    example:
+        "{event:'openOutreachImage',  content:{telescope: 'JWST', id:'potm2208b'}}"
+        "{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}"
+  closeOutreachImage:
+    parameters:
+      telescope:
+        type: (String)
+        description: The name of the telescope (HST/JWST) case-insensitive
+    description:
+      Close the outreach image of a telescope
+    example:
+        "{event:'closeOutreachImage',  content:{telescope: 'JWST'}}"
+        "{event:'closeOutreachImage',  content:{telescope: 'HST'}}"
+  addSingleImage:
+    description:
+      Adds a single image on the sky
+    parameters:
+      name:
+        type: (String)
+        description: Id of the image
+      url:
+        type: (String)
+        description: Url pointing to the image
+      ra:
+        type: (Double)
+        description: Right ascension of the center of the image
+      dec:
+        type: (Double)
+        description: Declination of the center of the image
+      fov:
+        type: (Double)
+        description: Field of View of the image width in degrees
+      rotation:
+        type: (Double)
+        description: Rotation of the image
+    example:
+      "{'event':'addSingleImage', 'content':{name:'MyImage', url:'https://cdn.eso.org/images/screen/eso1740a.jpg', ra:272.5123750, dec:-24.0248889, rot:90.0, fov:1.0471666666666666666666666666667}}"
+  addTiledImage:
+    description:
+      Adds a tiled image on the sky
+    parameters:
+      name:
+        type: (String)
+        description: Id of the image
+      url:
+        type: (String)
+        description: Url pointing to the image
+      ra:
+        type: (Double)
+        description: Right ascension of the center of the image
+      dec:
+        type: (Double)
+        description: Declination of the center of the image
+      fov:
+        type: (Double)
+        description: Field of View of the image width in degress
+      rotation:
+        type: (Double)
+        description: Rotation of the image
+    example:
+      "{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso0907a/', ra:337.4107083, dec:-20.8237005, rot:-0.1, fov:0.467, width:7059, height:6535}}"
+Player:
+  playerPlay:
+    description:
+      Start the currently active player
+    example:
+      "{event: 'playerPlay'}"
+  playerPause:
+    description:
+      Pause the currently active player
+    example:
+      "{event: 'playerPause'}"
+  playerNext:
+    description:
+      Go to the next entry in the player queue
+    example:
+      "{event: 'playerNext'}"
+  playerPrevious:
+    description:
+      Go to the previous entry in the player queue
+    example:
+      "{event: 'playerPrevious'}"

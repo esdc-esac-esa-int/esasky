@@ -27,16 +27,16 @@ import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.utility.samp.SampMessageItem;
 import esac.archive.esasky.cl.web.client.utility.samp.SampXmlParser;
 import esac.archive.esasky.cl.web.client.view.JupyterDownloadDialog;
-import esac.archive.esasky.cl.web.client.view.common.AutoHidingMovablePanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
+import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.QueryPopupPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.*;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ToggleColumnsDialogBox.ToggleColumnAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.stylemenu.StylePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.MetadataDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.MetadataVisibilityObserver;
+import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBean;
 import esac.archive.esasky.ifcs.model.multiretrievalbean.MultiRetrievalBeanList;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -46,6 +46,7 @@ import java.util.*;
 public class TabulatorTablePanel extends Composite implements ITablePanel, TabulatorCallback {
 
 	JupyterDownloadDialog dialog  = new JupyterDownloadDialog();
+	QueryPopupPanel queryPopupPanel;
 
 	private class SelectTimer extends Timer {
 		private final int rowId;
@@ -70,7 +71,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			}
 		}
 	}
-	public interface DescriptorMapper extends ObjectMapper<IDescriptor> {}
+	public interface DescriptorMapper extends ObjectMapper<CommonTapDescriptor> {}
 	private TabulatorWrapper table;
 	/** is the esaSkyUniqID, the same saved into the Entities. */
 	private String esaSkyUniqID;
@@ -91,14 +92,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private boolean inMOCMode = false;
 	private boolean toggleColumnsEnabled = true;
 
-	private MetadataVisibilityObserver metadataVisibilityObserver = new MetadataVisibilityObserver() {
+	private GeneralJavaScriptObject tableMetadata = null;
+
+	private MetadataVisibilityObserver visibilityObserver = new MetadataVisibilityObserver() {
 
 		@Override
-		public void onVisibilityChange(String tapName, boolean visible) {
+		public void onVisibilityChange(String columnName, boolean visible) {
 			if(isShowing) {
-				setColumnVisibility(tapName, visible);
+				setColumnVisibility(columnName, visible);
 			} else {
-				columnVisibilityChangeToDo.put(tapName, visible);
+				columnVisibilityChangeToDo.put(columnName, visible);
 			}
 		}
 
@@ -137,16 +140,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		public void openToggleColumnDialog() {
 			if(table.getColumns().length > 0) {
-				new ToggleColumnsDialogBox(entity.getDescriptor().getGuiLongName(), table.getColumns(), new ToggleColumnAction() {
+				new ToggleColumnsDialogBox(entity.getDescriptor().getLongName(), table.getColumns(), new ToggleColumnAction() {
 
 					@Override
 					public void onShow(String field) {
-						getDescriptor().setMetadataVisibility(field, true);
+						getDescriptor().setColumnVisibility(field, true);
 					}
 
 					@Override
 					public void onHide(String field) {
-						getDescriptor().setMetadataVisibility(field, false);
+						getDescriptor().setColumnVisibility(field, false);
 					}
 
 					@Override
@@ -171,8 +174,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		this.entity = entity;
 		this.tabulatorContainerId = "tabulatorContainer_" + esaSkyUniqID.replaceAll("[^A-Za-z0-9-_]", "_");
 
-		if(entity.getDescriptor() instanceof ExtTapDescriptor
-				|| "publications".equals(entity.getDescriptor().getIcon())) {
+
+		if(entity.getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)){
 			disableToggleColumns();
 		}
 
@@ -202,20 +205,20 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	protected void onAttach() {
 		super.onAttach();
 		table = new TabulatorWrapper(tabulatorContainerId, this, entity.getTabulatorSettings());
-		getDescriptor().registerMetadataVisibilityObserver(metadataVisibilityObserver);
+		getDescriptor().registerVisibilityObserver(visibilityObserver);
 	}
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		getDescriptor().unregisterMetadataVisibilityObserver(metadataVisibilityObserver);
+		getDescriptor().unregisterVisibilityObserver(visibilityObserver);
 	}
 
 	private void disableToggleColumns() {
 		toggleColumnsEnabled = false;
 	}
 
-	public IDescriptor getDescriptor() {
+	public CommonTapDescriptor getDescriptor() {
 		return entity.getDescriptor();
 	}
 
@@ -307,12 +310,33 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			stylePanel.removeFromParent();
 		}
 		entity.clearAll();
+		table.abortRequest();
 		EntityRepository.getInstance().removeEntity(entity);
 		notifyClosingObservers();
 	}
 
 	public boolean hasBeenClosed() {
 		return hasBeenClosed;
+	}
+
+	@Override
+	public void onAdqlButtonPressed(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onMetadataButtonPressed(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onAddObscoreTableClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
 	}
 
 	public boolean getIsHidingTable() {
@@ -338,11 +362,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void exportAsCsv() {
-		table.downloadCsv(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".csv");
+		table.downloadCsv(DownloadUtils.getValidFilename(getEntity().getId()) + ".csv");
 	}
 
 	public void exportAsVot() {
-		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getEsaSkyUniqId()) + ".vot", "ESASky " + getDescriptor().getGuiLongName());
+		table.downloadVot(DownloadUtils.getValidFilename(getEntity().getId()) + ".vot", "ESASky " + getDescriptor().getLongName());
 	}
 
 	public Widget getWidget() {
@@ -350,7 +374,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public String getFullId() {
-		return getEntity().getEsaSkyUniqId() + "-" + getLabel();
+		return getEntity().getId() + "-" + getLabel();
 	}
 
 	public void setEmptyTable(String emptyTableText) {
@@ -383,7 +407,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			if (url == null || url.trim().isEmpty()) {
 				url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("access_url"));
 			}
-			if (url == null || "ASTRO_SPECTRA_CHEOPS".equals(entity.getDescriptor().getDescriptorId())) {
+			if (url == null || "ASTRO_SPECTRA_CHEOPS".equals(entity.getDescriptor().getId())) {
 				url = GeneralJavaScriptObject.convertToString(tableRow.getProperty("sci_cor_lc_opt_link"));
 			}
 			if (url == null || url.trim().isEmpty()) {
@@ -430,7 +454,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPushEvent("FetchingRealData" + esaSkyUniqID,
 				TextMgr.getInstance().getText("tabulator_retrievingMissionData").replace("$NAME$", tabTitle),  url));
 
-		table.setDefaultQueryMode();
+		table.setQueryMode();
+		
 		table.setData(url);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}
@@ -438,6 +463,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void insertData(GeneralJavaScriptObject data) {
 		table.insertUserData(data);
+		tableNotShowingContainer.addStyleName("displayNone");
+	}
+
+	@Override
+	public void insertExternalTapData(GeneralJavaScriptObject data) {
+		GeneralJavaScriptObject metadata = data.hasProperty("metadata") ? data.getProperty("metadata") : data.getProperty("columns");
+		table.insertExternalTapData(data.getProperty("data"), metadata);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}
 
@@ -457,7 +489,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		return table.getAllRows();
 	}
 
-	private LinkedList<ClosingObserver> closingObservers = new LinkedList<ClosingObserver>();
+	private LinkedList<ClosingObserver> closingObservers = new LinkedList<>();
 
 	public void registerClosingObserver(ClosingObserver observer) {
 		closingObservers.add(observer);
@@ -508,7 +540,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	public void clearFilters() {
-		tapFilters = new HashMap<String, String>();
+		tapFilters = new HashMap<>();
 	}
 
 	private LinkedList<TableFilterObserver> filterObservers = new LinkedList<>();
@@ -527,13 +559,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getVoTableString() {
-		return table.getVot(getDescriptor().getGuiLongName());
+		return table.getVot(getDescriptor().getLongName());
 	}
 
 	@Override
-	public void onDataLoaded(GeneralJavaScriptObject javaScriptObject) {
+	public void onDataLoaded(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata) {
 		if(!hasBeenClosed) {
-			entity.addShapes(javaScriptObject);
+			entity.addShapes(javaScriptObject, metadata);
 		}
 		notifyNumberOfRowsShowingChanged(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
 		notifyOnDataLoaded(GeneralJavaScriptObject.convertToArray(javaScriptObject).length);
@@ -617,18 +649,18 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	@Override
-	public void onDatalinkClicked(GeneralJavaScriptObject row) {
-		String datalinkUrl = row.invokeFunction("getData").getStringProperty("access_url");
-		if(datalinkUrl == null || datalinkUrl.isEmpty()) {
-			datalinkUrl = buildArchiveURL(row.invokeFunction("getData"));
-		}
-		if("https:".equals(Window.Location.getProtocol()) && datalinkUrl.startsWith("http:")){
-			datalinkUrl = datalinkUrl.replaceFirst("http:", "https:");
-		}
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), datalinkUrl);
-		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
+	public void onDatalinkClicked(GeneralJavaScriptObject row, String url) {
 
-		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(datalinkUrl, title));
+		if(url == null || url.isEmpty()) {
+			url = buildArchiveURL(row.invokeFunction("getData"));
+		}
+		if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+			url = url.replaceFirst("http:", "https:");
+		}
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
+		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getIdColumn());
+
+		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(url, title));
 	}
 
 	@Override
@@ -647,15 +679,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void onPostcardUrlClicked(GeneralJavaScriptObject row, String columnName) {
 		String url = row.invokeFunction("getData").getStringProperty(columnName);
-		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getUniqueIdentifierField());
+		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getIdColumn());
 		selectRowWhileDialogBoxIsOpen(row, new PreviewDialogBox(url, title));
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOAD_PREVIEW, getFullId(), title);
 	}
 
 	@Override
 	public void onCenterClicked(GeneralJavaScriptObject rowData) {
-		final String ra = rowData.getStringProperty(getDescriptor().getTapRaColumn());
-		final String dec = rowData.getStringProperty(getDescriptor().getTapDecColumn());
+		final String ra = rowData.getStringProperty(getDescriptor().getRaColumn());
+		final String dec = rowData.getStringProperty(getDescriptor().getDecColumn());
 
 		double fov = AladinLiteWrapper.getInstance().getFovDeg();
 		if(rowData.getStringProperty(EsaSkyConstants.OBSCORE_FOV) != null
@@ -667,19 +699,20 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		AladinLiteWrapper.getInstance().goToTarget(ra, dec, fov, false, AladinLiteWrapper.getInstance().getCooFrame());
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_RECENTER, getFullId(),
-				rowData.getStringProperty(getDescriptor().getUniqueIdentifierField()));
+				rowData.getStringProperty(getDescriptor().getIdColumn()));
 	}
 
 	@Override
 	public void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData) {
-		String uniqueIdentifierField = rowData.getStringProperty(getDescriptor().getUniqueIdentifierField());
-		if(getEntity().getDescriptor().getSampUrl() != null){
+		String uniqueIdentifierField = rowData.getStringProperty(getDescriptor().getIdColumn());
+
+		if(getEntity().getDescriptor().isSampEnabled() && getEntity().getDescriptor().getSampBaseURL() != null){
 			executeSampFileList(uniqueIdentifierField);
 			return;
 		}
 
 		String tableName = getLabel() + "-" + uniqueIdentifierField + "-" + GUISessionStatus.getNextUniqueSampNumber();
-		HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
+		HashMap<String, String> sampUrlsPerMissionMap = new HashMap<>();
 
 		// Display top progress bar...
 		Log.debug("[sendSelectedProductToSampApp()] About to send 'show top progress bar...' event!!!");
@@ -690,10 +723,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TABROW_SENDTOVOTOOLS, getFullId(), uniqueIdentifierField);
 		String sampUrl = null;
-		if (getEntity().getDescriptor().getDdBaseURL() != null && !getEntity().getDescriptor().getDdBaseURL().isEmpty()) {
-			String tapName = getEntity().getDescriptor().getDdProductURI().split("@@@")[1];
-			String valueURI = rowData.getStringProperty(tapName);
-			sampUrl = getEntity().getDescriptor().getDdBaseURL() + getEntity().getDescriptor().getDdProductURI().replace("@@@" + tapName + "@@@", valueURI);
+		if (getEntity().getDescriptor() != null) {
+			CommonTapDescriptor desc = getEntity().getDescriptor();
+			if (desc.getSampBaseURL() != null && !desc.getSampBaseURL().isEmpty()) {
+				String tapName = desc.getSampProductURI().split("@@@")[1];
+				String valueURI = rowData.getStringProperty(tapName);
+				sampUrl = desc.getSampBaseURL() +  desc.getSampProductURI().replace("@@@" + tapName + "@@@", valueURI);
+			}
 		}
 
 		if (sampUrl == null) {
@@ -767,8 +803,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 						HashMap<String, String> sampUrlsPerMissionMap = new HashMap<String, String>();
 						for (SampMessageItem i : messageItems) {
 							// Prepare sending message
-							tableNameTmp = getDescriptor().getTapTable() + "_" + counter + "-" + GUISessionStatus.getNextUniqueSampNumber();
-							String fullUrl = getDescriptor().getDdBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
+							tableNameTmp = getDescriptor().getTableName() + "_" + counter + "-" + GUISessionStatus.getNextUniqueSampNumber();
+							String fullUrl = getDescriptor().getSampBaseURL() + "?retrieval_type=PRODUCT&hcss_urn=" + i.getUrn();
 							if (fullUrl.contains("README")) {
 								continue;
 							}
@@ -796,31 +832,50 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
-	private void selectRowWhileDialogBoxIsOpen(final GeneralJavaScriptObject row, AutoHidingMovablePanel dialogBox) {
+	private void selectRowWhileDialogBoxIsOpen(final GeneralJavaScriptObject row, MovablePanel dialogBox) {
 		if(!GeneralJavaScriptObject.convertToBoolean(row.invokeFunction("isSelected"))) {
 			row.invokeFunction("select");
-			dialogBox.registerCloseObserver(new ClosingObserver() {
-
-				@Override
-				public void onClose() {
-					row.invokeFunction("deselect");
-				}
-			});
+			dialogBox.registerCloseObserver(() -> row.invokeFunction("deselect"));
 		}
 	}
 
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
-		GeneralJavaScriptObject data = row.invokeFunction("getData");
-		String archiveColumn = getDescriptor().getArchiveColumn();
-		if (!archiveColumn.isEmpty()) {
-			String url = data.getStringProperty(archiveColumn);
-			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
-			UrlUtils.openUrl(url);
+		if (getDescriptor() != null) {
+			String archiveUrl = buildArchiveURL(row.invokeFunction("getData"));
+			openArchiveUrl(archiveUrl, row);
+		}
+
+	}
+
+	@Override
+	public void onLink2ArchiveClicked(GeneralJavaScriptObject row, String columnName) {
+		GeneralJavaScriptObject rowData = row.invokeFunction("getData");
+
+		String archiveUrl = "";
+		if (rowData.hasProperty(columnName)) {
+			archiveUrl = rowData.getProperty(columnName).toString();
+
+			// Workaround for incorrect MAST SWIFT URL's until they fix them.
+			if (Objects.equals(getDescriptor().getMission(), "MAST") 
+					&& archiveUrl.contains("mast.stsci.edu/portal/Download/file?uri=")
+					&& !archiveUrl.contains("mast:")) {
+				archiveUrl = archiveUrl.substring(archiveUrl.indexOf("uri=")).replace("uri=", "");
+			}
+		}
+
+		openArchiveUrl(archiveUrl, row);
+	}
+
+
+	private void openArchiveUrl(String archiveUrl, GeneralJavaScriptObject row) {
+		if (!archiveUrl.isEmpty() && !archiveUrl.toLowerCase().contains("datalink")) {
+			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
+			UrlUtils.openUrl(archiveUrl);
 		} else {
 			String url = buildArchiveURL(row.invokeFunction("getData"));
 			if(url.toLowerCase().contains("datalink")) {
-				onDatalinkClicked(row);
+				onDatalinkClicked(row, url);
 			}else {
 				GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, url);
 				Window.open(url, "_blank", "");
@@ -829,20 +884,25 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	private String buildArchiveURL(GeneralJavaScriptObject rowData) {
-		String productURI = getDescriptor().getArchiveProductURI();
-		RegExp regularExpression = RegExp.compile("@@@(.*?)@@@", "gm");
+		if (getDescriptor() != null) {
+			CommonTapDescriptor desc = getDescriptor();
+			String productURI = desc.getArchiveProductURI();
+			RegExp regularExpression = RegExp.compile("@@@(.*?)@@@", "gm");
 
-		for (MatchResult match = regularExpression.exec(getDescriptor().getArchiveProductURI()); match != null; match = regularExpression
-				.exec(getDescriptor().getArchiveProductURI())) {
-			String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
-			String valueURI = rowData.getStringProperty(rowColumn);
-			productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
+			for (MatchResult match = regularExpression.exec(desc.getArchiveProductURI()); match != null; match = regularExpression
+					.exec(desc.getArchiveProductURI())) {
+				String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
+				String valueURI = rowData.getStringProperty(rowColumn);
+				productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
+			}
+			String url = desc.getArchiveBaseURL() + productURI;
+			if (!url.contains("nxsa.esac.esa.int") && "https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")) {
+				url = url.replaceFirst("http:", "https:");
+			}
+			return url;
 		}
-		String url = getDescriptor().getArchiveURL() + productURI;
-		if(!url.contains("nxsa.esac.esa.int") && "https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
-			url = url.replaceFirst("http:", "https:");
-		}
-		return url;
+
+		return "";
 	}
 
 	@Override
@@ -854,24 +914,38 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getLabelFromTapName(String tapName) {
-		MetadataDescriptor md = entity.getDescriptor().getMetadataDescriptorByTapName(tapName);
-		if(md != null && md.getLabel() != null) {
-			return md.getLabel();
+		TapMetadataDescriptor md = entity.getDescriptor().getMetadata().stream().filter(m -> m.getName().equals(tapName)).findFirst().orElse(null);
+		if(md != null && md.getUnit() != null) {
+			return md.getUnit();
 		}
 		return tapName;
 	}
 
-
-	@Override
-	public boolean hasLabel(String tapName) {
-		MetadataDescriptor md = entity.getDescriptor().getMetadataDescriptorByTapName(tapName);
-		return md != null && md.getLabel() != null;
-	}
-
-
 	@Override
 	public GeneralJavaScriptObject getDescriptorMetaData() {
-		return entity.getDescriptor().getMetaDataJSONObject();
+		return entity.getDescriptor().getRawMetadata();
+	}
+
+	@Override
+	public GeneralJavaScriptObject getTableMetadata() {
+		return this.tableMetadata;
+	}
+
+	@Override
+	public void openQueryPanel() {
+		if (queryPopupPanel == null) {
+			queryPopupPanel = new QueryPopupPanel();
+			queryPopupPanel.addQueryHandler(event -> {
+				entity.getDescriptor().setUnprocessedADQL(event.getQuery());
+				entity.setQuery(event.getQuery());
+				updateData();
+			});
+		}
+
+		queryPopupPanel.setTapTable(entity.getDescriptor().getTableName());
+		queryPopupPanel.setTapServiceUrl(entity.getDescriptor().getTapUrl());
+		queryPopupPanel.setQuery(entity.getQuery());
+		queryPopupPanel.show();
 	}
 
 	@Override
@@ -914,7 +988,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getEsaSkyUniqId() {
-		return entity.getEsaSkyUniqId();
+		return entity.getId();
 	}
 
 	@Override
@@ -930,12 +1004,32 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public String getRaColumnName() {
-		return getDescriptor().getTapRaColumn();
+		return getDescriptor().getRaColumn();
 	}
 
 	@Override
 	public String getDecColumnName() {
-		return getDescriptor().getTapDecColumn();
+		return getDescriptor().getDecColumn();
+	}
+
+	@Override
+	public String getUniqueIdentifierField() {
+		return getDescriptor().getIdColumn();
+	}
+
+	@Override
+	public boolean isColumnVisible(String columnName) {
+		TapMetadataDescriptor column = getDescriptor().getMetadata()
+				.stream().filter(c -> Objects.equals(c.getName(), columnName)).findFirst().orElse(null);
+
+		return column == null || column.isPrincipal();
+	}
+
+	@Override
+	public String getColumnUnit(String columnName) {
+		TapMetadataDescriptor column = getDescriptor().getMetadata()
+				.stream().filter(c -> Objects.equals(c.getName(), columnName)).findFirst().orElse(null);
+		return column != null ? column.getUnit() : "";
 	}
 
 	@Override
@@ -945,7 +1039,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public boolean isDataProductDatalink() {
-		if(entity.getDescriptor().getDescriptorId().startsWith("HEASARC")) {
+		if(entity.getDescriptor().getMission().startsWith(EsaSkyWebConstants.HEASARC_MISSION)) {
 			return true;
 		}
 		return table.isDataProductDatalink();
@@ -969,6 +1063,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void filterOnFoV(String raCol, String decCol) {
 		table.filterOnFov(raCol, decCol);
+	}
+
+	@Override
+	public void groupOnColumn(String columnName) {
+		table.groupByColumns(columnName);
 	}
 
 	@Override

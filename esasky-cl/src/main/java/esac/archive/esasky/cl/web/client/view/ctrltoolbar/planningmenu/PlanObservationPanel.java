@@ -40,7 +40,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     private boolean isShowing = false;
 
     private static VerticalPanel jwstPanel; 
-    private final String SIAF_VERSION = "SIAF: PRDOPSSOC-036";
+    private final String SIAF_VERSION = "SIAF: PRDOPSSOC-059";
     
     private static PlanObservationPanel instance = null;
 

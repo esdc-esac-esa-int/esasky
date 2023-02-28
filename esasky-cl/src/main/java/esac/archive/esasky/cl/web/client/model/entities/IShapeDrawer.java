@@ -15,7 +15,7 @@ public interface IShapeDrawer {
 	public void setSizeRatio(double size);
 	public double getSize();
 	public void removeAllShapes();
-	public void addShapes(GeneralJavaScriptObject javaScriptObject);
+	public void addShapes(GeneralJavaScriptObject javaScriptObject, GeneralJavaScriptObject metadata);
 	public void selectShapes(int shapeId);
     public void deselectShapes(int shapeId);
     public void deselectAllShapes();

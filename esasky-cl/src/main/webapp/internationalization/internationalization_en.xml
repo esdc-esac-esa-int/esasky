@@ -85,7 +85,7 @@
 	<text key="PublicationsBySourceCallback_helpTitle">
 		Publications
 	</text>
-	<text key="resultsPresenter_helpDescription_PUBLICATIONS_ADS-PUB">
+	<text key="resultsPresenter_helpDescription_publications_ADS-PUB">
 		Publications associated to this source in SIMBAD plus
 		access to sources for each of the publications.
 		&lt;br&gt;&lt;br&gt;
@@ -527,7 +527,7 @@
 		Explore publications data for this region
 	</text>
 	<text key="webConstants_exploreRandomTarget">
-		Explore random target
+		Explore a random target
 	</text>
 
 	<!-- displayUtils -->
@@ -559,7 +559,7 @@
 		Computing data cross-match for $SSOTEXT$
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_INTEGRAL">
+	<text key="resultsPresenter_helpDescription_observations_INTEGRAL">
 		INTEGRAL/IBIS observations consist on a large number of individual
 		exposures (science windows) around a target position. For this reason
 		and because of the large size of the IBIS field-of-view, it is
@@ -573,7 +573,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM">
+	<text key="resultsPresenter_helpDescription_observations_XMM">
 		The XMM-Newton observations include public high-level Processing
 		Pipeline System
 		(PPS) products present in the XMM-Newton Science
@@ -596,7 +596,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Chandra">
+	<text key="resultsPresenter_helpDescription_observations_Chandra">
 		The Chandra dataset includes all public observations
 		(images and spectra), updated regularly, from the ACIS, LETG,
 		HETG and HRC instruments, available in the Chandra Data Archive
@@ -613,7 +613,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_SUZAKU">
+	<text key="resultsPresenter_helpDescription_observations_SUZAKU">
 		The observations include all public imaging products
 		present in the SUZAKU archive at DARTS.
 		Detailed information on the SUZAKU mission and its products can be found at
@@ -625,7 +625,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM-OM-OPTICAL">
+	<text key="resultsPresenter_helpDescription_observations_XMM-OM-OPTICAL">
 		The
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -643,7 +643,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_XMM-OM-UV">
+	<text key="resultsPresenter_helpDescription_observations_XMM-OM-UV">
 		The
 		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/technical-details-om"
 		target="_blank"&gt;
@@ -661,7 +661,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-OPTICAL">
+	<text key="resultsPresenter_helpDescription_observations_HST-OPTICAL">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -690,7 +690,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-UV">
+	<text key="resultsPresenter_helpDescription_observations_HST-UV">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -719,7 +719,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_HST-IR">
+	<text key="resultsPresenter_helpDescription_observations_HST-IR">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -748,7 +748,63 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Herschel">
+		<text key="resultsPresenter_helpDescription_observations_JWST_Near-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+		<text key="resultsPresenter_helpDescription_observations_JWST_Mid-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+		<text key="resultsPresenter_helpDescription_spectra_JWST_Near-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+		<text key="resultsPresenter_helpDescription_spectra_JWST_Mid-IR">
+		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
+		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
+		&lt;br&gt;&lt;br&gt;
+		Following launch, and after an initial commissioning phase of 6 months, the observatory has entered its regular science operations phase,
+		during which approved observation programs will be performed. Scientific data is collected from a set of observer-created programs placed on a
+		timeline of activities sent up to the spacecraft up to twice a day during operations.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_observations_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -767,7 +823,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ISO-IR">
+	<text key="resultsPresenter_helpDescription_observations_ISO-IR">
 		The Infrared Space Observatory (ISO) was the world's
 		first true orbiting infrared observatory launched in November 1995. It
 		carried four scientific instruments: two spectrometers (SWS and LWS),
@@ -782,7 +838,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_ALMA">
+	<text key="resultsPresenter_helpDescription_observations_ALMA">
 		ALMA (Atacama Large Millimeter/submillimeter Array) is the world's largest 
 		ground-based facility for observations in the millimeter/submillimeter regime. 
 		ALMA comprises a giant array of fifty 12-m antennas, which can be configured 
@@ -796,7 +852,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_INTEGRAL">
+	<text key="resultsPresenter_helpDescription_catalogues_INTEGRAL">
 		The IBIS/ISGRI Soft Gamma-Ray Source Catalog is an all-sky catalog
 		based on INTEGRAL-IBIS observations performed during the first 1000
 		orbits of the satellite. The catalogue was released in 2009 and
@@ -811,7 +867,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_CHANDRA-SC2">
+	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC2">
                 The Chandra Source Catalog (CSC) is the definitive catalog of X-ray sources 
 		detected by the Chandra X-ray Observatory. Version 2.0 (CSC 2.0) is the second 
 		major release of the catalog, and represents a significant improvement with 
@@ -828,7 +884,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
     The 4XMM-DR12 catalogue contains source detections drawn from 12,712
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
@@ -840,7 +896,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-EPIC-STACK">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
     	The stacked catalogue 4XMM-DR12s has been compiled from 1,620 groups,
 		comprising 9,355  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
@@ -857,7 +913,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-OM">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-OM">
 		The SUSS5.0 catalogue is a catalogue of sources serendipitously
 		detected by the Optical Monitor (OM) on board the XMM-Newton
 		observatory. It provides source positions, magnitudes and fluxes in
@@ -870,7 +926,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_XMM-SLEW">
+	<text key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
 		​XMMSL2 is the second catalogue of X-ray sources detected in
 		XMM-Newton slew data, and has been constructed by members of the
 		XMM-Newton SOC and the EPIC consortium on behalf of ESA. This release uses
@@ -884,7 +940,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Tycho-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Tycho-2">
 		​ The Tycho-2 Catalogue is an astrometric reference catalogue
 		containing positions, proper motions and two-colour photometry (B and
 		V) for the 2.5 million brightest stars in the sky. The catalogue is
@@ -901,7 +957,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_TwoMASS">
+	<text key="resultsPresenter_helpDescription_catalogues_TwoMASS">
 		The Two-Micron All Sky Survey (2MASS) covered 99.998% of
 		the sky in three near-
 		infrared bands, J, H and Ks. The 2MASS Point
@@ -921,7 +977,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AKARI-IRC-SC">
+	<text key="resultsPresenter_helpDescription_catalogues_AKARI-IRC-SC">
 		The AKARI IRC Point Source Catalogue Version 1.0 provides positions
 		and fluxes of 870,973 sources (844,649 sources in 9 micron band and
 		194,551 sources in 18 micron band) in the Mid-Infrared wavelengths.
@@ -939,7 +995,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_AllWise">
+	<text key="resultsPresenter_helpDescription_catalogues_AllWise">
 		The AllWISE Source Catalog provides astrometry and mid-infrared
 		photometry in four
 		bands (3.4, 4.6, 12 and 22 microns) for 747,634,026
@@ -959,7 +1015,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Hipparcos-2">
+	<text key="resultsPresenter_helpDescription_catalogues_Hipparcos-2">
 		The Hipparcos-2 Catalogue is a new reduction of the data from the
 		Hipparcos mission that improved up to a factor of 4 the accuracy of
 		stars with Hp magnitude 8 or lower. It contains positions, parallaxes
@@ -971,7 +1027,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_HSC">
+	<text key="resultsPresenter_helpDescription_catalogues_HSC">
 		The Hubble Source Catalog is a combination of all the visit-based source
 		lists in the Hubble Legacy Archive (HLA) into a single catalogue and is
 		designed to optimize science from the Hubble Space Telescope by combining
@@ -990,7 +1046,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-070">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1010,7 +1066,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-100">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-100">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1030,7 +1086,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-HPPSC-160">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-160">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
 		distributed over the three bands of the
@@ -1050,7 +1106,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-250">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-250">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1067,7 +1123,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-350">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-350">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1084,7 +1140,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Herschel-SPSC-500">
+	<text key="resultsPresenter_helpDescription_catalogues_Herschel-SPSC-500">
 		The SPIRE Point Source Catalogue (SPSC) contains more than 1.6
 		million entries
 		extracted from a total 6878 observations in the
@@ -1101,7 +1157,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PGCC">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PGCC">
 		The PGCC2 contains 13,188 Galactic sources and 54 sources located in the Magellanic Clouds, all of them identified as cold sources in Planck data (sources colder than their environment). The sources are extracted from the Planck HFI 857, 545 and 353 GHz maps and the 3 THz IRIS map. A detection requires SNR &gt; 4 in all Planck bands and a minimum angular distance of 5 arcmin to other detections.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -1109,7 +1165,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2E-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2E-HFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For the channels 100-353 GHz, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;
 		The catalogue at 100 Ghz and above has been
@@ -1125,7 +1181,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2-HFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-HFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For the channels 100-353 GHz, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;
 		The catalogue at 100 Ghz and above has been
@@ -1141,14 +1197,14 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PCCS2-LFI">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PCCS2-LFI">
 		The PCCS2 is a set of single-frequency source catalogues extracted from the Planck full-mission maps in intensity and polarization. These maps contain 48 months of data for the LFI channels, and 29 months of data for the HFI channels,  therefore the flux densities derived from these maps are an average of the source emission over these two periods of time. For all the LFI channels, the catalogue also contains polarization flux densities and polarization angles for sources with a significance in polarization &gt;99.99%.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#PCCS2"
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Planck-PSZ2">
+	<text key="resultsPresenter_helpDescription_catalogues_Planck-PSZ2">
 		The Planck SZ catalogue is a nearly all-sky list of SZ detections
 		obtained from the Planck data, derived from the HFI frequency channel
 		maps after masking and filling the bright point sources (SNR>10) from
@@ -1161,7 +1217,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_XMM-NEWTON">
+	<text key="resultsPresenter_helpDescription_spectra_XMM-NEWTON">
 		The XMM-Newton observations include public high-level Processing
 		Pipeline System
 		(PPS) products present in the XMM-Newton Science
@@ -1180,7 +1236,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Chandra">
+	<text key="resultsPresenter_helpDescription_spectra_Chandra">
 		The Chandra dataset includes all public observations
 		(images and spectra), updated regularly, from the ACIS, LETG,
 		HETG and HRC instruments, available in the Chandra Data Archive
@@ -1199,7 +1255,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_IUE">
+	<text key="resultsPresenter_helpDescription_spectra_IUE">
 		The International Ultraviolet Explorer (IUE) was a joint
 		project between ESA, NASA
 		and the UK PPARC. The mission operated
@@ -1231,7 +1287,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-UV">
+	<text key="resultsPresenter_helpDescription_spectra_HST-UV">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1259,7 +1315,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-OPTICAL">
+	<text key="resultsPresenter_helpDescription_spectra_HST-OPTICAL">
 		The Hubble Space Telescope (HST) observational data provided by
 		ESASky are science products from the two Hubble data collections:
 		&lt;ul&gt;
@@ -1285,7 +1341,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_HST-IR">
+	<text key="resultsPresenter_helpDescription_spectra_HST-IR">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1313,7 +1369,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_ISO-IR">
+	<text key="resultsPresenter_helpDescription_spectra_ISO-IR">
 		The Infrared Space Observatory (ISO) was the world's
 		first true orbiting infrared observatory launched in November 1995. It
 		carried four scientific instruments: two spectrometers (SWS and LWS),
@@ -1327,7 +1383,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_Herschel">
+	<text key="resultsPresenter_helpDescription_spectra_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -1346,7 +1402,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_Herschel">
+	<text key="resultsPresenter_helpDescription_sso_Herschel">
 		The available Herschel data include all public observations from
 		the HIFI, PACS and SPIRE instruments (including PACS/SPIRE parallel
 		observations).
@@ -1365,7 +1421,7 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_HST">
+	<text key="resultsPresenter_helpDescription_sso_HST">
 		The Hubble Space Telescope (HST) observational data
 		provided by ESASky are science products from the two Hubble data
 		collections:
@@ -1393,7 +1449,26 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
-	<text key="resultsPresenter_helpDescription_SSO_XMM">
+	<text key="resultsPresenter_helpDescription_sso_XMM">
+		The observations include public high-level Processing
+		Pipeline System (PPS) products present in the XMM-Newton Science
+		Archive
+		(&lt;a href="//nxsa.esac.esa.int/nxsa-web/#home"
+		target="_blank"&gt;XSA&lt;/a&gt;).
+		Detailed information on XMM-Newton products can be found in the
+		&lt;a href="//www.cosmos.esa.int/web/xmm-newton/guide-to-xmm-products"
+		target="_blank"&gt;
+		XMM-Newton Science Archive Data Products
+		Guide&lt;/a&gt;.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#XMM-Newton-OBS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+	
+		<text key="resultsPresenter_helpDescription_sso_XMM-OM">
 		The observations include public high-level Processing
 		Pipeline System (PPS) products present in the XMM-Newton Science
 		Archive
@@ -2962,24 +3037,10 @@
 		&gt;
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
-	<text key="treeMapContainer_help_EXT_TAP">
-		In ESASky you can now explore data from external data centres
-		which conforms with Virtual Observatory (IVOA) standards.
-
-		Services which have any data in the current region will appear
-		in the tree map. Clicking on any service will show the available
-		dataproduct types in the visible region (Images, Spectra etc). Clicking
-		on a prdouct type will show the available collections these product exist in.
-
-		Clicking on the collection/facility will load the data into the data panel and display
-		the corresponding footprints in the sky.
-		</text>
-
-
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_LRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.	
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
-		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10. 
+		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2987,21 +3048,10 @@
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_LRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.	
+	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
-		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10. 
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
-		target="_blank"&gt;
-		More information
-		&lt;/a&gt;
-	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_LAMOST_MRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.	
-		&lt;br&gt;&lt;br&gt;
-The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)		
+The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3009,10 +3059,10 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_LAMOST_MRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.	
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.
 		&lt;br&gt;&lt;br&gt;
-		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)		
+		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3020,8 +3070,18 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-	
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_AKARI">
+	<text key="resultsPresenter_helpDescription_spectra_LAMOST_LRS">
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+		&lt;br&gt;&lt;br&gt;
+		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_observations_AKARI">
 		ESASky serves all pointed observations taken with the InfraRed Camera (IRC) of this mission, which are directly downloaded from DARTS. The IRC consisted of three independent camera systems, NIR, MIR-S and MIR-L, which observed the wavelength bands of 1.7-5.5 μm, 5.8-14.1 μm, and 12.4-26.5 μm, respectively. Each camera system had three filters available. NIR and MIR-S covered the same field of view (FoV), while MIR-L had a different one, which did not overlap with the NIR/MIR-S FoV. A brief description of the instrument and data products is given in
 		&lt;a
 		href="//repository.exst.jaxa.jp/dspace/bitstream/a-is/906920/1/AA1830017000.pdf"
@@ -3035,7 +3095,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Spitzer">
+	<text key="resultsPresenter_helpDescription_catalogues_Spitzer">
 		The Spitzer Science Center and the Infrared Processing and Analysis Center have produced as part of the Cryogenic Release 3 the SEIP Source List. This list contains photometry for 42 million stars and galaxies for the Infrared Array Camera (IRAC) at 3.6, 4.5, 5.8 adn 8 microns and for the 24 micron band of the Multiband Imaging Photometer (MIPS). The Spitzer SEIP Source List has been produced combining data across multiple Astronomical Observation Request (AOR) archival data that allows the extraction of fainter sources using a uniform processing pipeline taking advantage of the best and final calibration of the cryogenic imaging data.
 
 		&lt;br&gt;&lt;br&gt;
@@ -3045,7 +3105,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_Spitzer">
+	<text key="resultsPresenter_helpDescription_observations_Spitzer">
 		Spitzer Enhanced Imaging Products (SEIP), Cryogenic Release version 3.0. These are combined images ("Super Mosaics") for data from Spitzer's cryogenic mission, including all four bands (3.6, 4.5, 5.8, 8 microns) of the Infrared Array Camera (IRAC), and the 24 micron band of the Multiband Imaging Photometer for Spitzer ("MIPS").
 
 		&lt;br&gt;&lt;br&gt;
@@ -3186,7 +3246,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="tabulator_sendRowToVOApplicationHeaderTooltip">
 		Send data product to Virtual Observatory application
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_CADC">
+	<text key="resultsPresenter_helpDescription_external_CADC">
 		External data provided by 
 		&lt;a
 		href="//www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/"
@@ -3204,7 +3264,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ESO">
+	<text key="resultsPresenter_helpDescription_external_ESO">
 		External data provided by 
 		&lt;a
 		href="//www.eso.org/"
@@ -3222,7 +3282,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_MAST">
+	<text key="resultsPresenter_helpDescription_external_MAST">
 		External data provided by 
 		&lt;a
 		href="//archive.stsci.edu/"
@@ -3273,7 +3333,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Close all tabs
 	</text>
 	<text key="treeMap_large_fov">
-		Data from external services is only availabe at field of view below $fov_limit$ degrees
+		Data from external services is only available at field of view below $fov_limit$ degrees
 	</text>
 	<text key="closeableTabLayoutPanel_configure">
 		Configure table
@@ -3381,6 +3441,24 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Download archive data
 	</text>
 
+	<text
+		key="resultsPresenter_helpDescription_catalogues_Gaia-DR3">
+		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
+		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
+		the &lt;a
+		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
+		target="_blank"
+		&gt;known issue&lt;/a&gt; present in EDR3 corrected in Gaia DR3), 
+		and G&lt;sub&gt;BP&lt;/sub&gt;
+		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.54 billion and 1.55 billion sources, respectively are also provided. 
+		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag. 
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+
 	<text key="selectionToolbox_showSelectionToolbox">
 		Show selection tools
 	</text>
@@ -3450,7 +3528,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="tabulator_addHipsColumn">Add</text>
 	<text key="tabulator_addHips_tooltip">Adds this HiPS as a new row to the Sky panel</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_CHEOPS">
+	<text key="resultsPresenter_helpDescription_spectra_CHEOPS">
 		CHEOPS is an ESA mission developed in partnership with Switzerland, with a dedicated consortium led by the University of Bern, and with important contributions from Austria, Belgium, France, Germany, Hungary, Italy, Portugal, Spain, Sweden and the UK. The satellite has a single payload comprising an ultra-high precision photometer covering the 330 - 1100 nm wavelength range in a single photometric band. Observations are made as part of the Guaranteed Time Observing Programme that is formulated by the CHEOPS Science Team and the Guest Observers Programme through which the Community at large can apply for CHEOPS time. 
 		&lt;br&gt;&lt;br&gt;
 		The subset of CHEOPS data available through ESASky includes an example of a light curve (the highest level data product produced by the automated data reduction pipeline) and the data reduction pipeline report for each public science observation. 
@@ -3465,7 +3543,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="show_more">Show More</text>
 	<text key="show_more_tooltip">Click to expand and show the full text</text>
 
-	<text key="resultsPresenter_helpDescription_EXT_TAP_HEASARC">
+	<text key="resultsPresenter_helpDescription_external_HEASARC">
 	External data provided by 
 		&lt;a
 		href="//heasarc.gsfc.nasa.gov"
@@ -3483,7 +3561,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_EXT_TAP_ASTRON">
+	<text key="resultsPresenter_helpDescription_external_ASTRON">
 		External data provided by 
 		&lt;a
 		href="//astron.nl"
@@ -3596,7 +3674,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="header_highResolutionImagesTooltip">
 		Visualise outreach images from the Hubble Space Telescope
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4FGL-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4FGL-DR2">
 		The Fermi Large Area Telescope (LAT) has been surveying the high-energy gamma-ray sky since 2008 and the LAT Collaboration has published a succession of source catalogs based on comprehensive analyses of LAT data. The fourth source catalog second data release was derived from analysis of the first 10 years of LAT science data.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3605,7 +3683,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_3FHL">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_3FHL">
 		Third Catalog of Hard Fermi-LAT Sources (3FHL), a catalog of sources detected above 10 GeV by the Fermi Large Area Telescope (LAT) in the first 7 years of data using the Pass 8 event-level analysis, containing 1556 objects characterised in the 10 GeV-2 TeV energy range.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3614,7 +3692,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Fermi_4LAC-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4LAC-DR2">
 		Fourth Catalog of Active Galactic Nuclei detected by the Fermi Large Area Telescope (LAT) (4LAC-DR2) based on 10 years of data. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3623,7 +3701,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_OU_Blazars">
+	<text key="resultsPresenter_helpDescription_catalogues_OU_Blazars">
 		Open Universe for Blazars relies on a master list of blazars. The second version of this list was assembled by combining the 5BZCAT, the 3HSP and the 4LAC catalogs.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3792,7 +3870,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Search
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Icecube">
+	<text key="resultsPresenter_helpDescription_catalogues_Icecube">
 		The IceCube All-Sky Point-Source Events Catalog (2008 - 2018; Icecubepsc). IceCube has performed several searches for point-like sources of neutrinos. The events contained in this catalogue make up the sample used in IceCube's 10-year time-integrated neutrino point source search. Events in the sample are track-like neutrino candidates detected by IceCube between April 2008 and July 2018.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3801,7 +3879,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2RXS">
+	<text key="resultsPresenter_helpDescription_catalogues_2RXS">
 		The second ROSAT all-sky survey source catalogue (2RXS) is the second publicly released ROSAT catalogue of point-like sources obtained from the ROSAT all-sky survey (RASS) observations performed with the position-sensitive proportional counter (PSPC) between June 1990 and August 1991, and is an extended and revised version of the bright and faint source catalogues. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3810,7 +3888,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; 
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_2WHSP">
+	<text key="resultsPresenter_helpDescription_catalogues_2WHSP">
 		A multi-frequency selected catalogue of high energy and very high energy gamma-ray blazars and blazar candidates (2WHSP). This catalogue contains the largest and most complete list of High Synchrotron Peaked blazars (HSPs) available to date (in 2017), which is an expansion of the 1WHSP catalog of gamma-ray source candidates off the Galactic plane. A number of multi-wavelength surveys (in the radio, infrared and X-ray bands) have been cross-matched and applied selection criteria based on the radio to IR and IR to X-ray spectral slopes. 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3852,7 +3930,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="header_acknowledge">
 		Acknowledge ESASky
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-NEAR-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST-NEAR-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -3866,7 +3944,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_JWST-MID-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST-MID-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -3965,22 +4043,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="header_jwstImagesTooltip">
 		Visualise outreach images from the James Webb Space Telescope
 	</text>
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_Gaia-DR3">
-		The Gaia DR3 catalogue provides positions, parallaxes and proper motions for more than 1.46 billion (1.468 10&lt;sup&gt;9&lt;/sup&gt;) sources, between G-magnitudes 3 and 21. 
-		The astrometric solution is accompanied with some quality indicators, like RUWE, and source image descriptors. Additionally, G magnitudes for around 1.806 billion sources (with 
-		the &lt;a
-		href="//www.cosmos.esa.int/web/gaia/edr3-known-issues#GBandCorrections"
-		target="_blank"
-		&gt;known issue&lt;/a&gt; present in EDR3 corrected in Gaia DR3), 
-		and G&lt;sub&gt;BP&lt;/sub&gt;
-		and G&lt;sub&gt;RP&lt;/sub&gt; magnitudes for around 1.54 billion and 1.55 billion sources, respectively are also provided. 
-		Parallax uncertainties span between 0.02 mas for G&lt;15 mag and 1.3 mas at G=21 mag. Proper motion uncertainties range from 0.02 mas/yr for G&lt;15 mag to 1.4 mas/yr for G=21 mag. 
-		&lt;br&gt;&lt;br&gt;
-		&lt;a
-		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIA"
-		target="_blank"&gt;
-		More information
-		&lt;/a&gt; </text>
 	<text key="header_highResolutionImages">
 		Hubble outreach images
 	</text>
@@ -4047,8 +4109,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Bkg Counts &lt;br&gt;&lt;i&gt;(ct
 		arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
-	<text key="resultsPresenter_helpDescription_ASTRO_IMAGING_eROSITA">
+	<text key="resultsPresenter_helpDescription_observations_eROSITA">
 		eROSITA (extended ROentgen Survey with an Imaging Telescope Array) is
 		a wide-field X-ray telescope on-board the Russian-German
 		"Spectrum-Roentgen-Gamma" (SRG) observatory, and it was developed under
@@ -4064,7 +4125,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-main">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eFEDS-main">
 		X-ray sources detected in the 0.2-2.3 keV band using eSASS adopting a detection likelihood threshold of 5.
 		The sources with detection likelihood larger than 6 are selected as the main eFEDS catalog (27910 sources).
 
@@ -4076,7 +4137,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-eFEDS-hard">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eFEDS-hard">
 		Hard X-ray selected eFEDS catalogue. Based on sources detection in three bands
 		(1: 0.2-0.6; 2: 0.6-2.3; 3: 2.3-5 keV) using eSASS adopting a detection likelihood
 		threshold of 5, we select the sources with a 2.3-5 keV band detection likelihood greater
@@ -4090,7 +4151,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-main">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-etaCha-main">
 		Catalog of X-ray sources in the eta Chamaeleontis field scan observation (OBSID 300004)
 		main catalogue, see Robrade et al. (2021).
 
@@ -4102,7 +4163,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_CATALOGUE_eROSITA-etaCha-hard">
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-etaCha-hard">
 		Catalog of X-ray sources in the eta Chamaeleontis
 		field scan observation (OBSID 300004) hard catalogue, see Robrade et al. (2021).
 
@@ -4113,9 +4174,1050 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
-	<!-- internationalization_es.xml is up to date for everything above -->
+
+	<!-- AUTO GENERATED translations for ExtTap -->
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_product_url">Download</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_designation">Name</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_obsid">Observation ID</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_objtype">Object Type</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_class">Class</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_subclass">Subclass</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_z">Z</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_z_err">Z Error</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_snru">SNR U</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_snrg">SNR G</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_snrr">SNR R</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_snri">SNR I</text>
+	<text key="catalogues.mv_lamost_dr8_lrs_fdw_snrz">SNR Z</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_product_url">Download</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_designation">Name</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_mobsid">Observation ID</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_band">Band</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_rv_b0">Radial Velocity R band  &lt;i&gt;(km/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_lamost_dr8_mrs_fdw_rv_r0">Radial Velocity B band &lt;i&gt;(km/s)&lt;/i&gt;</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_name">Name</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_ra_error">&amp;Delta;RA</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_dec_error">&amp;Delta;Dec</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w1mpro">W1 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w1mpro_error">&amp;Delta;W1 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w2mpro">W2 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w2mpro_error">&amp;Delta;W2 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w3mpro">W3 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w3mpro_error">&amp;Delta;W3 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w4mpro">W4 mag</text>
+	<text key="catalogues.t_allwise_original_valid_fdw_w4mpro_error">&amp;Delta;W4 mag</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_objid">Name</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i1_f_ap1">Flux IRAC1 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i1_df_ap1">Flux Error IRAC1 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i2_f_ap1">Flux IRAC2 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i2_df_ap1">Flux Error IRAC1 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i3_f_ap1">Flux IRAC3 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i3_df_ap1">Flux IRAC3 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i4_f_ap1">Flux IRAC4 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_i4_df_ap1">Flux Error IRAC4 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_m1_f_psf">Flux MIPS 24 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_m1_df_psf">Flux Error MIPS 24 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_j">Flux 2MASS J &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_h">Flux 2MASS H &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_k">Flux 2MASS K &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_wise1">Flux WISE W1 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_wise2">Flux WISE W2 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_wise3">Flux WISE W3 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_spitzer_seip_slphotdr4_fdw_wise4">Flux WISE W4 &lt;i&gt;(µJy)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_objname">Name</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_flux09">Flux S9W &lt;i&gt;(Jy)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_ferr09">Flux S9W Error &lt;i&gt;(Jy)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_flux18">Flux L18W &lt;i&gt;(Jy)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_ferr18">Flux L18W Error &lt;i&gt;(Jy)&lt;/i&gt;</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_fqual09">Flag S9W</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_fqual18">Flag L18W</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_extended09">Extended S9W Flag</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_extended18">Extended L18W Flag</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_ndata09">Number of SW09 Events</text>
+	<text key="catalogues.t_akari_point_source_catalogue_fdw_ndata18">Number of L18W Events</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_name">Name</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_j_m">J mag</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_j_msigcom">&amp;Delta;J mag</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_h_m">H mag</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_h_msigcom">&amp;Delta;H mag</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_ks_m">Ks mag</text>
+	<text key="catalogues.t_tmass_original_valid_fdw_ks_msigcom">&amp;Delta;Ks mag</text>
+	<text key="catalogues.integral_ibis_name">Name</text>
+	<text key="catalogues.integral_ibis_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.integral_ibis_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.integral_ibis_flux20_40">Flux&lt;sub&gt;20-40 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;</text>
+	<text key="catalogues.integral_ibis_flux40_100">Flux&lt;sub&gt;40-100 keV&lt;/sub&gt; &lt;i&gt;(mCrab)&lt;/i&gt;</text>
+	<text key="catalogues.integral_ibis_source_type">Type</text>
+	<text key="catalogues.integral_ibis_signif">Significance</text>
+	<text key="catalogues.integral_ibis_exposure">Exposure &lt;i&gt;(ksec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_name">Name</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_b">Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_lolim_b">Lower Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_hilim_b">Upper Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_w">Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_lolim_w">Lower Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_hilim_w">Upper Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_avg_b">Average Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_avg_lolim_b">Average Lower Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_avg_hilim_b">Average Upper Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_avg_w">Average Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_avg_lolim_w">Average Lower Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_flux_aper_avg_hilim_w">Average Upper Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_err_ellipse_r0">Major radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_err_ellipse_r1">Minor radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_err_ellipse_ang">Position angle error ellipse &lt;i&gt;(deg)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_significance">Highest Flux Significance</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_likelihood">Likelihood</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_likelihood_class">Likelihood Classification</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_conf_flag">Confusion Flag</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_extent_flag">Extent Flag</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_sat_src_flag">Source Saturation Flag</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_streak_src_flag">Source Streak Flag</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_flag">Variability Flag</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_hard_flag">Hardness Ratio Variability Flag</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hard_hm">Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hard_hm_lolim">Lower Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hard_hm_hilim">Upper Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hard_ms">Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hard_ms_lolim">Lower Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hard_ms_hilim">Upper Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_intra_index_b">ACIS Intra-Obs Variability Index</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_intra_index_w">HRC Intra-Obs Variability Index</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_index_b">ACIS Inter-Obs Variability Index</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_index_w">HRC Inter-Obs Variability Index</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_hard_prob_hm">Hard-Medium Hardness Ratio Variability Prob</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_chandra_csc2_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_iauname">Stack Catalogue Name</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_iauname_4xmmdr12">IAU Name</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ep_flux">Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ep_flux_err">Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_n_contrib">N. Contrib</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_n_obs">N. Obs</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_mjd_first">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ep_ontime">EP Ontime &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_extent">Extent</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_extent_err">Extent error</text>
+	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_fluxvar">Flux Var</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_iauname">Name</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_8_flux">Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_8_flux_err">Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_2_flux">Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_2_flux_err">Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_3_flux">Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_3_flux_err">Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_4_flux">Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_4_flux_err">Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_5_flux">Flux&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_5_flux_err">Flux error&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_mjd_start">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_iauname">Name</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_observation_id">Observation ID</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_poserr">&amp;Delta;Pos</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_uvw1_ab_flux">UVW1 Flux&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_uvw2_ab_flux">UVW2 Flux&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_uvm2_ab_flux">UVM2 Flux&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_u_ab_flux">U Flux&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_v_ab_flux">V Flux&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_b_ab_flux">B Flux&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_name">Name</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_flux_b8">Flux (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_flux_b8_err">Flux error (0.2-12kev)&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_flux_b7">Flux (2-12kev)&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_flux_b7_err">Flux error (2-12kev)&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_flux_b6">Flux (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_xsa_slew_source_cat_fdw_flux_b6_err">Flux error (0.2-2kev)&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_name">Name</text>
+	<text key="catalogues.mv_tycho2_fdw_ra">RA &lt;i&gt;(~J1991)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_dec">Dec &lt;i&gt;(~J1991)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_pm_ra">Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_e_pm_ra">&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_pm_de">Proper Motion in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_e_pm_de">&amp;Delta;PM in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_bt_mag">BT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_e_bt_mag">&amp;Delta;BT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_vt_mag">VT Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_tycho2_fdw_e_vt_mag">&amp;Delta; T Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_designation">Designation</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_ra">RA</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_dec">Dec</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_ra_error">RA error &lt;i&gt;(mas)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_dec_error">Dec error &lt;i&gt;(mas)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_parallax">Parallax &lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_parallax_error">&amp;sigma;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_pmra">Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_pmra_error">&amp;sigma;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_pmdec">Proper Motion in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_pmdec_error">&amp;sigma;PM in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_phot_g_mean_mag">G &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_phot_bp_mean_mag">Integrated G&lt;sub&gt;BP&lt;/sub&gt; mean mag &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_phot_rp_mean_mag">Integrated G&lt;sub&gt;RP&lt;/sub&gt; mean mag &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_phot_variable_flag">Photometric Variability Flag</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_bp_rp">G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt; colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_bp_g">G&lt;sub&gt;BP&lt;/sub&gt; - G colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_g_rp">G - G&lt;sub&gt;RP&lt;/sub&gt; colour &lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_radial_velocity">Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_radial_velocity_error">&amp;sigma;Radial Velocity&lt;br&gt;&lt;i&gt;(km/s)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_ruwe">Renormalised unit weight error (ruwe)</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_non_single_star">Non-Single Star Flag</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_has_xp_continuous">Has Continuous BP/RP Spectrum</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_has_xp_sampled">Has Sampled BP/RP Spectrum</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_has_rvs">Has RVS Spectrum</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_has_epoch_photometry">Has Epoch Photometry</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_has_mcmc_gspphot">Has GSP-Phot MCMC samples</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_has_mcmc_msc">Has MSC MCMC samples</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_teff_gspphot">Effective temperature&lt;br&gt;&lt;i&gt;(K)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_logg_gspphot">Surface gravity&lt;br&gt;&lt;i&gt;(log(cm/s&lt;sup&gt;2&lt;/sup&gt;))&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_mh_gspphot">Iron Abundance&lt;br&gt;&lt;i&gt;(dex)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_distance_gspphot">Distance&lt;br&gt;&lt;i&gt;(pc)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_azero_gspphot">Extinction, A&lt;sub&gt;0&lt;/sub&gt; at 547.7nm&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_ag_gspphot">Extinction in G band&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.t_gaia_source_dr3_fdw_ebpminrp_gspphot">Reddening E(G&lt;sub&gt;BP&lt;/sub&gt; - G&lt;sub&gt;RP&lt;/sub&gt;)&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_name">Name</text>
+	<text key="catalogues.mv_hipparcos_fdw_ra">RA &lt;i&gt;(J1991.25)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_dec">Dec &lt;i&gt;(J1991.25)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_plx">Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_e_plx">&amp;Delta;Parallax&lt;br&gt;&lt;i&gt;(mas)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_pm_ra">Proper Motion in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_e_pm_ra">&amp;Delta;PM in RA&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_pm_de">Proper Motion in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_e_pm_de">&amp;Delta;PM in Dec&lt;br&gt;&lt;i&gt;(mas/yr)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_hp_mag">Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_e_hp_mag">&amp;Delta;Magnitude&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_b_v">B - V colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_hipparcos_fdw_v_i">V - I colour&lt;br&gt;&lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_match_id">Match ID</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_target_name">Target name</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_num_images">Number of Images</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_num_images_per_filter">Number of Images per filter</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_filter">Filter</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_flux">Magnitude &lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_t_hubble_scv3_fdw_flux_sigma">Magnitude Error &lt;i&gt;(mag)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_name">Name</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_flux">Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_rms">&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_fwhmxfit">FWHM x Fit</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_fwhmyfit">FWHM y Fit</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_snr">S/N_S</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_stn">S/N_R</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_elong_flag">Elong Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_edge_flag">Edge Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_blend_flag">Blend Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_warmat">Warmat</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_ssomap_flag">SSO Map Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_070_fdw_obsid">Observation ID</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_name">Name</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_flux">Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_rms">&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_fwhmxfit">FWHM x Fit</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_fwhmyfit">FWHM y Fit</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_snr">S/N_S</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_stn">S/N_R</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_elong_flag">Elong Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_edge_flag">Edge Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_blend_flag">Blend Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_warmat">Warmat</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_ssomap_flag">SSO Map Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_100_fdw_obsid">Observation ID</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_name">Name</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_flux">Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_rms">&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_fwhmxfit">FWHM x Fit</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_fwhmyfit">FWHM y Fit</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_snr">S/N_S</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_stn">S/N_R</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_elong_flag">Elong Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_edge_flag">Edge Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_blend_flag">Blend Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_warmat">Warmat</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_ssomap_flag">SSO Map Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_hppsc_160_fdw_obsid">Observation ID</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_name">Name</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_snr">SNR</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_flux">Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_flux_err">&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_fluxdao">Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_fluxdao_err">&amp;Delta;Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_fluxtm2">Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_fluxtm2_err">&amp;Delta;Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_pntsrc_flag">Point Source Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_extsrc_flag">Extended Source Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_lowfwhm_flag">Low FWHM Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_largegal_flag">Large Galaxy Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_mapedge_flag">Map Edge Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_250_fdw_ssocont_flag">SSO Contaminator Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_name">Name</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_snr">SNR</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_flux">Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_flux_err">&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_fluxdao">Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_fluxdao_err">&amp;Delta;Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_fluxtm2">Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_fluxtm2_err">&amp;Delta;Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_pntsrc_flag">Point Source Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_extsrc_flag">Extended Source Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_lowfwhm_flag">Low FWHM Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_largegal_flag">Large Galaxy Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_mapedge_flag">Map Edge Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_350_fdw_ssocont_flag">SSO Contaminator Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_name">Name</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_snr">SNR</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_flux">Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_flux_err">&amp;Delta;Flux &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_fluxdao">Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_fluxdao_err">&amp;Delta;Fluxdao &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_fluxtm2">Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_fluxtm2_err">&amp;Delta;Flux TM2 &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_pntsrc_flag">Point Source Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_extsrc_flag">Extended Source Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_lowfwhm_flag">Low FWHM Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_largegal_flag">Large Galaxy Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_mapedge_flag">Map Edge Flag</text>
+	<text key="catalogues.mv_v_hsa_cat_spsc_500_fdw_ssocont_flag">SSO Contaminator Flag</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_name">Name</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_snr">Signal to Noise</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_gau_major_axis">Major FWHM &lt;i&gt;(arcmin)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_gau_major_axis_sig">Major FWHM Error &lt;i&gt;(arcmin)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_gau_minor_axis">Minor FWHM &lt;i&gt;(arcmin)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_gcc_catalog_fdw_gau_minor_axis_sig">Minor FWHM Error &lt;i&gt;(arcmin)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_name">Name</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_frequency">Frequency &lt;i&gt;(GHz)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_detflux">Flux Density &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_detflux_err">Flux Density Error &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_excluded_fdw_extended">Extended Source Flag</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_name">Name</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_frequency">Frequency &lt;i&gt;(GHz)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_detflux">Flux Density &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_detflux_err">Flux Density Error &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_extended">Extended Source Flag</text>
+	<text key="catalogues.mv_pcss_catalog_hfi_fdw_highest_reliability_cat">Cat. Reliability</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_name">Name</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_frequency">Frequency &lt;i&gt;(GHz)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_detflux">Flux Density &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_detflux_err">Flux Density Error &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_extended">Extended Source Flag</text>
+	<text key="catalogues.mv_pcss_catalog_lfi_fdw_highest_reliability_cat">Cat. Reliability</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_name">Name</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_snr">Signal to Noise</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_redshift">Redshift</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_msz">Sunyaev-Zeldovich Mass &lt;i&gt;(10&lt;sup&gt;14&lt;/sup&gt; M&lt;sub&gt;solar&lt;/sub&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_sz_catalog_fdw_validation">Validation</text>
+	<text key="catalogues.mv_v_icecubepsc_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_icecubepsc_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_icecubepsc_fdw_error_radius">Error Radius &lt;br&gt; &lt;i&gt;(deg)&lt;/i&gt;</text>
+	<text key="catalogues.mv_v_icecubepsc_fdw_event_energy">Event Energy &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_flux1000">Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_unc_flux1000">Photon Flux Error &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_signif_avg">Source significance</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_frac_variability">Fractional Variability</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_tevcat_flag">TeVCat Flag</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_assoc_tev">Associated TeV Source</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_class1">Class</text>
+	<text key="catalogues.mv_fermi_4fgl_dr2_fdw_assoc1">Associated Source</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_radio_flux">Radio Flux &lt;br&gt; &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_epvt">Pivot Energy &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_s">Flux Density &lt;br&gt; &lt;i&gt;(ph/cm2/GeV/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_flux">Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_eflx">Energy Flux &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_f1">Photon flux 10-20GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_f2">Photon flux 20-50GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_f3">Photon flux 50-150GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_f4">Photon flux 150-500GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_f5">Photon flux 500-2000GeV &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_nuFnu1">SED at 10-20GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu2">SED at 20-50GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu3">SED at 50-150GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu4">SED at 150-500GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_nufnu5">SED at 500-2000GeV &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_sig">Significance</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_var">Variability</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_exname">Extended Source Name</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_assoc">Associated Gamma Source</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_cl">Class</text>
+	<text key="catalogues.mv_fermi_3fhl_fdw_assoc1">Associated Source</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_f1000i">Photon Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_ef100">Energy Flux &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_nufnu">SED at Synchrotron peak frequency &lt;br&gt; &lt;i&gt;(erg/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_emax">Energy max &lt;br&gt; &lt;i&gt;(GeV)&lt;/i&gt;</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_z">Redshift</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_probby">ProbBY</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_problr">ProbLR</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_rfc">VLBI counterpart</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_gaia">Gaia DR2 counterpart</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_sedcl">SED Class</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_ccat">CCat</text>
+	<text key="catalogues.mv_fermi_4lac_fdw_fvar">Fractional Variability</text>
+	<text key="catalogues.mv_cat2whsp_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2whsp_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2whsp_fdw_lognupeak">Synchrotron peak &lt;br&gt; &lt;i&gt;(log(Hz))&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2whsp_fdw_lognufnu">Synchrotron peak flux &lt;br&gt; &lt;i&gt;(log(erg/s/cm2))&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2whsp_fdw_z">Redshift</text>
+	<text key="catalogues.mv_cat2whsp_fdw_2whspj">2WHSPJ</text>
+	<text key="catalogues.mv_cat2whsp_fdw_5bzcat">5BZCAT</text>
+	<text key="catalogues.mv_cat2whsp_fdw_2fhl">2FHL</text>
+	<text key="catalogues.mv_cat2rxs_fdw_raj2000">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2rxs_fdw_dej2000">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2rxs_fdw_crate">Count Rate &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2rxs_fdw_e_crate">Count Rate Error &lt;br&gt; &lt;i&gt;(ct/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2rxs_fdw_exptime">Exposure Time &lt;br&gt; &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2rxs_fdw_ext">Source Extent &lt;br&gt; &lt;i&gt;(pixel)&lt;/i&gt;</text>
+	<text key="catalogues.mv_cat2rxs_fdw_extml">Source Extent Probability</text>
+	<text key="catalogues.mv_cat2rxs_fdw_hr1">Hardness Ratio 1</text>
+	<text key="catalogues.mv_cat2rxs_fdw_hr2">Hardness Ratio 2</text>
+	<text key="catalogues.mv_cat2rxs_fdw_sflag">Source Quality Flag</text>
+	<text key="catalogues.mv_ou4blazars_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_ou4blazars_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_ou4blazars_fdw_radio_flux">Radio Flux &lt;br&gt; &lt;i&gt;(mJy)&lt;/i&gt;</text>
+	<text key="catalogues.mv_ou4blazars_fdw_fermi_flux">Fermi Flux &lt;br&gt; &lt;i&gt;(ph/cm2/s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_ou4blazars_fdw_log_nu_peak">Synchrotron peak &lt;br&gt; &lt;i&gt;(log(Hz))&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_name">Name</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ra_corr">RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_dec_corr">Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_b1">Flux&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_err_b1">Flux error&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_b2">Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_err_b2">Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_b3">Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_err_b3">Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_b4">Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_hard_fdw_ml_flux_err_b4">Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_name">Name</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ra_corr">RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_dec_corr">Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_b1">Flux&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_err_b1">Flux error&lt;sub&gt;0.2-0.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_b2">Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_err_b2">Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_b3">Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_err_b3">Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_b4">Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_efeds_c001_main_fdw_ml_flux_err_b4">Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ra">RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_dec">Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_radec_err">Error Radius &lt;br&gt;(arcsec)</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_cts">Counts&lt;br&gt;(ct)</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_cts_err">Counts Error &lt;br&gt;(ct)</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_rate">Count Rate &lt;br&gt;(ct)</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_rate_err">Count Rate Error &lt;br&gt;&lt;i&gt;(ct s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_flux">Flux &lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_flux_err">Flux Error &lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_det_like">Detect Likelihood</text>
+	<text key="catalogues.mv_etacha_c001_hard_fdw_ml_bkg">Bkg Counts &lt;br&gt;&lt;i&gt;(ct arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ra">RA&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_dec">Dec&lt;br&gt;&lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_radec_err">Error Radius &lt;br&gt;(arcsec)</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_cts">Counts&lt;br&gt;(ct)</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_cts_err">Counts Error &lt;br&gt;(ct)</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_rate">Count Rate &lt;br&gt;(ct)</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_rate_err">Count Rate Error &lt;br&gt;&lt;i&gt;(ct s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_flux">Flux &lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_flux_err">Flux Error &lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_det_like">Detect Likelihood</text>
+	<text key="catalogues.mv_etacha_c001_main_fdw_ml_bkg">Bkg Counts &lt;br&gt;&lt;i&gt;(ct arcmin&lt;sup&gt;-2&lt;/sup&gt;)&lt;/i&gt;</text>
+
+	<text key="alerts.mv_v_gravitational_waves_fdw_skymap_fits">Sky Map</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_grace_id">Grace ID</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_iso_time">ISO Time</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_far">FAR</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_bbh">BBH</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_bns">BNS</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_nsbh">NSBH</text>
+	<text key="alerts.mv_v_gravitational_waves_fdw_has_ns">Has NS</text>
+
+	<text key="alerts.mv_v_icecube_event_fdw_event_num">Event</text>
+	<text key="alerts.mv_v_icecube_event_fdw_run_num">Run</text>
+	<text key="alerts.mv_v_icecube_event_fdw_ra">RA</text>
+	<text key="alerts.mv_v_icecube_event_fdw_dec">Dec</text>
+	<text key="alerts.mv_v_icecube_event_fdw_far">FAR</text>
+
+
+	<text key="images.mv_hst_outreach_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="images.mv_hst_outreach_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="images.mv_webb_outreach_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="images.mv_webb_outreach_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+
+
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_access_url">Download</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_obs_id">Observation ID</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_s_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_s_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_t_min">Start Time</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_t_max">End Time</text>
+	<text key="observations.mv_v_obscore_isla_fdw_fdw_t_exptime">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_access_url">Download</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_obs_id">Observation ID</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_target_name">Target name</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_s_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_s_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_t_min">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_photo_fdw_t_exptime">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_suzaku_data_fdw_product_url">Download</text>
+	<text key="observations.mv_suzaku_data_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_suzaku_data_fdw_instrument">Instrument</text>
+	<text key="observations.mv_suzaku_data_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_suzaku_data_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_suzaku_data_fdw_target">Target name</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_product_url">Download</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_filter">Filter</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_target">Target name</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_start_utc">Start Time</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_esasky_xmm_om_optical_fdw_observation_oid">Observation Object ID</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_product_url">Download</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_filter">Filter</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_target">Target name</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_start_utc">Start Time</text>
+	<text key="observations.mv_v_esasky_xmm_om_uv_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_collection">Collection</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_uv_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_collection">Collection</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_optical_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_collection">Collection</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_infrared_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_nida_images_fdw_product_url">Download</text>
+	<text key="observations.mv_nida_images_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_nida_images_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_nida_images_fdw_target">Target name</text>
+	<text key="observations.mv_nida_images_fdw_start_time">Start Time</text>
+	<text key="observations.mv_nida_images_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_filter">Filter &lt;i&gt;(microns)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_akari_irc_fdw_archive_url">Archive</text>
+	<text key="observations.mv_akari_irc_fdw_obs_id">Observation ID</text>
+	<text key="observations.mv_akari_irc_fdw_target_name">Target name</text>
+	<text key="observations.mv_akari_irc_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_akari_irc_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_observing_mode">Observing Mode</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_calibrationlevel">Calibration Level</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_miri_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_observing_mode">Observing Mode</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_calibrationlevel">Calibration Level</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_images_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_spitzer_irac_fdw_product_url">Download</text>
+	<text key="observations.mv_spitzer_irac_fdw_obs_id">Observation ID</text>
+	<text key="observations.mv_spitzer_irac_fdw_instrument">Instrument</text>
+	<text key="observations.mv_spitzer_irac_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_spitzer_irac_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_spitzer_irac_fdw_start_time">Start Time</text>
+	<text key="observations.mv_spitzer_irac_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_access_url">Download</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_s_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_s_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_s_fov">S FoV</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_t_min">Start Time</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_t_exptime">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_band_list">Band</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_freq_min">Min Frequency (GHz)</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_freq_max">Max Frequency (GHz)</text>
+	<text key="observations.mv_v_v_alma_obs_fdw_scientific_category">Scientific Category</text>
+	<text key="observations.mv_efeds_obs_fdw_prod_url">Download</text>
+	<text key="observations.mv_efeds_obs_fdw_obsid">Observation ID</text>
+	<text key="observations.mv_efeds_obs_fdw_ra_pnt">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_efeds_obs_fdw_dec_pnt">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_efeds_obs_fdw_date-obs">Start Time</text>
+	<text key="observations.mv_efeds_obs_fdw_date-end">End Time</text>
+
+	<text key="public.ads_sources_bibcode">BIBCODE</text>
+	<text key="public.ads_sources_title">Title</text>
+	<text key="public.ads_sources_author">Authors</text>
+	<text key="public.ads_sources_pub">Journal</text>
+	<text key="public.ads_sources_pubdate">Date</text>
+
+
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_band">Wavelength</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_start_utc">Start Time</text>
+	<text key="observations.mv_v_v_xsa_spectra_rgs_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_access_url">Download</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_obs_id">Observation ID</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_s_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_s_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_target_name">Target name</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_t_min">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
+	<text key="observations.mv_chandra_obs_spectra_fdw_t_exptime">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_iue_spectra_fdw_product_url">Download</text>
+	<text key="observations.mv_iue_spectra_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_iue_spectra_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_iue_spectra_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_iue_spectra_fdw_target_name">Target name</text>
+	<text key="observations.mv_iue_spectra_fdw_aperture">Aperture</text>
+	<text key="observations.mv_iue_spectra_fdw_disp">Dispersion</text>
+	<text key="observations.mv_iue_spectra_fdw_start_time">Start Time</text>
+	<text key="observations.mv_iue_spectra_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_iue_spectra_fdw_filename">Filename</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_filter">Optical Element</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_wave_central">Central Wavelength &lt;i&gt;(nm)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_uv_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_filter">Optical Element</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_wave_central">Central Wavelength &lt;i&gt;(nm)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_optical_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_observing_mode">Observing Mode</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_observing_mode">Observing Mode</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_esasky_jwst_spectra_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_wave_central">Central Wavelength &lt;i&gt;(nm)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_filter">Optical Element</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_collection">Collection</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_spectra_infrared_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_nida_spectra_fdw_product_url">Download</text>
+	<text key="observations.mv_v_nida_spectra_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_nida_spectra_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_nida_spectra_fdw_target">Target name</text>
+	<text key="observations.mv_v_nida_spectra_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_nida_spectra_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_instrument">Instrument</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_observing_mode_name">Observing Mode</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_band">Wavelength Range</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_cheops_obs_fdw_sci_cor_lc_opt_link">Optimal Light-Curve</text>
+	<text key="observations.mv_cheops_obs_fdw_quality_report_link">Data Reduction Pipeline Report</text>
+	<text key="observations.mv_cheops_obs_fdw_targname">Target name</text>
+	<text key="observations.mv_cheops_obs_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_cheops_obs_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_cheops_obs_fdw_mag_g">MagG</text>
+	<text key="observations.mv_cheops_obs_fdw_mag_chps">MagC</text>
+	<text key="observations.mv_cheops_obs_fdw_obs_id">Observation ID</text>
+	<text key="observations.mv_cheops_obs_fdw_v_start_u">Observation Start Time (UTC)</text>
+	<text key="observations.mv_cheops_obs_fdw_v_stop_u">Observation Stop Time (UTC)</text>
+
+
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_observation_oid">Observation Object ID</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_end_time">End Time</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_observing_mode_name">Observing Mode</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_product_url">Download</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_observation_id">Observation ID</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_observation_oid">Observation Object ID</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_target_name">Target name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_instrument_name">Instrument</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_filter">Filter</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_start_time">Start Time</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_end_time">End Time</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_exposure_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_collection">Collection</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_observation_oid">Observation Object ID</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_end_time">End Time</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_product_url">Download</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_observation_id">Observation ID</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_observation_oid">Observation Object ID</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_target_name">Target name</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_instrument">Instrument</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_filter">Filter</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_start_utc">Start Time</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
+
+
+	<!-- XMATCH -->
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_sso_name">Name</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.v_mv_v_esasky_xmm_om_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_hst_mmi_observation_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_sso_name">Name</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg_1">RA Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg_1">Dec Start &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_ra_deg_2">RA End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dec_deg_2">Dec End &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_pos1_deg_err">Delta Pos. &lt;i&gt;(Deg)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_v_mag_1">V. &lt;i&gt;(Mag)&lt;/i&gt;</text>
+	<text key="observations.mv_v_v_xsa_esasky_photo_fdw_fdw_dist_1">Distance &lt;i&gt;(AU)&lt;/i&gt;</text>
+
 	<text key="outreachJwstPanel_closePanel">
 		Close panel
 	</text>
+	<text key="webConstants_changeSky">
+		Change the sky
+	</text>
+	<text key="webConstants_exploreTargetList">
+		Explore Target Lists
+	</text>
 
+	<text key="short_name">
+		Short Name
+	</text>
+	<text key="res_title">
+		Title
+	</text>
+	<text key="res_subjects">
+		Subjects
+	</text>
+	<text key="ivoid">
+		Identifier
+	</text>
+
+	<text key="tabulator_loadFailed_500">
+		We are unable to process the response from this resource. See details for more information.
+	</text>
+	<text key="tabulator_loadFailed_400">
+		This resource might not support cone search. Please try again without the FoV restriction.&lt;br&gt;
+		(Top right toggle button in the External TAP Registry window)
+	</text>
+	<text key="global_tap_panel_custom_query_description">
+		A user-generated query was used to retrieve this dataset.
+		&lt;br&gt;&lt;br&gt;
+		The query used was:
+	</text>
+	<text key="tabulator_no_data_fov_limit_disabled">
+		Empty dataset
+	</text>
+
+	<text key="global_tap_panel_query_failed_title">
+		Query failed
+	</text>
+
+	<text key="global_tap_panel_query_failed_body">
+		The query to TAP service "$TAP_SERVICE$" failed. This might be due to the service not responding or because the data could not be interpreted.
+	</text>
+
+	<text key="global_tap_panel_filter_tap_services">
+		Filter TAP services...
+	</text>
+
+	<text key="global_tap_panel_filter_tap_tables">
+		Filter TAP tables...
+	</text>
+
+	<text key="global_tap_panel_toggle_fov_restricted">
+		FoV restricted
+	</text>
+
+	<text key="global_tap_panel_toggle_fov_restricted_tooltip">
+		Limit table data to the field of view
+	</text>
+
+	<text key="global_tap_panel_missing_column_title">
+		Missing column information
+	</text>
+
+	<text key="global_tap_panel_missing_column_body">
+		We were unable to locate any columns defining RA, Dec, or Region for this table.
+		&lt;br&gt; We cannot perform a cone search without these columns; instead, the complete table will be obtained.
+		&lt;br&gt;&lt;br&gt; &lt;b&gt;Would you like to assign the columns manually?&lt;/b&gt;
+	</text>
+
+	<text key="global_tap_panel_column_selector_header">
+		Select columns
+	</text>
+
+	<text key="global_tap_panel_column_selector_help">
+		Choose table columns that define RA, Dec or Region for this table.
+	</text>
+
+	<text key="global_tap_panel_custom_query_help">
+		Create a custom ADQL query to fetch data from the TAP Service, or choose from one of the examples.
+	</text>
+
+	<text key="global_tap_panel_custom_query_title">
+		Custom ADQL query
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_tooltip">
+		Choose one of the examples or write your own query.
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_columns">
+		Columns in table
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_table">
+		Full table
+	</text>
+
+	<text key="global_tap_panel_custom_query_dropdown_option_row_count">
+		Count rows
+	</text>
+
+	<text key="global_tap_panel_custom_query_run_query">
+		Run Query
+	</text>
+
+	<text key="treemap_zero_count_alert">
+		$MISSION$ has been added to the dashboard but there is no data to show in the current FoV.
+	</text>
+
+	<text key="resultsPresenter_helpDescription_custom_tap_entity">
+		External data provided by $PUBLISHER$.
+
+		&lt;br&gt;&lt;br&gt;
+		It must be noted that these data, contrary to those offered via the images, spectra and catalogues functionalities, have not been curated by the ESASky team.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="treeMapContainer_help_EXT_TAP">
+		In ESASky you can now explore data from external data centres which conform with Virtual Observatory (IVOA) standards.
+		Services which have any data in the current region will appear in the dashboard. Clicking on any service will show the available data product types in the visible region
+		(Images, Spectra etc). Clicking on a product type will show the available collections these products exist in.
+		Clicking on the collection/facility will load the data into the data panel and display the corresponding footprints in the sky.
+
+		&lt;br&gt;&lt;br&gt;
+		Navigate to the TAP Registry tab to explore all accessible data centres. By choosing one of the data centres,
+		you can browse their public tables and perform custom queries, display metadata, or view table data in the data panel.
+		Use the corresponding tabs to gain quick access to the services and tables provided by ESA or VizieR.
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+
+	<text key="extTapPanel_resetTreemapBtn">
+		Reset the dashboard to its original state
+	</text>
+	<text key="extTapPanel_vizier">
+		VizieR
+	</text>
+	<text key="tabulatorWrapper_addTable">
+		Add
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboard">
+		Add service to the Dashboard
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboardDisabled">
+		Cannot add service to the Dashboard. This service does not have an ObsCore table.
+	</text>
+	<text key="tabulatorWrapper_query">
+		Query
+	</text>
+	<text key="tabulatorWrapper_adqlQuery">
+		ADQL query
+	</text>
+	<text key="tabulatorWrapper_customAdqlQuery">
+		Create a custom ADQL query
+	</text>
+	<text key="tabulatorWrapper_columnInfo">
+		Columns
+	</text>
+	<text key="tabulatorWrapper_columnMetadata">
+		Column metadata
+	</text>
+	<text key="tabulatorWrapper_showColumnMetadata">
+		Show column metadata
+	</text>
+	<text key="tabulatorWrapper_openTable">
+		Open
+	</text>
+	<text key="tabulatorWrapper_openTableTooltip">
+		Open table
+	</text>
+	<text key="extTapPanel_dashboard">
+		Dashboard
+	</text>
+	<text key="extTapPanel_tapRegistry">
+		TAP Registry
+	</text>
+	<text key="extTapPanel_tapRegistryTooltip">
+		Explore data in the VO Table Access Protocol Registry
+	</text>
+	<text key="extTapPanel_vizierTooltip">
+		Explore data from the CDS VizieR catalogue service
+	</text>
+	<text key="extTapPanel_esa">
+		ESA
+	</text>
+	<text key="extTapPanel_esaTooltip">
+		Explore data from ESA Table Access Protocols
+	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
+	<!-- internationalization_zh.xml is up to date for everything above -->
 </Internationalization>

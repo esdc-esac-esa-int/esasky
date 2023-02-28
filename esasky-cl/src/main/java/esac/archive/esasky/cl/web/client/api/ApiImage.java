@@ -9,13 +9,14 @@ import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.model.OutreachImage;
 import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper;
 import esac.archive.esasky.cl.web.client.utility.OpenSeaDragonWrapper.OpenSeaDragonType;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class ApiImage extends ApiBase{
 
@@ -26,14 +27,15 @@ public class ApiImage extends ApiBase{
 	}
 
 	public void parseHstImageData(final String name) {
-		Optional<ImageDescriptor> optionalImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors()
-				.getDescriptors().stream().filter(ImageDescriptor::isHst).findFirst();
 
-		if (optionalImageDescriptor.isPresent()) {
-			ImageDescriptor imageDescriptor = optionalImageDescriptor.get();
-			OutreachImage image = new OutreachImage(name, 1.0, imageDescriptor);
+		CommonTapDescriptor descriptor = DescriptorRepository.getInstance()
+				.getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_IMAGES)
+				.getDescriptorByMission(EsaSkyConstants.HST_MISSION);
+
+		if (descriptor != null) {
+			OutreachImage image = new OutreachImage(name, 1.0, descriptor);
 			TAPImageListService metadataService = TAPImageListService.getInstance();
-			image.loadImage(imageDescriptor, metadataService, true);
+			image.loadImage(descriptor, metadataService, true);
 		}
 	}
 
@@ -100,20 +102,24 @@ public class ApiImage extends ApiBase{
 
 	}
 
-	public void openOutreachPanel() {
-		controller.getRootPresenter().getCtrlTBPresenter().openOutreachPanel();
+	public void openTelescopeOutreachPanel(String telescope, String id) {
+		controller.getRootPresenter().getCtrlTBPresenter().openOutreachPanel(telescope, id);
 	}
 
-	public void closeOutreachPanel() {
-		controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+	public void closeTelescopeOutreachPanel(String telescope) {
+		if("JWST".equals(telescope)){
+			controller.getRootPresenter().getCtrlTBPresenter().closeJwstOutreachPanel();
+		}else{
+			controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+		}
 	}
 
-	public void getAllOutreachImageIds(JavaScriptObject widget) {
+	public void getAllOutreachImageIds(JavaScriptObject widget, String telescope) {
 		JSONObject obj = new JSONObject();
 		JSONArray ids = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageIds(result -> {
 			obj.put("Available_ids", result);
 			sendBackToWidget(obj, null, widget);
-		});
+		}, telescope);
 
 		if (ids.size() > 0) {
 			obj.put("Available_ids", ids);
@@ -122,8 +128,12 @@ public class ApiImage extends ApiBase{
 
 	}
 
-	public void showOutreachImage(String id) {
-		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id);
+	public void showOutreachImage(String id, String telescope) {
+		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id, telescope);
+	}
+
+	public void hideOutreachImage(String telescope) {
+		controller.getRootPresenter().getCtrlTBPresenter().hideOutreachImage(telescope);
 	}
 
 	private void addTiledImage(String name, String url, double ra, double dec, double fov,

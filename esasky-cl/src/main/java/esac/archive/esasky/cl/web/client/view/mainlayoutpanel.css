@@ -127,6 +127,19 @@ body {
 	background-color: rgba(255, 255, 255, 0.14);
 }
 
+.buttonCellDisabled {
+	opacity: 0.4;
+	background-color: transparent !important;
+	border-color: #CCCCCC !important;
+}
+
+.buttonCellDisabled:active {
+	pointer-events: none;
+	padding: 2px !important;
+	border-color: #CCCCCC !important;
+}
+
+
 .buttonCell img{
 	display: block;
 	margin: auto;
@@ -151,7 +164,7 @@ body {
   filter: brightness(0.8); 
 }
 
-.dragImageVertical:hover { 
+.dragImageVertical:hover {
   filter: brightness(1); 
   cursor: row-resize;
 }

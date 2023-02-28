@@ -18,6 +18,7 @@ import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
@@ -26,15 +27,14 @@ import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.BaseDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ImageDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> {
 
-    private BaseDescriptor outreachJwstDescriptor;
+    private CommonTapDescriptor outreachJwstDescriptor;
     private ImageListEntity imageEntity;
     private boolean isHidingFootprints = false;
     private static String outreachImageIdToBeOpened;
@@ -112,10 +112,11 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
 
     private void getData() {
         if(outreachJwstDescriptor == null) {
-            if(DescriptorRepository.getInstance().getImageDescriptors() != null) {
+            if(DescriptorRepository.getInstance().hasDescriptors(EsaSkyWebConstants.CATEGORY_IMAGES)) {
                 fetchData();
             } else {
-                DescriptorRepository.getInstance().setOutreachImageCountObserver(newCount -> fetchData());
+                DescriptorRepository.getInstance()
+                        .registerDescriptorLoadedObserver(EsaSkyWebConstants.CATEGORY_IMAGES, this::fetchData);
             }
         }
     }
@@ -125,12 +126,9 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
             return;
         }
 
-        Optional<ImageDescriptor> optionalImageDescriptor = DescriptorRepository.getInstance().getImageDescriptors()
-                .getDescriptors().stream().filter(d -> !d.isHst()).findFirst();
+        outreachJwstDescriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_IMAGES, EsaSkyConstants.JWST_MISSION);
 
-        if (optionalImageDescriptor.isPresent()) {
-            outreachJwstDescriptor = optionalImageDescriptor.get();
-        } else {
+        if (outreachJwstDescriptor == null) {
             return;
         }
 

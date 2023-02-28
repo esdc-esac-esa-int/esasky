@@ -26,23 +26,26 @@ public class NumberValueFormatter implements ValueFormatter{
         }
         if(numberOfDecimals > 0) {
             pattern = "0." + pattern;
+            format = NumberFormat.getFormat(pattern.substring(1));
         } else {
             pattern = "0";
+            format = NumberFormat.getFormat(pattern);
         }
-        format = NumberFormat.getFormat(pattern.substring(1));
+        
         scientificFormat = NumberFormat.getFormat(pattern + "E0");
     }
     
     @Override
     public String formatValue(double value) {
         if(numberOfDecimals == 0) {
-            return NumberFormatter.formatToNumberWithSpaces((int)Math.round(value));
+            return NumberFormatter.formatToNumberWithSpaces(Math.round(value));
         }
         if(Math.abs(value) >= Math.pow(10, -numberOfDecimals)){
             if(format.format(value % 1).equals(".0") || format.format(value % 1).equals("0")) {
-                return NumberFormatter.formatToNumberWithSpaces((int)value);
+                return NumberFormatter.formatToNumberWithSpaces((long)value);
             } else {
-                return ((int)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((int)value) + format.format(Math.abs(value) % 1);
+            	return formatDecimalValue(value);
+                
             }
         }
         String sciFormatResult = scientificFormat.format(value);
@@ -51,6 +54,25 @@ public class NumberValueFormatter implements ValueFormatter{
         }
         return sciFormatResult;
     }
+
+	private String formatDecimalValue(double value) {
+		String decimal = format.format(Math.abs(value) % 1);
+		while (decimal.endsWith("0")) {
+			decimal = decimal.substring(0, decimal.length() - 1);
+		}
+		if("0.".equals(decimal) || ".".equals(decimal)) {
+			decimal = "";
+		}
+		if (decimal.startsWith("1")) {
+			decimal = decimal.replaceFirst("1", "");
+			if (".".equals(decimal)) {
+				decimal = "";
+			}
+			return ((long)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((long)value + 1) + decimal;
+		} else {
+			return ((long)value == 0 && value < 0 ? "-": "") + NumberFormatter.formatToNumberWithSpaces((long)value) + decimal;
+		}
+	}
 
     @Override
     public double getValueFromFormat(String formattedValue) {

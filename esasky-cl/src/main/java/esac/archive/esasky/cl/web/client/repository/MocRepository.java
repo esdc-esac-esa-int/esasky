@@ -1,31 +1,24 @@
 package esac.archive.esasky.cl.web.client.repository;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteMOCIpixClickedEventHandler;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.*;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.MOCInfo;
 import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltip;
-import esac.archive.esasky.cl.web.client.view.allskypanel.MOCTooltipObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.descriptor.IDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class MocRepository {
 
 	private static MocRepository _instance;
-	private List<MOCEntity> allEntities = new LinkedList<MOCEntity>();
+	private final List<MOCEntity> allEntities = new LinkedList<>();
 
 	public static MocRepository init() {
 		_instance = new MocRepository();
@@ -41,64 +34,47 @@ public class MocRepository {
 	
 	private MocRepository() {
 		
-		CommonEventBus.getEventBus().addHandler(AladinLiteMOCIpixClickedEvent.TYPE, new AladinLiteMOCIpixClickedEventHandler () {
+		CommonEventBus.getEventBus().addHandler(AladinLiteMOCIpixClickedEvent.TYPE, event -> {
 
-			@Override
-			public void onMOCClicked(AladinLiteMOCIpixClickedEvent event) {
-				
-				
-				GeneralJavaScriptObject mocsClicked = (GeneralJavaScriptObject) event.getObject();
-				int length = GeneralJavaScriptObject.convertToInteger(mocsClicked.getProperty("length"));
-				
-				List<MOCInfo> mocInfos = new LinkedList<MOCInfo>();
-				for(int i = 0; i < length; i++) {
-					GeneralJavaScriptObject data = mocsClicked.getProperty(Integer.toString(i));
-					String name = data.getProperty("name").toString();
-					IDescriptor descriptor;
-					for(MOCEntity entity : allEntities) {
-						if(name.startsWith(entity.getDescriptor().getDescriptorId())) {
-							descriptor = entity.getDescriptor();
-							mocInfos.add(new MOCInfo(descriptor, entity, 
-									GeneralJavaScriptObject.convertToInteger(data.getProperty("count")), 
-							        data.getProperty("pixels")));
-							break;
-						}
+
+			GeneralJavaScriptObject mocsClicked = (GeneralJavaScriptObject) event.getObject();
+			int length = GeneralJavaScriptObject.convertToInteger(mocsClicked.getProperty("length"));
+
+			List<MOCInfo> mocInfos = new LinkedList<>();
+			for(int i = 0; i < length; i++) {
+				GeneralJavaScriptObject data = mocsClicked.getProperty(Integer.toString(i));
+				String name = data.getProperty("name").toString();
+				CommonTapDescriptor descriptor;
+				for(MOCEntity entity : allEntities) {
+					if(name.equals(entity.getId())) {
+						descriptor = entity.getDescriptor();
+						mocInfos.add(new MOCInfo(descriptor, entity,
+								GeneralJavaScriptObject.convertToInteger(data.getProperty("count")),
+								data.getProperty("pixels")));
+
+						break;
 					}
 				}
+			}
 
-				if(mocInfos.size() > 0) {
-					MOCTooltip tooltip = new MOCTooltip(mocInfos, event.getX(), event.getY());
-					
-					tooltip.registerObserver(new MOCTooltipObserver() {
-					
-						@Override
-						public void onLoad(MOCInfo mocInfo) {
-							mocInfo.entity.sendLoadQuery(mocInfo);
-						}
-					});
-					tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
-				}
-				
+			if(!mocInfos.isEmpty()) {
+				MOCTooltip tooltip = new MOCTooltip(mocInfos, event.getX(), event.getY());
+
+				tooltip.registerObserver(mocInfo -> mocInfo.entity.sendLoadQuery(mocInfo));
+				tooltip.show(AladinLiteWrapper.getAladinLite().getCooFrame());
+			}
+
+		});
+		
+		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, fovEvent -> {
+			for(MOCEntity entity : allEntities){
+				entity.onFoVChanged();
 			}
 		});
 		
-		CommonEventBus.getEventBus().addHandler(AladinLiteFoVChangedEvent.TYPE, new AladinLiteFoVChangedEventHandler () {
-
-			@Override
-			public void onChangeEvent(AladinLiteFoVChangedEvent fovEvent) {
-				for(MOCEntity entity : allEntities){
-					entity.onFoVChanged(); 
-				}
-			}
-		});
-		
-		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, new AladinLiteCoordinatesOrFoVChangedEventHandler () {
-			
-			@Override
-			public void onChangeEvent(AladinLiteCoordinatesOrFoVChangedEvent fovEvent) {
-				for(MOCEntity entity : allEntities){
-					entity.onMove(); 
-				}
+		CommonEventBus.getEventBus().addHandler(AladinLiteCoordinatesOrFoVChangedEvent.TYPE, fovEvent -> {
+			for(MOCEntity entity : allEntities){
+				entity.onMove();
 			}
 		});
 
@@ -114,11 +90,21 @@ public class MocRepository {
 
 	public MOCEntity getEntity(String name) {
 		for(MOCEntity entity : allEntities) {
-			if(entity.getEsaSkyUniqId().equals(name)) {
+			if(entity.getId().equals(name)) {
 				return entity;
 			}
 		}
 		
+		return null;
+	}
+
+	public MOCEntity getEntityByName(String name) {
+		for(MOCEntity entity : allEntities) {
+			if(entity.getDescriptor().getLongName().equals(name)) {
+				return entity;
+			}
+		}
+
 		return null;
 	}
 	
@@ -191,7 +177,7 @@ public class MocRepository {
 	}
 	
 	public interface MocLoadedObserver {
-		public void onLoaded();
+		void onLoaded();
 	}
 	
 	HashMap<String, MocLoadedObserver> mocLoadedObservers = new HashMap<>();

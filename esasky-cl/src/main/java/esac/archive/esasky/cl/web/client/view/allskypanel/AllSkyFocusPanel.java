@@ -76,7 +76,11 @@ public class AllSkyFocusPanel extends FocusPanel {
 		super();
 		style = resources.style();
 		style.ensureInjected();
-		createPopupMenu();
+
+		if (Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU)) {
+			createPopupMenu();
+		}
+
 		sinkEvents(Event.ONMOUSEUP | Event.ONCONTEXTMENU | Event.ONTOUCHSTART | Event.ONTOUCHMOVE | Event.ONMOUSEDOWN
 				| Event.ONTOUCHCANCEL | Event.ONTOUCHEND | Event.ONCLICK | Event.ONFOCUS | Event.TOUCHEVENTS);
 

@@ -98,6 +98,9 @@ public class StatusPanel extends Composite implements View{
 						- 20;
 				if(maxAvailableWidth < 0) {
 					maxAvailableWidth = 0;
+					loadingSpinner.addStyleName("header__statusPanel__invisibleSpinner");
+				} else {
+					loadingSpinner.removeStyleName("header__statusPanel__invisibleSpinner");
 				}
 				statusPanel.setWidth(maxAvailableWidth + "px");
 				

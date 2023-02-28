@@ -1,50 +1,18 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
+import com.google.gwt.http.client.*;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-
-import esac.archive.esasky.cl.web.client.utility.*;
-import esac.archive.esasky.cl.web.client.view.allskypanel.SearchToolPanel;
-import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
-import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
-import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
-import esac.archive.esasky.ifcs.model.coordinatesutils.*;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
-import esac.archive.esasky.ifcs.model.descriptor.PublicationsDescriptor;
-import esac.archive.esasky.ifcs.model.shared.ESASkyGeneralResultList;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
-import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
@@ -58,13 +26,30 @@ import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyFocusPanel.AllSkyFocusPanelObserver;
+import esac.archive.esasky.cl.web.client.view.allskypanel.SearchToolPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyJavaScriptLibrary;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
+import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.TargetListPanel;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinateValidator.SearchInputType;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.shared.ESASkyGeneralResultList;
+import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResultList;
+import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -77,6 +62,16 @@ public class SearchPresenter {
     private boolean isTextBoxFocused;
     private boolean isMouseOverSearchTool;
     private static long latestBibCodeTimeCall;
+
+    private static final String HTML_REPLACE = "$HTML$";
+    private static final String JOURNAL_REPLACE = "$JOURNAL$";
+    private static final String DATE_REPLACE = "$DATE$";
+    private static final String H3_OPEN = "<h3 style='font-size: 0.85em;'>";
+    private static final String H3_CLOSE = "</h3>";
+    private static final String H4_OPEN = "<h4>";
+    private static final String H4_CLOSE = "</h4>";
+    private static final String H5_OPEN = "<h5>";
+    private static final String H5_CLOSE = "</h5>";
 
     Timer updateBoxSizeTimer = new Timer() {
         @Override
@@ -602,14 +597,12 @@ public class SearchPresenter {
 			final String journal, final String date, final int maxSources, String responseText) {
 		//Shows the sources for this publication
         final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);
-        
-        
-        final PublicationsDescriptor descriptor = DescriptorRepository.getInstance().getPublicationsDescriptors().getDescriptors().get(0);   
-        final String titleHtml = "<h3 style='font-size: 0.85em;'>" + title + "</h3>" +
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace("$HTML$", getLinkHtml(bibcode, descriptor.getArchiveURL(), descriptor.getArchiveProductURI()).asString()) + "</h5>" + 
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace("$HTML$", ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + "</h5>" +
-                "<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace("$JOURNAL$", journal).replace("$DATE$", date) + "</h5>" +
-                "<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + "</h4>";
+        final CommonTapDescriptor descriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
+        final String titleHtml = H3_OPEN + title + H3_CLOSE +
+                H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_bibcode").replace(HTML_REPLACE, getLinkHtml(bibcode, descriptor.getArchiveBaseURL(), descriptor.getArchiveProductURI()).asString()) + H5_CLOSE +
+                H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_authors").replace(HTML_REPLACE, ESASkyJavaScriptLibrary.createLinkList(authors, 3)) + H5_CLOSE +
+                H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_journal").replace(JOURNAL_REPLACE, journal).replace(DATE_REPLACE, date) + H5_CLOSE +
+                H4_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_pubSources") + H4_CLOSE;
         view.showSearchResultsOnTargetList(searchResult, titleHtml + getNumSourcesText(searchResult.size(), maxSources));
 	}
     
@@ -655,9 +648,9 @@ public class SearchPresenter {
 				EsaSkyWebConstants.PUBLICATIONS_SHOW_ALL_AUTHORS_TEXT, 
 				EsaSkyWebConstants.PUBLICATIONS_MAX_AUTHORS).asString();
 		
-		final String titleHtml = "<h3 style='font-size: 0.85em;'>" + author + "</h3>" +
-				"<h5>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace("$HTML$", authorHtml) + "</h5>" + 
-				"<h4>" + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + "</h4>";
+		final String titleHtml = H3_OPEN + author + H3_CLOSE +
+				H5_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_adsSearch").replace(HTML_REPLACE, authorHtml) + H5_CLOSE +
+				H4_OPEN + TextMgr.getInstance().getText("ctrlToolBarPresenter_authorSources") + H4_CLOSE;
 		
 		//Shows the sources for this publication
 		final List<ESASkySearchResult> searchResult = ParseUtils.parseJsonSearchResults(responseText);

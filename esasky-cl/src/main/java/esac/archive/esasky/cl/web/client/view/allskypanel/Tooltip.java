@@ -102,81 +102,61 @@ public abstract class Tooltip extends AutoHidePanel{
         
         FlowPanel links = new FlowPanel();
         EsaSkyButton simbadButton = createLinkButton(resources.simbad());
-        simbadButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				Coordinate j2000Coordinate = getJ2000Coordinate();
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINSIMBAD, 
-						"RA: " + j2000Coordinate.getRa() 
-						+ " Dec: " + j2000Coordinate.getDec());
-				Window.open(
-						ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
-								j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
-						"_blank", "");
-				
-			}
+        simbadButton.addClickHandler(event -> {
+			Coordinate j2000Coordinate = getJ2000Coordinate();
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINSIMBAD,
+					"RA: " + j2000Coordinate.getRa()
+					+ " Dec: " + j2000Coordinate.getDec());
+			Window.open(
+					ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
+							j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
+					"_blank", "");
+
 		});
         links.add(simbadButton);
         
         EsaSkyButton nedButton = createLinkButton(resources.ned());
-        nedButton.addClickHandler(new ClickHandler() {
-        	
-        	@Override
-        	public void onClick(ClickEvent event) {
-        		Coordinate j2000Coordinate = getJ2000Coordinate();
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINNED, 
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
-				Window.open(
-						ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
-								CoordinatesFrame.J2000.getValue()), "_blank", "");
-        	}
-        });
+        nedButton.addClickHandler(event -> {
+			Coordinate j2000Coordinate = getJ2000Coordinate();
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINNED,
+					"RA: " + j2000Coordinate.getRa()
+					+ " Dec: " + j2000Coordinate.getDec());
+			Window.open(
+					ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
+							CoordinatesFrame.J2000.getValue()), "_blank", "");
+		});
         links.add(nedButton);
         
         EsaSkyButton vizierPhotometryButton = createLinkButton(resources.vizierPhotometry());
-        vizierPhotometryButton.addClickHandler(new ClickHandler() {
-        	
-        	@Override
-        	public void onClick(ClickEvent event) {
-        		Coordinate j2000Coordinate = getJ2000Coordinate();
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIERPHOTOMETRY, 
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
-        		Window.open(ExternalServices.buildVizierPhotometryURLJ2000(j2000Coordinate.getRa(),
-        				j2000Coordinate.getDec()), "_blank", "");
-        	}
-        });
+        vizierPhotometryButton.addClickHandler(event -> {
+			Coordinate j2000Coordinate = getJ2000Coordinate();
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIERPHOTOMETRY,
+					"RA: " + j2000Coordinate.getRa()
+					+ " Dec: " + j2000Coordinate.getDec());
+			Window.open(ExternalServices.buildVizierPhotometryURLJ2000(j2000Coordinate.getRa(),
+					j2000Coordinate.getDec()), "_blank", "");
+		});
         links.add(vizierPhotometryButton);
         
         EsaSkyButton vizierButton = createLinkButton(resources.vizier());
-        vizierButton.addClickHandler(new ClickHandler() {
-        	
-        	@Override
-        	public void onClick(ClickEvent event) {
-        		Coordinate j2000Coordinate = getJ2000Coordinate();
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIER, 
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
-        		Window.open(
-        				ExternalServices.buildVizierURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
-        	}
-        });
+        vizierButton.addClickHandler(event -> {
+			Coordinate j2000Coordinate = getJ2000Coordinate();
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINVIZIER,
+					"RA: " + j2000Coordinate.getRa()
+					+ " Dec: " + j2000Coordinate.getDec());
+			Window.open(
+					ExternalServices.buildVizierURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
+		});
         links.add(vizierButton);
         
         EsaSkyButton wwtButton = createLinkButton(resources.wwt());
-        wwtButton.addClickHandler(new ClickHandler() {
-        	
-        	@Override
-        	public void onClick(ClickEvent event) {
-        		Coordinate j2000Coordinate = getJ2000Coordinate();
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINWWT, 
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
-        		Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
-        	}
-        });
+        wwtButton.addClickHandler(event -> {
+			Coordinate j2000Coordinate = getJ2000Coordinate();
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_SOURCE_TOOLTIP, GoogleAnalytics.ACT_SOURCETOOLTIP_VIEWINWWT,
+					"RA: " + j2000Coordinate.getRa()
+					+ " Dec: " + j2000Coordinate.getDec());
+			Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
+		});
         if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
         	links.add(wwtButton);
         }
