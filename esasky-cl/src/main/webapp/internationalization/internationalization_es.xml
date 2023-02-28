@@ -3635,7 +3635,6 @@
 		 Cambiar de cielo</text>
 	<text key="webConstants_exploreTargetList">
 		 Explorar lista de fuentes</text>
-	    
 	<text key="short_name">
 		 Nombre corto</text>
 	<text key="res_title">
@@ -3645,7 +3644,7 @@
 	<text key="ivoid">
 		 Identificador</text>
 	<text key="tabulator_loadFailed_500">
-       No posible procesar la respuesta de este recurso. Ver detalles para más información.</text>
+		No posible procesar la respuesta de este recurso. Ver detalles para más información.</text>
 	<text key="tabulator_loadFailed_400">
 		El recurso no permite este tipo de consultas. Por favor inténtalo
 		otra vez sin la restricción del campo de visión (“FoV”).&lt;br&gt;
@@ -3656,7 +3655,7 @@
 		obtener este set de datos.&lt;br&gt;&lt;br&gt;
 		 La consulta utilizada es:</text>
 	<text key="tabulator_no_data_fov_limit_disabled">
-		       Set de datos vacío</text>
+		Set de datos vacío</text>
 	<text key="global_tap_panel_query_failed_title">
 		 Consulta fallida</text>
 	<text key="global_tap_panel_query_failed_body">
@@ -3678,7 +3677,7 @@
 	<text key="global_tap_panel_column_selector_header">
 		 Seleccionar columnas</text>
 	<text key="global_tap_panel_column_selector_help">
-		       Elegir columna de la tabla que contienen RA, Dec o Región para dicha
+		Elegir columna de la tabla que contienen RA, Dec o Región para dicha
 		tabla.</text>
 	<text key="global_tap_panel_custom_query_help">
 		 Crear consulta personalizada de ADQL para descargar datos del
@@ -3700,7 +3699,7 @@
 		 $MISSION$ se ha añadido al dashboard pero no hay datos disponibles en
 		el campo de vision actual.</text>
 	<text key="resultsPresenter_helpDescription_custom_tap_entity">
-		 Proveedor externo de datos de $PUBLISHER$.        
+		 Proveedor externo de datos de $PUBLISHER$.
 		&lt;br&gt;&lt;br&gt;
 		 Nótese que estos datos, al contrario de los que se ofrecen a través
 		de las opciones de imágenes, catálogos y espectros, no han sido
@@ -3712,7 +3711,7 @@
 		En ESASky ahora puede explorar datos de centros
 		de datos externos que cumplen los estándares de Observatorio Virtual
 		(IVOA). Los servicios que ofrecen datos en esta región del cielo
-		aparecerán de forma automática en el dashboard. Seleccionando cualquiera de estos servicios, se mostrará los distintos tipos de productos disponibles en esa región del cielo (imágenes, espectros, etc.). Seleccionando un tipo de producto, se mostrará las colecciones de datos disponibles para esos tipos de productos. Seleccionando una de estas colecciones, se cargarán los datos en el panel de resultados de la parte inferior mostrando las huellas en el cielo correspondientes a esos
+		aparecerán de forma automática en el dashboard. Seleccionando cualquiera de estos servicios, se mostrará los distintos tipos de productos disponibles en esa región del cielo (imágenes, espectros, etc.). Seleccionando un tipo de producto, se mostrará las colecciones de datos disponibles para esos tipos de productos. Seleccionando una de estas colecciones, se cargarán los datos en el panel de resultados de la parte inferior mostrando las huellas en el cielo correspondientes a esos
 		productos.
 		&lt;br&gt;&lt;br&gt;Navegar a la pestaña del
 		Registro TAP para explorar todos los centros de datos disponibles.
@@ -3725,8 +3724,8 @@
 		&lt;br&gt;&lt;br&gt;&lt;a
 		 href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
 		 target="_blank"&gt;
-		       Más información.&lt;/a&gt;</text>
-	    
+		Más información.&lt;/a&gt;</text>
+
 	<text key="extTapPanel_resetTreemapBtn">
 		Devolver el dashboard a su estado original</text>
 	<text key="extTapPanel_vizier">
@@ -3770,8 +3769,7 @@
 		Registro TAP
 	</text>
 	<text key="extTapPanel_tapRegistryTooltip">
-		Explorar datos en el Registro de protocolo de acceso a tablas del
-		VO</text>
+		Explorar datos en el Registro de protocolo de acceso a tablas del VO</text>
 	<text key="extTapPanel_vizierTooltip">
 		Explorar datos del servicio de catálogos CDS VizieR
 	</text>
