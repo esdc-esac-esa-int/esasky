@@ -1056,7 +1056,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_observations_JWST_Near-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST_Near-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
 		&lt;br&gt;&lt;br&gt;
@@ -1070,7 +1070,7 @@
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_observations_JWST_Mid-IR">
+	<text key="resultsPresenter_helpDescription_observations_JWST_Mid-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
 		&lt;br&gt;&lt;br&gt;
@@ -1084,7 +1084,7 @@
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_spectra_JWST_Near-IR">
+	<text key="resultsPresenter_helpDescription_spectra_JWST_Near-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
 		&lt;br&gt;&lt;br&gt;
@@ -1098,7 +1098,7 @@
 		Más informaci&#243;n
 		&lt;/a&gt; </text>
 
-		<text key="resultsPresenter_helpDescription_spectra_JWST_Mid-IR">
+	<text key="resultsPresenter_helpDescription_spectra_JWST_Mid-IR">
 		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
 		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
 		&lt;br&gt;&lt;br&gt;
@@ -1187,8 +1187,8 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_observations_ALMA">
-		ALMA (Atacama Large Millimeter/submillimeter Array) es el conjunto de telescopios terrestres en la banda milimétrica/submilimétrica  más grande
-		del mundo.  
+		ALMA (Atacama Large Millimeter/submillimeter Array) es el conjunto de telescopios terrestres en la banda milimétrica/submilimétrica más grande
+		del mundo. 
 		ALMA es un sistema de antenas gigantes de 12 metros, que pueden configurarse de tal manera que alcancen una línea de base de 16 kilómetros. Están equipadas con sistemas
 		punteros que cubren todas las ventanas atmosféricas hasta una frecuencia de 1 THz.
 		&lt;br&gt;&lt;br&gt;
@@ -2785,7 +2785,7 @@
 	</text>
 
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
-		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
+		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
 		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopia a baja resolución (LRS) contiene 10,633,515 espectros, de los cuales 10,336,752 son estrellas, 224,702 son galaxias, 72,061 son QSOs. Hay 9,385,159 objetos que presentan señal a ruido por encima de 10 en la bandas g o i.
 		&lt;br&gt;&lt;br&gt;
@@ -2796,7 +2796,7 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST_LRS">
-		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
+		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
 		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopia a baja resolución (LRS) contiene 10,633,515 espectros, de los cuales 10,336,752 son estrellas, 224,702 son galaxias, 72,061 son QSOs. Hay 9,385,159 objetos que presentan señal a ruido por encima de 10 en la bandas g o i.
 		&lt;br&gt;&lt;br&gt;
@@ -2808,9 +2808,9 @@
 	</text>
 
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
-		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
+		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene  5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
+		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene 5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2819,9 +2819,9 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
-		El  Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
+		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene  5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
+		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene 5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2876,7 +2876,7 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_Spitzer">
-		Como parte de la tercera remesa de datos de la fase criog&#233;nica (Cryogenic Release 3), el Spitzer Science Center y el Infrared Processing and Analysis Center (IPAC) han producido la lista de fuentes SEIP (SEIP Source List). Esta lista contiene la fotometr&#237;a de 42 millones de estrellas y galaxias medida con la c&#225;mara IRAC (Infrared Array Camera) en 3,6, 4,5, 5,8 y 8 micras y con el fot&#243;metro MIPS (Multiband Imaging Photometer) en 24 micras. Para producirla, se combinaron los datos archivados de m&#250;ltiples solicitudes de observaci&#243;n (Astronomical Observation Requests, AOR), lo que permiti&#243; la extracci&#243;n de fuentes m&#225;s d&#233;biles mediante un software de procesado uniforme, aprovechando  al m&#225;ximo la calibraci&#243;n final de las im&#225;genes de la fase criog&#233;nica.
+		Como parte de la tercera remesa de datos de la fase criog&#233;nica (Cryogenic Release 3), el Spitzer Science Center y el Infrared Processing and Analysis Center (IPAC) han producido la lista de fuentes SEIP (SEIP Source List). Esta lista contiene la fotometr&#237;a de 42 millones de estrellas y galaxias medida con la c&#225;mara IRAC (Infrared Array Camera) en 3,6, 4,5, 5,8 y 8 micras y con el fot&#243;metro MIPS (Multiband Imaging Photometer) en 24 micras. Para producirla, se combinaron los datos archivados de m&#250;ltiples solicitudes de observaci&#243;n (Astronomical Observation Requests, AOR), lo que permiti&#243; la extracci&#243;n de fuentes m&#225;s d&#233;biles mediante un software de procesado uniforme, aprovechando al m&#225;ximo la calibraci&#243;n final de las im&#225;genes de la fase criog&#233;nica.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		
@@ -3023,7 +3023,7 @@
 		Cerrar todas las pestañas
 	</text>
 	<text key="treeMap_large_fov">
-		Datos de servicios externos únicamente disponibles  para campos menores de $fov_limit$ grados
+		Datos de servicios externos únicamente disponibles para campos menores de $fov_limit$ grados
 	</text>
 	<text key="closeableTabLayoutPanel_configure">
 		Configurar tabla
@@ -3123,35 +3123,43 @@
 		Mostrar herramientas de selección
 	</text>
 	<text key="selectionToolbox_hideSelectionToolbox">
-        Esconder herramientas de selección
+		Esconder herramientas de selección
 	</text>
 	<text key="selectionToolbox_helpText">
-		&lt;b&gt;Selección&lt;/b&gt;&lt;br&gt;
-		Para seleccionar fuentes o regiones en un área del cielo, presione y arrastre de &lt;b&gt;izquierda&lt;/b&gt; a &lt;b&gt;derecha&lt;/b&gt;, con el cuadrado o cículo seleccionados.
-        Un cuadrado o un círculo verde aparecerán para indicar el área seleccionada.
-        Una vez esté satisfecho con el área seleccionada, suelte el botón y todas las las fuentes dentro de ese área serán seleccionadas.
-        &lt;br&gt;&lt;br&gt;&lt;b&gt;Anular la selección&lt;/b&gt;&lt;br&gt;
-		Para anular la selección, repita la misma operación pero presionando y arrastrando de derecha a izquierda.
-        Esto creará un área roja para anular la selección de fuentes.
-		&lt;br&gt;&lt;br&gt;&lt;b&gt;Polígono&lt;/b&gt;&lt;br&gt;
-		La herramienta de selección polígono permite seleccionar un área con forma arbitraria. Cada click añade un punto
-        más al polígono.
-        Termine el polígono con un doble click o seleccionando el primer vértice.
-		&lt;br&gt;&lt;br&gt;&lt;b&gt;Atajo de teclado&lt;/b&gt;&lt;br&gt;
-		Puede entrar en el modo de selección manteniendo presionada la tecla Shift. El modo de selección se mantiene activo
-        mientras tecla Shift se mantenga presionada, permitiendo  la selección múltiple de varias áreas.
-	</text>
+	&lt;b&gt;Selección&lt;/b&gt;&lt;br&gt;
+	Para seleccionar fuentes o regiones en un área del cielo, presione y
+	arrastre de &lt;b&gt;izquierda&lt;/b&gt; a &lt;b&gt;derecha&lt;/b&gt;,
+	con el cuadrado o cículo seleccionados.
+	Un cuadrado o un círculo verde aparecerán para indicar el área
+	seleccionada.
+	Una vez esté satisfecho con el área seleccionada, suelte el botón y todas
+	las las fuentes dentro de ese área serán seleccionadas.
+	&lt;br&gt;&lt;br&gt;&lt;b&gt;Anular la selección&lt;/b&gt;&lt;br&gt;
+	Para anular la selección, repita la misma operación pero presionando y
+	arrastrando de derecha a izquierda.
+	Esto creará un área roja para anular la selección de fuentes.
+	&lt;br&gt;&lt;br&gt;&lt;b&gt;Polígono&lt;/b&gt;&lt;br&gt;
+	La herramienta de selección polígono permite seleccionar un área con
+	forma arbitraria. Cada click añade un punto
+	más al polígono.
+	Termine el polígono con un doble click o seleccionando el primer vértice.
+	&lt;br&gt;&lt;br&gt;&lt;b&gt;Atajo de teclado&lt;/b&gt;&lt;br&gt;
+	Puede entrar en el modo de selección manteniendo presionada la tecla Shift.
+	El modo de selección se mantiene activo
+	mientras tecla Shift se mantenga presionada, permitiendo la selección múltiple
+	de varias áreas.
+</text>
 	<text key="selectionToolbox_helpHeader">
-        Herramientas de Selección
+		Herramientas de Selección
 	</text>
 	<text key="selectionToolbox_boxButtonTooltip">
-        Herramienta de Selección Cuadrado
+		Herramienta de Selección Cuadrado
 	</text>
 	<text key="selectionToolbox_circleButtonTooltip">
-        Herramienta de Selección Círculo
+		Herramienta de Selección Círculo
 	</text>
 	<text key="selectionToolbox_polygonButtonTooltip">
-        Herramienta de Selección Polígono
+		Herramienta de Selección Polígono
 	</text>
 	<text key="searchToolbox_title">
 		Herramientas de Búsqueda
@@ -3160,19 +3168,39 @@
 		Herramientas de Búsqueda
 	</text>
 	<text key="searchToolbox_helpText">
-		&lt;b&gt;Herramienta de Búsqueda Gráfica&lt;/b&gt;&lt;br&gt;
-		Para buscar fuentes haz click y mantener pulsado el ratón y arrastra la herramienta de selección circular o cuadrada.
-		En ese momento un círculo o un cuadrado verde aparecerán indicando el área de búsqueda. Una vez satisfechos con el area seleccionada soltar el botón del ratón.
+		&lt;b&gt;Herramienta de Búsqueda
+		Gráfica&lt;/b&gt;&lt;br&gt;
+		Para buscar fuentes haz click y mantener
+		pulsado el ratón y arrastra la herramienta de selección circular o
+		cuadrada.
+		En ese momento un círculo o un cuadrado verde aparecerán
+		indicando el área de búsqueda. Una vez satisfechos con el area
+		seleccionada soltar el botón del ratón.
 		&lt;br&gt;&lt;br&gt;
-		Además del circulo y del cuadrado está disponible una herramienta donde el usuario puede construir un polígono arbitrario.
-		En esta herramienta con cada click del ratón se añade un nuevo vértice al polígono. Para terminar de definir el polígono hay que hacer doble click con el ratón o pulsar en el primer punto de la serie.
-		&lt;br&gt;&lt;br&gt;&lt;b&gt;Herramienta de Búsqueda con Texto&lt;/b&gt;&lt;br&gt;
-		En el menú desplegable hay controles que hacen posible buscar una región STCS proporcionando la cadena de texto adecuada.
-		La selección de distintas formas permite proporcionar la cadena de texto con su propio formato.
-		&lt;br&gt;&lt;br&gt;Las cadenas de texto en formato STCS siguen el siguiente formato "[BOX|POLYGON]{1} RA(1) Dec(1) ... RA(n) Dec(n)".
-		&lt;br&gt;&lt;br&gt;&lt;b&gt;Ejemplos: &lt;/b&gt;&lt;br&gt;
-		"BOX ICRS 11.421 41.764 10.071 41.765 10.079 40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
-		"POLYGON ICRS 9.97 41.04 11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03 9.97 41.03"&lt;br&gt;&lt;br&gt;
+		Además del
+		circulo y del cuadrado está disponible una herramienta donde el
+		usuario puede construir un polígono arbitrario.
+		En esta herramienta con
+		cada click del ratón se añade un nuevo vértice al polígono. Para
+		terminar de definir el polígono hay que hacer doble click con el ratón
+		o pulsar en el primer punto de la serie.
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Herramienta de Búsqueda con
+		Texto&lt;/b&gt;&lt;br&gt;
+		En el menú desplegable hay controles que
+		hacen posible buscar una región STCS proporcionando la cadena de texto
+		adecuada.
+		La selección de distintas formas permite proporcionar la
+		cadena de texto con su propio formato.
+		&lt;br&gt;&lt;br&gt;Las cadenas
+		de texto en formato STCS siguen el siguiente formato "[BOX|POLYGON]{1}
+		RA(1) Dec(1) ... RA(n) Dec(n)".
+		&lt;br&gt;&lt;br&gt;&lt;b&gt;Ejemplos:
+		&lt;/b&gt;&lt;br&gt;
+		"BOX ICRS 11.421 41.764 10.071 41.765 10.079
+		40.864 11.411 40.863"&lt;br&gt;&lt;br&gt;
+		"POLYGON ICRS 9.97 41.04
+		11.13 41.94 11.45 42.0 11.34 41.51 10.15 40.53 9.79 40.80 9.97 41.03
+		9.97 41.03"&lt;br&gt;&lt;br&gt;
 		"CIRCLE ICRS 10.76 41.28 0.8"
 	</text>
 	<text key="searchToolbox_box">
@@ -3203,14 +3231,18 @@
 
 	<text key="addUrl_Header"> Añadir HiPS desde una URL </text>
 	<text key="addUrl_Description"> Añadir HiPS en ESASky desde una URL externa.
-    Introduzca la URL del HiPS que desea visualizar y ESASky examinará las propiedades en la URL y lo representará en el cielo
+		Introduzca la URL del HiPS que desea visualizar y ESASky examinará las
+		propiedades en la URL y lo representará en el cielo
 	</text>
 
 	<text key="addSky_errorParsingProperties">
-		Error en el análisis de las propiedades debido a: &lt;br&gt; $DUE_TO$
+		Error en el análisis de las propiedades debido a:
+		&lt;br&gt; $DUE_TO$
 		&lt;br&gt;&lt;br&gt;
-		Puede ser que el proveedor del servicio HiPS no permita Cross origin requests (CORS) o que no tenga un protocolo
-        de seguridad https lo que hace imposible cargar el HiPS en ESASky
+		Puede ser que el proveedor del
+		servicio HiPS no permita Cross origin requests (CORS) o que no tenga
+		un protocolo
+		de seguridad https lo que hace imposible cargar el HiPS en ESASky
 	</text>
 
 	<text key="browseHips_headerLabel">Listado de HiPS Global</text>
@@ -3231,17 +3263,31 @@
 	<text key="tabulator_addHips_tooltip">Añadir HiPS como nueva fila en el panel cielo</text>
 
 	<text key="resultsPresenter_helpDescription_spectra_CHEOPS">
-		CHEOPS es una misión de la ESA desarrollada en colaboración con Suiza, con un consorcio liderado por la Universidad de Berna, y con una importante contribución de Austria, Bélgica, Francia, Alemania, Hungría, Italia, España Suecia y Reino Unido. El satélite consiste en un único instrumento, un fotómetro de ultra-alta precisión que cubre el rango de longitud de onda 330 - 1100 nm en una sola banda. Las observaciones se realizan como parte del Guaranteed Time Observing Programme diseñado por el Equipo Científico de CHEOPS y del Guest Observers Programme a través del cual la comunidad astronómica puede solicitar tiempo de observación.
+		CHEOPS es una misión de la ESA desarrollada en
+		colaboración con Suiza, con un consorcio liderado por la Universidad
+		de Berna, y con una importante contribución de Austria, Bélgica,
+		Francia, Alemania, Hungría, Italia, España Suecia y Reino Unido. El
+		satélite consiste en un único instrumento, un fotómetro de ultra-alta
+		precisión que cubre el rango de longitud de onda 330 - 1100 nm en una
+		sola banda. Las observaciones se realizan como parte del Guaranteed
+		Time Observing Programme diseñado por el Equipo Científico de CHEOPS y
+		del Guest Observers Programme a través del cual la comunidad
+		astronómica puede solicitar tiempo de observación.
 		&lt;br&gt;&lt;br&gt;
 
-		Los datos de CHEOPS disponibles en ESASky consisten en una curva de luz (datos de alto nivel producidos por la pipeline automática de redución de datos) y un  data reduction pipeline report para cada observación pública.
-        Para más información visite  &lt;a href="https://cheops-archive.astro.unige.ch/archive_browser/" target="_blank"&gt;CHEOPS Archive Browser&lt;/a&gt;.
+		Los datos de CHEOPS disponibles en ESASky
+		consisten en una curva de luz (datos de alto nivel producidos por la
+		pipeline automática de redución de datos) y un data reduction pipeline
+		report para cada observación pública.
+		Para más información visite &lt;a
+		href="https://cheops-archive.astro.unige.ch/archive_browser/"
+		target="_blank"&gt;CHEOPS Archive Browser&lt;/a&gt;.
 		&lt;br&gt;&lt;br&gt;
-		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#CHEOPS"
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-observations#CHEOPS"
 		target="_blank"&gt;
 		Más información
-		&lt;/a&gt;
-	</text>
+		&lt;/a&gt; </text>
 
 	<text key="show_more">Mostrar más</text>
 	<text key="show_more_tooltip">Click para expandir y mostrar todo el texto</text>
@@ -3264,7 +3310,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text key="resultsPresenter_helpDescription_external_ASTRON">
-        Datos externos proporcionados por
+		Datos externos proporcionados por
 		&lt;a
 		href="//astron.nl"
 		target="_blank"&gt;
@@ -3272,12 +3318,12 @@
 		&lt;/a&gt; 
 		
 		&lt;br&gt;&lt;br&gt;
-        Es importante mencionar que estos datos, al contrario que los que aparecen en las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
+		Es importante mencionar que estos datos, al contrario que los que aparecen en las funcionalidades de imágenes, espectros y catálogos, no han sido tratados por el equipo de ESASky.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
 		target="_blank"&gt;
-        Más información
+		Más información
 		&lt;/a&gt; 
 	</text>
 
@@ -3288,19 +3334,19 @@
 		Borrar entrada
 	</text>
 	<text key="treeMap_notInRange_ASTRO_SPECTRA">
-        No se ha encontrado ningún Espectro o Curva de Luz en este rango de longitud de onda.
+		No se ha encontrado ningún Espectro o Curva de Luz en este rango de longitud de onda.
 	</text>
 	<text key="treeMap_noData_ASTRO_SPECTRA">
-        No se ha encontrado ningún Espectro o Curva de Luz.
+		No se ha encontrado ningún Espectro o Curva de Luz.
 	</text>
 	<text key="treeMap_ASTRO_SPECTRA">
-        Espectros y Curvas de Luz
+		Espectros y Curvas de Luz
 	</text>
 	<text key="treeMap_loading_ASTRO_SPECTRA">
-        Cargando Espectros y Curvas de Luz
+		Cargando Espectros y Curvas de Luz
 	</text>
 	<text key="webConstants_exploreSpectral">
-        Explorar Espectros y Curvas de Luz en esta región
+		Explorar Espectros y Curvas de Luz en esta región
 	</text>
 	<text key="tabulator_products">
 		Productos 
@@ -3355,7 +3401,7 @@
 		href="https://esahubble.org/images/"
 		target="_blank"&gt;
 		ESA/Hubble.
-		&lt;/a&gt;  
+		&lt;/a&gt; 
 		&lt;br&gt;&lt;br&gt;
 		Haciendo click en el icono aparece una lista con las imágenes divulgativas de ESA/Hubble disponibles en la región del cielo actual. En el campo de visión se muestran los contornos de dichas imágenes mediante rectángulos verdes, es posible ocultarlos seleccionando Ocultar Contornos.
 		&lt;br&gt;&lt;br&gt;
@@ -3373,8 +3419,7 @@
 		Visualizar imágenes de divulgación de ESA/Hubble	
 	</text>
 
-
-		<text key="resultsPresenter_helpDescription_catalogues_Fermi_4FGL-DR2">
+	<text key="resultsPresenter_helpDescription_catalogues_Fermi_4FGL-DR2">
 		El telescopio Fermi Large Area (LAT) escanea el cielo en rayos gamma de altas energías desde 2008 y la colaboración LAT desde entonces ha publicado una serie de catálogos de fuentes en rayos basados en análisis exhaustivos de los datos de LAT. El segundo lanzamiento de datos del cuarto catálogo de fuentes 4FGL-DR2 procede del análisis científico de los datos de los 10 primeros años de esta misión.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -3410,7 +3455,7 @@
 		&lt;/a&gt; 
 	</text>
 
-		<text key="resultsPresenter_helpDescription_catalogues_Icecube">
+	<text key="resultsPresenter_helpDescription_catalogues_Icecube">
 		Catálogo de eventos puntuales a todo el cielo de IceCube (IceCube All-Sky Point-Source Events Catalog; 2008 - 2018; Icecubepsc). IceCube ha realizado múltiples búsquedas de fuentes puntuales de neutrinos. Los eventos contenidos en este catálogo forman la muestra de datos integrados a lo largo de 10 años utilizada en la búsqueda de este tipo de eventos. Los eventos en la muestra son candidatos detectados por IceCube entre abril de 2008 y julio de 2018.		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#icecubepsc"
@@ -3427,14 +3472,13 @@
 		&lt;/a&gt; 
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_2WHSP">
-Catálogo de blazars y candidates a blazars de alta  energía y muy alta energía en rayos gamma seleccionados en multi-frecuencia (2WHSP). Este catálogo contiene la mayor y más completa lista de HSPs (High Synchrotron Peaked blazars) disponible hasta la fecha (en 2017), que es una extensión del catálogo de candidatos a fuentes de rayos gamma fuera del plano galáctico (1WHSP).		&lt;br&gt;&lt;br&gt;
+		Catálogo de blazars y candidates a blazars de alta energía y muy alta energía en rayos gamma seleccionados en multi-frecuencia (2WHSP). Este catálogo contiene la mayor y más completa lista de HSPs (High Synchrotron Peaked blazars) disponible hasta la fecha (en 2017), que es una extensión del catálogo de candidatos a fuentes de rayos gamma fuera del plano galáctico (1WHSP).		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#WHSP"
 		target="_blank"&gt;
 		Más información
 		&lt;/a&gt; 
 	</text>
-
 
 	<text key="Gamma-rays">
 		rayos gamma
@@ -3490,7 +3534,7 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 		Nivel de Calibración
 		</text>
 	<text key="webConstants_exploreJwstImages">
-		Explora imágenes  de Divulgación del Telescopio Espacial James Webb
+		Explora imágenes de Divulgación del Telescopio Espacial James Webb
 		</text>
 	<text key="outreachJwstPanel_header">
 		ESA/Webb Imágenes de Divulgación
@@ -3586,85 +3630,84 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 		&lt;/a&gt;
 	</text>
 	<text key="outreachJwstPanel_closePanel">
-		        Cerrar panel</text>
+		 Cerrar panel</text>
 	<text key="webConstants_changeSky">
-		        Cambiar de cielo</text>
+		 Cambiar de cielo</text>
 	<text key="webConstants_exploreTargetList">
-		        Explorar lista de fuentes</text>
+		 Explorar lista de fuentes</text>
 	    
 	<text key="short_name">
-		        Nombre corto</text>
+		 Nombre corto</text>
 	<text key="res_title">
-		        Título</text>
+		 Título</text>
 	<text key="res_subjects">
-		        Temas</text>
+		 Temas</text>
 	<text key="ivoid">
-		        Identificador</text>
+		 Identificador</text>
 	<text key="tabulator_loadFailed_500">
-		       No posible procesar la respuesta de este recurso. Ver detalles para más
-		información.</text>
+       No posible procesar la respuesta de este recurso. Ver detalles para más información.</text>
 	<text key="tabulator_loadFailed_400">
-		        El recurso no permite este tipo de consultas. Por favor inténtalo
+		El recurso no permite este tipo de consultas. Por favor inténtalo
 		otra vez sin la restricción del campo de visión (“FoV”).&lt;br&gt;
-		        (El botón en la parte superior derecha de la ventana de
+		(El botón en la parte superior derecha de la ventana de
 		“External Tap Registry”)</text>
 	<text key="global_tap_panel_custom_query_description">
-		        Una consulta personalizada por el usuario se ha utilizado para
+		 Una consulta personalizada por el usuario se ha utilizado para
 		obtener este set de datos.&lt;br&gt;&lt;br&gt;
-		        La consulta utilizada es:</text>
+		 La consulta utilizada es:</text>
 	<text key="tabulator_no_data_fov_limit_disabled">
 		       Set de datos vacío</text>
 	<text key="global_tap_panel_query_failed_title">
-		        Consulta fallida</text>
+		 Consulta fallida</text>
 	<text key="global_tap_panel_query_failed_body">
-		        La consulta al servicio TAP "$TAP_SERVICE$" ha fallado. Ésto se puede
+		 La consulta al servicio TAP "$TAP_SERVICE$" ha fallado. Ésto se puede
 		deber a que el servicio no responde o porque los datos no han podido
 		ser interpretados.</text>
 	<text key="global_tap_panel_filter_tap_services">
-		        Filtrar servicios TAP</text>
+		 Filtrar servicios TAP</text>
 	<text key="global_tap_panel_filter_tap_tables">
-		        Filtrar tablas TAP</text>
+		 Filtrar tablas TAP</text>
 	<text key="global_tap_panel_toggle_fov_restricted">
-		        restricción en el campo de vision “FoV”</text>
+		 Restringir Campo de visión</text>
 	<text key="global_tap_panel_toggle_fov_restricted_tooltip">
-		        Limitar los datos de la table al campo de visión</text>
+		 Limitar los datos de la table al campo de visión</text>
 	<text key="global_tap_panel_missing_column_title">
-		        Información de la columna no disponible</text>
+		 Información de la columna no disponible</text>
 	<text key="global_tap_panel_missing_column_body">
-		       No ha podido identificar ninguna columna asociada a RA, Dec, o Región en esta tabla.&lt;br&gt; No puede realizar una búsqueda sin éstas,; en su lugar se va a mostrar la tabla completa.&lt;br&gt;&lt;br&gt; &lt;b&gt;¿Desea seleccionar las columnas manualmente?&lt;/b&gt;</text>
+		 No ha podido identificar ninguna columna asociada a RA, Dec, o Región en esta tabla.&lt;br&gt; No puede realizar una búsqueda sin éstas,; en su lugar se va a mostrar la tabla completa.&lt;br&gt;&lt;br&gt; &lt;b&gt;¿Desea seleccionar las columnas manualmente?&lt;/b&gt;</text>
 	<text key="global_tap_panel_column_selector_header">
-		        Seleccionar columnas</text>
+		 Seleccionar columnas</text>
 	<text key="global_tap_panel_column_selector_help">
 		       Elegir columna de la tabla que contienen RA, Dec o Región para dicha
 		tabla.</text>
 	<text key="global_tap_panel_custom_query_help">
-		        Crear consulta personalizada de ADQL para descargar datos del
+		 Crear consulta personalizada de ADQL para descargar datos del
 		servicio TAP, o elegir uno de los ejemplos.</text>
 	<text key="global_tap_panel_custom_query_title">
-		        Consulta personalizada de ADQL</text>
+		 Consulta personalizada de ADQL</text>
 	<text key="global_tap_panel_custom_query_dropdown_tooltip">
-		        Elegir uno de los ejemplos o escribir tu propia consulta.</text>
+		 Elegir uno de los ejemplos o escribir tu propia consulta.</text>
 	<text key="global_tap_panel_custom_query_dropdown_option_columns">
-		        Columnas de la tabla</text>
+		 Columnas de la tabla</text>
 	<text key="global_tap_panel_custom_query_dropdown_option_table">
-		        Tabla entera</text>
+		 Tabla entera</text>
 	<text
 		key="global_tap_panel_custom_query_dropdown_option_row_count">
-		        Contar filas</text>
+		 Contar filas</text>
 	<text key="global_tap_panel_custom_query_run_query">
-		        Ejecutar consulta</text>
+		 Ejecutar consulta</text>
 	<text key="treemap_zero_count_alert">
-		        $MISSION$ se ha añadido al dashboard pero no hay datos disponibles en
+		 $MISSION$ se ha añadido al dashboard pero no hay datos disponibles en
 		el campo de vision actual.</text>
 	<text key="resultsPresenter_helpDescription_custom_tap_entity">
-		        Proveedor externo de datos de $PUBLISHER$.        
+		 Proveedor externo de datos de $PUBLISHER$.        
 		&lt;br&gt;&lt;br&gt;
-		       Nótese que estos datos, al contrario de los que se ofrecen a través
+		 Nótese que estos datos, al contrario de los que se ofrecen a través
 		de las opciones de imágenes, catálogos y espectros, no han sido
-		revisados por el equipo de ESASky.         &lt;br&gt;&lt;br&gt;&lt;a
-		        href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
-		        target="_blank"&gt;
-		        Más información.&lt;/a&gt;</text>
+		revisados por el equipo de ESASky. &lt;br&gt;&lt;br&gt;&lt;a
+		 href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		 target="_blank"&gt;
+		 Más información.&lt;/a&gt;</text>
 	<text key="treeMapContainer_help_EXT_TAP">
 		En ESASky ahora puede explorar datos de centros
 		de datos externos que cumplen los estándares de Observatorio Virtual
@@ -3680,11 +3723,62 @@ Catálogo de blazars y candidates a blazars de alta  energía y muy alta energí
 		a los servicios y tablas proporcionadas por ESA o
 		VizieR.
 		&lt;br&gt;&lt;br&gt;&lt;a
-		        href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
-		        target="_blank"&gt;
+		 href="//www.cosmos.esa.int/web/esdc/esasky-interface#EXTTAP"
+		 target="_blank"&gt;
 		       Más información.&lt;/a&gt;</text>
 	    
 	<text key="extTapPanel_resetTreemapBtn">
-		        Devolver el dashboard a su estado original</text>
+		Devolver el dashboard a su estado original</text>
+	<text key="extTapPanel_vizier">
+		VizieR
+	</text>
+	<text key="tabulatorWrapper_addTable">
+		Añadir
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboard">
+		Añadir servicio al Dashboard
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboardDisabled">
+		No se puede añadir al Dashboard. Este servicio no tiene tabla
+		ObsCore.
+	</text>
+	<text key="tabulatorWrapper_query">
+		Consulta
+	</text>
+	<text key="tabulatorWrapper_adqlQuery">
+		Consulta ADQL</text>
+	<text key="tabulatorWrapper_customAdqlQuery">
+		Crear búsqueda personalizada de ADQL</text>
+	<text key="tabulatorWrapper_columnInfo">
+		Columnas
+	</text>
+	<text key="tabulatorWrapper_columnMetadata">
+		Metadato de columnas
+	</text>
+	<text key="tabulatorWrapper_showColumnMetadata">
+		Mostrar el metadato de columnas
+	</text>
+	<text key="tabulatorWrapper_openTable">
+		Abrir
+	</text>
+	<text key="tabulatorWrapper_openTableTooltip">
+		Abrir tabla</text>
+	<text key="extTapPanel_dashboard">
+		Dashboard
+	</text>
+	<text key="extTapPanel_tapRegistry">
+		Registro TAP
+	</text>
+	<text key="extTapPanel_tapRegistryTooltip">
+		Explorar datos en el Registro de protocolo de acceso a tablas del
+		VO</text>
+	<text key="extTapPanel_vizierTooltip">
+		Explorar datos del servicio de catálogos CDS VizieR
+	</text>
+	<text key="extTapPanel_esa">
+		ESA
+	</text>
+	<text key="extTapPanel_esaTooltip">
+		Explorar datos a través de protocolo de acceso a tablas de la ESA</text>
 
 </Internationalization>
