@@ -104,19 +104,20 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         FlowPanel sliderContainer = initSliderContainer();
         treeMapContainer.add(sliderContainer);
 
-        tabPanel.add(treeMapContainer, "Dashboard");
+        tabPanel.add(treeMapContainer, createTabLabel("extTapPanel_dashboard", "webConstants_exploreExtTaps"));
 
         registryPanel = new GlobalTapPanel();
         registryPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
-        tabPanel.add(registryPanel, "TAP Registry");
+        
+        tabPanel.add(registryPanel, createTabLabel("extTapPanel_tapRegistry", "extTapPanel_tapRegistryTooltip"));
 
         vizierPanel = new GlobalTapPanel(GlobalTapPanel.Modes.VIZIER);
         registryPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
-        tabPanel.add(vizierPanel, "VizieR");
+        tabPanel.add(vizierPanel, createTabLabel("extTapPanel_vizier", "extTapPanel_vizierTooltip"));
 
         esaPanel = new GlobalTapPanel(GlobalTapPanel.Modes.ESA);
         esaPanel.addTreeMapNewDataHandler(event -> tabPanel.selectTab(0));
-        tabPanel.add(esaPanel, "ESA");
+        tabPanel.add(esaPanel, createTabLabel("extTapPanel_esa", "extTapPanel_esaTooltip"));
 
         tabPanel.selectTab(TabIndex.TREEMAP.ordinal());
 
@@ -163,6 +164,12 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
 
         setMaxSize();
 
+    }
+    
+    private Label createTabLabel(String labelTextKey, String tooltipKey) {
+    	Label label = new Label(TextMgr.getInstance().getText(labelTextKey));
+        label.setTitle(TextMgr.getInstance().getText(tooltipKey));
+        return label;
     }
 
     public void openTab(int tabIndex) {

@@ -1751,11 +1751,11 @@ public class TabulatorWrapper {
 
             if (settings.addObscoreTableColumn) {
                 this.addColumn({
-                    title: "Add",
+                    title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addTable"),
                     field: "obscoreAddBtn",
                     visible: true,
                     headerSort: false,
-                    headerTooltip: "Add ObsCore table to External Data Center Panel",
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addServiceToDashboard"),
                     minWidth: 55,
                     download: false,
                     width: 40,
@@ -1763,8 +1763,8 @@ public class TabulatorWrapper {
                     formatter: imageButtonFormatter,
                     formatterParams: {
                         image: "plus-sign-light-small.png",
-                        tooltip: "Add ObsCore table to the Treemap",
-                        disabledTooltip: "Add ObsCore table to the Treemap",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addServiceToDashboard"),
+                        disabledTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addServiceToDashboardDisabled"),
                         isDisabledFunc: obscoreButtonDisabled
                     },
                     cellClick: function (e, cell) {
@@ -1778,17 +1778,17 @@ public class TabulatorWrapper {
 
             if (settings.addAdqlColumn) {
                 this.addColumn({
-                    title: "Query",
+                    title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_query"),
                     field: "adqlBtn",
                     visible: true,
                     headerSort: false,
-                    headerTooltip: "ADQL query",
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_adqlQuery"),
                     minWidth: 65,
                     download: false,
                     width: 40,
                     hozAlign: "center",
                     formatter: imageButtonFormatter,
-                    formatterParams: {image: "query-icon.png", tooltip: "Create a custom ADQL query"},
+                    formatterParams: {image: "query-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_customAdqlQuery")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAdqlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
@@ -1798,17 +1798,17 @@ public class TabulatorWrapper {
 
             if (settings.addMetadataColumn) {
                 this.addColumn({
-                    title: "Columns",
+                    title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_columnInfo"),
                     field: "metadataBtn",
                     visible: true,
                     headerSort: false,
-                    headerTooltip: "Column metadata",
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_columnMetadata"),
                     minWidth: 75,
                     download: false,
                     width: 40,
                     hozAlign: "center",
                     formatter: imageButtonFormatter,
-                    formatterParams: {image: "column_icon.png", tooltip: "Show column metadata"},
+                    formatterParams: {image: "column_icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_showColumnMetadata")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onMetadataClicked(*)(cell.getData());
@@ -1818,17 +1818,17 @@ public class TabulatorWrapper {
 
             if (settings.addOpenTableColumn) {
                 this.addColumn({
-                    title: "Open",
+                    title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_openTable"),
                     field: "openTableBtn",
                     visible: true,
                     headerSort: false,
-                    headerTooltip: "Open table",
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_openTableTooltip"),
                     minWidth: 60,
                     download: false,
                     width: 40,
                     hozAlign: "center",
                     formatter: imageButtonFormatter,
-                    formatterParams: {image: "table-icon.png", tooltip: "Open table"},
+                    formatterParams: {image: "table-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_openTableTooltip")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onOpenTableClicked(*)(cell.getData());

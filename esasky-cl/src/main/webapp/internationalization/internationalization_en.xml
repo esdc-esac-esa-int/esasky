@@ -5164,8 +5164,60 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="extTapPanel_resetTreemapBtn">
 		Reset the dashboard to its original state
 	</text>
+	<text key="extTapPanel_vizier">
+		VizieR
+	</text>
+	<text key="tabulatorWrapper_addTable">
+		Add
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboard">
+		Add service to the Dashboard
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboardDisabled">
+		Cannot add service to the Dashboard. This service does not have an ObsCore table.
+	</text>
+	<text key="tabulatorWrapper_query">
+		Query
+	</text>
+	<text key="tabulatorWrapper_adqlQuery">
+		ADQL query
+	</text>
+	<text key="tabulatorWrapper_customAdqlQuery">
+		Create a custom ADQL query
+	</text>
+	<text key="tabulatorWrapper_columnInfo">
+		Columns
+	</text>
+	<text key="tabulatorWrapper_columnMetadata">
+		Column metadata
+	</text>
+	<text key="tabulatorWrapper_showColumnMetadata">
+		Show column metadata
+	</text>
+	<text key="tabulatorWrapper_openTable">
+		Open
+	</text>
+	<text key="tabulatorWrapper_openTableTooltip">
+		Open table
+	</text>
+	<text key="extTapPanel_dashboard">
+		Dashboard
+	</text>
+	<text key="extTapPanel_tapRegistry">
+		TAP Registry
+	</text>
+	<text key="extTapPanel_tapRegistryTooltip">
+		Explore data in the VO Table Access Protocol Registry
+	</text>
+	<text key="extTapPanel_vizierTooltip">
+		Explore data from the CDS VizieR catalogue service
+	</text>
+	<text key="extTapPanel_esa">
+		ESA
+	</text>
+	<text key="extTapPanel_esaTooltip">
+		Explore data from ESA Table Access Protocols
+	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
-
-
 </Internationalization>
