@@ -2713,5 +2713,58 @@
 	<text key="extTapPanel_resetTreemapBtn">
 		重置面板到初始状态
 	</text>
-
+	<text key="extTapPanel_vizier">
+		VizieR
+	</text>
+	<text key="extTapPanel_esa">
+        ESA
+	</text>
+	<text key="tabulatorWrapper_addTable">
+		添加
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboard">
+		添加服务到控制面板
+	</text>
+	<text key="tabulatorWrapper_addServiceToDashboardDisabled">
+		无法添加服务到控制面板。这个服务没有一个ObsCore表。
+	</text>
+	<text key="tabulatorWrapper_query">
+		查询
+	</text>
+	<text key="tabulatorWrapper_adqlQuery">
+		ADQL查询
+	</text>
+	<text key="tabulatorWrapper_customAdqlQuery">
+		自定义一个ADQL语句
+	</text>
+	<text key="tabulatorWrapper_columnInfo">
+		列
+	</text>
+	<text key="tabulatorWrapper_columnMetadata">
+		列元数据
+	</text>
+	<text key="tabulatorWrapper_showColumnMetadata">
+		显示列元数据
+	</text>
+	<text key="tabulatorWrapper_openTable">
+		打开
+	</text>
+	<text key="tabulatorWrapper_openTableTooltip">
+		打开表格
+	</text>
+	<text key="extTapPanel_dashboard">
+		控制面板
+	</text>
+	<text key="extTapPanel_tapRegistry">
+		TAP注册
+	</text>
+	<text key="extTapPanel_tapRegistryTooltip">
+		浏览VO TAP注册中的数据
+	</text>
+	<text key="extTapPanel_vizierTooltip">
+		浏览CDS VizieR目录服务中的数据
+	</text>
+	<text key="extTapPanel_esaTooltip">
+		浏览欧空间（ESA）TAP服务中的数据
+	</text>
 </Internationalization>
