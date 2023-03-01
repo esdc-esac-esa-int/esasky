@@ -5,7 +5,7 @@
      var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"')
      var esaskyFrame = document.getElementsByClassName("iframe-container")[0].children[0];
      console.log(cmd2)
-     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int')
+     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int/versions/esasky-5.0')
      var input = document.getElementById("messageinput");
      console.log(input)
      input.value=cmd;
@@ -44,7 +44,7 @@
 <div class="panel" id="info" style="display: block;">
 <p>All commands should be sent to the ESASky element as http postmessages. For example by:</p>
 
-<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘http://sky.esa.int’)</p>
+<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘ https://sky.esa.int/versions/esasky-5.0’)</p>
 
 <p>Where <i>esaskyFrameName</i> is the elementId where the esasky page is embedded, <i>command </i>is a JSON containing ‘event’ for function name and ‘content’ with all parameters</p>
 
@@ -70,7 +70,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>goToRaDec</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Moves centre of the screen to supplied ra and dec in current coordinate frame</p>
+<p>Moves center of the screen to supplied ra and dec in current coordinate frame</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>ra (String, decimal degrees or sexagesimal format)<p>dec (String, decimal degrees or sexagesimal format)<p><b>Example:&nbsp;</b></p>
 <p id="gotoradec">{event:'goToRaDec', content:{ra:'10.68470',dec:'41.26875'}}</p>
@@ -103,7 +103,7 @@
 <p>cooFrame (String)(Optional) - Should be "J2000" or "GALACTIC", defaults to "J2000"</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>values.ra (Double) - Right ascension (lon) of the center in decimal degrees</p>
-<p>values.dec (Double) - Declination(lat) of the center in decimal degrees</p>
+<p>values.dec (Double) - Declination (lat) of the center in decimal degrees</p>
 <p>values.fov (Double) - Field of view in horizontal (lat) direction in decimal degrees</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="getcenter">{event:'getCenter',  content:{cooFrame:'J2000'}}</p>
@@ -163,7 +163,7 @@
 <p><b>Parameters:&nbsp;</b></p>
 <p>wavelength (String)(Optional) - Wavelength in capital e.g. "OPTICAL". Defaults to empty.</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>values(JSON dictionary) - If wavelength is empty this is a dictionary of wavlengths otherwise this is a dictionary with available HiPS in that wavlength</p>
+<p>values(JSON (Dictionary) - If wavelength is empty this is a dictionary of wavelengths otherwise this is a dictionary with available HiPS in that wavelength</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="getavailablehips">{event:'getAvailableHiPS',  content:{wavelength:'OPTICAL'}}</p>
 <p><button onclick="msg_func('getavailablehips')" type="button">Send</button></p>
@@ -188,8 +188,8 @@
 <p>Add a HiPS programmatically to the skypanel list</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>hipsName (String)<p><b>Parameters:&nbsp;</b></p>
-<p>extras (Dictionary) - Empty if succes</p>
-<p>extras.message (String) - Not existing if success otherwise error message</p>
+<p>extras (Dictionary) - Empty if success</p>
+<p>extras.message (String) - Not existing if success, otherwise error message</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="addhips">{event:'addHips',  content:{hipsName:'DSS2 color'}}</p>
 <p><button onclick="msg_func('addhips')" type="button">Send</button></p>
@@ -231,7 +231,7 @@
 <p>Removes the hips in the sky panel list at described index with first starting at 0. Entering -1 will remove all except for the first row.</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>index (Integer)<p><b>Parameters:&nbsp;</b></p>
-<p>extras (Dictionary) - Empty if succes</p>
+<p>extras (Dictionary) - Empty if success</p>
 <p>extras.message (String) - Not existing if success otherwise error message</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="removehips">{event:'removeHips',  content:{index:0}}</p>
@@ -288,8 +288,8 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Selects a shape (catalogue source or footprint)</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>overlayName (String) - Name of the overlaySet where we eant to selesct a shape</p>
-<p>shapeName (String) - Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent</p>
+<p>overlayName (String) - Name of the overlaySet where we want to select a shape</p>
+<p>shapeName (String) - Name of the shape (typical observation id). See overlayCatalogueFootprint or response from shapeSelectionEvent</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="selectshape">{'event': 'selectShape',  content:{overlayName:'test footprints', shapeName:'test footprint1'}}</p>
 <p><button onclick="msg_func('selectshape')" type="button">Send</button></p>
@@ -426,7 +426,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>getActiveOverlays</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Returns all overlays (catalgoues/footprints) currently active on the sky</p>
+<p>Returns all overlays (catalogues/footprints) currently active on the sky</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>values.overlays (List) - List of ids of the currently active overlays</p>
 <p><b>Example:&nbsp;</b></p>
@@ -464,7 +464,7 @@
 <p>Changes the object shape of all objects in the overlay to the selected color</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>overlayName (String) - OverlayName/Id of the overlay to update</p>
-<p>shape (Double) - Changes the shape type displayed shapes. Returns available input values on errorneous input</p>
+<p>shape (Double) - Changes the shape type displayed shapes. Returns available input values on erroneous input</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="setoverlayshape">{event:'setOverlayShape', content:{overlayName:'MyOverlay', shape:'plus'}}</p>
 <p><button onclick="msg_func('setoverlayshape')" type="button">Send</button></p>
@@ -511,7 +511,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>hideResultPanel</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Minimises the datapanel</p>
+<p>Minimizes the datapanel</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="hideresultpanel">{event:'hideResultPanel'}</p>
 <p><button onclick="msg_func('hideresultpanel')" type="button">Send</button></p>
@@ -569,10 +569,10 @@
 <p><b>Event:&nbsp;</b></p>
 <p>plotObservations</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Plot available image observation footprints in ESASky for he currently shown area for the given missionID</p>
+<p>Plot available image observation footprints in ESASky for the currently shown area for the given missionID</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>missionId (String)<p><b>Parameters:&nbsp;</b></p>
-<p>extras (Dictionary) - Empty if succes</p>
+<p>extras (Dictionary) - Empty if success</p>
 <p>extras.message (String) - Not existing if success otherwise error message</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="plotobservations">{event:'plotObservations',  content:{missionId: 'HST-UV'}}</p>
@@ -595,10 +595,10 @@
 <p><b>Event:&nbsp;</b></p>
 <p>plotSpectra</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Plot available spectra footprints in ESASky for he currently shown area for the given missionID</p>
+<p>Plot available spectra footprints in ESASky for the currently shown area for the given missionID</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>missionId (String)<p><b>Parameters:&nbsp;</b></p>
-<p>extras (Dictionary) - Empty if succes</p>
+<p>extras (Dictionary) - Empty if success</p>
 <p>extras.message (String) - Not existing if success otherwise error message</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="plotspectra">{event:'plotSpectra',  content:{missionId: 'IUE'}}</p>
@@ -617,7 +617,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>getAvailableTapServices</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Lists the avaialble TAP services in ESASky</p>
+<p>Lists the available TAP services in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>List with the available TAP Services<p><b>Example:&nbsp;</b></p>
 <p id="getavailabletapservices">{'event':'getAvailableTapServices'}</p>
@@ -627,7 +627,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>getTapServiceCount</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Get list of missions in a TAP Serrivece wihtin the current FoV</p>
+<p>Get list of missions in a TAP Service within the current FoV</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>tapService (String) - The name of the tapService to get available data from</p>
 <p><b>Parameters:&nbsp;</b></p>
@@ -652,12 +652,12 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Plot available image observation footprints in ESASky for he currently shown area for the given missionID</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>name (String) - Will overwrite any exisitng dataPanel with the same name</p>
+<p>name (String) - Will overwrite any existing dataPanel with the same name</p>
 <p>tapUrl (String)<p>color (String) - Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')</p>
 <p>raColumn (String) - Which column on the TAP side to use as ra</p>
 <p>decColumn (String) - Which column on the TAP side to use as dec</p>
 <p>STCSColumn (String) - Which column on the TAP side to use for displaying footprints</p>
-<p>intersectColumn (String) - Which column on the TAP side to use to insersect the current screen against if dataOnlyInView is true</p>
+<p>intersectColumn (String) - Which column on the TAP side to use to intersect the current screen against if dataOnlyInView is true</p>
 <p>dataOnlyInView (Boolean) - If true will add a where clause to the adql to limit the data loaded. Parameter intersectColumn or ra and dec columns need to be set</p>
 <p>adql (String) - ADQL used for the TAP query</p>
 <p><b>Example:&nbsp;</b></p>
@@ -718,7 +718,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>addJwst</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Open the JWST planning tool and adds at center of screen</p>
+<p>Opens the JWST planning tool and adds at center of screen</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>instrument (String)<p>detector (String)<p>showAllInstruments (boolean)<p><b>Example:&nbsp;</b></p>
 <p id="addjwst">{'event': 'addJwst',  content:{'instrument': 'NIRSpec', 'detector': 'NRS_FULL_MSA', 'showAllInstruments': false}}</p>
@@ -728,7 +728,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>addJwstWithCoordinates</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Open the JWST planning tool and adds at supplied coordinates</p>
+<p>Opens the JWST planning tool and adds at supplied coordinates</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>instrument (String)<p>detector (String)<p>showAllInstruments (boolean)<p>ra (String, in degrees)<p>dec (String, in degrees)<p>rotation (String, in degrees)<p><b>Example:&nbsp;</b></p>
 <p id="addjwstwithcoordinates">{'event': 'addJwstWithCoordinates',  content:{'instrument': 'NIRISS', 'detector': 'NIS_CEN', 'showAllInstruments': true, 'ra': '210', 'dec': '12', 'rotation': '90'}}</p>
@@ -766,6 +766,35 @@
 
 
 <!--***************
+***External Data Centres***
+*************** -->
+<hr />
+<button class="accordion">External Data Centres</button>
+<div class="panel" id="external_data_centres">
+<p><b>Event:&nbsp;</b></p>
+<p>openExtTapPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Open the External Data Centres Panel. If tab is specified it will open that one. Otherwise it will open on the first tab (Dashboard)</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>tab (String) - (Optional) The name of the tab to be opened - case-insensitive</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="openexttappanel">{event:'openExtTapPanel',  content:{tab: 'Tap Registry'}}</p>
+<p><button onclick="msg_func('openexttappanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeExtTapPanel</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Close the External Data Centres Panel</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closeexttappanel">{event:'closeExtTapPanel'}</p>
+<p><button onclick="msg_func('closeexttappanel')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
 ***Healpix MOC***
 *************** -->
 <hr />
@@ -776,7 +805,7 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Adds a MOC  ( HEALPix Multi-Order Coverage map) on the sky</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>name (String) - Name of the MOC  (will overwrte existing MOC with same name)</p>
+<p>name (String) - Name of the MOC  (will overwrite existing MOC with same name)</p>
 <p>options.color (String) - Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')</p>
 <p>options.opacity (Float) - Opacity of the MOC in range 0.0</p>
 <p>options.lineStyle (String) (optional) - Sets the linestyle of the borders in case only the borders are shown. Possible parameters are "solid" and "dashed"</p>
@@ -815,7 +844,7 @@
 <p><b>Parameters:&nbsp;</b></p>
 <p>treeMap.name (String) - The nameID that will be used in any callbacks</p>
 <p>treeMap.description (String) (Optional) - description that will be shown when hovering on the button</p>
-<p>treeMap.iconText (String) (Otional) - Text showing on the button, will default to name if not specified</p>
+<p>treeMap.iconText (String) (Optional) - Text showing on the button, will default to name if not specified</p>
 <p>treeMap.missions (List) - List of the missions that will show up in the treemap</p>
 <p>treeMap.missions.name (String) - Name of the mission which will be ID in callbacks</p>
 <p>treeMap.missions.color (String) - Default color showing up in the treeMap</p>
@@ -868,7 +897,7 @@
 <p>button.name (String) - The nameID of the custom button that will be used in callbacks</p>
 <p>button.description (String) - Description that will be shown on hover</p>
 <p>button.iconText (String) - If no icon this text will be the icon instead</p>
-<p>button.iconName (String) - Id of one of the existing icons in ESASky. Errouneous name will send back available ids</p>
+<p>button.iconName (String) - Id of one of the existing icons in ESASky. Erroneous name will send back available ids</p>
 <p><b>Events:&nbsp;</b></p>
 <p><b>button_clicked</b></p>
 <p>values.action (String) - Always "button_clicked"</p>
@@ -890,7 +919,7 @@
 <p>button.name (String) - The nameID of the button to update</p>
 <p>button.description (String) - Description that will be shown on hover</p>
 <p>button.iconText (String) - If no icon this text will be the icon instead</p>
-<p>button.iconName (String) - Id of one of the existing icons in ESASky. Errouneous name will send back available ids</p>
+<p>button.iconName (String) - Id of one of the existing icons in ESASky. Erroneous name will send back available ids</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="updatecustombutton">{'event': 'updateCustomButton', content:{'button':{name:'myButton', description:'My button´s description', iconName:'exclamation'}}}</p>
 <p><button onclick="msg_func('updatecustombutton')" type="button">Send</button></p>
@@ -912,7 +941,7 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Sets visibility of the modifiable elements in ESASky.</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>modules (JSON Object) - Object on format; {key:boolean}. Errorneous id returns possible values</p>
+<p>modules (JSON Object) - Object on format; {key:boolean}. Erroneous id returns possible values</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="setmodulevisibility">{event:'setModuleVisibility',  content:{modules:{skies_menu:false}}}</p>
 <p><button onclick="msg_func('setmodulevisibility')" type="button">Send</button></p>
@@ -941,7 +970,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>openGWPanel</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Opens the Graviational Wave panel</p>
+<p>Opens the Gravitational Wave panel</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="opengwpanel">{'event': 'openGWPanel'}</p>
 <p><button onclick="msg_func('opengwpanel')" type="button">Send</button></p>
@@ -950,7 +979,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>openNeutrinoPanel</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Opens the Nutrino events panel</p>
+<p>Opens the Neutrino events panel</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="openneutrinopanel">{'event': 'openNeutrinoPanel'}</p>
 <p><button onclick="msg_func('openneutrinopanel')" type="button">Send</button></p>
@@ -968,7 +997,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>minimiseAlertPanel</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Mininises the Alert panel, i.e. keeps the events shown but removes the panel from the screen</p>
+<p>Minimizes the Alert panel, i.e. keeps the events shown but removes the panel from the screen</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="minimisealertpanel">{'event': 'minimiseAlertPanel'}</p>
 <p><button onclick="msg_func('minimisealertpanel')" type="button">Send</button></p>
@@ -1038,21 +1067,21 @@
 <p>event.values.fov (float) - Field of View in degld of View in deg</p>
 <p>&nbsp;</p>
 <p><b>shape_selected</b></p>
-<p>event.action (String) - Will allways be "shape_selected"</p>
+<p>event.action (String) - Will always be "shape_selected"</p>
 <p>event.values.overlay (String) - Overlayname to which the shape selected is attached</p>
 <p>event.values.name (String) - Name of the shape selected</p>
 <p>event.values.id (String) - Id of the shape selected</p>
 <p>&nbsp;</p>
 <p><b>result_panel_opened</b></p>
-<p>event.action (String) - Will allways be "result_panel_opened"</p>
+<p>event.action (String) - Will always be "result_panel_opened"</p>
 <p>event.values.id (String) - ID of the panel opened</p>
 <p>&nbsp;</p>
 <p><b>result_panel_closed</b></p>
-<p>event.action (String) - Will allways be "result_panel_closed"</p>
+<p>event.action (String) - Will always be "result_panel_closed"</p>
 <p>event.values.id (String) - ID of the panel closed</p>
 <p>&nbsp;</p>
 <p><b>search_area_used</b></p>
-<p>event.action (String) - Will allways be "search_area_used" This event triggers when a user sets the search area toll to a new area</p>
+<p>event.action (String) - Will always be "search_area_used" This event triggers when a user sets the search area toll to a new area</p>
 <p>event.values.type (String) - POLYGON or CIRCLE</p>
 <p>event.values.coordinates (List) - if type is POLYGON this will be the points that makes up the area List with 1,3,5 etc being ra and 2,4,6 etc dec</p>
 <p>event.values.ra (Double) - Right ascension of the center of the circle if type is CIRCLE</p>
@@ -1060,7 +1089,7 @@
 <p>event.values.radius (Double) - Radius of the circle if type is CIRCLE</p>
 <p>&nbsp;</p>
 <p><b>area_shape_selection</b></p>
-<p>event.action (String) - Will allways be "area_shape_selection". this event will trigger when a user has used the area selection tool</p>
+<p>event.action (String) - Will always be "area_shape_selection". this event will trigger when a user has used the area selection tool</p>
 <p>event.values.overlays (List) - List of overlays with entities that have been selected</p>
 <p>event.values.overlays.name (String) - Name of entity that have been selected in this event</p>
 <p>event.values.overlays.id (String) - ID of entity that have been selected in this event</p>
@@ -1083,7 +1112,7 @@
 <p>Adds a event listener which returns values whenever a shape is selected</p>
 <p><b>Events:&nbsp;</b></p>
 <p><b>shape_selected</b></p>
-<p>event.action (String) - Will allways be "shape_selected"</p>
+<p>event.action (String) - Will always be "shape_selected"</p>
 <p>event.values.overlay (String) - Overlayname to which the shape selected is attached</p>
 <p>event.values.name (String) - Name of the shape</p>
 <p>event.values.id (String) - Id of the shape</p>
@@ -1096,7 +1125,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>registerFoVChangedListener</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Adds a event listener which returns values whenever a the field of view is changed</p>
+<p>Adds an event listener which returns values whenever a the field of view is changed</p>
 <p><b>Events:&nbsp;</b></p>
 <p><b>view_changed</b></p>
 <p>event.action (String) - view_changed</p>
@@ -1139,7 +1168,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>setConeSearchArea</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Sets a circle as cone search area. All counts and data retrival will be within this area. Outside of the area will be blurred</p>
+<p>Sets a circle as cone search area. All counts and data retrieval will be within this area. Outside of the area will be blurred</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>ra (double) - Right Ascension of the center of the circle</p>
 <p>dec (double) - Declination of the center of the circle</p>
@@ -1152,7 +1181,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>setPolygonSearchArea</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Sets a polygon as search area. All counts and data retrival will be within this area. Outside of the area will be blurred</p>
+<p>Sets a polygon as search area. All counts and data retrieval will be within this area. Outside of the area will be blurred</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>stcs (String) - STC String of the polygon</p>
 <p><b>Example:&nbsp;</b></p>
@@ -1220,39 +1249,57 @@
 <p><b>Event:&nbsp;</b></p>
 <p>openOutreachPanel</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Open the outreach panel</p>
+<p>Open the outreach panel of the available telescopes</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="openoutreachpanel">{event: 'openOutreachPanel'}</p>
+<p id="openoutreachpanel">{event: 'openOutreachPanel', content: {telescope: 'JWST'}}</p>
 <p><button onclick="msg_func('openoutreachpanel')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
 <p>closeOutreachPanel</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Close the outreach panel</p>
+<p>Close the outreach panel of the available telescopes</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="closeoutreachpanel">{event: 'closeOutreachPanel'}</p>
+<p id="closeoutreachpanel">{event: 'closeOutreachPanel', content: {telescope: 'HST'}}</p>
 <p><button onclick="msg_func('closeoutreachpanel')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
 <p>getOutreachImageIds</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Get all available outreach image IDs</p>
+<p>Get all available outreach image IDs of the available telescopes</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="getoutreachimageids">{event: 'getOutreachImageIds'}</p>
+<p id="getoutreachimageids">{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}</p>
 <p><button onclick="msg_func('getoutreachimageids')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
 <p>openOutreachImage</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Close the outreach panel</p>
+<p>Open an outreach image of a telescope</p>
 <p><b>Parameters:&nbsp;</b></p>
+<p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
 <p>id (String) - The unique identifier of the outreach image to be opened</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="openoutreachimage">{event:'openOutreachImage',  content:{ id:'heic0406a'}}</p>
+<p id="openoutreachimage">{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}</p>
 <p><button onclick="msg_func('openoutreachimage')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>closeOutreachImage</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Close the outreach image of a telescope</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="closeoutreachimage">{event:'closeOutreachImage',  content:{telescope: 'JWST'}}</p>
+<p><button onclick="msg_func('closeoutreachimage')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
@@ -1264,10 +1311,10 @@
 <p>url (String) - Url pointing to the image</p>
 <p>ra (Double) - Right ascension of the center of the image</p>
 <p>dec (Double) - Declination of the center of the image</p>
-<p>fov (Double) - Field of View of the image width in degress</p>
+<p>fov (Double) - Field of View of the image width in degrees</p>
 <p>rotation (Double) - Rotation of the image</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="addsingleimage">{'event':'addSingleImage', 'content':{name:'MyImage', url:'https://hst.esac.esa.int/tap-server/data?OBSERVATIONID=hst_08597_46_wfpc2_f606w_wf&RETRIEVAL_TYPE=POSTCARD&TAPCLIENT=ESASKY', ra:192.6162107, dec:25.5088941, rot:0.0, fov:0.044}}</p>
+<p id="addsingleimage">{'event':'addSingleImage', 'content':{name:'MyImage', url:'https://cdn.eso.org/images/screen/eso1740a.jpg', ra:272.5123750, dec:-24.0248889, rot:90.0, fov:1.0471666666666666666666666666667}}</p>
 <p><button onclick="msg_func('addsingleimage')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
@@ -1280,7 +1327,7 @@
 <p>url (String) - Url pointing to the image</p>
 <p>ra (Double) - Right ascension of the center of the image</p>
 <p>dec (Double) - Declination of the center of the image</p>
-<p>fov (Double) - Field of View of the image width in degress</p>
+<p>fov (Double) - Field of View of the image width in degrees</p>
 <p>rotation (Double) - Rotation of the image</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="addtiledimage">{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso1723a/', ra:83.7844027714, dec:-5.47870026672, rot:0.18, fov:0.999, width:16877, height:13107}}</p>
