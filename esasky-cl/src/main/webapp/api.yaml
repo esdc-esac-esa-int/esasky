@@ -778,11 +778,11 @@ External Data Centres:
     parameters:
       tab:
         type: (String)
-        description: (Optional) The name of the tab to be opened - case-insensitive
+        description:
+          (Optional) The name of the tab to be opened - case-insensitive
     description:
       Open the External Data Centres Panel. If tab is specified it will open that one. Otherwise it will open on the first tab (Dashboard)
     example:
-        "{event:'openExtTapPanel'}"
         "{event:'openExtTapPanel',  content:{tab: 'Tap Registry'}}"
 
   closeExtTapPanel:
@@ -1261,55 +1261,56 @@ Image:
     parameters:
       telescope:
         type: (String)
-        description: The name of the telescope (HST/JWST) case-insensitive
+        description:
+          The name of the telescope (HST/JWST) case-insensitive
     description:
       Open the outreach panel of the available telescopes
     example:
         "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
-        "{event: 'openOutreachPanel', content: {telescope: 'HST'}}"
   closeOutreachPanel:
     parameters:
       telescope:
         type: (String)
-        description: The name of the telescope (HST/JWST) case-insensitive
+        description:
+          The name of the telescope (HST/JWST) case-insensitive
     description:
       Close the outreach panel of the available telescopes
     example:
-        "{event: 'closeOutreachPanel', content: {telescope: 'JWST'}}"
         "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
   getOutreachImageIds:
     parameters:
       telescope:
         type: (String)
-        description: The name of the telescope (HST/JWST) case-insensitive
+        description:
+          The name of the telescope (HST/JWST) case-insensitive
     description:
       Get all available outreach image IDs of the available telescopes
     example:
         "{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}"
-        "{event: 'getOutreachImageIds', content: {telescope: 'HST'}}"
   openOutreachImage:
     parameters:
       telescope:
         type: (String)
-        description: The name of the telescope (HST/JWST) case-insensitive
+        description:
+          The name of the telescope (HST/JWST) case-insensitive
       id:
         type: (String)
-        description: The unique identifier of the outreach image to be opened
+        description:
+          The unique identifier of the outreach image to be opened
     description:
       Open an outreach image of a telescope
     example:
-        "{event:'openOutreachImage',  content:{telescope: 'JWST', id:'potm2208b'}}"
         "{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}"
   closeOutreachImage:
     parameters:
       telescope:
         type: (String)
-        description: The name of the telescope (HST/JWST) case-insensitive
+        description:
+          The name of the telescope (HST/JWST) case-insensitive
     description:
       Close the outreach image of a telescope
     example:
         "{event:'closeOutreachImage',  content:{telescope: 'JWST'}}"
-        "{event:'closeOutreachImage',  content:{telescope: 'HST'}}"
   addSingleImage:
     description:
       Adds a single image on the sky
