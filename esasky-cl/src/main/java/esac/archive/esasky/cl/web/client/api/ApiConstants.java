@@ -68,6 +68,7 @@ public class ApiConstants {
 	public static final String EXTTAP_RA_COLUMN = "raColumn";
 	public static final String EXTTAP_DEC_COLUMN = "decColumn";
 	public static final String EXTTAP_INTERSECT_COLUMN = "intersectColumn";
+	public static final String EXTTAP_INTERSECT_COLUMN_OLD_API = "IntersectColumn";
 	public static final String EXTTAP_NAME_COLUMN = "name";
 	public static final String EXTTAP_TAP_URL_COLUMN = "tapUrl";
 	public static final String EXTTAP_ADQL_COLUMN = "adql";

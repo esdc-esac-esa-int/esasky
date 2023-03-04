@@ -198,7 +198,8 @@ public class ApiExtTap extends ApiBase{
 			region = options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN);
 		}
 
-		if (options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)) {
+		if (options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)
+				|| options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN_OLD_API)) {
 			region = options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN);
 		}
 		
@@ -211,7 +212,8 @@ public class ApiExtTap extends ApiBase{
 		}
 
 		descriptor.setMetadata(controller.getRootPresenter().getDescriptorRepository().mockSpatialMetadata(ra, dec, region));
-		descriptor.setUseIntersectsPolygon(options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN));
+		descriptor.setUseIntersectsPolygon(options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN)
+				|| options.hasProperty(ApiConstants.EXTTAP_INTERSECT_COLUMN_OLD_API));
 
 		descriptor.setFovLimitDisabled(!dataOnlyInView);
 		descriptor.setColor(color);
