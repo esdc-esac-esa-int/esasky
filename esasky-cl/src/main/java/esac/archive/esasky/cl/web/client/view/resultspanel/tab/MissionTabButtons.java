@@ -54,19 +54,19 @@ public class MissionTabButtons extends Composite {
             wavelengthCanvas.addStyleName("missionTab__wavelengthCanvas");
             wavelengthCanvas.setTitle(Objects.requireNonNull(WavelengthUtils.getWavelengthNameFromValue(descriptor.getWavelengthCenter())).longName);
             compositePanel.add(wavelengthCanvas);
-
-            String title = descriptor.isCustom()
-                    ? descriptor.getMission() + "(" + entity.getQuery() + ")"
-                    : descriptor.getLongName();
-
-            compositePanel.setTitle(title);
-
-            entity.registerQueryChangedObserver(query -> {
-                if (descriptor.isCustom()) {
-                    compositePanel.setTitle(descriptor.getMission() + " (" + entity.getQuery() + ")");
-                }
-            });
         }
+
+        String title = descriptor.isCustom()
+                ? descriptor.getMission() + "(" + entity.getQuery() + ")"
+                : descriptor.getLongName();
+
+        compositePanel.setTitle(title);
+
+        entity.registerQueryChangedObserver(query -> {
+            if (descriptor.isCustom()) {
+                compositePanel.setTitle(descriptor.getMission() + " (" + entity.getQuery() + ")");
+            }
+        });
         if(entity.getTypeLogo() != null) {
         	Image logo = entity.getTypeLogo();
         	logo.addStyleName("tabLogo");
@@ -95,7 +95,7 @@ public class MissionTabButtons extends Composite {
     }
     
     private void plotWavelengthWave(boolean isSelected) {
-        if(canvasId != null) {
+        if(canvasId != null && descriptor.getWavelengthCenter() != null) {
             double minWavelengthAllowed = WavelengthUtils.getMinWavelengthRange();
             double maxWavelengthAllowed = WavelengthUtils.getMaxWavelengthRange();
             double normalizedWavelength = (descriptor.getWavelengthCenter() - minWavelengthAllowed)

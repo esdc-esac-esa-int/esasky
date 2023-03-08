@@ -49,10 +49,10 @@ public class CommonTapDescriptor extends TapDescriptor {
     private String credits;
 
     @JsonProperty("wavelength_start")
-    private double wavelengthStart;
+    private Double wavelengthStart;
 
     @JsonProperty("wavelength_end")
-    private double wavelengthEnd;
+    private Double wavelengthEnd;
 
     @JsonProperty("category")
     private String category;
@@ -132,11 +132,11 @@ public class CommonTapDescriptor extends TapDescriptor {
         return credits;
     }
 
-    public double getWavelengthStart() {
+    public Double getWavelengthStart() {
         return wavelengthStart;
     }
 
-    public double getWavelengthEnd() {
+    public Double getWavelengthEnd() {
         return wavelengthEnd;
     }
 
@@ -160,6 +160,9 @@ public class CommonTapDescriptor extends TapDescriptor {
 
 
     public Double getWavelengthCenter() {
+    	if(getWavelengthStart() == null || getWavelengthEnd() == null) {
+    		return null;
+    	}
         return (getWavelengthStart() + getWavelengthEnd()) / 2;
     }
 
@@ -167,6 +170,8 @@ public class CommonTapDescriptor extends TapDescriptor {
     public String getColor() {
         if (super.color != null && !super.color.isEmpty()) {
             return color;
+        } else if(getWavelengthCenter() == null){
+        	return "#777777";
         } else {
             return ESASkyColors.getColorFromWavelength((Math.max(getWavelengthStart(), 0) + Math.min(getWavelengthEnd(), 100)) / 2);
         }
