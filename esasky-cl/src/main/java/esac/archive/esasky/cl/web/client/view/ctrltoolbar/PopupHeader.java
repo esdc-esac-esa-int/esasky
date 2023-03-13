@@ -78,6 +78,7 @@ public class PopupHeader<T> extends FlowPanel{
 	}
 	
 	public void setHelpText(String text) {
+		labelWithHelpButton.setHelpButtonVisibility(text != null && !text.isEmpty());
 		labelWithHelpButton.setDialogMessage(text);
 	}
 

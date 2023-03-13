@@ -843,10 +843,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
                 });
         ctrlToolBarPanel.add(button);
-        ctrlToolBarPanel.add(treeMapContainer);
-        catalogTreeMapContainer.registerObserver(() -> button.setToggleStatus(false));
+        MainLayoutPanel.addElementToMainArea(treeMapContainer);
 
-        LinkedList<Integer> counts = new LinkedList<Integer>();
+        treeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        treeMapContainer.definePositionFromTopAndLeft();
+        treeMapContainer.registerObserver(() -> button.setToggleStatus(false));
+
+        LinkedList<Integer> counts = new LinkedList<>();
         for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
             counts.add(1);
         }

@@ -5220,4 +5220,16 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 	<!-- internationalization_zh.xml is up to date for everything above -->
+	<text key="treeMap_noData_USER_TREEMAP">
+		No Data Found
+	</text>
+	<text key="treeMap_USER_TREEMAP">
+		Data
+	</text>
+	<text key="treeMap_notInRange_USER_TREEMAP">
+		No data found in this wavelength range.
+	</text>
+	<text key="treeMap_loading_USER_TREEMAP">
+		Loading data
+	</text>
 </Internationalization>
