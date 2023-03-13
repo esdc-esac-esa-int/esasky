@@ -253,8 +253,7 @@ public class Controller implements ValueChangeHandler<String> {
 			String targetFromURL, String fov, String coordinateFrameFromUrl, boolean hideWelcome) {
 		MainLayoutPanel view = new MainLayoutPanel(HiPSFromURL, targetFromURL, fov, coordinateFrameFromUrl, hideWelcome);
 		
-		boolean isInitialPositionDescribedInCoordinates = !targetFromURL.isEmpty() && !RegExp.compile("[a-zA-Z]").test(targetFromURL);
-		presenter = new MainPresenter(view, coordinateFrameFromUrl, isInitialPositionDescribedInCoordinates);
+		presenter = new MainPresenter(view, coordinateFrameFromUrl);
         presenter.go(Controller.this.container);
 	}
 	

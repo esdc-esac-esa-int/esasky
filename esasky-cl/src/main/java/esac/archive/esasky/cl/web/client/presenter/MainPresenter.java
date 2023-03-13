@@ -86,11 +86,11 @@ public class MainPresenter {
         BannerPresenter.View getBannerPanelBottom();
     }
 
-    public MainPresenter(final View inputView, String coordinateFrameFromUrl, boolean isInitialPositionDescribedInCoordinates) {
+    public MainPresenter(final View inputView, String coordinateFrameFromUrl) {
         this.view = inputView;
 
         // Creates the descriptors repository
-        descriptorRepo = DescriptorRepository.init(isInitialPositionDescribedInCoordinates);
+        descriptorRepo = DescriptorRepository.getInstance();
 
         entityRepo = EntityRepository.init(descriptorRepo);
         MocRepository.init();
@@ -475,7 +475,7 @@ public class MainPresenter {
             loadAuthorInformationFromSimbad(author);
 
         } else {
-            descriptorRepo.addPublicationDescriptorLoadObserver(() -> {
+            descriptorRepo.registerDescriptorLoadedObserver(EsaSkyWebConstants.CATEGORY_PUBLICATIONS, () -> {
                 Log.debug("[MainPresenter] PublicationDescriptor ready, loading author informaiton");
                 loadAuthorInformationFromSimbad(author);
             });
@@ -488,7 +488,7 @@ public class MainPresenter {
         if (descriptorRepo.hasDescriptors(EsaSkyWebConstants.CATEGORY_PUBLICATIONS)) {
             loadBibcodeInformaitonFromSimbad(bibcode);
         } else {
-            descriptorRepo.addPublicationDescriptorLoadObserver(() -> {
+            descriptorRepo.registerDescriptorLoadedObserver(EsaSkyWebConstants.CATEGORY_PUBLICATIONS, () -> {
                 Log.debug("[MainPresenter] PublicationDescriptor ready, loading bibcode informaiton");
                 loadBibcodeInformaitonFromSimbad(bibcode);
             });
@@ -499,6 +499,9 @@ public class MainPresenter {
 
     private void loadAuthorInformationFromSimbad(String author) {
         final String authorUrl = "https://ui.adsabs.harvard.edu/#search/q=author%3A%22@@@AUTHOR@@@%22&sort=date%20desc%2C%20bibcode%20desc";
+        if(!author.endsWith(".")) {
+        	author += ".";
+        }
         getTargetPresenter().showAuthorInfo(author, "\n", authorUrl, "@@@AUTHOR@@@");
         CommonEventBus.getEventBus().fireEvent(new AddTableEvent(entityRepo.createPublicationsByAuthorEntity(author)));
 
