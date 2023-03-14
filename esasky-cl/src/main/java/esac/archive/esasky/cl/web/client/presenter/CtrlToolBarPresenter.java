@@ -105,9 +105,11 @@ public class CtrlToolBarPresenter {
 
         void closeExtTapPanelTab();
         JSONArray getOutreachImageIds(ICommand command, String telescope);
+        JSONArray getOutreachImageNames(ICommand command, String telescope);
 
         void showOutreachImage(String id, String telescope);
         void hideOutreachImage(String telescope);
+        void showOutreachImageByName(String name, String telescope);
 
         Map<String, Double[]> getSliderValues();
         void setSliderValues(Map<String, Double[]> sliderMap);
@@ -378,8 +380,16 @@ public class CtrlToolBarPresenter {
         return view.getOutreachImageIds(command, telescope);
     }
 
+    public JSONArray getOutreachImageNames(ICommand command, String telescope) {
+        return view.getOutreachImageNames(command, telescope);
+    }
+
     public void showOutreachImage(String id, String telescope) {
         view.showOutreachImage(id, telescope);
+    }
+
+    public void showOutreachImageByName(String name, String telescope) {
+        view.showOutreachImageByName(name, telescope);
     }
 
     public void hideOutreachImage(String telescope) {

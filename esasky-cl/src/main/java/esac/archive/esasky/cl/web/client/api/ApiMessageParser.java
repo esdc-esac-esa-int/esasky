@@ -681,7 +681,18 @@ public class ApiMessageParser {
 				case 'openOutreachImage':
 					console.log('openOutreachImage event captured');
 					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
-					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(Ljava/lang/String;Ljava/lang/String;)(msg.content.id, telescope)
+                    if (msg.content.id) {
+						apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImage(*)(msg.content.id, telescope)
+					} else if (msg.content.name) {
+						apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::showOutreachImageByName(*)(msg.content.name, telescope)
+					}
+
+					break;
+
+				case 'getOutreachImageNames':
+					console.log('getOutreachImageNames event captured');
+					var telescope = (Object.hasOwn(msg, 'content') && Object.hasOwn(msg.content, 'telescope') ? msg.content.telescope : "HST").toUpperCase();
+					apiImage.@esac.archive.esasky.cl.web.client.api.ApiImage::getAllOutreachImageNames(*)(e, telescope)
 					break;
 
 				case 'closeOutreachImage':

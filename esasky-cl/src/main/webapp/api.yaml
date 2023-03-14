@@ -1287,6 +1287,16 @@ Image:
       Get all available outreach image IDs of the available telescopes
     example:
         "{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}"
+  getOutreachImageNames:
+    parameters:
+      telescope:
+        type: (String)
+        description:
+          The name of the telescope (HST/JWST) case-insensitive
+    description:
+      Get all available outreach image object names for the given telescope
+    example:
+      "{event: 'getOutreachImageNames', content: {telescope: 'JWST'}}"
   openOutreachImage:
     parameters:
       telescope:
@@ -1297,6 +1307,10 @@ Image:
         type: (String)
         description:
           The unique identifier of the outreach image to be opened
+      name:
+        type: (String)
+        description:
+          The object name of the image to be opened
     description:
       Open an outreach image of a telescope
     example:

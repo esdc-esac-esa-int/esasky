@@ -1027,6 +1027,16 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
     }
 
+
+    @Override
+    public JSONArray getOutreachImageNames(ICommand command, String telescope) {
+        if("JWST".equals(telescope)){
+            return outreachJwstPanel.getAllImageNames(command);
+        } else {
+            return outreachImagePanel.getAllImageNames(command);
+        }
+    }
+
     @Override
     public void showOutreachImage(String id, String telescope) {
         if("JWST".equals(telescope)) {
@@ -1034,6 +1044,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
         }else{
             outreachImagePanel.selectShape(id);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+        }
+    }
+
+    @Override
+    public void showOutreachImageByName(String name, String telescope) {
+        if("JWST".equals(telescope)) {
+            outreachJwstPanel.selectShapeByName(name);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
+        }else{
+            outreachImagePanel.selectShapeByName(name);
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
         }
     }

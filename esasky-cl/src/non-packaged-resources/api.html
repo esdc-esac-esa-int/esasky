@@ -1280,12 +1280,24 @@
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
+<p>getOutreachImageNames</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Get all available outreach image object names for the given telescope</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getoutreachimagenames">{event: 'getOutreachImageNames', content: {telescope: 'JWST'}}</p>
+<p><button onclick="msg_func('getoutreachimagenames')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
 <p>openOutreachImage</p>
 <p><b>Description:&nbsp;</b></p>
 <p>Open an outreach image of a telescope</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>telescope (String) - The name of the telescope (HST/JWST) case-insensitive</p>
 <p>id (String) - The unique identifier of the outreach image to be opened</p>
+<p>name (String) - The object name of the image to be opened</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="openoutreachimage">{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}</p>
 <p><button onclick="msg_func('openoutreachimage')" type="button">Send</button></p>
