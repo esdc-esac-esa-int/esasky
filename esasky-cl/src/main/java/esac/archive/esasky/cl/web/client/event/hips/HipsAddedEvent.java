@@ -9,14 +9,14 @@ public class HipsAddedEvent extends GwtEvent<HipsAddedEventHandler> {
     public static final Type<HipsAddedEventHandler> TYPE = new Type<>();
 
     private HiPS hips;
-    private HipsWavelength hipsWavelength;
+    private String hipsWavelength;
     private boolean addIfAlreadyExist;
 
-    public HipsAddedEvent(final HiPS inputHips, final HipsWavelength hipsWavelength) {
+    public HipsAddedEvent(final HiPS inputHips, final String hipsWavelength) {
     	this(inputHips, hipsWavelength, true);
     }
 
-    public HipsAddedEvent(final HiPS inputHips, final HipsWavelength hipsWavelength, final boolean addIfAlreadyExist) {
+    public HipsAddedEvent(final HiPS inputHips, final String hipsWavelength, final boolean addIfAlreadyExist) {
     	this.hips = inputHips;
     	this.hipsWavelength = hipsWavelength;
     	if(this.hips != null) {
@@ -29,7 +29,7 @@ public class HipsAddedEvent extends GwtEvent<HipsAddedEventHandler> {
         return hips;
     }
     
-    public final HipsWavelength getHipsWavelength() {
+    public final String getHipsWavelength() {
     	return hipsWavelength;
     }
 

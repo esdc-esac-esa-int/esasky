@@ -87,13 +87,11 @@ public class EsaSkyConstants {
      * Default survey name.
      */
     public static final String ALADIN_DEFAULT_SURVEY_NAME = "DSS2 color";
-    /**
-     * Default survey name.
-     */
-    public static final HipsWavelength DEFAULT_WAVELENGTH = HipsWavelength.OPTICAL;
-    /**
-     * Default survey URL.
-     */
+
+    /** Default survey name. */
+    public static final String DEFAULT_WAVELENGTH = HipsWavelength.OPTICAL;
+    
+    /** Default survey URL. */
     public static final String ALADIN_DEFAULT_SURVEY_URL = "//cdn.skies.esac.esa.int/DSSColor";
     /**
      * Default HiPS cooframe.
