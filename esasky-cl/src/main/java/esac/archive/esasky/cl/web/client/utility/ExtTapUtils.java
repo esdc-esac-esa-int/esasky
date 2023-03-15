@@ -68,7 +68,7 @@ public class ExtTapUtils {
     }
 
     private static void updateWavelength(CommonTapDescriptor descriptor, Double start, Double end) {
-        if (descriptor == null) {
+        if (descriptor == null || start == null || start.isNaN() || end == null || end.isNaN()) {
             return;
         }
 
@@ -78,10 +78,10 @@ public class ExtTapUtils {
         	return;
         }
 
-        if (start != null && end != null) {
+        if (start > 0 && end > 0) {
             descriptor.setWavelengthStart(descriptor.getWavelengthStart() > 0 ? Math.min(descriptor.getWavelengthStart(), start) : start);
             descriptor.setWavelengthEnd(Math.max(descriptor.getWavelengthEnd(), end));
-        } else if (descriptor.getWavelengthStart() == null && descriptor.getWavelengthEnd() == null) {
+        } else if (descriptor.getWavelengthStart() <= 0 && descriptor.getWavelengthEnd() <= 0) {
             CommonTapDescriptor parent = descriptor.getParent();
             if (parent != null) {
                 descriptor.setWavelengthStart(parent.getWavelengthStart());
