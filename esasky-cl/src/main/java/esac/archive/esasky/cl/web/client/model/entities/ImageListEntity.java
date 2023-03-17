@@ -33,10 +33,12 @@ public class ImageListEntity extends EsaSkyEntity {
 	private OutreachImage lastImage = null;
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
+	private String outreachImageNameToBeOpened;
 	private long timeAtLastFoVFilter = 0L;
 	private ICallback shapeSelectedCallback;
 
 	public static final String IDENTIFIER_KEY = "identifier";
+	public static final String NAME_KEY = "object_name";
 
 	private Timer updateTimer = new Timer() {
 
@@ -137,12 +139,30 @@ public class ImageListEntity extends EsaSkyEntity {
     		String errorMsg = TextMgr.getInstance().getText("imageListEntity_imageNotFound").replace("$ID$", outreachImageIdToBeOpened);
 			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
 					TextMgr.getInstance().getText("error"));
+		} else if (outreachImageNameToBeOpened != null) {
+			GeneralJavaScriptObject [] rowDataArray = GeneralJavaScriptObject.convertToArray(rows);
+
+			for(int i = 0; i < rowDataArray.length; i++) {
+				if(rowDataArray[i].hasProperty(NAME_KEY) && rowDataArray[i].getProperty(NAME_KEY) != null
+						&& rowDataArray[i].getStringProperty(NAME_KEY).replace("\"", "").equals(outreachImageNameToBeOpened)) {
+					selectShapes(i);
+					tablePanel.selectRow(i, true);
+					return;
+				}
+			}
+			String errorMsg = TextMgr.getInstance().getText("imageListEntity_imageNotFound").replace("$ID$", outreachImageNameToBeOpened);
+			DisplayUtils.showMessageDialogBox(errorMsg, TextMgr.getInstance().getText("error").toUpperCase(), UUID.randomUUID().toString(),
+					TextMgr.getInstance().getText("error"));
 		}
 
 	}
 
 	public void setIdToBeOpened(String id) {
 		this.outreachImageIdToBeOpened = id;
+	}
+
+	public void setNameToBeOpened(String name) {
+		this.outreachImageNameToBeOpened = name;
 	}
 
 	@Override
@@ -263,6 +283,34 @@ public class ImageListEntity extends EsaSkyEntity {
 		}
 
 		return result;
+	}
+
+
+	public JSONArray getNames() {
+		JSONObject data = getAllData();
+		JSONArray result = new JSONArray();
+
+		int i = 0;
+		for (String key : data.keySet()) {
+			JSONObject value = data.get(key).isObject();
+			if (value != null && value.containsKey(NAME_KEY) && !Objects.equals(value.get(NAME_KEY).toString(), "null")) {
+				result.set(i++, value.get(NAME_KEY));
+			}
+		}
+
+		return result;
+	}
+
+	public String getIdFromName(String name) {
+		JSONObject data = getAllData();
+		for (String key : data.keySet()) {
+			JSONObject value = data.get(key).isObject();
+			if (value != null && value.containsKey(NAME_KEY) && value.get(NAME_KEY).toString().replace("\"", "").equals(name) && value.containsKey(IDENTIFIER_KEY)) {
+				return value.get(IDENTIFIER_KEY).toString().replace("\"", "");
+			}
+		}
+
+		return null;
 	}
 
 	public JSONObject getAllData() {

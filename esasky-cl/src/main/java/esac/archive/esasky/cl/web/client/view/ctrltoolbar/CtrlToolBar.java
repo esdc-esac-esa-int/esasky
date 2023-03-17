@@ -843,10 +843,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_PLANNINGTOOL, treeMapDescriptor.getName());
                 });
         ctrlToolBarPanel.add(button);
-        ctrlToolBarPanel.add(treeMapContainer);
-        catalogTreeMapContainer.registerObserver(() -> button.setToggleStatus(false));
+        MainLayoutPanel.addElementToMainArea(treeMapContainer);
 
-        LinkedList<Integer> counts = new LinkedList<Integer>();
+        treeMapContainer.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
+        treeMapContainer.definePositionFromTopAndLeft();
+        treeMapContainer.registerObserver(() -> button.setToggleStatus(false));
+
+        LinkedList<Integer> counts = new LinkedList<>();
         for (int i = 0; i < treeMapDescriptor.getMissionDescriptors().size(); i++) {
             counts.add(1);
         }
@@ -1024,6 +1027,16 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
     }
 
+
+    @Override
+    public JSONArray getOutreachImageNames(ICommand command, String telescope) {
+        if("JWST".equals(telescope)){
+            return outreachJwstPanel.getAllImageNames(command);
+        } else {
+            return outreachImagePanel.getAllImageNames(command);
+        }
+    }
+
     @Override
     public void showOutreachImage(String id, String telescope) {
         if("JWST".equals(telescope)) {
@@ -1031,6 +1044,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
         }else{
             outreachImagePanel.selectShape(id);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+        }
+    }
+
+    @Override
+    public void showOutreachImageByName(String name, String telescope) {
+        if("JWST".equals(telescope)) {
+            outreachJwstPanel.selectShapeByName(name);
+            CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
+        }else{
+            outreachImagePanel.selectShapeByName(name);
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
         }
     }

@@ -148,9 +148,11 @@ public class TreeMap extends Chart {
                     if (point.getText() != null && allPoints.containsKey(point.getText())) {
                         PointInformation pointInformation = allPoints.get(point.getText());
                         String tooltipText = pointInformation.longName;
-
-                        final String wavelengthText = "<br/><p style=\"font-size: 10px;\"> (" + pointInformation.getWavelengthLongName() + ") </p><br/>";
-                        tooltipText += wavelengthText;
+                        String wavelengthName = pointInformation.getWavelengthLongName();
+                        if(!wavelengthName.isEmpty()) {
+                        	final String wavelengthText = "<br/><p style=\"font-size: 10px;\"> (" + wavelengthName + ") </p><br/>";
+                        	tooltipText += wavelengthText;
+                        }
 
                         if (pointInformation.credits != null && !pointInformation.credits.isEmpty()) {
                             tooltipText += " [" + pointInformation.credits.replace("U+00F8", "\u00F8") + "]";
@@ -565,9 +567,10 @@ public class TreeMap extends Chart {
     }
 
     private boolean shouldBeShown(double maxWavelength, double minWavelength, PointInformation pointInformation) {
-        return pointInformation.getCount() > 0
-                && minWavelength <= pointInformation.descriptor.getWavelengthEnd()
-                && maxWavelength >= pointInformation.descriptor.getWavelengthStart();
+        return (pointInformation.descriptor.getWavelengthEnd() == null || pointInformation.descriptor.getWavelengthStart() == null)
+        		|| (pointInformation.getCount() > 0
+	                && minWavelength <= pointInformation.descriptor.getWavelengthEnd()
+	                && maxWavelength >= pointInformation.descriptor.getWavelengthStart());
     }
 
     public boolean isHasSlider() {

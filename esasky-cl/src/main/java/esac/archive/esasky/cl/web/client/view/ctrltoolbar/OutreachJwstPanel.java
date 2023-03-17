@@ -38,7 +38,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     private ImageListEntity imageEntity;
     private boolean isHidingFootprints = false;
     private static String outreachImageIdToBeOpened;
-
+    private static String outreachImageNameToBeOpened;
     private FlowPanel opacityPanel;
     private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachJwstPanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
     private final FlowPanel mainContainer = new FlowPanel();
@@ -79,7 +79,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     @Override
     protected void onLoad() {
         super.onLoad();
-        if(outreachImageIdToBeOpened != null) {
+        if(outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) {
             show();
         }
         this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
@@ -135,6 +135,8 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         imageEntity = EntityRepository.getInstance().createImageListEntity(outreachJwstDescriptor);
         if(outreachImageIdToBeOpened != null) {
             imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
+        } else if (outreachImageNameToBeOpened != null) {
+            imageEntity.setNameToBeOpened(outreachImageNameToBeOpened);
         }
         tableContainer.add(imageEntity.createTablePanel().getWidget());
         imageEntity.fetchData();
@@ -218,8 +220,20 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         outreachImageIdToBeOpened = id;
     }
 
+    public static void setStartupName(String name) {
+        outreachImageNameToBeOpened = name;
+    }
+
 
     public JSONArray getAllImageIds(ICommand command) {
+        return getAllImageAttribute(command, true);
+    }
+
+    public JSONArray getAllImageNames(ICommand command) {
+        return getAllImageAttribute(command, false);
+    }
+
+    public JSONArray getAllImageAttribute(ICommand command, boolean id) {
         if (imageEntity == null) {
             getData();
             imageEntity.getTablePanel().registerObserver(new TableObserver() {
@@ -241,7 +255,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
                 @Override
                 public void onDataLoaded(int numberOfRows) {
                     if (numberOfRows > 0) {
-                        command.onResult(imageEntity.getIds());
+                        command.onResult(id ? imageEntity.getIds() : imageEntity.getNames());
                         imageEntity.setIsPanelClosed(true);
                         imageEntity.getTablePanel().unregisterObserver(this);
                     }
@@ -259,12 +273,23 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
             });
 
         } else {
-            return imageEntity.getIds();
+            return id ? imageEntity.getIds() : imageEntity.getNames();
         }
 
         return null;
     }
 
+    public void selectShapeByName(String name) {
+        if (imageEntity != null) {
+            imageEntity.selectShape(imageEntity.getIdFromName(name));
+        } else {
+            OutreachJwstPanel.setStartupName(name);
+        }
+
+        if (!isShowing()) {
+            show();
+        }
+    }
     public void selectShape(String id) {
         if(imageEntity != null) {
             imageEntity.selectShape(id);

@@ -63,7 +63,10 @@ public class LabelWithHelpButton extends FlowPanel{
 	public void setButtonLightIconAndStyle() {
 		button.setPrimaryIcon();
 		button.setLightStyle();
-		
+	}
+	
+	public void setHelpButtonVisibility(boolean visible) {
+		button.setVisible(visible);
 	}
     	
 }

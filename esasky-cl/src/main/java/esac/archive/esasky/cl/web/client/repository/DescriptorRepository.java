@@ -55,36 +55,21 @@ public class DescriptorRepository {
     private final Map<String, List<String>> tableCategoryMap = new HashMap<>();
 
 
-    private final boolean isInitialPositionDescribedInCoordinates;
     private boolean isExtTapOpen = false;
-
-    private static final String NOT_SET = "<not_set>";
-    private static final String COLOR_STRING = "color";
 
     private ICountRequestHandler countRequestHandler;
     private SearchArea searchArea;
-    private static DescriptorRepository _instance;
+    private static DescriptorRepository instance;
 
-    private LinkedList<PublicationDescriptorLoadObserver> publicationDescriptorLoadObservers = new LinkedList<>();
-
-    public interface PublicationDescriptorLoadObserver {
-        void onLoad();
-    }
-
-    public static DescriptorRepository init(boolean isInitialPositionDescribedInCoordinates) {
-        _instance = new DescriptorRepository(isInitialPositionDescribedInCoordinates);
-        return _instance;
-    }
 
     public static DescriptorRepository getInstance() {
-        if (_instance == null) {
-            throw new AssertionError("You have to call init first");
+        if (instance == null) {
+        	instance = new DescriptorRepository();
         }
-        return _instance;
+        return instance;
     }
 
-    private DescriptorRepository(boolean isInitialPositionDescribedInCoordinates) {
-        this.isInitialPositionDescribedInCoordinates = isInitialPositionDescribedInCoordinates;
+    private DescriptorRepository() {
     }
 
     public void setCountRequestHandler(ICountRequestHandler countRequestHandler) {
@@ -657,9 +642,5 @@ public class DescriptorRepository {
 
     public void setIsExtTapOpen(boolean isExtTapOpen) {
         this.isExtTapOpen = isExtTapOpen;
-    }
-
-    public void addPublicationDescriptorLoadObserver(PublicationDescriptorLoadObserver observer) {
-        publicationDescriptorLoadObservers.add(observer);
     }
 }

@@ -35,7 +35,7 @@ public class SkiesMenu {
         return null;
     }
 
-    public HipsWavelength getWavelengthFromHiPS(HiPS hips) {
+    public String getWavelengthFromHiPS(HiPS hips) {
         for (SkiesMenuEntry currentEntry : menuEntries) {
             for (HiPS currentHiPS : currentEntry.getHips()) {
                 if (currentHiPS.getSurveyId().equals(hips.getSurveyId())) {
@@ -46,7 +46,7 @@ public class SkiesMenu {
         return null;
     }
     
-    public HipsWavelength getWavelengthFromHiPSName(String hipsName) {
+    public String getWavelengthFromHiPSName(String hipsName) {
         for (SkiesMenuEntry currentEntry : menuEntries) {
             for (HiPS currentHiPS : currentEntry.getHips()) {
                 if (currentHiPS.getSurveyName().equalsIgnoreCase(hipsName)) {
@@ -58,7 +58,7 @@ public class SkiesMenu {
     }
     
 
-    public HiPS getHiPS(HipsWavelength wavelength, String surveyId) {
+    public HiPS getHiPS(String wavelength, String surveyId) {
         for (SkiesMenuEntry currentEntry : menuEntries) {
 
             if (currentEntry.getWavelength() == wavelength) {
@@ -72,7 +72,7 @@ public class SkiesMenu {
         return null;
     }
 
-    public HiPS getHiPS(HipsWavelength wavelength, String mission, String surveyId) {
+    public HiPS getHiPS(String wavelength, String mission, String surveyId) {
         for (SkiesMenuEntry currentEntry : menuEntries) {
 
             if (currentEntry.getWavelength() == wavelength) {
@@ -87,7 +87,7 @@ public class SkiesMenu {
         return null;
     }
 
-    public SkiesMenuEntry getHiPSListByWavelength(HipsWavelength wavelength) {
+    public SkiesMenuEntry getHiPSListByWavelength(String wavelength) {
         for (SkiesMenuEntry currentEntry : menuEntries) {
 
             if (currentEntry.getWavelength() == wavelength) {

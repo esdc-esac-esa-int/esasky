@@ -17,8 +17,8 @@ public class WavelengthUtils {
     private static final String UNKNOWN = "Unknown";
 
     public static String getShortName(CommonTapDescriptor descriptor) {
-        final double wavelengthStart = descriptor.getWavelengthStart();
-        final double wavelengthEnd = descriptor.getWavelengthEnd();
+        final Double wavelengthStart = descriptor.getWavelengthStart();
+        final Double wavelengthEnd = descriptor.getWavelengthEnd();
 
         WavelengthName wls = getWavelengthNameFromValue(wavelengthEnd);
         WavelengthName wle = getWavelengthNameFromValue(wavelengthStart);
@@ -35,8 +35,8 @@ public class WavelengthUtils {
     }
     
     public static String getLongName(CommonTapDescriptor descriptor) {
-        final double wavelengthStart = descriptor.getWavelengthStart();
-        final double wavelengthEnd = descriptor.getWavelengthEnd();
+        final Double wavelengthStart = descriptor.getWavelengthStart();
+        final Double wavelengthEnd = descriptor.getWavelengthEnd();
 
         WavelengthName wls = getWavelengthNameFromValue(wavelengthEnd);
         WavelengthName wle = getWavelengthNameFromValue(wavelengthStart);
@@ -54,13 +54,18 @@ public class WavelengthUtils {
 
     public static void setWavelengthRangeMaxMin(List<CommonTapDescriptor> descriptors) {
         for(CommonTapDescriptor descriptor : descriptors) {
-            double meanWavelength = descriptor.getWavelengthCenter();
-            minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
-            maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
+            Double meanWavelength = descriptor.getWavelengthCenter();
+            if(meanWavelength != null) {
+            	minWavelengthRange = Math.min(minWavelengthRange, meanWavelength);
+            	maxWavelengthRange = Math.max(maxWavelengthRange, meanWavelength);
+            }
         }
     }
     
-    public static WavelengthName getWavelengthNameFromValue(double value) {
+    public static WavelengthName getWavelengthNameFromValue(Double value) {
+    	if(value == null) {
+    		return null;
+    	}
     	for(WavelengthName wavelengthName : wavelengthNames) {
     		if(value < wavelengthName.maxWavelength) {
     			return wavelengthName;

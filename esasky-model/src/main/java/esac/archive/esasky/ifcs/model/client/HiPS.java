@@ -47,7 +47,12 @@ public class HiPS {
     /** icon */
     String icon;
     /** Wavelength */
-    HipsWavelength hipsWavelength;
+    String hipsWavelength;
+    /** Category */
+    String hipsCategory;
+    /** defaultHIPS */
+    boolean defaultHIPS = false;
+    
     /*
      * hips color default map
      */
@@ -210,11 +215,11 @@ public class HiPS {
 		this.files = files;
 	}
 
-	public HipsWavelength getHipsWavelength() {
+	public String getHipsWavelength() {
 		return hipsWavelength;
 	}
 
-	public void setHipsWavelength(HipsWavelength hipsWavelength) {
+	public void setHipsWavelength(String hipsWavelength) {
 		this.hipsWavelength = hipsWavelength;
 	}
 
@@ -224,6 +229,22 @@ public class HiPS {
 
 	public void setReversedColorMap(boolean isReversedColorMap) {
 		this.isReversedColorMap = isReversedColorMap;
+	}
+
+	public String getHipsCategory() {
+		return hipsCategory;
+	}
+
+	public void setHipsCategory(String hipsCategory) {
+		this.hipsCategory = hipsCategory;
+	}
+
+	public boolean isDefaultHIPS() {
+		return defaultHIPS;
+	}
+
+	public void setDefaultHIPS(boolean defaultHIPS) {
+		this.defaultHIPS = defaultHIPS;
 	}
 	
 }

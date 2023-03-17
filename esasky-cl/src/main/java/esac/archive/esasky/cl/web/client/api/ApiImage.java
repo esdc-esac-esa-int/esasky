@@ -128,8 +128,26 @@ public class ApiImage extends ApiBase{
 
 	}
 
+	public void getAllOutreachImageNames(JavaScriptObject widget, String telescope) {
+		JSONObject obj = new JSONObject();
+		JSONArray names = controller.getRootPresenter().getCtrlTBPresenter().getOutreachImageNames(result -> {
+			obj.put("available_names", result);
+			sendBackToWidget(obj, null, widget);
+		}, telescope);
+
+		if (names.size() > 0) {
+			obj.put("available_names", names);
+			sendBackToWidget(obj, null, widget);
+		}
+
+	}
+
 	public void showOutreachImage(String id, String telescope) {
 		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImage(id, telescope);
+	}
+
+	public void showOutreachImageByName(String name, String telescope) {
+		controller.getRootPresenter().getCtrlTBPresenter().showOutreachImageByName(name, telescope);
 	}
 
 	public void hideOutreachImage(String telescope) {

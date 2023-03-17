@@ -94,7 +94,8 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		this.add(treeMapContainer);
 		
 		header.setText(TextMgr.getInstance().getText("treeMap_" + context));
-		header.setHelpText(TextMgr.getInstance().getText("treeMapContainer_help_" + context));
+		String helpText = TextMgr.getInstance().hasText("treeMapContainer_help_" + context) ? TextMgr.getInstance().getText("treeMapContainer_help_" + context): null;
+		header.setHelpText(helpText);
 		
 		MainLayoutPanel.addMainAreaResizeHandler(event -> updateMaxSize());
 

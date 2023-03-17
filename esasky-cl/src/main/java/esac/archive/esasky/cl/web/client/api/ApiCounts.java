@@ -45,7 +45,11 @@ public class ApiCounts extends ApiBase {
         JSONObject obsObj = new JSONObject();
 
         for (CommonTapDescriptor currDesc : descriptors) {
-            double meanWavelength = currDesc.getWavelengthCenter();
+            Double meanWavelength = currDesc.getWavelengthCenter();
+            if(meanWavelength == null) {
+            	obsObj.put(currDesc.getMission(), new JSONObject());
+            	continue;
+            }
 
             JSONObject descObj = new JSONObject();
             WavelengthName name = WavelengthUtils.getWavelengthNameFromValue(meanWavelength);
