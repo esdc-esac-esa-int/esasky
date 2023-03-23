@@ -137,7 +137,7 @@ HiPS:
     description:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
-      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
+      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
   addHiPSWithParams:
     parameters:
       hips.id:
@@ -161,7 +161,7 @@ HiPS:
     description:
       Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
     example:
-      "{event:'addHiPSWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
+      "{event:'addHiPSWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
   setHipsColorPalette:
     parameters:
       colorPalette:
