@@ -40,7 +40,6 @@ public class HipsWavelength {
 			add(SUBMM);
 			add(RADIO);
 			add(OTHERS);
-			add(USER);
 			add(GW);
 		}
 	};

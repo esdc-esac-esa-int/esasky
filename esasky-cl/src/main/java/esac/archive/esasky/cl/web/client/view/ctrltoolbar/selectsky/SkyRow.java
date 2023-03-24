@@ -165,7 +165,7 @@ public class SkyRow extends Composite implements Selectable{
 			@Override
 			public void onSelectedChange() {
 				List<HiPS> listOfHipsByWavelength;
-				if(!HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject()) || wavelengthDropDown.getSelectedObject() == HipsWavelength.USER) {
+				if(!HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject())) {
 					listOfHipsByWavelength = HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject().toString());
 					fillHiPSMenuBar(listOfHipsByWavelength, true);
 				} else {
@@ -214,8 +214,7 @@ public class SkyRow extends Composite implements Selectable{
 	    }
 	    
 		for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
-			if(menuEntry.getWavelength() == HipsWavelength.USER || 
-					(!HipsWavelength.wavelengthList.contains(menuEntry.getWavelength()) )) {
+			if((!HipsWavelength.wavelengthList.contains(menuEntry.getWavelength()) )) {
 				for(HiPS hips: menuEntry.getHips()) {
 					
 					if(HipsWavelength.getListOfUserHips().get(menuEntry.getWavelength()) == null) {
@@ -231,9 +230,7 @@ public class SkyRow extends Composite implements Selectable{
 		}
 		
 		for(String category: HipsWavelength.getListOfUserHips().keySet()) {
-			if(!category.equals(HipsWavelength.USER)) {
 				createWavelengthOption(category);
-			}
 			
 		}
 		
@@ -345,7 +342,7 @@ public class SkyRow extends Composite implements Selectable{
         hipsDropDown.removeMenuItem(menuItemToRemove);
         List<SkiesMenuEntry> entriesToDelete = new LinkedList<SkiesMenuEntry>();
         for (final SkiesMenuEntry menuEntry : skiesMenu.getMenuEntries()) {
-            if(menuEntry.getWavelength() == HipsWavelength.USER || !HipsWavelength.wavelengthList.contains(menuEntry.getWavelength())) {
+            if(!HipsWavelength.wavelengthList.contains(menuEntry.getWavelength())) {
                 for(HiPS hips: menuEntry.getHips()) {
                     if(menuItemToRemove.getItem().equals(hips)) {
                         entriesToDelete.add(menuEntry);
@@ -643,7 +640,7 @@ public class SkyRow extends Composite implements Selectable{
 	public void refreshUserDropdown() {
 	    blockNotifications = true;
 	    refreshWavelengthDropdown();
-	    if(wavelengthDropDown.getSelectedObject() == HipsWavelength.USER || !HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject())) {
+	    if(!HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject())) {
 	    	HiPS selectedObject = hipsDropDown.getSelectedObject();
 	        fillHiPSMenuBar(HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject()), true);
 	        hipsDropDown.selectObject(selectedObject);
