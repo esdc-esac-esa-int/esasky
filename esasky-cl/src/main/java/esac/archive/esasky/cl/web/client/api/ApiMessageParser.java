@@ -104,7 +104,9 @@ public class ApiMessageParser {
 					console.log('changeHiPSWithParams event captured!');
 					console.log(msg);
 					console.log("HiPS URL "+msg.content.hips.url);
-					msg.content.hips['category'] = ""
+					if(!msg.content.hips.hasOwnProperty('category')){
+					   msg.content.hips['category'] = "USER";
+					}
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
 						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, @java.lang.Boolean::FALSE, false, e);
 					break
@@ -114,7 +116,7 @@ public class ApiMessageParser {
 					console.log(msg);
 					console.log("HiPS URL "+msg.content.hips.url);
 					if(!msg.content.hips.hasOwnProperty('category')){
-					   msg.content.hips['category'] = "";
+					   msg.content.hips['category'] = "USER";
 					}
 					
 					if(msg.content.hips.hasOwnProperty('removeFirst') && msg.content.hips['removeFirst'] === 'true'){
