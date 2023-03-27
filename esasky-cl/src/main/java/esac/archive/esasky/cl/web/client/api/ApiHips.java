@@ -326,7 +326,7 @@ public class ApiHips extends ApiBase{
 				hipsWavelength = null;
 			}
 		}
-		if (null == hipsWavelength) {
+		if (null == hipsWavelength || wavelength.equalsIgnoreCase("ALL") || wavelength.equals("")) {
 			return getHipsAllWavelengths(onlyName);
 		} else {
 			return getHiPSByWavelength(hipsWavelength);

@@ -5,7 +5,7 @@
      var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"')
      var esaskyFrame = document.getElementsByClassName("iframe-container")[0].children[0];
      console.log(cmd2)
-     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int/versions/esasky-5.0')
+     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int')
      var input = document.getElementById("messageinput");
      console.log(input)
      input.value=cmd;
@@ -44,7 +44,7 @@
 <div class="panel" id="info" style="display: block;">
 <p>All commands should be sent to the ESASky element as http postmessages. For example by:</p>
 
-<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘https://sky.esa.int/versions/esasky-5.0’)</p>
+<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘https://sky.esa.int’)</p>
 
 <p>Where <i>esaskyFrameName</i> is the elementId where the esasky page is embedded, <i>command </i>is a JSON containing ‘event’ for function name and ‘content’ with all parameters</p>
 
