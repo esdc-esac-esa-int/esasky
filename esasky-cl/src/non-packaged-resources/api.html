@@ -44,7 +44,7 @@
 <div class="panel" id="info" style="display: block;">
 <p>All commands should be sent to the ESASky element as http postmessages. For example by:</p>
 
-<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘https://sky.esa.int’)</p>
+<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘http://sky.esa.int’)</p>
 
 <p>Where <i>esaskyFrameName</i> is the elementId where the esasky page is embedded, <i>command </i>is a JSON containing ‘event’ for function name and ‘content’ with all parameters</p>
 
@@ -185,7 +185,7 @@
 <p><b>Event:&nbsp;</b></p>
 <p>addHips</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Add a HiPS programmatically to the skypanel list</p>
+<p>Add a HiPS programmatically to the sky panel list</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>hipsName (String)<p><b>Parameters:&nbsp;</b></p>
 <p>extras (Dictionary) - Empty if success</p>
@@ -196,22 +196,22 @@
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
-<p>changeHiPSWithParams</p>
+<p>changeHipsWithParams</p>
 <p><b>Description:&nbsp;</b></p>
 <p>Change HiPS programmatically by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
-<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
+<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
 <p><button onclick="msg_func('changehipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
-<p>addHiPSWithParams</p>
+<p>addHipsWithParams</p>
 <p><b>Description:&nbsp;</b></p>
 <p>Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
-<p id="addhipswithparams">{event:'addHiPSWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https:cdaftp.cfa.harvard.educxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
+<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
 <p><button onclick="msg_func('addhipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
@@ -1342,7 +1342,7 @@
 <p>fov (Double) - Field of View of the image width in degrees</p>
 <p>rotation (Double) - Rotation of the image</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="addtiledimage">{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso1723a/', ra:83.7844027714, dec:-5.47870026672, rot:0.18, fov:0.999, width:16877, height:13107}}</p>
+<p id="addtiledimage">{event:'addTiledImage', content:{name:'MyImage', url:'https://cdn.eso.org/images/zoomable/eso0907a/', ra:337.4107083, dec:-20.8237005, rot:-0.1, fov:0.467, width:7059, height:6535}}</p>
 <p><button onclick="msg_func('addtiledimage')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
