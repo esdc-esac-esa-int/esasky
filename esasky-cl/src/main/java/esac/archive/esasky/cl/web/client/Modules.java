@@ -26,6 +26,7 @@ public class Modules {
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_CLEAN, createCleanMap());
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_ESASKY, createEsaskyMap());
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_JWST, createJWSTMap());
+        allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_EUCLID, createEuclidMap());
 		allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_KIOSK, createKioskMap());
         
         currentModuleMap = allModuleMaps.get(EsaSkyWebConstants.MODULE_MODE_ESASKY);
@@ -129,6 +130,37 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
 		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, true);
+		map.put(EsaSkyWebConstants.MODULE_DICE, false);
+		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
+        map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
+		
+		return map;
+	}
+	
+	private static HashMap<String, Boolean> createEuclidMap() {
+        HashMap<String, Boolean> map = createDefaultMap();
+		
+		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, false);
+		map.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
+		map.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
+		map.put(EsaSkyWebConstants.MODULE_SCREENSHOT, true);
+		map.put(EsaSkyWebConstants.MODULE_SHARE, true);
+		map.put(EsaSkyWebConstants.MODULE_HELP, false);
+		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, false);
+		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
+		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
+		map.put(EsaSkyWebConstants.MODULE_OBS, true);
+		map.put(EsaSkyWebConstants.MODULE_CAT, true);
+		map.put(EsaSkyWebConstants.MODULE_SPE, true);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, false);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, false);
+		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
+		map.put(EsaSkyWebConstants.MODULE_GW, false);
+		map.put(EsaSkyWebConstants.MODULE_SSO, false);
+		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
+		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
+		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, false);
 		map.put(EsaSkyWebConstants.MODULE_DICE, false);
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
