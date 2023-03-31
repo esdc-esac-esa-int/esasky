@@ -160,7 +160,7 @@ public class ApiMessageParser {
 
 				case 'getAvailableHiPS':
 				case 'getAvailableHips':
-					console.log('getAvailableHiPS event captured!');
+					console.log('getAvailableHips event captured!');
 					console.log(msg);
 					if(!msg.content.hasOwnProperty('wavelength')){
 						msg.content['wavelength'] = "";

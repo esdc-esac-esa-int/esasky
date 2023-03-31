@@ -42,7 +42,7 @@
 <div id="main" style="overflow-y: scroll;height: 900px"><button class="accordion">Info:</button>
 
 <div class="panel" id="info" style="display: block;">
-<p>All commands should be sent to the ESASky element as http postmessages. For example by:</p>
+<p>All commands should be sent to the ESASky element as <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" target="_blank" >postMessages</a>. For example by:</p>
 
 <p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘http://sky.esa.int’)</p>
 
@@ -159,13 +159,13 @@
 <button class="accordion">HiPS</button>
 <div class="panel" id="hips">
 <p><b>Event:&nbsp;</b></p>
-<p>getAvailableHiPS</p>
+<p>getAvailableHips</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>wavelength (String)(Optional) - Wavelength in capital e.g. "OPTICAL". Defaults to empty.</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>values(JSON (Dictionary) - If wavelength is empty this is a dictionary of wavelengths otherwise this is a dictionary with available HiPS in that wavelength</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="getavailablehips">{event:'getAvailableHiPS',  content:{wavelength:'OPTICAL'}}</p>
+<p id="getavailablehips">{event:'getAvailableHips',  content:{wavelength:'OPTICAL'}}</p>
 <p><button onclick="msg_func('getavailablehips')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
@@ -211,7 +211,7 @@
 <p>Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
-<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
+<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}</p>
 <p><button onclick="msg_func('addhipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
