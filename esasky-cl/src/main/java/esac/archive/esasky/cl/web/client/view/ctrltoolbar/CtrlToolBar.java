@@ -72,7 +72,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     private final ExtTapPanel extTapPanel = new ExtTapPanel();
     enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
     private HashMap<String, CustomTreeMap> customTreeMaps = new HashMap<String, CustomTreeMap>();
-
+    private Timer labelRotationTimer;
     private EsaSkyButton exploreBtn;
     private EsaSkyToggleButton selectSkyButton;
     private EsaSkyToggleButton planObservationButton;
@@ -243,13 +243,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         selectSkyButton.addClickHandler(event -> {
             CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(selectSkyButton));
             sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_SKIES);
+            hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
         });
 
-        selectSkyPanel.addCloseHandler(event -> selectSkyButton.setToggleStatus(false));
+        selectSkyPanel.addCloseHandler(event -> {
+            selectSkyButton.setToggleStatus(false);
+            rotateButtonLabelVisibility(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+        });
 
 
         if (isKiosk) {
-            selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            selectSkyPanel.setSuggestedPosition(suggestedPositionLeft, 100);
             selectSkyPanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(selectSkyButton);
         }
@@ -575,8 +579,20 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         button.getElement().setId("targetListButton");
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_uploadTargetList"));
         button.addClickHandler(event -> {
-            MainPresenter.getInstance().getTargetPresenter().toggleTargetList();
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
+            if(!MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().isShowing()){
+                CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(targetListButton));
+                MainPresenter.getInstance().getTargetPresenter().toggleTargetList();
+                if (isKiosk) {
+                    MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().setSuggestedPosition(suggestedPositionLeft, 100);
+                }
+                hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, GoogleAnalytics.ACT_CTRLTOOLBAR_TARGETLIST, "");
+            }
+            else{
+                targetListButton.setToggleStatus(false);
+                MainPresenter.getInstance().getTargetPresenter().toggleTargetList();
+                rotateButtonLabelVisibility(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+            }
         });
 
         if (isKiosk) {
@@ -596,6 +612,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachImageButton.addClickHandler(event -> {
                     CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.HST));
                     CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachImageButton));
+                    if(outreachImageButton.getToggleStatus()){
+                        hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+                    }
                     sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
                 }
         );
@@ -603,10 +622,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachImagePanel.definePositionFromTopAndLeft();
         outreachImagePanel.hide();
-        outreachImagePanel.addCloseHandler(event -> outreachImageButton.setToggleStatus(false));
+        outreachImagePanel.addCloseHandler(event -> {
+            outreachImageButton.setToggleStatus(false);
+            rotateButtonLabelVisibility(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+        });
 
         if (isKiosk) {
-            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            outreachImagePanel.setSuggestedPosition(suggestedPositionLeft, 100);
             outreachImagePanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(outreachImageButton);
         }
@@ -625,6 +647,9 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachJwstButton.addClickHandler(event -> {
                     CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.JWST));
                     CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(outreachJwstButton));
+                    if(outreachJwstButton.getToggleStatus()){
+                        hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+                    }
                     sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE);
                 }
         );
@@ -632,10 +657,13 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, suggestedPositionTop);
         outreachJwstPanel.definePositionFromTopAndLeft();
         outreachJwstPanel.hide();
-        outreachJwstPanel.addCloseHandler(event -> outreachJwstButton.setToggleStatus(false));
+        outreachJwstPanel.addCloseHandler(event -> {
+            outreachJwstButton.setToggleStatus(false);
+            rotateButtonLabelVisibility(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+        });
 
         if (isKiosk) {
-            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 180);
+            outreachJwstPanel.setSuggestedPosition(suggestedPositionLeft, 100);
             outreachJwstPanel.definePositionFromTopAndLeft();
             addKioskButtonStyle(outreachJwstButton);
         }
@@ -1099,11 +1127,20 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     }
 
+    private void hideAllLabels(List<EsaSkyButton> btnList) {
+        for (EsaSkyButton btn : btnList) {
+            btn.hideLabel();
+        }
+    }
     private void rotateButtonLabelVisibility(List<EsaSkyButton> btnList) {
+        if (labelRotationTimer != null) {
+            labelRotationTimer.cancel();
+        }
+
         if (!btnList.isEmpty()) {
             btnList.get(0).showLabel();
         }
-        Timer timer = new Timer() {
+        labelRotationTimer = new Timer() {
             @Override
             public void run() {
                 for (int i = 0; i < btnList.size(); i++) {
@@ -1120,6 +1157,6 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
         };
 
-        timer.scheduleRepeating(5000);
+        labelRotationTimer.scheduleRepeating(5000);
     }
 }
