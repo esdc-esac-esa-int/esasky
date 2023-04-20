@@ -230,7 +230,17 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
     @Override
     protected void onLoad() {
-        MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().addCloseHandler(event -> targetListButton.setToggleStatus(false));
+        MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().addCloseHandler(event -> {
+            rotateButtonLabelVisibility(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+            targetListButton.setToggleStatus(false);
+        });
+        checkPanelsVisibility();
+    }
+
+    private void checkPanelsVisibility() {
+        if (selectSkyPanel.isShowing() || outreachImagePanel.isShowing() || outreachJwstPanel.isShowing() || MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().isShowing()) {
+            hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
+        }
     }
 
     private EsaSkyButton createSkiesMenuBtn() {
