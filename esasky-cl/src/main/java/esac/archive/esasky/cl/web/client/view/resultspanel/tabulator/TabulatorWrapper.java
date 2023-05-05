@@ -2198,12 +2198,12 @@ public class TabulatorWrapper {
             headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getBooleanFilterEditorFunc(*)(wrapper);
             headerFilterFunc = "like";
             sorter = "string";
-        } else if (ucd.includes("pos.eq.dec") || utype.includes("Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C2")) {
+        } else if ((ucd.includes("pos.eq.dec") && !ucd.includes("pos.pm")) || utype.includes("Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C2")) {
             formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDecFormatterFunc()();
             headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
             headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
             sorter = "number";
-        } else if (ucd.includes("pos.eq.ra") || utype.includes("Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C1")) {
+        } else if ((ucd.includes("pos.eq.ra") && !ucd.includes("pos.pm")) || utype.includes("Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C1")) {
             formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRaFormatterFunc()();
             headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
             headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDoubleFilterFunc()();
