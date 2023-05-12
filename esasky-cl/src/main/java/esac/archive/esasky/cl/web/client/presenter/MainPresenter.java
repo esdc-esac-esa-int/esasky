@@ -380,7 +380,7 @@ public class MainPresenter {
             entity.setId(descriptor.getId());
         }
 
-        if(userData.getProperty("overlaySet").hasProperty("refreshable") && userData.getProperty("overlaySet").getProperty("refreshable").equals("true")) {
+        if(userData.getProperty("overlaySet").hasProperty("refreshable") && userData.getProperty("overlaySet").getStringProperty("refreshable").equals("true")) {
             entity.setRefreshable(false);
             entity.setCustomRefreshable(true);
         }else{

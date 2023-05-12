@@ -48,6 +48,7 @@ import java.util.Objects;
  */
 public class CloseableTabLayoutPanel extends Composite {	
 	
+    private static final String REFRESH_TITLE = "closeableTabLayoutPanel_refreshData";
 
     private final Resources resources = GWT.create(Resources.class);
     private final CssResource style;
@@ -224,22 +225,42 @@ public class CloseableTabLayoutPanel extends Composite {
 	
     private void ensureCorrectRelatedInformationVisibilty (GeneralEntityInterface entity){
 
-    	if(entity.isSampEnabled()) {
-    		sendButton.getElement().getStyle().setDisplay(Display.BLOCK);
-    	} else {
-    		sendButton.getElement().getStyle().setDisplay(Display.NONE);
-    	}
-    	if(entity.isRefreshable()) {
-    		refreshButton.getElement().getStyle().setDisplay(Display.BLOCK);
+    	setSampEnabled(entity);
+    	setRefreshable(entity);
+        setCustomRefreshable(entity);
+        setCustomizable(entity);
+
+        if (Objects.equals(entity.getDescriptor().getCategory(), EsaSkyWebConstants.CATEGORY_EXTERNAL)
+                || "publications".equals(entity.getIcon())) {
+            configureButton.getElement().getStyle().setDisplay(Display.NONE);
+        } else {
+            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
+        }
+    }
+
+    private void setSampEnabled(GeneralEntityInterface entity) {
+        if(entity.isSampEnabled()) {
+            sendButton.getElement().getStyle().setDisplay(Display.BLOCK);
+        } else {
+            sendButton.getElement().getStyle().setDisplay(Display.NONE);
+        }
+    }
+
+    private void setRefreshable(GeneralEntityInterface entity) {
+        if(entity.isRefreshable()) {
+            refreshButton.getElement().getStyle().setDisplay(Display.BLOCK);
             if (entity.getDescriptor().isCustom()) {
                 queryButton.getElement().getStyle().setDisplay(Display.BLOCK);
             } else {
                 queryButton.getElement().getStyle().setDisplay(Display.NONE);
             }
-    	} else {
-    		refreshButton.getElement().getStyle().setDisplay(Display.NONE);
+        } else {
+            refreshButton.getElement().getStyle().setDisplay(Display.NONE);
             queryButton.getElement().getStyle().setDisplay(Display.NONE);
-    	}
+        }
+    }
+
+    private void setCustomRefreshable(GeneralEntityInterface entity) {
         if(entity.isCustomRefreshable()) {
             customRefreshButton.getElement().getStyle().setDisplay(Display.BLOCK);
             if (entity.getDescriptor().isCustom()) {
@@ -251,17 +272,14 @@ public class CloseableTabLayoutPanel extends Composite {
             customRefreshButton.getElement().getStyle().setDisplay(Display.NONE);
             queryButton.getElement().getStyle().setDisplay(Display.NONE);
         }
+    }
+
+    private void setCustomizable(GeneralEntityInterface entity) {
         if (entity.isCustomizable()) {
             styleButton.getElement().getStyle().setDisplay(Display.BLOCK);
             styleButton.setCircleColor(entity.getColor());
         } else {
             styleButton.getElement().getStyle().setDisplay(Display.NONE);
-        }
-        if (Objects.equals(entity.getDescriptor().getCategory(), EsaSkyWebConstants.CATEGORY_EXTERNAL)
-                || "publications".equals(entity.getIcon())) {
-            configureButton.getElement().getStyle().setDisplay(Display.NONE);
-        } else {
-            configureButton.getElement().getStyle().setDisplay(Display.BLOCK);
         }
     }
 
@@ -338,7 +356,7 @@ public class CloseableTabLayoutPanel extends Composite {
 
         EsaSkyButton btn = new EsaSkyButton(resources.queryIcon());
         btn.setMediumStyle();
-        btn.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        btn.setTitle(TextMgr.getInstance().getText(REFRESH_TITLE));
         btn.addStyleName("tabButton");
         btn.addClickHandler(arg0 -> {
             ITablePanel tabPanel = getSelectedWidget();
@@ -413,7 +431,7 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton createRefreshButton() {
         EsaSkyButton refreshButton = new EsaSkyButton(resources.refreshIcon());
         refreshButton.setMediumStyle();
-        refreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        refreshButton.setTitle(TextMgr.getInstance().getText(REFRESH_TITLE));
         refreshButton.addStyleName("tabButton");
 
         refreshButton.addClickHandler(arg0 -> {
@@ -429,7 +447,7 @@ public class CloseableTabLayoutPanel extends Composite {
     private EsaSkyButton createCustomRefreshButton() {
         EsaSkyButton customRefreshButton = new EsaSkyButton(resources.refreshIcon());
         customRefreshButton.setMediumStyle();
-        customRefreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        customRefreshButton.setTitle(TextMgr.getInstance().getText(REFRESH_TITLE));
         customRefreshButton.addStyleName("tabButton");
 
         customRefreshButton.addClickHandler(arg0 -> {
