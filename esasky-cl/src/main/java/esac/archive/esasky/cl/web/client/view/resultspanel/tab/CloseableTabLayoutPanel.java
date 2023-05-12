@@ -4,10 +4,13 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -17,6 +20,7 @@ import com.google.gwt.user.client.ui.*;
 import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -78,6 +82,7 @@ public class CloseableTabLayoutPanel extends Composite {
     private final EsaSkyButton queryButton;
     private final EsaSkyButton closeAllButton;
     private final EsaSkyButton refreshButton;
+    private final EsaSkyButton customRefreshButton;
     private final EsaSkyButton styleButton;
     private final EsaSkyButton recenterButton;
     private EsaSkyButton sendButton;
@@ -167,11 +172,13 @@ public class CloseableTabLayoutPanel extends Composite {
         shadedArea.add(closeMinimizeButtonsPanel);
         queryButton = createChangeQueryButton();
         refreshButton = createRefreshButton();
+        customRefreshButton = createCustomRefreshButton();
         styleButton = createStyleButton();
         recenterButton = createRecenterButton();
 
         shadedArea.add(queryButton);
         shadedArea.add(refreshButton);
+        shadedArea.add(customRefreshButton);
         shadedArea.add(styleButton);
         shadedArea.add(recenterButton);
         shadedArea.add(createSendButton());
@@ -233,6 +240,17 @@ public class CloseableTabLayoutPanel extends Composite {
     		refreshButton.getElement().getStyle().setDisplay(Display.NONE);
             queryButton.getElement().getStyle().setDisplay(Display.NONE);
     	}
+        if(entity.isCustomRefreshable()) {
+            customRefreshButton.getElement().getStyle().setDisplay(Display.BLOCK);
+            if (entity.getDescriptor().isCustom()) {
+                queryButton.getElement().getStyle().setDisplay(Display.BLOCK);
+            } else {
+                queryButton.getElement().getStyle().setDisplay(Display.NONE);
+            }
+        } else {
+            customRefreshButton.getElement().getStyle().setDisplay(Display.NONE);
+            queryButton.getElement().getStyle().setDisplay(Display.NONE);
+        }
         if (entity.isCustomizable()) {
             styleButton.getElement().getStyle().setDisplay(Display.BLOCK);
             styleButton.setCircleColor(entity.getColor());
@@ -393,19 +411,46 @@ public class CloseableTabLayoutPanel extends Composite {
     }
 
     private EsaSkyButton createRefreshButton() {
-    	
-    	EsaSkyButton refreshButton = new EsaSkyButton(resources.refreshIcon());
-    	refreshButton.setMediumStyle();
-    	refreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
-    	refreshButton.addClickHandler(arg0 -> {
+        EsaSkyButton refreshButton = new EsaSkyButton(resources.refreshIcon());
+        refreshButton.setMediumStyle();
+        refreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        refreshButton.addStyleName("tabButton");
+
+        refreshButton.addClickHandler(arg0 -> {
             ITablePanel tabPanel = getSelectedWidget();
             tabPanel.getEntity().setSkyViewPosition(CoordinateUtils.getCenterCoordinateInJ2000());
             tabPanel.updateData();
             GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_TABTOOLBAR_REFRESH, tabPanel.getFullId());
         });
-    	refreshButton.addStyleName("tabButton");
+
     	return refreshButton;
     }
+
+    private EsaSkyButton createCustomRefreshButton() {
+        EsaSkyButton customRefreshButton = new EsaSkyButton(resources.refreshIcon());
+        customRefreshButton.setMediumStyle();
+        customRefreshButton.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_refreshData"));
+        customRefreshButton.addStyleName("tabButton");
+
+        customRefreshButton.addClickHandler(arg0 -> {
+            ITablePanel tabPanel = getSelectedWidget();
+            JSONObject msg = new JSONObject();
+            JSONObject result = new JSONObject();
+            result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_REFRESH_CLICKED));
+            result.put(ApiConstants.VALUES, new JSONString(tabPanel.getEntity().getTabLabel()));
+            msg.put(ApiConstants.ORIGIN, new JSONString("esasky"));
+            msg.put(ApiConstants.VALUES, result);
+            sendBackToWidgetJS(msg);
+        });
+
+        return customRefreshButton;
+    }
+
+    protected native void sendBackToWidgetJS(JSONObject msg) /*-{
+        // Javascript adds a wrapper object around the values and extras which we remove
+        msg = Object.values(msg)[0];
+        $wnd.postMessage(msg);
+    }-*/;
 
     private EsaSkyButton createStyleButton() {
         

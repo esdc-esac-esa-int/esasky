@@ -85,6 +85,8 @@ public class ApiConstants {
 	public static final String EVENT_TREEMAP_MISSION_CLICKED = "treemap_mission_clicked";
 	public static final String EVENT_BUTTON_CLICKED = "button_clicked";
 
+	public static final String EVENT_REFRESH_CLICKED = "refresh_clicked";
+
 	public static final String FOOTPRINT_STCS = "stcs";
 
 	public static final String CENTER_RA_DEG = "ra_deg";

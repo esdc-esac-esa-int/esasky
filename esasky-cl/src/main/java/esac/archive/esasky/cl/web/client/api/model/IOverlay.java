@@ -27,6 +27,10 @@ public interface IOverlay {
 
 	public void setLineWidth(Integer lineWidth);
 
+	public boolean getRefreshable();
+
+	public void setRefreshable(boolean refreshable);
+
 	public List<? extends GeneralSkyObject> getSkyObjectList();
 
 }

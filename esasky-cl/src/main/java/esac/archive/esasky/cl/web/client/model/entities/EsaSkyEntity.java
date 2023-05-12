@@ -53,6 +53,8 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private TapRowList metadata;
     private CountStatus countStatus;
     private boolean isRefreshable = true;
+
+    private boolean customRefreshable = false;
     private StylePanel stylePanel;
     private LinkedList<ColorChangeObserver> colorChangeObservers = new LinkedList<>();
     private LinkedList<QueryChangeObserver> queryChangeObservers = new LinkedList<>();
@@ -663,6 +665,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     @Override
     public void setRefreshable(boolean isRefreshable) {
         this.isRefreshable = isRefreshable;
+    }
+
+    @Override
+    public void setCustomRefreshable(boolean customRefreshable) {
+        this.customRefreshable = customRefreshable;
+    }
+
+    @Override
+    public boolean isCustomRefreshable() {
+        return customRefreshable;
     }
 
     @Override
