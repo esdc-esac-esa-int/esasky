@@ -13,6 +13,8 @@ public class SourceListOverlay implements IOverlay {
 	Integer lineWidth;
 	List<Source> skyObjectList = new LinkedList<Source>();
 
+	Boolean refreshable = false;
+
 	@Override
 	public String getOverlayName() {
 		return catalogueName;
@@ -69,6 +71,16 @@ public class SourceListOverlay implements IOverlay {
 		if (null == lineWidth) {
 			this.lineWidth = DefaultValues.CATALOGUE_DEFAULT_LINEWIDTH;
 		}
+	}
+
+	@Override
+	public boolean getRefreshable() {
+		return this.refreshable;
+	}
+
+	@Override
+	public void setRefreshable(boolean refreshable) {
+		this.refreshable=refreshable;
 	}
 
 }
