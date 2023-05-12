@@ -372,6 +372,7 @@ public class MainPresenter {
         resultsPresenter.getMetadata(entity, adql);
     }
 
+
     public void showUserRelatedMetadata(CommonTapDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
         Log.debug("[MainPresenter][showUserRelatedMetadata]");
         GeneralEntityInterface entity = entityRepo.getEntityByName(descriptor.getLongName());
@@ -379,7 +380,6 @@ public class MainPresenter {
             entity = entityRepo.createEntity(descriptor);
             entity.setId(descriptor.getId());
         }
-
         if(userData.getProperty("overlaySet").hasProperty("refreshable") && userData.getProperty("overlaySet").getStringProperty("refreshable").equals("true")) {
             entity.setRefreshable(false);
             entity.setCustomRefreshable(true);

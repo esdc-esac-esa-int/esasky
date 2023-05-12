@@ -67,17 +67,15 @@ public class ApiOverlay extends ApiBase{
 			}
 		}
 	}
-	public void overlayFootprints(String footprintsSetJSON, boolean shouldBeInTablePanel) {
 
+	public void overlayFootprints(String footprintsSetJSON, boolean shouldBeInTablePanel) {
 		FootprintsSetMapper mapper = GWT.create(FootprintsSetMapper.class);
 
 		try {
 			FootprintListJSONWrapper footprintsSet = mapper.read(footprintsSetJSON);
-
 			GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_OVERLAYFOOTPRINTSWITHDETAILS, footprintsSet.getOverlaySet().getOverlayName());
 
 			List<TapMetadataDescriptor> metadata = new LinkedList<>();
-
 			TapMetadataDescriptor mName = new TapMetadataDescriptor();
 			mName.setName(ApiConstants.OBS_NAME);
 			mName.setDataType(ColumnType.CHAR.getName());
@@ -107,11 +105,8 @@ public class ApiOverlay extends ApiBase{
 			mDec.setUcd(UCD.POS_EQ_DEC.getValue());
 			mDec.setPrincipal(false);
 			metadata.add(mDec);
-
 			FootprintListOverlay fooprintList = (FootprintListOverlay) footprintsSet.getOverlaySet();
-
 			GeneralSkyObject generalSkyObject = fooprintList.getSkyObjectList().get(0);
-
 			for (MetadataAPI currMetadata : generalSkyObject.getData()) {
 				TapMetadataDescriptor m = new TapMetadataDescriptor();
 				m.setName(currMetadata.getName());
@@ -120,12 +115,9 @@ public class ApiOverlay extends ApiBase{
 				m.setPrincipal(true);
 				metadata.add(m);
 			}
-
 			CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository()
 					.initUserDescriptor(metadata, footprintsSet, generalSkyObject);
-
 			controller.getRootPresenter().showUserRelatedMetadata(descriptor, GeneralJavaScriptObject.createJsonObject(footprintsSetJSON), shouldBeInTablePanel);
-
 			AladinLiteWrapper.getAladinLite().goToRaDec(
 					fooprintList.getSkyObjectList().get(0).getRa_deg(),
 					fooprintList.getSkyObjectList().get(0).getDec_deg());

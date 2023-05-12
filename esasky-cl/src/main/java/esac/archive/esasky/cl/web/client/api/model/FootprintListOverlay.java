@@ -15,7 +15,7 @@ public class FootprintListOverlay implements IOverlay {
 	Integer lineWidth;
 	List<Footprint> skyObjectList = new LinkedList<Footprint>();
 
-	Boolean refreshable;
+	Boolean refreshable = false;
 
 	public FootprintListOverlay() {
 		Log.debug("[FootprintListOverlay] Ready!!");
@@ -86,7 +86,7 @@ public class FootprintListOverlay implements IOverlay {
 
 	@Override
 	public void setRefreshable(boolean refreshable) {
-		this.setRefreshable(refreshable);
+		this.refreshable = refreshable;
 	}
 
 }
