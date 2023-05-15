@@ -20,7 +20,6 @@ import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 public class ExtTapDescriptor extends BaseDescriptor {
 
     private String whereADQL;
-	private String orderBy;
     private String dateADQL;
     private String selectADQL;
     private String responseFormat;
@@ -46,7 +45,6 @@ public class ExtTapDescriptor extends BaseDescriptor {
     	
     	whereADQL = parent.getWhereADQL();
     	dateADQL = parent.getDateADQL();
-		orderBy = parent.getOrderBy();
     	selectADQL = parent.getSelectADQL();
     	responseFormat = parent.getResponseFormat();
     	searchFunction = parent.getSearchFunction();
