@@ -46,11 +46,9 @@ public class TAPExtTapService extends AbstractTAPService {
 		// Handle tables with non-alphanumeric characters
         adql += FROM + ExtTapUtils.encapsulateTableName(tapTable);
 
-        boolean isHEASARC = descriptor.getMission().equalsIgnoreCase(HEASARC)
-                && descriptor.getOriginalParent() != null
-                && !descriptor.getOriginalParent().isCustom();
+        boolean isHEASARC = getIsHEASARC(descriptor);
 
-        boolean isChildHEASARC = isHEASARC && descriptor.getParent() != null;
+        boolean isChildHEASARC = getIsChildHEASARC(isHEASARC, descriptor);
 
         if (isHEASARC && !isChildHEASARC) {
             adql += " JOIN master_table.indexview on table_name = name";
@@ -70,15 +68,37 @@ public class TAPExtTapService extends AbstractTAPService {
             adql += getBlacklistAdql(descriptor, isHEASARC);
         }
 
-    	if(descriptor.getWhereADQL() != null && !isChildHEASARC) {
-    		if(adql.contains(WHERE.trim())) {
-    			adql += AND;
-    		}else {
-    			adql += WHERE;
-    		}
-    		adql += descriptor.getWhereADQL();
-    	}
+    	adql = addWhereToAdql(descriptor, isChildHEASARC, adql);
 
+        adql = addOrderByToAdql(descriptor, isChildHEASARC, adql);
+
+    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
+    	return adql;
+    }
+
+    private boolean getIsChildHEASARC(boolean isHEASARC, CommonTapDescriptor descriptor) {
+        return isHEASARC && descriptor.getParent() != null;
+    }
+
+    private boolean getIsHEASARC(CommonTapDescriptor descriptor) {
+        return descriptor.getMission().equalsIgnoreCase(HEASARC)
+                && descriptor.getOriginalParent() != null
+                && !descriptor.getOriginalParent().isCustom();
+    }
+
+    private String addWhereToAdql(CommonTapDescriptor descriptor, boolean isChildHEASARC, String adql) {
+        if(descriptor.getWhereADQL() != null && !isChildHEASARC) {
+            if(adql.contains(WHERE.trim())) {
+                adql += AND;
+            }else {
+                adql += WHERE;
+            }
+            adql += descriptor.getWhereADQL();
+        }
+        return adql;
+    }
+
+    private String addOrderByToAdql(CommonTapDescriptor descriptor, boolean isChildHEASARC, String adql) {
         if(descriptor.getOrderByADQL() != null && !isChildHEASARC) {
             if(adql.contains(ORDER_BY.trim())) {
                 adql += AND;
@@ -87,8 +107,7 @@ public class TAPExtTapService extends AbstractTAPService {
             }
             adql += descriptor.getOrderByADQL();
         }
-    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
-    	return adql;
+        return adql;
     }
 
     private String getBlacklistAdql(CommonTapDescriptor descriptor, boolean isHEASARC) {
