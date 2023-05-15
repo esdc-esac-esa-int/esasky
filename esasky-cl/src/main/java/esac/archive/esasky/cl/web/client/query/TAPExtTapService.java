@@ -18,6 +18,8 @@ public class TAPExtTapService extends AbstractTAPService {
 
     private static final String FROM = " FROM ";
     private static final String WHERE = " WHERE ";
+
+    private static final String ORDER_BY = " ORDER BY ";
     private static final String AND = " AND ";
     private static final String HEASARC = EsaSkyWebConstants.HEASARC_MISSION;
 
@@ -76,8 +78,16 @@ public class TAPExtTapService extends AbstractTAPService {
     		}
     		adql += descriptor.getWhereADQL();
     	}
-    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
 
+        if(descriptor.getOrderByADQL() != null && !isChildHEASARC) {
+            if(adql.contains(ORDER_BY.trim())) {
+                adql += AND;
+            }else {
+                adql += ORDER_BY;
+            }
+            adql += descriptor.getOrderByADQL();
+        }
+    	Log.debug("[TAPQueryBuilder/getMetadata4ExtTap()] ADQL " + adql);
     	return adql;
     }
 
