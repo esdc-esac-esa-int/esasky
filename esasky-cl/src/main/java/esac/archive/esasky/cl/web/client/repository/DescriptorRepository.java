@@ -322,13 +322,12 @@ public class DescriptorRepository {
         String[] whereSplit = adql.split(where);
         if (whereSplit.length > 1) {
             descriptor.setWhereADQL(whereSplit[1]);
+        }else{
+            String[] orderBySplit = adql.split(orderBy);
+            if (orderBySplit.length > 1) {
+                descriptor.setOrderByADQL(orderBySplit[1]);
+            }
         }
-
-        String[] orderBySplit = adql.split(orderBy);
-        if (orderBySplit.length > 1) {
-            descriptor.setOrderByADQL(orderBySplit[1]);
-        }
-
 
         String[] fromSplit = adql.split(from);
         descriptor.setSelectADQL(fromSplit[0]);
