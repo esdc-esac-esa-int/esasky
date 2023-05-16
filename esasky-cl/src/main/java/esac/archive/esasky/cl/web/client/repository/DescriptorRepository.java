@@ -301,8 +301,10 @@ public class DescriptorRepository {
         }
         final String from = "FROM";
         final String where = "WHERE";
+        final String orderBy = "ORDER BY";
 
         // Make sure "from" is uppercase
+
         int start = adql.toUpperCase().indexOf(from);
         if (start >= 0) {
             String subStr = adql.substring(start, start + from.length());
@@ -321,6 +323,13 @@ public class DescriptorRepository {
         if (whereSplit.length > 1) {
             descriptor.setWhereADQL(whereSplit[1]);
         }
+
+        String[] orderBySplit = adql.split(orderBy);
+        if (orderBySplit.length > 1) {
+            descriptor.setOrderByADQL(orderBySplit[1]);
+        }
+
+
         String[] fromSplit = adql.split(from);
         descriptor.setSelectADQL(fromSplit[0]);
 
@@ -328,7 +337,6 @@ public class DescriptorRepository {
         descriptor.setTableName(tapTable[1]);
         return descriptor;
     }
-
 
     public void initDescriptors(List<String> schemas, String category, Promise<CommonTapDescriptorList> promise) {
         Log.debug("[DescriptorRepository] Into DescriptorRepository.initDescriptors");

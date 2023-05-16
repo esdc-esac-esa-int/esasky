@@ -55,4 +55,24 @@ class TapDescriptorTest {
         assertEquals("stc_s", tapDescriptor.getRegionColumn());
         assertEquals("identifier", tapDescriptor.getIdColumn());
     }
+
+    @Test
+    void setAdqlTest() {
+        emptyTapDescriptor.setProperties(null);
+        assertNotNull(emptyTapDescriptor.getProperties());
+        assertTrue(emptyTapDescriptor.getProperties().isEmpty());
+
+        emptyTapDescriptor.setProperties(KEY1, VAL1);
+        assertEquals(1, emptyTapDescriptor.getProperties().size());
+
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(KEY1, VAL1);
+        properties.put(KEY2, VAL2);
+        emptyTapDescriptor.setProperties(properties);
+        assertEquals(2, emptyTapDescriptor.getProperties().size());
+        assertEquals(VAL1, emptyTapDescriptor.getProperty(KEY1));
+
+        emptyTapDescriptor.setOrderByADQL("test");
+        assertEquals(emptyTapDescriptor.getOrderByADQL(), "test");
+    }
 }
