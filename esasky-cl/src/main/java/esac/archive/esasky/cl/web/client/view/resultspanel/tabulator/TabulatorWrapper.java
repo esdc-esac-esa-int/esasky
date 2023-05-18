@@ -2308,6 +2308,14 @@ public class TabulatorWrapper {
                 headerFilterFunc = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDateFilterFunc()();
                 sorter = "string";
                 break;
+            case "polygon":
+            case "circle":
+            case "point":
+                formatter = "plaintext";
+                headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getStringFilterEditorFunc(*)(wrapper);
+                headerFilterFunc = "like";
+                sorter = "string";
+                break;
             default:
                 return undefined;
         }
@@ -2337,6 +2345,9 @@ public class TabulatorWrapper {
     private native JavaScriptObject createColumnWithDatatype(JavaScriptObject wrapper, JavaScriptObject table, JavaScriptObject columnMeta, String divId) /*-{
         var formatter, formatterParams, headerFilter, headerFilterFunc, sorter;
         var datatype = columnMeta.datatype ? columnMeta.datatype : "";
+//        if(datatype.toLowerCase() === "double" && columnMetadata){ //TODO when we can handle xtype
+//        	datatype = "string";
+//        }
         switch (datatype.toLowerCase()) {
             case "char":
                 formatter = "plaintext";
