@@ -424,7 +424,7 @@ public class AladinLiteWrapper {
         	}
     	} else {
     		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
-    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");
     			setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
     			Log.debug("Switched to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
     		}
@@ -448,7 +448,7 @@ public class AladinLiteWrapper {
         String rootUrl = overlayHiPS.getSurveyRootUrl();
         if(!loadHipsFromCDN) {
     		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
-    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");
     			overlayHiPS.setSurveyRootUrl(newRootUrl);
     			Log.debug("Changed overlay survey url to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
     		}
