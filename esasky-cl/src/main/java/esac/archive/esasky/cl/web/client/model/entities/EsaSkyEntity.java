@@ -136,12 +136,18 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         this.skyViewPosition = skyViewPosition;
         this.countStatus = countStatus;
-
-
     }
 
 
     protected ShapeBuilder shapeBuilder = new ShapeBuilder() {
+    	private GeneralJavaScriptObject getRowWithName(GeneralJavaScriptObject metadata, String name) {
+    		for(GeneralJavaScriptObject entry : GeneralJavaScriptObject.convertToArray(metadata)) {
+    			if(entry.getStringProperty("name").equals(name)) {
+    				return entry;
+    			}
+    		}
+    		return null;
+    	}
         @Override
         public Shape buildShape(int rowId, TapRowList rowList, GeneralJavaScriptObject rowData, GeneralJavaScriptObject metadata) {
             String stcs = null;
@@ -153,9 +159,21 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
             if(stcsColumn != null && !stcsColumn.isEmpty()) {
                 stcs = rowData.getStringProperty(stcsColumn);
-            }
 
-            if(stcs == null || stcs.toUpperCase().startsWith("POSITION") || !isValidSTCS(stcs)) {
+                GeneralJavaScriptObject stcsMetadata = getRowWithName(metadata, stcsColumn);
+                String xtype = stcsMetadata != null ? stcsMetadata.getStringProperty("xtype") : null;
+                if(xtype != null && stcs != null) {
+                	xtype = xtype.toLowerCase();
+                	if(xtype.contains("polygon") && !stcs.trim().toLowerCase().startsWith("polygon")) {
+                		stcs = "POLYGON " + stcs.replace(",", " ");
+                	} else if(xtype.contains("circle") && !stcs.trim().toLowerCase().startsWith("circle")) {
+                		stcs = "CIRCLE " + stcs.replace(",", " ");
+                	} else if(xtype.contains("point") && !stcs.trim().toLowerCase().startsWith("point")) {
+                		stcs = "POINT " + stcs.replace(",", " ");
+                	}
+                }
+            }
+            if(stcs == null || stcs.toUpperCase().startsWith("POSITION") || !(isValidSTCS(stcs))) {
                 return catalogBuilder(rowId, rowData);
             }
 
