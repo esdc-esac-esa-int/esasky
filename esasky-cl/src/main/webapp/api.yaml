@@ -71,7 +71,7 @@ Coordinate grid:
     example:
       "{event:'showCoordinateGrid',  content:{show:true}}"
 HiPS:
-  getAvailableHiPS:
+  getAvailableHips:
     parameters:
       wavelength:
         type: (String)(Optional) 
@@ -81,7 +81,7 @@ HiPS:
         type: (Dictionary)
         description:  If wavelength is empty this is a dictionary of wavelengths otherwise this is a dictionary with available HiPS in that wavelength
     example:
-      "{event:'getAvailableHiPS',  content:{wavelength:'OPTICAL'}}"
+      "{event:'getAvailableHips',  content:{wavelength:'OPTICAL'}}"
   changeHips:
     parameters:
       hipsName:
@@ -111,10 +111,10 @@ HiPS:
         type: (String) 
         description:  Not existing if success, otherwise error message
     description:
-      Add a HiPS programmatically to the skypanel list
+      Add a HiPS programmatically to the sky panel list
     example:
       "{event:'addHips',  content:{hipsName:'DSS2 color'}}"
-  changeHiPSWithParams:
+  changeHipsWithParams:
     parameters:
       hips.id:
         type: (String)
@@ -138,7 +138,7 @@ HiPS:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
       "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
-  addHiPSWithParams:
+  addHipsWithParams:
     parameters:
       hips.id:
         type: (String)
@@ -161,7 +161,7 @@ HiPS:
     description:
       Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
     example:
-      "{event:'addHiPSWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
+      "{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}"
   setHipsColorPalette:
     parameters:
       colorPalette:

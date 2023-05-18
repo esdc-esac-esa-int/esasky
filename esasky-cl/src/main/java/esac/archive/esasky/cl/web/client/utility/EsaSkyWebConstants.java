@@ -130,6 +130,7 @@ public class EsaSkyWebConstants {
     /*************************************************************************/
     public static final String MODULE_MODE_ESASKY = "ESASKY";
     public static final String MODULE_MODE_JWST = "JWST";
+    public static final String MODULE_MODE_EUCLID = "EUCLID";
     public static final String MODULE_MODE_CLEAN = "CLEAN";
     public static final String MODULE_MODE_KIOSK = "KIOSK";
 

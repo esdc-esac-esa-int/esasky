@@ -41,6 +41,9 @@ public abstract class TapDescriptorBase {
     private String whereADQL;
 
     @JsonIgnore
+    private String orderByADQL;
+
+    @JsonIgnore
     private String unprocessedADQL;
 
     @JsonIgnore
@@ -186,6 +189,14 @@ public abstract class TapDescriptorBase {
 
     public void setWhereADQL(String whereADQL) {
         this.whereADQL = whereADQL;
+    }
+
+    public String getOrderByADQL() {
+        return this.orderByADQL;
+    }
+
+    public void setOrderByADQL(String orderByADQL) {
+        this.orderByADQL = orderByADQL;
     }
 
 

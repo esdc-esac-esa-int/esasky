@@ -106,6 +106,7 @@ public class DatalinkDownloadDialogBox extends MovablePanel {
 								}
 								Anchor anchor = new Anchor(anchorName, links.getAccessUrl(), "_blank");
 								if(anchorName.toLowerCase().contains("datalink")
+										|| (links.getContentType() != null && links.getContentType().contains("datalink"))
 								        || anchorName.toLowerCase().contains(TextMgr.getInstance().getText("datalink_linkedProducts").toLowerCase())) {
 									anchor.setTarget("");
 									anchor.setHref("javascript:;");

@@ -793,7 +793,17 @@ public class MOCEntity implements GeneralEntityInterface {
         parentEntity.setRefreshable(isRefreshable);
     }
 
-    
+	@Override
+	public void setCustomRefreshable(boolean customRefreshable) {
+		this.parentEntity.setCustomRefreshable(customRefreshable);
+	}
+
+	@Override
+	public boolean isCustomRefreshable() {
+		return this.parentEntity.isCustomRefreshable();
+	}
+
+
 	@Override
 	public String getHelpText() {
 		if(parentEntity != null) {

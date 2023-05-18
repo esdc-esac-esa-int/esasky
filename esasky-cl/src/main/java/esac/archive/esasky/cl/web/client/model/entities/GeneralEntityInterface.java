@@ -79,6 +79,10 @@ public interface GeneralEntityInterface extends IShapeDrawer {
 
     void setRefreshable(boolean isRefreshable);
 
+    void setCustomRefreshable(boolean customRefreshable);
+
+    boolean isCustomRefreshable();
+
     boolean isCustomizable();
 
     void onShapeSelection(AladinShape shape);
