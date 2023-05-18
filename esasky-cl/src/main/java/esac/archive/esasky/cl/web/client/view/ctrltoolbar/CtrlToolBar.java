@@ -569,6 +569,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         addCommonButtonStyle(button, TextMgr.getInstance().getText("webConstants_exploreRandomTarget"));
         button.addClickHandler(event -> {
             if (!exploreActionInProgress) {
+                hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachImageButton, outreachJwstButton));
                 CommonEventBus.getEventBus().fireEvent(new CloseOtherPanelsEvent(button));
                 showRandomSource();
                 sendGAEvent(GoogleAnalytics.ACT_CTRLTOOLBAR_DICE);
