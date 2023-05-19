@@ -60,6 +60,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     private LinkedList<QueryChangeObserver> queryChangeObservers = new LinkedList<>();
     protected LinkedList<Integer> shapeRecentlySelected = new LinkedList<>();
     private String adql; 
+    
+    private static final String CIRCLE = "circle";
+    private static final String POLYGON = "polygon";
 
     public EsaSkyEntity(CommonTapDescriptor descriptor, CountStatus countStatus,
                         SkyViewPosition skyViewPosition, String esaSkyUniqId, AbstractTAPService metadataService, SecondaryShapeAdder secondaryShapeAdder) {
@@ -160,18 +163,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             if(stcsColumn != null && !stcsColumn.isEmpty()) {
                 stcs = rowData.getStringProperty(stcsColumn);
 
-                GeneralJavaScriptObject stcsMetadata = getRowWithName(metadata, stcsColumn);
-                String xtype = stcsMetadata != null ? stcsMetadata.getStringProperty("xtype") : null;
-                if(xtype != null && stcs != null) {
-                	xtype = xtype.toLowerCase();
-                	if(xtype.contains("polygon") && !stcs.trim().toLowerCase().startsWith("polygon")) {
-                		stcs = "POLYGON " + stcs.replace(",", " ");
-                	} else if(xtype.contains("circle") && !stcs.trim().toLowerCase().startsWith("circle")) {
-                		stcs = "CIRCLE " + stcs.replace(",", " ");
-                	} else if(xtype.contains("point") && !stcs.trim().toLowerCase().startsWith("point")) {
-                		stcs = "POINT " + stcs.replace(",", " ");
-                	}
-                }
+                stcs = handleShapeXtypes(metadata, stcs, stcsColumn);
             }
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION") || !(isValidSTCS(stcs))) {
                 return catalogBuilder(rowId, rowData);
@@ -195,6 +187,21 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
             return polygon;
         }
+		private String handleShapeXtypes(GeneralJavaScriptObject metadata, String stcs, String stcsColumn) {
+			GeneralJavaScriptObject stcsMetadata = getRowWithName(metadata, stcsColumn);
+			String xtype = stcsMetadata != null ? stcsMetadata.getStringProperty("xtype") : null;
+			if(xtype != null && stcs != null) {
+				xtype = xtype.toLowerCase();
+				if(xtype.contains(POLYGON) && !stcs.trim().toLowerCase().startsWith(POLYGON)) {
+					stcs = "POLYGON " + stcs.replace(",", " ");
+				} else if(xtype.contains(CIRCLE) && !stcs.trim().toLowerCase().startsWith(CIRCLE)) {
+					stcs = "CIRCLE " + stcs.replace(",", " ");
+				} else if(xtype.contains("point") && !stcs.trim().toLowerCase().startsWith("point")) {
+					stcs = "POINT " + stcs.replace(",", " ");
+				}
+			}
+			return stcs;
+		}
     };
 
 
@@ -243,17 +250,17 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             return stcs;
         }
         if(stcs.contains("POLYGON")){
-            stcs = stcs.replaceAll("POLYGON", "POLYGON J2000");
+            stcs = stcs.replace("POLYGON", "POLYGON J2000");
         }
         if(stcs.contains("CIRCLE")){
-            stcs = stcs.replaceAll("CIRCLE", "CIRCLE J2000");
+            stcs = stcs.replace("CIRCLE", "CIRCLE J2000");
         }
         return stcs;
 
     }
 
     private boolean isValidSTCS(String input) {
-        String[] validShapes = new String[]{"polygon", "circle", "ellipse"};
+        String[] validShapes = new String[]{POLYGON, CIRCLE, "ellipse"};
         return Arrays.stream(validShapes).anyMatch(input.toLowerCase()::contains);
     }
 
