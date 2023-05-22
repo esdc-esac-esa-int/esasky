@@ -1491,20 +1491,12 @@ public class TabulatorWrapper {
             var value = cell.getValue();
             var missionName = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getMission()()
             if (formatterParams.convertBack && formatterParams.convertBack === true) {
-                if (missionName.includes("MAST")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value);
-                } else {
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value) / 1024;
-                }
+                return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatToBytes(Ljava/lang/String;)(value) / 1024;
             } else {
                 if (value === undefined || value === "") {
                     return "";
                 }
-                if (missionName.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
-                } else {
-                    return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
-                }
+                return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
             }
         }
     }-*/;
