@@ -163,7 +163,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             if(stcsColumn != null && !stcsColumn.isEmpty()) {
                 stcs = rowData.getStringProperty(stcsColumn);
 
-                stcs = handleShapeXtypes(metadata, stcs, stcsColumn);
+                if (metadata != null) {
+                    stcs = handleShapeXtypes(metadata, stcs, stcsColumn);
+                }
             }
             if(stcs == null || stcs.toUpperCase().startsWith("POSITION") || !(isValidSTCS(stcs))) {
                 return catalogBuilder(rowId, rowData);
