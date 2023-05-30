@@ -5248,4 +5248,14 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_GLADE+">
+		GLADE+ is an extended version of the GLADE galaxy catalog for multimessenger searches with advanced gravitational-wave detectors. GLADE+ combines data from six separate but not independent astronomical catalogues: the GWGC, 2MPZ, 2MASS XSC, HyperLEDA, and WISExSCOSPZ galaxy catalogues, and the SDSS-DR16Q quasar catalogue. GLADE+ contains ~22.5 million galaxies and ~750,000 quasars. GLADE+ is complete up to a luminosity distance of ~44 Mpc in terms of the cumulative B-band luminosity of galaxies, and contains all of the brightest galaxies giving half of the total B-band luminosity up to ~95 Mpc. Considering the brightest galaxies giving half of the total luminosity in the W1-band, GLADE+ has nearly 90% completeness at even ~500 Mpc. Stellar masses and binary neutron star mergers for galaxies with W1 magnitudes have been derived. These parameters can help to rank the galaxies in a given gravitational wave localization volume, thereby possibly reducing the number of pointings and the total integration time needed to find the electromagnetic counterpart.
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GLADE"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
 </Internationalization>
