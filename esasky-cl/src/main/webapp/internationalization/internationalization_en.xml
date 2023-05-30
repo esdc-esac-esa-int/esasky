@@ -5232,4 +5232,20 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="treeMap_loading_USER_TREEMAP">
 		Loading data
 	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_PLATO asPIC1.1">
+		The ESA PLAnetary Transits and Oscillations of stars (PLATO) mission will search for terrestrial planets in the habitable zone of solar-type stars. Because of telemetry limitations, PLATO targets need to be pre-selected. The all-sky PLATO input catalogue will be fundamental to selecting the best PLATO fields and the most promising target stars, deriving their basic parameters, analysing the instrumental performances, and then planning and optimising follow-up observations. This catalogue also represents a valuable resource for the general definition of stellar samples optimised for the search of transiting planets. The first public release of the all sky PLATO Input catalogue (asPIC version 1.1) contains a total of 2,675,539 stars, among which are 2,378,177 FGK dwarfs and subgiants and 297,362 M dwarfs. It was produced using Gaia Data Release 2 (DR2) astrometry and photometry and 3D maps of the local interstellar medium. It provides derived reddening of the targets and estimates of stellar fundamental parameters (Teff, radius, mass) from astrometric and photometric measurements using a developed algorithm.
+		&lt;br&gt;&lt;br&gt;
+		DOI:
+		&lt;a
+		href="//www.dx.doi.org/10.17909/t9-8msm-xh08"
+		target="_blank"&gt;
+		10.17909/t9-8msm-xh08
+		&lt;/a&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#ASPIC"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
 </Internationalization>
