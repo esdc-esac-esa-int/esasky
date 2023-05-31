@@ -3778,5 +3778,30 @@
 	</text>
 	<text key="extTapPanel_esaTooltip">
 		Explorar datos a través de protocolo de acceso a tablas de la ESA</text>
-
+	<text key="resultsPresenter_helpDescription_catalogues_PLATO asPIC1.1">
+		La misión de Tránsitos y Oscilaciones Planetarias de la ESA PLATO (por sus siglas en inglés) se centrará en la búsqueda de planetas terrestres en la zona habitable de estrellas de tipo solar. Debido a limitaciones en la telemetría, las fuentes de PLATO han de ser preseleccionadas. Presentamos el catálogo de cielo que será fundamental en la selección de los campos y las estrellas más prometedoras para PLATO, para los que se han derivado parámetros básicos y analizado el rendimiento del instrumento para luego planear y optimizar las observaciones subsiguientes. Este catálogo también supone un recurso valioso para la definición general de la muestra de estrellas más indicada para la búsqueda de tránsitos de planetas. La primera publicación del catálogo de cielo inicial (asPIC version 1.1) contiene un total de 2,675,539 estrellas, de las cuales 2,378,177 son enanas FGK y sub-enanas y 297,362 son enanas M. Para su generación se han utilizado astrometría y fotometría, así como los mapas 3D del medio interestelar local, de la publicación de datos de Gaia (DR2). También se proporciona el enrojecimiento de las fuentes y una estimación de parámetros fundamentales (temperatura efectiva, radio y masa) derivada de dichas medidas astrométricas y fotométricas utilizando una algoritmo propio.
+		&lt;br&gt;&lt;br&gt;
+		DOI:
+		&lt;a
+		href="//www.dx.doi.org/10.17909/t9-8msm-xh08"
+		target="_blank"&gt;
+		10.17909/t9-8msm-xh08
+		&lt;/a&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#ASPIC"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_GLADE+">
+		GLADE+ es una versión extendida del catálogo de galaxias GLADE para la detección de eventos multimessenger con detectores de ondas gravitatorias. GLADE+ combina datos de seis catálogos astronómicos diferentes: los catálogos de galaxias GWGC, 2MPZ, 2MASS XSC, HyperLEDA y WISExSCOSPZ, así como el catálogo de cuásares SDSS-DR16Q. GLADE+ contiene aproximadamente 22.5 millones de galaxias y 750,000 cuásares. GLADE+ es completo hasta una distancia de luminosidad de ~44 Mpc en relación a la luminosidad acumulada en la banda B y contiene todas la galaxias cuyo brillo supone la mitad de la luminosidad total en la banda B hasta una distancia de ~95 Mpc. Considerando las galaxias más brillantes que suponen la mitad de la luminosidad total en la banda W1, GLADE+ tiene casi un 90% de completitud, incluso a ~500 Mpc. También se ha estimado la masa estelar y los mergers de estrellas binarias de neutrones para galaxias con magnitude W1. Estos parámetros pueden ayudar en la clasificación de galaxias en un volumen de localización dado de ondas gravitatorias y, con ello, reducir el número de apuntados y el tiempo de integración necesario para encontrar la contrapartida electromagnética.
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GLADE"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
 </Internationalization>
