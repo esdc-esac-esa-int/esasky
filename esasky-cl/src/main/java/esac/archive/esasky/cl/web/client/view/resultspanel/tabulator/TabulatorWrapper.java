@@ -1500,7 +1500,7 @@ public class TabulatorWrapper {
                 if (value === undefined || value === "") {
                     return "";
                 }
-                if (missionName.includes("MAST-")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
+                if (missionName.includes("MAST")) { //MAST has incorrect unit for access_estsize. Should be in kilobytes
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value, 0);
                 } else {
                     return @esac.archive.esasky.cl.web.client.utility.SizeFormatter::formatBytes(II)(value * 1024, 0);
