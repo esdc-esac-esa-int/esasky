@@ -5232,4 +5232,30 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="treeMap_loading_USER_TREEMAP">
 		Loading data
 	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_PLATO asPIC1.1">
+		The ESA PLAnetary Transits and Oscillations of stars (PLATO) mission will search for terrestrial planets in the habitable zone of solar-type stars. Because of telemetry limitations, PLATO targets need to be pre-selected. The all-sky PLATO input catalogue will be fundamental to selecting the best PLATO fields and the most promising target stars, deriving their basic parameters, analysing the instrumental performances, and then planning and optimising follow-up observations. This catalogue also represents a valuable resource for the general definition of stellar samples optimised for the search of transiting planets. The first public release of the all sky PLATO Input catalogue (asPIC version 1.1) contains a total of 2,675,539 stars, among which are 2,378,177 FGK dwarfs and subgiants and 297,362 M dwarfs. It was produced using Gaia Data Release 2 (DR2) astrometry and photometry and 3D maps of the local interstellar medium. It provides derived reddening of the targets and estimates of stellar fundamental parameters (Teff, radius, mass) from astrometric and photometric measurements using a developed algorithm.
+		&lt;br&gt;&lt;br&gt;
+		DOI:
+		&lt;a
+		href="//www.dx.doi.org/10.17909/t9-8msm-xh08"
+		target="_blank"&gt;
+		10.17909/t9-8msm-xh08
+		&lt;/a&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#ASPIC"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_GLADE+">
+		GLADE+ is an extended version of the GLADE galaxy catalog for multimessenger searches with advanced gravitational-wave detectors. GLADE+ combines data from six separate but not independent astronomical catalogues: the GWGC, 2MPZ, 2MASS XSC, HyperLEDA, and WISExSCOSPZ galaxy catalogues, and the SDSS-DR16Q quasar catalogue. GLADE+ contains ~22.5 million galaxies and ~750,000 quasars. GLADE+ is complete up to a luminosity distance of ~44 Mpc in terms of the cumulative B-band luminosity of galaxies, and contains all of the brightest galaxies giving half of the total B-band luminosity up to ~95 Mpc. Considering the brightest galaxies giving half of the total luminosity in the W1-band, GLADE+ has nearly 90% completeness at even ~500 Mpc. Stellar masses and binary neutron star mergers for galaxies with W1 magnitudes have been derived. These parameters can help to rank the galaxies in a given gravitational wave localization volume, thereby possibly reducing the number of pointings and the total integration time needed to find the electromagnetic counterpart.
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GLADE"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+	</text>
 </Internationalization>
