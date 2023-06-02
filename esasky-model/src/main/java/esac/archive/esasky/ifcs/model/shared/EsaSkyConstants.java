@@ -1,5 +1,6 @@
 package esac.archive.esasky.ifcs.model.shared;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -88,10 +89,14 @@ public class EsaSkyConstants {
      */
     public static final String ALADIN_DEFAULT_SURVEY_NAME = "DSS2 color";
 
-    /** Default survey name. */
+    /**
+     * Default survey name.
+     */
     public static final String DEFAULT_WAVELENGTH = HipsWavelength.OPTICAL;
-    
-    /** Default survey URL. */
+
+    /**
+     * Default survey URL.
+     */
     public static final String ALADIN_DEFAULT_SURVEY_URL = "//cdn.skies.esac.esa.int/DSSColor";
     /**
      * Default HiPS cooframe.
@@ -250,12 +255,16 @@ public class EsaSkyConstants {
     /** INTERNATIONALIZATION VALUES **/
     /*************************************************************************/
     public static final String DEFAULT_LANGCODE = "en";
-    private static final List<SimpleEntry<String, String>> AVAILABLE_LANGUAGES = new LinkedList<SimpleEntry<String, String>>(
+    private static final List<SimpleEntry<String, String>> AVAILABLE_LANGUAGES = new LinkedList<>(
             Arrays.asList(
-                    new SimpleEntry<String, String>("en", "En"),
-                    new SimpleEntry<String, String>("es", "Es")
-                    , new SimpleEntry<String, String>("zh", "中文")
+                    new SimpleEntry<>("en", "En"),
+                    new SimpleEntry<>("es", "Es"),
+                    new SimpleEntry<>("zh", "中文")
             )
+    );
+
+    private static final List<SimpleEntry<String, String>> LIMITED_AVAILABLE_LANGUAGES = new LinkedList<>(
+            Arrays.asList(new SimpleEntry<>("fr", "Fr"))
     );
 
     /*************************************************************************/
@@ -468,7 +477,14 @@ public class EsaSkyConstants {
         throw new UnsupportedOperationException();
     }
 
-    public static List<SimpleEntry<String, String>> getAvailableLanguages() {
-        return AVAILABLE_LANGUAGES;
+    public static List<SimpleEntry<String, String>> getAvailableLanguages(boolean includeLimited) {
+        if (includeLimited) {
+            List<SimpleEntry<String, String>> result = new ArrayList<>(AVAILABLE_LANGUAGES.size() + LIMITED_AVAILABLE_LANGUAGES.size());
+            result.addAll(AVAILABLE_LANGUAGES);
+            result.addAll(LIMITED_AVAILABLE_LANGUAGES);
+            return result;
+        } else {
+            return AVAILABLE_LANGUAGES;
+        }
     }
 }

@@ -1,9 +1,637 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE internationalization [
-<!ELEMENT text (#PCDATA)>
-<!ATTLIST text key ID #REQUIRED>
-]>
+        <!ELEMENT text (#PCDATA)>
+        <!ATTLIST text key ID #REQUIRED>
+        ]>
+
 <Internationalization langCode="fr">
 
+    <text key="headerPresenter_languageNameAbbreviation">
+        Fr
+    </text>
+    <text key="header_gridFull">
+        Affiche la grille de coordonn&#233;es c&#233;lestes
+    </text>
+    <text key="header_gridDropdown">
+        Grille de coordonn&#233;es
+    </text>
 
+    <!-- uploadTargetList -->
+    <text key="uploadTargetList_targetList">
+        Fichier de liste de cibles:
+    </text>
+    <text key="uploadTargetList_targetListDescriptionText">
+        S&#233;lectionnez un exemple de liste de cibles ou un fichier texte
+        contenant votre liste de cibles, pouvant &#234;tre des noms SIMBAD ou
+        des coordonn&#233;es.
+        Le message 'R&#233;solution de la liste des cibles...' est affich&#233; en haut
+        de l'interface pendant le chargement de la liste. Une fois le chargement termin&#233;,
+        la liste des cibles est affich&#233;e &#224; gauche.
+        &lt;br&gt;&lt;br&gt;
+        Cliquez sur une cible pour la voir dans le ciel.
+        Les objets non identifi&#233;s par SIMBAD seront barr&#233;s.
+        Des boutons type vid&#233;o se trouvent sous la liste des cibles. Appuyer
+        sur Lecture pour lire la liste des cibles ; la cible affich&#233;e sera
+        surlign&#233;e en gris fonc&#233; dans la liste.
+        Il est &#233;galement possible d'ajouter du texte et des commentaires
+        &#224; une liste de cibles ; le texte est affich&#233; dans ESASky sous les
+        boutons de lecture.
+
+    </text>
+    <text key="uploadTargetList_uploadTargetListFailed">
+        &#233;chec d&#251; &#224;
+    </text>
+    <text key="uploadTargetList_removeTargetList">
+        Supprimer la liste des cibles
+    </text>
+    <text key="uploadTargetList_title">
+        Liste des cibles
+    </text>
+    <text key="uploadTargetList_selectList">
+        S&#233;lectionner la liste des cibles
+    </text>
+    <text key="uploadTargetList_orUpload">
+        ou
+    </text>
+    <text key="uploadTargetList_resolvingTargetList">
+        R&#233;solution de la liste des cibles
+    </text>
+
+    <!-- uploadTargetListPanel -->
+    <text key="uploadTargetListPanel_MultiTargetCatalog">
+        Catalogue cibles multiples
+    </text>
+
+    <!-- Sky -->
+    <text key="sky_wavelength">
+        Longueur d'onde
+    </text>
+    <text key="sky_selectWavelength">
+        S&#233;lectionner la longueur d'onde
+    </text>
+    <text key="sky_skies">
+        Ciels
+    </text>
+    <text key="sky_selectSky">
+        S&#233;lectionner un ciel
+    </text>
+    <text key="sky_selectSky_help">
+        Les ciels sont regroup&#233;s dans trois r&#233;gions de longueur d'onde, du rayonnement
+        gamma au rayonnement radio, et une section Autres, en bas, contient actuellement
+        des mod&#232;les physiques.
+        S&#233;lectionnez un ciel en choisissant la r&#233;gion de longueur d'onde dans le premier
+        panneau, puis explorer les ciels dans le second panneau. Cliquez sur l'ic&#244;ne i pour
+        voir les d&#233;tails sur chaque ciel. Pour plus de d&#233;tails et une liste de tous les
+        ciels disponibles, consultez la page d'information sur les ciels (HiPS).
+        &lt;br&gt;&lt;br&gt;
+        La couleur des ciels peut &#234;tre modifi&#233;e &#224; l'aide des options
+        'Native', 'EOSB', 'Planck',
+        'Arc-en-ciel', 'Niveau de gris' and 'Cubehelix' de la carte des couleurs.
+        &lt;br&gt;&lt;br&gt;
+        Il est possible d'ajouter un ciel dans la pile en cliquant sur le bouton +.
+        &lt;br&gt;&lt;br&gt;
+        Cliquez sur les boutons type vid&#233;o pour faire d&#233;filer les ciels de
+        la pile, passer au suivant, revenir au pr&#233;c&#233;dent ou arr&#234;ter.
+    </text>
+    <text key="sky_selectASky">
+        S&#233;lectionner un ciel
+    </text>
+    <text key="sky_skyDetails">
+        D&#233;tails du ciel
+    </text>
+    <text key="sky_removeSky">
+        Supprimer le ciel
+    </text>
+    <text key="sky_loadingSkies">
+        Chargement de ciels
+    </text>
+
+    <!-- HiPS Details Popup -->
+    <text key="hiPSDetailsPopup_mapName">
+        Nom de la carte:
+    </text>
+    <text key="hiPSDetailsPopup_mission">
+        Mission:
+    </text>
+    <text key="hiPSDetailsPopup_instrument">
+        Instrument:
+    </text>
+    <text key="hiPSDetailsPopup_wavFreq">
+        Longueur d'onde/fr&#233;quence:
+    </text>
+    <text key="hiPSDetailsPopup_mapCreatedBy">
+        Carte cr&#233;&#233;e par
+    </text>
+    <text key="hiPSDetailsPopup_forMoreInformation">
+        Pour plus d'informations, cliquez&amp;nbsp;
+    </text>
+    <text key="hiPSDetailsPopup_here">
+        ici
+    </text>
+    <text key="hiPSDetailsPopup_close">
+        Fermer
+    </text>
+
+    <!-- Change Palette Button -->
+    <text key="changePaletteBtn_changePaletteTooltip">
+        Palette de couleurs
+    </text>
+
+    <text key="dateFilter_resetFilter">
+        R&#233;initialiser le filtre
+    </text>
+    <text key="rangeFilter_resetFilter">
+        R&#233;initialiser le filtre
+    </text>
+    <!-- playerPanel -->
+    <text key="playerPanel_next">
+        Suivant
+    </text>
+    <text key="playerPanel_pause">
+        Pause
+    </text>
+    <text key="playerPanel_play">
+        Lecture
+    </text>
+    <text key="playerPanel_previous">
+        Pr&#233;c&#233;dent
+    </text>
+    <text key="playerPanel_surveyTourStarted">
+        D&#233;but de la visite d'&#233;tude
+    </text>
+
+    <!-- webConstants -->
+    <text key="webConstants_manageSkies">
+        G&#233;rer les ciels
+    </text>
+    <text key="webConstants_uploadTargetList">
+        G&#233;rer la liste des cibles
+    </text>
+    <text key="webConstants_exploreData">
+        Explorer les donn&#233;es pour $TARGET$
+    </text>
+    <text key="webConstants_exploreRandomTarget">
+        Explorer une cible al&#233;atoire
+    </text>
+
+    <!-- targetWidget -->
+    <text key="targetWidget_showTargetInTheSky">
+        Afficher la cible dans le ciel
+    </text>
+    <text key="targetWidget_targetNotFoundInSimbad">
+        Cible non trouv&#233;e dans SIMBAD
+    </text>
+
+    <!-- zoomControlPanel -->
+    <text key="ZoomControlPanel_zoomIn">
+        Zoom avant
+    </text>
+    <text key="ZoomControlPanel_zoomOut">
+        Zoom arri&#232;re
+    </text>
+
+    <text key="targetName">
+        Nom de la cible
+    </text>
+    <text key="filter">
+        Filtre
+    </text>
+
+    <text key="FileName">
+        Nom de fichier
+    </text>
+    <text key="opticalElement">
+        &#201;l&#233;ment optique
+    </text>
+    <text key="centralWavelength">
+        Longueur d'onde centrale &lt;i&gt;(nm)&lt;/i&gt; </text>
+
+
+    <text key="GalaxyClusters">
+        Amas de galaxies
+    </text>
+    <text key="GlobularClusters">
+        Amas globulaires
+    </text>
+    <text key="JWST_EROs">
+        Cibles Webb Early Release
+    </text>
+    <text key="SpiralGalaxies">
+        Galaxies spirales
+    </text>
+    <text key="StarFormationRegions">
+        R&#233;gions de formation d'&#233;toiles
+    </text>
+    <text key="SupernovaRemnants">
+        Vestiges de supernova
+    </text>
+    <text key="BrownDwarfs">
+        Naines brunes
+    </text>
+    <text key="BrownDwarfsInMultipleSystems">
+        Naines brunes dans multiples syst&#232;mes
+    </text>
+    <text key="BrightNebulae">
+        N&#233;buleuses brillantes
+    </text>
+    <text key="DarkNebulae">
+        N&#233;buleuses obscures
+    </text>
+    <text key="ClosestExoplanetarySystems">
+        Syst&#232;mes exoplan&#233;taires les plus proches
+    </text>
+    <text key="SupermassiveBlackHoles">
+        Trous noirs supermassifs
+    </text>
+    <text key="OpenClusters">
+        Amas ouverts
+    </text>
+    <text key="PeculiarGalaxies">
+        Galaxies particuli&#232;res
+    </text>
+    <text key="InteractingGalaxies">
+        Galaxies en interaction
+    </text>
+    <text key="CESAR_ISM">
+        ISM CESAR
+    </text>
+    <text key="CESAR_Galaxies">
+        Galaxies CESAR
+    </text>
+    <text key="CESAR_Colours">
+        Couleurs CESAR
+    </text>
+
+    <text key="wavelength_GAMMA_RAY">
+        Rayons gamma
+    </text>
+    <text key="wavelength_GAMMA_RAY_Tooltip">
+        100 keV - 10 GeV
+    </text>
+    <text key="wavelength_HARD_X_RAY">
+        Rayons X durs
+    </text>
+    <text key="wavelength_HARD_X_RAY_Tooltip">
+        10 - 100 keV, 10 - 100 Angstrom
+    </text>
+    <text key="wavelength_SOFT_X_RAY">
+        Rayons X mous
+    </text>
+    <text key="wavelength_SOFT_X_RAY_Tooltip">
+        0.12 - 10 keV, 0.12 - 100 Angstrom
+    </text>
+    <text key="wavelength_UV">
+        Ultraviolet
+    </text>
+    <text key="wavelength_UV_Tooltip">
+        10 - 100 nm, 100 - 1000 Angstrom
+    </text>
+    <text key="wavelength_OPTICAL">
+        Optique
+    </text>
+    <text key="wavelength_OPTICAL_Tooltip">
+        100 - 750 nm, 0.1 - 0.75 micron
+    </text>
+    <text key="wavelength_NEAR_IR">
+        Infrarouge proche
+    </text>
+    <text key="wavelength_NEAR_IR_Tooltip">
+        0.75 - 2.5 micron, 120 to 400 THz
+    </text>
+    <text key="wavelength_MID_IR">
+        Infrarouge moyen
+    </text>
+    <text key="wavelength_MID_IR_Tooltip">
+        2.5 - 10 micron, 30 to 120 THz
+    </text>
+    <text key="wavelength_FAR_IR">
+        Infrarouge lointain
+    </text>
+    <text key="wavelength_FAR_IR_Tooltip">
+        10 - 200 micron, 30 THz - 1500 GHz
+    </text>
+    <text key="wavelength_SUBMM">
+        Submillim&#233;trique
+    </text>
+    <text key="wavelength_SUBMM_Tooltip">
+        200 - 1000 micron, 1500 GHz - 300 GHz
+    </text>
+    <text key="wavelength_RADIO">
+        Radio
+    </text>
+    <text key="wavelength_RADIO_Tooltip">
+        &gt;1 mm, &lt;300 GHz
+    </text>
+    <text key="wavelength_USER">
+        Utilisateur
+    </text>
+    <text key="wavelength_USER_Tooltip">
+        HiPS charg&#233; par l'utilisateur
+    </text>
+    <text key="wavelength_OTHERS">
+        Autres
+    </text>
+    <text key="wavelength_OTHERS_Tooltip">
+        Autres
+    </text>
+    <text key="colorPalette_NATIVE">
+        Native
+    </text>
+    <text key="colorPalette_EOSB">
+        EOSB
+    </text>
+    <text key="colorPalette_PLANCK">
+        Planck
+    </text>
+    <text key="colorPalette_RAINBOW">
+        Arc-en-ciel
+    </text>
+    <text key="colorPalette_GREYSCALE">
+        Niveau de gris
+    </text>
+    <text key="colorPalette_GREYSCALE_INV">
+        Niveau de gris (Inverse)
+    </text>
+    <text key="colorPalette_CUBEHELIX">
+        Ajouter ciel
+    </text>
+    <text key="selectSkyPanel_addSky">
+        Ajouter ciel
+    </text>
+    <text key="popupHeader_minimize">
+        Masquer le panneau
+    </text>
+    <text key="MultiTargetTooltip_noNearbySimbadIdFound">
+        Aucun identifiant SIMBAD proche n'a &#233;t&#233; trouv&#233;
+    </text>
+    <text key="MultiTargetTooltip_resolvingNearbyTargets">
+        R&#233;solution des cibles proches
+    </text>
+    <text key="tabulator_rowCount">
+        Lignes: $count$
+    </text>
+    <text key="tabulator_loadFailed">
+        &#201;chec du chargement de donn&#233;es
+    </text>
+    <text key="tabulator_no_data">
+        Aucune donn&#233;e disponible dans cette zone du ciel
+    </text>
+    <text key="tabulator_filtered_empty">
+        Aucune donn&#233;e disponible avec les filtres actuels
+    </text>
+    <text key="treeMap_large_fov">
+        Les donn&#233;es provenant de services externes ne sont disponibles que pour des champs de vision inf&#233;rieurs &#224; $fov_limit$ degr&#233;s
+    </text>
+    <text key="closeableTabLayoutPanel_configure">
+        Configurer le tableau
+    </text>
+    <text key="toggleColumns_rowSelectionTitle">
+        Visible
+    </text>
+    <text key="toggleColumns_headerTitleColumn">
+        Colonne
+    </text>
+    <text key="toggleColumns_headerTitleDatabaseName">
+        Nom de la base de donn&#233;es
+    </text>
+    <text key="toggleColumns_headerTitleDescription">
+        Description
+    </text>
+    <text key="Infrared">
+        Infrarouge
+    </text>
+    <text key="IR">
+        IR
+    </text>
+    <text key="X-ray">
+        Rayons X
+    </text>
+    <text key="DownloadDataProducts">
+        Produits de donn&#233;es ($COUNT$ s&#233;lectionn&#233;s)
+    </text>
+    <text key="treeMap_notInRange_EXT_TAP">
+        Aucune donn&#233;e provenant de centres de donn&#233;es externes n'a &#233;t&#233; trouv&#233;e dans cette plage de longueur d'onde.
+    </text>
+    <text key="webConstants_exploreExtTaps">
+        Explorer les donn&#233;es des centres de donn&#233;es externes dans cette r&#233;gion
+    </text>
+    <text key="treeMap_noData_EXT_TAP">
+        Aucune donn&#233;e trouv&#233;e dans les centres de donn&#233;es externes
+    </text>
+    <text key="treeMap_loading_EXT_TAP">
+        Chargement de donn&#233;es provenant de centres de donn&#233;es externes
+    </text>
+    <text key="treeMap_EXT_TAP">
+        Centres de donn&#233;es externes
+    </text>
+    <text key="mocDialog_loadData">
+        Charger les donn&#233;es
+    </text>
+    <text key="tabulator_accessEstSize_header">
+        Taille du fichier
+    </text>
+    <text key="tabulator_accessEstSize_headerTooltip">
+        Taille estim&#233;e du produit de donn&#233;es t&#233;l&#233;chargeable
+    </text>
+    <text key="tabulator_link2ArchiveHeader">
+        &lt;div class="esasky_column_header"&gt;Archive&lt;/div&gt;
+    </text>
+    <text key="tabulator_link2ArchiveHeaderTooltip">
+        Cliquer sur une ligne pour ouvrir les donn&#233;es de cette ligne dans les archives correspondantes
+    </text>
+    <text key="tabulator_link2ArchiveButtonTooltip">
+        Ouvrir ces donn&#233;es dans le site web des archives
+    </text>
+    <text key="tabulator_previewHeaderTooltip">
+        Afficher un aper&#231;u des donn&#233;es
+    </text>
+    <text key="tabulator_SourcesInPublicationHeader">
+        &lt;div class="esasky_column_header"&gt;Sources&lt;/div&gt;
+    </text>
+    <text key="tabulator_SourcesInPublicationHeaderTooltip">
+        Cliquer pour afficher les sources mentionn&#233;es dans une publication
+    </text>
+    <text key="tabulator_SourcesInPublication">
+        Afficher les sources mentionn&#233;es dans cette publication
+    </text>
+    <text key="tabulator_authorHeaderTooltip">
+        Cliquer sur un nom d'auteur pour afficher les publications de cet auteur dans ADS
+    </text>
+    <text key="access_url">
+        T&#233;l&#233;charger
+    </text>
+    <text key="tabulator_preview">
+        Afficher un aper&#231;u de la carte postale
+    </text>
+    <text key="addSkyMenuItem_ESASKY">
+        Ajouter une nouvelle ligne
+    </text>
+    <text key="addUrl_Description">
+        Ajoutez un HiPS dans ESASky depuis une URL externe.
+        Entrez l'URL du HiPS que vous souhaitez visualiser et ESASky essaiera d'analyser les propri&#233;t&#233;s de l'URL et de l'afficher sur le ciel.
+    </text>
+
+    <text key="addSky_errorParsingProperties">
+        Erreur d'analyse des propri&#233;t&#233;s probablement due au fait que:
+        &lt;br&gt;
+        $DUE_TO$
+        &lt;br&gt;&lt;br&gt;
+        le fournisseur du service HiPS n'autorise pas les requ&#234;tes multi-origines (CORS) ou n'a pas de protocole https s&#233;curis&#233;, ce qui rend malheureusement impossible le chargement du HiPS dans ESASky.
+    </text>
+
+    <text key="browseHips_headerLabel">
+        Liste globale du registre HiPS
+    </text>
+    <text key="browseHips_errorLoadingGlobal">
+        ESASky n'a pas pu charger la liste globale des HiPS depuis: $URL$ </text>
+
+    <text key="targetlist_opacity">Opacit&#233; de l'image</text>
+
+    <!-- Hips browse panel -->
+    <text key="ID">ID</text>
+    <text key="title">Titre</text>
+    <text key="URL">URL</text>
+    <text key="hips_order">Ordre</text>
+    <text key="hips_coverage">Couverture du ciel</text>
+    <text key="hips_em_min">Longueur d'onde minimale &lt;i&gt;(m)&lt;/i&gt;</text>
+    <text key="hips_em_max">Longueur d'onde maximale &lt;i&gt;(m)&lt;/i&gt;</text>
+    <text key="tabulator_addHipsColumn">Ajouter</text>
+    <text key="tabulator_addHips_tooltip">Ajoute ce HiPS sur une nouvelle ligne dans le panneau Ciel</text>
+    <text key="show_more">Afficher plus</text>
+    <text key="show_more_tooltip">Cliquez pour d&#233;velopper et afficher le texte complet</text>
+    <text key="Gamma-ray">
+        Rayons gamma
+    </text>
+    <text key="menuItem_removeEntry">
+        Supprimer l'entr&#233;e
+    </text>
+    <text key="treeMap_notInRange_ASTRO_SPECTRA">
+        Aucune donn&#233;e spectrale ou de courbe de lumi&#232;re n'a &#233;t&#233; trouv&#233;e dans cette plage de longueurs d'onde.
+    </text>
+    <text key="treeMap_noData_ASTRO_SPECTRA">
+        Aucune donn&#233;e spectrale ou de courbe de lumi&#232;re n'a &#233;t&#233; trouv&#233;e.
+    </text>
+    <text key="treeMap_ASTRO_SPECTRA">
+        Spectres et courbes de lumi&#232;re
+    </text>
+    <text key="treeMap_loading_ASTRO_SPECTRA">
+        Chargement des spectres et des courbes de lumi&#232;re
+    </text>
+    <text key="webConstants_exploreSpectral">
+        Explorer les donn&#233;es spectrales ou les courbes de lumi&#232;re pour cette r&#233;gion
+    </text>
+    <text key="datalink_linkedProducts">
+        Produits li&#233;s
+    </text>
+    <text key="tabulator_products">
+        Produits
+    </text>
+    <text key="tabulator_columnHeader_browseProducts">
+        Parcourir les produits
+    </text>
+    <text key="tabulator_browseProducts">
+        Parcourir les produits pour cette ligne
+    </text>
+    <text key="webConstants_exploreHstImages">
+        Explorer les images 'grand public' captur&#233;es par le t&#233;lescope spatial Hubble
+    </text>
+    <text key="ctrlToolBar_gwTooltip">
+        Explorer les &#233;v&#233;nements multi-messagers
+    </text>
+    <text key="outreachImage_hideFootprints">
+        Masquer les empreintes
+    </text>
+    <text key="outreachImagePanel_header">
+        Images 'grand public' ESA/Hubble
+    </text>
+    <text key="outreachImagePanel_helpText">
+        Afficher les images astronomiques 'grand public' provenant de &lt;a
+        href="https://esahubble.org/images/"
+        target="_blank"&gt;
+        site web ESA/Hubble.
+        &lt;/a&gt;
+        &lt;br&gt;&lt;br&gt;
+        Ce panneau affiche une liste des images 'grand public' ESA/Hubble disponibles pour cette r&#233;gion du ciel. Dans le champ de vision, l'empreinte de ces images est repr&#233;sent&#233;e par des rectangles verts. Vous pouvez les masquer en cliquant sur Masquer les empreintes.
+        &lt;br&gt;&lt;br&gt;
+        Cliquez sur une empreinte ou sur un &#233;l&#233;ment de la liste. L'image 'grand public' appara&#238;t en superposition sur le ciel affich&#233;. Une zone de texte s'ouvre avec la description de l'image et le lien vers son emplacement sur le site Web de l'ESA/Hubble. Vous pouvez jouer avec l'opacit&#233; en d&#233;pla&#231;ant la barre d'opacit&#233; de l'image vers la gauche et vers la droite.
+        &lt;br&gt;&lt;br&gt;
+        &lt;b&gt;IMPORTANT:&lt;/b&gt; Ces images sont destin&#233;es au grand public et non &#224; un usage scientifique.
+    </text>
+    <text key="outreachImagePanel_helpTitle">
+        Images 'grand public' ESA/Hubble
+    </text>
+    <text key="imageListEntity_imageNotFound">
+        Impossible de trouver l'image avec ID: $ID$. V&#233;rifier si l'ID saisi est correct.
+    </text>
+    <text key="header_highResolutionImagesTooltip">
+        Afficher les images 'grand public' du t&#233;lescope spatial Hubble
+    </text>
+
+    <text key="header_eva">
+        Assistant virtuel ESA
+    </text>
+
+    <text key="header_sessionSaveEntryTooltip">
+        Enregistrer dans un fichier json tous les param&#232;tres actuels, les panneaux de donn&#233;es ouverts, etc.
+    </text>
+
+    <text key="header_sessionRestoreEntryTooltip">
+        Restaurer tous les param&#232;tres &#224; partir d'un fichier json
+    </text>
+
+    <text key="instrumentDetailsPopup_close">
+        Fermer
+    </text>
+
+    <text key="observing_mode">
+        Mode d'observation
+    </text>
+    <text key="detector">
+        D&#233;tecteur
+    </text>
+    <text key="calibration_level">
+        Niveau d'&#233;talonnage
+    </text>
+
+    <text key="webConstants_exploreJwstImages">
+        Explorer les images 'grand public' captur&#233;es par le t&#233;lescope spatial James Webb
+    </text>
+    <text key="outreachJwstPanel_header">
+        Images 'grand public' ESA/Webb
+    </text>
+    <text key="outreachJwstPanel_helpText">
+        Afficher les images astronomiques 'grand public' provenant de &lt;a
+        href="https://esawebb.org/images/"
+        target="_blank"&gt;
+        site web ESA/Webb.
+        &lt;/a&gt;
+        &lt;br&gt;&lt;br&gt;
+        Ce panneau affiche une liste des images 'grand public' ESA/Webb disponibles pour cette r&#233;gion du ciel. Dans le champ de vision, l'empreinte de ces images est repr&#233;sent&#233;e par des rectangles oranges. Vous pouvez les masquer en cliquant sur Masquer les empreintes.
+        &lt;br&gt;&lt;br&gt;
+        Cliquez sur une empreinte ou sur un &#233;l&#233;ment de la liste. L'image 'grand public' appara&#238;t en superposition sur le ciel affich&#233;. Une zone de texte s'ouvre avec la description de l'image et le lien vers son emplacement sur le site Web de l'ESA/Webb. Vous pouvez jouer avec l'opacit&#233; en d&#233;pla&#231;ant la barre d'opacit&#233; de l'image vers la gauche et vers la droite.
+        &lt;br&gt;&lt;br&gt;
+        &lt;b&gt;IMPORTANT:&lt;/b&gt; Ces images sont destin&#233;es au grand public et non &#224; un usage scientifique.
+    </text>
+    <text key="outreachJwstPanel_helpTitle">
+        Images 'grand public' ESA/Webb
+    </text>
+    <text key="header_jwstOutreachImages">
+        Images 'grand public' Webb
+    </text>
+    <text key="header_jwstImagesTooltip">
+        Afficher les images 'grand public' captur&#233;es par le t&#233;lescope spatial James Webb
+    </text>
+
+    <text key="header_highResolutionImages">
+        Images 'grand public' Hubble
+    </text>
+    <text key="publicationShapeLimitDescription">
+        Result limited to the first $sourceLimit$ sources with the $mostOrLeast$ number of publications
+    </text>
+    <text key="webConstants_changeSky">
+        Changer le ciel
+    </text>
+    <text key="webConstants_exploreTargetList">
+        Explorer les listes de cibles
+    </text>
 </Internationalization>
