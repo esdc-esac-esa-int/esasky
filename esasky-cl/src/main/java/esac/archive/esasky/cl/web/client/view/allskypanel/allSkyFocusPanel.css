@@ -19,3 +19,34 @@
 	flex-direction: column;
 	justify-content: center;
 }
+
+.allSkyCoordinateContainer {
+	display: flex;
+	text-align: center;
+	padding: 10px;
+	font-size: small;
+	border-bottom: 1px solid #fff;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.allSkyCoordinateContainer > div{
+	flex: 1;
+}
+
+.labelContainer {
+	display: flex;
+	flex: 10 !important;
+	flex-direction: column;
+}
+
+.labelRow {
+	display: inline-flex;
+}
+.labelRow > div {
+	margin-right: 5px;
+}
+
+.labelTitle {
+	font-weight: bold;
+}
