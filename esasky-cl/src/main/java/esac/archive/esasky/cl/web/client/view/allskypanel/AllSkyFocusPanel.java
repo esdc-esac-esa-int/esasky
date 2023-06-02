@@ -124,8 +124,8 @@ public class AllSkyFocusPanel extends FocusPanel {
                 if (lastKnownNumberOfTouches > 1) {
                     break;
                 }
-                this.updateCoordinates();
                 this.openContextMenu(event);
+                this.updateCoordinates();
                 break;
 
             default:
@@ -306,7 +306,8 @@ public class AllSkyFocusPanel extends FocusPanel {
     private void updateCoordinates() {
         Coordinate cords = getJ2000Coordinate();
         CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
-        double[] coords = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(), cords.getRa() + " +" + cords.getDec(), CoordinatesFrame.J2000, cooFrame);
+        double[] coords = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(), cords.getRa() + " "
+                + (cords.getDec() >= 0 ? "+" : "") + cords.getDec(), CoordinatesFrame.J2000, cooFrame);
 
         if (coords != null && coords.length > 1) {
             RaPosition raPos = new RaPosition(coords[0]);
@@ -324,7 +325,7 @@ public class AllSkyFocusPanel extends FocusPanel {
         }
     }
 
-    private static native boolean copyToClipboard (String copyText) /*-{
+    private static native boolean copyToClipboard(String copyText) /*-{
         $wnd.navigator.clipboard.writeText(copyText);
     }-*/;
 }
