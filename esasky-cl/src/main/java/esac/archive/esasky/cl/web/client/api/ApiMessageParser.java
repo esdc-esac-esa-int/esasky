@@ -48,7 +48,14 @@ public class ApiMessageParser {
 					console.log('setFoV event captured');
 					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::setFoV(D)(msg.content.fov);
 					break;
-				
+				case 'getFov':
+                    console.log('getFoV event captured');
+					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::getFoV(*)(e);
+					break;
+				case 'getFovShape':
+					console.log('getFovShape event captured');
+					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::getFovShape(*)(e);
+					break;
 				case 'goToRaDec':
 					console.log('goToRADec event captured!');
 					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::goTo(Ljava/lang/String;Ljava/lang/String;)
