@@ -11,6 +11,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 
+import com.google.gwt.user.client.Window;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectAreaEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteSelectSearchAreaEvent;
@@ -179,11 +180,13 @@ public class ApiEvents extends ApiBase{
 				JSONObject result = new JSONObject();
 				JSONObject fov = new JSONObject();
 				SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+				double fovDec = pos.getFov()* Window.getClientHeight()/Window.getClientWidth();
 				
 				fov.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().getRa()));
 				fov.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().getDec()));
 				fov.put(ApiConstants.FOV, new JSONNumber(pos.getFov()));
 				fov.put(ApiConstants.FOVRA, new JSONNumber(pos.getFov()));
+				fov.put(ApiConstants.FOVDEC, new JSONNumber(fovDec));
 				result.put(ApiConstants.ACTION, new JSONString(ApiConstants.EVENT_VIEW_CHANGED));
 				result.put(ApiConstants.VALUES, fov);
 				_this.sendBackEventToWidget(result, widget);
