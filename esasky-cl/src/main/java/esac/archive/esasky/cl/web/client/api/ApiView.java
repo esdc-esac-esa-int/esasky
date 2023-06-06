@@ -12,6 +12,7 @@ import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
@@ -70,7 +71,8 @@ public class ApiView extends ApiBase {
     public void getFoV(JavaScriptObject widget) {
         SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
         JSONObject obj = new JSONObject();
-        obj.put("fov", new JSONNumber(pos.getFov()));
+        obj.put(ApiConstants.FOVRA, new JSONNumber(pos.getFov()));
+        obj.put(ApiConstants.FOVDEC, new JSONNumber(pos.getFov() * MainLayoutPanel.getMainAreaHeight() / MainLayoutPanel.getMainAreaWidth()));
         sendBackToWidget(obj, widget);
     }
 
