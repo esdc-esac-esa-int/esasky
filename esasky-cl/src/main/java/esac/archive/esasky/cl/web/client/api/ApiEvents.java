@@ -23,6 +23,7 @@ import esac.archive.esasky.cl.web.client.model.DecPosition;
 import esac.archive.esasky.cl.web.client.model.RaPosition;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.TabObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
@@ -180,7 +181,7 @@ public class ApiEvents extends ApiBase{
 				JSONObject result = new JSONObject();
 				JSONObject fov = new JSONObject();
 				SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-				double fovDec = pos.getFov()* Window.getClientHeight()/Window.getClientWidth();
+				double fovDec = pos.getFov()* MainLayoutPanel.getMainAreaHeight()/MainLayoutPanel.getMainAreaWidth();
 				
 				fov.put(ApiConstants.RA, new JSONNumber(pos.getCoordinate().getRa()));
 				fov.put(ApiConstants.DEC, new JSONNumber(pos.getCoordinate().getDec()));
