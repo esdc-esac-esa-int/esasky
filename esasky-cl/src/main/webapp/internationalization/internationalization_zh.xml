@@ -2752,4 +2752,35 @@ ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接�
 	<text key="extTapPanel_esaTooltip">
 		浏览欧空间（ESA）TAP服务中的数据
 	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_PLATO asPIC1.1">
+		欧洲空间局的行星凌星和震荡计划（PLATO）期望在类太阳恒星的宜居带中寻找类地行星。由于遥测技术的限制，PLATO观测目标需要预先选择。全天PLATO输入星表对于选择最佳PLATO星场和最有希望的目标恒星，提取其基本参数，分析仪器性能，以及规划和优化随动观测都至关重要的。这个星表对于为寻找凌星行星而优化恒星样本的定义也是很有价值的资源。首次公开发布的全天PLATO输入星表（asPIC 1.1版）共包含2,675,539颗恒星，其中包括2,378,177颗FGK矮星和亚巨星以及297,362颗M矮星。本星表使用盖亚卫星DR2数据的天体测量和光度测量以及本地星际介质3D地图制作完成。它使用一套定制开发的算法从天体测量和光度测量数据中获取了目标的红化和恒星基本参数(Teff、半径、质量)信息。
+
+		&lt;br&gt;&lt;br&gt;
+		DOI:
+		&lt;a
+		href="//www.dx.doi.org/10.17909/t9-8msm-xh08"
+		target="_blank"&gt;
+		10.17909/t9-8msm-xh08
+		&lt;/a&gt;
+
+		&lt;br&gt;
+
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#ASPIC"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
+	<text key="resultsPresenter_helpDescription_catalogues_GLADE+">
+		GLADE+是GLADE星系星表的扩展版本，主要用于对先进引力波探测器发现的事件进行多信使搜寻。该星表综合了六个不同但又不相互独立的天文星表的数据：GWGC、2MPZ、2MASS XSC、HyperLEDA、WISExSCOSPZ星系星表以及SDSS-DR16Q类星体星表，总共包含约2250万个星系和约75万个类星体。就星系的B波段累积光度而言，GLADE+的完备光度距离约为44 Mpc，并且包含所有亮星系的半光度完备距离约为95 Mpc。考虑到亮星系占W1波段总光度的一半，GLADE+即使在约500 Mpc时仍具有近90%的完备性。该星表给出了具有W1星等的星系恒星质量和双中子星并合事件率的参数，这些参数可以在给定的引力波误差天区中对星系进行排序时提供帮助，从而可能减少找到电磁对应体所需的指向次数和总积分时间。
+
+		&lt;br&gt;
+		&lt;br&gt;
+
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GLADE"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt;
+	</text>
 </Internationalization>
