@@ -503,15 +503,9 @@ public class ApiMessageParser {
 					if(!msg.content.hasOwnProperty('dataOnlyInView')){ 
 						msg.content['dataOnlyInView'] = false;
 					}
-					
-					if(msg.content['dataOnlyInView']){
-						apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::plotExtTapWithDetails(*)
-							(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit, msg.content);
-					
-					}else{
-						apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::plotExtTapADQL(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)
-							(msg.content, e);
-					}
+
+					apiExtTap.@esac.archive.esasky.cl.web.client.api.ApiExtTap::plotExtTapWithDetails(*)
+						(msg.content.name, msg.content.tapUrl, msg.content.dataOnlyInView, msg.content.adql, msg.content.color, msg.content.limit, msg.content);
 					break;
 
 				case 'openExtTapPanel':
