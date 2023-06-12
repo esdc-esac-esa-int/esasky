@@ -22,17 +22,12 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesOb
 import esac.archive.esasky.cl.web.client.model.DecPosition;
 import esac.archive.esasky.cl.web.client.model.RaPosition;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.ExternalServices;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
@@ -245,7 +240,7 @@ public class AllSkyFocusPanel extends FocusPanel {
         FlowPanel positionContainer = new FlowPanel();
         positionContainer.addStyleName("allSkyCoordinateContainer");
         copyCoordinateButton = new EsaSkyButton(this.resources.copyIcon());
-        copyCoordinateButton.addClickHandler(event -> copyToClipboard(raText.getText() + " " + decText.getText()));
+        copyCoordinateButton.addClickHandler(event -> CopyToClipboardHelper.getInstance().copyToClipBoard(raText.getText() + " " + decText.getText(), TextMgr.getInstance().getText("AllSkyFocusPanel_copyCoordinateURL")));
 
         FlowPanel labelContainer = new FlowPanel();
         labelContainer.addStyleName("labelContainer");
@@ -324,8 +319,4 @@ public class AllSkyFocusPanel extends FocusPanel {
             decText.setText(raDecStr[1]);
         }
     }
-
-    private static native boolean copyToClipboard(String copyText) /*-{
-        $wnd.navigator.clipboard.writeText(copyText);
-    }-*/;
 }
