@@ -192,7 +192,7 @@ public class TextMgr {
 	private String getTwoLetterLangCode(String newLangCode) {
 		String twoLetterLangCode = newLangCode.substring(0, 2);
 		Log.debug(twoLetterLangCode + ":");
-		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages()) {
+		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages(true)) {
 			if(entry.getKey().equalsIgnoreCase(twoLetterLangCode)) {
 				return twoLetterLangCode;
 			}

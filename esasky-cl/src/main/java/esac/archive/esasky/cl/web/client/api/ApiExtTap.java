@@ -221,44 +221,6 @@ public class ApiExtTap extends ApiBase{
 		controller.getRootPresenter().getRelatedMetadata(descriptor);
 	}
 
-	public void plotExtTapADQL(GeneralJavaScriptObject options, JavaScriptObject widget) {
-		String name;
-		if(options.hasProperty(ApiConstants.EXTTAP_NAME_COLUMN)) {
-			name = options.getStringProperty(ApiConstants.EXTTAP_NAME_COLUMN);
-		}else {
-			sendBackErrorMsgToWidget(ApiConstants.EXTTAP_MSG_MISING + ApiConstants.EXTTAP_NAME_COLUMN, widget);
-			return;
-		}
-
-		String tapUrl;
-		if(options.hasProperty(ApiConstants.EXTTAP_TAP_URL_COLUMN)) {
-			tapUrl = options.getStringProperty(ApiConstants.EXTTAP_TAP_URL_COLUMN);
-		}else {
-			sendBackErrorMsgToWidget(ApiConstants.EXTTAP_MSG_MISING + ApiConstants.EXTTAP_TAP_URL_COLUMN, widget);
-			return;
-		}
-		
-		String adql;
-		if(options.hasProperty(ApiConstants.EXTTAP_ADQL_COLUMN)) {
-			adql = options.getStringProperty(ApiConstants.EXTTAP_ADQL_COLUMN);
-		}else {
-			sendBackMessageToWidget(ApiConstants.EXTTAP_MSG_MISING + ApiConstants.EXTTAP_ADQL_COLUMN, widget);
-			return;
-		}
-		
-		CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().createCustomExternalTapDescriptor(name, tapUrl, false, adql);
-
-
-		descriptor.setShapeLimit(100000);
-		
-		if(options.hasProperty(ApiConstants.EXTTAP_STCS_COLUMN)) {
-			List<TapMetadataDescriptor> meta = descriptor.getMetadata();
-			meta.addAll(controller.getRootPresenter().getDescriptorRepository().mockSpatialMetadata(null, null, options.getStringProperty(ApiConstants.EXTTAP_STCS_COLUMN)));
-			descriptor.setMetadata(meta);
-		}
-		GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(descriptor);
-		controller.getRootPresenter().getRelatedMetadata(entity, adql);
-	}
 
 	public void openExtTapPanelTab(String tab) {
 		if(!("".equals(tab))) {

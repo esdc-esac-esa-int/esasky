@@ -17,9 +17,19 @@ View:
         type: (double, in deg)
         description: 
     description:
-      Set the Field of View in degrees
+      Set the horizontal Field of View in degrees
     example:
       "{event:'setFov',  content:{fov:'3.2'}}"
+  getFov:
+    description:
+      Get the horizontal Field of View in degrees
+    example:
+      "{event:'getFov'}"
+  getFovShape:
+    description:
+      Get the polygon or circle that is made up by the users viewport. This is the same geometrical constraint that is used to calculate the counts.
+    example:
+      "{event:'getFovShape'}"
   goToTargetName:
     parameters:
       targetName:

@@ -24,6 +24,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoo
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
@@ -409,11 +410,11 @@ public class HeaderPresenter {
 		}
 
 		view.setHipsName(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
-		
-		view.setAvailableLanguages(EsaSkyConstants.getAvailableLanguages());
-		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages()) {
+		boolean isKiosk = Modules.getModule(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS);
+		view.setAvailableLanguages(EsaSkyConstants.getAvailableLanguages(isKiosk));
+		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages(isKiosk)) {
 			if(entry.getKey().equalsIgnoreCase(GUISessionStatus.getCurrentLanguage())) {
-				view.setSelectedLanguage(EsaSkyConstants.getAvailableLanguages().indexOf(entry));
+				view.setSelectedLanguage(EsaSkyConstants.getAvailableLanguages(isKiosk).indexOf(entry));
 				break;
 			}
 		}

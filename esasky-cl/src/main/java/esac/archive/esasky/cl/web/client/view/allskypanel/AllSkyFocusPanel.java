@@ -19,261 +19,304 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
+import esac.archive.esasky.cl.web.client.model.DecPosition;
+import esac.archive.esasky.cl.web.client.model.RaPosition;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.esasky.ifcs.model.coordinatesutils.ClientRegexClass;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
-import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.ExternalServices;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.AutoHidePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesParser;
 
 public class AllSkyFocusPanel extends FocusPanel {
 
-	public interface AllSkyFocusPanelObserver {
-		public void onAladinInteraction();
-	}
+    public interface AllSkyFocusPanelObserver {
+        public void onAladinInteraction();
+    }
 
-	private LinkedList<AllSkyFocusPanelObserver> observers = new LinkedList<AllSkyFocusPanelObserver>();
-	private AutoHidePanel contextMenu = new AutoHidePanel();
-	private int mouseX;
-	private int mouseY;
-	private EsaSkyButton searchInSimbadButton;
-	private EsaSkyButton searchInNedButton;
-	private EsaSkyButton searchInVizierPhotometryButton;
-	private int lastKnownNumberOfTouches = 0;
-	private Resources resources = GWT.create(Resources.class);
-	private CssResource style;
+    private LinkedList<AllSkyFocusPanelObserver> observers = new LinkedList<AllSkyFocusPanelObserver>();
+    private AutoHidePanel contextMenu = new AutoHidePanel();
+    private int mouseX;
+    private int mouseY;
+    private EsaSkyButton searchInSimbadButton;
+    private EsaSkyButton searchInNedButton;
+    private EsaSkyButton searchInVizierPhotometryButton;
+    private EsaSkyButton copyCoordinateButton;
+    private int lastKnownNumberOfTouches = 0;
+    Label raText;
+    Label decText;
+    private Resources resources = GWT.create(Resources.class);
+    private CssResource style;
 
-	public interface Resources extends ClientBundle {
+    public interface Resources extends ClientBundle {
 
-		@Source("NED.png")
-		ImageResource ned();
+        @Source("NED.png")
+        ImageResource ned();
 
-		@Source("vizier-photometry-icon.png")
-		ImageResource vizierPhotometry();
+        @Source("vizier-photometry-icon.png")
+        ImageResource vizierPhotometry();
 
-		@Source("vizier.png")
-		ImageResource vizier();
+        @Source("vizier.png")
+        ImageResource vizier();
 
-		@Source("simbad.png")
-		ImageResource simbad();
+        @Source("simbad.png")
+        ImageResource simbad();
 
-		@Source("wwt_logo.png")
-		ImageResource wwtLogo();
+        @Source("wwt_logo.png")
+        ImageResource wwtLogo();
 
-		@Source("allSkyFocusPanel.css")
-		@CssResource.NotStrict
-		CssResource style();
-	}
+        @Source("copy-icon.png")
+        ImageResource copyIcon();
 
-	private AllSkyFocusPanel() {
-		super();
-		style = resources.style();
-		style.ensureInjected();
+        @Source("allSkyFocusPanel.css")
+        @CssResource.NotStrict
+        CssResource style();
+    }
 
-		if (Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU)) {
-			createPopupMenu();
-		}
+    private AllSkyFocusPanel() {
+        super();
+        style = resources.style();
+        style.ensureInjected();
 
-		sinkEvents(Event.ONMOUSEUP | Event.ONCONTEXTMENU | Event.ONTOUCHSTART | Event.ONTOUCHMOVE | Event.ONMOUSEDOWN
-				| Event.ONTOUCHCANCEL | Event.ONTOUCHEND | Event.ONCLICK | Event.ONFOCUS | Event.TOUCHEVENTS);
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU)) {
+            createPopupMenu();
+        }
 
-	}
+        sinkEvents(Event.ONMOUSEUP | Event.ONCONTEXTMENU | Event.ONTOUCHSTART | Event.ONTOUCHMOVE | Event.ONMOUSEDOWN
+                | Event.ONTOUCHCANCEL | Event.ONTOUCHEND | Event.ONCLICK | Event.ONFOCUS | Event.TOUCHEVENTS);
 
-	private static AllSkyFocusPanel instance = null;
+    }
 
-	public static AllSkyFocusPanel getInstance() {
-		if (instance == null) {
-			instance = new AllSkyFocusPanel();
-		}
-		return instance;
-	}
+    private static AllSkyFocusPanel instance = null;
 
-	@Override
-	public final void onBrowserEvent(final Event event) {
-		switch (DOM.eventGetType(event)) {
+    public static AllSkyFocusPanel getInstance() {
+        if (instance == null) {
+            instance = new AllSkyFocusPanel();
+        }
+        return instance;
+    }
 
-		case Event.ONTOUCHSTART:
-		case Event.ONTOUCHEND:
-		case Event.ONTOUCHMOVE:
-		case Event.ONTOUCHCANCEL:
-			lastKnownNumberOfTouches = event.getTouches().length();
-			break;
+    @Override
+    public final void onBrowserEvent(final Event event) {
+        switch (DOM.eventGetType(event)) {
 
-		case Event.ONMOUSEUP:
-			break;
+            case Event.ONTOUCHSTART:
+            case Event.ONTOUCHEND:
+            case Event.ONTOUCHMOVE:
+            case Event.ONTOUCHCANCEL:
+                lastKnownNumberOfTouches = event.getTouches().length();
+                break;
 
-		case Event.ONCONTEXTMENU:
-			if (lastKnownNumberOfTouches > 1) {
-				break;
-			}
-			this.openContextMenu(event);
-			break;
+            case Event.ONMOUSEUP:
+                break;
 
-		default:
-			break;
+            case Event.ONCONTEXTMENU:
+                if (lastKnownNumberOfTouches > 1) {
+                    break;
+                }
+                this.openContextMenu(event);
+                this.updateCoordinates();
+                break;
 
-		}
-		notifyObservers();
-	}
+            default:
+                break;
 
-	public final void openContextMenu(final Event event) {
-		mouseX = event.getClientX() - MainLayoutPanel.getMainAreaAbsoluteLeft();
-		mouseY = event.getClientY() - MainLayoutPanel.getMainAreaAbsoluteTop();
+        }
+        notifyObservers();
+    }
 
-		DisplayUtils.showInsideMainAreaPointingAtPosition(contextMenu, mouseX, mouseY);
+    public final void openContextMenu(final Event event) {
+        mouseX = event.getClientX() - MainLayoutPanel.getMainAreaAbsoluteLeft();
+        mouseY = event.getClientY() - MainLayoutPanel.getMainAreaAbsoluteTop();
 
-		Log.debug(AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg() + " dec "
-				+ AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg());
-	}
+        DisplayUtils.showInsideMainAreaPointingAtPosition(contextMenu, mouseX, mouseY);
 
-	private void createPopupMenu() {
+        Log.debug(AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getRaDeg() + " dec "
+                + AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX, mouseY).getDecDeg());
+    }
 
-		searchInSimbadButton = new EsaSkyButton(this.resources.simbad());
-		searchInSimbadButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInSimbad"));
-		searchInSimbadButton.setVeryBigStyle();
-		searchInSimbadButton.addStyleName("allSkyButton");
-		searchInSimbadButton.addClickHandler(new ClickHandler() {
+    private void createPopupMenu() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				contextMenu.hide();
-				Coordinate j2000Coordinate = getJ2000Coordinate();
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD, 
-						"RA: " + j2000Coordinate.getRa() 
-						+ " Dec: " + j2000Coordinate.getDec()
-						+ " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
-				Window.open(
-						ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
-								j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
-						"_blank", "");
-			}
-		});
+        searchInSimbadButton = new EsaSkyButton(this.resources.simbad());
+        searchInSimbadButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInSimbad"));
+        searchInSimbadButton.setVeryBigStyle();
+        searchInSimbadButton.addStyleName("allSkyButton");
+        searchInSimbadButton.addClickHandler(new ClickHandler() {
 
-		searchInNedButton = new EsaSkyButton(this.resources.ned());
-		searchInNedButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInNed"));
-		searchInNedButton.addStyleName("allSkyButton");
-		searchInNedButton.setVeryBigStyle();
-		searchInNedButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                contextMenu.hide();
+                Coordinate j2000Coordinate = getJ2000Coordinate();
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD,
+                        "RA: " + j2000Coordinate.getRa()
+                                + " Dec: " + j2000Coordinate.getDec()
+                                + " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
+                Window.open(
+                        ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
+                                j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
+                        "_blank", "");
+            }
+        });
 
-			@Override
-			public void onClick(ClickEvent event) {
-				contextMenu.hide();
-        		Coordinate j2000Coordinate = getJ2000Coordinate();
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINNED, 
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec()
-						+ " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
-				Window.open(
-						ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
-								CoordinatesFrame.J2000.getValue()), "_blank", "");
-			}
-		});
+        searchInNedButton = new EsaSkyButton(this.resources.ned());
+        searchInNedButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInNed"));
+        searchInNedButton.addStyleName("allSkyButton");
+        searchInNedButton.setVeryBigStyle();
+        searchInNedButton.addClickHandler(event -> {
+            contextMenu.hide();
+            Coordinate j2000Coordinate = getJ2000Coordinate();
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINNED,
+                    "RA: " + j2000Coordinate.getRa()
+                            + " Dec: " + j2000Coordinate.getDec()
+                            + " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
+            Window.open(
+                    ExternalServices.buildNedURL(j2000Coordinate.getRa(), j2000Coordinate.getDec(),
+                            CoordinatesFrame.J2000.getValue()), "_blank", "");
+        });
 
-		searchInVizierPhotometryButton = new EsaSkyButton(this.resources.vizierPhotometry());
-		searchInVizierPhotometryButton
-				.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInVizierPhotometry"));
-		searchInVizierPhotometryButton.setVeryBigStyle();
-		searchInVizierPhotometryButton.addStyleName("allSkyButton");
-		searchInVizierPhotometryButton.addClickHandler(new ClickHandler() {
+        searchInVizierPhotometryButton = new EsaSkyButton(this.resources.vizierPhotometry());
+        searchInVizierPhotometryButton
+                .setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInVizierPhotometry"));
+        searchInVizierPhotometryButton.setVeryBigStyle();
+        searchInVizierPhotometryButton.addStyleName("allSkyButton");
+        searchInVizierPhotometryButton.addClickHandler(event -> {
+            contextMenu.hide();
+            Coordinate j2000Coordinate = getJ2000Coordinate();
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIERPHOTOMETRY,
+                    "RA: " + j2000Coordinate.getRa()
+                            + " Dec: " + j2000Coordinate.getDec());
+            Window.open(ExternalServices.buildVizierPhotometryURLJ2000(j2000Coordinate.getRa(),
+                    j2000Coordinate.getDec()), "_blank", "");
 
-			@Override
-			public void onClick(ClickEvent event) {
-				contextMenu.hide();
-        		Coordinate j2000Coordinate = getJ2000Coordinate();
-        		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIERPHOTOMETRY, 
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
-        		Window.open(ExternalServices.buildVizierPhotometryURLJ2000(j2000Coordinate.getRa(),
-        				j2000Coordinate.getDec()), "_blank", "");
+        });
 
-			}
-		});
+        EsaSkyButton searchInVizierButton = new EsaSkyButton(this.resources.vizier());
+        searchInVizierButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInVizier"));
+        searchInVizierButton.setVeryBigStyle();
+        searchInVizierButton.addStyleName("allSkyButton");
+        searchInVizierButton.addClickHandler(event -> {
+            contextMenu.hide();
+            Coordinate j2000Coordinate = getJ2000Coordinate();
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU,
+                    GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIER,
+                    "RA: " + j2000Coordinate.getRa()
+                            + " Dec: " + j2000Coordinate.getDec());
+            Window.open(
+                    ExternalServices.buildVizierURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
+        });
 
-		EsaSkyButton searchInVizierButton = new EsaSkyButton(this.resources.vizier());
-		searchInVizierButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInVizier"));
-		searchInVizierButton.setVeryBigStyle();
-		searchInVizierButton.addStyleName("allSkyButton");
-		searchInVizierButton.addClickHandler(new ClickHandler() {
+        EsaSkyButton wwtButton = new EsaSkyButton(this.resources.wwtLogo());
+        wwtButton.setVeryBigStyle();
+        wwtButton.addStyleName("allSkyButton");
 
-			@Override
-			public void onClick(ClickEvent event) {
-				contextMenu.hide();
-	    		Coordinate j2000Coordinate = getJ2000Coordinate();
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU,
-						GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINVIZIER,
-        				"RA: " + j2000Coordinate.getRa() 
-        				+ " Dec: " + j2000Coordinate.getDec());
-        		Window.open(
-        				ExternalServices.buildVizierURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
-			}
-		});
+        wwtButton.setTitle(TextMgr.getInstance().getText("header_viewInWWTFull"));
+        wwtButton.addClickHandler(event -> {
+            Coordinate j2000Coordinate = getJ2000Coordinate();
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_VIEWINWWT,
+                    "RA: " + j2000Coordinate.getRa() + " Dec: " + j2000Coordinate.getDec());
+            Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
+        });
+        if (!Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
+            wwtButton.getElement().getStyle().setDisplay(Display.NONE);
+        }
 
-		EsaSkyButton wwtButton = new EsaSkyButton(this.resources.wwtLogo());
-		wwtButton.setVeryBigStyle();
-		wwtButton.addStyleName("allSkyButton");
+        Style popupStyle = contextMenu.getElement().getStyle();
+        popupStyle.setZIndex(30);
 
-		wwtButton.setTitle(TextMgr.getInstance().getText("header_viewInWWTFull"));
-		wwtButton.addClickHandler(new ClickHandler() {
+        FlowPanel searchButtons = new FlowPanel();
+        searchButtons.add(searchInSimbadButton);
+        searchButtons.add(searchInNedButton);
+        searchButtons.add(searchInVizierPhotometryButton);
+        searchButtons.add(searchInVizierButton);
+        if (Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
+            searchButtons.add(wwtButton);
+        }
 
-			@Override
-			public void onClick(ClickEvent event) {
-				Coordinate j2000Coordinate = getJ2000Coordinate();
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_VIEWINWWT,
-						"RA: " + j2000Coordinate.getRa() + " Dec: " + j2000Coordinate.getDec());
-				Window.open(ExternalServices.buildWwtURLJ2000(j2000Coordinate.getRa(), j2000Coordinate.getDec()), "_blank", "");
-			}
-		});
-		if (!Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
-			wwtButton.getElement().getStyle().setDisplay(Display.NONE);
-		}
+        FlowPanel positionContainer = new FlowPanel();
+        positionContainer.addStyleName("allSkyCoordinateContainer");
+        copyCoordinateButton = new EsaSkyButton(this.resources.copyIcon());
+        copyCoordinateButton.addClickHandler(event -> CopyToClipboardHelper.getInstance().copyToClipBoard(raText.getText() + " " + decText.getText(), TextMgr.getInstance().getText("AllSkyFocusPanel_copyCoordinateURL")));
 
-		Style popupStyle = contextMenu.getElement().getStyle();
-		popupStyle.setZIndex(30);
+        FlowPanel labelContainer = new FlowPanel();
+        labelContainer.addStyleName("labelContainer");
+        FlowPanel raContainer = new FlowPanel();
+        FlowPanel decContainer = new FlowPanel();
+        raContainer.addStyleName("labelRow");
+        decContainer.addStyleName("labelRow");
 
-		FlowPanel searchButtons = new FlowPanel();
-		searchButtons.add(searchInSimbadButton);
-		searchButtons.add(searchInNedButton);
-		searchButtons.add(searchInVizierPhotometryButton);
-		searchButtons.add(searchInVizierButton);
-		if (Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
-			searchButtons.add(wwtButton);
-		}
+        Label raLabel = new Label("RA: ");
+        Label decLabel = new Label("Dec: ");
+        raLabel.addStyleName("labelTitle");
+        decLabel.addStyleName("labelTitle");
+        raText = new Label();
+        decText = new Label();
 
-		Label searchLabel = new Label(TextMgr.getInstance().getText("AllSkyFocusPanel_searchIn"));
-		FlowPanel container = new FlowPanel();
-		container.add(searchLabel);
-		container.add(searchButtons);
-		contextMenu.add(container);
-		contextMenu.addStyleName("AllSkyRightClickPopup");
+        raContainer.add(raLabel);
+        raContainer.add(raText);
 
-	}
-	
-	protected Coordinate getJ2000Coordinate() {
-		CoordinatesObject coordinateOfPress = AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX,
-				mouseY);
-		return CoordinateUtils.getCoordinateInJ2000(coordinateOfPress.getRaDeg(),
-				coordinateOfPress.getDecDeg());
-	}
+        decContainer.add(decLabel);
+        decContainer.add(decText);
 
-	public void registerObserver(AllSkyFocusPanelObserver observer) {
-		observers.add(observer);
-	}
+        labelContainer.add(raContainer);
+        labelContainer.add(decContainer);
+        positionContainer.add(labelContainer);
+        positionContainer.add(copyCoordinateButton);
+        contextMenu.add(positionContainer);
 
-	public void removeObserver(AllSkyFocusPanelObserver observer) {
-		observers.remove(observer);
-	}
+        Label searchLabel = new Label(TextMgr.getInstance().getText("AllSkyFocusPanel_searchIn"));
+        FlowPanel container = new FlowPanel();
+        container.add(searchLabel);
+        container.add(searchButtons);
+        contextMenu.add(container);
+        contextMenu.addStyleName("AllSkyRightClickPopup");
 
-	private void notifyObservers() {
-		for (AllSkyFocusPanelObserver observer : observers) {
-			observer.onAladinInteraction();
-		}
-	}
+    }
 
+    protected Coordinate getJ2000Coordinate() {
+        CoordinatesObject coordinateOfPress = AladinLiteWrapper.getAladinLite().convertMouseXYToRaDecDeg(mouseX,
+                mouseY);
+        return CoordinateUtils.getCoordinateInJ2000(coordinateOfPress.getRaDeg(),
+                coordinateOfPress.getDecDeg());
+    }
+
+    public void registerObserver(AllSkyFocusPanelObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(AllSkyFocusPanelObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (AllSkyFocusPanelObserver observer : observers) {
+            observer.onAladinInteraction();
+        }
+    }
+
+    private void updateCoordinates() {
+        Coordinate cords = getJ2000Coordinate();
+        CoordinatesFrame cooFrame = CoordinatesFrame.valueOf(AladinLiteWrapper.getAladinLite().getCooFrame().toUpperCase());
+        double[] coords = CoordinatesParser.convertCoordsToDegrees(new ClientRegexClass(), cords.getRa() + " "
+                + (cords.getDec() >= 0 ? "+" : "") + cords.getDec(), CoordinatesFrame.J2000, cooFrame);
+
+        if (coords != null && coords.length > 1) {
+            RaPosition raPos = new RaPosition(coords[0]);
+            DecPosition decPos = new DecPosition(coords[1]);
+
+            String[] raDecStr;
+            if (GUISessionStatus.isShowingCoordinatesInDegrees()) {
+                raDecStr = new String[]{Double.toString(raPos.getRaDeg()), Double.toString(decPos.getDecDegFix())};
+            } else {
+                raDecStr = new String[]{raPos.getSpacedHmsString(), decPos.getSpacedDmsStringFix()};
+            }
+
+            raText.setText(raDecStr[0]);
+            decText.setText(raDecStr[1]);
+        }
+    }
 }

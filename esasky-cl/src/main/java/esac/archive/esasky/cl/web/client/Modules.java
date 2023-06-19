@@ -204,7 +204,7 @@ public class Modules {
 		HashMap<String, Boolean> map = createDefaultMap();
 
 		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, false);
-		map.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
+		map.put(EsaSkyWebConstants.MODULE_LANGUAGE, true);
 		map.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
 		map.put(EsaSkyWebConstants.MODULE_SCREENSHOT, false);
 		map.put(EsaSkyWebConstants.MODULE_SHARE, false);

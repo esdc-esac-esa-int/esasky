@@ -64,13 +64,12 @@ public class CopyToClipboardHelper {
 		textBoxToCopyFrom.setFocus(true);
 		textBoxToCopyFrom.selectAll();
 		textBoxToCopyFrom.setWidth(calculateWidth(text) + 12 + "px");
-		if(tryAutomaticCopyToClipboardJS()) {
+		if(tryAutomaticCopyToClipboardJS() || navigatorCopyToClipboard(text)) {
 			copyPopupPanel.hide();
-			
 			copyNotificationLabel.setText(copyNotificationText);
 			copyNotification.show();
 			copyNotificationTimer.schedule(2500);
-		} 
+		}
 	}
 	
 	private int calculateWidth(String text) {
@@ -91,5 +90,14 @@ public class CopyToClipboardHelper {
 			return false;
 		}
 
+	}-*/;
+
+	private static native boolean navigatorCopyToClipboard(String copyText) /*-{
+    	try {
+			$wnd.navigator.clipboard.writeText(copyText);
+            return true;
+		} catch(err) {
+            return false;
+		}
 	}-*/;
 }

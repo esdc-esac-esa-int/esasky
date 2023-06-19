@@ -5218,8 +5218,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="extTapPanel_esaTooltip">
 		Explore data from ESA Table Access Protocols
 	</text>
-	<!-- internationalization_es.xml is up to date for everything above -->
-	<!-- internationalization_zh.xml is up to date for everything above -->
 	<text key="treeMap_noData_USER_TREEMAP">
 		No Data Found
 	</text>
@@ -5258,4 +5256,10 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
+
+	<!-- internationalization_es.xml is up to date for everything above -->
+	<text  key="AllSkyFocusPanel_copyCoordinateURL">
+		Coordinates copied to clipboard
+	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
 </Internationalization>
