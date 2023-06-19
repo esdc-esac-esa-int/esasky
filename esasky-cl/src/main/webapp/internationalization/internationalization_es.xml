@@ -3804,4 +3804,7 @@
 		Más información
 		&lt;/a&gt;
 	</text>
+	<text  key="AllSkyFocusPanel_copyCoordinateURL">
+		Coordenadas copiadas al portapapeles
+	</text>
 </Internationalization>
