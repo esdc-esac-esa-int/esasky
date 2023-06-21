@@ -107,11 +107,6 @@ public class SelectSkyPanelPresenter {
 
         url = EsaSkyWebConstants.HIPS_SOURCES_URL;
 
-        String mode = Modules.getMode();
-        if (mode != null && Objects.equals(mode.toUpperCase(), EsaSkyWebConstants.MODULE_MODE_KIOSK)) {
-            url += "?defaultHips=true";
-        }
-
         Log.debug("Query [" + url + "]");
 
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
