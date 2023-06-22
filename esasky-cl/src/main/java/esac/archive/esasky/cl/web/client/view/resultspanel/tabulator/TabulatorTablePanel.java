@@ -145,11 +145,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 					@Override
 					public void onShow(String field) {
 						getDescriptor().setColumnVisibility(field, true);
+						table.showColumn(field);
 					}
 
 					@Override
 					public void onHide(String field) {
 						getDescriptor().setColumnVisibility(field, false);
+						table.hideColumn(field);
 					}
 
 					@Override
