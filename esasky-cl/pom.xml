@@ -69,7 +69,7 @@
 		</dependency>
 		<dependency>
 			<groupId>esac.archive.absi.vo.tap</groupId>
-			<artifactId>absi-vo-tap-gwt</artifactId>
+			<artifactId>absi-lib-tap-gwt</artifactId>
 			<version>${absi-vo-tap.version}</version>
 		</dependency>
 		<dependency>
