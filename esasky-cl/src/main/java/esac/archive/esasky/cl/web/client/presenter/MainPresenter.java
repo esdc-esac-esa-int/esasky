@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.cl.wcstransform.module.utility.DS9Loader;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -116,6 +117,7 @@ public class MainPresenter {
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_IMAGES, EsaSkyWebConstants.CATEGORY_IMAGES, requiredCategoryArr);
         fetchDescriptorList(EsaSkyWebConstants.SCHEMA_EXTERNAL, EsaSkyWebConstants.CATEGORY_EXTERNAL, requiredCategoryArr);
         new SiafDescriptor(EsaSkyWebConstants.BACKEND_CONTEXT);
+        new DS9Loader(EsaSkyWebConstants.BACKEND_CONTEXT);
 
 
         bindSampRequests();
