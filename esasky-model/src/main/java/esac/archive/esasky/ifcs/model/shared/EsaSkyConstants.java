@@ -398,6 +398,31 @@ public class EsaSkyConstants {
 
     }
 
+
+
+    public enum XMMInstrument {
+        XMM_EPIC_PN("EPIC-pn", "CCD_FULL");
+
+        private String instrName;
+        private String aperName;
+
+        private XMMInstrument(String instrName, String aperName) {
+            this.instrName = instrName;
+            this.aperName = aperName;
+        }
+
+        @Override
+        public String toString() {
+            return instrName;
+        }
+
+        public String getAperName() {
+            return aperName;
+        }
+
+
+    }
+
     /*************************************************************************/
     /** DEFAULT INIT VALUES **/
     /*************************************************************************/
