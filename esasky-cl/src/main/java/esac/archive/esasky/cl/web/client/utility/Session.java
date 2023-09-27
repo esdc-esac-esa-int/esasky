@@ -305,12 +305,15 @@ public class Session {
 	                    String opacity = new Double(imageEnt.getOpacity()).toString();
 	                    String footprintsShowing = new Boolean(!imageEnt.isHidingShapes()).toString();
 	                    String panelOpen = new Boolean(!imageEnt.getIsPanelClosed()).toString();
-	                    
+						boolean isJWST = imageEnt.getDescriptor().getMission() == EsaSkyWebConstants.JWST_MISSION;
+	                    String telescope = isJWST? "JWST" : "HST";
+
 	                    outreachObj = new JSONObject();
 	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_ID, new JSONString(id));
 	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_OPACITY, new JSONString(opacity));
 	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING, new JSONString(footprintsShowing));
 	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_PANEL_OPEN, new JSONString(panelOpen));
+						outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_TELESCOPE, new JSONString(telescope));
 					}
 				}
 				break;
@@ -329,10 +332,11 @@ public class Session {
 		
 		if(outreachObj.hasProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_ID)) {
 			String id = outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_ID);
+			String telescope = outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_TELESCOPE);
 			double opacity = Double.parseDouble(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_OPACITY));
 			boolean showFootPrints = Boolean.parseBoolean(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING));
 			boolean showPanel = Boolean.parseBoolean(outreachObj.getStringProperty(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_PANEL_OPEN));
-			MainPresenter.getInstance().getCtrlTBPresenter().showOutreachImage(id, "");
+			MainPresenter.getInstance().getCtrlTBPresenter().showOutreachImage(id, telescope);
 			for(GeneralEntityInterface ent : EntityRepository.getInstance().getAllEntities()) {
 				if(ent instanceof ImageListEntity) {
 					ImageListEntity imageEnt = (ImageListEntity) ent;
