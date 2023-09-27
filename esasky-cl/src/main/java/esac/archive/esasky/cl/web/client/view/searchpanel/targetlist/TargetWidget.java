@@ -27,6 +27,7 @@ public class TargetWidget extends Composite implements Selectable {
 	private Label label;
 	private boolean isValid;
 	private String targetDescription;
+	private String outreachImage;
 	private int width;
 	private LinkedList<TargetObserver> observers = new LinkedList<TargetObserver>();
 
@@ -47,6 +48,7 @@ public class TargetWidget extends Composite implements Selectable {
 		this.target = inputTarget;
 		this.isValid = inputTarget.getValidInput();
 		this.targetDescription = inputTarget.getDescription();
+		this.outreachImage = inputTarget.getOutreachImage();
 		this.width = width;
 		initView();
 	}
@@ -111,6 +113,10 @@ public class TargetWidget extends Composite implements Selectable {
 	 */
 	public final String getTargetDescription() {
 		return targetDescription;
+	}
+
+	public final String getOutreachImage() {
+		return outreachImage;
 	}
 
 	private void setValidStyle() {

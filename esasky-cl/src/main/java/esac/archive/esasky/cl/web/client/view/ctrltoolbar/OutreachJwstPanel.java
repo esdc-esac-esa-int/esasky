@@ -17,7 +17,6 @@ import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
@@ -38,6 +37,8 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
     private ImageListEntity imageEntity;
     private boolean isHidingFootprints = false;
     private static String outreachImageIdToBeOpened;
+    private static boolean defaultHideFootprints = false;
+    private static boolean startupMinimized = false;
     private static String outreachImageNameToBeOpened;
     private FlowPanel opacityPanel;
     private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachJwstPanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
@@ -134,13 +135,14 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
 
         imageEntity = EntityRepository.getInstance().createImageListEntity(outreachJwstDescriptor);
         if(outreachImageIdToBeOpened != null) {
-            imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
+            imageEntity.setIdToBeOpened(outreachImageIdToBeOpened, startupMinimized);
         } else if (outreachImageNameToBeOpened != null) {
             imageEntity.setNameToBeOpened(outreachImageNameToBeOpened);
         }
         tableContainer.add(imageEntity.createTablePanel().getWidget());
         imageEntity.fetchData();
         setMaxSize();
+        hideFootprints(defaultHideFootprints);
     }
     public void show() {
         super.show();
@@ -183,12 +185,7 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
         MainLayoutPanel.addElementToMainArea(opacityPanel);
 
         hideFootprintsSwitch.addStyleName("outreachJwstPanel__footprintSwitch");
-        hideFootprintsSwitch.addClickHandler(event ->
-        {
-            isHidingFootprints = !isHidingFootprints;
-            hideFootprintsSwitch.setChecked(isHidingFootprints);
-            imageEntity.setIsHidingShapes(isHidingFootprints);
-        });
+        hideFootprintsSwitch.addClickHandler(event -> hideFootprints(!isHidingFootprints));
         header.addActionWidget(hideFootprintsSwitch);
         mainContainer.add(header);
         mainContainer.add(tableContainer);
@@ -218,6 +215,17 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
 
     public static void setStartupId(String id) {
         outreachImageIdToBeOpened = id;
+    }
+
+    public static void setStartupId(String id, boolean hideFootprints) {
+        outreachImageIdToBeOpened = id;
+        defaultHideFootprints = hideFootprints;
+    }
+
+    public static void setStartupId(String id, boolean hideFootprints, boolean minimized) {
+        outreachImageIdToBeOpened = id;
+        defaultHideFootprints = hideFootprints;
+        startupMinimized = minimized;
     }
 
     public static void setStartupName(String name) {
@@ -299,6 +307,23 @@ public class OutreachJwstPanel extends MovableResizablePanel<OutreachJwstPanel> 
 
         if (!isShowing()) {
             show();
+        }
+    }
+
+    public void selectShapeMinimized(String id) {
+        if (imageEntity != null) {
+            imageEntity.showImage(id);
+        } else {
+            OutreachJwstPanel.setStartupId(id, true, true);
+            getData();
+        }
+    }
+
+    private void hideFootprints(boolean hide) {
+        if (hide != isHidingFootprints) {
+            isHidingFootprints = hide;
+            hideFootprintsSwitch.setChecked(hide);
+            imageEntity.setIsHidingShapes(hide);
         }
     }
 }

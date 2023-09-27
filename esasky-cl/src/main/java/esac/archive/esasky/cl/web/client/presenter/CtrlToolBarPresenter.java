@@ -110,6 +110,7 @@ public class CtrlToolBarPresenter {
         void showOutreachImage(String id, String telescope);
         void hideOutreachImage(String telescope);
         void showOutreachImageByName(String name, String telescope);
+        void showOutreachImageMinimized(String name, String telescope);
 
         Map<String, Double[]> getSliderValues();
         void setSliderValues(Map<String, Double[]> sliderMap);
@@ -390,6 +391,10 @@ public class CtrlToolBarPresenter {
 
     public void showOutreachImageByName(String name, String telescope) {
         view.showOutreachImageByName(name, telescope);
+    }
+
+    public void showOutreachImageMinimized(String name, String telescope) {
+        view.showOutreachImageMinimized(name, telescope);
     }
 
     public void hideOutreachImage(String telescope) {

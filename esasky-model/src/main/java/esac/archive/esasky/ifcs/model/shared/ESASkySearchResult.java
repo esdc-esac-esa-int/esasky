@@ -27,6 +27,8 @@ public class ESASkySearchResult {
     Boolean validInput = false;
     String cooFrame;
     String description;
+    String outreachImage;
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     double foVDeg;
 
@@ -171,16 +173,21 @@ public class ESASkySearchResult {
         if (majorAxisArcmin != null && majorAxisArcmin.trim().length() > 0) {
             foVDeg = Double.parseDouble(majorAxisArcmin) / 60.;
         }
-        // little hack: AladinLite seems not able to handle very small fov, so we set a lower value
-        // to 0.1 degrees
-        if (foVDeg < EsaSkyConstants.MIN_ALLOWED_DEFAULT_FOV) {
-            foVDeg = EsaSkyConstants.DEFAULT_FOV;
-        }
+
         return foVDeg;
     }
 
     public void setFoVDeg(double foVDeg) {
         this.foVDeg = foVDeg;
+    }
+
+
+    public String getOutreachImage() {
+        return outreachImage;
+    }
+
+    public String setOutreachImage(String outreachImage) {
+        return this.outreachImage = outreachImage;
     }
 
     /**

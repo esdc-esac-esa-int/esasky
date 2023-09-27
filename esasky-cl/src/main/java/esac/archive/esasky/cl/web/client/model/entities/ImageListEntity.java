@@ -33,6 +33,7 @@ public class ImageListEntity extends EsaSkyEntity {
 	private OutreachImage lastImage = null;
 	private List<Integer> visibleRows;
 	private String outreachImageIdToBeOpened;
+	private boolean startMinimized = false;
 	private String outreachImageNameToBeOpened;
 	private long timeAtLastFoVFilter = 0L;
 	private ICallback shapeSelectedCallback;
@@ -131,8 +132,13 @@ public class ImageListEntity extends EsaSkyEntity {
 			idColumn = Objects.equals(idColumn, "id") ? IDENTIFIER_KEY : idColumn;
 			for(int i = 0; i < rowDataArray.length; i++) {
 				if(rowDataArray[i].getStringProperty(idColumn).equals(outreachImageIdToBeOpened)) {
-					selectShapes(i);
-					tablePanel.selectRow(i, true);
+					if (startMinimized) {
+						showImage(outreachImageIdToBeOpened);
+					} else {
+						selectShapes(i);
+						tablePanel.selectRow(i, true);
+					}
+
 					return;
 				}
 			}
@@ -158,7 +164,12 @@ public class ImageListEntity extends EsaSkyEntity {
 	}
 
 	public void setIdToBeOpened(String id) {
+		setIdToBeOpened(id, false);
+	}
+
+	public void setIdToBeOpened(String id, boolean minimized) {
 		this.outreachImageIdToBeOpened = id;
+		this.startMinimized = minimized;
 	}
 
 	public void setNameToBeOpened(String name) {
@@ -335,6 +346,22 @@ public class ImageListEntity extends EsaSkyEntity {
 				tablePanel.deselectAllRows();
 				selectShapes(i);
 				tablePanel.selectRow(i);
+				return;
+			}
+		}
+	}
+
+	public void showImage(String id) {
+		if (lastImage != null) {
+			lastImage.removeOpenSeaDragon();
+		}
+
+		GeneralJavaScriptObject[] rowDataArray = tablePanel.getAllRows();
+		for (int i = 0; i < rowDataArray.length; i++) {
+			String idColumn = getDescriptor().getIdColumn();
+			idColumn = Objects.equals(idColumn, "id") ? IDENTIFIER_KEY : idColumn;
+			if (rowDataArray[i].getStringProperty(idColumn).equals(id)) {
+				lastImage = new OutreachImage(rowDataArray[i], lastOpacity, descriptor.getMission(), false, true);
 				return;
 			}
 		}

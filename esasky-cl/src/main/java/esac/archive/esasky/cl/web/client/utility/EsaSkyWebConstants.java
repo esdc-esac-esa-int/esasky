@@ -79,8 +79,7 @@ public class EsaSkyWebConstants {
     public static final String URL_PARAM_LAYOUT = "layout";
     public static final String URL_PARAM_HIDE_BANNER_INFO = "hide_banner_info";
     public static final String URL_PARAM_SHOW_EVA = "show_eva";
-    
-    
+    public static final String URL_PARAM_HIDE_FOOTPRINTS = "hide_footprints";
     public static final String SCI_MODE_COOKIE = "IsInSciMode";
     
     public static final boolean SINGLE_COUNT_ENABLED = true; // If enabled the Dynamic count will go against the single fast-count, else one request per mission

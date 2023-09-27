@@ -37,6 +37,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 	private ImageListEntity imageEntity;
 	private boolean isHidingFootprints = false;
 	private static String outreachImageIdToBeOpened;
+	private static boolean defaultHideFootprints = false;
 	private static String outreachImageNameToBeOpened;
 	private FlowPanel opacityPanel;
 	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
@@ -157,6 +158,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 		tableContainer.add(imageEntity.createTablePanel().getWidget());
 		imageEntity.fetchData();
 		setMaxSize();
+		hideFootprints(defaultHideFootprints);
 	}
 	
 	private void initView() {
@@ -184,12 +186,7 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
         MainLayoutPanel.addElementToMainArea(opacityPanel);
 		
         hideFootprintsSwitch.addStyleName("outreachImagePanel__footprintSwitch");
-        hideFootprintsSwitch.addClickHandler(event ->
-        {
-        	isHidingFootprints = !isHidingFootprints;
-        	hideFootprintsSwitch.setChecked(isHidingFootprints);
-    		imageEntity.setIsHidingShapes(isHidingFootprints);
-		});
+        hideFootprintsSwitch.addClickHandler(event -> hideFootprints(!isHidingFootprints));
 		header.addActionWidget(hideFootprintsSwitch);
 		mainContainer.add(header);
 		mainContainer.add(tableContainer);
@@ -220,6 +217,11 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
     public static void setStartupId(String id) {
     	outreachImageIdToBeOpened = id;
     }
+
+	public static void setStartupId(String id, boolean hideFootprints) {
+		outreachImageIdToBeOpened = id;
+		defaultHideFootprints = hideFootprints;
+	}
 
 	public static void setStartupName(String name) {
 		outreachImageNameToBeOpened = name;
@@ -301,6 +303,14 @@ public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel
 
 		if (!isShowing()) {
 			show();
+		}
+	}
+
+	private void hideFootprints(boolean hide) {
+		if (hide != isHidingFootprints) {
+			isHidingFootprints = hide;
+			hideFootprintsSwitch.setChecked(hide);
+			imageEntity.setIsHidingShapes(hide);
 		}
 	}
 
