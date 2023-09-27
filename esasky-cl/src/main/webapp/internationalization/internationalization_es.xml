@@ -203,7 +203,7 @@
 
 	<!-- planObservationPanel -->
 	<text key="planObservationPanel_projectFutureObservations">
-		Proyectar futuras observaciones
+		Proyectar futuras observaciones con $MISSION$
 	</text>
 	<text key="planObservationPanel_helpMessageTitle">
 		Proyectar futuras observaciones

@@ -94,7 +94,7 @@ public class FutureFootprintRow extends Composite {
         put(Instrument.NIRISS, -0.57);
         put(Instrument.MIRI, -4.45);
         put(Instrument.FGS, 0.0);
-		put(Instrument.XMM_EPIC_PN, 0.0);
+        
     }};
     
     
@@ -179,6 +179,12 @@ public class FutureFootprintRow extends Composite {
 		initializeNumberBox(raControl.getNumberBox(), this.ra);
 		initializeNumberBox(decControl.getNumberBox(), this.dec);
 		initializeNumberBox(rotationControl.getNumberBox(), this.rotation);
+		
+//		infoImage = new Image(resources.info());
+//		infoImage.setWidth("20px");
+//		infoImage.setHeight("20px");
+//		infoImage.getElement().getStyle().setVerticalAlign(VerticalAlign.MIDDLE);
+		
 
 		Grid variables = new Grid(3,3);
 		variables.setWidget(0, 0, raLabel);
@@ -226,15 +232,17 @@ public class FutureFootprintRow extends Composite {
 	}
 
 	private DropDownMenu<String> createDetectorDropDownMenu() {
-		final DropDownMenu<String> aperturesDropDownMenu = new DropDownMenu<>(
+		final DropDownMenu<String> aperturesDropDownMenu = new DropDownMenu<String>(
 				TextMgr.getInstance().getText("futureFootprintRow_aperture"), TextMgr.getInstance().getText("futureFootprintRow_aperture"), 135, "aperturesDropDownMenu");
 
+//		List<Detectors> aperturesNames = Detectors.getDetectorsForInstrument(instrument
+//				.getInstrumentName());
 		List<String> aperturesNames = InstrumentMapping.getInstance().getApertureListForInstrument(instrument.getInstrumentName());
 
 		int counter = 0;
 		int apertureIndex = 0;
 		for (final String currentAperture : aperturesNames) {
-			MenuItem<String> dropdownItem = new MenuItem<>(currentAperture,
+			MenuItem<String> dropdownItem = new MenuItem<String>(currentAperture,
 					currentAperture, currentAperture, true);
 			aperturesDropDownMenu.addMenuItem(dropdownItem);
 			if (currentAperture.equals(aperture)) {
@@ -244,21 +252,25 @@ public class FutureFootprintRow extends Composite {
 		}
 		aperturesDropDownMenu.selectObject(aperturesDropDownMenu.getMenuItems().get(apertureIndex).getItem());
 
-		aperturesDropDownMenu.registerObserver(() -> {
-			String apertureName = aperturesDropDownMenu.getSelectedObject();
+		aperturesDropDownMenu.registerObserver(new MenuObserver() {
 
-			for (String aperture : InstrumentMapping.getInstance().getApertureListForInstrument(instrument.getInstrumentName())) {
+			@Override
+			public void onSelectedChange() {
+				String apertureName = aperturesDropDownMenu.getSelectedObject();
 
-				if (aperture.equals(apertureName)) {
-					FutureFootprintRow.this.aperture = aperture;
+				for (String aperture : InstrumentMapping.getInstance().getApertureListForInstrument(instrument.getInstrumentName())) {
 
-					CommonEventBus.getEventBus().fireEvent(
-							new FutureFootprintEvent(FutureFootprintRow.this));
-					break;
+					if (aperture.equals(apertureName)) {
+						FutureFootprintRow.this.aperture = aperture;
+
+						CommonEventBus.getEventBus().fireEvent(
+								new FutureFootprintEvent(FutureFootprintRow.this));
+						break;
+					}
 				}
+				
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_DETECTORSELECTED, instrument.getInstrumentName() + " - " + apertureName);
 			}
-
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_DETECTORSELECTED, instrument.getInstrumentName() + " - " + apertureName);
 		});
 		return aperturesDropDownMenu;
 	}
@@ -266,12 +278,27 @@ public class FutureFootprintRow extends Composite {
 	private CheckBox createAllInstrumentsCheckBox() {
 		allInstrumentsCheckBox = new CheckBox(TextMgr.getInstance().getText("futureFootprintRow_allInstruments"));
 		allInstrumentsCheckBox.addStyleName("allInstrumentsCheckBox");
+//		allInstrumentsCheckBox.addClickHandler(new ClickHandler() {
+//
+//			@Override
+//			public void onClick(ClickEvent arg0) {
+//			    
+//			    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PlanningTool, GoogleAnalytics.ACT_PlanningTool_AllInstrumentsClick, instrument.getInstrumentName());
+//			    
+//				CommonEventBus.getEventBus().fireEvent(
+//						new FutureFootprintEvent(FutureFootprintRow.this));
+//			}
+//		});
+		allInstrumentsCheckBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
-		allInstrumentsCheckBox.addValueChangeHandler(event -> {
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_ALLINSTRUMENTSCLICK, instrument.getInstrumentName());
-
-			CommonEventBus.getEventBus().fireEvent(
-					new FutureFootprintEvent(FutureFootprintRow.this));
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+			    GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_ALLINSTRUMENTSCLICK, instrument.getInstrumentName());
+			    
+				CommonEventBus.getEventBus().fireEvent(
+						new FutureFootprintEvent(FutureFootprintRow.this));
+				
+			}	
 
 		});
 		
@@ -282,10 +309,14 @@ public class FutureFootprintRow extends Composite {
 		CloseButton closeButton = new CloseButton();
 		closeButton.addStyleName(CSS_CLOSE_BUTTON);
 		closeButton.setTitle(TextMgr.getInstance().getText("futureFootprintRow_removeFootprint"));
-		closeButton.addClickHandler(arg0 -> {
-			CommonEventBus.getEventBus().fireEvent(
-					new FutureFootprintClearEvent(FutureFootprintRow.this));
-			FutureFootprintRow.this.removeFromParent();
+		closeButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent arg0) {
+				CommonEventBus.getEventBus().fireEvent(
+						new FutureFootprintClearEvent(FutureFootprintRow.this));
+				FutureFootprintRow.this.removeFromParent();
+			}
 		});
 		return closeButton;
 	}
@@ -296,8 +327,15 @@ public class FutureFootprintRow extends Composite {
 		numberBox.removeStyleName("gwt-TextBox");
 		numberBox.setStyleName(CSS_TEXTBOX);
 
-		numberBox.addValueChangeHandler(event -> CommonEventBus.getEventBus().fireEvent(
-				new FutureFootprintEvent(FutureFootprintRow.this)));
+		numberBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				CommonEventBus.getEventBus().fireEvent(
+						new FutureFootprintEvent(FutureFootprintRow.this));
+			}
+		});
 	}
 
 	private HorizontalPanel createControlPanel() {
@@ -374,16 +412,20 @@ public class FutureFootprintRow extends Composite {
 		instrumentDetailsBtn.setTitle(TextMgr.getInstance().getText("futureFootprintRow_tooltip"));
 		instrumentDetailsBtn.setRoundStyle();
 		instrumentDetailsBtn.setSmallStyle();
-		instrumentDetailsBtn.addClickHandler(event -> {
-			InstrumentDetailsPopup skyDetailsInfo = new InstrumentDetailsPopup(rotationControl.getValue(), INSTRUMENT_ANGLES.get(instrument), getRotationDeg());
-			skyDetailsInfo.show();
-			int defaultLeft = instrumentDetailsBtn.getAbsoluteLeft() + instrumentDetailsBtn.getOffsetWidth() / 2;
-			if (defaultLeft + skyDetailsInfo.getOffsetWidth() > MainLayoutPanel.getMainAreaAbsoluteLeft() + MainLayoutPanel.getMainAreaWidth()) {
-				defaultLeft -= skyDetailsInfo.getOffsetWidth();
-			}
-			skyDetailsInfo.setPopupPosition(defaultLeft,
-					instrumentDetailsBtn.getAbsoluteTop() + instrumentDetailsBtn.getOffsetHeight() / 2);
+		instrumentDetailsBtn.addClickHandler(new ClickHandler() {
 
+			@Override
+			public void onClick(ClickEvent event) {
+				InstrumentDetailsPopup skyDetailsInfo = new InstrumentDetailsPopup(rotationControl.getValue(), INSTRUMENT_ANGLES.get(instrument), getRotationDeg());
+				skyDetailsInfo.show();
+				int defaultLeft = instrumentDetailsBtn.getAbsoluteLeft() + instrumentDetailsBtn.getOffsetWidth() / 2;
+				if (defaultLeft + skyDetailsInfo.getOffsetWidth() > MainLayoutPanel.getMainAreaAbsoluteLeft() + MainLayoutPanel.getMainAreaWidth()) {
+					defaultLeft -= skyDetailsInfo.getOffsetWidth(); 
+				}
+				skyDetailsInfo.setPopupPosition(defaultLeft, 
+						instrumentDetailsBtn.getAbsoluteTop() + instrumentDetailsBtn.getOffsetHeight() / 2);
+				
+			}
 		});
 
 		return instrumentDetailsBtn;

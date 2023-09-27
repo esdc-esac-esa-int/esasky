@@ -304,7 +304,7 @@
 
 	<!-- planObservationPanel -->
 	<text key="planObservationPanel_projectFutureObservations">
-		观测规划工具
+		$MISSION$观测规划工具
 	</text>
 	<text key="planObservationPanel_helpMessageText">
 		此工具将天文仪器的覆盖区域显示到天空中，并且可以任意选择位置和方向，以协助天文学家制定观测计划。

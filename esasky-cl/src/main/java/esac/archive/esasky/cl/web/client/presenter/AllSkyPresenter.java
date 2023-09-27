@@ -1,18 +1,40 @@
 package esac.archive.esasky.cl.web.client.presenter;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Vector;
+
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.VerticalPanel;
+
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
+import esac.archive.esasky.ifcs.model.shared.ColorPalette;
+import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
+import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEventHandler;
 import esac.archive.esasky.cl.web.client.event.UrlChangedEvent;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
+import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEventHandler;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
+import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEventHandler;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEvent;
+import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEventHandler;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
@@ -21,15 +43,6 @@ import esac.archive.esasky.cl.web.client.view.allskypanel.PlanningDetectorCenter
 import esac.archive.esasky.cl.web.client.view.allskypanel.Tooltip;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
 import esac.archive.esasky.cl.web.client.view.searchpanel.targetlist.MultiTargetSourceConstants;
-import esac.archive.esasky.ifcs.model.client.HiPS;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
-import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
-import esac.archive.esasky.ifcs.model.shared.ColorPalette;
-import esac.archive.esasky.ifcs.model.shared.ESASkySSOSearchResult.ESASkySSOObjType;
-
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -85,40 +98,79 @@ public class AllSkyPresenter {
     private void bind() {
 
         CommonEventBus.getEventBus().addHandler(FutureFootprintClearEvent.TYPE,
-                event -> AllSkyPresenter.this.removePlanningFootprint(event.getFutureFootprintRow()));
+                new FutureFootprintClearEventHandler() {
+
+                    @Override
+                    public void clearPlanningFootprint(FutureFootprintClearEvent event) {
+                        AllSkyPresenter.this.removePlanningFootprint(event.getFutureFootprintRow());
+                    }
+                });
 
         CommonEventBus.getEventBus().addHandler(FutureFootprintEvent.TYPE,
-                event -> AllSkyPresenter.this.drawPlanning(event.getFutureFootprintRow()));
-        CommonEventBus.getEventBus().addHandler(HipsChangeEvent.TYPE, changeEvent -> {
+                new FutureFootprintEventHandler() {
 
-            changeHiPS(changeEvent.getHiPS(), changeEvent.getColorPalette(),
-                    changeEvent.isBaseImage(), changeEvent.getOpacity());
-            CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
+                    @Override
+                    public void drawPlanningFootprint(FutureFootprintEvent event) {
+                        AllSkyPresenter.this.drawPlanning(event.getFutureFootprintRow());
+
+                    }
+                });
+        CommonEventBus.getEventBus().addHandler(HipsChangeEvent.TYPE, new HipsChangeEventHandler() {
+
+            @Override
+            public void onChangeEvent(final HipsChangeEvent changeEvent) {
+
+            	changeHiPS(changeEvent.getHiPS(), changeEvent.getColorPalette(),
+                		changeEvent.isBaseImage(), changeEvent.getOpacity());
+                CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
+            }
         });
         
         /*
          * On mouse click on top of a source show a tooltip if not publications source
          */
-        CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE, selectEvent -> {
-            AladinShape obj = selectEvent.getShape();
-            if (obj != null) {
-                if(obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME) != null &&
-                        obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME).equals(MultiTargetSourceConstants.OVERLAY_NAME)) {
-                    AllSkyPresenter.this.view.showSourceTooltip(new MultiTargetTooltip(obj));
-                } else if(obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY) != null &&
-                        obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY).equals(PlanningConstant.OVERLAY_NAME)) {
-                    AllSkyPresenter.this.view.showSourceTooltip(new PlanningDetectorCenterTooltip(obj));
-                }
-            }
+        CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE, new AladinLiteShapeSelectedEventHandler() {
+			
+			@Override
+			public void onShapeSelectionEvent(AladinLiteShapeSelectedEvent selectEvent) {
+				AladinShape obj = selectEvent.getShape();
+				if (obj != null) {
+				    if(obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME) != null &&
+				    		obj.getDataDetailsByKey(MultiTargetSourceConstants.CATALOGUE_NAME).equals(MultiTargetSourceConstants.OVERLAY_NAME)) {
+				        AllSkyPresenter.this.view.showSourceTooltip(new MultiTargetTooltip(obj));
+				    } else if(obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY) != null &&
+				    		obj.getDataDetailsByKey(PlanningConstant.OVERLAY_PROPERTY).equals(PlanningConstant.OVERLAY_NAME)) {
+				        AllSkyPresenter.this.view.showSourceTooltip(new PlanningDetectorCenterTooltip(obj));
+				    }
+				}
+			}
         });
         
-        CommonEventBus.getEventBus().addHandler(AddShapeTooltipEvent.TYPE, event -> AllSkyPresenter.this.view.showSourceTooltip(event.getTooltip()));
+        CommonEventBus.getEventBus().addHandler(AddShapeTooltipEvent.TYPE, new AddShapeTooltipEventHandler() {
+            
+            @Override
+            public void onEvent(AddShapeTooltipEvent event) {
+              AllSkyPresenter.this.view.showSourceTooltip(event.getTooltip());
+            }
+        });
      
         // Click on + (ZoomIn) button
-        this.view.getZoomInClickHandler().addClickHandler(event -> AladinLiteWrapper.getInstance().increaseZoom());
+        this.view.getZoomInClickHandler().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                AladinLiteWrapper.getInstance().increaseZoom();
+            }
+        });
 
         // Click on - (ZoomOut) button
-        this.view.getZoomOutClickHandler().addClickHandler(event -> AladinLiteWrapper.getInstance().decreaseZoom());
+        this.view.getZoomOutClickHandler().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                AladinLiteWrapper.getInstance().decreaseZoom();
+            }
+        });
 
     }
 
@@ -153,7 +205,7 @@ public class AllSkyPresenter {
                 futureFootprintRow.getAperture(),
                 futureFootprintRow.getRotationDeg(), raDeg, decDeg);
 
-        Map<String, JavaScriptObject> polygonJsInstrumentMap = new HashMap<>();
+        Map<String, JavaScriptObject> polygonJsInstrumentMap = new HashMap<String, JavaScriptObject>();
 
         String individualInstrumentPolygon = "";
 

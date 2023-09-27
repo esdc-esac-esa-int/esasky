@@ -338,7 +338,7 @@
 
 	<!-- planObservationPanel -->
 	<text key="planObservationPanel_projectFutureObservations">
-		Observations Planning Tool
+		Observations Planning Tool for $MISSION$
 	</text>
 	<text key="planObservationPanel_helpMessageText">
 		This tool projects onto the sky the footprints of

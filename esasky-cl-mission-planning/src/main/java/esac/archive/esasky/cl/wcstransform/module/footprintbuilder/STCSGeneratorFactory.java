@@ -13,9 +13,8 @@ public class STCSGeneratorFactory {
     public static STCSAbstractGenerator getSTCSGenerator(String mission) {
         Log.debug("FACTORY " + mission);
         if (PlanningMission.JWST.getMissionName().equals(mission)) {
+            Log.debug("FACTORY " + PlanningMission.JWST.getMissionName());
             return new JWSTSiafToSTCSGenerator(mission);
-        } else if (PlanningMission.XMM.getMissionName().equals(mission)) {
-            return new DS9ToSTCSGenerator(mission);
         }
         return null;
     }
