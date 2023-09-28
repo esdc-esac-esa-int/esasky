@@ -134,6 +134,11 @@ public class OutreachImage {
 				? "https://esahubble.org/images/" + id
 				: "https://esawebb.org/images/" + id;
 
+		boolean isOrion = desc.getId().equalsIgnoreCase("webb_orionnebula_longwave") || desc.getId().equalsIgnoreCase("webb_orionnebula_shortwave");
+		if (isOrion) {
+			this.baseUrl = "https://www.esa.int/Science_Exploration/Space_Science/Webb/Webb_s_wide-angle_view_of_the_Orion_Nebula_is_released_in_ESASky";
+		}
+
 		this.title = desc.getTitle();
 		this.description = desc.getDescription();
 		this.credits = desc.getCredit();
@@ -181,6 +186,7 @@ public class OutreachImage {
 			popupText.append(this.credits);
 
 			popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
+			popupText.append("<br> Download the full image <a target=\"_blank\" href=\"" + desc.getLargeUrl() +"\">here</a>");
 
 			CommonEventBus.getEventBus().fireEvent(
 					new TargetDescriptionEvent(this.title, popupText.toString(), false));
