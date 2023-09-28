@@ -186,7 +186,6 @@ public class OutreachImage {
 			popupText.append(this.credits);
 
 			popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
-			popupText.append("<br> Download the full image <a target=\"_blank\" href=\"" + desc.getLargeUrl() +"\">here</a>");
 
 			CommonEventBus.getEventBus().fireEvent(
 					new TargetDescriptionEvent(this.title, popupText.toString(), false));
