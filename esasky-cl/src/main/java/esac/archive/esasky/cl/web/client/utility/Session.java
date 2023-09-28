@@ -314,9 +314,9 @@ public class Session {
 	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_FOOTPRINT_SHOWING, new JSONString(footprintsShowing));
 	                    outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_PANEL_OPEN, new JSONString(panelOpen));
 						outreachObj.put(EsaSkyWebConstants.SESSION_OUTREACH_IMAGE_TELESCOPE, new JSONString(telescope));
+						break;
 					}
 				}
-				break;
 			}
 		}
 		
