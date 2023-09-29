@@ -8,7 +8,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "A region with five pairs of planetary mass objects, each with 3-5 times the mass of Jupiter. McCaughrean & Pearson have called these JuMBOs, for Jupiter-Mass Binary Objects. The discovery of these objects was a complete surprise and there are more than 30 pairs in the regions, some as small as 1+1 Jupiter mass. It is not at all obvious how these form.",
+    "description": "A region with five pairs of planetary mass objects, each with 3-5 times the mass of Jupiter. McCaughrean & Pearson have called these JuMBOs, for Jupiter-Mass Binary Objects. The discovery of these objects was a complete surprise and there are more than 30 pairs in the regions, some as small as 1+1 Jupiter mass. It is not at all obvious how these form. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -20,11 +20,11 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "This is a zoom into some of the so-called “fingers” emanating from the BN-KL star-forming region behind the Trapezium Cluster and visible Orion Nebula. These fingers are expanding rapidly at hundreds of kilometres per second away from an explosive event that took place in BN-KL 500-1000 years ago. The fingers are red because they emit in shocked molecular hydrogen and the green tips are due to ionised iron.",
+    "description": "This is a zoom into some of the so-called “fingers” emanating from the BN-KL star-forming region behind the Trapezium Cluster and visible Orion Nebula. These fingers are expanding rapidly at hundreds of kilometres per second away from an explosive event that took place in BN-KL 500-1000 years ago. Each of the fingers comprises a series of bright arcs of emission like bow waves, expanding behind tips, the latter often appearing green. The fingers are red because they emit in shocked molecular hydrogen and the green tips are due to ionised iron. There are many stars spread across the region with the characteristic eight spikes due to diffraction in the optics of JWST, and there is a foreground haze of wispy blue clouds due to the Orion Nebula, which lies in front of the fingers. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
-    "simbadMainId": "[OW94] 072-426",
+    "simbadMainId": "[OW94] 072-135",
     "simbadRaDeg": "83.780086",
     "simbadDecDeg": "-5.359612",
     "simbadGaldimMajAxis": 0.2,
@@ -32,7 +32,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "A circumstellar disk seen as a silhouette against the background nebula, being heated and evaporated by the Trapezium stars, forming a colourful tail of molecular and ionised gas.",
+    "description": "A star and its circumstellar disk are seen as a silhouette against the grey-blue background of the Orion Nebula. The star is white and is surrounded by the elliptical dark shadow of its disk, with bright red material streaming away from the disk on the bottom side and a mix of blues and greens on the top side. The disk is being heated and evaporated by the Trapezium stars, forming a colourful tail of molecular and ionised gas. These glowing gases are shaped into a tail streaming away towards the upper right, with the reds, blues, and greens slowly fading and blending. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -44,7 +44,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "This is a zoom into one of the pillars to the east of the Trapezium being eroded by the intense light of the massive stars. This short wavelength image shows a clear separation between the outer ionisation front as seen in ionised hydrogen gas (blue) and the fluorescent molecular hydrogen gas (red) associated with denser material inside the pillar.",
+    "description": "This is a zoom into one of the pillars to the east of the Trapezium being eroded by the intense light of the massive stars. This short wavelength image shows a clear separation between the outer ionisation front as seen in ionised hydrogen gas (blue) and the fluorescent molecular hydrogen gas (red) associated with denser material inside the pillar. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -56,7 +56,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "This is a zoom into one of the pillars to the east of the Trapezium being eroded by the intense light of the massive stars. This long wavelength image shows a clear separation between the outer ionisation front and the denser material inside the pillar, with polycyclic aromatic hydrocarbon (PAH) emission lying just inside the ionisation front.",
+    "description": "This is a zoom into one of the pillars to the east of the Trapezium being eroded by the intense light of the massive stars. This long wavelength image shows a clear separation between the outer ionisation front and the denser material inside the pillar, with polycyclic aromatic hydrocarbon (PAH) emission lying just inside the ionisation front. The image displayed is a Webb NIRCam long-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_longwave"
   },
   {
@@ -68,7 +68,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "The largest circumstellar disk in Orion, discovered with HST almost 30 years ago, but seen in unprecedented detail now with JWST. The disk of gas and dust swirling around a young star is seen edge-on, obscuring the star, and appears as a silhouette against the bright background light of the Orion Nebula. But some of the light from the star reflects off dust above and below the plane of the disk, giving rise to the colourful strips of light, like seeing a city over the horizon due to the reflected light in the sky. This disk is roughly 10 x larger than our solar system.",
+    "description": "The largest circumstellar disk in Orion, discovered with HST almost 30 years ago, but seen in unprecedented detail now with JWST. The disk of gas and dust swirling around a young star is seen edge-on, obscuring the star, and appears as a silhouette against the bright background light of the Orion Nebula. But some of the light from the star reflects off dust above and below the plane of the disk, giving rise to the colourful strips of light, like seeing a city over the horizon due to the reflected light in the sky. This disk is roughly 10 x larger than our solar system. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -80,7 +80,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "An edge-on circumstellar disk located quite a long way from the Trapezium. The disk is seen edge-on as a silhouette, with reflection due to the unseen central star above and below it. There is a faint bubble of molecular hydrogen around it, showing that it is still being impacted despite its distance from the Trapezium.",
+    "description": "An edge-on circumstellar disk located quite a long way from the Trapezium. The disk is seen edge-on as a silhouette, with reflection due to the unseen central star above and below it. There is a faint bubble of molecular hydrogen around it, showing that it is still being impacted despite its distance from the Trapezium. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -92,7 +92,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "A circumstellar disk that is much closer to the Trapezium which is being very aggressively heated and evaporated by them. The disk is seen as a silhouette with a red cowl of molecular hydrogen, while the gas that is streaming away is ionised and sculpted into a tadpole shape. There is also a second star and disk located south of this disk.",
+    "description": "A circumstellar disk that is much closer to the Trapezium which is being very aggressively heated and evaporated by them. The disk is seen as a silhouette with a red cowl of molecular hydrogen, while the gas that is streaming away is ionised and sculpted into a tadpole shape. There is also a second star and disk located south of this disk. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -104,7 +104,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "This is a zoom into the Bright Bar ionisation front and photodissociation region (PDR) south of the Trapezium, showing complex layered structures of this near edge-on lip to the HII, ionised hydrogen, region. This short wavelength image is dominated by ionised hydrogen (blue) and fluorescent molecular hydrogen (red).",
+    "description": "This is a zoom into the Bright Bar ionisation front and photodissociation region (PDR) south of the Trapezium, showing complex layered structures of this near edge-on lip to the HII, ionised hydrogen, region. This short wavelength image is dominated by ionised hydrogen (blue) and fluorescent molecular hydrogen (red). The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -116,7 +116,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "This is a zoom into the Bright Bar ionisation front and photodissociation region (PDR) south of the Trapezium, showing complex layered structures of this near edge-on lip to the HII, ionised hydrogen, region. This long wavelength image is dominated by dust and polycyclic aromatic hydrocarbon (PAH) emission.",
+    "description": "This is a zoom into the Bright Bar ionisation front and photodissociation region (PDR) south of the Trapezium, showing complex layered structures of this near edge-on lip to the HII, ionised hydrogen, region. This long wavelength image is dominated by dust and polycyclic aromatic hydrocarbon (PAH) emission. The image displayed is a Webb NIRCam long-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_longwave"
   },
   {
@@ -128,7 +128,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "The massive young Trapezium stars are found in the heart of the Orion Nebula. This short wavelength image is dominated by those stars, but also shows examples of so-called “proplyds”, where disks of gas and dust around young stars are being ablated and evaporated by the massive stars, giving them a characteristic “tadpole” shape.",
+    "description": "The massive young Trapezium stars are found in the heart of the Orion Nebula. This short wavelength image is dominated by those stars, but also shows examples of so-called “proplyds”, where disks of gas and dust around young stars are being ablated and evaporated by the massive stars, giving them a characteristic “tadpole” shape. The image displayed is a Webb NIRCam short-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_shortwave"
   },
   {
@@ -140,7 +140,7 @@
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
-    "description": "The massive young Trapezium stars are found in the heart of the Orion Nebula. This long wavelength image is dominated by those stars, however they are fainter in the long wavelength compared to the short wavelength, but now you can see the warm dust piled up around the stars in red-brown.",
+    "description": "The massive young Trapezium stars are found in the heart of the Orion Nebula. This long wavelength image is dominated by those stars, however they are fainter in the long wavelength compared to the short wavelength, but now you can see the warm dust piled up around the stars in red-brown. The image displayed is a Webb NIRCam long-wavelength colour composite.",
     "outreachImage": "jwst:webb_orionnebula_longwave"
   }
 ]
