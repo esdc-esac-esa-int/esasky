@@ -24,6 +24,7 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
@@ -51,7 +52,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
     private String preparedFilenamesBaseUrl = GWT.getHostPageBaseURL() + "targetlist/";
 
     
-    private final String [] fileNames = {"JWST_EROs", "SpiralGalaxies", "PeculiarGalaxies", "InteractingGalaxies", "GalaxyClusters", "BrightNebulae",
+    private final String [] fileNames = {"OrionNebulaInterestingFeatures", "JWST_EROs", "SpiralGalaxies", "PeculiarGalaxies", "InteractingGalaxies", "GalaxyClusters", "BrightNebulae",
     		"DarkNebulae", "GlobularClusters", "OpenClusters", "StarFormationRegions", "SupernovaRemnants", "SupermassiveBlackHoles",
     		"BrownDwarfs", "BrownDwarfsInMultipleSystems", "ClosestExoplanetarySystems", "CESAR_ISM", "CESAR_Galaxies", "CESAR_Colours"};
     private FlowPanel container;
@@ -378,6 +379,14 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
                 && !selectedWidget.getTargetDescription().isEmpty()) {
             CommonEventBus.getEventBus().fireEvent(
             		new TargetDescriptionEvent(selectedWidget.getNameofSelected(), selectedWidget.getTargetDescription(), true));
+        }
+
+        if (selectedWidget.getOutreachImage() != null && !selectedWidget.getOutreachImage().isEmpty()) {
+            String[] imageInstrument = selectedWidget.getOutreachImage().split(":");
+            if (imageInstrument.length == 2) {
+                MainPresenter.getInstance().getCtrlTBPresenter().showOutreachImageMinimized(imageInstrument[1], imageInstrument[0]);
+            }
+
         }
     }
 

@@ -72,41 +72,47 @@ public class OpenSeaDragonWrapper implements HasHandlers {
 
 	private native JavaScriptObject createOpenSeaDragonObject(OpenSeaDragonWrapper wrapper, String name, String url, String type, double ra, double dec,
 			double fov, double rot, int width, int height)/*-{
-		var tileSources;
+
+    var isDeepZoomFormat = url.endsWith('.dzi');
+
+    var tileSources;
 
 		var openseadragon = $wnd.OpenSeadragon({
 		    id: "openseadragonCanvas",
-			maxZoomPixelRatio: 3,
 		    animationTime: .01,
 		    showFullPageControl: false,
 		    showHomeControl: false,
 		    showZoomControl: false,
-			crossOriginPolicy: "Anonymous"
+			crossOriginPolicy: "Anonymous",
+			tileSources: isDeepZoomFormat ? url : null,
+			imageSmoothingEnabled: !isDeepZoomFormat,
 		});
-		if (type == 'image'){
-			options = {
-				type: type,
-	       		url: url,
-				success: function(event) {
-	                   openseadragon.image = event.item;
-	            }
-			};
-			openseadragon.addSimpleImage(options)
-		}else{
-			options = {
-				tileSource :{
-			        type: type,
-			        width: width,
-			        height: height,
-			        tilesUrl: url
-		    	},
-				success: function(event) {
-	                   openseadragon.image = event.item;
-	            }
-			};
-			openseadragon.addTiledImage(options)
-		};
 
+		if (!isDeepZoomFormat) {
+			if (type == 'image'){
+				options = {
+					type: type,
+					url: url,
+					success: function(event) {
+						openseadragon.image = event.item;
+					}
+				};
+				openseadragon.addSimpleImage(options)
+			}else{
+				options = {
+					tileSource :{
+						type: type,
+						width: width,
+						height: height,
+						tilesUrl: url,
+					},
+					success: function(event) {
+						openseadragon.image = event.item;
+					}
+				};
+				openseadragon.addTiledImage(options)
+			};
+		}
 
 
         // Fail event emitted by Image sources
@@ -128,7 +134,7 @@ public class OpenSeaDragonWrapper implements HasHandlers {
 	    openseadragon.dec = dec;
 	    openseadragon.rot = rot;
 	    openseadragon.whScale = width / height;
-	    openseadragon.viewport.setRotation(rot); 
+	    openseadragon.viewport.setRotation(rot);
 	    return openseadragon;
 	}-*/;
 

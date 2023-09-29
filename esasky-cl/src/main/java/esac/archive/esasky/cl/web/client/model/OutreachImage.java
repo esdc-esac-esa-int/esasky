@@ -40,12 +40,17 @@ public class OutreachImage {
 	}
 
 	public OutreachImage(GeneralJavaScriptObject imageObject, double opacity, String mission) {
+		this(imageObject, opacity, mission, true, false);
+	}
+
+
+	public OutreachImage(GeneralJavaScriptObject imageObject, double opacity, String mission, boolean moveToCenter, boolean hideDescription) {
 		this.opacity = opacity;
 
 		OutreachImageDescriptorMapper mapper = GWT.create(OutreachImageDescriptorMapper.class);
 		String newJson = imageObject.jsonStringify().replaceAll("\"(\\[\\d+?,\\s?\\d+?\\])\"", "$1");
 		OutreachImageDescriptor desc = mapper.read(newJson);
-		onResponseParsed(desc, mission, true);
+		onResponseParsed(desc, mission, moveToCenter, hideDescription);
 		this.mission = mission;
 	}
 	
@@ -77,7 +82,7 @@ public class OutreachImage {
 				String newJson = newObj.jsonStringify().replace("\"[", "[").replace("]\"", "]");
 				OutreachImageDescriptor desc = mapper.read(newJson);
 			
-				onResponseParsed(desc, mission, moveToCenter);
+				onResponseParsed(desc, mission, moveToCenter, false);
 			}
 
 			@Override
@@ -109,7 +114,7 @@ public class OutreachImage {
 		return id;
 	}
 	
-	public void onResponseParsed(OutreachImageDescriptor desc, String mission, boolean moveToCenter) {
+	public void onResponseParsed(OutreachImageDescriptor desc, String mission, boolean moveToCenter, boolean hideDescription) {
 
 		
 		ImageSize imageSize = new ImageSize(desc.getPixelSize()[0], desc.getPixelSize()[1]);
@@ -128,6 +133,11 @@ public class OutreachImage {
 		this.baseUrl = isHst
 				? "https://esahubble.org/images/" + id
 				: "https://esawebb.org/images/" + id;
+
+		boolean isOrion = desc.getId().equalsIgnoreCase("webb_orionnebula_longwave") || desc.getId().equalsIgnoreCase("webb_orionnebula_shortwave");
+		if (isOrion) {
+			this.baseUrl = "https://www.esa.int/Science_Exploration/Space_Science/Webb/Webb_s_wide-angle_view_of_the_Orion_Nebula_is_released_in_ESASky";
+		}
 
 		this.title = desc.getTitle();
 		this.description = desc.getDescription();
@@ -170,14 +180,17 @@ public class OutreachImage {
 		timer.schedule(100);
 		AladinLiteWrapper.getAladinLite().setOpenSeaDragonOpacity(opacity);
 
-		StringBuilder popupText = new StringBuilder(this.description);
-		popupText.append("<br>  Credit: ");
-		popupText.append(this.credits);
+		if (!hideDescription) {
+			StringBuilder popupText = new StringBuilder(this.description);
+			popupText.append("<br>  Credit: ");
+			popupText.append(this.credits);
 
-		popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
-		
-		CommonEventBus.getEventBus().fireEvent(
-        		new TargetDescriptionEvent(this.title, popupText.toString(), false));
+			popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
+
+			CommonEventBus.getEventBus().fireEvent(
+					new TargetDescriptionEvent(this.title, popupText.toString(), false));
+		}
+
 		CommonEventBus.getEventBus().fireEvent(new OpenSeaDragonActiveEvent(true));
 		if (removed) {
 			removeOpenSeaDragon();

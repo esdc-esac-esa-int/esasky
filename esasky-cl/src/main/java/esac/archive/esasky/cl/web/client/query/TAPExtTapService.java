@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
 import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
@@ -123,6 +124,14 @@ public class TAPExtTapService extends AbstractTAPService {
         double fovDeg = Math.min(90, AladinLiteWrapper.getAladinLite().getFovDeg());
         double centerLong = AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg();
         double centerLat = AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg();
+
+        String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
+        if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
+            double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(centerLong, centerLat);
+            centerLong = ccInJ2000[0];
+            centerLat = ccInJ2000[1];
+        }
+
         return "CIRCLE('ICRS', " + centerLong + "," + centerLat + ", " + fovDeg + ")" + ")";
     }
 

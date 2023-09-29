@@ -1,13 +1,7 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Console;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,6 +10,8 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 
+import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.client.SkiesMenu;
@@ -264,17 +260,14 @@ public class SkyRow extends Composite implements Selectable{
 	private void fillHiPSMenuBar(final List<HiPS> hipsList, boolean removable) {
 		hipsDropDown.clearItems();
 
+		String mode = Modules.getMode();
 		HiPS defaultHips = null;
 		for (final HiPS hips : hipsList) {
-			MenuItem<HiPS> dropdownItem = new MenuItem<HiPS>(hips, hips.getSurveyName(), true, removable,
-			        new OnRemove<HiPS>() {
+			if (mode != null && Objects.equals(mode.toUpperCase(), EsaSkyWebConstants.MODULE_MODE_KIOSK) && !hips.getIsDefault()) {
+				continue;
+			}
 
-                        @Override
-                        public void onRemove(MenuItem<HiPS> menuItem) {
-                            notifyMenuItemRemoveClicked(menuItem);
-                        }
-			    
-                    });
+			MenuItem<HiPS> dropdownItem = new MenuItem<>(hips, hips.getSurveyName(), true, removable, this::notifyMenuItemRemoveClicked);
 			hipsDropDown.addMenuItem(dropdownItem);
 			if(hips.getIsDefault()){
 				defaultHips = hips;

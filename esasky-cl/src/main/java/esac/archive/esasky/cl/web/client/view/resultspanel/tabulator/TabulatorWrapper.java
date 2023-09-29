@@ -353,23 +353,17 @@ public class TabulatorWrapper {
         // To handle ra fov closer to the poles
         fov = Math.abs(fov / Math.cos(dec * Math.PI / 180.0));
 
-        String filterString = "";
         minRa = ra - fov;
         maxRa = ra + fov;
         if (minRa < 0) {
             minRa += 360;
-            filterString += minRa + "," + 360;
-            filterString += "," + 0 + "," + (maxRa % 360);
         } else if (maxRa > 360) {
             maxRa = maxRa % 360;
-            filterString += 0 + "," + maxRa;
-            filterString += "," + minRa + "," + 360;
-        } else {
-            filterString += minRa + "," + maxRa;
         }
 
         tableJsObject.setProperty("filteredOnFov", true);
-        groupByFov(tableJsObject, raCol, filterString, decCol, minDec, maxDec);
+
+        groupByFov(tableJsObject, ra, dec, minRa, minDec, minRa, maxDec, maxRa, maxDec, maxRa, minDec);
     }
 
     public void groupByColumns(String... columnNames) {
@@ -381,38 +375,48 @@ public class TabulatorWrapper {
     }-*/;
 
 
-    public native void groupByFov(GeneralJavaScriptObject tableJsObject, String raColumn, String filterString,
-                                  String decColumn, double minDec, double maxDec)/*-{
+    public native void groupByFov(GeneralJavaScriptObject tableJsObject, double fovCenterRa, double fovCenterDec, double... minMaxPoly)/*-{
 
-        var split = filterString.split(",");
+        function isPointInPolygon(pointRA, pointDec, polygonPoints) {
 
-        var isWithin = function (data, column, index) {
-            var startTrue = true;
-            var endTrue = true;
-            if (split[index].length > 0 && data[column] < parseFloat(split[index])) {
-                startTrue = false;
-            }
-            if (split[index + 1].length > 0 && data[column] > parseFloat(split[index + 1])) {
-                endTrue = false;
-            }
-            if (startTrue && endTrue) {
-                return true;
+            var numVertices = polygonPoints.length;
+
+            // Check if the polygon has at least 3 vertices (at least 6 values)
+            if (numVertices < 6 || numVertices % 2 !== 0) {
+                return false;
             }
 
-            if (split.length > index + 2) {
-                return isWithin(data, column, index + 2);
+            // Ray-casting algorithm
+            var numIntersections = 0;
+            for (var i = 0, j = numVertices - 2; i < numVertices; i += 2, j = i - 2) {
+                var xi = polygonPoints[i];
+                var yi = polygonPoints[i + 1];
+                var xj = polygonPoints[j];
+                var yj = polygonPoints[j + 1];
+
+                var intersect = yi > pointDec !== yj > pointDec
+                    && pointRA < ((xj - xi) * (pointDec - yi)) / (yj - yi) + xi;
+
+                if (intersect) {
+                    numIntersections++;
+                }
             }
-            return false;
+
+            return numIntersections % 2 === 1;
         }
+
+
+
         var isInFov = function (data) {
-            if (isWithin(data, raColumn, 0)
-                && data[decColumn] >= minDec && data[decColumn] <= maxDec) {
+            var polygonArray = data.stc_s.trim().split(' ').slice(2); // Remove the first two elements (Polygon J2000)
+            var imagePoly = polygonArray.map(parseFloat); // Parse the remaining elements into numbers
+
+            if ( isPointInPolygon(data.ra_deg, data.dec_deg, minMaxPoly) || isPointInPolygon(fovCenterRa, fovCenterDec, imagePoly)) {
                 return "In Field of View";
             } else {
                 return "Outside Field of View"
             }
         }
-
 
         tableJsObject.setGroupBy(isInFov);
     }-*/;
