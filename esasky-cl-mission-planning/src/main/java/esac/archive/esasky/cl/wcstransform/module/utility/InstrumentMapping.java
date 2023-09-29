@@ -1,13 +1,14 @@
 package esac.archive.esasky.cl.wcstransform.module.utility;
 
-import esac.archive.esasky.ifcs.model.descriptor.DS9DescriptorList;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import esac.archive.esasky.ifcs.model.descriptor.SiafEntries;
 import esac.archive.esasky.ifcs.model.descriptor.SiafEntry;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.JWSTInstrument;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Contains a Mapping for SIAF XMLs
@@ -16,8 +17,7 @@ import java.util.stream.Collectors;
  *
  */
 public class InstrumentMapping {
-	private static SiafEntries siafEntries;
-	private static DS9DescriptorList ds9Descriptors;
+	private static SiafEntries entries;
     private static Map<String, List<String>> apertureList;
     private static List<String> instrumentList;
     private static InstrumentMapping instance = null;
@@ -39,24 +39,15 @@ public class InstrumentMapping {
         }
         return instance;
     }
-
-	public static DS9DescriptorList getDs9Descriptors() {
-		return ds9Descriptors;
-	}
-
+    
 	public void setSiafEntries(SiafEntries entries) {
-		InstrumentMapping.siafEntries = entries;
+		InstrumentMapping.entries = entries;
 		setInstrumentList();
-
-	}
-
-	public void setDs9Entries(DS9DescriptorList descriptors) {
-		ds9Descriptors = descriptors;
 
 	}
 	
 	public List<SiafEntry> getSiafEntries() {
-		return siafEntries.getSiafEntry();
+		return entries.getSiafEntry();
 	}
 
 	private void setInstrumentList() {
@@ -66,24 +57,17 @@ public class InstrumentMapping {
 				instrumentList.add(ins.toString());
 			}
 
-			List<String> aperturesPerInstrument = new ArrayList<>();
-			for (SiafEntry entry : siafEntries.getSiafEntry()) {
+			List<String> aperturesPerInstrument = new ArrayList<String>();
+			for (SiafEntry entry : entries.getSiafEntry()) {
 				if(entry.getInstrName().equalsIgnoreCase(ins.toString())) {
-					if (!aperturesPerInstrument.contains(entry.getAperName())) {
-						aperturesPerInstrument.add(entry.getAperName());
+				if (!aperturesPerInstrument.contains(entry.getAperName())) {
+					aperturesPerInstrument.add(entry.getAperName());
 
-					}
+				}
 				}
 			}
 
 			apertureList.put(ins.toString(), aperturesPerInstrument);
-		}
-
-		for (EsaSkyConstants.XMMInstrument ins : EsaSkyConstants.XMMInstrument.values()) {
-			if (!instrumentList.contains(ins.toString())) {
-				instrumentList.add(ins.toString());
-				apertureList.put(ins.toString(), Arrays.asList(ins.getAperName()));
-			}
 		}
 	}
 	
@@ -118,9 +102,6 @@ public class InstrumentMapping {
     		case "MIRI":{
     			return JWSTInstrument.MIRIM_FULL.getAperName();
     		}
-			case "EPIC-pn": {
-				return EsaSkyConstants.XMMInstrument.XMM_EPIC_PN.getAperName();
-			}
     		default:{
     			return JWSTInstrument.FGS1.getAperName();
     		}
@@ -128,7 +109,7 @@ public class InstrumentMapping {
     }
 
 	public SiafEntry getApertureDetails(String aperName) {
-		for (SiafEntry entry : siafEntries.getSiafEntry()) {
+		for (SiafEntry entry : entries.getSiafEntry()) {
 			if (entry.getAperName().equalsIgnoreCase(aperName)) {
 				return entry;
 			}
@@ -137,7 +118,7 @@ public class InstrumentMapping {
 	}
 	
 	public double[] selectReferencePosVFrame(String aperName) {
-		for (SiafEntry entry : siafEntries.getSiafEntry()) {
+		for (SiafEntry entry : entries.getSiafEntry()) {
 			if (entry.getAperName().equalsIgnoreCase(aperName)) {
 				return new double[] {entry.getV2Ref(),entry.getV3Ref()};
 			}
@@ -160,14 +141,8 @@ public class InstrumentMapping {
 
     }
     
-    public List<String> getInstrumentList(String mission){
-		if (Constants.PlanningMission.JWST.getMissionName().equals(mission)) {
-			return Arrays.stream(JWSTInstrument.values()).map(d -> d.toString()).distinct().collect(Collectors.toList());
-		} else if (Constants.PlanningMission.XMM.getMissionName().equals(mission)) {
-			return Arrays.stream(EsaSkyConstants.XMMInstrument.values()).map(d -> d.toString()).distinct().collect(Collectors.toList());
-		} else {
-			return null;
-		}
+    public List<String> getInstrumentList(){
+    	return instrumentList;
     }
 
 

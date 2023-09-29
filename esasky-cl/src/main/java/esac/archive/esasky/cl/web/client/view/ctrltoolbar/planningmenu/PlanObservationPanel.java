@@ -1,6 +1,8 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -37,14 +39,12 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
 
     private boolean isShowing = false;
 
-    private static VerticalPanel container;
+    private static VerticalPanel jwstPanel; 
     private final String SIAF_VERSION = "SIAF: PRDOPSSOC-059";
     
     private static PlanObservationPanel instance = null;
 
     private PopupHeader<PlanObservationPanel> header;
-
-    private EsaSkyMenuPopupPanel<Instrument> instrumentPopupMenu;
 
     public interface Resources extends ClientBundle {
 
@@ -71,29 +71,18 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     
 
     private void initView() {
-        final DropDownMenu<PlanningMission> missionPopupMenu = new DropDownMenu<>(PlanningMission.JWST.getMissionName(), "Mission", 122, "planObservationPanel_mission_dropdown");
-        missionPopupMenu.addMenuItem(new MenuItem<>(PlanningMission.JWST, PlanningMission.JWST.getMissionName(), true));
-        missionPopupMenu.addMenuItem(new MenuItem<>(PlanningMission.XMM, PlanningMission.XMM.getMissionName(), true));
-        missionPopupMenu.selectObject(PlanningMission.JWST);
-        missionPopupMenu.registerObserver(() -> changeMission(missionPopupMenu.getSelectedObject()));
-        instrumentPopupMenu = new EsaSkyMenuPopupPanel<>(212, true);
-        instrumentPopupMenu.registerObserver(() -> {
-            String instrument = instrumentPopupMenu.getSelectedObject().getInstrumentName();
-            String detector = InstrumentMapping.getInstance().getDefaultApertureForInstrument(instrument);
-            PlanObservationPanel.this.addInstrumentRow(Instrument.getSingleInstrument(missionPopupMenu.getSelectedObject(), instrument), detector, container);
-
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_INSTRUMENTSELECTED, instrument);
-        });
-
-        header = new PopupHeader<>(this,
-                TextMgr.getInstance().getText("planObservationPanel_projectFutureObservations"),
-                TextMgr.getInstance().getText("planObservationPanel_helpMessageText"));
-
+    	final PlanningMission pm = PlanningMission.JWST;
+    	header = new PopupHeader<>(this,
+    			TextMgr.getInstance().getText("planObservationPanel_projectFutureObservations").replace("$MISSION$", pm.getMissionName()),
+    			TextMgr.getInstance().getText("planObservationPanel_helpMessageText"));
+    			
         final VerticalPanel jwstPanel = new VerticalPanel();
         jwstPanel.setStyleName(MISSION_CONTAINER_CLASS);
         jwstPanel.addStyleName(CONTAINER_ID);
 
         jwstPanel.add(header);
+        
+        final EsaSkyMenuPopupPanel<Instrument> instrumentPopupMenu = createInstrumentPopupMenu(pm, jwstPanel);
 
         final SignButton addInstrumentButton = createAddInstrumentButton(instrumentPopupMenu);
 
@@ -101,7 +90,6 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         container.add(jwstPanel);
         FlowPanel addButtonAndSiafContainer = new FlowPanel();
         addButtonAndSiafContainer.addStyleName("planObservationPanel__addButtonAndSiafContainer");
-        addButtonAndSiafContainer.add(missionPopupMenu);
         addButtonAndSiafContainer.add(addInstrumentButton);
         Label siafVersion = new Label(SIAF_VERSION);
         addButtonAndSiafContainer.add(siafVersion);
@@ -111,7 +99,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         this.getElement().setId(COMPONENT_ID);
         this.removeStyleName("gwt-DialogBox");
         this.hide();
-        PlanObservationPanel.container = jwstPanel;
+        PlanObservationPanel.jwstPanel = jwstPanel;
         
         MainLayoutPanel.addMainAreaResizeHandler(event -> setMaxSize());
         setMaxSize();
@@ -120,20 +108,33 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     @Override
     protected void onLoad() {
         this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
-        changeMission(PlanningMission.JWST);
     }
 
-	private void changeMission(final PlanningMission pm) {
-
-        instrumentPopupMenu.clearItems();
-
+	private EsaSkyMenuPopupPanel<Instrument> createInstrumentPopupMenu(final PlanningMission pm,
+			final VerticalPanel jwstPanel) {
+	    
+		final EsaSkyMenuPopupPanel<Instrument> instrumentPopupMenu = new EsaSkyMenuPopupPanel<Instrument>(112, true);
         List<Instrument> instrumentsNames = Instrument.getInstrumentsPerMission(pm);
         
         for (final Instrument currInstrument : instrumentsNames) {
-            MenuItem<Instrument> dropdownItem = new MenuItem<>(currInstrument,
+            MenuItem<Instrument> dropdownItem = new MenuItem<Instrument>(currInstrument,
                     currInstrument.getInstrumentName(), currInstrument.getInstrumentName(), false);
             instrumentPopupMenu.addMenuItem(dropdownItem);
         }
+        
+        instrumentPopupMenu.registerObserver(new MenuObserver() {
+
+            @Override
+            public void onSelectedChange() {
+                String instrument = instrumentPopupMenu.getSelectedObject().getInstrumentName();
+                String detector = InstrumentMapping.getInstance().getDefaultApertureForInstrument(instrument);
+                PlanObservationPanel.this.addInstrumentRow(Instrument.getSingleInstrument(pm, instrument), detector,jwstPanel);
+                
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_PLANNINGTOOL, GoogleAnalytics.ACT_PLANNINGTOOL_INSTRUMENTSELECTED, instrument);
+            }
+        });
+        
+		return instrumentPopupMenu;
 	}
 
 	private SignButton createAddInstrumentButton(final EsaSkyMenuPopupPanel<Instrument> instrumentPopupMenu) {
@@ -142,9 +143,13 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         addInstrumentButton.setRoundStyle();
         addInstrumentButton.setMediumStyle();
         addInstrumentButton.setTitle(TextMgr.getInstance().getText("futureFootprintRow_addJWSTInstrument"));
-        addInstrumentButton.addClickHandler(event -> {
-            instrumentPopupMenu.show();
-            instrumentPopupMenu.setPopupPosition(addInstrumentButton.getAbsoluteLeft(), addInstrumentButton.getAbsoluteTop());
+        addInstrumentButton.addClickHandler(new ClickHandler() {
+        	
+        	@Override
+        	public void onClick(ClickEvent event) {
+        		instrumentPopupMenu.show();
+        		instrumentPopupMenu.setPopupPosition(addInstrumentButton.getAbsoluteLeft(), addInstrumentButton.getAbsoluteTop());
+        	}
         });
 		return addInstrumentButton;
 	}
@@ -185,7 +190,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     			else {
     				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, SIAF_VERSION);
     			}
-    	        PlanObservationPanel.container.add(fr);
+    	        PlanObservationPanel.jwstPanel.add(fr);
     			found = true;
     		}
     		availableModules.set(i, new JSONString(detector));
@@ -203,9 +208,9 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     
     public void clearAllAPI() {
     	int i=0;
-    	while(i<PlanObservationPanel.container.getWidgetCount()) {
-    		if(PlanObservationPanel.container.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
-        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.container.getWidget(i);
+    	while(i<PlanObservationPanel.jwstPanel.getWidgetCount()) {
+    		if(PlanObservationPanel.jwstPanel.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
+        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.jwstPanel.getWidget(i);
         		CommonEventBus.getEventBus().fireEvent(new FutureFootprintClearEvent(fr));
         		fr.removeFromParent();
     		}else {
@@ -217,9 +222,9 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     public List<FutureFootprintRow> getAllRows(){
     	int i=0;
     	List<FutureFootprintRow> list = new LinkedList<>();
-    	while(i<PlanObservationPanel.container.getWidgetCount()) {
-    		if(PlanObservationPanel.container.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
-        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.container.getWidget(i);
+    	while(i<PlanObservationPanel.jwstPanel.getWidgetCount()) {
+    		if(PlanObservationPanel.jwstPanel.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
+        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.jwstPanel.getWidget(i);
         		list.add(fr);
     		}
     		i++;

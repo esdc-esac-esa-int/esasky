@@ -79,10 +79,6 @@ public class EsaSkyMenuPopupPanel<T> extends PopupPanel {
         }
     }
 
-    public void selectIndex(int index) {
-        selectItem(menuItems.get(index));
-    }
-
     public List<MenuItem<T>> getMenuItems(){
     	    return menuItems;
     }
