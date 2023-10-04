@@ -319,6 +319,14 @@ public class DescriptorRepository {
         }
 
 
+        // Make sure "order by" is uppercase
+        start = adql.toUpperCase().indexOf(orderBy);
+        if (start >= 0) {
+            String subStr = adql.substring(start, start + orderBy.length());
+            adql = adql.replace(subStr, orderBy);
+        }
+
+
         String[] whereSplit = adql.split(where);
         if (whereSplit.length > 1) {
             descriptor.setWhereADQL(whereSplit[1]);
