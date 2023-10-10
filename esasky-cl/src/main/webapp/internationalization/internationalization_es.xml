@@ -3807,4 +3807,15 @@
 	<text  key="AllSkyFocusPanel_copyCoordinateURL">
 		Coordenadas copiadas al portapapeles
 	</text>
+	<text  key="resultsPresenter_helpDescription_catalogues_Gaia-FPR">
+		El catálogo de campo abarrotado Gaia FPR consiste en la astrometría y fotometría de imágenes de ingeniería obtenidas en la región de Omega Centauri. Las fuentes han sido detectadas en las imágenes de función de Servicio de Interfaz (SIF) de regiones densas del cielo. Estas fuentes constituyen un catálogo adicional al catálogo nominal de Gaia. Por tanto, detecciones nominales y SIF no han sido cruzadas con el fin de crear este catálogo, sino obtenidas exclusivamente de la detección en las últimas. Las fuentes presentes en catálogo nominal de Gaia se han eliminado del catálogo SIF adicional. El catálogo contiene posiciones, paralajes y movimientos propios de 526,457 nuevas fuentes Gaia, tal y como se extraen de las imágenes SIF (incluyendo 130 fuentes adicionales para las que sólo se cuenta con posiciones). Asimismo, contiene información fotométrica (magnitud media y flujo G) para las 526,587 fuentes detectadas.
+
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#GAIAFPR"
+		target="_blank"&gt;
+		Más información
+		&lt;/a&gt;
+	</text>
 </Internationalization>
