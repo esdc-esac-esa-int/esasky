@@ -885,7 +885,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
-    The 4XMM-DR12 catalogue contains source detections drawn from 12,712
+    The 4XMM-DR13 catalogue contains source detections drawn from 13,243
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
 		to 12 keV. Presently, only sources with QUALITY flag equals 0 or 1
 		(sources "good" or "with suspect parameters") are displayed in ESASky.
@@ -897,7 +897,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-    	The stacked catalogue 4XMM-DR12s has been compiled from 1,620 groups,
+    	The stacked catalogue 4XMM-DR13s has been compiled from 1,620 groups,
 		comprising 9,355  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
 		1 and 2021 December 4 which overlap by at least one arcminute in radius
@@ -4319,20 +4319,20 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_extent">Extent</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_extent_err">Extent error</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_fluxvar">Flux Var</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_iauname">Name</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_8_flux">Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_8_flux_err">Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_2_flux">Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_2_flux_err">Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_3_flux">Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_3_flux_err">Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_4_flux">Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_4_flux_err">Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_5_flux">Flux&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_ep_5_flux_err">Flux error&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_source_cat_dr12_fdw_mjd_start">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_iauname">Name</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_8_flux">Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_8_flux_err">Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_2_flux">Flux&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_2_flux_err">Flux error&lt;sub&gt;0.5-1 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_3_flux">Flux&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_3_flux_err">Flux error&lt;sub&gt;1-2 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_4_flux">Flux&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_4_flux_err">Flux error&lt;sub&gt;2-4.5 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_5_flux">Flux&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ep_5_flux_err">Flux error&lt;sub&gt;4.5-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_xsa_epic_source_cat_fdw_mjd_start">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
 	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_iauname">Name</text>
 	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_observation_id">Observation ID</text>
 	<text key="catalogues.mv_xsa_om_source_cat_5_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
