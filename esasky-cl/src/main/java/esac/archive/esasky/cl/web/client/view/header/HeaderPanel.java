@@ -76,6 +76,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel(); 
 	private FocusPanel hiResDropdown = new FocusPanel();
 	private FocusPanel jwstDropdown = new FocusPanel();
+	private FocusPanel euclidDropdown = new FocusPanel();
 	private EsaSkySwitch dropdownScienceModeSwitch; 
 	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
 	private final ListBox dropdownLanguageBox = new ListBox();
@@ -239,6 +240,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 		dropdownContent.add(createHiResDropdownEntry());
 		dropdownContent.add(createJwstDropdownEntry());
+		dropdownContent.add(createEuclidDropdownEntry());
 
 		dropdownFeedbackEntry.getElement().setId("header__dropdown__feedback");
 		dropdownVideoTutorialsEntry.getElement().setId("header__dropdown__tutorials");
@@ -375,6 +377,16 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
 				&& GUISessionStatus.getIsInScienceMode());
 		return jwstDropdown;
+	}
+
+	private Widget createEuclidDropdownEntry() {
+		Label euclidLabel = new Label(TextMgr.getInstance().getText("header_euclidOutreachImages"));
+		euclidLabel.addStyleName("header__dropdown__outreach__text");
+		euclidDropdown.add(euclidLabel);
+		euclidDropdown.setTitle(TextMgr.getInstance().getText("header_euclidImagesTooltip"));
+		euclidDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID)
+				&& GUISessionStatus.getIsInScienceMode());
+		return euclidDropdown;
 	}
 
 	private Widget createSessionSaveDropdownEntries() {
@@ -583,6 +595,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addJwstClickHandler(ClickHandler handler) {
 		jwstDropdown.addClickHandler(handler);
+	}
+
+	@Override
+	public void addEuclidClickHandler(ClickHandler handler) {
+		euclidDropdown.addClickHandler(handler);
 	}
 	
 	@Override

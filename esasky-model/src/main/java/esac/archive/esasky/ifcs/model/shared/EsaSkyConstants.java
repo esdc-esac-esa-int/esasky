@@ -251,6 +251,8 @@ public class EsaSkyConstants {
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
 
+    public static final String EUCLID_MISSION = "EUCLID";
+
     /*************************************************************************/
     /** INTERNATIONALIZATION VALUES **/
     /*************************************************************************/

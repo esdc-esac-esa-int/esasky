@@ -59,6 +59,8 @@ public final class GoogleAnalytics {
     public static final String CAT_IMAGES = "Images";
     public static final String CAT_OUTREACHIMAGES = "OutreachImages";
     public static final String CAT_JWSTOUTREACHIMAGES = "jwstOutreachImages";
+
+    public static final String CAT_EUCLIDOUTREACHIMAGES = "euclidOutreachImages";
     public static final String CAT_SELECTSKY = "SelectSky";
     public static final String CAT_EVA = "Eva";
     public static final String CAT_GLOBALTAPPANEL = "ExternalTapPanel";
@@ -114,6 +116,7 @@ public final class GoogleAnalytics {
     public static final String ACT_CTRLTOOLBAR_GW = "GravitationalWave";
     public static final String ACT_CTRLTOOLBAR_OUTREACH_IMAGE = "OutreachImage";
     public static final String ACT_CTRLTOOLBAR_JWST_IMAGE = "jwstOutreachImage";
+    public static final String ACT_CTRLTOOLBAR_EUCLID_IMAGE = "euclidOutreachImage";
     public static final String ACT_CTRLTOOLBAR_SESSION_SAVE = "SaveSession";
     public static final String ACT_CTRLTOOLBAR_SESSION_RESTORE = "RestoreSession";
     public static final String ACT_CTRLTOOLBAR_DICE = "Dice";

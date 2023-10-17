@@ -17,6 +17,7 @@ public final class UrlUtils {
 
 	private static String selectedHstImageId = null;
 	private static String selectedJwstImageId = null;
+	private static String selectedEuclidImageId = null;
 
 	public static String getUrlForCurrentState() {
 	    
@@ -59,10 +60,13 @@ public final class UrlUtils {
 
 		String hstImage = "";
 		String jwstImage = "";
+		String euclidImage = "";
 		if (selectedHstImageId != null) {
 			hstImage = "&" + EsaSkyWebConstants.URL_PARAM_HST_IMAGE + "=" + selectedHstImageId;
 		} else if (selectedJwstImageId != null) {
 			jwstImage = "&" + EsaSkyWebConstants.URL_PARAM_JWST_IMAGE + "=" + selectedJwstImageId;
+		} else if (selectedEuclidImageId != null) {
+			euclidImage = "&" + EsaSkyWebConstants.URL_PARAM_EUCLID_IMAGE + "=" + selectedEuclidImageId;
 		}
 		
 		String bookmarkUrl = baseUrl 
@@ -78,7 +82,8 @@ public final class UrlUtils {
 				+ logLevel
 				+ layout
 				+ hstImage
-				+ jwstImage;
+				+ jwstImage
+				+ euclidImage;
 		return bookmarkUrl;
 	}
 	
@@ -124,10 +129,16 @@ public final class UrlUtils {
     }
 
 	public static void setSelectedOutreachImageId(String id, CommonTapDescriptor descriptor) {
-		if (Objects.equals(descriptor.getMission(), EsaSkyConstants.HST_MISSION)) {
-			selectedHstImageId = id;
-		} else {
-			selectedJwstImageId = id;
+		switch (descriptor.getMission()) {
+			case EsaSkyConstants.HST_MISSION:
+				selectedHstImageId = id;
+				break;
+			case EsaSkyConstants.JWST_MISSION:
+				selectedJwstImageId = id;
+				break;
+			case EsaSkyConstants.EUCLID_MISSION:
+				selectedEuclidImageId = id;
+				break;
 		}
 
 		UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());

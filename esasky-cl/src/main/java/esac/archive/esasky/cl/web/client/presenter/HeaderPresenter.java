@@ -102,6 +102,7 @@ public class HeaderPresenter {
 		void addWarningButtonClickHandler(ClickHandler handler);
 		void addHiResClickHandler(ClickHandler handler);
 		void addJwstClickHandler(ClickHandler handler);
+		void addEuclidClickHandler(ClickHandler handler);
 		void addSessionSaveClickHandler(ClickHandler handler);
 		void addSessionRestoreClickHandler(ClickHandler handler);
 		void addGridButtonClickHandler(ClickHandler handler);
@@ -354,9 +355,15 @@ public class HeaderPresenter {
 		});
 
 		view.addJwstClickHandler(event -> {
-			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_JWST_IMAGE, "");
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_EUCLID_IMAGE, "");
 			view.closeDropdownMenu();
 			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.JWST));
+		});
+
+		view.addEuclidClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_EUCLID_IMAGE, "");
+			view.closeDropdownMenu();
+			CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.EUCLID));
 		});
 
 		view.addSessionSaveClickHandler(event -> {

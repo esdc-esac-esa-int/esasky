@@ -26,7 +26,8 @@ public class ShowImageListEvent extends GwtEvent<ShowImageListEventHandler> {
 
     public enum Sender {
         HST,
-        JWST
+        JWST,
+        EUCLID
     }
 
 }
