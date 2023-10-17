@@ -30,7 +30,7 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import java.util.Objects;
 
 public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
-
+    private static boolean startupMinimized = false;
     private CommonTapDescriptor outreachImageDescriptor;
     private ImageListEntity imageEntity;
     private boolean isHidingFootprints = false;
@@ -42,7 +42,6 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
     private final FlowPanel mainContainer = new FlowPanel();
     private final FlowPanel tableContainer = new FlowPanel();
     private PopupHeader<OutreachImagePanel> header;
-    private static boolean startupMinimized = false;
     private final String mission;
     private final Resources resources;
     private CssResource style;

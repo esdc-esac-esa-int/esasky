@@ -251,7 +251,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private void checkPanelsVisibility() {
-        if (selectSkyPanel.isShowing() || outreachHstImagePanel.isShowing() || outreachJwstPanel.isShowing() || outreachEuclidPanel.isShowing() || MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().isShowing()) {
+        if (selectSkyPanel.isShowing() || outreachHstImagePanel.isShowing() || outreachJwstPanel.isShowing() || MainPresenter.getInstance().getTargetPresenter().getTargetListPanel().isShowing()) {
             hideAllLabels(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachHstButton, outreachJwstButton, outreachEuclidButton));
         }
     }

@@ -11,7 +11,6 @@ import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Objects;
 
 public final class UrlUtils {
 
@@ -130,15 +129,14 @@ public final class UrlUtils {
 
 	public static void setSelectedOutreachImageId(String id, CommonTapDescriptor descriptor) {
 		switch (descriptor.getMission()) {
-			case EsaSkyConstants.HST_MISSION:
-				selectedHstImageId = id;
-				break;
-			case EsaSkyConstants.JWST_MISSION:
+            case EsaSkyConstants.JWST_MISSION:
 				selectedJwstImageId = id;
 				break;
 			case EsaSkyConstants.EUCLID_MISSION:
 				selectedEuclidImageId = id;
 				break;
+			default:
+				selectedHstImageId = id;
 		}
 
 		UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());

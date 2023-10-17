@@ -353,15 +353,14 @@ public class CtrlToolBarPresenter {
 
     public void openOutreachPanel(String telescope, String id) {
         switch (telescope) {
-            case EsaSkyConstants.HST_MISSION:
-                view.openOutreachPanel(id);
-                break;
             case EsaSkyConstants.JWST_MISSION:
                 view.openJwstOutreachPanel(id);
                 break;
             case EsaSkyConstants.EUCLID_MISSION:
                 view.openEuclidOutreachPanel(id);
                 break;
+            default:
+                view.openOutreachPanel(id);
         }
     }
 
