@@ -46,6 +46,8 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
 
     private EsaSkyMenuPopupPanel<Instrument> instrumentPopupMenu;
 
+    private Label siafVersion;
+
     public interface Resources extends ClientBundle {
 
         @Source("planObservationPanel.css")
@@ -75,7 +77,12 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         missionPopupMenu.addMenuItem(new MenuItem<>(PlanningMission.JWST, PlanningMission.JWST.getMissionName(), true));
         missionPopupMenu.addMenuItem(new MenuItem<>(PlanningMission.XMM, PlanningMission.XMM.getMissionName(), true));
         missionPopupMenu.selectObject(PlanningMission.JWST);
-        missionPopupMenu.registerObserver(() -> changeMission(missionPopupMenu.getSelectedObject()));
+        missionPopupMenu.registerObserver(() -> {
+            changeMission(missionPopupMenu.getSelectedObject());
+            siafVersion.setText(missionPopupMenu.getSelectedObject().equals(PlanningMission.JWST) ? SIAF_VERSION : "");
+        });
+
+
         instrumentPopupMenu = new EsaSkyMenuPopupPanel<>(212, true);
         instrumentPopupMenu.registerObserver(() -> {
             String instrument = instrumentPopupMenu.getSelectedObject().getInstrumentName();
@@ -103,7 +110,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         addButtonAndSiafContainer.addStyleName("planObservationPanel__addButtonAndSiafContainer");
         addButtonAndSiafContainer.add(missionPopupMenu);
         addButtonAndSiafContainer.add(addInstrumentButton);
-        Label siafVersion = new Label(SIAF_VERSION);
+        siafVersion = new Label(SIAF_VERSION);
         addButtonAndSiafContainer.add(siafVersion);
         container.add(addButtonAndSiafContainer);
         		
