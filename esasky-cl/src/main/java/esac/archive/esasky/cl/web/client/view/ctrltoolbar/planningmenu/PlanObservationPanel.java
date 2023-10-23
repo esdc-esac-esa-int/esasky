@@ -37,7 +37,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
 
     private boolean isShowing = false;
 
-    private static VerticalPanel container;
+    private  VerticalPanel container;
     private final String SIAF_VERSION = "SIAF: PRDOPSSOC-059";
     
     private static PlanObservationPanel instance = null;
@@ -104,21 +104,21 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
 
         final SignButton addInstrumentButton = createAddInstrumentButton(instrumentPopupMenu);
 
-        VerticalPanel container = new VerticalPanel();
-        container.add(jwstPanel);
+        VerticalPanel outerContainer = new VerticalPanel();
+        outerContainer.add(jwstPanel);
         FlowPanel addButtonAndSiafContainer = new FlowPanel();
         addButtonAndSiafContainer.addStyleName("planObservationPanel__addButtonAndSiafContainer");
         addButtonAndSiafContainer.add(missionPopupMenu);
         addButtonAndSiafContainer.add(addInstrumentButton);
         siafVersion = new Label(SIAF_VERSION);
         addButtonAndSiafContainer.add(siafVersion);
-        container.add(addButtonAndSiafContainer);
+        outerContainer.add(addButtonAndSiafContainer);
         		
-        this.add(container);
+        this.add(outerContainer);
         this.getElement().setId(COMPONENT_ID);
         this.removeStyleName("gwt-DialogBox");
         this.hide();
-        PlanObservationPanel.container = jwstPanel;
+        this.container = jwstPanel;
         
         MainLayoutPanel.addMainAreaResizeHandler(event -> setMaxSize());
         setMaxSize();
@@ -192,7 +192,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     			else {
     				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, SIAF_VERSION);
     			}
-    	        PlanObservationPanel.container.add(fr);
+    	        this.container.add(fr);
     			found = true;
     		}
     		availableModules.set(i, new JSONString(detector));
@@ -210,9 +210,9 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     
     public void clearAllAPI() {
     	int i=0;
-    	while(i<PlanObservationPanel.container.getWidgetCount()) {
-    		if(PlanObservationPanel.container.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
-        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.container.getWidget(i);
+    	while(i<this.container.getWidgetCount()) {
+    		if(this.container.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
+        		FutureFootprintRow fr = (FutureFootprintRow) this.container.getWidget(i);
         		CommonEventBus.getEventBus().fireEvent(new FutureFootprintClearEvent(fr));
         		fr.removeFromParent();
     		}else {
@@ -224,9 +224,9 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     public List<FutureFootprintRow> getAllRows(){
     	int i=0;
     	List<FutureFootprintRow> list = new LinkedList<>();
-    	while(i<PlanObservationPanel.container.getWidgetCount()) {
-    		if(PlanObservationPanel.container.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
-        		FutureFootprintRow fr = (FutureFootprintRow) PlanObservationPanel.container.getWidget(i);
+    	while(i<this.container.getWidgetCount()) {
+    		if(this.container.getWidget(i).getClass().equals(FutureFootprintRow.class)) {
+        		FutureFootprintRow fr = (FutureFootprintRow) this.container.getWidget(i);
         		list.add(fr);
     		}
     		i++;

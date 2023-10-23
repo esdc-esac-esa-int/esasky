@@ -91,7 +91,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private ListBox coordinateFrameFirstLetter = new ListBox();
 	private FlowPanel coordinateContainer = new FlowPanel();
 
-	private final String outreachDropdownHeaderClass = "header__dropdown__outreach__text";
+	private static final String OUTREACH_DROPDOWN_HEADER_CLASS = "header__dropdown__outreach__text";
 
 	public interface Resources extends ClientBundle {
 
@@ -362,7 +362,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private Widget createHiResDropdownEntry() {
 		Label hiresLabel = new Label(TextMgr.getInstance().getText("header_highResolutionImages"));
-		hiresLabel.addStyleName(outreachDropdownHeaderClass);
+		hiresLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
 		hiResDropdown.add(hiresLabel);
 		hiResDropdown.getElement().setId("header__dropdown__outreach");
 		hiResDropdown.setTitle(TextMgr.getInstance().getText("header_highResolutionImagesTooltip"));
@@ -373,7 +373,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private Widget createJwstDropdownEntry() {
 		Label jwstLabel = new Label(TextMgr.getInstance().getText("header_jwstOutreachImages"));
-		jwstLabel.addStyleName(outreachDropdownHeaderClass);
+		jwstLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
 		jwstDropdown.add(jwstLabel);
 		jwstDropdown.setTitle(TextMgr.getInstance().getText("header_jwstImagesTooltip"));
 		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
@@ -383,7 +383,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private Widget createEuclidDropdownEntry() {
 		Label euclidLabel = new Label(TextMgr.getInstance().getText("header_euclidOutreachImages"));
-		euclidLabel.addStyleName(outreachDropdownHeaderClass);
+		euclidLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
 		euclidDropdown.add(euclidLabel);
 		euclidDropdown.setTitle(TextMgr.getInstance().getText("header_euclidImagesTooltip"));
 		euclidDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID)
