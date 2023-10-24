@@ -724,7 +724,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         outreachEuclidPanel.definePositionFromTopAndLeft();
         outreachEuclidPanel.hide();
         outreachEuclidPanel.addCloseHandler(event -> {
-            outreachJwstButton.setToggleStatus(false);
+            outreachEuclidButton.setToggleStatus(false);
             rotateButtonLabelVisibility(Arrays.asList(selectSkyButton, exploreBtn, targetListButton, outreachHstButton, outreachJwstButton, outreachEuclidButton));
         });
 

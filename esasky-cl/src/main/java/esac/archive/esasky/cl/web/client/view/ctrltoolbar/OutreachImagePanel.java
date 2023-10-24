@@ -35,10 +35,11 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
     private ImageListEntity imageEntity;
     private boolean isHidingFootprints = false;
     private static String outreachImageIdToBeOpened;
+    private static String missionToBeOpened;
     private static boolean defaultHideFootprints = false;
     private static String outreachImageNameToBeOpened;
     private FlowPanel opacityPanel;
-    private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
+    private EsaSkySwitch hideFootprintsSwitch;
     private final FlowPanel mainContainer = new FlowPanel();
     private final FlowPanel tableContainer = new FlowPanel();
     private PopupHeader<OutreachImagePanel> header;
@@ -59,7 +60,6 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         this.style.ensureInjected();
 
         this.mission = mission;
-
         initView();
         setMaxSize();
 
@@ -79,7 +79,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
     @Override
     protected void onLoad() {
         super.onLoad();
-        if (outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) {
+        if ((outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) && missionToBeOpened.equals(mission)) {
             show();
         }
         this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
@@ -153,15 +153,18 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         }
 
         imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
-        if (outreachImageIdToBeOpened != null) {
-            imageEntity.setIdToBeOpened(outreachImageIdToBeOpened, startupMinimized);
-        } else if (outreachImageNameToBeOpened != null) {
-            imageEntity.setNameToBeOpened(outreachImageNameToBeOpened);
+        if (missionToBeOpened.equals(mission)) {
+            if (outreachImageIdToBeOpened != null) {
+                imageEntity.setIdToBeOpened(outreachImageIdToBeOpened, startupMinimized);
+            } else if (outreachImageNameToBeOpened != null) {
+                imageEntity.setNameToBeOpened(outreachImageNameToBeOpened);
+            }
         }
+
         tableContainer.add(imageEntity.createTablePanel().getWidget());
         imageEntity.fetchData();
         setMaxSize();
-        hideFootprints(defaultHideFootprints);
+        hideFootprints(defaultHideFootprints && missionToBeOpened.equals(mission));
     }
 
 
@@ -186,7 +189,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         opacityPanel.add(opacitySlider);
         opacityPanel.setVisible(false);
         MainLayoutPanel.addElementToMainArea(opacityPanel);
-
+        hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch_" + mission, false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
         hideFootprintsSwitch.addStyleName("outreachImagePanel__footprintSwitch");
         hideFootprintsSwitch.addClickHandler(event -> hideFootprints(!isHidingFootprints));
         header.addActionWidget(hideFootprintsSwitch);
@@ -220,23 +223,27 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         tableContainer.getElement().getStyle().setPropertyPx("height", height);
     }
 
-    public static void setStartupId(String id) {
+    public static void setStartupId(String id, String mission) {
         outreachImageIdToBeOpened = id;
+        missionToBeOpened = mission;
     }
 
-    public static void setStartupId(String id, boolean hideFootprints) {
+    public static void setStartupId(String id, String mission, boolean hideFootprints) {
         outreachImageIdToBeOpened = id;
         defaultHideFootprints = hideFootprints;
+        missionToBeOpened = mission;
     }
 
-    public static void setStartupId(String id, boolean hideFootprints, boolean minimized) {
+    public static void setStartupId(String id, String mission, boolean hideFootprints, boolean minimized) {
         outreachImageIdToBeOpened = id;
         defaultHideFootprints = hideFootprints;
         startupMinimized = minimized;
+        missionToBeOpened = mission;
     }
 
-    public static void setStartupName(String name) {
+    public static void setStartupName(String name, String mission) {
         outreachImageNameToBeOpened = name;
+        missionToBeOpened = mission;
     }
 
     public JSONArray getAllImageIds(ICommand command) {
@@ -298,7 +305,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         if (imageEntity != null) {
             imageEntity.selectShape(imageEntity.getIdFromName(name));
         } else {
-            OutreachImagePanel.setStartupName(name);
+            OutreachImagePanel.setStartupName(name, this.mission);
         }
 
         if (!isShowing()) {
@@ -310,7 +317,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         if (imageEntity != null) {
             imageEntity.selectShape(id);
         } else {
-            OutreachImagePanel.setStartupId(id);
+            OutreachImagePanel.setStartupId(id, this.mission);
         }
 
         if (!isShowing()) {
@@ -330,7 +337,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         if (imageEntity != null) {
             imageEntity.showImage(id);
         } else {
-            setStartupId(id, true, true);
+            setStartupId(id, this.mission, true, true);
             getData();
         }
     }
