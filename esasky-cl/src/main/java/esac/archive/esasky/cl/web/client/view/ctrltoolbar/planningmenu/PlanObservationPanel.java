@@ -157,7 +157,7 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
 	}
 
     private void addInstrumentRow(Instrument instrument, String detector, VerticalPanel verticalPanel) {
-        FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, false, SIAF_VERSION);
+        FutureFootprintRow fr = new FutureFootprintRow(instrument, detector, false, siafVersion.getText());
         verticalPanel.add(fr);
     }
     
@@ -187,10 +187,10 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
     		if(detector.equals(detectorName)) {
     			FutureFootprintRow fr;
     			if(ra != null && dec != null && rotation != null) {
-    				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation, SIAF_VERSION);
+    				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, ra, dec, rotation, siafVersion.getText());
     			}
     			else {
-    				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, SIAF_VERSION);
+    				fr = new FutureFootprintRow(instrument, detector, showAllInstruments, siafVersion.getText());
     			}
     	        this.container.add(fr);
     			found = true;

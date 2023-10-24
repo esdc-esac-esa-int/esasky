@@ -341,15 +341,12 @@
 		Observations Planning Tool
 	</text>
 	<text key="planObservationPanel_helpMessageText">
-		This tool projects onto the sky the footprints of
-		astronomical instruments, at any chosen position and orientation, and
-		has been developed to aid professional astronomers when they are
-		defining their future observation proposals for a particular space
-		mission or ground-based telescope.
-		Currently the tool works for all the JWST instruments, including being able to
-		project the full focal plane of the JWST.
-		The possibility to project the footprints of other live missions, like
-		XMM-Newton or HST, will be implemented in the near future.
+		This tool projects onto the sky the footprints of astronomical instruments,
+		at any chosen position and orientation, and has been developed to aid professional
+		astronomers when they are defining their future observation proposals for a particular
+		space mission or ground-based telescope. Currently the tool works for all the
+		James Webb Space Telescope (JWST) instruments (including being able to project the full
+		focal plane of the JWST), and for the XMM-Newton EPIC-pn camera.
 		&lt;br&gt;&lt;br&gt;
 		IMPORTANT: This functionality is not intended to
 		replace the JWST ATP tool, but just to provide a quick-look aid for
