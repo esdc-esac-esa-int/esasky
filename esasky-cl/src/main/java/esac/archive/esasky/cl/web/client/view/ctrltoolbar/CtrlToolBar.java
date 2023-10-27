@@ -543,15 +543,20 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         showOrHideWidget(outreachHstButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE) && !isInScienceMode);
         showOrHideWidget(outreachJwstButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST) && !isInScienceMode);
 
-        // Show always EUCLID outreach when layout is EUCLID
-        String layout = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
-        if (layout != null && layout.equals((EsaSkyConstants.EUCLID_MISSION))) {
-            showOrHideWidget(outreachEuclidButton,
-                    Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID) && true);
-        }else{
-            showOrHideWidget(outreachEuclidButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID) && !isInScienceMode);
-        }
+        // (ESASKYPCR-2504) Show always EUCLID outreach when layout is EUCLID
+        showOrHideWidget(outreachEuclidButton,
+                Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID) && (!isInScienceMode || this.isEuclidLayout()));
+
         showOrHideWidget(targetListButton, Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST) && !isInScienceMode);
+    }
+
+    /**
+     * Verifies if EUCLID layout is being used, so its outreach mode is always shown
+     * @return boolean
+     */
+    private boolean isEuclidLayout() {
+        String layout = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
+        return layout != null && layout.equals((EsaSkyConstants.EUCLID_MISSION));
     }
 
     private void showScienceModeWidgets() {
