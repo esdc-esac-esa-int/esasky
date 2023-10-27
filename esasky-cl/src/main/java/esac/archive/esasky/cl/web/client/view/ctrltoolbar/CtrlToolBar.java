@@ -10,6 +10,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesOrFoVChangedEvent;
@@ -541,7 +542,15 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
         }
         showOrHideWidget(outreachHstButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE) && !isInScienceMode);
         showOrHideWidget(outreachJwstButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST) && !isInScienceMode);
-        showOrHideWidget(outreachEuclidButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID) && !isInScienceMode);
+
+        // Show always EUCLID outreach when layout is EUCLID
+        String layout = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
+        if (layout != null && layout.equals((EsaSkyConstants.EUCLID_MISSION))) {
+            showOrHideWidget(outreachEuclidButton,
+                    Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID) && true);
+        }else{
+            showOrHideWidget(outreachEuclidButton, Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID) && !isInScienceMode);
+        }
         showOrHideWidget(targetListButton, Modules.getModule(EsaSkyWebConstants.MODULE_TARGETLIST) && !isInScienceMode);
     }
 

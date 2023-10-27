@@ -148,8 +148,8 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
 		map.put(EsaSkyWebConstants.MODULE_SCREENSHOT, true);
 		map.put(EsaSkyWebConstants.MODULE_SHARE, true);
-		map.put(EsaSkyWebConstants.MODULE_HELP, false);
-		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, false);
+		map.put(EsaSkyWebConstants.MODULE_HELP, true);
+		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, true);
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
@@ -157,11 +157,11 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SPE, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, false);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, false);
-		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, false);
-		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
-		map.put(EsaSkyWebConstants.MODULE_GW, false);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, true);
+		map.put(EsaSkyWebConstants.MODULE_EXTTAP, true);
+		map.put(EsaSkyWebConstants.MODULE_GW, true);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
-		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
+		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, true);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
 		map.put(EsaSkyWebConstants.MODULE_JWST_PLANNING, false);
 		map.put(EsaSkyWebConstants.MODULE_DICE, false);
