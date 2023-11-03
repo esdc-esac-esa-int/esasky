@@ -213,8 +213,11 @@
 	<text key="futureFootprintRow_addJWSTInstrument">
 		Agregar un instrumento del JWST.
 	</text>
-	<text key="futureFootprintRow_instrAngleInfo">
+	<text key="futureFootprintRow_instrAngleInfo_JWST">
 		Para m&#225;s informaci&#243;n haga clic &lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;aqu&#237;&lt;/a&gt;
+	</text>
+	<text key="futureFootprintRow_instrAngleInfo_XMM">
+		Para m&#225;s informaci&#243;n haga clic &lt;a href="//xmm-tools.cosmos.esa.int/external/xmm_user_support/documentation/uhb/posdet.html" target="_blank"&gt;aqu&#237;&lt;/a&gt;
 	</text>
 	<text key="futureFootprintRow_instrAngle">
 		&#193;ngulo del Instrumento en el plano focal:
@@ -226,7 +229,7 @@
 		Rotaci&#243;n del plano focal en el cielo:
 	</text>
 	<text key="futureFootprintRow_tooltip">
-		Detalle de los &#193;ngulos de JWST
+		Detalle de los &#193;ngulos de $MISSION$
 	</text>
 	<text key="futureFootprintRow_rotation">
 		Rotaci&#243;n

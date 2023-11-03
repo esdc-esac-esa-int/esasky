@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
-
 public class InstrumentDetailsPopup extends PopupPanel {
 
     private final String CSS_ID = "instrumentDbox";
@@ -30,17 +29,17 @@ public class InstrumentDetailsPopup extends PopupPanel {
     private final String BOLD_OPEN = "<b>";
     private final String BOLD_CLOSED = "</b>";
     private final String LINE_BREAK = "<br/>";
-
+    private final String mission;
     public static interface Resources extends ClientBundle {
         @Source("instrumentDetailsPopup.css")
         @CssResource.NotStrict
         CssResource style();
     }
 
-    public InstrumentDetailsPopup(double offsetAngle, double instrumentAngle, double totalAngle) {
+    public InstrumentDetailsPopup(String mission, double offsetAngle, double instrumentAngle, double totalAngle) {
         this.style = this.resources.style();
         this.style.ensureInjected();
-
+        this.mission = mission;
         this.offsetAngle=offsetAngle;
         this.instrumentAngle=instrumentAngle;
         this.totalAngle=totalAngle;
@@ -68,7 +67,7 @@ public class InstrumentDetailsPopup extends PopupPanel {
 
         instrumentDetailsPanel.add(closeBtn);
 
-        instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_tooltip") + BOLD_CLOSED));
+        instrumentDetailsPanel.add(new HTML(BOLD_OPEN + TextMgr.getInstance().getText("futureFootprintRow_tooltip").replace("$MISSION$", mission) + BOLD_CLOSED));
         instrumentDetailsPanel.add(new HTML(LINE_BREAK));
         
         addInstrumentAngle(instrumentAngle);
@@ -103,9 +102,9 @@ public class InstrumentDetailsPopup extends PopupPanel {
     }
 
     private void addInfoLink() {
-    	instrumentDetailsPanel.add(new HTML(TextMgr.getInstance().getText("futureFootprintRow_instrAngleInfo")));
+    	instrumentDetailsPanel.add(new HTML(TextMgr.getInstance().getText("futureFootprintRow_instrAngleInfo_" + mission)));
     }
-    
+
 
     @Override
     public void show() {

@@ -375,11 +375,11 @@ public class FutureFootprintRow extends Composite {
 	private EsaSkyButton createInstrumentDetailsBtn() {
 		final EsaSkyButton instrumentDetailsBtn = new EsaSkyButton(Icons.getInfoIcon());
 		instrumentDetailsBtn.addStyleName("instrumentInfoBtn");
-		instrumentDetailsBtn.setTitle(TextMgr.getInstance().getText("futureFootprintRow_tooltip"));
+		instrumentDetailsBtn.setTitle(TextMgr.getInstance().getText("futureFootprintRow_tooltip").replace("$MISSION$", instrument.getMission().getMissionName()));
 		instrumentDetailsBtn.setRoundStyle();
 		instrumentDetailsBtn.setSmallStyle();
 		instrumentDetailsBtn.addClickHandler(event -> {
-			InstrumentDetailsPopup skyDetailsInfo = new InstrumentDetailsPopup(rotationControl.getValue(), INSTRUMENT_ANGLES.get(instrument), getRotationDeg());
+			InstrumentDetailsPopup skyDetailsInfo = new InstrumentDetailsPopup(instrument.getMission().getMissionName(), rotationControl.getValue(), INSTRUMENT_ANGLES.get(instrument), getRotationDeg());
 			skyDetailsInfo.show();
 			int defaultLeft = instrumentDetailsBtn.getAbsoluteLeft() + instrumentDetailsBtn.getOffsetWidth() / 2;
 			if (defaultLeft + skyDetailsInfo.getOffsetWidth() > MainLayoutPanel.getMainAreaAbsoluteLeft() + MainLayoutPanel.getMainAreaWidth()) {
