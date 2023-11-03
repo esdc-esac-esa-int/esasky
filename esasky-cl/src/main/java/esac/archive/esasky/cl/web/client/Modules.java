@@ -155,8 +155,8 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
 		map.put(EsaSkyWebConstants.MODULE_SPE, true);
-		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, false);
-		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, false);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, true);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, true);
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, true);
 		map.put(EsaSkyWebConstants.MODULE_GW, true);
