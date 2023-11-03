@@ -143,7 +143,7 @@ public class Modules {
 	private static HashMap<String, Boolean> createEuclidMap() {
         HashMap<String, Boolean> map = createDefaultMap();
 		
-		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, false);
+		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, true);
 		map.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
 		map.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
 		map.put(EsaSkyWebConstants.MODULE_SCREENSHOT, true);

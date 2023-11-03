@@ -897,12 +897,12 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-    	The stacked catalogue 4XMM-DR13s has been compiled from 1,620 groups,
-		comprising 9,355  overlapping good-quality XMM-Newton observations. They
+    	The stacked catalogue 4XMM-DR13s has been compiled from 1,688 groups,
+		comprising 9,796  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
-		1 and 2021 December 4 which overlap by at least one arcminute in radius
-		and are not affected by very high background emission. It contains 386,043
-		unique sources, 298,626 of them multiply observed, with positions and
+		1 and 2022 November 29 which overlap by at least one arcminute in radius
+		and are not affected by very high background emission. It contains 401,596
+		unique sources, 310,478 of them multiply observed, with positions and
 		source parameters like fluxes in the XMM-Newton standard energy bands,
 		hardness ratios, quality estimate, and information on inter-observation
 		variability. 
@@ -4269,19 +4269,19 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
 	<text key="catalogues.mv_t_chandra_csc2_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_t_chandra_csc2_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_iauname">Stack Catalogue Name</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_iauname_4xmmdr12">IAU Name</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ep_flux">Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ep_flux_err">Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_n_contrib">N. Contrib</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_n_obs">N. Obs</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_mjd_first">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_ep_ontime">EP Ontime &lt;i&gt;(s)&lt;/i&gt;</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_extent">Extent</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_extent_err">Extent error</text>
-	<text key="catalogues.mv_xsa_epic_stack_cat_dr12_fdw_fluxvar">Flux Var</text>
+	<text key="catalogues.xsa_epic_stack_cat_iauname">Stack Catalogue Name</text>
+	<text key="catalogues.xsa_epic_stack_cat_iauname_detcat">IAU Name</text>
+	<text key="catalogues.xsa_epic_stack_cat_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.xsa_epic_stack_cat_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.xsa_epic_stack_cat_ep_flux">Flux&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.xsa_epic_stack_cat_ep_flux_err">Flux error&lt;sub&gt;0.2-12 keV&lt;/sub&gt;&lt;br&gt;&lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.xsa_epic_stack_cat_n_contrib">N. Contrib</text>
+	<text key="catalogues.xsa_epic_stack_cat_n_obs">N. Obs</text>
+	<text key="catalogues.xsa_epic_stack_cat_mjd_first">Start Time &lt;i&gt;(MJD)&lt;/i&gt;</text>
+	<text key="catalogues.xsa_epic_stack_cat_ep_ontime">EP Ontime &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.xsa_epic_stack_cat_extent">Extent</text>
+	<text key="catalogues.xsa_epic_stack_cat_extent_err">Extent error</text>
+	<text key="catalogues.xsa_epic_stack_cat_fluxvar">Flux Var</text>
 	<text key="catalogues.mv_xsa_epic_source_cat_fdw_iauname">Name</text>
 	<text key="catalogues.mv_xsa_epic_source_cat_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
 	<text key="catalogues.mv_xsa_epic_source_cat_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
