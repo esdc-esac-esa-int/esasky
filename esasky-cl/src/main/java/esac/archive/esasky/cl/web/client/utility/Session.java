@@ -273,6 +273,7 @@ public class Session {
 			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_APERTURE, new JSONString(row.getAperture()));
 			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_INSTRUMENT, new JSONString(row.getInstrument().getInstrumentName()));
 			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_ALL, new JSONString(new Boolean(row.getIsAllInstrumentsSelected()).toString()));
+			rowObj.put(EsaSkyWebConstants.SESSION_PLANNING_MISSION, new JSONString(row.getInstrument().getMission().getMissionName()));
 			array.set(array.size(), rowObj);
 		}
 		return array;
@@ -287,9 +288,10 @@ public class Session {
 			String rot = planningObj.getStringProperty(EsaSkyWebConstants.SESSION_ROT);
 			String aperture = planningObj.getStringProperty(EsaSkyWebConstants.SESSION_PLANNING_APERTURE);
 			String instrument = planningObj.getStringProperty(EsaSkyWebConstants.SESSION_PLANNING_INSTRUMENT);
+			String mission = planningObj.getStringProperty(EsaSkyWebConstants.SESSION_PLANNING_MISSION);
 			boolean all = Boolean.parseBoolean(planningObj.getStringProperty(EsaSkyWebConstants.SESSION_PLANNING_ALL));
 			PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
-			planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, aperture, all, ra, dec, rot);
+			planObservationPanel.addInstrumentRowWithCoordinatesAPI(mission, instrument, aperture, all, ra, dec, rot);
 		}
 	}
 	

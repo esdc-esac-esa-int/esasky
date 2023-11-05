@@ -161,12 +161,12 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         verticalPanel.add(fr);
     }
     
-    public JSONValue addInstrumentRowAPI(String instrumentName, String detectorName, boolean showAllInstruments) {
-    	return addInstrumentRowWithCoordinatesAPI(instrumentName, detectorName, showAllInstruments, null, null, null);
+    public JSONValue addInstrumentRowAPI(String mission, String instrumentName, String detectorName, boolean showAllInstruments) {
+    	return addInstrumentRowWithCoordinatesAPI(mission, instrumentName, detectorName, showAllInstruments, null, null, null);
     }
     
-    public JSONValue addInstrumentRowWithCoordinatesAPI(String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
-    	final PlanningMission pm = PlanningMission.JWST;
+    public JSONValue addInstrumentRowWithCoordinatesAPI(String mission, String instrumentName, String detectorName, boolean showAllInstruments, String ra, String dec, String rotation) {
+    	final PlanningMission pm = mission.equals(PlanningMission.XMM.getMissionName()) ? PlanningMission.XMM : PlanningMission.JWST;
     	Instrument instrument = Instrument.getSingleInstrument(pm, instrumentName);
     	if(instrument == null) {
     		List<Instrument> instruments = Instrument.getInstrumentsPerMission(pm);
