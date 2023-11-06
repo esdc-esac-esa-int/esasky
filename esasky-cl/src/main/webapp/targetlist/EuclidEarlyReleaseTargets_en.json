@@ -73,10 +73,10 @@
   },
   {
     "simbadMainId": "IC 434",
-    "simbadRaDeg": "83.780086",
-    "simbadDecDeg": "-5.359612",
+    "simbadRaDeg": "85.2499402",
+    "simbadDecDeg": "-2.50002983",
     "simbadGaldimMajAxis": 28,
-    "userInput": "Circumstellar disk 072-135",
+    "userInput": "IC 434",
     "userInputType": "TARGET",
     "validInput": true,
     "cooFrame": "J2000",
