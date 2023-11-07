@@ -1,0 +1,98 @@
+[
+  {
+    "simbadMainId": "IC 342",
+    "simbadRaDeg": "56.700975",
+    "simbadDecDeg": "68.095996",
+    "simbadGaldimMajAxis": 33,
+    "userInput": "IC 342",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "IC 342 is an intermediate spiral galaxy in the constellation Camelopardalis. ",
+    "outreachImage": "euclid:ic342"
+  },
+  {
+    "simbadMainId": "NGC 6822",
+    "simbadRaDeg": "296.2343044",
+    "simbadDecDeg": "-14.79764917",
+    "simbadGaldimMajAxis": 40,
+    "userInput": "NGC 6822",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "NGC 6822 is a barred irregular galaxy approximately 1.6 million light-years away in the constellation Sagittarius and is part of the Local Group of galaxies. ",
+    "outreachImage": "euclid:ngc6822"
+  },
+  {
+    "simbadMainId": "Perseus cluster",
+    "simbadRaDeg": "49.9469872",
+    "simbadDecDeg": "41.5129355",
+    "simbadGaldimMajAxis": 24,
+    "userInput": "Perseus galaxy cluster",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "The Perseus cluster (Abell 426) is a cluster of galaxies in the constellation Perseus. It is one of the most massive objects in the known universe, containing thousands of galaxies immersed in a vast cloud of multimillion-degree gas.",
+    "outreachImage": "euclid:perseus"
+  },
+  {
+    "simbadMainId": "NGC 6397",
+    "simbadRaDeg": "265.1753750",
+    "simbadDecDeg": "-53.67394998",
+    "simbadGaldimMajAxis": 26,
+    "userInput": "NGC 6397",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "NGC 6397 is a globular cluster in the constellation Ara and contains around 400,000 stars. It is located about 7,800 light-years from Earth, making it one of the two nearest globular clusters to Earth (the other one being Messier 4).",
+    "outreachImage": "euclid:ngc6397"
+  },
+  {
+    "simbadMainId": "NGC 2023",
+    "simbadRaDeg": "85.4079752",
+    "simbadDecDeg": "-2.2644653",
+    "simbadGaldimMajAxis": 9,
+    "userInput": "NGC 2023",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "Reflection Nebula and embedded cluster around a B-type star.",
+    "outreachImage": "euclid:horsehead"
+  },
+  {
+    "simbadMainId": "Horsehead Nebula",
+    "simbadRaDeg": "85.245833",
+    "simbadDecDeg": "-2.4585133",
+    "simbadGaldimMajAxis": 12,
+    "userInput": "Horsehead Nebula",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "The Horsehead Nebula is a dark nebula in the constellation Orion. It is one of the most identifiable nebulae because of the shape of its swirling cloud of dark dust and gases, which bears some resemblance to a horse's head when viewed from Earth.",
+    "outreachImage": "euclid:horsehead"
+  },
+  {
+    "simbadMainId": "IC 434",
+    "simbadRaDeg": "85.2499402",
+    "simbadDecDeg": "-2.50002983",
+    "simbadGaldimMajAxis": 28,
+    "userInput": "IC 434",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "IC 434 is a bright emssion nebula (HII Region) in the constellation Orion. The Horsehead Nebula is a dark nebula silhouetted against it.",
+    "outreachImage": "euclid:horsehead"
+  },
+  {
+    "simbadMainId": "[BZR99] S Ori 62",
+    "simbadRaDeg": "84.9252218",
+    "simbadDecDeg": "-2.5087679",
+    "simbadGaldimMajAxis": 1.0,
+    "userInput": "S Ori 62",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "S Ori 62 is a brown dwarf with spectral type L, expected to have a mass between 2 and 8 times the mass of Jupiter.",
+    "outreachImage": "euclid:horsehead"
+  }
+]

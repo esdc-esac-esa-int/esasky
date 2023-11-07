@@ -76,6 +76,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel(); 
 	private FocusPanel hiResDropdown = new FocusPanel();
 	private FocusPanel jwstDropdown = new FocusPanel();
+	private FocusPanel euclidDropdown = new FocusPanel();
 	private EsaSkySwitch dropdownScienceModeSwitch; 
 	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
 	private final ListBox dropdownLanguageBox = new ListBox();
@@ -89,6 +90,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private ListBox coordinateFrameFull = new ListBox();
 	private ListBox coordinateFrameFirstLetter = new ListBox();
 	private FlowPanel coordinateContainer = new FlowPanel();
+
+	private static final String OUTREACH_DROPDOWN_HEADER_CLASS = "header__dropdown__outreach__text";
 
 	public interface Resources extends ClientBundle {
 
@@ -239,6 +242,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 		dropdownContent.add(createHiResDropdownEntry());
 		dropdownContent.add(createJwstDropdownEntry());
+		dropdownContent.add(createEuclidDropdownEntry());
 
 		dropdownFeedbackEntry.getElement().setId("header__dropdown__feedback");
 		dropdownVideoTutorialsEntry.getElement().setId("header__dropdown__tutorials");
@@ -358,7 +362,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private Widget createHiResDropdownEntry() {
 		Label hiresLabel = new Label(TextMgr.getInstance().getText("header_highResolutionImages"));
-		hiresLabel.addStyleName("header__dropdown__outreach__text");
+		hiresLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
 		hiResDropdown.add(hiresLabel);
 		hiResDropdown.getElement().setId("header__dropdown__outreach");
 		hiResDropdown.setTitle(TextMgr.getInstance().getText("header_highResolutionImagesTooltip"));
@@ -369,12 +373,22 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private Widget createJwstDropdownEntry() {
 		Label jwstLabel = new Label(TextMgr.getInstance().getText("header_jwstOutreachImages"));
-		jwstLabel.addStyleName("header__dropdown__outreach__text");
+		jwstLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
 		jwstDropdown.add(jwstLabel);
 		jwstDropdown.setTitle(TextMgr.getInstance().getText("header_jwstImagesTooltip"));
 		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
 				&& GUISessionStatus.getIsInScienceMode());
 		return jwstDropdown;
+	}
+
+	private Widget createEuclidDropdownEntry() {
+		Label euclidLabel = new Label(TextMgr.getInstance().getText("header_euclidOutreachImages"));
+		euclidLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
+		euclidDropdown.add(euclidLabel);
+		euclidDropdown.setTitle(TextMgr.getInstance().getText("header_euclidImagesTooltip"));
+		euclidDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID)
+				&& GUISessionStatus.getIsInScienceMode());
+		return euclidDropdown;
 	}
 
 	private Widget createSessionSaveDropdownEntries() {
@@ -583,6 +597,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addJwstClickHandler(ClickHandler handler) {
 		jwstDropdown.addClickHandler(handler);
+	}
+
+	@Override
+	public void addEuclidClickHandler(ClickHandler handler) {
+		euclidDropdown.addClickHandler(handler);
 	}
 	
 	@Override

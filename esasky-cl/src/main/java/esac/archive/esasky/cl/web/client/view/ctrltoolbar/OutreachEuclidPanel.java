@@ -6,13 +6,13 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
-public class OutreachJwstPanel extends OutreachImagePanel {
-
-    public OutreachJwstPanel() {
-        super(EsaSkyConstants.JWST_MISSION, GoogleAnalytics.CAT_JWSTOUTREACHIMAGES);
+public class OutreachEuclidPanel extends OutreachImagePanel {
+    public OutreachEuclidPanel() {
+        super(EsaSkyConstants.EUCLID_MISSION, GoogleAnalytics.CAT_EUCLIDOUTREACHIMAGES);
     }
+
     @Override
     protected CommonTapDescriptor getOutreachImageDescriptor() {
-        return DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_IMAGES, EsaSkyConstants.JWST_MISSION);
+        return DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_IMAGES, EsaSkyConstants.EUCLID_MISSION);
     }
 }

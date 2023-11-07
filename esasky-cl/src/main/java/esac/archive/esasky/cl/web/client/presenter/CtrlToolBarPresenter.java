@@ -25,6 +25,7 @@ import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.descriptor.CustomTreeMapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkySearchResult;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.*;
 
@@ -100,6 +101,11 @@ public class CtrlToolBarPresenter {
         void openJwstOutreachPanel(String id);
 
         void closeJwstOutreachPanel();
+
+        void openEuclidOutreachPanel(String id);
+
+        void closeEuclidOutreachPanel();
+
 
         void openExtTapPanelTab(int index);
 
@@ -346,10 +352,15 @@ public class CtrlToolBarPresenter {
     }
 
     public void openOutreachPanel(String telescope, String id) {
-        if("JWST".equals(telescope)) {
-            view.openJwstOutreachPanel(id);
-        } else {
-            view.openOutreachPanel(id);
+        switch (telescope) {
+            case EsaSkyConstants.JWST_MISSION:
+                view.openJwstOutreachPanel(id);
+                break;
+            case EsaSkyConstants.EUCLID_MISSION:
+                view.openEuclidOutreachPanel(id);
+                break;
+            default:
+                view.openOutreachPanel(id);
         }
     }
 
@@ -361,6 +372,10 @@ public class CtrlToolBarPresenter {
         view.closeJwstOutreachPanel();
     }
 
+
+    public void closeEuclidOutreachPanel() {
+        view.closeEuclidOutreachPanel();
+    }
     public void openExternalTapPanel(String tab) {
         if("TAP REGISTRY".equals(tab)){
             view.openExtTapPanelTab(1);

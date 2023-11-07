@@ -27,7 +27,7 @@ public class JWSTSiafToSTCSGenerator extends STCSAbstractGenerator {
 
     private void setIntruments() {
         super.instruments = new ArrayList<String>();
-        List<String> instrumentParsed = InstrumentMapping.getInstance().getInstrumentList();
+        List<String> instrumentParsed = InstrumentMapping.getInstance().getInstrumentList(this.mission);
        for(int i =0; i<instrumentParsed.size();i++) {
     	   super.instruments.add(instrumentParsed.get(i));
        }
@@ -78,7 +78,7 @@ public class JWSTSiafToSTCSGenerator extends STCSAbstractGenerator {
     	Map<String, Vector<double[]>> fullFovPixels = new HashMap<String, Vector<double[]>>();
         Map<String, Vector<double[]>> fullFovSkyCoords = new HashMap<String, Vector<double[]>>();
 
-        List<String> availableInstruments = InstrumentMapping.getInstance().getInstrumentList();       
+        List<String> availableInstruments = InstrumentMapping.getInstance().getInstrumentList(this.mission);
         for(String instrumentName : availableInstruments) {
         	fullFovPixels.put(instrumentName, InstrumentPoly(instrumentName));
         }

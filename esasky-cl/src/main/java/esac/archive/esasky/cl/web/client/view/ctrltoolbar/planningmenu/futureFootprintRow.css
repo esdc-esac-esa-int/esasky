@@ -22,6 +22,7 @@
 
 .clearButton {
     margin-left: 8px;
+    float: right;
 }
 
 .commandsTable {

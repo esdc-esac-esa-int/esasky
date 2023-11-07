@@ -18,7 +18,6 @@ import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkySlider;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
@@ -27,292 +26,320 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.TableObserver;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
 import java.util.Objects;
 
-public class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
+public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachImagePanel> {
+    private static boolean startupMinimized = false;
+    private CommonTapDescriptor outreachImageDescriptor;
+    private ImageListEntity imageEntity;
+    private boolean isHidingFootprints = false;
+    private static String outreachImageIdToBeOpened;
+    private static String missionToBeOpened;
+    private static boolean defaultHideFootprints = false;
+    private static String outreachImageNameToBeOpened;
+    private FlowPanel opacityPanel;
+    private EsaSkySwitch hideFootprintsSwitch;
+    private final FlowPanel mainContainer = new FlowPanel();
+    private final FlowPanel tableContainer = new FlowPanel();
+    private PopupHeader<OutreachImagePanel> header;
+    private final String mission;
+    private final Resources resources;
+    private CssResource style;
 
-	private CommonTapDescriptor outreachImageDescriptor;
-	private ImageListEntity imageEntity;
-	private boolean isHidingFootprints = false;
-	private static String outreachImageIdToBeOpened;
-	private static boolean defaultHideFootprints = false;
-	private static String outreachImageNameToBeOpened;
-	private FlowPanel opacityPanel;
-	private final EsaSkySwitch hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch", false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
-	private final FlowPanel mainContainer = new FlowPanel();
-	private final FlowPanel tableContainer = new FlowPanel();
-	private PopupHeader<OutreachImagePanel> header;
+    public static interface Resources extends ClientBundle {
+        @Source("outreachImagePanel.css")
+        @CssResource.NotStrict
+        CssResource style();
+    }
 
-	private final Resources resources;
-	private CssResource style;
+    public OutreachImagePanel(String mission, String googleEventCategory) {
+        super(googleEventCategory, false);
+        this.resources = GWT.create(Resources.class);
+        this.style = this.resources.style();
+        this.style.ensureInjected();
 
-	public static interface Resources extends ClientBundle {
-		@Source("outreachImagePanel.css")
-		@CssResource.NotStrict
-		CssResource style();
-	}
-	
-	public OutreachImagePanel() {
-		super(GoogleAnalytics.CAT_OUTREACHIMAGES, false);
-		this.resources = GWT.create(Resources.class);
-		this.style = this.resources.style();
-		this.style.ensureInjected();
+        this.mission = mission;
+        initView();
+        setMaxSize();
 
-		initView();
-		setMaxSize();
+        CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
+        CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
+            if (Objects.equals(entity.getSelectedEntity(), imageEntity)) {
+                if (!isShowing()) {
+                    show();
+                }
+            } else if (isShowing()) {
+                hide();
+            }
+        }));
+        MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
+    }
 
-		CommonEventBus.getEventBus().addHandler(OpenSeaDragonActiveEvent.TYPE, event -> opacityPanel.setVisible(event.isActive() && super.isShowing()));
-		CommonEventBus.getEventBus().addHandler(ImageListSelectedEvent.TYPE, (entity -> {
-			if (Objects.equals(entity.getSelectedEntity(), imageEntity)) {
-				if (!isShowing()) {
-					show();
-				}
-			} else if (isShowing()) {
-				hide();
-			}
-		}) );
-		MainLayoutPanel.addMainAreaResizeHandler(event -> setDefaultSize());
-	}
-	
-	@Override
-	protected void onLoad() {
-		super.onLoad();
-		if(outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) {
-			show();
-		}
-		this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
-	}
+    @Override
+    protected void onLoad() {
+        super.onLoad();
+        if ((outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) && missionToBeOpened.equals(mission)) {
+            show();
+        }
+        this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
+    }
 
-	@Override
-	protected void onResize() {
-		setMaxHeight();
-	}
+    @Override
+    protected void onResize() {
+        setMaxHeight();
+    }
 
-	@Override
-	protected Element getResizeElement() {
-		return mainContainer.getElement();
-	}
+    @Override
+    protected Element getResizeElement() {
+        return mainContainer.getElement();
+    }
 
-	private void setDefaultSize() {
-		Size size = getDefaultSize();
-		mainContainer.setWidth(size.width + "px");
-		mainContainer.setHeight(size.height + "px");
+    private void setDefaultSize() {
+        Size size = getDefaultSize();
+        mainContainer.setWidth(size.width + "px");
+        mainContainer.setHeight(size.height + "px");
 
-		Style containerStyle = mainContainer.getElement().getStyle();
-		containerStyle.setPropertyPx("minWidth", 150);
-		containerStyle.setPropertyPx("minHeight", 100);
-	}
+        Style containerStyle = mainContainer.getElement().getStyle();
+        containerStyle.setPropertyPx("minWidth", 150);
+        containerStyle.setPropertyPx("minHeight", 100);
+    }
 
-	@Override
-	protected Element getMovableElement() {
-		return header.getElement();
-	}
+    @Override
+    protected Element getMovableElement() {
+        return header.getElement();
+    }
 
-	private void getData() {
-		if(outreachImageDescriptor == null) {
-			if(DescriptorRepository.getInstance().hasDescriptors(EsaSkyWebConstants.CATEGORY_IMAGES)) {
-				fetchData();
-			} else {
-				DescriptorRepository.getInstance()
-						.registerDescriptorLoadedObserver(EsaSkyWebConstants.CATEGORY_IMAGES, this::fetchData);
-			}
-		}
-	}
-	public void show() {
-		super.show();
-		getData();
-		if(imageEntity != null) {
-			imageEntity.setIsPanelClosed(false);
-		}
-	}
+    private void getData() {
+        if (outreachImageDescriptor == null) {
+            if (DescriptorRepository.getInstance().hasDescriptors(EsaSkyWebConstants.CATEGORY_IMAGES)) {
+                fetchData();
+            } else {
+                DescriptorRepository.getInstance()
+                        .registerDescriptorLoadedObserver(EsaSkyWebConstants.CATEGORY_IMAGES, this::fetchData);
+            }
+        }
+    }
 
-
-	public void close() {
-		if(imageEntity != null) {
-			imageEntity.setIsPanelClosed(true);
-		}
-
-		super.hide();
-	}
+    public void show() {
+        super.show();
+        getData();
+        if (imageEntity != null) {
+            imageEntity.setIsPanelClosed(false);
+        }
+    }
 
 
-	private void fetchData() {
-		if(outreachImageDescriptor != null) {
-			return;
-		}
+    public void close() {
+        if (imageEntity != null) {
+            imageEntity.setIsPanelClosed(true);
+        }
 
-		outreachImageDescriptor = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_IMAGES, EsaSkyConstants.HST_MISSION);
-
-		if (outreachImageDescriptor == null) {
-			return;
-		}
-
-		imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
-		if(outreachImageIdToBeOpened != null) {
-			imageEntity.setIdToBeOpened(outreachImageIdToBeOpened);
-		} else if (outreachImageNameToBeOpened != null) {
-			imageEntity.setNameToBeOpened(outreachImageNameToBeOpened);
-		}
-		tableContainer.add(imageEntity.createTablePanel().getWidget());
-		imageEntity.fetchData();
-		setMaxSize();
-		hideFootprints(defaultHideFootprints);
-	}
-	
-	private void initView() {
-		this.getElement().addClassName("outreachImagePanel");
-
-		header = new PopupHeader<>(this, TextMgr.getInstance().getText("outreachImagePanel_header"),
-				TextMgr.getInstance().getText("outreachImagePanel_helpText"),
-				TextMgr.getInstance().getText("outreachImagePanel_helpTitle"),
-				event -> close(), "Close panel");
+        super.hide();
+    }
 
 
+    protected abstract CommonTapDescriptor getOutreachImageDescriptor();
 
-		
-		ESASkySlider opacitySlider = new ESASkySlider(0, 1.0, 250);
-		opacitySlider.registerValueChangeObserver(value -> imageEntity.setOpacity(value));
-		
-		Label opacityLabel = new Label();
-		opacityLabel.setText(TextMgr.getInstance().getText("targetlist_opacity"));
-		opacityLabel.setStyleName("outreachImagePanel__opacityLabel");
+    private void fetchData() {
+        if (outreachImageDescriptor != null) {
+            return;
+        }
+
+        outreachImageDescriptor = getOutreachImageDescriptor();
+
+        if (outreachImageDescriptor == null) {
+            return;
+        }
+
+        imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
+        if (missionToBeOpened.equals(mission)) {
+            if (outreachImageIdToBeOpened != null) {
+                imageEntity.setIdToBeOpened(outreachImageIdToBeOpened, startupMinimized);
+            } else if (outreachImageNameToBeOpened != null) {
+                imageEntity.setNameToBeOpened(outreachImageNameToBeOpened);
+            }
+        }
+
+        tableContainer.add(imageEntity.createTablePanel().getWidget());
+        imageEntity.fetchData();
+        setMaxSize();
+        hideFootprints(defaultHideFootprints && missionToBeOpened.equals(mission));
+    }
+
+
+    private void initView() {
+        this.getElement().addClassName("outreachImagePanel");
+
+        header = new PopupHeader<>(this, TextMgr.getInstance().getText(getLabelPrefix() + "_header"),
+                TextMgr.getInstance().getText(getLabelPrefix() + "_helpText"),
+                TextMgr.getInstance().getText(getLabelPrefix() + "_helpTitle"),
+                event -> close(), "Close panel");
+
+
+        ESASkySlider opacitySlider = new ESASkySlider(0, 1.0, 250);
+        opacitySlider.registerValueChangeObserver(value -> imageEntity.setOpacity(value));
+
+        Label opacityLabel = new Label();
+        opacityLabel.setText(TextMgr.getInstance().getText("targetlist_opacity"));
+        opacityLabel.setStyleName("outreachImagePanel__opacityLabel");
         opacityPanel = new FlowPanel();
         opacityPanel.addStyleName("outreachImagePanel__opacityControl");
         opacityPanel.add(opacityLabel);
         opacityPanel.add(opacitySlider);
         opacityPanel.setVisible(false);
         MainLayoutPanel.addElementToMainArea(opacityPanel);
-		
+        hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch_" + mission, false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
         hideFootprintsSwitch.addStyleName("outreachImagePanel__footprintSwitch");
         hideFootprintsSwitch.addClickHandler(event -> hideFootprints(!isHidingFootprints));
-		header.addActionWidget(hideFootprintsSwitch);
-		mainContainer.add(header);
-		mainContainer.add(tableContainer);
+        header.addActionWidget(hideFootprintsSwitch);
+        mainContainer.add(header);
+        mainContainer.add(tableContainer);
         mainContainer.getElement().setId("outreachImagePanelContainer");
-		this.add(mainContainer);
-	}
-	
-	@Override
-	public void setMaxSize() {
-		Style elementStyle = mainContainer.getElement().getStyle();
-		int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
-		elementStyle.setPropertyPx("maxWidth", maxWidth);
-		elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
-		setMaxHeight();
-	}
-	
-	private void setMaxHeight() {
-		int headerSize = header.getOffsetHeight();
-		int height = mainContainer.getOffsetHeight() - headerSize - 5;
-
-		if (height > MainLayoutPanel.getMainAreaHeight()) {
-			height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
-		}
-
-		tableContainer.getElement().getStyle().setPropertyPx("height", height);
-	}
-    
-    public static void setStartupId(String id) {
-    	outreachImageIdToBeOpened = id;
+        this.add(mainContainer);
     }
 
-	public static void setStartupId(String id, boolean hideFootprints) {
-		outreachImageIdToBeOpened = id;
-		defaultHideFootprints = hideFootprints;
-	}
+    private String getLabelPrefix() {
+        return "outreachImagePanel_" + mission;
+    }
 
-	public static void setStartupName(String name) {
-		outreachImageNameToBeOpened = name;
-	}
+    @Override
+    public void setMaxSize() {
+        Style elementStyle = mainContainer.getElement().getStyle();
+        int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
+        elementStyle.setPropertyPx("maxWidth", maxWidth);
+        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+        setMaxHeight();
+    }
 
-	public JSONArray getAllImageIds(ICommand command) {
-		return getAllImageAttribute(command, true);
-	}
+    private void setMaxHeight() {
+        int headerSize = header.getOffsetHeight();
+        int height = mainContainer.getOffsetHeight() - headerSize - 5;
+
+        if (height > MainLayoutPanel.getMainAreaHeight()) {
+            height = MainLayoutPanel.getMainAreaHeight() - headerSize - 5;
+        }
+
+        tableContainer.getElement().getStyle().setPropertyPx("height", height);
+    }
+
+    public static void setStartupId(String id, String mission) {
+        outreachImageIdToBeOpened = id;
+        missionToBeOpened = mission;
+    }
+
+    public static void setStartupId(String id, String mission, boolean hideFootprints) {
+        outreachImageIdToBeOpened = id;
+        defaultHideFootprints = hideFootprints;
+        missionToBeOpened = mission;
+    }
+
+    public static void setStartupId(String id, String mission, boolean hideFootprints, boolean minimized) {
+        outreachImageIdToBeOpened = id;
+        defaultHideFootprints = hideFootprints;
+        startupMinimized = minimized;
+        missionToBeOpened = mission;
+    }
+
+    public static void setStartupName(String name, String mission) {
+        outreachImageNameToBeOpened = name;
+        missionToBeOpened = mission;
+    }
+
+    public JSONArray getAllImageIds(ICommand command) {
+        return getAllImageAttribute(command, true);
+    }
 
 
-	public JSONArray getAllImageNames(ICommand command) {
-		return getAllImageAttribute(command, false);
-	}
+    public JSONArray getAllImageNames(ICommand command) {
+        return getAllImageAttribute(command, false);
+    }
 
-	public JSONArray getAllImageAttribute(ICommand command, boolean id) {
-		if (imageEntity == null) {
-			getData();
-			imageEntity.getTablePanel().registerObserver(new TableObserver() {
-				@Override
-				public void numberOfShownRowsChanged(int numberOfShownRows) {
-					// Not needed here
-				}
+    public JSONArray getAllImageAttribute(ICommand command, boolean id) {
+        if (imageEntity == null) {
+            getData();
+            imageEntity.getTablePanel().registerObserver(new TableObserver() {
+                @Override
+                public void numberOfShownRowsChanged(int numberOfShownRows) {
+                    // Not needed here
+                }
 
-				@Override
-				public void onSelection(ITablePanel selectedTablePanel) {
-					// Not needed here
-				}
+                @Override
+                public void onSelection(ITablePanel selectedTablePanel) {
+                    // Not needed here
+                }
 
-				@Override
-				public void onUpdateStyle(ITablePanel panel) {
-					// Not needed here
-				}
+                @Override
+                public void onUpdateStyle(ITablePanel panel) {
+                    // Not needed here
+                }
 
-				@Override
-				public void onDataLoaded(int numberOfRows) {
-					if (numberOfRows > 0) {
-						command.onResult(id ? imageEntity.getIds() : imageEntity.getNames());
-						imageEntity.setIsPanelClosed(true);
-						imageEntity.getTablePanel().unregisterObserver(this);
-					}
-				}
+                @Override
+                public void onDataLoaded(int numberOfRows) {
+                    if (numberOfRows > 0) {
+                        command.onResult(id ? imageEntity.getIds() : imageEntity.getNames());
+                        imageEntity.setIsPanelClosed(true);
+                        imageEntity.getTablePanel().unregisterObserver(this);
+                    }
+                }
 
-				@Override
-				public void onRowSelected(GeneralJavaScriptObject row) {
-					// Not needed here
-				}
+                @Override
+                public void onRowSelected(GeneralJavaScriptObject row) {
+                    // Not needed here
+                }
 
-				@Override
-				public void onRowDeselected(GeneralJavaScriptObject row) {
-					// Not needed here
-				}
-			});
+                @Override
+                public void onRowDeselected(GeneralJavaScriptObject row) {
+                    // Not needed here
+                }
+            });
 
-		} else {
-			return id ? imageEntity.getIds() : imageEntity.getNames();
-		}
+        } else {
+            return id ? imageEntity.getIds() : imageEntity.getNames();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public void selectShapeByName(String name) {
-		if (imageEntity != null) {
-			imageEntity.selectShape(imageEntity.getIdFromName(name));
-		} else {
-			OutreachImagePanel.setStartupName(name);
-		}
+    public void selectShapeByName(String name) {
+        if (imageEntity != null) {
+            imageEntity.selectShape(imageEntity.getIdFromName(name));
+        } else {
+            OutreachImagePanel.setStartupName(name, this.mission);
+        }
 
-		if (!isShowing()) {
-			show();
-		}
-	}
+        if (!isShowing()) {
+            show();
+        }
+    }
 
-	public void selectShape(String id) {
-		if(imageEntity != null) {
-			imageEntity.selectShape(id);
-		} else {
-			OutreachImagePanel.setStartupId(id);
-		}
+    public void selectShape(String id) {
+        if (imageEntity != null) {
+            imageEntity.selectShape(id);
+        } else {
+            OutreachImagePanel.setStartupId(id, this.mission);
+        }
 
-		if (!isShowing()) {
-			show();
-		}
-	}
+        if (!isShowing()) {
+            show();
+        }
+    }
 
-	private void hideFootprints(boolean hide) {
-		if (hide != isHidingFootprints) {
-			isHidingFootprints = hide;
-			hideFootprintsSwitch.setChecked(hide);
-			imageEntity.setIsHidingShapes(hide);
-		}
-	}
+    private void hideFootprints(boolean hide) {
+        if (hide != isHidingFootprints) {
+            isHidingFootprints = hide;
+            hideFootprintsSwitch.setChecked(hide);
+            imageEntity.setIsHidingShapes(hide);
+        }
+    }
 
+    public void selectShapeMinimized(String id) {
+        if (imageEntity != null) {
+            imageEntity.showImage(id);
+        } else {
+            setStartupId(id, this.mission, true, true);
+            getData();
+        }
+    }
 
 }

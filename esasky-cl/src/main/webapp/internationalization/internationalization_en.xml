@@ -338,18 +338,15 @@
 
 	<!-- planObservationPanel -->
 	<text key="planObservationPanel_projectFutureObservations">
-		Observations Planning Tool for $MISSION$
+		Observations Planning Tool
 	</text>
 	<text key="planObservationPanel_helpMessageText">
-		This tool projects onto the sky the footprints of
-		astronomical instruments, at any chosen position and orientation, and
-		has been developed to aid professional astronomers when they are
-		defining their future observation proposals for a particular space
-		mission or ground-based telescope.
-		Currently the tool works for all the JWST instruments, including being able to
-		project the full focal plane of the JWST.
-		The possibility to project the footprints of other live missions, like
-		XMM-Newton or HST, will be implemented in the near future.
+		This tool projects onto the sky the footprints of astronomical instruments,
+		at any chosen position and orientation, and has been developed to aid professional
+		astronomers when they are defining their future observation proposals for a particular
+		space mission or ground-based telescope. Currently the tool works for all the
+		James Webb Space Telescope (JWST) instruments (including being able to project the full
+		focal plane of the JWST), and for the XMM-Newton EPIC-pn camera.
 		&lt;br&gt;&lt;br&gt;
 		IMPORTANT: This functionality is not intended to
 		replace the JWST ATP tool, but just to provide a quick-look aid for
@@ -384,8 +381,11 @@
 	<text key="futureFootprintRow_rotation">
 		Rotation
 	</text>
-	<text key="futureFootprintRow_instrAngleInfo">
+	<text key="futureFootprintRow_instrAngleInfo_JWST">
 		For more information click &lt;a href="//jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-position-angles-ranges-and-offsets" target="_blank"&gt;here&lt;/a&gt;
+	</text>
+	<text key="futureFootprintRow_instrAngleInfo_XMM">
+		For more information click &lt;a href="//xmm-tools.cosmos.esa.int/external/xmm_user_support/documentation/uhb/posdet.html" target="_blank"&gt;here&lt;/a&gt;
 	</text>
 	<text key="futureFootprintRow_instrAngle">
 		Angle of the instrument on the focal plane:
@@ -397,7 +397,7 @@
 		Rotation of the focal plane on the sky:
 	</text>
 	<text key="futureFootprintRow_tooltip">
-		JWST Angle Details
+		$MISSION$ Angle Details
 	</text>
 	<text key="futureFootprintRow_allInstruments">
 		All Instruments
@@ -897,7 +897,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-    	The stacked catalogue 4XMM-DR12s has been compiled from 1,620 groups,
+		The stacked catalogue 4XMM-DR12s has been compiled from 1,620 groups,
 		comprising 9,355  overlapping good-quality XMM-Newton observations. They
 		were selected from the public observations taken between 2000 February
 		1 and 2021 December 4 which overlap by at least one arcminute in radius
@@ -3652,25 +3652,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="outreachImage_hideFootprints">
 		Hide Footprints
 	</text>
-	<text key="outreachImagePanel_header">
-		ESA/Hubble Outreach Images
-	</text>
-	<text key="outreachImagePanel_helpText">
-		Visualise outreach astronomical images from the &lt;a
-		href="https://esahubble.org/images/"
-		target="_blank"&gt;
-		ESA/Hubble website.
-		&lt;/a&gt;  
-		&lt;br&gt;&lt;br&gt;
-		This panel displays a list with the ESA/Hubble outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by green rectangles, you can hide them by clicking in Hide Footprints.
-		&lt;br&gt;&lt;br&gt;
-		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Hubble website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
-		&lt;br&gt;&lt;br&gt;
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
-	</text>
-	<text key="outreachImagePanel_helpTitle">
-		ESA/Hubble Outreach Images
-	</text>
+
 	<text key="imageListEntity_imageNotFound">
 		Could not find image with ID: $ID$. Please make sure the entered ID is correct.
 	</text>
@@ -4020,25 +4002,6 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 
 	<text key="webConstants_exploreJwstImages">
 		Explore outreach images from the James Webb Space Telescope
-	</text>
-	<text key="outreachJwstPanel_header">
-		ESA/Webb Outreach Images
-	</text>
-	<text key="outreachJwstPanel_helpText">
-		Visualise outreach astronomical images from the &lt;a
-		href="https://esawebb.org/images/"
-		target="_blank"&gt;
-		ESA/Webb website.
-		&lt;/a&gt;
-		&lt;br&gt;&lt;br&gt;
-		This panel displays a list with the ESA/Webb outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by orange rectangles, you can hide them by clicking in Hide Footprints.
-		&lt;br&gt;&lt;br&gt;
-		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Webb website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
-		&lt;br&gt;&lt;br&gt;
-		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
-	</text>
-	<text key="outreachJwstPanel_helpTitle">
-		ESA/Webb Outreach Images
 	</text>
 	<text key="header_jwstOutreachImages">
 		Webb outreach images
@@ -5275,6 +5238,90 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		More information
 		&lt;/a&gt;
 	</text>
+
+
+
+
+
+	<text key="outreachImagePanel_HST_header">
+		ESA/Hubble Outreach Images
+	</text>
+	<text key="outreachImagePanel_HST_helpText">
+		Visualise outreach astronomical images from the &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		ESA/Hubble website.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		This panel displays a list with the ESA/Hubble outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by green rectangles, you can hide them by clicking in Hide Footprints.
+		&lt;br&gt;&lt;br&gt;
+		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Hubble website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
+	</text>
+	<text key="outreachImagePanel_HST_helpTitle">
+		ESA/Hubble Outreach Images
+	</text>
+
+
+	<text key="outreachImagePanel_JWST_header">
+		ESA/Webb Outreach Images
+	</text>
+	<text key="outreachImagePanel_JWST_helpText">
+		Visualise outreach astronomical images from the &lt;a
+		href="https://esawebb.org/images/"
+		target="_blank"&gt;
+		ESA/Webb website.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		This panel displays a list with the ESA/Webb outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by orange rectangles, you can hide them by clicking in Hide Footprints.
+		&lt;br&gt;&lt;br&gt;
+		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Webb website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
+	</text>
+	<text key="outreachImagePanel_JWST_helpTitle">
+		Webb outreach images
+	</text>
+
+
 	<!-- internationalization_es.xml is up to date for everything above -->
 
+	<text key="outreachImagePanel_EUCLID_header">
+		ESA/Euclid Outreach Images
+	</text>
+	<text key="outreachImagePanel_EUCLID_helpText">
+		Visualise outreach astronomical images from the &lt;a
+		href="https://www.esa.int/Science_Exploration/Space_Science/Euclid"
+		target="_blank"&gt;
+		ESA/Euclid website.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		This panel displays a list with the ESA/Euclid outreach images available for that region of the sky. In the field-of-view the footprint of these images is shown by blue rectangles, you can hide them by clicking in Hide Footprints.
+		&lt;br&gt;&lt;br&gt;
+		Click on a footprint or on a list item, the outreach image is shown overlaid to the sky currently displayed. A text box opens with the description of the image and the link to its location on the ESA/Euclid website. You can play with the opacity by moving the Image Opacity bar to the left and to the right.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANT:&lt;/b&gt; These images are created for outreach purposes and they are not intended for scientific use.
+	</text>
+
+	<text key="outreachImagePanel_EUCLID_helpTitle">
+		ESA/Euclid Outreach Images
+	</text>
+
+
+	<text key="webConstants_exploreEuclidImages">
+		Explore outreach images from Euclid
+	</text>
+
+	<text key="header_euclidOutreachImages">
+		Euclid outreach images
+	</text>
+	<text key="header_euclidImagesTooltip">
+		Visualise outreach images from the Euclid Space Telescope
+	</text>
+
+
+	<text key="EuclidEarlyReleaseTargets">
+		Euclid Early Release Targets
+	</text>
 </Internationalization>

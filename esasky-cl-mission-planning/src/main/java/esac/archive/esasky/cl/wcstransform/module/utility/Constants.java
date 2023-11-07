@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants.JWSTInstrument;
 
 /**
@@ -21,7 +22,8 @@ public class Constants {
 
     public enum PlanningMission {
         // JWST("JWST", 0), XMM("XMM", 1);
-        JWST("JWST", 0);
+        JWST("JWST", 0),
+        XMM("XMM", 1);
 
         private String mission;
         private int index;
@@ -48,7 +50,7 @@ public class Constants {
     public enum Instrument {
         NIRSPEC(PlanningMission.JWST, JWSTInstrument.NIRSPEC_MSA.toString()), NIRCAM(PlanningMission.JWST, JWSTInstrument.NIRCAFULL.toString()), NIRISS(
                 PlanningMission.JWST, JWSTInstrument.NIRISS_CEN.toString()), MIRI(PlanningMission.JWST, JWSTInstrument.MIRIM_FULL.toString()), FGS(
-                        PlanningMission.JWST,JWSTInstrument.FGS1.toString() );
+                        PlanningMission.JWST,JWSTInstrument.FGS1.toString() ), XMM_EPIC_PN(PlanningMission.XMM, EsaSkyConstants.XMMInstrument.XMM_EPIC_PN.toString());
 
         private String instrument;
         private PlanningMission mission;
@@ -62,6 +64,7 @@ public class Constants {
         public String getInstrumentName() {
             return this.instrument;
         }
+
 
         public PlanningMission getMission() {
             return this.mission;

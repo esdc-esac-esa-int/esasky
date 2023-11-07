@@ -134,6 +134,10 @@ public class Icons {
 		@Source("jwst-icon.png")
 		ImageResource jwstIcon();
 
+		@Source("euclid-icon.png")
+		ImageResource euclidIcon();
+
+
 		// selection
 		@Source("selection-rectangle-dashed.png")
 		ImageResource dashedRectIcon();
@@ -359,6 +363,10 @@ public class Icons {
 
 	public static ImageResource getJwstIcon() {
 		return resources.jwstIcon();
+	}
+
+	public static ImageResource getEuclidIcon() {
+		return resources.euclidIcon();
 	}
 
 	public static ImageResource getDashedCircleIcon() {

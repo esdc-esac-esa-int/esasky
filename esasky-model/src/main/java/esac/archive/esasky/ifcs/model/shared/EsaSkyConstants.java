@@ -251,6 +251,8 @@ public class EsaSkyConstants {
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
 
+    public static final String EUCLID_MISSION = "EUCLID";
+
     /*************************************************************************/
     /** INTERNATIONALIZATION VALUES **/
     /*************************************************************************/
@@ -382,6 +384,31 @@ public class EsaSkyConstants {
         private String aperName;
 
         private JWSTInstrument(String instrName, String aperName) {
+            this.instrName = instrName;
+            this.aperName = aperName;
+        }
+
+        @Override
+        public String toString() {
+            return instrName;
+        }
+
+        public String getAperName() {
+            return aperName;
+        }
+
+
+    }
+
+
+
+    public enum XMMInstrument {
+        XMM_EPIC_PN("EPIC-pn", "CCD_FULL");
+
+        private String instrName;
+        private String aperName;
+
+        private XMMInstrument(String instrName, String aperName) {
             this.instrName = instrName;
             this.aperName = aperName;
         }

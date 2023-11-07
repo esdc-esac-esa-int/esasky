@@ -5,6 +5,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
+import esac.archive.esasky.cl.wcstransform.module.utility.Constants;
 import esac.archive.esasky.cl.web.client.Controller;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
@@ -39,7 +40,7 @@ public class ApiPlanning extends ApiBase{
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDJWSTWITHCOORDINATES, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
-		JSONValue available = planObservationPanel.addInstrumentRowWithCoordinatesAPI(instrument, detector, allInstruments, ra, dec, rotation);
+		JSONValue available = planObservationPanel.addInstrumentRowWithCoordinatesAPI(Constants.PlanningMission.JWST.getMissionName(), instrument, detector, allInstruments, ra, dec, rotation);
 		if(available != null) {
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.ERROR_AVAILABLE, available);
@@ -54,7 +55,7 @@ public class ApiPlanning extends ApiBase{
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDJWST, allInfo);
 		PlanObservationPanel planObservationPanel = PlanObservationPanel.getInstance();
 		planObservationPanel.show();
-		JSONValue available = planObservationPanel.addInstrumentRowAPI(instrument, detector, allInstruments);
+		JSONValue available = planObservationPanel.addInstrumentRowAPI(Constants.PlanningMission.JWST.getMissionName(), instrument, detector, allInstruments);
 		if(available != null) {
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.ERROR_AVAILABLE, available);

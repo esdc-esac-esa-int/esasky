@@ -185,7 +185,11 @@ public class OutreachImage {
 			popupText.append("<br>  Credit: ");
 			popupText.append(this.credits);
 
-			popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
+			if (Objects.equals(mission, EsaSkyWebConstants.EUCLID_MISSION)) {
+				popupText.append("<br><br> This image on <a target=\"_blank\" href=\"https://www.esa.int/Science_Exploration/Space_Science/Euclid/Euclid_s_first_images_the_dazzling_edge_of_darkness \">ESA Euclid News</a>");
+			} else {
+				popupText.append("<br><br> This image on <a target=\"_blank\" href=\" " + this.baseUrl + (isHst ? "\">ESA Hubble News</a>" : "\">ESA Webb News</a>"));
+			}
 
 			CommonEventBus.getEventBus().fireEvent(
 					new TargetDescriptionEvent(this.title, popupText.toString(), false));

@@ -107,10 +107,16 @@ public class ApiImage extends ApiBase{
 	}
 
 	public void closeTelescopeOutreachPanel(String telescope) {
-		if("JWST".equals(telescope)){
-			controller.getRootPresenter().getCtrlTBPresenter().closeJwstOutreachPanel();
-		}else{
-			controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+		switch (telescope) {
+            case EsaSkyConstants.JWST_MISSION:
+				controller.getRootPresenter().getCtrlTBPresenter().closeJwstOutreachPanel();
+				break;
+			case EsaSkyConstants.EUCLID_MISSION:
+				controller.getRootPresenter().getCtrlTBPresenter().closeEuclidOutreachPanel();
+				break;
+			default:
+				controller.getRootPresenter().getCtrlTBPresenter().closeOutreachPanel();
+
 		}
 	}
 

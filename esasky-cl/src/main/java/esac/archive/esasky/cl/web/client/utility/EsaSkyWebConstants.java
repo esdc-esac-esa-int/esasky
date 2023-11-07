@@ -68,6 +68,7 @@ public class EsaSkyWebConstants {
 
     public static final String URL_PARAM_HST_IMAGE = "hst_image";
     public static final String URL_PARAM_JWST_IMAGE = "jwst_image";
+    public static final String URL_PARAM_EUCLID_IMAGE = "euclid_image";
     
     public static final String URL_PARAM_FRAME_COORD = "cooframe";
     
@@ -150,6 +151,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_GW = "gw_button";
     public static final String MODULE_OUTREACH_IMAGE = "outreach_button";
     public static final String MODULE_OUTREACH_JWST = "outreach_jwst_button";
+    public static final String MODULE_OUTREACH_EUCLID = "outreach_euclid_button";
     public static final String MODULE_SSO = "sso_button";
     public static final String MODULE_PUBLICATIONS = "publications_button";
     public static final String MODULE_TARGETLIST = "target_list_button";
@@ -184,6 +186,7 @@ public class EsaSkyWebConstants {
 
     public static final String HST_MISSION = "HST";
     public static final String JWST_MISSION = "JWST";
+    public static final String EUCLID_MISSION = "EUCLID";
     public static final String HEASARC_MISSION = "HEASARC";
     public static final String SCHEMA_OBSERVATIONS = "observations";
     public static final String SCHEMA_CATALOGUES = "catalogues";
@@ -275,6 +278,7 @@ public class EsaSkyWebConstants {
     public static final String SESSION_PLANNING_APERTURE = "aperture";
     public static final String SESSION_PLANNING_INSTRUMENT = "instrument";
     public static final String SESSION_PLANNING_ALL = "all";
+    public static final String SESSION_PLANNING_MISSION = "mission";
 
     public static final String SESSION_OUTREACH = "outreach_image";
     public static final String SESSION_OUTREACH_IMAGE_ID = "id";
