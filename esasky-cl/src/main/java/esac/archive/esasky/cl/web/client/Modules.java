@@ -143,7 +143,7 @@ public class Modules {
 	private static HashMap<String, Boolean> createEuclidMap() {
         HashMap<String, Boolean> map = createDefaultMap();
 		
-		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, true);
+		map.put(EsaSkyWebConstants.MODULE_SCIENTIFIC_BUTTON, false);
 		map.put(EsaSkyWebConstants.MODULE_LANGUAGE, false);
 		map.put(EsaSkyWebConstants.MODULE_COOR_GRID, true);
 		map.put(EsaSkyWebConstants.MODULE_SCREENSHOT, true);
@@ -156,10 +156,10 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
 		map.put(EsaSkyWebConstants.MODULE_SPE, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, true);
-		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, true);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, false);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, true);
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, true);
-		map.put(EsaSkyWebConstants.MODULE_GW, true);
+		map.put(EsaSkyWebConstants.MODULE_GW, false);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, true);
 		map.put(EsaSkyWebConstants.MODULE_TARGETLIST, true);
