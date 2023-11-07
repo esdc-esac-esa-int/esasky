@@ -5320,4 +5320,8 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		Visualise outreach images from the Euclid Space Telescope
 	</text>
 
+
+	<text key="EuclidEarlyReleaseTargets">
+		Euclid Early Release Targets
+	</text>
 </Internationalization>

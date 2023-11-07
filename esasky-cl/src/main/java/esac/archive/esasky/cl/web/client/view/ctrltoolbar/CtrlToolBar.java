@@ -1146,7 +1146,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
 
 
     private OutreachImagePanel getOutreachImagePanel(String telescope) {
-        switch (telescope) {
+        switch (telescope.toUpperCase()) {
             case EsaSkyConstants.HST_MISSION:
                 return outreachHstImagePanel;
             case EsaSkyConstants.JWST_MISSION:
@@ -1159,7 +1159,7 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     private EsaSkyToggleButton getOutreachImageButton(String telescope) {
-        switch (telescope) {
+        switch (telescope.toUpperCase()) {
             case EsaSkyConstants.HST_MISSION:
                 return outreachHstButton;
             case EsaSkyConstants.JWST_MISSION:

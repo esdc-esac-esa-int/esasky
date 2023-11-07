@@ -278,6 +278,7 @@ public class EsaSkyWebConstants {
     public static final String SESSION_PLANNING_APERTURE = "aperture";
     public static final String SESSION_PLANNING_INSTRUMENT = "instrument";
     public static final String SESSION_PLANNING_ALL = "all";
+    public static final String SESSION_PLANNING_MISSION = "mission";
 
     public static final String SESSION_OUTREACH = "outreach_image";
     public static final String SESSION_OUTREACH_IMAGE_ID = "id";
