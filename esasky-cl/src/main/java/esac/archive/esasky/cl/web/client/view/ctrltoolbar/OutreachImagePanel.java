@@ -79,7 +79,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
     @Override
     protected void onLoad() {
         super.onLoad();
-        if ((outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) && missionToBeOpened.equals(mission)) {
+        if ((outreachImageIdToBeOpened != null || outreachImageNameToBeOpened != null) && mission.equals(missionToBeOpened)) {
             show();
         }
         this.addSingleElementAbleToInitiateMoveOperation(header.getElement());
@@ -153,7 +153,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         }
 
         imageEntity = EntityRepository.getInstance().createImageListEntity(outreachImageDescriptor);
-        if (missionToBeOpened.equals(mission)) {
+        if (mission.equals(missionToBeOpened)) {
             if (outreachImageIdToBeOpened != null) {
                 imageEntity.setIdToBeOpened(outreachImageIdToBeOpened, startupMinimized);
             } else if (outreachImageNameToBeOpened != null) {
@@ -164,7 +164,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         tableContainer.add(imageEntity.createTablePanel().getWidget());
         imageEntity.fetchData();
         setMaxSize();
-        hideFootprints(defaultHideFootprints && missionToBeOpened.equals(mission));
+        hideFootprints(defaultHideFootprints && mission.equals(missionToBeOpened));
     }
 
 
@@ -229,9 +229,11 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
     }
 
     public static void setStartupId(String id, String mission, boolean hideFootprints) {
-        outreachImageIdToBeOpened = id;
-        defaultHideFootprints = hideFootprints;
-        missionToBeOpened = mission;
+        if (id != null) {
+            outreachImageIdToBeOpened = id;
+            defaultHideFootprints = hideFootprints;
+            missionToBeOpened = mission;
+        }
     }
 
     public static void setStartupId(String id, String mission, boolean hideFootprints, boolean minimized) {
