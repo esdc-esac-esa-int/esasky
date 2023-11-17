@@ -612,7 +612,7 @@
 		&lt;/a&gt; 
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
-		4XMM-DR12星表包含了由XMM牛顿望远镜12,712次PIC观测中的源，覆盖从0.2 keV到12 keV的能量范围。
+		4XMM-DR13星表包含了由XMM牛顿望远镜13,243次PIC观测中的源，覆盖从0.2 keV到12 keV的能量范围。
 		目前，ESASky中只显示质量标志(QUALITY flag)为0或1的源(即“好”或“有可疑参数”的源)。
 
 		&lt;br&gt;&lt;br&gt;
@@ -1553,7 +1553,7 @@
 		&lt;/a&gt; </text>
 
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-		4XMM-DR12s堆叠星表由1,620组共计9,355次高质量XMM-牛顿望远镜观测数据编纂而成。这些数据的获取时间为2000年2月1日至2020年12月4日。它们在半径上至少重叠1角分，且没有受非常高的背景辐射影响。该星表包含386,043颗源，其中298,626颗进行了多次观测。星表提供的信息包括位置和其他参数，例如XMM-牛顿标准能带流量、硬度比系数、质量评估以及多次观测间的变化性信息等。
+		4XMM-DR13s堆叠星表由1,688组共计9,796次高质量XMM-牛顿望远镜观测数据编纂而成。这些数据的获取时间为2000年2月1日至2022年11月29日。它们在半径上至少重叠1角分，且没有受非常高的背景辐射影响。该星表包含401,496颗源，其中310,478颗进行了多次观测。星表提供的信息包括位置和其他参数，例如XMM-牛顿标准能带流量、硬度比系数、质量评估以及多次观测间的变化性信息等。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#4XMMs"
