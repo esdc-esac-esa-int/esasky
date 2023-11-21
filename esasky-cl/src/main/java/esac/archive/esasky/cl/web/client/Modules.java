@@ -221,7 +221,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, true);
-		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, false);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, true);
 		map.put(EsaSkyWebConstants.MODULE_GW, false);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);

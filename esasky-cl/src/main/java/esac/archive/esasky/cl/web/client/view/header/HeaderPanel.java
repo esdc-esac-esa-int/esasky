@@ -633,6 +633,8 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 				&& isInScienceMode);
 		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
 				&& isInScienceMode);
+		euclidDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID)
+				&& isInScienceMode);
 	}
 
 	@Override
