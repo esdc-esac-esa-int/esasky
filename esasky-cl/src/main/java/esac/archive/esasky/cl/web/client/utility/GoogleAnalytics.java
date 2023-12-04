@@ -253,6 +253,8 @@ public final class GoogleAnalytics {
     public static final String ACT_IMAGES_HSTIMAGE_FAIL = "hstImageFail";
     public static final String ACT_IMAGES_JWSTIMAGE_SUCCESS = "jwstImageSuccess";
     public static final String ACT_IMAGES_JWSTIMAGE_FAIL = "jwstImageFail";
+    public static final String ACT_IMAGES_EUCLIDIMAGE_SUCCESS = "euclidImageSuccess";
+    public static final String ACT_IMAGES_EUCLIDIMAGE_FAIL = "euclidImageFail";
 
     public static final String ACT_SKIES_PANEL_EVA_TOGGLE= "toggleEva";
 
