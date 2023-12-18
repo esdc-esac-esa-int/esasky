@@ -3134,7 +3134,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		 MagG
 	</text>
 	<text key="ligthcurveLinkCheops">
-		 Optimal Light-Curve
+		 Default Light-Curve
 	</text>
 	<text key="reportLinkCheops">
 		  Data Reduction Pipeline Report 
@@ -4904,7 +4904,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_band">Wavelength Range</text>
 	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_start_time">Start Time</text>
 	<text key="observations.mv_v_v_hsa_esasky_spectra_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
-	<text key="observations.mv_cheops_obs_fdw_sci_cor_lc_opt_link">Optimal Light-Curve</text>
+	<text key="observations.mv_cheops_obs_fdw_sci_cor_lc_opt_link">Default Light-Curve</text>
 	<text key="observations.mv_cheops_obs_fdw_quality_report_link">Data Reduction Pipeline Report</text>
 	<text key="observations.mv_cheops_obs_fdw_targname">Target name</text>
 	<text key="observations.mv_cheops_obs_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
