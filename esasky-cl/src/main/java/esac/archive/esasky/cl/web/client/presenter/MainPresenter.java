@@ -380,7 +380,6 @@ public class MainPresenter {
         GeneralEntityInterface entity = entityRepo.getEntityByName(descriptor.getLongName());
         if (entity == null) {
             entity = entityRepo.createEntity(descriptor);
-            entity.setId(descriptor.getId());
         }
         if(userData.getProperty("overlaySet").hasProperty("refreshable") && userData.getProperty("overlaySet").getStringProperty("refreshable").equals("true")) {
             entity.setRefreshable(false);
