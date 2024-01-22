@@ -2267,7 +2267,8 @@ public class TabulatorWrapper {
                 columnMeta.displayName = "Download";
             } else {
                 formatter = function (cell, formatterParams, onRendered) {
-                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                    var disabledClass = cell.getValue() ? "" : "buttonCellDisabled";
+                    return "<div class='buttonCell " + disabledClass + "' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
                 };
                 formatterParams = {
                     image: "link2archive.png",

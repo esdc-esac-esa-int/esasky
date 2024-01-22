@@ -866,7 +866,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			}
 		}
 
-		openArchiveUrl(archiveUrl, row);
+		if (archiveUrl != null && !archiveUrl.isEmpty()){
+			openArchiveUrl(archiveUrl, row);
+		}
 	}
 
 
