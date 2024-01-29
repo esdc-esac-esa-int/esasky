@@ -5325,4 +5325,17 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="EuclidEarlyReleaseTargets">
 		Euclid Early Release Targets
 	</text>
+
+
+	<text key="tabulator_link_cell_tooltip_gallery_url">
+		Open this data in the MMODA product gallery
+	</text>
+
+	<text key="tabulator_link_column_tooltip_gallery_url">
+		Click any row to open that row's data in the MMODA product gallery
+	</text>
+
+	<text key="tabulator_link_no_data">
+		No data available for this entry
+	</text>
 </Internationalization>

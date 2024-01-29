@@ -2266,17 +2266,20 @@ public class TabulatorWrapper {
                 }
                 columnMeta.displayName = "Download";
             } else {
+                var cellTooltipKey = "tabulator_link_cell_tooltip_" + columnMeta.name;
                 formatter = function (cell, formatterParams, onRendered) {
                     var disabledClass = cell.getValue() ? "" : "buttonCellDisabled";
-                    return "<div class='buttonCell " + disabledClass + "' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                    var title = disabledClass ? $wnd.esasky.getDefaultLanguageText("tabulator_link_no_data") : formatterParams.tooltip;
+                    return "<div class='buttonCell " + disabledClass + "' title='" + title + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
                 };
                 formatterParams = {
                     image: "link2archive.png",
-                    tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+                    tooltip: $wnd.esasky.hasInternationalizationText(cellTooltipKey) ? $wnd.esasky.getDefaultLanguageText(cellTooltipKey) : $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
                 };
             }
 
-            tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
+            var tooltipKey = "tabulator_link_column_tooltip_" + columnMeta.name;
+            tooltip =  $wnd.esasky.hasInternationalizationText(tooltipKey) ? $wnd.esasky.getDefaultLanguageText(tooltipKey) : $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
                 e.stopPropagation();
                 var rowData = cell.getData();
