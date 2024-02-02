@@ -1,49 +1,36 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
-
+import com.google.gwt.user.client.ui.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
-import esac.archive.esasky.cl.wcstransform.module.utility.Constants;
-import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants.Instrument;
+import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CopyToClipboardHelper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.common.DropDownMenu;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkyNumberBox;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkyNumberControl;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
-import esac.archive.esasky.cl.web.client.view.common.MenuObserver;
+import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.HiPSDetailsPopup;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FutureFootprintRow extends Composite {
 
@@ -66,10 +53,13 @@ public class FutureFootprintRow extends Composite {
 	private Instrument instrument;
 	private String aperture;
 	private final NumberFormat raAndDecFormat = NumberFormat.getFormat("#0.000000");
+	private final NumberFormat sexagesimalRaFormat = new SexagesimalNumberFormat(true);
+	private final NumberFormat sexagesimalDecFormat = new SexagesimalNumberFormat(false);
 	private final NumberFormat angleFormat = NumberFormat.getFormat("#0.000");
 
-	private final String RA_TEXT = "RA \u00B0";
-	private final String DEC_TEXT = "Dec \u00B0";
+	private final String RA_TEXT = "RA";
+	private final String DEC_TEXT = "Dec";
+	private final String DEGREE_TEXT = "\u00B0";
 	private final String ROTATION_TEXT = TextMgr.getInstance().getText("futureFootprintRow_rotation") + " \u00B0";
 	private final String SIAF_VERSION;
 
@@ -79,7 +69,6 @@ public class FutureFootprintRow extends Composite {
 
 	private CheckBox allInstrumentsCheckBox;
 	private EsaSkyButton copyButton;
-//	private Image infoImage;
 
 	private EsaSkyNumberControl raControl = new EsaSkyNumberControl(RA_TEXT,
 			resources.arrowIcon(), resources.arrowIcon(), RA_DEG_STEP, raAndDecFormat);
@@ -143,6 +132,7 @@ public class FutureFootprintRow extends Composite {
 		if (aperturesNames.size() < 2) {
 			this.allInstrumentsCheckBox.setVisible(false);
 		}
+
 	}
 	
 	public FutureFootprintRow(Instrument instrument, String detector, boolean showAllInstruments, String ra, String dec, String rotation, String SIAF_VERSION) {
@@ -213,7 +203,27 @@ public class FutureFootprintRow extends Composite {
 		initWidget(container);
 
 		CommonEventBus.getEventBus().fireEvent(new FutureFootprintEvent(FutureFootprintRow.this));
-	}    
+
+		CommonEventBus.getEventBus().addHandler(IsShowingCoordintesInDegreesChangeEvent.TYPE, this::updateCoordinateFormat);
+	}
+
+
+	@Override
+	public void onLoad() {
+		updateCoordinateFormat();
+	}
+
+
+
+	private void updateCoordinateFormat() {
+		if(GUISessionStatus.isShowingCoordinatesInDegrees()) {
+			raControl.setNumberFormat(raAndDecFormat);
+			decControl.setNumberFormat(raAndDecFormat);
+		} else {
+			raControl.setNumberFormat(sexagesimalRaFormat);
+			decControl.setNumberFormat(sexagesimalDecFormat);
+		}
+	}
 
 	private HorizontalPanel createInstrumentHeader() {
 		HorizontalPanel instrumentHeader = new HorizontalPanel();
@@ -355,8 +365,10 @@ public class FutureFootprintRow extends Composite {
 				}else {
 					coordinatesFormat = AladinLiteConstants.FRAME_GALACTIC;
 				}
-				String texToCopy = TextMgr.getInstance().getText("futureFootprintRow_centre") + ": " + RA_TEXT + " " + getCenterRaDeg() 
-						+ "  " + DEC_TEXT + " " + getCenterDecDeg()
+
+				String degreeText = GUISessionStatus.isShowingCoordinatesInDegrees() ? DEGREE_TEXT : "";
+				String texToCopy = TextMgr.getInstance().getText("futureFootprintRow_centre") + ": " + RA_TEXT + " " + degreeText + " " + raControl.getFormattedValue()
+						+ "  " + DEC_TEXT + " " + degreeText + " " + decControl.getFormattedValue()
 						+ "  ; APA (" + ROTATION_TEXT + "): " + rotationControl.getValue()
 						+ " ; " + TextMgr.getInstance().getText("futureFootprintRow_coordinateSystem") + " " + coordinatesFormat 
 						+ " ; " + SIAF_VERSION;
