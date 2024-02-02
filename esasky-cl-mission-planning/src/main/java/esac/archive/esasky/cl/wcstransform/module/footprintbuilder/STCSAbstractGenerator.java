@@ -34,6 +34,8 @@ public abstract class STCSAbstractGenerator {
     public abstract Map<String, Vector<double[]>> computeInstrumentPolygon(String instrument,
             String detector, double angle, double ra, double dec);
 
+    public abstract Map<String, double[]> computeInstrumentLabels(String instrument, String detector, double angle, double ra, double dec);
+
     public abstract String generateSTCS(Vector<double[]> pixels);
 
     public abstract Map<String, Vector<double[]>> getDetectorsSkyCoordsForInstrument(

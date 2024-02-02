@@ -31,23 +31,23 @@ public class DS9Loader {
                     if (200 == response.getStatusCode()) {
                         ds9DescriptorListMapper mapper = GWT.create(ds9DescriptorListMapper.class);
                         ds9DescriptorList = mapper.read(response.getText());
-                        Log.debug("SiafEntries=" + response.getText());
+                        Log.debug("Ds9Entries=" + response.getText());
                         InstrumentMapping.getInstance().setDs9Entries(ds9DescriptorList);
 
                     } else {
-                        Log.error("[getSiafEntriesFormUrl] Couldn't retrieve JSON (" + response.getStatusText() + ") from "
+                        Log.error("[getDs9EntriesFormUrl] Couldn't retrieve JSON (" + response.getStatusText() + ") from "
                                 + url);
                     }
                 }
 
                 @Override
                 public void onError(final Request request, final Throwable e) {
-                    Log.error("[getSiafEntriesFormUrl] Error fetching JSON data from server:" + e.getMessage());
+                    Log.error("[getDs9EntriesFormUrl] Error fetching JSON data from server:" + e.getMessage());
                 }
             });
 
         } catch (RequestException e) {
-            Log.error("[getSiafEntriesFormUrl] Error fetching JSON data from server" + e.getMessage());
+            Log.error("[getDs9EntriesFormUrl] Error fetching JSON data from server" + e.getMessage());
         }
     }
 
