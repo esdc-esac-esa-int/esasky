@@ -167,7 +167,7 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 	public void setNumberFormat(NumberFormat numberFormat) {
 		NumberFormat oldNumberFormat = this.numberFormat;
 		this.numberFormat = numberFormat;
-		this.setNumber(oldNumberFormat.parse(getText()));
+		this.setNumberSilently(oldNumberFormat.parse(getText()));
 	}
 
 	@Override
@@ -175,6 +175,16 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 		Log.debug("Can't set text of a number box");
 	}
 
+
+	private void setNumberSilently(double number) {
+		if(number > maxNumber) {
+			number = maxNumber;
+		}
+		if(number < minNumber) {
+			number = minNumber;
+		}
+		super.setTextSilently(numberFormat.format(number));
+	}
 
 	private class KeyDownAndHold extends Timer {
 

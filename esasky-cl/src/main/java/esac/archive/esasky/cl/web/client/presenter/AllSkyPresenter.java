@@ -126,7 +126,8 @@ public class AllSkyPresenter {
 
     void removePlanningFootprint(FutureFootprintRow footprintRow) {
         planningFootprintsPerInstrument.remove(footprintRow);
-        currentPlanningFootprintRow = previuosPlanningFootprintRow;
+        planningLabelsPerInstrument.remove(footprintRow);
+        currentPlanningFootprintRow = !planningFootprintsPerInstrument.isEmpty() ? previuosPlanningFootprintRow : null;
         drawPlanningPolygons();
     }
 
@@ -225,12 +226,18 @@ public class AllSkyPresenter {
                 AladinLiteWrapper.getInstance().getFutureSelectedDetectorCatalogue());
 
 
-        Map<String, List<JavaScriptObject>> t = planningLabelsPerInstrument.get(currentPlanningFootprintRow);
+        if (currentPlanningFootprintRow != null) {
+            for (Entry<FutureFootprintRow, Map<String, List<JavaScriptObject>>> currEntry : planningLabelsPerInstrument
+                    .entrySet()) {
 
-        for (List<JavaScriptObject> ss : t.values()) {
-            for (JavaScriptObject sd : ss) {
-                AladinLiteWrapper.getAladinLite().addFootprintToOverlay(
-                        planningOverlaySelectedInstrument, sd);
+                Map<String, List<JavaScriptObject>> planningTextFootprints = currEntry.getValue();
+                for (List<JavaScriptObject> textFootprints : planningTextFootprints.values()) {
+                    for (JavaScriptObject textFootprint : textFootprints) {
+                        AladinLiteWrapper.getAladinLite().addFootprintToOverlay(
+                                planningOverlaySelectedInstrument, textFootprint);
+
+                    }
+                }
             }
         }
 
