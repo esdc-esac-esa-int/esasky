@@ -23,6 +23,6 @@ public class SexagesimalNumberFormat extends NumberFormat {
 
     @Override
     public double parse(String text) throws NumberFormatException {
-        return isRa ? new RaPosition(text).getRaDeg() : new DecPosition(text).getDecDeg();
+        return isRa ? new RaPosition(text).getRaDeg() : new DecPosition(text, true).getDecDegFix();
     }
 }
