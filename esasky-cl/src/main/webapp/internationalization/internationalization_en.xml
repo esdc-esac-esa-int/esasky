@@ -3041,9 +3041,9 @@
 		Full documentation of this feature.
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
-		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10.
+		The ninth LAMOST data release (LAMOST DR9) includes observations until June 2021. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 11,211,028 spectra, of which 10,893,354 are stars, 241,454 are galaxies, and 76,220 are QSOs.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3052,9 +3052,9 @@
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.
 		&lt;br&gt;&lt;br&gt;
-The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)
+		The ninth LAMOST data release (LAMOST DR9) includes observations until June 2021. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 8,259,362 spectra, where there are 1,846,438 and 6,412,924 spectra for the non time-domain and time-domain surveys, respectively.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3065,7 +3065,7 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
 		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey provides flux - and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3700-9000 angstrom for many types of astronomical objects. Since October 2018, LAMOST started the second stage survey program containing both low- and medium-resolution spectroscopic surveys, and the medium-resolution spectroscopic survey includes two surveys, i.e., the time-domain and the non time-domain surveys.
 		&lt;br&gt;&lt;br&gt;
-		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 5,975,982 spectra, where there are 1,465,789 and 4,510,193 spectra for the non time-domain and time-domain surveys, respectively. (Note: This catalog contains in total 22,141,635 entries, which is different from the two statistics numbers above. For the number of the non-time-domain survey, we only count each of the coadded spectra as one of the 1,465,789 spectra, while for the time-domain survey, every single exposure of the B band plus R band were regarded as one of the 4,510,193 spectra.)
+		The ninth LAMOST data release (LAMOST DR9) includes observations until June 2021. The Medium-Resolution spectroscopic survey (MRS) General Catalog contains 8,259,362 spectra, where there are 1,846,438 and 6,412,924 spectra for the non time-domain and time-domain surveys, respectively.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3074,9 +3074,9 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 		&lt;/a&gt;
 	</text>
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST_LRS">
-		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom.for many types of astronomical objects.
+		The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) is a Chinese national scientific research facility operated by the National Astronomical Observatories, Chinese Academy of Sciences. It is a special reflecting Schmidt telescope with 4000 fibers in a field of view of 20 degrees. The LAMOST survey, initiated in 2012, provides flux- and wavelength-calibrated, sky-subtracted spectra in the wavelength range of 3690-9100 angstrom with a resolution of 1800 at the 5500 angstrom for many types of astronomical objects.
 		&lt;br&gt;&lt;br&gt;
-		The eighth LAMOST data release (LAMOST DR8) includes observations until June 2020. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 10,633,515 spectra, of which 10,336,752 are stars, 224,702 are galaxies, 72,061 are QSOs, and there are 9,563,115 spectra with g-band SNR or i-band SNR larger than 10.
+		The ninth LAMOST data release (LAMOST DR9) includes observations until June 2021. The Low-Resolution spectroscopic survey (LRS) General Catalog contains 11,211,028 spectra, of which 10,893,354 are stars, 241,454 are galaxies, and 76,220 are QSOs.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
