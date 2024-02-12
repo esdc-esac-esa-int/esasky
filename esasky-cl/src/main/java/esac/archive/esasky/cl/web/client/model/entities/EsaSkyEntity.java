@@ -296,7 +296,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
  	        mocEntity.setShouldBeShown(false);
          }
 
-         String url = descriptor.createTapUrl(metadataService.getRequestUrl(), adql, EsaSkyConstants.JSON);
+         String url = descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), adql, EsaSkyConstants.JSON);
 
          clearAll();
          tablePanel.insertData(url);
@@ -361,7 +361,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     
     public String getTapUrl() {
     	setQuery(metadataService.getMetadataAdql(descriptor, tablePanel.getFilterString()));
-    	return descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON);
+    	return descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), this.adql, EsaSkyConstants.JSON);
     }
 
     public void fetchDataWithoutMOC(String whereQuery) {
@@ -375,7 +375,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
     	
     	clearAll();
     	setQuery(metadataService.getMetadataFromMOCPixelsADQL(getDescriptor(), whereQuery));
-        tablePanel.insertData(descriptor.createTapUrl(metadataService.getRequestUrl(), this.adql, EsaSkyConstants.JSON));
+        tablePanel.insertData(descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), this.adql, EsaSkyConstants.JSON));
     }
     public void fetchDataWithoutMOC(MOCInfo mocInfo, String whereQuery) {
 
@@ -719,7 +719,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 	        mocEntity.clearAll();
 	        mocEntity.setShouldBeShown(false);
         }
-        String url = descriptor.createTapUrl(metadataService.getRequestUrl(), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
+        String url = descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), metadataService.getMetadataAdqlRadial(getDescriptor(), conePos), EsaSkyConstants.JSON);
 
         clearAll();
         tablePanel.insertData(url);

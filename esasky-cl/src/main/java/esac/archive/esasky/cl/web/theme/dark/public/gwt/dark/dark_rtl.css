@@ -172,9 +172,9 @@ a, a:visited, a:hover {
   overflow: hidden;
 }
 
-.gwt-DisclosurePanel .header,
-.gwt-DisclosurePanel .header a,
-.gwt-DisclosurePanel .header td {
+.gwt-DisclosurePanel .header__container,
+.gwt-DisclosurePanel .header__container a,
+.gwt-DisclosurePanel .header__container td {
   text-decoration: none;  /* Remove underline from header */
   color: #bec7cc; 
   cursor: pointer;

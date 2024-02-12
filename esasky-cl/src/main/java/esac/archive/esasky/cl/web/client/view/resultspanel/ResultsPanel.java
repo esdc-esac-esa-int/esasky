@@ -3,22 +3,18 @@ package esac.archive.esasky.cl.web.client.view.resultspanel;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.DataPanelAnimationCompleteEvent;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.presenter.ResultsPresenter;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-import esac.archive.esasky.cl.web.client.view.animation.AnimationObserver;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
 import esac.archive.esasky.cl.web.client.view.animation.HeightAnimation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tab.CloseableTabLayoutPanel;
@@ -66,23 +62,13 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 		resultsLP.add(contentPanel);
 		resultsLP.getElement().setId("resultPanel");
 
-		panelAnimation.addObserver(new AnimationObserver() {
-			
-			@Override
-			public void onComplete(double currentPosition) {
-				if(!GUISessionStatus.isDataPanelOpen()){
-					CommonEventBus.getEventBus().fireEvent(new DataPanelAnimationCompleteEvent());
-				}
-			}
-		});
+		panelAnimation.addObserver(currentPosition -> {
+            if(!GUISessionStatus.isDataPanelOpen()){
+                CommonEventBus.getEventBus().fireEvent(new DataPanelAnimationCompleteEvent());
+            }
+        });
 		initWidget(resultsLP);
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				ensureDataPanelCanFit();
-			}
-		});
+		MainLayoutPanel.addMainAreaResizeHandler(event -> ensureDataPanelCanFit());
 		ensureDataPanelCanFit();
 	}
 	
@@ -116,7 +102,15 @@ public class ResultsPanel extends Composite implements ResultsPresenter.View {
 	        tabPanel.removeTab(tab);
 	    }
     }
-	
+
+	@Override
+	public void removeAllTabs() {
+		Object[] tabs = tabPanel.getTabWidgetIds().inverse().values().toArray();
+		for (Object tab : tabs) {
+			tabPanel.removeTab((MissionTabButtons) tab);
+		}
+	}
+
 	@Override
 	public final Widget getTabFromTableId(final String id) {
 		return tabPanel.getTablePanelFromId(id).getWidget();

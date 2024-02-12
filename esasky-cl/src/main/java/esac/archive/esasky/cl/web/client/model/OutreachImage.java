@@ -62,7 +62,7 @@ public class OutreachImage {
 	
 	public void loadImage(CommonTapDescriptor descriptor, TAPImageListService metadataService, boolean moveToCenter) {
 		String mission = this.mission;
-		String query = descriptor.createTapUrl(metadataService.getRequestUrl(), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
+		String query = descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
 		JSONUtils.getJSONFromUrl(query , new IJSONRequestCallback() {
 
 			@Override

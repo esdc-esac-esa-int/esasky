@@ -34,14 +34,17 @@ public class EsaSkyWebConstants {
     public static final String GENERAL_RESOLVER_URL = BACKEND_CONTEXT + "/generalresolver";
     public static final String SSO_RESOLVER_URL = BACKEND_CONTEXT + "/ssoresolver";
     public static final String DATA_REQUEST_URL = BACKEND_CONTEXT + "/data-request";
-
     public static final String TAP_SYNC_URL = BACKEND_CONTEXT + "/tap/sync";
     public static final String TAP_DESCRIPTOR_URL = BACKEND_CONTEXT + "/tap/descriptors";
+    public static final String TAP_USERTABLES_URL = BACKEND_CONTEXT + "/tap/usertables";
+    public static final String TAP_USERLAYOUTS_URL = BACKEND_CONTEXT + "/tap/layouts";
+    public static final String TAP_USERSESSIONS_URL = BACKEND_CONTEXT + "/tap/sessions";
     public static final String IMAGES_URL = BACKEND_CONTEXT + "/outreach-image";
     public static final String SSO_URL = BACKEND_CONTEXT + "/sso";
     public static final String SPECTRA_URL = BACKEND_CONTEXT + "/spectra";
     public static final String CATALOGS_URL = BACKEND_CONTEXT + "/catalogs";
     public static final String EXT_TAP_URL = BACKEND_CONTEXT + "/ext-taps";
+    public static final String UPLOAD_TABLE_URL = BACKEND_CONTEXT + "/Upload";
     public static final String EXT_TAP_REQUEST_URL = EXT_TAP_URL + "?" + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST;
     public static final String EXT_TAP_GET_TAPS_URL = EXT_TAP_URL + "?" + EsaSkyConstants.EXT_TAP_ACTION_FLAG +  "=" + EsaSkyConstants.EXT_TAP_ACTION_DESCRIPTORS;
     public static final String PUBLICATIONS_URL = BACKEND_CONTEXT + "/publications";
@@ -133,6 +136,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_MODE_EUCLID = "EUCLID";
     public static final String MODULE_MODE_CLEAN = "CLEAN";
     public static final String MODULE_MODE_KIOSK = "KIOSK";
+    public static final String MODULE_MODE_USER = "USER";
 
     
     public static final String MODULE_SCIENTIFIC_BUTTON = "scientific_toggle_button";
@@ -144,6 +148,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_DROPDOWN = "dropdown_menu";
     public static final String MODULE_SKIESMENU = "skies_menu";
     public static final String MODULE_FEEDBACK = "feedback_button";
+    public static final String MODULE_LOGIN = "login_button";
     public static final String MODULE_OBS = "observations_button";
     public static final String MODULE_CAT = "catalogues_button";
     public static final String MODULE_SPE = "spectra_button";
@@ -267,9 +272,9 @@ public class EsaSkyWebConstants {
     public static final String SESSION_DATA_SIZE = "size";
     public static final String SESSION_DATA_LINESTYLE = "line_style";
     public static final String SESSION_DATA_SOURCE_STYLE = "source_style";
-
+    public static final String SESSION_DATA_TAPURL = "tap_url";
     public static final String SESSION_SHOWING = "showing";
-    
+
     public static final String SESSION_ICECUBE = "icecube";
     public static final String SESSION_MME = "multi_messenger_events";
     public static final String SESSION_GW_ID = "gw_id";
@@ -306,6 +311,6 @@ public class EsaSkyWebConstants {
     public static final String SESSION_TREEMAP_LOW = "low";
     public static final String SESSION_TREEMAP_HIGH = "high";
     public static final String SESSION_EXTERNAL_DATA_CENTERS = "external_data_centers";
-    
+
 
 }

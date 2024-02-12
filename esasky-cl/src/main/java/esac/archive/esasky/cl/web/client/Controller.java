@@ -3,31 +3,23 @@ package esac.archive.esasky.cl.web.client;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
-
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants.CoordinateFrame;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
-import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachJwstPanel;
-import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
+import esac.archive.esasky.cl.web.client.status.ActivityStatus;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.utility.ParseUtils;
-import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.OutreachImagePanel;
+import esac.archive.esasky.ifcs.model.shared.ESASkyTarget;
 
 /**
  * @author ESDC team Copyright (c) 2015- European Space Agency
@@ -60,6 +52,7 @@ public class Controller implements ValueChangeHandler<String> {
     }
 
 	private void initializePresenter() {
+		ActivityStatus.getInstance(); // Initialize singleton
 		GUISessionStatus.initiateHipsLocationScheduler();
 		
 		String toggleColumns = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TOGGLE_COLUMNS);
@@ -185,7 +178,11 @@ public class Controller implements ValueChangeHandler<String> {
     private void setBasicLayoutFromParameters() {
         String mode = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT);
 		Modules.setMode(mode);
-		
+
+		if (mode != null && mode.startsWith(EsaSkyWebConstants.MODULE_MODE_USER)) {
+			Modules.activateLayout(Modules.getLayoutId());
+		}
+
 		String hideBannerInfoString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_BANNER_INFO);
 		GUISessionStatus.setShouldHideBannerInfo(hideBannerInfoString != null && hideBannerInfoString.toLowerCase().contains("true"));
         
@@ -253,7 +250,6 @@ public class Controller implements ValueChangeHandler<String> {
 	private void initESASkyWithURLParameters(String HiPSFromURL,
 			String targetFromURL, String fov, String coordinateFrameFromUrl, boolean hideWelcome) {
 		MainLayoutPanel view = new MainLayoutPanel(HiPSFromURL, targetFromURL, fov, coordinateFrameFromUrl, hideWelcome);
-		
 		presenter = new MainPresenter(view, coordinateFrameFromUrl);
         presenter.go(Controller.this.container);
 	}

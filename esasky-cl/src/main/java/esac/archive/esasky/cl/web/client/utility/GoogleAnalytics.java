@@ -21,6 +21,8 @@ public final class GoogleAnalytics {
     public static final String CAT_GW = "GravitationalWaves";
     public static final String CAT_CONVENIENCE = "Convenience";
     public static final String CAT_HELP = "Help";
+
+    public static final String CAT_USERAREA = "UserArea";
     public static final String CAT_HEADER = "Header";
     public static final String CAT_HEADER_STATUS = "Header_Status";
     public static final String CAT_TARGETLIST = "TargetList";
@@ -37,6 +39,7 @@ public final class GoogleAnalytics {
     public static final String CAT_API = "API";
     public static final String CAT_PUBLICATION = "Publication";
     public static final String CAT_WELCOME = "Welcome";
+    public static final String CAT_OPEN_TABLE = "Open Table";
     public static final String CAT_INITIALISATION = "Initialisation";
     public static final String CAT_PREVIEW = "Preview";
     public static final String CAT_DATALINK = "Datalink";
@@ -81,6 +84,11 @@ public final class GoogleAnalytics {
     public static final String ACT_HEADER_EVA = "Eva";
     public static final String ACT_HEADER_MENU = "Menu";
     public static final String ACT_HEADER_FEEDBACK = "Feedback";
+    public static final String ACT_HEADER_LOGIN = "Login";
+    public static final String ACT_HEADER_LOGOUT = "Logout";
+    public static final String ACT_HEADER_UPLOADTABLES = "UploadTables";
+    public static final String ACT_HEADER_DELETETABLES = "DeleteTables";
+    public static final String ACT_HEADER_REGISTER = "Register";
     public static final String ACT_HEADER_VIDEOTUTORIALS = "VideoTutorials";
     public static final String ACT_HEADER_RELEASENOTES = "ReleaseNotes";
     public static final String ACT_HEADER_COORDINATEGRID = "CoordinateGrid";
@@ -90,6 +98,7 @@ public final class GoogleAnalytics {
     public static final String ACT_HEADER_SCREENSHOT = "ScreenShot";
     public static final String ACT_HEADER_SCIMODE = "SciMode";
     public static final String ACT_HEADER_LANGUAGE = "Language";
+    public static final String ACT_HEADER_USERAREA = "UserArea";
     public static final String ACT_HEADER_STATUS_ERROR = "Error";
     public static final String ACT_HEADER_COOFRAMECHANGED= "CoordinateFrameChanged";
     

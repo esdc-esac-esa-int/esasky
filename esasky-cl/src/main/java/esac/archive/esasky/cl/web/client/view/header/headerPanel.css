@@ -1,11 +1,12 @@
-.header {
+.header__container {
 	font-size: 13px;
 	font-family: arial, sans-serif;
 	height: 30px;
 	width: 100%;
 	position: absolute;
 	z-index: 300;
-	background-color: rgba(0, 0, 0, 0.65)
+	background-color: rgba(0, 0, 0, 0.65);
+	font-weight: normal;
 }
 
 #rightSideHeader {
@@ -21,6 +22,7 @@
 #header__screenshotButton > div,
 #headerHelpButton > div,
 #header__gridButton > div,
+#header__userAreaButton > div,
 #header__warningButton > div { 
 	border: 0px;
 	border-radius: 1px;
@@ -40,6 +42,7 @@
 #header__screenshotButton,
 #headerHelpButton,
 #header__gridButton,
+#header__userAreaButton,
 #header__warningButton{
 	display: inline-flex;
 	vertical-align: middle;
@@ -48,12 +51,12 @@
 }
 
 #header__dropdown:hover,
-.header select:hover{
+.header__container select:hover{
 	background-color: rgba(255, 255, 255, 0.15);
 }
 
 #header__dropdown:active,
-.header select:active{
+.header__container select:active{
 	background-color: rgba(255, 255, 255, 0.30);
 }
 
@@ -62,25 +65,25 @@
 	margin-right: 5px;
 }
 
-#coordinateContainer, .header label {
+#coordinateContainer, .header__container label {
 	line-height: 30px;
 }
 
-.header select {
+.header__container select {
 	color: white;
 	font-weight: bold;
 	background-color: transparent;
 	border: 0px;
 }
 
-.header select:hover {
+.header__container select:hover {
 	cursor: pointer;
 }
 
-.header select:active {
+.header__container select:active {
 }
 
-.header option{
+.header__container option{
 	background-color: #000000;
 }
 
@@ -208,6 +211,7 @@
 .header__dropdown__session__save__text,
 .header__dropdown__session__restore__text,
 .header__dropdown__outreach__text,
+.header_dropdown__user__text,
 .header__dropdown__grid__text  {
 	display: inline-block;
 }

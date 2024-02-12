@@ -195,9 +195,9 @@ a:active{
 }
 .gwt-DisclosurePanel-closed {
 }
-.gwt-DisclosurePanel .header,
-.gwt-DisclosurePanel .header a,
-.gwt-DisclosurePanel .header td {
+.gwt-DisclosurePanel .header__container,
+.gwt-DisclosurePanel .header__container a,
+.gwt-DisclosurePanel .header__container td {
   text-decoration: none;  /* Remove underline from header */
   color: #bec7cc; 
   cursor: pointer;
@@ -1063,6 +1063,8 @@ td.datePickerMonth {
 .gwt-TabLayoutPanel {
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
+  background-color: transparent;
+  padding-left: 0;
 }
 .gwt-TabLayoutPanelContentContainer {
   border-color: #00CCFF;

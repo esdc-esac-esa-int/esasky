@@ -8,7 +8,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -409,7 +408,7 @@ public class MovablePanel extends FocusPanel {
 				return;
 			}
 
-			elementCanStartDragOperation = eventTargetsPopup(nativeEvent) && !eventTargetsPartner(nativeEvent);
+			elementCanStartDragOperation = eventTargetsPopup(nativeEvent) && eventTargetsPartner(nativeEvent);
 		}
 	}
 
@@ -439,32 +438,28 @@ public class MovablePanel extends FocusPanel {
 	}
 	private boolean eventTargetsPartner(NativeEvent event) {
 		if (elementsNotInitiatingMoveOperations == null && moveInitiatorElement == null) {
-			return false;
+			return true;
 		}
 
 		EventTarget target = event.getEventTarget();
 		if (Element.is(target)) {
 			if (moveInitiatorElement != null) {
-				return !moveInitiatorElement.equals(Element.as(target));
+				return moveInitiatorElement.isOrHasChild(Element.as(target));
 			}
 
 			for (Element elem : elementsNotInitiatingMoveOperations) {
 				if (elem.isOrHasChild(Element.as(target))) {
-					return true;
+					return false;
 				}
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	protected void updateHandlers() {
 		removeHandlers();
-		nativePreviewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
-			public void onPreviewNativeEvent(NativePreviewEvent event) {
-				previewNativeEvent(event);
-			}
-		});
+		nativePreviewHandlerRegistration = Event.addNativePreviewHandler(this::previewNativeEvent);
 	}
 
 	protected void removeHandlers() {

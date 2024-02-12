@@ -135,6 +135,7 @@ public class MainPresenter {
     /**
      * initChildPresenters(). Only the Presenters needed at start up are initialized here.
      */
+
     private void initChildPresenters(String coordinateFrameFromUrl) {
 
         this.allSkyPresenter = getAllSkyPresenter();
@@ -372,6 +373,10 @@ public class MainPresenter {
 
     public void getRelatedMetadata(GeneralEntityInterface entity, String adql) {
         resultsPresenter.getMetadata(entity, adql);
+    }
+
+    public void clearResultsPanel() {
+        resultsPresenter.removeAllTabs();
     }
 
 

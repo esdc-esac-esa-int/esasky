@@ -186,4 +186,29 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	public void onOpenTableClicked(GeneralJavaScriptObject rowData) {
 		//Do nothing by default - To be overridden if needed.
 	}
+
+	@Override
+	public void onDeleteRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onEditRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onAddRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onCreateRowClicked() {
+		//Do nothing by default - To be overridden if needed.
+	}
 }

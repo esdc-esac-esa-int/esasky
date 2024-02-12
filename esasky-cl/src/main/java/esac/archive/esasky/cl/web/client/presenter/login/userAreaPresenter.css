@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.tableName__textBoxContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    height: 125px;
+}
+
+.tableName__textBox {
+    width: 100%;
+}
+
+.uploadPanel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: block;
+    border: 1px solid;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-style: solid;
+}

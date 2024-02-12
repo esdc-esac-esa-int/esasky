@@ -5325,7 +5325,119 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 	<text key="EuclidEarlyReleaseTargets">
 		Euclid Early Release Targets
 	</text>
+	<!-- internationalization_zh.xml is up to date for everything above -->
 
+	<text key="header_userArea">
+		User area
+	</text>
+
+	<text key="login">Login</text>
+	<text key="logout">Logout</text>
+	<text key="Logout">Logout</text>
+	<text key="register_account">Register</text>
+	<text key="yes">Yes</text>
+	<text key="no">No</text>
+
+	<text key="userArea__dropdown__tables">Tables</text>
+	<text key="userArea__dropdown__sessions">Sessions</text>
+	<text key="userArea__dropdown__layouts">Layouts</text>
+	<text key="userArea__searchTables">Search tables</text>
+	<text key="userArea__userTables">User Tables</text>
+	<text key="userArea__userSessions">User Sessions</text>
+	<text key="userArea__uploadTablePopup_title">Upload table</text>
+	<text key="userArea__uploadTablePopup_help">Upload custom tables to ESASky. Note that the file extension must be .xml, .vot, .csv or .votable</text>
+
+	<text key="tabulatorWrapper_deleteRow">
+		Delete
+	</text>
+	<text key="tabulatorWrapper_deleteRowTooltip">
+		Delete row
+	</text>
+
+
+	<text key="userArea__deleteTableTitle">
+		Delete table
+	</text>
+
+	<text key="userArea__deleteTableBody">
+		Are you sure you want to delete this table?
+	</text>
+
+	<text key="userArea__deleteTableHelp">
+		This action will delete your table from the database. This action cannot be undone.
+	</text>
+	<text key="scientific_toggle_button">Toggle between science and outreach modes using the scientific toggle button</text>
+	<text key="science_mode">Toggle between science and outreach modes</text>
+	<text key="language_button">Switch between languages with the language button</text>
+	<text key="coordinate_grid_button">Toggle the coordinate grid using the coordinate grid button</text>
+	<text key="screenshot_button">Capture a screenshot of ESASky with the screenshot button</text>
+	<text key="share_button">Copy your URL to the clipboard using the share button</text>
+	<text key="help_button">Navigate to the how-to pages for ESASky with the help button</text>
+	<text key="dropdown_menu">Toggle the hamburger menu</text>
+	<text key="skies_menu">Access the HIPS menu</text>
+	<text key="feedback_button">Provide feedback using the feedback button</text>
+	<text key="login_button">Toggle the user area with the login button</text>
+	<text key="observations_button">Toggle the observations button</text>
+	<text key="catalogues_button">Toggle the catalogues button</text>
+	<text key="spectra_button">Toggle the spectra button</text>
+	<text key="exttap_button">Toggle external data centers with the external data centers button</text>
+	<text key="gw_button">Toggle gravitational events with the gravitation events button</text>
+	<text key="outreach_button">Toggle the Hubble outreach image button</text>
+	<text key="outreach_jwst_button">Toggle the James Webb telescope image button</text>
+	<text key="sso_button">Toggle the solar system object button</text>
+	<text key="publications_button">Toggle the publications button</text>
+	<text key="target_list_button">Toggle the target list button</text>
+	<text key="target_list_upload">Toggle the upload target list button</text>
+	<text key="jwst_planning_button">Toggle the Mission Planning button</text>
+	<text key="dice_button">Toggle the outreach random target button</text>
+	<text key="session">Placeholder text for session</text>
+	<text key="eva_menu">Toggle the EVA menu button</text>
+	<text key="eva">Toggle EVA chat</text>
+	<text key="search_tool">Placeholder text for search tool</text>
+	<text key="search_in">Placeholder text for search in</text>
+	<text key="kiosk_buttons">Access kiosk layout buttons</text>
+	<text key="welcome_dialog">Hide or show the welcome dialog on startup</text>
+
+
+	<text key="userArea__userInfoPopup_title">Profile</text>
+	<text key="userArea__userInfoPopup_help">This panel displays your user profile, permissions and quotas within ESASky</text>
+
+	<text key="userArea__userInfoPopup_username">Username:</text>
+	<text key="userArea__userInfoPopup_db_quota">Database Quota:</text>
+	<text key="userArea__userInfoPopup_req_timeout">Request timeout:</text>
+
+	<text key="userArea__userTablePanel_title">Tables</text>
+	<text key="userArea__userTablePanel_help">
+		The Tables feature in ESASky empowers users to upload their own tables of data, expanding the scope of exploration possibilities within the application.
+		&lt;br&gt;&lt;br&gt;
+		With this feature, users can seamlessly integrate their custom datasets into ESASky, enhancing their analysis and visualization capabilities.
+		Supported formats include VOTable and CSV.
+	</text>
+	<text key="userArea__userTablePanel_searchTables">Search tables</text>
+	<text key="userArea__userTablePanel_addTableTitle">Upload table</text>
+
+	<text key="userArea__userSessionPanel_title">Sessions</text>
+	<text key="userArea__userSessionPanel_help">
+		The Sessions feature in ESASky enables users to save the current state of the application, allowing them to revisit their work at a later time.
+		&lt;br&gt;&lt;br&gt;
+		This feature provides users with the ability to capture the current configuration, including the selected datasets, viewing settings,
+		and any customizations made to the interface. By saving this state as a session, users can easily return to where they left off, eliminating the need to recreate their work from scratch.
+	</text>
+	<text key="userArea__userSessionPanel_createSession">Save current session</text>
+	<text key="userArea__userSessionPanel_searchSessions">Search sessions</text>
+
+	<text key="userArea__userLayoutPanel_resetBtnTitle">Restore the default layout</text>
+	<text key="userArea__userLayoutPanel_addBtnTitle">Create a new layout</text>
+	<text key="userArea__userLayoutPanel_saveBtnTitle">Save layout</text>
+	<text key="userArea__userLayoutPanel_title">Layouts</text>
+	<text key="userArea__userLayoutPanel_help">
+		The Layout feature in ESASky allows you to personalize your viewing experience by arranging and displaying
+		elements within the interface according to your preferences.
+		&lt;br&gt;&lt;br&gt;
+		With this feature, you can easily adjust how different elements are arranged and displayed on the ESASky interface.
+		Whether you prefer certain tools or information to be more prominent or tucked away, you have the
+		flexibility to tailor the layout to suit your needs.
+	</text>
 
 	<text key="tabulator_link_cell_tooltip_gallery_url">
 		Open this data in the MMODA product gallery
@@ -5337,5 +5449,17 @@ The eighth LAMOST data release (LAMOST DR8) includes observations until June 202
 
 	<text key="tabulator_link_no_data">
 		No data available for this entry
+	</text>
+
+	<text key="userArea__userAreaPresenter_restoreSession_title">
+		Welcome back!
+	</text>
+	<text key="userArea__userAreaPresenter_restoreSession_body">
+		Your previous ESASky session has been automatically preserved.
+		&lt;br&gt;
+		Would you like to continue from where you left off?
+	</text>
+	<text key="userArea__userAreaPresenter_restoreSession_help">
+		ESASky offers users the convenient functionality of automatically saving their sessions. This feature ensures that your progress is preserved, allowing you to seamlessly pick up from where you last left off whenever you return to ESASky.
 	</text>
 </Internationalization>

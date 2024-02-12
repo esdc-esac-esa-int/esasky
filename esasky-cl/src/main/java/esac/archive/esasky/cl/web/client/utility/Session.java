@@ -1,8 +1,6 @@
 package esac.archive.esasky.cl.web.client.utility;
 
 
-import java.util.*;
-
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -10,42 +8,41 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FileUpload;
-
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddTableEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
+import esac.archive.esasky.cl.web.client.login.UserTablePanel;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.Shape;
-import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
-import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
-import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
-import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
-import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
+import esac.archive.esasky.cl.web.client.model.entities.*;
 import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
+import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.exceptions.SaveStateException;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel.TabIndex;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
-import esac.archive.esasky.ifcs.model.descriptor.*;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptorList;
+import esac.archive.esasky.ifcs.model.descriptor.TapDescriptorList;
+import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ColorPalette;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel.TabIndex;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
-import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
+
+import java.util.*;
 
 public class Session {
 	
@@ -86,10 +83,10 @@ public class Session {
 		
 		return stateObj;
 	}
-	
+
 	public void restoreState() {
 		FileUpload upload = new FileUpload();
-		addFileUploadHandler(this, (JavaScriptObject) upload.getElement());
+		addFileUploadHandler(this, upload.getElement());
 		upload.click();
 	}
 	
@@ -548,7 +545,7 @@ public class Session {
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_MISSION, new JSONString(ent.getDescriptor().getMission()));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_TABLE,new JSONString(ent.getDescriptor().getTableName()));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_CATEGORY,new JSONString(ent.getDescriptor().getCategory()));
-			
+
 			String isMoc = "False";
 			if(ent instanceof EsaSkyEntity && ((EsaSkyEntity) ent).getMocEntity() != null
 					&& ((EsaSkyEntity) ent).getMocEntity().isShouldBeShown()){
@@ -562,8 +559,9 @@ public class Session {
 			}else {
 				entObj.put(EsaSkyWebConstants.SESSION_DATA_HAS_PANEL,new JSONString("False"));
 			}
-			
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_ADQL,new JSONString(ent.getQuery()));
+
+			String query = ent.getDescriptor().getUnprocessedADQL() != null ? ent.getDescriptor().getUnprocessedADQL() : ent.getQuery();
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_ADQL,new JSONString(query));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_FILTERS, new JSONString(ent.getTablePanel().getFilterString()));
 			
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN,new JSONString(ent.getPrimaryColor()));
@@ -582,42 +580,101 @@ public class Session {
 	}
 	
 	private void restoreData(GeneralJavaScriptObject saveStateObj) throws SaveStateException {
+
+		// Clear current data
+		Iterator<GeneralEntityInterface> entityIterator = EntityRepository.getInstance().getAllEntities().iterator();
+		while (entityIterator.hasNext()) {
+			GeneralEntityInterface ent = entityIterator.next();
+			ent.getTablePanel().closeTablePanel();
+		}
+
+		// Load session data
 		try {
 			GeneralJavaScriptObject[] dataArray = GeneralJavaScriptObject.convertToArray(saveStateObj.getProperty(EsaSkyWebConstants.SESSION_DATA));
 			for(GeneralJavaScriptObject dataObj : dataArray) {
 				String mission = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_MISSION);
 				String category = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_CATEGORY);
-				String adql = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ADQL);
-				boolean isMoc = Boolean.parseBoolean(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ISMOC));
 
-				CommonTapDescriptor desc = DescriptorRepository.getInstance().getDescriptorFromMission(category, mission);
-				GeneralEntityInterface ent = EntityRepository.getInstance().createEntity(desc);
-				MainPresenter.getInstance().getResultsPresenter().addResultsTab(ent);
-				String filterString = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_FILTERS);
-				restoreFilters(ent, filterString);
-				if(isMoc) {
-					EsaSkyEntity esaSkyEntity = (EsaSkyEntity) ent;
-					MOCEntity mocEntity = esaSkyEntity.createMocEntity();
-					mocEntity.loadMOC(adql);
-				}else {
-					ent.fetchData(adql);
+				if (category.equals(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
+					restoreExternalDescriptor(dataObj);
+				} else {
+					String adql = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ADQL);
+					boolean isMoc = Boolean.parseBoolean(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ISMOC));
+
+					CommonTapDescriptor desc = DescriptorRepository.getInstance().getDescriptorFromMission(category, mission);
+
+					GeneralEntityInterface ent = EntityRepository.getInstance().createEntity(desc);
+					MainPresenter.getInstance().getResultsPresenter().addResultsTab(ent);
+					String filterString = dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_FILTERS);
+					restoreFilters(ent, filterString);
+					if(isMoc) {
+						EsaSkyEntity esaSkyEntity = (EsaSkyEntity) ent;
+						MOCEntity mocEntity = esaSkyEntity.createMocEntity();
+						mocEntity.loadMOC(adql);
+					}else {
+						ent.fetchData(adql);
+					}
+
+					ent.setPrimaryColor(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN));
+					ent.setSecondaryColor(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_SECOND));
+					ent.setSizeRatio(dataObj.getDoubleProperty(EsaSkyWebConstants.SESSION_DATA_SIZE));
+					if(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_LINESTYLE) != null) {
+						ent.setLineStyle(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_LINESTYLE));
+					}
+					if(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE) != null) {
+						ent.setShapeType(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE));
+					}
 				}
-				
-				ent.setPrimaryColor(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN));
-				ent.setSecondaryColor(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_SECOND));
-				ent.setSizeRatio(dataObj.getDoubleProperty(EsaSkyWebConstants.SESSION_DATA_SIZE));
-				if(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_LINESTYLE) != null) {
-					ent.setLineStyle(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_LINESTYLE));
-				}
-				if(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE) != null) {
-					ent.setShapeType(dataObj.getStringProperty(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE));
-				}
-				
-				
 			}
 		}catch (Exception e) {
 			throw new SaveStateException(e.getMessage(), e);
 		}
+	}
+
+	private void restoreExternalDescriptor(GeneralJavaScriptObject sessionData) {
+		String table = sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_TABLE);
+		String adql = sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_ADQL);
+		JSONUtils.getJSONFromUrl(TAPUtils.getTAPQuery(adql, "json"), new JSONUtils.IJSONRequestCallback() {
+			@Override
+			public void onSuccess(String responseText) {
+				GeneralJavaScriptObject obj = GeneralJavaScriptObject.createJsonObject(responseText);
+				UserTablePanel.TapDescriptorListMapper mapper = GWT.create(UserTablePanel.TapDescriptorListMapper.class);
+				TapDescriptorList descriptorList = mapper.read(responseText);
+				if (descriptorList != null) {
+					List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
+					CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, EsaSkyWebConstants.TAP_CONTEXT + "/tap/sync",
+							table, table, "user_description", adql, false, true);
+					commonTapDescriptor.setColor(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN);
+					commonTapDescriptor.setIsUserTable(true);
+
+					GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(commonTapDescriptor);
+					MainPresenter.getInstance().getResultsPresenter().addResultsTab(entity);
+					entity.insertExternalData(obj);
+					entity.setQuery(adql);
+					String filterString = sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_FILTERS);
+					restoreFilters(entity, filterString);
+
+					entity.setPrimaryColor(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN));
+					entity.setSecondaryColor(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_SECOND));
+					entity.setSizeRatio(sessionData.getDoubleProperty(EsaSkyWebConstants.SESSION_DATA_SIZE));
+					if(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_LINESTYLE) != null) {
+						entity.setLineStyle(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_LINESTYLE));
+					}
+					if(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE) != null) {
+						entity.setShapeType(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE));
+					}
+				}
+
+			}
+
+			@Override
+			public void onError(String errorCause) {
+
+			}
+
+		});
+
+
 	}
 	
 	private void restoreFilters(GeneralEntityInterface ent, String filterString) {

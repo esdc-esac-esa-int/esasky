@@ -42,5 +42,10 @@ public interface TabulatorCallback {
     void onMetadataButtonPressed(GeneralJavaScriptObject rowData);
     void onAddObscoreTableClicked(GeneralJavaScriptObject rowData);
     void onOpenTableClicked(GeneralJavaScriptObject rowData);
+    void onDeleteRowClicked(GeneralJavaScriptObject rowData);
+    void onEditRowClicked(GeneralJavaScriptObject rowData);
+    void onAddRowClicked(GeneralJavaScriptObject rowData);
+    void onRowClicked(GeneralJavaScriptObject rowData);
+    void onCreateRowClicked();
 
 }

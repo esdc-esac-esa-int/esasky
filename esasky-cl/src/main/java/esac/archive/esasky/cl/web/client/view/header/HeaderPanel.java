@@ -7,11 +7,7 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Anchor;
@@ -23,6 +19,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import esac.archive.esasky.cl.web.client.login.UnauthenticatedUserView;
+import esac.archive.esasky.cl.web.client.login.AuthenticatedUserView;
+import esac.archive.esasky.cl.web.client.presenter.login.UserAreaPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
@@ -45,6 +44,7 @@ import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
 
 public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
+
 	private static Resources resources = GWT.create(Resources.class);
 	private CssResource style;
 
@@ -54,10 +54,15 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private EsaSkyToggleButton gridButton = new EsaSkyToggleButton(Icons.getGridIcon());
 	private EsaSkyStringButton feedbackButton = new EsaSkyStringButton(TextMgr.getInstance().getText("header_comunity"));
 	private EsaSkyStringButton hipsLabelButton = new EsaSkyStringButton(EsaSkyConstants.ALADIN_DEFAULT_HIPS_MAP);
-
+	private EsaSkyButton userAreaButton = new EsaSkyButton(Icons.getUserIcon());
 	private EsaSkySwitch headerScienceModeSwitch;
 	private String headerScienceModeSwitchId = Document.get().createUniqueId();
 	private StatusPanel statusPanel = new StatusPanel();
+	private UnauthenticatedUserView unauthenticatedUserAreaView = new UnauthenticatedUserView();
+	private AuthenticatedUserView authenticatedUserAreaView = new AuthenticatedUserView();
+
+	private UserAreaPresenter userAreaPresenter = new UserAreaPresenter(unauthenticatedUserAreaView, authenticatedUserAreaView);
+
 	private EsaSkyStringButton coordinateLabel = new EsaSkyStringButton("");
 	private FlowPanel fovPanel = new FlowPanel();
 	private final ListBox languageBox = new ListBox();
@@ -70,10 +75,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownScreenshotEntry = new FocusPanel();
 	private FocusPanel dropdownGridEntry = new FocusPanel();
 	private FocusPanel dropdownHelpEntry = new FocusPanel(); 
-	private FocusPanel dropdownEvaEntry = new FocusPanel(); 
+	private FocusPanel dropdownEvaEntry = new FocusPanel();
+	private FocusPanel dropdownUserAreaEntry = new FocusPanel();
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel(); 
 	private FocusPanel dropdownSessionSaveEntry = new FocusPanel(); 
-	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel(); 
+	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel();
 	private FocusPanel hiResDropdown = new FocusPanel();
 	private FocusPanel jwstDropdown = new FocusPanel();
 	private FocusPanel euclidDropdown = new FocusPanel();
@@ -109,7 +115,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private void initView() {
 		FlowPanel header = new FlowPanel();
-		header.addStyleName("header");
+		header.addStyleName("header__container");
 
 		coordinateFrameFull.addStyleName("coordinateFrameFull");
 		coordinateFrameFirstLetter.addStyleName("coordinateFrameFirstLetter");
@@ -133,12 +139,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 		header.add(statusPanel);
 
-
-
 		gridButton.setTitle(TextMgr.getInstance().getText("header_gridFull"));
 		gridButton.setMediumStyle();
 		gridButton.getElement().setId("header__gridButton");
-		
 
 		shareButton.setTitle(TextMgr.getInstance().getText("header_getURLCurrentView"));
 		shareButton.setMediumStyle();
@@ -152,8 +155,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		screenshotButton.setMediumStyle();
 		screenshotButton.getElement().setId("header__screenshotButton");
 
-		feedbackButton.getElement().setId("feedbackButton");
+		userAreaButton.setTitle(TextMgr.getInstance().getText("header_userArea"));
+		userAreaButton.setMediumStyle();
+		userAreaButton.getElement().setId("header__userAreaButton");
 
+		feedbackButton.getElement().setId("feedbackButton");
 
 		FlowPanel rightSideHeader = new FlowPanel();
 		rightSideHeader.getElement().setId("rightSideHeader");
@@ -174,21 +180,19 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			languageBox.addStyleName("languageSelector");
 			rightSideHeader.add(languageBox);
 		}
+		rightSideHeader.add(feedbackButton);
 		rightSideHeader.add(gridButton);
 		rightSideHeader.add(screenshotButton);
 		rightSideHeader.add(shareButton);
+		rightSideHeader.add(userAreaButton);
 		rightSideHeader.add(helpButton);
-		rightSideHeader.add(feedbackButton);
-
 		rightSideHeader.add(createHamburgerMenu());
 
 		header.add(rightSideHeader);
 
-
 		initWidget(header);
 		
 		ScreenSizeService.getInstance().registerObserver(new ScreenSizeObserver() {
-			
 			@Override
 			public void onScreenSizeChange() {
 				updateModuleVisibility();
@@ -233,8 +237,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(createScreenshotDropdownEntry());
 		dropdownContent.add(createGridDropdownEntry());
 		dropdownContent.add(createShareDropdownEntry());
+		dropdownContent.add(createUserAreaDropdownEntry());
 		dropdownContent.add(createHelpDropdownEntry());
-		
+
 		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_WWT_LINK)) {
 			dropdownContent.add(createViewInWWTDropdownEntry());
@@ -250,7 +255,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownNewsletterEntry.getElement().setId("header__dropdown__newsletter");
 		dropdownAboutUsEntry.getElement().setId("header__dropdown__aboutus");
 		dropdownAcknowledgeEntry.getElement().setId("header__dropdown_acknowledge");
-		
+
 		dropdownContent.add(dropdownFeedbackEntry);
 		dropdownContent.add(dropdownVideoTutorialsEntry);
 		dropdownContent.add(dropdownReleaseNotesEntry);
@@ -262,7 +267,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		}
 		dropdownContent.add(createSessionSaveDropdownEntries());
 		dropdownContent.add(createSessionRestoreDropdownEntries());
-
 
 		return dropdownContent;
 	}
@@ -314,6 +318,23 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownShareEntry.getElement().setId("header__dropdown__share");
 		dropdownShareEntry.setTitle(TextMgr.getInstance().getText("header_getURLCurrentView"));
 		return dropdownShareEntry;
+	}
+
+	private Widget createUserAreaDropdownEntry() {
+		FlowPanel dropdownUserContainer = new FlowPanel();
+
+		Image userImage = new Image(Icons.getUserIcon());
+		userImage.addStyleName("header__dropdown__item__icon");
+		dropdownUserContainer.add(userImage);
+
+		Label userLabel = new Label(TextMgr.getInstance().getText("header_userArea"));
+		userLabel.addStyleName("header_dropdown__user__text");
+		dropdownUserContainer.add(userLabel);
+
+		dropdownUserAreaEntry.add(dropdownUserContainer);
+		dropdownUserAreaEntry.getElement().setId("header__dropdown__user");
+		dropdownUserAreaEntry.setTitle(TextMgr.getInstance().getText("header_userArea"));
+		return dropdownUserAreaEntry;
 	}
 
 	private Widget createHelpDropdownEntry() {
@@ -508,8 +529,9 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void addFeedbackClickHandler(ClickHandler clickHandler) {
 		dropdownFeedbackEntry.addClickHandler(clickHandler);
 		feedbackButton.addClickHandler(clickHandler);
-
 	}
+
+
 
 	@Override
 	public void addVideoTutorialsClickHandler(ClickHandler clickHandler) {
@@ -560,7 +582,13 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void setGridButtonToggled(boolean toggled) {
 		gridButton.setToggleStatus(toggled);
 	}
-	
+
+	@Override
+	public void addUserAreaClickHandler(ClickHandler handler) {
+		userAreaButton.addClickHandler(handler);
+		dropdownUserAreaEntry.addClickHandler(handler);
+	}
+
 	public boolean getGridButtonToggled() {
 		return gridButton.getToggleStatus();
 	}
@@ -572,6 +600,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 	private void openDropdownMenu() {
 		dropdownContent.getElement().getStyle().setDisplay(Display.BLOCK);
+	}
+
+	private String getStatus() {
+		return GUISessionStatus.isUserAuthenticated() ? GUISessionStatus.getUserDetails().getId() : "TEST";
 	}
 
 	@Override
@@ -617,6 +649,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public StatusPresenter.View getStatusView() {
 		return statusPanel;
+	}
+
+	@Override
+	public UserAreaPresenter getUserAreaPresenter() {
+		return userAreaPresenter;
 	}
 
 	@Override
@@ -773,12 +810,20 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			dropdownContainer.setVisible(false);
 		}
 		
-		if(Modules.getModule(EsaSkyWebConstants.MODULE_FEEDBACK)&& pxWidth > ScreenWidth.MEDIUM.getPxSize()) {
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_FEEDBACK) && pxWidth > ScreenWidth.MEDIUM.getPxSize()) {
 			feedbackButton.setVisible(true);
 			dropdownFeedbackEntry.setVisible(false);
 		}else {
 			feedbackButton.setVisible(false);
 			dropdownFeedbackEntry.setVisible(true);
+		}
+
+		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE) && Modules.getModule(EsaSkyWebConstants.MODULE_LOGIN)  && pxWidth > ScreenWidth.MEDIUM.getPxSize()) {
+			userAreaButton.setVisible(true);
+			dropdownUserAreaEntry.setVisible(false);
+		}else {
+			userAreaButton.setVisible(false);
+			dropdownUserAreaEntry.setVisible(true);
 		}
 		
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)) {

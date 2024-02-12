@@ -1,10 +1,7 @@
 package esac.archive.esasky.ifcs.model.shared;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette;
 import esac.archive.esasky.ifcs.model.client.HiPS.HiPSImageFormat;
@@ -279,6 +276,8 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_ACTION_DESCRIPTORS = "DESCRIPTORS";
     public static final String EXT_TAP_ACTION_RESET = "RESET";
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
+//    public static final String EXT_TAP_ACTION_UPLOAD = "UPLOAD";
+
     public static final String EXT_TAP_URL_FLAG = "TAP_URL";
     public static final String EXT_TAP_RESPONSE_FORMAT = "RESPONSE_FORMAT";
     public static final String EXT_TAP_MAX_REC_FLAG = "MAX_REC";
@@ -330,6 +329,90 @@ public class EsaSkyConstants {
     public static final String Q3C_IPIX = "moc_ipix";
     public static final String Q3C_ORDER = "moc_order";
     public static final String Q3C_COUNT = "moc_count";
+
+
+    /*************************************************************************/
+    /** MODULES **/
+    /*************************************************************************/
+    public static class ModuleConstants {
+        public static final String MODULE_SCIENTIFIC_BUTTON = "scientific_toggle_button";
+        public static final String MODULE_LANGUAGE = "language_button";
+        public static final String MODULE_COOR_GRID = "coordinate_grid_button";
+        public static final String MODULE_SCREENSHOT = "screenshot_button";
+        public static final String MODULE_SHARE = "share_button";
+        public static final String MODULE_HELP = "help_button";
+        public static final String MODULE_DROPDOWN = "dropdown_menu";
+        public static final String MODULE_SKIESMENU = "skies_menu";
+        public static final String MODULE_FEEDBACK = "feedback_button";
+        public static final String MODULE_LOGIN = "login_button";
+        public static final String MODULE_OBS = "observations_button";
+        public static final String MODULE_CAT = "catalogues_button";
+        public static final String MODULE_SPE = "spectra_button";
+        public static final String MODULE_EXTTAP = "exttap_button";
+        public static final String MODULE_GW = "gw_button";
+        public static final String MODULE_OUTREACH_IMAGE = "outreach_button";
+        public static final String MODULE_OUTREACH_JWST = "outreach_jwst_button";
+        public static final String MODULE_SSO = "sso_button";
+        public static final String MODULE_PUBLICATIONS = "publications_button";
+        public static final String MODULE_TARGETLIST = "target_list_button";
+        public static final String MODULE_TARGETLIST_UPLOAD = "target_list_upload";
+        public static final String MODULE_JWST_PLANNING = "jwst_planning_button";
+        public static final String MODULE_DICE = "dice_button";
+        public static final String MODULE_SCIENCE_MODE = "science_mode";
+        public static final String MODULE_SESSION = "session";
+        public static final String MODULE_EVA_MENU = "eva_menu";
+        public static final String MODULE_EVA = "eva";
+        public static final String MODULE_SEARCH_TOOL = "search_tool";
+        public static final String MODULE_SEARCH_IN_MENU = "search_in";
+        public static final String MODULE_KIOSK_BUTTONS = "kiosk_buttons";
+        public static final String MODULE_WELCOME_DIALOG = "welcome_dialog";
+
+        // Create a Map to store the constants
+        private static final Map<String, String> MODULE_MAP = new HashMap<>();
+
+        // Static block to initialize the map
+        static {
+            MODULE_MAP.put("MODULE_SCIENTIFIC_BUTTON", MODULE_SCIENTIFIC_BUTTON);
+            MODULE_MAP.put("MODULE_LANGUAGE", MODULE_LANGUAGE);
+            MODULE_MAP.put("MODULE_COOR_GRID", MODULE_COOR_GRID);
+            MODULE_MAP.put("MODULE_SCREENSHOT", MODULE_SCREENSHOT);
+            MODULE_MAP.put("MODULE_SHARE", MODULE_SHARE);
+            MODULE_MAP.put("MODULE_HELP", MODULE_HELP);
+            MODULE_MAP.put("MODULE_DROPDOWN", MODULE_DROPDOWN);
+            MODULE_MAP.put("MODULE_SKIESMENU", MODULE_SKIESMENU);
+            MODULE_MAP.put("MODULE_FEEDBACK", MODULE_FEEDBACK);
+            MODULE_MAP.put("MODULE_LOGIN", MODULE_LOGIN);
+            MODULE_MAP.put("MODULE_OBS", MODULE_OBS);
+            MODULE_MAP.put("MODULE_CAT", MODULE_CAT);
+            MODULE_MAP.put("MODULE_SPE", MODULE_SPE);
+            MODULE_MAP.put("MODULE_EXTTAP", MODULE_EXTTAP);
+            MODULE_MAP.put("MODULE_GW", MODULE_GW);
+            MODULE_MAP.put("MODULE_OUTREACH_IMAGE", MODULE_OUTREACH_IMAGE);
+            MODULE_MAP.put("MODULE_OUTREACH_JWST", MODULE_OUTREACH_JWST);
+            MODULE_MAP.put("MODULE_SSO", MODULE_SSO);
+            MODULE_MAP.put("MODULE_PUBLICATIONS", MODULE_PUBLICATIONS);
+            MODULE_MAP.put("MODULE_TARGETLIST", MODULE_TARGETLIST);
+            MODULE_MAP.put("MODULE_TARGETLIST_UPLOAD", MODULE_TARGETLIST_UPLOAD);
+            MODULE_MAP.put("MODULE_JWST_PLANNING", MODULE_JWST_PLANNING);
+            MODULE_MAP.put("MODULE_DICE", MODULE_DICE);
+            MODULE_MAP.put("MODULE_SCIENCE_MODE", MODULE_SCIENCE_MODE);
+            MODULE_MAP.put("MODULE_SESSION", MODULE_SESSION);
+            MODULE_MAP.put("MODULE_EVA_MENU", MODULE_EVA_MENU);
+            MODULE_MAP.put("MODULE_EVA", MODULE_EVA);
+            MODULE_MAP.put("MODULE_SEARCH_TOOL", MODULE_SEARCH_TOOL);
+            MODULE_MAP.put("MODULE_SEARCH_IN_MENU", MODULE_SEARCH_IN_MENU);
+            MODULE_MAP.put("MODULE_KIOSK_BUTTONS", MODULE_KIOSK_BUTTONS);
+            MODULE_MAP.put("MODULE_WELCOME_DIALOG", MODULE_WELCOME_DIALOG);
+        }
+
+        // Method to get the module value based on the key
+        public static String getModuleValue(String key) {
+            return MODULE_MAP.get(key);
+        }
+
+
+    }
+
 
     /*************************************************************************/
     /** JWST Instruments **/

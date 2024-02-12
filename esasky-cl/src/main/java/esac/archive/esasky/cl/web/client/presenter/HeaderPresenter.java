@@ -24,6 +24,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoo
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteFoVChangedEventHandler;
+import esac.archive.esasky.cl.web.client.presenter.login.UserAreaPresenter;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
@@ -107,20 +108,20 @@ public class HeaderPresenter {
 		void addSessionRestoreClickHandler(ClickHandler handler);
 		void addGridButtonClickHandler(ClickHandler handler);
 		void setGridButtonToggled(boolean toggled);
-
+		void addUserAreaClickHandler(ClickHandler handler);
 		void showWarningButton();
 		void hideWarningButton();
 		void toggleDropdownMenu();
 		void closeDropdownMenu();
-
 		StatusPresenter.View getStatusView();
-		
+
+		UserAreaPresenter getUserAreaPresenter();
+
 		void updateModuleVisibility();
 	}
 
 
 	private String coordinateFrameFromUrl;
-
 	private long timeSinceLastMouseDownInsideDropdownContainer;
 	private boolean isSciModeChecked = GUISessionStatus.getIsInScienceMode();
 
@@ -305,6 +306,7 @@ public class HeaderPresenter {
 			}
 		});
 
+
 		view.addVideoTutorialsClickHandler(new ClickHandler() {
 
 			@Override
@@ -371,7 +373,6 @@ public class HeaderPresenter {
 			view.closeDropdownMenu();
 			Session session = new Session();
 			session.saveState();
-			
 		});
 		
 		view.addSessionRestoreClickHandler(event -> {
@@ -401,6 +402,12 @@ public class HeaderPresenter {
 		});
 		
 		view.addWarningButtonClickHandler(event -> CommonEventBus.getEventBus().fireEvent(new ToggleServerProblemBannerEvent()));
+
+		view.addUserAreaClickHandler(event -> {
+			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_USERAREA, "");
+			getView().getUserAreaPresenter().togglePanel();
+			view.closeDropdownMenu();
+		});
 
 	}
 
