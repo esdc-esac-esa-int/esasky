@@ -48,13 +48,7 @@ public class MessageDialogBox extends Composite{
             final String dialogId, String analyticsMoveId) {
         super();
         movablePanel = new MovablePanel(analyticsMoveId, true);
-        movablePanel.addHideOnEscapeKeyBehavior(new OnKeyPress() {
-            
-            @Override
-            public void onEscapeKey() {
-                hide();
-            }
-        });
+        movablePanel.addHideOnEscapeKeyBehavior(this::hide);
         this.dialogId = dialogId;
         this.inputWidget = inputWidget;
         inputWidget.addStyleName("messageDialogBoxWidget");
@@ -69,15 +63,11 @@ public class MessageDialogBox extends Composite{
         
         final CloseButton closeButton = new CloseButton();
         closeButton.addStyleName("closeDialogBox");
-        closeButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                // Remove message from the top progress indicator
-                CommonEventBus.getEventBus().fireEvent(
-                        new ProgressIndicatorPopEvent(dialogId));
-                hide();
-            }
+        closeButton.addClickHandler(event -> {
+            // Remove message from the top progress indicator
+            CommonEventBus.getEventBus().fireEvent(
+                    new ProgressIndicatorPopEvent(dialogId));
+            hide();
         });
         header.add(closeButton);
         contentPanel.add(inputWidget);

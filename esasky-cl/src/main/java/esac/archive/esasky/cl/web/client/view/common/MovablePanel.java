@@ -390,7 +390,7 @@ public class MovablePanel extends FocusPanel {
 		// If the event targets the popup or the partner, consume it
 		Event nativeEvent = Event.as(event.getNativeEvent());
 		boolean eventTargetsPopupOrPartner = eventTargetsPopup(nativeEvent)
-				|| eventTargetsPartner(nativeEvent);
+				|| !eventTargetsPartner(nativeEvent);
 		if (eventTargetsPopupOrPartner) {
 			event.consume();
 		}
