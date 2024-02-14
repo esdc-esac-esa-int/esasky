@@ -123,6 +123,7 @@ public class UploadTablePopupPanel extends BaseMovablePopupPanel {
                 if (!ALLOWED_EXTENSIONS.contains(fileExtension)) {
                     fireEvent(new ErrorEvent("Incorrect file type provided.", "Only [" + ALLOWED_EXTENSIONS.replace('|', ',') + "] files are allowed"));
                 } else {
+                    tableNameTextBox.setText(tableNameTextBox.getValue().toLowerCase());
                     formPanel.submit();
                 }
             } else
