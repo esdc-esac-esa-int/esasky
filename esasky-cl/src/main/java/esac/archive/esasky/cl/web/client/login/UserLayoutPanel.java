@@ -344,7 +344,7 @@ public class UserLayoutPanel extends TabulatorPopupSearchPanel {
             field: "is_shown",
             title: "Enabled",
             visible: true,
-            editor: true,
+            editor: false,
             formatter: "tickCross",
             cellEdited: function (cell) {
                 var data = cell.getData();
