@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import esac.archive.esasky.cl.web.client.event.ErrorEvent;
 import esac.archive.esasky.cl.web.client.event.ErrorEventHandler;
-import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
+import esac.archive.esasky.cl.web.client.model.Size;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
@@ -225,16 +225,9 @@ public class TabulatorPopupSearchPanel extends MovableResizablePanel<TabulatorPo
         this.tabulatorContainer.getElement().getStyle().setPropertyPx("height", height);
     }
     private void setDefaultSize() {
-        if(DeviceUtils.isMobile()) {
-            mainContainer.getElement().getStyle().setWidth(1000, Style.Unit.PX);
-            mainContainer.getElement().getStyle().setHeight(1000, Style.Unit.PX);
-        } else if(DeviceUtils.isTablet()){
-            mainContainer.getElement().getStyle().setWidth(800, Style.Unit.PX);
-            mainContainer.getElement().getStyle().setHeight(800, Style.Unit.PX);
-        } else {
-            mainContainer.getElement().getStyle().setWidth(500 , Style.Unit.PX);
-            mainContainer.getElement().getStyle().setHeight(500, Style.Unit.PX);
-        }
+        Size size = super.getDefaultSize();
+        mainContainer.setWidth(size.width + "px");
+        mainContainer.setHeight(size.height + "px");
     }
 
 
