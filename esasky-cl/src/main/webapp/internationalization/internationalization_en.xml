@@ -3223,6 +3223,9 @@
 	<text key="AKARI_IRC_orderBy_flux_s9w">
 		Flux S9W
 	</text>
+	<text key="AKARI_IRC_orderBy_flux_s9w">
+		Flux S9W
+	</text>
 
 	<text key="publicationPanel_helpText">
 		Shown are the sources in the field-of-view that have associated publications according to SIMBAD. Clicking on each icon will open a table listing the publications for that object, including basic information (title, authors, publication date) and a link to the paper in ADS. There is also the possibility to load the full list of objects studied in a given publication for further exploration with ESASky. &lt;br&gt; &lt;br&gt; By default, ESASky is showing at most 3 000 sources with related publications at the same time, but this number can be changed in the settings.
@@ -3426,6 +3429,9 @@
 		Preview
 	</text>
 	<text key="productURL">
+		Download
+	</text>
+	<text key="product_url">
 		Download
 	</text>
 	<text key="archiveUrl">
@@ -4752,6 +4758,7 @@
 	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_start_time">Start Time</text>
 	<text key="observations.mv_v_v_hsa_esasky_photo_fdw_fdw_duration">Duration &lt;i&gt;(s)&lt;/i&gt;</text>
 	<text key="observations.mv_akari_irc_fdw_archive_url">Archive</text>
+	<text key="observations.mv_akari_irc_fdw_product_url">Download</text>
 	<text key="observations.mv_akari_irc_fdw_obs_id">Observation ID</text>
 	<text key="observations.mv_akari_irc_fdw_target_name">Target name</text>
 	<text key="observations.mv_akari_irc_fdw_ra_deg">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
