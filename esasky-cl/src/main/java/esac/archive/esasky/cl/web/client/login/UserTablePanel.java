@@ -162,7 +162,7 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
             popupPanel.addQueryHandler(event -> {
                 String query = event.getQuery();
                 String fullTableName = event.getTableName();
-                TabulatorCallback.this.doQuery(query, fullTableName);
+                TabulatorCallback.this.doQuery(query, fullTableName, true);
             });
 
             return popupPanel;
@@ -175,7 +175,7 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
             String fullTableName = schemaName + "." + tableName;
             String query = "SELECT * FROM " + fullTableName;
 
-            this.doQuery(query, fullTableName);
+            this.doQuery(query, fullTableName, false);
         }
 
         @Override
@@ -200,7 +200,7 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
             String query = "SELECT * FROM TAP_SCHEMA.columns where table_name='" + fullTableName + "'";
 
 
-            this.doQuery(query, fullTableName);
+            this.doQuery(query, fullTableName, false);
 
         }
 
@@ -268,7 +268,7 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
             }
         }
 
-        private void doQuery(String query, String fullTableName) {
+        private void doQuery(String query, String fullTableName, boolean custom) {
             userTablePanel.setIsLoading(true);
             JSONUtils.getJSONFromUrl(TAPUtils.getTAPQuery(query, "json"), new JSONUtils.IJSONRequestCallback() {
                 @Override
@@ -283,9 +283,9 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
                         commonTapDescriptor.setColor(ESASkyColors.getNext());
                         commonTapDescriptor.setIsUserTable(true);
 
-                        boolean isMissingSpatial =
-                                (commonTapDescriptor.getRaColumn() == null || commonTapDescriptor.getDecColumn() == null)
-                                        && commonTapDescriptor.getRegionColumn() == null;
+                        boolean isMissingSpatial = !custom &&
+                                ((commonTapDescriptor.getRaColumn() == null || commonTapDescriptor.getDecColumn() == null)
+                                        && commonTapDescriptor.getRegionColumn() == null);
 
                         if (isMissingSpatial) {
                             handleMissingColumns(commonTapDescriptor, obj);
