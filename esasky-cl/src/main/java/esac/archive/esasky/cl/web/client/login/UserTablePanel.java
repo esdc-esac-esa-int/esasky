@@ -63,6 +63,7 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
         });
 
         uploadTablePopupPanel.addErrorHandler(this::fireEvent);
+        this.setSearchColumns("schema_name", "table_name");
         setSearchPlaceholder(TextMgr.getInstance().getText("userArea__userTablePanel_searchTables"));
 
     }
