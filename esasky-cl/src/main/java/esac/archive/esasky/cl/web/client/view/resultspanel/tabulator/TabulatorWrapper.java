@@ -707,6 +707,7 @@ public class TabulatorWrapper {
                 tableJsObject.addRow(createNewRowData);
                 tableJsObject.redraw(true);
             }
+            tableJsObject.showCount = true;
         });
 
         var observer = new MutationObserver(function (mutations) {
