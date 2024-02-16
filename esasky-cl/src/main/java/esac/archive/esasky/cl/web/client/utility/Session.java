@@ -425,9 +425,13 @@ public class Session {
 	}
 	
 	private void restoreHipsStack(GeneralJavaScriptObject saveStateObj) throws SaveStateException {
+
+		// Clear stack
+		SelectSkyPanel.getInstance().removeOtherSkies();
+
 		GeneralJavaScriptObject hipsArrayObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_HIPS);
 		GeneralJavaScriptObject[] array = GeneralJavaScriptObject.convertToArray(hipsArrayObj.getProperty(EsaSkyWebConstants.SESSION_HIPS_ARRAY));
-		
+
 		boolean first = true;
 		for(GeneralJavaScriptObject hipObj : array) {
 			String name = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_NAME);

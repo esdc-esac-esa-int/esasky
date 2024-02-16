@@ -374,29 +374,33 @@ public class TabulatorWrapper {
             createNewRow.getElement().style.marginTop = "10px"
             createNewRow.getElement().style.background = "rgb(32 164 216 / 60%)"
             var createNewRowCell = createNewRow.getElement().getElementsByClassName("tabulator-cell")[0];
-            createNewRowCell.innerHTML = "<div style='display:flex;justify-content:center' title='" + tableJsObject.settings.showCreateRowButtonTooltip + "'> <img src='" + tableJsObject.settings.showCreateRowButtonIcon + "' width='20px' height='20px'/></div>";
+            if (createNewRowCell) {
+                createNewRowCell.innerHTML = "<div style='display:flex;justify-content:center' title='" + tableJsObject.settings.showCreateRowButtonTooltip + "'> <img src='" + tableJsObject.settings.showCreateRowButtonIcon + "' width='20px' height='20px'/></div>";
 
-            // Loop through other cells in the special row to clear content and remove borders
-            var cells = createNewRow.getCells();
-            for (var i = 0; i < cells.length; i++) {
-                var cell = cells[i];
-                if (i > 0) {
-                    // Clear content of other columns
-                    cell.getElement().innerHTML = "";
-                    cell.getElement().style.display = "none";
-                } else {
-                    cell.getElement().style.overflow = "visible";
-                    cell.getElement().style.width = "100%";
+                // Loop through other cells in the special row to clear content and remove borders
+                var cells = createNewRow.getCells();
+                for (var i = 0; i < cells.length; i++) {
+                    var cell = cells[i];
+                    if (i > 0) {
+                        // Clear content of other columns
+                        cell.getElement().innerHTML = "";
+                        cell.getElement().style.display = "none";
+                    } else {
+                        cell.getElement().style.overflow = "visible";
+                        cell.getElement().style.width = "100%";
+                    }
+
+                    cell.getElement().style.pointerEvents = "none";
+                    cell.getElement().style.border = "none";
                 }
 
-                cell.getElement().style.pointerEvents = "none";
-                cell.getElement().style.border = "none";
             }
 
             // Prevent sort from moving row
             if (tableJsObject.getDataCount() > 1) {
                 createNewRow.move(tableJsObject.getRows('active')[tableJsObject.getDataCount() - 1]);
             }
+
         }
     }-*/;
 
