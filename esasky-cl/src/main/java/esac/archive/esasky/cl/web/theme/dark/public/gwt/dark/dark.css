@@ -43,6 +43,25 @@ a:active{
 	color: #325596;
 }
 
+
+h2{
+  font-family: NotesEsaBold, "Trebuchet MS", Tahoma, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #3277a6;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: default
+}
+
 /**
  * The reference theme can be used to determine when this style sheet has
  * loaded.  Create a hidden div element with absolute position, assign the style
@@ -1110,3 +1129,5 @@ td.datePickerMonth {
   height: 2px !important;
   cursor: row-resize;
 }
+
+
