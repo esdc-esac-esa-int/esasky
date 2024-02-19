@@ -2257,33 +2257,14 @@ public class TabulatorWrapper {
             var table = this;
             selectionMap = [];
 
-            if(rows.length < 1) {
-                return;
-            }
-
-            var createNewRowSelected = rows.some(function(row) {
-                return row.getData().createNewRow === true;
-            });
-
-            if (createNewRowSelected) {
-                rows.forEach(function(row) {
-                    if (row.getData().createNewRow === true) {
-                        row.deselect();
-                    }
-                });
-                return;
-            }
-
-
             wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::multiSelectionInProgress()();
             rows.forEach(function (item, index, array) {
-
                 selectionMap[item.getIndex()] = true;
                 if (!previouslySelectedMap[item.getIndex()]) {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowSelection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(item);
                 }
             });
-            Object.keys(previouslySelectedMap).forEach(function (item) {
+            Object.keys(previouslySelectedMap).forEach(function (item, index, array) {
                 if (!selectionMap[item] && table.getRow(item)) {
                     wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowDeselection(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(table.getRow(item));
                 }
