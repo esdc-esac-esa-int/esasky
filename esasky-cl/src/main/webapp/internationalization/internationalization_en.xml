@@ -3949,7 +3949,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST-NEAR-IR">
+	<text key="resultsPresenter_helpDescription_spectra_JWST-NEAR-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
@@ -3963,7 +3963,7 @@
 		More information
 		&lt;/a&gt; </text>
 
-	<text key="resultsPresenter_helpDescription_ASTRO_SPECTRA_JWST-MID-IR">
+	<text key="resultsPresenter_helpDescription_spectra_JWST-MID-IR">
 		The James Webb Space Telescope (JWST) is the largest optical or infrared observatory ever launched to space.
 		Developed in a collaboration between NASA, ESA, and CSA, Webb observes the Universe in infrared light from its orbit at the Lagrangian point L2, 1.5 million km away from Earth.
 		&lt;br&gt;&lt;br&gt;
