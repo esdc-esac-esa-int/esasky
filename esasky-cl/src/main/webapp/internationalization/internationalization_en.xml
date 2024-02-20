@@ -5405,7 +5405,7 @@
 	<text key="kiosk_buttons">Access kiosk layout buttons</text>
 	<text key="welcome_dialog">Hide or show the welcome dialog on startup</text>
 	<text key="search_box">Toggle the sky search text box</text>
-
+	<text key="outreach_euclid_button">Toggle the Euclid outreach image button</text>
 
 	<text key="userArea__userInfoPopup_title">Profile</text>
 	<text key="userArea__userInfoPopup_help">This panel displays your user profile, permissions and quotas within ESASky</text>
