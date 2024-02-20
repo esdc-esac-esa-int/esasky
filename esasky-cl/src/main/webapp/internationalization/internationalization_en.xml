@@ -5397,13 +5397,14 @@
 	<text key="target_list_upload">Toggle the upload target list button</text>
 	<text key="jwst_planning_button">Toggle the Mission Planning button</text>
 	<text key="dice_button">Toggle the outreach random target button</text>
-	<text key="session">Placeholder text for session</text>
-	<text key="eva_menu">Toggle the EVA menu button</text>
+	<text key="session">Toggle the save and restore session from file dropdown entries</text>
+	<text key="eva_menu">Toggle the ESA Virtual Assistant menu</text>
 	<text key="eva">Toggle EVA chat</text>
-	<text key="search_tool">Placeholder text for search tool</text>
-	<text key="search_in">Placeholder text for search in</text>
+	<text key="search_tool">Toggle the search tool button</text>
+	<text key="search_in">Disable or enable the right click context menu</text>
 	<text key="kiosk_buttons">Access kiosk layout buttons</text>
 	<text key="welcome_dialog">Hide or show the welcome dialog on startup</text>
+	<text key="search_box">Toggle the sky search text box</text>
 
 
 	<text key="userArea__userInfoPopup_title">Profile</text>

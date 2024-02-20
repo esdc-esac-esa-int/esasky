@@ -176,9 +176,10 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_DICE, false);
         map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
-        
-        return map;
+
+		return map;
 	}
 	
 	private static HashMap<String, Boolean> createJWSTMap() {
@@ -210,6 +211,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		
 		return map;
 	}
@@ -243,6 +245,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		
 		return map;
 	}
@@ -276,7 +279,8 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
-		
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
+
 		return map;
 	}
 
@@ -314,6 +318,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU, false);
 		map.put(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS, true);
 		map.put(EsaSkyWebConstants.MODULE_WELCOME_DIALOG, false);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		return map;
 	}
 	
@@ -331,6 +336,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU, true);
 		map.put(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS, false);
 		map.put(EsaSkyWebConstants.MODULE_WELCOME_DIALOG, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		return map;
 	}
     

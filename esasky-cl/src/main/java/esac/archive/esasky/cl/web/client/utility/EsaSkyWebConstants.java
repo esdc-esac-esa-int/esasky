@@ -167,6 +167,7 @@ public class EsaSkyWebConstants {
     public static final String MODULE_SESSION = "session";
     public static final String MODULE_EVA_MENU = "eva_menu";
     public static final String MODULE_EVA = "eva";
+    public static final String MODULE_SEARCH_BOX = "search_box";
     public static final String MODULE_SEARCH_TOOL = "search_tool";
     public static final String MODULE_SEARCH_IN_MENU = "search_in";
     public static final String MODULE_KIOSK_BUTTONS = "kiosk_buttons";

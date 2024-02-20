@@ -529,6 +529,7 @@ public class MainPresenter {
         ctrlTBPresenter.updateModuleVisibility();
         targetPresenter.updateModuleVisibility();
         headerPresenter.updateModuleVisibility();
+        allSkyPresenter.updateModuleVisibility();
     }
 
     public void onShiftPressed() {

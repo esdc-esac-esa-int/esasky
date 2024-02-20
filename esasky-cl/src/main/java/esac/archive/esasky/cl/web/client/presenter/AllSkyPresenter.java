@@ -70,6 +70,8 @@ public class AllSkyPresenter {
         void deToggleSelectionMode();
 
         void areaSelectionKeyboardShortcutStart();
+
+        void updateModuleVisibility();
     }
 
     /**
@@ -487,5 +489,9 @@ public class AllSkyPresenter {
 
     public void hideTooltip() {
        this.view.hideTooltip();
+    }
+
+    public void updateModuleVisibility() {
+        view.updateModuleVisibility();
     }
 }
