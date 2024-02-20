@@ -5294,6 +5294,7 @@
 
 
 	<!-- internationalization_es.xml is up to date for everything above -->
+	<!-- internationalization_zh.xml is up to date for everything above -->
 
 	<text key="outreachImagePanel_EUCLID_header">
 		ESA/Euclid Outreach Images
@@ -5332,7 +5333,6 @@
 	<text key="EuclidEarlyReleaseTargets">
 		Euclid Early Release Targets
 	</text>
-	<!-- internationalization_zh.xml is up to date for everything above -->
 
 	<text key="header_userArea">
 		User area
@@ -5380,32 +5380,32 @@
 	<text key="screenshot_button">Capture a screenshot of ESASky with the screenshot button</text>
 	<text key="share_button">Copy your URL to the clipboard using the share button</text>
 	<text key="help_button">Navigate to the how-to pages for ESASky with the help button</text>
-	<text key="dropdown_menu">Toggle the hamburger menu</text>
-	<text key="skies_menu">Access the HIPS menu</text>
+	<text key="dropdown_menu">The main hamburger menu</text>
+	<text key="skies_menu">The HIPS menu</text>
 	<text key="feedback_button">Provide feedback using the feedback button</text>
-	<text key="login_button">Toggle the user area with the login button</text>
-	<text key="observations_button">Toggle the observations button</text>
-	<text key="catalogues_button">Toggle the catalogues button</text>
-	<text key="spectra_button">Toggle the spectra button</text>
-	<text key="exttap_button">Toggle external data centers with the external data centers button</text>
-	<text key="gw_button">Toggle gravitational events with the gravitation events button</text>
-	<text key="outreach_button">Toggle the Hubble outreach image button</text>
-	<text key="outreach_jwst_button">Toggle the James Webb telescope image button</text>
-	<text key="sso_button">Toggle the solar system object button</text>
-	<text key="publications_button">Toggle the publications button</text>
-	<text key="target_list_button">Toggle the target list button</text>
+	<text key="login_button">The user area (tables, sessions, layouts)</text>
+	<text key="observations_button">Observations</text>
+	<text key="catalogues_button">Catalogues</text>
+	<text key="spectra_button">Spectra</text>
+	<text key="exttap_button">External data centers</text>
+	<text key="gw_button">Access multi-messenger events</text>
+	<text key="outreach_button">Hubble outreach images</text>
+	<text key="outreach_jwst_button">James Webb telescope images</text>
+	<text key="sso_button">Solar system objects</text>
+	<text key="publications_button">Publications</text>
+	<text key="target_list_button">Target lists</text>
 	<text key="target_list_upload">Toggle the upload target list button</text>
-	<text key="jwst_planning_button">Toggle the Mission Planning button</text>
-	<text key="dice_button">Toggle the outreach random target button</text>
-	<text key="session">Toggle the save and restore session from file dropdown entries</text>
-	<text key="eva_menu">Toggle the ESA Virtual Assistant menu</text>
+	<text key="jwst_planning_button">The planning tool</text>
+	<text key="dice_button">Go to random target</text>
+	<text key="session">Save and restore session from local file</text>
+	<text key="eva_menu">The ESA Virtual Assistant</text>
 	<text key="eva">Toggle EVA chat</text>
-	<text key="search_tool">Toggle the search tool button</text>
-	<text key="search_in">Disable or enable the right click context menu</text>
+	<text key="search_tool">Search tools (Shape search)</text>
+	<text key="search_in">The right-click context menu</text>
 	<text key="kiosk_buttons">Access kiosk layout buttons</text>
 	<text key="welcome_dialog">Hide or show the welcome dialog on startup</text>
-	<text key="search_box">Toggle the sky search text box</text>
-	<text key="outreach_euclid_button">Toggle the Euclid outreach image button</text>
+	<text key="search_box">The sky search input field</text>
+	<text key="outreach_euclid_button">Euclid outreach images</text>
 
 	<text key="userArea__userInfoPopup_title">Profile</text>
 	<text key="userArea__userInfoPopup_help">This panel displays your user profile, permissions and quotas within ESASky</text>
