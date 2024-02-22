@@ -130,6 +130,13 @@ public class PlanObservationPanel extends MovablePanel implements Hidable<PlanOb
         changeMission(PlanningMission.JWST);
     }
 
+    @Override
+    public void setMaxSize() {
+        int marginPx = 15;
+        getElement().getStyle().setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight()-this.getAbsoluteTop()-marginPx);
+        getElement().getStyle().setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth()-this.getAbsoluteLeft());
+    }
+
 	private void changeMission(final PlanningMission pm) {
 
         instrumentPopupMenu.clearItems();

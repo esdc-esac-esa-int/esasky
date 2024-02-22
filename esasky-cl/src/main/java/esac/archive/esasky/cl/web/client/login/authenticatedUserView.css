@@ -1,0 +1,36 @@
+.statusPopupPanel {
+    z-index: 9999;
+}
+
+.statusPopupPanel__header_dropdown_content {
+    min-width: 175px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.statusPopupPanel__header_dropdown_content_title {
+    border-bottom: 1px solid grey;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+.statusPopupPanel__header_dropdown_content_footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid grey;
+}
+
+
+.powerButton__active {
+    opacity: 1.0;
+    transform: scale(1.0);
+}
+
+.powerButton__inactive {
+    opacity: 0.8;
+    transform: scale(0.9);
+}

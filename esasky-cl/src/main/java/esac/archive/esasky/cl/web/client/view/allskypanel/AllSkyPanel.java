@@ -226,6 +226,16 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     }
 
     @Override
+    public void updateModuleVisibility() {
+        if (evaButton != null) {
+            evaButton.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU));
+        }
+
+        aladinLiteFocusPanel.updateModuleVisibility();
+
+    }
+
+    @Override
     public final HasClickHandlers getZoomInClickHandler() {
         return this.zoomControlPanel.getZoomInClickHandler();
     }

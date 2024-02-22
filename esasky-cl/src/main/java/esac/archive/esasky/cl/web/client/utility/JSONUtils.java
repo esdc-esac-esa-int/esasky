@@ -18,7 +18,10 @@ public class JSONUtils {
 
     public interface IJSONRequestCallback {
         void onSuccess(final String responseText);
-        void onError(final String errorCause);
+        default void onError(final String errorCause) {}
+        default void onError(final int statusCode, final String errorCause) {
+            onError(errorCause);
+        }
         default void whenComplete(){}
     }
     
@@ -68,9 +71,9 @@ public class JSONUtils {
                                 + response.getStatusText() + ") from " + url);
 
                         if (handleServerError) {
-                            callback.onError(response.getText());
+                            callback.onError(response.getStatusCode(), response.getText());
                         } else {
-                            callback.onError("Couldn't retrieve JSON: " + response.getStatusText());
+                            callback.onError(response.getStatusCode(), "Couldn't retrieve JSON: " + response.getStatusText());
                         }
 
 

@@ -21,6 +21,7 @@ public class DS9Descriptor {
     private String width;
 
     private List<String> shapes;
+    private List<DS9TextDescriptor> texts;
 
     public String getColor() {
         return color;
@@ -63,5 +64,16 @@ public class DS9Descriptor {
 
     public void setInstrument(String instrument) {
         this.instrument = instrument;
+    }
+
+    public List<DS9TextDescriptor> getTexts() {
+        if (texts == null) {
+            texts = new LinkedList<>();
+        }
+        return texts;
+    }
+
+    public void setTexts(List<DS9TextDescriptor> texts) {
+        this.texts = texts;
     }
 }

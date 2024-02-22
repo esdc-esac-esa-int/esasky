@@ -1219,7 +1219,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
-		El cat&#225;logo 4XMM-DR12 contiene fuentes detectadas
+		El cat&#225;logo 4XMM-DR13 contiene fuentes detectadas
 		a partir de
 		13 243 observaciones con las c&#225;maras EPIC de
 		XMM-Newton,
@@ -1239,7 +1239,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-		El cat&#xE1;logo 4XMM-DR12s se ha compilado a partir de 1 620 grupos, que comprenden 9 355 observaciones
+		El cat&#xE1;logo 4XMM-DR13s se ha compilado a partir de 1 688 grupos, que comprenden 9 796 observaciones
 		superpuestas de buena calidad de XMM-Newton.
 		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 1 de febrero de 2000 y el 29 de
 		noviembre de 2022 que se superponen en al menos un radio de un
@@ -2793,7 +2793,7 @@
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_LRS">
 		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopia a baja resolución (LRS) contiene 10,633,515 espectros, de los cuales 10,336,752 son estrellas, 224,702 son galaxias, 72,061 son QSOs. Hay 9,385,159 objetos que presentan señal a ruido por encima de 10 en la bandas g o i.
+		La novena edición de éste estudio (LAMOST DR9) incluye observaciones hasta Junio de 2021. El catálogo general de espectroscopia a baja resolución (LRS) contiene 11,211,028 espectros, de los cuales 10,893,354 son estrellas, 241,454 son galaxias, y 76,220 son QSOs.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2804,7 +2804,7 @@
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST_LRS">
 		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopia a baja resolución (LRS) contiene 10,633,515 espectros, de los cuales 10,336,752 son estrellas, 224,702 son galaxias, 72,061 son QSOs. Hay 9,385,159 objetos que presentan señal a ruido por encima de 10 en la bandas g o i.
+		La novena edición de éste estudio (LAMOST DR9) incluye observaciones hasta Junio de 2021. El catálogo general de espectroscopia a baja resolución (LRS) contiene 11,211,028 espectros, de los cuales 10,893,354 son estrellas, 241,454 son galaxias, y 76,220 son QSOs.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2816,7 +2816,7 @@
 	<text key="resultsPresenter_helpDescription_spectra_LAMOST_MRS">
 		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene 5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
+		La novena edición de éste estudio (LAMOST DR9) incluye observaciones hasta Junio de 2021. El catálogo general de espectroscopía a media resolución (MRS) contiene 8,259,362 espectros, para los cuales hay 1,846,438 y 6,412,924 espectros dentro y fuera del dominio temporal respectivamente.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -2827,7 +2827,7 @@
 	<text key="resultsPresenter_helpDescription_catalogues_LAMOST_MRS">
 		El Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) es una instalación científica china operada por los Observatorios Astronómicos Nacionales de la Academia China de Ciencias. Se trata de un telescopio reflector Schmidt con 4000 fibras con un campo de visión de 20 grados. El estudio LAMOST proporciona espectros calibrados en longitud de onda y flujo, sustraídos de fondo de cielo, en el rango espectral de 3690-9100 Å para muy diversos tipos de objetos astronómicos. En Octubre de 2018, LAMOST comenzó la segunda fase del programa del estudio, que engloba estudios de espectroscopía a baja y media resolución. El estudio de espectroscopía a media resolución incluye las investigaciones dentro y fuera del dominio temporal.
 		&lt;br&gt;&lt;br&gt;
-		La octava edición de éste estudio (LAMOST DR8) incluye observaciones hasta Junio de 2020. El catálogo general de espectroscopía a media resolución (MRS) contiene 5,975,982 espectros, para los cuales hay 1,465,789 y 4,510,193 espectros dentro y fuera del dominio temporal respectivamente. (Nota: Este catálogo contiene un total de 22,141,635 entradas, siendo este número diferente de los valores estadísticos antes mencionados. Para la investigación fuera del dominio temporal consideramos sólo los espectros añadidos para cada uno de los 1,465,789, mientras que en la investigación en el dominio temporal, cada una de las exposiciones individuales en las bandas B y R cuentan como uno de los 4,510,193 espectros).
+		La novena edición de éste estudio (LAMOST DR9) incluye observaciones hasta Junio de 2021. El catálogo general de espectroscopía a media resolución (MRS) contiene 8,259,362 espectros, para los cuales hay 1,846,438 y 6,412,924 espectros dentro y fuera del dominio temporal respectivamente.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#LAMOST"
@@ -3823,5 +3823,208 @@
 		target="_blank"&gt;
 		Más información
 		&lt;/a&gt;
+	</text>
+
+	<text key="resultsPresenter_helpDescription_spectra_JWST-NEAR-IR">
+		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
+		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
+		&lt;br&gt;&lt;br&gt;
+		Tras su lanzamiento y una puesta en marcha de 6 meses, el observatorio ha entrado en su fase nominal de operaciones cient&#237;ficas, durante la cual
+		se ejecutar&#225;n los programas de observaci&#243;n aprobados. Los datos cient&#237;ficos son recopilados desde una serie de programas establecidos en un cronograma
+		de actividades enviado al observatorio dos veces al d&#237;a durante las operaciones.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		Más informaci&#243;n
+		&lt;/a&gt; </text>
+
+	<text key="resultsPresenter_helpDescription_spectra_JWST-MID-IR">
+		El Telescopio Espacial James Webb (JWST) es el mayor observatorio &#243;ptico o infrarrojo enviado al espacio. Desarrollado como colaboraci&#243;n entre NASA, ESA y CSA, Webb
+		observa el Universo en luz infrarroja desde su &#243;rbita en el punto Lagrangiano L2, a 1,5 millones de kil&#243;metros de la Tierra.
+		&lt;br&gt;&lt;br&gt;
+		Tras su lanzamiento y una puesta en marcha de 6 meses, el observatorio ha entrado en su fase nominal de operaciones cient&#237;ficas, durante la cual
+		se ejecutar&#225;n los programas de observaci&#243;n aprobados. Los datos cient&#237;ficos son recopilados desde una serie de programas establecidos en un cronograma
+		de actividades enviado al observatorio dos veces al d&#237;a durante las operaciones.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a href="//www.cosmos.esa.int/web/esdc/esasky-observations#JWST"
+		target="_blank"&gt;
+		Más informaci&#243;n
+		&lt;/a&gt; </text>
+
+	<text key="outreachImagePanel_EUCLID_header">
+		Imágenes de divulgación de ESA/Euclid
+	</text>
+	<text key="outreachImagePanel_EUCLID_helpText">
+		Visualiza imágenes astronómicas de divulgación desde el &lt;a
+		href="https://www.esa.int/Science_Exploration/Space_Science/Euclid"
+		target="_blank"&gt;
+		sitio web de ESA/Euclid.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		Este panel muestra una lista con las imágenes de divulgación de ESA/Euclid disponibles para esa región del cielo. En el campo de visión se muestra la huella de estas imágenes mediante rectángulos azules, puedes ocultarlos haciendo clic en Ocultar huellas.
+		&lt;br&gt;&lt;br&gt;
+		Haz clic en una huella o en un elemento de la lista, la imagen de divulgación se muestra superpuesta al cielo actualmente visualizado. Se abre un cuadro de texto con la descripción de la imagen y el enlace a su ubicación en el sitio web de ESA/Euclid. Puedes ajustar la opacidad moviendo la barra de Opacidad de la imagen hacia la izquierda y hacia la derecha.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANTE:&lt;/b&gt; Estas imágenes son creadas con fines de divulgación y no están destinadas a uso científico.
+	</text>
+
+	<text key="outreachImagePanel_EUCLID_helpTitle">
+		Imágenes de divulgación de ESA/Euclid
+	</text>
+
+
+	<text key="webConstants_exploreEuclidImages">
+		Explorar imágenes de divulgación de Euclid
+	</text>
+
+	<text key="header_euclidOutreachImages">
+		Imágenes de divulgación de Euclid
+	</text>
+	<text key="header_euclidImagesTooltip">
+		Visualiza imágenes de divulgación del Telescopio Espacial Euclid
+	</text>
+
+
+	<text key="EuclidEarlyReleaseTargets">
+		Objetivos de las primeras imágenes de Euclid
+	</text>
+
+	<text key="header_userArea">
+		Área de usuario
+	</text>
+
+	<text key="login">Iniciar sesión</text>
+	<text key="logout">Cerrar sesión</text>
+	<text key="Logout">Cerrar sesión</text>
+	<text key="register_account">Registrar</text>
+	<text key="yes">Sí</text>
+	<text key="no">No</text>
+
+	<text key="userArea__dropdown__tables">Tablas</text>
+	<text key="userArea__dropdown__sessions">Sesiones</text>
+	<text key="userArea__dropdown__layouts">Diseños</text>
+	<text key="userArea__searchTables">Buscar tablas</text>
+	<text key="userArea__userTables">Tablas del usuario</text>
+	<text key="userArea__userSessions">Sesiones del usuario</text>
+	<text key="userArea__uploadTablePopup_title">Subir tabla</text>
+	<text key="userArea__uploadTablePopup_help">Sube tablas personalizadas a ESASky. Ten en cuenta que la extensión del archivo debe ser .xml, .vot, .csv o .votable</text>
+
+	<text key="tabulatorWrapper_deleteRow">
+		Eliminar
+	</text>
+	<text key="tabulatorWrapper_deleteRowTooltip">
+		Eliminar fila
+	</text>
+
+
+	<text key="userArea__deleteTableTitle">
+		Eliminar tabla
+	</text>
+
+	<text key="userArea__deleteTableBody">
+		¿Estás seguro de que quieres eliminar esta tabla?
+	</text>
+
+	<text key="userArea__deleteTableHelp">
+		Esta acción eliminará tu tabla de la base de datos. Esta acción no se puede deshacer.
+	</text>
+	<text key="scientific_toggle_button">Cambiar entre modos científico y de divulgación usando el botón de selección de modo</text>
+	<text key="science_mode">Cambiar entre modos científico y de divulgación</text>
+	<text key="language_button">Cambiar entre idiomas con el botón de idioma</text>
+	<text key="coordinate_grid_button">Mostrar/Ocultar la cuadrícula de coordenadas usando el botón de cuadrícula de coordenadas</text>
+	<text key="screenshot_button">Realizar una captura de pantalla de ESASky con el botón de captura de pantalla</text>
+	<text key="share_button">Copiar tu URL al portapapeles con el botón de compartir</text>
+	<text key="help_button">Navegar a las páginas de ayuda para ESASky con el botón de ayuda</text>
+	<text key="dropdown_menu">,Menú principal desplegable</text>
+	<text key="skies_menu">Menú de selección de HIPS</text>
+	<text key="feedback_button">Proporcionar comentarios usando el botón de feedback</text>
+	<text key="login_button">Área de usuario (tablas, sesiones, diseños)</text>
+	<text key="observations_button">Observaciones</text>
+	<text key="catalogues_button">Catálogos</text>
+	<text key="spectra_button">Espectros</text>
+	<text key="exttap_button">Centros de datos externos</text>
+	<text key="gw_button">Acceder a eventos multimessenger</text>
+	<text key="outreach_button">Imágenes de divulgación del Hubble</text>
+	<text key="outreach_jwst_button">Imágenes de divulgación del telescopio espacial James Webb</text>
+	<text key="sso_button">Objetos del sistema solar</text>
+	<text key="publications_button">Publicaciones</text>
+	<text key="target_list_button">Listas de objetivos</text>
+	<text key="target_list_upload">Mostrar/Ocultar el botón de carga de lista de objetivos</text>
+	<text key="jwst_planning_button">Herramienta de planificación</text>
+	<text key="dice_button">Ir a un objetivo aleatorio</text>
+	<text key="session">Guardar y restaurar sesión desde archivo local</text>
+	<text key="eva_menu">Asistente Virtual de ESA</text>
+	<text key="eva">Mostrar/Ocultar chat de EVA</text>
+	<text key="search_tool">Herramientas de búsqueda (Búsquedas por polígonos)</text>
+	<text key="search_in">Menú contextual del clic derecho</text>
+	<text key="kiosk_buttons">Acceder a los botones de diseño del quiosco</text>
+	<text key="welcome_dialog">Ocultar o mostrar el cuadro de diálogo de bienvenida al iniciar</text>
+	<text key="search_box">Campo de búsqueda del cielo</text>
+	<text key="outreach_euclid_button">Imágenes de divulgación de Euclid</text>
+
+	<text key="userArea__userInfoPopup_title">Perfil</text>
+	<text key="userArea__userInfoPopup_help">Este panel muestra tu perfil de usuario, permisos y cuotas dentro de ESASky</text>
+
+	<text key="userArea__userInfoPopup_username">Nombre de usuario:</text>
+	<text key="userArea__userInfoPopup_db_quota">Cuota de base de datos:</text>
+	<text key="userArea__userInfoPopup_req_timeout">Tiempo de espera de solicitud:</text>
+
+	<text key="userArea__userTablePanel_title">Tablas</text>
+	<text key="userArea__userTablePanel_help">
+		La función de Tablas en ESASky permite a los usuarios cargar sus propias tablas de datos, ampliando las posibilidades de exploración dentro de la aplicación.
+		&lt;br&gt;&lt;br&gt;
+		Con esta función, los usuarios pueden integrar sin problemas sus conjuntos de datos personalizados en ESASky, mejorando sus capacidades de análisis y visualización.
+		Los formatos admitidos incluyen VOTable y CSV.
+	</text>
+	<text key="userArea__userTablePanel_searchTables">Buscar tablas</text>
+	<text key="userArea__userTablePanel_addTableTitle">Subir tabla</text>
+
+	<text key="userArea__userSessionPanel_title">Sesiones</text>
+	<text key="userArea__userSessionPanel_help">
+		La función de Sesiones en ESASky permite a los usuarios guardar el estado actual de la aplicación, lo que les permite volver a su trabajo en un momento posterior.
+		&lt;br&gt;&lt;br&gt;
+		Esta función proporciona a los usuarios la capacidad de capturar la configuración actual, incluidos los conjuntos de datos seleccionados, la configuración de visualización
+		y cualquier personalización realizada en la interfaz. Al guardar este estado como una sesión, los usuarios pueden volver fácilmente a donde lo dejaron, eliminando la necesidad de recrear su trabajo desde cero.
+	</text>
+	<text key="userArea__userSessionPanel_createSession">Guardar sesión actual</text>
+	<text key="userArea__userSessionPanel_searchSessions">Buscar sesiones</text>
+
+	<text key="userArea__userLayoutPanel_resetBtnTitle">Restaurar el diseño predeterminado</text>
+	<text key="userArea__userLayoutPanel_addBtnTitle">Crear un nuevo diseño de interfaz</text>
+	<text key="userArea__userLayoutPanel_saveBtnTitle">Guardar diseño</text>
+	<text key="userArea__userLayoutPanel_title">Diseños</text>
+	<text key="userArea__userLayoutPanel_help">
+		La función de Diseños en ESASky te permite personalizar tu experiencia de visualización mediante la disposición y visualización
+		de elementos dentro de la interfaz según tus preferencias.
+		&lt;br&gt;&lt;br&gt;
+		Con esta función, puedes ajustar fácilmente cómo se organizan y muestran los diferentes elementos en la interfaz de ESASky.
+		Ya sea que prefieras que ciertas herramientas o información sean más prominentes o estén ocultas, tienes la
+		flexibilidad para adaptar el diseño a tus necesidades.
+	</text>
+
+	<text key="tabulator_link_cell_tooltip_gallery_url">
+		Abrir estos datos en la galería de productos MMODA
+	</text>
+
+	<text key="tabulator_link_column_tooltip_gallery_url">
+		Haz clic en cualquier fila para abrir los datos de esa fila en la galería de productos MMODA
+	</text>
+
+	<text key="tabulator_link_no_data">
+		No hay datos disponibles para esta entrada
+	</text>
+
+	<text key="userArea__userAreaPresenter_restoreSession_title">
+		¡Bienvenido de nuevo!
+	</text>
+	<text key="userArea__userAreaPresenter_restoreSession_body">
+		Tu sesión anterior de ESASky se ha conservado automáticamente.
+		&lt;br&gt;
+		¿Te gustaría continuar desde donde lo dejaste?
+	</text>
+	<text key="userArea__userAreaPresenter_restoreSession_help">
+		ESASky ofrece a los usuarios la funcionalidad conveniente de guardar automáticamente sus sesiones. Esta función asegura que tu progreso se conserve, permitiéndote continuar sin problemas desde donde lo dejaste la última vez cada vez que regreses a ESASky.
 	</text>
 </Internationalization>

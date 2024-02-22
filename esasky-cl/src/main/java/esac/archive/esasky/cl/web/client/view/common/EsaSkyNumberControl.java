@@ -61,4 +61,12 @@ public class EsaSkyNumberControl{
 	public double getValue() {
 		return numberBox.getNumber();
 	}
+
+	public String getFormattedValue() {
+		return numberBox.getFormattedNumber();
+	}
+
+	public void setNumberFormat(NumberFormat numberFormat) {
+		numberBox.setNumberFormat(numberFormat);
+	}
 }

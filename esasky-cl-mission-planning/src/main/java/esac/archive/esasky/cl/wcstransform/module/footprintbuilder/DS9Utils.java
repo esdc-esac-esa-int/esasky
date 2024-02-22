@@ -12,6 +12,8 @@ public final class DS9Utils {
     public static Vector<double[]> getShapePixels(String row) {
         String cleanRow = row.trim().toLowerCase();
         cleanRow = cleanRow.replaceAll("point|circle|polygon|ellipse|box|\\(|\\)", "");
+        cleanRow = cleanRow.replaceAll("#.*", ""); // Remove comments
+        cleanRow = cleanRow.replaceAll("\\|\\|.*", ""); // Remove comments
         String[] pixelStr = cleanRow.split(",");
 
         Vector<double[]> pixels = new Vector<>();

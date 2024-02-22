@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.wcstransform.module.footprintbuilder;
 import esac.archive.esasky.cl.wcstransform.module.utility.Constants;
 import esac.archive.esasky.cl.wcstransform.module.utility.InstrumentMapping;
 import esac.archive.esasky.ifcs.model.descriptor.DS9Descriptor;
+import esac.archive.esasky.ifcs.model.descriptor.DS9TextDescriptor;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -56,6 +57,32 @@ public class DS9ToSTCSGenerator extends STCSAbstractGenerator {
                 fullFovSkyCoords.put(inst,
                         projectPixelsToSkyCoords(fullFovPixels.get(inst), vToSkyFrameMatrix));
             }
+        }
+
+        return fullFovSkyCoords;
+    }
+
+    @Override
+    public Map<String, double[]> computeInstrumentLabels(String instrument, String detector, double angle, double ra, double dec) {
+        Map<String, double[]> fullFovSkyCoords = new HashMap<>();
+
+        DS9Descriptor ds9Descriptor = InstrumentMapping.getInstance().getDs9Descriptors().getDescriptors()
+                .stream().filter(d -> d.getInstrument().equals(instrument)).findFirst().orElse(null);
+
+
+        if (ds9Descriptor == null || ds9Descriptor.getTexts().isEmpty()) {
+            return fullFovSkyCoords;
+        }
+
+        double[] referencePoint = DS9Utils.getReferencePoint(ds9Descriptor);
+        BigDecimal[][] vToSkyFrameMatrix = JWSTSIAFUtils.getTelescopeToSkyFrameReferenceMatrix(
+                ra, dec, angle, referencePoint[0], referencePoint[1]);
+
+        for (DS9TextDescriptor textDescriptor : ds9Descriptor.getTexts()) {
+            double[] coordinates = {textDescriptor.getRa(), textDescriptor.getDec()};
+            Vector<double[]> skyCoordinates = projectPixelsToSkyCoords(new Vector<>(Collections.singletonList(coordinates)), vToSkyFrameMatrix);
+            skyCoordinates.firstElement()[2] = angle;
+            fullFovSkyCoords.put(textDescriptor.getText(), skyCoordinates.firstElement());
         }
 
         return fullFovSkyCoords;

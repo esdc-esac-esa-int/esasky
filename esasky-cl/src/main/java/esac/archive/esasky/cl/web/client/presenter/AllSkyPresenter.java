@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSAbstractGenerator;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.AddShapeTooltipEvent;
@@ -40,6 +41,7 @@ public class AllSkyPresenter {
     private View view;
 
     private Map<FutureFootprintRow, Map<String, JavaScriptObject>> planningFootprintsPerInstrument = null;
+    private Map<FutureFootprintRow, Map<String, List<JavaScriptObject>>> planningLabelsPerInstrument = null;
 
     private FutureFootprintRow previuosPlanningFootprintRow = null;
     private FutureFootprintRow currentPlanningFootprintRow = null;
@@ -68,6 +70,8 @@ public class AllSkyPresenter {
         void deToggleSelectionMode();
 
         void areaSelectionKeyboardShortcutStart();
+
+        void updateModuleVisibility();
     }
 
     /**
@@ -124,7 +128,8 @@ public class AllSkyPresenter {
 
     void removePlanningFootprint(FutureFootprintRow footprintRow) {
         planningFootprintsPerInstrument.remove(footprintRow);
-        currentPlanningFootprintRow = previuosPlanningFootprintRow;
+        planningLabelsPerInstrument.remove(footprintRow);
+        currentPlanningFootprintRow = !planningFootprintsPerInstrument.isEmpty() ? previuosPlanningFootprintRow : null;
         drawPlanningPolygons();
     }
 
@@ -134,7 +139,7 @@ public class AllSkyPresenter {
         currentPlanningFootprintRow = futureFootprintRow;
 
         if (planningFootprintsPerInstrument == null) {
-            planningFootprintsPerInstrument = new HashMap<FutureFootprintRow, Map<String, JavaScriptObject>>();
+            planningFootprintsPerInstrument = new HashMap<>();
         }
 
         double raDeg = futureFootprintRow.getCenterRaDeg();
@@ -178,6 +183,29 @@ public class AllSkyPresenter {
             }
         }
 
+
+        if (planningLabelsPerInstrument == null) {
+            planningLabelsPerInstrument = new HashMap<>();
+        }
+
+        String missionName = futureFootprintRow.getInstrument().getMission().getMissionName();
+        String instrumentName = futureFootprintRow.getInstrument().getInstrumentName();
+        double rotationDeg = futureFootprintRow.getRotationDeg();
+
+        STCSAbstractGenerator stcsGenerator = STCSGeneratorFactory.getSTCSGenerator(missionName);
+        Map<String, double[]> labelInstrumentMap = stcsGenerator.computeInstrumentLabels(instrumentName, futureFootprintRow.getAperture(), rotationDeg, raDeg, decDeg);
+
+        Map<String, List<JavaScriptObject>> textJsInstrumentMap = new HashMap<>();
+        textJsInstrumentMap.put(instrumentName, new LinkedList<>());
+
+        for (Map.Entry<String, double[]> entry : labelInstrumentMap.entrySet()) {
+            JavaScriptObject textLabelJs = AladinLiteWrapper.getAladinLite().createTextLabel(entry.getKey(), entry.getValue());
+            textJsInstrumentMap.get(instrumentName).add(textLabelJs);
+        }
+
+        planningLabelsPerInstrument.put(futureFootprintRow, textJsInstrumentMap);
+
+
         drawPlanningPolygons();
 
         return individualInstrumentPolygon;
@@ -198,6 +226,23 @@ public class AllSkyPresenter {
 
         AladinLiteWrapper.getAladinLite().removeAllSourcesFromCatalog(
                 AladinLiteWrapper.getInstance().getFutureSelectedDetectorCatalogue());
+
+
+        if (currentPlanningFootprintRow != null) {
+            for (Entry<FutureFootprintRow, Map<String, List<JavaScriptObject>>> currEntry : planningLabelsPerInstrument
+                    .entrySet()) {
+
+                Map<String, List<JavaScriptObject>> planningTextFootprints = currEntry.getValue();
+                for (List<JavaScriptObject> textFootprints : planningTextFootprints.values()) {
+                    for (JavaScriptObject textFootprint : textFootprints) {
+                        AladinLiteWrapper.getAladinLite().addFootprintToOverlay(
+                                planningOverlaySelectedInstrument, textFootprint);
+
+                    }
+                }
+            }
+        }
+
 
         for (Entry<FutureFootprintRow, Map<String, JavaScriptObject>> currEntry : planningFootprintsPerInstrument
                 .entrySet()) {
@@ -221,7 +266,7 @@ public class AllSkyPresenter {
                                 + " coords " + currCenter.getValue().get(0)[0] + " "
                                 + currCenter.getValue().get(0)[1]);
 
-                        Map<String, Object> details = new HashMap<String, Object>();
+                        Map<String, Object> details = new HashMap<>();
 
                         details.put(PlanningConstant.INSTRUMENT, currentPlanningFootprintRow
                                 .getInstrument().getInstrumentName());
@@ -266,7 +311,7 @@ public class AllSkyPresenter {
                         Log.debug("[cc] Det name " + currCenter.getKey()
                                 + " coords " + currCenter.getValue().get(0)[0] + " "
                                 + currCenter.getValue().get(0)[1]);
-                        Map<String, Object> details = new HashMap<String, Object>();
+                        Map<String, Object> details = new HashMap<>();
 
                         details.put(PlanningConstant.INSTRUMENT, currentPlanningFootprintRow.getInstrument().getInstrumentName());
                         details.put(PlanningConstant.DETECTOR, currCenter.getKey());
@@ -444,5 +489,9 @@ public class AllSkyPresenter {
 
     public void hideTooltip() {
        this.view.hideTooltip();
+    }
+
+    public void updateModuleVisibility() {
+        view.updateModuleVisibility();
     }
 }

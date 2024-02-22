@@ -13,6 +13,8 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
 public abstract class AbstractTAPService {
 
     public abstract String getMetadataAdql(CommonTapDescriptor descriptor);
@@ -20,9 +22,13 @@ public abstract class AbstractTAPService {
     public abstract String getMetadataAdqlRadial(CommonTapDescriptor descriptor, SkyViewPosition conePos);
     
   
-    public String getRequestUrl() {
+    public String getRequestUrl(CommonTapDescriptor descriptor) {
         return EsaSkyWebConstants.TAP_CONTEXT;
     }
+
+//    public String getUploadUrl() {
+//        return EsaSkyWebConstants.EXT_TAP_UPLOAD_URL;
+//    }
     
     public String getCount(final AladinLiteWidget aladinLite, CommonTapDescriptor descriptor) {
         final String tapTable = descriptor.getTableName();

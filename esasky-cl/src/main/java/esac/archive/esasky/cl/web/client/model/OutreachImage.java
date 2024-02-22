@@ -62,7 +62,7 @@ public class OutreachImage {
 	
 	public void loadImage(CommonTapDescriptor descriptor, TAPImageListService metadataService, boolean moveToCenter) {
 		String mission = this.mission;
-		String query = descriptor.createTapUrl(metadataService.getRequestUrl(), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
+		String query = descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), metadataService.getImageMetadata(descriptor, this.id), EsaSkyConstants.JSON);
 		JSONUtils.getJSONFromUrl(query , new IJSONRequestCallback() {
 
 			@Override
@@ -152,10 +152,14 @@ public class OutreachImage {
 				action = event.isSuccess()
 						? GoogleAnalytics.ACT_IMAGES_HSTIMAGE_SUCCESS
 						: GoogleAnalytics.ACT_IMAGES_HSTIMAGE_FAIL;
-			} else {
+			} else if (Objects.equals(mission, EsaSkyConstants.JWST_MISSION)){
 				action = event.isSuccess()
 						? GoogleAnalytics.ACT_IMAGES_JWSTIMAGE_SUCCESS
 						:GoogleAnalytics.ACT_IMAGES_JWSTIMAGE_FAIL;
+			} else {
+				action = event.isSuccess()
+						? GoogleAnalytics.ACT_IMAGES_EUCLIDIMAGE_SUCCESS
+						:GoogleAnalytics.ACT_IMAGES_EUCLIDIMAGE_FAIL;
 			}
 
 			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_IMAGES, action, desc.getId());

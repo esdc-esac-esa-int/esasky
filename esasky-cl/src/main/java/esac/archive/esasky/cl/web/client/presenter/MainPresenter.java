@@ -135,6 +135,7 @@ public class MainPresenter {
     /**
      * initChildPresenters(). Only the Presenters needed at start up are initialized here.
      */
+
     private void initChildPresenters(String coordinateFrameFromUrl) {
 
         this.allSkyPresenter = getAllSkyPresenter();
@@ -374,13 +375,16 @@ public class MainPresenter {
         resultsPresenter.getMetadata(entity, adql);
     }
 
+    public void clearResultsPanel() {
+        resultsPresenter.removeAllTabs();
+    }
+
 
     public void showUserRelatedMetadata(CommonTapDescriptor descriptor, GeneralJavaScriptObject userData, boolean shouldHavePanel) {
         Log.debug("[MainPresenter][showUserRelatedMetadata]");
         GeneralEntityInterface entity = entityRepo.getEntityByName(descriptor.getLongName());
         if (entity == null) {
             entity = entityRepo.createEntity(descriptor);
-            entity.setId(descriptor.getId());
         }
         if(userData.getProperty("overlaySet").hasProperty("refreshable") && userData.getProperty("overlaySet").getStringProperty("refreshable").equals("true")) {
             entity.setRefreshable(false);
@@ -525,6 +529,7 @@ public class MainPresenter {
         ctrlTBPresenter.updateModuleVisibility();
         targetPresenter.updateModuleVisibility();
         headerPresenter.updateModuleVisibility();
+        allSkyPresenter.updateModuleVisibility();
     }
 
     public void onShiftPressed() {

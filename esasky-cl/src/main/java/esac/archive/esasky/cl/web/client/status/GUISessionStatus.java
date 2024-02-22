@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.status;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Cookies;
@@ -15,15 +16,11 @@ import esac.archive.esasky.cl.web.client.event.IsInScienceModeChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsShowingCoordintesInDegreesChangeEvent;
 import esac.archive.esasky.cl.web.client.event.IsTrackingSSOEvent;
 import esac.archive.esasky.cl.web.client.model.TrackedSso;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.*;
+import esac.archive.absi.modules.cl.vo.gwt.utils.client.model.user.UserDetails;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
-import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
-
 /**
  * This class is intended to store some global variables related to status of MMI GUI during the
  * user's session. E.g: User's screen size, which perspective is open, etc.
@@ -37,9 +34,11 @@ public class GUISessionStatus {
 	private static boolean hideSwitch = false;
 	private static boolean showCoordinatesInDegrees = false;
 	private static boolean hideBannerInfo = false;
-	
+
+	private static UserDetails userDetails;
+
 	private static String currentLanguage;
-	
+
 	//TOPCAT requires a uniqe ID, otherwise it rejects incoming message
 	private static int uniqueSampNumber = 0;
 
@@ -47,7 +46,7 @@ public class GUISessionStatus {
 	private static int userScreenHeight = 0;
 	/** User's screen width. */
 	private static int userScreenWidth = 0;
-	
+
 	private static int currentHeightForExpandedDataPanel = 335;
 
 	/** current count for each catalogs. Key is the value of JSON mission CatalogDescriptor */
@@ -93,6 +92,18 @@ public class GUISessionStatus {
 		return GUISessionStatus.userScreenHeight;
 	}
 
+	public static void setUserDetails(final UserDetails userDetails) {
+		GUISessionStatus.userDetails = userDetails;
+	}
+
+	public static UserDetails getUserDetails() {
+		return GUISessionStatus.userDetails;
+	}
+
+	public static boolean isUserAuthenticated() {
+		return Objects.nonNull(GUISessionStatus.getUserDetails());
+	}
+
 	/**
 	 * setUserScreenHeight().
 	 * @param inputUserScreenWidth Input Release Object.
@@ -108,7 +119,7 @@ public class GUISessionStatus {
 	public static int getUserScreenWidth() {
 		return GUISessionStatus.userScreenWidth;
 	}
-	
+
 	public static int getCurrentHeightForExpandedDataPanel() {
 		int height = currentHeightForExpandedDataPanel;
 		if(height > MainLayoutPanel.getMainAreaHeight() - 80) {
@@ -119,11 +130,11 @@ public class GUISessionStatus {
 		}
 		return height;
 	}
-	
+
 	public static void setCurrentHeightForExpandedDataPanel(int currentHeightForExpandedDataPanel) {
 		GUISessionStatus.currentHeightForExpandedDataPanel = currentHeightForExpandedDataPanel;
 	}
-	
+
 	/**
 	 * @return the catalogsCountMap
 	 */
@@ -163,26 +174,26 @@ public class GUISessionStatus {
 	public static boolean getIsTrackingSSO(){
 		return GUISessionStatus.isTrackingSSO;
 	}
-	
+
 	public static void setTrackedSSO(TrackedSso trackedSso){
 		GUISessionStatus.trackedSso = trackedSso;
 		setIsTrackingSSO(true);
 	}
-	
+
 	public static TrackedSso getTrackedSso() {
 		return isTrackingSSO ? trackedSso : null;
 	}
-	
+
 	public static String getTrackedSsoName() {
 	    return isTrackingSSO ? trackedSso.name : null;
 	}
-	
+
 	public static void setIsTrackingSSO(boolean isTrackingSso){
 		if(GUISessionStatus.isTrackingSSO != isTrackingSso){
 			GUISessionStatus.isTrackingSSO = isTrackingSso;
 			CommonEventBus.getEventBus().fireEvent(new IsTrackingSSOEvent());
 			if(isTrackingSso) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR, 
+				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CTRLTOOLBAR,
 						"SSO", GUISessionStatus.trackedSso.name + "(" + GUISessionStatus.trackedSso.type + ")");
 			}
 		}
@@ -194,7 +205,7 @@ public class GUISessionStatus {
 	public static boolean isHidingSwitch(){
 		return GUISessionStatus.hideSwitch;
 	}
-	
+
 	public static void toggleShowCoordinatesInDegrees(){
 	    GUISessionStatus.setShowCoordinatesInDegrees(!GUISessionStatus.showCoordinatesInDegrees);
 	}
@@ -205,11 +216,11 @@ public class GUISessionStatus {
 	public static boolean isShowingCoordinatesInDegrees(){
 	    return GUISessionStatus.showCoordinatesInDegrees;
 	}
-	
+
 	public static boolean getIsInScienceMode(){
 		return Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE);
 	}
-	
+
 	public static void setInitialIsInScienceMode() {
 		try {
 			Modules.setModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
@@ -231,7 +242,7 @@ public class GUISessionStatus {
 		expires.setTime(expires.getTime() + milliseconds);
 		Cookies.setCookie(EsaSkyWebConstants.SCI_MODE_COOKIE, Boolean.toString(isInScienceMode), expires);
 	}
-	
+
 	public static void setIsInScienceMode(boolean isInScienceMode){
 		if(getIsInScienceMode() != isInScienceMode){
 			try {
@@ -245,47 +256,47 @@ public class GUISessionStatus {
 	public static void setDoCountOnEnteringScienceMode() {
 		doCountOnEnteringScienceMode = true;
 	}
-	
+
 	public static void setCurrentLanguage(String language) {
 		currentLanguage = language;
 	}
-	
+
 	public static String getCurrentLanguage() {
 		return currentLanguage;
 	}
-	
+
     public static void setShouldHideBannerInfo(boolean shouldHideBannerInfo) {
         hideBannerInfo = shouldHideBannerInfo;
     }
-    
+
     public static boolean getShouldHideBannerInfo() {
         return hideBannerInfo;
     }
-	
+
 	public static void initiateHipsLocationScheduler() {
 		checkHipsServerLocation();
 		new Timer() {
-			
+
 			@Override
 			public void run() {
-				if(ActivityStatus.getInstance().anyActivityDuringTheLastMinute()) {
+				if(ActivityStatus.getInstance().isUserActive()) {
 					checkHipsServerLocation();
 				}
 			}
 		}.scheduleRepeating(1000 * 60);
-		
+
 		new Timer() {
-			
+
 			@Override
 			public void run() {
 				checkHipsServerLocation();
 			}
 		}.schedule(1000 * 10);
 	}
-	
+
 	public static void checkHipsServerLocation() {
 		JSONUtils.getJSONFromUrl(EsaSkyWebConstants.HIPS_STORAGE_URL, new IJSONRequestCallback() {
-			
+
 			@Override
 			public void onSuccess(String responseText) {
 				if(responseText.equalsIgnoreCase("//skies.esac.esa.int")
@@ -307,7 +318,7 @@ public class GUISessionStatus {
 					}
 				}
 			}
-			
+
 			@Override
 			public void onError(String errorCause) {
 				Log.debug(errorCause);
@@ -315,10 +326,14 @@ public class GUISessionStatus {
 		});
 
 	}
-	
+
+	public static boolean isUserActive() {
+		return ActivityStatus.getInstance().isUserActive();
+	}
+
 	public static int getNextUniqueSampNumber(){
 	    uniqueSampNumber++;
 	    return uniqueSampNumber;
 	}
-	
+
 }

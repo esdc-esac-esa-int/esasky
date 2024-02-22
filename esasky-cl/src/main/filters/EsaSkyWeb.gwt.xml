@@ -13,6 +13,7 @@
 	<inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
 
 	<!-- ESDC -->
+	<inherits name="esac.archive.absi.modules.cl.vo.gwt.tapgui.TapGui"/>
 	<inherits name='esac.archive.esasky.cl.web.theme.dark.Dark' />
 	<inherits name='esac.archive.esasky.ifcs.Model' />
 	<inherits

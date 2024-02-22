@@ -5,8 +5,14 @@ import java.util.HashMap;
 import com.google.gwt.i18n.client.Dictionary;
 
 import esac.archive.esasky.cl.web.client.event.ModuleUpdatedEvent;
+import esac.archive.esasky.cl.web.client.login.UserLayoutPanel;
+import esac.archive.esasky.cl.web.client.presenter.MainPresenter;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
+import esac.archive.esasky.cl.web.client.utility.JSONUtils;
+import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.utility.exceptions.MapKeyException;
+import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
 public class Modules {
     
@@ -28,7 +34,7 @@ public class Modules {
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_JWST, createJWSTMap());
         allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_EUCLID, createEuclidMap());
 		allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_KIOSK, createKioskMap());
-        
+        allModuleMaps.put(EsaSkyWebConstants.MODULE_MODE_USER, createEsaskyMap());
         currentModuleMap = allModuleMaps.get(EsaSkyWebConstants.MODULE_MODE_ESASKY);
     	
     }
@@ -57,15 +63,81 @@ public class Modules {
     
     public static void setMode(String mode) {
     	Modules.mode = mode;
-    	if(mode != null && allModuleMaps.containsKey(mode.toUpperCase())) {
-    		currentModuleMap = allModuleMaps.get(mode.toUpperCase());
+		String mapMode  = mode;
+
+		if (mode != null && mode.startsWith(EsaSkyWebConstants.MODULE_MODE_USER)) {
+			String[] modeArr = Modules.mode.split("_");
+			mapMode = modeArr[0];
+		}
+
+    	if(mapMode != null && allModuleMaps.containsKey(mapMode.toUpperCase())) {
+    		currentModuleMap = allModuleMaps.get(mapMode.toUpperCase());
     	}else {
     		currentModuleMap = allModuleMaps.get(EsaSkyWebConstants.MODULE_MODE_ESASKY);
     	}
     }
 
+	public static void setMode(String mode, String layoutId) {
+		setMode(mode + "_" + layoutId);
+	}
+
+	public static String getLayoutId() {
+		if (Modules.mode.startsWith(EsaSkyWebConstants.MODULE_MODE_USER)) {
+			String[] mode = Modules.mode.split("_");
+			if (mode.length > 1) {
+				return mode[1];
+			}
+		}
+
+		return null;
+	}
+
+	public static void activateLayout(String layoutId) {
+		if (layoutId != null ) {
+			String url = EsaSkyWebConstants.TAP_USERLAYOUTS_URL + "?layout_id=" + layoutId;
+			JSONUtils.getJSONFromUrl(url, new JSONUtils.IJSONRequestCallback() {
+				@Override
+				public void onSuccess(String responseText) {
+
+					GeneralJavaScriptObject obj = GeneralJavaScriptObject.createJsonObject(responseText);
+					GeneralJavaScriptObject data = obj.getProperty("data");
+					GeneralJavaScriptObject metadata = obj.getProperty("columns");
+
+					GeneralJavaScriptObject metaObj = ExtTapUtils.formatExternalTapMetadata(metadata);
+					GeneralJavaScriptObject dataObj = ExtTapUtils.formatExternalTapData(data, metaObj);
+
+					Modules.setMode(EsaSkyWebConstants.MODULE_MODE_USER, layoutId);
+					for (GeneralJavaScriptObject obj2 : GeneralJavaScriptObject.convertToArray(dataObj)) {
+						String key = obj2.getStringProperty("key");
+						Boolean isShown = Boolean.parseBoolean(obj2.getStringProperty("is_shown"));
+
+						try {
+							Modules.setModule(key, isShown);
+						} catch (MapKeyException e) {
+							throw new RuntimeException(e);
+						}
+					}
+
+					MainPresenter.getInstance().updateModuleVisibility();
+					UrlUtils.updateURLWithoutReloadingJS(UrlUtils.getUrlForCurrentState());
+
+				}
+
+				@Override
+				public void onError(String errorCause) {
+					String test = "";
+				}
+
+				@Override
+				public void whenComplete() {
+
+				}
+			});
+		}
+	}
+
 	public static String getMode() {
-		return mode;
+		return mode != null ? mode : "";
 	}
 
 	public static HashMap<String, Boolean> getModuleMap() {
@@ -87,6 +159,7 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_HELP, false);
         map.put(EsaSkyWebConstants.MODULE_DROPDOWN, true);
         map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
+		map.put(EsaSkyWebConstants.MODULE_LOGIN, false);
         map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
         map.put(EsaSkyWebConstants.MODULE_OBS, false);
         map.put(EsaSkyWebConstants.MODULE_CAT, false);
@@ -103,9 +176,10 @@ public class Modules {
         map.put(EsaSkyWebConstants.MODULE_DICE, false);
         map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, false);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, false);
-        
-        return map;
+
+		return map;
 	}
 	
 	private static HashMap<String, Boolean> createJWSTMap() {
@@ -119,6 +193,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_HELP, false);
 		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, false);
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
+		map.put(EsaSkyWebConstants.MODULE_LOGIN, false);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
@@ -136,6 +211,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		
 		return map;
 	}
@@ -151,6 +227,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_HELP, true);
 		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, true);
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
+		map.put(EsaSkyWebConstants.MODULE_LOGIN, false);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
@@ -168,6 +245,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		
 		return map;
 	}
@@ -183,6 +261,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_HELP, true);
 		map.put(EsaSkyWebConstants.MODULE_DROPDOWN, true);
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, true);
+		map.put(EsaSkyWebConstants.MODULE_LOGIN, true);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, true);
 		map.put(EsaSkyWebConstants.MODULE_CAT, true);
@@ -200,7 +279,8 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SCIENCE_MODE, true);
         map.put(EsaSkyWebConstants.MODULE_SESSION, true);
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_TOOL, true);
-		
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
+
 		return map;
 	}
 
@@ -214,6 +294,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SHARE, false);
 		map.put(EsaSkyWebConstants.MODULE_HELP, false);
 		map.put(EsaSkyWebConstants.MODULE_FEEDBACK, false);
+		map.put(EsaSkyWebConstants.MODULE_LOGIN, false);
 		map.put(EsaSkyWebConstants.MODULE_SKIESMENU, true);
 		map.put(EsaSkyWebConstants.MODULE_OBS, false);
 		map.put(EsaSkyWebConstants.MODULE_CAT, false);
@@ -221,7 +302,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_EXTTAP, false);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE, true);
 		map.put(EsaSkyWebConstants.MODULE_OUTREACH_JWST, true);
-		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, false);
+		map.put(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID, true);
 		map.put(EsaSkyWebConstants.MODULE_GW, false);
 		map.put(EsaSkyWebConstants.MODULE_SSO, false);
 		map.put(EsaSkyWebConstants.MODULE_PUBLICATIONS, false);
@@ -237,6 +318,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU, false);
 		map.put(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS, true);
 		map.put(EsaSkyWebConstants.MODULE_WELCOME_DIALOG, false);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		return map;
 	}
 	
@@ -254,6 +336,7 @@ public class Modules {
 		map.put(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU, true);
 		map.put(EsaSkyWebConstants.MODULE_KIOSK_BUTTONS, false);
 		map.put(EsaSkyWebConstants.MODULE_WELCOME_DIALOG, true);
+		map.put(EsaSkyWebConstants.MODULE_SEARCH_BOX, true);
 		return map;
 	}
     

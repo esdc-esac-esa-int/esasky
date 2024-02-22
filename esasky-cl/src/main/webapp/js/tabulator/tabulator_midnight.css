@@ -545,6 +545,7 @@
 .tabulator-row .tabulator-cell.tabulator-editing input, .tabulator-row .tabulator-cell.tabulator-editing select {
   border: 1px;
   background: transparent;
+  color: lightgrey;
 }
 
 .tabulator-row .tabulator-cell.tabulator-validation-fail {

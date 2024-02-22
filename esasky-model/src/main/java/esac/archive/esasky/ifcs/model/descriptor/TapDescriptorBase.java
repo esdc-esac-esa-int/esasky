@@ -58,6 +58,9 @@ public abstract class TapDescriptorBase {
     @JsonIgnore
     private static final String GROUP_COL2_KEY = "group_column2";
 
+    @JsonIgnore
+    private boolean isUserTable = false;
+
 
     public abstract List<TapMetadataDescriptor> getMetadata();
     public abstract Map<String, Object> getProperties();
@@ -127,6 +130,13 @@ public abstract class TapDescriptorBase {
         return true;
     }
 
+    public boolean isUserTable() {
+        return isUserTable;
+    }
+
+    public void setIsUserTable(boolean isUserTable) {
+        this.isUserTable = isUserTable;
+    }
 
     public void setTapUrl(String tapUrl) {
         getProperties().put(TAP_URL_KEY, formatTapUrl(tapUrl));
@@ -165,7 +175,7 @@ public abstract class TapDescriptorBase {
         long currentTime = System.currentTimeMillis();
         String encodedQuery = URL.encodeQueryString(query);
 
-        if (!isExternal()) {
+        if (!isExternal() || isUserTable()) {
             return baseUrl + "/tap/sync?request=doQuery&lang=ADQL&format="
                     + responseFormat + "&query=" + encodedQuery + "&timecall=" + currentTime;
         } else {

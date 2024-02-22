@@ -66,6 +66,7 @@ public class TabulatorWrapper {
         };
     }
 
+
     public void setAddHipsColumn(boolean addHipsColumn) {
         tableJsObject.setProperty("addHipsColumn", addHipsColumn);
     }
@@ -117,6 +118,24 @@ public class TabulatorWrapper {
         GeneralJavaScriptObject rows = GeneralJavaScriptObject.createJsonObject(json);
         deselectRows(rows);
     }
+
+    public void addRow(GeneralJavaScriptObject row) {
+        addRow(tableJsObject, row);
+    }
+
+    public native void addRow(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject row) /*-{
+        tableJsObject.addRow(row);
+
+    }-*/;
+
+    public void deleteRow(GeneralJavaScriptObject row) {
+        deleteRow(tableJsObject, row);
+    }
+
+    public native void deleteRow(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject row) /*-{
+        tableJsObject.deleteRow(row);
+
+    }-*/;
 
     public void selectRows(GeneralJavaScriptObject rowIdArray) {
         selectRows(tableJsObject, rowIdArray);
@@ -330,6 +349,61 @@ public class TabulatorWrapper {
         tableJsObject.redraw(true);
         tableJsObject.vdomHoz.reinitialize();
     }-*/;
+
+
+    private void onRenderComplete() {
+        if(tableJsObject != null) {
+            onRenderComplete(tableJsObject);
+        }
+    }
+
+    private native void onRenderComplete(GeneralJavaScriptObject tableJsObject) /*-{
+
+        var rows = tableJsObject.getRows();
+        var createNewRow;
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].getData().createNewRow) {
+                createNewRow = rows[i];
+                break;
+            }
+        }
+
+        if(createNewRow){
+            createNewRow.getElement().style.border = "1px solid rgb(204 204 204 / 50%)"
+            createNewRow.getElement().style.borderRadius = "5px"
+            createNewRow.getElement().style.marginTop = "10px"
+            createNewRow.getElement().style.background = "rgb(32 164 216 / 60%)"
+            var createNewRowCell = createNewRow.getElement().getElementsByClassName("tabulator-cell")[0];
+            if (createNewRowCell) {
+                createNewRowCell.innerHTML = "<div style='display:flex;justify-content:center' title='" + tableJsObject.settings.showCreateRowButtonTooltip + "'> <img src='" + tableJsObject.settings.showCreateRowButtonIcon + "' width='20px' height='20px'/></div>";
+
+                // Loop through other cells in the special row to clear content and remove borders
+                var cells = createNewRow.getCells();
+                for (var i = 0; i < cells.length; i++) {
+                    var cell = cells[i];
+                    if (i > 0) {
+                        // Clear content of other columns
+                        cell.getElement().innerHTML = "";
+                        cell.getElement().style.display = "none";
+                    } else {
+                        cell.getElement().style.overflow = "visible";
+                        cell.getElement().style.width = "100%";
+                    }
+
+                    cell.getElement().style.pointerEvents = "none";
+                    cell.getElement().style.border = "none";
+                }
+
+            }
+
+            // Prevent sort from moving row
+            if (tableJsObject.getDataCount() > 1) {
+                createNewRow.move(tableJsObject.getRows('active')[tableJsObject.getDataCount() - 1]);
+            }
+
+        }
+    }-*/;
+
 
     public void filterOnFov(String raCol, String decCol) {
         SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
@@ -627,7 +701,14 @@ public class TabulatorWrapper {
 
     private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
         tableJsObject.dataLoaded = false;
-        tableJsObject.setData(dataOrUrl, {}, {signal: abortController.signal});
+        tableJsObject.setData(dataOrUrl, {}, {signal: abortController.signal}).then(function () {
+            if (tableJsObject.settings && tableJsObject.settings.showCreateRowButton) {
+                var createNewRowData = {createNewRow: true, selectable: false}; // Identify it as the special row
+                tableJsObject.addRow(createNewRowData);
+                tableJsObject.redraw(true);
+            }
+            tableJsObject.showCount = true;
+        });
 
         var observer = new MutationObserver(function (mutations) {
             for (var i = 0; i < mutations.length; i++) {
@@ -809,11 +890,34 @@ public class TabulatorWrapper {
             ajaxLoaderLoading: @esac.archive.esasky.cl.web.client.view.common.LoadingSpinner::getLoadingSpinner()(),
             ajaxLoaderError: $wnd.esasky.getInternationalizationText("tabulator_loadFailed"),
             rowSelectionChanged: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getRowSelectionChangedFunc(*)(wrapper),
-
+            rowClick: function (e, row) {
+                if (row.getData().createNewRow) {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onCreateNewRowClicked()();
+                } else {
+                    wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowClicked(*)(row);
+                }
+            },
             rowMouseEnter: function (e, row) {
                 wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRowEnter(I)(row.getIndex());
             },
-
+            rowAdded: function(row) {
+                // Check if the added row is not the special row
+                if (!row.getData().createNewRow) {
+                    var rows = table.getRows();
+                    var createNewRowIndex = -1;
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].getData().createNewRow) {
+                            createNewRowIndex = i;
+                            break;
+                        }
+                    }
+                    var createNewRow = rows[createNewRowIndex]; // Get special row object
+                    row.move(createNewRow, row); // Move the added row above the special row
+                }
+            },
+            renderComplete: function() {
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onRenderComplete()()
+            },
             movableColumns: true,
             autoColumns: true,
             layout: settings.tableLayout
@@ -823,7 +927,7 @@ public class TabulatorWrapper {
             table.blockRedraw();
         }
 
-
+        table.settings = settings;
         table.isEsaskyData = settings.isEsaskyData;
         //Remove the clearSelection function to make sure that it is possible to select and copy text from the table
         table._clearSelection = function () {
@@ -881,6 +985,7 @@ public class TabulatorWrapper {
             var esaskyToVOStandardType = {};
             esaskyToVOStandardType["DOUBLE"] = "double"
             esaskyToVOStandardType["INTEGER"] = "int"
+            esaskyToVOStandardType["INT"] = "int"
             esaskyToVOStandardType["SHORT"] = "short"
             esaskyToVOStandardType["BIGINT"] = "long";
             esaskyToVOStandardType["STRING"] = "char";
@@ -891,7 +996,10 @@ public class TabulatorWrapper {
             esaskyToVOStandardType["SMALLINT"] = "int";
             esaskyToVOStandardType["TIMESTAMP"] = "char";
             esaskyToVOStandardType["BOOLEAN"] = "boolean";
-
+            esaskyToVOStandardType["LONG"] = "long";
+            esaskyToVOStandardType["RA"] = "double";
+            esaskyToVOStandardType["DEC"] = "double";
+            
             // Adds headers to xml
             table.metadata.forEach(function (columnInfo) {
                 if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
@@ -903,7 +1011,9 @@ public class TabulatorWrapper {
                                 value = esaskyToVOStandardType[value.toUpperCase()];
                                 if (value == "char" && !columnInfo.hasOwnProperty("arraysize")) {
                                     votData += " arraysize =\"*\""
-                                }
+                                } else if (!value || value == "") {
+                                    value = "char";
+                                    votData += " arraysize =\"*\""                                }
                             }
                             votData += " " + key + "=\"" + $wnd.esasky.escapeXml(value) + "\"";
                         }
@@ -1109,7 +1219,7 @@ public class TabulatorWrapper {
             })
             this.metadata = newMeta;
             this.filterData = filterData;
-            this.showCount = false;
+            this.showCount = true;
             this.dataLoaded = true;
 
             return [];
@@ -1753,6 +1863,46 @@ public class TabulatorWrapper {
                 previewColumn.move("centre", true);
             }
 
+            if (settings.deleteRowColumn) {
+                this.addColumn({
+                    title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_deleteRow"),
+                    field: "deleteRowBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_deleteRowTooltip"),
+                    minWidth: 60,
+                    download: false,
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter,
+                    formatterParams: {image: "recycle-bin-line-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_deleteRowTooltip")},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onDeleteRowClicked(*)(cell.getData());
+                    }
+                }, true);
+            }
+
+            if (settings.editRowColumn) {
+                this.addColumn({
+                    title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_editRow"),
+                    field: "editRowBtn",
+                    visible: true,
+                    headerSort: false,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_editRowTooltip"),
+                    minWidth: 60,
+                    download: false,
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: imageButtonFormatter,
+                    formatterParams: {image: "edit-pen-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_editRowTooltip")},
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onEditRowClicked(*)(cell.getData());
+                    }
+                }, true);
+            }
+
             if (settings.addObscoreTableColumn) {
                 this.addColumn({
                     title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addTable"),
@@ -1839,6 +1989,7 @@ public class TabulatorWrapper {
                     }
                 }, true);
             }
+
         }
     }-*/;
 
@@ -1879,6 +2030,10 @@ public class TabulatorWrapper {
                     }
 
                 }
+            }
+            
+            if (settings.customColumn) {
+                activeColumnGroup.push(JSON.parse(settings.customColumn));
             }
 
             // Add additional columns from settings
@@ -2067,6 +2222,8 @@ public class TabulatorWrapper {
                             title: @esac.archive.esasky.cl.web.client.status.GUISessionStatus::getTrackedSsoName()(),
                             columns: activeColumnGroup
                         });
+                    } else if (settings.customMetadata) {
+                        activeColumnGroup.push(this.metadata[i]);
                     } else {
                         activeColumnGroup.push(wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::generateColumn(*)(wrapper, this, this.metadata[i], divId, this.metadata.find(function (obj) {
                             return obj.name === "access_format"
@@ -2266,16 +2423,20 @@ public class TabulatorWrapper {
                 }
                 columnMeta.displayName = "Download";
             } else {
+                var cellTooltipKey = "tabulator_link_cell_tooltip_" + columnMeta.name;
                 formatter = function (cell, formatterParams, onRendered) {
-                    return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+                    var disabledClass = cell.getValue() ? "" : "buttonCellDisabled";
+                    var title = disabledClass ? $wnd.esasky.getDefaultLanguageText("tabulator_link_no_data") : formatterParams.tooltip;
+                    return "<div class='buttonCell " + disabledClass + "' title='" + title + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
                 };
                 formatterParams = {
                     image: "link2archive.png",
-                    tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
+                    tooltip: $wnd.esasky.hasInternationalizationText(cellTooltipKey) ? $wnd.esasky.getDefaultLanguageText(cellTooltipKey) : $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
                 };
             }
 
-            tooltip = $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
+            var tooltipKey = "tabulator_link_column_tooltip_" + columnMeta.name;
+            tooltip =  $wnd.esasky.hasInternationalizationText(tooltipKey) ? $wnd.esasky.getDefaultLanguageText(tooltipKey) : $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip");
             cellClick = function (e, cell) {
                 e.stopPropagation();
                 var rowData = cell.getData();
@@ -2510,12 +2671,28 @@ public class TabulatorWrapper {
         tabulatorCallback.onOpenTableClicked(rowData);
     }
 
+    public void onDeleteRowClicked(GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onDeleteRowClicked(rowData);
+    }
+
+    public void onEditRowClicked(GeneralJavaScriptObject rowData) {
+        tabulatorCallback.onEditRowClicked(rowData);
+    }
+
     public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onAddHipsClicked(rowData);
     }
 
     public void onRowSelection(GeneralJavaScriptObject row) {
         tabulatorCallback.onRowSelection(row);
+    }
+
+    public void onRowClicked(GeneralJavaScriptObject row) {
+        tabulatorCallback.onRowClicked(row);
+    }
+
+    public void onCreateNewRowClicked() {
+        tabulatorCallback.onCreateRowClicked();
     }
 
     public void onRowDeselection(GeneralJavaScriptObject row) {

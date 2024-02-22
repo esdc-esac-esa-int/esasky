@@ -2,14 +2,11 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
@@ -361,6 +358,20 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
             }
         }
 	}
+
+	// Remove all but the selected sky
+	public void removeOtherSkies() {
+		for(SkyRow skyRow : skies) {
+			int indexToRemove = skies.indexOf(skyRow);
+			int indexOfSelected = skies.indexOf(getSelectedSky());
+
+			if (indexToRemove != indexOfSelected) {
+				removeSky(skyRow);
+			}
+
+		}
+	}
+
 
 	private void removeSky(SkyRow skyToRemove){
 		int indexToRemove = skies.indexOf(skyToRemove);

@@ -171,6 +171,12 @@ public class Icons {
 
 		@Source("undo-arrow-icon.png")
 		ImageResource undoArrowIcon();
+
+		@Source("delete-table.png")
+		ImageResource deleteTableIcon();
+
+		@Source("user-icon.png")
+		ImageResource userIcon();
 	}
 	
 	private static void initMap() {
@@ -210,7 +216,7 @@ public class Icons {
 		iconMap.put("contract", getContractIcon());
 		iconMap.put("hubble", getHubbleIcon());
 		iconMap.put("jwst", getJwstIcon());
-		
+		iconMap.put("delete-table", getDeleteTableIcon());
 	}
 	
 	public static HashMap<String, ImageResource> getIconMap(){
@@ -398,4 +404,10 @@ public class Icons {
 	public static ImageResource getBackArrowIcon() { return resources.backArrow(); }
 
 	public static ImageResource getUndoArrowIcon() { return resources.undoArrowIcon(); }
+
+	public static ImageResource getDeleteTableIcon() { return resources.deleteTableIcon(); }
+
+	public static ImageResource getUserIcon() {
+		return resources.userIcon();
+	}
 }

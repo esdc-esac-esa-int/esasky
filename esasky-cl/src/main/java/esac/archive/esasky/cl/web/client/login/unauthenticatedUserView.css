@@ -1,0 +1,11 @@
+.loginPopupPanel {
+    z-index: 9999;
+    min-width: 150px;
+}
+
+
+.loginPopupPanel__header_dropdown_content {
+    min-width: 175px;
+    text-align: center;
+    font-size: 14px;
+}

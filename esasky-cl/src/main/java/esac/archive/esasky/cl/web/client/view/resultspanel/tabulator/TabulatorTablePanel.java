@@ -341,6 +341,31 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		//Do nothing by default - To be overridden if needed.
 	}
 
+	@Override
+	public void onDeleteRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onEditRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onAddRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onRowClicked(GeneralJavaScriptObject rowData) {
+		//Do nothing by default - To be overridden if needed.
+	}
+
+	@Override
+	public void onCreateRowClicked() {
+		//Do nothing by default - To be overridden if needed.
+	}
+
 	public boolean getIsHidingTable() {
 		return isHidingTable;
 	}
@@ -866,7 +891,9 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			}
 		}
 
-		openArchiveUrl(archiveUrl, row);
+		if (archiveUrl != null && !archiveUrl.isEmpty()){
+			openArchiveUrl(archiveUrl, row);
+		}
 	}
 
 
@@ -946,8 +973,16 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		queryPopupPanel.setTapTable(entity.getDescriptor().getTableName());
 		queryPopupPanel.setTapServiceUrl(entity.getDescriptor().getTapUrl());
-		queryPopupPanel.setQuery(entity.getQuery());
+		queryPopupPanel.setQuery(this.getQuery());
 		queryPopupPanel.show();
+	}
+
+	private String getQuery() {
+		if (entity.getQuery() != null && !entity.getQuery().isEmpty()) {
+			return entity.getQuery();
+		} else {
+			return entity.getDescriptor().getUnprocessedADQL();
+		}
 	}
 
 	@Override

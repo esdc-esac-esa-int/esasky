@@ -146,21 +146,17 @@ public class AllSkyFocusPanel extends FocusPanel {
         searchInSimbadButton.setTitle(TextMgr.getInstance().getText("AllSkyFocusPanel_searchInSimbad"));
         searchInSimbadButton.setVeryBigStyle();
         searchInSimbadButton.addStyleName("allSkyButton");
-        searchInSimbadButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                contextMenu.hide();
-                Coordinate j2000Coordinate = getJ2000Coordinate();
-                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD,
-                        "RA: " + j2000Coordinate.getRa()
-                                + " Dec: " + j2000Coordinate.getDec()
-                                + " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
-                Window.open(
-                        ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
-                                j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
-                        "_blank", "");
-            }
+        searchInSimbadButton.addClickHandler(event -> {
+            contextMenu.hide();
+            Coordinate j2000Coordinate = getJ2000Coordinate();
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_CONTEXT_MENU, GoogleAnalytics.ACT_CONTEXTMENU_SEARCHINSIMBAD,
+                    "RA: " + j2000Coordinate.getRa()
+                            + " Dec: " + j2000Coordinate.getDec()
+                            + " CooFrame: " + AladinLiteWrapper.getCoordinatesFrame().getValue());
+            Window.open(
+                    ExternalServices.buildSimbadURLWithRaDec(j2000Coordinate.getRa(),
+                            j2000Coordinate.getDec(), CoordinatesFrame.J2000.getValue()),
+                    "_blank", "");
         });
 
         searchInNedButton = new EsaSkyButton(this.resources.ned());
@@ -318,5 +314,9 @@ public class AllSkyFocusPanel extends FocusPanel {
             raText.setText(raDecStr[0]);
             decText.setText(raDecStr[1]);
         }
+    }
+
+    public void updateModuleVisibility() {
+        contextMenu.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_SEARCH_IN_MENU));
     }
 }

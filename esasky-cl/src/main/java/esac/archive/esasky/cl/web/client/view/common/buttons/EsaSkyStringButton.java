@@ -43,6 +43,10 @@ public class EsaSkyStringButton extends Composite{
 		setSmallStyle();
 		setSquaredStyle();
 	}
+
+	public PushButton getPushButton() {
+		return this.button;
+	}
 	
 	public void setDarkStyle(){
 		button.removeStyleName("lightStringStyle");

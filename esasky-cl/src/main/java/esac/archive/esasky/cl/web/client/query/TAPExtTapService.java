@@ -35,8 +35,8 @@ public class TAPExtTapService extends AbstractTAPService {
     }
 
     @Override
-    public String getRequestUrl() {
-        return EsaSkyWebConstants.EXT_TAP_REQUEST_URL;
+    public String getRequestUrl(CommonTapDescriptor descriptor) {
+        return descriptor.isUserTable() ? super.getRequestUrl(descriptor) : EsaSkyWebConstants.EXT_TAP_REQUEST_URL;
     }
 
     public String getAdql(CommonTapDescriptor descriptor, String selectADQL) {

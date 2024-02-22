@@ -28,6 +28,13 @@ public class TabulatorSettings{
 	private Boolean addObscoreTableColumn = false;
 	private Boolean showDetailedErrors = false;
 	private Boolean fovLimitDisabled = false;
+	private Boolean deleteRowColumn = false;
+	private Boolean editRowColumn = false;
+	private String customColumn;
+	private Boolean customMetadata = false;
+	private Boolean showCreateRowButton = false;
+	private String createRowButtonTooltip = "Add row";
+	private String createRowButtonIcon = "images/plus-sign-light-small.png";
 
 	public String convertToJsonString() {
 		JSONObject json = new JSONObject();
@@ -59,6 +66,16 @@ public class TabulatorSettings{
 		json.put("showDetailedErrors", JSONBoolean.getInstance(showDetailedErrors));
 		json.put("fovLimitDisabled", JSONBoolean.getInstance(fovLimitDisabled));
 		json.put("addOpenTableColumn", JSONBoolean.getInstance(addOpenTableColumn));
+		json.put("deleteRowColumn", JSONBoolean.getInstance(deleteRowColumn));
+		json.put("editRowColumn", JSONBoolean.getInstance(editRowColumn));
+		json.put("customMetadata", JSONBoolean.getInstance(customMetadata));
+		json.put("showCreateRowButton", JSONBoolean.getInstance(showCreateRowButton));
+		json.put("showCreateRowButtonTooltip", new JSONString(createRowButtonTooltip));
+		json.put("showCreateRowButtonIcon", new JSONString(createRowButtonIcon));
+		if (customColumn != null) {
+			json.put("customColumn", new JSONString(customColumn));
+		}
+
 		return json.toString();
 	}
 
@@ -209,4 +226,56 @@ public class TabulatorSettings{
 	public void setAddOpenTableColumn(Boolean addOpenTableColumn) {
 		this.addOpenTableColumn = addOpenTableColumn;
 	}
+
+	public void setDeleteRowColumn(Boolean deleteRowColumn) {
+		this.deleteRowColumn = deleteRowColumn;
+	}
+
+	public Boolean getDeleteRowColumn() {
+		return deleteRowColumn;
+	}
+
+	public Boolean getEditRowColumn() {
+		return editRowColumn;
+	}
+
+	public void setEditRowColumn(Boolean editRowColumn) {
+		this.editRowColumn = editRowColumn;
+	}
+
+	public String getCustomColumn() {
+		return customColumn;
+	}
+
+	public void setCustomColumn(String customColumn) {
+		this.customColumn = customColumn;
+	}
+
+	public Boolean getCustomMetadata() {
+		return customMetadata;
+	}
+
+	public void setCustomMetadata(Boolean customMetadata) {
+		this.customMetadata = customMetadata;
+	}
+
+	public Boolean getShowCreateRowButton() {
+		return showCreateRowButton;
+	}
+
+	public void setShowCreateRowButton(Boolean showCreateRowButton) {
+		this.showCreateRowButton = showCreateRowButton;
+	}
+
+	public void setShowCreateRowButton(Boolean showCreateRowButton, String tooltip) {
+		this.showCreateRowButton = showCreateRowButton;
+		this.createRowButtonTooltip = tooltip;
+	}
+
+	public void setShowCreateRowButton(Boolean showCreateRowButton, String tooltip, String icon) {
+		this.showCreateRowButton = showCreateRowButton;
+		this.createRowButtonTooltip = tooltip;
+		this.createRowButtonIcon = icon;
+	}
+
 }

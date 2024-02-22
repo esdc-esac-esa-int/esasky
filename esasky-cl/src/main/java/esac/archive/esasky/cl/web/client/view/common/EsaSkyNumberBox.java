@@ -21,7 +21,7 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 	private final CssResource style;
 	private Resources resources;
 
-	private final NumberFormat numberFormat;
+	private NumberFormat numberFormat;
 
 	private double latestValidNumber;
 	private double maxNumber = Double.MAX_VALUE;
@@ -37,11 +37,11 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
     }
 	
 	
-	public EsaSkyNumberBox(final NumberFormat numberFormat, final double keyboardArrowStep){
+	public EsaSkyNumberBox(NumberFormat numberFormat, final double keyboardArrowStep){
 		this(numberFormat, keyboardArrowStep, Double.MIN_VALUE, Double.MAX_VALUE);
 	}
 	
-	public EsaSkyNumberBox(final NumberFormat numberFormat, final double keyboardArrowStep, double min, double max){
+	public EsaSkyNumberBox(NumberFormat numberFormat, final double keyboardArrowStep, double min, double max){
 		super();
 		
 		this.resources = GWT.create(Resources.class);
@@ -103,29 +103,39 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 			
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
-				if(getText().matches("[-+]?[0-9]*\\.?[0-9]+")) {
-					double currentNumber = Double.valueOf(getText());
-					if(new Double(numberFormat.format(currentNumber)) > new Double(numberFormat.format(maxNumber))) {
-						currentNumber = maxNumber;
-						setNumber(currentNumber);
+				NumberFormat numberFormat = EsaSkyNumberBox.this.numberFormat;
+				try {
+					double currentNumber = numberFormat.parse(getText());
+					String stringValue = String.valueOf(currentNumber);
+					if(stringValue.matches("[-+]?[0-9]*\\.?[0-9]+")) {
+						if(currentNumber > maxNumber) {
+							currentNumber = maxNumber;
+							setNumber(currentNumber);
+						}
+						if(currentNumber < minNumber) {
+							currentNumber = minNumber;
+							setNumber(currentNumber);
+						}
+						latestValidNumber = currentNumber;
+						getElement().removeClassName(INVALID_INPUT_CSS);
+
+					}else {
+						getElement().addClassName(INVALID_INPUT_CSS);
 					}
-					if(new Double(numberFormat.format(currentNumber)) < new Double(numberFormat.format(minNumber))) {
-						currentNumber = minNumber;
-						setNumber(currentNumber);
-					}
-					latestValidNumber = currentNumber;
-					getElement().removeClassName(INVALID_INPUT_CSS);
-				
-				}else {
-					
+				} catch (Exception ex) {
 					getElement().addClassName(INVALID_INPUT_CSS);
 				}
+
 			}
 		});
 	}
 
 	public double getNumber() {
 		return latestValidNumber;
+	}
+
+	public String getFormattedNumber() {
+		return numberFormat.format(getNumber());
 	}
 
 	public void setNumber(double number) {
@@ -154,11 +164,27 @@ public class EsaSkyNumberBox extends EsaSkyTextBox{
 		minNumber = min;
 	}
 
+	public void setNumberFormat(NumberFormat numberFormat) {
+		NumberFormat oldNumberFormat = this.numberFormat;
+		this.numberFormat = numberFormat;
+		this.setNumberSilently(oldNumberFormat.parse(getText()));
+	}
+
 	@Override
 	public void setText(String text) {
 		Log.debug("Can't set text of a number box");
 	}
 
+
+	private void setNumberSilently(double number) {
+		if(number > maxNumber) {
+			number = maxNumber;
+		}
+		if(number < minNumber) {
+			number = minNumber;
+		}
+		super.setTextSilently(numberFormat.format(number));
+	}
 
 	private class KeyDownAndHold extends Timer {
 

@@ -59,6 +59,8 @@ public class ResultsPresenter implements ICountRequestHandler {
         ITablePanel addResultsTab(GeneralEntityInterface entity, String helpTitle, String helpDescription);
 
         void removeTab(String id);
+
+        void removeAllTabs();
     }
 
     public ResultsPresenter(final View inputView, DescriptorRepository descriptorRepo) {
@@ -264,6 +266,10 @@ public class ResultsPresenter implements ICountRequestHandler {
     }
     
     public void removeTab(String id) {
-    	    view.removeTab(id);
+        view.removeTab(id);
+    }
+
+    public void removeAllTabs() {
+        view.removeAllTabs();
     }
 }

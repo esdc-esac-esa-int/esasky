@@ -2,6 +2,7 @@ package esac.archive.esasky.cl.wcstransform.module.footprintbuilder;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,11 @@ public class JWSTSiafToSTCSGenerator extends STCSAbstractGenerator {
 
         return fullFovSkyCoords;
 
+    }
+
+    @Override
+    public Map<String, double[]> computeInstrumentLabels(String instrument, String detector, double angle, double ra, double dec) {
+        return Collections.emptyMap();
     }
 
     private Vector<double[]> projectPixelsToSkyCoords(Vector<double[]> pixels,

@@ -38,4 +38,8 @@ public class EsaSkyTextBox extends TextBox{
 	   super.setText(text);
 	   ValueChangeEvent.fire(EsaSkyTextBox.this, getText());
    }
+
+   public void setTextSilently(String text) {
+        super.setText(text);
+   }
 }

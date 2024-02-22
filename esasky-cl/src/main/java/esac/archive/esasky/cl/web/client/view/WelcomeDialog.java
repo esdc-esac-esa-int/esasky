@@ -1,36 +1,22 @@
 package esac.archive.esasky.cl.web.client.view;
 
-import java.util.Date;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
-
+import com.google.gwt.user.client.ui.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.MovablePanel;
-import esac.archive.esasky.cl.web.client.view.common.MovablePanel.OnKeyPress;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.LabelWithHelpButton;
+
+import java.util.Date;
 
 public class WelcomeDialog extends Composite {
 
@@ -80,13 +66,7 @@ public class WelcomeDialog extends Composite {
 		descriptionText.addStyleName("welcomeDescription");
 		
 		final MovablePanel welcomeDialogConainer = new MovablePanel(GoogleAnalytics.CAT_WELCOME, true);
-		welcomeDialogConainer.addHideOnEscapeKeyBehavior(new OnKeyPress() {
-            
-            @Override
-            public void onEscapeKey() {
-                close();
-            }
-        });
+		welcomeDialogConainer.addHideOnEscapeKeyBehavior(this::close);
 		welcomeDialogConainer.add(esaSkyLogo);
 		welcomeDialogConainer.add(esaLogo);
 		welcomeDialogConainer.add(title);
@@ -102,37 +82,23 @@ public class WelcomeDialog extends Composite {
 		scienceButton = new EsaSkyStringButton(TextMgr.getInstance().getText("WelcomeDialog_science"));
 		scienceButton.setMediumStyle();
 		scienceButton.addStyleName("welcomeButton");
-		scienceButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				close();
-				GUISessionStatus.setIsInScienceMode(true);
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_SCIENCE, "");
-			}
-		});
+		scienceButton.addClickHandler(event -> {
+            close();
+            GUISessionStatus.setIsInScienceMode(true);
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_SCIENCE, "");
+        });
 		
 		explorerButton = new EsaSkyStringButton(TextMgr.getInstance().getText("WelcomeDialog_explorer"));
 		explorerButton.setMediumStyle();
 		explorerButton.addStyleName("welcomeButton");
-		explorerButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_EXPLORER, "");
-				close();
-				GUISessionStatus.setIsInScienceMode(false);
-			}
-		});
+		explorerButton.addClickHandler(event -> {
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_EXPLORER, "");
+            close();
+            GUISessionStatus.setIsInScienceMode(false);
+        });
 		
 		checkBox.addStyleName("welcomeCheckBox");
-		checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_DONOTSHOWAGAIN, event.getValue().toString());
-			}
-		});
+		checkBox.addValueChangeHandler(event -> GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_DONOTSHOWAGAIN, event.getValue().toString()));
 		
 		Anchor cookieInformation = new Anchor(TextMgr.getInstance().getText("WelcomeDialog_cookieInformation"), EsaSkyWebConstants.COOKIE_POLICY_URL, "_blank");
 		cookieInformation.addStyleName("cookieInformation");
@@ -158,14 +124,10 @@ public class WelcomeDialog extends Composite {
 		getElement().getStyle().setWidth(DIALOG_WIDTH, Unit.PX);
 		addStyleName("welcomeDialogBox");
 		
-		MainLayoutPanel.addMainAreaResizeHandler(new ResizeHandler() {
-			
-			@Override
-			public void onResize(ResizeEvent event) {
-				setMaxSize();
-				setSciModeButtonPositions();
-			}
-		});
+		MainLayoutPanel.addMainAreaResizeHandler(event -> {
+            setMaxSize();
+            setSciModeButtonPositions();
+        });
     }
     
     @Override
@@ -178,20 +140,16 @@ public class WelcomeDialog extends Composite {
     	EsaSkyStringButton closeButton = new EsaSkyStringButton(TextMgr.getInstance().getText("WelcomeDialog_closeButton"));
     	closeButton.setMediumStyle();
     	closeButton.addStyleName("welcomeCloseButton");
-    	closeButton.addClickHandler(new ClickHandler() {
-    		
-    		@Override
-    		public void onClick(ClickEvent event) {
-    			close();
-    			GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_CLOSE, "");
-    		}
-    	});
+    	closeButton.addClickHandler(event -> {
+            close();
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_CLOSE, "");
+        });
     	
     	return closeButton;
     }
     
     private void close() {
-    	if(checkBox.getValue()){
+    	if(Boolean.TRUE.equals(checkBox.getValue())){
 			Date expires = new Date();
 			long milliseconds = ((long) 120)  * 24 * 60 * 60 * 1000;
 			expires.setTime(expires.getTime() + milliseconds);
