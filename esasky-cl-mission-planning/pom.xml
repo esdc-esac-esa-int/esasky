@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>6.1-SNAPSHOT</version>
+		<version>6.0</version>
 	</parent>
 
 	<artifactId>esasky-cl-mission-planning</artifactId>
