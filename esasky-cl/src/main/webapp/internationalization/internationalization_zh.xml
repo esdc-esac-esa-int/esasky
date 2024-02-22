@@ -2775,4 +2775,174 @@ ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接�
 		更多信息
 		&lt;/a&gt;
 	</text>
+	<text key="outreachImagePanel_EUCLID_header">
+		欧空局/Euclid科普图片
+	</text>
+	<text key="outreachImagePanel_EUCLID_helpText">
+		展示 &lt;a
+		href="https://www.esa.int/Science_Exploration/Space_Science/Euclid"
+		target="_blank"&gt;
+		欧空局/Euclid网站上提供的天文科普图片。
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		此面板显示了欧空局/Euclid 科普图片的列表，这些图片可在天空区域中使用。在视野内，这些图像的覆盖图通过蓝色矩形显示，您可以单击“隐藏覆盖图”来隐藏它们。
+		&lt;br&gt;&lt;br&gt;
+		单击覆盖图或列表项，即可在当前显示的天空上叠加显示科普图像。打开一个文本框，其中包含图像的描述及其在欧空局/Euclid网站上的链接。您可以通过将图像不透明度条移动到左侧和右侧来调整不透明度。
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;重要:&lt;/b&gt; 这些图像是为科普目的而创建的，不适用于科学用途。
+	</text>
+
+	<text key="outreachImagePanel_EUCLID_helpTitle">
+		欧空局/Euclid科普图片
+	</text>
+
+
+	<text key="webConstants_exploreEuclidImages">
+		浏览来自Euclid的科普图片
+	</text>
+
+	<text key="header_euclidOutreachImages">
+		Euclid科普图片
+	</text>
+	<text key="header_euclidImagesTooltip">
+		展示来自欧几里得空间望远镜的科普图片
+	</text>
+
+
+	<text key="EuclidEarlyReleaseTargets">
+		Euclid早期释放目标
+	</text>
+
+	<text key="header_userArea">
+		用户区
+	</text>
+
+	<text key="login">登录</text>
+	<text key="logout">注销</text>
+	<text key="Logout">注销</text>
+	<text key="register_account">注册</text>
+	<text key="yes">是</text>
+	<text key="no">否</text>
+
+	<text key="userArea__dropdown__tables">表格</text>
+	<text key="userArea__dropdown__sessions">会话</text>
+	<text key="userArea__dropdown__layouts">布局</text>
+	<text key="userArea__searchTables">搜索表格</text>
+	<text key="userArea__userTables">用户表格</text>
+	<text key="userArea__userSessions">用户会话</text>
+	<text key="userArea__uploadTablePopup_title">上传表格</text>
+	<text key="userArea__uploadTablePopup_help">将自定义表格上传到 ESASky。请注意，文件扩展名必须为 .xml、.vot、.csv 或 .votable</text>
+
+	<text key="tabulatorWrapper_deleteRow">
+		删除
+	</text>
+	<text key="tabulatorWrapper_deleteRowTooltip">
+		删除行
+	</text>
+
+
+	<text key="userArea__deleteTableTitle">
+		删除表格
+	</text>
+
+	<text key="userArea__deleteTableBody">
+		您确定要删除此表格吗？
+	</text>
+
+	<text key="userArea__deleteTableHelp">
+		此操作将从数据库中删除您的表格。此操作无法撤销。
+	</text>
+	<text key="scientific_toggle_button">使用科学切换按钮在科学和科普模式之间切换</text>
+	<text key="science_mode">在科学和科普模式之间切换</text>
+	<text key="language_button">使用语言按钮在语言之间切换</text>
+	<text key="coordinate_grid_button">使用坐标网格按钮切换坐标网格</text>
+	<text key="screenshot_button">使用屏幕截图按钮捕获ESASky的屏幕截图</text>
+	<text key="share_button">使用共享按钮将您的URL复制到剪贴板</text>
+	<text key="help_button">使用帮助按钮导航至ESASky的操作指南页面</text>
+	<text key="dropdown_menu">主汉堡菜单</text>
+	<text key="skies_menu">HIPS菜单</text>
+	<text key="feedback_button">使用反馈按钮提供反馈</text>
+	<text key="login_button">用户区（表格、会话、布局）</text>
+	<text key="observations_button">观测</text>
+	<text key="catalogues_button">星表</text>
+	<text key="spectra_button">光谱</text>
+	<text key="exttap_button">外部数据中心</text>
+	<text key="gw_button">访问多信使事件</text>
+	<text key="outreach_button">哈勃科普图片</text>
+	<text key="outreach_jwst_button">詹姆斯·韦伯望远镜图片</text>
+	<text key="sso_button">太阳系天体</text>
+	<text key="publications_button">出版物</text>
+	<text key="target_list_button">目标列表</text>
+	<text key="target_list_upload">切换上传目标列表按钮</text>
+	<text key="jwst_planning_button">规划工具</text>
+	<text key="dice_button">转到随机目标</text>
+	<text key="session">从本地文件保存和恢复会话</text>
+	<text key="eva_menu">ESA虚拟助手(EVA)</text>
+	<text key="eva">切换EVA聊天</text>
+	<text key="search_tool">搜索工具（形状搜索）</text>
+	<text key="search_in">右键上下文菜单</text>
+	<text key="kiosk_buttons">访问Kiosk布局按钮</text>
+	<text key="welcome_dialog">启动时隐藏或显示欢迎对话框</text>
+	<text key="search_box">天空搜索输入框</text>
+	<text key="outreach_euclid_button">Euclid科普图片</text>
+
+	<text key="userArea__userInfoPopup_title">个人资料</text>
+	<text key="userArea__userInfoPopup_help">此面板显示您的用户个人资料、权限和ESASky中的配额</text>
+
+	<text key="userArea__userInfoPopup_username">用户名:</text>
+	<text key="userArea__userInfoPopup_db_quota">数据库配额:</text>
+	<text key="userArea__userInfoPopup_req_timeout">请求超时:</text>
+
+	<text key="userArea__userTablePanel_title">表格</text>
+	<text key="userArea__userTablePanel_help">
+		ESASky中的表格功能使用户能够上传自己的数据表，扩展了应用程序的探索范围。
+		&lt;br&gt;&lt;br&gt;
+		通过此功能，用户可以将自定义数据集无缝集成到ESASky中，增强其分析和可视化能力。
+		支持的格式包括VOTable和CSV。
+	</text>
+	<text key="userArea__userTablePanel_searchTables">搜索表格</text>
+	<text key="userArea__userTablePanel_addTableTitle">上传表格</text>
+
+	<text key="userArea__userSessionPanel_title">会话</text>
+	<text key="userArea__userSessionPanel_help">
+		ESASky中的会话功能使用户能够保存应用程序的当前状态，以便以后重新访问其工作。
+		&lt;br&gt;&lt;br&gt;
+		此功能可让用户捕获当前配置，包括所选数据集、查看设置以及对界面进行的任何自定义。通过将此状态保存为会话，用户可以轻松返回到上次离开的地方，无需从头开始重新创建其工作。
+	</text>
+	<text key="userArea__userSessionPanel_createSession">保存当前会话</text>
+	<text key="userArea__userSessionPanel_searchSessions">搜索会话</text>
+
+	<text key="userArea__userLayoutPanel_resetBtnTitle">恢复默认布局</text>
+	<text key="userArea__userLayoutPanel_addBtnTitle">创建新布局</text>
+	<text key="userArea__userLayoutPanel_saveBtnTitle">保存布局</text>
+	<text key="userArea__userLayoutPanel_title">布局</text>
+	<text key="userArea__userLayoutPanel_help">
+		ESASky中的布局功能允许您通过根据您的偏好安排和显示界面内的元素来个性化您的使用体验。
+		&lt;br&gt;&lt;br&gt;
+		通过此功能，您可以轻松调整ESASky界面上不同元素的排列和显示方式。无论您喜欢某些工具或信息更突出还是隐藏起来，您都能灵活根据自己的需求调整布局。
+	</text>
+
+	<text key="tabulator_link_cell_tooltip_gallery_url">
+		在MMODA产品画廊中打开此数据
+	</text>
+
+	<text key="tabulator_link_column_tooltip_gallery_url">
+		单击任何行以在MMODA产品画廊中打开该行的数据
+	</text>
+
+	<text key="tabulator_link_no_data">
+		此条目无可用数据
+	</text>
+
+	<text key="userArea__userAreaPresenter_restoreSession_title">
+		欢迎回来！
+	</text>
+	<text key="userArea__userAreaPresenter_restoreSession_body">
+		您之前的ESASky会话已自动保存。
+		&lt;br&gt;
+		您想从上次离开的地方继续吗？
+	</text>
+	<text key="userArea__userAreaPresenter_restoreSession_help">
+		ESASky为用户提供方便的自动保存会话功能。此功能可确保您的进度得以保存，当再次返回ESASky时能无缝地从上次离开的地方继续。
+	</text>
 </Internationalization>
