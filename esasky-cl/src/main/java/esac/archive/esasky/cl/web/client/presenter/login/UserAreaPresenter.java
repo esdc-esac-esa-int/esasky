@@ -116,13 +116,13 @@ public class UserAreaPresenter {
         Window.open("https://www.cosmos.esa.int/web/esasky/registration", "_blank", "");
     }
 
-    private void doCasLogin() {
+    public void doCasLogin() {
         String casLoginUrl = EsaSkyWebConstants.TAP_CONTEXT + "/CasLogin?redirect=" + URL.encode(Window.Location.getHref());
         Log.info("CAS login URL: " + casLoginUrl);
         Window.Location.assign(casLoginUrl);
     }
 
-    private void doCasLogout() {
+    public void doCasLogout() {
         GUISessionStatus.setUserDetails(null);
         refreshView();
 

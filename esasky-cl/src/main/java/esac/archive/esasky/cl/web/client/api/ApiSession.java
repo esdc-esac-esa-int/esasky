@@ -27,9 +27,17 @@ public class ApiSession extends ApiBase{
 		Session session = new Session();
 		if(saveObj != null) {
 			session.restoreState(saveObj);
-		}else {
+		} else {
 			session.restoreState();
 		}
+	}
+	
+	public void login() {
+		controller.getRootPresenter().getHeaderPresenter().getView().getUserAreaPresenter().doCasLogin();
+	}
+	
+	public void logout() {
+		controller.getRootPresenter().getHeaderPresenter().getView().getUserAreaPresenter().doCasLogout();
 	}
 	
 }
