@@ -75,8 +75,7 @@
 #uploadTargetListPanel{
     background-color: rgba(0, 0, 0, 0.65);
     border: 1px solid;
-    border-bottom-right-radius: 25px;
-    border-top-right-radius: 12px;
+    border-radius: 7px;
     height: auto;
     overflow: auto !important;
     padding: 5px;
@@ -85,7 +84,7 @@
     margin-left: 3px;
     position: absolute;
     top: 75px;
-    right: 10px;
+    right: 5px;
 }
 
 
