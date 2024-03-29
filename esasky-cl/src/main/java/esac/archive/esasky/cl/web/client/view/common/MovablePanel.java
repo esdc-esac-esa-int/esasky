@@ -26,10 +26,13 @@ public class MovablePanel extends FocusPanel {
 
     public interface OnKeyPress {void onEscapeKey();}
 
-	private boolean isMouseDown = false;
+    private static final int MIN_DISTANCE_FROM_TOP = 30;
+    private static final int SNAPPING_DISTANCE = 15;
+    private static final int MIN_BOTTOM_DISTANCE = 2;
+	private static final int MIN_RIGHT_DISTANCE = 1;
+
+    private boolean isMouseDown = false;
 	private boolean isBeingDragged = false;
-	private final int MIN_DISTANCE_FROM_TOP = 30;
-	private final int SNAPPING_DISTANCE = 15;
 	private final String googleEventCategory;
 	private int positionOnPanelTop;
 	private int positionOnPanelLeft;
@@ -43,12 +46,19 @@ public class MovablePanel extends FocusPanel {
 	private int suggestedPositionLeft;
 	private boolean isBottom = false;
 	private boolean isRight = false;
+	
+	/* Resizable elements with their position set by position:absolute and right: xpx;
+	 * often resize themselves smaller and smaller in a vicious loop until they have 0 width.
+	 * This is most often triggered by a resize operation while the position is defined by right: 0px.
+	 * To combat this, we allow alwaysForceTopLeftPosition to allow components to disable positions defined by 
+	 * their right position, instead always having their position defined by their left position.  */
+	protected boolean alwaysForceTopLeftPosition = true;
 	private boolean isWindowResize = false;
 	private boolean isSnappingEnabled = true;
-	private FlowPanel container = new FlowPanel();
 
 	private Element moveInitiatorElement;
 	private HandlerRegistration nativePreviewHandlerRegistration;
+	protected FlowPanel container = new FlowPanel();
 	protected List<ClosingObserver> observers = new LinkedList<>();
 
 	private OnKeyPress onKeyPress = new OnKeyPress() {
@@ -210,9 +220,8 @@ public class MovablePanel extends FocusPanel {
 		setPosition(left, top, false);
 	}
 
-	private static int MIN_BOTTOM_DISTANCE = 2;
-	private static int MIN_RIGHT_DISTANCE = 1;
 	private void setPosition(int left, int top, boolean forceTopLeftDefinition) {
+		forceTopLeftDefinition = forceTopLeftDefinition || alwaysForceTopLeftPosition;
 		int snappingDistance = isSnappingEnabled ? SNAPPING_DISTANCE : MIN_BOTTOM_DISTANCE;
 		if(isWindowResize && isBottom && !forceTopLeftDefinition) {
 			setBottom(MIN_BOTTOM_DISTANCE);
