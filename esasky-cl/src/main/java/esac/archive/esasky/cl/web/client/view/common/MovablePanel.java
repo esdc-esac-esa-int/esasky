@@ -48,7 +48,7 @@ public class MovablePanel extends FocusPanel {
 
 	private Element moveInitiatorElement;
 	private HandlerRegistration nativePreviewHandlerRegistration;
-	protected FlowPanel container = new FlowPanel();
+	protected FlowPanel movableContainer = new FlowPanel();
 	protected List<ClosingObserver> observers = new LinkedList<>();
 
 	private OnKeyPress onKeyPress = () -> {
@@ -75,13 +75,14 @@ public class MovablePanel extends FocusPanel {
 				setSuggestedPositionCenter();
 			}
 		});
-		super.add(container);
+		super.add(movableContainer);
         setFocus(true);
     }
 
 	@Override
 	public void add(Widget w) {
-	    container.add(w);
+		movableContainer
+				.add(w);
 	}
 
 	@Override
