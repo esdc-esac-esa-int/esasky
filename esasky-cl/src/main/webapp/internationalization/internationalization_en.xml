@@ -5493,4 +5493,16 @@
 		&lt;/a&gt;
 
 	</text>
+
+	<text key="resultsPresenter_helpDescription_catalogues_SWIFT-2SXPS">
+		The Second Swift-XRT Point Source (2SXPS) catalog contains 206,335 point sources detected by the Swift X-ray Telescope (XRT) in the 0.3-10 keV energy range. This catalog represents a significant improvement over 1SXPS, with double the sky coverage (now 3790 deg2), and several significant developments in source detection and classification. In particular, modeling the effect of stray light and significantly reducing the number of spurious sources detected. Plus, a new model of the XRT point-spread function and a method for correctly localizing and characterizing piled-up sources.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-help#SXPS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+
+	</text>
 </Internationalization>
