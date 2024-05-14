@@ -1180,6 +1180,10 @@ public class TabulatorWrapper {
                     // Only add DB units to the column header if we don't supply our own through internationalization.
                     var unit = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getColumnUnit(*)(label);
                     if (unit) {
+                        if ((metadata[j].displayName.length + unit.length) > 15) {
+                            metadata[j].displayName += "<br>";
+                        }
+
                         displayName += " <i>[" + unit + "]</i>";
                     }
                 }
