@@ -81,8 +81,7 @@ public class MovablePanel extends FocusPanel {
 
 	@Override
 	public void add(Widget w) {
-		movableContainer
-				.add(w);
+		movableContainer.add(w);
 	}
 
 	@Override
@@ -261,8 +260,8 @@ public class MovablePanel extends FocusPanel {
 	}
 
 	public void setMaxSize() {
-		getElement().getStyle().setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight()-2);
-		getElement().getStyle().setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth()-2);
+		getElement().getStyle().setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() - 30);
+		getElement().getStyle().setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() - 2);
 	}
 
 	private void setLeft(int left) {
