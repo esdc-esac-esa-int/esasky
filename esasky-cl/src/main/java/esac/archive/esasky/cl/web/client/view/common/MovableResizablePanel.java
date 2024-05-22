@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.view.common;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -19,7 +20,11 @@ public abstract class MovableResizablePanel<T> extends MovablePanel implements H
         super.onLoad();
         getResizeElement().getStyle().setProperty("resize", "both");
         getResizeElement().getStyle().setProperty("overflow", "auto");
-        addResizeHandler(getResizeElement().getId());
+        String resizableElementId = getResizeElement().getId();
+        if("".equals(resizableElementId)) {
+        	Log.error("Resizable Elements needs an Id");
+        }
+        addResizeHandler(resizableElementId);
 
         addSingleElementAbleToInitiateMoveOperation(getMovableElement());
         setSnapping(false);

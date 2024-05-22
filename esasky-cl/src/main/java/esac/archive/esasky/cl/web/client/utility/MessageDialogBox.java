@@ -144,7 +144,7 @@ public class MessageDialogBox extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				updateContent(contentText, headerText.getText(), true);
-				
+				movablePanel.ensureDialogFitsInsideWindow();
 			}
 		});
     	

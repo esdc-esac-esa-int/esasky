@@ -26,10 +26,12 @@ public class MovablePanel extends FocusPanel {
 
     public interface OnKeyPress {void onEscapeKey();}
 
-	private boolean isMouseDown = false;
+    private static final int MIN_DISTANCE_FROM_TOP = 30;
+    private static final int SNAPPING_DISTANCE = 15;
+    private static final int MIN_BOTTOM_DISTANCE = 2;
+
+    private boolean isMouseDown = false;
 	private boolean isBeingDragged = false;
-	private final int MIN_DISTANCE_FROM_TOP = 30;
-	private final int SNAPPING_DISTANCE = 15;
 	private final String googleEventCategory;
 	private int positionOnPanelTop;
 	private int positionOnPanelLeft;
@@ -41,21 +43,15 @@ public class MovablePanel extends FocusPanel {
 	private boolean updateZIndex = true;
 	private int suggestedPositionTop;
 	private int suggestedPositionLeft;
-	private boolean isBottom = false;
-	private boolean isRight = false;
-	private boolean isWindowResize = false;
+
 	private boolean isSnappingEnabled = true;
-	private FlowPanel container = new FlowPanel();
 
 	private Element moveInitiatorElement;
 	private HandlerRegistration nativePreviewHandlerRegistration;
+	protected FlowPanel movableContainer = new FlowPanel();
 	protected List<ClosingObserver> observers = new LinkedList<>();
 
-	private OnKeyPress onKeyPress = new OnKeyPress() {
-
-	    @Override
-	    public void onEscapeKey() {
-	    }
+	private OnKeyPress onKeyPress = () -> {
 	};
 
 	private static int highestZIndex = 1000;
@@ -79,13 +75,13 @@ public class MovablePanel extends FocusPanel {
 				setSuggestedPositionCenter();
 			}
 		});
-		super.add(container);
+		super.add(movableContainer);
         setFocus(true);
     }
 
 	@Override
 	public void add(Widget w) {
-	    container.add(w);
+		movableContainer.add(w);
 	}
 
 	@Override
@@ -207,57 +203,26 @@ public class MovablePanel extends FocusPanel {
 	}
 
 	private void setPosition(int left, int top) {
-		setPosition(left, top, false);
-	}
-
-	private static int MIN_BOTTOM_DISTANCE = 2;
-	private static int MIN_RIGHT_DISTANCE = 1;
-	private void setPosition(int left, int top, boolean forceTopLeftDefinition) {
 		int snappingDistance = isSnappingEnabled ? SNAPPING_DISTANCE : MIN_BOTTOM_DISTANCE;
-		if(isWindowResize && isBottom && !forceTopLeftDefinition) {
-			setBottom(MIN_BOTTOM_DISTANCE);
-		} else {
+		
+		if(top < MIN_DISTANCE_FROM_TOP) {
+			top = MIN_DISTANCE_FROM_TOP;
+		}
+		if(top + snappingDistance > MainLayoutPanel.getMainAreaHeight() - getOffsetHeight()) {
+			top = MainLayoutPanel.getMainAreaHeight() - getOffsetHeight();
 			if(top < MIN_DISTANCE_FROM_TOP) {
 				top = MIN_DISTANCE_FROM_TOP;
 			}
-			if(top + snappingDistance > MainLayoutPanel.getMainAreaHeight() - getOffsetHeight()) {
-				if(!isWindowResize && !forceTopLeftDefinition) {
-					setBottom(MIN_BOTTOM_DISTANCE);
-				} else {
-					top = MainLayoutPanel.getMainAreaHeight() - getOffsetHeight();
-					if(top < MIN_DISTANCE_FROM_TOP) {
-						top = MIN_DISTANCE_FROM_TOP;
-					}
-					setTop(top);
-				}
-			} else {
-				setTop(top);
-			}
 		}
-
-		if(isWindowResize && isRight && !forceTopLeftDefinition) {
-			setRight(MIN_RIGHT_DISTANCE);
-		} else {
-			if(left < 0) {
-				left = 0;
-			}
-			if(left + snappingDistance > MainLayoutPanel.getMainAreaWidth() - getOffsetWidth()) {
-				if(!isWindowResize && !forceTopLeftDefinition) {
-					setRight(MIN_RIGHT_DISTANCE);
-				} else {
-					left = MainLayoutPanel.getMainAreaWidth() - getOffsetWidth();
-					setLeft(left);
-				}
-			} else {
-				setLeft(left);
-			}
+		setTop(top);
+	
+		if(left < 0) {
+			left = 0;
 		}
-
-		if(isBottom && isRight && !forceTopLeftDefinition) {
-			getElement().getStyle().setProperty("borderTopLeftRadius", "10px");
-		} else {
-			getElement().getStyle().clearProperty("borderTopLeftRadius");
+		if(left + snappingDistance > MainLayoutPanel.getMainAreaWidth() - getOffsetWidth()) {
+			left = MainLayoutPanel.getMainAreaWidth() - getOffsetWidth();
 		}
+		setLeft(left);
 	}
 
 	private boolean hasBeenMovedByUser() {
@@ -265,7 +230,6 @@ public class MovablePanel extends FocusPanel {
 	}
 
 	public void ensureDialogFitsInsideWindow() {
-		isWindowResize = true;
 		setMaxSize();
 		if(hasBeenMovedByUser()) {
 			int left = userSetPositionLeft;
@@ -293,51 +257,26 @@ public class MovablePanel extends FocusPanel {
 
 			setPosition(left, top);
 		}
-		isWindowResize = false;
 	}
 
 	public void setMaxSize() {
-		getElement().getStyle().setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight()-2);
-		getElement().getStyle().setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth()-2);
+		getElement().getStyle().setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() - 30);
+		getElement().getStyle().setPropertyPx("maxWidth", MainLayoutPanel.getMainAreaWidth() - 2);
 	}
 
 	private void setLeft(int left) {
-		if(!isWindowResize) {
-			isRight = false;
-		}
 		getElement().getStyle().setLeft(left, Unit.PX);
-		getElement().getStyle().setProperty("right", "auto");
-	}
-
-	private void setRight(int right) {
-		if(!isWindowResize) {
-			isRight = true;
-		}
-		getElement().getStyle().setRight(right, Unit.PX);
-		getElement().getStyle().setProperty("left", "auto");
 	}
 
 	private void setTop(int top) {
-		if(!isWindowResize) {
-			isBottom = false;
-		}
 		getElement().getStyle().setTop(top, Unit.PX);
-		getElement().getStyle().setProperty("bottom", "auto");
-	}
-
-	private void setBottom(int bottom) {
-		if(!isWindowResize) {
-			isBottom = true;
-		}
-		getElement().getStyle().setBottom(bottom, Unit.PX);
-		getElement().getStyle().setProperty("top", "auto");
 	}
 
 	public void definePositionFromTopAndLeft() {
 		if(hasBeenMovedByUser) {
-			setPosition(userSetPositionLeft, userSetPositionTop, true);
+			setPosition(userSetPositionLeft, userSetPositionTop);
 		} else {
-			setPosition(suggestedPositionLeft, suggestedPositionTop, true);
+			setPosition(suggestedPositionLeft, suggestedPositionTop);
 		}
 	}
 

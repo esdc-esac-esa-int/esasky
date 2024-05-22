@@ -5470,4 +5470,39 @@
 	<text key="userArea__userAreaPresenter_restoreSession_help">
 		ESASky offers users the convenient functionality of automatically saving their sessions. This feature ensures that your progress is preserved, allowing you to seamlessly pick up from where you last left off whenever you return to ESASky.
 	</text>
+
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eRASS-main">
+		The eROSITA X-ray telescope on board the Spectrum-Poentgen-Gamma (SPG) observatory combines a large field of view and a large collecting area in the energy range between ~0.2 and ~8.0 keV. This gives the telescope the capability to perform uniform scanning observations of large sky areas. The eRASS 1 main catalogue consits of data acquired in the first six months of survey operations (eRASS1; completed June 2020) over the half sky whose proprietary data rights lie with the German eROSITA Consortium and contains X-ray sources detected in the 0.2>2.3 keV band using eSASS adopting a detection likelihood threshold of 5. The sources with detection likelihood larger than 6 are selected as the main eRASS1 catalogue (930203 sources).
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#eRASSmain"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+
+	</text>
+
+	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eRASS-hard">
+		The eROSITA X-ray telescope on board the Spectrum-Poentgen-Gamma (SPG) observatory combines a large field of view and a large collecting area in the energy range between ~0.2 and ~8.0 keV. This gives the telescope the capability to perform uniform scanning observations of large sky areas. The eRASS 1 hard catalogue consits of data acquired in the first six months of survey operations (eRASS1; completed June 2020) over the half sky whose proprietary data rights lie with the German eROSITA Consortium and contains X-ray sources detected in the 2.3-5.0 keV band (5466 sources).
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#eRASShard"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+
+	</text>
+
+	<text key="resultsPresenter_helpDescription_catalogues_SWIFT-2SXPS">
+		The Second Swift-XRT Point Source (2SXPS) catalog contains 206,335 point sources detected by the Swift X-ray Telescope (XRT) in the 0.3-10 keV energy range. This catalog represents a significant improvement over 1SXPS, with double the sky coverage (now 3790 deg2), and several significant developments in source detection and classification. In particular, modeling the effect of stray light and significantly reducing the number of spurious sources detected. Plus, a new model of the XRT point-spread function and a method for correctly localizing and characterizing piled-up sources.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-help#SXPS"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+
+	</text>
 </Internationalization>

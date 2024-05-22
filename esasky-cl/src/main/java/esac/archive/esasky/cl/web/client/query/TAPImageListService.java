@@ -26,8 +26,7 @@ public class TAPImageListService extends AbstractTAPService {
     
     @Override
     public String getMetadataAdql(CommonTapDescriptor descriptor, String filter) {
-    	return "SELECT * from " + descriptor.getTableName() +
-                " NATURAL FULL OUTER JOIN " + descriptor.getTableName().replace("_fdw", "_ext_fdw") + " order by priority desc";
+    	return "SELECT * from " + descriptor.getTableName() + " order by priority desc";
     }
 
 	@Override

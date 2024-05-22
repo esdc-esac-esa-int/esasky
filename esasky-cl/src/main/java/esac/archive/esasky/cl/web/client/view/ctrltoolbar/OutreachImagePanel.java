@@ -195,7 +195,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         header.addActionWidget(hideFootprintsSwitch);
         mainContainer.add(header);
         mainContainer.add(tableContainer);
-        mainContainer.getElement().setId("outreachImagePanelContainer");
+        mainContainer.getElement().setId("outreachImagePanelContainer_" + this.mission);
         this.add(mainContainer);
     }
 
@@ -208,7 +208,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         Style elementStyle = mainContainer.getElement().getStyle();
         int maxWidth = MainLayoutPanel.getMainAreaWidth() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft() - 15;
         elementStyle.setPropertyPx("maxWidth", maxWidth);
-        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop() - 15);
+        elementStyle.setPropertyPx("maxHeight", MainLayoutPanel.getMainAreaHeight() - getAbsoluteTop());
         setMaxHeight();
     }
 

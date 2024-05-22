@@ -830,7 +830,14 @@ public class ApiMessageParser {
 					}
 					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::restoreState(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(state)
 					break;
-
+				case 'login':
+					console.log('login event captured');
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::login()();
+					break;
+				case 'logout':
+					console.log('logout event captured');
+					apiSession.@esac.archive.esasky.cl.web.client.api.ApiSession::logout()();
+					break;
 
 				default:
 					console.log('No event associated');
