@@ -353,7 +353,7 @@ public class CloseableTabLayoutPanel extends Composite {
 
         EsaSkyButton btn = new EsaSkyButton(resources.queryIcon());
         btn.setMediumStyle();
-        btn.setTitle(TextMgr.getInstance().getText(REFRESH_TITLE));
+        btn.setTitle(TextMgr.getInstance().getText("closeableTabLayoutPanel_changeQuery"));
         btn.addStyleName("tabButton");
         btn.addClickHandler(arg0 -> {
             ITablePanel tabPanel = getSelectedWidget();

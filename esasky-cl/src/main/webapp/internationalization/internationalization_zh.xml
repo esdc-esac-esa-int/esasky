@@ -2945,4 +2945,7 @@ ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接�
 	<text key="userArea__userAreaPresenter_restoreSession_help">
 		ESASky为用户提供方便的自动保存会话功能。此功能可确保您的进度得以保存，当再次返回ESASky时能无缝地从上次离开的地方继续。
 	</text>
+	<text key="closeableTabLayoutPanel_changeQuery">
+		修改查询
+	</text>
 </Internationalization>

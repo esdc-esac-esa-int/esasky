@@ -4027,4 +4027,8 @@
 	<text key="userArea__userAreaPresenter_restoreSession_help">
 		ESASky ofrece a los usuarios la funcionalidad conveniente de guardar automáticamente sus sesiones. Esta función asegura que tu progreso se conserve, permitiéndote continuar sin problemas desde donde lo dejaste la última vez cada vez que regreses a ESASky.
 	</text>
+
+	<text key="closeableTabLayoutPanel_changeQuery">
+		Modificar consulta
+	</text>
 </Internationalization>

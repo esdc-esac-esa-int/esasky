@@ -5505,4 +5505,8 @@
 		&lt;/a&gt;
 
 	</text>
+
+	<text key="closeableTabLayoutPanel_changeQuery">
+		Modify query
+	</text>
 </Internationalization>
