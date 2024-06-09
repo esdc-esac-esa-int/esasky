@@ -5,6 +5,7 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Timer;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
@@ -372,7 +373,17 @@ public class DescriptorRepository {
             @Override
             public void onError(String errorCause) {
                 Log.error("[DescriptorRepository] initDescriptors ERROR: " + errorCause);
-                promise.error();
+                final Timer retryTimer = new Timer() {
+                    @Override
+                    public void run() {
+                        if (!promise.isCompleted()) {
+                            initDescriptors(schemas, category, promise);
+                        }
+                    }
+                };
+
+                retryTimer.schedule(500);
+
             }
         });
 
