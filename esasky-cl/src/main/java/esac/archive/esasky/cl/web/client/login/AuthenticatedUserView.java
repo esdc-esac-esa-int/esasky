@@ -50,18 +50,6 @@ public class AuthenticatedUserView extends AutoHidePanel implements UserAreaPres
         setStyleName("statusPopupPanel");
 
         dropdownPanels = new ArrayList<>();
-        UserTablePanel userTablePanel = new UserTablePanel();
-        userTablePanel.addErrorHandler(this::onErrorEvent);
-
-        UserLayoutPanel userLayoutPanel = new UserLayoutPanel();
-        userLayoutPanel.addErrorHandler(this::onErrorEvent);
-
-        UserSessionPanel userSessionPanel = new UserSessionPanel();
-        userSessionPanel.addErrorHandler(this::onErrorEvent);
-
-        dropdownPanels.add(userTablePanel);
-        dropdownPanels.add(userLayoutPanel);
-        dropdownPanels.add(userSessionPanel);
 
         FlowPanel mainContainer = new FlowPanel();
         mainContainer.setStyleName("header__dropdown__content");
@@ -74,13 +62,31 @@ public class AuthenticatedUserView extends AutoHidePanel implements UserAreaPres
         title.addClickHandler(event -> userInfoPanel.show());
 
         Anchor tablesAnchor = new Anchor(TextMgr.getInstance().getText("userArea__dropdown__tables"));
-        tablesAnchor.addClickHandler(event -> showPanel(userTablePanel));
+        tablesAnchor.addClickHandler(event -> {
+            UserTablePanel userTablePanel = new UserTablePanel();
+            userTablePanel.addErrorHandler(this::onErrorEvent);
+            showPanel(userTablePanel);
+            dropdownPanels.clear();
+            dropdownPanels.add(userTablePanel);
+        });
 
         Anchor sessionAnchor = new Anchor(TextMgr.getInstance().getText("userArea__dropdown__sessions"));
-        sessionAnchor.addClickHandler(event -> showPanel(userSessionPanel));
+        sessionAnchor.addClickHandler(event -> {
+            UserSessionPanel userSessionPanel = new UserSessionPanel();
+            userSessionPanel.addErrorHandler(this::onErrorEvent);
+            showPanel(userSessionPanel);
+            dropdownPanels.clear();
+            dropdownPanels.add(userSessionPanel);
+        });
 
         Anchor accountAnchor = new Anchor(TextMgr.getInstance().getText("userArea__dropdown__layouts"));
-        accountAnchor.addClickHandler(event -> showPanel(userLayoutPanel));
+        accountAnchor.addClickHandler(event -> {
+            UserLayoutPanel userLayoutPanel = new UserLayoutPanel();
+            userLayoutPanel.addErrorHandler(this::onErrorEvent);
+            showPanel(userLayoutPanel);
+            dropdownPanels.clear();
+            dropdownPanels.add(userLayoutPanel);
+        });
 
         signoutLabel = new Label(TextMgr.getInstance().getText(TextMgr.getInstance().getText("logout")));
         signoutLabel.addStyleName("statusPopupPanel__header_dropdown_content_footer");
@@ -103,7 +109,6 @@ public class AuthenticatedUserView extends AutoHidePanel implements UserAreaPres
                 hidable.hide();
             }
         }
-
         panel.show();
         hide();
     }
