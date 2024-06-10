@@ -101,8 +101,6 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
         dropDownMenu.addMenuItem(menuItem2);
         dropDownMenu.addMenuItem(menuItem3);
 
-
-
         dropDownMenu.registerObserver(() -> {
             switch (dropDownMenu.getSelectedObject()) {
                 case METADATA:
@@ -122,12 +120,16 @@ public class QueryPopupPanel extends BaseMovablePopupPanel {
     }
 
 
-    private enum PopupMenuItems{
+    public enum PopupMenuItems{
         METADATA, TABLE, COUNT;
     }
 
     public void setTapServiceUrl(String tapServiceUrl) {
         this.tapServiceUrl = tapServiceUrl;
+    }
+
+    public void disableExample(PopupMenuItems menuItem) {
+        dropDownMenu.getMenuItems().stream().filter(item -> item.getItem() == menuItem).findFirst().ifPresent(item -> item.setDisabled(true));
     }
 
     public void setTapTable(String tableName) {

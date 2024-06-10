@@ -187,6 +187,7 @@ public class UserTablePanel extends TabulatorPopupSearchPanel {
 
             queryPopupPanel.setTapServiceUrl(EsaSkyWebConstants.TAP_CONTEXT + "/tap/sync");
             queryPopupPanel.setTapTable(rowData.getStringProperty(TABLE_NAME_COL));
+            queryPopupPanel.disableExample(QueryPopupPanel.PopupMenuItems.METADATA);
             queryPopupPanel.setTapDescription("test_desc");
             queryPopupPanel.setPublisher("test_pub");
             queryPopupPanel.show();
