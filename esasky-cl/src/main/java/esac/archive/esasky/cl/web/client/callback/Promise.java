@@ -8,8 +8,10 @@ public abstract class Promise<T>  {
         @Override
         public void run() {
             failure();
+            completed = true;
         }
     };
+    private boolean completed = false;
 
     protected Promise() {
         timeoutTimer.schedule(5000);
@@ -25,12 +27,14 @@ public abstract class Promise<T>  {
         timeoutTimer.cancel();
         success(data);
         whenComplete();
+        completed = true;
     }
 
     public final void error() {
         timeoutTimer.cancel();
         failure();
         whenComplete();
+        completed = true;
     }
 
     protected abstract void success(T data);
@@ -38,4 +42,8 @@ public abstract class Promise<T>  {
     protected void failure() {}
 
     protected void whenComplete() {}
+
+    public boolean isCompleted() {
+        return completed;
+    }
 }

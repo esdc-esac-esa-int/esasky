@@ -106,11 +106,17 @@ public final class UrlUtils {
     public static boolean urlHasAuthor() {
         return Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.PUBLICATIONS_AUTHOR_URL_PARAM);
     }
+
+	public static boolean urlLayoutIsKiosk() {
+		return "kiosk".equalsIgnoreCase(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT));
+
+	}
     
     public static String getUrlLangCode() {
         if (Window.Location.getParameterMap().containsKey(EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM)) {
             final String langCode = Window.Location.getParameter(EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM).toLowerCase();
-    		for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages(true)) {
+			final boolean includeLimitedLang = urlLayoutIsKiosk();
+			for(SimpleEntry<String, String> entry : EsaSkyConstants.getAvailableLanguages(includeLimitedLang)) {
     			if(entry.getKey().equalsIgnoreCase(langCode)) {
     				return langCode;
     			}

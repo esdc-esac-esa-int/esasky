@@ -914,10 +914,10 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-OM">
-		The SUSS5.0 catalogue is a catalogue of sources serendipitously
+		The SUSS6.1 catalogue is a catalogue of sources serendipitously
 		detected by the Optical Monitor (OM) on board the XMM-Newton
 		observatory. It provides source positions, magnitudes and fluxes in
-		six broad-band ultraviolet and optical filters for more than 5.9 million
+		six broad-band ultraviolet and optical filters for more than 6.6 million
 		sources, as well as profile diagnostics and variability statistics.
 
 		&lt;br&gt;&lt;br&gt;
@@ -5472,7 +5472,7 @@
 	</text>
 
 	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eRASS-main">
-		The eROSITA X-ray telescope on board the Spectrum-Poentgen-Gamma (SPG) observatory combines a large field of view and a large collecting area in the energy range between ~0.2 and ~8.0 keV. This gives the telescope the capability to perform uniform scanning observations of large sky areas. The eRASS 1 main catalogue consits of data acquired in the first six months of survey operations (eRASS1; completed June 2020) over the half sky whose proprietary data rights lie with the German eROSITA Consortium and contains X-ray sources detected in the 0.2>2.3 keV band using eSASS adopting a detection likelihood threshold of 5. The sources with detection likelihood larger than 6 are selected as the main eRASS1 catalogue (930203 sources).
+		The eROSITA X-ray telescope on board the Spectrum-Poentgen-Gamma (SPG) observatory combines a large field of view and a large collecting area in the energy range between ~0.2 and ~8.0 keV. This gives the telescope the capability to perform uniform scanning observations of large sky areas. The eRASS1 main catalogue consits of data acquired in the first six months of survey operations (eRASS1; completed June 2020) over the half sky whose proprietary data rights lie with the German eROSITA Consortium and contains X-ray sources detected in the 0.2>2.3 keV band using eSASS adopting a detection likelihood threshold of 5. The sources with detection likelihood larger than 6 are selected as the main eRASS1 catalogue (930203 sources).
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="https://www.cosmos.esa.int/web/esdc/esasky-catalogues#eRASSmain"
@@ -5483,7 +5483,7 @@
 	</text>
 
 	<text key="resultsPresenter_helpDescription_catalogues_eROSITA-eRASS-hard">
-		The eROSITA X-ray telescope on board the Spectrum-Poentgen-Gamma (SPG) observatory combines a large field of view and a large collecting area in the energy range between ~0.2 and ~8.0 keV. This gives the telescope the capability to perform uniform scanning observations of large sky areas. The eRASS 1 hard catalogue consits of data acquired in the first six months of survey operations (eRASS1; completed June 2020) over the half sky whose proprietary data rights lie with the German eROSITA Consortium and contains X-ray sources detected in the 2.3-5.0 keV band (5466 sources).
+		The eROSITA X-ray telescope on board the Spectrum-Poentgen-Gamma (SPG) observatory combines a large field of view and a large collecting area in the energy range between ~0.2 and ~8.0 keV. This gives the telescope the capability to perform uniform scanning observations of large sky areas. The eRASS1 hard catalogue consits of data acquired in the first six months of survey operations (eRASS1; completed June 2020) over the half sky whose proprietary data rights lie with the German eROSITA Consortium and contains X-ray sources detected in the 2.3-5.0 keV band (5466 sources).
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
@@ -5499,10 +5499,14 @@
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
-		href="https://www.cosmos.esa.int/web/esdc/esasky-help#SXPS"
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#SXPS"
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt;
 
+	</text>
+
+	<text key="closeableTabLayoutPanel_changeQuery">
+		Modify query
 	</text>
 </Internationalization>

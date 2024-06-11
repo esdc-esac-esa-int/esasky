@@ -1,0 +1,98 @@
+[
+  {
+    "simbadMainId": "IC 342",
+    "simbadRaDeg": "56.700975",
+    "simbadDecDeg": "68.095996",
+    "simbadGaldimMajAxis": 33,
+    "userInput": "IC 342",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "IC 342 es una galaxia espiral en la constelación de La Jirafa (Camelopardalis). ",
+    "outreachImage": "euclid:ic342"
+  },
+  {
+    "simbadMainId": "NGC 6822",
+    "simbadRaDeg": "296.2343044",
+    "simbadDecDeg": "-14.79764917",
+    "simbadGaldimMajAxis": 40,
+    "userInput": "NGC 6822",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "NGC 6822 es una galaxia irregular barrada situada a aproximadamente 1.6 millones de años luz en la constelación de Sagitario y se considera parte del Grupo Local de galaxias. ",
+    "outreachImage": "euclid:ngc6822"
+  },
+  {
+    "simbadMainId": "Cúmulo de Perseo",
+    "simbadRaDeg": "49.9469872",
+    "simbadDecDeg": "41.5129355",
+    "simbadGaldimMajAxis": 24,
+    "userInput": "Perseus galaxy cluster",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "El Cúmulo de Perseo (Abell 426) es un cúmulo de galaxies en la constelación de Perseo.  Es uno de los objetos más masivos en el Universo conocido, contiene miles de galaxias y está inmerso en una vasta nuble de gas.",
+    "outreachImage": "euclid:perseus"
+  },
+  {
+    "simbadMainId": "NGC 6397",
+    "simbadRaDeg": "265.1753750",
+    "simbadDecDeg": "-53.67394998",
+    "simbadGaldimMajAxis": 26,
+    "userInput": "NGC 6397",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "NGC 6397 es un cúmulo globular en la constelación de Ara y contiene alrededor de 400.000 estrellas. Está situado a 7,800 años luz de la Tierra, lo que le convierte en uno de los cúmulos globulares más cercanos a la Tierra (siendo el otro Messier 4).",
+    "outreachImage": "euclid:ngc6397"
+  },
+  {
+    "simbadMainId": "NGC 2023",
+    "simbadRaDeg": "85.4079752",
+    "simbadDecDeg": "-2.2644653",
+    "simbadGaldimMajAxis": 9,
+    "userInput": "NGC 2023",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "Nubulosa en reflexión y cluster embebido alrededor de una estrella tipo B.",
+    "outreachImage": "euclid:horsehead"
+  },
+  {
+    "simbadMainId": "Nebulosa Cabeza de Caballo",
+    "simbadRaDeg": "85.245833",
+    "simbadDecDeg": "-2.4585133",
+    "simbadGaldimMajAxis": 12,
+    "userInput": "Horsehead Nebula",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "La nebulosa de la cabeza de caballo es una nebulosa oscura en la constelación de Orión. Es una de las nebulosas más reconocibles debido a la forma característica de su nube oscurecida, que se asemeja a la cabeza de un caballo visto desde la Tierra.",
+    "outreachImage": "euclid:horsehead"
+  },
+  {
+    "simbadMainId": "IC 434",
+    "simbadRaDeg": "85.2499402",
+    "simbadDecDeg": "-2.50002983",
+    "simbadGaldimMajAxis": 28,
+    "userInput": "IC 434",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "IC 434 es un nebulosa de emisión brillante (Región HII) en la constelación de Orión.",
+    "outreachImage": "euclid:horsehead"
+  },
+  {
+    "simbadMainId": "[BZR99] S Ori 62",
+    "simbadRaDeg": "84.9252218",
+    "simbadDecDeg": "-2.5087679",
+    "simbadGaldimMajAxis": 1.0,
+    "userInput": "S Ori 62",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "S Ori 62 es una enana marrón con tipo espectral L, y se estima que tiene una masa de entre 1 y 8 veces la masa de Júpiter.",
+    "outreachImage": "euclid:horsehead"
+  }
+]
