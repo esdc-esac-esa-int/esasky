@@ -1219,9 +1219,9 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
-		El cat&#225;logo 4XMM-DR13 contiene fuentes detectadas
+		El cat&#225;logo 4XMM-DR14 contiene fuentes detectadas
 		a partir de
-		13 243 observaciones con las c&#225;maras EPIC de
+		13 864 observaciones con las c&#225;maras EPIC de
 		XMM-Newton,
 		las cuales
 		cubren el intervalo de energ&#237;a entre 0.2 y 12 keV.
@@ -1239,12 +1239,12 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
-		El cat&#xE1;logo 4XMM-DR13s se ha compilado a partir de 1 688 grupos, que comprenden 9 796 observaciones
+		El cat&#xE1;logo 4XMM-DR14s se ha compilado a partir de 1 751 grupos, que comprenden 10 336 observaciones
 		superpuestas de buena calidad de XMM-Newton.
-		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 1 de febrero de 2000 y el 29 de
-		noviembre de 2022 que se superponen en al menos un radio de un
-		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 401 596 fuentes
-		&#xFA;nicas, 310 478 de ellas observadas en m&#xFA;ltiples ocasiones,
+		Fueron seleccionadas a partir de observaciones p&#xFA;blicas tomadas entre el 1 de febrero de 2000 y el 16 de
+		noviembre de 2023 que se superponen en al menos un radio de un
+		minuto de arco y no se ven afectadas por una emisi&#xF3;n de fondo muy alta. Contiene 427,525 fuentes
+		&#xFA;nicas, 329972 478 de ellas observadas en m&#xFA;ltiples ocasiones,
 		con posiciones y par&#xE1;metros de las fuentes como flujos en las bandas de energ&#xED;a est&#xE1;ndar de XMM-Newton, estimaci&#xF3;n de calidad e informaci&#xF3;n sobre la variabilidad entre observaciones.
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
