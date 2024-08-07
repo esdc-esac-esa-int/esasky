@@ -128,8 +128,8 @@ public class FutureFootprintRow extends Composite {
 		if(showAllInstruments) {
 			this.allInstrumentsCheckBox.setValue(true, true);
 		}
-		List<String> aperturesNames = InstrumentMapping.getInstance().getApertureListForInstrument(instrument.getInstrumentName());
-		if (aperturesNames.size() < 2) {
+
+		if (Instrument.getInstrumentsPerMission(instrument.getMission()).size() < 2) {
 			this.allInstrumentsCheckBox.setVisible(false);
 		}
 
