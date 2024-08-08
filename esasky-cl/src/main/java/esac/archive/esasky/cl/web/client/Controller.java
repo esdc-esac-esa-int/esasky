@@ -82,7 +82,10 @@ public class Controller implements ValueChangeHandler<String> {
 				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FRAME_COORD) != null
 				|| Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_TARGET) != null) {
 			startupWithChosenTargetOrHips(hideWelcome);
-		} else if (EsaSkyWebConstants.RANDOM_SOURCE_ON_STARTUP && !UrlUtils.urlHasBibcode() && !UrlUtils.urlHasAuthor()) {
+		} else if (EsaSkyWebConstants.RANDOM_SOURCE_ON_STARTUP
+				&& !UrlUtils.urlHasBibcode()
+				&& !UrlUtils.urlHasAuthor()
+				&& !UrlUtils.urlHasOutreachImage()) {
 			//Retrieves a random source from backend and shows it
 			startupWithRandomSource(hideWelcome);
 		} else {

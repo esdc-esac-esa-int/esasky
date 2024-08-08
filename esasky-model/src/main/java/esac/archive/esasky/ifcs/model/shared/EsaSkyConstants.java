@@ -114,7 +114,7 @@ public class EsaSkyConstants {
     /**
      * Default target.
      */
-    public static final String ALADIN_DEFAULT_TARGET = "M51";
+    public static final String ALADIN_DEFAULT_TARGET = "202.469575 +47.19525833333333";
     /**
      * Default FoV value.
      */
