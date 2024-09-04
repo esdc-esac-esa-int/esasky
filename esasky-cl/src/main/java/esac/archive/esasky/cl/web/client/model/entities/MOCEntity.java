@@ -76,7 +76,7 @@ public class MOCEntity implements GeneralEntityInterface {
 			getVisibleCount();
 			setTableCountText();
 
-			if(filterRequested && perMissionNewCount < EsaSkyWebConstants.MOC_FILTER_LIMIT) {
+			if(filterRequested && perMissionNewCount < EsaSkyWebConstants.MOC_FILTER_LIMIT && shouldBeShown) {
 				loadMOC();
 				filterRequested = false;
 			}
@@ -92,15 +92,13 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 		@Override
 		public void run() {
-			if (shouldBeShown) {
 				if (getCountStatus().hasMoved(descriptor)) {
 					filterRequested = true;
-				} else if( getCountStatus().getCount(descriptor) < EsaSkyWebConstants.MOC_FILTER_LIMIT){
+				} else if(getCountStatus().getCount(descriptor) < EsaSkyWebConstants.MOC_FILTER_LIMIT && shouldBeShown){
 					filterRequested = true;
 					loadMOC();
 					filterRequested = false;
 				}
-			}
 		}
 		
 		@Override
@@ -441,7 +439,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		@Override
 		public void run() {
 
-				if (descriptor.hasSearchArea()) {
+				if (descriptor.hasSearchArea() || !shouldBeShown) {
 					return;
 				}
 
