@@ -1916,13 +1916,16 @@ public class TabulatorWrapper {
                     title: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addTable"),
                     field: "obscoreAddBtn",
                     visible: true,
-                    headerSort: false,
+                    headerSort: true,
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addServiceToDashboard"),
-                    minWidth: 55,
+                    minWidth: 70,
                     download: false,
                     width: 40,
                     hozAlign: "center",
                     formatter: imageButtonFormatter,
+                    sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
+                        return obscoreButtonDisabled(aRow) - obscoreButtonDisabled(bRow);
+                    },
                     formatterParams: {
                         image: "plus-sign-light-small.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_addServiceToDashboard"),
