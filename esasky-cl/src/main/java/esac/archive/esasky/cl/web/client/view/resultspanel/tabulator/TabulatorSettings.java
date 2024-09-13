@@ -11,6 +11,7 @@ public class TabulatorSettings{
 	private Boolean addLink2ArchiveColumn = false;
 	private Boolean addLink2AdsColumn = false;
 	private Boolean addSourcesInPublicationColumn = false;
+	private Boolean addTimeVizColumn = false;
 	private String selectionHeaderTitle = null; // Selection Title if selection column is enabled. null = no text
 	private Boolean blockRedraw = false; // block initial draw operation - restoreRedraw has to be called manually afterwards
     private Boolean isEsaskyData = true; // Data from user or not
@@ -42,6 +43,7 @@ public class TabulatorSettings{
 		json.put("addLink2ArchiveColumn", JSONBoolean.getInstance(addLink2ArchiveColumn));
 		json.put("addLink2AdsColumn", JSONBoolean.getInstance(addLink2AdsColumn));
 		json.put("addSourcesInPublicationColumn", JSONBoolean.getInstance(addSourcesInPublicationColumn));
+		json.put("addTimeVizColumn", JSONBoolean.getInstance(addTimeVizColumn));
 		if(selectionHeaderTitle == null) {
 			json.put("selectionHeaderTitle", JSONNull.getInstance());
 		} else {
@@ -109,6 +111,14 @@ public class TabulatorSettings{
 
 	public void setAddSourcesInPublicationColumn(Boolean addSourcesInPublicationColumn) {
 		this.addSourcesInPublicationColumn = addSourcesInPublicationColumn;
+	}
+	
+	public Boolean getAddTimeVizColumn() {
+		return addTimeVizColumn;
+	}
+
+	public void setAddTimeVizColumn(Boolean addTimeVizColumn) {
+		this.addTimeVizColumn = addTimeVizColumn;
 	}
 
 	public String getSelectionHeaderTitle() {

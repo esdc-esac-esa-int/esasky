@@ -42,6 +42,7 @@ public final class GoogleAnalytics {
     public static final String CAT_OPEN_TABLE = "Open Table";
     public static final String CAT_INITIALISATION = "Initialisation";
     public static final String CAT_PREVIEW = "Preview";
+    public static final String CAT_TIMESERIES = "TimeSeries";
     public static final String CAT_DATALINK = "Datalink";
     public static final String CAT_DOWNLOADROW = "DownloadRow";
     public static final String CAT_DOWNLOADDIALOG = "DownloadDialog";

@@ -3223,9 +3223,6 @@
 	<text key="AKARI_IRC_orderBy_flux_s9w">
 		Flux S9W
 	</text>
-	<text key="AKARI_IRC_orderBy_flux_s9w">
-		Flux S9W
-	</text>
 
 	<text key="publicationPanel_helpText">
 		Shown are the sources in the field-of-view that have associated publications according to SIMBAD. Clicking on each icon will open a table listing the publications for that object, including basic information (title, authors, publication date) and a link to the paper in ADS. There is also the possibility to load the full list of objects studied in a given publication for further exploration with ESASky. &lt;br&gt; &lt;br&gt; By default, ESASky is showing at most 3 000 sources with related publications at the same time, but this number can be changed in the settings.
@@ -5509,4 +5506,37 @@
 	<text key="closeableTabLayoutPanel_changeQuery">
 		Modify query
 	</text>
+	<text key="tabulator_timeViz">
+		&lt;div class="esasky_column_header"&gt;Time&lt;/br&gt;Series&lt;/div&gt;
+	</text>
+	<text key="tabulator_timeVizTooltip">
+		Open Time Series Visualizer
+	</text>
+	<text key="tabulator_timeVizDisabledTooltip">
+		No Time Series data available for this row
+	</text>
+	<text key="timeViz_helpDescription">
+		The ESASky Time-Series Viewer is a visualisation tool for inspecting time-series data products. This interface, conceived as a multi-mission and multi-object aggregated interactive display, is prompted from the tabulated view of catalogues and observations for ESA missions.
+		&lt;br&gt;
+		&lt;br&gt;
+		Once a table is loaded from the tree map of resources, a dedicated time-series column will be shown for missions featuring time-series science products. Clicking on an active time-series icon will open the time-series viewer window, automatically displaying the time-series data collection and the overlay of subsequent time-series products of sources or missions if the viewer is already open.
+		&lt;br&gt;
+		&lt;br&gt;
+		As the ESASky Time-series viewer is meant to inspect both light curves and time-series spectra, two views are available: light intensity as a function of time (time view) and intensity as a function of wavelength (SED view). The icon in the panel's lower-right corner toggles between both views. The user may interactively inspect the data by selecting areas for zooming, dragging, and dropping for panning. They may alternate between these options or reset the display using the upper-right corner panel buttons. Multiple datasets are displayed and labelled in the legend under the catalogue source index. Deselecting a dataset will remove the correspondent displayed signal in the plot. A drop-down list enables format conversion for the time axis, while another supports unit conversion for the flux axes in both SED- and time- views.
+		&lt;br&gt;
+		&lt;br&gt;
+		Julian Date is the default unit for the time format in the ESASky time-series viewer. Multi-mission data aggregation entails a standard conversion to flux in units of mJy and a time format conversion to the scale of the first mission displayed. Most time-series data products tabulate flux in instrumental units. ESASky curates, when available, the zero points and conversion factors published by the missions used to convert from instrumental flux to physical units. The ESASky time-series viewer supports ST and AB photometric systems and a model-based approximation for the VEGA photometric system.
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#TSVIEW"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt;
+
+	</text>
+	<text key="timeViz_title">
+		ESA Time-Series Viewer
+	</text>
+	
 </Internationalization>

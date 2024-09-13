@@ -211,4 +211,9 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	public void onCreateRowClicked() {
 		//Do nothing by default - To be overridden if needed.
 	}
+	
+	@Override
+	public void onAddTimeSeriesClicked(GeneralJavaScriptObject row) {
+		//Do nothing by default - To be overridden if needed.
+	}
 }

@@ -855,7 +855,7 @@ public class TabulatorWrapper {
             settings.selectable = true;
         }
 
-        $wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication"];
+        $wnd.esasky.nonDatabaseColumns = ["rowSelection", "centre", "link2archive", "addLink2AdsColumn", "samp", "sourcesInPublication", "timevizColumn"];
 
         var footerCounter = "<div></div><div id=\"" + divId + "_rowCount\" class=\"footerCounter\">0</div>"
         var table = new $wnd.Tabulator("#" + divId, {
@@ -1805,23 +1805,6 @@ public class TabulatorWrapper {
 
     private native JavaScriptObject getDataLoadedFunc(TabulatorWrapper wrapper, JavaScriptObject settings) /*-{
         return function (data) {
-            var imageButtonFormatter = function (cell, formatterParams, onRendered) {
-                var isDisabled = false;
-
-                if (formatterParams.isDisabledFunc) {
-                    isDisabled = formatterParams.isDisabledFunc(cell);
-                }
-
-                var disabledClass = isDisabled ? "buttonCellDisabled" : "";
-
-                var toolTip = formatterParams.tooltip;
-                if (isDisabled && formatterParams.disabledTooltip) {
-                    toolTip = formatterParams.disabledTooltip;
-                }
-
-                return "<div class='buttonCell " + disabledClass + "' title='" + toolTip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
-
             var obscoreButtonDisabled = function (cell) {
                 var data = cell.getData();
                 var tableNames = data["table_names"];
@@ -1882,7 +1865,7 @@ public class TabulatorWrapper {
                     download: false,
                     width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter,
+                    formatter: $wnd.esasky.imageButtonFormatter,
                     formatterParams: {image: "recycle-bin-line-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_deleteRowTooltip")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
@@ -1902,7 +1885,7 @@ public class TabulatorWrapper {
                     download: false,
                     width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter,
+                    formatter: $wnd.esasky.imageButtonFormatter,
                     formatterParams: {image: "edit-pen-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_editRowTooltip")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
@@ -1922,7 +1905,7 @@ public class TabulatorWrapper {
                     download: false,
                     width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter,
+                    formatter: $wnd.esasky.imageButtonFormatter,
                     sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
                         return obscoreButtonDisabled(aRow) - obscoreButtonDisabled(bRow);
                     },
@@ -1952,7 +1935,7 @@ public class TabulatorWrapper {
                     download: false,
                     width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter,
+                    formatter: $wnd.esasky.imageButtonFormatter,
                     formatterParams: {image: "query-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_customAdqlQuery")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
@@ -1972,7 +1955,7 @@ public class TabulatorWrapper {
                     download: false,
                     width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter,
+                    formatter: $wnd.esasky.imageButtonFormatter,
                     formatterParams: {image: "column_icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_showColumnMetadata")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
@@ -1992,7 +1975,7 @@ public class TabulatorWrapper {
                     download: false,
                     width: 40,
                     hozAlign: "center",
-                    formatter: imageButtonFormatter,
+                    formatter: $wnd.esasky.imageButtonFormatter,
                     formatterParams: {image: "table-icon.png", tooltip: $wnd.esasky.getInternationalizationText("tabulatorWrapper_openTableTooltip")},
                     cellClick: function (e, cell) {
                         e.stopPropagation();
@@ -2021,8 +2004,31 @@ public class TabulatorWrapper {
             var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
             var activeColumnGroup = [];
             var isSSO = false;
-            var imageButtonFormatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "'/></div>";
+            $wnd.esasky.imageButtonFormatter = function (cell, formatterParams, onRendered) {
+                var isDisabled = false;
+
+                if (formatterParams.isDisabledFunc) {
+                    isDisabled = formatterParams.isDisabledFunc(cell);
+                }
+
+                var disabledClass = isDisabled ? "buttonCellDisabled" : "";
+
+                var toolTip = formatterParams.tooltip;
+                if (isDisabled && formatterParams.disabledTooltip) {
+                    toolTip = formatterParams.disabledTooltip;
+                }
+
+                return "<div class='buttonCell " + disabledClass + "' title='" + toolTip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
+            };
+
+            var timeVizButtonDisabled = function (cell) {
+                var data = cell.getData();
+                var has_epoch_photometry = data["has_epoch_photometry"];
+                var observation_id = data["observation_id"];
+                var has_time_series = data["tseries"];
+                var has_cheops_product = data["sci_cor_lc_opt_link"];
+                
+                return !(has_time_series === true || has_epoch_photometry === true || has_cheops_product || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism");
             };
 
 
@@ -2071,7 +2077,7 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_centreHeaderTooltip"),
                     minWidth: 50,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "recenter.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_centreOnCoordinates")
                     },
@@ -2091,7 +2097,7 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_sendRowToVOApplicationHeaderTooltip"),
                     minWidth: 50,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "send_small.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_sendRowToVOA")
                     },
@@ -2111,7 +2117,7 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveHeaderTooltip"),
                     minWidth: 63,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "link2archive.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2ArchiveButtonTooltip")
                     },
@@ -2131,7 +2137,7 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_columnHeader_browseProducts"),
                     minWidth: 85,
                     download: true,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "download_small.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_browseProducts")
                     },
@@ -2150,7 +2156,7 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_link2AdsHeaderTooltip"),
                     minWidth: 63,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "link2archive.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_link2AdsButtonTooltip")
                     },
@@ -2169,7 +2175,7 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
                     minWidth: 67,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "target_list.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublication")
                     },
@@ -2188,13 +2194,39 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_SourcesInPublicationHeaderTooltip"),
                     minWidth: 50,
                     download: false,
-                    formatter: imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
                         image: "plus-sign-light-small.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_addHips_tooltip")
                     },
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAddHipsClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getData());
+                    }
+                });
+            }
+            if (settings.addTimeVizColumn) {
+                activeColumnGroup.push({
+                    title: $wnd.esasky.getInternationalizationText("tabulator_timeViz"),
+                    field: "timevizColumn",
+                    visible: true,
+                    headerSort: true,
+                    headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizTooltip"),
+                    minWidth: 68,
+                    download: false,
+                    sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
+                        return timeVizButtonDisabled(aRow) - timeVizButtonDisabled(bRow);
+                    },
+                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                        image: "scatterplot.png",
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizTooltip"),
+                        disabledTooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizDisabledTooltip"),
+                        isDisabledFunc: timeVizButtonDisabled
+                    },
+                    cellClick: function (e, cell) {
+                        e.stopPropagation();
+                        if (timeVizButtonDisabled(cell) === false) {
+                        	wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onAddTimeSeriesClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                        }
                     }
                 });
             }
@@ -2692,6 +2724,10 @@ public class TabulatorWrapper {
 
     public void onAddHipsClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onAddHipsClicked(rowData);
+    }
+
+    public void onAddTimeSeriesClicked(final GeneralJavaScriptObject row) {
+        tabulatorCallback.onAddTimeSeriesClicked(row);
     }
 
     public void onRowSelection(GeneralJavaScriptObject row) {
