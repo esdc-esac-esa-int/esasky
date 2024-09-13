@@ -986,9 +986,16 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             } else {
                 settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null && !isPub);
             }
+            List<String> missionsWithTimeVizData = Arrays.asList("catalogues.t_gaia_source_dr3_fdw",
+            		"catalogues.mv_xsa_epic_source_cat_fdw" 
+//            		, "observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw", "observations.mv_v_v_esasky_jwst_spectra_fdw_fdw",
+//            		"observations.mv_cheops_obs_fdw"
+            		);
+            boolean hasTimeVizData = missionsWithTimeVizData.contains(descriptor.getTableName());
 
             settings.setAddLink2AdsColumn(isPub);
             settings.setAddSourcesInPublicationColumn(isPub);
+            settings.setAddTimeVizColumn(hasTimeVizData);
             settings.setAddSelectionColumn(true);
             settings.setUseUcd(true);
             settings.setShowDetailedErrors(descriptor.isExternal() && descriptor.isCustom());

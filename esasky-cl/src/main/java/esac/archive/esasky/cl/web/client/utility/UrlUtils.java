@@ -111,7 +111,13 @@ public final class UrlUtils {
 		return "kiosk".equalsIgnoreCase(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_LAYOUT));
 
 	}
-    
+
+	public static boolean urlHasOutreachImage() {
+		return Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.URL_PARAM_JWST_IMAGE)
+				|| Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.URL_PARAM_HST_IMAGE)
+				|| Window.Location.getParameterMap().containsKey(EsaSkyWebConstants.URL_PARAM_EUCLID_IMAGE);
+	}
+
     public static String getUrlLangCode() {
         if (Window.Location.getParameterMap().containsKey(EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM)) {
             final String langCode = Window.Location.getParameter(EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM).toLowerCase();

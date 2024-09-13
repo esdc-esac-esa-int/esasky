@@ -45,6 +45,7 @@ import java.util.*;
 
 public class TabulatorTablePanel extends Composite implements ITablePanel, TabulatorCallback {
 
+	private static final String GET_DATA = "getData";
 	JupyterDownloadDialog dialog  = new JupyterDownloadDialog();
 	QueryPopupPanel queryPopupPanel;
 
@@ -365,6 +366,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onCreateRowClicked() {
 		//Do nothing by default - To be overridden if needed.
 	}
+	
+	@Override
+	public void onAddTimeSeriesClicked(GeneralJavaScriptObject row) {
+		String mission = entity.getDescriptor().getMission();
+		String productUrl = mission.equals("CHEOPS") ? row.invokeFunction(GET_DATA).getStringProperty("sci_cor_lc_opt_link") : null;
+		String dataId = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
+		selectRowWhileDialogBoxIsOpen(row, TimeSeriesPanel.openTimeSeriesData(mission, dataId, productUrl));
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TIMESERIES, getLabel(), dataId);
+	}
 
 	public boolean getIsHidingTable() {
 		return isHidingTable;
@@ -637,7 +647,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onRowSelection(final GeneralJavaScriptObject row) {
 		notifyOnRowSelection(row);
 		entity.selectShapes(GeneralJavaScriptObject.convertToInteger(row.invokeFunction("getIndex")));
-		CommonEventBus.getEventBus().fireEvent(new TableRowSelectedEvent(row.invokeFunction("getData")));
+		CommonEventBus.getEventBus().fireEvent(new TableRowSelectedEvent(row.invokeFunction(GET_DATA)));
 	}
 
 	@Override
@@ -679,13 +689,13 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onDatalinkClicked(GeneralJavaScriptObject row, String url) {
 
 		if(url == null || url.isEmpty()) {
-			url = buildArchiveURL(row.invokeFunction("getData"));
+			url = buildArchiveURL(row.invokeFunction(GET_DATA));
 		}
 		if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
 			url = url.replaceFirst("http:", "https:");
 		}
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
-		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getIdColumn());
+		String title = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
 
 		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(url, title));
 	}
@@ -705,8 +715,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void onPostcardUrlClicked(GeneralJavaScriptObject row, String columnName) {
-		String url = row.invokeFunction("getData").getStringProperty(columnName);
-		String title = row.invokeFunction("getData").getStringProperty(entity.getDescriptor().getIdColumn());
+		String url = row.invokeFunction(GET_DATA).getStringProperty(columnName);
+		String title = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
 		selectRowWhileDialogBoxIsOpen(row, new PreviewDialogBox(url, title));
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOAD_PREVIEW, getFullId(), title);
 	}
@@ -869,7 +879,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row) {
 		if (getDescriptor() != null) {
-			String archiveUrl = buildArchiveURL(row.invokeFunction("getData"));
+			String archiveUrl = buildArchiveURL(row.invokeFunction(GET_DATA));
 			openArchiveUrl(archiveUrl, row);
 		}
 
@@ -877,7 +887,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void onLink2ArchiveClicked(GeneralJavaScriptObject row, String columnName) {
-		GeneralJavaScriptObject rowData = row.invokeFunction("getData");
+		GeneralJavaScriptObject rowData = row.invokeFunction(GET_DATA);
 
 		String archiveUrl = "";
 		if (rowData.hasProperty(columnName)) {
@@ -902,7 +912,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			GoogleAnalytics.sendEventWithURL(GoogleAnalytics.CAT_OUTBOUND, GoogleAnalytics.ACT_OUTBOUND_CLICK, archiveUrl);
 			UrlUtils.openUrl(archiveUrl);
 		} else {
-			String url = buildArchiveURL(row.invokeFunction("getData"));
+			String url = buildArchiveURL(row.invokeFunction(GET_DATA));
 			if(url.toLowerCase().contains("datalink")) {
 				onDatalinkClicked(row, url);
 			}else {

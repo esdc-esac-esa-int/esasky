@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+#timeseriesPanel{
+	display: block;
+	z-index: 10010;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.9);
+	border: 1px solid;
+    box-sizing: border-box;
+    position: absolute !important;
+	width: 80%;
+	height: 50%;
+	padding: 5px;
+	padding-right: 0px;
+}
+
+.timeSeriesCloseButton {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	z-index: 10;
+}
+
+.timeseriesContentContainer {
+	height:100%;
+}
+
+.timeseriesContent {
+	height: 100%;
+} 
+.timeSeriesHeader {
+	cursor:all-scroll;
+	height: 40px;
+	text-align: center;
+    box-sizing: border-box;
+    position: absolute; 
+    z-index: 10;
+    width: literal("calc(100% - 290px)");
+    left: 170px;
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	justify-content: center;
+}
+
+.timeSeriesHeaderLabel{
+	font-size: 18px;
+	font-weight: bold;
+}
