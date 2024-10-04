@@ -80,11 +80,29 @@
 <p><b>Event:&nbsp;</b></p>
 <p>setFov</p>
 <p><b>Description:&nbsp;</b></p>
-<p>Set the Field of View in degrees</p>
+<p>Set the horizontal Field of View in degrees</p>
 <p><b>Parameters:&nbsp;</b></p>
 <p>fov (double, in deg)<p><b>Example:&nbsp;</b></p>
 <p id="setfov">{event:'setFov',  content:{fov:'3.2'}}</p>
 <p><button onclick="msg_func('setfov')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getFov</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Get the horizontal Field of View in degrees</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getfov">{event:'getFov'}</p>
+<p><button onclick="msg_func('getfov')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>getFovShape</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Get the polygon or circle that is made up by the users viewport. This is the same geometrical constraint that is used to calculate the counts.</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="getfovshape">{event:'getFovShape'}</p>
+<p><button onclick="msg_func('getfovshape')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 <p><b>Event:&nbsp;</b></p>
@@ -1389,6 +1407,53 @@
 <p><b>Example:&nbsp;</b></p>
 <p id="playerprevious">{event: 'playerPrevious'}</p>
 <p><button onclick="msg_func('playerprevious')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+</div>
+
+
+<!--***************
+***Session***
+*************** -->
+<hr />
+<button class="accordion">Session</button>
+<div class="panel" id="session">
+<p><b>Event:&nbsp;</b></p>
+<p>saveState</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Save the current state of the application. The state can be restored later.</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="savestate">{event: 'saveState'}</p>
+<p><button onclick="msg_func('savestate')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>restoreState</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Restore a saved state.</p>
+<p><b>Parameters:&nbsp;</b></p>
+<p>state (String) - A JSON string defining a state.</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="restorestate">{event: 'restoreState', content: {state:{"location":{"ra":"65.50637741584342", "dec":"19.52653625483832", "fov":"0.5879454759609269", "coo_frame":"J2000"}}} }</p>
+<p><button onclick="msg_func('restorestate')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>login</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Login to the ESASky user area.</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="login">{event: 'login'}</p>
+<p><button onclick="msg_func('login')" type="button">Send</button></p>
+<p>&nbsp;</p>
+
+<p><b>Event:&nbsp;</b></p>
+<p>logout</p>
+<p><b>Description:&nbsp;</b></p>
+<p>Logout of the ESASky user area</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="logout">{event: 'logout'}</p>
+<p><button onclick="msg_func('logout')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
 </div>

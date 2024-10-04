@@ -617,22 +617,6 @@ Plotting ESASky data:
       Plot available spectra footprints in ESASky for the currently shown area for the given missionID
     example:
       "{event:'plotSpectra',  content:{missionId: 'IUE'}}"
-  plotSpectra:
-    parameters:
-      missionId:
-        type:  (String)
-        description: 
-    returns:
-      extras:
-        type:  (Dictionary) 
-        description:  Empty if success
-      extras.message:
-        type:  (String) 
-        description:  Not existing if success otherwise error message
-    description:
-      Plot available spectra footprints in ESASky for the currently shown area for the given missionID
-    example:
-      "{event:'plotSpectra',  content:{missionId: 'IUE'}}"
 Plotting TAP Service data:
   getAvailableTapServices:
     returns:
@@ -1404,3 +1388,28 @@ Player:
       Go to the previous entry in the player queue
     example:
       "{event: 'playerPrevious'}"
+Session:
+  saveState:
+    description:
+      Save the current state of the application. The state can be restored later.
+    example:
+      "{event: 'saveState'}"
+  restoreState:
+    description:
+      Restore a saved state.
+    parameters:
+      state:
+        type: (String)
+        description: A JSON string defining a state.
+    example:
+      "{event: 'restoreState', content: {state:{\"location\":{\"ra\":\"65.50637741584342\", \"dec\":\"19.52653625483832\", \"fov\":\"0.5879454759609269\", \"coo_frame\":\"J2000\"}}} }"
+  login:
+    description:
+      Login to the ESASky user area.
+    example:
+      "{event: 'login'}"
+  logout:
+    description:
+      Logout of the ESASky user area
+    example:
+      "{event: 'logout'}"
