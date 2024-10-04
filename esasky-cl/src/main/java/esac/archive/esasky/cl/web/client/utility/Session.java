@@ -33,6 +33,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFoo
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -589,7 +590,10 @@ public class Session {
 		Iterator<GeneralEntityInterface> entityIterator = EntityRepository.getInstance().getAllEntities().iterator();
 		while (entityIterator.hasNext()) {
 			GeneralEntityInterface ent = entityIterator.next();
-			ent.getTablePanel().closeTablePanel();
+			ITablePanel tablePanel = ent.getTablePanel();
+			if (tablePanel != null) {
+				tablePanel.closeTablePanel();
+			}
 		}
 
 		// Load session data
