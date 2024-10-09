@@ -115,7 +115,8 @@ public class ApiMessageParser {
 					   msg.content.hips['category'] = "USER";
 					}
 					var useCredentials = @java.lang.Boolean::FALSE;
-					if(!msg.content.hips.hasOwnProperty('useCredentials') && msg.content.hips['useCredentials'].toLowerCase()() === 'true'){
+					if(msg.content.hips.hasOwnProperty('useCredentials') 
+						&& (msg.content.hips['useCredentials'] === true || msg.content.hips['useCredentials'].toLowerCase()() === 'true')){
 						useCredentials = @java.lang.Boolean::TRUE;
 					}
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
@@ -130,7 +131,8 @@ public class ApiMessageParser {
 					   msg.content.hips['category'] = "USER";
 					}
 					var useCredentials = @java.lang.Boolean::FALSE;
-					if(!msg.content.hips.hasOwnProperty('useCredentials') && msg.content.hips['useCredentials'].toLowerCase()() === 'true'){
+					if(msg.content.hips.hasOwnProperty('useCredentials') 
+						&& (msg.content.hips['useCredentials'] === true || msg.content.hips['useCredentials'].toLowerCase()() === 'true')){
 						useCredentials = @java.lang.Boolean::TRUE;
 					}
 					if(msg.content.hips.hasOwnProperty('removeFirst') && msg.content.hips['removeFirst'] === 'true'){
