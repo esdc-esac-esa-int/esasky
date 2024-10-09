@@ -137,13 +137,17 @@ HiPS:
         description: 
       hips.cooframe:
         type: (String)
-        description: 
+        description: J2000 or GAL
       hips.maxnorder:
         type: (Int)
         description: 
       hips.imgformat:
         type: (String)
-        description: 
+        description: Image format of the tiles
+       hips.useCredentials:
+       	type: (Boolean)
+       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
+        
     description:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
@@ -168,6 +172,9 @@ HiPS:
       hips.imgformat:
         type: (String)
         description: 
+      hips.useCredentials:
+       	type: (Boolean)
+       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
     description:
       Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
     example:

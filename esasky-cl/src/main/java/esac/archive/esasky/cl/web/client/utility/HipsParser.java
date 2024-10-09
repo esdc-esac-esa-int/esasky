@@ -32,9 +32,10 @@ public class HipsParser {
 			 url = url.replaceFirst("http:", "https:");
         }
 		
-		final String surveyRootUrl = url;
+		final String surveyRootUrl = url.replace("/properties", "").replace("%2fproperties", "");
 	
-		final String propertiesUrl = surveyRootUrl +  "/" +  ApiConstants.HIPS_PROPERTIES_FILE;
+		String separator = url.endsWith("%2fproperties") ? "%2f" : "/";
+		final String propertiesUrl = surveyRootUrl +  separator +  ApiConstants.HIPS_PROPERTIES_FILE;
 		JSONUtils.getJSONFromUrl(propertiesUrl, new JsonRequestCallback("", propertiesUrl) {
 	
 			@Override
@@ -55,7 +56,7 @@ public class HipsParser {
 				observer.onError(ApiConstants.HIPS_PROP_ERROR_LOADING + propertiesUrl );
 			}
 			
-		});
+		}, true);
 	}
 	
 	public HiPS parseHipsProperties(String propertiesText, String surveyRootUrl) throws IOException {

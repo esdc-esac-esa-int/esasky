@@ -58,24 +58,24 @@ public class ApiHips extends ApiBase{
 	}
 	
 	public void addHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
-			int maximumNorder, String imgFormat, String category, boolean isDefault) {
+			int maximumNorder, String imgFormat, String category, boolean isDefault, boolean useCredentials) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_ADDHIPS, surveyRootUrl);
 		if(!isDefault) {
 			// CASE 1: normal case, just adding HiPS
 			SelectSkyPanel.getInstance().createSky(true, category, isDefault);
-			setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault);
+			setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault, useCredentials);
 
-		}else {
+		} else {
 			if(HipsWavelength.getListOfUserHips().keySet().contains(category)) {
 				// CASE 2: add default HiPS in an existing category
 				// Simply add the HiPS to the existing category, no new row is needed
-				addHipsToCategory(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault);
+				addHipsToCategory(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault, useCredentials);
 				SelectSkyPanel.updateCustomHiPS();
 			}else {
 				// CASE 3: add default HiPS in a new category
 				// Create the category, create row and add the HiPS
 				SelectSkyPanel.getInstance().createSky(true, category, isDefault);
-				setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault);
+				setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault, useCredentials);
 
 			}
 		}
@@ -132,8 +132,8 @@ public class ApiHips extends ApiBase{
 		sendBackSuccessToWidget(widget);
 		return true;
 	}
-
-	public void setHiPSWithParams(String surveyName, String baseUrl, String category, Boolean isDefault, boolean add, final JavaScriptObject widget) {
+	
+	public void setHiPSWithParams(String surveyName, String baseUrl, String category, Boolean useCredentials, Boolean isDefault, boolean add, final JavaScriptObject widget) {
 		
 		if("https:".equals(Window.Location.getProtocol()) && baseUrl.startsWith("http:")){
 			baseUrl = baseUrl.replaceFirst("http:", "https:");
@@ -159,9 +159,9 @@ public class ApiHips extends ApiBase{
 				int maximumNorder = (int) props.getDoubleProperty(ApiConstants.HIPS_PROP_ORDER);
 				
 				if(add) {
-					addHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault);
+					addHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault, useCredentials);
 				}else {
-					setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault);
+					setHiPSWithParams(surveyName, surveyRootUrl, surveyFrame, maximumNorder, imgFormat, category, isDefault, useCredentials);
 				}
 				sendBackSuccessToWidget(widget);
 
@@ -172,7 +172,7 @@ public class ApiHips extends ApiBase{
 				sendBackErrorMsgToWidget(ApiConstants.HIPS_PROP_ERROR_LOADING + propertiesUrl, widget);
 			}
 			
-		});
+		}, useCredentials);
 		
 	}
 	
@@ -211,7 +211,7 @@ public class ApiHips extends ApiBase{
 	}
 	
 	public void setHiPSWithParams(String surveyName, String surveyRootUrl, String surveyFrame,
-			int maximumNorder, String imgFormat, String category, boolean isDefault) {
+			int maximumNorder, String imgFormat, String category, boolean isDefault, boolean useCredentials) {
 		
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CHANGEHIPSWITHPARAMS, surveyRootUrl);
 
@@ -226,16 +226,17 @@ public class ApiHips extends ApiBase{
 		HiPSImageFormat hipsImageFormatEnum = HiPSImageFormat.png.name().toLowerCase().contains(imgFormat.toLowerCase())
 				? HiPSImageFormat.png : HiPSImageFormat.jpg;
 		hips.setImgFormat(hipsImageFormatEnum);
-		if(category != null && category != "") {
+		if(category != null && !category.equals("")) {
 			hips.setHipsCategory(category);
 		}
 
 		hips.setDefaultHIPS(isDefault);
+		hips.setUseCredentials(useCredentials);
 		SelectSkyPanel.setHiPSFromAPI(hips, true);
 	}
 	
 	public void addHipsToCategory(String surveyName, String surveyRootUrl, String surveyFrame,
-			int maximumNorder, String imgFormat, String category, boolean isDefault) {
+			int maximumNorder, String imgFormat, String category, boolean isDefault, boolean useCredentials) {
 		
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CHANGEHIPSWITHPARAMS, surveyRootUrl);
 
@@ -250,12 +251,12 @@ public class ApiHips extends ApiBase{
 		HiPSImageFormat hipsImageFormatEnum = HiPSImageFormat.png.name().toLowerCase().contains(imgFormat.toLowerCase())
 				? HiPSImageFormat.png : HiPSImageFormat.jpg;
 		hips.setImgFormat(hipsImageFormatEnum);
-		if(category != null && category != "") {
+		if(category != null && !category.equals("")) {
 			hips.setHipsCategory(category);
 		}
 
 		hips.setDefaultHIPS(isDefault);
-		
+		hips.setUseCredentials(useCredentials);
 		HipsWavelength.getListOfUserHips().get(category).add(hips);
 		SelectSkyPanel.updateCustomHiPS();
 	}

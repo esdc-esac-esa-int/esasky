@@ -100,8 +100,13 @@ public class JSONUtils {
     }
     
     public static void getJSONFromUrl(final String url, final RequestCallback callback) {
+    	getJSONFromUrl(url, callback, false);
+    }
+    
+    public static void getJSONFromUrl(final String url, final RequestCallback callback, boolean includeCredentials) {
         Log.debug("[getJSONFromUrl] Query [" + url + "]");
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+        builder.setIncludeCredentials(includeCredentials);
         try {
             builder.sendRequest(null, callback);
         } catch (RequestException e) {
@@ -109,5 +114,4 @@ public class JSONUtils {
             Log.error("[getJSONFromUrl] Error fetching JSON data from server");
         }
     }
-
 }

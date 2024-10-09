@@ -400,14 +400,13 @@ public class AladinLiteWrapper {
         }
         
         if(hips.isLocal()) {
-        	
         	aladinLite.createAndSetLocalImageSurvey(hips.getSurveyId(), hips.getSurveyName(),
         			"", hips.getSurveyFrame().name(), hips.getMaximumNorder(),
         			hips.getImgFormat().name(), hips.getFiles());
-        }else {
+        } else {
         	aladinLite.createAndSetImageSurveyWithImgFormat(hips.getSurveyId(), hips.getSurveyName(),
         			hips.getSurveyRootUrl(), hips.getSurveyFrame().name(), hips.getMaximumNorder(),
-        			hips.getImgFormat().name());
+        			hips.getImgFormat().name(), hips.shouldUseCredentials());
         	
         }
         
@@ -457,7 +456,7 @@ public class AladinLiteWrapper {
         aladinLite.doOverlaySimpleImageLayer(overlayHiPS.getSurveyId(),
                 overlayHiPS.getSurveyName(), overlayHiPS.getSurveyRootUrl(), overlayHiPS
                         .getSurveyFrame().name(), overlayHiPS.getMaximumNorder(), overlayHiPS
-                        .getImgFormat().name(), opacity);
+                        .getImgFormat().name(), opacity, overlayHiPS.shouldUseCredentials());
         aladinLite.setOverlayColorPalette(getColorPaletteForAladin(colorPalette));
     }
 

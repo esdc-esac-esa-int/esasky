@@ -110,12 +110,16 @@ public class ApiMessageParser {
 				case 'changeHipsWithParams':
 					console.log('changeHiPSWithParams event captured!');
 					console.log(msg);
-					console.log("HiPS URL "+msg.content.hips.url);
+					console.log("HiPS URL " + msg.content.hips.url);
 					if(!msg.content.hips.hasOwnProperty('category')){
 					   msg.content.hips['category'] = "USER";
 					}
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, @java.lang.Boolean::FALSE, false, e);
+					var useCredentials = @java.lang.Boolean::FALSE;
+					if(!msg.content.hips.hasOwnProperty('useCredentials') && msg.content.hips['useCredentials'].toLowerCase()() === 'true'){
+						useCredentials = @java.lang.Boolean::TRUE;
+					}
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, useCredentials, @java.lang.Boolean::FALSE, false, e);
 					break
 	
 				case 'addHipsWithParams':
@@ -125,7 +129,10 @@ public class ApiMessageParser {
 					if(!msg.content.hips.hasOwnProperty('category')){
 					   msg.content.hips['category'] = "USER";
 					}
-					
+					var useCredentials = @java.lang.Boolean::FALSE;
+					if(!msg.content.hips.hasOwnProperty('useCredentials') && msg.content.hips['useCredentials'].toLowerCase()() === 'true'){
+						useCredentials = @java.lang.Boolean::TRUE;
+					}
 					if(msg.content.hips.hasOwnProperty('removeFirst') && msg.content.hips['removeFirst'] === 'true'){
 						msg.content.index = 0;
 					   	apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::removeSkyRow(ILcom/google/gwt/core/client/JavaScriptObject;)(msg.content.index,e);
@@ -137,8 +144,8 @@ public class ApiMessageParser {
 					   msg.content.hips['isDefault'] = @java.lang.Boolean::FALSE;
 					}
 					
-					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, msg.content.hips.isDefault, true, e);
+					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;)
+						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, useCredentials, msg.content.hips.isDefault, true, e);
 					break
 					
 				case 'removeHips':

@@ -375,26 +375,24 @@ public class AllSkyPresenter {
 	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
 	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
 				if(checkNotReverseAndGreyscale(hips, colorPalette)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+					AladinLiteWrapper.getAladinLite().reverseColorMap();
 					hips.setReversedColorMap(true);
 				}else if(checkReverseAndNotGreyscale(hips, colorPalette)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+					AladinLiteWrapper.getAladinLite().reverseColorMap();
 					hips.setReversedColorMap(false);
 				}
 	            
 	        }
-        }else {
+        } else {
 			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
-			
 			createOverlayMap(hips, opacity, colorPalette);
 			
 			currentOverlay = hips;
 			
 			if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
+				AladinLiteWrapper.getAladinLite().reverseOverlayColorMap();
 				hips.setReversedColorMap(true);
 			}else if(checkReverseAndNotGreyscale(hips, colorPalette)) {
-//				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
 				hips.setReversedColorMap(false);
 			}
         }
@@ -402,7 +400,7 @@ public class AllSkyPresenter {
     }
     private void reverseCurrentHiPS(ColorPalette colorPalette) {
 		if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
+			AladinLiteWrapper.getAladinLite().reverseColorMap();
 			currentHiPS.setReversedColorMap(true);
 		}
     }

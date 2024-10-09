@@ -53,6 +53,8 @@ public class HiPS {
     /** defaultHIPS */
     boolean defaultHIPS = false;
     
+    boolean useCredentials = false;
+    
     /*
      * hips color default map
      */
@@ -245,6 +247,14 @@ public class HiPS {
 
 	public void setDefaultHIPS(boolean defaultHIPS) {
 		this.defaultHIPS = defaultHIPS;
+	}
+	
+	public boolean shouldUseCredentials() {
+		return useCredentials;
+	}
+
+	public void setUseCredentials(boolean useCredentials) {
+		this.useCredentials = useCredentials;
 	}
 	
 }
