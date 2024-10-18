@@ -52,6 +52,8 @@ public class CtrlToolBarPresenter {
         void updateSsoCount(long newCount);
         void onIsTrackingSSOEventChanged();
         void closeTreeMap();
+
+        void closeAllPanels();
         void closeAllOtherPanels(Widget button);
         void updateModuleVisibility();
 
@@ -312,6 +314,8 @@ public class CtrlToolBarPresenter {
     public void openGWPanel(int tabId) {
         view.openGWPanel(tabId);
     }
+
+    public void closeAllPanels() { view.closeAllPanels(); }
 
     public void closeGWPanel() {
         view.closeGWPanel();

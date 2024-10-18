@@ -459,47 +459,52 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
     }
 
     @Override
+    public void closeAllPanels() {
+        closeAllOtherPanels(null);
+    }
+
+    @Override
     public void closeAllOtherPanels(Widget button) {
-        if (!button.equals(observationButton)) {
+        if (!observationButton.equals(button)) {
             observationTreeMapContainer.hide();
         }
-        if (!button.equals(catalogButton)) {
+        if (!catalogButton.equals(button)) {
             catalogTreeMapContainer.hide();
         }
-        if (!button.equals(spectraButton)) {
+        if (!spectraButton.equals(button)) {
             spectraTreeMapContainer.hide();
         }
-        if (!button.equals(ssoButton)) {
+        if (!ssoButton.equals(button)) {
             ssoTreeMapContainer.hide();
         }
-        if (!button.equals(selectSkyButton)) {
+        if (!selectSkyButton.equals(button)) {
             selectSkyPanel.hide();
         }
-        if (!button.equals(planObservationButton)) {
+        if (!planObservationButton.equals(button)) {
             planObservationPanel.hide();
         }
-        if (!button.equals(publicationsButton)) {
+        if (!publicationsButton.equals(button)) {
             publicationPanel.hide();
         }
-        if (!button.equals(extTapButton)) {
+        if (!extTapButton.equals(button)) {
             extTapPanel.hide();
         }
-        if (!button.equals(gwButton)) {
+        if (!gwButton.equals(button)) {
             gwPanel.hide();
         }
-        if (!button.equals(outreachHstButton)) {
+        if (!outreachHstButton.equals(button)) {
             outreachHstImagePanel.hide();
         }
-        if (!button.equals(outreachJwstButton)) {
+        if (!outreachJwstButton.equals(button)) {
             outreachJwstPanel.hide();
         }
 
-        if (!button.equals(outreachEuclidButton)) {
+        if (!outreachEuclidButton.equals(button)) {
             outreachEuclidPanel.hide();
         }
 
         for (CustomTreeMap customTreeMap : customTreeMaps.values()) {
-            if (!button.equals(customTreeMap.button)) {
+            if (!customTreeMap.button.equals(button)) {
                 customTreeMap.treeMapContainer.hide();
             }
         }

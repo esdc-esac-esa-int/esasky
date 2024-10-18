@@ -595,6 +595,7 @@ public class Session {
 				tablePanel.closeTablePanel();
 			}
 		}
+		MainPresenter.getInstance().getCtrlTBPresenter().closeAllPanels();
 
 		// Load session data
 		try {
