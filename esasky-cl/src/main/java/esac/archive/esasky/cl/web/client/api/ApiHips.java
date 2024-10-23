@@ -133,7 +133,7 @@ public class ApiHips extends ApiBase{
 		return true;
 	}
 	
-	public void setHiPSWithParams(String surveyName, String baseUrl, String category, Boolean useCredentials, Boolean isDefault, boolean add, final JavaScriptObject widget) {
+	public void setHiPSWithParams(String surveyName, String baseUrl, String category, Boolean isDefault, boolean add, final JavaScriptObject widget, Boolean useCredentials) {
 		
 		if("https:".equals(Window.Location.getProtocol()) && baseUrl.startsWith("http:")){
 			baseUrl = baseUrl.replaceFirst("http:", "https:");
