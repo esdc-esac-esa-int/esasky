@@ -508,7 +508,7 @@ public class DescriptorRepository {
                     TAPSingleCountService.getInstance().getCountStcs(AladinLiteWrapper.getAladinLite())));
         }
 
-        JSONUtils.getJSONFromUrl(url, new JsonRequestCallback(countRequestHandler.getProgressIndicatorMessage(), url) {
+        JSONUtils.getJSONFromUrl(url, new CountRequestCallback(countRequestHandler.getProgressIndicatorMessage(), url) {
 
             @Override
             protected void onSuccess(Response response) {

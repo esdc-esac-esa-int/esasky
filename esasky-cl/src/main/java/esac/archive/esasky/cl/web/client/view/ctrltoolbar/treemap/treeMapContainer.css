@@ -42,3 +42,19 @@
 	margin: auto;
 }
 
+.treeMapContainer__spinnerContainer{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10000;
+	display: flex;
+	pointer-events: none;
+}
+.treeMapContainer__spinnerContainer > * {
+	margin: auto;
+}
+
+.treeMapContainer__invisibleSpinner{
+	display: none;
+}
