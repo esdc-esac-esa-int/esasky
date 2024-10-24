@@ -48,5 +48,5 @@ public interface TabulatorCallback {
     void onRowClicked(GeneralJavaScriptObject rowData);
     void onCreateRowClicked();
 	void onAddTimeSeriesClicked(GeneralJavaScriptObject rowData);
-
+    boolean isRowVisibleInTimeSeriesViewer(GeneralJavaScriptObject rowData);
 }

@@ -16,6 +16,9 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private final Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -35,15 +38,32 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private FlowPanel contentAndCloseButton;
     private Element timevizElement; 
     private static TimeSeriesPanel timeSeriesPanel = null;
-    
-    public static TimeSeriesPanel openTimeSeriesData(String mission, String dataId, String productUrl) {
-    	if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
-    		timeSeriesPanel = new TimeSeriesPanel(mission, dataId, productUrl);
-    	} else {
-    		String[] dataInfo = {mission, dataId, productUrl};
-    		timeSeriesPanel.addData(dataInfo);
-    	}
-    	return timeSeriesPanel;
+    private final Set<String> currentData = new HashSet<>();
+
+    public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String productUrl) {
+        String[] dataInfo = {mission, dataId, productUrl};
+        if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
+            timeSeriesPanel = new TimeSeriesPanel(mission, dataId, productUrl);
+            timeSeriesPanel.currentData.add(String.join(",", dataInfo));
+        } else if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
+            timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
+            timeSeriesPanel.removeData(dataInfo);
+            if (timeSeriesPanel.currentData.isEmpty()) {
+                timeSeriesPanel.hide();
+            }
+        } else {
+            timeSeriesPanel.currentData.add(String.join(",", dataInfo));
+            timeSeriesPanel.addData(dataInfo);
+        }
+        return timeSeriesPanel;
+    }
+
+    public static boolean dataIsVisible(String mission, String dataId, String productUrl) {
+        if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
+            return false;
+        }
+        String[] dataInfo = {mission, dataId, productUrl};
+        return timeSeriesPanel.currentData.contains(String.join(",", dataInfo));
     }
     
     public TimeSeriesPanel(String mission, String dataId, String productUrl) {
@@ -88,11 +108,19 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     public void addData(String [] dataInfo) {
     	addDataToTimeViz(timevizElement, dataInfo);
     }
+
+    public void removeData(String [] dataInfo) {
+        removeDataFromTimeViz(timevizElement, dataInfo);
+    }
     
     private native void addDataToTimeViz(Element timevizElement, String[] id) /*-{
 		timevizElement.addData = id;
 	}-*/;
-    
+
+    private native void removeDataFromTimeViz(Element timevizElement, String[] id) /*-{
+        timevizElement.removeData = id;
+    }-*/;
+
 	@Override
 	public void show() {
 		super.show();

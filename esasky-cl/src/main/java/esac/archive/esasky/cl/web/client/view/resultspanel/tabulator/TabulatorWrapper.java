@@ -340,6 +340,10 @@ public class TabulatorWrapper {
         tableJsObject.restoreRedraw();
     }-*/;
 
+    public native void reformatRow(GeneralJavaScriptObject row)/*-{
+        row.reformat();
+    }-*/;
+
     public void redrawAndReinitializeHozVDom() {
         redrawAndReinitializeHozVDom(tableJsObject);
     }
@@ -2031,7 +2035,39 @@ public class TabulatorWrapper {
                 return !(has_time_series === true || has_epoch_photometry === true || has_cheops_product || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism");
             };
 
+            var cellActiveInTimeViz = function (cell) {
+                return rowActiveInTimeViz(cell.getRow());
+            };
 
+            var rowActiveInTimeViz = function (row) {
+                return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::rowActiveInTimeViz(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(row);
+            };
+
+            var selectableFormatter = function (cell, formatterParams) {
+                var isDisabled = false;
+
+                if (formatterParams.isDisabledFunc) {
+                    isDisabled = formatterParams.isDisabledFunc(cell);
+                }
+
+                var disabledClass = isDisabled ? "buttonCellDisabled" : "";
+
+                var toolTip = formatterParams.tooltip;
+                if (isDisabled && formatterParams.disabledTooltip) {
+                    toolTip = formatterParams.disabledTooltip;
+                }
+
+                var isActive = formatterParams.isActiveFunc(cell);
+                var image;
+                if (isActive) {
+                    image = formatterParams.active_image;
+                } else {
+                    image = formatterParams.inactive_image;
+                }
+                var activeClass = isActive ? "toggleButtonOn" : "";
+
+                return "<div class='buttonCell " + disabledClass + " " + activeClass + "' title='" + toolTip + "'><img src='images/" + image + "' width='20px' height='20px'/></div>";
+            }
 
             var raName = "";
             var decName = "";
@@ -2204,6 +2240,7 @@ public class TabulatorWrapper {
                     }
                 });
             }
+
             if (settings.addTimeVizColumn) {
                 activeColumnGroup.push({
                     title: $wnd.esasky.getInternationalizationText("tabulator_timeViz"),
@@ -2214,14 +2251,20 @@ public class TabulatorWrapper {
                     minWidth: 68,
                     download: false,
                     sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
-                        return timeVizButtonDisabled(aRow) - timeVizButtonDisabled(bRow);
+                        return rowActiveInTimeViz(bRow) - rowActiveInTimeViz(aRow) + timeVizButtonDisabled(aRow) - timeVizButtonDisabled(bRow);
                     },
-                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "scatterplot.png",
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: selectableFormatter,
+                    formatterParams: {
+                        active_image: "scatterplot_blue.png",
+                        inactive_image: "scatterplot.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizTooltip"),
                         disabledTooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizDisabledTooltip"),
-                        isDisabledFunc: timeVizButtonDisabled
+                        isDisabledFunc: timeVizButtonDisabled,
+                        isActiveFunc: cellActiveInTimeViz
                     },
+
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         if (timeVizButtonDisabled(cell) === false) {
@@ -2728,6 +2771,7 @@ public class TabulatorWrapper {
 
     public void onAddTimeSeriesClicked(final GeneralJavaScriptObject row) {
         tabulatorCallback.onAddTimeSeriesClicked(row);
+        this.reformatRow(row);
     }
 
     public void onRowSelection(GeneralJavaScriptObject row) {
@@ -2758,6 +2802,10 @@ public class TabulatorWrapper {
         return tabulatorCallback.getDescriptorMetaData();
     }
 
+    public boolean rowActiveInTimeViz(GeneralJavaScriptObject row) {
+        return tabulatorCallback.isRowVisibleInTimeSeriesViewer(row);
+    }
+
     public CommonTapDescriptor getDescriptor() {
         return tabulatorCallback.getDescriptor();
     }
@@ -2770,7 +2818,7 @@ public class TabulatorWrapper {
             return null;
         }
     }
-    
+
     public String getMission() {
         return getDescriptor().getMission();
     }

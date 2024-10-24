@@ -216,4 +216,8 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	public void onAddTimeSeriesClicked(GeneralJavaScriptObject row) {
 		//Do nothing by default - To be overridden if needed.
 	}
+
+	public boolean isRowVisibleInTimeSeriesViewer(GeneralJavaScriptObject row) {
+		return false;
+	}
 }

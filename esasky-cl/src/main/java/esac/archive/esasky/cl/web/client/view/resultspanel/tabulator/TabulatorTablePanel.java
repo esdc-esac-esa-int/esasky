@@ -366,14 +366,22 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onCreateRowClicked() {
 		//Do nothing by default - To be overridden if needed.
 	}
-	
+
 	@Override
 	public void onAddTimeSeriesClicked(GeneralJavaScriptObject row) {
 		String mission = entity.getDescriptor().getMission();
 		String productUrl = mission.equals("CHEOPS") ? row.invokeFunction(GET_DATA).getStringProperty("sci_cor_lc_opt_link") : null;
 		String dataId = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
-		selectRowWhileDialogBoxIsOpen(row, TimeSeriesPanel.openTimeSeriesData(mission, dataId, productUrl));
+		MovablePanel timeSeriesPanel = TimeSeriesPanel.toggleTimeSeriesData(mission, dataId, productUrl);
+		timeSeriesPanel.registerCloseObserver(() -> table.reformatRow(row));
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TIMESERIES, getLabel(), dataId);
+	}
+
+	public boolean isRowVisibleInTimeSeriesViewer(GeneralJavaScriptObject row) {
+		String mission = entity.getDescriptor().getMission();
+		String productUrl = mission.equals("CHEOPS") ? row.invokeFunction(GET_DATA).getStringProperty("sci_cor_lc_opt_link") : null;
+		String dataId = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
+		return TimeSeriesPanel.dataIsVisible(mission, dataId, productUrl);
 	}
 
 	public boolean getIsHidingTable() {
