@@ -5528,10 +5528,18 @@
 		Julian Date is the default unit for the time format in the ESASky time-series viewer. Multi-mission data aggregation entails a standard conversion to flux in units of mJy and a time format conversion to the scale of the first mission displayed. Most time-series data products tabulate flux in instrumental units. ESASky curates, when available, the zero points and conversion factors published by the missions used to convert from instrumental flux to physical units. The ESASky time-series viewer supports ST and AB photometric systems and a model-based approximation for the VEGA photometric system.
 		&lt;br&gt;
 		&lt;br&gt;
+		For details on the accessed time-series data products per mission, their format and granularity, go to 
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-observations"
+		target="_blank"&gt;
+		Observations descriptions.
+		&lt;/a&gt;
+		&lt;br&gt;
+		&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#TSVIEW"
 		target="_blank"&gt;
-		More information
+		Interface information
 		&lt;/a&gt;
 
 	</text>

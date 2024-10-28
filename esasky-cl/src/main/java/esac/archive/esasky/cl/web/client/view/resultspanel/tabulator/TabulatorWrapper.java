@@ -2031,8 +2031,14 @@ public class TabulatorWrapper {
                 var observation_id = data["observation_id"];
                 var has_time_series = data["tseries"];
                 var has_cheops_product = data["sci_cor_lc_opt_link"];
+                var xmm_om_fast_id = data["fast_id"];
                 
-                return !(has_time_series === true || has_epoch_photometry === true || has_cheops_product || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism");
+                return !(has_time_series === true 
+                	|| has_epoch_photometry === true
+					|| has_cheops_product
+					|| observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism"
+					|| (xmm_om_fast_id && xmm_om_fast_id != "")
+					);
             };
 
             var cellActiveInTimeViz = function (cell) {
@@ -2058,12 +2064,8 @@ public class TabulatorWrapper {
                 }
 
                 var isActive = formatterParams.isActiveFunc(cell);
-                var image;
-                if (isActive) {
-                    image = formatterParams.active_image;
-                } else {
                     image = formatterParams.inactive_image;
-                }
+                    //image = formatterParams.active_image;
                 var activeClass = isActive ? "toggleButtonOn" : "";
 
                 return "<div class='buttonCell " + disabledClass + " " + activeClass + "' title='" + toolTip + "'><img src='images/" + image + "' width='20px' height='20px'/></div>";

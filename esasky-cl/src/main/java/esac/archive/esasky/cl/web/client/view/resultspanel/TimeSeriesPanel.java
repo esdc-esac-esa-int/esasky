@@ -40,10 +40,10 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private static TimeSeriesPanel timeSeriesPanel = null;
     private final Set<String> currentData = new HashSet<>();
 
-    public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String productUrl) {
-        String[] dataInfo = {mission, dataId, productUrl};
+    public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String secondIdentifier) {
+        String[] dataInfo = {mission, dataId, secondIdentifier};
         if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
-            timeSeriesPanel = new TimeSeriesPanel(mission, dataId, productUrl);
+            timeSeriesPanel = new TimeSeriesPanel(mission, dataId, secondIdentifier);
             timeSeriesPanel.currentData.add(String.join(",", dataInfo));
         } else if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
             timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
@@ -66,14 +66,14 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
         return timeSeriesPanel.currentData.contains(String.join(",", dataInfo));
     }
     
-    public TimeSeriesPanel(String mission, String dataId, String productUrl) {
+    public TimeSeriesPanel(String mission, String dataId, String secondIdentifier) {
     	super(GoogleAnalytics.CAT_TIMESERIES, true);
         this.style = this.resources.style();
         this.style.ensureInjected();
         
         this.dataInfo[0] = mission;
         this.dataInfo[1] = dataId;
-        this.dataInfo[2] = productUrl;
+        this.dataInfo[2] = secondIdentifier;
         setSnapping(false);
         closeButton = new CloseButton();
         closeButton.addStyleName("timeSeriesCloseButton");
