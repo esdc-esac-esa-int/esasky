@@ -8,12 +8,20 @@ import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 
 public class CountRequestCallback extends JsonRequestCallback {
     
-    public CountRequestCallback(String progressIndicatorMessage, String googleAnalyticsErrorMessage) {
+	public interface IOnSuccess {
+	    void onSucess(Response response);
+	}
+	
+	private IOnSuccess onSucess;
+    
+    public CountRequestCallback(String progressIndicatorMessage, String googleAnalyticsErrorMessage, IOnSuccess onSucess) {
         super(progressIndicatorMessage, googleAnalyticsErrorMessage);
+        this.onSucess = onSucess;
     }
 
     @Override
     protected void onSuccess(final Response response) {
+    	this.onSucess.onSucess(response);
     }
 
     @Override
