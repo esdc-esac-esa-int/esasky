@@ -33,32 +33,55 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private boolean imageHasLoaded = false;
     private Label headerLabel;
     private FlowPanel headerLabelAndHelpButton = new FlowPanel();
-    private String[] dataInfo = new String[3];
+    private String[] initialDataInfo = new String[3];
     
     private FlowPanel contentAndCloseButton;
     private Element timevizElement; 
-    private static TimeSeriesPanel timeSeriesPanel = null;
+    private static TimeSeriesPanel mainTimeSeriesPanel = null;
+    //CHEOPS data is normalized, and this cannot be combined with any other mission
+    private static TimeSeriesPanel cheopsTimeSeriesPanel = null;
     private final Set<String> currentData = new HashSet<>();
 
+    private static TimeSeriesPanel getTimeSeriesPanel(String mission) {
+    	if("CHEOPS".equals(mission)) {
+    		if(cheopsTimeSeriesPanel == null || !cheopsTimeSeriesPanel.isShowing()) {
+    			cheopsTimeSeriesPanel = new TimeSeriesPanel(true);
+    		}
+    		return cheopsTimeSeriesPanel;
+    	} else {
+    		if(mainTimeSeriesPanel == null || !mainTimeSeriesPanel.isShowing()) {
+    			mainTimeSeriesPanel = new TimeSeriesPanel(false);
+    		}
+    		return mainTimeSeriesPanel;
+    	}
+    }
+    
+    private static TimeSeriesPanel getTimeSeriesPanelOrNull(String mission) {
+    	if("CHEOPS".equals(mission)) {
+    		return cheopsTimeSeriesPanel;
+    	} else {
+    		return mainTimeSeriesPanel;
+    	}
+    }
+    
     public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String secondIdentifier) {
+    	TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanel(mission);
         String[] dataInfo = {mission, dataId, secondIdentifier};
-        if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
-            timeSeriesPanel = new TimeSeriesPanel(mission, dataId, secondIdentifier);
-            timeSeriesPanel.currentData.add(String.join(",", dataInfo));
-        } else if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
-            timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
-            timeSeriesPanel.removeData(dataInfo);
+        if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
+        	timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
+        	timeSeriesPanel.removeData(dataInfo);
             if (timeSeriesPanel.currentData.isEmpty()) {
-                timeSeriesPanel.hide();
+            	timeSeriesPanel.hide();
             }
         } else {
-            timeSeriesPanel.currentData.add(String.join(",", dataInfo));
-            timeSeriesPanel.addData(dataInfo);
+        	timeSeriesPanel.currentData.add(String.join(",", dataInfo));
+        	timeSeriesPanel.addData(dataInfo);
         }
         return timeSeriesPanel;
     }
 
     public static boolean dataIsVisible(String mission, String dataId, String productUrl) {
+    	TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanelOrNull(mission);
         if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
             return false;
         }
@@ -66,20 +89,17 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
         return timeSeriesPanel.currentData.contains(String.join(",", dataInfo));
     }
     
-    public TimeSeriesPanel(String mission, String dataId, String secondIdentifier) {
+    public TimeSeriesPanel(boolean isCheops) {
     	super(GoogleAnalytics.CAT_TIMESERIES, true);
         this.style = this.resources.style();
         this.style.ensureInjected();
         
-        this.dataInfo[0] = mission;
-        this.dataInfo[1] = dataId;
-        this.dataInfo[2] = secondIdentifier;
         setSnapping(false);
         closeButton = new CloseButton();
         closeButton.addStyleName("timeSeriesCloseButton");
         closeButton.addClickHandler(event -> hide());
-        
-        headerLabel = new Label("Time-Series Viewer");
+        String cheopsPrefix = isCheops ? "CHEOPS " : "";
+        headerLabel = new Label(cheopsPrefix + "Time-Series Viewer");
         headerLabel.setStyleName("timeSeriesHeaderLabel");
         headerLabelAndHelpButton.addStyleName("timeSeriesHeader");
         headerLabelAndHelpButton.add(headerLabel);
@@ -102,11 +122,15 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     	super.onAttach();
     	this.timevizElement = Document.get().createElement("timeviz-element");
     	contentAndCloseButton.getElement().appendChild(timevizElement);
-    	Scheduler.get().scheduleFinally(() -> addDataToTimeViz(timevizElement, dataInfo));
+    	Scheduler.get().scheduleFinally(() -> addDataToTimeViz(timevizElement, initialDataInfo));
     }
     
     public void addData(String [] dataInfo) {
-    	addDataToTimeViz(timevizElement, dataInfo);
+    	if(isAttached()) {
+    		addDataToTimeViz(timevizElement, dataInfo);
+    	} else {
+    	    this.initialDataInfo = dataInfo;
+    	}
     }
 
     public void removeData(String [] dataInfo) {
