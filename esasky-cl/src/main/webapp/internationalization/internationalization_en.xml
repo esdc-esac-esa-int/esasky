@@ -5546,5 +5546,8 @@
 	<text key="timeViz_title">
 		ESA Time-Series Viewer
 	</text>
-	
+	<text key="tabulator_timeVizToggleTooltip">
+		Only show items with Time Series data
+	</text>
+
 </Internationalization>

@@ -23,6 +23,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueForma
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -1007,7 +1008,7 @@ public class TabulatorWrapper {
             esaskyToVOStandardType["LONG"] = "long";
             esaskyToVOStandardType["RA"] = "double";
             esaskyToVOStandardType["DEC"] = "double";
-            
+
             // Adds headers to xml
             table.metadata.forEach(function (columnInfo) {
                 if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
@@ -1743,6 +1744,38 @@ public class TabulatorWrapper {
         }
     }-*/;
 
+    private native JavaScriptObject getToggleFilterFunc(TabulatorWrapper wrapper) /*-{
+        return function (headerValue, rowValue, rowData, filterParams) {
+            if (headerValue) {
+                return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasTimeVizData(*)(rowData);
+            }
+            return true;
+        }
+    }-*/;
+
+    private native JavaScriptObject getToggleFilterEditorFunc(TabulatorWrapper wrapper, String timeVizWhereQuery) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+            var tooltip = $wnd.esasky.getInternationalizationText("tabulator_timeVizToggleTooltip");
+            var button = @esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::new(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)("time-viz-toggle", false, "", tooltip);
+            var checked = false;
+            var successFunc = function (checked) {
+                success(checked);
+                button.@esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::setChecked(Z)(checked);
+                var filterString = checked ? timeVizWhereQuery: "";
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filterString)
+            }
+
+            var buttonElement = button.@esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::getElement()();
+            buttonElement.style.pointerEvents = "auto";
+            buttonElement.onclick = function () {
+                checked = !checked
+                successFunc(checked);
+            };
+
+            return buttonElement;
+        }
+    }-*/;
+
     private native JavaScriptObject getBooleanFilterEditorFunc(TabulatorWrapper wrapper) /*-{
         return function (cell, onRendered, success, cancel, editorParams) {
 
@@ -2026,19 +2059,8 @@ public class TabulatorWrapper {
             };
 
             var timeVizButtonDisabled = function (cell) {
-                var data = cell.getData();
-                var has_epoch_photometry = data["has_epoch_photometry"];
-                var observation_id = data["observation_id"];
-                var has_time_series = data["tseries"];
-                var has_cheops_product = data["sci_cor_lc_opt_link"];
-                var xmm_om_fast_id = data["fast_id"];
-                
-                return !(has_time_series === true 
-                	|| has_epoch_photometry === true
-					|| has_cheops_product
-					|| observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism"
-					|| (xmm_om_fast_id && xmm_om_fast_id != "")
-					);
+                return !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasTimeVizData(*)(cell.getData());
+
             };
 
             var cellActiveInTimeViz = function (cell) {
@@ -2086,7 +2108,7 @@ public class TabulatorWrapper {
 
                 }
             }
-            
+
             if (settings.customColumn) {
                 activeColumnGroup.push(JSON.parse(settings.customColumn));
             }
@@ -2266,7 +2288,8 @@ public class TabulatorWrapper {
                         isDisabledFunc: timeVizButtonDisabled,
                         isActiveFunc: cellActiveInTimeViz
                     },
-
+                    headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getToggleFilterEditorFunc(*)(wrapper, settings.timeVizWhereQuery),
+                    headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getToggleFilterFunc(*)(wrapper),
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         if (timeVizButtonDisabled(cell) === false) {
@@ -2676,6 +2699,20 @@ public class TabulatorWrapper {
         }
 
         return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
+    }-*/;
+
+    private native boolean hasTimeVizData(JavaScriptObject data) /*-{
+        var has_epoch_photometry = data["has_epoch_photometry"];
+        var observation_id = data["observation_id"];
+        var has_time_series = data["tseries"];
+        var has_cheops_product = data["sci_cor_lc_opt_link"];
+        var xmm_om_fast_id = data["fast_id"];
+
+        return has_time_series === true
+            || has_epoch_photometry === true
+            || has_cheops_product
+            || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism"
+            || (xmm_om_fast_id && xmm_om_fast_id !== "");
     }-*/;
 
     public void onRowEnter(int rowId) {

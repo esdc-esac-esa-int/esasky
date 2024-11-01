@@ -986,17 +986,25 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             } else {
                 settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null && !isPub);
             }
-            List<String> missionsWithTimeVizData = Arrays.asList("catalogues.t_gaia_source_dr3_fdw",
-            		"catalogues.mv_xsa_epic_source_cat_fdw" 
-            		, "observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw", "observations.mv_v_v_esasky_jwst_spectra_fdw_fdw",
-            		"observations.mv_cheops_obs_fdw",
-            		"catalogues.mv_xsa_om_source_cat_fdw"
-            		);
-            boolean hasTimeVizData = missionsWithTimeVizData.contains(descriptor.getTableName());
+
+            Map<String, String> timeVizTablesAndWhereClause =
+                    new HashMap<String, String>() {{
+                        put("catalogues.t_gaia_source_dr3_fdw", "has_epoch_photometry = 'True'");
+                        put("catalogues.mv_xsa_epic_source_cat_fdw", "tseries = 'True'");
+                        put("observations.mv_cheops_obs_fdw", "sci_cor_lc_opt_link IS NOT NULL");
+                        put("observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw", "observation_id = 'jw02783-o002_t001_miri_p750l-slitlessprism'");
+                        put("catalogues.mv_xsa_om_source_cat_fdw", "fast_id IS NOT NULL");
+                    }};
+
+            boolean hasTimeVizData = timeVizTablesAndWhereClause.containsKey(descriptor.getTableName());
+            String timeVizWhereQuery = timeVizTablesAndWhereClause.get(descriptor.getTableName());
 
             settings.setAddLink2AdsColumn(isPub);
             settings.setAddSourcesInPublicationColumn(isPub);
             settings.setAddTimeVizColumn(hasTimeVizData);
+            if (timeVizWhereQuery != null) {
+                settings.setTimeVizWhereQuery(timeVizWhereQuery);
+            }
             settings.setAddSelectionColumn(true);
             settings.setUseUcd(true);
             settings.setShowDetailedErrors(descriptor.isExternal() && descriptor.isCustom());
