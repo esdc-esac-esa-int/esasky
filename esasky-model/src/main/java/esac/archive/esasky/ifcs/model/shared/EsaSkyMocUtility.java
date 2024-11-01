@@ -100,11 +100,11 @@ public class EsaSkyMocUtility {
 			if(val.contains("-")) {
 				String[] split = val.split("-");
 				long start = Long.parseLong(split[0]) << (maxOrder - order) * 2;
-				long end = Long.parseLong(split[1]) << (maxOrder - order) * 2;
+				long end = (Long.parseLong(split[1]) + 1 << (maxOrder - order) * 2) - 1;
 				tree.add(start, end);
 			}else {
 				long start = Long.parseLong(val) << (maxOrder - order) * 2;
-				long end = start;
+				long end = (Long.parseLong(val) + 1 << (maxOrder - order) * 2) - 1;
 				tree.add(start, end);
 			}
 		}

@@ -18,7 +18,7 @@ public class MocUtilsTest {
 	public void testAsciiStringToRangeTree() {
 		String asciiString = "3/3-6 10 12 4/24-28 120 5/1 3";
 		RangeTree tree = EsaSkyMocUtility.asciiStringToRangeTree(asciiString, 5);
-		assertEquals("1,3,48-112,160,192,480", tree.toString());
+		assertEquals("1,3,48-115,160-175,192-207,480-483", tree.toString());
 	}
 
 }
