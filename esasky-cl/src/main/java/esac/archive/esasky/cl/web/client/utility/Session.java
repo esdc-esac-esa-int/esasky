@@ -34,6 +34,7 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObser
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TimeSeriesPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -81,6 +82,10 @@ public class Session {
 		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_EXTERNAL_DATA_CENTERS, getExternalDatacentersJson());
+		JSONObject timeViewerObj = getTimeViewerJson();
+		if (timeViewerObj != null) {
+			stateObj.put(EsaSkyWebConstants.SESSION_TIME_VIEWER, timeViewerObj);
+		}
 		
 		return stateObj;
 	}
@@ -109,6 +114,7 @@ public class Session {
 			restoreSettings(saveStateObj);
 			restoreTreemap(saveStateObj);
 			restoreExternalDataCenters(saveStateObj);
+			restoreTimeViewer(saveStateObj);
 		} catch (SaveStateException e) {
 			Log.error(e.getMessage(), e);
 		}
@@ -153,6 +159,21 @@ public class Session {
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(null, true, EsaSkyWebConstants.CATEGORY_EXTERNAL));
 		}
 	}
+
+	private void restoreTimeViewer(GeneralJavaScriptObject saveStateObj) {
+		if (saveStateObj.hasProperty(EsaSkyWebConstants.SESSION_TIME_VIEWER)) {
+			GeneralJavaScriptObject object = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_TIME_VIEWER);
+			for (String key : object.getPropertiesArray()) {
+				GeneralJavaScriptObject panel = object.getProperty(key);
+				for (GeneralJavaScriptObject dataEntry : GeneralJavaScriptObject.convertToArray(panel.getProperty("data"))) {
+					String mission = dataEntry.getProperty("mission").toString();
+					String id = dataEntry.getProperty("id").toString();
+					String secondIdentifier = dataEntry.getProperty("secondIdentifier").toString();
+					TimeSeriesPanel.toggleTimeSeriesData(mission, id, secondIdentifier);
+				}
+			}
+		}
+	}
 	
 	private JSONObject getSettingsJson() {
 		JSONObject settingsObj = new JSONObject();
@@ -192,7 +213,38 @@ public class Session {
 		String jsonString = mapper.write(commonTapDescriptorList);
 		return new JSONObject(JsonUtils.safeEval(jsonString));
 	}
-	
+
+	private JSONObject getTimeViewerJson() {
+		JSONObject obj = new JSONObject();
+		TimeSeriesPanel cheops = TimeSeriesPanel.getTimeSeriesPanelOrNull("CHEOPS");
+		if (cheops != null) {
+			storeTimeSeriesPanelData(obj, "cheops", cheops);
+		}
+		TimeSeriesPanel allOther = TimeSeriesPanel.getTimeSeriesPanelOrNull("GAIA");
+		if (allOther != null) {
+			storeTimeSeriesPanelData(obj, "others", allOther);
+		}
+		if (!obj.keySet().isEmpty()) {
+			return obj;
+		}
+		return null;
+	}
+
+	private void storeTimeSeriesPanelData(JSONObject obj, String key, TimeSeriesPanel panel) {
+		Set<String[]> data = panel.getCurrentData();
+		JSONArray dataArray = new JSONArray();
+		for (String[] entry : data) {
+			JSONObject jsonEntry = new JSONObject();
+			jsonEntry.put("mission", new JSONString(entry[0]));
+			jsonEntry.put("id", new JSONString(entry[1]));
+			jsonEntry.put("secondIdentifier", new JSONString(entry[2]));
+			dataArray.set(dataArray.size(), jsonEntry);
+		}
+		JSONObject panelSettings = new JSONObject();
+		panelSettings.put("data", dataArray);
+		obj.put(key, panelSettings);
+	}
+
 	private void restoreSettings(GeneralJavaScriptObject saveStateObj) {
 		GeneralJavaScriptObject settingsObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_SETTINGS);
 		if(settingsObj.hasProperty(EsaSkyWebConstants.SESSION_SETTINGS_GRID)) {

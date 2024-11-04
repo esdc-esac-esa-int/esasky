@@ -18,6 +18,7 @@ import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private final Resources resources = GWT.create(Resources.class);
@@ -56,7 +57,7 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     	}
     }
     
-    private static TimeSeriesPanel getTimeSeriesPanelOrNull(String mission) {
+    public static TimeSeriesPanel getTimeSeriesPanelOrNull(String mission) {
     	if("CHEOPS".equals(mission)) {
     		return cheopsTimeSeriesPanel;
     	} else {
@@ -131,6 +132,10 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     	} else {
     	    this.initialDataInfo = dataInfo;
     	}
+    }
+
+    public Set<String[]> getCurrentData() {
+        return currentData.stream().map(s -> s.split(",")).collect(Collectors.toSet());
     }
 
     public void removeData(String [] dataInfo) {
