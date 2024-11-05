@@ -374,7 +374,7 @@ public class HeaderPresenter {
 
         Map<String, String> map = new HashMap<>();
         map.put("Spheric", "SIN");
-        map.put("Tangental", "TAN");
+        map.put("Tangential", "TAN");
         map.put("Aitoff", "AIT");
         map.put("Zenital equal-area", "ZEA");
         map.put("Stereographic", "STG");
