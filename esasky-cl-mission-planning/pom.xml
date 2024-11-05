@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>6.4</version>
+		<version>7.0</version>
 	</parent>
 
 	<artifactId>esasky-cl-mission-planning</artifactId>
@@ -83,7 +83,7 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<extensions>true</extensions>
 				<configuration>
-					<moduleName>esac.archive.absi.modules.wcstransform.WCSTransform</moduleName>
+					<moduleName>esac.archive.esasky.cl.wcstransform.WCSTransform</moduleName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -91,7 +91,7 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt.version}</version>
 				<configuration>
-					<module>esac.archive.absi.modules.wcstransform.WCSTransform</module>
+					<module>esac.archive.esasky.cl.wcstransform.WCSTransform</module>
 				</configuration>
 				<executions>
 					<execution>

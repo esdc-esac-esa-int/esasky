@@ -74,7 +74,11 @@ public class CountStatus {
     }
 
     public SkyViewPosition getSkyViewPosition(CommonTapDescriptor descriptor) {
-        return countStatus.get(descriptor.getId()).getSkyViewPosition();
+        if (countStatus.containsKey(descriptor.getId())) {
+            return countStatus.get(descriptor.getId()).getSkyViewPosition();
+        } else {
+            return CoordinateUtils.getCenterCoordinateInJ2000();
+        }
     }
 
     public void updateCount(){

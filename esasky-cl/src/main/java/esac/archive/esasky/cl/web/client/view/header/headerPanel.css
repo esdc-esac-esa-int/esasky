@@ -4,7 +4,7 @@
 	height: 30px;
 	width: 100%;
 	position: absolute;
-	z-index: 300;
+	z-index: 99999;
 	background-color: rgba(0, 0, 0, 0.65);
 	font-weight: normal;
 }
@@ -31,6 +31,7 @@
 #selectedSky > div {
 	height: 30px;
 	box-sizing: border-box;
+	margin-left: 7px;
 }
 
 #feedbackButton > div {
@@ -123,6 +124,9 @@
 #selectedSky {
 	display: inline-block;
 	margin-right: 7px;
+	margin-left: 7px;
+	padding: 0;
+	line-height: 30px;
 }
 
 .header__dropdown__content {
@@ -214,4 +218,45 @@
 .header_dropdown__user__text,
 .header__dropdown__grid__text  {
 	display: inline-block;
+}
+
+#projectionContainer {
+	background: transparent;
+	line-height: 24px;
+	display: inline-flex;
+	vertical-align: top;
+	margin-left: 10px;
+}
+
+#projectionContainer :hover {
+	cursor: pointer;
+}
+
+
+#projectionContainer > div {
+	position: absolute !important;
+}
+
+#projectionContainer * > .gwt-Label {
+	user-select: none;
+}
+
+#projectionRootItem {
+	user-select: none;
+}
+
+#projectionRootItem > table {
+	min-width: 50px;
+}
+
+#projectionRootItem > div {
+	background: rgba(0, 0, 0, 0.65);
+}
+
+.projectionCategoryItem {
+	margin-left: 0 !important;
+}
+
+.tableRowHover, .rootTableRowHover > table {
+	background: rgba(255, 255, 255, 0.15);
 }

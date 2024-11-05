@@ -16,6 +16,10 @@ import esac.archive.esasky.cl.web.client.view.common.buttons.HelpButton;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private final Resources resources = GWT.create(Resources.class);
     private CssResource style;
@@ -30,36 +34,73 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     private boolean imageHasLoaded = false;
     private Label headerLabel;
     private FlowPanel headerLabelAndHelpButton = new FlowPanel();
-    private String[] dataInfo = new String[3];
+    private String[] initialDataInfo = new String[3];
     
     private FlowPanel contentAndCloseButton;
     private Element timevizElement; 
-    private static TimeSeriesPanel timeSeriesPanel = null;
-    
-    public static TimeSeriesPanel openTimeSeriesData(String mission, String dataId, String productUrl) {
-    	if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
-    		timeSeriesPanel = new TimeSeriesPanel(mission, dataId, productUrl);
+    private static TimeSeriesPanel mainTimeSeriesPanel = null;
+    //CHEOPS data is normalized, and this cannot be combined with any other mission
+    private static TimeSeriesPanel cheopsTimeSeriesPanel = null;
+    private final Set<String> currentData = new HashSet<>();
+
+    private static TimeSeriesPanel getTimeSeriesPanel(String mission) {
+    	if("CHEOPS".equals(mission)) {
+    		if(cheopsTimeSeriesPanel == null || !cheopsTimeSeriesPanel.isShowing()) {
+    			cheopsTimeSeriesPanel = new TimeSeriesPanel(true);
+    		}
+    		return cheopsTimeSeriesPanel;
     	} else {
-    		String[] dataInfo = {mission, dataId, productUrl};
-    		timeSeriesPanel.addData(dataInfo);
+    		if(mainTimeSeriesPanel == null || !mainTimeSeriesPanel.isShowing()) {
+    			mainTimeSeriesPanel = new TimeSeriesPanel(false);
+    		}
+    		return mainTimeSeriesPanel;
     	}
-    	return timeSeriesPanel;
     }
     
-    public TimeSeriesPanel(String mission, String dataId, String productUrl) {
+    public static TimeSeriesPanel getTimeSeriesPanelOrNull(String mission) {
+    	if("CHEOPS".equals(mission)) {
+    		return cheopsTimeSeriesPanel;
+    	} else {
+    		return mainTimeSeriesPanel;
+    	}
+    }
+    
+    public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String secondIdentifier) {
+    	TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanel(mission);
+        String[] dataInfo = {mission, dataId, secondIdentifier};
+        if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
+        	timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
+        	timeSeriesPanel.removeData(dataInfo);
+            if (timeSeriesPanel.currentData.isEmpty()) {
+            	timeSeriesPanel.hide();
+            }
+        } else {
+        	timeSeriesPanel.currentData.add(String.join(",", dataInfo));
+        	timeSeriesPanel.addData(dataInfo);
+        }
+        return timeSeriesPanel;
+    }
+
+    public static boolean dataIsVisible(String mission, String dataId, String productUrl) {
+    	TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanelOrNull(mission);
+        if(timeSeriesPanel == null || !timeSeriesPanel.isShowing()) {
+            return false;
+        }
+        String[] dataInfo = {mission, dataId, productUrl};
+        return timeSeriesPanel.currentData.contains(String.join(",", dataInfo));
+    }
+    
+    public TimeSeriesPanel(boolean isCheops) {
     	super(GoogleAnalytics.CAT_TIMESERIES, true);
         this.style = this.resources.style();
         this.style.ensureInjected();
         
-        this.dataInfo[0] = mission;
-        this.dataInfo[1] = dataId;
-        this.dataInfo[2] = productUrl;
         setSnapping(false);
         closeButton = new CloseButton();
         closeButton.addStyleName("timeSeriesCloseButton");
         closeButton.addClickHandler(event -> hide());
-        
-        headerLabel = new Label("Time-Series Viewer");
+        String cheopsPrefix = isCheops ? "CHEOPS " : "";
+        headerLabel = new Label(cheopsPrefix + "Time-Series Viewer");
         headerLabel.setStyleName("timeSeriesHeaderLabel");
         headerLabelAndHelpButton.addStyleName("timeSeriesHeader");
         headerLabelAndHelpButton.add(headerLabel);
@@ -82,17 +123,33 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     	super.onAttach();
     	this.timevizElement = Document.get().createElement("timeviz-element");
     	contentAndCloseButton.getElement().appendChild(timevizElement);
-    	Scheduler.get().scheduleFinally(() -> addDataToTimeViz(timevizElement, dataInfo));
+    	Scheduler.get().scheduleFinally(() -> addDataToTimeViz(timevizElement, initialDataInfo));
     }
     
     public void addData(String [] dataInfo) {
-    	addDataToTimeViz(timevizElement, dataInfo);
+    	if(isAttached()) {
+    		addDataToTimeViz(timevizElement, dataInfo);
+    	} else {
+    	    this.initialDataInfo = dataInfo;
+    	}
+    }
+
+    public Set<String[]> getCurrentData() {
+        return currentData.stream().map(s -> s.split(",")).collect(Collectors.toSet());
+    }
+
+    public void removeData(String [] dataInfo) {
+        removeDataFromTimeViz(timevizElement, dataInfo);
     }
     
     private native void addDataToTimeViz(Element timevizElement, String[] id) /*-{
 		timevizElement.addData = id;
 	}-*/;
-    
+
+    private native void removeDataFromTimeViz(Element timevizElement, String[] id) /*-{
+        timevizElement.removeData = id;
+    }-*/;
+
 	@Override
 	public void show() {
 		super.show();

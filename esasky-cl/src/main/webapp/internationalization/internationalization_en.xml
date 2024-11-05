@@ -884,6 +884,17 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
+	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC21">
+		The Chandra Source Catalog (CSC) is the definitive catalog of X-ray sources detected by the Chandra X-ray Observatory.
+		CSC 2.1 includes measured properties for 407,806 unique compact and extended X-ray sources in the sky, allowing statistical analysis of large samples, as well as individual source studies.
+		Extracted properties are provided for 1,304,376 individual observation detections identified in Chandra ACIS and HRC-I imaging observations released publicly through the end of 2021.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Chandra"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
     The 4XMM-DR14 catalogue contains source detections drawn from 13,864
 		XMM-Newton EPIC observations, covering an energy interval from 0.2 keV
@@ -914,7 +925,7 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-OM">
-		The SUSS6.1 catalogue is a catalogue of sources serendipitously
+		The SUSS6.2 catalogue is a catalogue of sources serendipitously
 		detected by the Optical Monitor (OM) on board the XMM-Newton
 		observatory. It provides source positions, magnitudes and fluxes in
 		six broad-band ultraviolet and optical filters for more than 6.6 million
@@ -4273,6 +4284,47 @@
 	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
 	<text key="catalogues.mv_t_chandra_csc2_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_t_chandra_csc2_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_name">Name</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_b">Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_lolim_b">Lower Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_hilim_b">Upper Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_w">Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_lolim_w">Lower Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_hilim_w">Upper Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_b">Average Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_lolim_b">Average Lower Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_hilim_b">Average Upper Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_w">Average Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_lolim_w">Average Lower Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_hilim_w">Average Upper Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_err_ellipse_r0">Major radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_err_ellipse_r1">Minor radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_err_ellipse_ang">Position angle error ellipse &lt;i&gt;(deg)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_significance">Highest Flux Significance</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_likelihood">Likelihood</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_likelihood_class">Likelihood Classification</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_conf_flag">Confusion Flag</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_extent_flag">Extent Flag</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_sat_src_flag">Source Saturation Flag</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_streak_src_flag">Source Streak Flag</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_flag">Variability Flag</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_hard_flag">Hardness Ratio Variability Flag</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hard_hm">Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hard_hm_lolim">Lower Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hard_hm_hilim">Upper Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hard_ms">Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hard_ms_lolim">Lower Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hard_ms_hilim">Upper Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_intra_index_b">ACIS Intra-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_intra_index_w">HRC Intra-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_index_b">ACIS Inter-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_index_w">HRC Inter-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_hard_prob_hm">Hard-Medium Hardness Ratio Variability Prob</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc21_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_fdw_iauname">Stack Catalogue Name</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_fdw_iauname_detcat">IAU Name</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
@@ -5290,8 +5342,7 @@
 	</text>
 
 
-	<!-- internationalization_es.xml is up to date for everything above -->
-	<!-- internationalization_zh.xml is up to date for everything above -->
+
 
 	<text key="outreachImagePanel_EUCLID_header">
 		ESA/Euclid Outreach Images
@@ -5502,10 +5553,12 @@
 		&lt;/a&gt;
 
 	</text>
-
 	<text key="closeableTabLayoutPanel_changeQuery">
 		Modify query
 	</text>
+
+	<!-- internationalization_zh.xml is up to date for everything above -->
+
 	<text key="tabulator_timeViz">
 		&lt;div class="esasky_column_header"&gt;Time&lt;/br&gt;Series&lt;/div&gt;
 	</text>
@@ -5515,6 +5568,7 @@
 	<text key="tabulator_timeVizDisabledTooltip">
 		No Time Series data available for this row
 	</text>
+
 	<text key="timeViz_helpDescription">
 		The ESASky Time-Series Viewer is a visualisation tool for inspecting time-series data products. This interface, conceived as a multi-mission and multi-object aggregated interactive display, is prompted from the tabulated view of catalogues and observations for ESA missions.
 		&lt;br&gt;
@@ -5528,15 +5582,65 @@
 		Julian Date is the default unit for the time format in the ESASky time-series viewer. Multi-mission data aggregation entails a standard conversion to flux in units of mJy and a time format conversion to the scale of the first mission displayed. Most time-series data products tabulate flux in instrumental units. ESASky curates, when available, the zero points and conversion factors published by the missions used to convert from instrumental flux to physical units. The ESASky time-series viewer supports ST and AB photometric systems and a model-based approximation for the VEGA photometric system.
 		&lt;br&gt;
 		&lt;br&gt;
+		For details on the accessed time-series data products per mission, their format and granularity, go to 
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-observations"
+		target="_blank"&gt;
+		Observations descriptions.
+		&lt;/a&gt;
+		&lt;br&gt;
+		&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-interface#TSVIEW"
 		target="_blank"&gt;
-		More information
+		Interface information
 		&lt;/a&gt;
 
 	</text>
 	<text key="timeViz_title">
 		ESA Time-Series Viewer
 	</text>
-	
+
+	<text key="imageConfigPanel_color_palette">
+		Color palette
+	</text>
+	<text key="imageConfigPanel_reverse">
+		Reverse
+	</text>
+	<text key="imageConfigPanel_stretch">
+		Stretch
+	</text>
+	<text key="imageConfigPanel_cuts">
+		Cuts
+	</text>
+	<text key="imageConfigPanel_blending">
+		Blending
+	</text>
+	<text key="imageConfigPanel_blending_default">
+		default
+	</text>
+	<text key="imageConfigPanel_blending_additive">
+		additive
+	</text>
+	<text key="imageConfigPanel_opacity">
+		Opacity
+	</text>
+	<text key="imageConfigPanel_tile_format">
+		Tile format
+	</text>
+	<text key="aladin_file_size_warn_title">
+		File Size Warning
+	</text>
+	<text key="aladin_file_size_warn_body">
+		The file you are trying to open is larger than 1GB and may lead to performance issues due to its size.
+		&lt;br&gt;&lt;br&gt;
+		Do you want to proceed?
+	</text>
+	<text key="aladin_file_size_warn_help">
+		Large files over 1 gigabyte can cause performance issues based on your computer's specifications. Limited RAM, slower processors, and traditional hard drives may lead to lag. Additionally, browsers have memory constraints that can affect the handling of large files.
+	</text>
+	<text key="tabulator_timeVizToggleTooltip">
+		Only show items with Time Series data
+	</text>
+	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

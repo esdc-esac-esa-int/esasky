@@ -23,6 +23,7 @@ import esac.archive.esasky.cl.web.client.view.resultspanel.tab.filter.ValueForma
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -340,6 +341,10 @@ public class TabulatorWrapper {
         tableJsObject.restoreRedraw();
     }-*/;
 
+    public native void reformatRow(GeneralJavaScriptObject row)/*-{
+        row.reformat();
+    }-*/;
+
     public void redrawAndReinitializeHozVDom() {
         redrawAndReinitializeHozVDom(tableJsObject);
     }
@@ -631,19 +636,19 @@ public class TabulatorWrapper {
 
     public void insertData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata) {
         setMetadata(tableJsObject, metadata);
-        setData(tableJsObject, abortController, data);
+        setData(tableJsObject, abortController, data, false);
     }
 
     public void insertData(String data, GeneralJavaScriptObject metadata) {
         setMetadata(tableJsObject, metadata);
-        setData(tableJsObject, abortController, data);
+        setData(tableJsObject, abortController, data, false);
     }
 
     public void insertExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata) {
         GeneralJavaScriptObject formattedMetadata = ExtTapUtils.formatExternalTapMetadata(metadata);
         GeneralJavaScriptObject formattedData = ExtTapUtils.formatExternalTapData(data, formattedMetadata);
         setMetadata(tableJsObject, formattedMetadata);
-        setData(tableJsObject, abortController, formattedData);
+        setData(tableJsObject, abortController, formattedData, false);
     }
 
     private native String setMetadata(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject metadata)/*-{
@@ -652,13 +657,13 @@ public class TabulatorWrapper {
 
     public void insertUserData(GeneralJavaScriptObject data) {
         setIsUserDataBool(tableJsObject);
-        setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
+        setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()), false);
 
     }
 
     public void insertUserHeader(GeneralJavaScriptObject data) {
         setIsUserDataBool(tableJsObject);
-        setData(tableJsObject, abortController, convertDataToHeaderFormat(tableJsObject, data));
+        setData(tableJsObject, abortController, convertDataToHeaderFormat(tableJsObject, data), false);
     }
 
     private native void setIsUserDataBool(GeneralJavaScriptObject tableJsObject)/*-{
@@ -673,8 +678,8 @@ public class TabulatorWrapper {
         return tableJsObject.convertDataToHeaderFormat(data);
     }-*/;
 
-    public void setData(String dataOrUrl) {
-        setData(tableJsObject, abortController, dataOrUrl);
+    public void setData(String dataOrUrl, boolean postData) {
+        setData(tableJsObject, abortController, dataOrUrl, postData);
     }
 
     public void clearTable() {
@@ -699,9 +704,21 @@ public class TabulatorWrapper {
         tableJsObject.clearing = false;
     }-*/;
 
-    private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
+    private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl, boolean postData)/*-{
         tableJsObject.dataLoaded = false;
-        tableJsObject.setData(dataOrUrl, {}, {signal: abortController.signal}).then(function () {
+        var config = {
+            signal: abortController.signal
+        }
+        if (postData) {
+            var parts = dataOrUrl.split("?");
+            dataOrUrl = parts[0];
+            config.body = parts[1];
+            config.method = "POST";
+            config.headers = {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }
+        tableJsObject.setData(dataOrUrl, {}, config).then(function () {
             if (tableJsObject.settings && tableJsObject.settings.showCreateRowButton) {
                 var createNewRowData = {createNewRow: true, selectable: false}; // Identify it as the special row
                 tableJsObject.addRow(createNewRowData);
@@ -870,6 +887,17 @@ public class TabulatorWrapper {
             dataLoaded: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDataLoadedFunc(*)(wrapper, settings),
             dataLoading: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDataLoadingFunc(*)(wrapper, divId, settings),
             selectable: settings.selectable,
+            ajaxContentType: {
+                headers: {
+                    "Content-Type": "text/html; charset=utf-8"
+                },
+                body: function(url, config, params) {
+                    if (config.hasOwnProperty("body")) {
+                        return config.body;
+                    }
+                    return "";
+                }
+            },
             ajaxError: function (error) {
                 var test = settings;
                 if (settings.showDetailedErrors) {
@@ -1003,7 +1031,7 @@ public class TabulatorWrapper {
             esaskyToVOStandardType["LONG"] = "long";
             esaskyToVOStandardType["RA"] = "double";
             esaskyToVOStandardType["DEC"] = "double";
-            
+
             // Adds headers to xml
             table.metadata.forEach(function (columnInfo) {
                 if (columnInfo.name !== "sso_name_splitter" && table.getColumn(columnInfo.name).getDefinition().download) {
@@ -1739,6 +1767,39 @@ public class TabulatorWrapper {
         }
     }-*/;
 
+    private native JavaScriptObject getToggleFilterFunc(TabulatorWrapper wrapper) /*-{
+        return function (headerValue, rowValue, rowData, filterParams) {
+            if (headerValue) {
+                return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasTimeVizData(*)(rowData);
+            }
+            return true;
+        }
+    }-*/;
+
+    private native JavaScriptObject getToggleFilterEditorFunc(TabulatorWrapper wrapper, String timeVizWhereQuery) /*-{
+        return function (cell, onRendered, success, cancel, editorParams) {
+            var tooltip = $wnd.esasky.getInternationalizationText("tabulator_timeVizToggleTooltip");
+            var toggleId = "time-viz-toggle-" + Math.random().toString(36).substring(2);
+            var button = @esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::new(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)(toggleId, false, "", tooltip);
+            var checked = false;
+            var successFunc = function (checked) {
+                success(checked);
+                button.@esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::setChecked(Z)(checked);
+                var filterString = checked ? timeVizWhereQuery: "";
+                wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onFilterChanged(*)(cell.getField(), filterString)
+            }
+
+            var buttonElement = button.@esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::getElement()();
+            buttonElement.style.pointerEvents = "auto";
+            buttonElement.onclick = function () {
+                checked = !checked
+                successFunc(checked);
+            };
+
+            return buttonElement;
+        }
+    }-*/;
+
     private native JavaScriptObject getBooleanFilterEditorFunc(TabulatorWrapper wrapper) /*-{
         return function (cell, onRendered, success, cancel, editorParams) {
 
@@ -2022,16 +2083,39 @@ public class TabulatorWrapper {
             };
 
             var timeVizButtonDisabled = function (cell) {
-                var data = cell.getData();
-                var has_epoch_photometry = data["has_epoch_photometry"];
-                var observation_id = data["observation_id"];
-                var has_time_series = data["tseries"];
-                var has_cheops_product = data["sci_cor_lc_opt_link"];
-                
-                return !(has_time_series === true || has_epoch_photometry === true || has_cheops_product || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism");
+                return !wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::hasTimeVizData(*)(cell.getData());
+
             };
 
+            var cellActiveInTimeViz = function (cell) {
+                return rowActiveInTimeViz(cell.getRow());
+            };
 
+            var rowActiveInTimeViz = function (row) {
+                return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::rowActiveInTimeViz(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(row);
+            };
+
+            var selectableFormatter = function (cell, formatterParams) {
+                var isDisabled = false;
+
+                if (formatterParams.isDisabledFunc) {
+                    isDisabled = formatterParams.isDisabledFunc(cell);
+                }
+
+                var disabledClass = isDisabled ? "buttonCellDisabled" : "";
+
+                var toolTip = formatterParams.tooltip;
+                if (isDisabled && formatterParams.disabledTooltip) {
+                    toolTip = formatterParams.disabledTooltip;
+                }
+
+                var isActive = formatterParams.isActiveFunc(cell);
+                    image = formatterParams.inactive_image;
+                    //image = formatterParams.active_image;
+                var activeClass = isActive ? "toggleButtonOn" : "";
+
+                return "<div class='buttonCell " + disabledClass + " " + activeClass + "' title='" + toolTip + "'><img src='images/" + image + "' width='20px' height='20px'/></div>";
+            }
 
             var raName = "";
             var decName = "";
@@ -2048,7 +2132,7 @@ public class TabulatorWrapper {
 
                 }
             }
-            
+
             if (settings.customColumn) {
                 activeColumnGroup.push(JSON.parse(settings.customColumn));
             }
@@ -2204,6 +2288,7 @@ public class TabulatorWrapper {
                     }
                 });
             }
+
             if (settings.addTimeVizColumn) {
                 activeColumnGroup.push({
                     title: $wnd.esasky.getInternationalizationText("tabulator_timeViz"),
@@ -2214,14 +2299,21 @@ public class TabulatorWrapper {
                     minWidth: 68,
                     download: false,
                     sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
-                        return timeVizButtonDisabled(aRow) - timeVizButtonDisabled(bRow);
+                        return rowActiveInTimeViz(bRow) - rowActiveInTimeViz(aRow) + timeVizButtonDisabled(aRow) - timeVizButtonDisabled(bRow);
                     },
-                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
-                        image: "scatterplot.png",
+                    width: 40,
+                    hozAlign: "center",
+                    formatter: selectableFormatter,
+                    formatterParams: {
+                        active_image: "scatterplot_blue.png",
+                        inactive_image: "scatterplot.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizTooltip"),
                         disabledTooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizDisabledTooltip"),
-                        isDisabledFunc: timeVizButtonDisabled
+                        isDisabledFunc: timeVizButtonDisabled,
+                        isActiveFunc: cellActiveInTimeViz
                     },
+                    headerFilter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getToggleFilterEditorFunc(*)(wrapper, settings.timeVizWhereQuery),
+                    headerFilterFunc: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getToggleFilterFunc(*)(wrapper),
                     cellClick: function (e, cell) {
                         e.stopPropagation();
                         if (timeVizButtonDisabled(cell) === false) {
@@ -2633,6 +2725,20 @@ public class TabulatorWrapper {
         return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::createDefaultColumn(*)(wrapper, columnMeta, formatter, formatterParams, headerFilter, headerFilterFunc, sorter);
     }-*/;
 
+    private native boolean hasTimeVizData(JavaScriptObject data) /*-{
+        var has_epoch_photometry = data["has_epoch_photometry"];
+        var observation_id = data["observation_id"];
+        var has_time_series = data["tseries"];
+        var has_cheops_product = data["sci_cor_lc_opt_link"];
+        var xmm_om_fast_id = data["fast_id"];
+
+        return has_time_series === true
+            || has_epoch_photometry === true
+            || has_cheops_product
+            || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism"
+            || (xmm_om_fast_id && xmm_om_fast_id !== "");
+    }-*/;
+
     public void onRowEnter(int rowId) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastHoverTime > 5) {
@@ -2728,6 +2834,7 @@ public class TabulatorWrapper {
 
     public void onAddTimeSeriesClicked(final GeneralJavaScriptObject row) {
         tabulatorCallback.onAddTimeSeriesClicked(row);
+        this.reformatRow(row);
     }
 
     public void onRowSelection(GeneralJavaScriptObject row) {
@@ -2758,6 +2865,10 @@ public class TabulatorWrapper {
         return tabulatorCallback.getDescriptorMetaData();
     }
 
+    public boolean rowActiveInTimeViz(GeneralJavaScriptObject row) {
+        return tabulatorCallback.isRowVisibleInTimeSeriesViewer(row);
+    }
+
     public CommonTapDescriptor getDescriptor() {
         return tabulatorCallback.getDescriptor();
     }
@@ -2770,7 +2881,7 @@ public class TabulatorWrapper {
             return null;
         }
     }
-    
+
     public String getMission() {
         return getDescriptor().getMission();
     }

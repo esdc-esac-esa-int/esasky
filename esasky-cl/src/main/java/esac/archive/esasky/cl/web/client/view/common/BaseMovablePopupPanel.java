@@ -82,4 +82,8 @@ public class BaseMovablePopupPanel extends MovablePanel implements Hidable<Popup
     protected void onMainAreaResizeEvent(ResizeEvent event) {
         setMaxSize();
     }
+
+    protected void setHeaderText(String headerText) {
+        header.setText(headerText);
+    }
 }

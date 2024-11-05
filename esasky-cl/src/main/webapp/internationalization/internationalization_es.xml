@@ -1218,6 +1218,24 @@
 		target="_blank"&gt;
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
+	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC21">
+		El cat&#225;logo CSC (Chandra Source Catalog) contiene posiciones
+		y
+		flujos
+		detectados en im&#225;genes p&#250;blicas de los instrumentos
+		ACIS y HRC
+		a bordo del observatorio de rayos X Chandra.
+		En la
+		actualidad, el cat&#225;logo s&#243;lo incluye fuentes puntuales y
+		fuentes compactas con extensi&#243;n espacial observada menor a 30
+		segundos de arco.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Chandra"
+		target="_blank"&gt;
+		M&#225;s informaci&#243;n
+		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC">
 		El cat&#225;logo 4XMM-DR14 contiene fuentes detectadas
 		a partir de
@@ -1253,7 +1271,7 @@
 		M&#225;s informaci&#243;n
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-OM">
-		SUSS6.1 es un cat&#225;logo de fuentes casualmente detectadas
+		SUSS6.2 es un cat&#225;logo de fuentes casualmente detectadas
 		por
 		el Optical Monitor (OM) a bordo del observatorio XMM-Newton.
 		El
@@ -4031,4 +4049,89 @@
 	<text key="closeableTabLayoutPanel_changeQuery">
 		Modificar consulta
 	</text>
+
+	<text key="tabulator_timeViz">
+		&lt;div class="esasky_column_header"&gt;Tiempo&lt;/br&gt;Series&lt;/div&gt;
+	</text>
+	<text key="tabulator_timeVizTooltip">
+		Abrir Visualizador de Series Temporales
+	</text>
+	<text key="tabulator_timeVizDisabledTooltip">
+		No hay datos de Series Temporales disponibles para esta fila
+	</text>
+
+	<text key="timeViz_helpDescription">
+		El Visor de Series Temporales de ESASky es una herramienta de visualización para inspeccionar productos de datos de series temporales. Esta interfaz, concebida como una pantalla interactiva agregada multimisión y multiobjeto, se inicia desde la vista tabulada de catálogos y observaciones para las misiones de la ESA.
+		&lt;br&gt;
+		&lt;br&gt;
+		Una vez cargada una tabla desde el mapa de recursos, se mostrará una columna dedicada a series temporales para misiones con productos científicos de series temporales. Al hacer clic en un icono de serie temporal activo, se abrirá la ventana del visor de series temporales, mostrando automáticamente la colección de datos de series temporales y la superposición de productos de series temporales posteriores de fuentes o misiones si el visor ya está abierto.
+		&lt;br&gt;
+		&lt;br&gt;
+		Como el visor de series temporales de ESASky está diseñado para inspeccionar tanto curvas de luz como espectros de series temporales, están disponibles dos vistas: intensidad de luz en función del tiempo (vista temporal) e intensidad en función de la longitud de onda (vista SED). El icono en la esquina inferior derecha del panel alterna entre ambas vistas. El usuario puede inspeccionar interactivamente los datos seleccionando áreas para hacer zoom, arrastrando y soltando para desplazarse. Puede alternar entre estas opciones o restablecer la pantalla usando los botones del panel en la esquina superior derecha. Múltiples conjuntos de datos se muestran y etiquetan en la leyenda bajo el índice de fuente del catálogo. Desactivar un conjunto de datos eliminará la señal correspondiente mostrada en el gráfico. Una lista desplegable permite la conversión de formato para el eje de tiempo, mientras que otra admite la conversión de unidades para los ejes de flujo en ambas vistas SED y temporal.
+		&lt;br&gt;
+		&lt;br&gt;
+		La Fecha Juliana es la unidad predeterminada para el formato de tiempo en el visor de series temporales de ESASky. La agregación de datos multimisión implica una conversión estándar a flujo en unidades de mJy y una conversión de formato de tiempo a la escala de la primera misión mostrada. La mayoría de los productos de datos de series temporales tabulan el flujo en unidades instrumentales. ESASky cura, cuando está disponible, los puntos cero y factores de conversión publicados por las misiones utilizadas para convertir el flujo instrumental a unidades físicas. El visor de series temporales de ESASky es compatible con los sistemas fotométricos ST y AB y una aproximación basada en modelo para el sistema fotométrico VEGA.
+		&lt;br&gt;
+		&lt;br&gt;
+		Para obtener detalles sobre los productos de datos de series temporales accedidos por misión, su formato y granularidad, vaya a
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-observations"
+		target="_blank"&gt;
+		Descripciones de Observaciones.
+		&lt;/a&gt;
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#TSVIEW"
+		target="_blank"&gt;
+		Información de la Interfaz
+		&lt;/a&gt;
+
+	</text>
+	<text key="timeViz_title">
+		Visor de Series Temporales de ESA
+	</text>
+
+	<text key="imageConfigPanel_color_palette">
+		Paleta de colores
+	</text>
+	<text key="imageConfigPanel_reverse">
+		Invertir
+	</text>
+	<text key="imageConfigPanel_stretch">
+		Extender
+	</text>
+	<text key="imageConfigPanel_cuts">
+		Cortes
+	</text>
+	<text key="imageConfigPanel_blending">
+		Combinar
+	</text>
+	<text key="imageConfigPanel_blending_default">
+		predeterminado
+	</text>
+	<text key="imageConfigPanel_blending_additive">
+		aditiva
+	</text>
+	<text key="imageConfigPanel_opacity">
+		Opacidad
+	</text>
+	<text key="imageConfigPanel_tile_format">
+		Formato de mosaico
+	</text>
+	<text key="aladin_file_size_warn_title">
+		Advertencia de Tamaño de Archivo
+	</text>
+	<text key="aladin_file_size_warn_body">
+		El archivo que intenta abrir es mayor de 1GB y puede causar problemas de rendimiento debido a su tamaño.
+		&lt;br&gt;&lt;br&gt;
+		¿Desea continuar?
+	</text>
+	<text key="aladin_file_size_warn_help">
+		Los archivos grandes de más de 1 gigabyte pueden causar problemas de rendimiento según las especificaciones de su computadora. La RAM limitada, los procesadores más lentos y los discos duros tradicionales pueden provocar retrasos. Además, los navegadores tienen limitaciones de memoria que pueden afectar el manejo de archivos grandes.
+	</text>
+	<text key="tabulator_timeVizToggleTooltip">
+		Mostrar solo elementos con datos de Series Temporales
+	</text>
+
 </Internationalization>

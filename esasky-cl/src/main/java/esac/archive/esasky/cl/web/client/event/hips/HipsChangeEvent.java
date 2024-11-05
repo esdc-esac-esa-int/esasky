@@ -18,8 +18,10 @@ public class HipsChangeEvent extends GwtEvent<HipsChangeEventHandler> {
     private ColorPalette colorPalette;
     private boolean isBaseImage;
     private double opacity;
+    private String skyRowId;
 
-    public HipsChangeEvent(final HiPS inputHips, final ColorPalette colorPalette, final boolean isBaseImage, final double opacity) {
+    public HipsChangeEvent(final String skyRowId, final HiPS inputHips, final ColorPalette colorPalette, final boolean isBaseImage, final double opacity) {
+        this.skyRowId = skyRowId;
         this.hips = inputHips;
         this.colorPalette = colorPalette;
         this.isBaseImage = isBaseImage;
@@ -50,5 +52,9 @@ public class HipsChangeEvent extends GwtEvent<HipsChangeEventHandler> {
     @Override
     protected final void dispatch(final HipsChangeEventHandler handler) {
         handler.onChangeEvent(this);
+    }
+
+    public String getSkyRowId() {
+        return skyRowId;
     }
 }

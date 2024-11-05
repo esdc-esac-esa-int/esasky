@@ -52,11 +52,20 @@ public abstract class JsonRequestCallback implements RequestCallback {
     }
 
     private void addProgressIndicator(String progressIndicatorMessage, String googleAnalyticsErrorMessage) {
-        CommonEventBus.getEventBus().fireEvent(
-                new ProgressIndicatorPushEvent(this.progressIndicatorId, progressIndicatorMessage, googleAnalyticsErrorMessage));
+        ProgressIndicatorPushEvent event = createPushEvent(progressIndicatorId, progressIndicatorMessage, googleAnalyticsErrorMessage);
+        CommonEventBus.getEventBus().fireEvent(event);
     }
 
     private void removeProgressIndicator() {
-        CommonEventBus.getEventBus().fireEvent(new ProgressIndicatorPopEvent(progressIndicatorId));
+        ProgressIndicatorPopEvent event = createPopEvent(progressIndicatorId);
+        CommonEventBus.getEventBus().fireEvent(event);
+    }
+
+    protected ProgressIndicatorPushEvent createPushEvent(String id, String progressIndicatorMessage, String googleAnalyticsErrorMessage) {
+        return new ProgressIndicatorPushEvent(id, progressIndicatorMessage, googleAnalyticsErrorMessage);
+    }
+
+    protected ProgressIndicatorPopEvent createPopEvent(String id) {
+        return new ProgressIndicatorPopEvent(id);
     }
 }

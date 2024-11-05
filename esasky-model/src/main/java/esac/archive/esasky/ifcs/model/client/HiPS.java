@@ -2,7 +2,10 @@ package esac.archive.esasky.ifcs.model.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ImageLayer;
 import esac.archive.esasky.ifcs.model.shared.ColorPalette;
+
+import java.util.Objects;
 
 
 /**
@@ -11,7 +14,7 @@ import esac.archive.esasky.ifcs.model.shared.ColorPalette;
 public class HiPS {
 
     public enum HiPSImageFormat {
-        jpg, png;
+        jpg, png, fits;
     }
 
     /** hips mission */
@@ -52,6 +55,8 @@ public class HiPS {
     String hipsCategory;
     /** defaultHIPS */
     boolean defaultHIPS = false;
+    
+    boolean useCredentials = false;
     
     /*
      * hips color default map
@@ -120,7 +125,7 @@ public class HiPS {
     }
 
     public String getSurveyRootUrl() {
-        return surveyRootUrl;
+        return this.surveyRootUrl;
     }
 
     public void setSurveyRootUrl(String surveyRootUrl) {
@@ -246,5 +251,42 @@ public class HiPS {
 	public void setDefaultHIPS(boolean defaultHIPS) {
 		this.defaultHIPS = defaultHIPS;
 	}
+
+    public static HiPS fromImageLayer(ImageLayer imageLayer, String category) {
+        HiPS hips = new HiPS();
+        hips.setSurveyId(imageLayer.getName());
+        hips.setSurveyName(imageLayer.getName());
+        hips.setSurveyRootUrl(imageLayer.getId());
+        hips.setImgFormat(HiPSImageFormat.valueOf(imageLayer.getImageFormat()));
+        hips.setSurveyFrame(HiPSCoordsFrame.EQUATORIAL);
+        hips.setMaximumNorder(8);
+        hips.setColorPalette(ColorPalette.NATIVE);
+        if(category != null && !category.isEmpty()) {
+            hips.setHipsCategory(category);
+        }
+
+        return hips;
+    }
+	
+	public boolean shouldUseCredentials() {
+		return useCredentials;
+	}
+
+	public void setUseCredentials(boolean useCredentials) {
+		this.useCredentials = useCredentials;
+	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        HiPS hips = (HiPS) obj;
+        return Objects.equals(surveyId, hips.surveyId) && Objects.equals(surveyRootUrl, hips.surveyRootUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(surveyId, surveyRootUrl);
+    }
 	
 }

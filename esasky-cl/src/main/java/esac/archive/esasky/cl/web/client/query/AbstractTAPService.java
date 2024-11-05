@@ -99,6 +99,10 @@ public abstract class AbstractTAPService {
         final String debugPrefix = "[TAPService.getGeometricConstraint]";
         String containsOrIntersect;
 
+        if (AladinLiteWrapper.getInstance().getFovDeg() > 180 && !descriptor.hasSearchArea()) {
+            return "1=1";
+        }
+
         if (descriptor.useIntersectsPolygon()) {
             containsOrIntersect = "1=INTERSECTS(fov,";
         } else {

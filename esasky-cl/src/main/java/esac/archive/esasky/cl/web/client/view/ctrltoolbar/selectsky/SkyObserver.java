@@ -4,8 +4,9 @@ import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 
 public interface SkyObserver {
-	public void onUpdateSkyEvent(SkyRow sky);
-	public void onCloseEvent(SkyRow sky);
-	public void onMenuItemRemovalEvent(MenuItem<HiPS> menuItem);
+	void onUpdateSkyEvent(SkyRow sky);
+	void onCloseEvent(SkyRow sky);
+	void onMenuItemRemovalEvent(MenuItem<HiPS> menuItem);
+	void onImageSettingsClicked(SkyRow skyRow);
 
 }

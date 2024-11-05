@@ -508,27 +508,27 @@ public class DescriptorRepository {
                     TAPSingleCountService.getInstance().getCountStcs(AladinLiteWrapper.getAladinLite())));
         }
 
-        JSONUtils.getJSONFromUrl(url, new JsonRequestCallback(countRequestHandler.getProgressIndicatorMessage(), url) {
-
-            @Override
-            protected void onSuccess(Response response) {
-                try {
-                    if (timecall < lastestSingleCountTimecall) {
-                        Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall=" + timecall
-                                + " , dif:" + (lastestSingleCountTimecall - timecall));
-                        return;
-                    }
-                    SingleCountListMapper scMapper = GWT.create(SingleCountListMapper.class);
-                    List<SingleCount> singleCountList = scMapper.read(response.getText());
-                    doUpdateSingleCount(singleCountList, skyViewPosition);
-
-
-                } catch (Exception ex) {
-                    Log.error("[DescriptorRepository] requestSingleCount.onSuccess ERROR: " + ex.getMessage(), ex);
-                }
-            }
-
-        });
+        CountRequestCallback callback = new CountRequestCallback(countRequestHandler.getProgressIndicatorMessage(), url, new CountRequestCallback.IOnSuccess () {
+			
+			@Override
+			public void onSucess(Response response) {
+				try {
+	                if (timecall < lastestSingleCountTimecall) {
+	                    Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall=" + timecall
+	                            + " , dif:" + (lastestSingleCountTimecall - timecall));
+	                    return;
+	                }
+	                SingleCountListMapper scMapper = GWT.create(SingleCountListMapper.class);
+	                List<SingleCount> singleCountList = scMapper.read(response.getText());
+	                doUpdateSingleCount(singleCountList, skyViewPosition);
+	
+	
+	                } catch (Exception ex) {
+	                    Log.error("[DescriptorRepository] requestSingleCount.onSuccess ERROR: " + ex.getMessage(), ex);
+	                }
+				}
+		});
+        JSONUtils.getJSONFromUrl(url, callback);
     }
 
 

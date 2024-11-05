@@ -334,7 +334,7 @@ public class ESASkyPlayerPanel extends Composite {
         this.player.addStyleName("hideItem");
     }
     
-    protected boolean isPlaying(){
+    public boolean isPlaying(){
     	    return timer.isRunning();
     }
 

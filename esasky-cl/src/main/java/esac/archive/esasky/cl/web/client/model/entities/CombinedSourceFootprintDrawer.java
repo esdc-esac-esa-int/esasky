@@ -184,23 +184,27 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 	
 	@Override
 	public void selectShapes(int shapeId) {
-		Integer[] index = allShapesIndexes.get(shapeId);
-		
-		if(index[0] != -1) {
-			AladinLiteWrapper.getAladinLite().selectShape(sourceShapes.get(index[0]).getJsObject());
-		}else {
-			AladinLiteWrapper.getAladinLite().selectShape(footPrintshapes.get(index[1]).getJsObject());
+		if (shapeId < allShapesIndexes.size()) {
+			Integer[] index = allShapesIndexes.get(shapeId);
+
+			if (index[0] != -1) {
+				AladinLiteWrapper.getAladinLite().selectShape(sourceShapes.get(index[0]).getJsObject());
+			} else {
+				AladinLiteWrapper.getAladinLite().selectShape(footPrintshapes.get(index[1]).getJsObject());
+			}
 		}
 	}
 	
 	@Override
 	public void deselectShapes(int shapeId) {
-		Integer[] index = allShapesIndexes.get(shapeId);
-		
-		if(index[0] != -1) {
-			AladinLiteWrapper.getAladinLite().deselectShape(sourceShapes.get(index[0]).getJsObject());
-		}else {
-			AladinLiteWrapper.getAladinLite().deselectShape(footPrintshapes.get(index[1]).getJsObject());
+		if (shapeId < allShapesIndexes.size()) {
+			Integer[] index = allShapesIndexes.get(shapeId);
+
+			if (index[0] != -1) {
+				AladinLiteWrapper.getAladinLite().deselectShape(sourceShapes.get(index[0]).getJsObject());
+			} else {
+				AladinLiteWrapper.getAladinLite().deselectShape(footPrintshapes.get(index[1]).getJsObject());
+			}
 		}
 	}
 
@@ -216,12 +220,14 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
 
     @Override
     public void hideShape(int shapeId) {
-        Integer[] index = allShapesIndexes.get(shapeId);
-		
-		if(index[0] != -1) {
-			AladinLiteWrapper.getAladinLite().hideShape(sourceShapes.get(index[0]).getJsObject());
-		}else {
-			AladinLiteWrapper.getAladinLite().hideShape(footPrintshapes.get(index[1]).getJsObject());
+		if (shapeId < allShapesIndexes.size()) {
+			Integer[] index = allShapesIndexes.get(shapeId);
+
+			if (index[0] != -1) {
+				AladinLiteWrapper.getAladinLite().hideShape(sourceShapes.get(index[0]).getJsObject());
+			} else {
+				AladinLiteWrapper.getAladinLite().hideShape(footPrintshapes.get(index[1]).getJsObject());
+			}
 		}
     }
     
@@ -251,12 +257,14 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     
     @Override
     public void showShape(int shapeId) {
-        Integer[] index = allShapesIndexes.get(shapeId);
-		
-		if(index[0] != -1) {
-			AladinLiteWrapper.getAladinLite().showShape(sourceShapes.get(index[0]).getJsObject());
-		}else {
-			AladinLiteWrapper.getAladinLite().showShape(footPrintshapes.get(index[1]).getJsObject());
+		if (shapeId < allShapesIndexes.size()) {
+			Integer[] index = allShapesIndexes.get(shapeId);
+
+			if (index[0] != -1) {
+				AladinLiteWrapper.getAladinLite().showShape(sourceShapes.get(index[0]).getJsObject());
+			} else {
+				AladinLiteWrapper.getAladinLite().showShape(footPrintshapes.get(index[1]).getJsObject());
+			}
 		}
     }
     
@@ -283,23 +291,26 @@ public class CombinedSourceFootprintDrawer implements IShapeDrawer{
     
     @Override
 	public void hoverStart(int shapeId) {
-        Integer[] index = allShapesIndexes.get(shapeId);
-		if(index[0] != -1) {
-			AladinLiteWrapper.getAladinLite().hoverStart(sourceShapes.get(index[0]).getJsObject());
-		}else {
-			AladinLiteWrapper.getAladinLite().hoverStart(footPrintshapes.get(index[1]).getJsObject());
+		if (shapeId < allShapesIndexes.size()) {
+			Integer[] index = allShapesIndexes.get(shapeId);
+			if(index[0] != -1) {
+				AladinLiteWrapper.getAladinLite().hoverStart(sourceShapes.get(index[0]).getJsObject());
+			}else {
+				AladinLiteWrapper.getAladinLite().hoverStart(footPrintshapes.get(index[1]).getJsObject());
+			}
 		}
-		
 	}
 	
 	@Override
 	public void hoverStop(int shapeId) {
-        Integer[] index = allShapesIndexes.get(shapeId);
-		
-		if(index[0] != -1) {
-			AladinLiteWrapper.getAladinLite().hoverStop(sourceShapes.get(index[0]).getJsObject());
-		}else {
-			AladinLiteWrapper.getAladinLite().hoverStop(footPrintshapes.get(index[1]).getJsObject());
+		if (shapeId < allShapesIndexes.size()) {
+			Integer[] index = allShapesIndexes.get(shapeId);
+
+			if (index[0] != -1) {
+				AladinLiteWrapper.getAladinLite().hoverStop(sourceShapes.get(index[0]).getJsObject());
+			} else {
+				AladinLiteWrapper.getAladinLite().hoverStop(footPrintshapes.get(index[1]).getJsObject());
+			}
 		}
 	}
 

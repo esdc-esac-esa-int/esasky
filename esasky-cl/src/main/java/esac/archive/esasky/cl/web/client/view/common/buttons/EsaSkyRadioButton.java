@@ -101,14 +101,14 @@ public class EsaSkyRadioButton extends Widget{
 	   addListener(id, this);
    }
    
-   private LinkedList<EsaSkyRadioButtonObserver> observers = new LinkedList<EsaSkyRadioButtonObserver>();
+   private LinkedList<EsaSkyButtonValueObserver> observers = new LinkedList<EsaSkyButtonValueObserver>();
    
-   public void registerValueChangeObserver(EsaSkyRadioButtonObserver observer) {
+   public void registerValueChangeObserver(EsaSkyButtonValueObserver observer) {
 	   observers.add(observer);
    }
    
    private void notifyObservers() {
-	   for(EsaSkyRadioButtonObserver observer : observers) {
+	   for(EsaSkyButtonValueObserver observer : observers) {
 		   observer.onValueChange(radioElement.isChecked());
 	   }
    }

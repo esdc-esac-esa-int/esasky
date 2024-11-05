@@ -12,6 +12,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 
+import com.google.gwt.user.client.ui.Widget;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkyMenuPopupPanel;
@@ -78,13 +79,7 @@ public class ChangePaletteBtn extends Composite{
             changePaletteMenu.addMenuItem(new MenuItem<ColorPalette>(colorPalette, TextMgr.getInstance().getText("colorPalette_" + colorPalette.name()), true));
         }
         changePaletteMenu.selectObject(ColorPalette.NATIVE);
-        changePaletteMenu.registerObserver(new MenuObserver() {
-			
-			@Override
-			public void onSelectedChange() {
-                notifyObservers();
-			}
-		});
+        changePaletteMenu.registerObserver(this::notifyObservers);
     }
     
     public void setDefaultColorPallette(ColorPalette colorPalette){
@@ -93,6 +88,10 @@ public class ChangePaletteBtn extends Composite{
 
     public void registerObserver(PaletteObserver observer){
     	    observers.add(observer);
+    }
+
+    public Widget getWidget() {
+        return super.getWidget();
     }
     
     private void notifyObservers(){

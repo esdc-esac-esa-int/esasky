@@ -2,12 +2,12 @@ package esac.archive.esasky.cl.web.client.presenter;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.*;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ImageLayer;
 import esac.archive.esasky.cl.wcstransform.module.utility.DS9Loader;
 import esac.archive.esasky.cl.wcstransform.module.utility.SiafDescriptor;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -15,6 +15,7 @@ import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.Promise;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
@@ -28,11 +29,15 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
 import esac.archive.esasky.cl.web.client.view.allskypanel.AllSkyPanel;
+import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.CtrlToolBar;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap.PointInformation;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ResultsPanel;
 import esac.archive.esasky.cl.web.client.view.searchpanel.SearchPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
+import esac.archive.esasky.ifcs.model.client.HiPS;
+import esac.archive.esasky.ifcs.model.client.HipsWavelength;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
@@ -156,7 +161,6 @@ public class MainPresenter {
 
         // init the targetPresenter
         getTargetPresenter();
-        AladinLiteWrapper.getAladinLite().enableReduceDeformations();
 
         if (Modules.getModule(EsaSkyWebConstants.MODULE_PUBLICATIONS)) {
             if (UrlUtils.urlHasAuthor()) {
@@ -177,7 +181,7 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeSelectedEvent.TYPE,
                 selectEvent -> {
-                    GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
+                    GeneralEntityInterface entity = entityRepo.getEntityByChild(selectEvent.getOverlayName());
                     if (entity != null) {
                         entity.onShapeSelection(selectEvent.getShape());
                     }
@@ -185,7 +189,8 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteSelectAreaEvent.TYPE,
                 selectEvent -> {
-                    GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) selectEvent.getObjects());
+                    GeneralJavaScriptObject objects = (GeneralJavaScriptObject) selectEvent.getObjects();
+                    GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray(objects);
                     HashMap<String, LinkedList<AladinShape>> shapesToadd = new HashMap<String, LinkedList<AladinShape>>();
                     for (GeneralJavaScriptObject shape : shapes) {
                         String overlayName = null;
@@ -204,7 +209,7 @@ public class MainPresenter {
 
                     for (String overlayName : shapesToadd.keySet()) {
 
-                        GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
+                        GeneralEntityInterface entity = entityRepo.getEntityByChild(overlayName);
 
                         if (entity != null) {
                             entity.onMultipleShapesSelection(shapesToadd.get(overlayName));
@@ -218,7 +223,7 @@ public class MainPresenter {
         CommonEventBus.getEventBus().addHandler(AladinLiteDeselectAreaEvent.TYPE,
                 deselectEvent -> {
                     GeneralJavaScriptObject[] shapes = GeneralJavaScriptObject.convertToArray((GeneralJavaScriptObject) deselectEvent.getObjects());
-                    HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<String, LinkedList<AladinShape>>();
+                    HashMap<String, LinkedList<AladinShape>> shapesToRemove = new HashMap<>();
                     for (GeneralJavaScriptObject shape : shapes) {
                         String overlayName = null;
                         if (shape.hasProperty("overlay")) {
@@ -236,7 +241,7 @@ public class MainPresenter {
 
                     for (String overlayName : shapesToRemove.keySet()) {
 
-                        GeneralEntityInterface entity = entityRepo.getEntity(overlayName);
+                        GeneralEntityInterface entity = entityRepo.getEntityByChild(overlayName);
 
                         if (entity != null) {
                             entity.onMultipleShapesDeselection(shapesToRemove.get(overlayName));
@@ -258,7 +263,7 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeDeselectedEvent.TYPE,
                 selectEvent -> {
-                    GeneralEntityInterface entity = entityRepo.getEntity(selectEvent.getOverlayName());
+                    GeneralEntityInterface entity = entityRepo.getEntityByChild(selectEvent.getOverlayName());
                     if (entity != null) {
                         entity.onShapeDeselection(selectEvent.getShape());
                     }
@@ -266,7 +271,7 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStartEvent.TYPE,
                 hoverEvent -> {
-                    GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
+                    GeneralEntityInterface entity = entityRepo.getEntityByChild(hoverEvent.getOverlayName());
                     if (entity != null) {
                         entity.onShapeHover(hoverEvent.getShape());
                     }
@@ -274,7 +279,7 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(AladinLiteShapeHoverStopEvent.TYPE,
                 hoverEvent -> {
-                    GeneralEntityInterface entity = entityRepo.getEntity(hoverEvent.getOverlayName());
+                    GeneralEntityInterface entity = entityRepo.getEntityByChild(hoverEvent.getOverlayName());
                     if (entity != null) {
                         entity.onShapeUnhover(hoverEvent.getShape());
                     }
@@ -335,6 +340,37 @@ public class MainPresenter {
 
         CommonEventBus.getEventBus().addHandler(ShowEvaEvent.TYPE, event -> {
             showEva();
+        });
+
+        CommonEventBus.getEventBus().addHandler(AladinLiteFitsImageAddedEvent.TYPE, event -> {
+            ImageLayer layer = event.getImageLayer();
+
+            // We lack a flag telling us if this is a new FITS, or we changed to an existing FITS.
+            // For new FITS the layer name and the image name will be the same otherwise not.
+            if (Objects.equals(layer.getLayer(), layer.getName())) {
+                HiPS hips = HiPS.fromImageLayer(event.getImageLayer(), HipsWavelength.USER);
+                SelectSkyPanel.addFits(hips);
+            }
+        });
+
+
+        CommonEventBus.getEventBus().addHandler(AladinConfirmDialogRequestedEvent.TYPE, event -> {
+            String title = TextMgr.getInstance().getText(event.getTitle());
+            String body = TextMgr.getInstance().getText(event.getMessage());
+            String help = TextMgr.getInstance().getText(event.getHelp());
+            ConfirmationPopupPanel popupPanel = new ConfirmationPopupPanel(GoogleAnalytics.CAT_ALADIN_FITS, title, body, help);
+            final AladinConfirmDialogRequestedEvent thisEvent = event;
+            popupPanel.addDialogEventHandler(new DialogActionEventHandler() {
+                @Override
+                public void onAction(DialogActionEvent action) {
+                    if (action.getAction() == DialogActionEvent.DialogAction.YES) {
+                        thisEvent.callbackResult(true);
+                    } else {
+                        thisEvent.callbackResult(false);
+                    }
+                }
+            });
+            popupPanel.show();
         });
     }
 

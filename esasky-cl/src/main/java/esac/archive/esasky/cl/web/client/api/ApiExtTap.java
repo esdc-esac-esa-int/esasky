@@ -7,9 +7,7 @@ import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import esac.archive.esasky.cl.web.client.Controller;
-import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.query.TAPExtTapService;
-import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.status.CountObserver;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
@@ -17,10 +15,7 @@ import esac.archive.esasky.cl.web.client.utility.ExtTapUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.TapMetadataDescriptor;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
-
-import java.util.List;
 
 public class ApiExtTap extends ApiBase{
 	
@@ -181,7 +176,6 @@ public class ApiExtTap extends ApiBase{
 	}
 	
 	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit, GeneralJavaScriptObject options) {
-		
 	    CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().createCustomExternalTapDescriptor(name, tapUrl, dataOnlyInView, adql);
 
 		if(limit == -1) {

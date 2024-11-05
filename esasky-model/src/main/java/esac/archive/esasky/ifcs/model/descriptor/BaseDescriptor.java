@@ -556,7 +556,7 @@ public abstract class BaseDescriptor implements IDescriptor {
 
 
     @Override
-    public  String getUcdColumnName(String ucdName) {
+    public String getUcdColumnName(String ucdName) {
         if (this.tapTableMetadata == null) {
             return "";
         }

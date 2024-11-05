@@ -82,7 +82,7 @@ public class UserAreaPresenter {
             Date now = new Date();
             long elapsedTime = now.getTime() - lastSessionSave.getTime();
 
-            if(GUISessionStatus.isUserActive() && elapsedTime >= 30*1000) {
+            if (GUISessionStatus.isUserAuthenticated() && GUISessionStatus.isUserActive() && elapsedTime >= 30*1000) {
                 saveCurrentSession();
                 lastSessionSave = now;
             }

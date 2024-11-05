@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteShapeSelectedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ImageLayer;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSAbstractGenerator;
 import esac.archive.esasky.cl.wcstransform.module.footprintbuilder.STCSGeneratorFactory;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -15,7 +16,6 @@ import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintClearEvent;
 import esac.archive.esasky.cl.web.client.event.planning.FutureFootprintEvent;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.PlanningConstant;
 import esac.archive.esasky.cl.web.client.view.allskypanel.MultiTargetTooltip;
 import esac.archive.esasky.cl.web.client.view.allskypanel.PlanningDetectorCenterTooltip;
@@ -47,7 +47,7 @@ public class AllSkyPresenter {
     private FutureFootprintRow currentPlanningFootprintRow = null;
 
     private List<SSOOverlayAndPolyline> ssoPolyline = null;
-    private HiPS currentHiPS = EsaSkyWebConstants.getInitialHiPS();
+//    private HiPS currentHiPS = EsaSkyWebConstants.getInitialHiPS();
     
     private HiPS currentOverlay;
     private double currentOverlayOpacity = 0;
@@ -94,9 +94,7 @@ public class AllSkyPresenter {
         CommonEventBus.getEventBus().addHandler(FutureFootprintEvent.TYPE,
                 event -> AllSkyPresenter.this.drawPlanning(event.getFutureFootprintRow()));
         CommonEventBus.getEventBus().addHandler(HipsChangeEvent.TYPE, changeEvent -> {
-
-            changeHiPS(changeEvent.getHiPS(), changeEvent.getColorPalette(),
-                    changeEvent.isBaseImage(), changeEvent.getOpacity());
+            changeHiPS(changeEvent.getSkyRowId(), changeEvent.getHiPS(), changeEvent.getColorPalette(), changeEvent.getOpacity());
             CommonEventBus.getEventBus().fireEvent(new UrlChangedEvent());
         });
         
@@ -359,60 +357,27 @@ public class AllSkyPresenter {
      * @param hips Input HiPS object
      * @param colorPalette Input ColorPalette object
      */
-    protected final void changeHiPS(final HiPS hips, final ColorPalette colorPalette, boolean isBaseImage, double opacity) {
-    	currentOverlayOpacity = opacity;
-    	if(isBaseImage) {
-	    	if (currentHiPS != hips) {
-	    		currentHiPS.setReversedColorMap(false);
-	            currentHiPS = hips;
-	            AladinLiteWrapper.getInstance().openHiPS(hips);
-	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
-	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
-	            
-	            reverseCurrentHiPS(colorPalette);
+    protected final void changeHiPS(final String skyRowId, final HiPS hips, final ColorPalette colorPalette, double opacity) {
 
-	        } else {
-	            AladinLiteWrapper.getInstance().setColorPalette(colorPalette);
-	            AladinLiteWrapper.getInstance().changeHiPSOpacity(Math.pow(opacity,0.25));
-				if(checkNotReverseAndGreyscale(hips, colorPalette)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-					hips.setReversedColorMap(true);
-				}else if(checkReverseAndNotGreyscale(hips, colorPalette)) {
-					AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-					hips.setReversedColorMap(false);
-				}
-	            
-	        }
-        }else {
-			AladinLiteWrapper.getInstance().setOverlayImageLayerToNull();
-			
-			createOverlayMap(hips, opacity, colorPalette);
-			
-			currentOverlay = hips;
-			
-			if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
-				hips.setReversedColorMap(true);
-			}else if(checkReverseAndNotGreyscale(hips, colorPalette)) {
-//				AladinLiteWrapper.getInstance().getAladinLite().reverseOverlayColorMap();
-				hips.setReversedColorMap(false);
-			}
+        ImageLayer imageLayer = AladinLiteWrapper.getInstance().getImageLayer(skyRowId);
+    	if (imageLayer == null || !Objects.equals(imageLayer.getId(), hips.getSurveyId()))  {
+            AladinLiteWrapper.getInstance().openHiPS(skyRowId, hips);
+        }
+
+        AladinLiteWrapper.getInstance().changeImageLayerOpacity(skyRowId, 1);
+        AladinLiteWrapper.getInstance().setColorPalette(skyRowId, colorPalette);
+        if (isReverseColorMap(colorPalette)) {
+            reverseColorMap(hips);
         }
         
     }
-    private void reverseCurrentHiPS(ColorPalette colorPalette) {
-		if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
-			AladinLiteWrapper.getInstance().getAladinLite().reverseColorMap();
-			currentHiPS.setReversedColorMap(true);
-		}
+    private void reverseColorMap(HiPS hips) {
+        hips.setReversedColorMap(true);
+        AladinLiteWrapper.getAladinLite().reverseColorMap();
     }
-    
-    private void createOverlayMap(HiPS hips, double opacity, ColorPalette colorPalette) {
-    	if(checkSameOpacity(hips, opacity)) {
-			AladinLiteWrapper.getInstance().createOverlayMap(hips, 1-opacity, colorPalette);
-		}else {
-			AladinLiteWrapper.getInstance().createOverlayMap(hips, 1-Math.pow(opacity,0.25), colorPalette);
-		}
+
+    private boolean isReverseColorMap(ColorPalette colorPalette) {
+        return colorPalette.equals(ColorPalette.GREYSCALE_INV);
     }
     
     private boolean checkNotReverseAndGreyscale(HiPS hips, ColorPalette colorPalette) {

@@ -1,0 +1,17 @@
+#collapsablePanel {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    border-radius: 10px;
+    transition: all 0.5s;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+}
+
+#collapsablePanel.expanded {
+    height: 255px;
+    visibility: visible;
+    background: rgba(255, 255, 255, 0.1);
+
+}

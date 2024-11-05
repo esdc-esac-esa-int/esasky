@@ -33,6 +33,8 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFoo
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.PlanObservationPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
+import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.cl.web.client.view.resultspanel.TimeSeriesPanel;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -80,6 +82,10 @@ public class Session {
 		stateObj.put(EsaSkyWebConstants.SESSION_SETTINGS, getSettingsJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_TREEMAP, getTreemapJson());
 		stateObj.put(EsaSkyWebConstants.SESSION_EXTERNAL_DATA_CENTERS, getExternalDatacentersJson());
+		JSONObject timeViewerObj = getTimeViewerJson();
+		if (timeViewerObj != null) {
+			stateObj.put(EsaSkyWebConstants.SESSION_TIME_VIEWER, timeViewerObj);
+		}
 		
 		return stateObj;
 	}
@@ -108,6 +114,7 @@ public class Session {
 			restoreSettings(saveStateObj);
 			restoreTreemap(saveStateObj);
 			restoreExternalDataCenters(saveStateObj);
+			restoreTimeViewer(saveStateObj);
 		} catch (SaveStateException e) {
 			Log.error(e.getMessage(), e);
 		}
@@ -152,6 +159,21 @@ public class Session {
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(null, true, EsaSkyWebConstants.CATEGORY_EXTERNAL));
 		}
 	}
+
+	private void restoreTimeViewer(GeneralJavaScriptObject saveStateObj) {
+		if (saveStateObj.hasProperty(EsaSkyWebConstants.SESSION_TIME_VIEWER)) {
+			GeneralJavaScriptObject object = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_TIME_VIEWER);
+			for (String key : object.getPropertiesArray()) {
+				GeneralJavaScriptObject panel = object.getProperty(key);
+				for (GeneralJavaScriptObject dataEntry : GeneralJavaScriptObject.convertToArray(panel.getProperty("data"))) {
+					String mission = dataEntry.getProperty("mission").toString();
+					String id = dataEntry.getProperty("id").toString();
+					String secondIdentifier = dataEntry.getProperty("secondIdentifier").toString();
+					TimeSeriesPanel.toggleTimeSeriesData(mission, id, secondIdentifier);
+				}
+			}
+		}
+	}
 	
 	private JSONObject getSettingsJson() {
 		JSONObject settingsObj = new JSONObject();
@@ -191,7 +213,38 @@ public class Session {
 		String jsonString = mapper.write(commonTapDescriptorList);
 		return new JSONObject(JsonUtils.safeEval(jsonString));
 	}
-	
+
+	private JSONObject getTimeViewerJson() {
+		JSONObject obj = new JSONObject();
+		TimeSeriesPanel cheops = TimeSeriesPanel.getTimeSeriesPanelOrNull("CHEOPS");
+		if (cheops != null) {
+			storeTimeSeriesPanelData(obj, "cheops", cheops);
+		}
+		TimeSeriesPanel allOther = TimeSeriesPanel.getTimeSeriesPanelOrNull("GAIA");
+		if (allOther != null) {
+			storeTimeSeriesPanelData(obj, "others", allOther);
+		}
+		if (!obj.keySet().isEmpty()) {
+			return obj;
+		}
+		return null;
+	}
+
+	private void storeTimeSeriesPanelData(JSONObject obj, String key, TimeSeriesPanel panel) {
+		Set<String[]> data = panel.getCurrentData();
+		JSONArray dataArray = new JSONArray();
+		for (String[] entry : data) {
+			JSONObject jsonEntry = new JSONObject();
+			jsonEntry.put("mission", new JSONString(entry[0]));
+			jsonEntry.put("id", new JSONString(entry[1]));
+			jsonEntry.put("secondIdentifier", new JSONString(entry[2]));
+			dataArray.set(dataArray.size(), jsonEntry);
+		}
+		JSONObject panelSettings = new JSONObject();
+		panelSettings.put("data", dataArray);
+		obj.put(key, panelSettings);
+	}
+
 	private void restoreSettings(GeneralJavaScriptObject saveStateObj) {
 		GeneralJavaScriptObject settingsObj = saveStateObj.getProperty(EsaSkyWebConstants.SESSION_SETTINGS);
 		if(settingsObj.hasProperty(EsaSkyWebConstants.SESSION_SETTINGS_GRID)) {
@@ -404,6 +457,7 @@ public class Session {
 			double dec = loc.getDoubleProperty(EsaSkyWebConstants.SESSION_DEC);
 			double fov = loc.getDoubleProperty(EsaSkyWebConstants.SESSION_FOV);
 			String cooFrame = loc.getStringProperty(EsaSkyWebConstants.SESSION_FRAME);
+			String projection = loc.getStringProperty(EsaSkyWebConstants.SESSION_PROJECTION);
 			
 			if(cooFrame.equalsIgnoreCase(EsaSkyWebConstants.ALADIN_J2000_COOFRAME)) {
 				AladinLiteWrapper.getInstance().setCooFrame(AladinLiteConstants.CoordinateFrame.J2000);
@@ -417,6 +471,10 @@ public class Session {
 			
 			AladinLiteWrapper.getInstance().goToObject(ra + " " + dec, false);
 			AladinLiteWrapper.getAladinLite().setZoom(fov);
+
+			if (projection != null) {
+				AladinLiteWrapper.getAladinLite().setProjection(projection);
+			}
 
 			
 		}catch (Exception e) {
@@ -452,7 +510,7 @@ public class Session {
 				skyRow = SelectSkyPanel.getSelectedSky();
 				first = false;
 			}
-			if(!skyRow.setSelectHips(name, true, false, category)) {
+			if(!skyRow.setSelectHips(name,  false, category)) {
 				//Means that we can't find it in the list
 				//Setting from url instead
 				String url = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_URL);
@@ -483,7 +541,7 @@ public class Session {
 			public void onSuccess(HiPS hips) {
 				hips.setHipsWavelength(category != null ? category : HipsWavelength.USER);
 				hips.setHipsCategory(category != null ? category : HipsWavelength.USER);
-				skyRow.setHiPSFromAPI(hips, false, true);
+				skyRow.setHiPSFromAPI(hips, true);
 				skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
 				if(isDefault) {
 					skyRow.disableDeleteButton();
@@ -589,8 +647,12 @@ public class Session {
 		Iterator<GeneralEntityInterface> entityIterator = EntityRepository.getInstance().getAllEntities().iterator();
 		while (entityIterator.hasNext()) {
 			GeneralEntityInterface ent = entityIterator.next();
-			ent.getTablePanel().closeTablePanel();
+			ITablePanel tablePanel = ent.getTablePanel();
+			if (tablePanel != null) {
+				tablePanel.closeTablePanel();
+			}
 		}
+		MainPresenter.getInstance().getCtrlTBPresenter().closeAllPanels();
 
 		// Load session data
 		try {
@@ -717,11 +779,13 @@ public class Session {
 		String decDeg = new Double(AladinLiteWrapper.getCenterDecDeg()).toString();
 		String fov = new Double(AladinLiteWrapper.getAladinLite().getFovDeg()).toString();
 		String cooFrame = AladinLiteWrapper.getCoordinatesFrame().toString();
+		String projection = AladinLiteWrapper.getCurrentProjection();
 		
 		obj.put(EsaSkyWebConstants.SESSION_RA, new JSONString(raDeg));
 		obj.put(EsaSkyWebConstants.SESSION_DEC, new JSONString(decDeg));
 		obj.put(EsaSkyWebConstants.SESSION_FOV, new JSONString(fov));
 		obj.put(EsaSkyWebConstants.SESSION_FRAME, new JSONString(cooFrame));
+		obj.put(EsaSkyWebConstants.SESSION_PROJECTION, new JSONString(projection));
 		
 		return obj;
 	}

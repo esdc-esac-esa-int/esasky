@@ -25,6 +25,7 @@ public final class UrlUtils {
 		String encodedFov = URL.encodeQueryString(new Double(AladinLiteWrapper.getAladinLite().getFovDeg()).toString());
 		String encodedHips = URL.encodeQueryString(SelectSkyPanel.getNameOfSelectedHips());
 		String encodedCooFrame = URL.encodeQueryString(AladinLiteWrapper.getCoordinatesFrame().toString());
+		String encodedProjection = URL.encodeQueryString(AladinLiteWrapper.getCurrentProjection());
 		String hostName = Window.Location.getHost();
 		String baseUrl = Window.Location.getPath();
 		
@@ -41,7 +42,7 @@ public final class UrlUtils {
 		if(Window.Location.getParameterMap().containsKey("log_level")){
 			logLevel = "&log_level=" + Window.Location.getParameterMap().get("log_level").get(0);
 		}
-		
+
 		String language = "";
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_INTERNATIONALIZATION)) {
 			language = "&" + EsaSkyConstants.INTERNATIONALIZATION_LANGCODE_URL_PARAM + "=" + GUISessionStatus.getCurrentLanguage();
@@ -72,6 +73,7 @@ public final class UrlUtils {
 				+ "?" + EsaSkyWebConstants.URL_PARAM_TARGET + "=" + encodedRaDeg + "%20" + encodedDecDeg 
 				+ "&" + EsaSkyWebConstants.URL_PARAM_HIPS + "=" + encodedHips 
 				+ "&" + EsaSkyWebConstants.URL_PARAM_FOV + "=" + encodedFov
+				+ "&" + EsaSkyWebConstants.URL_PARAM_PROJECTION + "=" + encodedProjection
 				+ "&" + EsaSkyWebConstants.URL_PARAM_FRAME_COORD + "=" + encodedCooFrame
 				+ "&" + EsaSkyWebConstants.URL_PARAM_SCI_MODE + "=" + GUISessionStatus.getIsInScienceMode()
 				+ language

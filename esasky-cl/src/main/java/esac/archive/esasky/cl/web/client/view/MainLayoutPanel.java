@@ -64,6 +64,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 	private String targetFromURL;
 
 	private String fovFromUrl;
+	private final String projectionFromUrl;
 
 	private String HiPSFromURL;
 
@@ -113,12 +114,13 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 	 * @param inputTarget Input String
 	 */
 	public MainLayoutPanel(final String HiPSFromURL, final String targetFromURL, String fovFromUrl,
-			final String coordinateFrameFromUrl, boolean hideWelcome) {
+			final String coordinateFrameFromUrl, boolean hideWelcome, String projectionFromUrl) {
 		this.HiPSFromURL = HiPSFromURL;
 		this.targetFromURL = targetFromURL;
 		this.fovFromUrl = fovFromUrl;
 		this.coordinateFrameFromUrl = coordinateFrameFromUrl;
 		this.hideWelcome = hideWelcome;
+		this.projectionFromUrl = projectionFromUrl;
 
 		this.style = resources.style();
 		this.style.ensureInjected();
@@ -131,7 +133,7 @@ public class MainLayoutPanel extends Composite implements MainPresenter.View {
 		skeletonPanel = new FlowPanel();
 		skeletonPanel.getElement().setId("skeletonPanel");
 
-		allSkyPanel = new AllSkyPanel(targetFromURL, fovFromUrl, coordinateFrameFromUrl);
+		allSkyPanel = new AllSkyPanel(targetFromURL, fovFromUrl, coordinateFrameFromUrl, projectionFromUrl);
 
 		banner = new Banner(Side.TOP);
 		skeletonPanel.add(banner);

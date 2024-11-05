@@ -44,6 +44,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
     private String initialTarget;
     private String fovFromUrl;
     private String coordinateFrameFromUrl;
+    private String projectionFromUrl;
 
     private Image esaLogo;
     private EsaSkyButton evaButton;
@@ -63,15 +64,12 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
         CssResource style();
     }
 
-    /**
-     * AllSkyPanel().
-     * @param inputInitialHiPS Input HiPS object.
-     * @param inputTarget Input String
-     */
-    public AllSkyPanel(final String inputTarget, final String fovFromUrl, final String coordinateFrameFromUrl) {
+
+    public AllSkyPanel(final String inputTarget, final String fovFromUrl, final String coordinateFrameFromUrl, String projectionFromUrl) {
         this.initialTarget = inputTarget;
         this.fovFromUrl = fovFromUrl;
         this.coordinateFrameFromUrl = coordinateFrameFromUrl;
+        this.projectionFromUrl = projectionFromUrl;
 
         style = resources.style();
         style.ensureInjected();
@@ -103,7 +101,7 @@ public class AllSkyPanel extends ResizeLayoutPanel implements AllSkyPresenter.Vi
      */
     private void initView() {
         this.allSkyContainerPanel = new VerticalPanel();
-        AladinLiteWrapper.init(this.allSkyContainerPanel, null, initialTarget, fovFromUrl, coordinateFrameFromUrl);
+        AladinLiteWrapper.init(this.allSkyContainerPanel, null, initialTarget, fovFromUrl, coordinateFrameFromUrl, projectionFromUrl);
         this.aladinLiteFocusPanel = AllSkyFocusPanel.getInstance();
 
         addResizeHandler(event -> resizeAladinTimer.setNewSize(event.getWidth(), event.getHeight()));

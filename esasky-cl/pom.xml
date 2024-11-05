@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>6.4</version>
+		<version>7.0</version>
 	</parent>
 
 	<artifactId>esasky-cl</artifactId>
@@ -91,11 +91,6 @@
 		<dependency>
 			<groupId>esac.archive.esasky.esasky-app</groupId>
 			<artifactId>esasky-model</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>esac.archive.esasky.esasky-app</groupId>
-			<artifactId>esasky-cl-mission-planning</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

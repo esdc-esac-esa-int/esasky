@@ -48,7 +48,7 @@ public class HipsWavelength {
 
 	public static Map<String, LinkedList<HiPS>> getListOfUserHips() {
 		if(listOfUserHips==null) {
-			listOfUserHips = new HashMap<String, LinkedList<HiPS>>();
+			listOfUserHips = new HashMap<>();
 		}
 		return listOfUserHips;
 	}

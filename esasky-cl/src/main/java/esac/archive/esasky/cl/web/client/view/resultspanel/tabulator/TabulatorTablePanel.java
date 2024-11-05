@@ -315,6 +315,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		entity.clearAll();
 		table.abortRequest();
 		EntityRepository.getInstance().removeEntity(entity);
+		AladinLiteWrapper.getInstance().removeOverlay(entity.getId());
 		notifyClosingObservers();
 	}
 
@@ -366,14 +367,27 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onCreateRowClicked() {
 		//Do nothing by default - To be overridden if needed.
 	}
-	
+
 	@Override
 	public void onAddTimeSeriesClicked(GeneralJavaScriptObject row) {
 		String mission = entity.getDescriptor().getMission();
+		String secondIdentifier = null;
+		if("CHEOPS".equals(mission)) {
+			secondIdentifier = row.invokeFunction(GET_DATA).getStringProperty("sci_cor_lc_opt_link"); 
+		} else if ("XMM-OM".equals(mission)) {
+			secondIdentifier = row.invokeFunction(GET_DATA).getStringProperty("fast_id");
+		}
+		String dataId = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
+		MovablePanel timeSeriesPanel = TimeSeriesPanel.toggleTimeSeriesData(mission, dataId, secondIdentifier);
+		timeSeriesPanel.registerCloseObserver(() -> table.reformatRow(row));
+		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TIMESERIES, getLabel(), dataId);
+	}
+
+	public boolean isRowVisibleInTimeSeriesViewer(GeneralJavaScriptObject row) {
+		String mission = entity.getDescriptor().getMission();
 		String productUrl = mission.equals("CHEOPS") ? row.invokeFunction(GET_DATA).getStringProperty("sci_cor_lc_opt_link") : null;
 		String dataId = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
-		selectRowWhileDialogBoxIsOpen(row, TimeSeriesPanel.openTimeSeriesData(mission, dataId, productUrl));
-		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TIMESERIES, getLabel(), dataId);
+		return TimeSeriesPanel.dataIsVisible(mission, dataId, productUrl);
 	}
 
 	public boolean getIsHidingTable() {
@@ -493,7 +507,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		table.setQueryMode();
 		
-		table.setData(url);
+		table.setData(url, true);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}
 

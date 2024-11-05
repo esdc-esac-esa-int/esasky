@@ -22,7 +22,7 @@ public class PublicationsEntity extends EsaSkyEntity {
 	
     @Override
     public void onShapeSelection(AladinShape shape) {
-        GeneralEntityInterface entity = EntityRepository.getInstance().getEntity(shape.getSourceName());
+        GeneralEntityInterface entity = EntityRepository.getInstance().getEntityByChild(shape.getSourceName());
         if(entity == null) {
             entity = EntityRepository.getInstance().createPublicationsBySourceEntity(shape.getDataDetailsByKey(SourceConstant.SOURCE_NAME), 
                     new Double(shape.getRa()), new Double(shape.getDec()), shape.getDataDetailsByKey("bibcount"));

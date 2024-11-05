@@ -9,7 +9,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 
-import esac.archive.esasky.cl.web.client.Modules;
+import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyPlayerPanel;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.client.HipsWavelength;
@@ -21,8 +21,6 @@ import esac.archive.esasky.cl.web.client.presenter.CtrlToolBarPresenter.SkiesMen
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.AddSkyButton;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
-
-import java.util.Objects;
 
 public class SelectSkyPanelPresenter {
 
@@ -55,7 +53,9 @@ public class SelectSkyPanelPresenter {
         		if(changeEvent.getHipsWavelength() == HipsWavelength.USER || changeEvent.getHipsWavelength() == HipsWavelength.GW || !HipsWavelength.wavelengthList.contains(changeEvent.getHipsWavelength())) {
         			addUrlHips(changeEvent.getHiPS(), null);
         		} else {
-        			view.createSky(true);
+        			SkyRow sky = view.createSky(true);
+                    CommonEventBus.getEventBus().fireEvent(
+                            new HipsChangeEvent(sky.getRowId(), sky.getSelectedHips(), sky.getSelectedPalette(), sky.isBase(), 1));
         		}
         	} else {
         		if(!view.select(changeEvent.getHiPS())) {
@@ -92,12 +92,14 @@ public class SelectSkyPanelPresenter {
 			entry.setWavelength(hips.getHipsWavelength());
 			getSkiesMenu().getMenuEntries().add(entry);
 		} else {
-		    entry.getHips().add(hips);
+            if (!entry.getHips().contains(hips)) {
+                entry.getHips().add(hips);
+            }
 		}
 		if(skyRow == null) {
 			skyRow = view.createSky(false);
 		}
-		skyRow.setSelectHips(hips.getSurveyName(), false, false, hips.getHipsCategory());
+		skyRow.setSelectHips(hips.getSurveyName(), false, hips.getHipsCategory());
 		view.refreshUserDropdowns();
     }
 

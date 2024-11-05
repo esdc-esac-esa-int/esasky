@@ -5,3 +5,16 @@
 	border: 1px solid #CCCCCC;
 }
 
+.loadingOverlay {}
+
+.loadingOverlay:after {
+	content: " ";
+	z-index: 10;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.1);
+	pointer-events: none;
+}

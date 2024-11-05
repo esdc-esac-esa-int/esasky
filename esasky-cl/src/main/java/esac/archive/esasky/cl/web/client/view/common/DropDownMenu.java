@@ -328,9 +328,13 @@ public class DropDownMenu<T> extends Composite {
 	}
 
 	public void selectObject(T object) {
+		selectObject(object, true);
+	}
+
+	public void selectObject(T object, boolean notifyObservers) {
 		for(MenuItem<T> menuItem : menuItems){
 			if(menuItem.getItem() == object){
-				selectItem(menuItem);
+				selectItem(menuItem, notifyObservers);
 				break;
 			}
 		}
@@ -349,13 +353,7 @@ public class DropDownMenu<T> extends Composite {
 		menuBarPanel.add(item);
 		menuItems.add(item);
 
-		item.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				selectItem(item);
-			}
-		});
+		item.addClickHandler(event -> selectItem(item));
 
 	}
 
@@ -372,10 +370,16 @@ public class DropDownMenu<T> extends Composite {
 	}
 
 	private void selectItem(MenuItem<T> selectedItem) {
+		selectItem(selectedItem, true);
+	}
+
+	private void selectItem(MenuItem<T> selectedItem, boolean notifyObservers) {
 		hideMenuBar();
 		if(selectedObject != selectedItem.getItem()){
 			selectedObject = selectedItem.getItem();
-			notifyObservers();
+			if (notifyObservers) {
+				notifyObservers();
+			}
 		}
 
 		for(MenuItem<T> menuItem : menuItems){
@@ -446,6 +450,12 @@ public class DropDownMenu<T> extends Composite {
 		for(MenuItem<T> menuItem : menuItems){
 			menuItem.unSelect();
 		}
+	}
+
+	public boolean containsItem(T item) {
+		return menuItems.stream()
+				.map(MenuItem::getItem)
+				.anyMatch(item::equals);
 	}
 
 	public void registerObserver(MenuObserver observer){

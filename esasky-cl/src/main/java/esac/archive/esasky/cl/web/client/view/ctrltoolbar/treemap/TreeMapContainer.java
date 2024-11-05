@@ -11,6 +11,8 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -18,17 +20,23 @@ import esac.archive.esasky.cl.web.client.utility.DeviceUtils;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
+import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.PopupHeader;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
 import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.Arrays;
 
 
 public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
+
+    private static final Set<EntityContext> TREE_MAPS_WITH_LOADING_SPINNERS = new HashSet<>(Arrays.asList(EntityContext.ASTRO_CATALOGUE, EntityContext.ASTRO_SPECTRA, EntityContext.ASTRO_IMAGING));
 
 	private final CssResource style;
 	private final Resources resources;
@@ -42,9 +50,10 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 	private FlowPanel sliderContainer;
 	boolean haveSlider;
 
+	private final Set<String> currentlyLoadingDataIds = new HashSet<>();
+
 	private final List<TreeMapChanged> treemapObservers = new LinkedList<>();
-	
-	
+
 	public interface Resources extends ClientBundle {
 		@Source("treeMapContainer.css")
 		@CssResource.NotStrict
@@ -68,6 +77,9 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 		treeMap = new TreeMap(context);
 
+		if (TREE_MAPS_WITH_LOADING_SPINNERS.contains(context)) {
+			setupLoadingSpinner();
+		}
 
 		this.addStyleName("treeMapContainer");
 		if(!DeviceUtils.isMobileOrTablet()) {
@@ -92,16 +104,47 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 
 		treeMap.setHasSlider(shouldHaveSlider);
 		this.add(treeMapContainer);
-		
+
 		header.setText(TextMgr.getInstance().getText("treeMap_" + context));
 		String helpText = TextMgr.getInstance().hasText("treeMapContainer_help_" + context) ? TextMgr.getInstance().getText("treeMapContainer_help_" + context): null;
 		header.setHelpText(helpText);
-		
+
 		MainLayoutPanel.addMainAreaResizeHandler(event -> updateMaxSize());
 
 	}
 
-	@Override
+    private void setupLoadingSpinner() {
+        final LoadingSpinner loadingSpinner = new LoadingSpinner(false);
+        CommonEventBus.getEventBus().addHandler(ProgressIndicatorPushEvent.TYPE,
+                new ProgressIndicatorPushEventHandler() {
+                    @Override
+                    public void onPushEvent(ProgressIndicatorPushEvent pushEvent) {
+                        if (pushEvent instanceof CountProgressIndicatorPushEvent) {
+                            currentlyLoadingDataIds.add(pushEvent.getId());
+                            treeMap.addStyleName("loadingOverlay");
+                            loadingSpinner.removeStyleName("treeMapContainer__invisibleSpinner");
+                        }
+                    }
+                });
+
+        CommonEventBus.getEventBus().addHandler(ProgressIndicatorPopEvent.TYPE,
+                new ProgressIndicatorPopEventHandler() {
+                    @Override
+                    public void onPopEvent(ProgressIndicatorPopEvent popEvent) {
+                        currentlyLoadingDataIds.remove(popEvent.getId());
+                        if (currentlyLoadingDataIds.isEmpty()) {
+                            treeMap.removeStyleName("loadingOverlay");
+                            loadingSpinner.addStyleName("treeMapContainer__invisibleSpinner");
+                        }
+                    }
+                });
+
+        loadingSpinner.addStyleName("treeMapContainer__spinnerContainer");
+        loadingSpinner.addStyleName("treeMapContainer__invisibleSpinner");
+        treeMapContainer.add(loadingSpinner);
+    }
+
+    @Override
 	protected void onLoad() {
 		super.onLoad();
 		show();
@@ -259,7 +302,7 @@ public class TreeMapContainer extends MovableResizablePanel<TreeMapContainer>{
 		updateTreeMapSize();
 	}
 
-	@Override 
+	@Override
 	public void hide() {
 		super.hide();
 		notifyClosed();
