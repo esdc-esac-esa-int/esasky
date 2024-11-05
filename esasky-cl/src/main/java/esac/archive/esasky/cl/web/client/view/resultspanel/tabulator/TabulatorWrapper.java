@@ -1756,7 +1756,8 @@ public class TabulatorWrapper {
     private native JavaScriptObject getToggleFilterEditorFunc(TabulatorWrapper wrapper, String timeVizWhereQuery) /*-{
         return function (cell, onRendered, success, cancel, editorParams) {
             var tooltip = $wnd.esasky.getInternationalizationText("tabulator_timeVizToggleTooltip");
-            var button = @esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::new(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)("time-viz-toggle", false, "", tooltip);
+            var toggleId = "time-viz-toggle-" + Math.random().toString(36).substring(2);
+            var button = @esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch::new(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)(toggleId, false, "", tooltip);
             var checked = false;
             var successFunc = function (checked) {
                 success(checked);
