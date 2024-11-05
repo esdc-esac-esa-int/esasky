@@ -89,7 +89,7 @@ public class Controller implements ValueChangeHandler<String> {
 			//Retrieves a random source from backend and shows it
 			startupWithRandomSource(hideWelcome);
 		} else {
-			initESASkyWithURLParameters("", "", "", "", hideWelcome);
+			initESASkyWithURLParameters("", "", "", "", hideWelcome, "");
 		}
 		
 	}
@@ -109,7 +109,9 @@ public class Controller implements ValueChangeHandler<String> {
 
         final String fov = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_FOV);
 
-        initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+		final String projection = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_PROJECTION);
+
+        initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome, projection);
     }
     
     private String extractTargetFromUrlParameter(String targetFromUrl, String target) {
@@ -149,7 +151,7 @@ public class Controller implements ValueChangeHandler<String> {
         			fov = esaSkyTarget.getFovDeg();
         			cooFrame = esaSkyTarget.getCooFrame() != null ? esaSkyTarget.getCooFrame() : CoordinateFrame.J2000.toString();
         			hiPSName = esaSkyTarget.getHipsName();
-        			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+        			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome, "");
         			if (esaSkyTarget != null
     					&& !GUISessionStatus.getIsInScienceMode()
     					&& !"clean".equalsIgnoreCase(Modules.getMode())) {
@@ -165,14 +167,14 @@ public class Controller implements ValueChangeHandler<String> {
         			fov = "";
         			cooFrame = "";
         			hiPSName = "";
-        			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome);
+        			initESASkyWithURLParameters(hiPSName, target, fov, cooFrame, hideWelcome, "");
         		}
         	}
 
         	@Override
         	public void onError(String errorCause) {
         		Log.error("[Controller] getRandomSource ERROR: " + errorCause);
-        		initESASkyWithURLParameters("", "", "", "", hideWelcome);
+        		initESASkyWithURLParameters("", "", "", "", hideWelcome, "");
         	}
 
         }, EsaSkyWebConstants.RANDOM_SOURCE_CALL_TIMEOUT);
@@ -250,9 +252,9 @@ public class Controller implements ValueChangeHandler<String> {
 		}
 	}
 
-	private void initESASkyWithURLParameters(String HiPSFromURL,
-			String targetFromURL, String fov, String coordinateFrameFromUrl, boolean hideWelcome) {
-		MainLayoutPanel view = new MainLayoutPanel(HiPSFromURL, targetFromURL, fov, coordinateFrameFromUrl, hideWelcome);
+	private void initESASkyWithURLParameters(String HiPSFromURL, String targetFromURL, String fov,
+											 String coordinateFrameFromUrl, boolean hideWelcome, String projection) {
+		MainLayoutPanel view = new MainLayoutPanel(HiPSFromURL, targetFromURL, fov, coordinateFrameFromUrl, hideWelcome, projection);
 		presenter = new MainPresenter(view, coordinateFrameFromUrl);
         presenter.go(Controller.this.container);
 	}

@@ -6,6 +6,10 @@
 	display: none;
 }
 
+.aladin-reticle {
+    z-index: 100;
+}
+
 .aladin-reticleColor {
     color: #321bdf !important;
     font-weight: bold;

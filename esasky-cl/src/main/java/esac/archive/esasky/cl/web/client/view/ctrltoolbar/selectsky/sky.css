@@ -10,10 +10,15 @@
 .selectedSky{
 }
 
-.skyRadioBtn{
+.skyToggleVisibilityButton{
 	display: block;
 	margin: auto;
-	padding-left: 2px;
+	align-self: center;
+	padding: 4px;
+}
+
+.skyToggleVisibilityButton.off > div{
+	filter: opacity(0.5);
 }
 
 .skyInfoBtn{
@@ -38,6 +43,8 @@ td{
 
 .closeSkyButton {
 	margin: auto;
+	align-self: center;
+	padding-left: 5px;
 }
 
 .skyDropDown{
@@ -53,3 +60,8 @@ td{
 	display: none;
 }
 
+.skySettingButton {
+	align-self: center;
+	margin: auto;
+	padding: 4px;
+}

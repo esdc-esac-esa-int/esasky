@@ -1551,7 +1551,14 @@
 		target="_blank"&gt;
 		更多信息
 		&lt;/a&gt; </text>
-
+	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC21">
+		钱德拉源表（CSC）是最权威的X射线源星表，由钱德拉X射线望远镜探测得到。CSC 2.1包含了 407,806颗致密X射线源和X射线展源的观测结果，可用于大样本统计学分析或单个源的深入研究。基于到2021年底公开发布的次钱德拉ACIS、HRC-I图像观测数据，共提取出1,304,376组单次观测结果。
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Chandra"
+		target="_blank"&gt;
+		更多信息
+		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-EPIC-STACK">
 		4XMM-DR14s堆叠星表由1,751组共计10,336次高质量XMM-牛顿望远镜观测数据编纂而成。这些数据的获取时间为2000年2月1日至2023年11月16日。它们在半径上至少重叠1角分，且没有受非常高的背景辐射影响。该星表包含427,525颗源，其中329,972颗进行了多次观测。星表提供的信息包括位置和其他参数，例如XMM-牛顿标准能带流量、硬度比系数、质量评估以及多次观测间的变化性信息等。
 		&lt;br&gt;&lt;br&gt;

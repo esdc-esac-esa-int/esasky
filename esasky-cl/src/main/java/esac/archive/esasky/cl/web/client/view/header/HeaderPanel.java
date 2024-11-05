@@ -1,46 +1,42 @@
 package esac.archive.esasky.cl.web.client.view.header;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
-
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Widget;
-
-import esac.archive.esasky.cl.web.client.login.UnauthenticatedUserView;
-import esac.archive.esasky.cl.web.client.login.AuthenticatedUserView;
-import esac.archive.esasky.cl.web.client.presenter.login.UserAreaPresenter;
-import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
-import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
-import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.*;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.login.AuthenticatedUserView;
+import esac.archive.esasky.cl.web.client.login.UnauthenticatedUserView;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter.SelectionEntry;
 import esac.archive.esasky.cl.web.client.presenter.HeaderPresenter.StringValueSelectionChangedHandler;
 import esac.archive.esasky.cl.web.client.presenter.StatusPresenter;
+import esac.archive.esasky.cl.web.client.presenter.login.UserAreaPresenter;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
-import esac.archive.esasky.cl.web.client.status.ScreenSizeObserver;
 import esac.archive.esasky.cl.web.client.status.ScreenSizeService;
 import esac.archive.esasky.cl.web.client.status.ScreenWidth;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
+import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyStringButton;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyToggleButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
+import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
@@ -96,14 +92,25 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private ListBox coordinateFrameFull = new ListBox();
 	private ListBox coordinateFrameFirstLetter = new ListBox();
 	private FlowPanel coordinateContainer = new FlowPanel();
-
+	private final FocusPanel projectionContainer = new FocusPanel();
+	private Tree projectionTree;
+	TreeItem projectionRootItem = new TreeItem();
 	private static final String OUTREACH_DROPDOWN_HEADER_CLASS = "header__dropdown__outreach__text";
+	private TreeItem selectedProjectionItem;
 
-	public interface Resources extends ClientBundle {
+	public interface Resources extends ClientBundle, Tree.Resources {
 
 		@Source("headerPanel.css")
 		@CssResource.NotStrict
 		CssResource style();
+
+		@Source("../common/icons/down-arrow.png")
+		@ImageResource.ImageOptions(width = 10, height = 10)
+		ImageResource treeClosed();
+
+		@Source("../common/icons/up-arrow.png")
+		@ImageResource.ImageOptions(width = 10, height = 10)
+		ImageResource treeOpen();
 	}
 
 	public HeaderPanel() {
@@ -132,10 +139,26 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		coordinateContainer.add(fovPanel);
 		header.add(coordinateContainer);
 
+		projectionTree = new Tree(resources, true);
+		projectionRootItem.getElement().setId("projectionRootItem");
+
+		projectionTree.addOpenHandler(event -> {
+            if (selectedProjectionItem != null) {
+				selectedProjectionItem.setSelected(true);
+            }
+        });
+
+		projectionContainer.addBlurHandler(event -> closeAllProjectionItems(projectionRootItem));
+		projectionContainer.getElement().setId("projectionContainer");
+		projectionContainer.add(projectionTree);
+		coordinateContainer.add(projectionContainer);
+
 		hipsLabelButton.getElement().setId("selectedSky");
 		hipsLabelButton.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_SKIESMENU));
 
 		header.add(hipsLabelButton);
+
+
 
 		header.add(statusPanel);
 
@@ -192,12 +215,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 
 		initWidget(header);
 
-		ScreenSizeService.getInstance().registerObserver(new ScreenSizeObserver() {
-			@Override
-			public void onScreenSizeChange() {
-				updateModuleVisibility();
-			}
-		});
+		ScreenSizeService.getInstance().registerObserver(this::updateModuleVisibility);
 		updateModuleVisibility();
 	}
 
@@ -460,6 +478,96 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			coordinateFrameFull.addItem(entry.getText(), entry.getValue());
 			coordinateFrameFirstLetter.addItem(entry.getText().substring(0, 1), entry.getValue());
 		}
+	}
+
+	@Override
+	public void setAvailableProjections(Map<String, String> projections) {
+		projectionTree.clear();
+        projections.forEach((key, value) -> {
+			Label categoryLabel = new Label(key);
+			TreeItem categoryItem = new TreeItem(categoryLabel);
+			categoryItem.setUserObject(value);
+
+			DOM.sinkEvents(categoryItem.getElement(), Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK);
+			DOM.setEventListener(categoryItem.getElement(), event -> {
+				int eventType = DOM.eventGetType(event);
+				if (eventType == Event.ONMOUSEOVER) {
+					categoryItem.addStyleName("tableRowHover");
+				} else if (eventType == Event.ONMOUSEOUT) {
+					categoryItem.removeStyleName("tableRowHover");
+				} else if (eventType == Event.ONCLICK) {
+					AladinLiteWrapper.setProjection(value);
+					if (selectedProjectionItem != null) {
+						selectedProjectionItem.setSelected(false);
+					}
+					selectedProjectionItem = categoryItem;
+					categoryItem.setSelected(true);
+					closeAllProjectionItems(projectionRootItem);
+				}
+
+				event.stopPropagation();
+			});
+
+			categoryItem.setStyleName("projectionCategoryItem");
+
+			projectionRootItem.addItem(categoryItem);
+        });
+
+		projectionTree.addItem(projectionRootItem);
+	}
+
+	@Override
+	public void setProjection(String projection) {
+		Label projectionLabel = new Label(projection);
+		projectionRootItem.setWidget(projectionLabel);
+
+		DOM.sinkEvents(projectionRootItem.getElement(), Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONMOUSEDOWN);
+		DOM.setEventListener(projectionRootItem.getElement(), event -> {
+			int eventType = DOM.eventGetType(event);
+			if (eventType == Event.ONMOUSEOVER) {
+				projectionRootItem.addStyleName("rootTableRowHover");
+			} else if (eventType == Event.ONMOUSEOUT) {
+				projectionRootItem.removeStyleName("rootTableRowHover");
+			} else if (eventType == Event.ONCLICK) {
+				projectionRootItem.setState(!projectionRootItem.getState());
+			}
+
+			event.stopPropagation();
+		});
+
+		setSelectedProjectionItem(projectionRootItem, projection);
+	}
+
+	private void setSelectedProjectionItem(TreeItem item, String projection) {
+		if (item == null) {
+			return;
+		}
+
+		if (item.getChildCount() > 0) {
+			for (int i = 0; i < item.getChildCount(); i++) {
+				setSelectedProjectionItem(item.getChild(i), projection);
+			}
+		} else if (Objects.equals(item.getUserObject(), projection)) {
+			if (selectedProjectionItem != null) {
+				selectedProjectionItem.setSelected(false);
+			}
+
+			selectedProjectionItem = item;
+			item.setSelected(true);
+		}
+	}
+
+	private void closeAllProjectionItems(TreeItem item) {
+
+		if (item == null || item.getChildCount() < 1) {
+			return;
+		}
+
+		for (int i = 0; i < item.getChildCount(); i++) {
+			closeAllProjectionItems(item.getChild(i));
+		}
+
+		item.setState(false);
 	}
 
 	@Override
@@ -751,7 +859,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			coordinateFrameFull.setVisible(false);
 			coordinateFrameFirstLetter.setVisible(true);
 		} else {
-			coordinateContainer.setWidth("355px");
+			coordinateContainer.setWidth("385px");
 			coordinateFrameFull.setVisible(true);
 			coordinateFrameFirstLetter.setVisible(false);
 		}
@@ -829,9 +937,18 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_SCIENCE_MODE)) {
 			dropdownSessionSaveEntry.setVisible(true);
 			dropdownSessionRestoreEntry.setVisible(true);
-		}else {
+			projectionContainer.setVisible(true);
+			hiResDropdown.setVisible(false);
+			jwstDropdown.setVisible(false);
+			euclidDropdown.setVisible(false);
+		} else {
 			dropdownSessionSaveEntry.setVisible(false);
 			dropdownSessionRestoreEntry.setVisible(false);
+			projectionContainer.setVisible(false);
+			hiResDropdown.setVisible(true);
+			jwstDropdown.setVisible(true);
+			euclidDropdown.setVisible(true);
+			AladinLiteWrapper.getAladinLite().setProjection("TAN");
 		}
 
         dropdownEvaEntry.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU));

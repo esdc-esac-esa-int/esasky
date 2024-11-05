@@ -120,7 +120,7 @@ public class ApiHips extends ApiBase{
 
 	public boolean setHiPS(String wantedHiPSName, JavaScriptObject widget) {
 		GoogleAnalytics.sendEvent(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_CHANGEHIPS, wantedHiPSName);
-		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, true, false, null)) {
+		if (!SelectSkyPanel.getSelectedSky().setSelectHips(wantedHiPSName, false, null)) {
 			JSONObject error = new JSONObject();
 			error.put(ApiConstants.MESSAGE, new JSONString("No HiPS called: " + wantedHiPSName + " found"));
 

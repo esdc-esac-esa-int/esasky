@@ -8,7 +8,7 @@
     display: block;
     position: absolute !important;
     text-align: left;
-    z-index: 300;
+    z-index: 10000;
     padding: 1px;
     box-sizing: border-box;
 }

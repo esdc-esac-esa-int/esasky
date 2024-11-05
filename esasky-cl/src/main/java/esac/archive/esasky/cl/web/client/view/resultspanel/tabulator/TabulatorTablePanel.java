@@ -315,6 +315,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		entity.clearAll();
 		table.abortRequest();
 		EntityRepository.getInstance().removeEntity(entity);
+		AladinLiteWrapper.getInstance().removeOverlay(entity.getId());
 		notifyClosingObservers();
 	}
 
@@ -506,7 +507,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		table.setQueryMode();
 		
-		table.setData(url);
+		table.setData(url, true);
 		tableNotShowingContainer.addStyleName("displayNone");
 	}
 

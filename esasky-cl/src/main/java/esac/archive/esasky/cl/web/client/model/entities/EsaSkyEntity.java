@@ -118,7 +118,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         }
 
         String color = descriptor.getColor();
-        JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(id, color, lineStyle);
+        JavaScriptObject footprints = AladinLiteWrapper.getAladinLite().createOverlay(id+"_overlay", color, lineStyle);
 
         Map<String, Object> details = new HashMap<>();
 
@@ -128,7 +128,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             details.put("shape", shapeType);
         }
 
-        JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(id, shapeSize, color, details);
+        JavaScriptObject catalogue = AladinLiteWrapper.getAladinLite().createCatalogWithDetails(id+"_catalogue", shapeSize, color, details);
 
         combinedDrawer = new CombinedSourceFootprintDrawer(catalogue, footprints, shapeBuilder, shapeType);
 
@@ -252,10 +252,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
             return stcs;
         }
         if(stcs.contains("POLYGON")){
-            stcs = stcs.replace("POLYGON", "POLYGON J2000");
+            stcs = stcs.replaceAll("POLYGON", " POLYGON J2000");
         }
         if(stcs.contains("CIRCLE")){
-            stcs = stcs.replace("CIRCLE", "CIRCLE J2000");
+            stcs = stcs.replaceAll("CIRCLE", " CIRCLE J2000");
         }
         return stcs;
 

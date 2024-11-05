@@ -1,0 +1,58 @@
+@CHARSET "UTF-8";
+
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+    position: absolute;
+    opacity: 0;
+    display: none;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    box-sizing: border-box;
+    border-radius: 15%;
+    border: 1px solid #eeeeee;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+    top: 7px;
+    left: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 15%;
+    background: white;
+}
+
+.esaSkyCheckButton {
+    align-self: center;
+    margin: auto;
+    padding: 4px;
+}
+

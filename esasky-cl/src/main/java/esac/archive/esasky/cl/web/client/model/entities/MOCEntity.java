@@ -319,10 +319,15 @@ public class MOCEntity implements GeneralEntityInterface {
     	final String debugPrefix = "[fetchMoc][" + getDescriptor().getShortName() + "]";
 
     	Log.debug(debugPrefix + "Query [" + url + "]");
-    	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		String[] parts = url.split("\\?");
+		String baseUrl = parts[0];
+		String queryString = parts[1];
+
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, baseUrl);
+		builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
     	try {
-    		builder.sendRequest(null,
-    				new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
+			builder.sendRequest(queryString,
+					new MocCallback(tablePanel, url, this, TextMgr.getInstance().getText("mocEntity_retrievingMissionCoverage").replace("$MISSIONNAME$", descriptor.getLongName()), () -> {
 						getVisibleCount();
 						setTableCountText();
 					   	onFoVChanged();
@@ -371,7 +376,7 @@ public class MOCEntity implements GeneralEntityInterface {
 		}
 		
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + getId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -418,7 +423,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void updateOverlay() {
 		if(overlay == null) {
-			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + parentEntity.getId() + "\"}";
+			String options = "{\"opacity\":0.2, \"color\":\"" + descriptor.getColor() + "\", \"name\":\"" + getId() + "\"}";
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
@@ -591,7 +596,7 @@ public class MOCEntity implements GeneralEntityInterface {
 
 	@Override
 	public String getId() {
-		return parentEntity.getId();
+		return parentEntity.getId() + "_moc" ;
 	}
 
 	@Override
@@ -763,8 +768,8 @@ public class MOCEntity implements GeneralEntityInterface {
     @Override
     public void setPrimaryColor(String color) {
     	if(overlay != null) {
-    		overlay.setProperty("color", color);
-    	}
+			overlay.invokeFunction("setColor", color);
+		}
     }
     
     @Override

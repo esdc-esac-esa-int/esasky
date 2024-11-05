@@ -26,48 +26,27 @@ public class TAPSingleCountService {
         }
         return instance;
     }
-
-    public String getCount(AladinLiteWidget aladinLite) {
-
-        String cooFrame = aladinLite.getCooFrame();
-        double[] ccInJ2000 = { aladinLite.getCenterLongitudeDeg(),
-                               aladinLite.getCenterLatitudeDeg() };
-        
-        if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
-            // convert to J2000
-            ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(
-                            aladinLite.getCenterLongitudeDeg(),
-                            aladinLite.getCenterLatitudeDeg());
-        }
-        
-        String shape = "POLYGON('ICRS', 0.0, 0.0, 1.0, 1.0, 2.0, 2.0)";
-        String spoly = "";
-        
-        if (AladinLiteWrapper.isCornersInsideHips()) {
-            shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
-            spoly = "{" + aladinLite.getFovCorners(2).toString() + "}";
-        }
-        
-        String adqlQuery = "SELECT esasky_general_dynamic_count_q3c_json(" + shape
-                + ",   '" + spoly + "'"
-                + ",   '" + ccInJ2000[0] + "', '" + ccInJ2000[1] + "'"
-                + ") as esasky_dynamic_count from dual";
-        
-        Log.debug("[TAPQueryBuilder/SingleFastCountQuery()] Single Fast count ADQL " + adqlQuery);
-        
-        return adqlQuery;
-    }
     
     public String getCountStcs(AladinLiteWidget aladinLite) {
-          String shape = "";
+          String shape;
+
+          if (aladinLite.getFovDeg() > 180) {
+              return "";
+          }
           
           if (AladinLiteWrapper.isCornersInsideHips()) {
-              shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
-          }else {
+              if (AladinLiteWrapper.isCornersValid()) {
+                  shape = "POLYGON('ICRS'," + aladinLite.getFovCorners(2).toString() + ")";
+              } else {
+                  SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+                  shape = "CIRCLE('ICRS'," + pos.getCoordinate().getRa() + "," + pos.getCoordinate().getDec() + ", " + aladinLite.getFovDeg() + ")" ;
+              }
+
+          } else {
         	  SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
         	  shape = "CIRCLE('ICRS'," + pos.getCoordinate().getRa() + "," + pos.getCoordinate().getDec() + ", 90.0)" ;
           }
-          
+
           return shape;
     }
 

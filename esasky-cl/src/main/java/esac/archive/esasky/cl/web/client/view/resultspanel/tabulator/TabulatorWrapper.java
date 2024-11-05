@@ -636,19 +636,19 @@ public class TabulatorWrapper {
 
     public void insertData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata) {
         setMetadata(tableJsObject, metadata);
-        setData(tableJsObject, abortController, data);
+        setData(tableJsObject, abortController, data, false);
     }
 
     public void insertData(String data, GeneralJavaScriptObject metadata) {
         setMetadata(tableJsObject, metadata);
-        setData(tableJsObject, abortController, data);
+        setData(tableJsObject, abortController, data, false);
     }
 
     public void insertExternalTapData(GeneralJavaScriptObject data, GeneralJavaScriptObject metadata) {
         GeneralJavaScriptObject formattedMetadata = ExtTapUtils.formatExternalTapMetadata(metadata);
         GeneralJavaScriptObject formattedData = ExtTapUtils.formatExternalTapData(data, formattedMetadata);
         setMetadata(tableJsObject, formattedMetadata);
-        setData(tableJsObject, abortController, formattedData);
+        setData(tableJsObject, abortController, formattedData, false);
     }
 
     private native String setMetadata(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject metadata)/*-{
@@ -657,13 +657,13 @@ public class TabulatorWrapper {
 
     public void insertUserData(GeneralJavaScriptObject data) {
         setIsUserDataBool(tableJsObject);
-        setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()));
+        setData(convertDataToTabulatorFormat(tableJsObject, data, AladinLiteWrapper.getCoordinatesFrame().getValue()), false);
 
     }
 
     public void insertUserHeader(GeneralJavaScriptObject data) {
         setIsUserDataBool(tableJsObject);
-        setData(tableJsObject, abortController, convertDataToHeaderFormat(tableJsObject, data));
+        setData(tableJsObject, abortController, convertDataToHeaderFormat(tableJsObject, data), false);
     }
 
     private native void setIsUserDataBool(GeneralJavaScriptObject tableJsObject)/*-{
@@ -678,8 +678,8 @@ public class TabulatorWrapper {
         return tableJsObject.convertDataToHeaderFormat(data);
     }-*/;
 
-    public void setData(String dataOrUrl) {
-        setData(tableJsObject, abortController, dataOrUrl);
+    public void setData(String dataOrUrl, boolean postData) {
+        setData(tableJsObject, abortController, dataOrUrl, postData);
     }
 
     public void clearTable() {
@@ -704,9 +704,21 @@ public class TabulatorWrapper {
         tableJsObject.clearing = false;
     }-*/;
 
-    private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl)/*-{
+    private native void setData(GeneralJavaScriptObject tableJsObject, GeneralJavaScriptObject abortController, Object dataOrUrl, boolean postData)/*-{
         tableJsObject.dataLoaded = false;
-        tableJsObject.setData(dataOrUrl, {}, {signal: abortController.signal}).then(function () {
+        var config = {
+            signal: abortController.signal
+        }
+        if (postData) {
+            var parts = dataOrUrl.split("?");
+            dataOrUrl = parts[0];
+            config.body = parts[1];
+            config.method = "POST";
+            config.headers = {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }
+        tableJsObject.setData(dataOrUrl, {}, config).then(function () {
             if (tableJsObject.settings && tableJsObject.settings.showCreateRowButton) {
                 var createNewRowData = {createNewRow: true, selectable: false}; // Identify it as the special row
                 tableJsObject.addRow(createNewRowData);
@@ -875,6 +887,17 @@ public class TabulatorWrapper {
             dataLoaded: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDataLoadedFunc(*)(wrapper, settings),
             dataLoading: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDataLoadingFunc(*)(wrapper, divId, settings),
             selectable: settings.selectable,
+            ajaxContentType: {
+                headers: {
+                    "Content-Type": "text/html; charset=utf-8"
+                },
+                body: function(url, config, params) {
+                    if (config.hasOwnProperty("body")) {
+                        return config.body;
+                    }
+                    return "";
+                }
+            },
             ajaxError: function (error) {
                 var test = settings;
                 if (settings.showDetailedErrors) {

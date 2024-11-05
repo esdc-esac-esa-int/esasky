@@ -26,13 +26,10 @@ public class TAPMOCService {
     public String getPrecomputedMocConstraint(CommonTapDescriptor descriptor) {
 		if (descriptor.hasSearchArea()) {
 			return descriptor.getSearchAreaShape();
+		} else if (AladinLiteWrapper.getInstance().getFovDeg() > 180) {
+			return "";
 		} else {
-			String constraint = getGeometricConstraint().replace("\'", "");
-			if (!constraint.equals("")) {
-				constraint = "POLYGON" + constraint;
-			}
-
-			return constraint;
+			return getGeometricConstraint().replace("\'", "");
 		}
     }
     
@@ -40,17 +37,19 @@ public class TAPMOCService {
     	final String debugPrefix = "[TAPMOCService.getGeometricConstraint]";
         String shape;
         double fovDeg = AladinLiteWrapper.getAladinLite().getFovDeg();
-        if (AladinLiteWrapper.isCornersInsideHips()) {
+
+		if (AladinLiteWrapper.isCornersInsideHips()) {
             if (fovDeg < 1) {
                 Log.debug(debugPrefix + " FoV < 1d");
-                shape = "\'(" +  AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")\'";
+                shape = "POLYGON\'(" +  AladinLiteWrapper.getAladinLite().getFovCorners(1).toString() + ")\'";
 
             } else {
-                shape =  "\'(" +  AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")\'";
+                shape =  "POLYGON\'(" +  AladinLiteWrapper.getAladinLite().getFovCorners(2).toString() + ")\'";
             }
         } else {
-
-            shape = "\'\'";
+			double lon = AladinLiteWrapper.getInstance().getCenterLongitudeDeg();
+			double lat = AladinLiteWrapper.getInstance().getCenterLatitudeDeg();
+            shape = "CIRCLE\'(" + lon + " " + lat + " " + "90)\'";
         }
         return shape;
     }

@@ -457,6 +457,7 @@ public class Session {
 			double dec = loc.getDoubleProperty(EsaSkyWebConstants.SESSION_DEC);
 			double fov = loc.getDoubleProperty(EsaSkyWebConstants.SESSION_FOV);
 			String cooFrame = loc.getStringProperty(EsaSkyWebConstants.SESSION_FRAME);
+			String projection = loc.getStringProperty(EsaSkyWebConstants.SESSION_PROJECTION);
 			
 			if(cooFrame.equalsIgnoreCase(EsaSkyWebConstants.ALADIN_J2000_COOFRAME)) {
 				AladinLiteWrapper.getInstance().setCooFrame(AladinLiteConstants.CoordinateFrame.J2000);
@@ -470,6 +471,10 @@ public class Session {
 			
 			AladinLiteWrapper.getInstance().goToObject(ra + " " + dec, false);
 			AladinLiteWrapper.getAladinLite().setZoom(fov);
+
+			if (projection != null) {
+				AladinLiteWrapper.getAladinLite().setProjection(projection);
+			}
 
 			
 		}catch (Exception e) {
@@ -505,7 +510,7 @@ public class Session {
 				skyRow = SelectSkyPanel.getSelectedSky();
 				first = false;
 			}
-			if(!skyRow.setSelectHips(name, true, false, category)) {
+			if(!skyRow.setSelectHips(name,  false, category)) {
 				//Means that we can't find it in the list
 				//Setting from url instead
 				String url = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_URL);
@@ -536,7 +541,7 @@ public class Session {
 			public void onSuccess(HiPS hips) {
 				hips.setHipsWavelength(category != null ? category : HipsWavelength.USER);
 				hips.setHipsCategory(category != null ? category : HipsWavelength.USER);
-				skyRow.setHiPSFromAPI(hips, false, true);
+				skyRow.setHiPSFromAPI(hips, true);
 				skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
 				if(isDefault) {
 					skyRow.disableDeleteButton();
@@ -774,11 +779,13 @@ public class Session {
 		String decDeg = new Double(AladinLiteWrapper.getCenterDecDeg()).toString();
 		String fov = new Double(AladinLiteWrapper.getAladinLite().getFovDeg()).toString();
 		String cooFrame = AladinLiteWrapper.getCoordinatesFrame().toString();
+		String projection = AladinLiteWrapper.getCurrentProjection();
 		
 		obj.put(EsaSkyWebConstants.SESSION_RA, new JSONString(raDeg));
 		obj.put(EsaSkyWebConstants.SESSION_DEC, new JSONString(decDeg));
 		obj.put(EsaSkyWebConstants.SESSION_FOV, new JSONString(fov));
 		obj.put(EsaSkyWebConstants.SESSION_FRAME, new JSONString(cooFrame));
+		obj.put(EsaSkyWebConstants.SESSION_PROJECTION, new JSONString(projection));
 		
 		return obj;
 	}

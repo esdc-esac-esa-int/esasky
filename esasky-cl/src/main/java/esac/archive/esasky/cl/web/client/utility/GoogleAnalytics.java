@@ -71,6 +71,8 @@ public final class GoogleAnalytics {
     public static final String CAT_GLOBALTAP_ADQLPANEL = "ExternalTapAdqlPanel";
     public static final String CAT_GLOBALTAPPANEL_ERRORDIALOG = "ExternalTapPanelErrorDialog";
     public static final String CAT_GLOBALTAP_SELECTCOLUMNPANEL = "ExternalTapSelectColumnPanel";
+    public static final String CAT_IMAGECONFIGPANEL = "ImageConfigPanel";
+    public static final String CAT_ALADIN_FITS = "AladinFits";
     
     //Actions
     public static final String ACT_INITIALISATION_TIME = "InitialisationTime";

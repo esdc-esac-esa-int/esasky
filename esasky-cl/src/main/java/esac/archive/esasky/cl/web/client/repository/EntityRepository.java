@@ -57,6 +57,17 @@ public class EntityRepository {
         return null;
     }
 
+    public GeneralEntityInterface getEntityByChild(String childId) {
+        if (childId != null && !childId.isEmpty()) {
+            for (GeneralEntityInterface currEntity : allEntities) {
+                if (childId.startsWith(currEntity.getId())) {
+                    return currEntity;
+                }
+            }
+        }
+        return null;
+    }
+
     public GeneralEntityInterface getEntityByName(String name) {
         for (GeneralEntityInterface currEntity : allEntities) {
             if (currEntity.getDescriptor().getLongName().equals(name)) {

@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.query;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
 
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 
@@ -49,19 +50,25 @@ public class TAPUtils {
         Long timecall = System.currentTimeMillis();
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
-        return EsaSkyWebConstants.TAP_CONTEXT + "/tap/counts?stcs="
-        + stcs + "&timecall=" + timecall + "&client=esasky-web-client";
+
+        String stcQuery = "";
+        if (stcs != null && !stcs.isEmpty()) {
+            stcQuery = "&stcs=" + stcs;
+        }
+
+        return EsaSkyWebConstants.TAP_CONTEXT + "/tap/counts?"
+        + stcQuery + "&timecall=" + timecall + "&client=esasky-web-client";
     }
 
-    public static String getTAPMocQuery(final String center, final String stcs, final String tableName,
+    public static String getTAPMocQuery(final String center, String stcs, final String tableName,
     		int order,  String filters, boolean precomputedMaxmin) {
 
         // Get System time call
         Long timecall = System.currentTimeMillis();
 
         Log.debug("[TAPUtils/getTAPQuery()] timecall " + timecall);
-        String url =  EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?center=" + center + "&order=" + Integer.toString(order) +
-                "&stcs="+ stcs + "&tablename="+ tableName + "&precomputedMaxmin=" + Boolean.toString(precomputedMaxmin)
+        String url =  EsaSkyWebConstants.TAP_CONTEXT + "/tap/mocs?center=" + center + "&order=" + order +
+                "&stcs="+ stcs + "&tablename="+ tableName + "&precomputedMaxmin=" + precomputedMaxmin
                 + "&timecall=" + timecall + "&client=esasky-web-client";
        
         if(filters != null && !"".equals(filters)) {

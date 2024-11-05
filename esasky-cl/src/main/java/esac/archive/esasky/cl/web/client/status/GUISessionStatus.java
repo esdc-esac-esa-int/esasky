@@ -303,7 +303,7 @@ public class GUISessionStatus {
 						|| responseText.equalsIgnoreCase("\"//skies.esac.esa.int\"")) {
 					try {
 						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(false);
-					} catch (AssertionError exception) {
+					} catch (Exception exception) {
 						//AladinLite not initialized
 						AladinLiteWrapper.setLoadInitialHipsFromEsac(true);
 						AladinLiteWrapper.setLoadHipsFromCDNBeforeAladinInitialization(false);
@@ -311,7 +311,7 @@ public class GUISessionStatus {
 				} else {
 					try {
 						AladinLiteWrapper.getInstance().setLoadHipsFromCDN(true);
-					} catch (AssertionError exception) {
+					} catch (Exception exception) {
 						//AladinLite not initialized
 					    AladinLiteWrapper.setLoadInitialHipsFromEsac(false);
 						AladinLiteWrapper.setLoadHipsFromCDNBeforeAladinInitialization(true);

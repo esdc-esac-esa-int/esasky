@@ -112,9 +112,7 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 		setSliderValueJs(value1, value2, sliderSelector);
 		notifyObservers();
 	}
-	
-	
-	
+
 	private native void setSliderValueJs(double value1, double value2, JavaScriptObject sliderSelector) /*-{
 		sliderSelector.setValues(value1,value2);
 	}-*/;
@@ -143,13 +141,7 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
  		   observer.onValueChange(currentValue1, currentValue2);
  	   }
     }
-    
-    public void resetSlider() {
-    	currentValue1 = minValue;
-    	currentValue2 = maxValue;
-    	setSliderValue(minValue, maxValue);
-    	notifyObservers();
-    }
+
 
 	public double getMinValue() {
 		return minValue;
@@ -166,6 +158,16 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 	public void setMaxValue(double maxValue) {
 		this.maxValue = maxValue;
 	}
+
+	public void setMinMaxValues(double minValue, double maxValue) {
+		this.minValue = minValue;
+		this.maxValue = maxValue;
+		this.setMinMaxValues(sliderSelector, minValue, maxValue);
+	}
+
+	private native void setMinMaxValues(JavaScriptObject sliderSelector, double minValue, double maxValue) /*-{
+		sliderSelector.setMinMaxValues(minValue, maxValue);
+	}-*/;
 	
 	public Element getSliderUiHeader() {
 		Element el = getElement().getFirstChildElement();
@@ -194,5 +196,13 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 	public native void setSliderColorJs(String color, JavaScriptObject sliderUiHeader) /*-{
 		sliderUiHeader.style.background = color;
 	}-*/;
+
+	public boolean isSliderReady() {
+		return sliderSelector != null;
+	}
+
+	public String getSliderId() {
+		return this.sliderID;
+	}
 
 }

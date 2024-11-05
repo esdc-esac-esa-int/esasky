@@ -119,8 +119,15 @@ public class ApiMessageParser {
 						&& (msg.content.hips['useCredentials'] === true || msg.content.hips['useCredentials'] === 'true')){
 						useCredentials = @java.lang.Boolean::TRUE;
 					}
+
+					if(msg.content.hips.hasOwnProperty('isDefault') && msg.content.hips['isDefault'] === 'true'){
+						msg.content.hips['isDefault'] = @java.lang.Boolean::TRUE;
+					}else{
+						msg.content.hips['isDefault'] = @java.lang.Boolean::FALSE;
+					}
+
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Boolean;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, @java.lang.Boolean::FALSE, false, e, useCredentials);
+					(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, useCredentials, msg.content.hips.isDefault, e, true);
 					break
 	
 				case 'addHipsWithParams':
@@ -145,9 +152,9 @@ public class ApiMessageParser {
 					}else{
 					   msg.content.hips['isDefault'] = @java.lang.Boolean::FALSE;
 					}
-					
+
 					apiHips.@esac.archive.esasky.cl.web.client.api.ApiHips::setHiPSWithParams(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;ZLcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/Boolean;)
-						(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, msg.content.hips.isDefault, true, e, useCredentials);
+					(msg.content.hips.name, msg.content.hips.url, msg.content.hips.category, useCredentials, msg.content.hips.isDefault, e, true);
 					break
 					
 				case 'removeHips':
@@ -418,8 +425,8 @@ public class ApiMessageParser {
 				case 'plotPublications':
 					console.log('plotPublications event captured');
 					if(msg.content.ra != null){
-						apiPlot.@esac.archive.esasky.cl.web.client.api.ApiPlot::coneSearchPublications(DDDLcom/google/gwt/core/client/JavaScriptObject;)
-							(msg.content.missionId, msg.content.ra, msg.content.dec, msg.content.radius, e);
+						apiPlot.@esac.archive.esasky.cl.web.client.api.ApiPlot::coneSearchPublications(*)
+							(msg.content.ra, msg.content.dec, msg.content.radius, e);
 					}else{
 						apiPlot.@esac.archive.esasky.cl.web.client.api.ApiPlot::plotPublications(Lcom/google/gwt/core/client/JavaScriptObject;)
 							(e);

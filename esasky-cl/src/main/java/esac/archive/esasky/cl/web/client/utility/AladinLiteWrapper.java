@@ -1,8 +1,6 @@
 package esac.archive.esasky.cl.web.client.utility;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
@@ -16,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteConstants.CoordinateFrame;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ImageLayer;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesFrame;
@@ -69,12 +68,11 @@ public class AladinLiteWrapper {
     }
 
     public static void init(final Widget inputParentWidget, final HiPS initialHiPS,
-            final String target, final String fovFromUrl, final String coordinateFrame) {
+            final String target, final String fovFromUrl, final String coordinateFrame, final String projection) {
         String dbp = dBugPref + "[init]";
         Log.debug(dbp);
-        // Log.debug(dBugPref);
         if (_instance == null) {
-            _instance = new AladinLiteWrapper(inputParentWidget, initialHiPS, target, fovFromUrl, coordinateFrame);
+            _instance = new AladinLiteWrapper(inputParentWidget, initialHiPS, target, fovFromUrl, coordinateFrame, projection);
             Log.debug("_instance " + _instance);
         }
     }
@@ -93,10 +91,10 @@ public class AladinLiteWrapper {
      * @param target Input String
      */
     private AladinLiteWrapper(final Widget inputParentWidget, final HiPS initialHiPS,
-            final String target, final String fovFromUrl, final String coordinateFrame) {
+            final String target, final String fovFromUrl, final String coordinateFrame, final String projection) {
         style = resources.style();
         style.ensureInjected();
-        initAladinWidget(inputParentWidget, initialHiPS, target, fovFromUrl, coordinateFrame);
+        initAladinWidget(inputParentWidget, initialHiPS, target, fovFromUrl, coordinateFrame, projection);
     }
 
     /**
@@ -106,7 +104,7 @@ public class AladinLiteWrapper {
      * @param target Input String.
      */
     private void initAladinWidget(final Widget inputParentWidget, HiPS initialHiPS,
-            String target, String fovFromUrl, String coordinateFrame) {
+            String target, String fovFromUrl, String coordinateFrame, String projection) {
 
         String prefix = ("[AladinLiteWrapper] ");
         
@@ -153,7 +151,8 @@ public class AladinLiteWrapper {
                 false, // showZoomControlBoolean
                 true, // showFrameBoolean
                 target, // target
-                fov, // zoomInteger
+                fov, // zoomInteger,
+                projection,
                 inputParentWidget);
     }
 
@@ -185,6 +184,15 @@ public class AladinLiteWrapper {
     public static CoordinatesFrame getCoordinatesFrame() {
         return CoordinatesFrame.valueOf(aladinLite.getCooFrame().toUpperCase());
     }
+
+    public static String getCurrentProjection() {
+        return aladinLite.getCurrentProjection();
+    }
+
+    public static void setProjection(String projectionName) {
+        aladinLite.setProjection(projectionName);
+    }
+
 
     public void addPlolyline2SsoOverlay(JavaScriptObject overlay, JavaScriptObject polyline) {
         if(polyline != null){
@@ -322,22 +330,6 @@ public class AladinLiteWrapper {
     }
 
     /**
-     * displayMultiTargetPointer().
-     * @param ra Input String
-     * @param dec Input String
-     */
-    public final void addSourcesToMultiTargetCatalogue(JavaScriptObject source) {
-        if (this.multiTargetCatalogObject == null) {
-            this.multiTargetCatalogObject = aladinLite.createCatalog("Multi Target Catalog",
-                    "#00CC00", 6);
-        }
-
-        JsArray<JavaScriptObject> jsSources = aladinLite.getNativeJsArray();
-        jsSources.push(jsSources);
-        aladinLite.addSourcesToCatalog(this.multiTargetCatalogObject, jsSources);
-    }
-
-    /**
      * removeMultitargetPointer().
      */
     public final void removeMultitargetPointer() {
@@ -389,7 +381,7 @@ public class AladinLiteWrapper {
      * openHiPS().
      * @param hips Input HiPS object.
      */
-    public final void openHiPS(final HiPS hips) {
+    public final void openHiPS(final String skyRowId, final HiPS hips) {
         String rootUrl = hips.getSurveyRootUrl();
         if(!loadHipsFromCDN) {
     		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
@@ -400,13 +392,14 @@ public class AladinLiteWrapper {
         }
         
         if(hips.isLocal()) {
-        	aladinLite.createAndSetLocalImageSurvey(hips.getSurveyId(), hips.getSurveyName(),
-        			"", hips.getSurveyFrame().name(), hips.getMaximumNorder(),
-        			hips.getImgFormat().name(), hips.getFiles());
-        } else {
-        	aladinLite.createAndSetImageSurveyWithImgFormat(hips.getSurveyId(), hips.getSurveyName(),
-        			hips.getSurveyRootUrl(), hips.getSurveyFrame().name(), hips.getMaximumNorder(),
-        			hips.getImgFormat().name(), hips.shouldUseCredentials());
+        	
+        	aladinLite.createAndSetLocalImageSurvey(skyRowId, hips.getSurveyId(), hips.getSurveyName(),
+        			"", hips.getSurveyFrame().name().toLowerCase(), hips.getMaximumNorder(),
+        			hips.getImgFormat().name(), hips.getFiles(), getColorPaletteForAladin(hips.getColorPalette()).name().toLowerCase());
+        }else {
+        	aladinLite.createAndSetImageSurveyWithImgFormat(skyRowId, hips.getSurveyId(), hips.getSurveyName(),
+        			hips.getSurveyRootUrl(), hips.getSurveyFrame().name().toLowerCase(), hips.getMaximumNorder(),
+        			hips.getImgFormat().name(), getColorPaletteForAladin(hips.getColorPalette()).name().toLowerCase(), hips.shouldUseCredentials());
         	
         }
         
@@ -415,6 +408,10 @@ public class AladinLiteWrapper {
     public void setLoadHipsFromCDN(boolean loadFromCDN) {
     	loadHipsFromCDN = loadFromCDN;
     	String rootUrl = getRootUrl(aladinLite.getCurrentImageSurveyObject());
+        if (rootUrl == null) {
+            return;
+        }
+
     	if(loadFromCDN) {
         	if(rootUrl.contains("skies.esac.esa.int") && !rootUrl.contains("cdn.skies.esac.esa.int")) {
         		String newRootUrl = rootUrl.replaceFirst("skies\\.esac\\.esa\\.int", "cdn.skies.esac.esa.int");
@@ -435,49 +432,40 @@ public class AladinLiteWrapper {
     }-*/;
     
     private native String getRootUrl(JavaScriptObject currentImageSurvey) /*-{
+        if (!currentImageSurvey) {
+            return null;
+        }
+
     	return currentImageSurvey.rootUrl;
     }-*/;
-    /**
-     * createOverlayMap().
-     * @param overlayHiPS Input HiPS object
-     * @param opacity Input double
-     * @param colorPalette Input ColorPalette object
-     */
-    public final void createOverlayMap(final HiPS overlayHiPS, final double opacity,  ColorPalette colorPalette) {
-        String rootUrl = overlayHiPS.getSurveyRootUrl();
-        if(!loadHipsFromCDN) {
-    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
-    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");
-    			overlayHiPS.setSurveyRootUrl(newRootUrl);
-    			Log.debug("Changed overlay survey url to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
-    		}
-        }
-    	
-        aladinLite.doOverlaySimpleImageLayer(overlayHiPS.getSurveyId(),
-                overlayHiPS.getSurveyName(), overlayHiPS.getSurveyRootUrl(), overlayHiPS
-                        .getSurveyFrame().name(), overlayHiPS.getMaximumNorder(), overlayHiPS
-                        .getImgFormat().name(), opacity, overlayHiPS.shouldUseCredentials());
-        aladinLite.setOverlayColorPalette(getColorPaletteForAladin(colorPalette));
+
+
+    public final ImageLayer getImageLayer(String layerId) {
+        return aladinLite.getImageLayer(layerId);
+    }
+
+    public final void renameImageLayer(String layerId, String newLayerId) {
+        aladinLite.renameImageLayer(layerId, newLayerId);
     }
 
     /**
      * changeHiPSOpacity().
      * @param opacity Input double
      */
-    public final void changeHiPSOpacity(final double opacity) {
-        aladinLite.setImageSurveyAlpha(opacity);
+    public final void changeImageLayerOpacity(String layerId, double opacity) {
+        aladinLite.setImageLayerOpacity(layerId, opacity);
     }
 
-    
-    public final void changeOverlayOpacity(final double opacity) {
-    	aladinLite.setOverlayImageLayerAlpha(opacity);
+    public final void toggleImageLayer(String layerId) {
+        aladinLite.toggleImageLayer(layerId);
     }
 
-    /**
-     * setOverlayImageLayerToNull().
-     */
-    public final void setOverlayImageLayerToNull() {
-    	aladinLite.setOverlayImageLayerToNull();
+    public final void focusImageLayer(String layerId) {
+        aladinLite.focusImageLayer(layerId);
+    }
+
+    public final void restoreImageLayersFocus() {
+        aladinLite.restoreImageLayersFocus();
     }
     	
     /**
@@ -506,9 +494,9 @@ public class AladinLiteWrapper {
      * setDefaultColorPalette().
      * @param colorPalette Input Enum ColorPalette
      */
-    public final void setColorPalette(final ColorPalette colorPalette) {
+    public final void setColorPalette(String layerId, final ColorPalette colorPalette) {
 
-        aladinLite.setColorPalette(getColorPaletteForAladin(colorPalette));
+        aladinLite.setColorPalette(layerId, getColorPaletteForAladin(colorPalette));
     }
 
     /**
@@ -532,11 +520,6 @@ public class AladinLiteWrapper {
         AladinLiteWrapper.getAladinLite().setZoom(fovDegrees);
     }
 
-    /**
-     * goToObject().
-     * @param input Input String
-     * @param showTargetPointer Input boolean value.
-     */
     public void goToObject(final String input, final boolean showObjectPointer) {
         AladinLiteWrapper.getAladinLite().goToObject(input);
         if (showObjectPointer) {
@@ -566,6 +549,20 @@ public class AladinLiteWrapper {
     	} catch(Exception e) {
     	}
     	return false;
+    }
+
+    public static boolean isCornersValid() {
+        try {
+            Set<String> set = new HashSet<>();
+
+            String [] points = aladinLite.getFovCorners(2).toString().split(",");
+            boolean hasDuplicates = Arrays.stream(points).anyMatch(e -> !set.add(e));
+            Arrays.stream(points).forEach(Double::new);
+            return !hasDuplicates && points.length == 16;
+
+        }catch(Exception e) {
+            return false;
+        }
     }
     
     public ArrayList<Integer> getVisibleNpix(int norder) {
@@ -600,10 +597,24 @@ public class AladinLiteWrapper {
     }
     
     public static esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette getColorPaletteForAladin(ColorPalette colorPalette) {
+        if (colorPalette == null) {
+            return esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette.valueOf(ColorPalette.NATIVE.toString());
+        }
+
     	if(colorPalette.equals(ColorPalette.GREYSCALE_INV)) {
     		return esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette.valueOf(ColorPalette.GREYSCALE.toString());
     	}
     	
     	return esac.archive.absi.modules.cl.aladinlite.widget.client.model.ColorPalette.valueOf(colorPalette.toString());
     }
+
+    public double[] getFov() {
+        return aladinLite.getFov();
+    }
+
+    public void removeOverlay(String id) {
+        aladinLite.removeOverlay(id);
+    }
+
+
 }

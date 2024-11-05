@@ -56,7 +56,7 @@ public class HipsParser {
 				observer.onError(ApiConstants.HIPS_PROP_ERROR_LOADING + propertiesUrl );
 			}
 			
-		}, true);
+		}, false);
 	}
 	
 	public HiPS parseHipsProperties(String propertiesText, String surveyRootUrl) throws IOException {

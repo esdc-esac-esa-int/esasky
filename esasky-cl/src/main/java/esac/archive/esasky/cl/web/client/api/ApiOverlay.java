@@ -189,6 +189,7 @@ public class ApiOverlay extends ApiBase{
 		if (ent != null) {
 			ent.clearAll();
 			EntityRepository.getInstance().removeEntity(ent);
+			AladinLiteWrapper.getInstance().removeOverlay(ent.getId());
 		}
 		else{
 			JSONObject callbackMessage = new JSONObject();
@@ -207,6 +208,7 @@ public class ApiOverlay extends ApiBase{
 			}else {
 				ent.clearAll();
 				EntityRepository.getInstance().removeEntity(ent);
+				AladinLiteWrapper.getInstance().removeOverlay(ent.getId());
 			}
 		}
 		

@@ -19,10 +19,7 @@ import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.callback.ICommand;
 import esac.archive.esasky.cl.web.client.callback.Promise;
-import esac.archive.esasky.cl.web.client.event.CloseOtherPanelsEvent;
-import esac.archive.esasky.cl.web.client.event.ExtTapToggleEvent;
-import esac.archive.esasky.cl.web.client.event.ShowImageListEvent;
-import esac.archive.esasky.cl.web.client.event.TargetDescriptionEvent;
+import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
@@ -128,6 +125,28 @@ public class CtrlToolBar extends Composite implements CtrlToolBarPresenter.View 
                     CtrlToolBar.this.outreachEuclidPanel.toggle();
                     closeAllOtherPanels(outreachEuclidButton);
                     break;
+            }
+
+        });
+
+        CommonEventBus.getEventBus().addHandler(CloseImageListEvent.TYPE, event -> {
+            switch (event.sender) {
+                case HST:
+                    CtrlToolBar.this.outreachHstImagePanel.close();
+                    closeAllOtherPanels(outreachHstButton);
+                    break;
+                case JWST:
+                    CtrlToolBar.this.outreachJwstPanel.close();
+                    closeAllOtherPanels(outreachJwstButton);
+                    break;
+                case EUCLID:
+                    CtrlToolBar.this.outreachEuclidPanel.close();
+                    closeAllOtherPanels(outreachEuclidButton);
+                    break;
+                default:
+                    CtrlToolBar.this.outreachEuclidPanel.close();
+                    CtrlToolBar.this.outreachJwstPanel.close();
+                    CtrlToolBar.this.outreachHstImagePanel.close();
             }
 
         });
