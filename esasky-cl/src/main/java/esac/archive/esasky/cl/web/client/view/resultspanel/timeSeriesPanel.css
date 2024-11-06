@@ -35,7 +35,7 @@
     box-sizing: border-box;
     position: absolute; 
     z-index: 10;
-    width: literal("calc(100% - 290px)");
+    width: literal("calc(100% - 400px)");
     left: 170px;
 	display: flex;
 	flex-direction: row;
