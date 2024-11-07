@@ -142,21 +142,19 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 				}
 
 				// No level2 for HEASARC
-				level1Descriptor = descriptor;
-				descriptor.setTableName(column2Value);
-				level2Name = column1Value;
-			} else {
-				// Create or update level1 descriptor
-				level1Descriptor = createOrUpdateLevelDescriptor(column1Value, descriptor, whereADQL, emMin, emMax);
+				level1Descriptor = createOrUpdateLevelDescriptor(column1Value, descriptor, column2Value, whereADQL, emMin, emMax);
 				updatedIds.add(level1Descriptor.getId());
 				ExtTapUtils.setCount(descriptor, level1Descriptor, count);
+			} else {
+				// Create or update level1 descriptor
+				level1Descriptor = createOrUpdateLevelDescriptor(column1Value, descriptor, descriptor.getTableName(), whereADQL, emMin, emMax);
+				updatedIds.add(level1Descriptor.getId());
+				ExtTapUtils.setCount(descriptor, level1Descriptor, count);
+				// Create or update level2 descriptor
+				CommonTapDescriptor level2Descriptor = createOrUpdateLevelDescriptor(level2Name, level1Descriptor, level1Descriptor.getTableName(), whereADQL, emMin, emMax);
+				updatedIds.add(level2Descriptor.getId());
+				ExtTapUtils.setCount(level1Descriptor, level2Descriptor, count);
 			}
-
-
-			CommonTapDescriptor level2Descriptor = createOrUpdateLevelDescriptor(level2Name, level1Descriptor, whereADQL, emMin, emMax);
-
-			updatedIds.add(level2Descriptor.getId());
-			ExtTapUtils.setCount(level1Descriptor, level2Descriptor, count);
 		}
 
 		List<CommonTapDescriptor> descriptorList = new LinkedList<>();
@@ -187,10 +185,10 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 		return em != null ? Math.min(Math.max(Math.abs(Math.log10(em)), 1), 12): 1;
 	}
 
-	private CommonTapDescriptor createOrUpdateLevelDescriptor(String name, CommonTapDescriptor parent, String whereADQL, double emMin, double emMax) {
+	private CommonTapDescriptor createOrUpdateLevelDescriptor(String name, CommonTapDescriptor parent, String tableName, String whereADQL, double emMin, double emMax) {
 		CommonTapDescriptor descriptor1 = parent.getAllChildren().stream().filter(x -> Objects.equals(x.getLongName(), name)).findFirst().orElse(null);
 		if (descriptor1 == null) {
-			descriptor1 = ExtTapUtils.createLevelDescriptor(parent, name, whereADQL, emMin, emMax);
+			descriptor1 = ExtTapUtils.createLevelDescriptor(parent, name, tableName, whereADQL, emMin, emMax);
 		} else {
 			ExtTapUtils.updateLevelDescriptor(descriptor1, whereADQL, emMin, emMax);
 		}
