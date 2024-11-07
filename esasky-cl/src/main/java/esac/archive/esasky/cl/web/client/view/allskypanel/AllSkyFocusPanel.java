@@ -4,10 +4,10 @@ import java.util.LinkedList;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.dom.client.Touch;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -18,7 +18,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinOpenContextMenuEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
+import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.model.DecPosition;
 import esac.archive.esasky.cl.web.client.model.RaPosition;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
@@ -90,6 +92,11 @@ public class AllSkyFocusPanel extends FocusPanel {
         sinkEvents(Event.ONMOUSEUP | Event.ONCONTEXTMENU | Event.ONTOUCHSTART | Event.ONTOUCHMOVE | Event.ONMOUSEDOWN
                 | Event.ONTOUCHCANCEL | Event.ONTOUCHEND | Event.ONCLICK | Event.ONFOCUS | Event.TOUCHEVENTS);
 
+        CommonEventBus.getEventBus().addHandler(AladinOpenContextMenuEvent.TYPE, event -> {
+            openContextMenu(event.getEvent());
+            updateCoordinates();
+        });
+
     }
 
     private static AllSkyFocusPanel instance = null;
@@ -131,8 +138,20 @@ public class AllSkyFocusPanel extends FocusPanel {
     }
 
     public final void openContextMenu(final Event event) {
-        mouseX = event.getClientX() - MainLayoutPanel.getMainAreaAbsoluteLeft();
-        mouseY = event.getClientY() - MainLayoutPanel.getMainAreaAbsoluteTop();
+        JsArray<Touch> changedTouches = event.getChangedTouches();
+
+        if (changedTouches != null && changedTouches.length() > 0) {
+            mouseX = changedTouches.get(0).getClientX();
+            mouseY = changedTouches.get(0).getClientY();
+        } else {
+            mouseX = event.getClientX();
+            mouseY = event.getClientY();
+        }
+
+        mouseX -= - MainLayoutPanel.getMainAreaAbsoluteLeft();
+        mouseY -= - MainLayoutPanel.getMainAreaAbsoluteTop();
+
+
 
         DisplayUtils.showInsideMainAreaPointingAtPosition(contextMenu, mouseX, mouseY);
 
