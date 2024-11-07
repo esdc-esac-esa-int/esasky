@@ -570,6 +570,10 @@ public class SkyRow extends Composite implements Selectable{
 		imageConfigPanel.setDefaultColorPallette(colorPalette);
 	}
 
+	public ImageConfigPanel getImageConfigPanel() {
+		return imageConfigPanel;
+	}
+
 	public void addOnlyOneSkyActiveStyle(){
 		onlyOneSkyActive = true;
 		visibilityToggleButton.addStyleName("collapse");

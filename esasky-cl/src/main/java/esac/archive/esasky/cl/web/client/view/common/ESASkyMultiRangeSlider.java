@@ -205,4 +205,25 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
 		return this.sliderID;
 	}
 
+
+	public double getCurrentLowValue() {
+		return currentValue1;
+	}
+
+	public double getCurrentHighValue() {
+		return currentValue2;
+	}
+
+	public void setHandleValues(double low, double high) {
+		if (isSliderReady()) {
+			setHandleValues(sliderSelector, low, high);
+		}
+	}
+
+	private native void setHandleValues(JavaScriptObject slider, double low, double high) /*-{
+		slider.slider.slider('values', 0, low);
+		slider.slider.slider('values', 1, high);
+	}-*/;
+
+
 }

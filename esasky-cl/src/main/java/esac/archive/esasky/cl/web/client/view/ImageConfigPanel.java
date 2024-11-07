@@ -8,6 +8,7 @@ import esac.archive.absi.modules.cl.aladinlite.widget.client.event.HipsLayerChan
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.ImageLayer;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.view.common.*;
 import esac.archive.esasky.cl.web.client.view.common.MenuItem;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
@@ -16,6 +17,8 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.ChangePalett
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.HiPSDetailsPopup;
 import esac.archive.esasky.ifcs.model.client.HiPS;
 import esac.archive.esasky.ifcs.model.shared.ColorPalette;
+
+import java.util.Objects;
 
 public class ImageConfigPanel extends CollapsablePanel {
 
@@ -31,6 +34,8 @@ public class ImageConfigPanel extends CollapsablePanel {
     private ESASkySlider opacitySlider;
     private DropDownMenu<Boolean> blendMenu;
     private HiPS hips;
+
+    private boolean blockCutSliderEvent = false;
 
     public ImageConfigPanel() {
         this(false);
@@ -124,10 +129,11 @@ public class ImageConfigPanel extends CollapsablePanel {
             final HandlerRegistration[] handler = new HandlerRegistration[1];
             handler[0] = CommonEventBus.getEventBus().addHandler(HipsLayerChangedEvent.TYPE, event -> {
                 ImageLayer updatedLayer = event.getLayer();
-                boolean cutsUpdated = cutSlider.getMaxValue() != updatedLayer.getMaxCut() || cutSlider.getMinValue() != updatedLayer.getMinCut();
-                if (cutsUpdated && cutSlider.isSliderReady()) {
-                        cutSlider.setMinMaxValues(updatedLayer.getMinCutLimit(), updatedLayer.getMaxCutLimit());
-                        cutSlider.setSliderValue(updatedLayer.getMinCut(), updatedLayer.getMaxCut());
+                if (cutSlider.isSliderReady()) {
+                    blockCutSliderEvent = true;
+                    cutSlider.setMinMaxValues(updatedLayer.getMinCutLimit(), updatedLayer.getMaxCutLimit());
+                    cutSlider.setSliderValue(updatedLayer.getMinCut(), updatedLayer.getMaxCut());
+                    blockCutSliderEvent = false;
                 }
 
                 // Remove the handler after it is triggered
@@ -169,11 +175,18 @@ public class ImageConfigPanel extends CollapsablePanel {
         return skyDetailsBtn;
     }
 
-    public void setLayerAndHiPS(ImageLayer layer, HiPS hips) {
-        this.layer = layer;
-        this.hips = hips;
+    public ImageLayer discoverLayer(String skyRowId) {
+        this.layer = AladinLiteWrapper.getAladinLite().getImageLayer(skyRowId);
+        this.setDefaultValues();
+        return this.layer;
+    }
 
-        setDefaultValues();
+    public void setLayerAndHiPS(ImageLayer layer, HiPS hips) {
+        if (this.layer == null || !Objects.equals(this.hips, hips)) {
+            this.layer = layer;
+            this.hips = hips;
+            setDefaultValues();
+        }
     }
 
     public ImageLayer getLayer() {
@@ -193,8 +206,10 @@ public class ImageConfigPanel extends CollapsablePanel {
         stretchDropdownMenu.selectObject(layer.getColorCfg().getStretch());
 
         if (cutSlider.isSliderReady()) {
+            blockCutSliderEvent = true;
             cutSlider.setMinMaxValues(layer.getMinCutLimit(), layer.getMaxCutLimit());
-            cutSlider.setSliderValue(layer.getMinCut(), layer.getMaxCut());
+            cutSlider.setSliderValue(layer.getMinCutLimit(), layer.getMaxCutLimit());
+            blockCutSliderEvent = false;
         }
 
         blendMenu.selectObject(layer.getColorCfg().getAdditiveBlending() > 0);
@@ -214,6 +229,75 @@ public class ImageConfigPanel extends CollapsablePanel {
 
     public void setDefaultColorPallette(ColorPalette colorPalette) {
         colorMapButton.setDefaultColorPallette(colorPalette);
+    }
+
+    public boolean getReversed() {
+        return reverseButton.getValue();
+    }
+
+    public void setReversed(boolean reversed) {
+        reverseButton.setValue(reversed);
+    }
+
+    public String getStretch() {
+        return stretchDropdownMenu.getSelectedObject();
+    }
+
+    public void setStretch(String stretch) {
+        stretchDropdownMenu.selectObject(stretch);
+    }
+
+    public double[] getCuts() {
+        return new double[] {
+                cutSlider.getCurrentLowValue(), cutSlider.getCurrentHighValue()
+        };
+    }
+    public void setCuts(double[] cuts) {
+        if (cutSlider.isSliderReady()) {
+            NumberFormat numberFormat = NumberFormat.getFormat("0.0");
+
+            cutSlider.setHandleValues(cuts[0], cuts[1]);
+            layer.setCuts(cuts[0], cuts[1]);
+            cutLeftLabel.setText(numberFormat.format(cuts[0]));
+            cutRightLabel.setText(numberFormat.format(cuts[1]));
+        }
+    }
+
+    public double[] getCutLimits() {
+        return new double[] {
+                layer.getMinCutLimit(), layer.getMaxCutLimit()
+        };
+    }
+
+    public void setCutLimits(double[] cuts) {
+        if (cutSlider.isSliderReady()) {
+            cutSlider.setMinMaxValues(cuts[0], cuts[1]);
+            cutSlider.setSliderValue(cuts[0], cuts[1]);
+        }
+    }
+
+    public boolean getBlending() {
+        return blendMenu.getSelectedObject();
+    }
+
+    public void setBlending(boolean blending) {
+        blendMenu.selectObject(blending);
+    }
+
+    public double getOpacity() {
+        return opacitySlider.getCurrentValue();
+    }
+
+    public void setOpacity(double opacity) {
+        opacitySlider.setValue(opacity);
+    }
+
+    public String getTileFormat() {
+        return tileFormatDropdownMenu.getSelectedObject();
+    }
+
+    public void setTileFormat(String tileFormat) {
+        tileFormatDropdownMenu.selectObject(tileFormat);
     }
 
     private FlowPanel initSlider(double min, double max) {
@@ -246,7 +330,10 @@ public class ImageConfigPanel extends CollapsablePanel {
         NumberFormat numberFormat = NumberFormat.getFormat("0.0");
 
         cutSlider.registerValueChangeObserver((low, high) -> {
-            layer.setCuts(low, high);
+            if (!blockCutSliderEvent) {
+                layer.setCuts(low, high);
+            }
+
             cutLeftLabel.setText(numberFormat.format(low));
             cutRightLabel.setText(numberFormat.format(high));
         });
