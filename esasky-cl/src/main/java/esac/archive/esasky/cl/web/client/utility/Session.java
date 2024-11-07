@@ -219,11 +219,11 @@ public class Session {
 	private JSONObject getTimeViewerJson() {
 		JSONObject obj = new JSONObject();
 		TimeSeriesPanel cheops = TimeSeriesPanel.getTimeSeriesPanelOrNull("CHEOPS");
-		if (cheops != null) {
+		if (cheops != null && cheops.isShowing()) {
 			storeTimeSeriesPanelData(obj, "cheops", cheops);
 		}
 		TimeSeriesPanel allOther = TimeSeriesPanel.getTimeSeriesPanelOrNull("GAIA");
-		if (allOther != null) {
+		if (allOther != null && allOther.isShowing()) {
 			storeTimeSeriesPanelData(obj, "others", allOther);
 		}
 		if (!obj.keySet().isEmpty()) {
