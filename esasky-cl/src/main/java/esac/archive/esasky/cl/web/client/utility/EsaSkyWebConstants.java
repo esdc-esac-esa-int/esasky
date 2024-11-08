@@ -259,6 +259,15 @@ public class EsaSkyWebConstants {
     public static final String SESSION_HIPS_URL = "url";
     public static final String SESSION_HIPS_WAVELENGTH = "wavelength";
     public static final String SESSION_HIPS_COLORPALETTE = "colorpalette";
+    public static final String SESSION_HIPS_REVERSE = "reverse";
+    public static final String SESSION_HIPS_STRETCH = "stretch";
+    public static final String SESSION_HIPS_CUTS_LOW = "cutsLow";
+    public static final String SESSION_HIPS_CUTS_HIGH = "cutsHigh";
+    public static final String SESSION_HIPS_CUT_LIMIT_LOW = "cutLimitLow";
+    public static final String SESSION_HIPS_CUT_LIMIT_HIGH = "cutLimitHigh";
+    public static final String SESSION_HIPS_BLENDING = "blending";
+    public static final String SESSION_HIPS_OPACITY = "opacity";
+    public static final String SESSION_HIPS_FORMAT = "format";
     public static final String SESSION_HIPS_CATEGORY = "category";
     public static final String SESSION_HIPS_DEFAULT = "default";
 

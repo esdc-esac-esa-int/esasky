@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Timer;
@@ -27,6 +28,7 @@ import esac.archive.esasky.cl.web.client.query.TAPUtils;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.exceptions.SaveStateException;
+import esac.archive.esasky.cl.web.client.view.ImageConfigPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.GwPanel.TabIndex;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.planningmenu.FutureFootprintRow;
@@ -217,11 +219,11 @@ public class Session {
 	private JSONObject getTimeViewerJson() {
 		JSONObject obj = new JSONObject();
 		TimeSeriesPanel cheops = TimeSeriesPanel.getTimeSeriesPanelOrNull("CHEOPS");
-		if (cheops != null) {
+		if (cheops != null && cheops.isShowing()) {
 			storeTimeSeriesPanelData(obj, "cheops", cheops);
 		}
 		TimeSeriesPanel allOther = TimeSeriesPanel.getTimeSeriesPanelOrNull("GAIA");
-		if (allOther != null) {
+		if (allOther != null && allOther.isShowing()) {
 			storeTimeSeriesPanelData(obj, "others", allOther);
 		}
 		if (!obj.keySet().isEmpty()) {
@@ -492,8 +494,21 @@ public class Session {
 
 		boolean first = true;
 		for(GeneralJavaScriptObject hipObj : array) {
-			String name = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_NAME);
-			String colorPalette = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE);
+			final String name = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_NAME);
+			final String colorPalette = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE);
+			final boolean reverse =  Boolean.parseBoolean(hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_REVERSE));
+			final String stretch = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_STRETCH);
+			final double cutsLow = hipObj.getDoubleProperty(EsaSkyWebConstants.SESSION_HIPS_CUTS_LOW);
+			final double cutsHigh = hipObj.getDoubleProperty(EsaSkyWebConstants.SESSION_HIPS_CUTS_HIGH);
+			final double cutLimitLow = hipObj.getDoubleProperty(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_LOW);
+			final double cutLimitHigh = hipObj.getDoubleProperty(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_HIGH);
+			final boolean blending = Boolean.parseBoolean(hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_BLENDING));
+			final double opacity = hipObj.getDoubleProperty(EsaSkyWebConstants.SESSION_HIPS_OPACITY);
+			final String tileFormat = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_FORMAT);
+
+
+
+
 			String category = null;
 			if (hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_CATEGORY) != null) {
 				category = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_CATEGORY);
@@ -516,7 +531,31 @@ public class Session {
 				String url = hipObj.getStringProperty(EsaSkyWebConstants.SESSION_HIPS_URL);
 				addUrlHips(url, colorPalette, skyRow, category, isDefaultHiPS);
 			}
-			skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
+
+			// We need to wait for aladin to change the layer. It would be good to have an event for this
+			// but there is no event that would work for multiple layers atm...
+			final SkyRow skyRow1 = skyRow;
+			Timer timer = new Timer() {
+
+				@Override
+				public void run() {
+					ImageConfigPanel configPanel = skyRow1.getImageConfigPanel();
+					if (configPanel != null) {
+						configPanel.discoverLayer(skyRow1.getRowId());
+						configPanel.setTileFormat(tileFormat);
+						configPanel.setDefaultColorPallette(ColorPalette.valueOf(colorPalette));
+						configPanel.setReversed(reverse);
+						configPanel.setStretch(stretch);
+						configPanel.setBlending(blending);
+						configPanel.setOpacity(opacity);
+					}
+				}
+
+			};
+
+			timer.schedule(2000);
+
+
 		}
 		double sliderValue = hipsArrayObj.getDoubleProperty(EsaSkyWebConstants.SESSION_HIPS_SLIDER);
 		SelectSkyPanel.getInstance().setSliderValue(sliderValue);
@@ -533,8 +572,8 @@ public class Session {
 		timer.schedule(5000);
 
 	}
-	
-	private void addUrlHips(String url, String colorPalette, SkyRow skyRow, String category, boolean isDefault) {
+
+	private void addUrlHips(String url, String colorPalette, final SkyRow skyRow, String category, boolean isDefault) {
 		HipsParser parser = new HipsParser(new HipsParserObserver() {
 			
 			@Override
@@ -543,6 +582,7 @@ public class Session {
 				hips.setHipsCategory(category != null ? category : HipsWavelength.USER);
 				skyRow.setHiPSFromAPI(hips, true);
 				skyRow.setColorPalette(ColorPalette.valueOf(colorPalette));
+
 				if(isDefault) {
 					skyRow.disableDeleteButton();
 				}
@@ -798,7 +838,27 @@ public class Session {
 			HiPS hips = row.getSelectedHips();
 			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_NAME, new JSONString(hips.getSurveyName().toString()));
 			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_URL, new JSONString(hips.getSurveyRootUrl().toString()));
-			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE, new JSONString(row.getSelectedPalette().toString()));
+
+			ImageConfigPanel imgConfig = row.getImageConfigPanel();
+
+			if (imgConfig != null) {
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE, new JSONString(imgConfig.getSelectedColorPalette().toString()));
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_REVERSE, new JSONString(Boolean.toString(imgConfig.getReversed())));
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_STRETCH, new JSONString(imgConfig.getStretch()));
+
+				double[] cuts = imgConfig.getCuts();
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUTS_LOW, new JSONNumber(cuts[0]));
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUTS_HIGH, new JSONNumber(cuts[1]));
+
+				double[] cutLimits = imgConfig.getCutLimits();
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_LOW, new JSONNumber(cutLimits[0]));
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_HIGH, new JSONNumber(cutLimits[1]));
+
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_BLENDING, new JSONString(Boolean.toString(imgConfig.getBlending())));
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_OPACITY, new JSONNumber(imgConfig.getOpacity()));
+				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_FORMAT, new JSONString(imgConfig.getTileFormat()));
+			}
+
 			if(hips.getHipsCategory() != null) {
 				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CATEGORY, new JSONString(hips.getHipsCategory()));
 			}

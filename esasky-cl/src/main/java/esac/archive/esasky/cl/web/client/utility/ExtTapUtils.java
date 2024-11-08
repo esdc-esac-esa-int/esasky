@@ -17,7 +17,7 @@ public class ExtTapUtils {
     private ExtTapUtils() {}
 
 
-    public static CommonTapDescriptor createLevelDescriptor(CommonTapDescriptor parent, String name, String whereADQL, double wavelengthStart, double wavelengthEnd) {
+    public static CommonTapDescriptor createLevelDescriptor(CommonTapDescriptor parent, String name, String tableName, String whereADQL, double wavelengthStart, double wavelengthEnd) {
         CommonTapDescriptor descriptor = new CommonTapDescriptor();
         descriptor.setGroupColumn1(parent.getGroupColumn1());
         descriptor.setGroupColumn2(parent.getGroupColumn2());
@@ -26,7 +26,7 @@ public class ExtTapUtils {
         descriptor.setShortName(name);
         descriptor.setCategory(parent.getCategory());
         descriptor.setFovLimit(parent.getFovLimit());
-        descriptor.setTableName(parent.getTableName());
+        descriptor.setTableName(tableName);
         descriptor.setWhereADQL(whereADQL);
         descriptor.setSelectADQL("SELECT *");
         descriptor.setFovLimitDisabled(parent.isFovLimitDisabled());

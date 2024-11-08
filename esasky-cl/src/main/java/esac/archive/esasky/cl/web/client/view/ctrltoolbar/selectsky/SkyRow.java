@@ -567,7 +567,14 @@ public class SkyRow extends Composite implements Selectable{
 	}
 	
 	public void setColorPalette(ColorPalette colorPalette) {
+		if (imageConfigPanel.getLayer() == null) {
+			imageConfigPanel.discoverLayer(getRowId());
+		}
 		imageConfigPanel.setDefaultColorPallette(colorPalette);
+	}
+
+	public ImageConfigPanel getImageConfigPanel() {
+		return imageConfigPanel;
 	}
 
 	public void addOnlyOneSkyActiveStyle(){
