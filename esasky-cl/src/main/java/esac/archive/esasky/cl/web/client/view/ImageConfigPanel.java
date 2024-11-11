@@ -217,8 +217,10 @@ public class ImageConfigPanel extends CollapsablePanel {
 
         tileFormatDropdownMenu.clearItems();
         String[] imgFormats = layer.getAvailableImageFormats();
-        for (String imgFormat : imgFormats) {
-            tileFormatDropdownMenu.addMenuItem(new MenuItem<>(imgFormat, imgFormat, true));
+        if (imgFormats != null) {
+            for (String imgFormat : imgFormats) {
+                tileFormatDropdownMenu.addMenuItem(new MenuItem<>(imgFormat, imgFormat, true));
+            }
         }
         tileFormatDropdownMenu.selectObject(layer.getImageFormat());
     }
