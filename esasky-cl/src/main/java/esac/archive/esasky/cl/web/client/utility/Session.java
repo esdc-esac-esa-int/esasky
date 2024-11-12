@@ -256,6 +256,8 @@ public class Session {
 		if(settingsObj.hasProperty(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH)) {
 			String searchStcs =settingsObj.getStringProperty(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH);
 			AladinLiteWrapper.getAladinLite().createSearchArea(searchStcs);
+		} else {
+			AladinLiteWrapper.getAladinLite().clearSearchArea();
 		}
 	}
 	
