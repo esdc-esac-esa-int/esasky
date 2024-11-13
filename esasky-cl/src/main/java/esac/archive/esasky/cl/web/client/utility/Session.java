@@ -256,6 +256,8 @@ public class Session {
 		if(settingsObj.hasProperty(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH)) {
 			String searchStcs =settingsObj.getStringProperty(EsaSkyWebConstants.SESSION_SETTINGS_SEARCH);
 			AladinLiteWrapper.getAladinLite().createSearchArea(searchStcs);
+		} else {
+			AladinLiteWrapper.getAladinLite().clearSearchArea();
 		}
 	}
 	
@@ -815,9 +817,9 @@ public class Session {
 	private JSONObject getLocationJson() {
 		JSONObject obj = new JSONObject();
 
-		String raDeg = new Double(AladinLiteWrapper.getCenterRaDeg()).toString();
-		String decDeg = new Double(AladinLiteWrapper.getCenterDecDeg()).toString();
-		String fov = new Double(AladinLiteWrapper.getAladinLite().getFovDeg()).toString();
+		String raDeg = Double.toString(AladinLiteWrapper.getCenterRaDeg());
+		String decDeg = Double.toString(AladinLiteWrapper.getCenterDecDeg());
+		String fov = Double.toString(AladinLiteWrapper.getAladinLite().getFovDeg());
 		String cooFrame = AladinLiteWrapper.getCoordinatesFrame().toString();
 		String projection = AladinLiteWrapper.getCurrentProjection();
 		
@@ -836,28 +838,33 @@ public class Session {
 		for(SkyRow row : panel.getHipsList()) {
 			JSONObject hipsObj = new JSONObject();
 			HiPS hips = row.getSelectedHips();
-			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_NAME, new JSONString(hips.getSurveyName().toString()));
-			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_URL, new JSONString(hips.getSurveyRootUrl().toString()));
+			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_NAME, new JSONString(hips.getSurveyName()));
+			hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_URL, new JSONString(hips.getSurveyRootUrl()));
 
-			ImageConfigPanel imgConfig = row.getImageConfigPanel();
+			try {
+				ImageConfigPanel imgConfig = row.getImageConfigPanel();
 
-			if (imgConfig != null) {
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE, new JSONString(imgConfig.getSelectedColorPalette().toString()));
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_REVERSE, new JSONString(Boolean.toString(imgConfig.getReversed())));
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_STRETCH, new JSONString(imgConfig.getStretch()));
+				if (imgConfig != null) {
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_COLORPALETTE, new JSONString(imgConfig.getSelectedColorPalette().toString()));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_REVERSE, new JSONString(Boolean.toString(imgConfig.getReversed())));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_STRETCH, new JSONString(imgConfig.getStretch()));
 
-				double[] cuts = imgConfig.getCuts();
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUTS_LOW, new JSONNumber(cuts[0]));
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUTS_HIGH, new JSONNumber(cuts[1]));
+					double[] cuts = imgConfig.getCuts();
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUTS_LOW, new JSONNumber(cuts[0]));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUTS_HIGH, new JSONNumber(cuts[1]));
 
-				double[] cutLimits = imgConfig.getCutLimits();
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_LOW, new JSONNumber(cutLimits[0]));
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_HIGH, new JSONNumber(cutLimits[1]));
+					double[] cutLimits = imgConfig.getCutLimits();
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_LOW, new JSONNumber(cutLimits[0]));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CUT_LIMIT_HIGH, new JSONNumber(cutLimits[1]));
 
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_BLENDING, new JSONString(Boolean.toString(imgConfig.getBlending())));
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_OPACITY, new JSONNumber(imgConfig.getOpacity()));
-				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_FORMAT, new JSONString(imgConfig.getTileFormat()));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_BLENDING, new JSONString(Boolean.toString(imgConfig.getBlending())));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_OPACITY, new JSONNumber(imgConfig.getOpacity()));
+					hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_FORMAT, new JSONString(imgConfig.getTileFormat()));
+				}
+			} catch (Exception e) {
+				Log.error(e.getMessage(), e);
 			}
+
 
 			if(hips.getHipsCategory() != null) {
 				hipsObj.put(EsaSkyWebConstants.SESSION_HIPS_CATEGORY, new JSONString(hips.getHipsCategory()));
@@ -872,7 +879,7 @@ public class Session {
 		JSONObject obj = new JSONObject();
 		obj.put(EsaSkyWebConstants.SESSION_HIPS_ARRAY, hipsArray);
 
-		String currentActive =  new Double(panel.getSliderValue()).toString();
+		String currentActive = Double.toString(panel.getSliderValue());
 		obj.put(EsaSkyWebConstants.SESSION_HIPS_SLIDER, new JSONString(currentActive));
 		return obj;
 	}
