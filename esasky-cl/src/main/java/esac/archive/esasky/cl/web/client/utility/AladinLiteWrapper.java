@@ -382,15 +382,16 @@ public class AladinLiteWrapper {
      * @param hips Input HiPS object.
      */
     public final void openHiPS(final String skyRowId, final HiPS hips) {
-        String rootUrl = hips.getSurveyRootUrl();
-        if(!loadHipsFromCDN) {
-    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
-    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
-    			hips.setSurveyRootUrl(newRootUrl);
-    			Log.debug("Changed survey url to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
-    		}
-        }
-        
+//        String rootUrl = hips.getSurveyRootUrl();
+//        if(!loadHipsFromCDN) {
+//    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
+//    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");;
+//    			hips.setSurveyRootUrl(newRootUrl);
+//    			Log.debug("Changed survey url to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
+//    		}
+//        }
+//
+
         if(hips.isLocal()) {
         	
         	aladinLite.createAndSetLocalImageSurvey(skyRowId, hips.getSurveyId(), hips.getSurveyName(),
@@ -407,24 +408,24 @@ public class AladinLiteWrapper {
     
     public void setLoadHipsFromCDN(boolean loadFromCDN) {
     	loadHipsFromCDN = loadFromCDN;
-    	String rootUrl = getRootUrl(aladinLite.getCurrentImageSurveyObject());
-        if (rootUrl == null) {
-            return;
-        }
-
-    	if(loadFromCDN) {
-        	if(rootUrl.contains("skies.esac.esa.int") && !rootUrl.contains("cdn.skies.esac.esa.int")) {
-        		String newRootUrl = rootUrl.replaceFirst("skies\\.esac\\.esa\\.int", "cdn.skies.esac.esa.int");
-        		setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
-        		Log.debug("Switched to CDN servers for HiPS loading. New rootUrl is: " + newRootUrl);
-        	}
-    	} else {
-    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
-    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");
-    			setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
-    			Log.debug("Switched to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
-    		}
-    	}
+//    	String rootUrl = getRootUrl(aladinLite.getCurrentImageSurveyObject());
+//        if (rootUrl == null) {
+//            return;
+//        }
+//
+//    	if(loadFromCDN) {
+//        	if(rootUrl.contains("skies.esac.esa.int") && !rootUrl.contains("cdn.skies.esac.esa.int")) {
+//        		String newRootUrl = rootUrl.replaceFirst("skies\\.esac\\.esa\\.int", "cdn.skies.esac.esa.int");
+//        		setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
+//        		Log.debug("Switched to CDN servers for HiPS loading. New rootUrl is: " + newRootUrl);
+//        	}
+//    	} else {
+//    		if(rootUrl.contains("cdn.skies.esac.esa.int")) {
+//    			String newRootUrl = rootUrl.replaceFirst("cdn\\.", "");
+//    			setRootUrl(aladinLite.getCurrentImageSurveyObject(), newRootUrl);
+//    			Log.debug("Switched to ESAC servers for HiPS loading. New rootUrl is: " + newRootUrl);
+//    		}
+//    	}
     }
     
     private native void setRootUrl(JavaScriptObject currentImageSurvey, String newRootUrl) /*-{
