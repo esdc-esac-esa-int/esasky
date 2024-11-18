@@ -410,19 +410,15 @@ public class HeaderPresenter {
     }
 
     private void setCoordinates(double ra, double dec) {
-        String coordinate = "";
-        if (view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString())) {
-            RaPosition raPosition = new RaPosition(ra);
-            DecPosition decPosition = new DecPosition(dec);
-            if (GUISessionStatus.isShowingCoordinatesInDegrees()) {
-                coordinate = raPosition.getDegreeStringWithoutDegreeSymbol() + " " + decPosition.getDegreeStringWithoutDegreeSymbol();
-            } else {
-                coordinate = raPosition.getSpacedHmsString() + " " + decPosition.getSpacedDmsString();
-            }
-        } else {
-            double[] coord = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
-            coordinate = new RaPosition(coord[0]).getDegreeStringWithoutDegreeSymbol() + " " + new DecPosition(coord[1]).getDegreeStringWithoutDegreeSymbol();
+        String coordinate;
+        RaPosition raPosition = new RaPosition(ra);
+        DecPosition decPosition = new DecPosition(dec);
+        coordinate = raPosition.getDegreeStringWithoutDegreeSymbol() + " " + decPosition.getDegreeStringWithoutDegreeSymbol();
+
+        if (view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString()) && !GUISessionStatus.isShowingCoordinatesInDegrees()) {
+            coordinate = raPosition.getSpacedHmsString() + " " + decPosition.getSpacedDmsString();
         }
+
         view.setCoordinate(coordinate);
     }
 
