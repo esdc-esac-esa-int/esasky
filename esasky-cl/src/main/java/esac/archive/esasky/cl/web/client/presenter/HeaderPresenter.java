@@ -116,12 +116,6 @@ public class HeaderPresenter {
 
         void addWarningButtonClickHandler(ClickHandler handler);
 
-        void addHiResClickHandler(ClickHandler handler);
-
-        void addJwstClickHandler(ClickHandler handler);
-
-        void addEuclidClickHandler(ClickHandler handler);
-
         void addSessionSaveClickHandler(ClickHandler handler);
 
         void addSessionRestoreClickHandler(ClickHandler handler);
@@ -302,23 +296,6 @@ public class HeaderPresenter {
             view.closeDropdownMenu();
         });
 
-        view.addHiResClickHandler(event -> {
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
-            view.closeDropdownMenu();
-            CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.HST));
-        });
-
-        view.addJwstClickHandler(event -> {
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_EUCLID_IMAGE, "");
-            view.closeDropdownMenu();
-            CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.JWST));
-        });
-
-        view.addEuclidClickHandler(event -> {
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_EUCLID_IMAGE, "");
-            view.closeDropdownMenu();
-            CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.EUCLID));
-        });
 
         view.addSessionSaveClickHandler(event -> {
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_SESSION_SAVE, "");
