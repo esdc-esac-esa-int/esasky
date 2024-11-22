@@ -76,9 +76,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private FocusPanel dropdownViewInWwtEntry = new FocusPanel();
 	private FocusPanel dropdownSessionSaveEntry = new FocusPanel();
 	private FocusPanel dropdownSessionRestoreEntry = new FocusPanel();
-	private FocusPanel hiResDropdown = new FocusPanel();
-	private FocusPanel jwstDropdown = new FocusPanel();
-	private FocusPanel euclidDropdown = new FocusPanel();
 	private EsaSkySwitch dropdownScienceModeSwitch;
 	private EsaSkyButton warningButton = new EsaSkyButton(Icons.getWarningIcon());
 	private final ListBox dropdownLanguageBox = new ListBox();
@@ -263,10 +260,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			dropdownContent.add(createViewInWWTDropdownEntry());
 		}
 
-		dropdownContent.add(createHiResDropdownEntry());
-		dropdownContent.add(createJwstDropdownEntry());
-		dropdownContent.add(createEuclidDropdownEntry());
-
 		dropdownFeedbackEntry.getElement().setId("header__dropdown__feedback");
 		dropdownVideoTutorialsEntry.getElement().setId("header__dropdown__tutorials");
 		dropdownReleaseNotesEntry.getElement().setId("header__dropdown__releasenotes");
@@ -399,36 +392,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		return dropdownViewInWwtEntry;
 	}
 
-	private Widget createHiResDropdownEntry() {
-		Label hiresLabel = new Label(TextMgr.getInstance().getText("header_highResolutionImages"));
-		hiresLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
-		hiResDropdown.add(hiresLabel);
-		hiResDropdown.getElement().setId("header__dropdown__outreach");
-		hiResDropdown.setTitle(TextMgr.getInstance().getText("header_highResolutionImagesTooltip"));
-		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
-				&& GUISessionStatus.getIsInScienceMode());
-		return hiResDropdown;
-	}
-
-	private Widget createJwstDropdownEntry() {
-		Label jwstLabel = new Label(TextMgr.getInstance().getText("header_jwstOutreachImages"));
-		jwstLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
-		jwstDropdown.add(jwstLabel);
-		jwstDropdown.setTitle(TextMgr.getInstance().getText("header_jwstImagesTooltip"));
-		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
-				&& GUISessionStatus.getIsInScienceMode());
-		return jwstDropdown;
-	}
-
-	private Widget createEuclidDropdownEntry() {
-		Label euclidLabel = new Label(TextMgr.getInstance().getText("header_euclidOutreachImages"));
-		euclidLabel.addStyleName(OUTREACH_DROPDOWN_HEADER_CLASS);
-		euclidDropdown.add(euclidLabel);
-		euclidDropdown.setTitle(TextMgr.getInstance().getText("header_euclidImagesTooltip"));
-		euclidDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID)
-				&& GUISessionStatus.getIsInScienceMode());
-		return euclidDropdown;
-	}
 
 	private Widget createSessionSaveDropdownEntries() {
 		Label sessionSaveLabel = new Label(TextMgr.getInstance().getText("header_session_save"));
@@ -729,20 +692,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownViewInWwtEntry.addClickHandler(handler);
 	}
 
-	@Override
-	public void addHiResClickHandler(ClickHandler handler) {
-		hiResDropdown.addClickHandler(handler);
-	}
-
-	@Override
-	public void addJwstClickHandler(ClickHandler handler) {
-		jwstDropdown.addClickHandler(handler);
-	}
-
-	@Override
-	public void addEuclidClickHandler(ClickHandler handler) {
-		euclidDropdown.addClickHandler(handler);
-	}
 
 	@Override
 	public void addSessionSaveClickHandler(ClickHandler handler) {
@@ -774,12 +723,6 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	public void setIsInScienceMode(boolean isInScienceMode) {
 		dropdownScienceModeSwitch.setChecked(isInScienceMode);
 		headerScienceModeSwitch.setChecked(isInScienceMode);
-		hiResDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_IMAGE)
-				&& isInScienceMode);
-		jwstDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_JWST)
-				&& isInScienceMode);
-		euclidDropdown.setVisible(Modules.getModule(EsaSkyWebConstants.MODULE_OUTREACH_EUCLID)
-				&& isInScienceMode);
 	}
 
 	@Override
@@ -938,16 +881,10 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 			dropdownSessionSaveEntry.setVisible(true);
 			dropdownSessionRestoreEntry.setVisible(true);
 			projectionContainer.setVisible(true);
-			hiResDropdown.setVisible(false);
-			jwstDropdown.setVisible(false);
-			euclidDropdown.setVisible(false);
 		} else {
 			dropdownSessionSaveEntry.setVisible(false);
 			dropdownSessionRestoreEntry.setVisible(false);
 			projectionContainer.setVisible(false);
-			hiResDropdown.setVisible(true);
-			jwstDropdown.setVisible(true);
-			euclidDropdown.setVisible(true);
 			AladinLiteWrapper.getAladinLite().setProjection("TAN");
 		}
 

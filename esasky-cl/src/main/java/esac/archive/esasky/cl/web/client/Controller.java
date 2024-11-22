@@ -67,9 +67,9 @@ public class Controller implements ValueChangeHandler<String> {
 		
 		setBasicLayoutFromParameters();
 		setSciMode();
-		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HST_IMAGE), EsaSkyWebConstants.HST_MISSION, Boolean.parseBoolean(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_FOOTPRINTS)));
-		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_JWST_IMAGE), EsaSkyWebConstants.JWST_MISSION, Boolean.parseBoolean(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_FOOTPRINTS)));
-		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_EUCLID_IMAGE), EsaSkyWebConstants.EUCLID_MISSION, Boolean.parseBoolean(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_FOOTPRINTS)));
+		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HST_IMAGE), EsaSkyWebConstants.HST_MISSION, true);
+		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_JWST_IMAGE), EsaSkyWebConstants.JWST_MISSION, true);
+		OutreachImagePanel.setStartupId(Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_EUCLID_IMAGE), EsaSkyWebConstants.EUCLID_MISSION, true);
 
 		String hideWelcomeString = Window.Location.getParameter(EsaSkyWebConstants.URL_PARAM_HIDE_WELCOME);
 		boolean hideWelcome = hideWelcomeString != null && hideWelcomeString.toLowerCase().contains("true");

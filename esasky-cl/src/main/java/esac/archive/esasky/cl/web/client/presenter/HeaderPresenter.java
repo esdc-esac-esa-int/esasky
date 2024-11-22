@@ -116,12 +116,6 @@ public class HeaderPresenter {
 
         void addWarningButtonClickHandler(ClickHandler handler);
 
-        void addHiResClickHandler(ClickHandler handler);
-
-        void addJwstClickHandler(ClickHandler handler);
-
-        void addEuclidClickHandler(ClickHandler handler);
-
         void addSessionSaveClickHandler(ClickHandler handler);
 
         void addSessionRestoreClickHandler(ClickHandler handler);
@@ -302,23 +296,6 @@ public class HeaderPresenter {
             view.closeDropdownMenu();
         });
 
-        view.addHiResClickHandler(event -> {
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_OUTREACH_IMAGE, "");
-            view.closeDropdownMenu();
-            CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.HST));
-        });
-
-        view.addJwstClickHandler(event -> {
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_EUCLID_IMAGE, "");
-            view.closeDropdownMenu();
-            CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.JWST));
-        });
-
-        view.addEuclidClickHandler(event -> {
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_EUCLID_IMAGE, "");
-            view.closeDropdownMenu();
-            CommonEventBus.getEventBus().fireEvent(new ShowImageListEvent(ShowImageListEvent.Sender.EUCLID));
-        });
 
         view.addSessionSaveClickHandler(event -> {
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_CTRLTOOLBAR_SESSION_SAVE, "");
@@ -410,19 +387,15 @@ public class HeaderPresenter {
     }
 
     private void setCoordinates(double ra, double dec) {
-        String coordinate = "";
-        if (view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString())) {
-            RaPosition raPosition = new RaPosition(ra);
-            DecPosition decPosition = new DecPosition(dec);
-            if (GUISessionStatus.isShowingCoordinatesInDegrees()) {
-                coordinate = raPosition.getDegreeStringWithoutDegreeSymbol() + " " + decPosition.getDegreeStringWithoutDegreeSymbol();
-            } else {
-                coordinate = raPosition.getSpacedHmsString() + " " + decPosition.getSpacedDmsString();
-            }
-        } else {
-            double[] coord = CoordinatesConversion.convertPointEquatorialToGalactic(ra, dec);
-            coordinate = new RaPosition(coord[0]).getDegreeStringWithoutDegreeSymbol() + " " + new DecPosition(coord[1]).getDegreeStringWithoutDegreeSymbol();
+        String coordinate;
+        RaPosition raPosition = new RaPosition(ra);
+        DecPosition decPosition = new DecPosition(dec);
+        coordinate = raPosition.getDegreeStringWithoutDegreeSymbol() + " " + decPosition.getDegreeStringWithoutDegreeSymbol();
+
+        if (view.getSelectedCoordinateFrame().equals(CoordinateFrame.J2000.toString()) && !GUISessionStatus.isShowingCoordinatesInDegrees()) {
+            coordinate = raPosition.getSpacedHmsString() + " " + decPosition.getSpacedDmsString();
         }
+
         view.setCoordinate(coordinate);
     }
 

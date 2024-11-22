@@ -441,7 +441,6 @@ public class TabulatorWrapper {
         }
 
         tableJsObject.setProperty("filteredOnFov", true);
-
         groupByFov(tableJsObject, ra, dec, minRa, minDec, minRa, maxDec, maxRa, maxDec, maxRa, minDec);
     }
 
@@ -490,13 +489,18 @@ public class TabulatorWrapper {
             var polygonArray = data.stc_s.trim().split(' ').slice(2); // Remove the first two elements (Polygon J2000)
             var imagePoly = polygonArray.map(parseFloat); // Parse the remaining elements into numbers
 
+            // Ugly? Yes! Why you are not able to order groups without sorting the data I don't know,
+            // but this is the hack I came up with to force In Field of View to always be the first group.
+            if(!tableJsObject.getGroups() || tableJsObject.getGroups().length < 1) {
+                tableJsObject.modules.groupRows.createGroup("In Field of View", 0, {});
+            }
+
             if ( isPointInPolygon(data.ra_deg, data.dec_deg, minMaxPoly) || isPointInPolygon(fovCenterRa, fovCenterDec, imagePoly)) {
                 return "In Field of View";
             } else {
                 return "Outside Field of View"
             }
         }
-
         tableJsObject.setGroupBy(isInFov);
     }-*/;
 

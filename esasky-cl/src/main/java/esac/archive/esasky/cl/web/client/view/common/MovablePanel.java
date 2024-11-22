@@ -129,7 +129,6 @@ public class MovablePanel extends FocusPanel {
 			if (!isMouseDown && elementCanStartDragOperation) {
 				isMouseDown = true;
 				DOM.setCapture(getElement());
-				event.preventDefault();
 				positionOnPanelTop = eventType == Event.ONMOUSEDOWN ? event.getClientY() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop()
 						: event.getTargetTouches().get(0).getClientY() + MainLayoutPanel.getMainAreaAbsoluteTop() - getAbsoluteTop();
 				positionOnPanelLeft = eventType == Event.ONMOUSEDOWN ? event.getClientX() + MainLayoutPanel.getMainAreaAbsoluteLeft() - getAbsoluteLeft()

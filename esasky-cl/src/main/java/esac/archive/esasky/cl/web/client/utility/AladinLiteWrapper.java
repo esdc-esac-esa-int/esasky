@@ -161,7 +161,7 @@ public class AladinLiteWrapper {
         if (fovFromUrl != null && !fovFromUrl.equals("")) {
             	try {        		
             		Double fovFromUrlDouble = Double.valueOf(fovFromUrl);
-                	if (fovFromUrlDouble <= 0 || fovFromUrlDouble > 180) {
+                	if (fovFromUrlDouble <= 0 || fovFromUrlDouble > 360) {
                         Log.debug("Invalid fov value");
                     } else {
                         fov = fovFromUrlDouble;

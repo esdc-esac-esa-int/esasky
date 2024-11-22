@@ -36,7 +36,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
     private boolean isHidingFootprints = false;
     private static String outreachImageIdToBeOpened;
     private static String missionToBeOpened;
-    private static boolean defaultHideFootprints = false;
+    private static boolean defaultHideFootprints = true;
     private static String outreachImageNameToBeOpened;
     private FlowPanel opacityPanel;
     private EsaSkySwitch hideFootprintsSwitch;
@@ -164,7 +164,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         tableContainer.add(imageEntity.createTablePanel().getWidget());
         imageEntity.fetchData();
         setMaxSize();
-        hideFootprints(defaultHideFootprints && mission.equals(missionToBeOpened));
+        hideFootprints(defaultHideFootprints);
     }
 
 
@@ -189,7 +189,7 @@ public abstract class OutreachImagePanel extends MovableResizablePanel<OutreachI
         opacityPanel.add(opacitySlider);
         opacityPanel.setVisible(false);
         MainLayoutPanel.addElementToMainArea(opacityPanel);
-        hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch_" + mission, false, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
+        hideFootprintsSwitch = new EsaSkySwitch("outreachImagePanel__hideFootprintsSwitch_" + mission, true, TextMgr.getInstance().getText("outreachImage_hideFootprints"), "");
         hideFootprintsSwitch.addStyleName("outreachImagePanel__footprintSwitch");
         hideFootprintsSwitch.addClickHandler(event -> hideFootprints(!isHidingFootprints));
         header.addActionWidget(hideFootprintsSwitch);
