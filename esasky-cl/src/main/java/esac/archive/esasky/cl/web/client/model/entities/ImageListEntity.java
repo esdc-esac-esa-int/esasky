@@ -201,6 +201,7 @@ public class ImageListEntity extends EsaSkyEntity {
 		TabulatorSettings settings = new TabulatorSettings();
 		settings.setDisableGoToColumn(true);
 		settings.setSelectable(1);
+		settings.setTableLayout("fitColumns");
 		return settings;
 	}
 
