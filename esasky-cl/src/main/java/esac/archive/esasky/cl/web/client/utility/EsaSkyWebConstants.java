@@ -279,6 +279,8 @@ public class EsaSkyWebConstants {
     public static final String SESSION_DATA_HAS_PANEL = "has_panel";
     public static final String SESSION_DATA_ADQL = "adql";
     public static final String SESSION_DATA_FILTERS = "filters";
+    public static final String SESSION_DATA_BULK_DOWNLOAD_URL = "bulk_download_url";
+    public static final String SESSION_DATA_BULK_DOWNLOAD_ID_COLUMN = "bulk_download_id_column";
     public static final String SESSION_DATA_COLOR_MAIN = "color";
     public static final String SESSION_DATA_COLOR_SECOND = "color_secondary";
     public static final String SESSION_DATA_SIZE = "size";

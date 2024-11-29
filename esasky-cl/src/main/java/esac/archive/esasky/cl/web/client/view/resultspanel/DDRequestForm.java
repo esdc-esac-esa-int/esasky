@@ -11,10 +11,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DDRequestForm extends FormPanel {
 
-    /** instance to flow panel. */
     private FlowPanel fp = new FlowPanel();
-    /** jsonRequest. */
-    private Hidden jsonRequest = new Hidden();
+    private Hidden field = new Hidden();
 
     /**
      * Class constructor.
@@ -23,8 +21,8 @@ public class DDRequestForm extends FormPanel {
     public DDRequestForm(final String targetName) {
         super(targetName);
         this.setWidget(fp);
-        jsonRequest.setName("REQUEST");
-        fp.add(jsonRequest);
+        field.setName("REQUEST");
+        fp.add(field);
     }
 
     @Override
@@ -37,6 +35,12 @@ public class DDRequestForm extends FormPanel {
      * @param json Input string.
      */
     public final void setJsonRequest(final String json) {
-        jsonRequest.setValue(json);
+        field.setValue(json);
+    }
+    
+    
+    public final void setField(final String name, final String value) {
+    	field.setName(name);
+        field.setValue(value);
     }
 }

@@ -683,8 +683,22 @@ Plotting TAP Service data:
         type:  (Boolean) 
         description: If true will add a where clause to the adql to limit the data loaded. Parameter intersectColumn or ra and dec columns need to be set
       adql:
-        type:  (String) 
+        type: (String) 
         description:  ADQL used for the TAP query
+      bulkDownloadUrl:
+        type: (String) (optional) 
+        description:  This is only needed in rare cases. When a user selects multiple rows and clicks "Download Selected Rows", the ESASky server downloads the data and compresses it into a TAR file.
+			However, if an authentication layer protects your data, our server cannot download your data.
+			In this case, you can set bulkDownloadUrl to a download service on your server, which takes care of the authentication, bundling, and compression. 
+        	The download service is expected to accept HTTP POST with a comma separated list of IDs as specified by bulkDownloadIdColumn.
+			For example, if the bulkDownloadUrl is 'https://myservice.com/bulkdownload' and the bulkDownloadIdColumn is 'observation_id',
+			then ESASky will create a POST message with all selected observation_id, which could result in a call equivalent to
+			'https://myservice.com/bulkdownload?observation_id=observationid1,observationid2'.
+			In this example, 'observationid1', and 'observationid2' are extracted from the data table, by looking at the selected rows values for the column 'observation_id'.
+			You specify which column your download service expects by using the bulkDownloadId parameter described below.    
+      bulkDownloadIdColumn:        
+        type: (String) (optional)
+        description: Only to be used in conjunction with bulkDownloadUrl. bulkDownloadIdColumn should be the name of the column that identifies a row of data in your bulk download service. See description for bulkDownloadUrl. 
     description:
       Plot available image observation footprints in ESASky for he currently shown area for the given missionID
     example:

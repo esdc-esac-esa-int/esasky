@@ -171,6 +171,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	private TableFocusPanel tableFocusPanel;
+	
 	public TabulatorTablePanel(final String inputLabel, final String inputEsaSkyUniqID, GeneralEntityInterface entity) {
 		this.esaSkyUniqID = inputEsaSkyUniqID;
 		this.tabTitle = inputLabel;
@@ -483,12 +484,29 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		String json = mapper.write(multiRetrievalList);
 
-		ddForm.setAction(EsaSkyWebConstants.DATA_REQUEST_URL);
+		String bulkDownloadUrl = getEntity().getDescriptor().getBulkDownloadUrl();
+		if (bulkDownloadUrl == null || "".equals(bulkDownloadUrl)) {
+			bulkDownloadUrl = EsaSkyWebConstants.DATA_REQUEST_URL;
+		}
+		if (!EsaSkyWebConstants.DATA_REQUEST_URL.equals(bulkDownloadUrl)) {
+			String idColumn = entity.getDescriptor().getBulkDownloadIdColumn();
+			if (idColumn == null || "".equals(idColumn)) {
+				idColumn = entity.getDescriptor().getIdColumn();
+			}
+			StringBuilder payload = new StringBuilder();
+						for (GeneralJavaScriptObject tableRow : getSelectedRows()) {
+				payload.append(tableRow.getStringProperty(idColumn) + ","); 
+			}
+			payload.deleteCharAt(payload.length() - 1);
+			ddForm.setField(idColumn, payload.toString());
+		} else {
+			ddForm.setJsonRequest(json);
+		}
+		ddForm.setAction(bulkDownloadUrl);
 		ddForm.setMethod(FormPanel.METHOD_POST);
-		ddForm.setJsonRequest(json);
 		ddForm.submit();
 	}
-
+	
 	public void updateData() {
 		clearTable();
 		clearFilters();

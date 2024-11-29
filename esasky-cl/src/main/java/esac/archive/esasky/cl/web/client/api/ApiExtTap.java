@@ -176,7 +176,12 @@ public class ApiExtTap extends ApiBase{
 	}
 	
 	public void plotExtTapWithDetails(String name, String tapUrl, boolean dataOnlyInView, String adql, String color, int limit, GeneralJavaScriptObject options) {
-	    CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().createCustomExternalTapDescriptor(name, tapUrl, dataOnlyInView, adql);
+		String bulkDownloadUrl = EsaSkyWebConstants.DATA_REQUEST_URL; 
+		if(options.hasProperty(ApiConstants.EXTTAP_BULK_DOWNLOAD_URL)) {
+			bulkDownloadUrl = options.getStringProperty(ApiConstants.EXTTAP_BULK_DOWNLOAD_URL);
+		}
+		
+		CommonTapDescriptor descriptor = controller.getRootPresenter().getDescriptorRepository().createCustomExternalTapDescriptor(name, tapUrl, dataOnlyInView, adql, bulkDownloadUrl, options.getStringProperty(ApiConstants.EXTTAP_BULK_DOWNLOAD_ID_COLUMN));
 
 		if(limit == -1) {
 			limit = 3000;

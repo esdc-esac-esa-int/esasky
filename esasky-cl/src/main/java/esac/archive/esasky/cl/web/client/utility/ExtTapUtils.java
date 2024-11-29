@@ -36,6 +36,8 @@ public class ExtTapUtils {
         descriptor.setMetadata(parent.getMetadata());
         descriptor.setUseIntersectsPolygon(parent.useIntersectsPolygon());
         descriptor.setDescription(parent.getDescription());
+        descriptor.setBulkDownloadUrl(parent.getBulkDownloadUrl());
+        descriptor.setBulkDownloadIdColumn(parent.getBulkDownloadIdColumn());
         descriptor.setCustom(true);
         descriptor.setArchiveBaseURL(parent.getArchiveBaseURL());
         descriptor.setArchiveProductURI(parent.getArchiveProductURI());

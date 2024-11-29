@@ -74,6 +74,12 @@ public class CommonTapDescriptor extends TapDescriptor {
 
     @JsonIgnore
     private String description;
+    
+    @JsonIgnore
+    private String bulkDownloadUrl;
+    
+    @JsonIgnore
+    private String bulkDownloadIdColumn;
 
     /*********************
      * Getters
@@ -205,6 +211,14 @@ public class CommonTapDescriptor extends TapDescriptor {
     public String getDescription() {
         return description;
     }
+    
+    public String getBulkDownloadUrl() {
+        return bulkDownloadUrl;
+    }
+    
+    public String getBulkDownloadIdColumn() {
+        return bulkDownloadIdColumn;
+    }
 
     @JsonIgnore
     public void removeChildren(List<String> idsNotToRemove) {
@@ -316,5 +330,13 @@ public class CommonTapDescriptor extends TapDescriptor {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public void setBulkDownloadUrl(String bulkDownloadUrl) {
+        this.bulkDownloadUrl = bulkDownloadUrl;
+    }
+    
+    public void setBulkDownloadIdColumn(String bulkDownloadIdColumn) {
+        this.bulkDownloadIdColumn = bulkDownloadIdColumn;
     }
 }

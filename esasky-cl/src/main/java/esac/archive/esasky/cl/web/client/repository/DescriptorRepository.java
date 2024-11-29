@@ -187,6 +187,7 @@ public class DescriptorRepository {
         commonTapDescriptor.setFovLimit(10.0);
         commonTapDescriptor.setDescription(description);
         commonTapDescriptor.setCustom(true);
+        commonTapDescriptor.setBulkDownloadUrl(EsaSkyWebConstants.DATA_REQUEST_URL);
 
         boolean hasPointColumns = commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null;
         boolean hasRegionColumn = commonTapDescriptor.getRegionColumn() != null;
@@ -279,7 +280,7 @@ public class DescriptorRepository {
         return result;
     }
 
-    public CommonTapDescriptor createCustomExternalTapDescriptor(String name, String tapUrl, boolean dataOnlyInView, String adql) {
+    public CommonTapDescriptor createCustomExternalTapDescriptor(String name, String tapUrl, boolean dataOnlyInView, String adql, String bulkDownloadUrl, String bulkDownloadIdColumn) {
         CommonTapDescriptor descriptor = new CommonTapDescriptor();
 
         descriptor.setShortName(name);
@@ -294,6 +295,8 @@ public class DescriptorRepository {
         descriptor.setIsExternal(true);
         descriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
         descriptor.setDescription(" ");
+        descriptor.setBulkDownloadUrl(bulkDownloadUrl);
+        descriptor.setBulkDownloadIdColumn(bulkDownloadIdColumn);
 
         descriptor.setMetadata(mockSpatialMetadata(EsaSkyWebConstants.S_RA, EsaSkyWebConstants.S_DEC, EsaSkyWebConstants.S_REGION));
 

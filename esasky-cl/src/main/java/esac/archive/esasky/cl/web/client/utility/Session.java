@@ -667,10 +667,12 @@ public class Session {
 			String query = ent.getDescriptor().getUnprocessedADQL() != null ? ent.getDescriptor().getUnprocessedADQL() : ent.getQuery();
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_ADQL,new JSONString(query));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_FILTERS, new JSONString(ent.getTablePanel().getFilterString()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_URL, new JSONString(ent.getDescriptor().getBulkDownloadUrl()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_ID_COLUMN, new JSONString(ent.getDescriptor().getBulkDownloadIdColumn()));
 			
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN,new JSONString(ent.getPrimaryColor()));
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_SECOND,new JSONString(ent.getSecondaryColor()));
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_SIZE,new JSONString(new Double(ent.getSize()).toString()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN, new JSONString(ent.getPrimaryColor()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_SECOND, new JSONString(ent.getSecondaryColor()));
+			entObj.put(EsaSkyWebConstants.SESSION_DATA_SIZE, new JSONString(new Double(ent.getSize()).toString()));
 			if(ent.getLineStyle() != null) {
 				entObj.put(EsaSkyWebConstants.SESSION_DATA_LINESTYLE,new JSONString(ent.getLineStyle()));
 			}
@@ -752,8 +754,12 @@ public class Session {
 					List<TapMetadataDescriptor> metadataDescriptorList = ExtTapUtils.getMetadataFromTapDescriptorList(descriptorList, false);
 					CommonTapDescriptor commonTapDescriptor = DescriptorRepository.getInstance().createExternalDescriptor(metadataDescriptorList, EsaSkyWebConstants.TAP_CONTEXT + "/tap/sync",
 							table, table, "user_description", adql, false, true);
-					commonTapDescriptor.setColor(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN);
+					commonTapDescriptor.setColor(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN));
 					commonTapDescriptor.setIsUserTable(true);
+					if (sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_URL) != null) {
+						commonTapDescriptor.setBulkDownloadUrl(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_URL));
+						commonTapDescriptor.setBulkDownloadIdColumn(sessionData.getStringProperty(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_ID_COLUMN));
+					}
 
 					GeneralEntityInterface entity = EntityRepository.getInstance().createEntity(commonTapDescriptor);
 					MainPresenter.getInstance().getResultsPresenter().addResultsTab(entity);
