@@ -93,6 +93,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private boolean inMOCMode = false;
 	private boolean toggleColumnsEnabled = true;
 
+	private Map<String, Panel> openArchives = new HashMap<>();
+
 	private GeneralJavaScriptObject tableMetadata = null;
 
 	private MetadataVisibilityObserver visibilityObserver = new MetadataVisibilityObserver() {
@@ -310,6 +312,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void closeTablePanel() {
 		isShowing = false;
 		hasBeenClosed = true;
+		while(!openArchives.keySet().isEmpty()) {
+			String key = openArchives.keySet().iterator().next();
+			Panel panel = openArchives.get(key);
+			panel.removeFromParent();
+		}
 		if(stylePanel != null) {
 			stylePanel.removeFromParent();
 		}
@@ -719,7 +726,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void onDatalinkClicked(GeneralJavaScriptObject row, String url) {
-
 		if(url == null || url.isEmpty()) {
 			url = buildArchiveURL(row.invokeFunction(GET_DATA));
 		}
@@ -729,7 +735,18 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
 		String title = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
 
-		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(url, title));
+		if (openArchives.containsKey(url)) {
+			Panel panel = openArchives.remove(url);
+			panel.removeFromParent();
+		} else {
+			MovablePanel panel = new DatalinkDownloadDialogBox(url, title);
+			final String finalUrl = url;
+			panel.registerCloseObserver(() -> {
+				openArchives.remove(finalUrl);
+				table.reformatRow(row);
+			});
+			openArchives.put(url, panel);
+		}
 	}
 
 	@Override
@@ -938,6 +955,22 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
+	@Override
+	public boolean isDatalinkActive(GeneralJavaScriptObject row) {
+		String url = buildArchiveURL(row.invokeFunction(GET_DATA));
+		return isDatalinkActive(url);
+	}
+
+	@Override
+	public boolean isDatalinkActive(String url) {
+		if(!url.toLowerCase().contains("datalink")) {
+			return false;
+		}
+		if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+			url = url.replaceFirst("http:", "https:");
+		}
+		return openArchives.containsKey(url);
+	}
 
 	private void openArchiveUrl(String archiveUrl, GeneralJavaScriptObject row) {
 		if (!archiveUrl.isEmpty() && !archiveUrl.toLowerCase().contains("datalink")) {
@@ -963,7 +996,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			for (MatchResult match = regularExpression.exec(desc.getArchiveProductURI()); match != null; match = regularExpression
 					.exec(desc.getArchiveProductURI())) {
 				String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
-				String valueURI = rowData.getStringProperty(rowColumn);
+				String valueURI = URL.encodeQueryString(rowData.getStringProperty(rowColumn));
 				productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
 			}
 			String url = desc.getArchiveBaseURL() + productURI;

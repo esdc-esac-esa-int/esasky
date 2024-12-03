@@ -362,6 +362,27 @@ public class TabulatorWrapper {
         }
     }
 
+    private native String selectableFormatter(GeneralJavaScriptObject cell, GeneralJavaScriptObject formatterParams) /*-{
+        var isDisabled = false;
+
+        if (formatterParams.isDisabledFunc) {
+            isDisabled = formatterParams.isDisabledFunc(cell);
+        }
+
+        var disabledClass = isDisabled ? "buttonCellDisabled" : "";
+
+        var toolTip = formatterParams.tooltip;
+        if (isDisabled && formatterParams.disabledTooltip) {
+            toolTip = formatterParams.disabledTooltip;
+        }
+
+        var isActive = formatterParams.isActiveFunc(cell);
+        var image = formatterParams.image;
+        var activeClass = isActive ? "toggleButtonOn" : "";
+
+        return "<div class='buttonCell " + disabledClass + " " + activeClass + "' title='" + toolTip + "'><img src='images/" + image + "' width='20px' height='20px'/></div>";
+    }-*/;
+
     private native void onRenderComplete(GeneralJavaScriptObject tableJsObject) /*-{
 
         var rows = tableJsObject.getRows();
@@ -2065,6 +2086,26 @@ public class TabulatorWrapper {
                 return;
             }
 
+            var isDatalinkDisabled = function (cell) {
+                var data = cell.getData();
+                if (data['designation'] && data['designation'].startsWith("Gaia DR3")) {
+                    var hasData =
+                        data['has_epoch_photometry'] ||
+                        data['has_epoch_rv'] ||
+                        data['has_mcmc_gspphot'] ||
+                        data['has_mcmc_msc'] ||
+                        data['has_rvs'] ||
+                        data['has_xp_continuous'] ||
+                        data['has_xp_sampled'];
+                    return !hasData;
+                } else {
+                    return false;
+                }
+            };
+
+            var isArchiveLinkActive = function (cell) {
+                return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isArchiveLinkActive(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+            }
 
             var descriptorMetadata = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getDescriptorMetaData()();
             var activeColumnGroup = [];
@@ -2098,28 +2139,6 @@ public class TabulatorWrapper {
             var rowActiveInTimeViz = function (row) {
                 return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::rowActiveInTimeViz(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(row);
             };
-
-            var selectableFormatter = function (cell, formatterParams) {
-                var isDisabled = false;
-
-                if (formatterParams.isDisabledFunc) {
-                    isDisabled = formatterParams.isDisabledFunc(cell);
-                }
-
-                var disabledClass = isDisabled ? "buttonCellDisabled" : "";
-
-                var toolTip = formatterParams.tooltip;
-                if (isDisabled && formatterParams.disabledTooltip) {
-                    toolTip = formatterParams.disabledTooltip;
-                }
-
-                var isActive = formatterParams.isActiveFunc(cell);
-                    image = formatterParams.inactive_image;
-                    //image = formatterParams.active_image;
-                var activeClass = isActive ? "toggleButtonOn" : "";
-
-                return "<div class='buttonCell " + disabledClass + " " + activeClass + "' title='" + toolTip + "'><img src='images/" + image + "' width='20px' height='20px'/></div>";
-            }
 
             var raName = "";
             var decName = "";
@@ -2225,13 +2244,20 @@ public class TabulatorWrapper {
                     headerTooltip: $wnd.esasky.getInternationalizationText("tabulator_columnHeader_browseProducts"),
                     minWidth: 85,
                     download: true,
-                    formatter: $wnd.esasky.imageButtonFormatter, width: 40, hozAlign: "center", formatterParams: {
+                    formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::selectableFormatter(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;),
+                    width: 40,
+                    hozAlign: "center",
+                    formatterParams: {
                         image: "download_small.png",
-                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_browseProducts")
+                        isDisabledFunc: isDatalinkDisabled,
+                        tooltip: $wnd.esasky.getInternationalizationText("tabulator_browseProducts"),
+                        isActiveFunc: isArchiveLinkActive
                     },
                     cellClick: function (e, cell) {
                         e.stopPropagation();
-                        wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                        if (isDatalinkDisabled(cell) === false) {
+                            wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onLink2ArchiveClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;)(cell.getRow());
+                        }
                     }
                 });
             }
@@ -2307,10 +2333,9 @@ public class TabulatorWrapper {
                     },
                     width: 40,
                     hozAlign: "center",
-                    formatter: selectableFormatter,
+                    formatter: wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::selectableFormatter(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;),
                     formatterParams: {
-                        active_image: "scatterplot_blue.png",
-                        inactive_image: "scatterplot.png",
+                        image: "scatterplot.png",
                         tooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizTooltip"),
                         disabledTooltip: $wnd.esasky.getInternationalizationText("tabulator_timeVizDisabledTooltip"),
                         isDisabledFunc: timeVizButtonDisabled,
@@ -2485,6 +2510,11 @@ public class TabulatorWrapper {
         var formatter, formatterParams, headerFilter, headerFilterFunc, sorter, title, tooltip, cellClick;
         var ucd = columnMeta.ucd ? columnMeta.ucd : "";
         var utype = columnMeta.utype ? columnMeta.utype : "";
+
+        var isArchiveLinkActive = function (cell) {
+            return wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::isArchiveLinkActive(Ljava/lang/String;)(cell.getValue());
+        }
+
         if ((ucd.includes("phys.size") && ucd.includes("meta.file")) || utype.includes("Access.Size")) {
             formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getFileSizeFormatterFunc(*)(wrapper);
             headerFilter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::getNumericFilterEditorFunc(*)(wrapper, table, divId);
@@ -2532,14 +2562,14 @@ public class TabulatorWrapper {
                 wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::onPostcardUrlClicked(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Ljava/lang/String;)(cell.getRow(), cell.getColumn()._column.field);
             }
         } else if (((ucd.includes("meta.dataset") || ucd.includes("meta.product")) && ucd.includes("meta.ref.url")) || utype.includes("Access.Reference")) {
-            formatter = function (cell, formatterParams, onRendered) {
-                return "<div class='buttonCell' title='" + formatterParams.tooltip + "'><img src='images/" + formatterParams.image + "' width='20px' height='20px'/></div>";
-            };
+            formatter = wrapper.@esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorWrapper::selectableFormatter(Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;Lesac/archive/esasky/ifcs/model/client/GeneralJavaScriptObject;);
             formatterParams = {
+                width: 40,
+                hozAlign: "center",
                 image: "download_small.png",
-                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download")
-            }
-
+                tooltip: $wnd.esasky.getInternationalizationText("tabulator_download"),
+                isActiveFunc: isArchiveLinkActive
+            };
             cellClick = function (e, cell) {
                 e.stopPropagation();
                 var rowData = cell.getData();
@@ -2776,6 +2806,7 @@ public class TabulatorWrapper {
 
     public void onDatalinkClicked(final GeneralJavaScriptObject row, final String url) {
         tabulatorCallback.onDatalinkClicked(row, url);
+        this.reformatRow(row);
     }
 
     public void onAccessUrlClicked(String url) {
@@ -2797,12 +2828,21 @@ public class TabulatorWrapper {
 
     public void onLink2ArchiveClicked(final GeneralJavaScriptObject row) {
         tabulatorCallback.onLink2ArchiveClicked(row);
+        this.reformatRow(row);
+    }
+
+    public boolean isArchiveLinkActive(final GeneralJavaScriptObject row) {
+        return tabulatorCallback.isDatalinkActive(row);
+    }
+
+    public boolean isArchiveLinkActive(final String url) {
+        return tabulatorCallback.isDatalinkActive(url);
     }
 
     public void onLink2ArchiveClicked(final GeneralJavaScriptObject row, final String columnName) {
         tabulatorCallback.onLink2ArchiveClicked(row, columnName);
+        this.reformatRow(row);
     }
-
 
     public void onSourcesInPublicationClicked(final GeneralJavaScriptObject rowData) {
         tabulatorCallback.onSourcesInPublicationClicked(rowData);

@@ -57,7 +57,7 @@ public class DatalinkDownloadDialogBox extends MovablePanel {
 
 	public DatalinkDownloadDialogBox(final String url, String title) {
 		super(GoogleAnalytics.CAT_DATALINK, true, true);
-		
+
 		if(title == null || title.isEmpty()) {
 			title = "Datalink";
 		}
@@ -99,7 +99,13 @@ public class DatalinkDownloadDialogBox extends MovablePanel {
 							else if (!links.getAccessUrl().isEmpty()) {
 								String anchorName = "Download";
 								if (!links.getDescription().isEmpty()) {
-									anchorName = links.getDescription();
+									String description = links.getDescription();
+									// Special handling for Gaia, they have a long description for their links, but they want to display only the first part here
+									if (description.contains("Gaia DR3")) {
+										anchorName = description.split(",")[0];
+									} else {
+										anchorName = description;
+									}
 								}
 								if (!links.getContentLength().isEmpty()) {
 									anchorName += links.getTypeAndSizeDisplayText();
@@ -178,7 +184,7 @@ public class DatalinkDownloadDialogBox extends MovablePanel {
 		                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DATALINK, GoogleAnalytics.ACT_DATALINK_LOADFAILED, "Failed to load datalink: " + url);
 
 					}
-				}));
+				}, false));
 
 		datalinkContent.getElement().setId("datalinkContent");
 		datalinkContent.addStyleName("datalinkContent");
