@@ -41,8 +41,10 @@
 	font-size: 15px;
 	cursor:all-scroll;
 	height: 30px;
+	line-height: 30px;
 	text-align: center;
     box-sizing: border-box;
+	padding: 0px 32px 0px 5px;
 }
 
 .datalinkAnchor{
