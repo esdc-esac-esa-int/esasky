@@ -118,7 +118,7 @@ public class ApiCounts extends ApiBase {
     private Boolean checkCountUpdated(DescriptorCountAdapter descriptorCountAdapter) {
         if (descriptorCountAdapter != null) {
             CountStatus countStatus = descriptorCountAdapter.getCountStatus();
-            return !countStatus.hasMoved(descriptorCountAdapter.getDescriptors().get(0));
+            return countStatus.countStillValid(descriptorCountAdapter.getDescriptors().get(0));
         }
         return false;
     }

@@ -92,7 +92,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 		@Override
 		public void run() {
-				if (getCountStatus().hasMoved(descriptor)) {
+				if (!getCountStatus().countStillValid(descriptor)) {
 					filterRequested = true;
 				} else if(getCountStatus().getCount(descriptor) < EsaSkyWebConstants.MOC_FILTER_LIMIT && shouldBeShown){
 					filterRequested = true;
@@ -192,7 +192,7 @@ public class MOCEntity implements GeneralEntityInterface {
     }
 
     public void checkLoadMOC() {
-    	if (getCountStatus().hasMoved(descriptor) && !descriptor.hasSearchArea()) {
+    	if (!getCountStatus().countStillValid(descriptor)) {
     		loadMOCRequested = true;
     	} else {
     		loadMOC();

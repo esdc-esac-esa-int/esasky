@@ -1,5 +1,6 @@
 package esac.archive.esasky.cl.web.client.status;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 
 public class CountDetails {
@@ -7,6 +8,7 @@ public class CountDetails {
     private Integer count;
     private Long updateTime;
     private SkyViewPosition skyViewPosition;
+    private SearchArea searchArea;
     private boolean markedForRemoval;
 
     public CountDetails(Integer count) {
@@ -38,6 +40,14 @@ public class CountDetails {
 	public void setSkyViewPosition(SkyViewPosition skyViewPosition) {
 		this.skyViewPosition = skyViewPosition;
 	}
+
+    public void setSearchArea(SearchArea searchArea) {
+        this.searchArea = searchArea;
+    }
+
+    public SearchArea getSearchArea() {
+        return this.searchArea;
+    }
 
     public void markForRemoval() {
         this.markedForRemoval = true;

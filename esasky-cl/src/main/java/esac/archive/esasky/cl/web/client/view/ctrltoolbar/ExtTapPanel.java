@@ -16,7 +16,6 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.MainLayoutPanel;
 import esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider;
-import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.MovableResizablePanel;
 import esac.archive.esasky.cl.web.client.view.common.buttons.EsaSkyButton;
 import esac.archive.esasky.cl.web.client.view.common.icons.Icons;
@@ -46,7 +45,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
     private ESASkyMultiRangeSlider slider;
 
     private final List<TreeMapChanged> treemapObservers = new LinkedList<>();
-    private boolean fovLimiterEnabled;
     public enum TabIndex {TREEMAP, REGISTRY, VIZIER, ESA}
 
     public interface Resources extends ClientBundle {
@@ -79,15 +77,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             DescriptorRepository.getInstance().resetExternalDataCenterDescriptors();
             header.removeActionWidget(resetTreemapBtn);
         });
-
-
-
-        fovLimiterEnabled = true;
-        EsaSkySwitch switchBtn = new EsaSkySwitch("fovLimiterSwitch", fovLimiterEnabled,
-                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
-                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted_tooltip"));
-        switchBtn.addStyleName("globalTapPanel__fovSwitch");
-
 
         tabPanel = new TabLayoutPanel(50, Style.Unit.PX );
         tabPanel.addStyleName("extTapPanel__tabPanel");
@@ -136,11 +125,9 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             }
 
             if (selectedTabIndex != TabIndex.TREEMAP.ordinal()) {
-                header.addActionWidget(switchBtn);
                 header.setText(TextMgr.getInstance().getText("treeMap_" + EntityContext.EXT_TAP));
                 header.removeActionWidget(resetTreemapBtn);
             } else {
-                header.removeActionWidget(switchBtn);
                 if (hasCustomDescriptor()) {
                     header.addActionWidget(resetTreemapBtn);
                 }
@@ -148,14 +135,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
             }
 
         });
-
-
-        switchBtn.addClickHandler(event -> {
-            setFovLimiterEnabled(!fovLimiterEnabled);
-            switchBtn.setChecked(fovLimiterEnabled);
-        });
-
-        setFovLimiterEnabled(fovLimiterEnabled);
 
         mainContainer.add(header);
         mainContainer.add(tabPanel);
@@ -344,13 +323,6 @@ public class ExtTapPanel extends MovableResizablePanel<ExtTapPanel> {
         for(TreeMapChanged observer : treemapObservers){
             observer.onClose();
         }
-    }
-
-    public void setFovLimiterEnabled(boolean enabled) {
-        fovLimiterEnabled = enabled;
-        registryPanel.setFovLimiterEnabled(fovLimiterEnabled);
-        vizierPanel.setFovLimiterEnabled(fovLimiterEnabled);
-        esaPanel.setFovLimiterEnabled(fovLimiterEnabled);
     }
 
     private boolean hasCustomDescriptor() {

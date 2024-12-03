@@ -1,11 +1,15 @@
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -18,10 +22,12 @@ import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEventHandler;
 import esac.archive.esasky.cl.web.client.event.exttap.TapRegistrySelectEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.ifcs.model.shared.GeoFeature;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.ColumnSelectorPopupPanel;
 import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
+import esac.archive.esasky.cl.web.client.view.common.EsaSkySwitch;
 import esac.archive.esasky.cl.web.client.view.common.GlassFlowPanel;
 import esac.archive.esasky.cl.web.client.view.common.LoadingSpinner;
 import esac.archive.esasky.cl.web.client.view.common.buttons.CloseButton;
@@ -38,12 +44,17 @@ import esac.archive.esasky.ifcs.model.shared.ESASkyColors;
 import esac.archive.esasky.ifcs.model.shared.EsaSkyConstants;
 import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public class GlobalTapPanel extends FlowPanel {
-
 
     public interface TapDescriptorListMapper extends ObjectMapper<TapDescriptorList> {
     }
@@ -63,7 +74,7 @@ public class GlobalTapPanel extends FlowPanel {
     private LoadingSpinner loadingSpinner;
     private TabulatorCallback tabulatorCallback;
     private boolean initialDataLoaded = false;
-    private boolean fovLimiterEnabled;
+    private boolean fovLimiterEnabled = false;
     private static final String TABLE_NAME_COL = "table_name";
     private static final String DESCRIPTION_COL = "description";
     private static final String ACCESS_URL_COL = "access_url";
@@ -79,6 +90,10 @@ public class GlobalTapPanel extends FlowPanel {
     public enum Modes {REGISTRY, VIZIER, ESA}
 
     private final Modes mode;
+
+    private static final Map<String, Boolean> tapGeoFeatures = new HashMap<>();
+
+    private final EsaSkySwitch fovSwitch;
 
 
     public interface Resources extends ClientBundle {
@@ -96,6 +111,9 @@ public class GlobalTapPanel extends FlowPanel {
         this.style = this.resources.style();
         this.style.ensureInjected();
         this.mode = mode;
+        fovSwitch = new EsaSkySwitch("fovLimiterSwitch_" + mode, fovLimiterEnabled,
+                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted"),
+                TextMgr.getInstance().getText("global_tap_panel_toggle_fov_restricted_tooltip"));
         initView();
     }
 
@@ -148,6 +166,13 @@ public class GlobalTapPanel extends FlowPanel {
             }
         };
 
+        fovSwitch.addStyleName("globalTapPanel__fovSwitch");
+        fovSwitch.addClickHandler(event -> {
+            fovLimiterEnabled = !fovLimiterEnabled;
+            fovSwitch.setChecked(fovLimiterEnabled);
+        });
+        fovSwitch.setVisible(false);
+
         searchBox.addKeyUpHandler(event -> {
             searchDelayTimer.cancel();
             searchDelayTimer.schedule(500);
@@ -173,10 +198,6 @@ public class GlobalTapPanel extends FlowPanel {
         searchBoxContainer.add(searchBox);
         searchBoxContainer.add(searchClearBtn);
 
-        FlowPanel backButtonContainer = new FlowPanel();
-        backButtonContainer.setWidth("10px");
-        backButtonContainer.getElement().getStyle().setPropertyPx("marginLeft", 10);
-
         backButton = new EsaSkyButton(Icons.getBackArrowIcon());
         backButton.setBackgroundColor("#aaa");
         backButton.setRoundStyle();
@@ -184,11 +205,12 @@ public class GlobalTapPanel extends FlowPanel {
         backButton.addClickHandler(event -> {
             setBackButtonVisible(false);
             showTable(tapServicesWrapper);
+            fovSwitch.setVisible(false);
         });
-        backButtonContainer.add(backButton);
 
-        searchRowContainer.add(backButtonContainer);
+        searchRowContainer.add(backButton);
         searchRowContainer.add(searchBoxContainer);
+        searchRowContainer.add(fovSwitch);
 
         tabulatorCallback = new TabulatorCallback();
 
@@ -301,7 +323,7 @@ public class GlobalTapPanel extends FlowPanel {
     }
 
     private void loadVizierData() {
-        exploreTapServiceTables("http://tapvizier.cds.unistra.fr/TAPVizieR/tap", "VizieR");
+        exploreTapServiceTables("http://tapvizier.cds.unistra.fr/TAPVizieR/tap", "VizieR", Optional.of(true));
         tabulatorCallback.storedAccessUrl = "http://tapvizier.cds.unistra.fr/TAPVizieR/tap";
         tabulatorCallback.storedName = "VizieR";
         tabulatorCallback.storedPublisher = "CDS VizieR service";
@@ -373,6 +395,44 @@ public class GlobalTapPanel extends FlowPanel {
         });
     }
 
+    private void getCapabilities(String tapUrl) {
+        String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
+                + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_CAPABILITIES_REQUEST + "&"
+                + EsaSkyConstants.EXT_TAP_URL_FLAG + "=" + tapUrl;
+        JSONUtils.getJSONFromUrl(url, new RequestCallback() {
+            @Override
+            public void onResponseReceived(Request request, Response response) {
+                if (response.getStatusCode() == 200) {
+                    GeneralJavaScriptObject responseObj = GeneralJavaScriptObject.createJsonObject(response.getText());
+
+                    Set<GeoFeature> features = new HashSet<>();
+                    for (GeneralJavaScriptObject featureObject : GeneralJavaScriptObject.convertToArray(responseObj.getProperty("features"))) {
+                        try {
+                            features.add(GeoFeature.valueOf(featureObject.toString()));
+                        } catch (IllegalArgumentException ignore) {}
+                    }
+                    boolean hasFoVSupport = features.containsAll(Arrays.asList(GeoFeature.CONTAINS, GeoFeature.CIRCLE, GeoFeature.POLYGON));
+                    tapGeoFeatures.put(tapUrl, hasFoVSupport);
+                    setFoVState(hasFoVSupport);
+                } else {
+                    Log.warn(this.getClass().getSimpleName() + " Capabilities request got a bad response code: " + response.getStatusCode() + ": " + response.getStatusText());
+                    setFoVState(true);
+                }
+            }
+
+            @Override
+            public void onError(Request request, Throwable exception) {
+                setFoVState(true);
+            }
+        });
+    }
+
+    private void setFoVState(boolean hasFoVSupport) {
+        fovLimiterEnabled = hasFoVSupport;
+        fovSwitch.setChecked(hasFoVSupport);
+        fovSwitch.setVisible(true);
+    }
+
     private void queryExternalTapServiceMetadata(String tapUrl, String query, JSONUtils.IJSONRequestCallback callback) {
         setIsLoading(true);
 
@@ -385,7 +445,7 @@ public class GlobalTapPanel extends FlowPanel {
         JSONUtils.getJSONFromUrl(url, callback, true);
     }
 
-    public void exploreTapServiceTables(String tapUrl, String mission) {
+    public void exploreTapServiceTables(String tapUrl, String mission, final Optional<Boolean> fovCapabilityOverride) {
         setIsLoading(true);
 
         // First we attempt to get tables from the tap_schema.
@@ -403,6 +463,14 @@ public class GlobalTapPanel extends FlowPanel {
                 setIsLoading(false);
                 setBackButtonVisible(true);
                 GlobalTapPanel.this.onDataLoaded(responseText, tapTablesWrapper);
+
+                if (tapGeoFeatures.containsKey(tapUrl)) {
+                    setFoVState(tapGeoFeatures.get(tapUrl));
+                } else if (fovCapabilityOverride.isPresent()) {
+                    setFoVState(fovCapabilityOverride.get());
+                } else {
+                    getCapabilities(tapUrl);
+                }
             }
 
             @Override
@@ -490,10 +558,6 @@ public class GlobalTapPanel extends FlowPanel {
         backButton.setVisible(visible && !mode.equals(Modes.VIZIER));
     }
 
-    public void setFovLimiterEnabled(boolean enabled) {
-        fovLimiterEnabled = enabled;
-    }
-
     // Tabulator interaction
     private class TabulatorCallback extends DefaultTabulatorCallback {
         private String storedAccessUrl;
@@ -528,7 +592,7 @@ public class GlobalTapPanel extends FlowPanel {
 
             if (!rowData.hasProperty(TABLE_NAME_COL)) {
                 // Query for all tables in tap_schema.tables
-                exploreTapServiceTables(accessUrl, storedName);
+                exploreTapServiceTables(accessUrl, storedName, Optional.<Boolean>empty());
             }
         }
 

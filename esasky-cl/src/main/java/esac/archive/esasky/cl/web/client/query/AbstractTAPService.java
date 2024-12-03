@@ -143,5 +143,4 @@ public abstract class AbstractTAPService {
         }
         return containsOrIntersect + shape + ")";
     }
-
 }

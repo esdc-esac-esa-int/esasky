@@ -5,11 +5,13 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Timer;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPopEvent;
 import esac.archive.esasky.cl.web.client.event.ProgressIndicatorPushEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapNewDataEvent;
 import esac.archive.esasky.cl.web.client.model.DescriptorCountAdapter;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
@@ -56,11 +58,13 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 
 	private boolean isValidUpdate() {
 		boolean isValid = true;
+		double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+		SearchArea searchArea = DescriptorRepository.getInstance().getSearchArea();
 		if(countStatus.getUpdateTime(descriptor) != null && countStatus.getUpdateTime(descriptor) > timecall) {
 			Log.warn(this.getClass().getSimpleName() + " discarded server answer with timecall="
 					+ timecall + " , dif:" + (countStatus.getUpdateTime(descriptor) - timecall));
 			isValid = false;
-		} else if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() > descriptor.getFovLimit()){
+		} else if(DescriptorRepository.tapAreaTooLargeForExternal(fov, searchArea)) {
 			Log.warn(this.getClass().getSimpleName() + " discarded server answer to too large fov: "
 					+ CoordinateUtils.getCenterCoordinateInJ2000().getFov());
 			isValid = false;
@@ -85,7 +89,7 @@ public class ExtTapCheckCallback extends JsonRequestCallback {
 			GeneralJavaScriptObject metadata = responseObj.getProperty("metadata");
 			GeneralJavaScriptObject[] formattedDataArr = GeneralJavaScriptObject.convertToArray(ExtTapUtils.formatExternalTapData(data, metadata));
 			logReceived(formattedDataArr.length);
-			countStatus.setCountDetails(descriptor, formattedDataArr.length, System.currentTimeMillis(), CoordinateUtils.getCenterCoordinateInJ2000());
+			countStatus.setCountDetails(descriptor, formattedDataArr.length, System.currentTimeMillis(), CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getSearchArea());
 			DescriptorCountAdapter dca = createDescriptors(formattedDataArr);
 			CommonEventBus.getEventBus().fireEvent(new TreeMapNewDataEvent(Arrays.asList(dca)));
 

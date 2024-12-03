@@ -58,7 +58,7 @@ public class ApiExtTap extends ApiBase{
 	
 	private void getExtTapCount(final CommonTapDescriptor parent, final JavaScriptObject widget) {
 		final CountStatus countStatus = controller.getRootPresenter().getDescriptorRepository().getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus();
-		if(!countStatus.hasMoved(parent)) {
+		if(countStatus.countStillValid(parent)) {
 			JSONObject obsCount = countToJSON(parent, countStatus);
 
 			GoogleAnalytics.sendEventWithURL(googleAnalyticsCat, GoogleAnalytics.ACT_PYESASKY_COUNT, obsCount.toString());
