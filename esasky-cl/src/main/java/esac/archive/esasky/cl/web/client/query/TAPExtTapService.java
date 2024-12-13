@@ -13,6 +13,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -147,7 +148,13 @@ public class TAPExtTapService extends AbstractTAPService {
 
     private String cointainsPointSearch(CommonTapDescriptor descriptor, SearchArea searchArea) {
         String areaString = searchArea == null ? screenCircle() : areaToAdqlString(searchArea);
-        return "1=CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), " + areaString + ")";
+
+        String containsQuery = "CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), " + areaString + ")";
+        if (Objects.equals(descriptor.getMission(), "ESO")) {
+            return containsQuery + "=1";
+        } else {
+            return "1=" +containsQuery;
+        }
     }
 
     private String areaToAdqlString(SearchArea searchArea) {
