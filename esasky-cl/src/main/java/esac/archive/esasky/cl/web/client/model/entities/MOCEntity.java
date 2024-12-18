@@ -8,6 +8,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
+import esac.archive.esasky.cl.web.client.api.ApiConstants;
 import esac.archive.esasky.cl.web.client.callback.MocCallback;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.LineStyle;
@@ -51,6 +52,7 @@ public class MOCEntity implements GeneralEntityInterface {
     private boolean filterRequested = false;
     private boolean loadMOCRequested = false;
     private boolean freshLoad = true;
+	private boolean isHealpix = false;
     private double size;
     private TableFilterObserver filterObserver;
     Map<Integer, Map<Long, Integer>> countMap = new HashMap<Integer, Map<Long, Integer>>();
@@ -233,7 +235,7 @@ public class MOCEntity implements GeneralEntityInterface {
     
     private int getVisibleCount() {
     	
-    	if(overlay != null) {
+    	if(overlay != null && !isHealpix) {
     		currentVisibleCount = AladinLiteWrapper.getAladinLite().getVisibleCountInMOC(overlay);
     		return currentVisibleCount;
     	}
@@ -346,7 +348,11 @@ public class MOCEntity implements GeneralEntityInterface {
 	public void setSizeRatio(double size) {
 		this.size = size;
 		if(overlay != null) {
-    		overlay.invokeFunction("setOpacity", size);
+			if (isHealpix) {
+				overlay.setProperty("opacity", size);
+			} else {
+				overlay.invokeFunction("setOpacity", size);
+			}
     	}
 	}
 	
@@ -380,18 +386,27 @@ public class MOCEntity implements GeneralEntityInterface {
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
-		
+
+		isHealpix = false;
 		overlay.invokeFunction("dataFromESAJSON", data);
 		onFoVChanged();
 	}
 	
 	public void addJSON(final GeneralJavaScriptObject data, GeneralJavaScriptObject options) {
-		if(overlay == null) {
-			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+		if (Objects.equals(options.getStringProperty(ApiConstants.MOC_MODE), ApiConstants.MOC_HEALPIX)) {
+			isHealpix = true;
+			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createHealpixMoc(data, options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
+		} else {
+			isHealpix = false;
+			if(overlay == null) {
+				overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
+				AladinLiteWrapper.getAladinLite().addMOC(overlay);
+			}
+
+			overlay.invokeFunction("dataFromJSON", data);
 		}
-		
-		overlay.invokeFunction("dataFromJSON", data);
+
 		onFoVChanged();
 	}
 	
@@ -399,7 +414,11 @@ public class MOCEntity implements GeneralEntityInterface {
 		
 		MocRepository.getInstance().removeEntity(this);
 		clearAll();
-		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
+		if (overlay != null && isHealpix) {
+			overlay.invokeFunction("delete");
+		} else {
+			AladinLiteWrapper.getAladinLite().removeMOC(overlay);
+		}
 		overlay = null;
 		setShouldBeShown(false);
 		if(getCountStatus() != null) {
@@ -410,7 +429,12 @@ public class MOCEntity implements GeneralEntityInterface {
 	
 	public void closeFromAPI() {
 		clearAll();
-		AladinLiteWrapper.getAladinLite().removeMOC(overlay);
+		if (overlay != null && isHealpix) {
+			overlay.invokeFunction("delete");
+		} else {
+			AladinLiteWrapper.getAladinLite().removeMOC(overlay);
+		}
+
 		overlay = null;
 		setShouldBeShown(false);
 		if(getCountStatus() != null) {
@@ -427,14 +451,16 @@ public class MOCEntity implements GeneralEntityInterface {
 			overlay = (GeneralJavaScriptObject) AladinLiteWrapper.getAladinLite().createQ3CMOC(options);
 			AladinLiteWrapper.getAladinLite().addMOC(overlay);
 		}
-		
-		AladinLiteWrapper.getAladinLite().clearMOC(overlay);
 
-		int minOrder = MocRepository.getMinOrderFromFoV();
-		int maxOrder = MocRepository.getMaxOrderFromFoV();
+		if (!isHealpix) {
+			AladinLiteWrapper.getAladinLite().clearMOC(overlay);
+			int minOrder = MocRepository.getMinOrderFromFoV();
+			int maxOrder = MocRepository.getMaxOrderFromFoV();
 
-    	overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
-    	overlay.invokeFunction("reportChange");
+			overlay.invokeFunction("setShowOrders", minOrder, maxOrder);
+			overlay.invokeFunction("reportChange");
+		}
+
 
 	}
 	
@@ -476,7 +502,7 @@ public class MOCEntity implements GeneralEntityInterface {
 	};
 	
 	public void onFoVChanged() {
-		 if(shouldBeShown && overlay != null) {
+		 if(shouldBeShown && overlay != null && !isHealpix) {
 
 			int minOrder = MocRepository.getMinOrderFromFoV();
 			int maxOrder = MocRepository.getMaxOrderFromFoV();
@@ -735,8 +761,8 @@ public class MOCEntity implements GeneralEntityInterface {
     @Override
     public void setLineStyle(String lineStyle) {
     	this.lineStyle = lineStyle;
-    	if(overlay != null) {
-    		overlay.invokeFunction("setLineStyle", lineStyle);
+    	if(overlay != null && !isHealpix) {
+			overlay.invokeFunction("setLineStyle", lineStyle);
     	}
     }
 
@@ -768,7 +794,12 @@ public class MOCEntity implements GeneralEntityInterface {
     @Override
     public void setPrimaryColor(String color) {
     	if(overlay != null) {
-			overlay.invokeFunction("setColor", color);
+			if (isHealpix) {
+				overlay.setProperty("color", color);
+				overlay.invokeFunction("reportChange");
+			} else {
+				overlay.invokeFunction("setColor", color);
+			}
 		}
     }
     
