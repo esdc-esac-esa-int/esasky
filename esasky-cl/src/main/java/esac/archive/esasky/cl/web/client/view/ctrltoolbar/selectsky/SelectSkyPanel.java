@@ -230,7 +230,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 			for(SkyRow sky: skies){
 				sky.removeOnlyOneSkyActiveStyle();
 				slider.removeStyleName("collapse");
-				if(sky.getSelectedHips().isDefaultHIPS()) {
+				if(sky.getSelectedHips() != null && sky.getSelectedHips().isDefaultHIPS()) {
 					sky.disableDeleteButton();
 				}
 				
