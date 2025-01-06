@@ -37,16 +37,12 @@ public class ImageConfigPanel extends CollapsablePanel {
 
     private boolean blockCutSliderEvent = false;
 
-    public ImageConfigPanel() {
-        this(false);
+    public ImageConfigPanel(boolean isCollapsed, boolean showTileFormat) {
+        super(isCollapsed, showTileFormat ? 255 : 223);
+        initView(showTileFormat);
     }
 
-    public ImageConfigPanel(boolean isCollapsed) {
-        super(isCollapsed);
-        initView();
-    }
-
-    private void initView() {
+    private void initView(boolean showTileFormat) {
         FlexTable flexTable = new FlexTable();
         flexTable.setWidth("100%");
         flexTable.getElement().getStyle().setPadding(15, Style.Unit.PX);
@@ -144,8 +140,10 @@ public class ImageConfigPanel extends CollapsablePanel {
             layer.setImageFormat(format);
         });
 
-        flexTable.setWidget(11, 0, tileFormatLabel);
-        flexTable.setWidget(11, 1, tileFormatDropdownMenu);
+        if(showTileFormat) {
+	        flexTable.setWidget(11, 0, tileFormatLabel);
+	        flexTable.setWidget(11, 1, tileFormatDropdownMenu);
+        }
 
         if (layer != null) {
             setDefaultValues();

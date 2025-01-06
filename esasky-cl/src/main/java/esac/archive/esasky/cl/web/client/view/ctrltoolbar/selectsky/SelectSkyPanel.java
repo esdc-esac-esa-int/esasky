@@ -207,7 +207,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	
 	@Override
 	public SkyRow createSky(boolean sendConvenienveEvent, String category, boolean isDefault){
-		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl, category, isDefault, skies.isEmpty(), null);
+		SkyRow newSky = new SkyRow(skiesMenu, hipsFromUrl, category, isDefault, skies.isEmpty(), null, true);
 		newSky.registerObserver(this);
 		skyTable.insertItem(newSky);
 		player.addEntryToPlayer(newSky);
@@ -382,7 +382,7 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 		entry.setWavelength(HipsWavelength.USER);
 		instance.skiesMenu.getMenuEntries().add(entry);
 
-		SkyRow skyRow = new SkyRow(instance.skiesMenu, hips.getSurveyName(), skies.isEmpty(), hips.getSurveyName());
+		SkyRow skyRow = new SkyRow(instance.skiesMenu, hips.getSurveyName(), skies.isEmpty(), hips.getSurveyName(), false);
 		skyRow.registerObserver(instance);
 		instance.skyTable.insertItem(skyRow);
 		instance.player.addEntryToPlayer(skyRow);

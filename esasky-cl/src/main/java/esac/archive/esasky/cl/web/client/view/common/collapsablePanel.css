@@ -1,5 +1,4 @@
 #collapsablePanel {
-    height: 0;
     overflow: hidden;
     visibility: hidden;
     border-radius: 10px;
@@ -10,7 +9,6 @@
 }
 
 #collapsablePanel.expanded {
-    height: 255px;
     visibility: visible;
     background: rgba(255, 255, 255, 0.1);
 
