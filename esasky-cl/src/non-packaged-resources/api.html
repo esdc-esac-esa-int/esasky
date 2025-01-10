@@ -1,13 +1,13 @@
 <script>
     var msg_func = function(id){
      var cmd = document.getElementById(id).innerHTML;
-     console.log(cmd)
-     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"')
+     console.log(cmd);
+     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"');
      var esaskyFrame = document.getElementsByClassName("iframe-container")[0].children[0];
-     console.log(cmd2)
-     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int')
+     console.log(cmd2);
+     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int');
      var input = document.getElementById("messageinput");
-     console.log(input)
+     console.log(input);
      input.value=cmd;
     }
 </script>
