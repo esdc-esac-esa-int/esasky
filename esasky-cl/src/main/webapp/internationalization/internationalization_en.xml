@@ -5642,5 +5642,8 @@
 	<text key="tabulator_timeVizToggleTooltip">
 		Only show items with Time Series data
 	</text>
+	<text key="header_api">
+		ESASky API
+	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

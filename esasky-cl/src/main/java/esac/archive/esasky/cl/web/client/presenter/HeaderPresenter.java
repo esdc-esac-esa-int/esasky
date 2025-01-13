@@ -102,6 +102,8 @@ public class HeaderPresenter {
 
         void addNewsletterClickHandler(ClickHandler handler);
 
+        void addApiClickHandler(ClickHandler handler);
+
         void addAboutUsClickHandler(ClickHandler handler);
 
         void addAcknowledgeClickHandler(ClickHandler handler);
@@ -274,6 +276,12 @@ public class HeaderPresenter {
         view.addNewsletterClickHandler(event -> {
             GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_NEWSLETTER, "");
             Window.open(EsaSkyWebConstants.ESA_SKY_NEWSLETTER_URL, "_blank", "");
+            view.closeDropdownMenu();
+        });
+
+        view.addApiClickHandler(event -> {
+            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_API, "");
+            Window.open(EsaSkyWebConstants.ESA_SKY_API_URL, "_blank", "");
             view.closeDropdownMenu();
         });
 

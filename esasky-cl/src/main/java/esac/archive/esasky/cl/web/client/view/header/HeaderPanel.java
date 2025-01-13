@@ -83,6 +83,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	private Anchor dropdownVideoTutorialsEntry = new Anchor(TextMgr.getInstance().getText("header_videoTutorials"));
 	private Anchor dropdownReleaseNotesEntry = new Anchor(TextMgr.getInstance().getText("header_releaseNotes"));
 	private Anchor dropdownNewsletterEntry = new Anchor(TextMgr.getInstance().getText("header_newsletter"));
+	private Anchor dropdownApiEntry = new Anchor(TextMgr.getInstance().getText("header_api"));
 	private Anchor dropdownAboutUsEntry = new Anchor(TextMgr.getInstance().getText("header_aboutUs"));
 	private Anchor dropdownAcknowledgeEntry = new Anchor(TextMgr.getInstance().getText("header_acknowledge"));
 
@@ -264,6 +265,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownVideoTutorialsEntry.getElement().setId("header__dropdown__tutorials");
 		dropdownReleaseNotesEntry.getElement().setId("header__dropdown__releasenotes");
 		dropdownNewsletterEntry.getElement().setId("header__dropdown__newsletter");
+		dropdownApiEntry.getElement().setId("header__dropdown__api");
 		dropdownAboutUsEntry.getElement().setId("header__dropdown__aboutus");
 		dropdownAcknowledgeEntry.getElement().setId("header__dropdown_acknowledge");
 
@@ -271,6 +273,7 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 		dropdownContent.add(dropdownVideoTutorialsEntry);
 		dropdownContent.add(dropdownReleaseNotesEntry);
 		dropdownContent.add(dropdownNewsletterEntry);
+		dropdownContent.add(dropdownApiEntry);
 		dropdownContent.add(dropdownAboutUsEntry);
 		dropdownContent.add(dropdownAcknowledgeEntry);
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_EVA_MENU)) {
@@ -617,6 +620,11 @@ public class HeaderPanel extends Composite implements HeaderPresenter.View {
 	@Override
 	public void addNewsletterClickHandler(ClickHandler clickHandler) {
 		dropdownNewsletterEntry.addClickHandler(clickHandler);
+	}
+
+	@Override
+	public void addApiClickHandler(ClickHandler clickHandler) {
+		dropdownApiEntry.addClickHandler(clickHandler);
 	}
 
 	@Override

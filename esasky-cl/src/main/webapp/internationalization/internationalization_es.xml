@@ -4133,5 +4133,9 @@
 	<text key="tabulator_timeVizToggleTooltip">
 		Mostrar solo elementos con datos de Series Temporales
 	</text>
+	<text key="header_api">
+		ESASky API
+	</text>
+
 
 </Internationalization>
