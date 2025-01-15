@@ -254,7 +254,8 @@ public class ImageConfigPanel extends CollapsablePanel {
     }
     public void setCuts(double[] cuts) {
         if (cutSlider.isSliderReady()) {
-            NumberFormat numberFormat = NumberFormat.getFormat("0.0");
+            int dynamicDecimalPlaces = calculateDecimalPlaces(cuts[0], cuts[1]);
+            NumberFormat numberFormat = NumberFormat.getFormat(createFormatString(dynamicDecimalPlaces));
 
             cutSlider.setHandleValues(cuts[0], cuts[1]);
             layer.setCuts(cuts[0], cuts[1]);
@@ -326,20 +327,42 @@ public class ImageConfigPanel extends CollapsablePanel {
         cutSlider = new ESASkyMultiRangeSlider(min, max, 150);
         cutSlider.addStyleName("treeMap__slider");
         sliderContainer.add(cutSlider);
-
-        NumberFormat numberFormat = NumberFormat.getFormat("0.0");
-
+        
         cutSlider.registerValueChangeObserver((low, high) -> {
             if (!blockCutSliderEvent) {
                 layer.setCuts(low, high);
             }
+            int dynamicDecimalPlaces = calculateDecimalPlaces(low, high);
+            NumberFormat dynamicNumberFormat = NumberFormat.getFormat(createFormatString(dynamicDecimalPlaces));
 
-            cutLeftLabel.setText(numberFormat.format(low));
-            cutRightLabel.setText(numberFormat.format(high));
+            cutLeftLabel.setText(dynamicNumberFormat.format(low));
+            cutRightLabel.setText(dynamicNumberFormat.format(high));
         });
 
         return sliderContainer;
 
+    }
+    
+    private int calculateDecimalPlaces(double min, double max) {
+        double range = Math.abs(max - min);
+        if (range >= 100) {
+            return 0;
+        } else if (range >= 1) {
+            return 1;
+        } else {
+            return 5;
+        }
+    }
+
+    private String createFormatString(int decimalPlaces) {
+        StringBuilder format = new StringBuilder("0");
+        if (decimalPlaces > 0) {
+            format.append(".");
+            for (int i = 0; i < decimalPlaces; i++) {
+                format.append("0");
+            }
+        }
+        return format.toString();
     }
 
     @Override
