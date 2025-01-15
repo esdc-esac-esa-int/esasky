@@ -1939,6 +1939,34 @@
 		Magnitude &lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="HSC_v3_1_sigmavalues">
 		Magnitude Error &lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="HCV_v1_0_match_id">
+		Source </text>
+	<text key="HCV_v1_0_group_id">
+		Group ID </text>
+	<text key="HCV_v1_0_subgroup">
+		Subgroup </text>
+	<text key="HCV_v1_0_p_cl">
+		P.Cl. </text>
+	<text key="HCV_v1_0_e_cl">
+		E.Cl. </text>
+	<text key="HCV_v1_0_num_filters">
+		#Filters </text>
+	<text key="HCV_v1_0_filter">
+		Filter </text>
+	<text key="HCV_v1_0_num_in_lc">
+		nLC </text>
+	<text key="HCV_v1_0_varqual">
+		VarQual </text>
+	<text key="HCV_v1_0_varfil">
+		VarFil </text>
+	<text key="HCV_v1_0_hcv_mean_mag">
+		m<sub>HCV</sub> </text>
+	<text key="HCV_v1_0_hsc_mean_mag">
+		m<sub>HSC</sub> </text>
+	<text key="HCV_v1_0_mad">
+		MAD </text>
+	<text key="HCV_v1_0_chi2">
+		χ<sup>2</sup><sub>red</sub> </text>
 	<text key="Herschel_HPPSC_flux">
 		Flux &lt;i&gt;(mJy)&lt;/i&gt; </text>
 	<text key="Herschel_HPPSC_rms">
