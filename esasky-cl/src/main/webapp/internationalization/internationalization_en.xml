@@ -1057,6 +1057,24 @@
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
+	<text key="resultsPresenter_helpDescription_catalogues_HCV">
+		The Hubble Catalog of Variables (HCV) is the first full, homogeneous, catalog of variable sources found in the
+		Hubble Source Catalog (HSC), which is built out of publicly available images obtained with the WFPC2, ACS and
+		WFC3 instruments onboard the Hubble Space Telescope. The HCV is the deepest catalog of variables available.
+		It includes variable stars in our Galaxy and nearby galaxies, as well as transients and variable active
+		galactic nuclei.
+
+		In total, the HCV includes 84,428 candidate variable sources (out of 3.7 million HSC sources that were
+		searched for variability) with V &lte 27 mag; for 11,115 of them the variability is detected in more than one
+		filter. The data points in a light curve range from 5 to 120, the time baseline ranges from under a day to
+		over 15 years, while ∼8% of variables have amplitudes in excess of 1 mag.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/hst/hcv-help
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_Herschel-HPPSC-070">
 		The Herschel-PACS Point Source Catalogue (HPPSC) contains about
 		half million entries
