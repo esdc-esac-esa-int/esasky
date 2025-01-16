@@ -1065,7 +1065,7 @@
 		galactic nuclei.
 
 		In total, the HCV includes 84,428 candidate variable sources (out of 3.7 million HSC sources that were
-		searched for variability) with V &lte 27 mag; for 11,115 of them the variability is detected in more than one
+		searched for variability) with V &lt;= 27 mag; for 11,115 of them the variability is detected in more than one
 		filter. The data points in a light curve range from 5 to 120, the time baseline ranges from under a day to
 		over 15 years, while ∼8% of variables have amplitudes in excess of 1 mag.
 
