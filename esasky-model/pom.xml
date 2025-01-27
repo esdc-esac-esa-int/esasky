@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>7.0.4-beta3</version>
+		<version>7.0.4-beta4</version>
 	</parent>
 	<build>
 		<testSourceDirectory>${project.basedir}/src/test/</testSourceDirectory>
