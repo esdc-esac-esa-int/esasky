@@ -147,7 +147,17 @@ public class TAPExtTapService extends AbstractTAPService {
     }
 
     private String cointainsPointSearch(CommonTapDescriptor descriptor, SearchArea searchArea) {
-        String areaString = searchArea == null ? screenCircle() : areaToAdqlString(searchArea);
+        String areaString;
+        // Disable ESO Polygon search for now. They require the polygon vertices to be in counterclockwise order,
+        // i.e. the "left" side is the "inside" where we search for objects. We don't know in which order the vertices
+        // come in the SearchArea object.
+        if (searchArea == null) {
+            areaString = screenCircle();
+        } else if (!searchArea.isCircle() && "ESO".equals(descriptor.getMission())) {
+            areaString = screenCircle();
+        } else {
+            areaString = areaToAdqlString(searchArea);
+        }
 
         String containsQuery = "CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), " + areaString + ")";
         if (Objects.equals(descriptor.getMission(), "ESO")) {
