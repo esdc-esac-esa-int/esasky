@@ -67,6 +67,8 @@ public class HiPS {
     JavaScriptObject files;
     
     boolean isReversedColorMap = false;
+
+    String creatorDid;
     
     public String getMission() {
         return mission;
@@ -251,6 +253,13 @@ public class HiPS {
 	public void setDefaultHIPS(boolean defaultHIPS) {
 		this.defaultHIPS = defaultHIPS;
 	}
+
+    public String getCreatorDid() {
+        return creatorDid;
+    }
+    public void setCreatorDid(String creatorDid) {
+        this.creatorDid = creatorDid;
+    }
 
     public static HiPS fromImageLayer(ImageLayer imageLayer, String category) {
         HiPS hips = new HiPS();
