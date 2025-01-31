@@ -506,6 +506,23 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			}
 			payload.deleteCharAt(payload.length() - 1);
 			ddForm.setField(idColumn, payload.toString());
+			int queryStringIndex = bulkDownloadUrl.indexOf("?");
+			if(queryStringIndex != -1) {
+				String queryString = bulkDownloadUrl.substring(queryStringIndex + 1);
+				bulkDownloadUrl = bulkDownloadUrl.substring(0, queryStringIndex);
+				while(!queryString.isEmpty()) {
+					if(queryString.contains("&")) {
+						String name = queryString.split("=")[0];
+						String value = queryString.substring(queryString.indexOf("=") + 1, queryString.indexOf("&") - 1);
+						ddForm.add(new Hidden(name, value));
+						queryString = queryString.substring(queryString.indexOf("&") + 1);
+					} else if (queryString.contains("=")){
+						ddForm.add(new Hidden(queryString.split("=")[0], queryString.split("=")[1]));
+						queryString = "";
+					}					
+				}
+			}
+			
 		} else {
 			ddForm.setJsonRequest(json);
 		}
