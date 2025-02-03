@@ -513,7 +513,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 				while(!queryString.isEmpty()) {
 					if(queryString.contains("&")) {
 						String name = queryString.split("=")[0];
-						String value = queryString.substring(queryString.indexOf("=") + 1, queryString.indexOf("&") - 1);
+						String value = queryString.substring(queryString.indexOf("=") + 1, queryString.indexOf("&"));
 						ddForm.add(new Hidden(name, value));
 						queryString = queryString.substring(queryString.indexOf("&") + 1);
 					} else if (queryString.contains("=")){
