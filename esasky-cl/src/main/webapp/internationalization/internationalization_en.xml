@@ -886,7 +886,7 @@
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC21">
 		The Chandra Source Catalog (CSC) is the definitive catalog of X-ray sources detected by the Chandra X-ray Observatory.
-		CSC 2.1 includes measured properties for 407,806 unique compact and extended X-ray sources in the sky, allowing statistical analysis of large samples, as well as individual source studies.
+		CSC 2.1.1 includes measured properties for 407,806 unique compact and extended X-ray sources in the sky, allowing statistical analysis of large samples, as well as individual source studies.
 		Extracted properties are provided for 1,304,376 individual observation detections identified in Chandra ACIS and HRC-I imaging observations released publicly through the end of 2021.
 
 		&lt;br&gt;&lt;br&gt;

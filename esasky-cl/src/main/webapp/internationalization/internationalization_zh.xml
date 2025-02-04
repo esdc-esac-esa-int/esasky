@@ -1552,7 +1552,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC21">
-		钱德拉源表（CSC）是最权威的X射线源星表，由钱德拉X射线望远镜探测得到。CSC 2.1包含了 407,806颗致密X射线源和X射线展源的观测结果，可用于大样本统计学分析或单个源的深入研究。基于到2021年底公开发布的次钱德拉ACIS、HRC-I图像观测数据，共提取出1,304,376组单次观测结果。
+		钱德拉源表（CSC）是最权威的X射线源星表，由钱德拉X射线望远镜探测得到。CSC 2.1.1包含了 407,806颗致密X射线源和X射线展源的观测结果，可用于大样本统计学分析或单个源的深入研究。基于到2021年底公开发布的次钱德拉ACIS、HRC-I图像观测数据，共提取出1,304,376组单次观测结果。
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#Chandra"
