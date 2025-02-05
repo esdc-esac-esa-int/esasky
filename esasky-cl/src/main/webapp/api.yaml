@@ -151,7 +151,7 @@ HiPS:
     description:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
-      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}"
+      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}"
   addHipsWithParams:
     parameters:
       hips.id:
