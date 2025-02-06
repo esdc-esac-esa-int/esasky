@@ -5612,7 +5612,7 @@
 		Open Time Series Visualizer
 	</text>
 	<text key="tabulator_timeVizDisabledTooltip">
-		No Time Series data available for this row
+		No Time Series data is available for this row
 	</text>
 
 	<text key="timeViz_helpDescription">
