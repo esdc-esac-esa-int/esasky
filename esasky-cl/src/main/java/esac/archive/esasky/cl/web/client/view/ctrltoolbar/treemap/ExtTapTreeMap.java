@@ -2,11 +2,13 @@ package esac.archive.esasky.cl.web.client.view.ctrltoolbar.treemap;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.ExtTapFovEvent;
 import esac.archive.esasky.cl.web.client.event.TreeMapSelectionEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EntityContext;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
@@ -88,7 +90,9 @@ public class ExtTapTreeMap extends TreeMap {
 		
 	   setSeriesPlotOptions(new SeriesPlotOptions()
                 .setPointClickEventHandler(pointClickEvent -> {
-                    if(CoordinateUtils.getCenterCoordinateInJ2000().getFov() < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+                    double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
+                    SearchArea searchArea = DescriptorRepository.getInstance().getSearchArea();
+                    if(!DescriptorRepository.tapAreaTooLargeForExternal(fov, searchArea)) {
                         String id = pointClickEvent.getPoint().getText();
                         if (id != null) {
                             PointInformation pointInformation = allPoints.get(id);
@@ -393,9 +397,10 @@ public class ExtTapTreeMap extends TreeMap {
     private void registerLargeFovEventObserver() {
     	CommonEventBus.getEventBus().addHandler(ExtTapFovEvent.TYPE,
                 extTapFovEvent -> {
-                    if(extTapFovEvent.getFov() > EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+                    SearchArea searchArea = DescriptorRepository.getInstance().getSearchArea();
+                    if (DescriptorRepository.tapAreaTooLargeForExternal(extTapFovEvent.getFov(), searchArea)) {
                         addLargeFovGhostPoint();
-                    }else if(!ghostPoint.isRemoved()) {
+                    } else if (!ghostPoint.isRemoved()) {
                         ghostPoint.setLoading();
                         update(true);
                     }

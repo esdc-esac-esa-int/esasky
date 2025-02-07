@@ -886,7 +886,7 @@
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_CHANDRA-SC21">
 		The Chandra Source Catalog (CSC) is the definitive catalog of X-ray sources detected by the Chandra X-ray Observatory.
-		CSC 2.1 includes measured properties for 407,806 unique compact and extended X-ray sources in the sky, allowing statistical analysis of large samples, as well as individual source studies.
+		CSC 2.1.1 includes measured properties for 407,806 unique compact and extended X-ray sources in the sky, allowing statistical analysis of large samples, as well as individual source studies.
 		Extracted properties are provided for 1,304,376 individual observation detections identified in Chandra ACIS and HRC-I imaging observations released publicly through the end of 2021.
 
 		&lt;br&gt;&lt;br&gt;
@@ -1054,6 +1054,24 @@
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#HSC"
+		target="_blank"&gt;
+		More information
+		&lt;/a&gt; </text>
+	<text key="resultsPresenter_helpDescription_catalogues_HCV">
+		The Hubble Catalog of Variables (HCV) is the first full, homogeneous, catalog of variable sources found in the
+		Hubble Source Catalog (HSC), which is built out of publicly available images obtained with the WFPC2, ACS and
+		WFC3 instruments onboard the Hubble Space Telescope. The HCV is the deepest catalog of variables available.
+		It includes variable stars in our Galaxy and nearby galaxies, as well as transients and variable active
+		galactic nuclei.
+
+		In total, the HCV includes 84,428 candidate variable sources (out of 3.7 million HSC sources that were
+		searched for variability) with V &lt;= 27 mag; for 11,115 of them the variability is detected in more than one
+		filter. The data points in a light curve range from 5 to 120, the time baseline ranges from under a day to
+		over 15 years, while ∼8% of variables have amplitudes in excess of 1 mag.
+
+		&lt;br&gt;&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#HCV"
 		target="_blank"&gt;
 		More information
 		&lt;/a&gt; </text>
@@ -1939,6 +1957,34 @@
 		Magnitude &lt;i&gt;(mag)&lt;/i&gt; </text>
 	<text key="HSC_v3_1_sigmavalues">
 		Magnitude Error &lt;i&gt;(mag)&lt;/i&gt; </text>
+	<text key="HCV_v1_0_match_id">
+		Source </text>
+	<text key="HCV_v1_0_group_id">
+		Group ID </text>
+	<text key="HCV_v1_0_subgroup">
+		Subgroup </text>
+	<text key="HCV_v1_0_p_cl">
+		P.Cl. </text>
+	<text key="HCV_v1_0_e_cl">
+		E.Cl. </text>
+	<text key="HCV_v1_0_num_filters">
+		#Filters </text>
+	<text key="HCV_v1_0_filter">
+		Filter </text>
+	<text key="HCV_v1_0_num_in_lc">
+		nLC </text>
+	<text key="HCV_v1_0_varqual">
+		VarQual </text>
+	<text key="HCV_v1_0_varfil">
+		VarFil </text>
+	<text key="HCV_v1_0_hcv_mean_mag">
+		m<sub>HCV</sub> </text>
+	<text key="HCV_v1_0_hsc_mean_mag">
+		m<sub>HSC</sub> </text>
+	<text key="HCV_v1_0_mad">
+		MAD </text>
+	<text key="HCV_v1_0_chi2">
+		χ<sup>2</sup><sub>red</sub> </text>
 	<text key="Herschel_HPPSC_flux">
 		Flux &lt;i&gt;(mJy)&lt;/i&gt; </text>
 	<text key="Herschel_HPPSC_rms">
@@ -4284,47 +4330,47 @@
 	<text key="catalogues.mv_t_chandra_csc2_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
 	<text key="catalogues.mv_t_chandra_csc2_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_t_chandra_csc2_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_name">Name</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_b">Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_lolim_b">Lower Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_hilim_b">Upper Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_w">Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_lolim_w">Lower Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_hilim_w">Upper Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_b">Average Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_lolim_b">Average Lower Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_hilim_b">Average Upper Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_w">Average Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_lolim_w">Average Lower Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_flux_aper_avg_hilim_w">Average Upper Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_err_ellipse_r0">Major radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_err_ellipse_r1">Minor radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_err_ellipse_ang">Position angle error ellipse &lt;i&gt;(deg)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_significance">Highest Flux Significance</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_likelihood">Likelihood</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_likelihood_class">Likelihood Classification</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_conf_flag">Confusion Flag</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_extent_flag">Extent Flag</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_sat_src_flag">Source Saturation Flag</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_streak_src_flag">Source Streak Flag</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_flag">Variability Flag</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_hard_flag">Hardness Ratio Variability Flag</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hard_hm">Hard-Medium Hardness Ratio</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hard_hm_lolim">Lower Hard-Medium Hardness Ratio</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hard_hm_hilim">Upper Hard-Medium Hardness Ratio</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hard_ms">Medium-Soft Hardness Ratio</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hard_ms_lolim">Lower Medium-Soft Hardness Ratio</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hard_ms_hilim">Upper Medium-Soft Hardness Ratio</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_intra_index_b">ACIS Intra-Obs Variability Index</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_intra_index_w">HRC Intra-Obs Variability Index</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_index_b">ACIS Inter-Obs Variability Index</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_index_w">HRC Inter-Obs Variability Index</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_hard_prob_hm">Hard-Medium Hardness Ratio Variability Prob</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
-	<text key="catalogues.mv_chandra_csc21_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_name">Name</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_dec">Dec &lt;i&gt;(J2000)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_b">Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_lolim_b">Lower Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_hilim_b">Upper Flux ACIS &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_w">Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_lolim_w">Lower Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_hilim_w">Upper Flux HRC &lt;i&gt;(erg cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_avg_b">Average Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_avg_lolim_b">Average Lower Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_avg_hilim_b">Average Upper Flux ACIS &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_avg_w">Average Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_avg_lolim_w">Average Lower Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_flux_aper_avg_hilim_w">Average Upper Flux HRC &lt;i&gt;(erg	  cm&lt;sup&gt;-2&lt;/sup&gt;s&lt;sup&gt;-1&lt;/sup&gt;)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_err_ellipse_r0">Major radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_err_ellipse_r1">Minor radius of error ellipse &lt;i&gt;(arcsec)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_err_ellipse_ang">Position angle error ellipse &lt;i&gt;(deg)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_significance">Highest Flux Significance</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_likelihood">Likelihood</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_likelihood_class">Likelihood Classification</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_conf_flag">Confusion Flag</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_extent_flag">Extent Flag</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_sat_src_flag">Source Saturation Flag</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_streak_src_flag">Source Streak Flag</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_flag">Variability Flag</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_inter_hard_flag">Hardness Ratio Variability Flag</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hard_hm">Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hard_hm_lolim">Lower Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hard_hm_hilim">Upper Hard-Medium Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hard_ms">Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hard_ms_lolim">Lower Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hard_ms_hilim">Upper Medium-Soft Hardness Ratio</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_intra_index_b">ACIS Intra-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_intra_index_w">HRC Intra-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_inter_index_b">ACIS Inter-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_inter_index_w">HRC Inter-Obs Variability Index</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_inter_hard_prob_hm">Hard-Medium Hardness Ratio Variability Prob</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_var_inter_hard_prob_ms">Medium-Soft Hardness Ratio Variability Prob</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_acis_time">ACIS time &lt;i&gt;(s)&lt;/i&gt;</text>
+	<text key="catalogues.mv_chandra_csc211_fdw_hrc_time">HRC time &lt;i&gt;(s)&lt;/i&gt;</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_fdw_iauname">Stack Catalogue Name</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_fdw_iauname_detcat">IAU Name</text>
 	<text key="catalogues.mv_xsa_epic_stack_cat_fdw_ra">RA &lt;i&gt;(J2000)&lt;/i&gt;</text>
@@ -5566,7 +5612,7 @@
 		Open Time Series Visualizer
 	</text>
 	<text key="tabulator_timeVizDisabledTooltip">
-		No Time Series data available for this row
+		No Time Series data is available for this row
 	</text>
 
 	<text key="timeViz_helpDescription">
@@ -5641,6 +5687,9 @@
 	</text>
 	<text key="tabulator_timeVizToggleTooltip">
 		Only show items with Time Series data
+	</text>
+	<text key="header_api">
+		ESASky API
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
 </Internationalization>

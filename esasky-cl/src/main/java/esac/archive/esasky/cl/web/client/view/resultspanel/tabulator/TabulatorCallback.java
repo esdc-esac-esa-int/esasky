@@ -21,6 +21,8 @@ public interface TabulatorCallback {
     void onSendToVoApplicaitionClicked(GeneralJavaScriptObject rowData);
     void onLink2ArchiveClicked(GeneralJavaScriptObject row);
     void onLink2ArchiveClicked(GeneralJavaScriptObject row, String columnName);
+    boolean isDatalinkActive(GeneralJavaScriptObject row);
+    boolean isDatalinkActive(String url);
     void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData);
     void onAddHipsClicked(GeneralJavaScriptObject rowData);
     void onAjaxResponse();

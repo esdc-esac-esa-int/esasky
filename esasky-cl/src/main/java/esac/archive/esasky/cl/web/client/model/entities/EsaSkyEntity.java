@@ -269,7 +269,7 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
     @Override
     public void fetchData() {
-        if (getCountStatus().hasMoved(descriptor) && Double.compare(descriptor.getFovLimit(), 0) == 0 && !descriptor.hasSearchArea()) {
+        if (!getCountStatus().countStillValid(descriptor) && Double.compare(descriptor.getFovLimit(), 0) == 0) {
 	        getCountStatus().registerObserver(new CountObserver() {
 				@Override
 				public void onCountUpdate(long newCount) {
@@ -978,10 +978,9 @@ public class EsaSkyEntity implements GeneralEntityInterface {
 
         if (descriptor != null) {
             boolean isPub = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_PUBLICATIONS);
-            boolean isExternal = getDescriptor().getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL);
             settings.setAddSendToVOApplicationColumn(descriptor.isSampEnabled());
 
-            if (isExternal && descriptor.getArchiveProductURI() != null && descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
+            if (descriptor.getArchiveProductURI() != null && descriptor.getArchiveBaseURL().toLowerCase().contains("datalink")) {
                 settings.setAddDatalinkLink2ArchiveColumn(!Objects.equals(descriptor.getLongName(), "rassfsc"));
             } else {
                 settings.setAddLink2ArchiveColumn(getDescriptor().getArchiveProductURI() != null && !isPub);

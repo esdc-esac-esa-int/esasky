@@ -102,15 +102,15 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	public SkyRow(SkiesMenu skiesMenu, String hipsName, boolean isBase){
-	    this(skiesMenu, hipsName, null, false, isBase, null);
+	    this(skiesMenu, hipsName, null, false, isBase, null, true);
 	}
 
-	public SkyRow(SkiesMenu skiesMenu, String hipsName, boolean isBase, String currentId){
-		this(skiesMenu, hipsName, null, false, false, currentId);
+	public SkyRow(SkiesMenu skiesMenu, String hipsName, boolean isBase, String currentId, boolean showTileFormat){
+		this(skiesMenu, hipsName, null, false, false, currentId, showTileFormat);
 
 	}
 	
-	public SkyRow(SkiesMenu skiesMenu, String hipsName, String category, boolean isDefault, boolean isBase, String currentId){
+	public SkyRow(SkiesMenu skiesMenu, String hipsName, String category, boolean isDefault, boolean isBase, String currentId, boolean showTileFormat){
 	    blockNotifications = true;
 		this.resources = GWT.create(Resources.class);
 		this.style = this.resources.style();
@@ -131,16 +131,16 @@ public class SkyRow extends Composite implements Selectable{
 			hipsName = EsaSkyConstants.ALADIN_DEFAULT_SURVEY_NAME;
 		}
 		
-		initView(wavelength, hipsName, isDefault);
+		initView(wavelength, hipsName, isDefault, showTileFormat);
 		blockNotifications = false;
 	}
 
-	private void initView(String defaultWavelength, String defaultHips, boolean isDefault) {
+	private void initView(String defaultWavelength, String defaultHips, boolean isDefault, boolean showTileFormat) {
 		VerticalPanel container = new VerticalPanel();
 		skyPanel = new FlowPanel();
 		skyPanel.setStyleName(this.style.skyPanel());
 
-		imageConfigPanel = new ImageConfigPanel(true);
+		imageConfigPanel = new ImageConfigPanel(true, showTileFormat);
 		skyPanel.add(createSelectBtn());
 		wavelengthDropDown = createWavelengthDropdown();
 		skyPanel.add(wavelengthDropDown);

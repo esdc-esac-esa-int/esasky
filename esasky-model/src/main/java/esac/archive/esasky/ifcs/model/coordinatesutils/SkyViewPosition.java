@@ -30,6 +30,9 @@ public class SkyViewPosition{
 	}
 
 	public boolean compare(SkyViewPosition comparison, double precision) {
+		if (comparison == null) {
+			return false;
+		}
 		// The idea is to compare fov:s as relative sizes and use that size
 		// as an absolute value for the coordinate comparison
 		if(Math.abs(this.fov/comparison.fov-1)<=precision) {

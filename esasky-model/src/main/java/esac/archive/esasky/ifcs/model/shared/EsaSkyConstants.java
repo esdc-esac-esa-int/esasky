@@ -276,6 +276,7 @@ public class EsaSkyConstants {
     public static final String EXT_TAP_ACTION_DESCRIPTORS = "DESCRIPTORS";
     public static final String EXT_TAP_ACTION_RESET = "RESET";
     public static final String EXT_TAP_ACTION_REQUEST = "REQUEST";
+    public static final String EXT_TAP_CAPABILITIES_REQUEST = "CAPABILITIES";
 //    public static final String EXT_TAP_ACTION_UPLOAD = "UPLOAD";
 
     public static final String EXT_TAP_URL_FLAG = "TAP_URL";

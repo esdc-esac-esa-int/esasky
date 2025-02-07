@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
 import esac.archive.esasky.ifcs.model.descriptor.*;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
@@ -30,10 +32,11 @@ public class CountStatus {
     	countStatus.put(descriptor.getId(), new CountDetails(0));
     }
 
-    public void setCountDetails(CommonTapDescriptor descriptor, Integer count, Long updateTime, SkyViewPosition skyViewPosition) {
+    public void setCountDetails(CommonTapDescriptor descriptor, Integer count, Long updateTime, SkyViewPosition skyViewPosition, SearchArea searchArea) {
         setCount(descriptor, count);
         countStatus.get(descriptor.getId()).setUpdateTime(updateTime);
         countStatus.get(descriptor.getId()).setSkyViewPosition(skyViewPosition);
+        countStatus.get(descriptor.getId()).setSearchArea(searchArea);
     }
 
     public Integer getCount(CommonTapDescriptor descriptor) {
@@ -106,15 +109,35 @@ public class CountStatus {
             observer.onCountUpdate(totalCount);
         }
     }
-    
-    public boolean hasMoved(CommonTapDescriptor descriptor) {
-    	try {
-    		SkyViewPosition currPos = CoordinateUtils.getCenterCoordinateInJ2000();
-    		SkyViewPosition missionPos = getSkyViewPosition(descriptor);
-        	return !currPos.compare(missionPos, 0.01) && !descriptor.hasSearchArea();
-    	} catch(Exception e) {
-    		// Handles if the we haven't received any data yet i.e. no missionPos exists.
-    		return true; 
-    	}
-	}
+
+    public boolean countStillValid(CommonTapDescriptor descriptor) {
+        if (!countStatus.containsKey(descriptor.getId())) {
+            return false;
+        }
+        SkyViewPosition currPos = CoordinateUtils.getCenterCoordinateInJ2000();
+        SkyViewPosition missionPos = getSkyViewPosition(descriptor);
+
+        if (!currPos.compare(missionPos, 0.01)) {
+            return false;
+        }
+        SearchArea currentSearchArea = descriptor.getSearchArea();
+        SearchArea previousSearchArea =  countStatus.get(descriptor.getId()).getSearchArea();
+        if (currentSearchArea == null && previousSearchArea == null) {
+            return true;
+        }
+        if (currentSearchArea == null || previousSearchArea == null) {
+            return false;
+        }
+        CoordinatesObject[] currentCoordinates = currentSearchArea.getJ2000Coordinates();
+        CoordinatesObject[] previousCoordinates = previousSearchArea.getJ2000Coordinates();
+        if (currentCoordinates.length != previousCoordinates.length) {
+            return false;
+        }
+        for (int i = 0; i < currentCoordinates.length; i++) {
+            if (!currentCoordinates[i].equals(previousCoordinates[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

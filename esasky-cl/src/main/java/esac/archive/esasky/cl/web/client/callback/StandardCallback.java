@@ -28,21 +28,28 @@ public class StandardCallback extends JsonRequestCallback {
 	/*
 	 * Call with same category name will discard all answered that are not the latest*/
 	public StandardCallback(String category, String progressIndicatorMessage, OnComplete onComplete, OnFailure onFailure) {
+		this(category, progressIndicatorMessage, onComplete, onFailure, true);
+	}
+
+	// For some categories, each message is unique and we want to handle the response even if we have triggered a new request with the same category
+	public StandardCallback(String category, String progressIndicatorMessage, OnComplete onComplete, OnFailure onFailure, boolean ignoreOlderMessages) {
 		super(progressIndicatorMessage, category);
-		this.category = category;
+		if (ignoreOlderMessages) {
+			this.category = category;
+		}
 		timecall = System.currentTimeMillis();
 		latestUpdates.put(category, timecall);
 		this.onComplete = onComplete;
 		this.onFailure = onFailure;
 	}
-	
+
 	@Override
 	protected void onSuccess(final Response response) {
 		Scheduler.get().scheduleFinally(new ScheduledCommand() {
 
 			@Override
 			public void execute() {
-				if (timecall < latestUpdates.get(category)) {
+				if (category != null && timecall < latestUpdates.get(category)) {
 					Log.warn(this.getClass().getSimpleName() + " discarded server answer for " + category + " with timecall="
 							+ timecall + " , dif:" + (latestUpdates.get(category) - timecall));
 					return;

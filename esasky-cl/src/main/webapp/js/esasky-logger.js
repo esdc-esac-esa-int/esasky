@@ -19,21 +19,10 @@ console.error = function(){
     	console.errors.splice(0,console.errors.length - 20);
     }
     try{
-	    var lastDebugs = [];
-	    if(console.debugs.length < 20){
-			lastDebugs = console.debugs;    
-	    } else {
-	    	for(var i = 20; i>0; i--){
-	    		lastDebugs.push(console.debugs[console.debugs.length - i]);
-	    	}
-	    }
 	    if(Date.now() - lastMatomoErrorSent > 60000){
-		    
 			lastMatomoErrorSent = Date.now();
 		    window._paq.push(['trackEvent',  "Error", "console.error", "Time since startup: " 
-		    	+ (Date.now() - startupTime) + " (millis)"
-		    	+ " |||| Logged Errors: " + console.errors + " |||| Logged Warnings: " + console.warns 
-		    	+ " |||| Last Logged debugs: " + lastDebugs]);
+		    	+ (Date.now() - startupTime) + " (millis)"]);
 		}	
 		
     } catch(e){
@@ -59,10 +48,8 @@ console.debug = function(){
 window.addEventListener('error', function(e) {
 try{
     //window.ga('send', 'event', "Error", "Problem with source file: " + e.target.src, "Time since startup: " 
-    window._paq.push(['trackEvent',   "Error", "Problem with source file: " + e.target.src, "Time since startup: " 
-    + (Date.now() - startupTime) + " (millis)"
-    + " |||| Logged Errors: " + console.errors + " |||| Logged Warnings: " + console.warns 
-    + " |||| Logged debugs: " + console.debugs + " |||| Logged logs: " + console.logs]);
+    window._paq.push(['trackEvent', "Error", "Problem with source file: " + e.target.src, "Time since startup: "
+    + (Date.now() - startupTime) + " (millis)"]);
     } catch(e){
     }
 }, true);

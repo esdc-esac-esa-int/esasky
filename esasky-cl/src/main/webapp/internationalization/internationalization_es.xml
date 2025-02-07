@@ -3557,6 +3557,46 @@
 	<text key="calibration_level">
 		Nivel de Calibración
 		</text>
+	<text key="outreachImagePanel_HST_header">
+		ESA/Hubble Imágenes de Divulgación
+	</text>
+	<text key="outreachImagePanel_HST_helpText">
+		Visualiza imágenes de divulgación astronómica desde el &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		sitio web de ESA/Hubble.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		Este panel muestra una lista con las imágenes de divulgación astronómica de ESA/Hubble disponibles en esa región del cielo. En el campo de visión se muestran como rectángulos cuadrados las huellas proyectadas en el cielo de estas imágenes, y puedes ocultarlas haciendo click en Ocultar Huellas.
+		&lt;br&gt;&lt;br&gt;
+		Haz click en una huella o en un objeto de la lista y su huella se mostrará superpuesta en esa zona del cielo. Un caja de texto se abre con la descripción de la imagen y el enlace a su localización en la web de ESA/Hubble. Puedes jugar con la opacidad de la imagen moviendo la barra de opacidad de la imagen a derecha e izquierda.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANTE:&lt;/b&gt; Estas imágenes se ha creado con el objetivo de divulgar la ciencia del Telescopio Hubble, y no están pensadas para su uso científico.
+	</text>
+	<text key="outreachImagePanel_HST_helpTitle">
+		Imágenes de Divulgación de ESA/Hubble
+	</text>
+
+	<text key="outreachImagePanel_JWST_header">
+		ESA/Webb Imágenes de Divulgación
+	</text>
+	<text key="outreachImagePanel_JWST_helpText">
+		Visualiza imágenes de divulgación astronómica desde el  &lt;a
+		href="https://esahubble.org/images/"
+		target="_blank"&gt;
+		sitio web de ESA/Webb.
+		&lt;/a&gt;
+		&lt;br&gt;&lt;br&gt;
+		Este panel muestra una lista con las imágenes de divulgación astronómica de ESA/Webb disponibles en esa región del cielo. En el campo de visión se muestran como rectángulos cuadrados las huellas proyectadas en el cielo de estas imágenes, y puedes ocultarlas haciendo click en Ocultar Huellas.
+		&lt;br&gt;&lt;br&gt;
+		Haz click en una huella o en un objeto de la lista y su huella se mostrará superpuesta en esa zona del cielo. Un caja de texto se abre con la descripción de la imagen y el enlace a su localización en la web de ESA/Webb. Puedes jugar con la opacidad de la imagen moviendo la barra de opacidad de la imagen a derecha e izquierda.
+		&lt;br&gt;&lt;br&gt;
+		&lt;b&gt;IMPORTANTE:&lt;/b&gt; Estas imágenes se ha creado con el objetivo de divulgar la ciencia del Telescopio James Webb, y no están pensadas para su uso científico.
+	</text>
+	<text key="outreachImagePanel_JWST_helpTitle">
+		Imágenes de Divulgación de ESA/Webb
+	</text>
+
 	<text key="webConstants_exploreJwstImages">
 		Explora imágenes de Divulgación del Telescopio Espacial James Webb
 		</text>
@@ -3578,7 +3618,7 @@
 		&lt;b&gt;IMPORTANTE:&lt;/b&gt; Estas imágenes se ha creado con el objetivo de divulgar la ciencia del Telescopio James Webb, y no están pensadas para su uso científico.
 		</text>
 	<text key="outreachJwstPanel_helpTitle">
-		Imáges de Divulgación de ESA/Webb
+		Imágenes de Divulgación de ESA/Webb
 		</text>
 	<text key="header_jwstOutreachImages">
 		Imagenes de Divulgación del ESA/Webb
@@ -4133,5 +4173,9 @@
 	<text key="tabulator_timeVizToggleTooltip">
 		Mostrar solo elementos con datos de Series Temporales
 	</text>
+	<text key="header_api">
+		ESASky API
+	</text>
+
 
 </Internationalization>

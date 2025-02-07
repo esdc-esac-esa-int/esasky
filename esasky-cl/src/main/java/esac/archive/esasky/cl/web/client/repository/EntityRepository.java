@@ -174,7 +174,7 @@ public class EntityRepository {
                 break;
             default:
                 newEntity = new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(descriptor.getCategory()).getCountStatus(),
-                        CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPObservationService.getInstance());
+                        CoordinateUtils.getCenterCoordinateInJ2000(), descriptor.getId(), TAPCatalogueService.getInstance());
         }
 
         addEntity(newEntity);
@@ -250,7 +250,7 @@ public class EntityRepository {
         SkyViewPosition skyViewPosition = CoordinateUtils.getCenterCoordinateInJ2000();
 
         return new EsaSkyEntity(descriptor, descriptorRepo.getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_CATALOGUES).getCountStatus(),
-                skyViewPosition, esaSkyUniqId, TAPObservationService.getInstance(), new EsaSkyEntity.SecondaryShapeAdder() {
+                skyViewPosition, esaSkyUniqId, TAPCatalogueService.getInstance(), new EsaSkyEntity.SecondaryShapeAdder() {
 
                     @Override
                     public void createSpecializedOverlayShape(Map<String, Object> details) {

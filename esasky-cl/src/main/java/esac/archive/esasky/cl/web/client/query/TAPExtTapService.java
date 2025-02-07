@@ -2,6 +2,9 @@ package esac.archive.esasky.cl.web.client.query;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.http.client.URL;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
+import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.ifcs.model.coordinatesutils.CoordinatesConversion;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -10,6 +13,7 @@ import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,7 +43,7 @@ public class TAPExtTapService extends AbstractTAPService {
         return descriptor.isUserTable() ? super.getRequestUrl(descriptor) : EsaSkyWebConstants.EXT_TAP_REQUEST_URL;
     }
 
-    public String getAdql(CommonTapDescriptor descriptor, String selectADQL) {
+    public String getAdql(CommonTapDescriptor descriptor, String selectADQL, SearchArea searchArea) {
     	String adql = selectADQL;
 
 		String tapTable = descriptor.getTableName();
@@ -56,12 +60,12 @@ public class TAPExtTapService extends AbstractTAPService {
         }
 
         if (!descriptor.isFovLimitDisabled()) {
-            if(descriptor.useIntersectsPolygon()) {
-                adql +=  WHERE + polygonIntersectSearch(descriptor);
+            if (descriptor.useIntersectsPolygon()) {
+                adql +=  WHERE + polygonIntersectSearch(descriptor, searchArea);
             } else if (isHEASARC) {
-                adql += WHERE + heasarcSearch();
+                adql += WHERE + heasarcSearch(descriptor, searchArea);
             } else {
-                adql += WHERE + cointainsPointSearch(descriptor);
+                adql += WHERE + cointainsPointSearch(descriptor, searchArea);
             }
         }
 
@@ -124,35 +128,75 @@ public class TAPExtTapService extends AbstractTAPService {
         double fovDeg = Math.min(90, AladinLiteWrapper.getAladinLite().getFovDeg());
         double centerLong = AladinLiteWrapper.getAladinLite().getCenterLongitudeDeg();
         double centerLat = AladinLiteWrapper.getAladinLite().getCenterLatitudeDeg();
-
         String cooFrame = AladinLiteWrapper.getAladinLite().getCooFrame();
         if (EsaSkyWebConstants.ALADIN_GALACTIC_COOFRAME.equalsIgnoreCase(cooFrame)) {
             double[] ccInJ2000 = CoordinatesConversion.convertPointGalacticToJ2000(centerLong, centerLat);
             centerLong = ccInJ2000[0];
             centerLat = ccInJ2000[1];
         }
-
-        return "CIRCLE('ICRS', " + centerLong + "," + centerLat + ", " + fovDeg + ")" + ")";
+        return circleQueryString(centerLong, centerLat, String.valueOf(fovDeg));
     }
 
-    private String polygonIntersectSearch(CommonTapDescriptor descriptor) {
-    	String constraint = "1=INTERSECTS(" + descriptor.getRegionColumn() + ",";
-    	return constraint + screenCircle();
+    private String circleQueryString(double centerLong, double centerLat, String fovDeg) {
+        return "CIRCLE('ICRS', " + centerLong + "," + centerLat + ", " + fovDeg + ")";
     }
 
-    private String cointainsPointSearch(CommonTapDescriptor descriptor) {
-    	String constraint = "1=CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), ";
-    	return constraint + screenCircle();
+    private String polygonIntersectSearch(CommonTapDescriptor descriptor, SearchArea searchArea) {
+        String areaString = searchArea == null ? screenCircle() : areaToAdqlString(searchArea);
+    	return "1=INTERSECTS(" + descriptor.getRegionColumn() + "," + areaString + ")";
     }
 
-    private String heasarcSearch() {
-    	SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
-    	double fov = pos.getFov();
-    	double ra = pos.getCoordinate().getRa();
-    	double dec = pos.getCoordinate().getDec();
+    private String cointainsPointSearch(CommonTapDescriptor descriptor, SearchArea searchArea) {
+        String areaString;
+        // Disable ESO Polygon search for now. They require the polygon vertices to be in counterclockwise order,
+        // i.e. the "left" side is the "inside" where we search for objects. We don't know in which order the vertices
+        // come in the SearchArea object.
+        if (searchArea == null) {
+            areaString = screenCircle();
+        } else if (!searchArea.isCircle() && "ESO".equals(descriptor.getMission())) {
+            areaString = screenCircle();
+        } else {
+            areaString = areaToAdqlString(searchArea);
+        }
+
+        String containsQuery = "CONTAINS( POINT('ICRS', " + descriptor.getRaColumn() + ", " + descriptor.getDecColumn() + "), " + areaString + ")";
+        if (Objects.equals(descriptor.getMission(), "ESO")) {
+            return containsQuery + "=1";
+        } else {
+            return "1=" +containsQuery;
+        }
+    }
+
+    private String areaToAdqlString(SearchArea searchArea) {
+        CoordinatesObject coordinate = searchArea.getJ2000Coordinates()[0];
+
+        if (searchArea.isCircle()) {
+            return circleQueryString(coordinate.getRaDeg(), coordinate.getDecDeg(), searchArea.getRadius());
+        } else {
+            CoordinatesObject[] coordinates = searchArea.getJ2000Coordinates();
+            String coordinateString = Arrays.stream(coordinates)
+                    .map(point -> point.getRaDeg() + "," + point.getDecDeg())
+                    .collect(Collectors.joining(","));
+            return "POLYGON('ICRS'," + coordinateString + ")";
+        }
+    }
+
+    private String heasarcSearch(CommonTapDescriptor descriptor, SearchArea searchArea) {
+        double fov, ra, dec;
+        // Heasarc supports polygon search, but it's really slow. They are soon(?) releasing an obscore version, which will speed things up.
+        if (searchArea != null && searchArea.isCircle()) {
+            CoordinatesObject point = searchArea.getJ2000Coordinates()[0];
+            ra = point.getRaDeg();
+            dec = point.getDecDeg();
+            fov = Float.parseFloat(searchArea.getRadius()) * 2;
+        } else {
+            SkyViewPosition pos = CoordinateUtils.getCenterCoordinateInJ2000();
+            fov = pos.getFov();
+            ra = pos.getCoordinate().getRa();
+            dec = pos.getCoordinate().getDec();
+        }
         return " POWER(SIN((radians(dec) - radians(" + dec + "))/2),2)"
-                + "+ cos(radians(dec)) * cos(radians(" + dec + "))"
-                + "* POWER(SIN((radians(ra) - radians(" + ra + "))/2),2)"
+                + "+ POWER(SIN((radians(ra) - radians(" + ra + "))/2),2)"
                 + "< POWER((radians(" + fov +")/2),2) AND dec"
                 + " BETWEEN " + (dec - fov/2) + AND + (dec + fov/2);
     }
@@ -189,38 +233,36 @@ public class TAPExtTapService extends AbstractTAPService {
 
     @Override
     public String getMetadataAdql(CommonTapDescriptor descriptor) {
-        if(!descriptor.isExternal()) {
-            String selectADQL = "SELECT TOP " + DeviceUtils.getDeviceShapeLimit(descriptor) + " * ";
-        	return URL.encodeQueryString(getAdql(descriptor, selectADQL));
-        } else if(descriptor.getUnprocessedADQL() != null) {
+        if (descriptor.getUnprocessedADQL() != null) {
             return descriptor.getUnprocessedADQL();
         } else {
-            return getAdql(descriptor, descriptor.getSelectADQL());
+            SearchArea searchArea = DescriptorRepository.getInstance().getSearchArea();
+            return getAdql(descriptor, descriptor.getSelectADQL(), searchArea);
         }
     }
 
-    public String getCountAdql(CommonTapDescriptor descriptor) {
+    public String getCountAdql(CommonTapDescriptor descriptor, SearchArea searchArea) {
 		if(HEASARC.equalsIgnoreCase(descriptor.getMission())) {
-			return URL.encodeQueryString(getHeasarcCountAdql(descriptor));
+			return URL.encodeQueryString(getHeasarcCountAdql(descriptor, searchArea));
 		}
-		return URL.encodeQueryString(getDefaultCountAdql(descriptor));
+		return URL.encodeQueryString(getDefaultCountAdql(descriptor, searchArea));
 
     }
 
-    public String getDefaultCountAdql(CommonTapDescriptor descriptor) {
+    public String getDefaultCountAdql(CommonTapDescriptor descriptor, SearchArea searchArea) {
     	String selectADQL = "SELECT count(*) as c, MIN(em_min) as em_min, MAX(em_max) as em_max";
         selectADQL += ", " + descriptor.getGroupColumn1() + ", " + descriptor.getGroupColumn2();
 
-        String adql = getAdql(descriptor, selectADQL);
+        String adql = getAdql(descriptor, selectADQL, searchArea);
     	adql += " group by " + descriptor.getGroupColumn1() + ", " + descriptor.getGroupColumn2();
 
 
     	return adql;
     }
 
-    public String getHeasarcCountAdql(CommonTapDescriptor descriptor) {
+    public String getHeasarcCountAdql(CommonTapDescriptor descriptor, SearchArea searchArea) {
     	String adql = "SELECT table_name, description, regime, count(*) as c";
-    	adql = getAdql(descriptor, adql);
+    	adql = getAdql(descriptor, adql, searchArea);
     	adql += " group by table_name,description,regime";
 
         return adql + " UNION " + adql.replace("pos_small", "pos_big");

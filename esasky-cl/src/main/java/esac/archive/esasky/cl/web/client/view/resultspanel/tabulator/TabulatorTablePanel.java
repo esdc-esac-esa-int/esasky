@@ -93,6 +93,8 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	private boolean inMOCMode = false;
 	private boolean toggleColumnsEnabled = true;
 
+	private Map<String, Panel> openArchives = new HashMap<>();
+
 	private GeneralJavaScriptObject tableMetadata = null;
 
 	private MetadataVisibilityObserver visibilityObserver = new MetadataVisibilityObserver() {
@@ -171,6 +173,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	}
 
 	private TableFocusPanel tableFocusPanel;
+	
 	public TabulatorTablePanel(final String inputLabel, final String inputEsaSkyUniqID, GeneralEntityInterface entity) {
 		this.esaSkyUniqID = inputEsaSkyUniqID;
 		this.tabTitle = inputLabel;
@@ -309,6 +312,11 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void closeTablePanel() {
 		isShowing = false;
 		hasBeenClosed = true;
+		while(!openArchives.keySet().isEmpty()) {
+			String key = openArchives.keySet().iterator().next();
+			Panel panel = openArchives.get(key);
+			panel.removeFromParent();
+		}
 		if(stylePanel != null) {
 			stylePanel.removeFromParent();
 		}
@@ -483,12 +491,46 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 		String json = mapper.write(multiRetrievalList);
 
-		ddForm.setAction(EsaSkyWebConstants.DATA_REQUEST_URL);
+		String bulkDownloadUrl = getEntity().getDescriptor().getBulkDownloadUrl();
+		if (bulkDownloadUrl == null || "".equals(bulkDownloadUrl)) {
+			bulkDownloadUrl = EsaSkyWebConstants.DATA_REQUEST_URL;
+		}
+		if (!EsaSkyWebConstants.DATA_REQUEST_URL.equals(bulkDownloadUrl)) {
+			String idColumn = entity.getDescriptor().getBulkDownloadIdColumn();
+			if (idColumn == null || "".equals(idColumn)) {
+				idColumn = entity.getDescriptor().getIdColumn();
+			}
+			StringBuilder payload = new StringBuilder();
+						for (GeneralJavaScriptObject tableRow : getSelectedRows()) {
+				payload.append(tableRow.getStringProperty(idColumn) + ","); 
+			}
+			payload.deleteCharAt(payload.length() - 1);
+			ddForm.setField(idColumn, payload.toString());
+			int queryStringIndex = bulkDownloadUrl.indexOf("?");
+			if(queryStringIndex != -1) {
+				String queryString = bulkDownloadUrl.substring(queryStringIndex + 1);
+				bulkDownloadUrl = bulkDownloadUrl.substring(0, queryStringIndex);
+				while(!queryString.isEmpty()) {
+					if(queryString.contains("&")) {
+						String name = queryString.split("=")[0];
+						String value = queryString.substring(queryString.indexOf("=") + 1, queryString.indexOf("&"));
+						ddForm.add(new Hidden(name, value));
+						queryString = queryString.substring(queryString.indexOf("&") + 1);
+					} else if (queryString.contains("=")){
+						ddForm.add(new Hidden(queryString.split("=")[0], queryString.split("=")[1]));
+						queryString = "";
+					}					
+				}
+			}
+			
+		} else {
+			ddForm.setJsonRequest(json);
+		}
+		ddForm.setAction(bulkDownloadUrl);
 		ddForm.setMethod(FormPanel.METHOD_POST);
-		ddForm.setJsonRequest(json);
 		ddForm.submit();
 	}
-
+	
 	public void updateData() {
 		clearTable();
 		clearFilters();
@@ -701,7 +743,6 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 
 	@Override
 	public void onDatalinkClicked(GeneralJavaScriptObject row, String url) {
-
 		if(url == null || url.isEmpty()) {
 			url = buildArchiveURL(row.invokeFunction(GET_DATA));
 		}
@@ -711,7 +752,18 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_DOWNLOADROW, getFullId(), url);
 		String title = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
 
-		selectRowWhileDialogBoxIsOpen(row, new DatalinkDownloadDialogBox(url, title));
+		if (openArchives.containsKey(url)) {
+			Panel panel = openArchives.remove(url);
+			panel.removeFromParent();
+		} else {
+			MovablePanel panel = new DatalinkDownloadDialogBox(url, title);
+			final String finalUrl = url;
+			panel.registerCloseObserver(() -> {
+				openArchives.remove(finalUrl);
+				table.reformatRow(row);
+			});
+			openArchives.put(url, panel);
+		}
 	}
 
 	@Override
@@ -920,6 +972,22 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 		}
 	}
 
+	@Override
+	public boolean isDatalinkActive(GeneralJavaScriptObject row) {
+		String url = buildArchiveURL(row.invokeFunction(GET_DATA));
+		return isDatalinkActive(url);
+	}
+
+	@Override
+	public boolean isDatalinkActive(String url) {
+		if(!url.toLowerCase().contains("datalink")) {
+			return false;
+		}
+		if("https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")){
+			url = url.replaceFirst("http:", "https:");
+		}
+		return openArchives.containsKey(url);
+	}
 
 	private void openArchiveUrl(String archiveUrl, GeneralJavaScriptObject row) {
 		if (!archiveUrl.isEmpty() && !archiveUrl.toLowerCase().contains("datalink")) {
@@ -945,7 +1013,7 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			for (MatchResult match = regularExpression.exec(desc.getArchiveProductURI()); match != null; match = regularExpression
 					.exec(desc.getArchiveProductURI())) {
 				String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
-				String valueURI = rowData.getStringProperty(rowColumn);
+				String valueURI = URL.encodeQueryString(rowData.getStringProperty(rowColumn));
 				productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
 			}
 			String url = desc.getArchiveBaseURL() + productURI;

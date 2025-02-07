@@ -84,6 +84,16 @@ public class DefaultTabulatorCallback implements TabulatorCallback{
 	}
 
 	@Override
+	public boolean isDatalinkActive(GeneralJavaScriptObject rowData) {
+		return false;
+	}
+
+	@Override
+	public boolean isDatalinkActive(String url) {
+		return false;
+	}
+
+	@Override
 	public void onSourcesInPublicationClicked(GeneralJavaScriptObject rowData) {
 		//Do nothing by default - To be overridden if needed.
 	}

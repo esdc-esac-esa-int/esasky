@@ -110,6 +110,7 @@ public class EsaSkyWebConstants {
     public static final String ESA_SKY_HELP_PAGES_URL = "//www.cosmos.esa.int/web/esdc/esasky-how-to";
     public static final String ESA_SKY_NEWSLETTER_URL = "//www.cosmos.esa.int/web/esdc/newsletter";
     public static final String ESA_SKY_USER_ECHO = "https://esdc.userecho.com/communities/1-esasky";
+    public static final String ESA_SKY_API_URL = "//www.cosmos.esa.int/web/esdc/esasky-javascript-api";
     public static final String ESA_SKY_ABOUTUS_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits";
     public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/esasky-help#cookies";
     public static final String ESASKY_INFO_EMAIL = "esaskyinfo@sciops.esa.int";
@@ -279,6 +280,8 @@ public class EsaSkyWebConstants {
     public static final String SESSION_DATA_HAS_PANEL = "has_panel";
     public static final String SESSION_DATA_ADQL = "adql";
     public static final String SESSION_DATA_FILTERS = "filters";
+    public static final String SESSION_DATA_BULK_DOWNLOAD_URL = "bulk_download_url";
+    public static final String SESSION_DATA_BULK_DOWNLOAD_ID_COLUMN = "bulk_download_id_column";
     public static final String SESSION_DATA_COLOR_MAIN = "color";
     public static final String SESSION_DATA_COLOR_SECOND = "color_secondary";
     public static final String SESSION_DATA_SIZE = "size";

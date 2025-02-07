@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Timer;
+import esac.archive.absi.modules.cl.aladinlite.widget.client.model.CoordinatesObject;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.SearchArea;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.api.model.FootprintListJSONWrapper;
@@ -34,6 +35,8 @@ import esac.archive.esasky.ifcs.model.shared.contentdescriptors.UCD;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants.EXTTAP_FOV_LIMIT;
 
 public class DescriptorRepository {
 
@@ -187,6 +190,7 @@ public class DescriptorRepository {
         commonTapDescriptor.setFovLimit(10.0);
         commonTapDescriptor.setDescription(description);
         commonTapDescriptor.setCustom(true);
+        commonTapDescriptor.setBulkDownloadUrl(EsaSkyWebConstants.DATA_REQUEST_URL);
 
         boolean hasPointColumns = commonTapDescriptor.getRaColumn() != null && commonTapDescriptor.getDecColumn() != null;
         boolean hasRegionColumn = commonTapDescriptor.getRegionColumn() != null;
@@ -279,7 +283,7 @@ public class DescriptorRepository {
         return result;
     }
 
-    public CommonTapDescriptor createCustomExternalTapDescriptor(String name, String tapUrl, boolean dataOnlyInView, String adql) {
+    public CommonTapDescriptor createCustomExternalTapDescriptor(String name, String tapUrl, boolean dataOnlyInView, String adql, String bulkDownloadUrl, String bulkDownloadIdColumn) {
         CommonTapDescriptor descriptor = new CommonTapDescriptor();
 
         descriptor.setShortName(name);
@@ -294,6 +298,8 @@ public class DescriptorRepository {
         descriptor.setIsExternal(true);
         descriptor.setCategory(EsaSkyWebConstants.CATEGORY_EXTERNAL);
         descriptor.setDescription(" ");
+        descriptor.setBulkDownloadUrl(bulkDownloadUrl);
+        descriptor.setBulkDownloadIdColumn(bulkDownloadIdColumn);
 
         descriptor.setMetadata(mockSpatialMetadata(EsaSkyWebConstants.S_RA, EsaSkyWebConstants.S_DEC, EsaSkyWebConstants.S_REGION));
 
@@ -434,13 +440,48 @@ public class DescriptorRepository {
     public void updateCount4AllExtTaps() {
         double fov = CoordinateUtils.getCenterCoordinateInJ2000().getFov();
         CommonEventBus.getEventBus().fireEvent(new ExtTapFovEvent(fov));
-        if (fov < EsaSkyWebConstants.EXTTAP_FOV_LIMIT) {
+        if (!tapAreaTooLargeForExternal(fov, searchArea)) {
             for (CommonTapDescriptor descriptor : getDescriptors(EsaSkyWebConstants.CATEGORY_EXTERNAL)) {
-                if (EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getLevel()
-                        && getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus().hasMoved(descriptor)) {
-                    updateCount4ExtTap(descriptor, null);
+                if (EsaSkyConstants.TREEMAP_LEVEL_SERVICE == descriptor.getLevel()) {
+                    if (!getDescriptorCountAdapter(EsaSkyWebConstants.CATEGORY_EXTERNAL).getCountStatus().countStillValid(descriptor)) {
+                        updateCount4ExtTap(descriptor, null);
+                    }
                 }
             }
+        }
+    }
+
+    public static boolean tapAreaTooLargeForExternal(double fov, SearchArea searchArea) {
+        return tapAreaTooLargeForExternal(fov, searchArea, EXTTAP_FOV_LIMIT);
+    }
+
+    public static boolean tapAreaTooLargeForExternal(double fov, SearchArea searchArea, double fovLimit) {
+        if (searchArea == null) {
+            return fov > fovLimit;
+        }
+        if (searchArea.isCircle()) {
+            return Float.parseFloat(searchArea.getRadius()) * 2 > fovLimit;
+        }
+        CoordinatesObject[] points = searchArea.getJ2000Coordinates();
+        if (points.length >= 3) {
+            double minRa = points[0].getRaDeg();
+            double maxRa = points[0].getRaDeg();
+            double minDec = points[0].getDecDeg();
+            double maxDec = points[0].getDecDeg();
+            for (CoordinatesObject point : searchArea.getJ2000Coordinates()) {
+                minRa = Math.min(minRa, point.getRaDeg());
+                maxRa = Math.max(maxRa, point.getRaDeg());
+                minDec = Math.min(minDec, point.getDecDeg());
+                maxDec = Math.max(maxDec, point.getDecDeg());
+            }
+            if (minRa == maxRa || minDec == maxDec) {
+                return false;
+            }
+            double areaApproximation = (maxRa - minRa) * (maxDec - minDec);
+            return areaApproximation > fovLimit * fovLimit;
+        } else {
+            // If the polygon doesn't have at least three nodes, fallback to using fov
+            return fov > fovLimit;
         }
     }
 
@@ -450,7 +491,7 @@ public class DescriptorRepository {
             cs.addDescriptor(descriptor);
         }
 
-        String adql = TAPExtTapService.getInstance().getCountAdql(descriptor);
+        String adql = TAPExtTapService.getInstance().getCountAdql(descriptor, searchArea);
 
         String url = EsaSkyWebConstants.EXT_TAP_URL + "?"
                 + EsaSkyConstants.EXT_TAP_ACTION_FLAG + "=" + EsaSkyConstants.EXT_TAP_ACTION_REQUEST + "&"
@@ -520,7 +561,7 @@ public class DescriptorRepository {
 	                }
 	                SingleCountListMapper scMapper = GWT.create(SingleCountListMapper.class);
 	                List<SingleCount> singleCountList = scMapper.read(response.getText());
-	                doUpdateSingleCount(singleCountList, skyViewPosition);
+	                doUpdateSingleCount(singleCountList, skyViewPosition, searchArea);
 	
 	
 	                } catch (Exception ex) {
@@ -541,15 +582,15 @@ public class DescriptorRepository {
     }
 
 
-    private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition) {
+    private void doUpdateSingleCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition, SearchArea searchArea) {
 
         ArrayList<String> remainingDescriptors = new ArrayList<>(tableCategoryMap.keySet());
         List<CommonTapDescriptor> descriptors = new ArrayList<>();
 
-        setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors);
+        setCount(singleCountList, skyViewPosition, remainingDescriptors, descriptors, searchArea);
 
         //Handling that the fast count doesn't give any results for missing missions in the area, so we set them to 0
-        setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors);
+        setZeroCountOnNoResponseMissions(skyViewPosition, remainingDescriptors, descriptors, searchArea);
 
         if (!descriptors.isEmpty()) {
             notifyCountChange(descriptors.stream().filter(d -> !d.getCategory().equals(EsaSkyWebConstants.CATEGORY_SSO)).collect(Collectors.toList()));
@@ -569,7 +610,7 @@ public class DescriptorRepository {
     }
 
     private void setCount(List<SingleCount> singleCountList, final SkyViewPosition skyViewPosition,
-                          ArrayList<String> remainingDescriptors, List<CommonTapDescriptor> descriptors) {
+                          ArrayList<String> remainingDescriptors, List<CommonTapDescriptor> descriptors, SearchArea searchArea) {
 
         for (SingleCount singleCount : singleCountList) {
             List<String> categories = tableCategoryMap.get(singleCount.getTableName());
@@ -581,7 +622,7 @@ public class DescriptorRepository {
 
                     if (descriptor != null) {
                         final int count = Optional.ofNullable(singleCount.getCount()).orElse(0);
-                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
+                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition, searchArea);
                         remainingDescriptors.remove(singleCount.getTableName());
                         descriptors.add(descriptor);
                     }
@@ -594,7 +635,7 @@ public class DescriptorRepository {
     }
 
     private void setZeroCountOnNoResponseMissions(final SkyViewPosition skyViewPosition, ArrayList<String> remainingDescriptors,
-                                                  List<CommonTapDescriptor> descriptors) {
+                                                  List<CommonTapDescriptor> descriptors, SearchArea searchArea) {
         for (String tableName : remainingDescriptors) {
             List<String> categories = tableCategoryMap.get(tableName);
 
@@ -605,7 +646,7 @@ public class DescriptorRepository {
                 for (CommonTapDescriptor descriptor : descriptorCountAdapter.getDescriptors()) {
                     if (!descriptor.getCategory().equals(EsaSkyWebConstants.CATEGORY_EXTERNAL) && descriptor.getTableName().equals(tableName)) {
                         CountStatus cs = descriptorCountAdapter.getCountStatus();
-                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition);
+                        cs.setCountDetails(descriptor, count, System.currentTimeMillis(), skyViewPosition, searchArea);
                         descriptors.add(descriptor);
                     }
                 }

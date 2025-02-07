@@ -95,7 +95,7 @@ public class ESASkyMultiRangeSlider extends FlowPanel {
                                       	instance.@esac.archive.esasky.cl.web.client.view.common.ESASkyMultiRangeSlider::fireSliderChangedEvent(DD)(selector.fromValue, selector.toValue);
                                       	}),
                                       20,
-                                      .01);
+                                      (max - min)/100000);
 		$wnd.$("#" + containerId).append(sliderSelector.$html);
 		return sliderSelector;
 	}-*/;
