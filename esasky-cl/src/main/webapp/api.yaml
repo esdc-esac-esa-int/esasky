@@ -136,9 +136,8 @@ HiPS:
         type: (String)
         description: The HiPS URL needs to be accessible through HTTPS
       hips.useCredentials:
-       	type: (Boolean) (Optional) 
-       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
-        
+        type: (Boolean) (Optional) 
+        description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
     description:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
@@ -154,9 +153,9 @@ HiPS:
       hips.url:
         type: (String)
         description: The HiPS URL needs to be accessible through HTTPS
-       hips.useCredentials:
-       	type: (Boolean) (Optional)
-       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
+      hips.useCredentials:
+        type: (Boolean) (Optional)
+        description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
     description:
       Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
     example:

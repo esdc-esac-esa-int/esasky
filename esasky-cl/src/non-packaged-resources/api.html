@@ -1,13 +1,13 @@
 <script>
     var msg_func = function(id){
      var cmd = document.getElementById(id).innerHTML;
-     console.log(cmd);
-     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"');
+     console.log(cmd)
+     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"')
      var esaskyFrame = document.getElementsByClassName("iframe-container")[0].children[0];
-     console.log(cmd2);
-     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int');
+     console.log(cmd2)
+     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int')
      var input = document.getElementById("messageinput");
-     console.log(input);
+     console.log(input)
      input.value=cmd;
     }
 </script>
@@ -44,7 +44,7 @@
 <div class="panel" id="info" style="display: block;">
 <p>All commands should be sent to the ESASky element as <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" target="_blank" >postMessages</a>. For example by:</p>
 
-<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘https://sky.esa.int’)</p>
+<p>document.getElementById(esaskyFrameName).contentWindow.postMessage(command, ‘http://sky.esa.int’)</p>
 
 <p>Where <i>esaskyFrameName</i> is the elementId where the esasky page is embedded, <i>command </i>is a JSON containing ‘event’ for function name and ‘content’ with all parameters</p>
 
@@ -218,10 +218,10 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Change HiPS programmatically by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String) - J2000 or GAL</p>
-<p>hips.maxnorder (Int)<p>hips.imgformat (String) - Image format of the tiles</p>
+<p>hips.id (String)<p>hips.name (String)<p>hips.url (String) - The HiPS URL needs to be accessible through HTTPS</p>
+<p>hips.useCredentials (Boolean) (Optional) - set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}</p>
+<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/'}}}</p>
 <p><button onclick="msg_func('changehipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
@@ -230,9 +230,10 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p>hips.useCredentials (Boolean) - set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky</p>
+<p>hips.id (String)<p>hips.name (String)<p>hips.url (String) - The HiPS URL needs to be accessible through HTTPS</p>
+<p>hips.useCredentials (Boolean) (Optional) - set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky</p>
 <p><b>Example:&nbsp;</b></p>
-<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}</p>
+<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map'}}}</p>
 <p><button onclick="msg_func('addhipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
