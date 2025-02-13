@@ -134,24 +134,15 @@ HiPS:
         description:
       hips.url:
         type: (String)
-        description:
-      hips.cooframe:
-        type: (String)
-        description: J2000 or GAL
-      hips.maxnorder:
-        type: (Int)
-        description:
-      hips.imgformat:
-        type: (String)
-        description: Image format of the tiles
-        hips.useCredentials:
-          type: (Boolean)
-          description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
-
+        description: The HiPS URL needs to be accessible through HTTPS
+      hips.useCredentials:
+       	type: (Boolean) (Optional) 
+       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
+        
     description:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
-      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}"
+      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/'}}}"
   addHipsWithParams:
     parameters:
       hips.id:
@@ -162,23 +153,14 @@ HiPS:
         description:
       hips.url:
         type: (String)
-        description:
-      hips.cooframe:
-        type: (String)
-        description:
-      hips.maxnorder:
-        type: (Int)
-        description:
-      hips.imgformat:
-        type: (String)
-        description:
-      hips.useCredentials:
-        type: (Boolean)
-        description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
+        description: The HiPS URL needs to be accessible through HTTPS
+       hips.useCredentials:
+       	type: (Boolean) (Optional)
+       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
     description:
       Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
     example:
-      "{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}"
+      "{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map'}}}"
   setHipsColorPalette:
     parameters:
       colorPalette:
