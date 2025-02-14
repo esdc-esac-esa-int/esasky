@@ -1568,7 +1568,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
-		XMMSL3是第三版从XMM-牛顿望远镜回转数据中探测得到的X射线源星表。该星表由代表ESA的XMM-牛顿望远镜SOC和EPIC联盟成员完成。该版本数据使用了EXTraS项目框架下的工作成果。在对重叠部分进行校正后，回转巡天覆盖了84%的天区范围。
+		XMMSL3星表是XMM-Newton回转星表的第三版。它包含从3120次XMM-Newton pn回转观测中提取的探测数据，覆盖能量范围从0.2 keV到12 keV。这些观测数据采集于2000年8月26日至2023年8月11日之间。所有回转观测数据均为公开数据
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#XMMSL"
