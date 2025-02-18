@@ -105,6 +105,8 @@ public class SearchPresenter {
     public interface View {
 
         TextBox getSearchTextBox();
+        
+        EsaSkyButton getSearchIcon();
 
 		FocusPanel getTooltip();
 
@@ -211,10 +213,22 @@ public class SearchPresenter {
             }
         });
 
-        this.view.getSearchTextBox().addMouseDownHandler(new MouseDownHandler() {
+        /* Due to a gwt issue affecting iOS Chrome / Safari users, only one interaction handler (click, mouse over, etc.) may be added to searchIcon. 
+         * Otherwise, the iOS keyboard does not open on focus. iOS Safari / Chrome requires that the opening of the keyboard is triggered directly by a user action.
+         * It seems like adding multiple interaction handlers causes iOS Safari /Chrome to block the opening of the software keyboard.
+         */
+        this.view.getSearchIcon().addClickHandler(new ClickHandler() {
 
             @Override
-            public void onMouseDown(final MouseDownEvent arg0) {
+            public void onClick(final ClickEvent arg0) {
+                openSearchExtras();
+            }
+        });
+        
+        this.view.getSearchTextBox().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent arg0) {
                 openSearchExtras();
             }
         });
