@@ -57,7 +57,7 @@ public class ApiMessageParser {
 					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::getFovShape(*)(e);
 					break;
 				case 'goToRaDec':
-					console.log('goToRADec event captured!');
+					console.log('goToRaDec event captured!');
 					apiView.@esac.archive.esasky.cl.web.client.api.ApiView::goTo(Ljava/lang/String;Ljava/lang/String;)
 						(msg.content.ra, msg.content.dec);
 					break;
