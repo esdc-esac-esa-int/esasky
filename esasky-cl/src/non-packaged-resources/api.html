@@ -1,13 +1,13 @@
 <script>
     var msg_func = function(id){
      var cmd = document.getElementById(id).innerHTML;
-     console.log(cmd);
-     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"');
+     console.log(cmd)
+     var cmd2 = cmd.replace(/(\w+)(:[^/])/g,function(){return "\"" + arguments[1] + "\"" + arguments[2]}).replace(/'/g,'"')
      var esaskyFrame = document.getElementsByClassName("iframe-container")[0].children[0];
-     console.log(cmd2);
-     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int');
+     console.log(cmd2)
+     esaskyFrame.contentWindow.postMessage(JSON.parse(cmd2), 'https://sky.esa.int')
      var input = document.getElementById("messageinput");
-     console.log(input);
+     console.log(input)
      input.value=cmd;
     }
 </script>
@@ -218,8 +218,10 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Change HiPS programmatically by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
-<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Chandra', 'id': 'Chandra', 'url': 'https://cdaftp.cfa.harvard.edu/cxc-hips', 'cooframe': 'J2000', 'maxnorder': '11', 'imgformat': 'png'}}}</p>
+<p>hips.id (String)<p>hips.name (String)<p>hips.url (String) - The HiPS URL needs to be accessible through HTTPS</p>
+<p>hips.useCredentials (Boolean) (Optional) - set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="changehipswithparams">{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/'}}}</p>
 <p><button onclick="msg_func('changehipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
@@ -228,8 +230,10 @@
 <p><b>Description:&nbsp;</b></p>
 <p>Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky</p>
 <p><b>Parameters:&nbsp;</b></p>
-<p>hips.id (String)<p>hips.name (String)<p>hips.url (String)<p>hips.cooframe (String)<p>hips.maxnorder (Int)<p>hips.imgformat (String)<p><b>Example:&nbsp;</b></p>
-<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}</p>
+<p>hips.id (String)<p>hips.name (String)<p>hips.url (String) - The HiPS URL needs to be accessible through HTTPS</p>
+<p>hips.useCredentials (Boolean) (Optional) - set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky</p>
+<p><b>Example:&nbsp;</b></p>
+<p id="addhipswithparams">{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map'}}}</p>
 <p><button onclick="msg_func('addhipswithparams')" type="button">Send</button></p>
 <p>&nbsp;</p>
 
@@ -678,6 +682,7 @@
 <p>intersectColumn (String) - Which column on the TAP side to use to intersect the current screen against if dataOnlyInView is true</p>
 <p>dataOnlyInView (Boolean) - If true will add a where clause to the adql to limit the data loaded. Parameter intersectColumn or ra and dec columns need to be set</p>
 <p>adql (String) - ADQL used for the TAP query</p>
+<p>bulkDownloadUrl (String) (optional) - This is only needed in rare cases. When a user selects multiple rows and clicks "Download Selected Rows", the ESASky server downloads the data and compresses it into a TAR file. However, if an authentication layer protects your data, our server cannot download your data. In this case, you can set bulkDownloadUrl to a download service on your server, which takes care of the authentication, bundling, and compression. The download service is expected to accept HTTP POST with a comma separated list of IDs as specified by bulkDownloadIdColumn. For example, if the bulkDownloadUrl is 'https://myservice.com/bulkdownload' and the bulkDownloadIdColumn is 'observation_id', then ESASky will create a POST message with all selected observation_id, which could result in a call equivalent to 'https://myservice.com/bulkdownload?observation_id=observationid1,observationid2'. In this example, 'observationid1', and 'observationid2' are extracted from the data table, by looking at the selected rows values for the column 'observation_id'. You specify which column your download service expects by using the bulkDownloadId parameter described below.</p>
 <p><b>Example:&nbsp;</b></p>
 <p id="plottapservicewithdetails">{event:'plotTapServiceWithDetails',  content:{'name':'myTAP2',color:'#FF00FF', dataOnlyInView: true, tapUrl:'https://gea.esac.esa.int/tap-server/tap', raColumn:'ra', decColumn:'dec', adql:'SELECT TOP 100 *  from gaiadr3.gaia_source'}}</p>
 <p><button onclick="msg_func('plottapservicewithdetails')" type="button">Send</button></p>

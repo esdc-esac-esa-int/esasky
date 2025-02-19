@@ -1568,7 +1568,7 @@
 		更多信息
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
-		XMMSL2是第二版从XMM-牛顿望远镜回转数据中探测得到的X射线源星表。该星表由代表ESA的XMM-牛顿望远镜SOC和EPIC联盟成员完成。该版本数据使用了EXTraS项目框架下的工作成果。在对重叠部分进行校正后，回转巡天覆盖了84%的天区范围。
+		XMMSL3星表是XMM-Newton回转星表的第三版。它包含从3120次XMM-Newton pn回转观测中提取的探测数据，覆盖能量范围从0.2 keV到12 keV。这些观测数据采集于2000年8月26日至2023年8月11日之间。所有回转观测数据均为公开数据
 		&lt;br&gt;&lt;br&gt;
 		&lt;a
 		href="//www.cosmos.esa.int/web/esdc/esasky-catalogues#XMMSL"
@@ -2954,5 +2954,88 @@ ESASky提供了该任务中由红外照相机（IRC）拍摄的数据，直接�
 	</text>
 	<text key="closeableTabLayoutPanel_changeQuery">
 		修改查询
+	</text>
+	<text key="tabulator_timeViz">
+		&lt;div class="esasky_column_header"&gt;时&lt;/br&gt;序&lt;/div&gt;
+	</text>
+	<text key="tabulator_timeVizTooltip">
+		打开时序数据查看器
+	</text>
+	<text key="tabulator_timeVizDisabledTooltip">
+		本行中没有可用的时序数据
+	</text>
+	<text key="timeViz_helpDescription">
+		ESASky时序数据查看器是一款用于检查时间序列数据产品的可视化工具。该界面被设计为一个多任务、多对象的聚合交互式显示工具，可以从ESA任务的星表和观测数据表格视图中直接启动。
+		&lt;br&gt;
+		&lt;br&gt;
+		从资源树状图中加载表格后，对于包含时序科学产品的任务，将显示一个专门的时间序列列。点击活动的时序图标将打开时序数据查看器窗口，自动显示时序数据集合。如果查看器已经打开，则会叠加显示后续的源或任务的时序产品。
+		&lt;br&gt;
+		&lt;br&gt;
+		由于ESASky时序查看器旨在同时支持光变曲线和时序光谱，因此提供了两种视图：流量密度随时间变化的视图（时间视图）和流量密度随波长变化的视图（SED视图）。面板右下角的图标用于在两种视图之间切换。用户可以通过选择区域进行缩放、拖动和平移来交互式地查看数据。可以使用右上角的面板按钮在这些选项之间切换或重置显示。多个数据集会显示在图例中，并在星表源索引下进行标注。取消选择某个数据集将从图中移除相应的信号显示。一个下拉列表支持时间轴格式的转换，另一个下拉列表则支持在SED视图和时间视图中对流量轴进行单位转换。
+		&lt;br&gt;
+		&lt;br&gt;
+		儒略日（Julian Date）是ESASky时序数据查看器中时间格式的默认单位。多任务数据聚合需要将流量统一转换为毫央斯基（mJy），并将时间格式转换为第一个显示任务的时间尺度。大多数时序数据产品以仪器单位记录流量。ESASky在可能的情况下，会使用任务发布的零点和转换因子，将仪器流量转换为物理单位。ESASky时序数据查看器支持ST和AB测光系统，和基于模型近似的VEGA测光系统。
+		&lt;br&gt;
+		&lt;br&gt;
+		有关每个任务的时序数据产品详情，包括格式和颗粒度等，可访问
+		&lt;a
+		href="https://www.cosmos.esa.int/web/esdc/esasky-observations"
+		target="_blank"&gt;
+		观测描述页面
+		&lt;/a&gt;了解更多情况。
+		&lt;br&gt;
+		&lt;br&gt;
+		&lt;a
+		href="//www.cosmos.esa.int/web/esdc/esasky-interface#TSVIEW"
+		target="_blank"&gt;
+		界面信息
+		&lt;/a&gt;
+	</text>
+	<text key="timeViz_title">
+		ESA时序数据查看器
+	</text>
+	<text key="imageConfigPanel_color_palette">
+		调色板
+	</text>
+	<text key="imageConfigPanel_reverse">
+		反转
+	</text>
+	<text key="imageConfigPanel_stretch">
+		拉伸
+	</text>
+	<text key="imageConfigPanel_cuts">
+		剪切
+	</text>
+	<text key="imageConfigPanel_blending">
+		调配
+	</text>
+	<text key="imageConfigPanel_blending_default">
+		默认
+	</text>
+	<text key="imageConfigPanel_blending_additive">
+		叠加
+	</text>
+	<text key="imageConfigPanel_opacity">
+		透明度
+	</text>
+	<text key="imageConfigPanel_tile_format">
+		瓦片格式
+	</text>
+	<text key="aladin_file_size_warn_title">
+		文件大小警告
+	</text>
+	<text key="aladin_file_size_warn_body">
+		你试图打开的文件大于1GB，由于其大小可能导致性能问题。
+		&lt;br&gt;&lt;br&gt;
+		你想继续吗？
+	</text>
+	<text key="aladin_file_size_warn_help">
+		超过1GB的大文件可能会根据你的电脑配置导致性能问题。内存不足、处理器速度较慢以及传统机械硬盘都可能导致运行卡顿。此外，浏览器的内存限制也会影响对大文件的处理。
+	</text>
+	<text key="tabulator_timeVizToggleTooltip">
+		仅显示时序数据条目
+	</text>
+	<text key="header_api">
+		ESASky API
 	</text>
 </Internationalization>

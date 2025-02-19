@@ -59,7 +59,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     private CloseButton clearTextButton;
     private EsaSkyToggleButton targetListButton;
     private TargetListPanel targetListPanel;
-    private Image searchIcon;
+    private EsaSkyButton searchIcon;
     private Image ssoDNetLogo;
     private Image simbadLogo;
 
@@ -118,7 +118,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
         searchPanel.getElement().setId("allSkySearchPanel");
         searchPanel.getElement().getStyle().setPosition(Position.ABSOLUTE);
 
-        searchIcon = new Image(this.resources.searchIcon());
+        searchIcon = new EsaSkyButton(this.resources.searchIcon());
         searchIcon.addStyleName("searchIcon");
         searchPanel.add(searchIcon);
 
@@ -575,6 +575,10 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     public TextBox getSearchTextBox() {
         return this.searchTextBox;
     }
+    
+    public EsaSkyButton getSearchIcon() {
+        return this.searchIcon;
+    }
 
     @Override
     public FocusPanel getTooltip() {
@@ -620,6 +624,9 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
 
     @Override
     public void setFullSize(boolean fullSize) {
+    	if (this.isFullSize == fullSize) {
+    		return;
+    	}
         isFullSize = fullSize;
         if (isFullSize) {
             this.searchToolPanel.setVisible(true);
@@ -629,7 +636,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                 searchResultsFocusPanel.setVisible(true);
             }
             searchIcon.setVisible(false);
-
+            searchTextBox.setFocus(true);
         } else {
             searchWidthAnimation.animateTo(0, 500);
             searchPaddingAnimation.animateTo(15, 500);

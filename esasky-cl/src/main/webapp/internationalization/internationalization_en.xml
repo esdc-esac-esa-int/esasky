@@ -938,12 +938,10 @@
 		More information
 		&lt;/a&gt; </text>
 	<text key="resultsPresenter_helpDescription_catalogues_XMM-SLEW">
-		​XMMSL2 is the second catalogue of X-ray sources detected in
-		XMM-Newton slew data, and has been constructed by members of the
-		XMM-Newton SOC and the EPIC consortium on behalf of ESA. This release uses
-		results of work which has been carried out within the framework of the
-		EXTraS project. After correcting for overlaps, the Slew Survey covered
-		84% of the sky.
+		​The XMMSL3 catalogue is the third version of the XMM-Newton slew catalogue.
+		It contains detections drawn from 3120 XMM-Newton pn slew observations,
+		covering an energy interval from 0.2 keV to 12 keV.
+		These observations were made between 2000 August 26 and 2023 August 11. All slew observations are public.
 
 		&lt;br&gt;&lt;br&gt;
 		&lt;a

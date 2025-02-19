@@ -3,10 +3,10 @@ View:
     parameters:
       ra:
         type: (String, decimal degrees or sexagesimal format)
-        description: 
+        description:
       dec:
         type: (String, decimal degrees or sexagesimal format)
-        description: 
+        description:
     description:
       Moves center of the screen to supplied ra and dec in current coordinate frame
     example:
@@ -15,7 +15,7 @@ View:
     parameters:
       fov:
         type: (double, in deg)
-        description: 
+        description:
     description:
       Set the horizontal Field of View in degrees
     example:
@@ -34,7 +34,7 @@ View:
     parameters:
       targetName:
         type: (String)
-        description: 
+        description:
     description:
       Does a search against SIMBAD to get location of targetName and sets location in view
     example:
@@ -42,25 +42,25 @@ View:
   getCenter:
     parameters:
       cooFrame:
-        type: (String)(Optional) 
-        description:  Should be "J2000" or "GALACTIC", defaults to "J2000"
+        type: (String)(Optional)
+        description: Should be "J2000" or "GALACTIC", defaults to "J2000"
     returns:
       values.ra:
-        type: (Double) 
-        description:  Right ascension (lon) of the center in decimal degrees
+        type: (Double)
+        description: Right ascension (lon) of the center in decimal degrees
       values.dec:
-        type: (Double) 
-        description:  Declination (lat) of the center in decimal degrees
+        type: (Double)
+        description: Declination (lat) of the center in decimal degrees
       values.fov:
-        type: (Double) 
-        description:  Field of view in horizontal (lat) direction in decimal degrees
+        type: (Double)
+        description: Field of view in horizontal (lat) direction in decimal degrees
     example:
       "{event:'getCenter',  content:{cooFrame:'J2000'}}"
   setCooFrame:
     parameters:
       cooFrame:
-        type: (String) 
-        description:  J2000 or galactic
+        type: (String)
+        description: J2000 or galactic
     description:
       Set the coordinate frame
     example:
@@ -75,7 +75,7 @@ Coordinate grid:
     parameters:
       show:
         type: (Boolean) shows for true, hides for false
-        description: 
+        description:
     description:
       Enables or disables the coordinate grid overlay
     example:
@@ -84,26 +84,26 @@ HiPS:
   getAvailableHips:
     parameters:
       wavelength:
-        type: (String)(Optional) 
-        description:  Wavelength in capital e.g. "OPTICAL". Defaults to empty.
+        type: (String)(Optional)
+        description: Wavelength in capital e.g. "OPTICAL". Defaults to empty.
     returns:
       values(JSON:
         type: (Dictionary)
-        description:  If wavelength is empty this is a dictionary of wavelengths otherwise this is a dictionary with available HiPS in that wavelength
+        description: If wavelength is empty this is a dictionary of wavelengths otherwise this is a dictionary with available HiPS in that wavelength
     example:
       "{event:'getAvailableHips',  content:{wavelength:'OPTICAL'}}"
   changeHips:
     parameters:
       hipsName:
         type: (String)
-        description: 
+        description:
     returns:
       extras:
-        type: (Dictionary) 
-        description:  Empty if success
+        type: (Dictionary)
+        description: Empty if success
       extras.message:
-        type: (String) 
-        description:  Not existing if success otherwise error message
+        type: (String)
+        description: Not existing if success otherwise error message
     description:
       Change HiPS programmatically by using a HiPS present in ESASky
     example:
@@ -112,14 +112,14 @@ HiPS:
     parameters:
       hipsName:
         type: (String)
-        description: 
+        description:
     returns:
       extras:
-        type: (Dictionary) 
-        description:  Empty if success
+        type: (Dictionary)
+        description: Empty if success
       extras.message:
-        type: (String) 
-        description:  Not existing if success, otherwise error message
+        type: (String)
+        description: Not existing if success, otherwise error message
     description:
       Add a HiPS programmatically to the sky panel list
     example:
@@ -128,62 +128,43 @@ HiPS:
     parameters:
       hips.id:
         type: (String)
-        description: 
+        description:
       hips.name:
         type: (String)
-        description: 
+        description:
       hips.url:
         type: (String)
-        description: 
-      hips.cooframe:
-        type: (String)
-        description: J2000 or GAL
-      hips.maxnorder:
-        type: (Int)
-        description: 
-      hips.imgformat:
-        type: (String)
-        description: Image format of the tiles
-       hips.useCredentials:
-       	type: (Boolean)
-       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
-        
+        description: The HiPS URL needs to be accessible through HTTPS
+      hips.useCredentials:
+        type: (Boolean) (Optional) 
+        description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
     description:
       Change HiPS programmatically by using a new HiPS not present in ESASky
     example:
-      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}"
+      "{event:'changeHipsWithParams',  content:{'hips': {'name': 'Gaia DR3 G flux', 'id': 'GaiaGFlux', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/G-flux-map/'}}}"
   addHipsWithParams:
     parameters:
       hips.id:
         type: (String)
-        description: 
+        description:
       hips.name:
         type: (String)
-        description: 
+        description:
       hips.url:
         type: (String)
-        description: 
-      hips.cooframe:
-        type: (String)
-        description: 
-      hips.maxnorder:
-        type: (Int)
-        description: 
-      hips.imgformat:
-        type: (String)
-        description: 
+        description: The HiPS URL needs to be accessible through HTTPS
       hips.useCredentials:
-       	type: (Boolean)
-       	description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
+        type: (Boolean) (Optional)
+        description: set true if the HiPS is password protected. If the user has a valid cookie to access the HiPS, then the HiPS will be accessible via ESASky
     description:
       Add a HiPS programmatically to the sky panel list by using a new HiPS not present in ESASky
     example:
-      "{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map', 'cooframe': 'J2000', 'maxnorder': '7', 'imgformat': 'jpeg'}}}"
+      "{event:'addHipsWithParams',  content:{'hips': {'name': 'Gaia Density map', 'id': 'GAIA_DR3_DENSITY', 'url': 'https://alasky.cds.unistra.fr/ancillary/GaiaDR3/density-map'}}}"
   setHipsColorPalette:
     parameters:
       colorPalette:
         type: (String)
-        description: 
+        description:
     description:
       Changing color palette
     example:
@@ -192,14 +173,14 @@ HiPS:
     parameters:
       index:
         type: (Integer)
-        description: 
+        description:
     returns:
       extras:
-        type: (Dictionary) 
-        description:  Empty if success
+        type: (Dictionary)
+        description: Empty if success
       extras.message:
-        type: (String) 
-        description:  Not existing if success otherwise error message
+        type: (String)
+        description: Not existing if success otherwise error message
     description:
       Removes the hips in the sky panel list at described index with first starting at 0. Entering -1 will remove all except for the first row.
     example:
@@ -218,7 +199,7 @@ HiPS:
     parameters:
       value:
         type: (Double)
-        description: 
+        description:
     description:
       Sets the hips slider to specified value. 0.0 for first in skypanel list 1.0 for second etc. For everything in between a interpolation of the 2 nearby HiPS will be shown
     example:
@@ -227,18 +208,18 @@ HiPS:
     returns:
       values:
         type: (Integer)
-        description: 
+        description:
     example:
       "{event:'getNumberOfSkyRows'}"
 Shape selection:
   selectShape:
     parameters:
       overlayName:
-        type: (String) 
-        description:  Name of the overlaySet where we want to select a shape
+        type: (String)
+        description: Name of the overlaySet where we want to select a shape
       shapeName:
-        type: (String) 
-        description:  Name of the shape (typical observation id). See overlayCatalogueFootprint or response from shapeSelectionEvent
+        type: (String)
+        description: Name of the shape (typical observation id). See overlayCatalogueFootprint or response from shapeSelectionEvent
     description:
       Selects a shape (catalogue source or footprint)
     example:
@@ -246,11 +227,11 @@ Shape selection:
   deselectShape:
     parameters:
       overlayName:
-        type: (String) 
-        description:  Name of the overlaySet where we want to select a shape
+        type: (String)
+        description: Name of the overlaySet where we want to select a shape
       shapeName:
-        type: (String) 
-        description:  Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent
+        type: (String)
+        description: Name of the shape (typical observation id. See overlayCatalogueFootprint or response from shapeSelectionEvent
     description:
       Deselects a shape (catalogue source or footprint)
     example:
@@ -265,37 +246,37 @@ Catalogues:
     parameters:
       overlaySet:
         type: (String)
-        description: 
+        description:
       overlaySet.type:
         type: (String)
-        description: 
+        description:
       overlaySet.overlayName:
         type: (String)
-        description: 
+        description:
       overlaySet.cooframe:
         type: (String)
-        description: 
+        description:
       overlaySet.color:
         type: (String)
-        description: 
+        description:
       overlaySet.lineWidth:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList:
         type: (List)
-        description: 
+        description:
       overlaySet.skyObjectList.name:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.id:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList.ra:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.dec:
         type: (String)
-        description: 
+        description:
     description:
       Overlay a catalogue
     example:
@@ -304,49 +285,49 @@ Catalogues:
     parameters:
       overlaySet:
         type: (String)
-        description: 
+        description:
       overlaySet.type:
         type: (String)
-        description: 
+        description:
       overlaySet.overlayName:
         type: (String)
-        description: 
+        description:
       overlaySet.cooframe:
         type: (String)
-        description: 
+        description:
       overlaySet.color:
         type: (String)
-        description: 
+        description:
       overlaySet.lineWidth:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList:
         type: (List)
-        description: 
+        description:
       overlaySet.skyObjectList.name:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.id:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList.ra:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.dec:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.data:
         type: (List)
-        description: 
+        description:
       overlaySet.skyObjectList.data.name:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.data.type:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.data.value:
         type: (type)
-        description: 
+        description:
     description:
       Overlay a catalogue with data
     example:
@@ -355,7 +336,7 @@ Catalogues:
     parameters:
       overlayName:
         type: (String)
-        description: 
+        description:
     description:
       Remove an existing catalogue
     example:
@@ -364,7 +345,7 @@ Catalogues:
     parameters:
       overlayName:
         type: (String)
-        description: 
+        description:
     description:
       Clear an existing catalogue
     example:
@@ -374,34 +355,34 @@ Footprints:
     parameters:
       overlaySet:
         type: (String)
-        description: 
+        description:
       overlaySet.type:
         type: (String)
-        description: 
+        description:
       overlaySet.overlayName:
         type: (String)
-        description: 
+        description:
       overlaySet.cooframe:
         type: (String)
-        description: 
+        description:
       overlaySet.color:
         type: (String)
-        description: 
+        description:
       overlaySet.lineWidth:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList:
         type: (List)
-        description: 
+        description:
       overlaySet.skyObjectList.name:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.id:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList.stcs:
         type: (stcs)
-        description: 
+        description:
     description:
       Overlay a list of footprints
     example:
@@ -410,46 +391,46 @@ Footprints:
     parameters:
       overlaySet:
         type: (JSON)
-        description: 
+        description:
       overlaySet.type:
         type: (String)
-        description: 
+        description:
       overlaySet.overlayName:
         type: (String)
-        description: 
+        description:
       overlaySet.cooframe:
         type: (String)
-        description: 
+        description:
       overlaySet.color:
         type: (String)
-        description: 
+        description:
       overlaySet.lineWidth:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList:
         type: (List)
-        description: 
+        description:
       overlaySet.skyObjectList.name:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.id:
         type: (Int)
-        description: 
+        description:
       overlaySet.skyObjectList.stcs:
         type: (stcs)
-        description: 
+        description:
       overlaySet.skyObjectList.data:
         type: (List)
-        description: 
+        description:
       overlaySet.skyObjectList.data.name:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.data.type:
         type: (String)
-        description: 
+        description:
       overlaySet.skyObjectList.data.value:
         type: (type)
-        description: 
+        description:
     description:
       Overlay a list of footprints with data
     example:
@@ -458,7 +439,7 @@ Footprints:
     parameters:
       overlayName:
         type: (String)
-        description: 
+        description:
     description:
       Remove an existing catalogue
     example:
@@ -467,7 +448,7 @@ Footprints:
     parameters:
       catalogueName:
         type: (String)
-        description: 
+        description:
     description:
       Clear an existing catalogue
     example:
@@ -546,8 +527,8 @@ Results panel:
   closeResultPanelTab:
     parameters:
       index:
-        type:  (Integer)
-        description: 
+        type: (Integer)
+        description:
     description:
       Closes the result panel tab at index, starting with 0. -1 closes the current active tab.
     example:
@@ -555,8 +536,8 @@ Results panel:
   closeResultPanelTabById:
     parameters:
       index:
-        type:  (Integer)
-        description: 
+        type: (Integer)
+        description:
     description:
       Closes the result panel tab with the id.
     example:
@@ -569,8 +550,8 @@ Results panel:
   getResultPanelData:
     returns:
       values:
-        type:  (Dictionary) 
-        description:  All data in the currently active result panel tab
+        type: (Dictionary)
+        description: All data in the currently active result panel tab
     description:
       Closes all result panel tabs
     example:
@@ -579,15 +560,15 @@ Plotting ESASky data:
   plotObservations:
     parameters:
       missionId:
-        type:  (String)
-        description: 
+        type: (String)
+        description:
     returns:
       extras:
-        type:  (Dictionary) 
-        description:  Empty if success
+        type: (Dictionary)
+        description: Empty if success
       extras.message:
-        type:  (String) 
-        description:  Not existing if success otherwise error message
+        type: (String)
+        description: Not existing if success otherwise error message
     description:
       Plot available image observation footprints in ESASky for the currently shown area for the given missionID
     example:
@@ -595,15 +576,15 @@ Plotting ESASky data:
   plotCatalogues:
     parameters:
       missionId:
-        type:  (String)
-        description: 
+        type: (String)
+        description:
     returns:
       extras:
-        type:  (Dictionary) 
-        description:  Empty if succes
+        type: (Dictionary)
+        description: Empty if succes
       extras.message:
-        type:  (String) 
-        description:  Not existing if success otherwise error message
+        type: (String)
+        description: Not existing if success otherwise error message
     description:
       Plot available catalogue data in ESASky for the currently shown area for the given missionID
     example:
@@ -611,15 +592,15 @@ Plotting ESASky data:
   plotSpectra:
     parameters:
       missionId:
-        type:  (String)
-        description: 
+        type: (String)
+        description:
     returns:
       extras:
-        type:  (Dictionary) 
-        description:  Empty if success
+        type: (Dictionary)
+        description: Empty if success
       extras.message:
-        type:  (String) 
-        description:  Not existing if success otherwise error message
+        type: (String)
+        description: Not existing if success otherwise error message
     description:
       Plot available spectra footprints in ESASky for the currently shown area for the given missionID
     example:
@@ -629,7 +610,7 @@ Plotting TAP Service data:
     returns:
       List:
         type: with the available TAP Services
-        description: 
+        description:
     description:
       Lists the available TAP services in ESASky
     example:
@@ -637,12 +618,12 @@ Plotting TAP Service data:
   getTapServiceCount:
     parameters:
       tapService:
-        type:  (String) 
-        description:  The name of the tapService to get available data from
+        type: (String)
+        description: The name of the tapService to get available data from
     returns:
       List:
         type: with missions with data in the tapService within the current FoV
-        description: 
+        description:
     description:
       Get list of missions in a TAP Service within the current FoV
     example:
@@ -650,8 +631,8 @@ Plotting TAP Service data:
   plotTapService:
     parameters:
       tapService:
-        type:  (String) 
-        description:  The mission from the tapService to get data from  (See getTapServiceCount for available missions in the current view)
+        type: (String)
+        description: The mission from the tapService to get data from  (See getTapServiceCount for available missions in the current view)
     description:
       Plots data from the mission in the TAP Service
     example:
@@ -659,14 +640,14 @@ Plotting TAP Service data:
   plotTapServiceWithDetails:
     parameters:
       name:
-        type: (String) 
-        description:  Will overwrite any existing dataPanel with the same name
-      tapUrl: 
         type: (String)
-        description: 
+        description: Will overwrite any existing dataPanel with the same name
+      tapUrl:
+        type: (String)
+        description:
       color:
-        type: (String) 
-        description:  Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')
+        type: (String)
+        description: Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')
       raColumn:
         type: (String)
         description: Which column on the TAP side to use as ra
@@ -680,25 +661,17 @@ Plotting TAP Service data:
         type: (String)
         description: Which column on the TAP side to use to intersect the current screen against if dataOnlyInView is true
       dataOnlyInView:
-        type:  (Boolean) 
+        type: (Boolean)
         description: If true will add a where clause to the adql to limit the data loaded. Parameter intersectColumn or ra and dec columns need to be set
       adql:
-        type: (String) 
-        description:  ADQL used for the TAP query
+        type: (String)
+        description: ADQL used for the TAP query
       bulkDownloadUrl:
-        type: (String) (optional) 
-        description:  This is only needed in rare cases. When a user selects multiple rows and clicks "Download Selected Rows", the ESASky server downloads the data and compresses it into a TAR file.
-			However, if an authentication layer protects your data, our server cannot download your data.
-			In this case, you can set bulkDownloadUrl to a download service on your server, which takes care of the authentication, bundling, and compression. 
-        	The download service is expected to accept HTTP POST with a comma separated list of IDs as specified by bulkDownloadIdColumn.
-			For example, if the bulkDownloadUrl is 'https://myservice.com/bulkdownload' and the bulkDownloadIdColumn is 'observation_id',
-			then ESASky will create a POST message with all selected observation_id, which could result in a call equivalent to
-			'https://myservice.com/bulkdownload?observation_id=observationid1,observationid2'.
-			In this example, 'observationid1', and 'observationid2' are extracted from the data table, by looking at the selected rows values for the column 'observation_id'.
-			You specify which column your download service expects by using the bulkDownloadId parameter described below.    
-      bulkDownloadIdColumn:        
         type: (String) (optional)
-        description: Only to be used in conjunction with bulkDownloadUrl. bulkDownloadIdColumn should be the name of the column that identifies a row of data in your bulk download service. See description for bulkDownloadUrl. 
+        description: This is only needed in rare cases. When a user selects multiple rows and clicks "Download Selected Rows", the ESASky server downloads the data and compresses it into a TAR file. However, if an authentication layer protects your data, our server cannot download your data. In this case, you can set bulkDownloadUrl to a download service on your server, which takes care of the authentication, bundling, and compression. The download service is expected to accept HTTP POST with a comma separated list of IDs as specified by bulkDownloadIdColumn. For example, if the bulkDownloadUrl is 'https://myservice.com/bulkdownload' and the bulkDownloadIdColumn is 'observation_id', then ESASky will create a POST message with all selected observation_id, which could result in a call equivalent to 'https://myservice.com/bulkdownload?observation_id=observationid1,observationid2'. In this example, 'observationid1', and 'observationid2' are extracted from the data table, by looking at the selected rows values for the column 'observation_id'. You specify which column your download service expects by using the bulkDownloadId parameter described below.
+    bulkDownloadIdColumn:
+      type: (String) (optional)
+      description: Only to be used in conjunction with bulkDownloadUrl. bulkDownloadIdColumn should be the name of the column that identifies a row of data in your bulk download service. See description for bulkDownloadUrl.
     description:
       Plot available image observation footprints in ESASky for he currently shown area for the given missionID
     example:
@@ -708,28 +681,28 @@ Counts:
     returns:
       List:
         type: of available observations in ESASky with associated counts in the visible sky area
-        description: 
+        description:
     example:
       "{event: 'getObservationsCount'}"
   getCataloguesCount:
     returns:
       List:
         type: of available catalogues in ESASky with associated counts in the visible sky area
-        description: 
+        description:
     example:
       "{event: 'getCataloguesCount'}"
   getSpectraCount:
     returns:
       List:
         type: of available spectra in ESASky with associated counts in the visible sky area
-        description: 
+        description:
     example:
       "{event: 'getSpectraCount'}"
   getPublicationsCount:
     returns:
       Number:
         type: of publications in the visible sky area
-        description: 
+        description:
     example:
       "{event: 'getPublicationsCount'}"
 JWST planning tool:
@@ -737,13 +710,13 @@ JWST planning tool:
     parameters:
       instrument:
         type: (String)
-        description: 
+        description:
       detector:
         type: (String)
-        description: 
+        description:
       showAllInstruments:
         type: (boolean)
-        description: 
+        description:
     description:
       Opens the JWST planning tool and adds at center of screen
     example:
@@ -752,22 +725,22 @@ JWST planning tool:
     parameters:
       instrument:
         type: (String)
-        description: 
+        description:
       detector:
         type: (String)
-        description: 
+        description:
       showAllInstruments:
         type: (boolean)
-        description: 
+        description:
       ra:
         type: (String, in degrees)
-        description: 
+        description:
       dec:
         type: (String, in degrees)
-        description: 
+        description:
       rotation:
         type: (String, in degrees)
-        description: 
+        description:
     description:
       Opens the JWST planning tool and adds at supplied coordinates
     example:
@@ -798,7 +771,7 @@ External Data Centres:
     description:
       Open the External Data Centres Panel. If tab is specified it will open that one. Otherwise it will open on the first tab (Dashboard)
     example:
-        "{event:'openExtTapPanel',  content:{tab: 'Tap Registry'}}"
+      "{event:'openExtTapPanel',  content:{tab: 'Tap Registry'}}"
 
   closeExtTapPanel:
     description:
@@ -810,26 +783,26 @@ Healpix MOC:
   addMOC:
     parameters:
       name:
-        type: (String) 
-        description:  Name of the MOC  (will overwrite existing MOC with same name)
+        type: (String)
+        description: Name of the MOC  (will overwrite existing MOC with same name)
       options.color:
-        type: (String) 
-        description:  Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')
+        type: (String)
+        description: Sets the color, use 'blue' or RGB format  (e.g. '#FF008A')
       options.opacity:
-        type: (Float) 
-        description:  Opacity of the MOC in range 0.0 
+        type: (Float)
+        description: Opacity of the MOC in range 0.0
       options.lineStyle:
-        type: (String) (optional) 
-        description:  Sets the linestyle of the borders in case only the borders are shown. Possible parameters are "solid" and "dashed"
+        type: (String) (optional)
+        description: Sets the linestyle of the borders in case only the borders are shown. Possible parameters are "solid" and "dashed"
       options.mode:
-        type: (String) (optional) 
-        description:  Choose to display in "healpix" or "q3c" system. Default is healpix
+        type: (String) (optional)
+        description: Choose to display in "healpix" or "q3c" system. Default is healpix
       options.addTab:
-        type: (Boolean) (optional) 
-        description:  Adds a resultspanel tab to control style on true. Default is false
+        type: (Boolean) (optional)
+        description: Adds a resultspanel tab to control style on true. Default is false
       mocData:
-        type: (Javascript Object) 
-        description:  Object where the keys are the orders and the values are lists of pixels in the order
+        type: (Javascript Object)
+        description: Object where the keys are the orders and the values are lists of pixels in the order
     description:
       Adds a MOC  ( HEALPix Multi-Order Coverage map) on the sky
     example:
@@ -837,8 +810,8 @@ Healpix MOC:
   removeMOC:
     parameters:
       name:
-        type: (String) 
-        description:  Name of the MOC  (if it has already been added) MOC added without name will be "MOC"
+        type: (String)
+        description: Name of the MOC  (if it has already been added) MOC added without name will be "MOC"
     description:
       Removes a MOC  ( HEALPix Multi-Order Coverage map) from the sky
     example:
@@ -847,42 +820,42 @@ Layout:
   addCustomTreeMap:
     parameters:
       treeMap.name:
-        type: (String) 
-        description:  The nameID that will be used in any callbacks
+        type: (String)
+        description: The nameID that will be used in any callbacks
       treeMap.description:
-        type: (String) (Optional) 
-        description:  description that will be shown when hovering on the button
+        type: (String) (Optional)
+        description: description that will be shown when hovering on the button
       treeMap.iconText:
         type: (String) (Optional)
-        description:  Text showing on the button, will default to name if not specified
+        description: Text showing on the button, will default to name if not specified
       treeMap.missions:
-        type:  (List) 
-        description:  List of the missions that will show up in the treemap
+        type: (List)
+        description: List of the missions that will show up in the treemap
       treeMap.missions.name:
-        type: (String) 
-        description:  Name of the mission which will be ID in callbacks
+        type: (String)
+        description: Name of the mission which will be ID in callbacks
       treeMap.missions.color:
-        type: (String) 
-        description:  Default color showing up in the treeMap
+        type: (String)
+        description: Default color showing up in the treeMap
     events:
       treemap_mission_clicked:
         values.action:
-          type:  (String) 
-          description:  Always "treemap_mission_clicked"
+          type: (String)
+          description: Always "treemap_mission_clicked"
         values.info.treemap:
-          type: (String) 
-          description:  treemap name as specified in the parameter
+          type: (String)
+          description: treemap name as specified in the parameter
         values.info.mission:
-          type:  (String) 
-          description:  mission name as specified in the parameter
+          type: (String)
+          description: mission name as specified in the parameter
         values.location.ra:
-          type:  (Double) 
+          type: (Double)
           description: Right ascension of center of screen when button was pressed
         values.location.dec:
-          type:  (Double) 
+          type: (Double)
           description: Declination of center of screen when button was pressed
         values.location.fov:
-          type:  (Double) 
+          type: (Double)
           description: Field of View of screen when button was pressed
     description:
       Adds a custom treeMap button to ESASky and starts listening for clicks on the missions inside it and send events
@@ -891,91 +864,91 @@ Layout:
   addTreeMapMission:
     parameters:
       treeMap.treeMapName:
-        type: (String) 
-        description:  The nameID of the treemap on which to add a mission
+        type: (String)
+        description: The nameID of the treemap on which to add a mission
       treeMap.missions:
-        type:  (List) 
-        description:  List of the missions that will show up in the treemap
+        type: (List)
+        description: List of the missions that will show up in the treemap
       treeMap.missions.name:
-        type: (String) 
-        description:  Name of the mission which will be ID in callbacks
+        type: (String)
+        description: Name of the mission which will be ID in callbacks
       treeMap.missions.color:
-        type: (String) 
-        description:  Default color showing up in the treeMap
+        type: (String)
+        description: Default color showing up in the treeMap
     description:
-      Adds a or multiple custom mission to a custom treeMap 
+      Adds a or multiple custom mission to a custom treeMap
     example:
       "{event: 'addTreeMapMission', content:{'treeMap':{treeMapName:'JWST', missions:[{'name':'NIRSpec2','color':'red'}]}}}"
   removeTreeMapMission:
     parameters:
       treeMap.treeMapName:
-        type: (String) 
-        description:  The nameID of the treemap on which from remove a mission
+        type: (String)
+        description: The nameID of the treemap on which from remove a mission
       treeMap.missions:
-        type:  (List) 
-        description:  List of the missions that will show up in the treemap
+        type: (List)
+        description: List of the missions that will show up in the treemap
       treeMap.missions.name:
-        type: (String) 
-        description:  Name of the mission which will be ID in callbacks
+        type: (String)
+        description: Name of the mission which will be ID in callbacks
     description:
-      Removes missions from a custom treeMap 
+      Removes missions from a custom treeMap
     example:
       "{event: 'removeTreeMapMission', content:{'treeMap':{treeMapName:'JWST', missions:[{'name':'NIRSpec2', 'color':'red'}]}}}"
   addCustomButton:
     parameters:
       button.name:
-        type: (String) 
-        description:  The nameID of the custom button that will be used in callbacks
+        type: (String)
+        description: The nameID of the custom button that will be used in callbacks
       button.description:
         required: false
-        type: (String) 
-        description:  Description that will be shown on hover
+        type: (String)
+        description: Description that will be shown on hover
       button.iconText:
         required: false
-        type: (String) 
-        description:  If no icon this text will be the icon instead
+        type: (String)
+        description: If no icon this text will be the icon instead
       button.iconName:
         required: false
-        type:  (String) 
-        description:  Id of one of the existing icons in ESASky. Erroneous name will send back available ids
+        type: (String)
+        description: Id of one of the existing icons in ESASky. Erroneous name will send back available ids
     description:
       Adds a custom button and starts listening for clicks on it
     events:
       button_clicked:
         values.action:
-          type:  (String) 
-          description:  Always "button_clicked"
+          type: (String)
+          description: Always "button_clicked"
         values.values.button:
-          type: (String) 
+          type: (String)
           description: ID of button clicked
         values.location.ra:
-          type:  (Double) 
+          type: (Double)
           description: Right ascension of center of screen when button was pressed
         values.location.dec:
-          type:  (Double) 
+          type: (Double)
           description: Declination of center of screen when button was pressed
         values.location.fov:
-          type:  (Double) 
+          type: (Double)
           description: Field of View of screen when button was pressed
     example:
       "{event: 'addCustomButton', content:{'button':{name:'myButton', description:'My button´s description', iconText:'My Button'}}}"
   updateCustomButton:
     parameters:
       button.name:
-        type: (String) 
-        description:  The nameID of the button to update
+        type: (String)
+        description: The nameID of the button to update
       button.description:
         required: false
-        type: (String) 
-        description:  Description that will be shown on hover
+        type: (String)
+        description: Description that will be shown on hover
       button.iconText:
         required: false
-        type: (String) 
-        description:  If no icon this text will be the icon instead
+        type: (String)
+        description: If no icon this text will be the icon instead
       button.iconName:
         required: false
-        type:  (String) 
-        description:  Id of one of the existing icons in ESASky. Erroneous name will send back available ids
+        type: (String)
+        description: Id of one of the existing icons in ESASky. Erroneous name will send back available ids
     description:
       Updates an existing custom button
     example:
@@ -983,8 +956,8 @@ Layout:
   removeCustomButton:
     parameters:
       button.name:
-        type: (String) 
-        description:  The nameID of the button to remove
+        type: (String)
+        description: The nameID of the button to remove
     description:
       Removes an existing custom button
     example:
@@ -992,10 +965,10 @@ Layout:
   setModuleVisibility:
     parameters:
       modules:
-        type: (JSON Object) 
-        description:  Object on format; {key:boolean}. Erroneous id returns possible values
+        type: (JSON Object)
+        description: Object on format; {key:boolean}. Erroneous id returns possible values
     description:
-      Sets visibility of the modifiable elements in ESASky. 
+      Sets visibility of the modifiable elements in ESASky.
     example:
       "{event:'setModuleVisibility',  content:{modules:{skies_menu:false}}}"
   getAvailableModules:
@@ -1032,25 +1005,25 @@ Alerts:
     returns:
       List:
         type: of available GW ids in ESASky
-        description: 
+        description:
     example:
       "{event: 'getGWIds'}"
   getGWEventData:
     parameters:
       id:
-        type:  (String)
-        description: 
+        type: (String)
+        description:
     returns:
       Data:
         type: associated with the GW id
-        description: 
+        description:
     example:
       "{event:'getGWEventData',  content:{id: 'S200225q'}}"
   showGWEvent:
     parameters:
       id:
-        type:  (String)
-        description: 
+        type: (String)
+        description:
     description:
       Shows the chosen GW id on ESASky
     example:
@@ -1059,14 +1032,14 @@ Alerts:
     returns:
       List:
         type: of available GW ids with data in ESASky
-        description: 
+        description:
     example:
       "{event:'getAllGWData'}"
   getNeutrinoEventData:
     returns:
       List:
         type: of neutrino events with data in ESASky
-        description: 
+        description:
     example:
       "{event:'getNeutrinoEventData}"
 Events:
@@ -1074,97 +1047,97 @@ Events:
     events:
       view_changed:
         event.action:
-          type:  (String) 
-          description:  "view_changed"
+          type: (String)
+          description: "view_changed"
         event.values.ra:
-          type:  (float) 
-          description:  Right ascension of center of screen in deg
+          type: (float)
+          description: Right ascension of center of screen in deg
         event.values.dec:
-          type:  (float) 
-          description:  Declination of center of screen in deg
+          type: (float)
+          description: Declination of center of screen in deg
         event.values.fov:
-          type:  (float) 
-          description:  Field of View in degld of View in deg
+          type: (float)
+          description: Field of View in degld of View in deg
       shape_selected:
         event.action:
-          type:  (String) 
-          description:  Will always be "shape_selected"
+          type: (String)
+          description: Will always be "shape_selected"
         event.values.overlay:
-          type:  (String) 
-          description:  Overlayname to which the shape selected is attached
+          type: (String)
+          description: Overlayname to which the shape selected is attached
         event.values.name:
-          type:  (String) 
-          description:  Name of the shape selected
+          type: (String)
+          description: Name of the shape selected
         event.values.id:
-          type:  (String) 
-          description:  Id of the shape selected
+          type: (String)
+          description: Id of the shape selected
       result_panel_opened:
         event.action:
-          type:  (String) 
-          description:  Will always be "result_panel_opened"
+          type: (String)
+          description: Will always be "result_panel_opened"
         event.values.id:
-          type:  (String) 
-          description:  ID of the panel opened
+          type: (String)
+          description: ID of the panel opened
       result_panel_closed:
         event.action:
-          type:  (String) 
-          description:  Will always be "result_panel_closed"
+          type: (String)
+          description: Will always be "result_panel_closed"
         event.values.id:
-          type:  (String) 
-          description:  ID of the panel closed
+          type: (String)
+          description: ID of the panel closed
       search_area_used:
         event.action:
-          type:  (String) 
-          description:  Will always be "search_area_used" This event triggers when a user sets the search area toll to a new area
+          type: (String)
+          description: Will always be "search_area_used" This event triggers when a user sets the search area toll to a new area
         event.values.type:
-          type:  (String) 
-          description:  POLYGON or CIRCLE
+          type: (String)
+          description: POLYGON or CIRCLE
         event.values.coordinates:
-          type:  (List) 
-          description:  if type is POLYGON this will be the points that makes up the area List with 1,3,5 etc being ra and 2,4,6 etc dec
+          type: (List)
+          description: if type is POLYGON this will be the points that makes up the area List with 1,3,5 etc being ra and 2,4,6 etc dec
         event.values.ra:
-          type:  (Double) 
-          description:   Right ascension of the center of the circle if type is CIRCLE
+          type: (Double)
+          description: Right ascension of the center of the circle if type is CIRCLE
         event.values.dec:
-          type:  (Double) 
+          type: (Double)
           description: Declination of the center of the circle if type is CIRCLE
         event.values.radius:
-          type:  (Double) 
-          description:  Radius of the circle if type is CIRCLE
+          type: (Double)
+          description: Radius of the circle if type is CIRCLE
       area_shape_selection:
         event.action:
-          type:  (String) 
-          description:  Will always be "area_shape_selection". this event will trigger when a user has used the area selection tool
+          type: (String)
+          description: Will always be "area_shape_selection". this event will trigger when a user has used the area selection tool
         event.values.overlays:
-          type:  (List) 
-          description:  List of overlays with entities that have been selected
+          type: (List)
+          description: List of overlays with entities that have been selected
         event.values.overlays.name:
-          type:  (String) 
-          description:  Name of entity that have been selected in this event
+          type: (String)
+          description: Name of entity that have been selected in this event
         event.values.overlays.id:
-          type:  (String) 
-          description:  ID of entity that have been selected in this event
+          type: (String)
+          description: ID of entity that have been selected in this event
         event.values.selection_area.type:
-          type:  (String) 
-          description:  BOX, POLYGON or CIRCLE
+          type: (String)
+          description: BOX, POLYGON or CIRCLE
         event.values.selection_area.points:
-          type:  (List) 
-          description:  if type BOX is POLYGON this will be the points that makes up the area
+          type: (List)
+          description: if type BOX is POLYGON this will be the points that makes up the area
         event.values.selection_area.points.ra:
-          type:  (Double) 
-          description:  Right ascension of a point
+          type: (Double)
+          description: Right ascension of a point
         event.values.selection_area.points.dec:
-          type:  (Double) 
-          description:  Declination of a point
+          type: (Double)
+          description: Declination of a point
         event.values.selection_area.circle.ra:
-          type:  (Double) 
-          description:   Right ascension of the center of the circle if type is CIRCLE
+          type: (Double)
+          description: Right ascension of the center of the circle if type is CIRCLE
         event.values.selection_area.circle.dec:
-          type:  (Double) 
+          type: (Double)
           description: Declination of the center of the circle if type is CIRCLE
         event.values.selection_area.circle.radius:
-          type:  (Double) 
-          description:  Radius of the circle if type is CIRCLE
+          type: (Double)
+          description: Radius of the circle if type is CIRCLE
     description:
       Adds a event listener which returns values of certain events
     example:
@@ -1173,17 +1146,17 @@ Events:
     events:
       shape_selected:
         event.action:
-          type:  (String) 
-          description:  Will always be "shape_selected"
+          type: (String)
+          description: Will always be "shape_selected"
         event.values.overlay:
-          type:  (String) 
-          description:  Overlayname to which the shape selected is attached
+          type: (String)
+          description: Overlayname to which the shape selected is attached
         event.values.name:
-          type:  (String) 
-          description:  Name of the shape
+          type: (String)
+          description: Name of the shape
         event.values.id:
-          type:  (String) 
-          description:  Id of the shape
+          type: (String)
+          description: Id of the shape
     description:
       Adds a event listener which returns values whenever a shape is selected
     example:
@@ -1192,17 +1165,17 @@ Events:
     events:
       view_changed:
         event.action:
-          type:  (String) 
-          description:  "view_changed"
+          type: (String)
+          description: "view_changed"
         event.values.ra:
-          type:  (float) 
-          description:  Right ascension of center of screen in deg
+          type: (float)
+          description: Right ascension of center of screen in deg
         event.values.dec:
-          type:  (float) 
-          description:  Declination of center of screen in deg
+          type: (float)
+          description: Declination of center of screen in deg
         event.values.fov:
-          type:  (float) 
-          description:  Field of View in deg
+          type: (float)
+          description: Field of View in deg
     description:
       Adds an event listener which returns values whenever a the field of view is changed
     example:
@@ -1221,14 +1194,14 @@ Search Tool:
   setConeSearchArea:
     parameters:
       ra:
-        type:  (double) 
-        description:  Right Ascension of the center of the circle
+        type: (double)
+        description: Right Ascension of the center of the circle
       dec:
-        type:  (double) 
-        description:  Declination of the center of the circle
+        type: (double)
+        description: Declination of the center of the circle
       radius:
-        type:  (double) 
-        description:  Radius of the circle
+        type: (double)
+        description: Radius of the circle
     description:
       Sets a circle as cone search area. All counts and data retrieval will be within this area. Outside of the area will be blurred
     example:
@@ -1236,8 +1209,8 @@ Search Tool:
   setPolygonSearchArea:
     parameters:
       stcs:
-        type:  (String) 
-        description:  STC String of the polygon
+        type: (String)
+        description: STC String of the polygon
     description:
       Sets a polygon as search area. All counts and data retrieval will be within this area. Outside of the area will be blurred
     example:
@@ -1254,14 +1227,14 @@ Targetlist:
     returns:
       A:
         type: list of all available target lists.
-        description: 
+        description:
     example:
       "{event: 'getTargetLists'}"
   openTargetList:
     parameters:
       targetList:
-        type:  (String) (Optional) 
-        description:  One of the available target lists
+        type: (String) (Optional)
+        description: One of the available target lists
     description:
       Open the target list panel. If the optional parameter "targetlist" is provided, the panel is opened with the provided target list pre-selected
     example:
@@ -1281,7 +1254,7 @@ Image:
     description:
       Open the outreach panel of the available telescopes
     example:
-        "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
+      "{event: 'openOutreachPanel', content: {telescope: 'JWST'}}"
   closeOutreachPanel:
     parameters:
       telescope:
@@ -1291,7 +1264,7 @@ Image:
     description:
       Close the outreach panel of the available telescopes
     example:
-        "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
+      "{event: 'closeOutreachPanel', content: {telescope: 'HST'}}"
   getOutreachImageIds:
     parameters:
       telescope:
@@ -1301,7 +1274,7 @@ Image:
     description:
       Get all available outreach image IDs of the available telescopes
     example:
-        "{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}"
+      "{event: 'getOutreachImageIds', content: {telescope: 'JWST'}}"
   getOutreachImageNames:
     parameters:
       telescope:
@@ -1329,7 +1302,7 @@ Image:
     description:
       Open an outreach image of a telescope
     example:
-        "{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}"
+      "{event:'openOutreachImage',  content:{telescope: 'HST', id:'heic2018b'}}"
   closeOutreachImage:
     parameters:
       telescope:
@@ -1339,7 +1312,7 @@ Image:
     description:
       Close the outreach image of a telescope
     example:
-        "{event:'closeOutreachImage',  content:{telescope: 'JWST'}}"
+      "{event:'closeOutreachImage',  content:{telescope: 'JWST'}}"
   addSingleImage:
     description:
       Adds a single image on the sky
