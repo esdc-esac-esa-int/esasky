@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>esac.archive.esasky.esasky-app</groupId>
 		<artifactId>esasky-app-parent-pom</artifactId>
-		<version>7.2</version>
+		<version>7.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>esasky-cl</artifactId>
@@ -83,11 +83,6 @@
 			<version>3.1.0</version>
 			<type>maven-plugin</type>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>esac.archive.esasky.cl</groupId> -->
-<!-- 			<artifactId>esasky-cl-gpresenter</artifactId> -->
-<!-- 			<version>0.1</version> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>esac.archive.esasky.esasky-app</groupId>
 			<artifactId>esasky-model</artifactId>
@@ -113,10 +108,6 @@
 				<directory>${basedir}/src/test/resources</directory>
 				<filtering>true</filtering>
 			</testResource>
-			<!-- <testResource > <targetPath>${basedir}/target/test-classes/esavo/sl/test/data/transform/</targetPath> 
-				<directory>${basedir}/src/test/java/esavo/sl/test/data/transform/</directory> 
-				<includes> <include>*</include> </includes> <filtering>false</filtering> 
-				</testResource> -->
 		</testResources>
 		<plugins>
 	        <plugin>
@@ -217,11 +208,6 @@
 					<packagingExcludes>**/*.jar</packagingExcludes>
 				</configuration>
 			</plugin>
-
-			<!-- GWT plugin -->
-			<!--plugin> <groupId>net.ltgt.gwt.maven</groupId> <artifactId>gwt-maven-plugin</artifactId> 
-				<extensions>true</extensions> <configuration> <moduleName>esac.archive.gacs.cl.web.GacsWeb</moduleName> 
-				</configuration> </plugin -->
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
