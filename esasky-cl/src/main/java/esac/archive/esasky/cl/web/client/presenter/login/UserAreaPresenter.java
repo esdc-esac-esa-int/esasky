@@ -8,13 +8,10 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Window;
-import esac.archive.absi.modules.cl.vo.gwt.utils.client.http.UncachedRequestBuilder;
-import esac.archive.absi.modules.cl.vo.gwt.utils.client.model.user.UserDetails;
-import esac.archive.absi.modules.cl.vo.gwt.uws.client.utils.UwsURLBuilder;
-import esac.archive.absi.modules.cl.vo.gwt.uws.client.xml.UwsXmlParserHandlerFactory;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
+import esac.archive.esasky.cl.web.client.login.UserDetails;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.*;
 import esac.archive.esasky.cl.web.client.view.common.ConfirmationPopupPanel;
@@ -126,9 +123,10 @@ public class UserAreaPresenter {
         GUISessionStatus.setUserDetails(null);
         refreshView();
 
-        String encodedLogoutURL = UwsURLBuilder.buildLogoutURL(EsaSkyWebConstants.TAP_CONTEXT + '/');
+        String logoutUrl = EsaSkyWebConstants.TAP_CONTEXT + "/logout";
 
-        UncachedRequestBuilder builder = new UncachedRequestBuilder(RequestBuilder.POST, encodedLogoutURL);
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, logoutUrl);
+        builder.setHeader("If-Modified-Since", "01 Jan 1970 00:00:00 GMT");
         try {
             Log.info("Sending logout request...");
             builder.sendRequest(null, new RequestCallback() {
@@ -187,11 +185,12 @@ public class UserAreaPresenter {
     }
 
     private void checkCasLoginStatus() {
-        String encodedCheckUserIsLoggedInURL = UwsURLBuilder.buildCheckUserStatusURL(EsaSkyWebConstants.TAP_CONTEXT + '/');
+        String encodedCheckUserIsLoggedInURL = EsaSkyWebConstants.TAP_CONTEXT + "/LoginStatus";
 
         Log.info(encodedCheckUserIsLoggedInURL);
 
-        UncachedRequestBuilder builder = new UncachedRequestBuilder(RequestBuilder.GET, encodedCheckUserIsLoggedInURL);
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, encodedCheckUserIsLoggedInURL);
+        builder.setHeader("If-Modified-Since", "01 Jan 1970 00:00:00 GMT");
         try {
             Log.info("Sending user 'is user logged in' check request...");
             builder.sendRequest(null, new RequestCallback() {
@@ -205,7 +204,7 @@ public class UserAreaPresenter {
                             GUISessionStatus.setUserDetails(null);
                         } else {
                             String text = response.getText();
-                            UserDetails userDetails = UwsXmlParserHandlerFactory.getHandler().getUserDetails(text);
+                            UserDetails userDetails = UserDetails.parseFromXml(text);
                             GUISessionStatus.setUserDetails(userDetails);
                             restoreCurrentSession();
                         }

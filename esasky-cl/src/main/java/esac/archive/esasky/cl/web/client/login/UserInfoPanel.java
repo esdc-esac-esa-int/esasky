@@ -3,7 +3,6 @@ package esac.archive.esasky.cl.web.client.login;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import esac.archive.absi.modules.cl.vo.gwt.utils.client.model.user.UserDetails;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;

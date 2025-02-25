@@ -68,11 +68,6 @@
 			<version>1.1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>esac.archive.absi.vo.tap</groupId>
-			<artifactId>absi-lib-tap-gwt</artifactId>
-			<version>${absi-vo-tap.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>esac.archive.esasky.esasky-app</groupId>
 			<artifactId>esasky-cl-mission-planning</artifactId>
 			<version>${project.version}</version>
