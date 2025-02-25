@@ -10,7 +10,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import esac.archive.absi.modules.cl.vo.gwt.utils.client.model.user.UserDetails;
 import esac.archive.esasky.cl.web.client.event.ErrorEvent;
 import esac.archive.esasky.cl.web.client.event.ErrorEventHandler;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
