@@ -2,6 +2,10 @@
 
 This is the ESASky frontend. This is the code that is running at [the ESASky website](https://sky.esa.int/esasky/).
 
+## GWT -> Angular migration
+
+This codebase is currently built with the GWT framework. ESASky is internally working on rewriting this whole project in Angular. When that migration is close to finished, that code will also be made available in this repository.
+
 ## Develop
 
 ### Install
