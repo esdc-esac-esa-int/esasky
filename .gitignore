@@ -1,0 +1,7 @@
+/bin/
+*.classpath
+*.project
+*.settings/
+.idea
+esasky-cl/src/main/java/esac/archive/esasky/cl/web/EsaSkyWeb.gwt.xml
+*/target
