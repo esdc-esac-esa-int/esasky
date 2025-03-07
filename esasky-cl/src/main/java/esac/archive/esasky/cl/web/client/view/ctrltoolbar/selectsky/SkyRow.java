@@ -257,7 +257,7 @@ public class SkyRow extends Composite implements Selectable{
 			} else {
                 listOfHipsByWavelength = skiesMenu.getHiPSListByWavelength(wavelengthDropDown.getSelectedObject()).getHips();
                 fillHiPSMenuBar(listOfHipsByWavelength, false);
-				if (!Objects.equals(wavelengthDropDown.getSelectedObject(), HipsWavelength.GW)) {
+				if (!Objects.equals(wavelengthDropDown.getSelectedObject(), HipsWavelength.GW) && !Objects.equals(wavelengthDropDown.getSelectedObject(), HipsWavelength.OUTREACH)) {
 					selectDefaultHips(listOfHipsByWavelength);
 				}
             }

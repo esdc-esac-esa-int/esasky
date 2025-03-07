@@ -5690,4 +5690,10 @@
 		ESASky API
 	</text>
 	<!-- internationalization_es.xml is up to date for everything above -->
+	<text key="wavelength_OUTREACH">
+		Outreach
+	</text>
+	<text key="wavelength_OUTREACH_Tooltip">
+		Outreach HiPS
+	</text>
 </Internationalization>
