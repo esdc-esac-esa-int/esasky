@@ -33,6 +33,7 @@ import esac.archive.esasky.cl.web.client.query.TAPImageListService;
 import esac.archive.esasky.cl.web.client.status.CountStatus;
 import esac.archive.esasky.cl.web.client.utility.DisplayUtils;
 import esac.archive.esasky.cl.web.client.utility.UrlUtils;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
 import esac.archive.esasky.cl.web.client.view.resultspanel.tabulator.TabulatorSettings;
 import esac.archive.esasky.ifcs.model.client.GeneralJavaScriptObject;
 import esac.archive.esasky.ifcs.model.coordinatesutils.SkyViewPosition;
@@ -114,6 +115,10 @@ public class ImageListEntity extends EsaSkyEntity {
 		CommonEventBus.getEventBus().fireEvent(new ImageListSelectedEvent(this));
 		if (shapeSelectedCallback != null) {
 			this.shapeSelectedCallback.onCallback();
+		}
+
+		if (lastImage != null && lastImage.isHips()) {
+			SelectSkyPanel.getInstance().removeSky(lastImage.getSurveyName());
 		}
 
     	drawer.selectShapes(shapeId);
