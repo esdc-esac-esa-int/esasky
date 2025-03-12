@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
@@ -318,19 +319,36 @@ public class SkyRow extends Composite implements Selectable{
 	}
 
 	private void createWavelengthOption(String wavelength) {
-		MenuItem<String> dropdownItem;
-		if(HipsWavelength.wavelengthList.contains(wavelength)) {
-			dropdownItem = new MenuItem<>(
-                    wavelength, TextMgr.getInstance().getText("wavelength_" + wavelength),
-                    TextMgr.getInstance().getText("wavelength_" + wavelength + "_Tooltip"), true);
-		}else {
-			dropdownItem = new MenuItem<>(
-                    wavelength, wavelength,
-                    wavelength, true);
+		if (!checkWavelengthOptionExists(wavelength)) {
+			MenuItem<String> dropdownItem;
+			if (HipsWavelength.wavelengthList.contains(wavelength)) {
+				dropdownItem = new MenuItem<>(
+						wavelength, TextMgr.getInstance().getText("wavelength_" + wavelength),
+						TextMgr.getInstance().getText("wavelength_" + wavelength + "_Tooltip"), true);
+			} else {
+				dropdownItem = new MenuItem<>(
+						wavelength, wavelength,
+						wavelength, true);
+			}
+
+			wavelengthDropDown.addMenuItem(dropdownItem);
 		}
-		
-		wavelengthDropDown.addMenuItem(dropdownItem);
-	}  
+	}
+
+	/**
+	 * Verifies if the wavelength option has already been added
+	 * @param wavelength wavelength menu
+	 * @return if the wavelength exists
+	 */
+	private boolean checkWavelengthOptionExists(String wavelength) {
+		AtomicBoolean exists = new AtomicBoolean(false);
+		wavelengthDropDown.getMenuItems().forEach(menuItem-> {
+			if(menuItem.getText().equals(wavelength)) {
+				exists.set(true);
+			}
+		});
+		return exists.get();
+	}
 
 	private void fillHiPSMenuBar(final List<HiPS> hipsList, boolean removable) {
 		hipsDropDown.clearItems();
