@@ -27,6 +27,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Window;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
+import esac.archive.esasky.cl.web.client.Modules;
 import esac.archive.esasky.cl.web.client.event.*;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.login.UserDetails;
@@ -256,7 +257,7 @@ public class UserAreaPresenter {
                     GeneralJavaScriptObject dataObj = ExtTapUtils.formatExternalTapData(data, metaObj);
                     String sessionJson = getFirstSession(dataObj);
 
-                    if (sessionJson != null) {
+                    if (sessionJson != null && Modules.getMode().isEmpty()) {
                         ConfirmationPopupPanel restoreSessionDialog = new ConfirmationPopupPanel(CAT_USERAREA,
                                 TextMgr.getInstance().getText("userArea__userAreaPresenter_restoreSession_title"),
                                 TextMgr.getInstance().getText("userArea__userAreaPresenter_restoreSession_body"),

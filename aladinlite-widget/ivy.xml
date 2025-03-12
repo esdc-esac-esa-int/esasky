@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+
+    <info revision="0.8.7" status="release" organisation="esa" e:project="absi" e:layer="cl"
+        e:component="aladinlite-widget" module="absi-cl-aladinlite-widget">
+        <description homepage="http://satscm.esac.esa.int/trac/ABSI">
+            Absi AladinLite GWT Widget
+        </description>
+    </info>
+    <configurations>
+        <conf name="master" visibility="public" description="Only the main artifact, no transitive dependencies" />
+        <conf name="runtime" visibility="public" description="Everything needed to run this module"
+            extends="master" />
+        <conf name="default" visibility="public" description="Default configuration is runtime"
+            extends="runtime" />
+        <conf name="test" visibility="private" description="Test dependencies" extends="runtime" />
+    </configurations>
+    <publications>
+        <artifact name="absi-cl-aladinlite-widget" type="jar" ext="jar" conf="master" />
+    </publications>
+    <dependencies>
+        <!-- Test libraries -->
+        <dependency org="junit" name="junit" rev="4.10" force="false" transitive="true"
+            conf="test->default" />
+        <dependency org="checkstyle" name="checkstyle-no-deps" rev="4.4" force="false"
+            transitive="true" conf="test->default" />
+
+        <!-- External libraries -->
+        <dependency org="com.google.gwt" name="gwt-user" rev="2.6.1" force="false"
+            transitive="true" />
+        <dependency org="com.google.gwt" name="gwt-dev" rev="2.6.1" force="false"
+            transitive="true" />
+        <dependency org="com.google.gwt" name="gwt-servlet" rev="2.6.1" force="false"
+            transitive="true" />
+        <dependency org="com.google.gwt" name="gwt-log" rev="3.3.0" force="false"
+            transitive="true" />
+        <dependency org="javax.validation" name="validation-api" rev="1.0.0.GA" force="false"
+            transitive="true" />
+
+        <!-- ABSI libraries -->
+
+    </dependencies>
+
+</ivy-module>

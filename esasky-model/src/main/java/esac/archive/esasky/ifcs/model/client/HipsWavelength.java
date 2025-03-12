@@ -38,6 +38,7 @@ public class HipsWavelength {
 	public static String OTHERS = "OTHERS";
 	public static String USER = "USER";
 	public static String GW = "GW";
+	public static String OUTREACH = "OUTREACH";
 
 
 	public static LinkedList<String> wavelengthList = new LinkedList<String>() {
@@ -59,6 +60,7 @@ public class HipsWavelength {
 			add(RADIO);
 			add(OTHERS);
 			add(GW);
+			add(OUTREACH);
 		}
 	};
 	

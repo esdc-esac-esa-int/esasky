@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module rename-to='aladinlitewidget'>
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+	<!-- Other GWT module inherits -->
+	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name="com.google.gwt.uibinder.UiBinder" />
+
+	<!-- Javascript files -->
+	<script src="firebugx.js"></script>
+	<script src="jquery-1.9.1.min.js"></script>
+	<script src="aladin.min.js"></script>
+	<script src="aladin-types-ext.js"></script>
+	<script src="aladin-custom-utils.js"></script>
+	<script src="aladin-custom-shapes.js"></script>
+
+    <stylesheet src="gwt/aladinlite/aladin.min.css" />
+
+	
+
+	<!-- Other module inherits -->
+	<inherits name="com.google.gwt.json.JSON" />
+	<!-- Inherit gwt-log Default to `OFF`, but allow selection of a specific 
+		level, via the URL: http://hostname/module/index.html?log_level=INFO -->
+	<inherits name="com.allen_sauer.gwt.log.gwt-log-OFF" />
+	<extend-property name="log_level" values="DEBUG" />
+	<set-configuration-property name="log_pattern" value="%d [%-5p] %m%n" />
+
+	<!-- This will give us shorter obfuscated CSS class names. We guarantee 
+		that there will be no class names that will conflict with /M.+/ -->
+	<set-configuration-property name="CssResource.obfuscationPrefix"
+		value="M" />
+		
+			<add-linker name="xsiframe" />
+	<set-configuration-property
+		name='xsiframe.failIfScriptTag' value='FALSE' />
+<!-- 	<entry-point
+ 		class='esac.archive.absi.modules.cl.aladinlite.widget.sample.AladinLiteWidgetSample' />  -->
+	<!-- Specify the app entry point class. -->
+	<source path='sample' />
+
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+
+	<!-- Define which permutations to compile -->
+	<!-- For development purposes use just gecko1.8 (Firefox) -->
+	<!-- <set-property name="user.agent" value="gecko1_8"/> -->
+
+</module>

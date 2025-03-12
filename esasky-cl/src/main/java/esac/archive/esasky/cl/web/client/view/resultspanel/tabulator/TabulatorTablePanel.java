@@ -1031,10 +1031,14 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 			for (MatchResult match = regularExpression.exec(desc.getArchiveProductURI()); match != null; match = regularExpression
 					.exec(desc.getArchiveProductURI())) {
 				String rowColumn = match.getGroup(1); // Group 1 is the match inside @s
-				String valueURI = URL.encodeQueryString(rowData.getStringProperty(rowColumn));
+				String valueURI = rowData.getStringProperty(rowColumn);
+				if (!valueURI.startsWith("http")) {
+					valueURI = URL.encodeQueryString(valueURI);
+				}
+
 				productURI = productURI.replace("@@@" + rowColumn + "@@@", valueURI);
 			}
-			String url = desc.getArchiveBaseURL() + productURI;
+			String url =  (desc.getArchiveBaseURL() != null ? desc.getArchiveBaseURL() : "") + productURI;
 			if (!url.contains("nxsa.esac.esa.int") && "https:".equals(Window.Location.getProtocol()) && url.startsWith("http:")) {
 				url = url.replaceFirst("http:", "https:");
 			}

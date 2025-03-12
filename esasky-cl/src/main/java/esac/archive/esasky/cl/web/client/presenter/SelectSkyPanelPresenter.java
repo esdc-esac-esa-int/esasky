@@ -43,82 +43,92 @@ import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 public class SelectSkyPanelPresenter {
 
     private View view;
-    
+
     private SkiesMenu skiesMenu;
 
     public interface View {
-    	void fillAllSkyPanelEntries(SkiesMenu skiesMenu);
-    	
-    	void hide();
-    	void toggle();
-    	boolean isShowing();
-    	void setSkiesMenu(SkiesMenu skiesMenu);
-    	SkyRow createSky(boolean sendConvenienveEvent);
-    	SkyRow createSky(boolean sendConvenienveEvent, String category, boolean isDefault);
-    	boolean select(HiPS hips);
-    	
-    	void refreshUserDropdowns();
-    	
-    	AddSkyButton getAddSkyRowButton();
+        void fillAllSkyPanelEntries(SkiesMenu skiesMenu);
+
+        void hide();
+
+        void toggle();
+
+        boolean isShowing();
+
+        void setSkiesMenu(SkiesMenu skiesMenu);
+
+        SkyRow createSky(boolean sendConvenienveEvent);
+
+        SkyRow createSky(boolean sendConvenienveEvent, String category, boolean isDefault);
+
+        boolean select(HiPS hips);
+
+        void refreshUserDropdowns();
+
+        AddSkyButton getAddSkyRowButton();
+
         ESASkyPlayerPanel getPlayerPanel();
     }
-    
+
     public SelectSkyPanelPresenter(final View inputView) {
         this.view = inputView;
         getHiPSMapsList();
         CommonEventBus.getEventBus().addHandler(HipsAddedEvent.TYPE, changeEvent -> {
-        	if(changeEvent.getAddIfAlreadyExist()) {
-        		if(changeEvent.getHipsWavelength() == HipsWavelength.USER || changeEvent.getHipsWavelength() == HipsWavelength.GW || !HipsWavelength.wavelengthList.contains(changeEvent.getHipsWavelength())) {
-        			addUrlHips(changeEvent.getHiPS(), null);
-        		} else {
-        			SkyRow sky = view.createSky(true);
+            if (changeEvent.getAddIfAlreadyExist()) {
+                if (changeEvent.getHipsWavelength() == HipsWavelength.USER
+                        || changeEvent.getHipsWavelength() == HipsWavelength.GW
+                        || changeEvent.getHipsWavelength() == HipsWavelength.OUTREACH
+                        || !HipsWavelength.wavelengthList.contains(changeEvent.getHipsWavelength())) {
+                    addUrlHips(changeEvent.getHiPS(), null);
+                } else {
+                    SkyRow sky = view.createSky(true);
                     CommonEventBus.getEventBus().fireEvent(
                             new HipsChangeEvent(sky.getRowId(), sky.getSelectedHips(), sky.getSelectedPalette(), sky.isBase(), 1));
-        		}
-        	} else {
-        		if(!view.select(changeEvent.getHiPS())) {
-        			addUrlHips(changeEvent.getHiPS(), null);
-        		}
-        	}
-		});
+                }
+            } else {
+                if (!view.select(changeEvent.getHiPS())) {
+                    addUrlHips(changeEvent.getHiPS(), null);
+                }
+            }
+        });
     }
 
-    public SkiesMenu getSkiesMenu(){
-    	return skiesMenu;
+    public SkiesMenu getSkiesMenu() {
+        return skiesMenu;
     }
 
-    public  ESASkyPlayerPanel getPlayerPanel() {
+    public ESASkyPlayerPanel getPlayerPanel() {
         return view.getPlayerPanel();
     }
-    
+
     public void addUrlHips(HiPS hips, SkyRow skyRow) {
-		
-		SkiesMenuEntry entry = skiesMenu.getHiPSListByWavelength(hips.getHipsWavelength());
-		
-		if(entry == null) {
-			entry = new SkiesMenuEntry();
-			entry.getHips().add(hips);
-			entry.setTotal(1);
-			if(hips.getHipsWavelength() == null) {
-				if (hips.getHipsCategory() == null) {
-					hips.setHipsWavelength(HipsWavelength.USER);
-				}else {
-					hips.setHipsWavelength(hips.getHipsCategory());
-				}
-				
-			}
-			entry.setWavelength(hips.getHipsWavelength());
-			getSkiesMenu().getMenuEntries().add(entry);
-		} else {
+
+        SkiesMenuEntry entry = skiesMenu.getHiPSListByWavelength(hips.getHipsWavelength());
+
+        if (entry == null) {
+            entry = new SkiesMenuEntry();
+            entry.getHips().add(hips);
+            entry.setTotal(1);
+            if (hips.getHipsWavelength() == null) {
+                if (hips.getHipsCategory() == null) {
+                    hips.setHipsWavelength(HipsWavelength.USER);
+                } else {
+                    hips.setHipsWavelength(hips.getHipsCategory());
+                }
+
+            }
+            entry.setWavelength(hips.getHipsWavelength());
+            getSkiesMenu().getMenuEntries().add(entry);
+        } else {
             if (!entry.getHips().contains(hips)) {
                 entry.getHips().add(hips);
             }
-		}
-		if(skyRow == null) {
-			skyRow = view.createSky(false);
-		}
-		skyRow.setSelectHips(hips.getSurveyName(), false, hips.getHipsCategory());
-		view.refreshUserDropdowns();
+        }
+        if (skyRow == null) {
+            skyRow = view.createSky(false);
+        }
+        skyRow.setSelectHips(hips.getSurveyName(), false, hips.getHipsCategory());
+        view.refreshUserDropdowns();
     }
 
     private void getHiPSMapsList() {
@@ -167,16 +177,16 @@ public class SelectSkyPanelPresenter {
         }
         Log.debug("End of SelectSkyPresenter.getHiPSMapsList");
     }
-    
+
     public void hide() {
-    	view.hide();
+        view.hide();
     }
-    
+
     public void toggle() {
-		view.toggle();
+        view.toggle();
     }
-    
+
     public boolean isShowing() {
-    	return view.isShowing();
-    }	
+        return view.isShowing();
+    }
 }
