@@ -420,12 +420,16 @@ public class AladinLiteWidget extends Composite implements AladinLiteCDSWrapper 
 		aladinLiteJsObject.aladinDiv.addEventListener(
 				"AL:Event",
 				function (e) {
-					var rightClickDurationMs = Date.now() - aladinLiteJsObject.view.rightClickTimeStart;
-                    if (aladinLiteJsObject.view.rightClick && rightClickDurationMs < 300) {
-						var evt = new MouseEvent('contextmenu',{bubbles:true, clientX: e.detail.xy.x, clientY: e.detail.xy.y});
-						e.target.dispatchEvent(evt);
+                    if (e.detail.type === "mouseout") {
+                        var center = aladinLiteJsObject.view.viewCenter;
+						instance.@esac.archive.absi.modules.cl.aladinlite.widget.client.AladinLiteWidget::fireCoordinatesChangedEvent(DDZ)(center.lon, center.lat, true);
+					} else {
+						var rightClickDurationMs = Date.now() - aladinLiteJsObject.view.rightClickTimeStart;
+						if (aladinLiteJsObject.view.rightClick && rightClickDurationMs < 300) {
+							var evt = new MouseEvent('contextmenu',{bubbles:true, clientX: e.detail.xy.x, clientY: e.detail.xy.y});
+							e.target.dispatchEvent(evt);
+						}
 					}
-
 				}
 		);
 		aladinLiteJsObject.aladinDiv.addEventListener(
