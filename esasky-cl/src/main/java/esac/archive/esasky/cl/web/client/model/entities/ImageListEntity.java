@@ -378,7 +378,12 @@ public class ImageListEntity extends EsaSkyEntity {
 	public void showImage(String id) {
 		if (lastImage != null) {
 			lastImage.removeOpenSeaDragon();
+
+			if (lastImage.isHips()) {
+				SelectSkyPanel.getInstance().removeSky(lastImage.getSurveyName());
+			}
 		}
+
 
 		GeneralJavaScriptObject[] rowDataArray = tablePanel.getAllRows();
 		for (int i = 0; i < rowDataArray.length; i++) {
