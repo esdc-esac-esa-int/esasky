@@ -255,6 +255,7 @@ public class SkyRow extends Composite implements Selectable{
             if(!HipsWavelength.wavelengthList.contains(wavelengthDropDown.getSelectedObject())) {
                 listOfHipsByWavelength = HipsWavelength.getListOfUserHips().get(wavelengthDropDown.getSelectedObject());
                 fillHiPSMenuBar(listOfHipsByWavelength, true);
+				selectDefaultHips(listOfHipsByWavelength);
 			} else {
                 listOfHipsByWavelength = skiesMenu.getHiPSListByWavelength(wavelengthDropDown.getSelectedObject()).getHips();
                 fillHiPSMenuBar(listOfHipsByWavelength, false);
@@ -311,6 +312,12 @@ public class SkyRow extends Composite implements Selectable{
 
 		if(!HipsWavelength.wavelengthList.contains(defaultWavelength)) {
             HipsWavelength.getListOfUserHips().computeIfAbsent(defaultWavelength, k -> new LinkedList<>());
+		}
+
+		for(String category: HipsWavelength.getListOfUserHips().keySet()) {
+			if (!HipsWavelength.getListOfUserHips().get(category).isEmpty()) {
+				createWavelengthOption(category);
+			}
 		}
 		
 		wavelengthDropDown.selectObject(defaultWavelength);

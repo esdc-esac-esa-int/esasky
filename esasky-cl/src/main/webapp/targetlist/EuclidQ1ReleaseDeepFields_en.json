@@ -1,0 +1,38 @@
+[
+{
+"simbadMainId": "Euclid Deep Field Fornax",
+    "simbadRaDeg": "53",
+    "simbadDecDeg": "-28",
+    "simbadGaldimMajAxis": 33,
+    "userInput": "Euclid Deep Field Fornax",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "This is Euclid’s Deep Field Fornax. After only one observation, the space telescope already spotted 4.5 million galaxies in this field. In the coming years, Euclid will make 52 observations of this field to reach its full depth.",
+    "outreachImage": "euclid:EDFF"
+  },
+  {
+    "simbadMainId": "Euclid Deep Field North",
+    "simbadRaDeg": "269",
+    "simbadDecDeg": "66",
+    "simbadGaldimMajAxis": 40,
+    "userInput": "Euclid Deep Field North",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "This is Euclid’s Deep Field North. After only one observation, the space telescope has already spotted more than ten million galaxies in this field. It is also very rich in Milky Way stars, as it is close to the Galactic plane. In the coming years, Euclid will make 32 observations of this field to reach its full depth.",
+    "outreachImage": "euclid:EDFN"
+  },
+  {
+    "simbadMainId": "Euclid Deep Field South",
+    "simbadRaDeg": "61",
+    "simbadDecDeg": "-48.3",
+    "simbadGaldimMajAxis": 24,
+    "userInput": "Euclid Deep Field South",
+    "userInputType": "TARGET",
+    "validInput": true,
+    "cooFrame": "J2000",
+    "description": "This is Euclid’s Deep Field South. After only one observation, the space telescope already spotted more than 11 million galaxies in this field. In the coming years, Euclid will make more observations of this field to reach its full depth.",
+    "outreachImage": "euclid:EDFS"
+  }
+]
