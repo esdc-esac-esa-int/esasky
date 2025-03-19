@@ -70,7 +70,7 @@ public class TargetListPanel extends MovablePanel implements Hidable<PopupPanel>
     private String preparedFilenamesBaseUrl = GWT.getHostPageBaseURL() + "targetlist/";
 
     
-    private final String [] fileNames = {"EuclidEarlyReleaseTargets","OrionNebulaInterestingFeatures", "JWST_EROs", "SpiralGalaxies", "PeculiarGalaxies", "InteractingGalaxies", "GalaxyClusters", "BrightNebulae",
+    private final String [] fileNames = {"EuclidQ1ReleaseDeepFields","EuclidEarlyReleaseTargets","OrionNebulaInterestingFeatures", "JWST_EROs", "SpiralGalaxies", "PeculiarGalaxies", "InteractingGalaxies", "GalaxyClusters", "BrightNebulae",
     		"DarkNebulae", "GlobularClusters", "OpenClusters", "StarFormationRegions", "SupernovaRemnants", "SupermassiveBlackHoles",
     		"BrownDwarfs", "BrownDwarfsInMultipleSystems", "ClosestExoplanetarySystems", "CESAR_ISM", "CESAR_Galaxies", "CESAR_Colours"};
     private FlowPanel container;
