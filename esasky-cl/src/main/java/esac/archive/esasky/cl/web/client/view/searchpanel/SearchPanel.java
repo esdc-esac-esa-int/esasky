@@ -502,7 +502,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
                     container.getElement().getStyle().setPropertyPx("marginLeft", -1);
                     container.getElement().getStyle().setPropertyPx("marginRight", -3);
                     ssoName.setText("Moon data from the Planetary Science Archive");
-                    addLinkToEsaArchive(menuEntry, ssoTypeLabel, "https://archives.esac.esa.int/psa/#!Table%20View/Moon=target", "PSA Moon");
+                    addLinkToEsaArchive(menuEntry, ssoTypeLabel, "https://psa.esa.int/psa/#/pages/search?q=(target_name='Moon')%20AND%20(lastproduct='true')%20AND%20(proprietary_end_date%20%3C=%20ESDC_CURRENT_DATE())&t=0&m=null/null/null", "PSA Moon");
                 } else {
                     ssoName.setText(currSSO.getName());
                     menuEntry.addClickHandler((ClickEvent event) -> {
