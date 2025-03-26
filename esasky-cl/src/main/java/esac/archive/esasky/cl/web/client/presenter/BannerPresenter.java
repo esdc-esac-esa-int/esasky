@@ -25,6 +25,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTML;
 
@@ -46,12 +47,16 @@ import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils;
 import esac.archive.esasky.cl.web.client.utility.JSONUtils.IJSONRequestCallback;
 
+import java.util.Date;
+
 public class BannerPresenter {
 
 	private View view;
 	private boolean anyActicitySinceLastCheck;
 	private boolean bannerMessageIsActive;
 	private BannerMessage lastBannerMessage;
+	private final String BANNER_COOKIE_NAME = "esaSkyBannerCookie";
+
 
 	public interface View {
 		void setText(String text);
@@ -88,6 +93,10 @@ public class BannerPresenter {
 			public void onClick(ClickEvent event) {
 				hide();
 				if(lastBannerMessage != null && !lastBannerMessage.getIsWarning()) {
+					Date expires = new Date();
+					long milliseconds = ((long) 7)  * 24 * 60 * 60 * 1000;
+					expires.setTime(expires.getTime() + milliseconds);
+					Cookies.setCookie(BANNER_COOKIE_NAME, lastBannerMessage.getMessage(), expires);
 					bannerMessageIsActive = false;
 				}
 			}
@@ -173,6 +182,11 @@ public class BannerPresenter {
 				}
 				view.setIsWarning(bannerMessage.getIsWarning());
 				if(!view.getText().equals(new HTML(message).getHTML()) || bannerMessage.getIsWarning() != lastBannerMessage.getIsWarning()) {
+					String bannerCookie = Cookies.getCookie(BANNER_COOKIE_NAME);
+					if (bannerCookie != null && bannerCookie.equals(bannerMessage.getMessage())) {
+						return;
+					}
+
 					view.setText(message);
 					show();
 					if(bannerMessage.getIsWarning()) {
