@@ -45,6 +45,7 @@ import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
 import esac.archive.esasky.cl.web.client.utility.CoordinateUtils;
+import esac.archive.esasky.cl.web.client.utility.DatalabsExport;
 import esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.view.animation.EsaSkyAnimation;
@@ -321,6 +322,13 @@ public class CloseableTabLayoutPanel extends Composite {
                     new ExportVOTableEvent(selectedTabId, saveAllView));
         });
 
+        // Bind save as Jupyter anchor
+        saveAllView.getSaveAsJupyterAnchor().addClickHandler(event -> {
+            String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
+            CommonEventBus.getEventBus().fireEvent(
+                    new ExportJupyterEvent(selectedTabId, saveAllView));
+        });
+
         // Bind save as CSV anchor
         saveAllView.getSaveAsCSVAnchor().addClickHandler(event -> {
             String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
@@ -336,6 +344,9 @@ public class CloseableTabLayoutPanel extends Composite {
             GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
 
             saveAllView.setProductsDownloadVisible(hasProductUrl(entity.getDescriptor()) && !getSelectedWidget().isDataProductDatalink());
+
+            saveAllView.setJupyterDownloadVisible(DatalabsExport.supportsJupyterDownload(entity));
+
             // Set pop-up position.
             saveAllView.getSaveOrDownloadDialog().setPopupPositionAndShow(
                     (offsetWidth, offsetHeight) -> {

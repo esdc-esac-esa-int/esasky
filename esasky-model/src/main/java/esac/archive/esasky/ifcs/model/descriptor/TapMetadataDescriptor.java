@@ -109,14 +109,13 @@ public class TapMetadataDescriptor {
         return utype;
     }
 
-
-    @JsonSetter("principal")
     public void setPrincipal(Integer principal) {
         this.principal = principal == null ? 1 : principal;
     }
 
+    @JsonSetter
     public void setPrincipal(Boolean principal) {
-        this.principal = Boolean.FALSE.equals(principal) ? 0 : 1;
+        setPrincipal(Boolean.FALSE.equals(principal) ? 0 : 1);
     }
 
     public void setPrincipal(String principal) {

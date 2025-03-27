@@ -37,6 +37,7 @@ public class SaveAllView {
 
 	private Anchor saveAsVOTableAnchor;
 	private Anchor saveAsCSVAnchor;
+	private Anchor saveAsJupyterAnchor;
 	private Anchor downloadProdAnchor;
 	private PopupPanel saveOrDownloadPopupPanel;
 	private DDRequestForm ddRequestForm;
@@ -65,6 +66,10 @@ public class SaveAllView {
 		this.saveAsVOTableAnchor.setStyleName(POPUP_ANCHOR_CSS_STYLE);
 		this.saveAsVOTableAnchor.setTitle(TextMgr.getInstance().getText("saveAllView_save_In_VOTABLE_Format_Title"));
 
+		this.saveAsJupyterAnchor = new Anchor(TextMgr.getInstance().getText("saveAllView_Jupyter_Btn_Text"));
+		this.saveAsJupyterAnchor.setStyleName(POPUP_ANCHOR_CSS_STYLE);
+		this.saveAsJupyterAnchor.setTitle(TextMgr.getInstance().getText("saveAllView_Jupyter_Btn_Mouse_Over"));
+
 		this.downloadProdAnchor = new Anchor(TextMgr.getInstance().getText("saveAllView_Download_Btn_Text"));
 		this.downloadProdAnchor.setStyleName(POPUP_ANCHOR_CSS_STYLE);
 		this.downloadProdAnchor.setTitle(TextMgr.getInstance().getText("saveAllView_Download_Btn_Title"));
@@ -78,6 +83,7 @@ public class SaveAllView {
 		FlowPanel metadataPanel = new FlowPanel();
 		metadataPanel.add(this.saveAsCSVAnchor);
 		metadataPanel.add(this.saveAsVOTableAnchor);
+		metadataPanel.add(this.saveAsJupyterAnchor);
 
 		// Save section.
 		FlowPanel saveButtonDataPanel = new FlowPanel();
@@ -108,8 +114,16 @@ public class SaveAllView {
 		ddRequestForm.setVisible(visible);
 	}
 
+	public void setJupyterDownloadVisible(boolean visible) {
+		this.saveAsJupyterAnchor.setVisible(visible);
+	}
+
 	public final Anchor getSaveAsVOTableAnchor() {
 		return saveAsVOTableAnchor;
+	}
+
+	public final Anchor getSaveAsJupyterAnchor() {
+		return saveAsJupyterAnchor;
 	}
 
 	public final Anchor getSaveAsCSVAnchor() {

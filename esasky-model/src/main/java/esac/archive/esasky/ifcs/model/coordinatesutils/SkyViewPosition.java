@@ -21,7 +21,9 @@ package esac.archive.esasky.ifcs.model.coordinatesutils;
 public class SkyViewPosition{
 	private double fov;
 	private Coordinate coordinate;
-	
+
+	public SkyViewPosition() {}
+
 	public SkyViewPosition(Coordinate coordinate, Double fov) {
 		this.coordinate = coordinate;
 		this.fov = fov;

@@ -32,6 +32,7 @@ import esac.archive.esasky.cl.web.client.model.TapRowList;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.repository.DescriptorRepository;
 import esac.archive.esasky.cl.web.client.status.GUISessionStatus;
+import esac.archive.esasky.cl.web.client.utility.DatalabsExport;
 import esac.archive.esasky.cl.web.client.utility.GoogleAnalytics;
 import esac.archive.esasky.cl.web.client.utility.SampConstants.SampAction;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
@@ -119,6 +120,12 @@ public class ResultsPresenter implements ICountRequestHandler {
         CommonEventBus.getEventBus().addHandler(ExportCSVEvent.TYPE,
                 clickEvent -> {
                     doSaveTableAs(ReturnType.CSV);
+                    clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
+                });
+
+        CommonEventBus.getEventBus().addHandler(ExportJupyterEvent.TYPE,
+                clickEvent -> {
+                    doSaveTableAs(ReturnType.JUPYTER);
                     clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
                 });
 
@@ -271,7 +278,10 @@ public class ResultsPresenter implements ICountRequestHandler {
     	if (type.equals(ReturnType.CSV)) {
     		view.getTabPanel().getSelectedWidget().exportAsCsv();
     		eventCategory = GoogleAnalytics.CAT_DOWNLOAD_CSV;
-    	} else {
+	} else if (type.equals(ReturnType.JUPYTER)) {
+            DatalabsExport.exportTablePanel(view.getTabPanel().getSelectedWidget());
+            eventCategory = GoogleAnalytics.CAT_DOWNLOAD_IPYNB;
+        } else {
     		view.getTabPanel().getSelectedWidget().exportAsVot();
     		eventCategory = GoogleAnalytics.CAT_DOWNLOAD_VOT;
     	}
