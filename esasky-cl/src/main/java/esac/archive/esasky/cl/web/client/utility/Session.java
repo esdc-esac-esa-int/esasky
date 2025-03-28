@@ -189,7 +189,9 @@ public class Session {
 					String mission = dataEntry.getProperty("mission").toString();
 					String id = dataEntry.getProperty("id").toString();
 					String secondIdentifier = dataEntry.getProperty("secondIdentifier").toString();
-					TimeSeriesPanel.toggleTimeSeriesData(mission, id, secondIdentifier);
+					String ra = dataEntry.getStringProperty("ra");
+					String dec = dataEntry.getStringProperty("dec");
+					TimeSeriesPanel.toggleTimeSeriesData(mission, id, secondIdentifier, ra, dec);
 				}
 			}
 		}
