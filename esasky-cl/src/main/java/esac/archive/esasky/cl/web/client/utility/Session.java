@@ -685,22 +685,25 @@ public class Session {
 			String query = ent.getDescriptor().getUnprocessedADQL() != null ? ent.getDescriptor().getUnprocessedADQL() : ent.getQuery();
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_ADQL,new JSONString(query));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_FILTERS, new JSONString(ent.getTablePanel().getFilterString()));
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_URL, new JSONString(ent.getDescriptor().getBulkDownloadUrl()));
-			entObj.put(EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_ID_COLUMN, new JSONString(ent.getDescriptor().getBulkDownloadIdColumn()));
-			
+
+			putIfNonNull(entObj, EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_URL, ent.getDescriptor().getBulkDownloadUrl());
+			putIfNonNull(entObj, EsaSkyWebConstants.SESSION_DATA_BULK_DOWNLOAD_ID_COLUMN, ent.getDescriptor().getBulkDownloadIdColumn());
+
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_MAIN, new JSONString(ent.getPrimaryColor()));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_COLOR_SECOND, new JSONString(ent.getSecondaryColor()));
 			entObj.put(EsaSkyWebConstants.SESSION_DATA_SIZE, new JSONString(new Double(ent.getSize()).toString()));
-			if(ent.getLineStyle() != null) {
-				entObj.put(EsaSkyWebConstants.SESSION_DATA_LINESTYLE,new JSONString(ent.getLineStyle()));
-			}
-			if(ent.getShapeType() != null) {
-				entObj.put(EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE,new JSONString(ent.getShapeType()));
-			}
+			putIfNonNull(entObj, EsaSkyWebConstants.SESSION_DATA_LINESTYLE, ent.getLineStyle());
+			putIfNonNull(entObj, EsaSkyWebConstants.SESSION_DATA_SOURCE_STYLE, ent.getShapeType());
+
 			entArray.set(entArray.size(), entObj);
 		}
 		return entArray;
-		
+	}
+
+	private void putIfNonNull(JSONObject obj, String key, String value) {
+		if (value != null) {
+			obj.put(key, new JSONString(value));
+		}
 	}
 	
 	private void restoreData(GeneralJavaScriptObject saveStateObj) throws SaveStateException {
