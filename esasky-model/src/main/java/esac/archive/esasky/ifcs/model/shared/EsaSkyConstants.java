@@ -531,7 +531,7 @@ public class EsaSkyConstants {
     /** DEFAULT INIT VALUES **/
     /*************************************************************************/
     public enum ReturnType {
-        JSON("json", "application/json"), VOTABLE("vot", "application/x-votable+xml"), CSV("csv", "text/csv"), ASCII("ascii", "");
+        JSON("json", "application/json"), VOTABLE("vot", "application/x-votable+xml"), CSV("csv", "text/csv"), ASCII("ascii", ""), JUPYTER("ipynb", "application/x-ipynb+json");
 
         private String name;
         private String mimeType;

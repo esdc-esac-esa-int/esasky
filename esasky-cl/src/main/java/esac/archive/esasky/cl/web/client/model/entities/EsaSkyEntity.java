@@ -386,6 +386,10 @@ public class EsaSkyEntity implements GeneralEntityInterface {
         return descriptor.createTapUrl(metadataService.getRequestUrl(descriptor), this.adql, EsaSkyConstants.JSON);
     }
 
+    public String getCurrentQueryWithFilters() {
+        return metadataService.getMetadataAdql(descriptor, tablePanel.getFilterString());
+    }
+
     public void fetchDataWithoutMOC(String whereQuery) {
         Log.debug("Showing real data");
         tablePanel.setMOCMode(false);

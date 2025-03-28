@@ -32,6 +32,7 @@ public final class GoogleAnalytics {
     public static final String CAT_TAB_OPENED = "TabOpened";
     public static final String CAT_DOWNLOAD_CSV = "Download_CSV";
     public static final String CAT_DOWNLOAD_VOT = "Download_VOT";
+    public static final String CAT_DOWNLOAD_IPYNB = "Download_IPYNB";
     public static final String CAT_DOWNLOAD_PREVIEW = "Download_Preview";
     public static final String CAT_DOWNLOAD_DD = "Download_DD";
     public static final String CAT_CTRLTOOLBAR = "CtrlToolbar";

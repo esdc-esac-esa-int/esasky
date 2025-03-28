@@ -698,13 +698,6 @@ Counts:
         description:
     example:
       "{event: 'getSpectraCount'}"
-  getPublicationsCount:
-    returns:
-      Number:
-        type: of publications in the visible sky area
-        description:
-    example:
-      "{event: 'getPublicationsCount'}"
 JWST planning tool:
   addJwst:
     parameters:
