@@ -398,13 +398,15 @@ public class TabulatorTablePanel extends Composite implements ITablePanel, Tabul
 	public void onAddTimeSeriesClicked(GeneralJavaScriptObject row) {
 		String mission = entity.getDescriptor().getMission();
 		String secondIdentifier = null;
+		String ra = row.invokeFunction(GET_DATA).getStringProperty(getDescriptor().getRaColumn());
+		String dec = row.invokeFunction(GET_DATA).getStringProperty(getDescriptor().getDecColumn());
 		if("CHEOPS".equals(mission)) {
 			secondIdentifier = row.invokeFunction(GET_DATA).getStringProperty("sci_cor_lc_opt_link"); 
 		} else if ("XMM-OM".equals(mission)) {
 			secondIdentifier = row.invokeFunction(GET_DATA).getStringProperty("fast_id");
 		}
 		String dataId = row.invokeFunction(GET_DATA).getStringProperty(entity.getDescriptor().getIdColumn());
-		MovablePanel timeSeriesPanel = TimeSeriesPanel.toggleTimeSeriesData(mission, dataId, secondIdentifier);
+		MovablePanel timeSeriesPanel = TimeSeriesPanel.toggleTimeSeriesData(mission, dataId, secondIdentifier, ra, dec);
 		timeSeriesPanel.registerCloseObserver(() -> table.reformatRow(row));
 		GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_TIMESERIES, getLabel(), dataId);
 	}

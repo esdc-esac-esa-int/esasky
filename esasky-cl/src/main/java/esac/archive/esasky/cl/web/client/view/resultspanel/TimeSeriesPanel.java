@@ -83,9 +83,9 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     	}
     }
     
-    public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String secondIdentifier) {
+    public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String secondIdentifier, String ra, String dec) {
     	TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanel(mission);
-        String[] dataInfo = {mission, dataId, secondIdentifier};
+        String[] dataInfo = {mission, dataId, secondIdentifier, ra, dec};
         if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
         	timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
         	timeSeriesPanel.removeData(dataInfo);
