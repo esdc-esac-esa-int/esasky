@@ -5752,4 +5752,30 @@
 	<text key="saveAllView_Jupyter_Btn_Mouse_Over">
 		Download as a Jupyter Notebook
 	</text>
+	<text key="JupyterNotebook_welcome_text">
+		This notebook file was generated automatically by ESASky on $TIMESTAMP$.
+		Should you have any problem with this Notebook, please contact the ESAC Science Data Centre Helpdesk at https://support.cosmos.esa.int/esdc/index.php?/Tickets/Submit.
+	</text>
+	<text key="JupyterNotebook_import_libraries">
+		Import libraries
+	</text>
+	<text key="JupyterNotebook_esasky_widget">
+		ESASky widget
+	</text>
+	<text key="JupyterNotebook_configure_view">
+		Configure view
+	</text>
+	<text key="JupyterNotebook_code_block">
+		Code block
+	</text>
+	<text key="JupyterNotebook_loading_data">
+		Loading data
+	</text>
+	<text key="JupyterNotebook_try_finding_columns">
+		This is an attempt to automatically find the correct columns to use for id, ra and dec. If this doesn't work you can set them manually here.
+	</text>
+	<text key="JupyterNotebook_add_data_points">
+		Add the data points to the ESA Sky widget
+	</text>
+
 </Internationalization>

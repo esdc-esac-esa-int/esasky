@@ -3,6 +3,7 @@ package esac.archive.esasky.cl.web.client.utility;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.shared.DateTimeFormat;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
@@ -48,10 +49,10 @@ public class DatalabsExport {
         String currentTime = dtf.format(date);
 
         jupyter.addCell(new JupyterMarkdownCell(
-                "This notebook file was generated automatically by ESASky on " + currentTime + ".",
-                "Should you have any problem with this Notebook, please contact the ESAC Science Data Centre Helpdesk at https://support.cosmos.esa.int/esdc/index.php?/Tickets/Submit"));
+                TextMgr.getInstance().getText("JupyterNotebook_welcome_text").replace("$TIMESTAMP$", currentTime))
+                );
         jupyter.addCell(new JupyterMarkdownCell(
-                "## Import libraries"
+                "## " + TextMgr.getInstance().getText("JupyterNotebook_import_libraries")
         ));
         JupyterCodeCell installationCell = new JupyterCodeCell(
                 "%pip install astroquery --upgrade",
@@ -68,7 +69,7 @@ public class DatalabsExport {
 
     private static void addWidgetStep(Jupyter jupyter) {
         jupyter.addCell(new JupyterMarkdownCell(
-                "## ESASky widget"
+                "## " + TextMgr.getInstance().getText("JupyterNotebook_esasky_widget")
         ));
         jupyter.addCell(new JupyterCodeCell(
                 "esasky = ESASkyWidget()",
@@ -77,7 +78,7 @@ public class DatalabsExport {
 
     private static void addHipsStep(Jupyter jupyter) {
         jupyter.addCell(new JupyterMarkdownCell(
-                "## Configure view"
+                "## " + TextMgr.getInstance().getText("JupyterNotebook_configure_view")
         ));
         JupyterCodeCell hipsCell = new JupyterCodeCell();
 
@@ -106,7 +107,7 @@ public class DatalabsExport {
     }
 
     private static void addEntityStep(Jupyter jupyter, GeneralEntityInterface entity) {
-        jupyter.addCell(new JupyterMarkdownCell("## Code block"));
+        jupyter.addCell(new JupyterMarkdownCell("## " + TextMgr.getInstance().getText("JupyterNotebook_code_block")));
 
         if (entity.getDescriptor().isExternal() && OUR_EXTERNAL_TAPS.contains(entity.getDescriptor().getMission())) {
             addOurExternalTapStep(jupyter, entity);
@@ -144,7 +145,7 @@ public class DatalabsExport {
         String description = descriptor.getCategory() + " " + descriptor.getShortName();
         String tapUrl = getExternalTapUrl(descriptor);
         jupyter.addCell(new JupyterCodeCell(
-                "#Loading data: " + description,
+                "#" + TextMgr.getInstance().getText("Loading data") + " " + description,
                 "query = \"" + entity.getQuery() + "\"",
                 "tap_url = \"" + tapUrl + "\"",
                 "tap = TapPlus(url=tap_url)",
@@ -166,7 +167,7 @@ public class DatalabsExport {
                 "            return column_name",
                 "    return None"));
         jupyter.addCell(new JupyterCodeCell(
-                "#This is an attempt to automatically find the correct columns to use for id, ra and dec. If this doesn't work you can set them manually here.",
+                "# " + TextMgr.getInstance().getText("JupyterNotebook_try_finding_columns"),
                 "ra_column_name = find_first_matching(data.columns, [{'pos.eq.ra', 'meta.main'}, {'pos.eq.ra'}])",
                 "dec_column_name = find_first_matching(data.columns, [{'pos.eq.dec', 'meta.main'}, {'pos.eq.dec'}])",
                 "id_column_name = find_first_matching(data.columns, [{'meta.id', 'meta.main'}, {'meta.id'}])"
@@ -174,7 +175,7 @@ public class DatalabsExport {
         jupyter.addCell(new JupyterCodeCell(
                 "data"));
         jupyter.addCell(new JupyterCodeCell(
-                "#Add the data points to the ESA Sky widget",
+                "# " + TextMgr.getInstance().getText("JupyterNotebook_add_data_points"),
                 "esasky.overlay_cat_astropy(\"" + descriptor.getShortName() + "\", \"J2000\", \"#a343ff\", 7, data, ra_column_name, dec_column_name, id_column_name)"
         ));
     }
