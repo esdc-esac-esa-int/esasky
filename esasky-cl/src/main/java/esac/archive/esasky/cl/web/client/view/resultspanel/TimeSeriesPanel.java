@@ -84,17 +84,19 @@ public class TimeSeriesPanel extends MovableResizablePanel<TimeSeriesPanel> {
     }
     
     public static TimeSeriesPanel toggleTimeSeriesData(String mission, String dataId, String secondIdentifier, String ra, String dec) {
-    	TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanel(mission);
-        String[] dataInfo = {mission, dataId, secondIdentifier, ra, dec};
-        if (timeSeriesPanel.currentData.contains(String.join(",", dataInfo))) {
-        	timeSeriesPanel.currentData.remove(String.join(",", dataInfo));
-        	timeSeriesPanel.removeData(dataInfo);
+        TimeSeriesPanel timeSeriesPanel = getTimeSeriesPanel(mission);
+        // To preserve sessions created in 7.3.1 or earlier, the new parameters RA and Dec are not used in the data identifier
+        String[] dataIdentifier = {mission, dataId, secondIdentifier};
+        if (timeSeriesPanel.currentData.contains(String.join(",", dataIdentifier))) {
+            timeSeriesPanel.currentData.remove(String.join(",", dataIdentifier));
+            timeSeriesPanel.removeData(dataIdentifier);
             if (timeSeriesPanel.currentData.isEmpty()) {
-            	timeSeriesPanel.hide();
+                timeSeriesPanel.hide();
             }
         } else {
-        	timeSeriesPanel.currentData.add(String.join(",", dataInfo));
-        	timeSeriesPanel.addData(dataInfo);
+            timeSeriesPanel.currentData.add(String.join(",", dataIdentifier));
+            String [] dataToAdd = {mission, dataId, secondIdentifier, ra, dec};
+            timeSeriesPanel.addData(dataToAdd);
         }
         return timeSeriesPanel;
     }
