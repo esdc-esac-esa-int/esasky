@@ -26,6 +26,10 @@ public class ExportJupyterEvent extends GwtEvent<ExportJupyterEventHandler> {
         handler.onExportClick(this);
     }
 
+    public final String getEsaSkyUniqID() {
+        return this.esaSkyUniqID;
+    }
+
     public final SaveAllView getSaveAllView() {
         return this.saveAllView;
     }

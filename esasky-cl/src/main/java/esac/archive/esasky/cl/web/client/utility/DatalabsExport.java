@@ -11,6 +11,7 @@ import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEnti
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
 import esac.archive.esasky.cl.web.client.utility.jupyter.Jupyter;
 import esac.archive.esasky.cl.web.client.utility.jupyter.JupyterCell;
 import esac.archive.esasky.cl.web.client.utility.jupyter.JupyterCodeCell;
@@ -30,17 +31,46 @@ public class DatalabsExport {
     private static final List<String> OUR_EXTERNAL_TAPS = new ArrayList<>(Arrays.asList("ESO", "ASTRON", "HEASARC", "MAST"));
     public interface JupyterMapper extends ObjectMapper<Jupyter> {}
 
+    public static void exportAllTables() {
+        Jupyter jupyter = new Jupyter();
+        addInstallationStep(jupyter);
+        addWidgetStep(jupyter);
+        addHipsStep(jupyter);
+
+        jupyter.addCell(new JupyterMarkdownCell("## " + TextMgr.getInstance().getText("JupyterNotebook_code_block")));
+
+        List<GeneralEntityInterface> entities = EntityRepository.getInstance().getAllEntities();
+        double[] lastPosition = null;
+        for (GeneralEntityInterface entity : entities) {
+            double[] currentPosition = entityPosition(entity);
+            if (!Arrays.equals(currentPosition, lastPosition)) {
+                lastPosition = currentPosition;
+                addGoToStep(jupyter, entity);
+            }
+            addEntityStep(jupyter, entity);
+        }
+
+        JupyterMapper mapper = GWT.create(JupyterMapper.class);
+        downloadNotebook(mapper.write(jupyter));
+    }
+
     public static void exportTablePanel(ITablePanel panel) {
         Jupyter jupyter = new Jupyter();
         GeneralEntityInterface entity = panel.getEntity();
         addInstallationStep(jupyter);
         addWidgetStep(jupyter);
         addHipsStep(jupyter);
+        jupyter.addCell(new JupyterMarkdownCell("## " + TextMgr.getInstance().getText("JupyterNotebook_code_block")));
         addGoToStep(jupyter, entity);
         addEntityStep(jupyter, entity);
 
         JupyterMapper mapper = GWT.create(JupyterMapper.class);
         downloadNotebook(mapper.write(jupyter));
+    }
+
+    private static double[] entityPosition(GeneralEntityInterface entity) {
+        Coordinate coordinate = entity.getSkyViewPosition().getCoordinate();
+        return new double[]{coordinate.getRa(), coordinate.getDec(), entity.getSkyViewPosition().getFov()};
     }
 
     private static void addInstallationStep(Jupyter jupyter) {
@@ -107,8 +137,6 @@ public class DatalabsExport {
     }
 
     private static void addEntityStep(Jupyter jupyter, GeneralEntityInterface entity) {
-        jupyter.addCell(new JupyterMarkdownCell("## " + TextMgr.getInstance().getText("JupyterNotebook_code_block")));
-
         if (entity.getDescriptor().isExternal() && OUR_EXTERNAL_TAPS.contains(entity.getDescriptor().getMission())) {
             addOurExternalTapStep(jupyter, entity);
         } else if (entity.getDescriptor().isExternal()) {
