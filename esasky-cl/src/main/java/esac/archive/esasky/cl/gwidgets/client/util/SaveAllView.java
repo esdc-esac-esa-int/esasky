@@ -38,6 +38,7 @@ public class SaveAllView {
 	private Anchor saveAsVOTableAnchor;
 	private Anchor saveAsCSVAnchor;
 	private Anchor saveAsJupyterAnchor;
+	private Anchor saveAllAsJupyterAnchor;
 	private Anchor downloadProdAnchor;
 	private PopupPanel saveOrDownloadPopupPanel;
 	private DDRequestForm ddRequestForm;
@@ -70,6 +71,10 @@ public class SaveAllView {
 		this.saveAsJupyterAnchor.setStyleName(POPUP_ANCHOR_CSS_STYLE);
 		this.saveAsJupyterAnchor.setTitle(TextMgr.getInstance().getText("saveAllView_Jupyter_Btn_Mouse_Over"));
 
+		this.saveAllAsJupyterAnchor = new Anchor(TextMgr.getInstance().getText("saveAllView_Jupyter_All_Tables_Btn_Text"));
+		this.saveAllAsJupyterAnchor.setStyleName(POPUP_ANCHOR_CSS_STYLE);
+		this.saveAllAsJupyterAnchor.setTitle(TextMgr.getInstance().getText("saveAllView_Jupyter_Btn_Mouse_Over"));
+
 		this.downloadProdAnchor = new Anchor(TextMgr.getInstance().getText("saveAllView_Download_Btn_Text"));
 		this.downloadProdAnchor.setStyleName(POPUP_ANCHOR_CSS_STYLE);
 		this.downloadProdAnchor.setTitle(TextMgr.getInstance().getText("saveAllView_Download_Btn_Title"));
@@ -84,6 +89,7 @@ public class SaveAllView {
 		metadataPanel.add(this.saveAsCSVAnchor);
 		metadataPanel.add(this.saveAsVOTableAnchor);
 		metadataPanel.add(this.saveAsJupyterAnchor);
+		metadataPanel.add(this.saveAllAsJupyterAnchor);
 
 		// Save section.
 		FlowPanel saveButtonDataPanel = new FlowPanel();
@@ -109,6 +115,16 @@ public class SaveAllView {
 		final String count = (newNumberOfSelectedElements > 0) ? newNumberOfSelectedElements + "" : "0";
 		downloadProdAnchor.setText(TextMgr.getInstance().getText("DownloadDataProducts").replace("$COUNT$", NumberFormatter.formatToNumberWithSpaces(count)));
 	}
+
+	public final void updateJupyterNotebookButtons(int openTabCount) {
+		if (openTabCount <= 1) {
+			this.saveAllAsJupyterAnchor.getElement().addClassName("hidden");
+			this.saveAsJupyterAnchor.setText(TextMgr.getInstance().getText("saveAllView_Jupyter_Btn_Text"));
+		} else {
+			this.saveAllAsJupyterAnchor.getElement().removeClassName("hidden");
+			this.saveAsJupyterAnchor.setText(TextMgr.getInstance().getText("saveAllView_Jupyter_Single_Table_Btn_Text"));
+		}
+	}
 	
 	public void setProductsDownloadVisible(boolean visible) {
 		ddRequestForm.setVisible(visible);
@@ -124,6 +140,10 @@ public class SaveAllView {
 
 	public final Anchor getSaveAsJupyterAnchor() {
 		return saveAsJupyterAnchor;
+	}
+
+	public final Anchor getSaveAllAsJupyterAnchor() {
+		return saveAllAsJupyterAnchor;
 	}
 
 	public final Anchor getSaveAsCSVAnchor() {

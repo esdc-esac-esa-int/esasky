@@ -1,13 +1,9 @@
 package esac.archive.esasky.cl.web.client.utility;
 
-import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
@@ -15,78 +11,251 @@ import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEnti
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
 import esac.archive.esasky.cl.web.client.model.entities.SSOEntity;
+import esac.archive.esasky.cl.web.client.repository.EntityRepository;
+import esac.archive.esasky.cl.web.client.utility.jupyter.Jupyter;
+import esac.archive.esasky.cl.web.client.utility.jupyter.JupyterCell;
+import esac.archive.esasky.cl.web.client.utility.jupyter.JupyterCodeCell;
+import esac.archive.esasky.cl.web.client.utility.jupyter.JupyterMarkdownCell;
 import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SelectSkyPanel;
+import esac.archive.esasky.cl.web.client.view.ctrltoolbar.selectsky.SkyRow;
 import esac.archive.esasky.cl.web.client.view.resultspanel.ITablePanel;
+import esac.archive.esasky.ifcs.model.coordinatesutils.Coordinate;
 import esac.archive.esasky.ifcs.model.descriptor.CommonTapDescriptor;
-import esac.archive.esasky.ifcs.model.descriptor.ExtTapDescriptorList;
-import esac.archive.esasky.ifcs.model.shared.DatalabsData;
 
-import java.util.Objects;
-import java.util.function.Consumer;
-
-import static esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants.DATALABS_EXPORT_URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class DatalabsExport {
-    public interface DatalabsDataMapper extends ObjectMapper<DatalabsData> {
-    }
+    private static final List<String> OUR_EXTERNAL_TAPS = new ArrayList<>(Arrays.asList("ESO", "ASTRON", "HEASARC", "MAST"));
+    public interface JupyterMapper extends ObjectMapper<Jupyter> {}
 
-    public static final DatalabsDataMapper MAPPER = GWT.create(DatalabsDataMapper.class);
+    public static void exportAllTables() {
+        Jupyter jupyter = new Jupyter();
+        addInstallationStep(jupyter);
+        addWidgetStep(jupyter);
+        addHipsStep(jupyter);
+
+        jupyter.addCell(new JupyterMarkdownCell("## " + TextMgr.getInstance().getText("JupyterNotebook_code_block")));
+
+        List<GeneralEntityInterface> entities = EntityRepository.getInstance().getAllEntities();
+        double[] lastPosition = null;
+        for (GeneralEntityInterface entity : entities) {
+            double[] currentPosition = entityPosition(entity);
+            if (!Arrays.equals(currentPosition, lastPosition)) {
+                lastPosition = currentPosition;
+                addGoToStep(jupyter, entity);
+            }
+            addEntityStep(jupyter, entity);
+        }
+
+        JupyterMapper mapper = GWT.create(JupyterMapper.class);
+        downloadNotebook(mapper.write(jupyter));
+    }
 
     public static void exportTablePanel(ITablePanel panel) {
-        DatalabsData data = new DatalabsData();
-        addHips(data);
-        DatalabsData.DataEntity dataEntity = serializeEntity(panel.getEntity());
-        data.addDataEntity(dataEntity);
-        writeData(data, DatalabsExport::datalabsContentHandler);
+        Jupyter jupyter = new Jupyter();
+        GeneralEntityInterface entity = panel.getEntity();
+        addInstallationStep(jupyter);
+        addWidgetStep(jupyter);
+        addHipsStep(jupyter);
+        jupyter.addCell(new JupyterMarkdownCell("## " + TextMgr.getInstance().getText("JupyterNotebook_code_block")));
+        addGoToStep(jupyter, entity);
+        addEntityStep(jupyter, entity);
+
+        JupyterMapper mapper = GWT.create(JupyterMapper.class);
+        downloadNotebook(mapper.write(jupyter));
     }
 
-    private static void addHips(DatalabsData data) {
-        SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
-        skyPanel.getHipsList().forEach(row -> data.addHips(row.getSelectedHips().getSurveyName()));
+    private static double[] entityPosition(GeneralEntityInterface entity) {
+        Coordinate coordinate = entity.getSkyViewPosition().getCoordinate();
+        return new double[]{coordinate.getRa(), coordinate.getDec(), entity.getSkyViewPosition().getFov()};
     }
+
+    private static void addInstallationStep(Jupyter jupyter) {
+        Date date = new Date();
+        DateTimeFormat dtf = DateTimeFormat.getFormat(com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat.ISO_8601);
+        String currentTime = dtf.format(date);
+
+        jupyter.addCell(new JupyterMarkdownCell(
+                TextMgr.getInstance().getText("JupyterNotebook_welcome_text").replace("$TIMESTAMP$", currentTime))
+                );
+        jupyter.addCell(new JupyterMarkdownCell(
+                "## " + TextMgr.getInstance().getText("JupyterNotebook_import_libraries")
+        ));
+        JupyterCodeCell installationCell = new JupyterCodeCell(
+                "%pip install astroquery --upgrade",
+                "%pip install pandas",
+                "%pip install pyesasky --upgrade",
+                "from astroquery.esasky import ESASky",
+                "from astroquery.utils.tap.core import TapPlus",
+                "from astroquery.simbad import Simbad",
+                "import pandas as pd",
+                "from pyesasky import ESASkyWidget"
+        );
+        jupyter.addCell(installationCell);
+    }
+
+    private static void addWidgetStep(Jupyter jupyter) {
+        jupyter.addCell(new JupyterMarkdownCell(
+                "## " + TextMgr.getInstance().getText("JupyterNotebook_esasky_widget")
+        ));
+        jupyter.addCell(new JupyterCodeCell(
+                "esasky = ESASkyWidget()",
+                "esasky"));
+    }
+
+    private static void addHipsStep(Jupyter jupyter) {
+        jupyter.addCell(new JupyterMarkdownCell(
+                "## " + TextMgr.getInstance().getText("JupyterNotebook_configure_view")
+        ));
+        JupyterCodeCell hipsCell = new JupyterCodeCell();
+
+        SelectSkyPanel skyPanel = SelectSkyPanel.getInstance();
+        List<SkyRow> hips = skyPanel.getHipsList();
+
+        for (int i = 0; i < hips.size(); i++) {
+            String hipsName = hips.get(i).getSelectedHips().getSurveyName();
+            if (i == 0) {
+                hipsCell.addLine("esasky.select_hips('" + hipsName + "')");
+            } else {
+                hipsCell.addLine("esasky.add_hips('" + hipsName + "')");
+            }
+        }
+        jupyter.addCell(hipsCell);
+
+    }
+
+    private static void addGoToStep(Jupyter jupyter, GeneralEntityInterface entity) {
+        Coordinate coordinate = entity.getSkyViewPosition().getCoordinate();
+        JupyterCell goToCell = new JupyterCodeCell(
+                "esasky.go_to('" + coordinate.getRa() + "', '" + coordinate.getDec() + "')",
+                "esasky.set_fov(" + entity.getSkyViewPosition().getFov() + ")"
+        );
+        jupyter.addCell(goToCell);
+    }
+
+    private static void addEntityStep(Jupyter jupyter, GeneralEntityInterface entity) {
+        if (entity.getDescriptor().isExternal() && OUR_EXTERNAL_TAPS.contains(entity.getDescriptor().getMission())) {
+            addOurExternalTapStep(jupyter, entity);
+        } else if (entity.getDescriptor().isExternal()) {
+            addExternalTapStep(jupyter, entity);
+        } else {
+            addRegularTapStep(jupyter, entity);
+        }
+    }
+
+    private static void addOurExternalTapStep(Jupyter jupyter, GeneralEntityInterface entity) {
+        CommonTapDescriptor descriptor = entity.getDescriptor();
+        String description = descriptor.getCategory() + " " + descriptor.getShortName();
+
+        String levelDescriptor = descriptor.getShortName();
+        descriptor = descriptor.getParent();
+        while (descriptor != null) {
+            levelDescriptor = descriptor.getShortName() + "-" + levelDescriptor;
+            descriptor = descriptor.getParent();
+        }
+
+        jupyter.addCell(new JupyterCodeCell(
+                "# " + description,
+                "esasky.get_tap_count('" + entity.getDescriptor().getMission() + "')",
+                "esasky.plot_tap('" + levelDescriptor + "')"));
+        jupyter.addCell(new JupyterCodeCell(
+                "data=esasky.get_result_data()",
+                "data = data if type(data) is list else [data]",
+                "data_frame=pd.DataFrame.from_dict(data)",
+                "data_frame"));
+    }
+
+    private static void addExternalTapStep(Jupyter jupyter, GeneralEntityInterface entity) {
+        CommonTapDescriptor descriptor = entity.getDescriptor();
+        String description = descriptor.getCategory() + " " + descriptor.getShortName();
+        String tapUrl = getExternalTapUrl(descriptor);
+        jupyter.addCell(new JupyterCodeCell(
+                "#" + TextMgr.getInstance().getText("Loading data") + " " + description,
+                "query = \"" + entity.getQuery() + "\"",
+                "tap_url = \"" + tapUrl + "\"",
+                "tap = TapPlus(url=tap_url)",
+                "job = tap.launch_job(query)",
+                "data = job.get_data()"));
+
+        jupyter.addCell(new JupyterCodeCell(
+                "def column_name_with_ucds(columns, ucds):",
+                "    for column_name in columns:",
+                "        words = columns[column_name].meta.get('ucd', '').split(';')",
+                "        if ucds.issubset(words):",
+                "            return column_name",
+                "    return None",
+                "",
+                "def find_first_matching(columns, list_of_sets_of_ucds):",
+                "    for ucd_set in list_of_sets_of_ucds:",
+                "        column_name = column_name_with_ucds(columns, ucd_set)",
+                "        if column_name:",
+                "            return column_name",
+                "    return None"));
+        jupyter.addCell(new JupyterCodeCell(
+                "# " + TextMgr.getInstance().getText("JupyterNotebook_try_finding_columns"),
+                "ra_column_name = find_first_matching(data.columns, [{'pos.eq.ra', 'meta.main'}, {'pos.eq.ra'}])",
+                "dec_column_name = find_first_matching(data.columns, [{'pos.eq.dec', 'meta.main'}, {'pos.eq.dec'}])",
+                "id_column_name = find_first_matching(data.columns, [{'meta.id', 'meta.main'}, {'meta.id'}])"
+        ));
+        jupyter.addCell(new JupyterCodeCell(
+                "data"));
+        jupyter.addCell(new JupyterCodeCell(
+                "# " + TextMgr.getInstance().getText("JupyterNotebook_add_data_points"),
+                "esasky.overlay_cat_astropy(\"" + descriptor.getShortName() + "\", \"J2000\", \"#a343ff\", 7, data, ra_column_name, dec_column_name, id_column_name)"
+        ));
+    }
+
+    private static void addRegularTapStep(Jupyter jupyter, GeneralEntityInterface entity) {
+        CommonTapDescriptor descriptor = entity.getDescriptor();
+        String plotData;
+        switch (descriptor.getCategory()) {
+            case "observations":
+                plotData = "esasky.plot_obs('" + descriptor.getMission() + "')";
+                break;
+            case "spectra":
+                plotData = "esasky.plot_spec('" + descriptor.getMission() + "')";
+                break;
+            case "catalogues":
+                plotData = "esasky.plot_cat('" + descriptor.getMission() + "')";
+                break;
+            default:
+                plotData = "";
+        }
+        jupyter.addCell(new JupyterCodeCell(
+                plotData,
+                "data=esasky.get_result_data()",
+                "data = data if type(data) is list else [data]",
+                "data_frame=pd.DataFrame.from_dict(data)",
+                "data_frame"));
+    }
+
+    private static String getExternalTapUrl(CommonTapDescriptor descriptor) {
+        String tapUrl = descriptor.getOriginalParent().getTapUrl();
+        if (tapUrl.endsWith("sync")) {
+            tapUrl = tapUrl.replace("/sync", "");
+        }
+        return tapUrl;
+    }
+
 
     public static boolean supportsJupyterDownload(final GeneralEntityInterface entity) {
         return entity instanceof EsaSkyEntity &&
                 !(entity instanceof ImageListEntity ||
                         entity instanceof PublicationsEntity ||
-                        entity instanceof SSOEntity);
-        }
-
-    private static DatalabsData.DataEntity serializeEntity(GeneralEntityInterface entity) {
-        String authorId = null;
-        String sourceId = null;
-        String query = null;
-        String levelDescriptor = null;
-        if (entity instanceof PublicationsBySourceEntity) {
-            PublicationsBySourceEntity publicationsBySourceEntity = (PublicationsBySourceEntity) entity;
-            sourceId = publicationsBySourceEntity.getId();
-        } else if (entity instanceof PublicationsByAuthorEntity) {
-            PublicationsByAuthorEntity publicationsByAuthorEntity = (PublicationsByAuthorEntity) entity;
-            authorId = publicationsByAuthorEntity.getId();
-        } else {
-            query = ((EsaSkyEntity) entity).getCurrentQueryWithFilters();
-        }
-        if (entity.getDescriptor().isExternal()) {
-            CommonTapDescriptor descriptor = entity.getDescriptor();
-            levelDescriptor = descriptor.getShortName();
-            descriptor = descriptor.getParent();
-            while (descriptor != null) {
-                levelDescriptor = descriptor.getShortName() + "-" + levelDescriptor;
-                descriptor = descriptor.getParent();
-            }
-            if (ExtTapUtils.getLevelDescriptor(levelDescriptor) == null) {
-                levelDescriptor = null;
-            }
-        }
-        return new DatalabsData.DataEntity(entity.getDescriptor(), query, entity.getSkyViewPosition(), sourceId, authorId, levelDescriptor);
+                        entity instanceof SSOEntity ||
+                        entity instanceof PublicationsBySourceEntity ||
+                        entity instanceof PublicationsByAuthorEntity);
     }
 
-    private static native void datalabsContentHandler(String content) /*-{
+    private static native void downloadNotebook(String content) /*-{
         var uri = 'data:application/x-ipynb+json;charset=utf-8,' + content;
 
         var downloadLink = document.createElement("a");
         downloadLink.href = uri;
-        var file = new Blob([content], { type: 'appliction/xml;charset=utf-8' })
+        var file = new Blob([content], {type: 'appliction/xml;charset=utf-8'})
         downloadLink.href = URL.createObjectURL(file);
         var date = new Date().toLocaleDateString();
         var time = new Date().toLocaleTimeString();
@@ -98,47 +267,4 @@ public class DatalabsExport {
 
         URL.revokeObjectURL(downloadLink.href);
     }-*/;
-
-
-    private static void writeData(DatalabsData data, final Consumer<String> contentHandler) {
-        String json = MAPPER.write(data);
-        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, DATALABS_EXPORT_URL);
-
-        try {
-            requestBuilder.sendRequest(json, new RequestCallback() {
-
-                @Override
-                public void onError(final Request request, final Throwable exception) {
-                    Log.error("Failed exporting data to datalabs, exception: ", exception);
-                }
-
-                @Override
-                public void onResponseReceived(final Request request, final Response response) {
-                    if (response.getStatusCode() == 200) {
-                        contentHandler.accept(response.getText());
-                    } else {
-                        Log.error("Failed exporting data to datalabs, error code: " + response.getStatusCode());
-                    }
-                }
-            });
-        } catch (RequestException e) {
-            Log.error("Failed exporting data to datalabs, exception: ", e);
-        }
-    }
-
-    private static boolean shouldExport(GeneralEntityInterface entity){
-        return !(isSpecialEntity(entity) || isMoc(entity) || entity.getTablePanel() == null);
-    }
-
-    private static boolean isMoc(GeneralEntityInterface entity) {
-        return (entity instanceof EsaSkyEntity && ((EsaSkyEntity) entity).getMocEntity() != null
-                && ((EsaSkyEntity) entity).getMocEntity().isShouldBeShown());
-    }
-
-    private static boolean isSpecialEntity(GeneralEntityInterface ent) {
-        return Objects.equals(ent.getDescriptor().getSchemaName(), "alerts")
-                || Objects.equals(ent.getDescriptor().getSchemaName(), "public")
-                || ent instanceof ImageListEntity;
-    }
-
 }

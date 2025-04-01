@@ -22,7 +22,6 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -329,6 +328,12 @@ public class CloseableTabLayoutPanel extends Composite {
                     new ExportJupyterEvent(selectedTabId, saveAllView));
         });
 
+        // Bind save all tables as Jupyter anchor
+        saveAllView.getSaveAllAsJupyterAnchor().addClickHandler(event -> {
+            CommonEventBus.getEventBus().fireEvent(
+                    new ExportJupyterEvent(null, saveAllView));
+        });
+
         // Bind save as CSV anchor
         saveAllView.getSaveAsCSVAnchor().addClickHandler(event -> {
             String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
@@ -340,7 +345,7 @@ public class CloseableTabLayoutPanel extends Composite {
             String selectedTabId = tabs.get(tabLayout.getSelectedIndex()).getId();
             // Update number of observation selected before display the pop-up
             CommonEventBus.getEventBus().fireEvent(
-                    new UpdateNumRowsSelectedEvent(selectedTabId, saveAllView));
+                    new RefreshSaveAllViewEvent(saveAllView));
             GeneralEntityInterface entity = CloseableTabLayoutPanel.this.getWidget(tabLayout.getSelectedIndex()).getEntity();
 
             saveAllView.setProductsDownloadVisible(hasProductUrl(entity.getDescriptor()) && !getSelectedWidget().isDataProductDatalink());

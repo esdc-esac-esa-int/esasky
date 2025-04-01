@@ -25,43 +25,30 @@ import esac.archive.esasky.cl.gwidgets.client.util.SaveAllView;
 /**
  * @author María H. Sarmiento Copyright (c) 2016- European Space Agency
  */
-public class UpdateNumRowsSelectedEvent extends GwtEvent<UpdateNumRowsSelectedEventHandler> {
+public class RefreshSaveAllViewEvent extends GwtEvent<RefreshSaveAllViewEventHandler> {
 
     /** Event type. */
-    public final static Type<UpdateNumRowsSelectedEventHandler> TYPE = new Type<UpdateNumRowsSelectedEventHandler>();
+    public final static Type<RefreshSaveAllViewEventHandler> TYPE = new Type<>();
 
-    /** ESASkyUniqID. */
-    private String esaSkyUniqID;
     /** SaveAllView local instance. */
     private SaveAllView saveAllView;
 
     /**
      * Class constructor.
-     * @param inputEsaSkyUniqID Input String
      * @param inputSaveAllView Input SaveAllView
      */
-    public UpdateNumRowsSelectedEvent(final String inputEsaSkyUniqID,
-            final SaveAllView inputSaveAllView) {
-        this.esaSkyUniqID = inputEsaSkyUniqID;
+    public RefreshSaveAllViewEvent(final SaveAllView inputSaveAllView) {
         this.saveAllView = inputSaveAllView;
     }
 
     @Override
-    public final Type<UpdateNumRowsSelectedEventHandler> getAssociatedType() {
+    public final Type<RefreshSaveAllViewEventHandler> getAssociatedType() {
         return TYPE;
     }
 
     @Override
-    protected final void dispatch(final UpdateNumRowsSelectedEventHandler handler) {
+    protected final void dispatch(final RefreshSaveAllViewEventHandler handler) {
         handler.onUpdateClick(this);
-    }
-
-    /**
-     * getEsaSkyUniqID().
-     * @return String
-     */
-    public final String getEsaSkyUniqID() {
-        return esaSkyUniqID;
     }
 
     /**

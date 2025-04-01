@@ -33,3 +33,7 @@
 	cursor: default;
 	background: transparent;
 }
+
+.resultsToolbar-Anchor.hidden {
+    display: none;
+}

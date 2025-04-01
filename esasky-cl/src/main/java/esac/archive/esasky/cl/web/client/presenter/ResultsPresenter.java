@@ -125,13 +125,17 @@ public class ResultsPresenter implements ICountRequestHandler {
 
         CommonEventBus.getEventBus().addHandler(ExportJupyterEvent.TYPE,
                 clickEvent -> {
-                    doSaveTableAs(ReturnType.JUPYTER);
+                    boolean downloadAll = clickEvent.getEsaSkyUniqID() == null;
+                    doSaveTableAs(ReturnType.JUPYTER, downloadAll);
                     clickEvent.getSaveAllView().getSaveOrDownloadDialog().hide();
                 });
 
         // Update number of rows selected event.
-        CommonEventBus.getEventBus().addHandler(UpdateNumRowsSelectedEvent.TYPE,
-                clickEvent -> updateNumberOfObservationsSelected(clickEvent.getSaveAllView()));
+        CommonEventBus.getEventBus().addHandler(RefreshSaveAllViewEvent.TYPE,
+                clickEvent -> {
+                    updateNumberOfObservationsSelected(clickEvent.getSaveAllView());
+                    clickEvent.getSaveAllView().updateJupyterNotebookButtons(view.getTabPanel().getTabWidgetIds().size());
+                });
 
         CommonEventBus.getEventBus().addHandler(SSOCrossMatchEvent.TYPE,
                 event -> descriptorRepo.doCountSSO(event.getSsoName(), event.getSsoType()));
@@ -266,11 +270,16 @@ public class ResultsPresenter implements ICountRequestHandler {
         saveAllView.updateNumberOfSelectedElementsLabel(subset.length);
     }
 
+    private void doSaveTableAs(final ReturnType type) {
+        doSaveTableAs(type, false);
+    }
+
     /**
      * doSaveTableAs().
-     * @param votable Input ReturnType
+     * @param type Type of file to download
+     * @param downloadAll Whether to download all open tables or not (currently only supported for Notebooks)
      */
-    private void doSaveTableAs(final ReturnType type) {
+    private void doSaveTableAs(final ReturnType type, final boolean downloadAll) {
         Log.debug("[ResultsPresenter/doSaveTableAs()] Saving results table in format: "
                 + type.toString());
         
@@ -279,7 +288,11 @@ public class ResultsPresenter implements ICountRequestHandler {
     		view.getTabPanel().getSelectedWidget().exportAsCsv();
     		eventCategory = GoogleAnalytics.CAT_DOWNLOAD_CSV;
 	} else if (type.equals(ReturnType.JUPYTER)) {
-            DatalabsExport.exportTablePanel(view.getTabPanel().getSelectedWidget());
+            if (downloadAll) {
+                DatalabsExport.exportAllTables();
+            } else {
+                DatalabsExport.exportTablePanel(view.getTabPanel().getSelectedWidget());
+            }
             eventCategory = GoogleAnalytics.CAT_DOWNLOAD_IPYNB;
         } else {
     		view.getTabPanel().getSelectedWidget().exportAsVot();
