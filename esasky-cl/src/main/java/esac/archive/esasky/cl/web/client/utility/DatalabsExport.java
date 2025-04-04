@@ -7,6 +7,7 @@ import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.model.entities.EsaSkyEntity;
 import esac.archive.esasky.cl.web.client.model.entities.GeneralEntityInterface;
 import esac.archive.esasky.cl.web.client.model.entities.ImageListEntity;
+import esac.archive.esasky.cl.web.client.model.entities.MOCEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsByAuthorEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsBySourceEntity;
 import esac.archive.esasky.cl.web.client.model.entities.PublicationsEntity;
@@ -27,9 +28,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static esac.archive.esasky.cl.web.client.utility.EsaSkyWebConstants.CATEGORY_PUBLICATIONS;
+
 public class DatalabsExport {
     private static final List<String> OUR_EXTERNAL_TAPS = new ArrayList<>(Arrays.asList("ESO", "ASTRON", "HEASARC", "MAST"));
-    public interface JupyterMapper extends ObjectMapper<Jupyter> {}
+
+    public interface JupyterMapper extends ObjectMapper<Jupyter> {
+    }
 
     public static void exportAllTables() {
         Jupyter jupyter = new Jupyter();
@@ -80,7 +85,7 @@ public class DatalabsExport {
 
         jupyter.addCell(new JupyterMarkdownCell(
                 TextMgr.getInstance().getText("JupyterNotebook_welcome_text").replace("$TIMESTAMP$", currentTime))
-                );
+        );
         jupyter.addCell(new JupyterMarkdownCell(
                 "## " + TextMgr.getInstance().getText("JupyterNotebook_import_libraries")
         ));
@@ -137,11 +142,13 @@ public class DatalabsExport {
     }
 
     private static void addEntityStep(Jupyter jupyter, GeneralEntityInterface entity) {
-        if (entity.getDescriptor().isExternal() && OUR_EXTERNAL_TAPS.contains(entity.getDescriptor().getMission())) {
+        if (CATEGORY_PUBLICATIONS.equals(entity.getDescriptor().getCategory())) {
+            return;
+        } else if (entity.getDescriptor().isExternal() && OUR_EXTERNAL_TAPS.contains(entity.getDescriptor().getMission())) {
             addOurExternalTapStep(jupyter, entity);
         } else if (entity.getDescriptor().isExternal()) {
             addExternalTapStep(jupyter, entity);
-        } else {
+        } else if (entity instanceof EsaSkyEntity || entity instanceof MOCEntity) {
             addRegularTapStep(jupyter, entity);
         }
     }
