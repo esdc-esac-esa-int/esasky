@@ -5784,5 +5784,13 @@
 	<text key="JupyterNotebook_add_data_points">
 		Add the data points to the ESA Sky widget
 	</text>
-
+	<text key="WelcomeDialog_cookie_policy">
+		Cookie Policy
+	</text>
+	<text key="WelcomeDialog_privacy_policy">
+		Privacy Policy
+	</text>
+	<text key="WelcomeDialog_terms_conditions">
+		Terms and Conditions
+	</text>
 </Internationalization>
