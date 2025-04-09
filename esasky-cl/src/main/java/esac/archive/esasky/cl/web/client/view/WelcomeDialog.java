@@ -117,9 +117,7 @@ public class WelcomeDialog extends Composite {
 		
 		checkBox.addStyleName("welcomeCheckBox");
 		checkBox.addValueChangeHandler(event -> GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_WELCOME, GoogleAnalytics.ACT_WELCOME_DONOTSHOWAGAIN, event.getValue().toString()));
-		
-		Anchor cookieInformation = new Anchor(TextMgr.getInstance().getText("WelcomeDialog_cookieInformation"), EsaSkyWebConstants.COOKIE_POLICY_URL, "_blank");
-		cookieInformation.addStyleName("cookieInformation");
+
 		
 		welcomeButtonContainer = new FlowPanel();
 		welcomeButtonContainer.addStyleName("welcomeButtonContainer");
@@ -129,13 +127,26 @@ public class WelcomeDialog extends Composite {
 		welcomeDialogConainer.add(welcomeButtonContainer);
 		
 		
-		FlowPanel cookieCheckboxAndPolicy = new FlowPanel();
-		cookieCheckboxAndPolicy.addStyleName("cookieCheckboxAndPolicy");
-		cookieCheckboxAndPolicy.add(checkBox);
-		cookieCheckboxAndPolicy.add(cookieInformation);
+		FlowPanel hideDialogCheckbox = new FlowPanel();
+		hideDialogCheckbox.addStyleName("cookieCheckboxAndPolicy");
+		hideDialogCheckbox.add(checkBox);
+
+		FlowPanel policyContainer = new FlowPanel();
+		policyContainer.addStyleName("policyContainer");
+		Anchor cookieInformation = new Anchor(TextMgr.getInstance().getText("WelcomeDialog_cookie_policy"), EsaSkyWebConstants.COOKIE_POLICY_URL, "_blank");
+		cookieInformation.addStyleName("cookieInformation");
+		Anchor privacyInformation = new Anchor(TextMgr.getInstance().getText("WelcomeDialog_privacy_policy"), EsaSkyWebConstants.PRIVACY_POLICY_URL, "_blank");
+		privacyInformation.addStyleName("cookieInformation");
+		Anchor termsAndConditions = new Anchor(TextMgr.getInstance().getText("WelcomeDialog_terms_conditions"), EsaSkyWebConstants.TERMS_AND_CONDITIONS_URL, "_blank");
+		termsAndConditions.addStyleName("cookieInformation");
+		policyContainer.add(cookieInformation);
+		policyContainer.add(privacyInformation);
+		policyContainer.add(termsAndConditions);
 		
-		welcomeDialogConainer.add(cookieCheckboxAndPolicy);
-		welcomeDialogConainer.addElementNotAbleToInitiateMoveOperation(cookieCheckboxAndPolicy.getElement());
+		welcomeDialogConainer.add(hideDialogCheckbox);
+		welcomeDialogConainer.addElementNotAbleToInitiateMoveOperation(hideDialogCheckbox.getElement());
+		welcomeDialogConainer.add(policyContainer);
+		welcomeDialogConainer.addElementNotAbleToInitiateMoveOperation(policyContainer.getElement());
 		welcomeDialogConainer.add(createClosingButtons());
 		
 		initWidget(welcomeDialogConainer);

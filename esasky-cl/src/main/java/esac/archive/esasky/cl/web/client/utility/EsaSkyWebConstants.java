@@ -131,7 +131,10 @@ public class EsaSkyWebConstants {
     public static final String ESA_SKY_USER_ECHO = "https://esdc.userecho.com/communities/1-esasky";
     public static final String ESA_SKY_API_URL = "//www.cosmos.esa.int/web/esdc/esasky-javascript-api";
     public static final String ESA_SKY_ABOUTUS_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits";
-    public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/esasky-help#cookies";
+    public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/cookie-policy";
+    public static final String PRIVACY_POLICY_URL = "//www.cosmos.esa.int/privacy-policy";
+    public static final String TERMS_AND_CONDITIONS_URL = "//www.cosmos.esa.int/web/esdc/terms-and-conditions";
+
     public static final String ESASKY_INFO_EMAIL = "esaskyinfo@sciops.esa.int";
     public static final String ESA_SKY_ACKNOWLEDGE_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits#CITE";
     
