@@ -28,16 +28,26 @@ public class HipsNameChangeEvent extends GwtEvent<HipsNameChangeEventHandler> {
     /** Event type. */
     public final static Type<HipsNameChangeEventHandler> TYPE = new Type<HipsNameChangeEventHandler>();
 
-    private String hipsName;
+    private final String hipsName;
+    private final boolean fromPlayback;
 
     public HipsNameChangeEvent(final String hipsName) {
         this.hipsName = hipsName;
+        fromPlayback = false;
+    }
+
+    public HipsNameChangeEvent(final String hipsName, final boolean fromPlayback) {
+        this.hipsName = hipsName;
+        this.fromPlayback = fromPlayback;
     }
 
     public final String getHiPSName() {
         return hipsName;
     }
-    
+
+    public final boolean isFromPlayback() {
+        return fromPlayback;
+    }
 
     @Override
     public final Type<HipsNameChangeEventHandler> getAssociatedType() {
