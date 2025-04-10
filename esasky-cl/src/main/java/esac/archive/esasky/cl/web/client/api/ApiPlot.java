@@ -45,7 +45,7 @@ public class ApiPlot extends ApiBase{
 		CommonTapDescriptor currObs  = descriptors.getDescriptorByMission(missionId);
 
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
+			controller.getRootPresenter().getRelatedMetadata(currObs);
 			sendBackMessageToWidget("Image observations from missionId: " + missionId + " displayed in the ESASky", widget);
 		}
 		else {
@@ -78,7 +78,7 @@ public class ApiPlot extends ApiBase{
 		CommonTapDescriptor currObs  = descriptors.getDescriptorByMission(missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
+			controller.getRootPresenter().getRelatedMetadata(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Catalogs from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
@@ -114,7 +114,7 @@ public class ApiPlot extends ApiBase{
 		CommonTapDescriptor currObs = DescriptorRepository.getInstance().getFirstDescriptor(EsaSkyWebConstants.CATEGORY_SPECTRA, missionId);
 		
 		if(currObs != null ) {
-			controller.getRootPresenter().getRelatedMetadataWithoutMOC(currObs);
+			controller.getRootPresenter().getRelatedMetadata(currObs);
 			JSONObject callbackMessage = new JSONObject();
 			callbackMessage.put("message", new JSONString("Spectra from missionId: " + missionId + " displayed in the ESASky"));
 			sendBackToWidget(null, callbackMessage, widget);
