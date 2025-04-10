@@ -69,7 +69,6 @@ public class SkyRow extends Composite implements Selectable{
 	private DropDownMenu<String> wavelengthDropDown;
 	private DropDownMenu<HiPS> hipsDropDown;
 	private boolean onlyOneSkyActive = true;
-	private boolean isChosenFromSlider = false;
 	private boolean blockNotifications = false;
 
 	private List<SkyObserver> observers = new LinkedList<>();
@@ -576,7 +575,6 @@ public class SkyRow extends Composite implements Selectable{
 
 	private void select() {
 		selectCheckButton.setSelected(true, !blockNotifications);
-		isChosenFromSlider = false;
 	}
 
 
@@ -699,14 +697,6 @@ public class SkyRow extends Composite implements Selectable{
 		this.isBase = isBase;
 	}
 
-	public boolean isChosenFromSlider() {
-		return isChosenFromSlider;
-	}
-
-	public void setChosenFromSlider(boolean isChosenFromSlider) {
-		this.isChosenFromSlider = isChosenFromSlider;
-	}
-	
 	public void setOpacity(double opacity) {
 		AladinLiteWrapper.getInstance().changeImageLayerOpacity(getRowId(), opacity);
 	}

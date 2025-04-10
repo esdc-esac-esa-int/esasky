@@ -196,7 +196,9 @@ public class HeaderPresenter {
 
         CommonEventBus.getEventBus().addHandler(HipsNameChangeEvent.TYPE, changeEvent -> {
             view.setHipsName(changeEvent.getHiPSName());
-            GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_HIPSNAME, changeEvent.getHiPSName());
+            if (!changeEvent.isFromPlayback()) {
+                GoogleAnalytics.sendEvent(GoogleAnalytics.CAT_HEADER, GoogleAnalytics.ACT_HEADER_HIPSNAME, changeEvent.getHiPSName());
+            }
         });
 
         CommonEventBus.getEventBus().addHandler(IsInScienceModeChangeEvent.TYPE, () -> {
