@@ -26,6 +26,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.ui.FlowPanel;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.event.hips.HipsChangeEvent;
+import esac.archive.esasky.cl.web.client.event.hips.HipsNameChangeEvent;
 import esac.archive.esasky.cl.web.client.internationalization.TextMgr;
 import esac.archive.esasky.cl.web.client.presenter.SelectSkyPanelPresenter;
 import esac.archive.esasky.cl.web.client.utility.AladinLiteWrapper;
@@ -162,8 +163,14 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 
 			if (opacity > 0.5 && !curSkyRow.isSelected()) {
 				curSkyRow.setSelected(false);
+				sendUpdateSkyName(curSkyRow);
 			}
 		}
+	}
+
+	private void sendUpdateSkyName(SkyRow curSkyRow) {
+		HipsNameChangeEvent event = new HipsNameChangeEvent(curSkyRow.getNameofSelected(), true);
+		CommonEventBus.getEventBus().fireEvent(event);
 	}
 
 	public void fillAllSkyPanelEntries(final SkiesMenu skiesMenu) {
@@ -260,7 +267,9 @@ public class SelectSkyPanel extends MovablePanel implements SkyObserver, SelectS
 	private ESASkyPlayerPanel createPlayer() {
 		player = new ESASkyPlayerPanel(50, 0.01, "HiPSPlayer");
 		player.addStyleName("skyPlayer");
-		player.registerValueChangeObserver(value -> SelectSkyPanel.this.slider.setValue(value));
+		player.registerValueChangeObserver(value -> {
+			SelectSkyPanel.this.slider.setValue(value);
+		});
 		return player;
 	}
 
