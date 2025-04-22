@@ -77,6 +77,7 @@ public class EsaSkyWebConstants {
     public static final String RANDOM_SOURCE_URL = BACKEND_CONTEXT + "/random-source";
     public static final String SIMBAD_TAP_URL = BACKEND_CONTEXT + "/simbad-tap";
     public static final String BANNER_MESSAGE_URL = BACKEND_CONTEXT + "/banner-message";
+    public static final String ADVERTISING_MESSAGE_URL = BACKEND_CONTEXT + "/advertising-message";
     public static final String HIPS_STORAGE_URL = BACKEND_CONTEXT + "/location";
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
