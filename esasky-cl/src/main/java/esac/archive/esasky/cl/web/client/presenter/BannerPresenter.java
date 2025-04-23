@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.HTML;
 
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEvent;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.event.AladinLiteCoordinatesChangedEventHandler;
+import esac.archive.esasky.ifcs.model.descriptor.AdvertisingMessage;
 import esac.archive.esasky.ifcs.model.descriptor.BannerMessage;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
 import esac.archive.esasky.cl.web.client.Modules;
@@ -54,7 +55,9 @@ public class BannerPresenter {
 	private View view;
 	private boolean anyActicitySinceLastCheck;
 	private boolean bannerMessageIsActive;
+	private boolean showingIsAd = false;
 	private BannerMessage lastBannerMessage;
+	private AdvertisingMessage lastAdvertisingMessage;
 	private final String BANNER_COOKIE_NAME = "esaSkyBannerCookie";
 
 
@@ -74,6 +77,7 @@ public class BannerPresenter {
 		hide();
 	}
 	public interface BannerMessageMapper extends ObjectMapper<BannerMessage> {}
+	public interface AdvertisingMessageMapper extends ObjectMapper<AdvertisingMessage> {}
 	private Timer checkBackendMessageTimer = new Timer() {
 
 		@Override
@@ -92,13 +96,22 @@ public class BannerPresenter {
 			@Override
 			public void onClick(ClickEvent event) {
 				hide();
-				if(lastBannerMessage != null && !lastBannerMessage.getIsWarning()) {
-					Date expires = new Date();
-					long milliseconds = ((long) 7)  * 24 * 60 * 60 * 1000;
-					expires.setTime(expires.getTime() + milliseconds);
-					Cookies.setCookie(BANNER_COOKIE_NAME, lastBannerMessage.getMessage(), expires);
-					bannerMessageIsActive = false;
+				if (lastBannerMessage != null && lastBannerMessage.getIsWarning()) {
+					return;
 				}
+				String message;
+				if (lastBannerMessage != null && lastBannerMessage.getMessage() != null && !lastBannerMessage.getMessage().isEmpty()) {
+					message = lastBannerMessage.getMessage();
+				} else if (lastAdvertisingMessage != null) {
+					message = lastAdvertisingMessage.getMessage();
+				} else {
+					return;
+				}
+				Date expires = new Date();
+				long milliseconds = ((long) 7)  * 24 * 60 * 60 * 1000;
+				expires.setTime(expires.getTime() + milliseconds);
+				Cookies.setCookie(BANNER_COOKIE_NAME, message, expires);
+				bannerMessageIsActive = false;
 			}
 		});
 
@@ -143,8 +156,7 @@ public class BannerPresenter {
 		
 		checkBackendMessageTimer.scheduleRepeating(30*1000); // Every thirty seconds
 		checkBackendMessages();
-		
-		
+
 		if(Modules.getModule(EsaSkyWebConstants.MODULE_BANNERS_ALL_SIDE)){
 			String newMessage = "Drag me to resize";
 			view.setText(newMessage);
@@ -169,41 +181,83 @@ public class BannerPresenter {
 			@Override
 			public void onSuccess(String responseText) {
 				BannerMessageMapper mapper = GWT.create(BannerMessageMapper.class);
-				BannerMessage bannerMessage = mapper.read(responseText);
+				BannerMessage bannerMessage;
+				bannerMessage = mapper.read(responseText);
+				lastBannerMessage = bannerMessage;
 				String message = bannerMessage.getMessage();
-				if(message == null || message.isEmpty() || (GUISessionStatus.getShouldHideBannerInfo() && !bannerMessage.getIsWarning())) {
-					if(!view.getText().isEmpty()) {
-						CommonEventBus.getEventBus().fireEvent(new ServerProblemSolvedEvent());
+				if (message == null || message.isEmpty()) {
+					if (!showingIsAd) {
+						resolveAndHide();
 					}
-					bannerMessageIsActive = false;
-					view.setText("");
-					hide();
 					return;
 				}
-				view.setIsWarning(bannerMessage.getIsWarning());
-				if(!view.getText().equals(new HTML(message).getHTML()) || bannerMessage.getIsWarning() != lastBannerMessage.getIsWarning()) {
-					String bannerCookie = Cookies.getCookie(BANNER_COOKIE_NAME);
-					if (bannerCookie != null && bannerCookie.equals(bannerMessage.getMessage())) {
-						return;
-					}
-
-					view.setText(message);
-					show();
-					if(bannerMessage.getIsWarning()) {
-						CommonEventBus.getEventBus().fireEvent(new ServerProblemFoundEvent());
-					} else {
-						CommonEventBus.getEventBus().fireEvent(new ServerProblemSolvedEvent());
-					}
-					lastBannerMessage = bannerMessage;
-					bannerMessageIsActive = true;
+				if(GUISessionStatus.getShouldHideBannerInfo() && !bannerMessage.getIsWarning()) {
+					resolveAndHide();
+					return;
 				}
+				showingIsAd = false;
+				maybeSetNewMessage(message, bannerMessage.getIsWarning());
 			}
-
-			@Override
-			public void onError(String errorCause) {
-			}
-
 		});
 
+		if (!runningInIframe()) {
+			JSONUtils.getJSONFromUrl(EsaSkyWebConstants.ADVERTISING_MESSAGE_URL + "?lang=" + URL.encodeQueryString(GUISessionStatus.getCurrentLanguage()), responseText -> {
+                AdvertisingMessageMapper mapper = GWT.create(AdvertisingMessageMapper.class);
+				AdvertisingMessage advertisingMessage;
+				advertisingMessage = mapper.read(responseText);
+                String message = advertisingMessage.getMessage();
+				if(lastBannerMessage != null && lastBannerMessage.getMessage() != null && !lastBannerMessage.getMessage().isEmpty()) {
+					return;
+				}
+                if(GUISessionStatus.getShouldHideBannerInfo()) {
+                    resolveAndHide();
+                    return;
+                }
+				lastAdvertisingMessage = advertisingMessage;
+                if(message != null && !message.isEmpty()) {
+					showingIsAd = true;
+                    maybeSetNewMessage(advertisingMessage.getMessage(), false);
+                } else {
+					resolveAndHide();
+				}
+            });
+
+		}
+	}
+
+	private native boolean runningInIframe() /*-{
+		try {
+			return $wnd.self !== $wnd.top;
+		} catch (e) {
+			return true;
+		}
+	}-*/;
+
+	private void maybeSetNewMessage(String message, boolean warning) {
+		String bannerCookie = Cookies.getCookie(BANNER_COOKIE_NAME);
+		if (bannerCookie != null && bannerCookie.equals(message)) {
+			return;
+		}
+		if(view.getText().equals(new HTML(message).getHTML())) {
+			return;
+		}
+		view.setIsWarning(warning);
+		view.setText(message);
+		show();
+		if(warning) {
+			CommonEventBus.getEventBus().fireEvent(new ServerProblemFoundEvent());
+		} else {
+			CommonEventBus.getEventBus().fireEvent(new ServerProblemSolvedEvent());
+		}
+		bannerMessageIsActive = true;
+	}
+
+	private void resolveAndHide() {
+		if(!view.getText().isEmpty()) {
+			CommonEventBus.getEventBus().fireEvent(new ServerProblemSolvedEvent());
+		}
+		bannerMessageIsActive = false;
+		view.setText("");
+		hide();
 	}
 }

@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package esac.archive.esasky.ifcs.model.descriptor;
 
-
 public class BannerMessage{
 	String message;
 	boolean isWarning;
@@ -30,13 +29,20 @@ public class BannerMessage{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 	public boolean getIsWarning() {
 		return isWarning;
 	}
-	
+
 	public void setIsWarning(boolean isWarning) {
 		this.isWarning = isWarning;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		BannerMessage bannerMessage = (BannerMessage) obj;
+		return message.equals(bannerMessage.getMessage()) && isWarning == bannerMessage.getIsWarning();
+	}
 }
