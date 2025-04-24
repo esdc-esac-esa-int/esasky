@@ -182,7 +182,7 @@ public class BannerPresenter {
 			public void onSuccess(String responseText) {
 				BannerMessageMapper mapper = GWT.create(BannerMessageMapper.class);
 				BannerMessage bannerMessage;
-				bannerMessage = mapper.read(responseText);
+					bannerMessage = mapper.read(responseText);
 				lastBannerMessage = bannerMessage;
 				String message = bannerMessage.getMessage();
 				if (message == null || message.isEmpty()) {
@@ -215,7 +215,7 @@ public class BannerPresenter {
                 }
 				lastAdvertisingMessage = advertisingMessage;
                 if(message != null && !message.isEmpty()) {
-					showingIsAd = true;
+                    showingIsAd = true;
                     maybeSetNewMessage(advertisingMessage.getMessage(), false);
                 } else {
 					resolveAndHide();
