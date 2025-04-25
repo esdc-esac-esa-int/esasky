@@ -77,6 +77,7 @@ public class EsaSkyWebConstants {
     public static final String RANDOM_SOURCE_URL = BACKEND_CONTEXT + "/random-source";
     public static final String SIMBAD_TAP_URL = BACKEND_CONTEXT + "/simbad-tap";
     public static final String BANNER_MESSAGE_URL = BACKEND_CONTEXT + "/banner-message";
+    public static final String ADVERTISING_MESSAGE_URL = BACKEND_CONTEXT + "/advertising-message";
     public static final String HIPS_STORAGE_URL = BACKEND_CONTEXT + "/location";
     public static final String DATALINK_URL = BACKEND_CONTEXT + "/datalink-url";
     public static final String IMAGE_LOADER_URL = BACKEND_CONTEXT + "/image-loader";
@@ -131,7 +132,10 @@ public class EsaSkyWebConstants {
     public static final String ESA_SKY_USER_ECHO = "https://esdc.userecho.com/communities/1-esasky";
     public static final String ESA_SKY_API_URL = "//www.cosmos.esa.int/web/esdc/esasky-javascript-api";
     public static final String ESA_SKY_ABOUTUS_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits";
-    public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/esasky-help#cookies";
+    public static final String COOKIE_POLICY_URL = "//www.cosmos.esa.int/web/esdc/cookie-policy";
+    public static final String PRIVACY_POLICY_URL = "//www.cosmos.esa.int/privacy-policy";
+    public static final String TERMS_AND_CONDITIONS_URL = "//www.cosmos.esa.int/web/esdc/terms-and-conditions";
+
     public static final String ESASKY_INFO_EMAIL = "esaskyinfo@sciops.esa.int";
     public static final String ESA_SKY_ACKNOWLEDGE_URL = "//www.cosmos.esa.int/web/esdc/esasky-credits#CITE";
     

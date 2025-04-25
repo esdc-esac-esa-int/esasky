@@ -871,7 +871,7 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     @Override
     public void showSearchTool() {
         searchToolBoxButton.setToggleStatus(true);
-        searchToolPanel.showToolbox();
+        searchToolPanel.showToolbox(true);
     }
 
     @Override
@@ -883,14 +883,14 @@ public class SearchPanel extends Composite implements SearchPresenter.View {
     @Override
     public boolean setConeSearchArea(String ra, String dec, String radius) {
         searchToolBoxButton.setToggleStatus(true);
-        searchToolPanel.showWithConeDetails();
+        searchToolPanel.showWithConeDetails(false);
         return searchToolPanel.createConicalSearchArea(ra, dec, radius);
     }
 
     @Override
     public boolean setPolygonSearchArea(String stcs) {
         searchToolBoxButton.setToggleStatus(true);
-        searchToolPanel.showWithPolyDetails();
+        searchToolPanel.showWithPolyDetails(false);
         return searchToolPanel.createPolygonSearchArea(stcs);
     }
 

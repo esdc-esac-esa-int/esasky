@@ -5745,7 +5745,8 @@
   href="//www.cosmos.esa.int/web/esdc/esasky-observations#Euclid"
   target="_blank"&gt;
   More information
-  &lt;/a&gt; </text>  
+  &lt;/a&gt;
+</text>
 	<text key="saveAllView_Jupyter_Btn_Text">
 		Jupyter Notebook
 	</text>
@@ -5783,5 +5784,13 @@
 	<text key="JupyterNotebook_add_data_points">
 		Add the data points to the ESA Sky widget
 	</text>
-
+	<text key="WelcomeDialog_cookie_policy">
+		Cookie Policy
+	</text>
+	<text key="WelcomeDialog_privacy_policy">
+		Privacy Policy
+	</text>
+	<text key="WelcomeDialog_terms_conditions">
+		Terms and Conditions
+	</text>
 </Internationalization>

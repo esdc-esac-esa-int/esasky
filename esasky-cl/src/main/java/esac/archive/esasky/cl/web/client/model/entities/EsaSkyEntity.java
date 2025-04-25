@@ -21,6 +21,7 @@ package esac.archive.esasky.cl.web.client.model.entities;
 import com.allen_sauer.gwt.log.client.Log;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.ui.Image;
 import esac.archive.absi.modules.cl.aladinlite.widget.client.model.AladinShape;
 import esac.archive.esasky.cl.web.client.CommonEventBus;
@@ -1022,9 +1023,13 @@ public class EsaSkyEntity implements GeneralEntityInterface {
                         put("catalogues.t_gaia_source_dr3_fdw", "has_epoch_photometry = 'True'");
                         put("catalogues.mv_xsa_epic_source_cat_fdw", "tseries = 'True'");
                         put("observations.mv_cheops_obs_fdw", "sci_cor_lc_opt_link IS NOT NULL");
-//                        put("observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw", "observation_id = 'jw02783-o002_t001_miri_p750l-slitlessprism'");
                         put("catalogues.mv_xsa_om_source_cat_fdw", "fast_id IS NOT NULL");
                     }};
+
+            if(Boolean.parseBoolean(Dictionary.getDictionary("serverProperties").get("showJwstTimeSeries"))) {
+            	timeVizTablesAndWhereClause.put("observations.mv_v_v_esasky_jwst_spectra_fdw_fdw", "has_timeseries = 'True'");
+            	timeVizTablesAndWhereClause.put("observations.mv_v_v_esasky_jwst_spectra_miri_fdw_fdw", "has_timeseries = 'True'");
+            }
 
             boolean hasTimeVizData = timeVizTablesAndWhereClause.containsKey(descriptor.getTableName());
             String timeVizWhereQuery = timeVizTablesAndWhereClause.get(descriptor.getTableName());
