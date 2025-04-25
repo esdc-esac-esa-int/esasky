@@ -5,6 +5,18 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class ImageLayer extends JavaScriptObject {
     protected ImageLayer() {}
 
+    public final native void setCutLimits() /*-{
+        if (this && this.getCuts) {
+            var cuts = this.getCuts();
+            var minCut = cuts[0];
+            var maxCut = cuts[1];
+            this.minCutLimit = minCut;
+            this.maxCutLimit = maxCut;
+        } else if  (this){
+            this.minCutLimit = 0;
+            this.maxCutLimit = 1;
+        }
+    }-*/;
 
     public final native String getLayer() /*-{
         if (this.layer) {
@@ -58,8 +70,8 @@ public class ImageLayer extends JavaScriptObject {
     }-*/;
 
     public final native String[] getAvailableImageFormats() /*-{
-        if (this.formats) {
-            return this.formats;
+        if (this.acceptedFormats) {
+            return this.acceptedFormats;
         }
         return null;
     }-*/;
@@ -73,18 +85,16 @@ public class ImageLayer extends JavaScriptObject {
     }-*/;
 
     public final native double getMinCutLimit() /*-{
-        var limits = this.getDefaultCuts();
-        if (limits && limits.length > 0) {
-            return limits[0];
+        if (this.minCutLimit) {
+            return this.minCutLimit;
         } else {
             return 0;
         }
     }-*/;
 
     public final native double getMaxCutLimit() /*-{
-        var limits = this.getDefaultCuts();
-        if (limits && limits.length > 1) {
-            return limits[1];
+        if (this.maxCutLimit) {
+            return this.maxCutLimit;
         } else {
             return 1;
         }
