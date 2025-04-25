@@ -145,7 +145,7 @@ public class ImageConfigPanel extends CollapsablePanel {
                 ImageLayer updatedLayer = event.getLayer();
                 if (cutSlider.isSliderReady()) {
                     blockCutSliderEvent = true;
-                    cutSlider.setMinMaxValues(updatedLayer.getMinCutLimit(), updatedLayer.getMaxCutLimit());
+                    cutSlider.setMinMaxValues(updatedLayer.getMinCut(), updatedLayer.getMaxCut());
                     cutSlider.setSliderValue(updatedLayer.getMinCut(), updatedLayer.getMaxCut());
                     blockCutSliderEvent = false;
                 }
@@ -193,12 +193,14 @@ public class ImageConfigPanel extends CollapsablePanel {
 
     public ImageLayer discoverLayer(String skyRowId) {
         this.layer = AladinLiteWrapper.getAladinLite().getImageLayer(skyRowId);
+        this.layer.setCutLimits();
         this.setDefaultValues();
         return this.layer;
     }
 
     public void setLayerAndHiPS(ImageLayer layer, HiPS hips) {
         if (this.layer == null || !Objects.equals(this.hips, hips)) {
+            this.layer.setCutLimits();
             this.layer = layer;
             this.hips = hips;
             setDefaultValues();
