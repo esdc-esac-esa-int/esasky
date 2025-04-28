@@ -2783,12 +2783,14 @@ public class TabulatorWrapper {
         var has_time_series = data["tseries"];
         var has_cheops_product = data["sci_cor_lc_opt_link"];
         var xmm_om_fast_id = data["fast_id"];
+        var jwst_column = data["has_timeseries"];
 
         return has_time_series === true
             || has_epoch_photometry === true
             || has_cheops_product
             || observation_id === "jw02783-o002_t001_miri_p750l-slitlessprism"
-            || (xmm_om_fast_id && xmm_om_fast_id !== "");
+            || (xmm_om_fast_id && xmm_om_fast_id !== "")
+            || jwst_column === true;
     }-*/;
 
     public void onRowEnter(int rowId) {
